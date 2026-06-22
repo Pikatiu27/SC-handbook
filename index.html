@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AS 4100:2020 bolt capacity quick lookup">
+  <title>Bolt Capacity · AS 4100</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top"><span class="brand-mark">B</span><span><strong>Bolt Lookup</strong><small>AS 4100:2020</small></span></a>
+    <div class="top-actions"><a href="preview.html">Device preview</a><span class="standard-badge">AUSTRALIAN STANDARD</span></div>
+  </header>
+
+  <main id="top">
+    <section class="intro">
+      <p class="kicker">AS 4100:2020 · QUICK LOOKUP</p>
+      <h1>Bolt Capacity</h1>
+      <p>Select a bolt designation and shear-plane condition to obtain the AS 4100 design capacities.</p>
+    </section>
+
+    <section class="lookup-card">
+      <div class="primary-inputs three-inputs">
+        <label class="size-field">
+          <span>Bolt size</span>
+          <select id="boltSize" aria-label="Bolt size"></select>
+        </label>
+        <label>
+          <span>Bolt category</span>
+          <select id="category" aria-label="Bolt category"></select>
+        </label>
+        <label>
+          <span>Shear plane for design capacity</span>
+          <select id="shearPlane" aria-label="Shear-plane condition">
+            <option value="N">N — threads included</option>
+            <option value="X">X — threads excluded</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="bolt-summary">
+        <div><span>Typical drawing designation</span><strong id="selectionTitle">M24 8.8/S</strong><small id="drawingNote">Design assumption: N condition — threads included in shear plane</small></div>
+        <dl>
+          <div><dt>d</dt><dd id="diameterValue">24 mm</dd></div>
+          <div><dt>A<sub>s</sub></dt><dd id="stressAreaValue">353 mm²</dd></div>
+          <div><dt>f<sub>uf</sub></dt><dd id="strengthValue">830 MPa</dd></div>
+        </dl>
+      </div>
+      <p class="drawing-note"><b>Drawing convention:</b> use <code>M24 8.8/S</code>. If thread location is controlled, add a separate note such as <code>THREADS EXCLUDED FROM SHEAR PLANE</code>. N/X is a design condition, not part of the bolt category.</p>
+      <div class="notation-key" aria-label="Australian bolt notation key">
+        <span><b>/S</b> snug-tight</span>
+        <span><b>/TB</b> fully tensioned, bearing-type</span>
+        <span><b>/TF</b> fully tensioned, friction-type</span>
+        <span><b>N</b> threads included in shear plane</span>
+        <span><b>X</b> threads excluded from shear plane</span>
+      </div>
+
+      <section class="capacity-section" aria-live="polite">
+        <div class="section-heading">
+          <div><span class="step">01</span><h2>Single-bolt design capacities</h2></div>
+          <span>per bolt</span>
+        </div>
+        <div class="capacity-grid">
+          <article class="capacity-card selected-shear">
+            <span id="selectedShearLabel">Design shear · N condition</span>
+            <strong><output id="selectedShearCapacity">133.4</output><small> kN</small></strong>
+            <p id="selectedShearNote">φV<sub>f</sub> · threads included · 9.2.2.1</p>
+          </article>
+          <article class="capacity-card tension">
+            <span>Design tension</span>
+            <strong><output id="tensionCapacity">234.4</output><small> kN</small></strong>
+            <p>φN<sub>tf</sub> · AS 4100 9.2.2.2</p>
+          </article>
+          <article class="capacity-card alternate-shear">
+            <span id="alternateShearLabel">X-condition comparison</span>
+            <strong><output id="alternateShearCapacity">186.1</output><small> kN</small></strong>
+            <p id="alternateShearNote">threads excluded</p>
+          </article>
+        </div>
+        <p class="result-note">Shear values are for one shear plane with k<sub>r</sub> = 1.0. Use Detailed connection checks for bolt groups, long joints, ply bearing and combined actions.</p>
+      </section>
+    </section>
+
+    <details class="detail-card" id="connectionDetails">
+      <summary><span><b>Detailed connection checks</b><small>Bolt group, shear planes, ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
+      <div class="detail-body">
+        <section>
+          <h3>Bolt group and shear planes</h3>
+          <div class="form-grid four">
+            <label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="1"></label>
+            <label><span>N shear planes</span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label>
+            <label><span>X shear planes</span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label>
+            <label><span>k<sub>r</sub></span><input id="kr" type="number" min="0.5" max="1" step="0.01" value="1"></label>
+          </div>
+          <div class="compact-result"><span>Design shear capacity of bolt group</span><strong id="groupShearCapacity">133.4 kN</strong></div>
+        </section>
+
+        <section>
+          <h3>Connected-ply bearing</h3>
+          <div class="form-grid three">
+            <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="plateThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
+            <label><span>f<sub>up</sub> <i>ply tensile strength</i></span><span class="unit"><input id="plateStrength" type="number" min="1" step="1" value="440"><em>MPa</em></span></label>
+            <label><span>a<sub>e</sub> <i>effective edge distance</i></span><span class="unit"><input id="edgeDistance" type="number" min="0" step="1" value="42"><em>mm</em></span></label>
+          </div>
+          <div class="compact-result"><span>Design ply-bearing capacity per bolt</span><strong id="bearingCapacity">166.3 kN</strong><small id="bearingGoverning">edge limit controls</small></div>
+        </section>
+
+        <section id="slipSection">
+          <h3>TF slip resistance</h3>
+          <div class="form-grid three">
+            <label><span>n<sub>ei</sub> <i>effective interfaces</i></span><input id="interfaces" type="number" min="1" max="10" step="1" value="1"></label>
+            <label><span>μ <i>slip factor</i></span><input id="slipFactor" type="number" min="0" max="1" step="0.01" value="0.35"></label>
+            <label><span>k<sub>h</sub> <i>hole factor</i></span><select id="holeFactor"><option value="1">1.00 · standard</option><option value="0.85">0.85 · short slot / oversize</option><option value="0.7">0.70 · long slot</option></select></label>
+          </div>
+          <div class="compact-result"><span>Design slip resistance per bolt</span><strong id="slipCapacity">Not applicable</strong><small>TF categories only</small></div>
+        </section>
+
+        <section>
+          <h3>Design actions and combined check</h3>
+          <div class="form-grid two">
+            <label><span>V* <i>design shear action</i></span><span class="unit"><input id="shearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+            <label><span>N* <i>design tension action</i></span><span class="unit"><input id="tensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+          </div>
+          <div class="interaction-result"><span>Combined shear and tension ratio</span><strong id="interactionRatio">0.00</strong><b id="interactionStatus">Enter design actions</b></div>
+        </section>
+      </div>
+    </details>
+
+    <details class="source-card">
+      <summary><span><b>Calculation basis and limitations</b><small>Equations, AS 4100 references and data boundaries</small></span><i>+</i></summary>
+      <div class="source-body">
+        <div id="formulaSteps" class="formula-list"></div>
+        <div class="source-notes">
+          <p><b>Drawing convention</b> · Use <code>M24 8.8/S</code>, <code>M24 8.8/TB</code> or <code>M24 8.8/TF</code>. If the X condition is relied upon, state separately that threads are excluded from the shear plane.</p>
+          <p><b>Primary basis</b> · AS 4100:2020 Table 3.4; Clauses 9.2.2.1, 9.2.2.2, 9.2.2.4, 9.2.3.1–9.2.3.2; Table 15.2.2.2.</p>
+          <p>A<sub>s</sub> and A<sub>c</sub> use metric coarse-thread data. Verify against the applicable fastener and thread Standards before issue for design.</p>
+          <p>Public calculators informed interaction and cross-checking only; they are not the Standard:</p>
+          <p><a href="https://skyciv.com/quick-calculators/bolt-shear-strength-calculator/" target="_blank" rel="noreferrer">SkyCiv Bolt Calculator</a> · <a href="https://calcs.com/calculators/steelBoltAS4100-2020" target="_blank" rel="noreferrer">Calcs.com AS 4100:2020 Bolt</a></p>
+        </div>
+      </div>
+    </details>
+  </main>
+
+  <footer><span>Local engineering lookup. Results require competent engineering review and verification against a licensed copy of the applicable Standards.</span><b>Build 0.3.0 · 22 Jun 2026</b></footer>
+  <script src="app.js"></script>
+</body>
+</html>

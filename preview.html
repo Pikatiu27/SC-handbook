@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multi-device Preview · Bolt Capacity</title>
+  <link rel="stylesheet" href="preview.css">
+</head>
+<body>
+  <header class="preview-bar">
+    <div>
+      <span class="preview-mark">B</span>
+      <span><strong>Multi-device Preview</strong><small>Bolt Capacity · AS 4100:2020</small></span>
+    </div>
+    <nav>
+      <button id="reloadFrames" type="button">Reload all</button>
+      <a href="index.html">Open calculator</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="preview-intro">
+      <p>RESPONSIVE QA</p>
+      <h1>One page, four viewports</h1>
+      <span>Each panel is an independent live instance of the local calculator.</span>
+    </section>
+
+    <section class="device-grid">
+      <article class="device-card desktop-card">
+        <header><div><b>Desktop</b><span>1440 × 900</span></div><i>Windows / macOS</i></header>
+        <div class="viewport-shell" style="--width:1440px;--height:900px;--scale:.55">
+          <iframe src="index.html" title="Desktop preview"></iframe>
+        </div>
+      </article>
+
+      <article class="device-card landscape-card">
+        <header><div><b>iPad landscape</b><span>1024 × 768</span></div><i>Tablet landscape</i></header>
+        <div class="viewport-shell" style="--width:1024px;--height:768px;--scale:.68">
+          <iframe src="index.html" title="iPad landscape preview"></iframe>
+        </div>
+      </article>
+
+      <article class="device-card tablet-card">
+        <header><div><b>iPad portrait</b><span>768 × 1024</span></div><i>Tablet portrait</i></header>
+        <div class="viewport-shell" style="--width:768px;--height:1024px;--scale:.62">
+          <iframe src="index.html" title="iPad portrait preview"></iframe>
+        </div>
+      </article>
+
+      <article class="device-card mobile-card">
+        <header><div><b>Mobile</b><span>390 × 844</span></div><i>iPhone / Android</i></header>
+        <div class="phone-shell">
+          <span class="speaker"></span>
+          <div class="viewport-shell" style="--width:390px;--height:844px;--scale:.72">
+            <iframe src="index.html" title="Mobile preview"></iframe>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("reloadFrames").addEventListener("click", () => {
+      document.querySelectorAll("iframe").forEach(frame => frame.contentWindow.location.reload());
+    });
+  </script>
+</body>
+</html>
