@@ -29,12 +29,12 @@ select, input { font-variant-numeric: tabular-nums; }
 .brand-mark { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 8px 8px 8px 2px; background: var(--green); color: white; font-size: 17px; font-weight: 800; }
 .brand strong, .brand small { display: block; }
 .brand strong { font-size: 14px; line-height: 1.15; font-weight: 900; }
-.brand small { margin-top: 2px; color: var(--muted); font-size: 9px; }
-.standard-badge { color: var(--green); font-size: 9px; font-weight: 800; letter-spacing: .11em; }
+.brand small { margin-top: 2px; color: var(--muted); font-size: 10px; }
+.standard-badge { color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .11em; }
 
 main, footer { max-width: 980px; margin: auto; }
 .intro { padding: 31px 0 18px; }
-.kicker { margin: 0 0 6px; color: var(--green); font-size: 9px; font-weight: 800; letter-spacing: .12em; }
+.kicker { margin: 0 0 6px; color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
 .intro h1 { margin: 0; font-size: clamp(34px, 4vw, 44px); line-height: 1.08; font-weight: 900; letter-spacing: -.028em; }
 .intro > p:last-child { margin: 9px 0 0; max-width: 720px; color: var(--muted); font-size: 13px; }
 
@@ -50,12 +50,12 @@ main, footer { max-width: 980px; margin: auto; }
 
 .bolt-summary { margin: 17px 0 9px; padding: 14px 15px; border-radius: 9px; background: var(--green-soft); display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .bolt-summary > div > span, .bolt-summary > div > strong, .bolt-summary > div > small { display: block; }
-.bolt-summary > div > span { color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .055em; }
+.bolt-summary > div > span { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .055em; }
 .bolt-summary > div > strong { margin-top: 2px; font-size: 22px; line-height: 1.2; font-weight: 900; letter-spacing: -.015em; }
-.bolt-summary > div > small { margin-top: 3px; color: var(--muted); font-size: 10px; }
+.bolt-summary > div > small { margin-top: 3px; color: var(--muted); font-size: 11px; }
 .bolt-summary dl { display: flex; gap: 24px; margin: 0; }
 .bolt-summary dl div { text-align: right; }
-.bolt-summary dt { color: var(--muted); font-size: 9px; }
+.bolt-summary dt { color: var(--muted); font-size: 10px; }
 .bolt-summary dd { margin: 1px 0 0; font-size: 12px; font-weight: 700; }
 .drawing-note { margin: 0 0 23px; padding: 10px 12px; border-left: 3px solid var(--green); background: #f5faf7; color: var(--muted); font-size: 11px; line-height: 1.4; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .drawing-note b { color: var(--ink); font-size: inherit; }
@@ -68,61 +68,61 @@ main, footer { max-width: 980px; margin: auto; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
 .section-heading > div { display: flex; align-items: center; gap: 8px; }
 .section-heading h2 { margin: 0; font-size: 18px; line-height: 1.2; font-weight: 900; }
-.section-heading > span { color: var(--muted); font-size: 9px; font-weight: 650; text-transform: uppercase; letter-spacing: .08em; }
-.section-tag { padding: 4px 7px; border-radius: 4px; color: #fff; background: var(--green); font-size: 8px; line-height: 1; font-weight: 900; letter-spacing: .08em; }
+.section-heading > span { color: var(--muted); font-size: 10px; font-weight: 650; text-transform: uppercase; letter-spacing: .08em; }
+.section-tag { padding: 4px 7px; border-radius: 4px; color: #fff; background: var(--green); font-size: 9px; line-height: 1; font-weight: 900; letter-spacing: .08em; }
 .capacity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .capacity-card { min-width: 0; border: 1px solid var(--line); border-top: 3px solid var(--green); border-radius: 9px; padding: 15px; }
 .capacity-card > span { color: #46534c; font-size: 11px; font-weight: 700; }
 .capacity-card strong { display: block; margin: 5px 0 3px; font-size: 32px; line-height: 1.1; font-weight: 900; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
-.capacity-card strong small { color: var(--muted); font-size: 10px; font-weight: 600; letter-spacing: 0; }
-.capacity-card p { margin: 0; color: var(--muted); font-size: 9px; }
+.capacity-card strong small { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0; }
+.capacity-card p { margin: 0; color: var(--muted); font-size: 10px; }
 .selected-shear { border-color: #8fbea7; border-top-color: var(--green); background: linear-gradient(145deg, #edf7f1, #fff); }
 .alternate-shear { border-top-color: #7895a8; }
-.result-note { margin: 11px 0 0; color: var(--muted); font-size: 10px; }
+.result-note { margin: 11px 0 0; color: var(--muted); font-size: 11px; }
 
 .detail-card, .source-card { margin-top: 14px; overflow: hidden; }
 .detail-card > summary, .source-card > summary { list-style: none; padding: 15px 19px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
 .detail-card > summary::-webkit-details-marker, .source-card > summary::-webkit-details-marker { display: none; }
 .detail-card > summary span b, .detail-card > summary span small, .source-card > summary span b, .source-card > summary span small { display: block; }
 .detail-card > summary b, .source-card > summary b { font-size: 13px; }
-.detail-card > summary small, .source-card > summary small { margin-top: 2px; color: var(--muted); font-size: 10px; font-weight: 400; }
+.detail-card > summary small, .source-card > summary small { margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 400; }
 .detail-card > summary i, .source-card > summary i { color: var(--green); font-size: 20px; font-style: normal; transition: transform .2s; }
 .detail-card[open] > summary i, .source-card[open] > summary i { transform: rotate(45deg); }
 .detail-body, .source-body { border-top: 1px solid var(--line); padding: 3px 19px 19px; }
 .detail-body section { padding: 17px 0; border-bottom: 1px solid var(--line); }
 .detail-body section:last-child { border: 0; padding-bottom: 0; }
-.detail-body h3 { margin: 0 0 10px; color: var(--green); font-size: 10px; font-weight: 750; text-transform: uppercase; letter-spacing: .07em; }
+.detail-body h3 { margin: 0 0 10px; color: var(--green); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .07em; }
 .form-grid { display: grid; gap: 9px; }
 .form-grid.four { grid-template-columns: repeat(4, 1fr); }
 .form-grid.three { grid-template-columns: repeat(3, 1fr); }
 .form-grid.two { grid-template-columns: repeat(2, 1fr); }
-.form-grid label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; }
+.form-grid label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; }
 .form-grid label i { font-style: normal; }
 .form-grid input, .form-grid select { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: 7px; background: #fbfcfa; padding: 8px 9px; outline: none; font-size: 13px; }
 .unit { position: relative; margin: 0 !important; }
 .unit input { padding-right: 48px; }
-.unit em { position: absolute; right: 9px; top: 10px; color: var(--muted); font-size: 9px; font-style: normal; }
+.unit em { position: absolute; right: 9px; top: 10px; color: var(--muted); font-size: 10px; font-style: normal; }
 .compact-result { margin-top: 10px; padding: 9px 11px; display: flex; align-items: center; gap: 11px; border-radius: 7px; background: #f4f7f4; }
-.compact-result span { color: var(--muted); font-size: 10px; }
+.compact-result span { color: var(--muted); font-size: 11px; }
 .compact-result strong { margin-left: auto; font-size: 15px; font-variant-numeric: tabular-nums; }
-.compact-result small { color: var(--amber); font-size: 9px; }
+.compact-result small { color: var(--amber); font-size: 10px; }
 .interaction-result { margin-top: 10px; padding: 11px; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 14px; border-radius: 7px; background: var(--ink); color: white; }
-.interaction-result span { opacity: .72; font-size: 10px; }
+.interaction-result span { opacity: .72; font-size: 11px; }
 .interaction-result strong { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.interaction-result b { padding: 5px 8px; border-radius: 99px; color: var(--ink); background: #dce4df; font-size: 9px; }
+.interaction-result b { padding: 5px 8px; border-radius: 99px; color: var(--ink); background: #dce4df; font-size: 10px; }
 .interaction-result b.pass { background: #dff1e8; color: var(--green-dark); }
 .interaction-result b.fail { background: #f7deda; color: var(--red); }
 
 .source-body { display: grid; grid-template-columns: 1.15fr .85fr; gap: 22px; padding-top: 18px; }
-.formula-list > div { padding: 8px 0; border-bottom: 1px dashed var(--line); display: grid; grid-template-columns: 140px 1fr; gap: 9px; font-size: 10px; }
+.formula-list > div { padding: 8px 0; border-bottom: 1px dashed var(--line); display: grid; grid-template-columns: 140px 1fr; gap: 9px; font-size: 11px; }
 .formula-list > div:last-child { border: 0; }
 .formula-list b { color: var(--green); }
 .formula-list code { color: #4d5852; white-space: normal; }
-.source-notes { padding: 12px; border-radius: 8px; background: #fff8ef; color: #6e5138; font-size: 10px; }
+.source-notes { padding: 12px; border-radius: 8px; background: #fff8ef; color: #6e5138; font-size: 11px; }
 .source-notes p { margin: 0 0 9px; }
 .source-notes p:last-child { margin-bottom: 0; }
 .source-notes a { color: var(--green-dark); }
-footer { padding: 20px 0 30px; display: flex; justify-content: space-between; gap: 18px; color: var(--muted); font-size: 9px; }
+footer { padding: 20px 0 30px; display: flex; justify-content: space-between; gap: 18px; color: var(--muted); font-size: 10px; }
 footer b { white-space: nowrap; }
 
 @media (max-width: 1020px) {
@@ -140,7 +140,7 @@ footer b { white-space: nowrap; }
 @media (max-width: 500px) {
   main, footer { margin-left: 12px; margin-right: 12px; }
   .topbar { height: 54px; padding: 0 12px; }
-  .standard-badge { font-size: 8px; }
+  .standard-badge { font-size: 9px; }
   .intro { padding: 22px 0 14px; }
   .intro h1 { font-size: 29px; }
   .intro > p:last-child { font-size: 12px; }
