@@ -57,13 +57,13 @@ main, footer { max-width: 980px; margin: auto; }
 .bolt-summary dl div { text-align: right; }
 .bolt-summary dt { color: var(--muted); font-size: 9px; }
 .bolt-summary dd { margin: 1px 0 0; font-size: 12px; font-weight: 700; }
-.drawing-note { margin: 0 0 23px; padding: 10px 12px; border-left: 3px solid var(--green); background: #f5faf7; color: var(--muted); font-size: 10px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.drawing-note b { color: var(--ink); font-size: 10px; }
-.drawing-note code { color: var(--green-dark); font-family: var(--font); font-size: 12px; font-weight: 900; }
+.drawing-note { margin: 0 0 23px; padding: 10px 12px; border-left: 3px solid var(--green); background: #f5faf7; color: var(--muted); font-size: 11px; line-height: 1.4; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.drawing-note b { color: var(--ink); font-size: inherit; }
+.drawing-note code { color: var(--green-dark); font-family: var(--font); font-size: inherit; font-weight: 900; }
 .drawing-note span { margin-left: auto; }
 .notation-key { margin: -13px 0 23px; display: flex; gap: 6px; flex-wrap: wrap; }
-.notation-key span { padding: 4px 7px; border: 1px solid var(--line); border-radius: 99px; background: #fafcf9; color: var(--muted); font-size: 9px; }
-.notation-key b { color: var(--green-dark); }
+.notation-key span { padding: 5px 8px; border: 1px solid var(--line); border-radius: 99px; background: #fafcf9; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.notation-key b { color: var(--green-dark); font-size: inherit; }
 
 .section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
 .section-heading > div { display: flex; align-items: center; gap: 8px; }
