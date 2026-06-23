@@ -2,6 +2,8 @@
 
 Static English-language prototype for AS 4100 bolt-capacity lookups. Open `index.html` directly. The primary flow is deliberately bolt-first: select a size and category to see tension and both canonical single-plane shear capacities immediately. Checks that require connection geometry remain collapsed under **Detailed connection checks**.
 
+The interface uses locally bundled Lato font files to match the typography used by SkyCiv's public calculator while remaining fully self-contained.
+
 ## Included checks
 
 - bolt tension capacity;

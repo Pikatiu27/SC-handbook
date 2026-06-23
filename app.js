@@ -53,17 +53,17 @@ function calculate() {
 
   $("selectionTitle").textContent = `${size} ${categoryKey}`;
   $("drawingNote").textContent = plane === "X"
-    ? "Design assumption: X condition — threads excluded from shear plane"
-    : "Design assumption: N condition — threads included in shear plane";
+    ? "X condition — threads clear of the shear plane"
+    : "N condition — threads intercept the shear plane";
   $("diameterValue").textContent = `${bolt.d} mm`;
   $("stressAreaValue").textContent = `${bolt.As} mm²`;
   $("strengthValue").textContent = `${category.fuf} MPa`;
-  $("selectedShearLabel").textContent = `Design shear · ${plane} condition`;
+  $("selectedShearLabel").textContent = `Shear capacity — ${plane}`;
   $("selectedShearCapacity").textContent = fixed(selectedShear);
-  $("selectedShearNote").innerHTML = plane === "N" ? "φV<sub>f</sub> · threads included · 9.2.2.1" : "φV<sub>f</sub> · threads excluded · 9.2.2.1";
-  $("alternateShearLabel").textContent = `${plane === "N" ? "X" : "N"}-condition comparison`;
+  $("selectedShearNote").innerHTML = plane === "N" ? "φV<sub>f</sub> · threads intercept plane · Cl. 9.2.2.1" : "φV<sub>f</sub> · threads clear of plane · Cl. 9.2.2.1";
+  $("alternateShearLabel").textContent = `Shear capacity — ${plane === "N" ? "X" : "N"}`;
   $("alternateShearCapacity").textContent = fixed(alternateShear);
-  $("alternateShearNote").textContent = plane === "N" ? "threads excluded" : "threads included";
+  $("alternateShearNote").textContent = plane === "N" ? "threads clear of plane" : "threads intercept plane";
   $("tensionCapacity").textContent = fixed(tension);
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
   $("bearingCapacity").textContent = `${fixed(bearing)} kN`;

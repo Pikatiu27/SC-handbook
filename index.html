@@ -17,7 +17,7 @@
     <section class="intro">
       <p class="kicker">AS 4100:2020 · QUICK LOOKUP</p>
       <h1>Bolt Capacity</h1>
-      <p>Select a bolt designation and shear-plane condition to obtain the AS 4100 design capacities.</p>
+      <p>Select the bolt size, category and shear-plane condition.</p>
     </section>
 
     <section class="lookup-card">
@@ -31,54 +31,54 @@
           <select id="category" aria-label="Bolt category"></select>
         </label>
         <label>
-          <span>Shear plane for design capacity</span>
+          <span>Shear plane</span>
           <select id="shearPlane" aria-label="Shear-plane condition">
-            <option value="N">N — threads included</option>
-            <option value="X">X — threads excluded</option>
+            <option value="N">N — threads intercept plane</option>
+            <option value="X">X — threads clear of plane</option>
           </select>
         </label>
       </div>
 
       <div class="bolt-summary">
-        <div><span>Typical drawing designation</span><strong id="selectionTitle">M24 8.8/S</strong><small id="drawingNote">Design assumption: N condition — threads included in shear plane</small></div>
+        <div><span>Drawing callout</span><strong id="selectionTitle">M24 8.8/S</strong><small id="drawingNote">N condition — threads intercept the shear plane</small></div>
         <dl>
           <div><dt>d</dt><dd id="diameterValue">24 mm</dd></div>
           <div><dt>A<sub>s</sub></dt><dd id="stressAreaValue">353 mm²</dd></div>
           <div><dt>f<sub>uf</sub></dt><dd id="strengthValue">830 MPa</dd></div>
         </dl>
       </div>
-      <p class="drawing-note"><b>Drawing convention:</b> use <code>M24 8.8/S</code>. If thread location is controlled, add a separate note such as <code>THREADS EXCLUDED FROM SHEAR PLANE</code>. N/X is a design condition, not part of the bolt category.</p>
+      <p class="drawing-note"><b>Drawing note</b><code>M24 8.8/S</code><span>If X capacity is relied upon: <code>THREADS EXCLUDED FROM SHEAR PLANE</code></span></p>
       <div class="notation-key" aria-label="Australian bolt notation key">
         <span><b>/S</b> snug-tight</span>
         <span><b>/TB</b> fully tensioned, bearing-type</span>
         <span><b>/TF</b> fully tensioned, friction-type</span>
-        <span><b>N</b> threads included in shear plane</span>
-        <span><b>X</b> threads excluded from shear plane</span>
+        <span><b>N</b> threads intercept shear plane</span>
+        <span><b>X</b> threads clear of shear plane</span>
       </div>
 
       <section class="capacity-section" aria-live="polite">
         <div class="section-heading">
-          <div><span class="step">01</span><h2>Single-bolt design capacities</h2></div>
+          <div><span class="section-tag">RESULTS</span><h2>Design capacities</h2></div>
           <span>per bolt</span>
         </div>
         <div class="capacity-grid">
           <article class="capacity-card selected-shear">
-            <span id="selectedShearLabel">Design shear · N condition</span>
+            <span id="selectedShearLabel">Shear capacity — N</span>
             <strong><output id="selectedShearCapacity">133.4</output><small> kN</small></strong>
             <p id="selectedShearNote">φV<sub>f</sub> · threads included · 9.2.2.1</p>
           </article>
           <article class="capacity-card tension">
-            <span>Design tension</span>
+            <span>Tension capacity</span>
             <strong><output id="tensionCapacity">234.4</output><small> kN</small></strong>
             <p>φN<sub>tf</sub> · AS 4100 9.2.2.2</p>
           </article>
           <article class="capacity-card alternate-shear">
-            <span id="alternateShearLabel">X-condition comparison</span>
+            <span id="alternateShearLabel">Shear capacity — X</span>
             <strong><output id="alternateShearCapacity">186.1</output><small> kN</small></strong>
             <p id="alternateShearNote">threads excluded</p>
           </article>
         </div>
-        <p class="result-note">Shear values are for one shear plane with k<sub>r</sub> = 1.0. Use Detailed connection checks for bolt groups, long joints, ply bearing and combined actions.</p>
+        <p class="result-note">One shear plane; k<sub>r</sub> = 1.00. Open Detailed connection checks for bolt groups, ply bearing and combined actions.</p>
       </section>
     </section>
 
@@ -142,7 +142,7 @@
     </details>
   </main>
 
-  <footer><span>Local engineering lookup. Results require competent engineering review and verification against a licensed copy of the applicable Standards.</span><b>Build 0.3.0 · 22 Jun 2026</b></footer>
+  <footer><span>Local engineering lookup. Results require competent engineering review and verification against a licensed copy of the applicable Standards.</span><b>Build 0.3.1 · 23 Jun 2026</b></footer>
   <script src="app.js"></script>
 </body>
 </html>
