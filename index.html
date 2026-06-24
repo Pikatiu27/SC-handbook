@@ -85,10 +85,16 @@
     </section>
 
     <section id="memberPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">AXIAL MEMBERS · AS 4100 SECTIONS 6 AND 7</p><h2>Member Capacity</h2></div><span>CHS / Equal Angle</span></div>
+      <div class="tool-heading"><div><p class="kicker">AXIAL MEMBERS · AS 4100 SECTIONS 6 AND 7</p><h2>Member Capacity</h2></div><span>CHS / Equal Angle / Rod</span></div>
 
       <section class="lookup-card member-card">
-        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button></div>
+        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="rod">Rod</button></div>
+
+        <div class="section-guide" aria-label="Member section guide">
+          <article><div class="section-icon chs-icon" aria-hidden="true"><span></span></div><div><strong>CHS</strong><small>Circular hollow section. Use for tubular struts, posts and bracing members.</small></div></article>
+          <article><div class="section-icon ea-icon" aria-hidden="true"><span></span></div><div><strong>Equal Angle</strong><small>L-shaped equal-leg angle. Check axis, eccentricity and connection effects.</small></div></article>
+          <article><div class="section-icon rod-icon" aria-hidden="true"><span></span></div><div><strong>Rod</strong><small>Solid circular round bar. Verify stock size, grade and end connection details.</small></div></article>
+        </div>
 
         <div class="member-inputs">
           <label class="size-field"><span>Section</span><select id="memberSection"></select></label>
@@ -120,7 +126,7 @@
 
       <details class="detail-card" open><summary><span><b>Calculation steps</b><small>Axial tension, section compression, slenderness and member reduction</small></span><i>+</i></summary><div class="detail-body"><div id="memberFormulaSteps" class="formula-list member-formulas"></div></div></details>
 
-      <details class="source-card"><summary><span><b>Sources and limitations</b><small>Manufacturer data and AS 4100 design boundaries</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>CHS products</b> · Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0.</p><p><b>CHS capacity method</b> · Austube Mills / ASI Design Capacity Tables for Structural Steel Hollow Sections, Part 6.</p><p><b>Equal Angle properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 19–21.</p><p><b>Axial tension</b> · AS 4100 Clauses 7.1 to 7.3.</p></div><div class="source-notes"><p><b>Scope</b> · Centroidally loaded axial compression and axial tension.</p><p>For Equal Angles, confirm α<sub>b</sub> from AS 4100 Table 6.3.3 for the actual member, axis and fabrication condition. Determine A<sub>n</sub> and k<sub>t</sub> from the actual connection; Table 7.3.2 gives k<sub>t</sub> = 0.85 for the applicable eccentrically connected equal-angle configuration.</p><p>Section/member bending, shear, combined actions, connection capacity and flexural-torsional buckling are not included.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Sources and limitations</b><small>Manufacturer data and AS 4100 design boundaries</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>CHS products</b> · Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0.</p><p><b>CHS capacity method</b> · Austube Mills / ASI Design Capacity Tables for Structural Steel Hollow Sections, Part 6.</p><p><b>Equal Angle properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 19–21.</p><p><b>Rod properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3 Rounds - Size Availability and Mass; circular solid bar geometry is used for A<sub>g</sub> and r.</p><p><b>Axial tension</b> · AS 4100 Clauses 7.1 to 7.3.</p></div><div class="source-notes"><p><b>Scope</b> · Centroidally loaded axial compression and axial tension.</p><p>For Equal Angles and Rods, confirm α<sub>b</sub> from AS 4100 Table 6.3.3 for the actual member, axis and fabrication condition. Determine A<sub>n</sub> and k<sub>t</sub> from the actual connection; Table 7.3.2 gives k<sub>t</sub> = 0.85 for the applicable eccentrically connected equal-angle configuration.</p><p>Round bar availability can vary by supplier, grade and region. Verify the actual product grade, test certificate and stock length before issue for design.</p><p>Section/member bending, shear, combined actions, connection capacity and flexural-torsional buckling are not included.</p></div></div></details>
     </section>
   </main>
 

@@ -52,6 +52,24 @@ const eaSections = [
   grades: { "300PLUS": { fy: fy300, fu: 440, kf: kf300 }, "Grade 350": { fy: fy350, fu: 480, kf: kf350 } }
 }));
 
+const rodSections = [
+  [10, 0.616], [12, 0.887], [13, 1.04], [14, 1.21], [15, 1.39], [16, 1.58],
+  [17, 1.78], [18, 1.99], [19, 2.23], [20, 2.46], [22, 2.98], [24, 3.55],
+  [27, 4.49], [30, 5.55], [33, 6.71], [36, 7.99], [39, 9.38], [42, 10.9],
+  [45, 12.5], [48, 14.2], [50, 15.4], [56, 19.3], [60, 22.2], [65, 26.0],
+  [75, 34.7], [90, 49.9]
+].map(([diameter, mass]) => ({
+  designation: `Ø${diameter} Rod`,
+  diameter,
+  mass,
+  area: Math.PI * diameter ** 2 / 4,
+  r: diameter / 4,
+  grades: {
+    "300PLUS": { fy: 300, fu: 440, kf: 1 },
+    "Grade 350": { fy: 350, fu: 480, kf: 1 }
+  }
+}));
+
 const chsGrades = {
   C250L0: { fy: 250, fu: 320, kf: 1 },
   C350L0: { fy: 350, fu: 430, kf: 1 }
@@ -147,14 +165,18 @@ function chsProperties(section) {
 }
 
 function populateMemberOptions() {
-  const sections = memberType === "chs" ? chsSections : eaSections;
+  const sections = memberType === "chs" ? chsSections : memberType === "ea" ? eaSections : rodSections;
   $("memberSection").innerHTML = sections.map((section, index) => `<option value="${index}">${section.designation}</option>`).join("");
-  $("memberSection").value = memberType === "chs" ? String(chsSections.findIndex(s => s.D === 114.3 && s.t === 3.2)) : String(eaSections.findIndex(s => s.designation === "100 x 100 x 10 EA"));
+  $("memberSection").value = memberType === "chs"
+    ? String(chsSections.findIndex(s => s.D === 114.3 && s.t === 3.2))
+    : memberType === "ea"
+      ? String(eaSections.findIndex(s => s.designation === "100 x 100 x 10 EA"))
+      : String(rodSections.findIndex(s => s.diameter === 24));
   populateMemberGrades();
 }
 
 function populateMemberGrades() {
-  const section = (memberType === "chs" ? chsSections : eaSections)[Number($("memberSection").value) || 0];
+  const section = (memberType === "chs" ? chsSections : memberType === "ea" ? eaSections : rodSections)[Number($("memberSection").value) || 0];
   const grades = memberType === "chs" ? chsGrades : section.grades;
   $("memberGrade").innerHTML = Object.keys(grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
   $("memberGrade").value = memberType === "chs" ? "C350L0" : "300PLUS";
@@ -166,7 +188,7 @@ function populateMemberGrades() {
 }
 
 function calculateMember() {
-  const sections = memberType === "chs" ? chsSections : eaSections;
+  const sections = memberType === "chs" ? chsSections : memberType === "ea" ? eaSections : rodSections;
   const section = sections[Number($("memberSection").value) || 0];
   if (!section) return;
   const gradeName = $("memberGrade").value;
@@ -200,7 +222,11 @@ function calculateMember() {
   const tensionGoverning = grossYield <= netFracture ? "Gross-section yielding" : "Net-section fracture";
 
   $("memberDesignation").textContent = `${section.designation} - ${gradeName}`;
-  $("memberAssumption").textContent = memberType === "chs" ? "αb = -0.5 - buckling about any axis" : `user-selected αb = ${alphaB.toFixed(1)} - minor principal axis properties`;
+  $("memberAssumption").textContent = memberType === "chs"
+    ? "αb = -0.5 - buckling about any axis"
+    : memberType === "ea"
+      ? `user-selected αb = ${alphaB.toFixed(1)} - minor principal axis properties`
+      : `user-selected αb = ${alphaB.toFixed(1)} - solid circular rod geometry`;
   $("memberArea").textContent = formatArea(properties.area);
   $("memberRadius").textContent = `${properties.r.toFixed(1)} mm`;
   $("memberFy").textContent = `${grade.fy} MPa`;
@@ -219,7 +245,9 @@ function calculateMember() {
   const netAreaWarning = enteredNetArea > properties.area ? " Net area has been limited to gross area." : "";
   $("memberWarning").textContent = memberType === "chs"
     ? `Centroidal axial load only. Confirm A_n, k_t, effective length and the actual connection.${netAreaWarning}`
-    : `Confirm αb to AS 4100 Table 6.3.3 and A_n / k_t to Clauses 7.2 and 7.3. Flexural-torsional buckling is not checked.${netAreaWarning}`;
+    : memberType === "ea"
+      ? `Confirm αb to AS 4100 Table 6.3.3 and A_n / k_t to Clauses 7.2 and 7.3. Flexural-torsional buckling is not checked.${netAreaWarning}`
+      : `Confirm rod product grade, αb to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>min</sub> = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
     <div><b>Gross-section yielding - 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = ${fixed(grossYield)} kN</code></div>
@@ -273,7 +301,9 @@ function setTool(tool) {
 function setMemberType(type) {
   memberType = type;
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
-  $("alphaBField").hidden = type !== "ea";
+  $("alphaBField").hidden = type === "chs";
+  if (type === "ea") $("memberAlphaB").value = "0.5";
+  if (type === "rod") $("memberAlphaB").value = "0";
   populateMemberOptions();
 }
 
