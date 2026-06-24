@@ -29,6 +29,28 @@ The axial compression calculation follows AS 4100 Sections 6.2 and 6.3 and the p
 
 For Equal Angles and Rods, `alpha_b` is deliberately an explicit design input. Confirm it from AS 4100 Table 6.3.3 for the actual axis, member and fabrication condition. Enter connection-specific `A_n` and `k_t`; AS 4100 Table 7.3.2 gives `k_t = 0.85` for the applicable eccentrically connected equal-angle configuration. The tool uses the published minimum principal radius for Equal Angles and catalogue round-bar diameters with geometric properties for Rods. It does not check section/member bending, shear, combined actions, connection capacity or flexural-torsional buckling.
 
+### Weld Capacity
+
+The weld tool covers a compact weld-type guide plus a throat-capacity view for common structural welds:
+
+- weld type: fillet weld, complete penetration butt weld, incomplete penetration butt weld, or compound weld;
+- fillet weld size `s`;
+- butt-weld effective throat `a_w` where relevant;
+- weld category `SP` or `GP`;
+- nominal weld metal tensile strength `f_uw`;
+- effective weld length `l_w`;
+- number of effective weld runs;
+- optional reduction factor `k_r`;
+- direct shear action `V*` and utilisation ratio.
+
+The primary basis is AS 4100:2020 Clause 9.7 for welded connections, using `phi R = phi 0.6 f_uw t_t l_w` with `phi = 0.80`. For an equal-leg fillet weld, `t_t = 0.707s`. For CPBW, IPBW and compound weld selections, the tool shows weld-metal throat capacity using the user-entered `a_w`; this is a capacity view, not a full joint-design check. Weld metal strengths of 430, 490 and 550 MPa follow AS 4100 Table 9.7.3.10(1), also summarised in ASI *Simple Connections* 2020 Table 2.14.
+
+The weld-type diagrams are simplified schematic guides based on AS 4100 weld-type terminology and ASI *Simple Connections* 2020 Figure 2.7, *Common structural weld types in AS 4100*. They do not reproduce Standard figures. Confirm exact weld symbols, preparations, weld category, WPS, inspection and acceptance criteria to AS/NZS 1554.1 on the project drawings.
+
+The weld selection guide is a concise drafting aid for common cases such as shear cleats, gussets, base plates, full-strength splices, partial-strength butt joints, moment connections, tube cap/flange plates, fatigue-sensitive details and site welding. It is scenario-first: each item states the default weld choice, when to use it, when to avoid relying on it, and what still needs checking. ASI *Simple Connections* recommends specifying weld size, weld category and nominal weld metal strength while leaving the welding process selection to the fabricator.
+
+The weld tool does not check parent-metal rupture, heat-affected-zone effects, joint preparation, backing or gouging, eccentric weld groups, end returns, intermittent weld rules, fatigue, seismic detailing, lamellar tearing or inspection acceptance criteria. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
+
 ## Reference files
 
 The working reference folder is outside the published site at `C:\桌面\SC Handbook\reference` and contains:

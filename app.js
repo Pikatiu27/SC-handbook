@@ -20,6 +20,35 @@ const categories = {
   "10.9/TF": { grade: "10.9", fuf: 1040, type: "friction", preload: "preload109", description: "fully tensioned, friction" }
 };
 
+const weldSizes = [3, 4, 5, 6, 8, 10, 12, 16];
+const weldTypeData = {
+  fillet: {
+    label: "Fillet",
+    note: "AS 4100 direct weld capacity for effective throat area",
+    throatNote: "equal-leg fillet: 0.707s",
+    scope: "direct fillet-weld throat check"
+  },
+  cpbw: {
+    label: "CPBW",
+    note: "weld-metal throat capacity only; connected part and inspection may govern",
+    throatNote: "complete penetration: use joint thickness entered as a_w",
+    scope: "capacity view for complete-penetration butt weld"
+  },
+  ipbw: {
+    label: "IPBW",
+    note: "weld-metal throat capacity only; effective throat must be specified",
+    throatNote: "incomplete penetration: use specified effective throat a_w",
+    scope: "capacity view for incomplete-penetration butt weld"
+  },
+  compound: {
+    label: "Compound",
+    note: "combined throat capacity only; project detail governs",
+    throatNote: "compound throat: a_w + 0.707s",
+    scope: "capacity view for butt weld with superimposed fillet"
+  }
+};
+const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldKr", "weldDemand"];
+
 const chsSections = [
   [26.9,2.6],[33.7,2.0],[33.7,2.6],[33.7,3.2],[33.7,4.0],
   [42.4,2.0],[42.4,2.6],[42.4,3.2],[42.4,4.0],
@@ -77,6 +106,7 @@ const chsGrades = {
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
+const toolNames = ["bolt", "member", "weld"];
 let memberType = "chs";
 
 function value(id) { return Math.max(0, Number($(id).value) || 0); }
@@ -155,6 +185,53 @@ function calculateBolt() {
     <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
     <div><b>Governing ply capacity</b><code>min[${fixed(bearingFull)}, ${fixed(bearingEdge)}] = ${fixed(bearing)} kN</code></div>
     <div><b>TF slip - 9.2.3.1</b>${slipFormula}</div>`;
+}
+
+function calculateWeld() {
+  const type = $("weldType").value;
+  const typeData = weldTypeData[type] || weldTypeData.fillet;
+  const size = value("weldSize");
+  const category = $("weldCategory").value;
+  const fuw = value("weldStrength");
+  const length = value("weldLength");
+  const runs = Math.max(1, Math.round(value("weldRuns")));
+  const effectiveThroat = value("weldEffectiveThroat");
+  const kr = Math.min(1, Math.max(0.1, value("weldKr")));
+  const phi = 0.8;
+  const filletThroat = 0.707 * size;
+  const throat = type === "fillet" ? filletThroat : type === "compound" ? effectiveThroat + filletThroat : effectiveThroat;
+  const capacityPerMm = phi * 0.6 * fuw * throat * kr / 1000;
+  const capacity = capacityPerMm * length * runs;
+  const demand = value("weldDemand");
+  const utilisation = capacity > 0 ? demand / capacity : Infinity;
+  const hasDemand = demand > 0;
+  const callouts = {
+    fillet: `${size} mm CFW, category ${category}, fuw ${fuw} MPa`,
+    cpbw: `CPBW, a_w ${effectiveThroat.toFixed(1)} mm, category ${category}, fuw ${fuw} MPa`,
+    ipbw: `IPBW, a_w ${effectiveThroat.toFixed(1)} mm, category ${category}, fuw ${fuw} MPa`,
+    compound: `CPBW a_w ${effectiveThroat.toFixed(1)} mm + ${size} mm fillet, category ${category}, fuw ${fuw} MPa`
+  };
+
+  $("weldCallout").textContent = callouts[type] || callouts.fillet;
+  $("weldTypeValue").textContent = typeData.label;
+  $("weldThroatValue").textContent = `${throat.toFixed(1)} mm`;
+  $("weldLengthValue").textContent = `${fixed(length)} mm`;
+  $("weldRunsValue").textContent = String(runs);
+  $("weldCapacityLabel").innerHTML = type === "fillet" ? "Design weld capacity &phi;V<sub>w</sub>" : "Weld-metal throat capacity";
+  $("weldCapacityBasis").textContent = `${typeData.scope}; ${typeData.note}`;
+  $("weldCapacity").textContent = fixed(capacity);
+  $("weldCapacityPerMm").textContent = capacityPerMm.toFixed(2);
+  $("weldThroat").textContent = throat.toFixed(1);
+  $("weldThroatNote").textContent = typeData.throatNote;
+  $("weldUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
+  $("weldStatus").textContent = !hasDemand ? "Enter design action" : utilisation <= 1 ? "PASS" : "FAIL";
+  $("weldStatus").className = !hasDemand ? "" : utilisation <= 1 ? "pass" : "fail";
+  $("weldFormulaSteps").innerHTML = `
+    <div><b>Selected weld</b><code>${typeData.label} - ${typeData.scope}</code></div>
+    <div><b>Design throat</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : type === "compound" ? `${effectiveThroat.toFixed(1)} + 0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${throat.toFixed(1)} mm</code></div>
+    <div><b>Weld-metal capacity</b><code>&phi;R = 0.80 x 0.6 x ${fuw.toFixed(0)} x ${throat.toFixed(1)} x ${kr.toFixed(2)} x ${fixed(length)} / 1000 = ${fixed(capacity / runs)} kN per run</code></div>
+    <div><b>Weld group</b><code>${runs} effective run${runs === 1 ? "" : "s"} x ${fixed(capacity / runs)} = ${fixed(capacity)} kN</code></div>
+    <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; check parent metal, joint preparation, WPS, inspection, fatigue and effective length separately</code></div>`;
 }
 
 function chsProperties(section) {
@@ -284,18 +361,22 @@ function setBoltSize() {
   setStandardHole();
 }
 
-function setTool(tool) {
+function setTool(tool, updateHash = true) {
+  const selectedTool = toolNames.includes(tool) ? tool : "bolt";
   document.querySelectorAll(".tool-tab").forEach(button => {
-    const active = button.dataset.tool === tool;
+    const active = button.dataset.tool === selectedTool;
     button.classList.toggle("active", active);
     button.setAttribute("aria-selected", String(active));
   });
-  ["bolt", "member"].forEach(name => {
+  toolNames.forEach(name => {
     const panel = $(`${name}Panel`);
-    const active = name === tool;
+    const active = name === selectedTool;
     panel.hidden = !active;
     panel.classList.toggle("active", active);
   });
+  if (updateHash && location.hash !== `#${selectedTool}`) {
+    history.replaceState(null, "", `#${selectedTool}`);
+  }
 }
 
 function setMemberType(type) {
@@ -312,11 +393,16 @@ function initialise() {
   $("boltSize").value = "M24";
   populateBoltCategories();
   $("category").value = "8.8/S";
+  $("weldSize").innerHTML = weldSizes.map(size => `<option value="${size}">${size} mm</option>`).join("");
+  $("weldType").value = "fillet";
+  $("weldSize").value = "6";
   $("shearPlane").value = "N";
   boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
+  weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));
   $("boltSize").addEventListener("change", setBoltSize);
   $("shearPlane").addEventListener("input", setPrimaryPlane);
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
+  window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
   $("memberSection").addEventListener("change", populateMemberGrades);
   $("memberGrade").addEventListener("change", calculateMember);
@@ -326,6 +412,8 @@ function initialise() {
   $("memberKt").addEventListener("input", calculateMember);
   populateMemberOptions();
   calculateBolt();
+  calculateWeld();
+  setTool(location.hash.slice(1) || "bolt", false);
 }
 
 initialise();
