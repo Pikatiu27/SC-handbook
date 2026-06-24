@@ -1,6 +1,8 @@
 "use strict";
 
 const boltData = {
+  M10: { d: 10, Ao: 78.5, As: 58.0, Ac: 52.3 },
+  M12: { d: 12, Ao: 113, As: 84.3, Ac: 76.2 },
   M16: { d: 16, Ao: 201, As: 157, Ac: 144, preload88: 95, preload109: 130 },
   M20: { d: 20, Ao: 314, As: 245, Ac: 225, preload88: 145, preload109: 205 },
   M24: { d: 24, Ao: 452, As: 353, Ac: 324, preload88: 210, preload109: 295 },
@@ -56,12 +58,13 @@ const chsGrades = {
 };
 
 const $ = id => document.getElementById(id);
-const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeDistance", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
+const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 let memberType = "chs";
 
 function value(id) { return Math.max(0, Number($(id).value) || 0); }
 function fixed(number) { return Number(number).toFixed(1); }
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
+function standardHoleDiameter(diameter) { return diameter <= 24 ? diameter + 2 : diameter + 3; }
 
 function calculateBolt() {
   const size = $("boltSize").value;
@@ -80,8 +83,13 @@ function calculateBolt() {
   const nShank = Math.round(value("shankPlanes"));
   const kr = Math.min(1, Math.max(0.5, value("kr")));
   const groupShear = count * kr * (nThread * threadShear + nShank * shankShear);
+  const actualEdge = value("edgeDistance");
+  const holeDiameter = value("holeDiameter");
+  const effectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
+  const minimumEdge = value("edgeCondition") * bolt.d;
+  const edgeDistancePass = actualEdge >= minimumEdge;
   const bearingFull = 0.9 * 3.2 * bolt.d * value("plateThickness") * value("plateStrength") / 1000;
-  const bearingEdge = 0.9 * value("edgeDistance") * value("plateThickness") * value("plateStrength") / 1000;
+  const bearingEdge = 0.9 * effectiveEdge * value("plateThickness") * value("plateStrength") / 1000;
   const bearing = Math.min(bearingFull, bearingEdge);
   const preload = category.preload ? bolt[category.preload] : 0;
   const slip = category.type === "friction" ? 0.7 * value("slipFactor") * value("interfaces") * preload * value("holeFactor") : null;
@@ -89,10 +97,13 @@ function calculateBolt() {
   const ratio = groupShear > 0 && groupTension > 0 ? (value("shearDemand") / groupShear) ** 2 + (value("tensionDemand") / groupTension) ** 2 : Infinity;
   const hasDemand = value("shearDemand") > 0 || value("tensionDemand") > 0;
 
-  $("selectionTitle").textContent = `${size} ${categoryKey}`;
-  $("drawingNote").textContent = plane === "X" ? "X condition - threads clear of the shear plane" : "N condition - threads intercept the shear plane";
+  const drawingCallout = plane === "X" && categoryKey.endsWith("/S") ? `${size} ${category.grade} X/S` : `${size} ${categoryKey}`;
+  $("selectionTitle").textContent = drawingCallout;
+  $("drawingNote").textContent = "N: threads intercept shear plane · X: threads clear of shear plane";
   $("diameterValue").textContent = `${bolt.d} mm`;
   $("stressAreaValue").textContent = `${bolt.As} mm²`;
+  $("coreAreaValue").textContent = `${bolt.Ac} mm²`;
+  $("shankAreaValue").textContent = `${bolt.Ao} mm²`;
   $("strengthValue").textContent = `${category.fuf} MPa`;
   $("selectedShearLabel").textContent = `Shear capacity - ${plane}`;
   $("selectedShearCapacity").textContent = fixed(selectedShear);
@@ -102,8 +113,15 @@ function calculateBolt() {
   $("alternateShearNote").textContent = plane === "N" ? "threads clear of plane" : "threads intercept plane";
   $("tensionCapacity").textContent = fixed(tension);
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
+  $("plyBearingLimit").textContent = `${fixed(bearingFull)} kN`;
+  $("edgeTearoutLimit").textContent = `${fixed(bearingEdge)} kN`;
   $("bearingCapacity").textContent = `${fixed(bearing)} kN`;
   $("bearingGoverning").textContent = bearingEdge <= bearingFull ? "edge limit controls" : "bearing limit controls";
+  $("actualEdgeDistance").textContent = fixed(actualEdge);
+  $("minimumEdgeDistance").textContent = fixed(minimumEdge);
+  $("effectiveEdgeDistance").textContent = fixed(effectiveEdge);
+  $("edgeDistanceStatus").textContent = edgeDistancePass ? "PASS" : "FAIL";
+  $("edgeDistanceStatus").className = edgeDistancePass ? "pass" : "fail";
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
   $("interactionRatio").textContent = Number.isFinite(ratio) ? ratio.toFixed(2) : "-";
   $("interactionStatus").textContent = !hasDemand ? "Enter design actions" : ratio <= 1 ? "PASS" : "FAIL";
@@ -114,7 +132,10 @@ function calculateBolt() {
     <div><b>Tension - 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
     <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x A<sub>c</sub> = ${fixed(threadShear)} kN</code></div>
     <div><b>Shear X - 9.2.2.1</b><code>0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x A<sub>o</sub> = ${fixed(shankShear)} kN</code></div>
-    <div><b>Ply bearing - 9.2.2.4</b><code>min[${fixed(bearingFull)}, ${fixed(bearingEdge)}] = ${fixed(bearing)} kN</code></div>
+    <div><b>Ply bearing - 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
+    <div><b>Edge limit - 9.2.2.4(2)</b><code>a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
+    <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
+    <div><b>Governing ply capacity</b><code>min[${fixed(bearingFull)}, ${fixed(bearingEdge)}] = ${fixed(bearing)} kN</code></div>
     <div><b>TF slip - 9.2.3.1</b>${slipFormula}</div>`;
 }
 
@@ -137,6 +158,10 @@ function populateMemberGrades() {
   const grades = memberType === "chs" ? chsGrades : section.grades;
   $("memberGrade").innerHTML = Object.keys(grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
   $("memberGrade").value = memberType === "chs" ? "C350L0" : "300PLUS";
+  const properties = memberType === "chs" ? chsProperties(section) : { area: section.area, r: section.r };
+  $("memberNetArea").value = properties.area.toFixed(0);
+  $("memberNetArea").max = properties.area.toFixed(0);
+  $("memberKt").value = "1";
   calculateMember();
 }
 
@@ -149,6 +174,9 @@ function calculateMember() {
   if (!grade) return;
   const properties = memberType === "chs" ? chsProperties(section) : { area: section.area, r: section.r };
   const alphaB = memberType === "chs" ? -0.5 : Number($("memberAlphaB").value);
+  const enteredNetArea = value("memberNetArea");
+  const netArea = Math.min(properties.area, enteredNetArea);
+  const kt = Math.min(1, value("memberKt"));
   const effectiveLength = value("memberLength") * 1000;
   const leOverR = effectiveLength / properties.r;
   const lambdaN = leOverR * Math.sqrt(grade.kf) * Math.sqrt(grade.fy / 250);
@@ -167,25 +195,36 @@ function calculateMember() {
   const sectionCompression = 0.9 * grade.kf * properties.area * grade.fy / 1000;
   const memberCompression = alphaC * sectionCompression;
   const grossYield = 0.9 * properties.area * grade.fy / 1000;
+  const netFracture = 0.9 * 0.85 * kt * netArea * grade.fu / 1000;
+  const tensionCapacity = Math.min(grossYield, netFracture);
+  const tensionGoverning = grossYield <= netFracture ? "Gross-section yielding" : "Net-section fracture";
 
   $("memberDesignation").textContent = `${section.designation} - ${gradeName}`;
-  $("memberAssumption").textContent = memberType === "chs" ? "alpha_b = -0.5 - buckling about any axis" : `user-selected alpha_b = ${alphaB.toFixed(1)} - minor principal axis properties`;
+  $("memberAssumption").textContent = memberType === "chs" ? "αb = -0.5 - buckling about any axis" : `user-selected αb = ${alphaB.toFixed(1)} - minor principal axis properties`;
   $("memberArea").textContent = formatArea(properties.area);
   $("memberRadius").textContent = `${properties.r.toFixed(1)} mm`;
   $("memberFy").textContent = `${grade.fy} MPa`;
+  $("memberFu").textContent = `${grade.fu} MPa`;
   $("memberKf").textContent = grade.kf.toFixed(3);
   $("memberCompression").textContent = fixed(memberCompression);
   $("sectionCompression").textContent = fixed(sectionCompression);
-  $("grossTension").textContent = fixed(grossYield);
+  $("memberTension").textContent = fixed(tensionCapacity);
+  $("grossYieldCapacity").textContent = `${fixed(grossYield)} kN`;
+  $("netFractureCapacity").textContent = `${fixed(netFracture)} kN`;
+  $("tensionGoverning").textContent = tensionGoverning;
   $("memberSlenderness").textContent = leOverR.toFixed(1);
   $("memberLambdaN").textContent = lambdaN.toFixed(1);
   $("memberAlphaC").textContent = alphaC.toFixed(3);
   $("memberGoverning").textContent = alphaC < 0.999 ? "Member buckling" : "Section capacity";
+  const netAreaWarning = enteredNetArea > properties.area ? " Net area has been limited to gross area." : "";
   $("memberWarning").textContent = memberType === "chs"
-    ? "Centroidal axial load only. Verify effective length, section availability and all connection effects."
-    : "Confirm alpha_b to AS 4100 Table 6.3.3. Connection eccentricity, flexural-torsional buckling and net section are not checked.";
+    ? `Centroidal axial load only. Confirm A_n, k_t, effective length and the actual connection.${netAreaWarning}`
+    : `Confirm αb to AS 4100 Table 6.3.3 and A_n / k_t to Clauses 7.2 and 7.3. Flexural-torsional buckling is not checked.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
-    <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>min</sub> = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
+    <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>min</sub> = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
+    <div><b>Gross-section yielding - 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = ${fixed(grossYield)} kN</code></div>
+    <div><b>Net-section fracture - 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${grade.fu} / 1000 = ${fixed(netFracture)} kN</code></div>
+    <div><b>Design tension capacity - 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
     <div><b>Nominal slenderness</b><code>&lambda;<sub>n</sub> = (L<sub>e</sub>/r) &radic;k<sub>f</sub> &radic;(f<sub>y</sub>/250) = ${lambdaN.toFixed(1)}</code></div>
     <div><b>Modified slenderness</b><code>&lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub> = ${modifiedLambda.toFixed(1)}; &alpha;<sub>a</sub> = ${alphaA.toFixed(2)}</code></div>
     <div><b>Section capacity - 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>g</sub>f<sub>y</sub> = ${fixed(sectionCompression)} kN</code></div>
@@ -197,6 +236,24 @@ function setPrimaryPlane() {
   $("threadPlanes").value = isN ? 1 : 0;
   $("shankPlanes").value = isN ? 0 : 1;
   calculateBolt();
+}
+
+function setStandardHole() {
+  $("holeDiameter").value = standardHoleDiameter(boltData[$("boltSize").value].d);
+  calculateBolt();
+}
+
+function populateBoltCategories() {
+  const size = $("boltSize").value;
+  const previous = $("category").value;
+  const entries = Object.entries(categories).filter(([key]) => boltData[size].d >= 16 || key.endsWith("/S"));
+  $("category").innerHTML = entries.map(([key, item]) => `<option value="${key}">${key} - ${item.description}</option>`).join("");
+  $("category").value = entries.some(([key]) => key === previous) ? previous : "8.8/S";
+}
+
+function setBoltSize() {
+  populateBoltCategories();
+  setStandardHole();
 }
 
 function setTool(tool) {
@@ -222,11 +279,12 @@ function setMemberType(type) {
 
 function initialise() {
   $("boltSize").innerHTML = Object.keys(boltData).map(size => `<option value="${size}">${size}</option>`).join("");
-  $("category").innerHTML = Object.entries(categories).map(([key, item]) => `<option value="${key}">${key} - ${item.description}</option>`).join("");
   $("boltSize").value = "M24";
+  populateBoltCategories();
   $("category").value = "8.8/S";
   $("shearPlane").value = "N";
   boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
+  $("boltSize").addEventListener("change", setBoltSize);
   $("shearPlane").addEventListener("input", setPrimaryPlane);
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
@@ -234,6 +292,8 @@ function initialise() {
   $("memberGrade").addEventListener("change", calculateMember);
   $("memberLength").addEventListener("input", calculateMember);
   $("memberAlphaB").addEventListener("change", calculateMember);
+  $("memberNetArea").addEventListener("input", calculateMember);
+  $("memberKt").addEventListener("input", calculateMember);
   populateMemberOptions();
   calculateBolt();
 }

@@ -8,11 +8,14 @@ Static, English-language Australian structural steel quick-reference tools. Open
 
 - bolt tension capacity;
 - bolt shear capacity for N (threads intercept) and X (threads clear) shear planes;
-- connected-ply bearing capacity;
+- connected-ply bearing, edge tear-out limit and governing ply capacity;
+- minimum edge distance check by edge condition;
 - TF slip resistance;
 - combined shear and tension interaction.
 
-The primary basis is AS 4100:2020 Table 3.4 and Clauses 9.2.2.1, 9.2.2.2, 9.2.2.4 and 9.2.3.1. Australian drawing callouts use the category, for example `M24 8.8/S`, `M24 8.8/TB` or `M24 8.8/TF`. N and X are separate shear-plane conditions.
+The primary basis is AS 4100:2020 Table 3.4 and Clauses 9.2.2.1, 9.2.2.2, 9.2.2.4, 9.2.3.1 and 9.5.2. The edge check distinguishes hole-centre edge distance `e` from the effective edge distance `a_e` used for edge-limited ply bearing. Australian drawing callouts use the category, for example `M24 8.8/S`, `M24 8.8/TB` or `M24 8.8/TF`. N and X are separate shear-plane conditions.
+
+Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal plain-shank area, `A_c` is minor diameter area, and `A_s` is tensile stress area. M10 and M12 are included for `/S` categories only because AS 4100 Table 15.2.2.2 does not provide minimum bolt tensions below M16.
 
 ### Member Capacity
 
@@ -21,9 +24,9 @@ The member tool contains two product families:
 - CHS: common AS/NZS 1163 C250L0 and C350L0 sizes from the Orrcon National Product Catalogue 2024;
 - Equal Angle: common 300PLUS and Grade 350 sizes, properties and form factors from the InfraBuild Hot Rolled Products Catalogue, 9th edition.
 
-The axial compression calculation follows AS 4100 Sections 6.2 and 6.3 and the published Austube Mills / Australian Steel Institute *Design Capacity Tables for Structural Steel Hollow Sections*. It reports section compression capacity, member compression capacity, gross-section yielding, slenderness and the member reduction factor.
+The axial compression calculation follows AS 4100 Sections 6.2 and 6.3 and the published Austube Mills / Australian Steel Institute *Design Capacity Tables for Structural Steel Hollow Sections*. The axial tension calculation follows AS 4100 Clauses 7.1 to 7.3 and takes the lesser of gross-section yielding and net-section fracture. It reports section compression capacity, member compression capacity, design tension capacity, the two tension limit states, slenderness and the member reduction factor.
 
-For Equal Angles, `alpha_b` is deliberately an explicit design input. Confirm it from AS 4100 Table 6.3.3 for the actual axis, member and fabrication condition. The tool uses the published minimum principal radius and does not check connection eccentricity, flexural-torsional buckling, net-section rupture or combined actions.
+For Equal Angles, `alpha_b` is deliberately an explicit design input. Confirm it from AS 4100 Table 6.3.3 for the actual axis, member and fabrication condition. Enter connection-specific `A_n` and `k_t`; AS 4100 Table 7.3.2 gives `k_t = 0.85` for the applicable eccentrically connected equal-angle configuration. The tool uses the published minimum principal radius and does not check section/member bending, shear, combined actions, connection capacity or flexural-torsional buckling.
 
 ## Reference files
 
