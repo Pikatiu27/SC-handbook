@@ -21,6 +21,11 @@ const categories = {
 };
 
 const weldSizes = [3, 4, 5, 6, 8, 10, 12, 16];
+const parentMetalGrades = {
+  "Grade 250 plate": { fup: 410, standard: "AS/NZS 3678" },
+  "Grade 300 flat bar": { fup: 430, standard: "AS/NZS 3679.1" },
+  "Grade 350 plate": { fup: 450, standard: "AS/NZS 3678" }
+};
 const weldTypeData = {
   fillet: {
     label: "Fillet",
@@ -47,7 +52,7 @@ const weldTypeData = {
     scope: "capacity view for butt weld with superimposed fillet"
   }
 };
-const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldKr", "weldDemand"];
+const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldKr", "weldDemand", "weldParentThickness", "weldParentGrade"];
 
 const chsSections = [
   [26.9,2.6],[33.7,2.0],[33.7,2.6],[33.7,3.2],[33.7,4.0],
@@ -111,6 +116,7 @@ let memberType = "chs";
 
 function value(id) { return Math.max(0, Number($(id).value) || 0); }
 function fixed(number) { return Number(number).toFixed(1); }
+function fixed2(number) { return Number(number).toFixed(2); }
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
 function standardHoleDiameter(diameter) { return diameter <= 24 ? diameter + 2 : diameter + 3; }
 
@@ -197,11 +203,18 @@ function calculateWeld() {
   const runs = Math.max(1, Math.round(value("weldRuns")));
   const effectiveThroat = value("weldEffectiveThroat");
   const kr = Math.min(1, Math.max(0.1, value("weldKr")));
+  const parentThickness = value("weldParentThickness");
+  const parentGrade = parentMetalGrades[$("weldParentGrade").value] || parentMetalGrades["Grade 250 plate"];
   const phi = 0.8;
+  const parentPhi = 0.9;
   const filletThroat = 0.707 * size;
   const throat = type === "fillet" ? filletThroat : type === "compound" ? effectiveThroat + filletThroat : effectiveThroat;
   const capacityPerMm = phi * 0.6 * fuw * throat * kr / 1000;
   const capacity = capacityPerMm * length * runs;
+  const parentPerMm = parentPhi * 0.6 * parentGrade.fup * parentThickness / 1000;
+  const parentCheckActive = parentThickness > 0;
+  const governingPerMm = parentCheckActive ? Math.min(capacityPerMm, parentPerMm) : capacityPerMm;
+  const parentGoverns = parentCheckActive && parentPerMm < capacityPerMm;
   const demand = value("weldDemand");
   const utilisation = capacity > 0 ? demand / capacity : Infinity;
   const hasDemand = demand > 0;
@@ -214,23 +227,29 @@ function calculateWeld() {
 
   $("weldCallout").textContent = callouts[type] || callouts.fillet;
   $("weldTypeValue").textContent = typeData.label;
-  $("weldThroatValue").textContent = `${throat.toFixed(1)} mm`;
+  $("weldThroatValue").textContent = `${fixed2(throat)} mm`;
   $("weldLengthValue").textContent = `${fixed(length)} mm`;
   $("weldRunsValue").textContent = String(runs);
   $("weldCapacityLabel").innerHTML = type === "fillet" ? "Design weld capacity &phi;V<sub>w</sub>" : "Weld-metal throat capacity";
   $("weldCapacityBasis").textContent = `${typeData.scope}; ${typeData.note}`;
   $("weldCapacity").textContent = fixed(capacity);
   $("weldCapacityPerMm").textContent = capacityPerMm.toFixed(2);
-  $("weldThroat").textContent = throat.toFixed(1);
-  $("weldThroatNote").textContent = typeData.throatNote;
+  $("parentGoverningPerMm").textContent = fixed2(governingPerMm);
+  $("parentGoverningNote").textContent = !parentCheckActive
+    ? "enter ply thickness to check"
+    : parentGoverns
+      ? `parent metal governs; fup ${parentGrade.fup} MPa`
+      : "weld throat governs";
+  $("parentGoverningNote").className = parentGoverns ? "fail" : "pass";
   $("weldUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
   $("weldStatus").textContent = !hasDemand ? "Enter design action" : utilisation <= 1 ? "PASS" : "FAIL";
   $("weldStatus").className = !hasDemand ? "" : utilisation <= 1 ? "pass" : "fail";
   $("weldFormulaSteps").innerHTML = `
     <div><b>Selected weld</b><code>${typeData.label} - ${typeData.scope}</code></div>
-    <div><b>Design throat</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : type === "compound" ? `${effectiveThroat.toFixed(1)} + 0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${throat.toFixed(1)} mm</code></div>
-    <div><b>Weld-metal capacity</b><code>&phi;R = 0.80 x 0.6 x ${fuw.toFixed(0)} x ${throat.toFixed(1)} x ${kr.toFixed(2)} x ${fixed(length)} / 1000 = ${fixed(capacity / runs)} kN per run</code></div>
+    <div><b>Design throat</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : type === "compound" ? `${effectiveThroat.toFixed(1)} + 0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${fixed2(throat)} mm</code></div>
+    <div><b>Weld-metal capacity</b><code>&phi;R = 0.80 x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x ${kr.toFixed(2)} x ${fixed(length)} / 1000 = ${fixed(capacity / runs)} kN per run</code></div>
     <div><b>Weld group</b><code>${runs} effective run${runs === 1 ? "" : "s"} x ${fixed(capacity / runs)} = ${fixed(capacity)} kN</code></div>
+    <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x ${parentGrade.fup} x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm; governing = ${fixed2(governingPerMm)} kN/mm` : "Not checked - enter ply thickness"}</code></div>
     <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; check parent metal, joint preparation, WPS, inspection, fatigue and effective length separately</code></div>`;
 }
 
@@ -394,8 +413,10 @@ function initialise() {
   populateBoltCategories();
   $("category").value = "8.8/S";
   $("weldSize").innerHTML = weldSizes.map(size => `<option value="${size}">${size} mm</option>`).join("");
+  $("weldParentGrade").innerHTML = Object.keys(parentMetalGrades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
   $("weldType").value = "fillet";
   $("weldSize").value = "6";
+  $("weldParentGrade").value = "Grade 250 plate";
   $("shearPlane").value = "N";
   boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
   weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));

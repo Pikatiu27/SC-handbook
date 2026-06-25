@@ -40,16 +40,17 @@ The weld tool covers a compact weld-type guide plus a throat-capacity view for c
 - nominal weld metal tensile strength `f_uw`;
 - effective weld length `l_w`;
 - number of effective weld runs;
+- optional parent-metal ply thickness `t` and parent metal grade for a per-mm screening check;
 - optional reduction factor `k_r`;
 - direct shear action `V*` and utilisation ratio.
 
-The primary basis is AS 4100:2020 Clause 9.7 for welded connections, using `phi R = phi 0.6 f_uw t_t l_w` with `phi = 0.80`. For an equal-leg fillet weld, `t_t = 0.707s`. For CPBW, IPBW and compound weld selections, the tool shows weld-metal throat capacity using the user-entered `a_w`; this is a capacity view, not a full joint-design check. Weld metal strengths of 430, 490 and 550 MPa follow AS 4100 Table 9.7.3.10(1), also summarised in ASI *Simple Connections* 2020 Table 2.14.
+The primary basis is AS 4100:2020 Clause 9.7 for welded connections, using `phi R = phi 0.6 f_uw t_t l_w` with `phi = 0.80`. For an equal-leg fillet weld, `t_t = 0.707s`; the calculated throat is displayed to two decimals while capacity uses the unrounded throat. For CPBW, IPBW and compound weld selections, the tool shows weld-metal throat capacity using the user-entered `a_w`; this is a capacity view, not a full joint-design check. Weld metal strengths of 430, 490 and 550 MPa follow AS 4100 Table 9.7.3.10(1), also summarised in ASI *Simple Connections* 2020 Table 2.14.
 
-The weld-type diagrams are simplified schematic guides based on AS 4100 weld-type terminology and ASI *Simple Connections* 2020 Figure 2.7, *Common structural weld types in AS 4100*. They do not reproduce Standard figures. Confirm exact weld symbols, preparations, weld category, WPS, inspection and acceptance criteria to AS/NZS 1554.1 on the project drawings.
+The weld symbol diagrams use common AS 1101.3-style drawing notation: weld symbol below the reference line for arrow-side welds, above the line for other-side welds, and tail notes for items such as SP or GP category. They are drafting aids, not reproduced Standard figures. Confirm exact weld symbols, preparations, weld category, WPS, inspection and acceptance criteria to AS/NZS 1554.1 on the project drawings.
 
 The weld selection guide is a concise drafting aid for common cases such as shear cleats, gussets, base plates, full-strength splices, partial-strength butt joints, moment connections, tube cap/flange plates, fatigue-sensitive details and site welding. It is scenario-first: each item states the default weld choice, when to use it, when to avoid relying on it, and what still needs checking. ASI *Simple Connections* recommends specifying weld size, weld category and nominal weld metal strength while leaving the welding process selection to the fabricator.
 
-The weld tool does not check parent-metal rupture, heat-affected-zone effects, joint preparation, backing or gouging, eccentric weld groups, end returns, intermittent weld rules, fatigue, seismic detailing, lamellar tearing or inspection acceptance criteria. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
+The parent-metal row is a lightweight per-mm screen using `phi 0.6 f_up t`; it does not replace tear-out, block shear, net-section rupture, HAZ, edge-distance, eccentric weld group, end return, intermittent weld, fatigue, seismic, lamellar tearing or inspection acceptance checks. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
 
 ## Reference files
 
