@@ -694,3 +694,340 @@ Candidate future modules:
 - `Member_Check`
 
 Each future module must follow this file before workbook implementation starts.
+
+## 15. Static Web Handbook Rules
+
+These rules apply when a handbook module is implemented as a static web tab.
+
+The web page is still part of `SC Handbook`. It must follow the same source hierarchy, engineering language, formula traceability, and validation standard as the workbook. The web version should be a fast engineering lookup interface, not a full design report generator.
+
+### 15.1 Web Product Logic
+
+The web app is a local-first, static engineering calculation handbook.
+
+Core rules:
+
+- No server-side calculation.
+- No token consumption when visitors use the published page.
+- Fast inputs and fast governing results.
+- Clear Australian-standard language.
+- Compact assumptions, warnings, and references.
+- Phone, tablet, and desktop responsive layout.
+- Calculation basis available, but not forced into the main view.
+
+Each tab should answer:
+
+- What standard item or design option should I start with?
+- What is the quick design capacity or governing check?
+- Which project-specific checks remain outside this quick-reference tool?
+
+Do not turn a web tab into a full textbook, long tutorial, report writer, or complete design engine.
+
+### 15.2 Web Tab Structure
+
+Use one static app with multiple short tabs.
+
+Current core tabs:
+
+- `Bolt Capacity`
+- `Member Capacity`
+
+Future tabs may include:
+
+- `Weld Capacity`
+- `Plate Capacity`
+- `Base Plate`
+- `Section Properties`
+- `Connection Checks`
+- `Wind Actions`
+
+Tab rules:
+
+- One tab = one engineering topic.
+- One topic can contain closely related calculators.
+- Do not mix unrelated checks in the same visual block.
+- Keep tab names short and direct.
+- Page title and UI labels must be English.
+
+### 15.3 Web Result Layout
+
+Every web calculator should use the same result structure:
+
+1. `RESULTS <Main capacity>`
+2. `RESULTS <Detailed checks>`
+3. `Calculation basis and limitations`
+
+For bolt capacity:
+
+- `RESULTS Bolt capacity`
+- `RESULTS Detailed connection checks`
+- `Calculation basis and limitations`
+
+For member capacity:
+
+- `RESULTS Member capacity`
+- `RESULTS Detailed member checks`
+- `Calculation basis and limitations`
+
+The first block shows the governing answer. The second block shows secondary checks and intermediate capacities. The third block gives source clauses, assumptions, exclusions, and limitations.
+
+### 15.4 Web Layout and Typography
+
+Use a clean single-page app layout:
+
+1. Header
+2. Tab navigation
+3. Input card
+4. Main result card
+5. Detailed checks
+6. Calculation basis and limitations
+
+Use only three main visual font levels:
+
+| Level | Use |
+| --- | --- |
+| Large | page title and major result value |
+| Medium | section title, field value, important result label |
+| Small | helper notes, metadata, limitations, source notes |
+
+Practical rules:
+
+- Use shared CSS font variables across every tab.
+- Keep member-page typography aligned with bolt-page typography.
+- Input controls such as `Bolt Size M24` and `Bolt Category` should use the same size and weight.
+- Do not create a new font scale for every tab.
+- Avoid all-caps except for small tags such as `RESULTS`.
+- If helper text is important enough to show, it must be readable on phone.
+
+### 15.5 Mobile Layout Rules
+
+The web layout must work on phone, tablet, and desktop.
+
+Mobile rules:
+
+- If one row cannot display cleanly, wrap to two rows or one column.
+- Never force small controls, result chips, formula tags, or tab buttons into one crowded row.
+- On phone width, use single-column input grids unless two fields are clearly short and readable.
+- Tab buttons may wrap to two rows.
+- Result cards should stack vertically if three cards cannot fit comfortably.
+- Avoid horizontal scrolling except for unavoidable tables.
+- Keep minimum touch target height around 40-46 px for selects, inputs, and tab buttons.
+
+Detailed-check rows must not remain as rigid desktop grids on phone. For cards with a label, value, status chip, and note, use a phone layout such as:
+
+- row 1: label across the full width;
+- row 2: value on the left and status chip on the right;
+- row 3: clause note or derived-value note across the full width.
+
+Do not allow important labels such as `Minimum edge distance - AS 4100 Table 9.5.2` to collapse into one word per line. If this happens, change the mobile grid rather than reducing the font below the standard small-text level.
+
+Do not keep a visible `Device Preview` option in the final page. Responsiveness should be built into the CSS.
+
+### 15.6 Web Colour System
+
+Use a macaron / pastel colour system. The page should feel light and active, but still technical and readable.
+
+Current direction:
+
+- Bolt tab: pastel green.
+- Member tab: pastel blue.
+- Reference/source notes: pale warm yellow.
+- Background: warm off-white.
+- Text: dark neutral, not pure black.
+
+Each tab should have its own colour layer:
+
+- active tab colour;
+- tab panel background;
+- primary accent colour;
+- soft result-card background;
+- border colour.
+
+Do not rely only on colour to communicate engineering meaning. Status text such as `PASS`, `FAIL`, `Governing`, or `Not applicable` must be visible in words.
+
+### 15.7 Web Symbols, Formulas, and References
+
+Use standard engineering notation consistently.
+
+Formula notation:
+
+- Use `φ` for design capacity expressions where the capacity factor is included.
+- If a formula is shown as a design capacity, include `φ` in the displayed expression.
+- Prefer bracketed expressions when the capacity factor applies to the whole term.
+- Do not mix nominal-capacity notation and design-capacity notation without explaining the difference.
+
+Examples:
+
+- `φ(3.2d_f t_p f_up)`
+- `φ(a_e t_p f_up)`
+- `φ(0.85k_t A_n f_u)`
+- `0.90 × 3.2 × d_f × t_p × f_up`
+
+Subscript and superscript rules:
+
+- Use HTML subscript and superscript where symbols require it:
+  - `d<sub>f</sub>`
+  - `t<sub>p</sub>`
+  - `f<sub>up</sub>`
+  - `A<sub>n</sub>`
+  - `k<sub>t</sub>`
+  - `V<sup>*</sup>`
+  - `N<sup>*</sup>`
+- Do not display plain-text engineering notation such as `A_n`, `k_t`, `αb`, `V*`, or `N*` in the final UI when proper subscript or superscript notation is intended.
+- This rule applies to static HTML and JavaScript-generated text. If a generated result note or warning contains fixed trusted engineering notation, render it with `innerHTML` so the notation displays correctly, for example `A<sub>n</sub>`, `k<sub>t</sub>`, `&alpha;<sub>b</sub>`, `V<sup>*</sup>`, and `N<sup>*</sup>`.
+
+Clause and table references:
+
+- Use compact reference labels:
+  - `AS 4100 Cl. 9.2.2.1`
+  - `AS 4100 Table 9.5.2`
+  - `AS/NZS 1554.1`
+- Do not write long standard titles in every result card.
+- Put detailed source explanation in `Calculation basis and limitations`.
+- Use clause references near warnings only when they help the engineer know what to check next.
+
+### 15.8 Web Warning and Limitation Style
+
+Warnings should be concise and professional.
+
+Use action language:
+
+- `Verify block shear where applicable.`
+- `Include prying force in N<sup>*</sup> where applicable.`
+- `Apply k<sub>j</sub> reduction where required.`
+
+Avoid long paragraphs in the main result area. If the warning needs explanation, put the explanation in the collapsed basis panel.
+
+### 15.9 Bolt Web Tab Rules
+
+The bolt tab should follow Australian steel drawing and AS 4100 language.
+
+Drawing callout examples:
+
+- `M24 8.8/S`
+- `M24 8.8 X/S`
+- `M24 8.8/TB`
+- `M24 8.8/TF`
+
+Use:
+
+- `/S` for snug-tight.
+- `/TB` for fully tensioned, bearing-type.
+- `/TF` for fully tensioned, friction-type.
+- `N` when threads intercept the shear plane.
+- `X` when threads are clear of the shear plane.
+
+Display logic:
+
+- If threads intercept the shear plane, show normal callout such as `M24 8.8/S`.
+- If threads are clear of the shear plane and X shear capacity is used, show `M24 8.8 X/S`.
+- Under the callout, keep the explanation short: `N: threads intercept shear plane · X: threads clear of shear plane`.
+
+Bolt result checks should include:
+
+- Bolt shear capacity.
+- Bolt tension capacity where relevant.
+- Bolt bearing on connected ply.
+- Edge tear-out / ply tearing.
+- Minimum edge distance check.
+- Governing connected-ply capacity.
+
+Minimum edge distance and ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
+
+### 15.10 Member Web Tab Rules
+
+The member tab should use AS 4100 member-design language.
+
+Current member calculators:
+
+- `CHS`
+- `Equal Angle`
+- `Rod`
+
+Member checks should include, where applicable:
+
+- Axial compression section capacity.
+- Axial compression member capacity.
+- Axial tension capacity.
+- Gross-section yielding.
+- Net-section fracture.
+- Governing limit state.
+
+Use standard language:
+
+- `Section capacity`
+- `Member capacity`
+- `Design capacity`
+- `Gross-section yielding`
+- `Net-section fracture`
+- `Slenderness`
+- `Effective length`
+- `Buckling curve`
+- `Capacity factor`
+
+For product dimensions and section properties, use Australian manufacturer data where possible, such as OneSteel / InfraBuild / Austube / Orrcon catalogues. Manufacturer data can define product availability and section properties, but design equations still need to trace back to AS 4100 or another governing standard.
+
+Do not imply the member tab is a full steel design engine unless all required limit states are implemented. State exclusions clearly, for example:
+
+- Bending not included.
+- Shear not included.
+- Combined actions not included.
+- Connection design not included.
+- Flexural-torsional buckling not included unless specifically implemented.
+
+### 15.11 Web Local Update and Deployment Workflow
+
+Preferred workflow:
+
+1. Modify files locally.
+2. Test the static page locally.
+3. Check layout at narrow and wide widths.
+4. Check one or two representative calculations.
+5. Check the exact git diff.
+6. Commit only the intended files.
+7. Push to GitHub only when deployment is requested.
+8. Verify GitHub Pages after deployment.
+
+Current GitHub Pages repo:
+
+- Local repo: `C:\桌面\SC Handbook`
+- Remote: `https://github.com/Pikatiu27/SC-handbook.git`
+- Branch: `main`
+- Published page: `https://pikatiu27.github.io/SC-handbook/`
+
+Standard push sequence:
+
+```powershell
+cd "C:\桌面\SC Handbook"
+git status --short
+git diff --stat
+git diff
+git add <intended files only>
+git commit -m "<short clear commit message>"
+git push origin main
+git status --short
+git rev-parse --short HEAD
+```
+
+Rules before committing:
+
+- Always run `git status --short`.
+- Always inspect `git diff --stat`.
+- If the diff contains unrelated or unfinished work, do not commit it.
+- Only `git add` the files that belong to the accepted change.
+- Do not push experimental tabs, draft calculators, or unverified standard formulas.
+- In this chat, deploy only reviewed `Bolt Capacity`, `Member Capacity`, and accepted global framework changes.
+
+Rules after pushing:
+
+- Confirm the push completed to `origin/main`.
+- Confirm local `HEAD` short hash.
+- Confirm whether the working tree is clean.
+- The GitHub Pages page may take 1-2 minutes to update.
+- If the page still looks old, use hard refresh, private window, or a cache-busting URL.
+
+Token and browser notes:
+
+- Visitors using the static GitHub Pages calculator do not consume Codex or OpenAI tokens.
+- Local browser use, clicking the page, or sharing the page link does not consume model tokens.
+- Token usage only occurs when asking Codex to inspect, edit, convert references, reason, or generate code/content.
