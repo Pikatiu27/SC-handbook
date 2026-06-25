@@ -168,35 +168,21 @@ main, footer { max-width: 980px; margin: auto; }
 .weld-figure-card strong, .weld-figure-card small { display: block; }
 .weld-figure-card strong { color: var(--ink); font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
 .weld-figure-card small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
-.weld-symbol-diagram { width: 118px; height: 68px; position: relative; border-radius: 8px; background: #fff; border: 1px solid #ead4bc; overflow: hidden; font-size: 10px; font-weight: 800; color: #3f4a44; }
-.weld-symbol-diagram .ref-line { position: absolute; left: 28px; right: 13px; top: 34px; height: 2px; background: #34423b; }
-.weld-symbol-diagram .arrow-line { position: absolute; left: 9px; top: 45px; width: 31px; height: 2px; background: #34423b; transform: rotate(-33deg); transform-origin: right center; }
-.weld-symbol-diagram .arrow-head { position: absolute; left: 7px; top: 48px; width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-right: 8px solid #34423b; transform: rotate(-33deg); }
-.weld-symbol-diagram .tail::before, .weld-symbol-diagram .tail::after { content: ""; position: absolute; right: 10px; width: 20px; height: 2px; background: #34423b; transform-origin: left center; }
-.weld-symbol-diagram .tail::before { top: 34px; transform: rotate(-28deg); }
-.weld-symbol-diagram .tail::after { top: 34px; transform: rotate(28deg); }
-.weld-symbol-diagram .tail-note { position: absolute; right: 8px; top: 15px; color: var(--weld-dark); }
-.weld-symbol-diagram .side-label { position: absolute; left: 34px; bottom: 7px; color: var(--muted); font-size: 9px; font-weight: 700; }
-.weld-symbol-diagram .symbol-size { position: absolute; left: 39px; top: 38px; color: var(--weld-dark); }
-.weld-symbol-diagram .above-size { top: 16px; }
-.fillet-symbol { position: absolute; left: 52px; width: 18px; height: 12px; }
-.fillet-symbol::before { content: ""; position: absolute; inset: 0; background: var(--weld-accent); clip-path: polygon(0 100%, 0 0, 100% 100%); }
-.fillet-symbol::after { content: ""; position: absolute; inset: 0; border-left: 2px solid #34423b; border-bottom: 2px solid #34423b; clip-path: polygon(0 0, 100% 100%, 0 100%); }
-.fillet-symbol.below { top: 35px; }
-.fillet-symbol.above { top: 20px; transform: scaleY(-1); transform-origin: center 100%; }
-.v-symbol { position: absolute; left: 51px; top: 20px; width: 20px; height: 15px; }
-.v-symbol::before, .v-symbol::after { content: ""; position: absolute; bottom: 0; width: 2px; height: 19px; background: #34423b; transform-origin: bottom center; }
-.v-symbol::before { left: 8px; transform: rotate(-28deg); }
-.v-symbol::after { left: 10px; transform: rotate(28deg); }
-.cp-note { position: absolute; left: 51px; top: 6px; color: var(--weld-dark); font-size: 11px; }
+.weld-figure-ref { min-height: 68px; padding: 9px; display: flex; flex-direction: column; justify-content: center; gap: 4px; border-radius: 8px; background: #fff; border: 1px solid #ead4bc; }
+.weld-figure-ref b, .weld-figure-ref span { display: block; }
+.weld-figure-ref b { color: var(--weld-dark); font-size: var(--fs-xs); line-height: 1.1; font-weight: 900; }
+.weld-figure-ref span { color: var(--muted); font-size: var(--fs-xs); line-height: 1.25; }
 .weld-method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .weld-method-grid article { padding: 10px 11px; border: 1px solid var(--line); border-radius: 7px; background: #fffaf4; }
 .weld-method-grid b, .weld-method-grid span { display: block; }
 .weld-method-grid b { color: var(--green-dark); font-size: var(--fs-sm); }
 .weld-method-grid span { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); }
 .weld-guide { margin: 0 0 22px; border: 1px solid var(--line); border-radius: 9px; background: #fffaf4; overflow: hidden; }
-.weld-guide > summary { list-style: none; padding: 13px 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.weld-guide > summary { list-style: none; padding: 15px 19px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
 .weld-guide > summary::-webkit-details-marker { display: none; }
+.weld-guide > summary span b, .weld-guide > summary span small { display: block; }
+.weld-guide > summary b { font-size: var(--fs-sm); }
+.weld-guide > summary small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); font-weight: 400; }
 .weld-guide > summary i { color: var(--green); font-size: var(--fs-md); font-style: normal; transition: transform .2s; }
 .weld-guide[open] > summary i { transform: rotate(45deg); }
 .weld-guide .section-heading { margin-bottom: 0; }
@@ -324,9 +310,6 @@ footer b { white-space: nowrap; }
   .bolt-summary dl { margin-top: 11px; justify-content: space-between; }
   .bolt-summary dl div { text-align: left; }
   .weld-figure-card { grid-template-columns: 96px 1fr; }
-  .weld-symbol-diagram { width: 96px; }
-  .weld-symbol-diagram .tail-note { right: 5px; }
-  .weld-symbol-diagram .ref-line { right: 10px; }
   .weld-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .member-type-switch { width: 100%; }
   .member-type { flex: 1; min-width: 0; }

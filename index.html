@@ -105,23 +105,23 @@
 
         <div class="symbol-key" aria-label="AS 4100 weld symbols"><span><b>s</b> fillet weld leg size</span><span><b>t<sub>t</sub></b> design throat thickness</span><span><b>a<sub>w</sub></b> specified butt-weld throat</span><span><b>l<sub>w</sub></b> effective weld length</span><span><b>f<sub>uw</sub></b> nominal tensile strength of weld metal</span></div>
 
-        <section class="weld-figure-section" aria-label="Weld drawing symbol guide">
+        <section class="weld-figure-section" aria-label="Weld standard figure references">
           <article class="weld-figure-card">
-            <div class="weld-symbol-diagram fillet-arrow-symbol" aria-hidden="true"><span class="ref-line"></span><span class="arrow-line"></span><span class="arrow-head"></span><span class="fillet-symbol below"></span><span class="symbol-size">6</span><span class="tail"></span><span class="tail-note">SP</span><span class="side-label">arrow side</span></div>
-            <div><strong>Fillet weld - arrow side</strong><small><b>Symbol</b> fillet triangle below the reference line. Example: 6 mm CFW, SP, f<sub>uw</sub> 490 MPa.</small></div>
+            <div class="weld-figure-ref" aria-hidden="true"><b>AS 1101.3</b><span>Arrow-side symbol placement</span></div>
+            <div><strong>Fillet weld - arrow side</strong><small>Use the Standard welding-symbol figure for arrow-side placement. Typical note: 6 CFW, SP, f<sub>uw</sub> 490 MPa.</small></div>
           </article>
           <article class="weld-figure-card">
-            <div class="weld-symbol-diagram fillet-other-symbol" aria-hidden="true"><span class="ref-line"></span><span class="arrow-line"></span><span class="arrow-head"></span><span class="fillet-symbol above"></span><span class="symbol-size above-size">6</span><span class="tail"></span><span class="tail-note">SP</span><span class="side-label">other side</span></div>
-            <div><strong>Fillet weld - other side</strong><small><b>Symbol</b> fillet triangle above the reference line. Use both above and below for both-side fillet welds.</small></div>
+            <div class="weld-figure-ref" aria-hidden="true"><b>AS 1101.3</b><span>Other-side / both-side placement</span></div>
+            <div><strong>Fillet weld - other side</strong><small>Use the Standard figure for other-side placement. Use both sides only when the drawing calls for welds both sides.</small></div>
           </article>
           <article class="weld-figure-card">
-            <div class="weld-symbol-diagram cp-butt-symbol" aria-hidden="true"><span class="ref-line"></span><span class="arrow-line"></span><span class="arrow-head"></span><span class="v-symbol"></span><span class="cp-note">CP</span><span class="tail"></span><span class="tail-note">SP</span><span class="side-label">butt weld</span></div>
-            <div><strong>Complete penetration butt weld</strong><small><b>Symbol</b> butt-weld symbol with CP note. Use for full-thickness continuity; joint preparation and inspection govern.</small></div>
+            <div class="weld-figure-ref" aria-hidden="true"><b>ASI Fig. 2.7</b><span>Common AS 4100 weld types</span></div>
+            <div><strong>Complete penetration butt weld</strong><small>Use ASI Simple Connections Figure 2.7 and AS 1101.3 symbol rules. Joint preparation and inspection govern.</small></div>
           </article>
         </section>
 
         <details class="weld-guide" aria-label="Weld selection guide">
-          <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">GUIDE</span><b>Weld selection guide</b></span><small>Scenario-first defaults and limits</small></span><i>+</i></summary>
+          <summary><span><b>Weld selection guide</b><small>Scenario-first defaults and limits</small></span><i>+</i></summary>
           <div class="weld-scenario-grid">
             <article><b>Shear cleat / web plate</b><strong>Default: fillet weld both sides</strong><span>Use when load transfer is simple shear and both sides are accessible. Typical mark: 6 or 8 mm CFW both sides, SP.</span><small>Avoid CPBW unless full-strength continuity is required. Check eccentric weld group if force is not direct.</small></article>
             <article><b>Bracing gusset / cleat</b><strong>Default: continuous fillet weld</strong><span>Use for gusset-to-member shear transfer where fit-up is practical. Typical mark: 6 or 8 mm CFW all round or both sides, SP.</span><small>Prefer end returns where detailed. Check effective length, block shear path and local member wall/plate capacity.</small></article>
@@ -155,7 +155,7 @@
         </section>
       </section>
 
-      <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Calculation details</b></span><small>Formula steps and parent-metal per-mm screen</small></span><i>+</i></summary><div class="detail-body">
+      <details class="detail-card"><summary><span><b>Calculation details</b><small>Formula steps and parent-metal per-mm screen</small></span><i>+</i></summary><div class="detail-body">
         <section><h3>Calculation steps</h3><div id="weldFormulaSteps" class="formula-list"></div></section>
       </div></details>
 
