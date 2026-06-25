@@ -1,6 +1,6 @@
 # SC Handbook Web Tab Rules
 
-This note records the working rules from the current SC Handbook web build.
+This note records the working rules from the current SC Handbook web build.  
 Use it as the starting checklist when adding future tabs such as bolts, CHS, equal angle, welds, plates, base plates, or other Australian structural design calculators.
 
 The web page itself should remain fully English. This planning note is written in Chinese for internal use, with required UI wording shown in English.
@@ -156,8 +156,8 @@ For member capacity, use the same tone:
 - `RESULTS Detailed member checks`
 - `Calculation basis and limitations`
 
-The first result block should show the governing answer clearly.
-The second block should show secondary checks and intermediate capacities.
+The first result block should show the governing answer clearly.  
+The second block should show secondary checks and intermediate capacities.  
 The third block should explain source clauses, assumptions, exclusions, and limitations.
 
 ## 6. Bolt tab rules
@@ -268,6 +268,16 @@ Avoid:
 - Casual wording.
 - Over-explaining in the result card.
 - Ambiguous abbreviations without symbol definitions.
+- Repeating the same title words in the page title, tab title, card heading and result heading.
+
+Title rule:
+
+- The global page title is `SC Handbook`.
+- The global positioning is `Engineering Lookup` or `Engineering Lookup Handbook`.
+- Each tab title should be short, for example `Bolt Capacity` or `Member Capacity`.
+- Do not repeat `SC Handbook`, `Engineering Lookup`, `AS 4100` or `capacity` unnecessarily inside every card.
+- Standards should appear as compact basis notes, not as the whole-page identity.
+- Use one clear heading per visual level: page title, tab title, result block title, detail block title.
 
 ## 9. Page layout rules
 
@@ -296,7 +306,31 @@ The layout should work on:
 - tablet
 - desktop
 
+Mobile layout rule:
+
+- If one row cannot display cleanly, wrap to two rows or one column.
+- Never force small controls, result chips, formula tags, or tab buttons to crowd into one messy row.
+- On phone width, use single-column input grids unless two fields are clearly short and readable.
+- Tab buttons may wrap to two rows.
+- Result cards should stack vertically if three cards cannot fit comfortably.
+- Detailed-check rows must not remain as rigid desktop grids on phone. For cards with a label, value, status chip and note, use a phone layout such as:
+  - row 1: label across the full width;
+  - row 2: value on the left and status chip on the right;
+  - row 3: clause note or derived-value note across the full width.
+- Do not allow important labels such as `Minimum edge distance - AS 4100 Table 9.5.2` to collapse into one word per line. If this happens, change the mobile grid rather than reducing the font below the standard small-text level.
+- Summary metadata such as `d_f`, `A_s`, `A_c`, `A_o`, `f_uf` may wrap into two rows.
+- Keep minimum touch target height around 40-46 px for selects, inputs and tab buttons.
+- Avoid horizontal scrolling except for unavoidable tables; engineering calculators should not require sideways scrolling on phone.
+
 Do not keep a visible `Device Preview` option in the final page. Responsiveness should be built into the CSS.
+
+Professional calculator layout rule:
+
+- Main screen should show only the minimum inputs and governing results.
+- Secondary checks belong in a collapsed `Detailed checks` panel.
+- Source clauses, limitations and formula steps belong in a collapsed `Calculation basis and limitations` panel.
+- Warnings should be short and action-oriented.
+- Do not turn the handbook into a full calculation report unless the user specifically requests report output.
 
 ## 10. Font hierarchy
 
@@ -310,10 +344,30 @@ Recommended hierarchy:
 | Medium | section title, field value, important result label |
 | Small | helper notes, metadata, limitations, source notes |
 
-Keep member-page fonts aligned with bolt-page fonts.
+Keep member-page fonts aligned with bolt-page fonts.  
 Avoid creating a new font scale for every tab.
 
 Input controls such as `Bolt Size M24` and `Bolt Category` should use the same size and weight.
+
+Practical font rules:
+
+- Use a small number of CSS variables and reuse them across every tab.
+- Result numbers may have one separate result-size token, but do not create separate sizes for every result card.
+- Labels, input values and short helper notes should be readable on phone without zooming.
+- Avoid all-caps except for small tags such as `RESULTS`.
+- Do not make minor helper text too small; if it is important enough to show, it must be legible.
+- Keep line-height stable so wrapped labels do not look broken.
+
+Recommended visual scale:
+
+| Token | Typical use |
+| --- | --- |
+| `--fs-xs` | source notes, clause notes, helper text |
+| `--fs-sm` | labels, tabs, normal UI text |
+| `--fs-md` | selected values, compact headings |
+| `--fs-lg` | tab title |
+| `--fs-xl` | page title |
+| `--fs-result` | main result value |
 
 ## 11. Colour rules
 
@@ -329,12 +383,72 @@ Current direction:
 
 Colour should help the user identify the active module. It should not reduce contrast or make engineering values harder to read.
 
+Each tab should have its own colour layer:
+
+- active tab colour;
+- tab panel background;
+- primary accent colour;
+- soft result-card background;
+- border colour.
+
+Do not rely only on colour to communicate engineering meaning. Status text such as `PASS`, `FAIL`, `Governing`, `Not applicable` must be visible in words.
+
 Future tabs can use related pastel accents:
 
 - Weld: pastel orange.
 - Plate: pastel purple.
 - Wind: pastel teal.
 - Concrete: pastel sand.
+
+## 11A. Symbols, formulas and reference notation
+
+Use standard engineering notation consistently.
+
+Formula notation:
+
+- Use `φ` for design capacity expressions where the capacity factor is included.
+- If a formula is shown as a design capacity, include `φ` in the displayed expression.
+- Prefer bracketed expressions when the capacity factor applies to the whole term, for example:
+  - `φ(3.2d_f t_p f_up)`
+  - `φ(a_e t_p f_up)`
+  - `φ(0.85k_t A_n f_u)`
+- If numeric substitution is shown, write the numeric factor explicitly, for example:
+  - `0.90 × 3.2 × d_f × t_p × f_up`
+- Do not mix nominal-capacity notation and design-capacity notation without explaining the difference.
+
+Subscript and superscript rule:
+
+- Use HTML subscript and superscript where symbols require it:
+  - `d<sub>f</sub>`
+  - `t<sub>p</sub>`
+  - `f<sub>up</sub>`
+  - `A<sub>n</sub>`
+  - `k<sub>t</sub>`
+  - `N<sup>*</sup>` where superscript action notation is preferred.
+- Do not write engineering symbols as plain ambiguous text if subscript/superscript changes the meaning.
+- Keep symbol typography consistent between inputs, result cards and formula steps.
+- This rule applies to static HTML and JavaScript-generated text. If a result note or warning is generated by JavaScript and contains engineering notation, render fixed trusted markup with `innerHTML` rather than plain `textContent`, for example `A<sub>n</sub>`, `k<sub>t</sub>`, `&alpha;<sub>b</sub>`, `V<sup>*</sup>` and `N<sup>*</sup>`.
+- Do not display plain-text engineering notation such as `A_n`, `k_t`, `αb`, `V*` or `N*` in the final UI when proper subscript or superscript notation is intended.
+
+Clause and table references:
+
+- Use compact, consistent reference labels:
+  - `AS 4100 Cl. 9.2.2.1`
+  - `AS 4100 Table 9.5.2`
+  - `AS/NZS 1554.1`
+- Do not write long standard titles in every result card.
+- Put detailed source explanation in `Calculation basis and limitations`.
+- Use clause references near warnings only when they help the engineer know what to check next.
+
+Warning notation:
+
+- Warnings should be concise and professional.
+- Use action language:
+  - `Verify block shear where applicable.`
+  - `Include prying force in N* where applicable.`
+  - `Apply k_j reduction where required.`
+- Avoid long paragraphs in the main result area.
+- If the warning needs a long explanation, put the explanation in the collapsed basis panel.
 
 ## 12. Interaction rules
 

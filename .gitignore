@@ -1,0 +1,16 @@
+.agents/
+.codex/
+.codex-remote-attachments/
+.git-empty-backup/
+.vscode/
+
+reference/
+Tech sheet/
+outputs/
+tmp/
+tmp-*/
+tmp_*/
+tools/
+
+*.log
+*.tmp
