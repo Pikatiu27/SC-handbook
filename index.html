@@ -53,7 +53,7 @@
             <article class="capacity-card tension"><span>Tension capacity</span><strong><output id="tensionCapacity">234.4</output><small> kN</small></strong><p>φN<sub>tf</sub> · AS 4100 9.2.2.2</p></article>
             <article class="capacity-card alternate-shear"><span id="alternateShearLabel">Shear capacity — X</span><strong><output id="alternateShearCapacity">186.1</output><small> kN</small></strong><p id="alternateShearNote">threads clear of plane</p></article>
           </div>
-          <p class="result-note">One shear plane; k<sub>r</sub> = 1.00. Open Detailed connection checks for bolt groups, ply bearing and combined actions.</p>
+          <p class="result-note">One shear plane; k<sub>r</sub> = 1.00. Additional checks may apply: prying action, block shear and long-joint reduction.</p>
         </section>
       </section>
 
@@ -71,18 +71,19 @@
               <label><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="holeDiameter" type="number" min="0" step="1" value="26"><em>mm</em></span></label>
             </div>
             <div class="ply-result-grid">
-              <div><span>Ply bearing limit</span><strong id="plyBearingLimit">304.1 kN</strong><small>3.2d<sub>f</sub>t<sub>p</sub>f<sub>up</sub></small></div>
-              <div><span>Edge tear-out limit</span><strong id="edgeTearoutLimit">162.4 kN</strong><small>a<sub>e</sub>t<sub>p</sub>f<sub>up</sub></small></div>
+              <div><span>Ply bearing limit</span><strong id="plyBearingLimit">304.1 kN</strong><small>φ(3.2d<sub>f</sub>t<sub>p</sub>f<sub>up</sub>)</small></div>
+              <div><span>Edge tear-out limit</span><strong id="edgeTearoutLimit">162.4 kN</strong><small>φ(a<sub>e</sub>t<sub>p</sub>f<sub>up</sub>)</small></div>
               <div class="governing"><span>Governing ply capacity</span><strong id="bearingCapacity">162.4 kN</strong><small id="bearingGoverning">edge limit controls</small></div>
             </div>
             <div class="edge-check"><span>Minimum edge distance - AS 4100 Table 9.5.2</span><strong><output id="actualEdgeDistance">42.0</output> / <output id="minimumEdgeDistance">42.0</output> mm required</strong><b id="edgeDistanceStatus" class="pass">PASS</b><small>Derived a<sub>e</sub> = <output id="effectiveEdgeDistance">41.0</output> mm for Clause 9.2.2.4(2)</small></div>
           </section>
           <section><h3>TF slip resistance</h3><div class="form-grid three"><label><span>n<sub>ei</sub> <i>effective interfaces</i></span><input id="interfaces" type="number" min="1" max="10" step="1" value="1"></label><label><span>μ <i>slip factor</i></span><input id="slipFactor" type="number" min="0" max="1" step="0.01" value="0.35"></label><label><span>k<sub>h</sub> <i>hole factor</i></span><select id="holeFactor"><option value="1">1.00 · standard</option><option value="0.85">0.85 · short slot / oversize</option><option value="0.7">0.70 · long slot</option></select></label></div><div class="compact-result"><span>Design slip resistance per bolt</span><strong id="slipCapacity">Not applicable</strong><small>TF categories only</small></div></section>
-          <section><h3>Design actions and combined check</h3><div class="form-grid two"><label><span>V* <i>design shear action</i></span><span class="unit"><input id="shearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label><label><span>N* <i>design tension action</i></span><span class="unit"><input id="tensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label></div><div class="interaction-result"><span>Combined shear and tension ratio</span><strong id="interactionRatio">0.00</strong><b id="interactionStatus">Enter design actions</b></div></section>
+          <section><h3>Design actions and combined check</h3><div class="form-grid two"><label><span>V* <i>design shear action</i></span><span class="unit"><input id="shearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label><label><span>N* <i>design tension action</i></span><span class="unit"><input id="tensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label></div><div class="interaction-result"><span>Combined shear and tension ratio</span><strong id="interactionRatio">0.00</strong><b id="interactionStatus">Enter design actions</b></div><p class="checklist-warning">⚠️ Include any prying force in N* where applicable; refer AS 4100 Cl. 9.2.2.3.</p></section>
+          <section><h3>Checklists / warnings</h3><p class="checklist-warning">⚠️ Verify block shear for coped beams, gussets and locally reduced plates; refer AS 4100 Cl. 9.1.9. Apply long-joint reduction k<sub>j</sub> where required, including where L<sub>j</sub> &gt; 300 mm; refer AS 4100 Cl. 9.3.2.4.</p></section>
         </div>
       </details>
 
-      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>Equations, AS 4100 references and data boundaries</small></span><i>+</i></summary><div class="source-body"><div id="formulaSteps" class="formula-list"></div><div class="source-notes"><p><b>Primary basis</b> · AS 4100:2020 Table 3.4; Clauses 9.2.2.1, 9.2.2.2, 9.2.2.4, 9.2.3.1 and 9.5.2.</p><p><b>Symbols</b> · d<sub>f</sub> is the nominal bolt diameter; A<sub>o</sub> is the nominal plain-shank area; A<sub>c</sub> is the minor diameter area; A<sub>s</sub> is the tensile stress area.</p><p>Minimum edge distance assumes a standard hole measured from hole centre to ply edge. Enter the actual hole diameter used to derive a<sub>e</sub>. Non-standard holes require the measurement convention in Clause 9.5.2(b).</p><p>AS 4100 Table 15.2.2.2 gives minimum bolt tensions only for M16 to M36. Accordingly, M10 and M12 are available only in /S categories in this tool.</p><p>A<sub>s</sub> and A<sub>c</sub> use metric coarse-thread data. Verify against the applicable fastener and thread Standards before issue for design.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>Equations, AS 4100 references and data boundaries</small></span><i>+</i></summary><div class="source-body"><div id="formulaSteps" class="formula-list"></div><div class="source-notes"><p><b>Primary basis</b> · AS 4100:2020 Table 3.4; Clauses 9.2.2.1, 9.2.2.2, 9.2.2.4, 9.2.3.1 and 9.5.2.</p><p><b>Symbols</b> · d<sub>f</sub> is the nominal bolt diameter; A<sub>o</sub> is the nominal plain-shank area; A<sub>c</sub> is the minor diameter area; A<sub>s</sub> is the tensile stress area.</p><p>Minimum edge distance assumes a standard hole measured from hole centre to ply edge. Enter the actual hole diameter used to derive a<sub>e</sub>. Non-standard holes require the measurement convention in Clause 9.5.2(b).</p><p>Topology-dependent checks such as prying action, block shear, coped-beam tearing, gusset tear-out and long-joint reduction are not calculated by this quick-reference tool and must be checked from the actual connection geometry.</p><p>AS 4100 Table 15.2.2.2 gives minimum bolt tensions only for M16 to M36. Accordingly, M10 and M12 are available only in /S categories in this tool.</p><p>A<sub>s</sub> and A<sub>c</sub> use metric coarse-thread data. Verify against the applicable fastener and thread Standards before issue for design.</p></div></div></details>
     </section>
 
     <section id="weldPanel" class="tool-panel" hidden>
@@ -168,11 +169,14 @@
       <section class="lookup-card member-card">
         <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="rod">Rod</button></div>
 
-        <div class="section-guide" aria-label="Member section guide">
-          <article><div class="section-icon chs-icon" aria-hidden="true"><span></span></div><div><strong>CHS</strong><small>Circular hollow section. Use for tubular struts, posts and bracing members.</small></div></article>
-          <article><div class="section-icon ea-icon" aria-hidden="true"><span></span></div><div><strong>Equal Angle</strong><small>L-shaped equal-leg angle. Check axis, eccentricity and connection effects.</small></div></article>
-          <article><div class="section-icon rod-icon" aria-hidden="true"><span></span></div><div><strong>Rod</strong><small>Solid circular round bar. Verify stock size, grade and end connection details.</small></div></article>
-        </div>
+        <details class="section-guide-card">
+          <summary><span><b>Section guide</b><small>Basic CHS, Equal Angle and Rod section types</small></span><i>+</i></summary>
+          <div class="section-guide" aria-label="Member section guide">
+            <article><div class="section-icon chs-icon" aria-hidden="true"><span></span></div><div><strong>CHS</strong><small>Circular hollow section. Use for tubular struts, posts and bracing members.</small></div></article>
+            <article><div class="section-icon ea-icon" aria-hidden="true"><span></span></div><div><strong>Equal Angle</strong><small>L-shaped equal-leg angle. Check axis, eccentricity and connection effects.</small></div></article>
+            <article><div class="section-icon rod-icon" aria-hidden="true"><span></span></div><div><strong>Rod</strong><small>Solid circular round bar. Verify stock size, grade and end connection details.</small></div></article>
+          </div>
+        </details>
 
         <div class="member-inputs">
           <label class="size-field"><span>Section</span><select id="memberSection"></select></label>
@@ -202,7 +206,7 @@
         </section>
       </section>
 
-      <details class="detail-card" open><summary><span><b>Calculation steps</b><small>Axial tension, section compression, slenderness and member reduction</small></span><i>+</i></summary><div class="detail-body"><div id="memberFormulaSteps" class="formula-list member-formulas"></div></div></details>
+      <details class="detail-card"><summary><span><b>Calculation steps</b><small>Axial tension, section compression, slenderness and member reduction</small></span><i>+</i></summary><div class="detail-body"><div id="memberFormulaSteps" class="formula-list member-formulas"></div></div></details>
 
       <details class="source-card"><summary><span><b>Sources and limitations</b><small>Manufacturer data and AS 4100 design boundaries</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>CHS products</b> · Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0.</p><p><b>CHS capacity method</b> · Austube Mills / ASI Design Capacity Tables for Structural Steel Hollow Sections, Part 6.</p><p><b>Equal Angle properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 19–21.</p><p><b>Rod properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3 Rounds - Size Availability and Mass; circular solid bar geometry is used for A<sub>g</sub> and r.</p><p><b>Axial tension</b> · AS 4100 Clauses 7.1 to 7.3.</p></div><div class="source-notes"><p><b>Scope</b> · Centroidally loaded axial compression and axial tension.</p><p>For Equal Angles and Rods, confirm α<sub>b</sub> from AS 4100 Table 6.3.3 for the actual member, axis and fabrication condition. Determine A<sub>n</sub> and k<sub>t</sub> from the actual connection; Table 7.3.2 gives k<sub>t</sub> = 0.85 for the applicable eccentrically connected equal-angle configuration.</p><p>Round bar availability can vary by supplier, grade and region. Verify the actual product grade, test certificate and stock length before issue for design.</p><p>Section/member bending, shear, combined actions, connection capacity and flexural-torsional buckling are not included.</p></div></div></details>
     </section>

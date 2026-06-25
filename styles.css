@@ -82,7 +82,15 @@ main, footer { max-width: 980px; margin: auto; }
 
 .member-type-switch { display: inline-flex; gap: 3px; margin-bottom: 17px; padding: 3px; border-radius: 8px; background: #edf1ee; }
 .member-type { min-width: 116px; padding: 8px 13px; }
-.section-guide { margin: 0 0 17px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.section-guide-card { margin: 0 0 17px; border: 1px solid var(--line); border-radius: 9px; background: #f8fbfd; overflow: hidden; }
+.section-guide-card > summary { list-style: none; padding: 11px 13px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.section-guide-card > summary::-webkit-details-marker { display: none; }
+.section-guide-card > summary span b, .section-guide-card > summary span small { display: block; }
+.section-guide-card > summary b { font-size: var(--fs-sm); font-weight: 900; }
+.section-guide-card > summary small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); }
+.section-guide-card > summary i { color: var(--green); font-size: var(--fs-md); font-style: normal; transition: transform .2s; }
+.section-guide-card[open] > summary i { transform: rotate(45deg); }
+.section-guide { padding: 0 11px 11px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .section-guide article { min-width: 0; padding: 11px; display: grid; grid-template-columns: 48px 1fr; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 9px; background: #f8fbfd; }
 .section-guide strong, .section-guide small { display: block; }
 .section-guide strong { color: var(--ink); font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
@@ -250,6 +258,7 @@ main, footer { max-width: 980px; margin: auto; }
 .edge-check > b.pass { color: var(--green-dark); background: var(--green-soft); }
 .edge-check > b.fail { color: var(--red); background: #fde8e5; }
 .edge-check > small { grid-column: 1 / -1; }
+.checklist-warning { margin: 10px 0 0; padding: 10px 11px; border: 1px solid #efd6ad; border-left: 3px solid var(--amber); border-radius: 7px; background: #fff8ea; color: #745b3d; font-size: var(--fs-xs); line-height: 1.45; }
 .interaction-result { margin-top: 10px; padding: 11px; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 14px; border-radius: 7px; background: var(--ink); color: white; }
 .interaction-result span { opacity: .72; font-size: var(--fs-xs); }
 .interaction-result strong { font-size: var(--fs-md); font-weight: 700; font-variant-numeric: tabular-nums; }
