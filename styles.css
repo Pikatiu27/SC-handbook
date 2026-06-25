@@ -179,11 +179,15 @@ main, footer { max-width: 1040px; margin: auto; }
 .weld-extra-inputs label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); }
 .weld-extra-inputs input, .weld-extra-inputs select { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: var(--control-radius); background: #fff; padding: 8px 9px; outline: none; font-size: var(--fs-sm); }
 .weld-utilisation { margin-top: 9px; }
-.weld-legend-heading { margin: -4px 0 9px; display: flex; justify-content: space-between; align-items: end; gap: 12px; }
-.weld-legend-heading strong, .weld-legend-heading small { display: block; }
-.weld-legend-heading strong { color: var(--ink); font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
-.weld-legend-heading small { color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; text-align: right; }
-.weld-figure-section { margin: 0 0 14px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+.weld-legend-card { margin: -4px 0 14px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: #fffaf4; }
+.weld-legend-card > summary { list-style: none; padding: 11px 13px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; }
+.weld-legend-card > summary::-webkit-details-marker { display: none; }
+.weld-legend-card > summary b, .weld-legend-card > summary small { display: block; }
+.weld-legend-card > summary b { color: var(--ink); font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
+.weld-legend-card > summary small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
+.weld-legend-card > summary i { color: var(--weld-dark); font-size: var(--fs-lg); font-style: normal; line-height: 1; font-weight: 900; }
+.weld-legend-card[open] > summary i { transform: rotate(45deg); }
+.weld-figure-section { margin: 0; padding: 0 11px 11px; display: grid; grid-template-columns: 1fr; gap: 10px; }
 .weld-figure-card { min-width: 0; padding: 11px; display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 9px; background: #fffaf4; }
 .weld-image-card { grid-template-columns: minmax(280px, 1.15fr) minmax(0, .85fr); align-items: start; }
 .weld-figure-card strong, .weld-figure-card small { display: block; }
@@ -340,8 +344,6 @@ footer b { white-space: nowrap; }
   .bolt-summary dl { margin-top: 11px; justify-content: space-between; }
   .bolt-summary dl div { text-align: left; }
   .symbol-key span { white-space: normal; }
-  .weld-legend-heading { display: block; }
-  .weld-legend-heading small { margin-top: 2px; text-align: left; }
   .weld-figure-card, .weld-image-card { grid-template-columns: 1fr; }
   .weld-source-figure img { max-height: 260px; }
   .weld-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
