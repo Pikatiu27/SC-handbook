@@ -305,6 +305,11 @@ footer b { white-space: nowrap; }
   .member-metrics { grid-template-columns: repeat(2, 1fr); }
   .tension-limits { grid-template-columns: 1fr; }
   .ply-result-grid { grid-template-columns: 1fr; }
+  .edge-check { grid-template-columns: 1fr auto; align-items: start; gap: 6px 10px; }
+  .edge-check > span { grid-column: 1 / -1; }
+  .edge-check > strong { grid-column: 1; }
+  .edge-check > b { grid-column: 2; grid-row: 2; align-self: center; }
+  .edge-check > small { grid-column: 1 / -1; }
   .formula-list > div { grid-template-columns: 1fr; gap: 3px; }
 }
 

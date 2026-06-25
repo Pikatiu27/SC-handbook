@@ -318,11 +318,11 @@ function calculateMember() {
   const tensionGoverning = grossYield <= netFracture ? "Gross-section yielding" : "Net-section fracture";
 
   $("memberDesignation").textContent = `${section.designation} - ${gradeName}`;
-  $("memberAssumption").textContent = memberType === "chs"
-    ? "αb = -0.5 - buckling about any axis"
+  $("memberAssumption").innerHTML = memberType === "chs"
+    ? "&alpha;<sub>b</sub> = -0.5 - buckling about any axis"
     : memberType === "ea"
-      ? `user-selected αb = ${alphaB.toFixed(1)} - minor principal axis properties`
-      : `user-selected αb = ${alphaB.toFixed(1)} - solid circular rod geometry`;
+      ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - minor principal axis properties`
+      : `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - solid circular rod geometry`;
   $("memberArea").textContent = formatArea(properties.area);
   $("memberRadius").textContent = `${properties.r.toFixed(1)} mm`;
   $("memberFy").textContent = `${grade.fy} MPa`;
@@ -339,11 +339,11 @@ function calculateMember() {
   $("memberAlphaC").textContent = alphaC.toFixed(3);
   $("memberGoverning").textContent = alphaC < 0.999 ? "Member buckling" : "Section capacity";
   const netAreaWarning = enteredNetArea > properties.area ? " Net area has been limited to gross area." : "";
-  $("memberWarning").textContent = memberType === "chs"
-    ? `Centroidal axial load only. Confirm A_n, k_t, effective length and the actual connection.${netAreaWarning}`
+  $("memberWarning").innerHTML = memberType === "chs"
+    ? `Centroidal axial load only. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length and the actual connection.${netAreaWarning}`
     : memberType === "ea"
-      ? `Confirm αb to AS 4100 Table 6.3.3 and A_n / k_t to Clauses 7.2 and 7.3. Flexural-torsional buckling is not checked.${netAreaWarning}`
-      : `Confirm rod product grade, αb to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
+      ? `Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. Flexural-torsional buckling is not checked.${netAreaWarning}`
+      : `Confirm rod product grade, &alpha;<sub>b</sub> to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>min</sub> = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
     <div><b>Gross-section yielding - 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = ${fixed(grossYield)} kN</code></div>
