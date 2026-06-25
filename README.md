@@ -1,6 +1,6 @@
 # SC Handbook
 
-Static, English-language Australian structural steel quick-reference tools. Open `index.html` directly; no server, package installation or API is required.
+Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server, package installation or API is required.
 
 ## Tools
 
