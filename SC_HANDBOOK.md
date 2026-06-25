@@ -184,6 +184,19 @@ Use standard engineering symbols where applicable, for example:
 
 If a relationship is derived rather than directly quoted, label it as `Derived`.
 
+### 6.1 Material and Product Standard Traceability
+
+Every calculator must state the material or product standard behind tabulated strengths, section properties and fastener class data. Strength values such as `f_y`, `f_u`, `f_up` and `f_uf` must not appear as orphan numbers.
+
+Minimum web and workbook notes should identify the applicable source family:
+
+- Steel hollow sections: `AS/NZS 1163`.
+- Hot-rolled plates and sections: `AS/NZS 3678` / `AS/NZS 3679.1` where applicable.
+- Structural fasteners and bolt assemblies: `AS 1110` / `AS/NZS 1252` where applicable.
+- Manufacturer catalogues or design capacity tables used for section dimensions, availability or tabulated properties.
+
+Where strength depends on product thickness, wall thickness, grade range, supply condition or test certificate, state that the value must be verified for the actual supplied product before issue for design.
+
 ## 7. Engineering Language
 
 Use precise engineering terms.
