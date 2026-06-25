@@ -678,6 +678,16 @@ Formula basis:
 | Bearing, edge limit, `phiVb` | `phi * ae * tp * fup / 1000` |
 | Governing bearing capacity | `MIN(bearing_no_edge_limit, bearing_edge_limit)` |
 
+Edge-distance notation must be explicit:
+
+- `e` is the hole-centre edge distance used for the AS 4100 minimum edge-distance table check.
+- `d_h` is the actual hole diameter.
+- `d_f` is the nominal bolt diameter.
+- `e - d_h/2` is the clear distance from the hole edge to the ply edge.
+- `a_e` is the edge-distance parameter used for the edge-limited ply bearing expression in AS 4100 Cl. 9.2.2.4(2). In this handbook, calculate it as `a_e = e - d_h/2 + d_f/2` unless a project-specific standard interpretation requires otherwise.
+- Do not substitute the Table 9.5.2 minimum edge distance `e` directly into the edge-limited bearing formula without identifying the symbol conversion.
+- Do not substitute the clear hole-edge distance `e - d_h/2` directly for `a_e`.
+
 These formulas must be checked against the source references before issue-for-design use.
 
 ## 14. Future Modules
@@ -943,6 +953,14 @@ Bolt result checks should include:
 - Governing connected-ply capacity.
 
 Minimum edge distance and ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
+
+For the web bolt tab, separate the edge-distance terms visibly:
+
+- Input label: `e` = hole centre to edge.
+- Input label: `d_h` = actual hole diameter.
+- Result label: `Minimum edge distance, e - AS 4100 Table 9.5.2`.
+- Edge-limited bearing note: `a_e = e - d_h/2 + d_f/2`.
+- Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
 
 ### 15.10 Member Web Tab Rules
 
