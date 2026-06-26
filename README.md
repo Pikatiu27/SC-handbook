@@ -19,15 +19,31 @@ Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal pl
 
 ### Member Capacity
 
-The member tool contains three product families:
+The member tool contains four product families:
 
 - CHS: common AS/NZS 1163 C250L0 and C350L0 sizes from the Orrcon National Product Catalogue 2024;
 - Equal Angle: common 300PLUS and Grade 350 sizes, properties and form factors from the InfraBuild Hot Rolled Products Catalogue, 9th edition;
+- PFC: common 300PLUS Parallel Flange Channel sizes from the InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 15-16, using catalogue gross area, minimum radius of gyration and form factor;
 - Rod: common round bar diameters from the InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3 Rounds - Size Availability and Mass, using geometric area and radius. Confirm the actual Australian product grade and availability against the applicable manufacturer catalogue.
 
 The axial compression calculation follows AS 4100 Sections 6.2 and 6.3 and the published Austube Mills / Australian Steel Institute *Design Capacity Tables for Structural Steel Hollow Sections*. The axial tension calculation follows AS 4100 Clauses 7.1 to 7.3 and takes the lesser of gross-section yielding and net-section fracture. It reports section compression capacity, member compression capacity, design tension capacity, the two tension limit states, slenderness and the member reduction factor.
 
-For Equal Angles and Rods, `alpha_b` is deliberately an explicit design input. Confirm it from AS 4100 Table 6.3.3 for the actual axis, member and fabrication condition. Enter connection-specific `A_n` and `k_t`; AS 4100 Table 7.3.2 gives `k_t = 0.85` for the applicable eccentrically connected equal-angle configuration. The tool uses the published minimum principal radius for Equal Angles and catalogue round-bar diameters with geometric properties for Rods. It does not check section/member bending, shear, combined actions, connection capacity or flexural-torsional buckling.
+For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design input. Confirm it from AS 4100 Table 6.3.3 for the actual axis, member and fabrication condition. Enter connection-specific `A_n` and `k_t`; AS 4100 Table 7.3.2 gives `k_t = 0.85` for the applicable eccentrically connected equal-angle configuration. The tool uses the published minimum principal radius for Equal Angles, catalogue `r_min` for PFCs, and catalogue round-bar diameters with geometric properties for Rods. It does not check section/member bending, shear, combined actions, connection capacity, axis-specific PFC buckling, torsional buckling or flexural-torsional buckling.
+
+### Beam Capacity
+
+The beam tool covers x-axis section moment capacity for common hot-rolled Universal Beams:
+
+- UB section selection from the InfraBuild Hot Rolled Products Catalogue, 9th edition;
+- 300PLUS and Grade 350 section-capacity data where tabulated;
+- gross area, mass, `Sx`, `Zx`, `Zex`, compactness and form factor `kf`;
+- design section moment capacity `phi Ms`;
+- elastic yield and plastic limit reference values;
+- optional design moment `M*` and utilisation ratio.
+
+The primary basis is AS 4100:2020 Section 5 for beam section capacity, using `phi Ms = phi fy Ze` with `phi = 0.90`. The effective section modulus `Zex`, compactness and `kf` are taken from the InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser.
+
+The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, shear, combined bending and shear, web bearing, web buckling, concentrated loads, copes, holes, composite action, fire or deflection.
 
 ### Weld Capacity
 

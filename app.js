@@ -54,6 +54,37 @@ const weldTypeData = {
 };
 const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldKr", "weldDemand", "weldParentThickness", "weldParentGrade"];
 
+const ubSections = [
+  ["610UB125",125,16000,3680,3230,{ "300PLUS": { fy: 280, Ze: 3680, compactness: "C", kf: 0.950 }, "Grade 350": { fy: 340, Ze: 3680, compactness: "C", kf: 0.916 } }],
+  ["610UB113",113,14500,3290,2880,{ "300PLUS": { fy: 280, Ze: 3290, compactness: "C", kf: 0.926 }, "Grade 350": { fy: 340, Ze: 3290, compactness: "C", kf: 0.891 } }],
+  ["610UB101",101,13000,2900,2530,{ "300PLUS": { fy: 300, Ze: 2900, compactness: "C", kf: 0.888 }, "Grade 350": { fy: 340, Ze: 2900, compactness: "C", kf: 0.867 } }],
+  ["530UB92.4",92.4,11800,2370,2080,{ "300PLUS": { fy: 300, Ze: 2370, compactness: "C", kf: 0.928 }, "Grade 350": { fy: 340, Ze: 2370, compactness: "C", kf: 0.907 } }],
+  ["530UB82.0",82.0,10500,2070,1810,{ "300PLUS": { fy: 300, Ze: 2070, compactness: "C", kf: 0.902 }, "Grade 350": { fy: 340, Ze: 2070, compactness: "C", kf: 0.880 } }],
+  ["460UB82.1",82.1,10500,1840,1610,{ "300PLUS": { fy: 300, Ze: 1840, compactness: "C", kf: 0.979 }, "Grade 350": { fy: 340, Ze: 1840, compactness: "C", kf: 0.956 } }],
+  ["460UB74.6",74.6,9520,1660,1460,{ "300PLUS": { fy: 300, Ze: 1660, compactness: "C", kf: 0.948 }, "Grade 350": { fy: 340, Ze: 1660, compactness: "C", kf: 0.926 } }],
+  ["460UB67.1",67.1,8580,1480,1300,{ "300PLUS": { fy: 300, Ze: 1480, compactness: "C", kf: 0.922 }, "Grade 350": { fy: 340, Ze: 1480, compactness: "C", kf: 0.901 } }],
+  ["410UB59.7",59.7,7640,1200,1060,{ "300PLUS": { fy: 300, Ze: 1200, compactness: "C", kf: 0.938 }, "Grade 350": { fy: 340, Ze: 1200, compactness: "C", kf: 0.918 } }],
+  ["410UB53.7",53.7,6890,1060,933,{ "300PLUS": { fy: 320, Ze: 1060, compactness: "C", kf: 0.913 }, "Grade 350": { fy: 360, Ze: 1050, compactness: "N", kf: 0.894 } }],
+  ["360UB56.7",56.7,7240,1010,899,{ "300PLUS": { fy: 300, Ze: 1010, compactness: "C", kf: 0.996 }, "Grade 350": { fy: 340, Ze: 1010, compactness: "C", kf: 0.974 } }],
+  ["360UB50.7",50.7,6470,897,798,{ "300PLUS": { fy: 300, Ze: 897, compactness: "C", kf: 0.963 }, "Grade 350": { fy: 340, Ze: 897, compactness: "C", kf: 0.943 } }],
+  ["360UB44.7",44.7,5720,777,689,{ "300PLUS": { fy: 320, Ze: 770, compactness: "N", kf: 0.930 }, "Grade 350": { fy: 360, Ze: 762, compactness: "N", kf: 0.911 } }],
+  ["310UB46.2",46.2,5930,729,654,{ "300PLUS": { fy: 300, Ze: 729, compactness: "C", kf: 0.991 }, "Grade 350": { fy: 340, Ze: 729, compactness: "C", kf: 0.972 } }],
+  ["310UB40.4",40.4,5210,633,569,{ "300PLUS": { fy: 320, Ze: 633, compactness: "C", kf: 0.952 }, "Grade 350": { fy: 360, Ze: 629, compactness: "N", kf: 0.936 } }],
+  ["310UB32.0",32.0,4080,475,424,{ "300PLUS": { fy: 320, Ze: 467, compactness: "N", kf: 0.915 }, "Grade 350": { fy: 360, Ze: 462, compactness: "N", kf: 0.898 } }],
+  ["250UB37.3",37.3,4750,486,435,{ "300PLUS": { fy: 320, Ze: 486, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 486, compactness: "C", kf: 1.000 } }],
+  ["250UB31.4",31.4,4010,397,354,{ "300PLUS": { fy: 320, Ze: 395, compactness: "N", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 392, compactness: "N", kf: 0.991 } }],
+  ["250UB25.7",25.7,3270,319,285,{ "300PLUS": { fy: 320, Ze: 319, compactness: "C", kf: 0.949 }, "Grade 350": { fy: 360, Ze: 319, compactness: "C", kf: 0.932 } }],
+  ["200UB29.8",29.8,3820,316,281,{ "300PLUS": { fy: 320, Ze: 316, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 316, compactness: "C", kf: 1.000 } }],
+  ["200UB25.4",25.4,3230,260,232,{ "300PLUS": { fy: 320, Ze: 259, compactness: "N", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 257, compactness: "N", kf: 1.000 } }],
+  ["200UB22.3",22.3,2870,231,208,{ "300PLUS": { fy: 320, Ze: 227, compactness: "N", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 225, compactness: "N", kf: 1.000 } }],
+  ["200UB18.2",18.2,2320,180,160,{ "300PLUS": { fy: 320, Ze: 180, compactness: "C", kf: 0.990 }, "Grade 350": { fy: 360, Ze: 180, compactness: "C", kf: 0.970 } }],
+  ["180UB22.2",22.2,2820,195,171,{ "300PLUS": { fy: 320, Ze: 195, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 195, compactness: "C", kf: 1.000 } }],
+  ["180UB18.1",18.1,2300,157,139,{ "300PLUS": { fy: 320, Ze: 157, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 157, compactness: "C", kf: 1.000 } }],
+  ["180UB16.1",16.1,2040,138,123,{ "300PLUS": { fy: 320, Ze: 138, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 138, compactness: "C", kf: 1.000 } }],
+  ["150UB18.0",18.0,2300,135,117,{ "300PLUS": { fy: 320, Ze: 135, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 135, compactness: "C", kf: 1.000 } }],
+  ["150UB14.0",14.0,1780,102,88.8,{ "300PLUS": { fy: 320, Ze: 102, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 102, compactness: "C", kf: 1.000 } }]
+].map(([designation, mass, area, Sx, Zx, grades]) => ({ designation, mass, area, Sx, Zx, grades }));
+
 const chsSections = [
   [26.9,2.6],[33.7,2.0],[33.7,2.6],[33.7,3.2],[33.7,4.0],
   [42.4,2.0],[42.4,2.6],[42.4,3.2],[42.4,4.0],
@@ -86,6 +117,25 @@ const eaSections = [
   grades: { "300PLUS": { fy: fy300, fu: 440, kf: kf300 }, "Grade 350": { fy: fy350, fu: 480, kf: kf350 } }
 }));
 
+const pfcSections = [
+  [380, 55.2, 7030, 30.4, 280],
+  [300, 40.1, 5110, 28.1, 300],
+  [250, 35.5, 4520, 28.4, 300],
+  [230, 25.1, 3200, 23.5, 300],
+  [200, 22.9, 2920, 23.8, 300],
+  [180, 20.9, 2660, 23.8, 300],
+  [150, 17.7, 2250, 23.9, 320],
+  [125, 11.9, 1520, 20.8, 320],
+  [100, 8.33, 1060, 15.9, 320],
+  [75, 5.92, 754, 12.6, 320]
+].map(([depth, mass, area, r, fy]) => ({
+  designation: `${depth}PFC`,
+  mass,
+  area,
+  r,
+  grades: { "300PLUS": { fy, fu: 440, kf: 1 } }
+}));
+
 const rodSections = [
   [10, 0.616], [12, 0.887], [13, 1.04], [14, 1.21], [15, 1.39], [16, 1.58],
   [17, 1.78], [18, 1.99], [19, 2.23], [20, 2.46], [22, 2.98], [24, 3.55],
@@ -111,7 +161,7 @@ const chsGrades = {
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
-const toolNames = ["bolt", "member", "weld"];
+const toolNames = ["bolt", "member", "beam", "weld"];
 let memberType = "chs";
 
 function value(id) { return Math.max(0, Number($(id).value) || 0); }
@@ -253,6 +303,62 @@ function calculateWeld() {
     <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; check parent metal, joint preparation, WPS, inspection, fatigue and effective length separately</code></div>`;
 }
 
+function populateBeamOptions() {
+  $("beamSection").innerHTML = ubSections.map((section, index) => `<option value="${index}">${section.designation}</option>`).join("");
+  $("beamSection").value = String(ubSections.findIndex(section => section.designation === "310UB40.4"));
+  populateBeamGrades();
+}
+
+function populateBeamGrades() {
+  const section = ubSections[Number($("beamSection").value) || 0];
+  $("beamGrade").innerHTML = Object.keys(section.grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
+  $("beamGrade").value = "300PLUS";
+  calculateBeam();
+}
+
+function calculateBeam() {
+  const section = ubSections[Number($("beamSection").value) || 0];
+  if (!section) return;
+  const gradeName = $("beamGrade").value;
+  const grade = section.grades[gradeName];
+  if (!grade) return;
+  const phi = 0.9;
+  const sectionCapacity = phi * grade.fy * grade.Ze / 1000;
+  const elasticYield = phi * grade.fy * section.Zx / 1000;
+  const plasticLimit = phi * grade.fy * section.Sx / 1000;
+  const demand = value("beamMomentDemand");
+  const utilisation = sectionCapacity > 0 ? demand / sectionCapacity : Infinity;
+  const hasDemand = demand > 0;
+  const compactnessLabel = grade.compactness === "C" ? "Compact" : grade.compactness === "N" ? "Non-compact" : "Slender";
+
+  $("beamDesignation").textContent = `${section.designation} - ${gradeName}`;
+  $("beamAssumption").textContent = "x-axis section capacity only; full lateral restraint assumed for this quick check";
+  $("beamMass").textContent = `${section.mass} kg/m`;
+  $("beamArea").textContent = `${section.area.toLocaleString("en-AU")} mm2`;
+  $("beamFy").textContent = `${grade.fy} MPa`;
+  $("beamZex").textContent = `${grade.Ze.toLocaleString("en-AU")} x 10^3 mm3`;
+  $("beamCompactness").textContent = compactnessLabel;
+  $("beamSectionCapacity").textContent = fixed(sectionCapacity);
+  $("beamElasticYield").textContent = fixed(elasticYield);
+  $("beamPlasticLimit").textContent = fixed(plasticLimit);
+  $("beamSxValue").textContent = `${section.Sx.toLocaleString("en-AU")} x 10^3 mm3`;
+  $("beamZxValue").textContent = `${section.Zx.toLocaleString("en-AU")} x 10^3 mm3`;
+  $("beamKfValue").textContent = grade.kf.toFixed(3);
+  $("beamClassification").textContent = compactnessLabel;
+  $("beamGoverning").textContent = grade.compactness === "C" ? "Effective section modulus equals Sx" : "Effective section modulus reduced from Sx";
+  $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
+  $("beamStatus").textContent = !hasDemand ? "Enter design moment" : utilisation <= 1 ? "PASS" : "FAIL";
+  $("beamStatus").className = !hasDemand ? "" : utilisation <= 1 ? "pass" : "fail";
+  $("beamWarning").textContent = "Section capacity only. Check member moment capacity, lateral restraint, shear, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.";
+  $("beamFormulaSteps").innerHTML = `
+    <div><b>Section data</b><code>${section.designation}; A<sub>g</sub> = ${section.area.toLocaleString("en-AU")} mm&sup2;; mass = ${section.mass} kg/m</code></div>
+    <div><b>Catalogue moduli</b><code>S<sub>x</sub> = ${section.Sx.toLocaleString("en-AU")} x 10&sup3; mm&sup3;; Z<sub>x</sub> = ${section.Zx.toLocaleString("en-AU")} x 10&sup3; mm&sup3;; Z<sub>ex</sub> = ${grade.Ze.toLocaleString("en-AU")} x 10&sup3; mm&sup3;</code></div>
+    <div><b>Compactness</b><code>${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)} from InfraBuild section-capacity table</code></div>
+    <div><b>Elastic yield reference</b><code>&phi;f<sub>y</sub>Z<sub>x</sub> = 0.90 x ${grade.fy} x ${section.Zx.toLocaleString("en-AU")} x 10&sup3; / 10&sup6; = ${fixed(elasticYield)} kNm</code></div>
+    <div><b>Plastic limit reference</b><code>&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 x ${grade.fy} x ${section.Sx.toLocaleString("en-AU")} x 10&sup3; / 10&sup6; = ${fixed(plasticLimit)} kNm</code></div>
+    <div><b>Section capacity</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${grade.fy} x ${grade.Ze.toLocaleString("en-AU")} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>`;
+}
+
 function chsProperties(section) {
   const inner = section.D - 2 * section.t;
   const area = Math.PI / 4 * (section.D ** 2 - inner ** 2);
@@ -260,23 +366,36 @@ function chsProperties(section) {
   return { area, r: Math.sqrt(inertia / area) };
 }
 
+function memberSections() {
+  if (memberType === "chs") return chsSections;
+  if (memberType === "ea") return eaSections;
+  if (memberType === "pfc") return pfcSections;
+  return rodSections;
+}
+
+function memberProperties(section) {
+  return memberType === "chs" ? chsProperties(section) : { area: section.area, r: section.r };
+}
+
 function populateMemberOptions() {
-  const sections = memberType === "chs" ? chsSections : memberType === "ea" ? eaSections : rodSections;
+  const sections = memberSections();
   $("memberSection").innerHTML = sections.map((section, index) => `<option value="${index}">${section.designation}</option>`).join("");
   $("memberSection").value = memberType === "chs"
     ? String(chsSections.findIndex(s => s.D === 114.3 && s.t === 3.2))
     : memberType === "ea"
       ? String(eaSections.findIndex(s => s.designation === "100 x 100 x 10 EA"))
-      : String(rodSections.findIndex(s => s.diameter === 24));
+      : memberType === "pfc"
+        ? String(pfcSections.findIndex(s => s.designation === "150PFC"))
+        : String(rodSections.findIndex(s => s.diameter === 24));
   populateMemberGrades();
 }
 
 function populateMemberGrades() {
-  const section = (memberType === "chs" ? chsSections : memberType === "ea" ? eaSections : rodSections)[Number($("memberSection").value) || 0];
+  const section = memberSections()[Number($("memberSection").value) || 0];
   const grades = memberType === "chs" ? chsGrades : section.grades;
   $("memberGrade").innerHTML = Object.keys(grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
   $("memberGrade").value = memberType === "chs" ? "C350L0" : "300PLUS";
-  const properties = memberType === "chs" ? chsProperties(section) : { area: section.area, r: section.r };
+  const properties = memberProperties(section);
   $("memberNetArea").value = properties.area.toFixed(0);
   $("memberNetArea").max = properties.area.toFixed(0);
   $("memberKt").value = "1";
@@ -284,13 +403,13 @@ function populateMemberGrades() {
 }
 
 function calculateMember() {
-  const sections = memberType === "chs" ? chsSections : memberType === "ea" ? eaSections : rodSections;
+  const sections = memberSections();
   const section = sections[Number($("memberSection").value) || 0];
   if (!section) return;
   const gradeName = $("memberGrade").value;
   const grade = memberType === "chs" ? chsGrades[gradeName] : section.grades[gradeName];
   if (!grade) return;
-  const properties = memberType === "chs" ? chsProperties(section) : { area: section.area, r: section.r };
+  const properties = memberProperties(section);
   const alphaB = memberType === "chs" ? -0.5 : Number($("memberAlphaB").value);
   const enteredNetArea = value("memberNetArea");
   const netArea = Math.min(properties.area, enteredNetArea);
@@ -322,7 +441,9 @@ function calculateMember() {
     ? "&alpha;<sub>b</sub> = -0.5 - buckling about any axis"
     : memberType === "ea"
       ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - minor principal axis properties`
-      : `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - solid circular rod geometry`;
+      : memberType === "pfc"
+        ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - PFC r<sub>min</sub> from catalogue`
+        : `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - solid circular rod geometry`;
   $("memberArea").textContent = formatArea(properties.area);
   $("memberRadius").textContent = `${properties.r.toFixed(1)} mm`;
   $("memberFy").textContent = `${grade.fy} MPa`;
@@ -343,7 +464,9 @@ function calculateMember() {
     ? `Centroidal axial load only. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length and the actual connection.${netAreaWarning}`
     : memberType === "ea"
       ? `Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. Flexural-torsional buckling is not checked.${netAreaWarning}`
-      : `Confirm rod product grade, &alpha;<sub>b</sub> to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
+      : memberType === "pfc"
+        ? `PFC quick check uses catalogue A<sub>g</sub> and r<sub>min</sub> for centroidal axial load only. Check axis-specific buckling, torsional/flexural-torsional buckling and connection eccentricity separately.${netAreaWarning}`
+        : `Confirm rod product grade, &alpha;<sub>b</sub> to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>min</sub> = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
     <div><b>Gross-section yielding - 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = ${fixed(grossYield)} kN</code></div>
@@ -403,6 +526,7 @@ function setMemberType(type) {
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
   $("alphaBField").hidden = type === "chs";
   if (type === "ea") $("memberAlphaB").value = "0.5";
+  if (type === "pfc") $("memberAlphaB").value = "0";
   if (type === "rod") $("memberAlphaB").value = "0";
   populateMemberOptions();
 }
@@ -424,6 +548,9 @@ function initialise() {
   $("shearPlane").addEventListener("input", setPrimaryPlane);
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
+  $("beamSection").addEventListener("change", populateBeamGrades);
+  $("beamGrade").addEventListener("change", calculateBeam);
+  $("beamMomentDemand").addEventListener("input", calculateBeam);
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
   $("memberSection").addEventListener("change", populateMemberGrades);
   $("memberGrade").addEventListener("change", calculateMember);
@@ -431,6 +558,7 @@ function initialise() {
   $("memberAlphaB").addEventListener("change", calculateMember);
   $("memberNetArea").addEventListener("input", calculateMember);
   $("memberKt").addEventListener("input", calculateMember);
+  populateBeamOptions();
   populateMemberOptions();
   calculateBolt();
   calculateWeld();

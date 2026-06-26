@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20260626">
 </head>
 <body>
   <header class="topbar">
@@ -23,6 +23,7 @@
     <nav class="tool-tabs" aria-label="SC Handbook tools">
       <button class="tool-tab active" type="button" data-tool="bolt" aria-controls="boltPanel" aria-selected="true">Bolt Capacity</button>
       <button class="tool-tab" type="button" data-tool="member" aria-controls="memberPanel" aria-selected="false">Member Capacity</button>
+      <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Capacity</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
     </nav>
 
@@ -161,17 +162,53 @@
       <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100, AS/NZS 1554.1 and industry guidance</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Primary basis</b> - AS 4100:2020 Clause 9.7 welded connections; throat-area capacity is calculated as &phi;R = &phi;0.6f<sub>uw</sub>t<sub>t</sub>l<sub>w</sub> with &phi; = 0.80.</p><p><b>Weld metal strength</b> - AS 4100 Table 9.7.3.10(1), also summarised in ASI Simple Connections 2020 Table 2.14. Common strengths shown here are 430, 490 and 550 MPa.</p><p><b>Parent metal screen</b> - indicative per-mm parent metal shear capacity is shown as &phi;0.6f<sub>up</sub>t using &phi; = 0.90 and AS/NZS 3678 / AS/NZS 3679.1 tensile strengths summarised in ASI Simple Connections Tables 2.15 and 2.16.</p><p><b>Welding process</b> - process selection should be by the fabricator under a qualified WPS to AS/NZS 1554.1.</p></div><div class="source-notes"><p><b>Symbols</b> - welding symbols are shown in the AS 1101.3 style: the basic weld symbol below the reference line indicates arrow-side weld; above the line indicates other-side weld. Verify exact drawing symbols, preparations and inspection category to AS/NZS 1554.1 on the project drawings.</p><p><b>Scope</b> - selected weld-type throat capacity under direct action: equal-leg fillet, CPBW, IPBW, or compound weld using user-entered effective length, runs and a<sub>w</sub> where relevant.</p><p><b>Design boundary</b> - CPBW, IPBW and compound options are capacity views, not full joint checks. Parent-metal screen is not a tear-out, block shear, net-section, HAZ or eccentric weld group check. Parent-metal rupture, HAZ, joint preparation, backing/gouging, eccentric weld groups, intermittent weld rules, fatigue, seismic detailing, lamellar tearing and inspection acceptance criteria are excluded.</p></div></div></details>
     </section>
 
+    <section id="beamPanel" class="tool-panel" hidden>
+      <div class="tool-heading"><div><p class="kicker">BEAM SECTIONS - AS 4100 SECTION 5</p><h2>Beam Capacity</h2></div><span>UB x-axis section capacity</span></div>
+
+      <section class="lookup-card beam-card">
+        <div class="primary-inputs beam-inputs">
+          <label class="size-field"><span>UB section</span><select id="beamSection" aria-label="Universal beam section"></select></label>
+          <label><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
+          <label><span>M* design moment</span><span class="unit"><input id="beamMomentDemand" type="number" min="0" step="1" value="0"><em>kNm</em></span></label>
+        </div>
+
+        <div class="beam-summary">
+          <div><span>Selected beam</span><strong id="beamDesignation">310UB40.4 - 300PLUS</strong><small id="beamAssumption">x-axis section capacity only; full lateral restraint assumed for this quick check</small></div>
+          <dl><div><dt>mass</dt><dd id="beamMass">40.4 kg/m</dd></div><div><dt>A<sub>g</sub></dt><dd id="beamArea">5,210 mm&sup2;</dd></div><div><dt>f<sub>y</sub></dt><dd id="beamFy">320 MPa</dd></div><div><dt>Z<sub>ex</sub></dt><dd id="beamZex">633 x 10&sup3; mm&sup3;</dd></div><div><dt>class</dt><dd id="beamCompactness">Compact</dd></div></dl>
+        </div>
+
+        <div class="symbol-key" aria-label="AS 4100 beam symbols"><span><b>M<sub>s</sub></b> section moment capacity</span><span><b>Z<sub>ex</sub></b> effective section modulus about x-axis</span><span><b>S<sub>x</sub></b> plastic section modulus</span><span><b>Z<sub>x</sub></b> elastic section modulus</span><span><b>f<sub>y</sub></b> flange yield stress used for bending</span></div>
+
+        <section class="capacity-section" aria-live="polite">
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Beam section capacity</h2></div><span>&phi; = 0.90</span></div>
+          <div class="capacity-grid beam-results">
+            <article class="capacity-card selected-shear"><span>Design section moment capacity &phi;M<sub>s</sub></span><strong><output id="beamSectionCapacity">182.3</output><small> kNm</small></strong><p>AS 4100 Clause 5.2.1 using catalogue Z<sub>ex</sub></p></article>
+            <article class="capacity-card"><span>Elastic yield reference</span><strong><output id="beamElasticYield">163.9</output><small> kNm</small></strong><p>&phi;f<sub>y</sub>Z<sub>x</sub></p></article>
+            <article class="capacity-card alternate-shear"><span>Plastic limit reference</span><strong><output id="beamPlasticLimit">182.3</output><small> kNm</small></strong><p>&phi;f<sub>y</sub>S<sub>x</sub></p></article>
+          </div>
+          <div class="beam-metrics"><div><span>S<sub>x</sub></span><strong id="beamSxValue">633 x 10&sup3; mm&sup3;</strong></div><div><span>Z<sub>x</sub></span><strong id="beamZxValue">569 x 10&sup3; mm&sup3;</strong></div><div><span>k<sub>f</sub></span><strong id="beamKfValue">0.952</strong></div><div><span>Compactness</span><strong id="beamClassification">Compact</strong></div><div><span>Capacity basis</span><strong id="beamGoverning">Effective section modulus equals Sx</strong></div></div>
+          <div class="interaction-result beam-utilisation"><span>Moment utilisation ratio</span><strong id="beamUtilisation">0.00</strong><b id="beamStatus">Enter design moment</b></div>
+          <p class="result-note" id="beamWarning">Section capacity only. Check member moment capacity, lateral restraint, shear, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.</p>
+        </section>
+      </section>
+
+      <details class="detail-card"><summary><span><b>Calculation steps</b><small>Section properties, compactness and moment-capacity calculation</small></span><i>+</i></summary><div class="detail-body"><section><h3>Calculation steps</h3><div id="beamFormulaSteps" class="formula-list"></div></section></div></details>
+
+      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100 section capacity and InfraBuild UB data</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Primary basis</b> - AS 4100:2020 Section 5 beam design, with section moment capacity taken as &phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>e</sub> for the selected bending axis.</p><p><b>Product data</b> - InfraBuild Hot Rolled Products Catalogue, 9th edition, Universal Beams section properties and section-capacity table for 300PLUS and Grade 350.</p><p><b>Effective modulus</b> - Z<sub>ex</sub>, compactness and k<sub>f</sub> are taken from the catalogue table rather than recalculated from plate slenderness in the browser.</p></div><div class="source-notes"><p><b>Scope</b> - x-axis section moment capacity for hot-rolled UB sections only.</p><p><b>Design boundary</b> - member moment capacity M<sub>b</sub>, lateral-torsional buckling, restraint spacing, shear, combined bending and shear, web bearing, web buckling, concentrated loads, cope effects, holes, composite action, fire and deflection are excluded.</p><p><b>Use</b> - treat this as the first section-capacity lookup before completing the project-specific beam checks required by AS 4100.</p></div></div></details>
+    </section>
+
     <section id="memberPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">AXIAL MEMBERS · AS 4100 SECTIONS 6 AND 7</p><h2>Member Capacity</h2></div><span>CHS / Equal Angle / Rod</span></div>
+      <div class="tool-heading"><div><p class="kicker">AXIAL MEMBERS · AS 4100 SECTIONS 6 AND 7</p><h2>Member Capacity</h2></div><span>CHS / Equal Angle / PFC / Rod</span></div>
 
       <section class="lookup-card member-card">
-        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="rod">Rod</button></div>
+        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button></div>
 
         <details class="section-guide-card">
           <summary><span><b>Section guide</b><small>Product-manual section references; no schematic redraws</small></span><i>+</i></summary>
           <div class="section-guide" aria-label="Member section guide">
             <article class="manual-section-card"><span class="manual-tag">Orrcon catalogue</span><div><strong>CHS</strong><small>Use Circular Hollow Sections from Orrcon National Product Catalogue 2024, Sections 1.1.4 and 1.1.5. Verify AS/NZS 1163 grade, OD, wall thickness and availability.</small></div></article>
             <article class="manual-section-card"><span class="manual-tag">InfraBuild catalogue</span><div><strong>Equal Angle</strong><small>Use Equal Angles from InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 19–21. Confirm leg size, thickness, r<sub>min</sub>, k<sub>f</sub> and connection eccentricity.</small></div></article>
+            <article class="manual-section-card"><span class="manual-tag">InfraBuild catalogue</span><div><strong>PFC</strong><small>Use Parallel Flange Channels from InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 15–16. Confirm designation, A<sub>g</sub>, r<sub>min</sub>, steel grade and connection eccentricity.</small></div></article>
             <article class="manual-section-card"><span class="manual-tag">InfraBuild catalogue</span><div><strong>Rod</strong><small>Use Rounds from InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3. Verify stock diameter, grade, availability and end connection details.</small></div></article>
           </div>
         </details>
@@ -206,7 +243,7 @@
 
       <details class="detail-card"><summary><span><b>Calculation steps</b><small>Axial tension, section compression, slenderness and member reduction</small></span><i>+</i></summary><div class="detail-body"><div id="memberFormulaSteps" class="formula-list member-formulas"></div></div></details>
 
-      <details class="source-card"><summary><span><b>Sources and limitations</b><small>Manufacturer data and AS 4100 design boundaries</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Material standards</b> · Steel hollow sections are based on AS/NZS 1163. Hot-rolled plates, angles, rods and open sections are based on AS/NZS 3678 / AS/NZS 3679.1 where applicable. Verify grade, thickness range and test certificate before issue for design.</p><p><b>CHS products</b> · Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0.</p><p><b>CHS capacity method</b> · Austube Mills / ASI Design Capacity Tables for Structural Steel Hollow Sections, Part 6.</p><p><b>Equal Angle properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 19–21.</p><p><b>Rod properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3 Rounds - Size Availability and Mass; circular solid bar geometry is used for A<sub>g</sub> and r.</p><p><b>Axial tension</b> · AS 4100 Clauses 7.1 to 7.3.</p></div><div class="source-notes"><p><b>Scope</b> · Centroidally loaded axial compression and axial tension.</p><p>For Equal Angles and Rods, confirm α<sub>b</sub> from AS 4100 Table 6.3.3 for the actual member, axis and fabrication condition. Determine A<sub>n</sub> and k<sub>t</sub> from the actual connection; Table 7.3.2 gives k<sub>t</sub> = 0.85 for the applicable eccentrically connected equal-angle configuration.</p><p>Round bar availability can vary by supplier, grade and region. Verify the actual product grade, test certificate and stock length before issue for design.</p><p>Section/member bending, shear, combined actions, connection capacity and flexural-torsional buckling are not included.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Sources and limitations</b><small>Manufacturer data and AS 4100 design boundaries</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Material standards</b> · Steel hollow sections are based on AS/NZS 1163. Hot-rolled plates, angles, rods and open sections are based on AS/NZS 3678 / AS/NZS 3679.1 where applicable. Verify grade, thickness range and test certificate before issue for design.</p><p><b>CHS products</b> · Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0.</p><p><b>CHS capacity method</b> · Austube Mills / ASI Design Capacity Tables for Structural Steel Hollow Sections, Part 6.</p><p><b>Equal Angle properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 19–21.</p><p><b>PFC properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 15–16, Parallel Flange Channels; A<sub>g</sub>, r<sub>min</sub>, k<sub>f</sub> and 300PLUS yield stress are taken from the catalogue.</p><p><b>Rod properties</b> · InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3 Rounds - Size Availability and Mass; circular solid bar geometry is used for A<sub>g</sub> and r.</p><p><b>Axial tension</b> · AS 4100 Clauses 7.1 to 7.3.</p></div><div class="source-notes"><p><b>Scope</b> · Centroidally loaded axial compression and axial tension.</p><p>For Equal Angles, PFCs and Rods, confirm α<sub>b</sub> from AS 4100 Table 6.3.3 for the actual member, axis and fabrication condition. Determine A<sub>n</sub> and k<sub>t</sub> from the actual connection; Table 7.3.2 gives k<sub>t</sub> = 0.85 for the applicable eccentrically connected equal-angle configuration.</p><p>PFC checks use r<sub>min</sub> for a quick axial flexural-buckling screen only. Check axis-specific buckling, torsional/flexural-torsional buckling, load eccentricity and connection eccentricity separately.</p><p>Round bar availability can vary by supplier, grade and region. Verify the actual product grade, test certificate and stock length before issue for design.</p><p>Section/member bending, shear, combined actions, connection capacity and flexural-torsional buckling are not included.</p></div></div></details>
     </section>
   </main>
 
