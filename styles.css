@@ -94,7 +94,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .primary-inputs.three-inputs { grid-template-columns: .8fr 1.35fr 1.15fr; }
 .primary-inputs.weld-inputs { grid-template-columns: 1.05fr .8fr .9fr 1fr .8fr .7fr; }
 .primary-inputs.beam-inputs { grid-template-columns: 1.35fr 1fr .85fr; }
-.primary-inputs.concrete-inputs { grid-template-columns: 1.1fr .85fr .85fr .85fr .7fr; }
+.primary-inputs.concrete-inputs { grid-template-columns: 1.15fr .85fr .85fr .85fr .85fr .7fr; }
 .primary-inputs label > span { display: block; margin-bottom: 6px; color: #45534c; font-size: var(--fs-sm); line-height: 1.2; font-weight: 700; }
 .primary-inputs select, .primary-inputs input { width: 100%; min-height: 46px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 10px 12px; outline: none; font-size: var(--fs-sm); font-weight: 700; }
 .primary-inputs select { cursor: pointer; }
@@ -286,7 +286,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .layer-row > strong { color: var(--green-dark); font-size: var(--fs-sm); line-height: 1.2; }
 .layer-row label { position: relative; display: flex; align-items: center; gap: 6px; }
 .layer-row label span { color: var(--muted); font-size: var(--fs-xs); }
-.layer-row input[type="number"] { width: 100%; min-height: 34px; border: 1px solid #ccd5ce; border-radius: 8px; padding: 6px 30px 6px 8px; background: #fbfcfa; font-size: var(--fs-xs); font-weight: 700; }
+.layer-row input[type="number"], .layer-row select { width: 100%; min-height: 34px; border: 1px solid #ccd5ce; border-radius: 8px; padding: 6px 30px 6px 8px; background: #fbfcfa; font-size: var(--fs-xs); font-weight: 700; }
 .layer-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--green); }
 .layer-row em { position: absolute; right: 16px; color: var(--muted); font-size: 10px; font-style: normal; pointer-events: none; }
 .concrete-visual-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 10px; margin: 0 0 18px; }
@@ -297,6 +297,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .concrete-svg .section-outline { fill: #f8fbfb; stroke: #34423b; stroke-width: 2; }
 .concrete-svg .compression-zone { fill: rgba(111, 183, 176, .24); stroke: rgba(47, 116, 111, .45); stroke-width: 1; }
 .concrete-svg .neutral-axis { stroke: #1f2a25; stroke-width: 2; stroke-dasharray: 7 5; }
+.concrete-svg .cover-line { stroke: #8b9892; stroke-width: 1.4; stroke-dasharray: 4 5; }
 .concrete-svg .bar-tension { fill: #d87873; stroke: #8b3630; stroke-width: 2; }
 .concrete-svg .bar-compression { fill: #79abd8; stroke: #336692; stroke-width: 2; }
 .concrete-svg .bar-neutral { fill: #aeb8b4; stroke: #68766f; stroke-width: 2; }
