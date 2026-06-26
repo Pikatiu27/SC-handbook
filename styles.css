@@ -95,6 +95,14 @@ main, footer { max-width: 1040px; margin: auto; }
 .primary-inputs.weld-inputs { grid-template-columns: 1.05fr .8fr .9fr 1fr .8fr .7fr; }
 .primary-inputs.beam-inputs { grid-template-columns: 1.35fr 1fr .85fr; }
 .primary-inputs.concrete-inputs { grid-template-columns: 1.15fr .85fr .85fr .85fr .85fr .7fr; }
+.concrete-input-stack { display: grid; gap: 10px; }
+.concrete-input-row { display: grid; gap: 12px; align-items: end; }
+.concrete-row-main { grid-template-columns: 1.25fr 1fr 1fr 1fr; }
+.concrete-row-material { grid-template-columns: 1fr 1fr 1fr; max-width: 760px; }
+.concrete-row-analysis { grid-template-columns: repeat(4, 1fr); padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: #f8fcfb; }
+.concrete-input-row label > span:first-child { display: block; min-height: 18px; margin-bottom: 5px; color: #45534c; font-size: var(--fs-xs); line-height: 1.15; font-weight: 800; }
+.concrete-input-row .size-field > span:first-child { color: var(--ink); }
+.concrete-input-row input, .concrete-input-row select { width: 100%; min-height: 42px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 9px 12px; outline: none; font-size: var(--fs-sm); line-height: 1.2; font-weight: 700; }
 .primary-inputs label > span { display: block; margin-bottom: 6px; color: #45534c; font-size: var(--fs-sm); line-height: 1.2; font-weight: 700; }
 .primary-inputs select, .primary-inputs input { width: 100%; min-height: 46px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 10px 12px; outline: none; font-size: var(--fs-sm); font-weight: 700; }
 .primary-inputs select { cursor: pointer; }
@@ -305,8 +313,8 @@ main, footer { max-width: 1040px; margin: auto; }
 .concrete-svg .force-arrow { stroke: #34423b; stroke-width: 2.4; marker-end: url(#arrowHead); }
 .concrete-svg .strain-line { stroke: #2f746f; stroke-width: 3; fill: none; }
 .concrete-svg .strain-axis { stroke: #8b9892; stroke-width: 1.4; }
-.concrete-svg .small-label { fill: var(--muted); font-size: 11px; font-weight: 700; }
-.concrete-svg .strong-label { fill: var(--ink); font-size: 12px; font-weight: 900; }
+.concrete-svg .small-label { fill: var(--muted); font-size: 9.5px; font-weight: 700; }
+.concrete-svg .strong-label { fill: var(--ink); font-size: 10.5px; font-weight: 900; }
 .concrete-svg .warn-line { stroke: #e4a064; stroke-width: 2; stroke-dasharray: 5 4; }
 .concrete-layer-results { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .concrete-layer-results article { padding: 10px 11px; border: 1px solid var(--line); border-radius: 7px; background: #f8fcfb; }
@@ -386,7 +394,7 @@ footer b { white-space: nowrap; }
 
 @media (max-width: 760px) {
   .intro { padding-top: 25px; }
-  .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
+  .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .bolt-summary, .member-summary, .beam-summary { align-items: flex-start; }
   .weld-summary { display: block; }
   .bolt-summary dl { gap: 14px; flex-wrap: wrap; }

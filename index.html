@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260626f">
+  <link rel="stylesheet" href="styles.css?v=20260626g">
 </head>
 <body>
   <header class="topbar">
@@ -267,21 +267,26 @@
       <div class="tool-heading"><div><p class="kicker">CONCRETE PADS - AS 3600 SECTION THEORY</p><h2>Concrete Pad Moment</h2></div><span>multi-layer RC section</span></div>
 
       <section class="lookup-card concrete-card">
-        <div class="primary-inputs concrete-inputs">
-          <label class="size-field"><span>Compression face</span><select id="concreteDirection" aria-label="Compression face"><option value="top">Top face in compression</option><option value="bottom">Bottom face in compression</option></select></label>
-          <label><span>Section width, b</span><span class="unit"><input id="concreteWidth" type="number" min="100" step="50" value="1000"><em>mm</em></span></label>
-          <label><span>Top pad depth, D<sub>top</sub></span><span class="unit"><input id="concreteTopDepth" type="number" min="0" step="10" value="500"><em>mm</em></span></label>
-          <label><span>Bottom pad depth, D<sub>bot</sub></span><span class="unit"><input id="concreteBottomDepth" type="number" min="0" step="10" value="0"><em>mm</em></span></label>
-          <label><span>Nominal cover, c<sub>nom</sub></span><span class="unit"><input id="concreteCover" type="number" min="0" step="5" value="40"><em>mm</em></span></label>
-          <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" step="1" value="32"><em>MPa</em></span></label>
-          <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.75"></label>
-        </div>
+        <div class="concrete-input-stack">
+          <div class="concrete-input-row concrete-row-main">
+            <label class="size-field"><span>Compression face</span><select id="concreteDirection" aria-label="Compression face"><option value="top">Top face in compression</option><option value="bottom">Bottom face in compression</option></select></label>
+            <label><span>Section width, b</span><span class="unit"><input id="concreteWidth" type="number" min="100" step="50" value="1000"><em>mm</em></span></label>
+            <label><span>Top pad depth, D<sub>top</sub></span><span class="unit"><input id="concreteTopDepth" type="number" min="0" step="10" value="500"><em>mm</em></span></label>
+            <label><span>Bottom pad depth, D<sub>bot</sub></span><span class="unit"><input id="concreteBottomDepth" type="number" min="0" step="10" value="0"><em>mm</em></span></label>
+          </div>
 
-        <div class="concrete-secondary-inputs">
-          <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.01" value="0.85"></label>
-          <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.01" value="0.80"></label>
-          <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030"></label>
-          <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
+          <div class="concrete-input-row concrete-row-material">
+            <label><span>Nominal cover, c<sub>nom</sub></span><span class="unit"><input id="concreteCover" type="number" min="0" step="5" value="40"><em>mm</em></span></label>
+            <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" step="1" value="32"><em>MPa</em></span></label>
+            <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.75"></label>
+          </div>
+
+          <div class="concrete-input-row concrete-row-analysis">
+            <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.01" value="0.85"></label>
+            <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.01" value="0.80"></label>
+            <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030"></label>
+            <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
+          </div>
         </div>
 
         <div class="concrete-summary">

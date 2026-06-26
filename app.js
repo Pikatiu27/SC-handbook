@@ -590,9 +590,9 @@ function renderConcreteSectionSvg(data, result) {
     return;
   }
 
-  const sx = 210;
+  const sx = 230;
   const sy = 270;
-  const x0 = 78;
+  const x0 = 145;
   const y0 = 34;
   const secW = sx;
   const secH = sy;
@@ -616,61 +616,61 @@ function renderConcreteSectionSvg(data, result) {
     const y = yScale(layer.yTop);
     const status = Math.abs(layer.strain) < 0.00005 ? "neutral" : layer.force > 0 ? "compression" : "tension";
     const css = status === "compression" ? "bar-compression" : status === "tension" ? "bar-tension" : "bar-neutral";
-    const arrowX1 = status === "compression" ? x0 + secW + 72 : x0 - 38;
-    const arrowX2 = status === "compression" ? x0 + secW + 14 : x0 + 44;
-    const labelX = status === "compression" ? x0 + secW + 82 : x0 - 62;
-    const labelAnchor = status === "compression" ? "start" : "end";
+    const arrowX1 = status === "compression" ? x0 + secW + 78 : 70;
+    const arrowX2 = status === "compression" ? x0 + secW + 16 : x0 - 8;
+    const labelX = status === "compression" ? x0 + secW + 88 : 18;
+    const labelAnchor = "start";
     return `
       <circle class="${css}" cx="${x0 + secW * 0.30}" cy="${y}" r="8"></circle>
       <circle class="${css}" cx="${x0 + secW * 0.50}" cy="${y}" r="8"></circle>
       <circle class="${css}" cx="${x0 + secW * 0.70}" cy="${y}" r="8"></circle>
       <line class="force-arrow" x1="${arrowX1}" y1="${y}" x2="${arrowX2}" y2="${y}"></line>
-      <text x="${labelX}" y="${y - 6}" text-anchor="${labelAnchor}" class="strong-label">Fs${layer.index} ${status === "compression" ? "C" : status === "tension" ? "T" : "NA"}</text>
+      <text x="${labelX}" y="${y - 7}" text-anchor="${labelAnchor}" class="strong-label">F<tspan baseline-shift="sub">s${layer.index}</tspan> ${status === "compression" ? "C" : status === "tension" ? "T" : "NA"}</text>
       <text x="${labelX}" y="${y + 9}" text-anchor="${labelAnchor}" class="small-label">${fixed(layer.force / 1000)} kN/m</text>
-      <text x="${labelX}" y="${y + 23}" text-anchor="${labelAnchor}" class="small-label">eps_s${layer.index} = ${signedFixed(layer.strain, 5)}</text>`;
+      <text x="${labelX}" y="${y + 23}" text-anchor="${labelAnchor}" class="small-label">ε<tspan baseline-shift="sub">s${layer.index}</tspan> = ${signedFixed(layer.strain, 5)}</text>`;
   }).join("");
 
   $("concreteSectionSvg").innerHTML = `
-    <svg class="concrete-svg" viewBox="0 0 520 340" role="img" aria-label="Concrete section force diagram">
+    <svg class="concrete-svg" viewBox="0 0 640 350" role="img" aria-label="Concrete section force diagram">
       <defs><marker id="arrowHead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34423b"></path></marker></defs>
       <rect class="section-outline" x="${x0}" y="${y0}" width="${secW}" height="${secH}" rx="2"></rect>
       <rect class="compression-zone" x="${x0}" y="${blockY}" width="${secW}" height="${blockH}"></rect>
       ${coverLines}
       <line class="neutral-axis" x1="${x0 - 22}" y1="${naY}" x2="${x0 + secW + 22}" y2="${naY}"></line>
       ${interfaceLine}
-      <line class="force-arrow" x1="${x0 + secW + 92}" y1="${data.direction === "top" ? blockY + blockH / 2 : blockY + blockH / 2}" x2="${x0 + secW + 22}" y2="${blockY + blockH / 2}"></line>
-      <text x="${x0 + secW + 102}" y="${blockY + blockH / 2 - 4}" class="strong-label">Cc</text>
-      <text x="${x0 + secW + 102}" y="${blockY + blockH / 2 + 11}" class="small-label">${fixed(result.cc / 1000)} kN</text>
+      <line class="force-arrow" x1="${x0 + secW + 88}" y1="${blockY + blockH / 2}" x2="${x0 + secW + 18}" y2="${blockY + blockH / 2}"></line>
+      <text x="${x0 + secW + 98}" y="${Math.max(y0 + 18, blockY + blockH / 2 - 18)}" class="strong-label">C<tspan baseline-shift="sub">c</tspan></text>
+      <text x="${x0 + secW + 98}" y="${Math.max(y0 + 34, blockY + blockH / 2 - 2)}" class="small-label">${fixed(result.cc / 1000)} kN</text>
       ${layerSvg}
       <text x="${x0}" y="${y0 - 12}" class="strong-label">${data.direction === "top" ? "compression face" : "tension face"}</text>
       <text x="${x0}" y="${y0 + secH + 22}" class="strong-label">${data.direction === "top" ? "tension face" : "compression face"}</text>
-      <text x="${x0 + secW + 12}" y="${coverYs[0] ? coverYs[0] - 5 : y0 + 12}" class="small-label">c_nom = ${fixed(data.cover)} mm</text>
-      <text x="${x0 + secW + 12}" y="${naY - 6}" class="strong-label">neutral axis</text>
-      <text x="${x0 + secW + 12}" y="${naY + 10}" class="small-label">x = ${fixed(result.x)} mm</text>
+      <text x="${x0 + secW + 18}" y="${coverYs[0] ? coverYs[0] - 7 : y0 + 12}" class="small-label">c<tspan baseline-shift="sub">nom</tspan> = ${fixed(data.cover)} mm</text>
+      <text x="${x0 + secW + 18}" y="${naY + 20}" class="strong-label">x = ${fixed(result.x)} mm</text>
     </svg>`;
 
   const strainTop = data.direction === "top" ? data.ecu : data.ecu * (result.x - data.depth) / result.x;
   const strainBottom = data.direction === "top" ? data.ecu * (result.x - data.depth) / result.x : data.ecu;
   const maxAbs = Math.max(Math.abs(strainTop), Math.abs(strainBottom), data.ecu);
-  const cx = 170;
-  const px = strain => cx + strain / maxAbs * 95;
+  const cx = 245;
+  const px = strain => cx + strain / maxAbs * 115;
   const strainLayerSvg = result.layers.map(layer => {
     const y = yScale(layer.yTop);
     const x = px(layer.strain);
     const status = Math.abs(layer.strain) < 0.00005 ? "neutral" : layer.strain > 0 ? "compression" : "tension";
-    return `<circle class="${status === "compression" ? "bar-compression" : status === "tension" ? "bar-tension" : "bar-neutral"}" cx="${x}" cy="${y}" r="5"></circle><text x="${x + 8}" y="${y + 4}" class="small-label">eps_s${layer.index} ${signedFixed(layer.strain, 5)}</text>`;
+    const labelX = status === "compression" ? 315 : 44;
+    return `<circle class="${status === "compression" ? "bar-compression" : status === "tension" ? "bar-tension" : "bar-neutral"}" cx="${x}" cy="${y}" r="5"></circle><text x="${labelX}" y="${y + 4}" class="small-label">ε<tspan baseline-shift="sub">s${layer.index}</tspan> = ${signedFixed(layer.strain, 5)}</text>`;
   }).join("");
   $("concreteStrainSvg").innerHTML = `
-    <svg class="concrete-svg" viewBox="0 0 360 340" role="img" aria-label="Linear strain diagram">
+    <svg class="concrete-svg" viewBox="0 0 460 350" role="img" aria-label="Linear strain diagram">
       <line class="strain-axis" x1="${cx}" y1="${y0 - 10}" x2="${cx}" y2="${y0 + secH + 10}"></line>
-      <line class="strain-axis" x1="${cx - 115}" y1="${naY}" x2="${cx + 115}" y2="${naY}"></line>
+      <line class="strain-axis" x1="${cx - 145}" y1="${naY}" x2="${cx + 145}" y2="${naY}"></line>
       <polyline class="strain-line" points="${px(strainTop)},${y0} ${px(0)},${naY} ${px(strainBottom)},${y0 + secH}"></polyline>
       ${strainLayerSvg}
-      <text x="${cx + 104}" y="${y0 + 4}" class="small-label">compression +</text>
-      <text x="${cx - 114}" y="${y0 + secH + 15}" class="small-label">tension -</text>
-      <text x="${cx + 8}" y="${naY - 7}" class="strong-label">eps = 0</text>
-      <text x="${px(strainTop) + 8}" y="${y0 + 13}" class="strong-label">${signedFixed(strainTop, 5)}</text>
-      <text x="${px(strainBottom) + 8}" y="${y0 + secH - 6}" class="strong-label">${signedFixed(strainBottom, 5)}</text>
+      <text x="315" y="${y0 + 6}" class="small-label">compression +</text>
+      <text x="44" y="${y0 + secH + 17}" class="small-label">tension -</text>
+      <text x="${cx + 8}" y="${naY - 7}" class="strong-label">ε = 0</text>
+      <text x="315" y="${y0 + 23}" class="strong-label">${signedFixed(strainTop, 5)}</text>
+      <text x="44" y="${y0 + secH - 8}" class="strong-label">${signedFixed(strainBottom, 5)}</text>
     </svg>`;
 }
 
