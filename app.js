@@ -61,6 +61,18 @@ const concreteInputIds = [
   "layer3Active", "layer3Auto", "layer3Y", "layer3Bar", "layer3Spacing", "layer3Fsy", "layer3Es",
   "layer4Active", "layer4Auto", "layer4Y", "layer4Bar", "layer4Spacing", "layer4Fsy", "layer4Es"
 ];
+const concreteBarDiameters = [12, 16, 20, 24, 28, 32, 36];
+const concreteBarProducts = Object.fromEntries(
+  ["N", "Y"].flatMap(prefix => concreteBarDiameters.map(diameter => {
+    const legacy = prefix === "Y";
+    return [`${prefix}${diameter}`, {
+      designation: `${prefix}${diameter}`,
+      diameter,
+      fsy: legacy ? 410 : 500,
+      legacy
+    }];
+  }))
+);
 
 const ubSections = [
   ["610UB125",125,16000,3680,3230,{ "300PLUS": { fy: 280, Ze: 3680, compactness: "C", kf: 0.950 }, "Grade 350": { fy: 340, Ze: 3680, compactness: "C", kf: 0.916 } }],
@@ -490,9 +502,10 @@ function calculateMember() {
 function concreteLayer(index, depth, direction) {
   const active = $(`layer${index}Active`).checked;
   const yTop = value(`layer${index}Y`);
-  const bar = value(`layer${index}Bar`);
+  const product = concreteBarProduct(index);
+  const bar = product.diameter;
   const spacing = value(`layer${index}Spacing`);
-  const fsy = value(`layer${index}Fsy`);
+  const fsy = value(`layer${index}Fsy`) || product.fsy;
   const es = value(`layer${index}Es`);
   const area = spacing > 0 ? Math.PI * bar ** 2 / 4 * 1000 / spacing : 0;
   return {
@@ -502,11 +515,36 @@ function concreteLayer(index, depth, direction) {
     yTop,
     d: direction === "top" ? yTop : depth - yTop,
     bar,
+    designation: product.designation,
+    legacy: product.legacy,
     spacing,
     fsy,
     es,
     area
   };
+}
+
+function concreteBarProduct(index) {
+  return concreteBarProducts[$(`layer${index}Bar`).value] || concreteBarProducts.N16;
+}
+
+function setConcreteBarDefaults(index) {
+  $(`layer${index}Fsy`).value = concreteBarProduct(index).fsy;
+}
+
+function populateConcreteBarOptions() {
+  const groups = ["N", "Y"].map(prefix => {
+    const label = prefix === "N" ? "N bars - current notation" : "Y bars - legacy notation";
+    const options = concreteBarDiameters.map(diameter => `<option value="${prefix}${diameter}">${prefix}${diameter}</option>`).join("");
+    return `<optgroup label="${label}">${options}</optgroup>`;
+  }).join("");
+  [1, 2, 3, 4].forEach(index => {
+    const select = $(`layer${index}Bar`);
+    const defaultBar = select.dataset.defaultBar || "N16";
+    select.innerHTML = groups;
+    select.value = defaultBar;
+    setConcreteBarDefaults(index);
+  });
 }
 
 function concreteAutoDepth(index, topDepth, bottomDepth, cover, bar) {
@@ -525,7 +563,7 @@ function updateConcreteMatDepths(topDepth, bottomDepth, cover) {
     const yInput = $(`layer${index}Y`);
     yInput.readOnly = auto;
     if (!auto) return;
-    const bar = value(`layer${index}Bar`);
+    const bar = concreteBarProduct(index).diameter;
     const y = concreteAutoDepth(index, topDepth, bottomDepth, cover, bar);
     yInput.value = fixed(Math.max(0, y));
   });
@@ -720,7 +758,7 @@ function renderConcreteSectionLayout(data) {
   }
 
   const rows = data.layers.map(layer => `
-    <tr><td>Mat ${layer.index}</td><td>${layer.name}</td><td>${fixed(layer.yTop)} mm</td><td>N${fixed(layer.bar).replace(".0", "")}</td><td>${fixed(layer.spacing)} mm</td></tr>`).join("");
+    <tr><td>Mat ${layer.index}</td><td>${layer.name}</td><td>${fixed(layer.yTop)} mm</td><td>${layer.designation}</td><td>${fixed(layer.spacing)} mm</td></tr>`).join("");
   if (legendSummary) legendSummary.textContent = `${data.layers.length || "no"} active mat${data.layers.length === 1 ? "" : "s"}; b ${fixed(data.width)} mm, D ${fixed(data.depth)} mm`;
   if (legendBody) legendBody.innerHTML = `
     <div class="layout-meta"><span><b>b</b> ${fixed(data.width)} mm</span><span><b>D<sub>top</sub></b> ${fixed(data.topDepth)} mm</span><span><b>D<sub>bot</sub></b> ${fixed(data.bottomDepth)} mm</span><span><b>c<sub>nom</sub></b> ${fixed(data.cover)} mm</span></div>
@@ -767,7 +805,10 @@ function calculateConcrete() {
   $("concreteDirectionLabel").textContent = "relative positions";
   $("concreteSummaryTitle").textContent = `${fixed(data.width)} mm strip; D_top ${fixed(data.topDepth)} + D_bot ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`;
   $("concreteSummaryNote").textContent = data.composite === "yes" ? "Composite action marked as separately confirmed." : "Pad-on-pad composite action not confirmed; do not rely on combined depth without interface design.";
-  $("concretePhiNote").textContent = "Capacity factor calculated from AS 3600-style pure bending k_uo for N-class reinforcement.";
+  const legacyLayers = data.layers.filter(layer => layer.legacy);
+  $("concretePhiNote").textContent = legacyLayers.length
+    ? "Capacity factor uses AS 3600-style pure bending k_uo; verify legacy Y-bar ductility and material grade."
+    : "Capacity factor calculated from AS 3600-style pure bending k_uo for N-class reinforcement.";
 
   if (!result.ok) {
     ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo"].forEach(id => $(id).textContent = "-");
@@ -789,9 +830,10 @@ function calculateConcrete() {
     ? ` Cover warning: ${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} centroid is inside c_nom + db/2.`
     : "";
   const bottomPadNote = bottomMatWithoutDepth ? " Bottom pad reinforcement is active but D_bot is zero; enter a bottom pad depth or turn those mats off." : "";
+  const legacyNote = legacyLayers.length ? ` Legacy Y bar selected in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}; verify actual yield strength, ductility and condition from project records.` : "";
   const warningText = (data.composite === "yes"
     ? "Moment section capacity only. Composite action is user-confirmed outside this calculator; still check punching shear, one-way shear, bearing, development length and crack control separately."
-    : "Moment section capacity only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, one-way shear, bearing, development length and crack control are excluded.") + coverNote + bottomPadNote;
+    : "Moment section capacity only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, one-way shear, bearing, development length and crack control are excluded.") + coverNote + bottomPadNote + legacyNote;
 
   $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
   $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;
@@ -802,21 +844,22 @@ function calculateConcrete() {
   $("concreteMuo").textContent = fixed(result.muo);
   $("concretePhiMuo").textContent = fixed(result.phiMuo);
   $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
-  $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth ? "SOLVED" : "CHECK";
-  $("concreteWarningStatus").className = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth ? "pass" : "fail";
+  $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length ? "SOLVED" : "CHECK";
+  $("concreteWarningStatus").className = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length ? "pass" : "fail";
   $("concreteWarningText").textContent = warningText;
 
   $("concreteLayerResults").innerHTML = result.layers.map(layer => {
     const status = Math.abs(layer.strain) < 0.00005 ? "Near neutral axis" : layer.force > 0 ? "Compression" : "Tension";
     const coverStatus = layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2 ? "cover check required" : "cover reference OK";
     const displacementNote = layer.displacedConcreteStress > 0 ? `; net stress = ${signedFixed(layer.netStress, 1)} MPa after displaced concrete` : "";
-    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2/m; ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN/m</small></article>`;
+    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${layer.designation} @ ${fixed(layer.spacing)}; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2/m; ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN/m</small></article>`;
   }).join("");
 
   $("concreteFormulaSteps").innerHTML = `
     <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
     <div><b>Pad geometry</b><code>D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; bottom pad mats require D_bot > 0</code></div>
     <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface</code></div>
+    <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar</sub> x 1000 / spacing, using nominal bar diameter; N bars default to f<sub>sy</sub> = 500 MPa and legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten</code></div>
     <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
     <div><b>Concrete block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
     <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
@@ -892,9 +935,16 @@ function initialise() {
   $("weldSize").value = "6";
   $("weldParentGrade").value = "Grade 250 plate";
   $("shearPlane").value = "N";
+  populateConcreteBarOptions();
   boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
   weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));
   concreteInputIds.forEach(id => $(id).addEventListener("input", calculateConcrete));
+  [1, 2, 3, 4].forEach(index => {
+    $(`layer${index}Bar`).addEventListener("change", () => {
+      setConcreteBarDefaults(index);
+      calculateConcrete();
+    });
+  });
   $("boltSize").addEventListener("change", setBoltSize);
   $("shearPlane").addEventListener("input", setPrimaryPlane);
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
