@@ -23,7 +23,7 @@
     <nav class="tool-tabs" aria-label="SC Handbook tools">
       <button class="tool-tab active" type="button" data-tool="bolt" aria-controls="boltPanel" aria-selected="true">Bolt Capacity</button>
       <button class="tool-tab" type="button" data-tool="member" aria-controls="memberPanel" aria-selected="false">Member Capacity</button>
-      <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Capacity</button>
+      <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Section</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
     </nav>
 
@@ -163,7 +163,7 @@
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">BEAM SECTIONS - AS 4100 SECTION 5</p><h2>Beam Capacity</h2></div><span>UB x-axis section capacity</span></div>
+      <div class="tool-heading"><div><p class="kicker">BEAM SECTIONS - AS 4100 SECTION 5</p><h2>Beam Section</h2></div><span>UB x-axis section capacity</span></div>
 
       <section class="lookup-card beam-card">
         <div class="primary-inputs beam-inputs">
@@ -217,27 +217,27 @@
           <label class="size-field"><span>Section</span><select id="memberSection"></select></label>
           <label><span>Steel grade</span><select id="memberGrade"></select></label>
           <label><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
-          <label id="alphaBField" hidden><span>Member section constant α<sub>b</sub></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
+          <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
         </div>
 
-        <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">114.3 × 3.2 CHS · C350L0</strong><small id="memberAssumption">αb = -0.5 · buckling about any axis</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">1117 mm²</dd></div><div><dt>r<sub>min</sub></dt><dd id="memberRadius">39.3 mm</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">350 MPa</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">430 MPa</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">1.000</dd></div></dl></div>
+        <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r<sub>min</sub></dt><dd id="memberRadius">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
         <div class="tension-inputs">
-          <div><span>Tension member inputs · AS 4100 Clause 7.2</span><small>Defaults assume no holes and uniform force distribution. Enter the connection-specific net area and correction factor.</small></div>
-          <label><span>A<sub>n</sub> <i>net area of cross-section</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="1117"><em>mm²</em></span></label>
-          <label><span>k<sub>t</sub> <i>correction factor for distribution of forces</i></span><input id="memberKt" type="number" min="0" max="1" step="0.05" value="1"></label>
+          <div><span>Tension member inputs · AS 4100 Clause 7.2</span><small>Enter connection-specific A<sub>n</sub> and k<sub>t</sub>. Use k<sub>t</sub> = 1.0 only where force distribution is uniform; otherwise determine from Clause 7.3 / Table 7.3.2.</small></div>
+          <label><span>A<sub>n</sub> <i>net area of cross-section</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="0"><em>mm²</em></span></label>
+          <label><span>k<sub>t</sub> <i>AS 4100 Clause 7.3</i></span><input id="memberKt" type="number" min="0" max="1" step="0.05" value="1"></label>
         </div>
 
         <section class="capacity-section" aria-live="polite">
           <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Axial design capacities</h2></div><span>φ = 0.90</span></div>
           <div class="capacity-grid member-results">
-            <article class="capacity-card selected-shear"><span>Design member capacity in axial compression φN<sub>c</sub></span><strong><output id="memberCompression">183.0</output><small> kN</small></strong><p>AS 4100 Clause 6.3</p></article>
-            <article class="capacity-card"><span>Design section capacity in compression φN<sub>s</sub></span><strong><output id="sectionCompression">351.8</output><small> kN</small></strong><p>AS 4100 Clause 6.2</p></article>
-            <article class="capacity-card alternate-shear"><span>Design capacity in axial tension φN<sub>t</sub></span><strong><output id="memberTension">351.8</output><small> kN</small></strong><p>AS 4100 Clauses 7.1 and 7.2</p></article>
+            <article class="capacity-card selected-shear"><span>Design member capacity in axial compression φN<sub>c</sub></span><strong><output id="memberCompression">—</output><small> kN</small></strong><p>AS 4100 Clause 6.3</p></article>
+            <article class="capacity-card"><span>Design section capacity in compression φN<sub>s</sub></span><strong><output id="sectionCompression">—</output><small> kN</small></strong><p>AS 4100 Clause 6.2</p></article>
+            <article class="capacity-card alternate-shear"><span>Design capacity in axial tension φN<sub>t</sub></span><strong><output id="memberTension">—</output><small> kN</small></strong><p>AS 4100 Clauses 7.1 and 7.2</p></article>
           </div>
-          <div class="member-metrics"><div><span>L<sub>e</sub>/r</span><strong id="memberSlenderness">76.3</strong></div><div><span>λ<sub>n</sub></span><strong id="memberLambdaN">90.3</strong></div><div><span>α<sub>c</sub></span><strong id="memberAlphaC">0.520</strong></div><div><span>Governing</span><strong id="memberGoverning">Member buckling</strong></div></div>
-          <div class="tension-limits"><div><span>Gross-section yielding</span><strong id="grossYieldCapacity">351.8 kN</strong><small>φA<sub>g</sub>f<sub>y</sub></small></div><div><span>Net-section fracture</span><strong id="netFractureCapacity">367.5 kN</strong><small>φ0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub></small></div><div><span>Tension governing limit state</span><strong id="tensionGoverning">Gross-section yielding</strong><small>Clause 7.2 - lesser value</small></div></div>
-          <p class="result-note" id="memberWarning">Centroidal axial load only. Verify effective length, section availability and all connection effects.</p>
+          <div class="member-metrics"><div><span>L<sub>e</sub>/r</span><strong id="memberSlenderness">—</strong></div><div><span>λ<sub>n</sub></span><strong id="memberLambdaN">—</strong></div><div><span>α<sub>c</sub></span><strong id="memberAlphaC">—</strong></div><div><span>Governing</span><strong id="memberGoverning">—</strong></div></div>
+          <div class="tension-limits"><div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>φA<sub>g</sub>f<sub>y</sub></small></div><div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>φ0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub></small></div><div><span>Tension governing limit state</span><strong id="tensionGoverning">—</strong><small>Clause 7.2 - lesser value</small></div></div>
+          <p class="result-note" id="memberWarning">Results calculate after section and grade selection. Verify effective length, section availability and all connection effects.</p>
         </section>
       </section>
 

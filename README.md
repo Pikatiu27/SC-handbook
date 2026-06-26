@@ -30,7 +30,7 @@ The axial compression calculation follows AS 4100 Sections 6.2 and 6.3 and the p
 
 For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design input. Confirm it from AS 4100 Table 6.3.3 for the actual axis, member and fabrication condition. Enter connection-specific `A_n` and `k_t`; AS 4100 Table 7.3.2 gives `k_t = 0.85` for the applicable eccentrically connected equal-angle configuration. The tool uses the published minimum principal radius for Equal Angles, catalogue `r_min` for PFCs, and catalogue round-bar diameters with geometric properties for Rods. It does not check section/member bending, shear, combined actions, connection capacity, axis-specific PFC buckling, torsional buckling or flexural-torsional buckling.
 
-### Beam Capacity
+### Beam Section
 
 The beam tool covers x-axis section moment capacity for common hot-rolled Universal Beams:
 
