@@ -584,24 +584,17 @@ function solveConcreteSection(data) {
 }
 
 function renderConcreteSectionSvg(data, result) {
-  if (!result.ok) {
-    $("concreteSectionSvg").innerHTML = `<svg class="concrete-svg" viewBox="0 0 520 340" role="img" aria-label="Concrete section diagram unavailable"><text x="36" y="170" class="strong-label">${result.message}</text></svg>`;
-    $("concreteStrainSvg").innerHTML = `<svg class="concrete-svg" viewBox="0 0 360 340" role="img" aria-label="Strain diagram unavailable"><text x="28" y="170" class="strong-label">No strain diagram available</text></svg>`;
+  if (data.depth <= 0) {
+    $("concreteSectionSvg").innerHTML = `<svg class="concrete-svg" viewBox="0 0 520 260" role="img" aria-label="Concrete pad layout unavailable"><text x="36" y="130" class="strong-label">Enter a positive pad depth to show the section layout</text></svg>`;
     return;
   }
 
-  const sx = 230;
-  const sy = 270;
-  const x0 = 118;
+  const x0 = 150;
   const y0 = 48;
-  const secW = sx;
-  const secH = sy;
-  const legendX = 432;
+  const secW = 280;
+  const secH = 270;
+  const labelX = 500;
   const yScale = y => y0 + y / data.depth * secH;
-  const blockTop = data.direction === "top" ? y0 : yScale(data.depth - result.blockDepth);
-  const blockY = blockTop;
-  const blockH = Math.max(1, result.blockDepth / data.depth * secH);
-  const naY = data.direction === "top" ? yScale(result.x) : yScale(data.depth - result.x);
   const coverYs = [
     data.topDepth > 0 ? data.cover : null,
     data.topDepth > 0 ? data.topDepth - data.cover : null,
@@ -609,77 +602,47 @@ function renderConcreteSectionSvg(data, result) {
     data.bottomDepth > 0 ? data.depth - data.cover : null
   ].filter(y => y !== null && y >= 0 && y <= data.depth).map(yScale);
   const coverLines = coverYs.map(y => `<line class="cover-line" x1="${x0}" y1="${y}" x2="${x0 + secW}" y2="${y}"></line>`).join("");
-  const interfaceY = yScale(data.topDepth);
+  const topPadH = data.topDepth > 0 ? data.topDepth / data.depth * secH : 0;
+  const bottomPadH = data.bottomDepth > 0 ? data.bottomDepth / data.depth * secH : 0;
+  const interfaceY = data.bottomDepth > 0 ? yScale(data.topDepth) : null;
   const interfaceLine = data.bottomDepth > 0
-    ? `<line class="warn-line" x1="${x0}" y1="${interfaceY}" x2="${x0 + secW}" y2="${interfaceY}"></line><text x="${legendX}" y="${interfaceY + 4}" class="small-label">${data.composite === "yes" ? "pad interface" : "interface not verified"}</text>`
+    ? `<line class="warn-line" x1="${x0}" y1="${interfaceY}" x2="${x0 + secW}" y2="${interfaceY}"></line><text x="${labelX}" y="${interfaceY + 4}" class="small-label">${data.composite === "yes" ? "pad interface" : "interface not verified"}</text>`
     : "";
   const sub = text => `<tspan baseline-shift="sub" font-size="8">${text}</tspan>`;
-  const forceSymbol = layer => `F${sub(`s${layer.index}`)}`;
-  const layerLegend = result.layers.map((layer, index) => {
-    const status = Math.abs(layer.strain) < 0.00005 ? "NA" : layer.force > 0 ? "C" : "T";
-    const y = 158 + index * 42;
+  const layerLegend = data.layers.map((layer, index) => {
+    const y = 130 + index * 38;
     return `
-      <text x="${legendX}" y="${y}" class="strong-label">${forceSymbol(layer)} = ${signedFixed(layer.force / 1000)} kN/m</text>
-      <text x="${legendX}" y="${y + 14}" class="small-label">y${sub(layer.index)} = ${fixed(layer.yTop)} mm; ${status}; &epsilon;${sub(`s${layer.index}`)} = ${signedFixed(layer.strain, 5)}</text>`;
+      <text x="${labelX}" y="${y}" class="strong-label">Mat ${layer.index}</text>
+      <text x="${labelX}" y="${y + 14}" class="small-label">y${sub(layer.index)} = ${fixed(layer.yTop)} mm; ${layer.bar ? `N${fixed(layer.bar).replace(".0", "")}` : "-"} @ ${fixed(layer.spacing)} mm</text>`;
   }).join("");
-  const layerSvg = result.layers.map(layer => {
+  const layerSvg = data.layers.map(layer => {
     const y = yScale(layer.yTop);
-    const status = Math.abs(layer.strain) < 0.00005 ? "neutral" : layer.force > 0 ? "compression" : "tension";
-    const css = status === "compression" ? "bar-compression" : status === "tension" ? "bar-tension" : "bar-neutral";
-    const arrowStart = status === "compression" ? x0 + secW * 0.70 + 14 : x0 + secW * 0.30 - 14;
-    const arrowEnd = status === "compression" ? x0 + secW + 66 : x0 - 66;
     return `
-      <circle class="${css}" cx="${x0 + secW * 0.30}" cy="${y}" r="8"></circle>
-      <circle class="${css}" cx="${x0 + secW * 0.50}" cy="${y}" r="8"></circle>
-      <circle class="${css}" cx="${x0 + secW * 0.70}" cy="${y}" r="8"></circle>
-      <line class="force-arrow" x1="${arrowStart}" y1="${y}" x2="${arrowEnd}" y2="${y}"></line>`;
+      <line class="reo-line" x1="${x0 + 24}" y1="${y}" x2="${x0 + secW - 24}" y2="${y}"></line>
+      <circle class="bar-layout" cx="${x0 + secW * 0.28}" cy="${y}" r="8"></circle>
+      <circle class="bar-layout" cx="${x0 + secW * 0.50}" cy="${y}" r="8"></circle>
+      <circle class="bar-layout" cx="${x0 + secW * 0.72}" cy="${y}" r="8"></circle>
+      <text x="${x0 - 18}" y="${y + 4}" text-anchor="end" class="strong-label">Mat ${layer.index}</text>`;
   }).join("");
+  const noReoNote = data.layers.length ? "" : `<text x="${labelX}" y="130" class="small-label">No active reinforcement mat</text>`;
 
   $("concreteSectionSvg").innerHTML = `
-    <svg class="concrete-svg" viewBox="0 0 720 380" role="img" aria-label="Concrete section force diagram">
-      <defs><marker id="arrowHead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34423b"></path></marker></defs>
+    <svg class="concrete-svg" viewBox="0 0 720 380" role="img" aria-label="Concrete pad and reinforcement layout">
+      ${data.topDepth > 0 ? `<rect class="pad-top-zone" x="${x0}" y="${y0}" width="${secW}" height="${topPadH}"></rect>` : ""}
+      ${data.bottomDepth > 0 ? `<rect class="pad-bottom-zone" x="${x0}" y="${interfaceY}" width="${secW}" height="${bottomPadH}"></rect>` : ""}
       <rect class="section-outline" x="${x0}" y="${y0}" width="${secW}" height="${secH}" rx="2"></rect>
-      <rect class="compression-zone" x="${x0}" y="${blockY}" width="${secW}" height="${blockH}"></rect>
       ${coverLines}
-      <line class="neutral-axis" x1="${x0 - 22}" y1="${naY}" x2="${x0 + secW + 22}" y2="${naY}"></line>
       ${interfaceLine}
-      <line class="force-arrow" x1="${x0 + secW + 16}" y1="${blockY + blockH / 2}" x2="${x0 + secW + 76}" y2="${blockY + blockH / 2}"></line>
       ${layerSvg}
-      <line class="dimension-line" x1="${x0 - 34}" y1="${data.direction === "top" ? y0 : y0 + secH}" x2="${x0 - 34}" y2="${naY}"></line>
-      <text x="${x0 - 48}" y="${(naY + (data.direction === "top" ? y0 : y0 + secH)) / 2}" text-anchor="end" class="strong-label">x</text>
-      <text x="${x0}" y="${y0 - 12}" class="strong-label">${data.direction === "top" ? "compression face" : "tension face"}</text>
-      <text x="${x0}" y="${y0 + secH + 22}" class="strong-label">${data.direction === "top" ? "tension face" : "compression face"}</text>
-      <text x="${legendX}" y="58" class="strong-label">Internal force resultants</text>
-      <text x="${legendX}" y="82" class="strong-label">C${sub("c")} = ${fixed(result.cc / 1000)} kN/m</text>
-      <text x="${legendX}" y="98" class="small-label">a = &gamma;x = ${fixed(result.blockDepth)} mm; x = ${fixed(result.x)} mm</text>
-      <text x="${legendX}" y="114" class="small-label">c${sub("nom")} = ${fixed(data.cover)} mm</text>
-      <text x="${legendX}" y="132" class="small-label">C = compression; T = tension; N* = 0</text>
+      <text x="${x0}" y="${y0 - 14}" class="strong-label">top face</text>
+      <text x="${x0}" y="${y0 + secH + 24}" class="strong-label">bottom face</text>
+      <line class="dimension-line" x1="${x0 - 48}" y1="${y0}" x2="${x0 - 48}" y2="${y0 + secH}"></line>
+      <text x="${x0 - 62}" y="${y0 + secH / 2}" text-anchor="end" class="strong-label">D = ${fixed(data.depth)} mm</text>
+      <text x="${labelX}" y="62" class="strong-label">Section layout</text>
+      <text x="${labelX}" y="84" class="small-label">b = ${fixed(data.width)} mm; c${sub("nom")} = ${fixed(data.cover)} mm</text>
+      <text x="${labelX}" y="100" class="small-label">D${sub("top")} = ${fixed(data.topDepth)} mm; D${sub("bot")} = ${fixed(data.bottomDepth)} mm</text>
       ${layerLegend}
-    </svg>`;
-
-  const strainTop = data.direction === "top" ? data.ecu : data.ecu * (result.x - data.depth) / result.x;
-  const strainBottom = data.direction === "top" ? data.ecu * (result.x - data.depth) / result.x : data.ecu;
-  const maxAbs = Math.max(Math.abs(strainTop), Math.abs(strainBottom), data.ecu);
-  const cx = 245;
-  const px = strain => cx + strain / maxAbs * 115;
-  const strainLayerSvg = result.layers.map(layer => {
-    const y = yScale(layer.yTop);
-    const x = px(layer.strain);
-    const status = Math.abs(layer.strain) < 0.00005 ? "neutral" : layer.strain > 0 ? "compression" : "tension";
-    const labelX = status === "compression" ? 315 : 44;
-    return `<circle class="${status === "compression" ? "bar-compression" : status === "tension" ? "bar-tension" : "bar-neutral"}" cx="${x}" cy="${y}" r="5"></circle><text x="${labelX}" y="${y + 4}" class="small-label">ε<tspan baseline-shift="sub">s${layer.index}</tspan> = ${signedFixed(layer.strain, 5)}</text>`;
-  }).join("");
-  $("concreteStrainSvg").innerHTML = `
-    <svg class="concrete-svg" viewBox="0 0 460 350" role="img" aria-label="Linear strain diagram">
-      <line class="strain-axis" x1="${cx}" y1="${y0 - 10}" x2="${cx}" y2="${y0 + secH + 10}"></line>
-      <line class="strain-axis" x1="${cx - 145}" y1="${naY}" x2="${cx + 145}" y2="${naY}"></line>
-      <polyline class="strain-line" points="${px(strainTop)},${y0} ${px(0)},${naY} ${px(strainBottom)},${y0 + secH}"></polyline>
-      ${strainLayerSvg}
-      <text x="315" y="${y0 + 6}" class="small-label">compression +</text>
-      <text x="44" y="${y0 + secH + 17}" class="small-label">tension -</text>
-      <text x="${cx + 8}" y="${naY - 7}" class="strong-label">ε = 0</text>
-      <text x="315" y="${y0 + 23}" class="strong-label">${signedFixed(strainTop, 5)}</text>
-      <text x="44" y="${y0 + secH - 8}" class="strong-label">${signedFixed(strainBottom, 5)}</text>
+      ${noReoNote}
     </svg>`;
 }
 
@@ -713,7 +676,7 @@ function calculateConcrete() {
   }
 
   renderConcreteSectionSvg(data, result);
-  $("concreteDirectionLabel").textContent = direction === "top" ? "top face in compression" : "bottom face in compression";
+  $("concreteDirectionLabel").textContent = "relative positions";
   $("concreteSummaryTitle").textContent = `${fixed(data.width)} mm strip; D_top ${fixed(data.topDepth)} + D_bot ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`;
   $("concreteSummaryNote").textContent = data.composite === "yes" ? "Composite action marked as separately confirmed." : "Pad-on-pad composite action not confirmed; do not rely on combined depth without interface design.";
   $("concretePhiNote").textContent = `phi = ${data.phi.toFixed(2)} entered by user; verify ductility and capacity factor to AS 3600.`;

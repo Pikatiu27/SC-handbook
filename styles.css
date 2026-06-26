@@ -298,22 +298,23 @@ main, footer { max-width: 1040px; margin: auto; }
 .layer-row input[type="number"][readonly] { color: var(--muted); background: #f1f6f5; }
 .layer-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--green); }
 .layer-row em { position: absolute; right: 16px; color: var(--muted); font-size: 10px; font-style: normal; pointer-events: none; }
-.concrete-visual-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 10px; margin: 0 0 18px; }
+.concrete-visual-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0 0 18px; }
 .concrete-visual-card { min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: #fbfefe; }
 .concrete-svg-wrap { min-height: 320px; border: 1px solid #d5ebe8; border-radius: 8px; background: #fff; overflow: hidden; }
 .concrete-svg { display: block; width: 100%; height: auto; }
 .concrete-svg text { font-family: var(--font); letter-spacing: 0; }
+.concrete-svg .pad-top-zone { fill: rgba(111, 183, 176, .14); }
+.concrete-svg .pad-bottom-zone { fill: rgba(228, 160, 100, .12); }
 .concrete-svg .section-outline { fill: #f8fbfb; stroke: #34423b; stroke-width: 2; }
 .concrete-svg .compression-zone { fill: rgba(111, 183, 176, .24); stroke: rgba(47, 116, 111, .45); stroke-width: 1; }
 .concrete-svg .neutral-axis { stroke: #1f2a25; stroke-width: 2; stroke-dasharray: 7 5; }
 .concrete-svg .cover-line { stroke: #8b9892; stroke-width: 1.4; stroke-dasharray: 4 5; }
+.concrete-svg .reo-line { stroke: #a18a84; stroke-width: 1.6; stroke-dasharray: 7 6; }
+.concrete-svg .bar-layout { fill: #d87873; stroke: #8b3630; stroke-width: 2; }
 .concrete-svg .bar-tension { fill: #d87873; stroke: #8b3630; stroke-width: 2; }
 .concrete-svg .bar-compression { fill: #79abd8; stroke: #336692; stroke-width: 2; }
 .concrete-svg .bar-neutral { fill: #aeb8b4; stroke: #68766f; stroke-width: 2; }
-.concrete-svg .force-arrow { stroke: #34423b; stroke-width: 2.4; marker-end: url(#arrowHead); }
 .concrete-svg .dimension-line { stroke: #51645b; stroke-width: 1.6; stroke-dasharray: 3 4; }
-.concrete-svg .strain-line { stroke: #2f746f; stroke-width: 3; fill: none; }
-.concrete-svg .strain-axis { stroke: #8b9892; stroke-width: 1.4; }
 .concrete-svg .small-label { fill: var(--muted); font-size: 10.5px; font-weight: 700; }
 .concrete-svg .strong-label { fill: var(--ink); font-size: 12px; font-weight: 900; }
 .concrete-svg .warn-line { stroke: #e4a064; stroke-width: 2; stroke-dasharray: 5 4; }
