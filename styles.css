@@ -67,15 +67,15 @@ main, footer { max-width: 1040px; margin: auto; }
 .intro > p:last-child { margin: 8px 0 0; max-width: 760px; color: var(--muted); font-size: var(--fs-md); }
 
 .tool-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 16px; padding: 5px; width: fit-content; border: 1px solid #eadfd4; border-radius: 12px; background: #f4ede5; }
-.tool-tab, .member-type { border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-size: var(--fs-sm); font-weight: 800; }
+.tool-tab, .member-type, .beam-type { border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-size: var(--fs-sm); font-weight: 800; }
 .tool-tab { min-width: 150px; padding: 10px 16px; }
-.tool-tab.active, .member-type.active { background: var(--card); color: var(--green-dark); box-shadow: 0 1px 5px rgba(55, 61, 56, .10); }
+.tool-tab.active, .member-type.active, .beam-type.active { background: var(--card); color: var(--green-dark); box-shadow: 0 1px 5px rgba(55, 61, 56, .10); }
 .tool-tab[data-tool="bolt"].active { background: var(--bolt-soft); color: var(--bolt-dark); }
 .tool-tab[data-tool="member"].active { background: var(--member-soft); color: var(--member-dark); }
 .tool-tab[data-tool="beam"].active { background: var(--beam-soft); color: var(--beam-dark); }
 .tool-tab[data-tool="weld"].active { background: var(--weld-soft); color: var(--weld-dark); }
 .tool-tab[data-tool="concrete"].active { background: var(--concrete-soft); color: var(--concrete-dark); }
-.tool-tab:focus-visible, .member-type:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }
+.tool-tab:focus-visible, .member-type:focus-visible, .beam-type:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }
 .tool-panel[hidden] { display: none; }
 #boltPanel { --green: var(--bolt-accent); --green-dark: var(--bolt-dark); --green-soft: var(--bolt-soft); --panel-bg: var(--bolt-panel); --line: #cfe8da; }
 #memberPanel { --green: var(--member-accent); --green-dark: var(--member-dark); --green-soft: var(--member-soft); --panel-bg: var(--member-panel); --line: #d1e4f4; }
@@ -110,8 +110,8 @@ main, footer { max-width: 1040px; margin: auto; }
 .primary-inputs .size-field select { color: var(--ink); font-size: var(--fs-sm); font-weight: 700; letter-spacing: 0; }
 .primary-inputs select:focus, input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
 
-.member-type-switch { display: inline-flex; flex-wrap: wrap; gap: 3px; margin-bottom: 17px; padding: 3px; border-radius: 8px; background: #edf1ee; }
-.member-type { min-width: 92px; padding: 8px 13px; }
+.member-type-switch, .beam-type-switch { display: inline-flex; flex-wrap: wrap; gap: 3px; margin-bottom: 17px; padding: 3px; border-radius: 8px; background: #edf1ee; }
+.member-type, .beam-type { min-width: 92px; padding: 8px 13px; }
 .section-guide-card { margin: 0 0 17px; border: 1px solid var(--line); border-radius: 9px; background: #f8fbfd; overflow: hidden; }
 .section-guide-card > summary { list-style: none; padding: 11px 13px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
 .section-guide-card > summary::-webkit-details-marker { display: none; }
@@ -275,6 +275,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .beam-metrics span { color: var(--muted); font-size: var(--fs-xs); }
 .beam-metrics strong { margin-top: 1px; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
 .beam-utilisation { margin-top: 9px; }
+.beam-custom-inputs { margin-top: 12px; padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: #fbf8ff; }
 .concrete-secondary-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 12px; padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: #f8fcfb; }
 .concrete-secondary-inputs label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); }
 .concrete-secondary-inputs input, .concrete-secondary-inputs select { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: var(--control-radius); background: #fff; padding: 8px 9px; outline: none; font-size: var(--fs-sm); }
@@ -455,8 +456,8 @@ footer b { white-space: nowrap; }
   .symbol-key span { white-space: normal; }
   .weld-figure-card { grid-template-columns: 1fr; }
   .weld-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .member-type-switch { width: 100%; }
-  .member-type { flex: 1 1 calc(50% - 3px); min-width: 0; }
+  .member-type-switch, .beam-type-switch { width: 100%; }
+  .member-type, .beam-type { flex: 1 1 calc(50% - 3px); min-width: 0; }
   .section-guide article { padding: 10px; }
   .member-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .beam-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }

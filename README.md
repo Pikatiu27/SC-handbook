@@ -32,16 +32,17 @@ For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design in
 
 ### Beam Section
 
-The beam tool covers x-axis section moment capacity for common hot-rolled Universal Beams:
+The beam tool covers major-axis section moment capacity for catalogue hot-rolled Universal Beams / Universal Columns and user-entered custom sections:
 
-- UB section selection from the InfraBuild Hot Rolled Products Catalogue, 9th edition;
-- 300PLUS and Grade 350 section-capacity data where tabulated;
+- Complete UB and UC section selection from the InfraBuild Hot Rolled Products Catalogue, 9th edition;
+- 300PLUS and Grade 350 section-capacity data where tabulated for UB/UC sections;
+- Custom section mode using user-entered `fy`, `Zex`, `Sx`, `Zx`, compactness, area and mass values;
 - gross area, mass, `Sx`, `Zx`, `Zex`, compactness and form factor `kf`;
 - design section moment capacity `phi Ms`;
 - elastic yield and plastic limit reference values;
 - optional design moment `M*` and utilisation ratio.
 
-The primary basis is AS 4100:2020 Section 5 for beam section capacity, using `phi Ms = phi fy Ze` with `phi = 0.90`. The effective section modulus `Zex`, compactness and `kf` are taken from the InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser.
+The primary basis is AS 4100:2020 Section 5 for beam section capacity, using `phi Ms = phi fy Ze` with `phi = 0.90`. For catalogue sections, the effective section modulus `Zex`, compactness and `kf` are taken from the InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom sections, the user is responsible for the entered section properties and material/product basis.
 
 The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, shear, combined bending and shear, web bearing, web buckling, concentrated loads, copes, holes, composite action, fire or deflection.
 

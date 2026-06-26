@@ -105,6 +105,22 @@ const ubSections = [
   ["150UB14.0",14.0,1780,102,88.8,{ "300PLUS": { fy: 320, Ze: 102, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 102, compactness: "C", kf: 1.000 } }]
 ].map(([designation, mass, area, Sx, Zx, grades]) => ({ designation, mass, area, Sx, Zx, grades }));
 
+const ucSections = [
+  ["310UC158",158,20100,2680,2370,{ "300PLUS": { fy: 280, Ze: 2680, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 2680, compactness: "C", kf: 1.000 } }],
+  ["310UC137",137,17500,2300,2050,{ "300PLUS": { fy: 280, Ze: 2300, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 2300, compactness: "C", kf: 1.000 } }],
+  ["310UC118",118,15000,1960,1760,{ "300PLUS": { fy: 280, Ze: 1960, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 1950, compactness: "N", kf: 1.000 } }],
+  ["310UC96.8",96.8,12400,1600,1450,{ "300PLUS": { fy: 300, Ze: 1560, compactness: "N", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 1550, compactness: "N", kf: 1.000 } }],
+  ["250UC89.5",89.5,11400,1230,1100,{ "300PLUS": { fy: 280, Ze: 1230, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 1230, compactness: "C", kf: 1.000 } }],
+  ["250UC72.9",72.9,9320,992,897,{ "300PLUS": { fy: 300, Ze: 986, compactness: "N", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 977, compactness: "N", kf: 1.000 } }],
+  ["200UC59.5",59.5,7620,656,584,{ "300PLUS": { fy: 300, Ze: 656, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 656, compactness: "C", kf: 1.000 } }],
+  ["200UC52.2",52.2,6660,570,512,{ "300PLUS": { fy: 300, Ze: 570, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 569, compactness: "N", kf: 1.000 } }],
+  ["200UC46.2",46.2,5900,500,451,{ "300PLUS": { fy: 300, Ze: 494, compactness: "N", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 490, compactness: "N", kf: 1.000 } }],
+  ["150UC37.2",37.2,4730,310,274,{ "300PLUS": { fy: 300, Ze: 310, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 310, compactness: "C", kf: 1.000 } }],
+  ["150UC30.0",30.0,3860,250,223,{ "300PLUS": { fy: 320, Ze: 250, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 248, compactness: "N", kf: 1.000 } }],
+  ["150UC23.4",23.4,2980,184,166,{ "300PLUS": { fy: 320, Ze: 176, compactness: "N", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 174, compactness: "N", kf: 1.000 } }],
+  ["100UC14.8",14.8,1890,74.4,65.6,{ "300PLUS": { fy: 320, Ze: 74.4, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 74.4, compactness: "C", kf: 1.000 } }]
+].map(([designation, mass, area, Sx, Zx, grades]) => ({ designation, mass, area, Sx, Zx, grades }));
+
 const chsSections = [
   [26.9,2.6],[33.7,2.0],[33.7,2.6],[33.7,3.2],[33.7,4.0],
   [42.4,2.0],[42.4,2.6],[42.4,3.2],[42.4,4.0],
@@ -181,7 +197,9 @@ const chsGrades = {
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
+const beamCustomInputIds = ["beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx", "beamCustomCompactness", "beamCustomKf"];
 const toolNames = ["bolt", "member", "beam", "weld", "concrete"];
+let beamSectionType = "ub";
 let memberType = "chs";
 
 function value(id) { return Math.max(0, Number($(id).value) || 0); }
@@ -335,60 +353,144 @@ function calculateWeld() {
     <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; check parent metal, joint preparation, WPS, inspection, fatigue and effective length separately</code></div>`;
 }
 
+function beamCatalogueSections() {
+  return beamSectionType === "uc" ? ucSections : ubSections;
+}
+
+function formatBeamNumber(number, digits = 1) {
+  return Number(number).toLocaleString("en-AU", { maximumFractionDigits: digits });
+}
+
+function formatBeamOptional(number, unit, digits = 1) {
+  return number > 0 ? `${formatBeamNumber(number, digits)} ${unit}` : "-";
+}
+
+function formatBeamModulus(number) {
+  return number > 0 ? `${formatBeamNumber(number, 1)} x 10^3 mm3` : "-";
+}
+
+function compactnessText(compactness) {
+  return compactness === "C" ? "Compact" : compactness === "N" ? "Non-compact" : "Slender";
+}
+
+function customBeamSection() {
+  const designation = $("beamCustomName").value.trim() || "Custom section";
+  const kf = value("beamCustomKf") || 1;
+  return {
+    designation,
+    mass: value("beamCustomMass"),
+    area: value("beamCustomArea"),
+    Sx: value("beamCustomSx"),
+    Zx: value("beamCustomZx"),
+    custom: true,
+    grades: {
+      "User entered": {
+        fy: value("beamCustomFy"),
+        Ze: value("beamCustomZex"),
+        compactness: $("beamCustomCompactness").value || "C",
+        kf
+      }
+    }
+  };
+}
+
+function selectedBeamSection() {
+  if (beamSectionType === "custom") return customBeamSection();
+  const sections = beamCatalogueSections();
+  return sections.find(section => section.designation === $("beamSection").value) || sections[0];
+}
+
 function populateBeamOptions() {
-  $("beamSection").innerHTML = ubSections.map((section, index) => `<option value="${index}">${section.designation}</option>`).join("");
-  $("beamSection").value = String(ubSections.findIndex(section => section.designation === "310UB40.4"));
+  if (beamSectionType === "custom") {
+    calculateBeam();
+    return;
+  }
+  const sections = beamCatalogueSections();
+  const previous = $("beamSection").value;
+  const fallback = beamSectionType === "uc" ? "200UC46.2" : "310UB40.4";
+  const selected = sections.some(section => section.designation === previous) ? previous : fallback;
+  $("beamSection").innerHTML = sections.map(section => `<option value="${section.designation}">${section.designation}</option>`).join("");
+  $("beamSection").value = selected;
   populateBeamGrades();
 }
 
 function populateBeamGrades() {
-  const section = ubSections[Number($("beamSection").value) || 0];
-  $("beamGrade").innerHTML = Object.keys(section.grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
-  $("beamGrade").value = "300PLUS";
+  const section = selectedBeamSection();
+  const previousGrade = $("beamGrade").value || "300PLUS";
+  const grades = Object.keys(section.grades);
+  $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${grade}</option>`).join("");
+  $("beamGrade").value = grades.includes(previousGrade) ? previousGrade : grades[0];
   calculateBeam();
 }
 
+function setBeamType(type) {
+  beamSectionType = type;
+  document.querySelectorAll(".beam-type").forEach(button => button.classList.toggle("active", button.dataset.beamType === type));
+  const custom = type === "custom";
+  $("beamSectionField").hidden = custom;
+  $("beamGradeField").hidden = custom;
+  $("beamCustomInputs").hidden = !custom;
+  populateBeamOptions();
+}
+
 function calculateBeam() {
-  const section = ubSections[Number($("beamSection").value) || 0];
+  const section = selectedBeamSection();
   if (!section) return;
-  const gradeName = $("beamGrade").value;
+  const gradeName = beamSectionType === "custom" ? "User entered" : $("beamGrade").value;
   const grade = section.grades[gradeName];
   if (!grade) return;
+  const isCustom = beamSectionType === "custom";
   const phi = 0.9;
-  const sectionCapacity = phi * grade.fy * grade.Ze / 1000;
-  const elasticYield = phi * grade.fy * section.Zx / 1000;
-  const plasticLimit = phi * grade.fy * section.Sx / 1000;
+  const valid = grade.fy > 0 && grade.Ze > 0;
+  const sectionCapacity = valid ? phi * grade.fy * grade.Ze / 1000 : NaN;
+  const elasticYield = valid && section.Zx > 0 ? phi * grade.fy * section.Zx / 1000 : NaN;
+  const plasticLimit = valid && section.Sx > 0 ? phi * grade.fy * section.Sx / 1000 : NaN;
   const demand = value("beamMomentDemand");
-  const utilisation = sectionCapacity > 0 ? demand / sectionCapacity : Infinity;
+  const utilisation = valid && sectionCapacity > 0 ? demand / sectionCapacity : Infinity;
   const hasDemand = demand > 0;
-  const compactnessLabel = grade.compactness === "C" ? "Compact" : grade.compactness === "N" ? "Non-compact" : "Slender";
+  const compactnessLabel = compactnessText(grade.compactness);
+  const sourceBasis = isCustom ? "User-entered section properties" : `InfraBuild ${beamSectionType.toUpperCase()} catalogue data`;
 
   $("beamDesignation").textContent = `${section.designation} - ${gradeName}`;
-  $("beamAssumption").textContent = "x-axis section capacity only; full lateral restraint assumed for this quick check";
-  $("beamMass").textContent = `${section.mass} kg/m`;
-  $("beamArea").textContent = `${section.area.toLocaleString("en-AU")} mm2`;
-  $("beamFy").textContent = `${grade.fy} MPa`;
-  $("beamZex").textContent = `${grade.Ze.toLocaleString("en-AU")} x 10^3 mm3`;
+  $("beamAssumption").textContent = isCustom
+    ? "selected-axis section capacity only; user-entered properties are not catalogue-checked"
+    : "x-axis section capacity only; member capacity and lateral restraint are not checked";
+  $("beamMass").textContent = formatBeamOptional(section.mass, "kg/m", 1);
+  $("beamArea").textContent = formatBeamOptional(section.area, "mm2", 0);
+  $("beamFy").textContent = grade.fy > 0 ? `${formatBeamNumber(grade.fy, 0)} MPa` : "-";
+  $("beamZex").textContent = formatBeamModulus(grade.Ze);
   $("beamCompactness").textContent = compactnessLabel;
-  $("beamSectionCapacity").textContent = fixed(sectionCapacity);
-  $("beamElasticYield").textContent = fixed(elasticYield);
-  $("beamPlasticLimit").textContent = fixed(plasticLimit);
-  $("beamSxValue").textContent = `${section.Sx.toLocaleString("en-AU")} x 10^3 mm3`;
-  $("beamZxValue").textContent = `${section.Zx.toLocaleString("en-AU")} x 10^3 mm3`;
-  $("beamKfValue").textContent = grade.kf.toFixed(3);
+  $("beamSectionCapacity").textContent = Number.isFinite(sectionCapacity) ? fixed(sectionCapacity) : "-";
+  $("beamElasticYield").textContent = Number.isFinite(elasticYield) ? fixed(elasticYield) : "-";
+  $("beamPlasticLimit").textContent = Number.isFinite(plasticLimit) ? fixed(plasticLimit) : "-";
+  $("beamSxValue").textContent = formatBeamModulus(section.Sx);
+  $("beamZxValue").textContent = formatBeamModulus(section.Zx);
+  $("beamKfValue").textContent = grade.kf > 0 ? grade.kf.toFixed(3) : "-";
   $("beamClassification").textContent = compactnessLabel;
-  $("beamGoverning").textContent = grade.compactness === "C" ? "Effective section modulus equals Sx" : "Effective section modulus reduced from Sx";
+  $("beamGoverning").textContent = isCustom
+    ? "User-entered Zex controls"
+    : grade.compactness === "C"
+      ? "Effective section modulus equals Sx"
+      : "Effective section modulus reduced from Sx";
   $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
-  $("beamStatus").textContent = !hasDemand ? "Enter design moment" : utilisation <= 1 ? "PASS" : "FAIL";
-  $("beamStatus").className = !hasDemand ? "" : utilisation <= 1 ? "pass" : "fail";
+  $("beamStatus").textContent = !valid ? "Invalid input" : !hasDemand ? "Enter design moment" : utilisation <= 1 ? "PASS" : "FAIL";
+  $("beamStatus").className = !valid ? "fail" : !hasDemand ? "" : utilisation <= 1 ? "pass" : "fail";
   $("beamWarning").textContent = "Section capacity only. Check member moment capacity, lateral restraint, shear, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.";
+
+  if (!valid) {
+    $("beamFormulaSteps").innerHTML = `
+      <div><b>Required input</b><code>Enter positive f<sub>y</sub> and Z<sub>ex</sub> values before using Custom Section capacity.</code></div>
+      <div><b>Design boundary</b><code>Section capacity only; M<sub>b</sub>, lateral restraint, shear, web bearing, deflection and combined actions are not checked.</code></div>`;
+    return;
+  }
+
   $("beamFormulaSteps").innerHTML = `
-    <div><b>Section data</b><code>${section.designation}; A<sub>g</sub> = ${section.area.toLocaleString("en-AU")} mm&sup2;; mass = ${section.mass} kg/m</code></div>
-    <div><b>Catalogue moduli</b><code>S<sub>x</sub> = ${section.Sx.toLocaleString("en-AU")} x 10&sup3; mm&sup3;; Z<sub>x</sub> = ${section.Zx.toLocaleString("en-AU")} x 10&sup3; mm&sup3;; Z<sub>ex</sub> = ${grade.Ze.toLocaleString("en-AU")} x 10&sup3; mm&sup3;</code></div>
-    <div><b>Compactness</b><code>${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)} from InfraBuild section-capacity table</code></div>
-    <div><b>Elastic yield reference</b><code>&phi;f<sub>y</sub>Z<sub>x</sub> = 0.90 x ${grade.fy} x ${section.Zx.toLocaleString("en-AU")} x 10&sup3; / 10&sup6; = ${fixed(elasticYield)} kNm</code></div>
-    <div><b>Plastic limit reference</b><code>&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 x ${grade.fy} x ${section.Sx.toLocaleString("en-AU")} x 10&sup3; / 10&sup6; = ${fixed(plasticLimit)} kNm</code></div>
-    <div><b>Section capacity</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${grade.fy} x ${grade.Ze.toLocaleString("en-AU")} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>`;
+    <div><b>Section data</b><code>${section.designation}; A<sub>g</sub> = ${formatBeamOptional(section.area, "mm&sup2;", 0)}; mass = ${formatBeamOptional(section.mass, "kg/m", 1)}; source = ${sourceBasis}</code></div>
+    <div><b>Section moduli</b><code>S<sub>x</sub> = ${formatBeamModulus(section.Sx)}; Z<sub>x</sub> = ${formatBeamModulus(section.Zx)}; Z<sub>ex</sub> = ${formatBeamModulus(grade.Ze)}</code></div>
+    <div><b>Compactness</b><code>${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)}${isCustom ? "; user-entered reference value" : " from InfraBuild section-capacity table"}</code></div>
+    <div><b>Elastic yield reference</b><code>${Number.isFinite(elasticYield) ? `&phi;f<sub>y</sub>Z<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Zx, 1)} x 10&sup3; / 10&sup6; = ${fixed(elasticYield)} kNm` : "Not shown - enter Zx for custom reference value"}</code></div>
+    <div><b>Plastic limit reference</b><code>${Number.isFinite(plasticLimit) ? `&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Sx, 1)} x 10&sup3; / 10&sup6; = ${fixed(plasticLimit)} kNm` : "Not shown - enter Sx for custom reference value"}</code></div>
+    <div><b>Section capacity</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(grade.Ze, 1)} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>`;
 }
 
 function chsProperties(section) {
@@ -976,9 +1078,12 @@ function initialise() {
   document.querySelector(".concrete-layout-details").addEventListener("toggle", event => {
     if (event.target.open) calculateConcrete();
   });
+  document.querySelectorAll(".beam-type").forEach(button => button.addEventListener("click", () => setBeamType(button.dataset.beamType)));
   $("beamSection").addEventListener("change", populateBeamGrades);
   $("beamGrade").addEventListener("change", calculateBeam);
   $("beamMomentDemand").addEventListener("input", calculateBeam);
+  beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
+  $("beamCustomCompactness").addEventListener("change", calculateBeam);
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
   $("memberSection").addEventListener("change", populateMemberGrades);
   $("memberGrade").addEventListener("change", calculateMember);
