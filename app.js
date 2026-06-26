@@ -53,6 +53,14 @@ const weldTypeData = {
   }
 };
 const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldKr", "weldDemand", "weldParentThickness", "weldParentGrade"];
+const concreteInputIds = [
+  "concreteDirection", "concreteWidth", "concreteDepth", "concreteFc", "concretePhi",
+  "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteComposite",
+  "layer1Active", "layer1Y", "layer1Bar", "layer1Spacing", "layer1Fsy", "layer1Es",
+  "layer2Active", "layer2Y", "layer2Bar", "layer2Spacing", "layer2Fsy", "layer2Es",
+  "layer3Active", "layer3Y", "layer3Bar", "layer3Spacing", "layer3Fsy", "layer3Es",
+  "layer4Active", "layer4Y", "layer4Bar", "layer4Spacing", "layer4Fsy", "layer4Es"
+];
 
 const ubSections = [
   ["610UB125",125,16000,3680,3230,{ "300PLUS": { fy: 280, Ze: 3680, compactness: "C", kf: 0.950 }, "Grade 350": { fy: 340, Ze: 3680, compactness: "C", kf: 0.916 } }],
@@ -161,7 +169,7 @@ const chsGrades = {
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
-const toolNames = ["bolt", "member", "beam", "weld"];
+const toolNames = ["bolt", "member", "beam", "weld", "concrete"];
 let memberType = "chs";
 
 function value(id) { return Math.max(0, Number($(id).value) || 0); }
@@ -169,6 +177,7 @@ function fixed(number) { return Number(number).toFixed(1); }
 function fixed2(number) { return Number(number).toFixed(2); }
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
 function standardHoleDiameter(diameter) { return diameter <= 24 ? diameter + 2 : diameter + 3; }
+function signedFixed(number, digits = 1) { return `${number >= 0 ? "+" : ""}${Number(number).toFixed(digits)}`; }
 
 function calculateBolt() {
   const size = $("boltSize").value;
@@ -478,6 +487,233 @@ function calculateMember() {
     <div><b>Member capacity - 6.3</b><code>&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN</code></div>`;
 }
 
+function concreteLayer(index, depth, direction) {
+  const active = $(`layer${index}Active`).checked;
+  const yTop = value(`layer${index}Y`);
+  const bar = value(`layer${index}Bar`);
+  const spacing = value(`layer${index}Spacing`);
+  const fsy = value(`layer${index}Fsy`);
+  const es = value(`layer${index}Es`);
+  const area = spacing > 0 ? Math.PI * bar ** 2 / 4 * 1000 / spacing : 0;
+  return {
+    index,
+    name: index === 1 ? "Top mat" : index === 2 ? "Bottom mat" : index === 3 ? "Overlay layer" : "Existing layer",
+    active,
+    yTop,
+    d: direction === "top" ? yTop : depth - yTop,
+    bar,
+    spacing,
+    fsy,
+    es,
+    area
+  };
+}
+
+function concreteForcesAtX(x, data) {
+  const blockDepth = Math.min(data.depth, data.gamma * x);
+  const cc = data.alpha2 * data.fc * data.width * blockDepth;
+  const yCc = data.direction === "top" ? blockDepth / 2 : data.depth - blockDepth / 2;
+  const layers = data.layers.map(layer => {
+    const strain = data.ecu * (x - layer.d) / x;
+    const stress = Math.max(-layer.fsy, Math.min(layer.fsy, layer.es * strain));
+    const force = layer.area * stress;
+    return { ...layer, strain, stress, force };
+  });
+  const axial = cc + layers.reduce((sum, layer) => sum + layer.force, 0);
+  return { cc, yCc, blockDepth, layers, axial };
+}
+
+function solveConcreteSection(data) {
+  const forceAt = x => concreteForcesAtX(x, data).axial;
+  let low = 0.5;
+  let high = data.depth * 4;
+  let fLow = forceAt(low);
+  let fHigh = forceAt(high);
+  let expanded = 0;
+  while (fLow * fHigh > 0 && expanded < 10) {
+    high *= 1.8;
+    fHigh = forceAt(high);
+    expanded += 1;
+  }
+  if (fLow * fHigh > 0) {
+    return { ok: false, message: "No neutral axis solution found for active layers" };
+  }
+  for (let i = 0; i < 90; i += 1) {
+    const mid = (low + high) / 2;
+    const fMid = forceAt(mid);
+    if (Math.abs(fMid) < 0.5) {
+      low = mid;
+      high = mid;
+      break;
+    }
+    if (fLow * fMid <= 0) {
+      high = mid;
+      fHigh = fMid;
+    } else {
+      low = mid;
+      fLow = fMid;
+    }
+  }
+  const x = (low + high) / 2;
+  const state = concreteForcesAtX(x, data);
+  const momentNmm = state.cc * state.yCc + state.layers.reduce((sum, layer) => sum + layer.force * layer.yTop, 0);
+  const muo = Math.abs(momentNmm) / 1e6;
+  return { ok: true, x, muo, phiMuo: data.phi * muo, ...state };
+}
+
+function renderConcreteSectionSvg(data, result) {
+  if (!result.ok) {
+    $("concreteSectionSvg").innerHTML = `<svg class="concrete-svg" viewBox="0 0 520 340" role="img" aria-label="Concrete section diagram unavailable"><text x="36" y="170" class="strong-label">${result.message}</text></svg>`;
+    $("concreteStrainSvg").innerHTML = `<svg class="concrete-svg" viewBox="0 0 360 340" role="img" aria-label="Strain diagram unavailable"><text x="28" y="170" class="strong-label">No strain diagram available</text></svg>`;
+    return;
+  }
+
+  const sx = 210;
+  const sy = 270;
+  const x0 = 78;
+  const y0 = 34;
+  const secW = sx;
+  const secH = sy;
+  const yScale = y => y0 + y / data.depth * secH;
+  const blockTop = data.direction === "top" ? y0 : yScale(data.depth - result.blockDepth);
+  const blockY = blockTop;
+  const blockH = Math.max(1, result.blockDepth / data.depth * secH);
+  const naY = data.direction === "top" ? yScale(result.x) : yScale(data.depth - result.x);
+  const interfaceY = yScale(data.depth * 0.45);
+  const interfaceLine = data.composite === "no"
+    ? `<line class="warn-line" x1="${x0}" y1="${interfaceY}" x2="${x0 + secW}" y2="${interfaceY}"></line><text x="${x0 + secW + 12}" y="${interfaceY + 4}" class="small-label">interface not verified</text>`
+    : "";
+  const layerSvg = result.layers.map(layer => {
+    const y = yScale(layer.yTop);
+    const status = Math.abs(layer.strain) < 0.00005 ? "neutral" : layer.force > 0 ? "compression" : "tension";
+    const css = status === "compression" ? "bar-compression" : status === "tension" ? "bar-tension" : "bar-neutral";
+    const arrowX1 = status === "compression" ? x0 + secW + 72 : x0 - 38;
+    const arrowX2 = status === "compression" ? x0 + secW + 14 : x0 + 44;
+    const labelX = status === "compression" ? x0 + secW + 82 : x0 - 62;
+    const labelAnchor = status === "compression" ? "start" : "end";
+    return `
+      <circle class="${css}" cx="${x0 + secW * 0.30}" cy="${y}" r="8"></circle>
+      <circle class="${css}" cx="${x0 + secW * 0.50}" cy="${y}" r="8"></circle>
+      <circle class="${css}" cx="${x0 + secW * 0.70}" cy="${y}" r="8"></circle>
+      <line class="force-arrow" x1="${arrowX1}" y1="${y}" x2="${arrowX2}" y2="${y}"></line>
+      <text x="${labelX}" y="${y - 4}" text-anchor="${labelAnchor}" class="strong-label">L${layer.index} ${status === "compression" ? "C" : status === "tension" ? "T" : "NA"}</text>
+      <text x="${labelX}" y="${y + 11}" text-anchor="${labelAnchor}" class="small-label">${fixed(layer.force / 1000)} kN</text>`;
+  }).join("");
+
+  $("concreteSectionSvg").innerHTML = `
+    <svg class="concrete-svg" viewBox="0 0 520 340" role="img" aria-label="Concrete section force diagram">
+      <defs><marker id="arrowHead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34423b"></path></marker></defs>
+      <rect class="section-outline" x="${x0}" y="${y0}" width="${secW}" height="${secH}" rx="2"></rect>
+      <rect class="compression-zone" x="${x0}" y="${blockY}" width="${secW}" height="${blockH}"></rect>
+      <line class="neutral-axis" x1="${x0 - 22}" y1="${naY}" x2="${x0 + secW + 22}" y2="${naY}"></line>
+      ${interfaceLine}
+      <line class="force-arrow" x1="${x0 + secW + 92}" y1="${data.direction === "top" ? blockY + blockH / 2 : blockY + blockH / 2}" x2="${x0 + secW + 22}" y2="${blockY + blockH / 2}"></line>
+      <text x="${x0 + secW + 102}" y="${blockY + blockH / 2 - 4}" class="strong-label">Cc</text>
+      <text x="${x0 + secW + 102}" y="${blockY + blockH / 2 + 11}" class="small-label">${fixed(result.cc / 1000)} kN</text>
+      ${layerSvg}
+      <text x="${x0}" y="${y0 - 12}" class="strong-label">${data.direction === "top" ? "compression face" : "tension face"}</text>
+      <text x="${x0}" y="${y0 + secH + 22}" class="strong-label">${data.direction === "top" ? "tension face" : "compression face"}</text>
+      <text x="${x0 + secW + 12}" y="${naY - 6}" class="strong-label">neutral axis</text>
+      <text x="${x0 + secW + 12}" y="${naY + 10}" class="small-label">x = ${fixed(result.x)} mm</text>
+    </svg>`;
+
+  const strainTop = data.direction === "top" ? data.ecu : data.ecu * (result.x - data.depth) / result.x;
+  const strainBottom = data.direction === "top" ? data.ecu * (result.x - data.depth) / result.x : data.ecu;
+  const maxAbs = Math.max(Math.abs(strainTop), Math.abs(strainBottom), data.ecu);
+  const cx = 170;
+  const px = strain => cx + strain / maxAbs * 95;
+  const strainLayerSvg = result.layers.map(layer => {
+    const y = yScale(layer.yTop);
+    const x = px(layer.strain);
+    const status = Math.abs(layer.strain) < 0.00005 ? "neutral" : layer.strain > 0 ? "compression" : "tension";
+    return `<circle class="${status === "compression" ? "bar-compression" : status === "tension" ? "bar-tension" : "bar-neutral"}" cx="${x}" cy="${y}" r="5"></circle><text x="${x + 8}" y="${y + 4}" class="small-label">L${layer.index} ${signedFixed(layer.strain, 5)}</text>`;
+  }).join("");
+  $("concreteStrainSvg").innerHTML = `
+    <svg class="concrete-svg" viewBox="0 0 360 340" role="img" aria-label="Linear strain diagram">
+      <line class="strain-axis" x1="${cx}" y1="${y0 - 10}" x2="${cx}" y2="${y0 + secH + 10}"></line>
+      <line class="strain-axis" x1="${cx - 115}" y1="${naY}" x2="${cx + 115}" y2="${naY}"></line>
+      <polyline class="strain-line" points="${px(strainTop)},${y0} ${px(0)},${naY} ${px(strainBottom)},${y0 + secH}"></polyline>
+      ${strainLayerSvg}
+      <text x="${cx + 104}" y="${y0 + 4}" class="small-label">compression +</text>
+      <text x="${cx - 114}" y="${y0 + secH + 15}" class="small-label">tension -</text>
+      <text x="${cx + 8}" y="${naY - 7}" class="strong-label">epsilon = 0</text>
+      <text x="${px(strainTop) + 8}" y="${y0 + 13}" class="strong-label">${signedFixed(strainTop, 5)}</text>
+      <text x="${px(strainBottom) + 8}" y="${y0 + secH - 6}" class="strong-label">${signedFixed(strainBottom, 5)}</text>
+    </svg>`;
+}
+
+function calculateConcrete() {
+  const depth = value("concreteDepth");
+  const direction = $("concreteDirection").value;
+  const data = {
+    direction,
+    width: value("concreteWidth"),
+    depth,
+    fc: value("concreteFc"),
+    phi: Math.min(1, Math.max(0.1, value("concretePhi"))),
+    alpha2: Math.min(1, Math.max(0.1, value("concreteAlpha2"))),
+    gamma: Math.min(1, Math.max(0.1, value("concreteGamma"))),
+    ecu: value("concreteEcu"),
+    composite: $("concreteComposite").value,
+    layers: [1, 2, 3, 4].map(index => concreteLayer(index, depth, direction)).filter(layer => layer.active && layer.area > 0 && layer.yTop >= 0 && layer.yTop <= depth)
+  };
+
+  let result = { ok: false, message: "No active reinforcement layers" };
+  if (data.width > 0 && data.depth > 0 && data.fc > 0 && data.ecu > 0 && data.layers.length) {
+    result = solveConcreteSection(data);
+  }
+
+  renderConcreteSectionSvg(data, result);
+  $("concreteDirectionLabel").textContent = direction === "top" ? "top compression" : "bottom compression";
+  $("concreteSummaryTitle").textContent = `${fixed(data.width)} x ${fixed(data.depth)} mm strip - ${direction === "top" ? "top" : "bottom"} compression`;
+  $("concreteSummaryNote").textContent = data.composite === "yes" ? "Composite action marked as separately confirmed." : "Pad-on-pad composite action not confirmed; do not rely on combined depth without interface design.";
+  $("concretePhiNote").textContent = `phi = ${data.phi.toFixed(2)} entered by user; verify ductility and capacity factor to AS 3600.`;
+
+  if (!result.ok) {
+    ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo"].forEach(id => $(id).textContent = "-");
+    $("concreteStatusValue").textContent = "No solution";
+    $("concreteEquilibrium").textContent = result.message;
+    $("concreteWarningStatus").textContent = "CHECK";
+    $("concreteWarningStatus").className = "fail";
+    $("concreteLayerResults").innerHTML = "";
+    $("concreteFormulaSteps").innerHTML = `<div><b>Status</b><code>${result.message}</code></div>`;
+    return;
+  }
+
+  const residual = result.axial / 1000;
+  const residualOk = Math.abs(residual) < 0.01;
+  const warningText = data.composite === "yes"
+    ? "Moment section capacity only. Composite action is user-confirmed outside this calculator; still check punching shear, one-way shear, bearing, development length and crack control separately."
+    : "Moment section capacity only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, one-way shear, bearing, development length and crack control are excluded.";
+
+  $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
+  $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;
+  $("concreteMuoValue").textContent = `${fixed(result.muo)} kNm/m`;
+  $("concretePhiMuoValue").textContent = `${fixed(result.phiMuo)} kNm/m`;
+  $("concreteStatusValue").textContent = residualOk ? "Solved" : "Check residual";
+  $("concreteNa").textContent = fixed(result.x);
+  $("concreteMuo").textContent = fixed(result.muo);
+  $("concretePhiMuo").textContent = fixed(result.phiMuo);
+  $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
+  $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk ? "SOLVED" : "CHECK";
+  $("concreteWarningStatus").className = data.composite === "yes" && residualOk ? "pass" : "fail";
+  $("concreteWarningText").textContent = warningText;
+
+  $("concreteLayerResults").innerHTML = result.layers.map(layer => {
+    const status = Math.abs(layer.strain) < 0.00005 ? "Near neutral axis" : layer.force > 0 ? "Compression" : "Tension";
+    return `<article><b>Layer ${layer.index} - ${layer.name}</b><span>${status}; y = ${fixed(layer.yTop)} mm; As = ${fixed(layer.area)} mm2/m</span><small>epsilon_s = ${signedFixed(layer.strain, 5)}; f_s = ${signedFixed(layer.stress, 1)} MPa; F_s = ${signedFixed(layer.force / 1000, 1)} kN/m</small></article>`;
+  }).join("");
+
+  $("concreteFormulaSteps").innerHTML = `
+    <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each layer is transformed to distance d_i from that face</code></div>
+    <div><b>Concrete block</b><code>C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub> b &gamma;x = ${data.alpha2.toFixed(2)} x ${fixed(data.fc)} x ${fixed(data.width)} x ${data.gamma.toFixed(2)} x ${fixed(result.x)} = ${fixed(result.cc / 1000)} kN</code></div>
+    <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
+    <div><b>Steel stress</b><code>f<sub>si</sub> = E<sub>s</sub>&epsilon;<sub>si</sub>, capped at +/- f<sub>sy</sub> for each active layer</code></div>
+    <div><b>Force equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual</code></div>
+    <div><b>Nominal moment</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm/m</code></div>
+    <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${data.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm/m; verify &phi; to AS 3600 before issue for design</code></div>`;
+}
+
 function setPrimaryPlane() {
   const isN = $("shearPlane").value === "N";
   $("threadPlanes").value = isN ? 1 : 0;
@@ -544,6 +780,7 @@ function initialise() {
   $("shearPlane").value = "N";
   boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
   weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));
+  concreteInputIds.forEach(id => $(id).addEventListener("input", calculateConcrete));
   $("boltSize").addEventListener("change", setBoltSize);
   $("shearPlane").addEventListener("input", setPrimaryPlane);
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
@@ -562,6 +799,7 @@ function initialise() {
   populateMemberOptions();
   calculateBolt();
   calculateWeld();
+  calculateConcrete();
   setTool(location.hash.slice(1) || "bolt", false);
 }
 

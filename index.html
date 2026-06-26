@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260626c">
+  <link rel="stylesheet" href="styles.css?v=20260626d">
 </head>
 <body>
   <header class="topbar">
@@ -25,6 +25,7 @@
       <button class="tool-tab" type="button" data-tool="member" aria-controls="memberPanel" aria-selected="false">Member Capacity</button>
       <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Section</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
+      <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false">Concrete Moment</button>
     </nav>
 
     <section id="boltPanel" class="tool-panel active">
@@ -260,6 +261,62 @@
       </div></details>
 
       <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100, AS/NZS 1554.1 and industry guidance</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Primary basis</b> - AS 4100:2020 Clause 9.7 welded connections; throat-area capacity is calculated as &phi;R = &phi;0.6f<sub>uw</sub>t<sub>t</sub>l<sub>w</sub> with &phi; = 0.80.</p><p><b>Weld metal strength</b> - AS 4100 Table 9.7.3.10(1), also summarised in ASI Simple Connections 2020 Table 2.14. Common strengths shown here are 430, 490 and 550 MPa.</p><p><b>Parent metal screen</b> - indicative per-mm parent metal shear capacity is shown as &phi;0.6f<sub>up</sub>t using &phi; = 0.90 and AS/NZS 3678 / AS/NZS 3679.1 tensile strengths summarised in ASI Simple Connections Tables 2.15 and 2.16.</p><p><b>Welding process</b> - process selection should be by the fabricator under a qualified WPS to AS/NZS 1554.1.</p></div><div class="source-notes"><p><b>Symbols</b> - welding symbols are shown in the AS 1101.3 style: the basic weld symbol below the reference line indicates arrow-side weld; above the line indicates other-side weld. Verify exact drawing symbols, preparations and inspection category to AS/NZS 1554.1 on the project drawings.</p><p><b>Scope</b> - selected weld-type throat capacity under direct action: equal-leg fillet, CPBW, IPBW, or compound weld using user-entered effective length, runs and a<sub>w</sub> where relevant.</p><p><b>Design boundary</b> - CPBW, IPBW and compound options are capacity views, not full joint checks. Parent-metal screen is not a tear-out, block shear, net-section, HAZ or eccentric weld group check. Parent-metal rupture, HAZ, joint preparation, backing/gouging, eccentric weld groups, intermittent weld rules, fatigue, seismic detailing, lamellar tearing and inspection acceptance criteria are excluded.</p></div></div></details>
+    </section>
+
+    <section id="concretePanel" class="tool-panel" hidden>
+      <div class="tool-heading"><div><p class="kicker">CONCRETE PADS - AS 3600 SECTION THEORY</p><h2>Concrete Moment</h2></div><span>multi-layer RC section</span></div>
+
+      <section class="lookup-card concrete-card">
+        <div class="primary-inputs concrete-inputs">
+          <label class="size-field"><span>Moment direction</span><select id="concreteDirection" aria-label="Moment direction"><option value="top">Top compression</option><option value="bottom">Bottom compression</option></select></label>
+          <label><span>Section width, b</span><span class="unit"><input id="concreteWidth" type="number" min="100" step="50" value="1000"><em>mm</em></span></label>
+          <label><span>Total depth, D</span><span class="unit"><input id="concreteDepth" type="number" min="100" step="10" value="500"><em>mm</em></span></label>
+          <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" step="1" value="32"><em>MPa</em></span></label>
+          <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.75"></label>
+        </div>
+
+        <div class="concrete-secondary-inputs">
+          <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.01" value="0.85"></label>
+          <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.01" value="0.80"></label>
+          <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030"></label>
+          <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
+        </div>
+
+        <div class="concrete-summary">
+          <div><span>Selected section</span><strong id="concreteSummaryTitle">1000 x 500 mm strip - top compression</strong><small id="concreteSummaryNote">Neutral axis solved from internal force equilibrium with concrete tension ignored.</small></div>
+          <dl><div><dt>x</dt><dd id="concreteNaValue">-</dd></div><div><dt>C<sub>c</sub></dt><dd id="concreteCcValue">-</dd></div><div><dt>M<sub>uo</sub></dt><dd id="concreteMuoValue">-</dd></div><div><dt>&phi;M<sub>uo</sub></dt><dd id="concretePhiMuoValue">-</dd></div><div><dt>status</dt><dd id="concreteStatusValue">-</dd></div></dl>
+        </div>
+
+        <div class="symbol-key" aria-label="Concrete moment symbols"><span><b>x</b> neutral axis depth from compression face</span><span><b>C<sub>c</sub></b> concrete compression resultant</span><span><b>F<sub>s</sub></b> steel layer force</span><span><b>M<sub>uo</sub></b> nominal moment capacity</span><span><b>&phi;M<sub>uo</sub></b> design moment capacity</span></div>
+
+        <section class="concrete-layer-table" aria-label="Reinforcement layers">
+          <div class="layer-header"><span>Layer</span><span>Active</span><span>y from top</span><span>Bar</span><span>Spacing</span><span>f<sub>sy</sub></span><span>E<sub>s</sub></span></div>
+          <div class="layer-row"><strong>Top mat</strong><label><input id="layer1Active" type="checkbox" checked><span>include</span></label><label><input id="layer1Y" type="number" min="0" step="5" value="60"><em>mm</em></label><label><input id="layer1Bar" type="number" min="6" step="1" value="16"><em>mm</em></label><label><input id="layer1Spacing" type="number" min="50" step="5" value="200"><em>mm</em></label><label><input id="layer1Fsy" type="number" min="200" step="10" value="500"><em>MPa</em></label><label><input id="layer1Es" type="number" min="100000" step="1000" value="200000"><em>MPa</em></label></div>
+          <div class="layer-row"><strong>Bottom mat</strong><label><input id="layer2Active" type="checkbox" checked><span>include</span></label><label><input id="layer2Y" type="number" min="0" step="5" value="430"><em>mm</em></label><label><input id="layer2Bar" type="number" min="6" step="1" value="20"><em>mm</em></label><label><input id="layer2Spacing" type="number" min="50" step="5" value="200"><em>mm</em></label><label><input id="layer2Fsy" type="number" min="200" step="10" value="500"><em>MPa</em></label><label><input id="layer2Es" type="number" min="100000" step="1000" value="200000"><em>MPa</em></label></div>
+          <div class="layer-row"><strong>Overlay layer</strong><label><input id="layer3Active" type="checkbox"><span>include</span></label><label><input id="layer3Y" type="number" min="0" step="5" value="120"><em>mm</em></label><label><input id="layer3Bar" type="number" min="6" step="1" value="16"><em>mm</em></label><label><input id="layer3Spacing" type="number" min="50" step="5" value="200"><em>mm</em></label><label><input id="layer3Fsy" type="number" min="200" step="10" value="500"><em>MPa</em></label><label><input id="layer3Es" type="number" min="100000" step="1000" value="200000"><em>MPa</em></label></div>
+          <div class="layer-row"><strong>Existing layer</strong><label><input id="layer4Active" type="checkbox"><span>include</span></label><label><input id="layer4Y" type="number" min="0" step="5" value="360"><em>mm</em></label><label><input id="layer4Bar" type="number" min="6" step="1" value="16"><em>mm</em></label><label><input id="layer4Spacing" type="number" min="50" step="5" value="200"><em>mm</em></label><label><input id="layer4Fsy" type="number" min="200" step="10" value="500"><em>MPa</em></label><label><input id="layer4Es" type="number" min="100000" step="1000" value="200000"><em>MPa</em></label></div>
+        </section>
+
+        <section class="concrete-visual-grid">
+          <article class="concrete-visual-card"><div class="section-heading"><div><span class="section-tag">SVG</span><h2>Section force diagram</h2></div><span id="concreteDirectionLabel">top compression</span></div><div id="concreteSectionSvg" class="concrete-svg-wrap"></div></article>
+          <article class="concrete-visual-card"><div class="section-heading"><div><span class="section-tag">SVG</span><h2>Strain diagram</h2></div><span>linear strain</span></div><div id="concreteStrainSvg" class="concrete-svg-wrap"></div></article>
+        </section>
+
+        <section class="capacity-section" aria-live="polite">
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Moment capacity</h2></div><span>section strip</span></div>
+          <div class="capacity-grid concrete-results">
+            <article class="capacity-card selected-shear"><span>Design moment capacity &phi;M<sub>uo</sub></span><strong><output id="concretePhiMuo">-</output><small> kNm/m</small></strong><p id="concretePhiNote">Capacity factor entered by user; verify to AS 3600.</p></article>
+            <article class="capacity-card"><span>Nominal moment capacity M<sub>uo</sub></span><strong><output id="concreteMuo">-</output><small> kNm/m</small></strong><p>Internal force couple about the top face datum</p></article>
+            <article class="capacity-card alternate-shear"><span>Neutral axis depth x</span><strong><output id="concreteNa">-</output><small> mm</small></strong><p>measured from selected compression face</p></article>
+          </div>
+          <div class="interaction-result concrete-warning"><span>Section status</span><strong id="concreteEquilibrium">-</strong><b id="concreteWarningStatus">-</b></div>
+          <p class="result-note" id="concreteWarningText">Moment section capacity only. Check punching shear, one-way shear, bearing, development length, crack control and pad-on-pad interface shear separately.</p>
+        </section>
+      </section>
+
+      <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed section checks</b></span><small>Layer strains, stresses, forces and force-equilibrium residual</small></span><i>+</i></summary><div class="detail-body"><section><h3>Layer results</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation steps</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
+
+      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 3600 section theory and pad design boundary</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Primary basis</b> - reinforced concrete ultimate flexural section analysis to AS 3600 principles. Final clause mapping for stress-block factors, strain limits, ductility and capacity factor must be checked against the licensed current Standard before issue for design.</p><p><b>Section theory</b> - plane sections remain plane; strain is linear; concrete tension is ignored at ultimate; steel stress is calculated from strain and capped at yield.</p><p><b>Neutral axis</b> - x is solved by axial force equilibrium for a pure bending section, with no external axial load included.</p></div><div class="source-notes"><p><b>Scope</b> - rectangular pad strip only, normally b = 1000 mm for per-metre capacity. This is not a full footing design.</p><p><b>Excluded checks</b> - punching shear, one-way shear, base-plate or column bearing, soil bearing, development length, anchorage, bar spacing, crack control, deflection and load combinations.</p><p><b>Pad-on-pad</b> - do not rely on the combined depth unless composite action and interface shear transfer have been separately designed and documented.</p></div></div></details>
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
