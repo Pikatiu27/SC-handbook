@@ -592,10 +592,11 @@ function renderConcreteSectionSvg(data, result) {
 
   const sx = 230;
   const sy = 270;
-  const x0 = 145;
-  const y0 = 34;
+  const x0 = 118;
+  const y0 = 48;
   const secW = sx;
   const secH = sy;
+  const legendX = 432;
   const yScale = y => y0 + y / data.depth * secH;
   const blockTop = data.direction === "top" ? y0 : yScale(data.depth - result.blockDepth);
   const blockY = blockTop;
@@ -610,42 +611,50 @@ function renderConcreteSectionSvg(data, result) {
   const coverLines = coverYs.map(y => `<line class="cover-line" x1="${x0}" y1="${y}" x2="${x0 + secW}" y2="${y}"></line>`).join("");
   const interfaceY = yScale(data.topDepth);
   const interfaceLine = data.bottomDepth > 0
-    ? `<line class="warn-line" x1="${x0}" y1="${interfaceY}" x2="${x0 + secW}" y2="${interfaceY}"></line><text x="${x0 + secW + 12}" y="${interfaceY + 4}" class="small-label">${data.composite === "yes" ? "pad interface" : "interface not verified"}</text>`
+    ? `<line class="warn-line" x1="${x0}" y1="${interfaceY}" x2="${x0 + secW}" y2="${interfaceY}"></line><text x="${legendX}" y="${interfaceY + 4}" class="small-label">${data.composite === "yes" ? "pad interface" : "interface not verified"}</text>`
     : "";
+  const sub = text => `<tspan baseline-shift="sub" font-size="8">${text}</tspan>`;
+  const forceSymbol = layer => `F${sub(`s${layer.index}`)}`;
+  const layerLegend = result.layers.map((layer, index) => {
+    const status = Math.abs(layer.strain) < 0.00005 ? "NA" : layer.force > 0 ? "C" : "T";
+    const y = 158 + index * 42;
+    return `
+      <text x="${legendX}" y="${y}" class="strong-label">${forceSymbol(layer)} = ${signedFixed(layer.force / 1000)} kN/m</text>
+      <text x="${legendX}" y="${y + 14}" class="small-label">y${sub(layer.index)} = ${fixed(layer.yTop)} mm; ${status}; &epsilon;${sub(`s${layer.index}`)} = ${signedFixed(layer.strain, 5)}</text>`;
+  }).join("");
   const layerSvg = result.layers.map(layer => {
     const y = yScale(layer.yTop);
     const status = Math.abs(layer.strain) < 0.00005 ? "neutral" : layer.force > 0 ? "compression" : "tension";
     const css = status === "compression" ? "bar-compression" : status === "tension" ? "bar-tension" : "bar-neutral";
-    const arrowX1 = status === "compression" ? x0 + secW + 78 : 70;
-    const arrowX2 = status === "compression" ? x0 + secW + 16 : x0 - 8;
-    const labelX = status === "compression" ? x0 + secW + 88 : 18;
-    const labelAnchor = "start";
+    const arrowStart = status === "compression" ? x0 + secW * 0.70 + 14 : x0 + secW * 0.30 - 14;
+    const arrowEnd = status === "compression" ? x0 + secW + 66 : x0 - 66;
     return `
       <circle class="${css}" cx="${x0 + secW * 0.30}" cy="${y}" r="8"></circle>
       <circle class="${css}" cx="${x0 + secW * 0.50}" cy="${y}" r="8"></circle>
       <circle class="${css}" cx="${x0 + secW * 0.70}" cy="${y}" r="8"></circle>
-      <line class="force-arrow" x1="${arrowX1}" y1="${y}" x2="${arrowX2}" y2="${y}"></line>
-      <text x="${labelX}" y="${y - 7}" text-anchor="${labelAnchor}" class="strong-label">F<tspan baseline-shift="sub">s${layer.index}</tspan> ${status === "compression" ? "C" : status === "tension" ? "T" : "NA"}</text>
-      <text x="${labelX}" y="${y + 9}" text-anchor="${labelAnchor}" class="small-label">${fixed(layer.force / 1000)} kN/m</text>
-      <text x="${labelX}" y="${y + 23}" text-anchor="${labelAnchor}" class="small-label">ε<tspan baseline-shift="sub">s${layer.index}</tspan> = ${signedFixed(layer.strain, 5)}</text>`;
+      <line class="force-arrow" x1="${arrowStart}" y1="${y}" x2="${arrowEnd}" y2="${y}"></line>`;
   }).join("");
 
   $("concreteSectionSvg").innerHTML = `
-    <svg class="concrete-svg" viewBox="0 0 640 350" role="img" aria-label="Concrete section force diagram">
+    <svg class="concrete-svg" viewBox="0 0 720 380" role="img" aria-label="Concrete section force diagram">
       <defs><marker id="arrowHead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34423b"></path></marker></defs>
       <rect class="section-outline" x="${x0}" y="${y0}" width="${secW}" height="${secH}" rx="2"></rect>
       <rect class="compression-zone" x="${x0}" y="${blockY}" width="${secW}" height="${blockH}"></rect>
       ${coverLines}
       <line class="neutral-axis" x1="${x0 - 22}" y1="${naY}" x2="${x0 + secW + 22}" y2="${naY}"></line>
       ${interfaceLine}
-      <line class="force-arrow" x1="${x0 + secW + 88}" y1="${blockY + blockH / 2}" x2="${x0 + secW + 18}" y2="${blockY + blockH / 2}"></line>
-      <text x="${x0 + secW + 98}" y="${Math.max(y0 + 18, blockY + blockH / 2 - 18)}" class="strong-label">C<tspan baseline-shift="sub">c</tspan></text>
-      <text x="${x0 + secW + 98}" y="${Math.max(y0 + 34, blockY + blockH / 2 - 2)}" class="small-label">${fixed(result.cc / 1000)} kN</text>
+      <line class="force-arrow" x1="${x0 + secW + 16}" y1="${blockY + blockH / 2}" x2="${x0 + secW + 76}" y2="${blockY + blockH / 2}"></line>
       ${layerSvg}
+      <line class="dimension-line" x1="${x0 - 34}" y1="${data.direction === "top" ? y0 : y0 + secH}" x2="${x0 - 34}" y2="${naY}"></line>
+      <text x="${x0 - 48}" y="${(naY + (data.direction === "top" ? y0 : y0 + secH)) / 2}" text-anchor="end" class="strong-label">x</text>
       <text x="${x0}" y="${y0 - 12}" class="strong-label">${data.direction === "top" ? "compression face" : "tension face"}</text>
       <text x="${x0}" y="${y0 + secH + 22}" class="strong-label">${data.direction === "top" ? "tension face" : "compression face"}</text>
-      <text x="${x0 + secW + 18}" y="${coverYs[0] ? coverYs[0] - 7 : y0 + 12}" class="small-label">c<tspan baseline-shift="sub">nom</tspan> = ${fixed(data.cover)} mm</text>
-      <text x="${x0 + secW + 18}" y="${naY + 20}" class="strong-label">x = ${fixed(result.x)} mm</text>
+      <text x="${legendX}" y="58" class="strong-label">Internal force resultants</text>
+      <text x="${legendX}" y="82" class="strong-label">C${sub("c")} = ${fixed(result.cc / 1000)} kN/m</text>
+      <text x="${legendX}" y="98" class="small-label">a = &gamma;x = ${fixed(result.blockDepth)} mm; x = ${fixed(result.x)} mm</text>
+      <text x="${legendX}" y="114" class="small-label">c${sub("nom")} = ${fixed(data.cover)} mm</text>
+      <text x="${legendX}" y="132" class="small-label">C = compression; T = tension; N* = 0</text>
+      ${layerLegend}
     </svg>`;
 
   const strainTop = data.direction === "top" ? data.ecu : data.ecu * (result.x - data.depth) / result.x;

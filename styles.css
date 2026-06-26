@@ -311,10 +311,11 @@ main, footer { max-width: 1040px; margin: auto; }
 .concrete-svg .bar-compression { fill: #79abd8; stroke: #336692; stroke-width: 2; }
 .concrete-svg .bar-neutral { fill: #aeb8b4; stroke: #68766f; stroke-width: 2; }
 .concrete-svg .force-arrow { stroke: #34423b; stroke-width: 2.4; marker-end: url(#arrowHead); }
+.concrete-svg .dimension-line { stroke: #51645b; stroke-width: 1.6; stroke-dasharray: 3 4; }
 .concrete-svg .strain-line { stroke: #2f746f; stroke-width: 3; fill: none; }
 .concrete-svg .strain-axis { stroke: #8b9892; stroke-width: 1.4; }
-.concrete-svg .small-label { fill: var(--muted); font-size: 9.5px; font-weight: 700; }
-.concrete-svg .strong-label { fill: var(--ink); font-size: 10.5px; font-weight: 900; }
+.concrete-svg .small-label { fill: var(--muted); font-size: 10.5px; font-weight: 700; }
+.concrete-svg .strong-label { fill: var(--ink); font-size: 12px; font-weight: 900; }
 .concrete-svg .warn-line { stroke: #e4a064; stroke-width: 2; stroke-dasharray: 5 4; }
 .concrete-layer-results { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .concrete-layer-results article { padding: 10px 11px; border: 1px solid var(--line); border-radius: 7px; background: #f8fcfb; }
