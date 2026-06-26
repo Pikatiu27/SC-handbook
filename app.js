@@ -583,67 +583,128 @@ function solveConcreteSection(data) {
   return { ok: true, x, muo, phiMuo: data.phi * muo, ...state };
 }
 
-function renderConcreteSectionSvg(data, result) {
+function drawDashedLine(ctx, x1, y1, x2, y2, dash = [7, 6]) {
+  ctx.save();
+  ctx.setLineDash(dash);
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawText(ctx, text, x, y, options = {}) {
+  ctx.save();
+  ctx.fillStyle = options.fill || "#203029";
+  ctx.font = `${options.weight || 700} ${options.size || 12}px Aptos, Calibri, Arial, sans-serif`;
+  ctx.textAlign = options.align || "left";
+  ctx.textBaseline = options.baseline || "alphabetic";
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+function renderConcreteSectionLayout(data) {
+  const canvas = $("concreteLayoutCanvas");
+  const legend = $("concreteLayoutLegend");
+  if (!canvas || !legend) return;
+
+  const wrap = canvas.parentElement;
+  const cssW = Math.max(560, Math.round(wrap.clientWidth || 720));
+  const cssH = cssW < 680 ? 340 : 360;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.style.width = "100%";
+  canvas.style.height = `${cssH}px`;
+  canvas.width = Math.round(cssW * dpr);
+  canvas.height = Math.round(cssH * dpr);
+
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, cssW, cssH);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, cssW, cssH);
+
   if (data.depth <= 0) {
-    $("concreteSectionSvg").innerHTML = `<svg class="concrete-svg" viewBox="0 0 520 260" role="img" aria-label="Concrete pad layout unavailable"><text x="36" y="130" class="strong-label">Enter a positive pad depth to show the section layout</text></svg>`;
+    drawText(ctx, "Enter a positive pad depth to show the section layout", 28, cssH / 2, { size: 13, weight: 800 });
+    legend.innerHTML = "";
     return;
   }
 
-  const x0 = 150;
-  const y0 = 48;
-  const secW = 280;
-  const secH = 270;
-  const labelX = 500;
+  const compact = cssW < 680;
+  const x0 = compact ? 118 : 165;
+  const y0 = 38;
+  const secW = compact ? Math.min(330, cssW - 190) : 330;
+  const secH = cssH - 86;
   const yScale = y => y0 + y / data.depth * secH;
+  const barXs = [x0 + secW * 0.25, x0 + secW * 0.50, x0 + secW * 0.75];
   const coverYs = [
     data.topDepth > 0 ? data.cover : null,
     data.topDepth > 0 ? data.topDepth - data.cover : null,
     data.bottomDepth > 0 ? data.topDepth + data.cover : null,
     data.bottomDepth > 0 ? data.depth - data.cover : null
-  ].filter(y => y !== null && y >= 0 && y <= data.depth).map(yScale);
-  const coverLines = coverYs.map(y => `<line class="cover-line" x1="${x0}" y1="${y}" x2="${x0 + secW}" y2="${y}"></line>`).join("");
+  ].filter(y => y !== null && y >= 0 && y <= data.depth);
   const topPadH = data.topDepth > 0 ? data.topDepth / data.depth * secH : 0;
   const bottomPadH = data.bottomDepth > 0 ? data.bottomDepth / data.depth * secH : 0;
   const interfaceY = data.bottomDepth > 0 ? yScale(data.topDepth) : null;
-  const interfaceLine = data.bottomDepth > 0
-    ? `<line class="warn-line" x1="${x0}" y1="${interfaceY}" x2="${x0 + secW}" y2="${interfaceY}"></line><text x="${labelX}" y="${interfaceY + 4}" class="small-label">${data.composite === "yes" ? "pad interface" : "interface not verified"}</text>`
-    : "";
-  const sub = text => `<tspan baseline-shift="sub" font-size="8">${text}</tspan>`;
-  const layerLegend = data.layers.map((layer, index) => {
-    const y = 130 + index * 38;
-    return `
-      <text x="${labelX}" y="${y}" class="strong-label">Mat ${layer.index}</text>
-      <text x="${labelX}" y="${y + 14}" class="small-label">y${sub(layer.index)} = ${fixed(layer.yTop)} mm; ${layer.bar ? `N${fixed(layer.bar).replace(".0", "")}` : "-"} @ ${fixed(layer.spacing)} mm</text>`;
-  }).join("");
-  const layerSvg = data.layers.map(layer => {
-    const y = yScale(layer.yTop);
-    return `
-      <line class="reo-line" x1="${x0 + 24}" y1="${y}" x2="${x0 + secW - 24}" y2="${y}"></line>
-      <circle class="bar-layout" cx="${x0 + secW * 0.28}" cy="${y}" r="8"></circle>
-      <circle class="bar-layout" cx="${x0 + secW * 0.50}" cy="${y}" r="8"></circle>
-      <circle class="bar-layout" cx="${x0 + secW * 0.72}" cy="${y}" r="8"></circle>
-      <text x="${x0 - 18}" y="${y + 4}" text-anchor="end" class="strong-label">Mat ${layer.index}</text>`;
-  }).join("");
-  const noReoNote = data.layers.length ? "" : `<text x="${labelX}" y="130" class="small-label">No active reinforcement mat</text>`;
 
-  $("concreteSectionSvg").innerHTML = `
-    <svg class="concrete-svg" viewBox="0 0 720 380" role="img" aria-label="Concrete pad and reinforcement layout">
-      ${data.topDepth > 0 ? `<rect class="pad-top-zone" x="${x0}" y="${y0}" width="${secW}" height="${topPadH}"></rect>` : ""}
-      ${data.bottomDepth > 0 ? `<rect class="pad-bottom-zone" x="${x0}" y="${interfaceY}" width="${secW}" height="${bottomPadH}"></rect>` : ""}
-      <rect class="section-outline" x="${x0}" y="${y0}" width="${secW}" height="${secH}" rx="2"></rect>
-      ${coverLines}
-      ${interfaceLine}
-      ${layerSvg}
-      <text x="${x0}" y="${y0 - 14}" class="strong-label">top face</text>
-      <text x="${x0}" y="${y0 + secH + 24}" class="strong-label">bottom face</text>
-      <line class="dimension-line" x1="${x0 - 48}" y1="${y0}" x2="${x0 - 48}" y2="${y0 + secH}"></line>
-      <text x="${x0 - 62}" y="${y0 + secH / 2}" text-anchor="end" class="strong-label">D = ${fixed(data.depth)} mm</text>
-      <text x="${labelX}" y="62" class="strong-label">Section layout</text>
-      <text x="${labelX}" y="84" class="small-label">b = ${fixed(data.width)} mm; c${sub("nom")} = ${fixed(data.cover)} mm</text>
-      <text x="${labelX}" y="100" class="small-label">D${sub("top")} = ${fixed(data.topDepth)} mm; D${sub("bot")} = ${fixed(data.bottomDepth)} mm</text>
-      ${layerLegend}
-      ${noReoNote}
-    </svg>`;
+  ctx.fillStyle = "#f8fbfb";
+  ctx.fillRect(x0, y0, secW, secH);
+  if (data.topDepth > 0) {
+    ctx.fillStyle = "rgba(111, 183, 176, 0.16)";
+    ctx.fillRect(x0, y0, secW, topPadH);
+  }
+  if (data.bottomDepth > 0) {
+    ctx.fillStyle = "rgba(228, 160, 100, 0.14)";
+    ctx.fillRect(x0, interfaceY, secW, bottomPadH);
+  }
+
+  ctx.strokeStyle = "#34423b";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(x0, y0, secW, secH);
+
+  ctx.strokeStyle = "#8b9892";
+  ctx.lineWidth = 1.2;
+  coverYs.forEach(y => drawDashedLine(ctx, x0, yScale(y), x0 + secW, yScale(y), [4, 6]));
+
+  if (data.bottomDepth > 0) {
+    ctx.strokeStyle = "#d49250";
+    ctx.lineWidth = 2;
+    drawDashedLine(ctx, x0, interfaceY, x0 + secW, interfaceY, [8, 5]);
+    drawText(ctx, "pad interface", x0 + secW + 18, interfaceY + 4, { size: 12, weight: 800, fill: "#6f6256" });
+  }
+
+  data.layers.forEach(layer => {
+    const y = yScale(layer.yTop);
+    ctx.strokeStyle = "#a18a84";
+    ctx.lineWidth = 1.4;
+    drawDashedLine(ctx, x0 + 26, y, x0 + secW - 26, y, [8, 7]);
+    ctx.fillStyle = "#d87873";
+    ctx.strokeStyle = "#8b3630";
+    ctx.lineWidth = 2;
+    barXs.forEach(x => {
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    });
+    drawText(ctx, `Mat ${layer.index}`, x0 - 16, y + 4, { size: 12, weight: 800, align: "right" });
+  });
+
+  ctx.strokeStyle = "#51645b";
+  ctx.lineWidth = 1.5;
+  drawDashedLine(ctx, x0 - 48, y0, x0 - 48, y0 + secH, [3, 5]);
+  drawText(ctx, `D = ${fixed(data.depth)} mm`, x0 - 62, y0 + secH / 2, { size: 12, weight: 800, align: "right", baseline: "middle" });
+  drawText(ctx, "top face", x0, y0 - 14, { size: 13, weight: 900 });
+  drawText(ctx, "bottom face", x0, y0 + secH + 24, { size: 13, weight: 900 });
+
+  if (!data.layers.length) {
+    drawText(ctx, "No active reinforcement mat", x0 + secW + 26, y0 + 30, { size: 12, weight: 800, fill: "#67756f" });
+  }
+
+  const rows = data.layers.map(layer => `
+    <tr><td>Mat ${layer.index}</td><td>${layer.name}</td><td>${fixed(layer.yTop)} mm</td><td>N${fixed(layer.bar).replace(".0", "")}</td><td>${fixed(layer.spacing)} mm</td></tr>`).join("");
+  legend.innerHTML = `
+    <div class="layout-meta"><span><b>b</b> ${fixed(data.width)} mm</span><span><b>D<sub>top</sub></b> ${fixed(data.topDepth)} mm</span><span><b>D<sub>bot</sub></b> ${fixed(data.bottomDepth)} mm</span><span><b>c<sub>nom</sub></b> ${fixed(data.cover)} mm</span></div>
+    <table><thead><tr><th>Mat</th><th>Location</th><th>y<sub>i</sub></th><th>Bar</th><th>Spacing</th></tr></thead><tbody>${rows || `<tr><td colspan="5">No active reinforcement mat</td></tr>`}</tbody></table>`;
 }
 
 function calculateConcrete() {
@@ -675,7 +736,7 @@ function calculateConcrete() {
     result = solveConcreteSection(data);
   }
 
-  renderConcreteSectionSvg(data, result);
+  renderConcreteSectionLayout(data);
   $("concreteDirectionLabel").textContent = "relative positions";
   $("concreteSummaryTitle").textContent = `${fixed(data.width)} mm strip; D_top ${fixed(data.topDepth)} + D_bot ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`;
   $("concreteSummaryNote").textContent = data.composite === "yes" ? "Composite action marked as separately confirmed." : "Pad-on-pad composite action not confirmed; do not rely on combined depth without interface design.";
@@ -775,6 +836,7 @@ function setTool(tool, updateHash = true) {
   if (updateHash && location.hash !== `#${selectedTool}`) {
     history.replaceState(null, "", `#${selectedTool}`);
   }
+  if (selectedTool === "concrete") calculateConcrete();
 }
 
 function setMemberType(type) {
@@ -805,6 +867,9 @@ function initialise() {
   $("shearPlane").addEventListener("input", setPrimaryPlane);
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
+  window.addEventListener("resize", () => {
+    if (!$("concretePanel").hidden) calculateConcrete();
+  });
   $("beamSection").addEventListener("change", populateBeamGrades);
   $("beamGrade").addEventListener("change", calculateBeam);
   $("beamMomentDemand").addEventListener("input", calculateBeam);
