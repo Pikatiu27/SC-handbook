@@ -197,17 +197,19 @@ function calculateBolt() {
   const plane = $("shearPlane").value;
   const bolt = boltData[size];
   const category = categories[categoryKey];
-  const krd = category.grade === "10.9" ? 0.83 : 1;
+  const threadKrd = category.grade === "10.9" ? 0.83 : 1;
+  const shankKrd = 1;
   const tension = 0.8 * bolt.As * category.fuf / 1000;
-  const threadShear = 0.8 * 0.62 * category.fuf * krd * bolt.Ac / 1000;
-  const shankShear = 0.8 * 0.62 * category.fuf * krd * bolt.Ao / 1000;
+  const threadShear = 0.8 * 0.62 * category.fuf * threadKrd * bolt.Ac / 1000;
+  const shankShear = 0.8 * 0.62 * category.fuf * shankKrd * bolt.Ao / 1000;
   const selectedShear = plane === "N" ? threadShear : shankShear;
   const alternateShear = plane === "N" ? shankShear : threadShear;
   const count = Math.max(1, Math.round(value("boltCount")));
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
   const kr = Math.min(1, Math.max(0.5, value("kr")));
-  const groupShear = count * kr * (nThread * threadShear + nShank * shankShear);
+  const groupKrd = category.grade === "10.9" && nThread > 0 ? 0.83 : 1;
+  const groupShear = count * 0.8 * 0.62 * category.fuf * groupKrd * kr * (nThread * bolt.Ac + nShank * bolt.Ao) / 1000;
   const actualEdge = value("edgeDistance");
   const holeDiameter = value("holeDiameter");
   const effectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
@@ -237,6 +239,7 @@ function calculateBolt() {
   $("alternateShearCapacity").textContent = fixed(alternateShear);
   $("alternateShearNote").textContent = plane === "N" ? "threads clear of plane" : "threads intercept plane";
   $("tensionCapacity").textContent = fixed(tension);
+  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}. Additional checks may apply: prying action, block shear and long-joint reduction.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
   $("plyBearingLimit").textContent = `${fixed(bearingFull)} kN`;
   $("edgeTearoutLimit").textContent = `${fixed(bearingEdge)} kN`;
@@ -255,8 +258,9 @@ function calculateBolt() {
   const slipFormula = slip === null ? "<code>Not applicable - TF categories only</code>" : `<code>0.70 x ${value("slipFactor")} x ${value("interfaces")} x ${preload} x ${value("holeFactor")} = ${fixed(slip)} kN</code>`;
   $("formulaSteps").innerHTML = `
     <div><b>Tension - 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
-    <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x A<sub>c</sub> = ${fixed(threadShear)} kN</code></div>
-    <div><b>Shear X - 9.2.2.1</b><code>0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x A<sub>o</sub> = ${fixed(shankShear)} kN</code></div>
+    <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
+    <div><b>Shear X - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
+    <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x k<sub>r</sub> x (n<sub>n</sub>A<sub>c</sub> + n<sub>x</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>rd</sub> = ${groupKrd.toFixed(2)} for this bolt-group input</code></div>
     <div><b>Ply bearing - 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
     <div><b>Edge limit - 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
     <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
@@ -419,7 +423,7 @@ function populateMemberGrades() {
   const properties = memberProperties(section);
   $("memberNetArea").value = properties.area.toFixed(0);
   $("memberNetArea").max = properties.area.toFixed(0);
-  $("memberKt").value = "1";
+  $("memberKt").value = memberType === "ea" ? "0.85" : "1";
   calculateMember();
 }
 
@@ -441,12 +445,14 @@ function calculateMember() {
   let alphaC = 1;
   let alphaA = 0;
   let modifiedLambda = 0;
+  let eta = 0;
+  let xi = 1;
   if (lambdaN > 0) {
     alphaA = 2100 * (lambdaN - 13.5) / (lambdaN ** 2 - 15.3 * lambdaN + 2050);
     modifiedLambda = Math.max(0.001, lambdaN + alphaA * alphaB);
-    const eta = Math.max(0, 0.00326 * (modifiedLambda - 13.5));
+    eta = Math.max(0, 0.00326 * (modifiedLambda - 13.5));
     const ratio = modifiedLambda / 90;
-    const xi = (ratio ** 2 + 1 + eta) / (2 * ratio ** 2);
+    xi = (ratio ** 2 + 1 + eta) / (2 * ratio ** 2);
     const rootTerm = Math.max(0, 1 - (90 / (xi * modifiedLambda)) ** 2);
     alphaC = Math.min(1, Math.max(0, xi * (1 - Math.sqrt(rootTerm))));
   }
@@ -459,11 +465,11 @@ function calculateMember() {
 
   $("memberDesignation").textContent = `${section.designation} - ${gradeName}`;
   $("memberAssumption").innerHTML = memberType === "chs"
-    ? "&alpha;<sub>b</sub> = -0.5 - buckling about any axis"
+    ? "&alpha;<sub>b</sub> = -0.5 - CHS buckling about any axis"
     : memberType === "ea"
-      ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - minor principal axis properties`
+      ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - equal-angle principal-axis screen`
       : memberType === "pfc"
-        ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - PFC r<sub>min</sub> from catalogue`
+        ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - PFC r<sub>min</sub> axial screen`
         : `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - solid circular rod geometry`;
   $("memberArea").textContent = formatArea(properties.area);
   $("memberRadius").textContent = `${properties.r.toFixed(1)} mm`;
@@ -482,20 +488,22 @@ function calculateMember() {
   $("memberGoverning").textContent = alphaC < 0.999 ? "Member buckling" : "Section capacity";
   const netAreaWarning = enteredNetArea > properties.area ? " Net area has been limited to gross area." : "";
   $("memberWarning").innerHTML = memberType === "chs"
-    ? `Centroidal axial load only. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length and the actual connection.${netAreaWarning}`
+    ? `Centroidal axial load only. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length, grade certificate and the actual connection.${netAreaWarning}`
     : memberType === "ea"
-      ? `Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. Flexural-torsional buckling is not checked.${netAreaWarning}`
+      ? `Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; change it if the actual connection differs. Flexural-torsional buckling is not checked.${netAreaWarning}`
       : memberType === "pfc"
         ? `PFC quick check uses catalogue A<sub>g</sub> and r<sub>min</sub> for centroidal axial load only. Check axis-specific buckling, torsional/flexural-torsional buckling and connection eccentricity separately.${netAreaWarning}`
         : `Confirm rod product grade, &alpha;<sub>b</sub> to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
+    <div><b>Design input status</b><code>&alpha;<sub>b</sub>, A<sub>n</sub> and k<sub>t</sub> are connection- and axis-dependent design inputs; confirm them from AS 4100 and project details before issue</code></div>
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>min</sub> = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
-    <div><b>Gross-section yielding - 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = ${fixed(grossYield)} kN</code></div>
+    <div><b>Gross-section yielding - 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(grossYield)} kN</code></div>
     <div><b>Net-section fracture - 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${grade.fu} / 1000 = ${fixed(netFracture)} kN</code></div>
     <div><b>Design tension capacity - 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
     <div><b>Nominal slenderness</b><code>&lambda;<sub>n</sub> = (L<sub>e</sub>/r) &radic;k<sub>f</sub> &radic;(f<sub>y</sub>/250) = ${lambdaN.toFixed(1)}</code></div>
     <div><b>Modified slenderness</b><code>&lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub> = ${modifiedLambda.toFixed(1)}; &alpha;<sub>a</sub> = ${alphaA.toFixed(2)}</code></div>
-    <div><b>Section capacity - 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>g</sub>f<sub>y</sub> = ${fixed(sectionCompression)} kN</code></div>
+    <div><b>Member reduction - 6.3.3</b><code>&eta; = 0.00326(&lambda; - 13.5) = ${eta.toFixed(3)}; &xi; = ${xi.toFixed(3)}; &alpha;<sub>c</sub> = ${alphaC.toFixed(3)}</code></div>
+    <div><b>Section capacity - 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>g</sub>f<sub>y</sub> = 0.90 x ${grade.kf.toFixed(3)} x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(sectionCompression)} kN</code></div>
     <div><b>Member capacity - 6.3</b><code>&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN</code></div>`;
 }
 

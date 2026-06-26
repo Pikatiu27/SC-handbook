@@ -77,6 +77,14 @@ Source priority:
 
 Online sources must only be used when the local reference set does not contain the required information, or when an online source is needed to verify currency, errata, or publication status.
 
+Source gaps must be reported, not hidden:
+
+- If the governing standard clause, table, figure, manufacturer table, or design handbook passage cannot be found or read, stop treating that formula or value as checked.
+- Tell the user exactly what could not be verified, which reference locations were checked, and what engineering decision is blocked.
+- Mark the item as `Source_Not_Verified` until the missing source is supplied or a credible replacement source is accepted.
+- Do not describe an item as `Checked`, issue-ready, standards-verified, or safe to push as a verified calculator when its source basis is unresolved.
+- A source-unverified item may remain in the page only as a clearly labelled draft, placeholder, warning, or out-of-scope note.
+
 Each source record should include:
 
 - `Ref_ID`
@@ -97,6 +105,7 @@ Use `Status` values:
 
 - `Draft`
 - `Checked`
+- `Source_Not_Verified`
 - `Superseded`
 - `Do_Not_Use`
 
@@ -683,13 +692,21 @@ Formula basis:
 
 | Result | Formula basis |
 | --- | --- |
-| Thread in shear, `phiVf` | `phi * 0.62 * fuf * kr * Ac / 1000` |
-| Shank in shear, `phiVf` | `phi * 0.62 * fuf * Ao / 1000` |
+| Bolt in shear, `phiVf` | `phi * 0.62 * fuf * krd * kr * (nn * Ac + nx * Ao) / 1000` |
+| Single N shear plane, `phiVf` | `phi * 0.62 * fuf * krd * kr * Ac / 1000` |
+| Single X shear plane, `phiVf` | `phi * 0.62 * fuf * 1.0 * kr * Ao / 1000` |
 | Tension, `phiNtf` | `phi * As * fuf / 1000` |
 | Slip, `phiVsf` | `phi * mu * nei * Nti * kh` |
 | Bearing, no edge limit, `phiVb` | `phi * 3.2 * df * tp * fup / 1000` |
 | Bearing, edge limit, `phiVb` | `phi * ae * tp * fup / 1000` |
 | Governing bearing capacity | `MIN(bearing_no_edge_limit, bearing_edge_limit)` |
+
+Bolt shear reduction notation must be explicit:
+
+- `k_rd = 1.0` for grade 4.6 and grade 8.8 bolts.
+- `k_rd = 1.0` for grade 10.9 bolts where threads do not intercept the shear plane.
+- `k_rd = 0.83` for grade 10.9 bolts where threads intercept the shear plane.
+- For a bolt-group expression with both `nn` and `nx` entered, apply `k_rd` to the AS 4100 parenthesised shear expression shown above, not independently to only one displayed term.
 
 Edge-distance notation must be explicit:
 
@@ -987,6 +1004,7 @@ Current member calculators:
 
 - `CHS`
 - `Equal Angle`
+- `PFC`
 - `Rod`
 
 Member checks should include, where applicable:
@@ -1011,6 +1029,13 @@ Use standard language:
 - `Capacity factor`
 
 For product dimensions and section properties, use Australian manufacturer data where possible, such as OneSteel / InfraBuild / Austube / Orrcon catalogues. Manufacturer data can define product availability and section properties, but design equations still need to trace back to AS 4100 or another governing standard.
+
+Connection- and axis-dependent terms must stay explicit:
+
+- Do not auto-hide `alpha_b` for Equal Angle, PFC, or Rod checks; it must be confirmed against AS 4100 Table 6.3.3 for the actual member, axis, and fabrication condition.
+- Do not imply `A_n` is known from the catalogue section alone; it must come from the actual connection net section.
+- Use `k_t = 0.85` as the Equal Angle default only for the applicable eccentrically connected equal-angle condition. Keep it editable and state that it must be confirmed to AS 4100 Clause 7.3 / Table 7.3.2.
+- Use `k_t = 1.0` only where force distribution is uniform or the governing source justifies it.
 
 Do not imply the member tab is a full steel design engine unless all required limit states are implemented. State exclusions clearly, for example:
 
@@ -1061,6 +1086,7 @@ Rules before committing:
 - If the diff contains unrelated or unfinished work, do not commit it.
 - Only `git add` the files that belong to the accepted change.
 - Do not push experimental tabs, draft calculators, or unverified standard formulas.
+- If any formula, factor, table value, symbol convention, or product property is `Source_Not_Verified`, report the gap to the user before commit/push and keep it out of any verified calculator release unless the user explicitly accepts it as draft or placeholder content.
 - In this chat, deploy only reviewed `Bolt Capacity`, `Member Capacity`, and accepted global framework changes.
 
 Rules after pushing:
