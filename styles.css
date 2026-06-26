@@ -173,6 +173,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .section-heading > span { color: var(--muted); font-size: var(--fs-xs); font-weight: 650; text-transform: uppercase; letter-spacing: .08em; }
 .section-tag { padding: 4px 7px; border-radius: 4px; color: #fff; background: var(--green); font-size: var(--fs-xs); line-height: 1; font-weight: 900; letter-spacing: .08em; }
 .capacity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.member-results { grid-template-columns: 1.32fr .92fr .92fr; }
 .capacity-card { min-width: 0; border: 1px solid var(--line); border-top: 3px solid var(--green); border-radius: 11px; padding: 14px; background: rgba(255,255,255,.88); }
 .capacity-card > span { color: #46534c; font-size: var(--fs-sm); font-weight: 700; }
 .capacity-card strong { display: block; margin: 5px 0 3px; font-size: var(--fs-result); line-height: 1.08; font-weight: 900; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
