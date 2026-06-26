@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260626g">
+  <link rel="stylesheet" href="styles.css?v=20260626h">
 </head>
 <body>
   <header class="topbar">
@@ -277,14 +277,14 @@
 
           <div class="concrete-input-row concrete-row-material">
             <label><span>Nominal cover, c<sub>nom</sub></span><span class="unit"><input id="concreteCover" type="number" min="0" step="5" value="40"><em>mm</em></span></label>
-            <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" step="1" value="32"><em>MPa</em></span></label>
-            <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.75"></label>
+            <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" max="100" step="1" value="32"><em>MPa</em></span></label>
+            <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.85" readonly></label>
           </div>
 
           <div class="concrete-input-row concrete-row-analysis">
-            <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.01" value="0.85"></label>
-            <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.01" value="0.80"></label>
-            <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030"></label>
+            <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
+            <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
+            <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
             <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
           </div>
         </div>
@@ -305,7 +305,7 @@
         </section>
 
         <section class="concrete-visual-grid">
-          <article class="concrete-visual-card"><div class="section-heading"><div><span class="section-tag">CANVAS</span><h2>Pad and reinforcement layout</h2></div><span id="concreteDirectionLabel">relative positions</span></div><div class="concrete-canvas-wrap"><canvas id="concreteLayoutCanvas" aria-label="Concrete pad and reinforcement layout"></canvas></div><div id="concreteLayoutLegend" class="concrete-layout-legend"></div></article>
+          <article class="concrete-visual-card"><div class="section-heading"><div><span class="section-tag">CANVAS</span><h2>Pad and reinforcement layout</h2></div><span id="concreteDirectionLabel">relative positions</span></div><div class="concrete-canvas-wrap"><canvas id="concreteLayoutCanvas" aria-label="Concrete pad and reinforcement layout"></canvas></div><details id="concreteLayoutLegend" class="concrete-layout-legend"><summary><span><b>Layout legend</b><small id="concreteLayoutLegendSummary">section and active mats</small></span><i>+</i></summary><div id="concreteLayoutLegendBody" class="concrete-layout-legend-body"></div></details></article>
         </section>
 
         <section class="capacity-section" aria-live="polite">
@@ -322,7 +322,7 @@
 
       <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed section checks</b></span><small>Reinforcement mat strains, stresses, forces and force-equilibrium residual</small></span><i>+</i></summary><div class="detail-body"><section><h3>Reinforcement mat results</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation steps</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
 
-      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 3600 section theory and pad design boundary</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Primary basis</b> - reinforced concrete ultimate flexural section analysis using AS 3600-style rectangular stress-block section theory. Stress-block factors, ultimate strain, ductility limits and capacity factor must be checked against the licensed current Standard before issue for design.</p><p><b>Reinforcement basis</b> - Australian N bar designations are used for common deformed reinforcing bars to AS/NZS 4671. Verify actual product grade, ductility class, diameter and availability from the supplier certificate or product schedule.</p><p><b>Section theory</b> - plane sections remain plane; strain is linear; concrete tension is ignored at ultimate; steel stress is calculated from strain and capped at yield.</p><p><b>Neutral axis</b> - x is measured from the selected compression face and solved by axial force equilibrium for pure bending with N<sup>*</sup> = 0.</p></div><div class="source-notes"><p><b>Scope</b> - rectangular pad strip only, normally b = 1000 mm for per-metre capacity. This is not a full footing design.</p><p><b>Plain concrete</b> - if no reinforcement mat is active, this tool does not calculate an RC ultimate moment capacity. Use a separate plain-concrete or cracking check to AS 3600 where applicable.</p><p><b>Excluded checks</b> - punching shear, one-way shear, base-plate or column bearing, soil bearing, development length, anchorage, bar spacing, crack control, deflection and load combinations.</p><p><b>Pad-on-pad</b> - do not rely on the combined depth unless composite action and interface shear transfer have been separately designed and documented.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 3600 section theory and pad design boundary</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Primary basis</b> - reinforced concrete ultimate flexural section analysis using AS 3600-style rectangular stress-block section theory. Stress-block factors, ultimate strain, ductility limits and capacity factor must be checked against the licensed current Standard before issue for design.</p><p><b>Stress block</b> - &alpha;<sub>2</sub> and &gamma; are calculated from f'<sub>c</sub> using &alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) and &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67). The f'<sub>c</sub> input is limited to 20 to 100 MPa for this quick check.</p><p><b>Capacity factor</b> - for N-class reinforcement in pure bending, this tool calculates &phi; from k<sub>uo</sub> using the AS 3600-style expression &phi; = 1.24 - 13k<sub>uo</sub>/12, limited to 0.65 to 0.85. Compression-dominant axial-load cases are not implemented.</p><p><b>Reinforcement basis</b> - Australian N bar designations are used for common deformed reinforcing bars to AS/NZS 4671. Verify actual product grade, ductility class, diameter and availability from the supplier certificate or product schedule.</p><p><b>Section theory</b> - plane sections remain plane; strain is linear; concrete tension is ignored at ultimate; ultimate concrete strain is fixed at &epsilon;<sub>cu</sub> = 0.0030; steel stress is calculated from strain and capped at yield.</p><p><b>Neutral axis</b> - x is measured from the selected compression face and solved by axial force equilibrium for pure bending with N<sup>*</sup> = 0.</p></div><div class="source-notes"><p><b>Scope</b> - rectangular pad strip only, normally b = 1000 mm for per-metre capacity. This is not a full footing design.</p><p><b>Plain concrete</b> - if no reinforcement mat is active, this tool does not calculate an RC ultimate moment capacity. Use a separate plain-concrete or cracking check to AS 3600 where applicable.</p><p><b>Excluded checks</b> - punching shear, one-way shear, base-plate or column bearing, soil bearing, development length, anchorage, bar spacing, crack control, deflection and load combinations.</p><p><b>Pad-on-pad</b> - do not rely on the combined depth unless composite action and interface shear transfer have been separately designed and documented.</p></div></div></details>
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
@@ -411,6 +411,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js"></script>
+  <script src="app.js?v=20260626h"></script>
 </body>
 </html>
