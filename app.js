@@ -514,7 +514,7 @@ function calculateMember() {
     <div><b>Member capacity - 6.3</b><code>&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN</code></div>`;
 }
 
-function concreteLayer(index, depth, direction) {
+function concreteLayer(index, depth, direction, width) {
   const active = $(`layer${index}Active`).checked;
   const yTop = value(`layer${index}Y`);
   const product = concreteBarProduct(index);
@@ -522,7 +522,9 @@ function concreteLayer(index, depth, direction) {
   const spacing = value(`layer${index}Spacing`);
   const fsy = value(`layer${index}Fsy`) || product.fsy;
   const es = value(`layer${index}Es`);
-  const area = spacing > 0 ? Math.PI * bar ** 2 / 4 * 1000 / spacing : 0;
+  const barArea = Math.PI * bar ** 2 / 4;
+  const areaPerMetre = spacing > 0 ? barArea * 1000 / spacing : 0;
+  const area = spacing > 0 ? barArea * width / spacing : 0;
   return {
     index,
     name: index === 1 ? "Pad / upper pad top mat" : index === 2 ? "Pad / upper pad bottom mat" : index === 3 ? "Lower pad top mat" : "Lower pad bottom mat",
@@ -533,6 +535,8 @@ function concreteLayer(index, depth, direction) {
     designation: product.designation,
     legacy: product.legacy,
     spacing,
+    barArea,
+    areaPerMetre,
     fsy,
     es,
     area
@@ -648,7 +652,8 @@ function solveConcreteSection(data) {
     .reduce((current, layer) => !current || layer.d > current.d ? layer : current, null);
   const d0 = extremeTensionLayer ? extremeTensionLayer.d : Math.max(...state.layers.map(layer => layer.d));
   const kuo = d0 > 0 ? x / d0 : 0;
-  const phi = Math.max(0.65, Math.min(0.85, 1.24 - 13 * kuo / 12));
+  const hasLegacyReinforcement = state.layers.some(layer => layer.legacy);
+  const phi = hasLegacyReinforcement ? 0.65 : Math.max(0.65, Math.min(0.85, 1.24 - 13 * kuo / 12));
   return { ok: true, x, d0, kuo, phi, muo, phiMuo: phi * muo, ...state };
 }
 
@@ -786,6 +791,7 @@ function calculateConcrete() {
   const depth = topDepth + bottomDepth;
   const direction = $("concreteDirection").value;
   const cover = value("concreteCover");
+  const width = value("concreteWidth");
   const fcInput = value("concreteFc");
   const fc = Math.min(100, Math.max(20, fcInput));
   if (fc !== fcInput) $("concreteFc").value = fixed(fc);
@@ -797,7 +803,7 @@ function calculateConcrete() {
   updateConcreteMatDepths(topDepth, bottomDepth, cover);
   const data = {
     direction,
-    width: value("concreteWidth"),
+    width,
     depth,
     topDepth,
     bottomDepth,
@@ -807,7 +813,7 @@ function calculateConcrete() {
     gamma: stressBlock.gamma,
     ecu,
     composite: $("concreteComposite").value,
-    layers: [1, 2, 3, 4].map(index => concreteLayer(index, depth, direction)).filter(layer => layer.active && layer.area > 0 && layer.yTop >= 0 && layer.yTop <= depth)
+    layers: [1, 2, 3, 4].map(index => concreteLayer(index, depth, direction, width)).filter(layer => layer.active && layer.area > 0 && layer.yTop >= 0 && layer.yTop <= depth)
   };
   const bottomMatWithoutDepth = bottomDepth <= 0 && ($("layer3Active").checked || $("layer4Active").checked);
 
@@ -822,7 +828,7 @@ function calculateConcrete() {
   $("concreteSummaryNote").textContent = data.composite === "yes" ? "Composite action marked as separately confirmed." : "Pad-on-pad composite action not confirmed; do not rely on combined depth without interface design.";
   const legacyLayers = data.layers.filter(layer => layer.legacy);
   $("concretePhiNote").textContent = legacyLayers.length
-    ? "Capacity factor uses AS 3600-style pure bending k_uo; verify legacy Y-bar ductility and material grade."
+    ? "Legacy Y bar selected: conservative capacity factor phi = 0.65 is used unless N-class equivalence is verified."
     : "Capacity factor calculated from AS 3600-style pure bending k_uo for N-class reinforcement.";
 
   if (!result.ok) {
@@ -852,8 +858,8 @@ function calculateConcrete() {
 
   $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
   $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;
-  $("concreteMuoValue").textContent = `${fixed(result.muo)} kNm/m`;
-  $("concretePhiMuoValue").textContent = `${fixed(result.phiMuo)} kNm/m`;
+  $("concreteMuoValue").textContent = `${fixed(result.muo)} kNm`;
+  $("concretePhiMuoValue").textContent = `${fixed(result.phiMuo)} kNm`;
   $("concreteStatusValue").textContent = residualOk ? "Solved" : "Check residual";
   $("concreteNa").textContent = fixed(result.x);
   $("concreteMuo").textContent = fixed(result.muo);
@@ -867,22 +873,22 @@ function calculateConcrete() {
     const status = Math.abs(layer.strain) < 0.00005 ? "Near neutral axis" : layer.force > 0 ? "Compression" : "Tension";
     const coverStatus = layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2 ? "cover check required" : "cover reference OK";
     const displacementNote = layer.displacedConcreteStress > 0 ? `; net stress = ${signedFixed(layer.netStress, 1)} MPa after displaced concrete` : "";
-    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${layer.designation} @ ${fixed(layer.spacing)}; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2/m; ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN/m</small></article>`;
+    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${layer.designation} @ ${fixed(layer.spacing)}; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2 per strip (${fixed(layer.areaPerMetre)} mm2/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
   }).join("");
 
   $("concreteFormulaSteps").innerHTML = `
     <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
     <div><b>Pad geometry</b><code>D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; bottom pad mats require D_bot > 0</code></div>
     <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface</code></div>
-    <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar</sub> x 1000 / spacing, using nominal bar diameter; N bars default to f<sub>sy</sub> = 500 MPa and legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten</code></div>
+    <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar</sub> x b / spacing, using nominal bar diameter; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten</code></div>
     <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
     <div><b>Concrete block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
     <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
     <div><b>Steel stress</b><code>f<sub>si</sub> = E<sub>s</sub>&epsilon;<sub>si</sub>, capped at +/- f<sub>sy</sub>; for a bar inside the rectangular concrete block, F<sub>si</sub> = A<sub>si</sub>(f<sub>si</sub> - &alpha;<sub>2</sub>f'<sub>c</sub>) to avoid double-counting displaced concrete</code></div>
     <div><b>Force equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual</code></div>
-    <div><b>Nominal moment</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm/m</code></div>
-    <div><b>Capacity factor</b><code>k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85) = ${result.phi.toFixed(2)}</code></div>
-    <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm/m; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>`;
+    <div><b>Nominal moment</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
+    <div><b>Capacity factor</b><code>${legacyLayers.length ? `Legacy Y bar selected: &phi; = 0.65 unless N-class equivalence is verified` : `k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
+    <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>`;
 }
 
 function setPrimaryPlane() {
