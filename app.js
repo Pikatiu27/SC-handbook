@@ -665,8 +665,8 @@ function renderConcreteSectionLayout(data) {
   if (!canvas || !legend) return;
 
   const wrap = canvas.parentElement;
-  const cssW = Math.max(560, Math.round(wrap.clientWidth || 720));
-  const cssH = cssW < 680 ? 340 : 360;
+  const cssW = Math.max(320, Math.round(wrap.clientWidth || 520));
+  const cssH = cssW < 420 ? 170 : 180;
   const dpr = window.devicePixelRatio || 1;
   canvas.style.width = "100%";
   canvas.style.height = `${cssH}px`;
@@ -686,11 +686,11 @@ function renderConcreteSectionLayout(data) {
     return;
   }
 
-  const compact = cssW < 680;
-  const x0 = compact ? 118 : 165;
-  const y0 = 38;
-  const secW = compact ? Math.min(330, cssW - 190) : 330;
-  const secH = cssH - 86;
+  const compact = cssW < 480;
+  const x0 = compact ? 82 : 118;
+  const y0 = 26;
+  const secW = compact ? Math.max(115, cssW - 172) : Math.min(270, cssW - 210);
+  const secH = cssH - 58;
   const yScale = y => y0 + y / data.depth * secH;
   const barXs = [x0 + secW * 0.25, x0 + secW * 0.50, x0 + secW * 0.75];
   const coverYs = [
@@ -726,7 +726,7 @@ function renderConcreteSectionLayout(data) {
     ctx.strokeStyle = "#d49250";
     ctx.lineWidth = 2;
     drawDashedLine(ctx, x0, interfaceY, x0 + secW, interfaceY, [8, 5]);
-    drawText(ctx, "pad interface", x0 + secW + 18, interfaceY + 4, { size: 12, weight: 800, fill: "#6f6256" });
+    drawText(ctx, "pad interface", x0 + secW + 12, interfaceY + 4, { size: 10, weight: 800, fill: "#6f6256" });
   }
 
   data.layers.forEach(layer => {
@@ -739,22 +739,22 @@ function renderConcreteSectionLayout(data) {
     ctx.lineWidth = 2;
     barXs.forEach(x => {
       ctx.beginPath();
-      ctx.arc(x, y, 8, 0, Math.PI * 2);
+      ctx.arc(x, y, compact ? 5 : 6, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
     });
-    drawText(ctx, `Mat ${layer.index}`, x0 - 16, y + 4, { size: 12, weight: 800, align: "right" });
+    drawText(ctx, `Mat ${layer.index}`, x0 - 10, y + 3, { size: 10, weight: 800, align: "right" });
   });
 
   ctx.strokeStyle = "#51645b";
   ctx.lineWidth = 1.5;
-  drawDashedLine(ctx, x0 - 48, y0, x0 - 48, y0 + secH, [3, 5]);
-  drawText(ctx, `D = ${fixed(data.depth)} mm`, x0 - 62, y0 + secH / 2, { size: 12, weight: 800, align: "right", baseline: "middle" });
-  drawText(ctx, "top face", x0, y0 - 14, { size: 13, weight: 900 });
-  drawText(ctx, "bottom face", x0, y0 + secH + 24, { size: 13, weight: 900 });
+  drawDashedLine(ctx, x0 - 34, y0, x0 - 34, y0 + secH, [3, 5]);
+  drawText(ctx, `D = ${fixed(data.depth)} mm`, x0 - 44, y0 + secH / 2, { size: 10, weight: 800, align: "right", baseline: "middle" });
+  drawText(ctx, "top face", x0, y0 - 9, { size: 11, weight: 900 });
+  drawText(ctx, "bottom face", x0, y0 + secH + 18, { size: 11, weight: 900 });
 
   if (!data.layers.length) {
-    drawText(ctx, "No active reinforcement mat", x0 + secW + 26, y0 + 30, { size: 12, weight: 800, fill: "#67756f" });
+    drawText(ctx, "No active reinforcement mat", x0 + secW + 14, y0 + 24, { size: 10, weight: 800, fill: "#67756f" });
   }
 
   const rows = data.layers.map(layer => `
@@ -951,6 +951,9 @@ function initialise() {
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {
     if (!$("concretePanel").hidden) calculateConcrete();
+  });
+  document.querySelector(".concrete-layout-details").addEventListener("toggle", event => {
+    if (event.target.open) calculateConcrete();
   });
   $("beamSection").addEventListener("change", populateBeamGrades);
   $("beamGrade").addEventListener("change", calculateBeam);
