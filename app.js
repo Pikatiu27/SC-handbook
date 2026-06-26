@@ -54,12 +54,12 @@ const weldTypeData = {
 };
 const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldKr", "weldDemand", "weldParentThickness", "weldParentGrade"];
 const concreteInputIds = [
-  "concreteDirection", "concreteWidth", "concreteDepth", "concreteCover", "concreteFc", "concretePhi",
+  "concreteDirection", "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concretePhi",
   "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteComposite",
-  "layer1Active", "layer1Y", "layer1Bar", "layer1Spacing", "layer1Fsy", "layer1Es",
-  "layer2Active", "layer2Y", "layer2Bar", "layer2Spacing", "layer2Fsy", "layer2Es",
-  "layer3Active", "layer3Y", "layer3Bar", "layer3Spacing", "layer3Fsy", "layer3Es",
-  "layer4Active", "layer4Y", "layer4Bar", "layer4Spacing", "layer4Fsy", "layer4Es"
+  "layer1Active", "layer1Auto", "layer1Y", "layer1Bar", "layer1Spacing", "layer1Fsy", "layer1Es",
+  "layer2Active", "layer2Auto", "layer2Y", "layer2Bar", "layer2Spacing", "layer2Fsy", "layer2Es",
+  "layer3Active", "layer3Auto", "layer3Y", "layer3Bar", "layer3Spacing", "layer3Fsy", "layer3Es",
+  "layer4Active", "layer4Auto", "layer4Y", "layer4Bar", "layer4Spacing", "layer4Fsy", "layer4Es"
 ];
 
 const ubSections = [
@@ -509,6 +509,28 @@ function concreteLayer(index, depth, direction) {
   };
 }
 
+function concreteAutoDepth(index, topDepth, bottomDepth, cover, bar) {
+  const radius = bar / 2;
+  const totalDepth = topDepth + bottomDepth;
+  if (index === 1) return cover + radius;
+  if (index === 2) return Math.max(0, topDepth - cover - radius);
+  if (bottomDepth <= 0) return totalDepth + cover + radius;
+  if (index === 3) return topDepth + cover + radius;
+  return Math.max(0, totalDepth - cover - radius);
+}
+
+function updateConcreteMatDepths(topDepth, bottomDepth, cover) {
+  [1, 2, 3, 4].forEach(index => {
+    const auto = $(`layer${index}Auto`).checked;
+    const yInput = $(`layer${index}Y`);
+    yInput.readOnly = auto;
+    if (!auto) return;
+    const bar = value(`layer${index}Bar`);
+    const y = concreteAutoDepth(index, topDepth, bottomDepth, cover, bar);
+    yInput.value = fixed(Math.max(0, y));
+  });
+}
+
 function concreteForcesAtX(x, data) {
   const blockDepth = Math.min(data.depth, data.gamma * x);
   const cc = data.alpha2 * data.fc * data.width * blockDepth;
@@ -579,11 +601,16 @@ function renderConcreteSectionSvg(data, result) {
   const blockY = blockTop;
   const blockH = Math.max(1, result.blockDepth / data.depth * secH);
   const naY = data.direction === "top" ? yScale(result.x) : yScale(data.depth - result.x);
-  const topCoverY = yScale(Math.min(data.depth, data.cover));
-  const bottomCoverY = yScale(Math.max(0, data.depth - data.cover));
-  const interfaceY = yScale(data.depth * 0.45);
-  const interfaceLine = data.composite === "no"
-    ? `<line class="warn-line" x1="${x0}" y1="${interfaceY}" x2="${x0 + secW}" y2="${interfaceY}"></line><text x="${x0 + secW + 12}" y="${interfaceY + 4}" class="small-label">interface not verified</text>`
+  const coverYs = [
+    data.topDepth > 0 ? data.cover : null,
+    data.topDepth > 0 ? data.topDepth - data.cover : null,
+    data.bottomDepth > 0 ? data.topDepth + data.cover : null,
+    data.bottomDepth > 0 ? data.depth - data.cover : null
+  ].filter(y => y !== null && y >= 0 && y <= data.depth).map(yScale);
+  const coverLines = coverYs.map(y => `<line class="cover-line" x1="${x0}" y1="${y}" x2="${x0 + secW}" y2="${y}"></line>`).join("");
+  const interfaceY = yScale(data.topDepth);
+  const interfaceLine = data.bottomDepth > 0
+    ? `<line class="warn-line" x1="${x0}" y1="${interfaceY}" x2="${x0 + secW}" y2="${interfaceY}"></line><text x="${x0 + secW + 12}" y="${interfaceY + 4}" class="small-label">${data.composite === "yes" ? "pad interface" : "interface not verified"}</text>`
     : "";
   const layerSvg = result.layers.map(layer => {
     const y = yScale(layer.yTop);
@@ -608,8 +635,7 @@ function renderConcreteSectionSvg(data, result) {
       <defs><marker id="arrowHead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34423b"></path></marker></defs>
       <rect class="section-outline" x="${x0}" y="${y0}" width="${secW}" height="${secH}" rx="2"></rect>
       <rect class="compression-zone" x="${x0}" y="${blockY}" width="${secW}" height="${blockH}"></rect>
-      <line class="cover-line" x1="${x0}" y1="${topCoverY}" x2="${x0 + secW}" y2="${topCoverY}"></line>
-      <line class="cover-line" x1="${x0}" y1="${bottomCoverY}" x2="${x0 + secW}" y2="${bottomCoverY}"></line>
+      ${coverLines}
       <line class="neutral-axis" x1="${x0 - 22}" y1="${naY}" x2="${x0 + secW + 22}" y2="${naY}"></line>
       ${interfaceLine}
       <line class="force-arrow" x1="${x0 + secW + 92}" y1="${data.direction === "top" ? blockY + blockH / 2 : blockY + blockH / 2}" x2="${x0 + secW + 22}" y2="${blockY + blockH / 2}"></line>
@@ -618,7 +644,7 @@ function renderConcreteSectionSvg(data, result) {
       ${layerSvg}
       <text x="${x0}" y="${y0 - 12}" class="strong-label">${data.direction === "top" ? "compression face" : "tension face"}</text>
       <text x="${x0}" y="${y0 + secH + 22}" class="strong-label">${data.direction === "top" ? "tension face" : "compression face"}</text>
-      <text x="${x0 + secW + 12}" y="${topCoverY - 5}" class="small-label">c_nom = ${fixed(data.cover)} mm</text>
+      <text x="${x0 + secW + 12}" y="${coverYs[0] ? coverYs[0] - 5 : y0 + 12}" class="small-label">c_nom = ${fixed(data.cover)} mm</text>
       <text x="${x0 + secW + 12}" y="${naY - 6}" class="strong-label">neutral axis</text>
       <text x="${x0 + secW + 12}" y="${naY + 10}" class="small-label">x = ${fixed(result.x)} mm</text>
     </svg>`;
@@ -649,13 +675,19 @@ function renderConcreteSectionSvg(data, result) {
 }
 
 function calculateConcrete() {
-  const depth = value("concreteDepth");
+  const topDepth = value("concreteTopDepth");
+  const bottomDepth = value("concreteBottomDepth");
+  const depth = topDepth + bottomDepth;
   const direction = $("concreteDirection").value;
+  const cover = value("concreteCover");
+  updateConcreteMatDepths(topDepth, bottomDepth, cover);
   const data = {
     direction,
     width: value("concreteWidth"),
     depth,
-    cover: value("concreteCover"),
+    topDepth,
+    bottomDepth,
+    cover,
     fc: value("concreteFc"),
     phi: Math.min(1, Math.max(0.1, value("concretePhi"))),
     alpha2: Math.min(1, Math.max(0.1, value("concreteAlpha2"))),
@@ -664,6 +696,7 @@ function calculateConcrete() {
     composite: $("concreteComposite").value,
     layers: [1, 2, 3, 4].map(index => concreteLayer(index, depth, direction)).filter(layer => layer.active && layer.area > 0 && layer.yTop >= 0 && layer.yTop <= depth)
   };
+  const bottomMatWithoutDepth = bottomDepth <= 0 && ($("layer3Active").checked || $("layer4Active").checked);
 
   let result = { ok: false, message: "Plain concrete section: no RC ultimate flexural capacity is calculated without active reinforcement mats" };
   if (data.width > 0 && data.depth > 0 && data.fc > 0 && data.ecu > 0 && data.layers.length) {
@@ -672,7 +705,7 @@ function calculateConcrete() {
 
   renderConcreteSectionSvg(data, result);
   $("concreteDirectionLabel").textContent = direction === "top" ? "top face in compression" : "bottom face in compression";
-  $("concreteSummaryTitle").textContent = `${fixed(data.width)} x ${fixed(data.depth)} mm strip - ${direction === "top" ? "top" : "bottom"} face in compression`;
+  $("concreteSummaryTitle").textContent = `${fixed(data.width)} mm strip; D_top ${fixed(data.topDepth)} + D_bot ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`;
   $("concreteSummaryNote").textContent = data.composite === "yes" ? "Composite action marked as separately confirmed." : "Pad-on-pad composite action not confirmed; do not rely on combined depth without interface design.";
   $("concretePhiNote").textContent = `phi = ${data.phi.toFixed(2)} entered by user; verify ductility and capacity factor to AS 3600.`;
 
@@ -693,9 +726,10 @@ function calculateConcrete() {
   const coverNote = coverWarnings.length
     ? ` Cover warning: ${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} centroid is inside c_nom + db/2.`
     : "";
+  const bottomPadNote = bottomMatWithoutDepth ? " Bottom pad reinforcement is active but D_bot is zero; enter a bottom pad depth or turn those mats off." : "";
   const warningText = (data.composite === "yes"
     ? "Moment section capacity only. Composite action is user-confirmed outside this calculator; still check punching shear, one-way shear, bearing, development length and crack control separately."
-    : "Moment section capacity only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, one-way shear, bearing, development length and crack control are excluded.") + coverNote;
+    : "Moment section capacity only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, one-way shear, bearing, development length and crack control are excluded.") + coverNote + bottomPadNote;
 
   $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
   $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;
@@ -706,8 +740,8 @@ function calculateConcrete() {
   $("concreteMuo").textContent = fixed(result.muo);
   $("concretePhiMuo").textContent = fixed(result.phiMuo);
   $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
-  $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk && !coverWarnings.length ? "SOLVED" : "CHECK";
-  $("concreteWarningStatus").className = data.composite === "yes" && residualOk && !coverWarnings.length ? "pass" : "fail";
+  $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth ? "SOLVED" : "CHECK";
+  $("concreteWarningStatus").className = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth ? "pass" : "fail";
   $("concreteWarningText").textContent = warningText;
 
   $("concreteLayerResults").innerHTML = result.layers.map(layer => {
@@ -718,7 +752,8 @@ function calculateConcrete() {
 
   $("concreteFormulaSteps").innerHTML = `
     <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
-    <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown on the diagram; bar centroids should normally sit outside c_nom + d_b/2 from the relevant concrete surface</code></div>
+    <div><b>Pad geometry</b><code>D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; bottom pad mats require D_bot > 0</code></div>
+    <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface</code></div>
     <div><b>Concrete block</b><code>C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub> b &gamma;x = ${data.alpha2.toFixed(2)} x ${fixed(data.fc)} x ${fixed(data.width)} x ${data.gamma.toFixed(2)} x ${fixed(result.x)} = ${fixed(result.cc / 1000)} kN</code></div>
     <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
     <div><b>Steel stress</b><code>f<sub>si</sub> = E<sub>s</sub>&epsilon;<sub>si</sub>, capped at +/- f<sub>sy</sub> for each active layer</code></div>
