@@ -108,15 +108,115 @@
         <div class="symbol-key" aria-label="AS 4100 weld symbols"><span><b>s</b> fillet weld leg size</span><span><b>t<sub>t</sub></b> design throat thickness</span><span><b>a<sub>w</sub></b> specified butt-weld throat</span><span><b>l<sub>w</sub></b> effective weld length</span><span><b>f<sub>uw</sub></b> nominal tensile strength of weld metal</span></div>
 
         <details class="weld-legend-card">
-          <summary><span><b>Weld symbol legend</b><small>Australian-focused reference image; confirm final symbols to AS 1101.3 and project drawings</small></span><i>+</i></summary>
+          <summary><span><b>Weld symbol legend</b><small>Source-based SVG redraw; confirm final symbols to AS 1101.3 and project drawings</small></span><i>+</i></summary>
           <section class="weld-figure-section" aria-label="Weld symbol legend examples">
-            <article class="weld-figure-card weld-image-card">
-              <figure class="weld-source-figure">
-                <img src="https://www.structuraldrafter.com/img/Weld-Symbols.png" alt="Weld symbols commonly used in Australia, including basic, supplementary and complete weld callout examples">
-                <figcaption>Source image: Structural Drafter, Weld Symbols - CAD file.</figcaption>
-              </figure>
-              <div><strong>Australian weld-symbol reference</strong><small>Shows commonly used weld symbols and a complete callout example. Use it as a visual guide only; formal drawing symbols, arrow-side/other-side convention and inspection notes remain governed by AS 1101.3, AS/NZS 1554.1 and the project drawing standard.</small><a class="source-link" href="https://www.structuraldrafter.com/weld-symbols-cad-file.html" target="_blank" rel="noopener">Open source page</a></div>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgArrowSideTitle">
+                <title id="weldSvgArrowSideTitle">Fillet weld symbol below reference line for arrow side</title>
+                <line class="svg-line" x1="55" y1="48" x2="188" y2="48"></line>
+                <line class="svg-line" x1="55" y1="48" x2="25" y2="82"></line>
+                <path class="svg-arrow" d="M25 82 L35 78 L31 69 Z"></path>
+                <path class="svg-weld-mark" d="M96 48 L126 48 L96 70 Z"></path>
+                <text x="76" y="66">6</text>
+                <text class="svg-caption" x="55" y="96">symbol below reference line</text>
+              </svg>
+              <div><strong>Fillet weld - arrow side</strong><small>AS 1101.3 Cl. 2.3.2.1: place the weld symbol on the side of the reference line towards the reader.</small></div>
             </article>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgOtherSideTitle">
+                <title id="weldSvgOtherSideTitle">Fillet weld symbol above reference line for other side</title>
+                <line class="svg-line" x1="55" y1="64" x2="188" y2="64"></line>
+                <line class="svg-line" x1="55" y1="64" x2="25" y2="92"></line>
+                <path class="svg-arrow" d="M25 92 L35 88 L31 79 Z"></path>
+                <path class="svg-weld-mark" d="M96 64 L126 64 L96 42 Z"></path>
+                <text x="76" y="51">6</text>
+                <text class="svg-caption" x="55" y="18">symbol above reference line</text>
+              </svg>
+              <div><strong>Fillet weld - other side</strong><small>AS 1101.3 Cl. 2.3.2.2: place the weld symbol on the side of the reference line away from the reader.</small></div>
+            </article>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgBothSidesTitle">
+                <title id="weldSvgBothSidesTitle">Fillet weld symbols above and below reference line for both sides</title>
+                <line class="svg-line" x1="55" y1="56" x2="188" y2="56"></line>
+                <line class="svg-line" x1="55" y1="56" x2="25" y2="88"></line>
+                <path class="svg-arrow" d="M25 88 L35 84 L31 75 Z"></path>
+                <path class="svg-weld-mark" d="M96 56 L126 56 L96 34 Z"></path>
+                <path class="svg-weld-mark" d="M96 56 L126 56 L96 78 Z"></path>
+                <text x="76" y="46">6</text>
+                <text x="76" y="73">6</text>
+                <text class="svg-caption" x="55" y="101">symbols on both sides</text>
+              </svg>
+              <div><strong>Fillet weld - both sides</strong><small>AS 1101.3 Cl. 2.3.2.3: place weld symbols on both sides of the reference line, towards and away from the reader.</small></div>
+            </article>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgCpbwTitle">
+                <title id="weldSvgCpbwTitle">Complete penetration butt weld callout on reference line</title>
+                <line class="svg-line" x1="55" y1="56" x2="188" y2="56"></line>
+                <line class="svg-line" x1="55" y1="56" x2="25" y2="88"></line>
+                <path class="svg-arrow" d="M25 88 L35 84 L31 75 Z"></path>
+                <path class="svg-tail" d="M188 56 L203 43 M188 56 L203 69"></path>
+                <text class="svg-tag" x="90" y="48">CPBW</text>
+                <text class="svg-caption" x="55" y="101">callout text where specified</text>
+              </svg>
+              <div><strong>Complete penetration butt weld</strong><small>Callout example only. AS 1101.3 places specification, procedure, process or other reference in the tail where used.</small></div>
+            </article>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgSquareButtTitle">
+                <title id="weldSvgSquareButtTitle">Square butt weld symbol below reference line for arrow side</title>
+                <line class="svg-line" x1="55" y1="50" x2="188" y2="50"></line>
+                <line class="svg-line" x1="55" y1="50" x2="25" y2="84"></line>
+                <path class="svg-arrow" d="M25 84 L35 80 L31 71 Z"></path>
+                <path class="svg-groove-mark" d="M101 50 L101 76 M121 50 L121 76"></path>
+                <text class="svg-caption" x="55" y="99">square butt symbol below line</text>
+              </svg>
+              <div><strong>Square butt weld</strong><small>Basic butt-weld symbol from AS 1101.3 Fig. 2.1, shown on the arrow-side position for this quick legend.</small></div>
+            </article>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgVButtTitle">
+                <title id="weldSvgVButtTitle">Single V butt weld symbol below reference line for arrow side</title>
+                <line class="svg-line" x1="55" y1="50" x2="188" y2="50"></line>
+                <line class="svg-line" x1="55" y1="50" x2="25" y2="84"></line>
+                <path class="svg-arrow" d="M25 84 L35 80 L31 71 Z"></path>
+                <path class="svg-groove-mark" d="M96 50 L111 76 L126 50"></path>
+                <text class="svg-caption" x="55" y="99">single-V symbol below line</text>
+              </svg>
+              <div><strong>Single-V butt weld</strong><small>Basic V butt-weld symbol from AS 1101.3 Fig. 2.1, shown on the arrow-side position for this quick legend.</small></div>
+            </article>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgBevelButtTitle">
+                <title id="weldSvgBevelButtTitle">Single bevel butt weld symbol below reference line for arrow side</title>
+                <line class="svg-line" x1="55" y1="50" x2="188" y2="50"></line>
+                <line class="svg-line" x1="55" y1="50" x2="25" y2="84"></line>
+                <path class="svg-arrow" d="M25 84 L35 80 L31 71 Z"></path>
+                <path class="svg-groove-mark" d="M100 50 L100 76 L126 50"></path>
+                <text class="svg-caption" x="55" y="99">single-bevel symbol below line</text>
+              </svg>
+              <div><strong>Single-bevel butt weld</strong><small>Basic bevel butt-weld symbol from AS 1101.3 Fig. 2.1. Confirm which member is prepared from the project drawing.</small></div>
+            </article>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgDoubleVButtTitle">
+                <title id="weldSvgDoubleVButtTitle">Double V butt weld symbol across both sides of reference line</title>
+                <line class="svg-line" x1="55" y1="56" x2="188" y2="56"></line>
+                <line class="svg-line" x1="55" y1="56" x2="25" y2="88"></line>
+                <path class="svg-arrow" d="M25 88 L35 84 L31 75 Z"></path>
+                <path class="svg-groove-mark" d="M96 56 L111 34 L126 56 L111 78 Z"></path>
+                <text class="svg-caption" x="55" y="101">double-V both sides</text>
+              </svg>
+              <div><strong>Double-V butt weld</strong><small>Both-side V butt-weld indication using the Fig. 2.1 V symbol mirrored across the reference line.</small></div>
+            </article>
+            <article class="weld-figure-card">
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgIpbwTitle">
+                <title id="weldSvgIpbwTitle">Incomplete penetration butt weld callout on reference line</title>
+                <line class="svg-line" x1="55" y1="56" x2="188" y2="56"></line>
+                <line class="svg-line" x1="55" y1="56" x2="25" y2="88"></line>
+                <path class="svg-arrow" d="M25 88 L35 84 L31 75 Z"></path>
+                <path class="svg-tail" d="M188 56 L203 43 M188 56 L203 69"></path>
+                <text class="svg-tag" x="90" y="48">IPBW</text>
+                <text class="svg-caption" x="55" y="101">specified throat where required</text>
+              </svg>
+              <div><strong>Incomplete penetration butt weld</strong><small>Callout example only. Specify the effective throat or preparation depth separately where required by design.</small></div>
+            </article>
+            <p class="weld-legend-source">SVG redrawn as a visual guide from AS 1101.3:2005 Figs 2.1 and 2.8-2.10 for common structural-steel weld symbols only. AS 1101.3 describes arrow-side symbols as being on the side of the reference line towards the reader, other-side symbols as away from the reader, and both-side welds as symbols on both sides of the reference line. Weld size, length, pitch, process, contour, finish, weld category such as SP/GP, WPS and inspection notes must be specified separately on project drawings where required.</p>
           </section>
         </details>
 
