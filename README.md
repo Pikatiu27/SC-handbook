@@ -55,18 +55,18 @@ The weld tool covers a compact weld-type guide plus a throat-capacity view for c
 - weld category `SP` or `GP`;
 - nominal weld metal tensile strength `f_uw`;
 - effective weld length `l_w`;
-- number of effective weld runs;
+- number of identical effective weld lines acting together;
 - optional parent-metal ply thickness `t` and parent metal grade for a per-mm screening check;
-- optional reduction factor `k_r`;
+- welded lap connection flag for the AS 4100 `k_r` reduction;
 - direct shear action `V*` and utilisation ratio.
 
-The primary basis is AS 4100:2020 Clause 9.7 for welded connections, using `phi R = phi 0.6 f_uw t_t l_w` with `phi = 0.80`. For an equal-leg fillet weld, `t_t = 0.707s`; the calculated throat is displayed to two decimals while capacity uses the unrounded throat. For CPBW, IPBW and compound weld selections, the tool shows weld-metal throat capacity using the user-entered `a_w`; this is a capacity view, not a full joint-design check. Weld metal strengths of 430, 490 and 550 MPa follow AS 4100 Table 9.7.3.10(1), also summarised in ASI *Simple Connections* 2020 Table 2.14.
+The primary basis is AS 4100:2020 Clause 9.6 for welded connections, using `phi R = phi 0.6 f_uw t_t l_w k_r` with `phi = 0.80` for the fillet-weld throat check. For an equal-leg fillet weld, `t_t = 0.707s`; the calculated throat is displayed to two decimals while capacity uses the unrounded throat. For CPBW, IPBW and compound weld selections, the tool shows weld-metal throat capacity using the user-entered `a_w`; this is a capacity view, not a full joint-design check. Weld metal strengths of 430, 490 and 550 MPa follow AS 4100 Table 9.6.3.10, also summarised in ASI *Simple Connections* 2020 Table 2.14. The `k_r` reduction is from AS 4100 Table 9.6.3.10(B) for a welded lap connection and is applied only when that option is selected: `k_r = 1.00` for `l_w <= 1.7 m`, `k_r = 1.10 - 0.06l_w` for `1.7 < l_w <= 8.0 m`, and `k_r = 0.62` for `l_w > 8.0 m`.
 
 The weld symbol legend uses inline SVG examples redrawn from the authorized AS 1101.3:2005 reference, mainly Figures 2.1 and 2.8 to 2.10. It covers common structural-steel fillet and butt/groove symbols for quick recognition, plus CPBW and IPBW callout examples. Use these SVGs only as visual guides; AS 1101.3 governs formal welding-symbol placement, and ASI *Simple Connections* 2020 Figure 2.7 remains the reference for common AS 4100 weld-type terminology. Confirm exact weld symbols, preparations, weld category, WPS and inspection acceptance criteria to AS/NZS 1554.1 on the project drawings.
 
 The weld selection guide is a concise drafting aid for common cases such as shear cleats, gussets, base plates, full-strength splices, partial-strength butt joints, moment connections, tube cap/flange plates, fatigue-sensitive details and site welding. It is scenario-first: each item states the default weld choice, when to use it, when to avoid relying on it, and what still needs checking. ASI *Simple Connections* recommends specifying weld size, weld category and nominal weld metal strength while leaving the welding process selection to the fabricator.
 
-The parent-metal row is a lightweight per-mm screen using `phi 0.6 f_up t`; it does not replace tear-out, block shear, net-section rupture, HAZ, edge-distance, eccentric weld group, end return, intermittent weld, fatigue, seismic, lamellar tearing or inspection acceptance checks. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
+The parent-metal row is a lightweight warning-only per-mm screen using `phi 0.6 f_up t`; it does not change the weld PASS/FAIL status and does not replace tear-out, block shear, net-section rupture, HAZ, edge-distance, eccentric weld group, end return, intermittent weld, fatigue, seismic, lamellar tearing or inspection acceptance checks. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
 
 ## Reference files
 

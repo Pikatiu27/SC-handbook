@@ -52,7 +52,7 @@ const weldTypeData = {
     scope: "capacity view for butt weld with superimposed fillet"
   }
 };
-const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldKr", "weldDemand", "weldParentThickness", "weldParentGrade"];
+const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentThickness", "weldParentGrade"];
 const concreteInputIds = [
   "concreteDirection", "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concretePhi",
   "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteComposite",
@@ -187,6 +187,12 @@ let memberType = "chs";
 function value(id) { return Math.max(0, Number($(id).value) || 0); }
 function fixed(number) { return Number(number).toFixed(1); }
 function fixed2(number) { return Number(number).toFixed(2); }
+function weldLapReduction(lengthMm) {
+  const lengthM = lengthMm / 1000;
+  if (lengthM <= 1.7) return 1;
+  if (lengthM <= 8) return 1.10 - 0.06 * lengthM;
+  return 0.62;
+}
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
 function standardHoleDiameter(diameter) { return diameter <= 24 ? diameter + 2 : diameter + 3; }
 function signedFixed(number, digits = 1) { return `${number >= 0 ? "+" : ""}${Number(number).toFixed(digits)}`; }
@@ -277,7 +283,8 @@ function calculateWeld() {
   const length = value("weldLength");
   const runs = Math.max(1, Math.round(value("weldRuns")));
   const effectiveThroat = value("weldEffectiveThroat");
-  const kr = Math.min(1, Math.max(0.1, value("weldKr")));
+  const lapReductionActive = $("weldLapConnection").value === "yes" && type === "fillet";
+  const kr = lapReductionActive ? weldLapReduction(length) : 1;
   const parentThickness = value("weldParentThickness");
   const parentGrade = parentMetalGrades[$("weldParentGrade").value] || parentMetalGrades["Grade 250 plate"];
   const phi = 0.8;
@@ -288,7 +295,6 @@ function calculateWeld() {
   const capacity = capacityPerMm * length * runs;
   const parentPerMm = parentPhi * 0.6 * parentGrade.fup * parentThickness / 1000;
   const parentCheckActive = parentThickness > 0;
-  const governingPerMm = parentCheckActive ? Math.min(capacityPerMm, parentPerMm) : capacityPerMm;
   const parentGoverns = parentCheckActive && parentPerMm < capacityPerMm;
   const demand = value("weldDemand");
   const utilisation = capacity > 0 ? demand / capacity : Infinity;
@@ -309,12 +315,12 @@ function calculateWeld() {
   $("weldCapacityBasis").textContent = `${typeData.scope}; ${typeData.note}`;
   $("weldCapacity").textContent = fixed(capacity);
   $("weldCapacityPerMm").textContent = capacityPerMm.toFixed(2);
-  $("parentGoverningPerMm").textContent = fixed2(governingPerMm);
+  $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";
   $("parentGoverningNote").textContent = !parentCheckActive
     ? "enter ply thickness to check"
     : parentGoverns
-      ? `parent metal governs; fup ${parentGrade.fup} MPa`
-      : "weld throat governs";
+      ? `warning only; parent screen below weld, fup ${parentGrade.fup} MPa`
+      : "warning only; weld throat lower";
   $("parentGoverningNote").className = parentGoverns ? "fail" : "pass";
   $("weldUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
   $("weldStatus").textContent = !hasDemand ? "Enter design action" : utilisation <= 1 ? "PASS" : "FAIL";
@@ -322,9 +328,10 @@ function calculateWeld() {
   $("weldFormulaSteps").innerHTML = `
     <div><b>Selected weld</b><code>${typeData.label} - ${typeData.scope}</code></div>
     <div><b>Design throat</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : type === "compound" ? `${effectiveThroat.toFixed(1)} + 0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${fixed2(throat)} mm</code></div>
-    <div><b>Weld-metal capacity</b><code>&phi;R = 0.80 x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x ${kr.toFixed(2)} x ${fixed(length)} / 1000 = ${fixed(capacity / runs)} kN per run</code></div>
-    <div><b>Weld group</b><code>${runs} effective run${runs === 1 ? "" : "s"} x ${fixed(capacity / runs)} = ${fixed(capacity)} kN</code></div>
-    <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x ${parentGrade.fup} x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm; governing = ${fixed2(governingPerMm)} kN/mm` : "Not checked - enter ply thickness"}</code></div>
+    <div><b>Weld-metal capacity</b><code>&phi;R = 0.80 x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x ${fixed(length)} / 1000 x k<sub>r</sub> ${kr.toFixed(2)} = ${fixed(capacity / runs)} kN per run</code></div>
+    <div><b>Lap reduction</b><code>${lapReductionActive ? `AS 4100 Table 9.6.3.10(B); l<sub>w</sub> = ${(length / 1000).toFixed(2)} m, k<sub>r</sub> = ${kr.toFixed(2)}` : "Not applied - welded lap connection option is No or weld type is not fillet"}</code></div>
+    <div><b>Effective weld lines</b><code>${runs} identical effective weld line${runs === 1 ? "" : "s"} x ${fixed(capacity / runs)} = ${fixed(capacity)} kN; not welding passes</code></div>
+    <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x ${parentGrade.fup} x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm; warning only, not used in PASS/FAIL` : "Not checked - enter ply thickness"}</code></div>
     <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; check parent metal, joint preparation, WPS, inspection, fatigue and effective length separately</code></div>`;
 }
 
