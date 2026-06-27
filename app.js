@@ -236,8 +236,7 @@ function calculateBolt() {
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
   const kr = Math.min(1, Math.max(0.75, value("kr")));
-  const groupKrd = category.grade === "10.9" && nThread > 0 ? 0.83 : 1;
-  const groupShear = count * 0.8 * 0.62 * category.fuf * groupKrd * kr * (nThread * bolt.Ac + nShank * bolt.Ao) / 1000;
+  const groupShear = count * 0.8 * 0.62 * category.fuf * kr * (nThread * threadKrd * bolt.Ac + nShank * shankKrd * bolt.Ao) / 1000;
   const actualEdge = value("edgeDistance");
   const holeDiameter = value("holeDiameter");
   const effectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
@@ -302,7 +301,7 @@ function calculateBolt() {
     <div><b>Tension - 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
     <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
     <div><b>Shear X - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
-    <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x k<sub>r</sub> x (n<sub>n</sub>A<sub>c</sub> + n<sub>x</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
+    <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x</sub>k<sub>rd,X</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
     <div><b>Ply bearing - 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
     <div><b>Edge limit - 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
     <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
