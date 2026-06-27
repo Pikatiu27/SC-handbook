@@ -1045,6 +1045,15 @@ Connection- and axis-dependent terms must stay explicit:
 - Use `k_t = 0.85` as the Equal Angle default only for the applicable eccentrically connected equal-angle condition. Keep it editable and state that it must be confirmed to AS 4100 Clause 7.3 / Table 7.3.2.
 - Use `k_t = 1.0` only where force distribution is uniform or the governing source justifies it.
 
+For a quick-reference web tab, do not make the user leave the page for small repeated standard lookups. If a clause table is commonly needed, compact, and within the tool scope, embed a collapsed lookup table in the page with:
+
+- the value or factor;
+- the exact condition where it applies;
+- the source clause/table or design handbook basis;
+- the source status, such as `Checked`, `For Review`, or `Source_Not_Verified`.
+
+Keep genuinely project-specific inputs outside these lookup tables. For member design this includes actual net area `A_n`, effective length `L_e`, end restraint, connection eccentricity, hole layout, stagger, cope cuts, and flexural-torsional buckling assumptions.
+
 Do not imply the member tab is a full steel design engine unless all required limit states are implemented. State exclusions clearly, for example:
 
 - Bending not included.

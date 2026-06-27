@@ -388,6 +388,44 @@
           </div>
         </details>
 
+        <details class="section-guide-card member-lookup-card">
+          <summary><span><b>Member lookup tables</b><small>Embedded quick guides for α<sub>b</sub>, k<sub>t</sub> and project-defined inputs</small></span><i>+</i></summary>
+          <div class="lookup-table-stack">
+            <section>
+              <h3>α<sub>b</sub> member section constant guide</h3>
+              <div class="table-scroll">
+                <table class="compact-lookup-table">
+                  <thead><tr><th>Member case</th><th>Use this value when</th><th>α<sub>b</sub></th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>CHS</td><td>Cold-formed, non-stress-relieved hollow section; buckling about any axis.</td><td>-0.5</td><td>Checked against Austube / ASI hollow-section tables extracted from AS 4100 Table 6.3.3.</td></tr>
+                    <tr><td>PFC</td><td>Hot-rolled channel quick screen using catalogue r<sub>min</sub>.</td><td>0.5</td><td>For Review; confirm the actual axis and AS 4100 Table 6.3.3 row before final design issue.</td></tr>
+                    <tr><td>Equal Angle</td><td>Hot-rolled equal-angle principal-axis axial screen.</td><td>0.5</td><td>For Review; flexural-torsional buckling and connection eccentricity are not checked.</td></tr>
+                    <tr><td>Rod</td><td>Solid circular rod quick screen.</td><td>0.0</td><td>For Review; confirm product form, straightness and end restraint if compression governs.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <section>
+              <h3>k<sub>t</sub> tension correction guide</h3>
+              <div class="table-scroll">
+                <table class="compact-lookup-table">
+                  <thead><tr><th>Tension connection case</th><th>Use this value when</th><th>k<sub>t</sub></th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Uniform force distribution</td><td>Connection develops the section so stress distribution is effectively uniform, e.g. suitable full-perimeter welded connection.</td><td>1.00</td><td>Checked against AS 4100 Clause 7.3 basis in local hollow-section design tables.</td></tr>
+                    <tr><td>Equal Angle, one leg connected</td><td>Typical eccentrically connected equal-angle tension member.</td><td>0.85</td><td>Checked against local AS 4100 design-manual example citing Table 7.3.2.</td></tr>
+                    <tr><td>Unequal Angle, short leg connected</td><td>Use only where the actual unequal-angle connection matches the applicable AS 4100 Table 7.3.2 case.</td><td>0.75</td><td>For Review until the exact standard-table row is source-registered.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <section class="lookup-note-grid">
+              <article><b>A<sub>n</sub></b><span>Not a catalogue lookup. Calculate from the actual holes, slots, stagger, threads, cope cuts and net-section path.</span></article>
+              <article><b>L<sub>e</sub></b><span>Not a section-table lookup. Determine from actual end restraint, frame action and effective-length assumptions.</span></article>
+              <article><b>Excluded</b><span>Combined actions, flexural-torsional buckling, connection eccentricity and connection capacity remain outside this quick tab.</span></article>
+            </section>
+          </div>
+        </details>
+
         <div class="member-inputs">
           <label class="size-field"><span>Section</span><select id="memberSection"></select></label>
           <label><span>Steel grade</span><select id="memberGrade"></select></label>
