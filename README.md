@@ -11,9 +11,10 @@ Static, English-language engineering lookup handbook with traceable quick-refere
 - connected-ply bearing, edge tear-out limit and governing ply capacity;
 - minimum edge distance check by edge condition;
 - TF slip resistance;
-- combined shear and tension interaction.
+- combined shear and tension strength interaction;
+- TF slip combined shear and tension serviceability interaction.
 
-The primary basis is AS 4100:2020 Table 3.4 and Clauses 9.2.2.1, 9.2.2.2, 9.2.2.4, 9.2.3.1 and 9.5.2. The edge check distinguishes hole-centre edge distance `e` from the effective edge distance `a_e` used for edge-limited ply bearing. Australian drawing callouts use the category, for example `M24 8.8/S`, `M24 8.8/TB` or `M24 8.8/TF`. N and X are separate shear-plane conditions. For grade 10.9 bolts, `k_rd = 0.83` applies where threads intercept the shear plane and `k_rd = 1.00` applies where threads do not intercept the shear plane.
+The primary basis is AS 4100:2020 Table 3.4 and Clauses 9.1.8, 9.2.2.1, 9.2.2.2, 9.2.2.3, 9.2.2.4, 9.2.3.1, 9.2.3.3 and 9.5.2. The edge check distinguishes hole-centre edge distance `e` from the effective edge distance `a_e` used for edge-limited ply bearing. Australian drawing callouts use the category and shear-plane condition, for example `M24 8.8/S - N plane`, `M24 8.8/TB - X plane` or `M24 8.8/TF - N plane`. TB is a fully tensioned bearing category, not a fixed N or X plane. For grade 10.9 bolts, `k_rd = 0.83` applies where threads intercept the shear plane and `k_rd = 1.00` applies where threads do not intercept the shear plane. The strength combined check uses AS 4100 Clause 9.2.2.3. The TF serviceability slip combined check uses AS 4100 Clause 9.2.3.3 and is a separate check for friction-type connections where slip is limited.
 
 Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal plain-shank area, `A_c` is minor diameter area, and `A_s` is tensile stress area. M10 and M12 are included for `/S` categories only because AS 4100 Table 15.2.2.2 does not provide minimum bolt tensions below M16.
 
@@ -34,7 +35,7 @@ For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design in
 
 The beam tool covers major-axis section moment capacity for catalogue hot-rolled Universal Beams / Universal Columns and user-entered custom sections:
 
-- Complete UB and UC section selection from the InfraBuild Hot Rolled Products Catalogue, 9th edition;
+- selected UB and UC section entries from the InfraBuild Hot Rolled Products Catalogue, 9th edition;
 - 300PLUS and Grade 350 section-capacity data where tabulated for UB/UC sections;
 - Custom section mode using user-entered `fy`, `Zex`, `Sx`, `Zx`, compactness, area and mass values;
 - gross area, mass, `Sx`, `Zx`, `Zex`, compactness and form factor `kf`;
@@ -61,7 +62,7 @@ The weld tool covers a compact weld-type guide plus a throat-capacity view for c
 - welded lap connection flag for the AS 4100 `k_r` reduction;
 - direct shear action `V*` and utilisation ratio.
 
-The primary basis is AS 4100:2020 Clause 9.6 for welded connections, using `phi R = phi 0.6 f_uw t_t l_w k_r` with `phi = 0.80` for the fillet-weld throat check. For an equal-leg fillet weld, `t_t = 0.707s`; the calculated throat is displayed to two decimals while capacity uses the unrounded throat. For CPBW, IPBW and compound weld selections, the tool shows weld-metal throat capacity using the user-entered `a_w`; this is a capacity view, not a full joint-design check. Weld metal strengths of 430, 490 and 550 MPa follow AS 4100 Table 9.6.3.10, also summarised in ASI *Simple Connections* 2020 Table 2.14. The `k_r` reduction is from AS 4100 Table 9.6.3.10(B) for a welded lap connection and is applied only when that option is selected: `k_r = 1.00` for `l_w <= 1.7 m`, `k_r = 1.10 - 0.06l_w` for `1.7 < l_w <= 8.0 m`, and `k_r = 0.62` for `l_w > 8.0 m`.
+The primary basis is AS 4100:2020 Clause 9.6 for welded connections, using `phi R = phi 0.6 f_uw t_t l_w k_r` with `phi = 0.80` for the fillet-weld throat check. For an equal-leg fillet weld, `t_t = 0.707s`; the calculated throat is displayed to two decimals while capacity uses the unrounded throat. SP/GP category is retained for drawing, fabrication and inspection context but does not change the throat-capacity number in this quick view. For CPBW, IPBW and compound weld selections, the tool shows weld-metal throat capacity using the user-entered `a_w`; this is a capacity view only, not a full joint-design check. Weld metal strengths of 430, 490 and 550 MPa follow AS 4100 Table 9.6.3.10, also summarised in ASI *Simple Connections* 2020 Table 2.14. The `k_r` reduction is from AS 4100 Table 9.6.3.10(B) for a welded lap connection and is applied only when that option is selected: `k_r = 1.00` for `l_w <= 1.7 m`, `k_r = 1.10 - 0.06l_w` for `1.7 < l_w <= 8.0 m`, and `k_r = 0.62` for `l_w > 8.0 m`.
 
 The weld symbol legend uses inline SVG examples redrawn from the authorized AS 1101.3:2005 reference, mainly Figures 2.1 and 2.8 to 2.10. It covers common structural-steel fillet and butt/groove symbols for quick recognition, plus CPBW and IPBW callout examples. Use these SVGs only as visual guides; AS 1101.3 governs formal welding-symbol placement, and ASI *Simple Connections* 2020 Figure 2.7 remains the reference for common AS 4100 weld-type terminology. Confirm exact weld symbols, preparations, weld category, WPS and inspection acceptance criteria to AS/NZS 1554.1 on the project drawings.
 
@@ -71,7 +72,13 @@ The parent-metal row is a lightweight warning-only per-mm screen using `phi 0.6 
 
 ## Reference files
 
-The working reference folder is outside the published site at `C:\桌面\SC Handbook\reference` and contains:
+The only working reference folder for this project is:
+
+`C:\Users\silin\Documents\Codex\Reference`
+
+Do not keep duplicate source references in this repository. Relevant standards, manufacturer catalogues, ASI guides, converted Markdown references and technical sheets should all live in the Codex Reference folder.
+
+Relevant source files include:
 
 - `Orrcon-National-Product-Catalogue-2024.pdf`;
 - `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`;

@@ -244,11 +244,17 @@ function calculateBolt() {
   const bearing = Math.min(bearingFull, bearingEdge);
   const preload = category.preload ? bolt[category.preload] : 0;
   const slip = category.type === "friction" ? 0.7 * value("slipFactor") * value("interfaces") * preload * value("holeFactor") : null;
-  const groupTension = count * tension;
-  const ratio = groupShear > 0 && groupTension > 0 ? (value("shearDemand") / groupShear) ** 2 + (value("tensionDemand") / groupTension) ** 2 : Infinity;
+  const slipGroupCapacity = slip === null ? null : count * slip;
+  const slipTensionCapacity = preload > 0 ? count * preload : null;
+  const strengthRatio = groupShear > 0 && count * tension > 0
+    ? (value("shearDemand") / groupShear) ** 2 + (value("tensionDemand") / (count * tension)) ** 2
+    : Infinity;
+  const slipRatio = slipGroupCapacity && slipTensionCapacity
+    ? value("shearDemand") / slipGroupCapacity + value("tensionDemand") / slipTensionCapacity
+    : Infinity;
   const hasDemand = value("shearDemand") > 0 || value("tensionDemand") > 0;
 
-  const drawingCallout = plane === "X" && categoryKey.endsWith("/S") ? `${size} ${category.grade} X/S` : `${size} ${categoryKey}`;
+  const drawingCallout = `${size} ${categoryKey} - ${plane} plane`;
   $("selectionTitle").textContent = drawingCallout;
   $("drawingNote").textContent = "N: threads intercept shear plane · X: threads clear of shear plane";
   $("diameterValue").textContent = `${bolt.d} mm`;
@@ -263,7 +269,7 @@ function calculateBolt() {
   $("alternateShearCapacity").textContent = fixed(alternateShear);
   $("alternateShearNote").textContent = plane === "N" ? "threads clear of plane" : "threads intercept plane";
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}. Additional checks may apply: prying action, block shear and long-joint reduction.`;
+  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)} user/project reduction factor. Additional checks may apply: prying action, block shear and long-joint reduction.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
   $("plyBearingLimit").textContent = `${fixed(bearingFull)} kN`;
   $("edgeTearoutLimit").textContent = `${fixed(bearingEdge)} kN`;
@@ -275,11 +281,19 @@ function calculateBolt() {
   $("edgeDistanceStatus").textContent = edgeDistancePass ? "PASS" : "FAIL";
   $("edgeDistanceStatus").className = edgeDistancePass ? "pass" : "fail";
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
-  $("interactionRatio").textContent = Number.isFinite(ratio) ? ratio.toFixed(2) : "-";
-  $("interactionStatus").textContent = !hasDemand ? "Enter design actions" : ratio <= 1 ? "PASS" : "FAIL";
-  $("interactionStatus").className = !hasDemand ? "" : ratio <= 1 ? "pass" : "fail";
+  $("interactionRatio").textContent = Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-";
+  $("interactionStatus").textContent = !hasDemand
+    ? "Enter design actions"
+    : strengthRatio <= 1
+        ? "PASS"
+        : "FAIL";
+  $("interactionStatus").className = !hasDemand ? "" : strengthRatio <= 1 ? "pass" : "fail";
 
-  const slipFormula = slip === null ? "<code>Not applicable - TF categories only</code>" : `<code>0.70 x ${value("slipFactor")} x ${value("interfaces")} x ${preload} x ${value("holeFactor")} = ${fixed(slip)} kN</code>`;
+  const slipFormula = slip === null ? "<code>Not applicable - TF categories only</code>" : `<code>0.70 x ${value("slipFactor")} x ${value("interfaces")} x ${preload} x ${value("holeFactor")} = ${fixed(slip)} kN per bolt</code>`;
+  const strengthInteractionFormula = `<code>(V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub>)<sup>2</sup> = (${fixed(value("shearDemand"))} / ${fixed(groupShear)})<sup>2</sup> + (${fixed(value("tensionDemand"))} / ${fixed(count * tension)})<sup>2</sup> = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}; limit &le; 1.0</code>`;
+  const slipInteractionFormula = slip === null
+    ? "<code>Not applicable - AS 4100 Cl. 9.2.3.3 applies to friction-type categories where serviceability slip is limited</code>"
+    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(value("shearDemand"))} / ${fixed(slipGroupCapacity)} + ${fixed(value("tensionDemand"))} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> is taken as the minimum bolt tension at installation for this quick check</code>`;
   $("formulaSteps").innerHTML = `
     <div><b>Tension - 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
     <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
@@ -289,7 +303,10 @@ function calculateBolt() {
     <div><b>Edge limit - 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
     <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
     <div><b>Governing ply capacity</b><code>min[${fixed(bearingFull)}, ${fixed(bearingEdge)}] = ${fixed(bearing)} kN</code></div>
-    <div><b>TF slip - 9.2.3.1</b>${slipFormula}</div>`;
+    <div><b>Combined shear and tension - 9.2.2.3</b>${strengthInteractionFormula}</div>
+    <div><b>TF slip - 9.2.3.1</b>${slipFormula}</div>
+    <div><b>TF combined slip - 9.2.3.3</b>${slipInteractionFormula}</div>
+    <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8. TF categories also require the separate serviceability slip checks above.</code></div>`;
 }
 
 function calculateWeld() {
@@ -329,8 +346,8 @@ function calculateWeld() {
   $("weldThroatValue").textContent = `${fixed2(throat)} mm`;
   $("weldLengthValue").textContent = `${fixed(length)} mm`;
   $("weldRunsValue").textContent = String(runs);
-  $("weldCapacityLabel").innerHTML = type === "fillet" ? "Design weld capacity &phi;V<sub>w</sub>" : "Weld-metal throat capacity";
-  $("weldCapacityBasis").textContent = `${typeData.scope}; ${typeData.note}`;
+  $("weldCapacityLabel").innerHTML = type === "fillet" ? "Design weld capacity &phi;V<sub>w</sub>" : "Capacity view only";
+  $("weldCapacityBasis").textContent = `${typeData.scope}; ${typeData.note}; category ${category} is for specification and inspection context`;
   $("weldCapacity").textContent = fixed(capacity);
   $("weldCapacityPerMm").textContent = capacityPerMm.toFixed(2);
   $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";

@@ -1,5 +1,7 @@
 # SC Handbook
 
+`SC_HANDBOOK.md` is the only canonical project outline and rule file for this project. When the user refers to the project outline, total outline, handbook rules, or "总纲", use this file only.
+
 ## 1. Purpose
 
 `SC Handbook` is a single Excel-based engineering lookup and calculation handbook.
@@ -59,21 +61,20 @@ Keep worksheet names short, stable, and script-friendly.
 
 ## 4. Reference Sources
 
-Primary source locations:
+Primary source location:
 
 - `C:\Users\silin\Documents\Codex\Reference`
-- `C:\桌面\SC Handbook\reference`
-- `C:\桌面\SC Handbook\Tech sheet`
+
+All source references for this project must be stored in that folder. Do not keep duplicate reference PDFs, standards, catalogues, converted Markdown references, or technical sheets in the project workspace. If a source document is found in another project folder, move it into `C:\Users\silin\Documents\Codex\Reference` before treating it as a project reference.
 
 The handbook is based primarily on Australian engineering standards, Australian design handbooks, and Australian manufacturer data.
 
 Source priority:
 
 1. Australian standards and official standard-based design requirements
-2. Local reference files stored in the project `reference` folder
-3. Local reference files stored in `C:\Users\silin\Documents\Codex\Reference`
-4. Manufacturer catalogues and design capacity tables
-5. Credible online sources from official bodies, industry organisations, manufacturers, or recognised technical publishers
+2. Local reference files stored in `C:\Users\silin\Documents\Codex\Reference`
+3. Manufacturer catalogues and design capacity tables stored in `C:\Users\silin\Documents\Codex\Reference`
+4. Credible online sources from official bodies, industry organisations, manufacturers, or recognised technical publishers
 
 Online sources must only be used when the local reference set does not contain the required information, or when an online source is needed to verify currency, errata, or publication status.
 
@@ -638,9 +639,9 @@ Never modify source reference files unless the user explicitly asks.
 
 Protected source locations include:
 
-- `reference/`
-- `Tech sheet/`
 - `C:\Users\silin\Documents\Codex\Reference`
+
+The project workspace should not contain active source reference files. If `reference/` or `Tech sheet/` exists, treat it as non-canonical and keep it empty unless the user explicitly asks for a temporary staging area.
 
 Generated outputs, temporary extraction folders, and builder scripts may be updated as part of workbook generation.
 
