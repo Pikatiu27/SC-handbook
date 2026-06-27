@@ -964,7 +964,7 @@ function calculateConcrete() {
     $("concreteWarningStatus").textContent = "CHECK";
     $("concreteWarningStatus").className = "fail";
     $("concreteLayerResults").innerHTML = "";
-    $("concreteFormulaSteps").innerHTML = `<div><b>Status</b><code>${result.message}</code></div><div><b>Plain concrete note</b><code>For an unreinforced pad, use a separate cracking or plain-concrete check to AS 3600. Do not report this as ductile reinforced-concrete phiMuo.</code></div>`;
+    $("concreteFormulaSteps").innerHTML = `<div><b>Status</b><code>${result.message}</code></div><div><b>Plain concrete note</b><code>For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check. Do not report this as ductile reinforced-concrete phiMuo; Section 20 uses a linear stress-strain bending model and takes footing strength depth as nominal depth minus 50 mm.</code></div>`;
     return;
   }
 
