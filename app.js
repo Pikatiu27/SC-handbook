@@ -273,7 +273,7 @@ function calculateBolt() {
   $("alternateShearCapacity").textContent = fixed(alternateShear);
   $("alternateShearNote").textContent = plane === "N" ? "threads clear of plane" : "threads intercept plane";
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)} bolted lap connection reduction. Additional checks may apply: prying action, block shear and long-joint reduction.`;
+  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring Table 9.2.2.1 reduction.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
   $("plyBearingLimit").textContent = `${fixed(bearingFull)} kN`;
   $("edgeTearoutLimit").textContent = `${fixed(bearingEdge)} kN`;
@@ -302,7 +302,7 @@ function calculateBolt() {
     <div><b>Tension - 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
     <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
     <div><b>Shear X - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
-    <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x k<sub>r</sub> x (n<sub>n</sub>A<sub>c</sub> + n<sub>x</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>r</sub> is the bolted lap connection reduction from Table 9.2.2.1</code></div>
+    <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x k<sub>r</sub> x (n<sub>n</sub>A<sub>c</sub> + n<sub>x</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
     <div><b>Ply bearing - 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
     <div><b>Edge limit - 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
     <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
@@ -351,7 +351,7 @@ function calculateWeld() {
   $("weldLengthValue").textContent = `${fixed(length)} mm`;
   $("weldRunsValue").textContent = String(runs);
   $("weldCapacityLabel").innerHTML = type === "fillet" ? "Design weld capacity &phi;V<sub>w</sub>" : "Capacity view only";
-  $("weldCapacityBasis").textContent = `${typeData.scope}; ${typeData.note}; category ${category}, phi ${phi.toFixed(2)} from AS 4100 Table 3.4`;
+  $("weldCapacityBasis").textContent = `capacity view only; not a full weld or joint design check; ${typeData.scope}; ${typeData.note}; category ${category}, phi ${phi.toFixed(2)} from AS 4100 Table 3.4`;
   $("weldCapacity").textContent = fixed(capacity);
   $("weldCapacityPerMm").textContent = capacityPerMm.toFixed(2);
   $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";
@@ -371,7 +371,7 @@ function calculateWeld() {
     <div><b>Lap reduction</b><code>${lapReductionActive ? `AS 4100 Table 9.6.3.10(B); l<sub>w</sub> = ${(length / 1000).toFixed(2)} m, k<sub>r</sub> = ${kr.toFixed(2)}` : "Not applied - welded lap connection option is No or weld type is not fillet"}</code></div>
     <div><b>Effective weld lines</b><code>${runs} identical effective weld line${runs === 1 ? "" : "s"} x ${fixed(capacity / runs)} = ${fixed(capacity)} kN; not welding passes</code></div>
     <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x ${parentGrade.fup} x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm; warning only, not used in PASS/FAIL` : "Not checked - enter ply thickness"}</code></div>
-    <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; check parent metal, joint preparation, WPS, inspection, fatigue and effective length separately</code></div>`;
+    <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; capacity view only, not a full weld or joint design check; check parent metal, joint preparation, WPS, inspection, fatigue and effective length separately</code></div>`;
 }
 
 function beamCatalogueSections() {
@@ -470,7 +470,7 @@ function calculateBeam() {
   const utilisation = valid && sectionCapacity > 0 ? demand / sectionCapacity : Infinity;
   const hasDemand = demand > 0;
   const compactnessLabel = compactnessText(grade.compactness);
-  const sourceBasis = isCustom ? "User-entered section properties" : `InfraBuild ${beamSectionType.toUpperCase()} catalogue data`;
+  const sourceBasis = isCustom ? "User-entered section properties" : `OneSteel / InfraBuild ${beamSectionType.toUpperCase()} catalogue data`;
 
   $("beamDesignation").textContent = `${section.designation} - ${gradeName}`;
   $("beamAssumption").textContent = isCustom
@@ -508,7 +508,7 @@ function calculateBeam() {
   $("beamFormulaSteps").innerHTML = `
     <div><b>Section data</b><code>${section.designation}; A<sub>g</sub> = ${formatBeamOptional(section.area, "mm&sup2;", 0)}; mass = ${formatBeamOptional(section.mass, "kg/m", 1)}; source = ${sourceBasis}</code></div>
     <div><b>Section moduli</b><code>S<sub>x</sub> = ${formatBeamModulus(section.Sx)}; Z<sub>x</sub> = ${formatBeamModulus(section.Zx)}; Z<sub>ex</sub> = ${formatBeamModulus(grade.Ze)}</code></div>
-    <div><b>Compactness</b><code>${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)}${isCustom ? "; user-entered reference value" : " from InfraBuild section-capacity table"}</code></div>
+    <div><b>Compactness</b><code>${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)}${isCustom ? "; user-entered reference value" : " from OneSteel / InfraBuild section-capacity table"}</code></div>
     <div><b>Elastic yield reference</b><code>${Number.isFinite(elasticYield) ? `&phi;f<sub>y</sub>Z<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Zx, 1)} x 10&sup3; / 10&sup6; = ${fixed(elasticYield)} kNm` : "Not shown - enter Zx for custom reference value"}</code></div>
     <div><b>Plastic limit reference</b><code>${Number.isFinite(plasticLimit) ? `&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Sx, 1)} x 10&sup3; / 10&sup6; = ${fixed(plasticLimit)} kNm` : "Not shown - enter Sx for custom reference value"}</code></div>
     <div><b>Section capacity</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(grade.Ze, 1)} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>`;
@@ -599,7 +599,7 @@ function calculateMember() {
     : memberType === "ea"
       ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - equal-angle principal-axis screen`
       : memberType === "pfc"
-        ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - PFC r<sub>min</sub> axial screen`
+        ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - hot-rolled channel default for PFC r<sub>min</sub> axial screen`
         : `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - solid circular rod geometry`;
   $("memberArea").textContent = formatArea(properties.area);
   $("memberRadius").textContent = `${properties.r.toFixed(1)} mm`;
@@ -643,7 +643,8 @@ function concreteLayer(index, depth, direction, width) {
   const product = concreteBarProduct(index);
   const bar = product.diameter;
   const spacing = value(`layer${index}Spacing`);
-  const fsy = value(`layer${index}Fsy`) || product.fsy;
+  const fsyInput = value(`layer${index}Fsy`) || product.fsy;
+  const fsy = Math.min(600, fsyInput);
   const es = value(`layer${index}Es`);
   const barArea = Math.PI * bar ** 2 / 4;
   const areaPerMetre = spacing > 0 ? barArea * 1000 / spacing : 0;
@@ -660,6 +661,7 @@ function concreteLayer(index, depth, direction, width) {
     spacing,
     barArea,
     areaPerMetre,
+    fsyInput,
     fsy,
     es,
     area
@@ -712,7 +714,7 @@ function updateConcreteMatDepths(topDepth, bottomDepth, cover) {
 }
 
 function concreteStressBlockFactors(fc) {
-  const fcLimited = Math.min(100, Math.max(20, fc));
+  const fcLimited = Math.min(120, Math.max(20, fc));
   return {
     alpha2: Math.max(0.67, 0.85 - 0.0015 * fcLimited),
     gamma: Math.max(0.67, 0.97 - 0.0025 * fcLimited)
@@ -916,7 +918,7 @@ function calculateConcrete() {
   const cover = value("concreteCover");
   const width = value("concreteWidth");
   const fcInput = value("concreteFc");
-  const fc = Math.min(100, Math.max(20, fcInput));
+  const fc = Math.min(120, Math.max(20, fcInput));
   if (fc !== fcInput) $("concreteFc").value = fixed(fc);
   const stressBlock = concreteStressBlockFactors(fc);
   $("concreteAlpha2").value = stressBlock.alpha2.toFixed(3);
@@ -950,6 +952,7 @@ function calculateConcrete() {
   $("concreteSummaryTitle").textContent = `${fixed(data.width)} mm strip; D_top ${fixed(data.topDepth)} + D_bot ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`;
   $("concreteSummaryNote").textContent = data.composite === "yes" ? "Composite action marked as separately confirmed." : "Pad-on-pad composite action not confirmed; do not rely on combined depth without interface design.";
   const legacyLayers = data.layers.filter(layer => layer.legacy);
+  const fsyCappedLayers = data.layers.filter(layer => layer.fsyInput > 600);
   $("concretePhiNote").textContent = legacyLayers.length
     ? "Legacy Y bar selected: conservative capacity factor phi = 0.65 is used unless N-class equivalence is verified."
     : "Capacity factor calculated from AS 3600-style pure bending k_uo for N-class reinforcement.";
@@ -975,9 +978,11 @@ function calculateConcrete() {
     : "";
   const bottomPadNote = bottomMatWithoutDepth ? " Bottom pad reinforcement is active but D_bot is zero; enter a bottom pad depth or turn those mats off." : "";
   const legacyNote = legacyLayers.length ? ` Legacy Y bar selected in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}; verify actual yield strength, ductility and condition from project records.` : "";
+  const fsyCapNote = fsyCappedLayers.length ? ` AS 3600 reinforcement strength cap: f_sy above 600 MPa is capped for ${fsyCappedLayers.map(layer => `mat ${layer.index}`).join(", ")}.` : "";
+  const kuoNote = result.kuo > 0.36 ? ` AS 3600 Cl. 8.1.5 warning: k_uo = ${result.kuo.toFixed(3)} > 0.36; use only where the clause conditions for analysis, compression reinforcement and restraint are satisfied.` : "";
   const warningText = (data.composite === "yes"
     ? "Moment section capacity only. Composite action is user-confirmed outside this calculator; still check punching shear, one-way shear, bearing, development length and crack control separately."
-    : "Moment section capacity only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, one-way shear, bearing, development length and crack control are excluded.") + coverNote + bottomPadNote + legacyNote;
+    : "Moment section capacity only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, one-way shear, bearing, development length and crack control are excluded.") + coverNote + bottomPadNote + legacyNote + fsyCapNote + kuoNote;
 
   $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
   $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;
@@ -988,8 +993,8 @@ function calculateConcrete() {
   $("concreteMuo").textContent = fixed(result.muo);
   $("concretePhiMuo").textContent = fixed(result.phiMuo);
   $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
-  $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length ? "SOLVED" : "CHECK";
-  $("concreteWarningStatus").className = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length ? "pass" : "fail";
+  $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && result.kuo <= 0.36 ? "SOLVED" : "CHECK";
+  $("concreteWarningStatus").className = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && result.kuo <= 0.36 ? "pass" : "fail";
   $("concreteWarningText").textContent = warningText;
 
   $("concreteLayerResults").innerHTML = result.layers.map(layer => {
@@ -1003,7 +1008,7 @@ function calculateConcrete() {
     <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
     <div><b>Pad geometry</b><code>D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; bottom pad mats require D_bot > 0</code></div>
     <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface</code></div>
-    <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar</sub> x b / spacing, using nominal bar diameter; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten</code></div>
+    <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar</sub> x b / spacing, using nominal bar diameter; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten; design-model f<sub>sy</sub> is capped at 600 MPa</code></div>
     <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
     <div><b>Concrete block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
     <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
@@ -1011,6 +1016,7 @@ function calculateConcrete() {
     <div><b>Force equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual</code></div>
     <div><b>Nominal moment</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
     <div><b>Capacity factor</b><code>${legacyLayers.length ? `Legacy Y bar selected: &phi; = 0.65 unless N-class equivalence is verified` : `k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
+    <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
     <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>`;
 }
 
@@ -1062,6 +1068,11 @@ function setMemberType(type) {
   memberType = type;
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
   $("alphaBField").hidden = type === "chs";
+  $("memberAlphaBAssumption").innerHTML = type === "chs"
+    ? "&alpha;<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS."
+    : type === "pfc"
+      ? "&alpha;<sub>b</sub> = 0.5 hot-rolled channel default."
+      : "User-selected &alpha;<sub>b</sub>; confirm AS 4100 Table 6.3.3 for the actual member axis.";
   if (type === "ea") $("memberAlphaB").value = "0.5";
   if (type === "pfc") $("memberAlphaB").value = "0.5";
   if (type === "rod") $("memberAlphaB").value = "0";

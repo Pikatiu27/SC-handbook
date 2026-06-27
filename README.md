@@ -23,9 +23,9 @@ Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal pl
 The member tool contains four product families:
 
 - CHS: common AS/NZS 1163 C250L0 and C350L0 sizes from the Orrcon National Product Catalogue 2024;
-- Equal Angle: common 300PLUS and Grade 350 sizes, properties and form factors from the InfraBuild Hot Rolled Products Catalogue, 9th edition;
-- PFC: common 300PLUS Parallel Flange Channel sizes from the InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 15-16, using catalogue gross area, minimum radius of gyration and form factor;
-- Rod: common round bar diameters from the InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3 Rounds - Size Availability and Mass, using geometric area and radius. Confirm the actual Australian product grade and availability against the applicable manufacturer catalogue.
+- Equal Angle: common 300PLUS and Grade 350 sizes, properties and form factors from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition;
+- PFC: common 300PLUS Parallel Flange Channel sizes from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 15-16, using catalogue gross area, minimum radius of gyration and form factor;
+- Rod: common round bar diameters from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3 Rounds - Size Availability and Mass, using geometric area and radius. Confirm the actual Australian product grade and availability against the applicable manufacturer catalogue.
 
 The axial compression calculation follows AS 4100 Sections 6.2 and 6.3 and the published Austube Mills / Australian Steel Institute *Design Capacity Tables for Structural Steel Hollow Sections*. The axial tension calculation follows AS 4100 Clauses 7.1 to 7.3 and takes the lesser of gross-section yielding and net-section fracture. It reports section compression capacity, member compression capacity, design tension capacity, the two tension limit states, slenderness and the member reduction factor.
 
@@ -35,7 +35,7 @@ For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design in
 
 The beam tool covers major-axis section moment capacity for catalogue hot-rolled Universal Beams / Universal Columns and user-entered custom sections:
 
-- selected UB and UC section entries from the InfraBuild Hot Rolled Products Catalogue, 9th edition;
+- selected UB and UC section entries from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition;
 - 300PLUS and Grade 350 section-capacity data where tabulated for UB/UC sections;
 - Custom section mode using user-entered `fy`, `Zex`, `Sx`, `Zx`, compactness, area and mass values;
 - gross area, mass, `Sx`, `Zx`, `Zex`, compactness and form factor `kf`;
@@ -43,7 +43,7 @@ The beam tool covers major-axis section moment capacity for catalogue hot-rolled
 - elastic yield and plastic limit reference values;
 - optional design moment `M*` and utilisation ratio.
 
-The primary basis is AS 4100:2020 Section 5 for beam section capacity, using `phi Ms = phi fy Ze` with `phi = 0.90`. For catalogue sections, the effective section modulus `Zex`, compactness and `kf` are taken from the InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom sections, the user is responsible for the entered section properties and material/product basis.
+The primary basis is AS 4100:2020 Section 5 for beam section capacity, using `phi Ms = phi fy Ze` with `phi = 0.90`. For catalogue sections, the effective section modulus `Zex`, compactness and `kf` are taken from the OneSteel / InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom sections, the user is responsible for the entered section properties and material/product basis.
 
 The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, shear, combined bending and shear, web bearing, web buckling, concentrated loads, copes, holes, composite action, fire or deflection.
 
