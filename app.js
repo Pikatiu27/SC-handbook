@@ -211,6 +211,10 @@ function weldLapReduction(lengthMm) {
   if (lengthM <= 8) return 1.10 - 0.06 * lengthM;
   return 0.62;
 }
+function weldCapacityFactor(type, category) {
+  if (category === "GP") return 0.6;
+  return type === "cpbw" ? 0.9 : 0.8;
+}
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
 function standardHoleDiameter(diameter) { return diameter <= 24 ? diameter + 2 : diameter + 3; }
 function signedFixed(number, digits = 1) { return `${number >= 0 ? "+" : ""}${Number(number).toFixed(digits)}`; }
@@ -231,7 +235,7 @@ function calculateBolt() {
   const count = Math.max(1, Math.round(value("boltCount")));
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
-  const kr = Math.min(1, Math.max(0.5, value("kr")));
+  const kr = Math.min(1, Math.max(0.75, value("kr")));
   const groupKrd = category.grade === "10.9" && nThread > 0 ? 0.83 : 1;
   const groupShear = count * 0.8 * 0.62 * category.fuf * groupKrd * kr * (nThread * bolt.Ac + nShank * bolt.Ao) / 1000;
   const actualEdge = value("edgeDistance");
@@ -245,7 +249,7 @@ function calculateBolt() {
   const preload = category.preload ? bolt[category.preload] : 0;
   const slip = category.type === "friction" ? 0.7 * value("slipFactor") * value("interfaces") * preload * value("holeFactor") : null;
   const slipGroupCapacity = slip === null ? null : count * slip;
-  const slipTensionCapacity = preload > 0 ? count * preload : null;
+  const slipTensionCapacity = preload > 0 ? 0.7 * count * preload : null;
   const strengthRatio = groupShear > 0 && count * tension > 0
     ? (value("shearDemand") / groupShear) ** 2 + (value("tensionDemand") / (count * tension)) ** 2
     : Infinity;
@@ -269,7 +273,7 @@ function calculateBolt() {
   $("alternateShearCapacity").textContent = fixed(alternateShear);
   $("alternateShearNote").textContent = plane === "N" ? "threads clear of plane" : "threads intercept plane";
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)} user/project reduction factor. Additional checks may apply: prying action, block shear and long-joint reduction.`;
+  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)} bolted lap connection reduction. Additional checks may apply: prying action, block shear and long-joint reduction.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
   $("plyBearingLimit").textContent = `${fixed(bearingFull)} kN`;
   $("edgeTearoutLimit").textContent = `${fixed(bearingEdge)} kN`;
@@ -293,12 +297,12 @@ function calculateBolt() {
   const strengthInteractionFormula = `<code>(V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub>)<sup>2</sup> = (${fixed(value("shearDemand"))} / ${fixed(groupShear)})<sup>2</sup> + (${fixed(value("tensionDemand"))} / ${fixed(count * tension)})<sup>2</sup> = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}; limit &le; 1.0</code>`;
   const slipInteractionFormula = slip === null
     ? "<code>Not applicable - AS 4100 Cl. 9.2.3.3 applies to friction-type categories where serviceability slip is limited</code>"
-    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(value("shearDemand"))} / ${fixed(slipGroupCapacity)} + ${fixed(value("tensionDemand"))} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> is taken as the minimum bolt tension at installation for this quick check</code>`;
+    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(value("shearDemand"))} / ${fixed(slipGroupCapacity)} + ${fixed(value("tensionDemand"))} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; &phi;N<sub>tf</sub> = 0.70N<sub>ti</sub> for this serviceability slip check</code>`;
   $("formulaSteps").innerHTML = `
     <div><b>Tension - 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
     <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
     <div><b>Shear X - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
-    <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x k<sub>r</sub> x (n<sub>n</sub>A<sub>c</sub> + n<sub>x</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>rd</sub> = ${groupKrd.toFixed(2)} for this bolt-group input</code></div>
+    <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>rd</sub> x k<sub>r</sub> x (n<sub>n</sub>A<sub>c</sub> + n<sub>x</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>r</sub> is the bolted lap connection reduction from Table 9.2.2.1</code></div>
     <div><b>Ply bearing - 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
     <div><b>Edge limit - 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
     <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
@@ -322,7 +326,7 @@ function calculateWeld() {
   const kr = lapReductionActive ? weldLapReduction(length) : 1;
   const parentThickness = value("weldParentThickness");
   const parentGrade = parentMetalGrades[$("weldParentGrade").value] || parentMetalGrades["Grade 250 plate"];
-  const phi = 0.8;
+  const phi = weldCapacityFactor(type, category);
   const parentPhi = 0.9;
   const filletThroat = 0.707 * size;
   const throat = type === "fillet" ? filletThroat : type === "compound" ? effectiveThroat + filletThroat : effectiveThroat;
@@ -347,7 +351,7 @@ function calculateWeld() {
   $("weldLengthValue").textContent = `${fixed(length)} mm`;
   $("weldRunsValue").textContent = String(runs);
   $("weldCapacityLabel").innerHTML = type === "fillet" ? "Design weld capacity &phi;V<sub>w</sub>" : "Capacity view only";
-  $("weldCapacityBasis").textContent = `${typeData.scope}; ${typeData.note}; category ${category} is for specification and inspection context`;
+  $("weldCapacityBasis").textContent = `${typeData.scope}; ${typeData.note}; category ${category}, phi ${phi.toFixed(2)} from AS 4100 Table 3.4`;
   $("weldCapacity").textContent = fixed(capacity);
   $("weldCapacityPerMm").textContent = capacityPerMm.toFixed(2);
   $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";
@@ -363,7 +367,7 @@ function calculateWeld() {
   $("weldFormulaSteps").innerHTML = `
     <div><b>Selected weld</b><code>${typeData.label} - ${typeData.scope}</code></div>
     <div><b>Design throat</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : type === "compound" ? `${effectiveThroat.toFixed(1)} + 0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${fixed2(throat)} mm</code></div>
-    <div><b>Weld-metal capacity</b><code>&phi;R = 0.80 x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x ${fixed(length)} / 1000 x k<sub>r</sub> ${kr.toFixed(2)} = ${fixed(capacity / runs)} kN per run</code></div>
+    <div><b>Weld-metal capacity</b><code>&phi;R = ${phi.toFixed(2)} x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x ${fixed(length)} / 1000 x k<sub>r</sub> ${kr.toFixed(2)} = ${fixed(capacity / runs)} kN per run</code></div>
     <div><b>Lap reduction</b><code>${lapReductionActive ? `AS 4100 Table 9.6.3.10(B); l<sub>w</sub> = ${(length / 1000).toFixed(2)} m, k<sub>r</sub> = ${kr.toFixed(2)}` : "Not applied - welded lap connection option is No or weld type is not fillet"}</code></div>
     <div><b>Effective weld lines</b><code>${runs} identical effective weld line${runs === 1 ? "" : "s"} x ${fixed(capacity / runs)} = ${fixed(capacity)} kN; not welding passes</code></div>
     <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x ${parentGrade.fup} x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm; warning only, not used in PASS/FAIL` : "Not checked - enter ply thickness"}</code></div>
@@ -591,7 +595,7 @@ function calculateMember() {
 
   $("memberDesignation").textContent = `${section.designation} - ${gradeName}`;
   $("memberAssumption").innerHTML = memberType === "chs"
-    ? "&alpha;<sub>b</sub> = -0.5 - CHS buckling about any axis"
+    ? "&alpha;<sub>b</sub> = -0.5 - assumes cold-formed non-stress-relieved CHS"
     : memberType === "ea"
       ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - equal-angle principal-axis screen`
       : memberType === "pfc"
@@ -614,11 +618,11 @@ function calculateMember() {
   $("memberGoverning").textContent = alphaC < 0.999 ? "Member buckling" : "Section capacity";
   const netAreaWarning = enteredNetArea > properties.area ? " Net area has been limited to gross area." : "";
   $("memberWarning").innerHTML = memberType === "chs"
-    ? `Centroidal axial load only. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length, grade certificate and the actual connection.${netAreaWarning}`
+    ? `Centroidal axial load only. Default &alpha;<sub>b</sub> assumes cold-formed non-stress-relieved CHS; confirm hot-formed or stress-relieved sections separately. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length, grade certificate and the actual connection.${netAreaWarning}`
     : memberType === "ea"
-      ? `Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; change it if the actual connection differs. Flexural-torsional buckling is not checked.${netAreaWarning}`
+      ? `Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; unequal angles connected by the short leg may require 0.75, and uniform force distribution may justify 1.0. Flexural-torsional buckling is not checked.${netAreaWarning}`
       : memberType === "pfc"
-        ? `PFC quick check uses catalogue A<sub>g</sub> and r<sub>min</sub> for centroidal axial load only. Check axis-specific buckling, torsional/flexural-torsional buckling and connection eccentricity separately.${netAreaWarning}`
+        ? `PFC quick check uses catalogue A<sub>g</sub> and r<sub>min</sub> for centroidal axial load only, with hot-rolled channel &alpha;<sub>b</sub> = 0.5 by default. Check axis-specific buckling, torsional/flexural-torsional buckling and connection eccentricity separately.${netAreaWarning}`
         : `Confirm rod product grade, &alpha;<sub>b</sub> to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
     <div><b>Design input status</b><code>&alpha;<sub>b</sub>, A<sub>n</sub> and k<sub>t</sub> are connection- and axis-dependent design inputs; confirm them from AS 4100 and project details before issue</code></div>
@@ -629,7 +633,7 @@ function calculateMember() {
     <div><b>Nominal slenderness</b><code>&lambda;<sub>n</sub> = (L<sub>e</sub>/r) &radic;k<sub>f</sub> &radic;(f<sub>y</sub>/250) = ${lambdaN.toFixed(1)}</code></div>
     <div><b>Modified slenderness</b><code>&lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub> = ${modifiedLambda.toFixed(1)}; &alpha;<sub>a</sub> = ${alphaA.toFixed(2)}</code></div>
     <div><b>Member reduction - 6.3.3</b><code>&eta; = 0.00326(&lambda; - 13.5) = ${eta.toFixed(3)}; &xi; = ${xi.toFixed(3)}; &alpha;<sub>c</sub> = ${alphaC.toFixed(3)}</code></div>
-    <div><b>Section capacity - 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>g</sub>f<sub>y</sub> = 0.90 x ${grade.kf.toFixed(3)} x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(sectionCompression)} kN</code></div>
+    <div><b>Section capacity - 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>n</sub>f<sub>y</sub>; quick check assumes no penetrations or unfilled holes, so A<sub>n</sub> = A<sub>g</sub> = ${properties.area.toFixed(0)} mm2; capacity = ${fixed(sectionCompression)} kN</code></div>
     <div><b>Member capacity - 6.3</b><code>&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN</code></div>`;
 }
 
@@ -1059,7 +1063,7 @@ function setMemberType(type) {
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
   $("alphaBField").hidden = type === "chs";
   if (type === "ea") $("memberAlphaB").value = "0.5";
-  if (type === "pfc") $("memberAlphaB").value = "0";
+  if (type === "pfc") $("memberAlphaB").value = "0.5";
   if (type === "rod") $("memberAlphaB").value = "0";
   populateMemberOptions();
 }
