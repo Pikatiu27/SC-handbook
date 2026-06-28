@@ -1090,7 +1090,37 @@ Do not imply the member tab is a full steel design engine unless all required li
 - Connection design not included.
 - Flexural-torsional buckling not included unless specifically implemented.
 
-### 15.11 Web Local Update and Deployment Workflow
+### 15.11 Concrete Pad Moment Web Tab Rules
+
+The concrete pad tab is a compact reinforced-concrete flexural section-capacity view for rectangular pad strips. It is not a full footing, slab, or concrete design engine.
+
+Use this scope:
+
+- Rectangular strip section only.
+- Pure flexural section analysis with `N* = 0`.
+- User-selected compression face.
+- N-class and legacy Y-bar reinforcement mats.
+- Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
+- Pad-on-pad composite action only when the user separately confirms composite action and interface shear design outside the calculator.
+
+Required exclusions:
+
+- Punching shear.
+- One-way shear.
+- Soil bearing.
+- Base-plate, column, or pedestal bearing.
+- Development length and anchorage.
+- Bar spacing and cover compliance beyond warning-level screens.
+- Crack control, service stress, and deflection.
+- Load combinations and design actions.
+- Interface shear design for pad-on-pad strengthening.
+- Plain-concrete footing capacity.
+
+Concrete tab warnings must stay visible and concise. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
+
+The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
+
+### 15.12 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 

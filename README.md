@@ -47,6 +47,18 @@ The primary basis is AS 4100:2020 Section 5 for beam section capacity, using `ph
 
 The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, shear, combined bending and shear, web bearing, web buckling, concentrated loads, copes, holes, composite action, fire or deflection.
 
+### Concrete Pad Moment
+
+The concrete pad tool is a compact AS 3600-style reinforced-concrete flexural section check for a rectangular pad strip:
+
+- section width, top pad depth, optional bottom pad depth and bending direction;
+- N-class and legacy Y-bar reinforcement mats with spacing, depth, yield strength and modulus inputs;
+- neutral-axis solution, concrete compression force, nominal moment capacity `Muo`, design moment capacity `phi Muo` and `k_uo` warning status;
+- pad-on-pad composite-action warning where combined depth is used;
+- a small collapsed section-analysis schematic for strain, stress block and resultants.
+
+This is a moment section-capacity view only, not a full footing or slab design check. It does not check punching shear, one-way shear, soil bearing, base-plate or column bearing, development length, anchorage, crack control, deflection, load combinations, interface shear or plain-concrete footing capacity. For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check.
+
 ### Weld Capacity
 
 The weld tool covers a compact weld-type guide plus a throat-capacity view for common structural welds:
