@@ -443,6 +443,16 @@ footer b { white-space: nowrap; }
   .beam-metrics { grid-template-columns: repeat(2, 1fr); }
   .tension-limits { grid-template-columns: 1fr; }
   .lookup-note-grid { grid-template-columns: 1fr; }
+  .table-scroll { overflow-x: visible; }
+  .compact-lookup-table { min-width: 0; display: block; border-collapse: separate; border-spacing: 0; }
+  .compact-lookup-table thead { display: none; }
+  .compact-lookup-table tbody { display: grid; gap: 8px; }
+  .compact-lookup-table tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; padding: 10px; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+  .compact-lookup-table td { display: block; padding: 0; border: 0; min-width: 0; }
+  .compact-lookup-table td:nth-child(1) { grid-column: 1; grid-row: 1; color: var(--ink); font-weight: 900; }
+  .compact-lookup-table td:nth-child(2), .compact-lookup-table td:nth-child(4) { grid-column: 1 / -1; color: var(--muted); }
+  .compact-lookup-table td:nth-child(3) { grid-column: 2; grid-row: 1; justify-self: end; width: auto; min-width: 54px; padding: 3px 8px; border-radius: 999px; background: #eaf4fb; color: var(--member-dark); text-align: center; font-size: var(--fs-sm); line-height: 1.2; }
+  .compact-lookup-table td:nth-child(4)::before { content: "Status: "; color: var(--ink); font-weight: 900; }
   .ply-result-grid { grid-template-columns: 1fr; }
   .edge-check { grid-template-columns: 1fr auto; align-items: start; gap: 6px 10px; }
   .edge-check > span { grid-column: 1 / -1; }
@@ -476,7 +486,7 @@ footer b { white-space: nowrap; }
   .member-type-switch, .beam-type-switch { width: 100%; }
   .member-type, .beam-type { flex: 1 1 calc(50% - 3px); min-width: 0; }
   .section-guide article { padding: 10px; }
-  .compact-lookup-table { min-width: 620px; }
+  .compact-lookup-table { min-width: 0; }
   .member-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .beam-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .concrete-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
