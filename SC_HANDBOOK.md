@@ -934,6 +934,29 @@ Reduction-factor inputs:
 - Do not imply that a project factor is an automatic AS 4100, AS/NZS 1554.1, or manufacturer-table value.
 - For weld checks, `k_r` must not be treated as a free project factor when it is being used for AS 4100 welded lap connections. If included, calculate and label it from AS 4100 Table 9.6.3.10(B), and only apply it when the user confirms the weld is a welded lap connection.
 
+Web engineering figure and chart rules:
+
+- Figures, diagrams, sketches, and charts must support fast engineering lookup. They are not journal figures, marketing graphics, or decorative illustrations.
+- The web target is screen reading on phone, tablet, and desktop. Do not apply IEEE, Nature, Elsevier, or other print-publication sizing rules such as single-column inch widths, DPI targets, or EPS/PDF-first export unless the task is explicitly to produce a publication or report figure.
+- Prefer static HTML, SVG, or Canvas for interactive web figures. Use Python / Matplotlib / SciencePlots only for exported reports, static publication figures, or generated assets that are committed as normal web files.
+- Every technical figure must have a clear engineering purpose: geometry identification, symbol convention, load path, stress/resultant relationship, section layout, or source-table lookup support.
+- Keep figures compact. A figure should clarify the calculation faster than text; if it needs long explanation, move the explanation to `Calculation basis and limitations`.
+- Default web figures should be small inline engineering aids, not large feature images. As a starting point, size simple diagrams to roughly three to four lines of body text height on mobile, then allow responsive scaling only when the figure needs more space to remain legible.
+- Do not let a generated image dominate the first screen or push the main inputs and results away from the engineer. If a larger diagram is useful, place it in a collapsed details panel or provide a small preview with an expandable view.
+- Generated bitmap and SVG assets should have explicit responsive constraints such as `max-width`, `max-height`, `aspect-ratio`, or container sizing. Do not rely on the image's raw pixel dimensions to control its display size.
+- Labels must be readable at mobile width. Do not shrink labels below the small-text level to force a dense drawing to fit; simplify the drawing or stack the labels.
+- Use standard engineering notation with HTML subscript/superscript in visible labels where practical. Units must be visible and upright; variables may use standard mathematical notation where useful.
+- Do not rely on colour alone. If a diagram uses colour to distinguish actions, parts, checks, or statuses, also use labels, line style, marker shape, hatching, or text.
+- Use colour-blind-safe, low-saturation colours consistent with the web colour system. Avoid pure red, pure green, strong neon colours, dark low-contrast fills, and one-hue decorative palettes.
+- Use line weight intentionally: structural outlines and axes should be lighter than the highlighted force, dimension, or governing result. Avoid heavy borders around every object.
+- Gridlines, backgrounds, shadows, gradients, and decorative fills should be removed unless they directly help interpretation.
+- Legends must not cover important geometry or data. If a legend is needed, keep it short or place it outside the main drawing area.
+- For charts, show enough tick marks to read the engineering trend or threshold, but do not overload the chart with dense minor ticks. Axis labels must include units.
+- For PASS / FAIL / CHECK or governing result graphics, show the text status visibly. Colour is secondary.
+- For generated bitmap assets, keep the source script or generation method traceable where practical, and export at a resolution suitable for the displayed web size. Do not use large bitmap files when a compact SVG or Canvas drawing is sufficient.
+- Figures copied or redrawn from standards, handbooks, catalogues, or online sources must follow the source hierarchy and copyright rules below. A drawing used as a visual guide must not become the source of numeric properties unless the source explicitly provides those values.
+- If a figure cannot be verified against a standard, handbook, manufacturer document, or accepted project convention, label it as a draft visual guide or leave it out.
+
 Technical diagram and symbol rules:
 
 - Do not invent, freehand, or approximate engineering symbols in HTML/CSS/SVG when the symbol has a recognised standard or drawing convention.
