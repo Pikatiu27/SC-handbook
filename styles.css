@@ -127,7 +127,8 @@ main, footer { max-width: 1040px; margin: auto; }
 .section-guide small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
 .section-guide.diagram-guide { grid-template-columns: 1fr; }
 .section-guide.diagram-guide article { background: #fff; }
-.section-diagram { display: block; width: 50%; height: auto; margin: 0 auto; border: 1px solid #d7e4ee; border-radius: 8px; background: #fbfdff; }
+.section-guide [hidden] { display: none !important; }
+.section-diagram { display: block; width: min(25%, 360px); min-width: 190px; height: auto; margin: 0 auto; border: 1px solid #d7e4ee; border-radius: 8px; background: #fbfdff; }
 .manual-tag { width: max-content; max-width: 100%; padding: 4px 7px; border-radius: 999px; background: #edf6fd; color: var(--member-dark); font-size: var(--fs-xs); line-height: 1; font-weight: 900; }
 .lookup-table-stack { padding: 0 11px 12px; display: grid; gap: 11px; }
 .lookup-table-stack section { padding: 11px; border: 1px solid var(--line); border-radius: 9px; background: #f8fbfd; }
@@ -489,6 +490,7 @@ footer b { white-space: nowrap; }
   .member-type-switch, .beam-type-switch { width: 100%; }
   .member-type, .beam-type { flex: 1 1 calc(50% - 3px); min-width: 0; }
   .section-guide article { padding: 10px; }
+  .section-diagram { width: min(72%, 280px); min-width: 0; }
   .compact-lookup-table { min-width: 0; }
   .member-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .beam-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
