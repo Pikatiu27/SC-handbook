@@ -22,7 +22,6 @@
   </defs>
   <rect class="panel" x="0" y="0" width="360" height="240" rx="14" />
 
-  <text x="24" y="30" class="caption" text-anchor="start">CHS</text>
   <circle cx="142" cy="108" r="66" class="section" />
   <circle cx="142" cy="108" r="43" class="void" />
   <line x1="58" y1="108" x2="226" y2="108" class="centre" />

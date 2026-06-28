@@ -74,7 +74,6 @@ def svg_doc(title: str, body: str) -> str:
 def chs() -> str:
     cx, cy, ro, ri = 142, 108, 66, 43
     body = f"""
-  {text(24, 30, "CHS", "caption", "start")}
   <circle cx="{cx}" cy="{cy}" r="{ro}" class="section" />
   <circle cx="{cx}" cy="{cy}" r="{ri}" class="void" />
   {line(cx - ro - 18, cy, cx + ro + 18, cy, "centre")}
@@ -92,7 +91,6 @@ def chs() -> str:
 def equal_angle() -> str:
     x, y, leg, thk = 86, 54, 150, 34
     body = f"""
-  {text(24, 30, "Equal Angle", "caption", "start")}
   <path class="section" d="M {x} {y} L {x + leg} {y} L {x + leg} {y + thk} L {x + thk + 16} {y + thk} Q {x + thk} {y + thk} {x + thk} {y + thk + 16} L {x + thk} {y + leg} L {x} {y + leg} Z" />
   <path class="guide" d="M {x + thk + 16} {y + thk} Q {x + thk} {y + thk} {x + thk} {y + thk + 16}" />
   {dim_h(x, y - 20, x + leg)}
@@ -116,7 +114,6 @@ def equal_angle() -> str:
 def pfc() -> str:
     x, y, d, bf, tw, tf = 92, 48, 148, 132, 30, 26
     body = f"""
-  {text(24, 30, "PFC", "caption", "start")}
   <path class="section" d="M {x} {y} L {x + bf} {y} L {x + bf} {y + tf} L {x + tw + 12} {y + tf} Q {x + tw} {y + tf} {x + tw} {y + tf + 12} L {x + tw} {y + d - tf - 12} Q {x + tw} {y + d - tf} {x + tw + 12} {y + d - tf} L {x + bf} {y + d - tf} L {x + bf} {y + d} L {x} {y + d} Z" />
   <path class="guide" d="M {x + tw + 12} {y + tf} Q {x + tw} {y + tf} {x + tw} {y + tf + 12}" />
   <path class="guide" d="M {x + tw} {y + d - tf - 12} Q {x + tw} {y + d - tf} {x + tw + 12} {y + d - tf}" />
@@ -145,7 +142,6 @@ def pfc() -> str:
 def rod() -> str:
     cx, cy, r = 144, 108, 60
     body = f"""
-  {text(24, 30, "Round Bar / Rod", "caption", "start")}
   <circle cx="{cx}" cy="{cy}" r="{r}" class="section" />
   {line(cx - r - 18, cy, cx + r + 18, cy, "centre")}
   {line(cx, cy - r - 18, cx, cy + r + 18, "centre")}

@@ -22,7 +22,6 @@
   </defs>
   <rect class="panel" x="0" y="0" width="360" height="240" rx="14" />
 
-  <text x="24" y="30" class="caption" text-anchor="start">PFC</text>
   <path class="section" d="M 92 48 L 224 48 L 224 74 L 134 74 Q 122 74 122 86 L 122 158 Q 122 170 134 170 L 224 170 L 224 196 L 92 196 Z" />
   <path class="guide" d="M 134 74 Q 122 74 122 86" />
   <path class="guide" d="M 122 158 Q 122 170 134 170" />

@@ -22,7 +22,6 @@
   </defs>
   <rect class="panel" x="0" y="0" width="360" height="240" rx="14" />
 
-  <text x="24" y="30" class="caption" text-anchor="start">Equal Angle</text>
   <path class="section" d="M 86 54 L 236 54 L 236 88 L 136 88 Q 120 88 120 104 L 120 204 L 86 204 Z" />
   <path class="guide" d="M 136 88 Q 120 88 120 104" />
   <line x1="86" y1="34" x2="236" y2="34" class="dim" />
