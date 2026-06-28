@@ -147,10 +147,6 @@ def rod() -> str:
   {line(cx, cy - r - 18, cx, cy + r + 18, "centre")}
   {dim_h(cx - r, cy, cx + r)}
   {text(cx, cy - 14, "d")}
-  {dim_h(cx - r, cy + 74, cx + r)}
-  {line(cx - r, cy + r + 6, cx - r, cy + 82)}
-  {line(cx + r, cy + r + 6, cx + r, cy + 82)}
-  {text(cx, cy + 98, "diameter")}
 """
     return svg_doc("Round bar section guide", body)
 

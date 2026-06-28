@@ -1066,6 +1066,9 @@ function setTool(tool, updateHash = true) {
 function setMemberType(type) {
   memberType = type;
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
+  document.querySelectorAll("[data-member-guide]").forEach(card => {
+    card.hidden = card.dataset.memberGuide !== type;
+  });
   $("alphaBField").hidden = type === "chs";
   $("memberAlphaBAssumption").innerHTML = type === "chs"
     ? "&alpha;<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS."

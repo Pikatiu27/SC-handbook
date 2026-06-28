@@ -125,9 +125,9 @@ main, footer { max-width: 1040px; margin: auto; }
 .section-guide strong, .section-guide small { display: block; }
 .section-guide strong { color: var(--ink); font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
 .section-guide small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
-.section-guide.diagram-guide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.section-guide.diagram-guide { grid-template-columns: 1fr; }
 .section-guide.diagram-guide article { background: #fff; }
-.section-diagram { display: block; width: 100%; height: auto; border: 1px solid #d7e4ee; border-radius: 8px; background: #fbfdff; }
+.section-diagram { display: block; width: 50%; height: auto; margin: 0 auto; border: 1px solid #d7e4ee; border-radius: 8px; background: #fbfdff; }
 .manual-tag { width: max-content; max-width: 100%; padding: 4px 7px; border-radius: 999px; background: #edf6fd; color: var(--member-dark); font-size: var(--fs-xs); line-height: 1; font-weight: 900; }
 .lookup-table-stack { padding: 0 11px 12px; display: grid; gap: 11px; }
 .lookup-table-stack section { padding: 11px; border: 1px solid var(--line); border-radius: 9px; background: #f8fbfd; }

@@ -29,11 +29,5 @@
   <path class="arrow" d="M 84 108 L 91 104.5 L 91 111.5 Z" />
   <path class="arrow" d="M 204 108 L 197 104.5 L 197 111.5 Z" />
   <text x="144" y="94" class="dim-label" text-anchor="middle">d</text>
-  <line x1="84" y1="182" x2="204" y2="182" class="dim" />
-  <path class="arrow" d="M 84 182 L 91 178.5 L 91 185.5 Z" />
-  <path class="arrow" d="M 204 182 L 197 178.5 L 197 185.5 Z" />
-  <line x1="84" y1="174" x2="84" y2="190" class="guide" />
-  <line x1="204" y1="174" x2="204" y2="190" class="guide" />
-  <text x="144" y="206" class="dim-label" text-anchor="middle">diameter</text>
 
 </svg>
