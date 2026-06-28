@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">Equal angle section guide</title>
+  <desc id="desc">Dimension-labelled steel section guide generated for SC Handbook.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#58736b" />
+    </marker>
+    <style>
+  .panel { fill: #fbfdff; }
+  .section { fill: #eef8ff; stroke: #263732; stroke-width: 2.4; stroke-linejoin: round; }
+  .void { fill: #fbfdff; stroke: #263732; stroke-width: 2.4; }
+  .guide { fill: none; stroke: #9aa9a3; stroke-width: 1.2; }
+  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; marker-start: url(#arrow); marker-end: url(#arrow); }
+  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#arrow); }
+  .centre { fill: none; stroke: #9aa9a3; stroke-width: 1.1; stroke-dasharray: 5 5; }
+  .label { font: 800 16px Aptos, Calibri, Arial, sans-serif; fill: #24352f; }
+  .dim-label { font: 800 15px Aptos, Calibri, Arial, sans-serif; fill: #425c55; }
+  .caption { font: 800 14px Aptos, Calibri, Arial, sans-serif; fill: #547067; letter-spacing: .02em; }
+  .note { font: 600 11px Aptos, Calibri, Arial, sans-serif; fill: #78908a; }
+</style>
+  </defs>
+  <rect class="panel" x="0" y="0" width="360" height="240" rx="14" />
+
+  <text x="24" y="30" class="caption" text-anchor="start">Equal Angle</text>
+  <path class="section" d="M 86 54 L 236 54 L 236 88 L 136 88 Q 120 88 120 104 L 120 204 L 86 204 Z" />
+  <path class="guide" d="M 136 88 Q 120 88 120 104" />
+  <line x1="86" y1="34" x2="236" y2="34" class="dim" />
+  <line x1="86" y1="48" x2="86" y2="26" class="guide" />
+  <line x1="236" y1="48" x2="236" y2="26" class="guide" />
+  <text x="161.0" y="24" class="dim-label" text-anchor="middle">b</text>
+  <line x1="64" y1="54" x2="64" y2="204" class="dim" />
+  <line x1="80" y1="54" x2="56" y2="54" class="guide" />
+  <line x1="80" y1="204" x2="56" y2="204" class="guide" />
+  <text x="46" y="134.0" class="dim-label" text-anchor="middle">b</text>
+  <line x1="256" y1="54" x2="256" y2="88" class="dim" />
+  <line x1="242" y1="54" x2="264" y2="54" class="guide" />
+  <line x1="242" y1="88" x2="264" y2="88" class="guide" />
+  <text x="270" y="76.0" class="dim-label" text-anchor="start">t</text>
+  <path class="leader" d="M 169 133 L 133 101" />
+  <text x="178" y="140" class="dim-label" text-anchor="start">r</text>
+  <text x="24" y="214" class="note" text-anchor="start">Catalogue notation: b = leg length, t = thickness, r = root radius</text>
+
+</svg>

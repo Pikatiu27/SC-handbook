@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">PFC section guide</title>
+  <desc id="desc">Dimension-labelled steel section guide generated for SC Handbook.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#58736b" />
+    </marker>
+    <style>
+  .panel { fill: #fbfdff; }
+  .section { fill: #eef8ff; stroke: #263732; stroke-width: 2.4; stroke-linejoin: round; }
+  .void { fill: #fbfdff; stroke: #263732; stroke-width: 2.4; }
+  .guide { fill: none; stroke: #9aa9a3; stroke-width: 1.2; }
+  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; marker-start: url(#arrow); marker-end: url(#arrow); }
+  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#arrow); }
+  .centre { fill: none; stroke: #9aa9a3; stroke-width: 1.1; stroke-dasharray: 5 5; }
+  .label { font: 800 16px Aptos, Calibri, Arial, sans-serif; fill: #24352f; }
+  .dim-label { font: 800 15px Aptos, Calibri, Arial, sans-serif; fill: #425c55; }
+  .caption { font: 800 14px Aptos, Calibri, Arial, sans-serif; fill: #547067; letter-spacing: .02em; }
+  .note { font: 600 11px Aptos, Calibri, Arial, sans-serif; fill: #78908a; }
+</style>
+  </defs>
+  <rect class="panel" x="0" y="0" width="360" height="240" rx="14" />
+
+  <text x="24" y="30" class="caption" text-anchor="start">PFC</text>
+  <path class="section" d="M 92 48 L 224 48 L 224 74 L 134 74 Q 122 74 122 86 L 122 158 Q 122 170 134 170 L 224 170 L 224 196 L 92 196 Z" />
+  <path class="guide" d="M 134 74 Q 122 74 122 86" />
+  <path class="guide" d="M 122 158 Q 122 170 134 170" />
+  <line x1="68" y1="48" x2="68" y2="196" class="dim" />
+  <line x1="84" y1="48" x2="60" y2="48" class="guide" />
+  <line x1="84" y1="196" x2="60" y2="196" class="guide" />
+  <text x="50" y="127.0" class="dim-label" text-anchor="middle">d</text>
+  <line x1="92" y1="28" x2="224" y2="28" class="dim" />
+  <line x1="92" y1="42" x2="92" y2="20" class="guide" />
+  <line x1="224" y1="42" x2="224" y2="20" class="guide" />
+  <text x="158.0" y="17" class="dim-label" text-anchor="middle">b<tspan baseline-shift="sub" font-size="10">f</tspan></text>
+  <line x1="92" y1="216" x2="122" y2="216" class="dim" />
+  <line x1="92" y1="202" x2="92" y2="224" class="guide" />
+  <line x1="122" y1="202" x2="122" y2="224" class="guide" />
+  <text x="107.0" y="238" class="dim-label" text-anchor="middle">t<tspan baseline-shift="sub" font-size="10">w</tspan></text>
+  <line x1="242" y1="48" x2="242" y2="74" class="dim" />
+  <line x1="230" y1="48" x2="250" y2="48" class="guide" />
+  <line x1="230" y1="74" x2="250" y2="74" class="guide" />
+  <text x="256" y="66.0" class="dim-label" text-anchor="start">t<tspan baseline-shift="sub" font-size="10">f</tspan></text>
+  <path class="leader" d="M 182 122 L 132 84" />
+  <text x="191" y="129" class="dim-label" text-anchor="start">r</text>
+  <text x="24" y="214" class="note" text-anchor="start">Catalogue notation: d, b_f, t_w, t_f and root radius r</text>
+
+</svg>

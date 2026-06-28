@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">CHS section guide</title>
+  <desc id="desc">Dimension-labelled steel section guide generated for SC Handbook.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#58736b" />
+    </marker>
+    <style>
+  .panel { fill: #fbfdff; }
+  .section { fill: #eef8ff; stroke: #263732; stroke-width: 2.4; stroke-linejoin: round; }
+  .void { fill: #fbfdff; stroke: #263732; stroke-width: 2.4; }
+  .guide { fill: none; stroke: #9aa9a3; stroke-width: 1.2; }
+  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; marker-start: url(#arrow); marker-end: url(#arrow); }
+  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#arrow); }
+  .centre { fill: none; stroke: #9aa9a3; stroke-width: 1.1; stroke-dasharray: 5 5; }
+  .label { font: 800 16px Aptos, Calibri, Arial, sans-serif; fill: #24352f; }
+  .dim-label { font: 800 15px Aptos, Calibri, Arial, sans-serif; fill: #425c55; }
+  .caption { font: 800 14px Aptos, Calibri, Arial, sans-serif; fill: #547067; letter-spacing: .02em; }
+  .note { font: 600 11px Aptos, Calibri, Arial, sans-serif; fill: #78908a; }
+</style>
+  </defs>
+  <rect class="panel" x="0" y="0" width="360" height="240" rx="14" />
+
+  <text x="24" y="30" class="caption" text-anchor="start">CHS</text>
+  <circle cx="142" cy="108" r="66" class="section" />
+  <circle cx="142" cy="108" r="43" class="void" />
+  <line x1="58" y1="108" x2="226" y2="108" class="centre" />
+  <line x1="142" y1="24" x2="142" y2="192" class="centre" />
+  <line x1="76" y1="196" x2="208" y2="196" class="dim" />
+  <line x1="76" y1="180" x2="76" y2="204" class="guide" />
+  <line x1="208" y1="180" x2="208" y2="204" class="guide" />
+  <text x="142" y="220" class="dim-label" text-anchor="middle">D</text>
+  <line x1="185" y1="105" x2="208" y2="105" class="dim" />
+  <text x="197" y="94" class="dim-label" text-anchor="middle">t</text>
+  <text x="24" y="214" class="note" text-anchor="start">Catalogue notation: D = outside diameter, t = wall thickness</text>
+
+</svg>

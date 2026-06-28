@@ -379,17 +379,17 @@
         <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button></div>
 
         <details class="section-guide-card">
-          <summary><span><b>Section guide</b><small>Product-manual section references; no schematic redraws</small></span><i>+</i></summary>
-          <div class="section-guide" aria-label="Member section guide">
-            <article class="manual-section-card"><span class="manual-tag">Orrcon catalogue</span><div><strong>CHS</strong><small>Use Circular Hollow Sections from Orrcon National Product Catalogue 2024, Sections 1.1.4 and 1.1.5. Verify AS/NZS 1163 grade, OD, wall thickness and availability.</small></div></article>
-            <article class="manual-section-card"><span class="manual-tag">OneSteel / InfraBuild</span><div><strong>Equal Angle</strong><small>Use Equal Angles from OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 19–21. Confirm leg size, thickness, r<sub>min</sub>, k<sub>f</sub> and connection eccentricity.</small></div></article>
-            <article class="manual-section-card"><span class="manual-tag">OneSteel / InfraBuild</span><div><strong>PFC</strong><small>Use Parallel Flange Channels from OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, Tables 15–16. Confirm designation, A<sub>g</sub>, r<sub>min</sub>, steel grade and connection eccentricity.</small></div></article>
-            <article class="manual-section-card"><span class="manual-tag">OneSteel / InfraBuild</span><div><strong>Rod</strong><small>Use Rounds from OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, Table 3. Verify stock diameter, grade, availability and end connection details.</small></div></article>
+          <summary><span><b>Section guide</b><small>Product-catalogue style dimension sketches</small></span><i>+</i></summary>
+          <div class="section-guide diagram-guide" aria-label="Member section guide">
+            <article class="manual-section-card"><img class="section-diagram" src="assets/generated/member-section-chs.svg" alt="CHS section diagram showing D and t dimensions"><div><strong>CHS</strong><small>D, t · Orrcon catalogue / AS/NZS 1163 basis</small></div></article>
+            <article class="manual-section-card"><img class="section-diagram" src="assets/generated/member-section-equal-angle.svg" alt="Equal angle section diagram showing b, t and r dimensions"><div><strong>Equal Angle</strong><small>b, t, r · OneSteel / InfraBuild Tables 19–21</small></div></article>
+            <article class="manual-section-card"><img class="section-diagram" src="assets/generated/member-section-pfc.svg" alt="PFC section diagram showing d, bf, tw, tf and r dimensions"><div><strong>PFC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, r · OneSteel / InfraBuild Tables 15–16</small></div></article>
+            <article class="manual-section-card"><img class="section-diagram" src="assets/generated/member-section-rod.svg" alt="Round bar or rod section diagram showing diameter d"><div><strong>Rod</strong><small>d · OneSteel / InfraBuild Rounds Table 3</small></div></article>
           </div>
         </details>
 
         <details class="section-guide-card member-lookup-card">
-          <summary><span><b>Member lookup tables</b><small>Embedded quick guides for α<sub>b</sub>, k<sub>t</sub> and project-defined inputs</small></span><i>+</i></summary>
+          <summary><span><b>AS 4100 factor lookup</b><small>Quick guides for α<sub>b</sub> and k<sub>t</sub>; A<sub>n</sub> and L<sub>e</sub> remain project inputs</small></span><i>+</i></summary>
           <div class="lookup-table-stack">
             <section>
               <h3>α<sub>b</sub> member section constant guide</h3>
