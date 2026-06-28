@@ -325,6 +325,9 @@ main, footer { max-width: 1040px; margin: auto; }
 .concrete-visual-body { padding: 0 12px 12px; }
 .concrete-canvas-wrap { width: min(100%, 520px); min-height: 180px; border: 1px solid #d5ebe8; border-radius: 8px; background: #fff; overflow: hidden; }
 #concreteLayoutCanvas { display: block; width: 100%; height: 180px; }
+.concrete-publication-figure { margin: 0; padding: 10px; border: 1px solid #d5ebe8; border-radius: 8px; background: #fff; overflow: hidden; }
+.concrete-publication-figure img { display: block; width: 100%; height: auto; max-height: 360px; object-fit: contain; }
+.concrete-publication-figure figcaption { margin-top: 7px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; font-weight: 700; }
 .concrete-layout-legend { margin-top: 8px; border: 1px solid var(--line); border-radius: 7px; background: #f8fcfb; overflow: hidden; }
 .concrete-layout-legend > summary { list-style: none; padding: 7px 9px; display: flex; justify-content: space-between; align-items: center; gap: 10px; cursor: pointer; }
 .concrete-layout-legend > summary::-webkit-details-marker { display: none; }
