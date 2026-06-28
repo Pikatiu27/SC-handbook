@@ -2,16 +2,17 @@
   <title id="title">Round bar section guide</title>
   <desc id="desc">Dimension-labelled steel section guide generated for SC Handbook.</desc>
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
-      <path d="M 0 0 L 8 4 L 0 8 z" fill="#58736b" />
+    <marker id="leaderArrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 9 4.5 L 0 9 z" fill="#58736b" />
     </marker>
     <style>
   .panel { fill: #fbfdff; }
   .section { fill: #eef8ff; stroke: #263732; stroke-width: 2.4; stroke-linejoin: round; }
   .void { fill: #fbfdff; stroke: #263732; stroke-width: 2.4; }
   .guide { fill: none; stroke: #9aa9a3; stroke-width: 1.2; }
-  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; marker-start: url(#arrow); marker-end: url(#arrow); }
-  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#arrow); }
+  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; }
+  .arrow { fill: #58736b; stroke: none; }
+  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#leaderArrow); }
   .centre { fill: none; stroke: #9aa9a3; stroke-width: 1.1; stroke-dasharray: 5 5; }
   .label { font: 800 16px Aptos, Calibri, Arial, sans-serif; fill: #24352f; }
   .dim-label { font: 800 15px Aptos, Calibri, Arial, sans-serif; fill: #425c55; }
@@ -26,8 +27,12 @@
   <line x1="66" y1="108" x2="222" y2="108" class="centre" />
   <line x1="144" y1="30" x2="144" y2="186" class="centre" />
   <line x1="84" y1="108" x2="204" y2="108" class="dim" />
+  <path class="arrow" d="M 84 108 L 91 104.5 L 91 111.5 Z" />
+  <path class="arrow" d="M 204 108 L 197 104.5 L 197 111.5 Z" />
   <text x="144" y="94" class="dim-label" text-anchor="middle">d</text>
   <line x1="84" y1="182" x2="204" y2="182" class="dim" />
+  <path class="arrow" d="M 84 182 L 91 178.5 L 91 185.5 Z" />
+  <path class="arrow" d="M 204 182 L 197 178.5 L 197 185.5 Z" />
   <line x1="84" y1="174" x2="84" y2="190" class="guide" />
   <line x1="204" y1="174" x2="204" y2="190" class="guide" />
   <text x="144" y="206" class="dim-label" text-anchor="middle">diameter</text>

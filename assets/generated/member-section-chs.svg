@@ -2,16 +2,17 @@
   <title id="title">CHS section guide</title>
   <desc id="desc">Dimension-labelled steel section guide generated for SC Handbook.</desc>
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
-      <path d="M 0 0 L 8 4 L 0 8 z" fill="#58736b" />
+    <marker id="leaderArrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 9 4.5 L 0 9 z" fill="#58736b" />
     </marker>
     <style>
   .panel { fill: #fbfdff; }
   .section { fill: #eef8ff; stroke: #263732; stroke-width: 2.4; stroke-linejoin: round; }
   .void { fill: #fbfdff; stroke: #263732; stroke-width: 2.4; }
   .guide { fill: none; stroke: #9aa9a3; stroke-width: 1.2; }
-  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; marker-start: url(#arrow); marker-end: url(#arrow); }
-  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#arrow); }
+  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; }
+  .arrow { fill: #58736b; stroke: none; }
+  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#leaderArrow); }
   .centre { fill: none; stroke: #9aa9a3; stroke-width: 1.1; stroke-dasharray: 5 5; }
   .label { font: 800 16px Aptos, Calibri, Arial, sans-serif; fill: #24352f; }
   .dim-label { font: 800 15px Aptos, Calibri, Arial, sans-serif; fill: #425c55; }
@@ -27,10 +28,14 @@
   <line x1="58" y1="108" x2="226" y2="108" class="centre" />
   <line x1="142" y1="24" x2="142" y2="192" class="centre" />
   <line x1="76" y1="196" x2="208" y2="196" class="dim" />
+  <path class="arrow" d="M 76 196 L 83 192.5 L 83 199.5 Z" />
+  <path class="arrow" d="M 208 196 L 201 192.5 L 201 199.5 Z" />
   <line x1="76" y1="180" x2="76" y2="204" class="guide" />
   <line x1="208" y1="180" x2="208" y2="204" class="guide" />
   <text x="142" y="220" class="dim-label" text-anchor="middle">D</text>
   <line x1="185" y1="105" x2="208" y2="105" class="dim" />
+  <path class="arrow" d="M 185 105 L 190 102.5 L 190 107.5 Z" />
+  <path class="arrow" d="M 208 105 L 203 102.5 L 203 107.5 Z" />
   <text x="197" y="94" class="dim-label" text-anchor="middle">t</text>
   <text x="24" y="214" class="note" text-anchor="start">Catalogue notation: D = outside diameter, t = wall thickness</text>
 

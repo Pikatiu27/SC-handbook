@@ -2,16 +2,17 @@
   <title id="title">Equal angle section guide</title>
   <desc id="desc">Dimension-labelled steel section guide generated for SC Handbook.</desc>
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
-      <path d="M 0 0 L 8 4 L 0 8 z" fill="#58736b" />
+    <marker id="leaderArrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 9 4.5 L 0 9 z" fill="#58736b" />
     </marker>
     <style>
   .panel { fill: #fbfdff; }
   .section { fill: #eef8ff; stroke: #263732; stroke-width: 2.4; stroke-linejoin: round; }
   .void { fill: #fbfdff; stroke: #263732; stroke-width: 2.4; }
   .guide { fill: none; stroke: #9aa9a3; stroke-width: 1.2; }
-  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; marker-start: url(#arrow); marker-end: url(#arrow); }
-  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#arrow); }
+  .dim { fill: none; stroke: #58736b; stroke-width: 1.55; }
+  .arrow { fill: #58736b; stroke: none; }
+  .leader { fill: none; stroke: #58736b; stroke-width: 1.35; marker-end: url(#leaderArrow); }
   .centre { fill: none; stroke: #9aa9a3; stroke-width: 1.1; stroke-dasharray: 5 5; }
   .label { font: 800 16px Aptos, Calibri, Arial, sans-serif; fill: #24352f; }
   .dim-label { font: 800 15px Aptos, Calibri, Arial, sans-serif; fill: #425c55; }
@@ -25,14 +26,20 @@
   <path class="section" d="M 86 54 L 236 54 L 236 88 L 136 88 Q 120 88 120 104 L 120 204 L 86 204 Z" />
   <path class="guide" d="M 136 88 Q 120 88 120 104" />
   <line x1="86" y1="34" x2="236" y2="34" class="dim" />
+  <path class="arrow" d="M 86 34 L 93 30.5 L 93 37.5 Z" />
+  <path class="arrow" d="M 236 34 L 229 30.5 L 229 37.5 Z" />
   <line x1="86" y1="48" x2="86" y2="26" class="guide" />
   <line x1="236" y1="48" x2="236" y2="26" class="guide" />
   <text x="161.0" y="24" class="dim-label" text-anchor="middle">b</text>
   <line x1="64" y1="54" x2="64" y2="204" class="dim" />
+  <path class="arrow" d="M 64 54 L 60.5 61 L 67.5 61 Z" />
+  <path class="arrow" d="M 64 204 L 60.5 197 L 67.5 197 Z" />
   <line x1="80" y1="54" x2="56" y2="54" class="guide" />
   <line x1="80" y1="204" x2="56" y2="204" class="guide" />
   <text x="46" y="134.0" class="dim-label" text-anchor="middle">b</text>
   <line x1="256" y1="54" x2="256" y2="88" class="dim" />
+  <path class="arrow" d="M 256 54 L 253.5 59 L 258.5 59 Z" />
+  <path class="arrow" d="M 256 88 L 253.5 83 L 258.5 83 Z" />
   <line x1="242" y1="54" x2="264" y2="54" class="guide" />
   <line x1="242" y1="88" x2="264" y2="88" class="guide" />
   <text x="270" y="76.0" class="dim-label" text-anchor="start">t</text>
