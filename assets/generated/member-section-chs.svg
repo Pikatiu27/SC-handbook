@@ -37,6 +37,5 @@
   <path class="arrow" d="M 185 105 L 190 102.5 L 190 107.5 Z" />
   <path class="arrow" d="M 208 105 L 203 102.5 L 203 107.5 Z" />
   <text x="197" y="94" class="dim-label" text-anchor="middle">t</text>
-  <text x="24" y="214" class="note" text-anchor="start">Catalogue notation: D = outside diameter, t = wall thickness</text>
 
 </svg>

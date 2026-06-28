@@ -85,7 +85,6 @@ def chs() -> str:
   {text(cx, cy + 112, "D")}
   {dim_h(cx + ri, cy - 3, cx + ro, arrow=5)}
   {text(cx + 55, cy - 14, "t")}
-  {text(24, 214, "Catalogue notation: D = outside diameter, t = wall thickness", "note", "start")}
 """
     return svg_doc("CHS section guide", body)
 
@@ -110,7 +109,6 @@ def equal_angle() -> str:
   {text(x + leg + 34, y + thk / 2 + 5, "t", "dim-label", "start")}
   <path class="leader" d="M {x + thk + 49} {y + thk + 45} L {x + thk + 13} {y + thk + 13}" />
   {text(x + thk + 58, y + thk + 52, "r", "dim-label", "start")}
-  {text(24, 214, "Catalogue notation: b = leg length, t = thickness, r = root radius", "note", "start")}
 """
     return svg_doc("Equal angle section guide", body)
 
@@ -140,7 +138,6 @@ def pfc() -> str:
   {text(x + bf + 32, y + tf / 2 + 5, sub_label("t", "f"), "dim-label", "start")}
   <path class="leader" d="M {x + tw + 60} {y + tf + 48} L {x + tw + 10} {y + tf + 10}" />
   {text(x + tw + 69, y + tf + 55, "r", "dim-label", "start")}
-  {text(24, 214, "Catalogue notation: d, b_f, t_w, t_f and root radius r", "note", "start")}
 """
     return svg_doc("PFC section guide", body)
 
@@ -158,7 +155,6 @@ def rod() -> str:
   {line(cx - r, cy + r + 6, cx - r, cy + 82)}
   {line(cx + r, cy + r + 6, cx + r, cy + 82)}
   {text(cx, cy + 98, "diameter")}
-  {text(24, 214, "Catalogue notation: d = nominal round-bar diameter", "note", "start")}
 """
     return svg_doc("Round bar section guide", body)
 

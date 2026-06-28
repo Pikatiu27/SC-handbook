@@ -52,6 +52,5 @@
   <text x="256" y="66.0" class="dim-label" text-anchor="start">t<tspan baseline-shift="sub" font-size="10">f</tspan></text>
   <path class="leader" d="M 182 122 L 132 84" />
   <text x="191" y="129" class="dim-label" text-anchor="start">r</text>
-  <text x="24" y="214" class="note" text-anchor="start">Catalogue notation: d, b_f, t_w, t_f and root radius r</text>
 
 </svg>

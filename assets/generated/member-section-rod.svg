@@ -36,6 +36,5 @@
   <line x1="84" y1="174" x2="84" y2="190" class="guide" />
   <line x1="204" y1="174" x2="204" y2="190" class="guide" />
   <text x="144" y="206" class="dim-label" text-anchor="middle">diameter</text>
-  <text x="24" y="214" class="note" text-anchor="start">Catalogue notation: d = nominal round-bar diameter</text>
 
 </svg>
