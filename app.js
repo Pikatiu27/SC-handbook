@@ -704,12 +704,16 @@ function updateConcreteMatDepths(topDepth, bottomDepth, cover) {
   [1, 2, 3, 4].forEach(index => {
     const auto = $(`layer${index}Auto`).checked;
     const yInput = $(`layer${index}Y`);
-    yInput.readOnly = auto;
     if (!auto) return;
     const bar = concreteBarProduct(index).diameter;
     const y = concreteAutoDepth(index, topDepth, bottomDepth, cover, bar);
     yInput.value = fixed(Math.max(0, y));
   });
+}
+
+function setConcreteLayerDepthManual(index) {
+  $(`layer${index}Auto`).checked = false;
+  calculateConcrete();
 }
 
 function concreteStressBlockFactors(fc) {
@@ -876,7 +880,7 @@ function calculateConcrete() {
   $("concreteFormulaSteps").innerHTML = `
     <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
     <div><b>Pad geometry</b><code>D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; bottom pad mats require D_bot > 0</code></div>
-    <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface</code></div>
+    <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface; editing a y_i value turns off auto fill for that mat</code></div>
     <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar</sub> x b / spacing, using nominal bar diameter; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten; design-model f<sub>sy</sub> is capped at 600 MPa</code></div>
     <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
     <div><b>Concrete block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
@@ -965,7 +969,14 @@ function initialise() {
   populateConcreteBarOptions();
   boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
   weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));
-  concreteInputIds.forEach(id => $(id).addEventListener("input", calculateConcrete));
+  concreteInputIds.forEach(id => {
+    const depthMatch = id.match(/^layer([1-4])Y$/);
+    if (depthMatch) {
+      $(id).addEventListener("input", () => setConcreteLayerDepthManual(Number(depthMatch[1])));
+      return;
+    }
+    $(id).addEventListener("input", calculateConcrete);
+  });
   [1, 2, 3, 4].forEach(index => {
     $(`layer${index}Bar`).addEventListener("change", () => {
       setConcreteBarDefaults(index);
