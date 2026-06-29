@@ -1157,9 +1157,9 @@ Required exclusions:
 
 The Beam tab may include collapsed UB/UC section guide drawings, but they are visual guides only and must not be treated as numeric data sources.
 
-### 15.12 Concrete Pad Moment Web Tab Rules
+### 15.12 Concrete Pad Section Web Tab Rules
 
-The concrete pad tab is a compact reinforced-concrete flexural section-capacity view for rectangular pad strips. It is not a full footing, slab, or concrete design engine.
+The concrete pad tab is a compact reinforced-concrete section-capacity view for rectangular pad strips. It is not a full footing, slab, or concrete design engine.
 
 Use this scope:
 
@@ -1168,12 +1168,12 @@ Use this scope:
 - User-selected compression face.
 - N-class and legacy Y-bar reinforcement mats.
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
+- One-way shear capacity screen using AS 3600-style `Vuc = kv bv dv sqrt(f'c)` notation, with `kv` kept as a visible engineering assumption and `phi = 0.70` unless compliant Class N fitments are verified.
 - Pad-on-pad composite action only when the user separately confirms composite action and interface shear design outside the calculator.
 
 Required exclusions:
 
 - Punching shear.
-- One-way shear.
 - Soil bearing.
 - Base-plate, column, or pedestal bearing.
 - Development length and anchorage.
@@ -1183,7 +1183,7 @@ Required exclusions:
 - Interface shear design for pad-on-pad strengthening.
 - Plain-concrete footing capacity.
 
-Concrete tab warnings must stay visible and concise. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
+Concrete tab warnings must stay visible and concise. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo` or reinforced-concrete `phi Vuc`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 

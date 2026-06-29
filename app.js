@@ -55,7 +55,7 @@ const weldTypeData = {
 const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentThickness", "weldParentGrade"];
 const concreteInputIds = [
   "concreteDirection", "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concretePhi",
-  "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteComposite",
+  "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteKv", "concreteComposite",
   "layer1Active", "layer1Auto", "layer1Y", "layer1Bar", "layer1Spacing", "layer1Fsy", "layer1Es",
   "layer2Active", "layer2Auto", "layer2Y", "layer2Bar", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Active", "layer3Auto", "layer3Y", "layer3Bar", "layer3Spacing", "layer3Fsy", "layer3Es",
@@ -889,6 +889,20 @@ function solveConcreteSection(data) {
   return { ok: true, x, d0, kuo, phi, muo, phiMuo: phi * muo, ...state };
 }
 
+function concreteOneWayShear(data, result) {
+  const tensionLayers = result.layers.filter(layer => layer.d >= data.depth / 2 && layer.strain < -0.00005 && layer.area > 0);
+  const centroidArea = tensionLayers.reduce((sum, layer) => sum + layer.area, 0);
+  const d = centroidArea > 0
+    ? tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0) / centroidArea
+    : result.d0;
+  const dv = Math.max(0.72 * data.depth, 0.9 * d);
+  const kv = Math.max(0.01, Math.min(0.40, value("concreteKv")));
+  const rootFc = Math.min(Math.sqrt(data.fc), 8.0);
+  const vuc = kv * data.width * dv * rootFc / 1000;
+  const phi = 0.70;
+  return { d, dv, kv, rootFc, vuc, phi, phiVuc: phi * vuc };
+}
+
 function calculateConcrete() {
   const topDepth = value("concreteTopDepth");
   const bottomDepth = value("concreteBottomDepth");
@@ -935,8 +949,9 @@ function calculateConcrete() {
     : "Capacity factor calculated from AS 3600-style pure bending k_uo for N-class reinforcement.";
 
   if (!result.ok) {
-    ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo"].forEach(id => $(id).textContent = "-");
+    ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo", "concretePhiVuc"].forEach(id => $(id).textContent = "-");
     $("concretePhi").value = "";
+    $("concreteShearNote").innerHTML = "RC one-way shear not calculated without active reinforcement";
     $("concreteStatusValue").textContent = "No solution";
     $("concreteEquilibrium").textContent = result.message;
     $("concreteWarningStatus").textContent = "CHECK";
@@ -947,6 +962,7 @@ function calculateConcrete() {
   }
 
   const residual = result.axial / 1000;
+  const shear = concreteOneWayShear(data, result);
   $("concretePhi").value = result.phi.toFixed(2);
   const residualOk = Math.abs(residual) < 0.01;
   const coverWarnings = result.layers.filter(layer => layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2);
@@ -957,9 +973,10 @@ function calculateConcrete() {
   const legacyNote = legacyLayers.length ? ` Legacy Y bar selected in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}; verify actual yield strength, ductility and condition from project records.` : "";
   const fsyCapNote = fsyCappedLayers.length ? ` AS 3600 reinforcement strength cap: f_sy above 600 MPa is capped for ${fsyCappedLayers.map(layer => `mat ${layer.index}`).join(", ")}.` : "";
   const kuoNote = result.kuo > 0.36 ? ` AS 3600 Cl. 8.1.5 warning: k_uo = ${result.kuo.toFixed(3)} > 0.36; use only where the clause conditions for analysis, compression reinforcement and restraint are satisfied.` : "";
+  const shearNote = ` One-way shear shown is a V_uc screen using k_v = ${shear.kv.toFixed(2)} and phi = ${shear.phi.toFixed(2)}; confirm k_v, shear critical section and load path to AS 3600 before design issue.`;
   const warningText = (data.composite === "yes"
-    ? "Moment section capacity only. Composite action is user-confirmed outside this calculator; still check punching shear, one-way shear, bearing, development length and crack control separately."
-    : "Moment section capacity only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, one-way shear, bearing, development length and crack control are excluded.") + coverNote + bottomPadNote + legacyNote + fsyCapNote + kuoNote;
+    ? "Moment section capacity and one-way shear screen only. Composite action is user-confirmed outside this calculator; still check punching shear, bearing, development length and crack control separately."
+    : "Moment section capacity and one-way shear screen only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, bearing, development length and crack control are excluded.") + shearNote + coverNote + bottomPadNote + legacyNote + fsyCapNote + kuoNote;
 
   $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
   $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;
@@ -969,6 +986,8 @@ function calculateConcrete() {
   $("concreteNa").textContent = fixed(result.x);
   $("concreteMuo").textContent = fixed(result.muo);
   $("concretePhiMuo").textContent = fixed(result.phiMuo);
+  $("concretePhiVuc").textContent = fixed(shear.phiVuc);
+  $("concreteShearNote").innerHTML = `V<sub>uc</sub> = ${fixed(shear.vuc)} kN; d<sub>v</sub> = ${fixed(shear.dv)} mm`;
   $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
   $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && result.kuo <= 0.36 ? "SOLVED" : "CHECK";
   $("concreteWarningStatus").className = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && result.kuo <= 0.36 ? "pass" : "fail";
@@ -994,7 +1013,8 @@ function calculateConcrete() {
     <div><b>Nominal moment</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
     <div><b>Capacity factor</b><code>${legacyLayers.length ? `Legacy Y bar selected: &phi; = 0.65 unless N-class equivalence is verified` : `k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
     <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
-    <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>`;
+    <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
+    <div><b>One-way shear screen</b><code>d = ${fixed(shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm; V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(2)} x ${fixed(data.width)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &phi;V<sub>uc</sub> = ${shear.phi.toFixed(2)} x ${fixed(shear.vuc)} = ${fixed(shear.phiVuc)} kN</code></div>`;
 }
 
 function setPrimaryPlane() {

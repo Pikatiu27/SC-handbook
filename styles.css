@@ -100,7 +100,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .concrete-input-row { display: grid; gap: 12px; align-items: end; }
 .concrete-row-main { grid-template-columns: 1.25fr 1fr 1fr 1fr; }
 .concrete-row-material { grid-template-columns: 1fr 1fr 1fr; max-width: 760px; }
-.concrete-row-analysis { grid-template-columns: repeat(4, 1fr); padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: #f8fcfb; }
+.concrete-row-analysis { grid-template-columns: repeat(5, 1fr); padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: #f8fcfb; }
 .concrete-input-row label > span:first-child { display: block; min-height: 18px; margin-bottom: 5px; color: #45534c; font-size: var(--fs-xs); line-height: 1.15; font-weight: 800; }
 .concrete-input-row .size-field > span:first-child { color: var(--ink); }
 .concrete-input-row input, .concrete-input-row select { width: 100%; min-height: 42px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 9px 12px; outline: none; font-size: var(--fs-sm); line-height: 1.2; font-weight: 700; }
