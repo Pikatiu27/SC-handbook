@@ -1,6 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
+Last updated: 2026-06-30
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -44,7 +45,7 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | Section 5 / Clause 5.2 visually checked on PDF page 66 | Visual checked |
 | Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | Clauses 5.11.4 and 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
 | Beam | Shear-bending interaction | `AS4100.pdf` | Clause 5.12 visually checked on PDF page 89, including 5.12.1, 5.12.2 and `Vvm = Vv` for the proportioning method | Visual checked |
-| Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns visually located on PDF pages 12-15 | Visual located; row-level numeric check still required for embedded section values |
+| Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns visually located on PDF pages 12-15; default rows 310UB40.4 and 200UC46.2 row-checked on PDF pages 12-15 | Default UB/UC rows checked; remaining embedded UB/UC rows still need row-level numeric check |
 | Axial Member | Section compression capacity | `AS4100.pdf` | Clause 6.2 visually checked on PDF page 100; `Ns = kf Ag fy` confirmed | Visual checked |
 | Axial Member | Member buckling reduction | `AS4100.pdf` | Clause 6.3.3 and Tables 6.3.3(A/B/C) visually checked on PDF pages 103-106 | Visual checked |
 | Axial Member | Tension gross yielding / net fracture | `AS4100.pdf` | Clause 7.2 visually checked on PDF page 112 | Visual checked |
@@ -67,6 +68,30 @@ The primary standard formula pages above have been visually checked. These items
 - AS 3600 one-way shear is kept as a lightweight screen with visible assumptions. It is not a full shear design engine unless `kv`, reinforcement layout and detailing checks are expanded later.
 - AS/NZS 1554.3 currently has 0% text extraction in the generated pack. Treat it as visual-check-only or OCR-needed.
 
+## 2026-06-30 Default Row / Calculation Audit
+
+### InfraBuild UB/UC Default Rows
+
+The current Beam tab defaults were visually checked against `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`.
+
+| App default | Source pages | Checked app values | Status |
+| --- | --- | --- | --- |
+| 310UB40.4, 300PLUS | Table 9 PDF page 12; Table 10 PDF page 13 | mass 40.4 kg/m; `Ag` 5210 mm2; `d1` 283.6 mm; `tw` 6.1 mm; `Sx` 633 x 10^3 mm3; `Zx` 569 x 10^3 mm3; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; compact; `kf` 0.952 | Row checked |
+| 200UC46.2, 300PLUS | Table 11 PDF page 14; Table 12 PDF page 15 | mass 46.2 kg/m; `Ag` 5900 mm2; `d1` 181.4 mm; `tw` 7.3 mm; `Sx` 500 x 10^3 mm3; `Zx` 451 x 10^3 mm3; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; non-compact; `kf` 1.000 | Row checked |
+
+### Default Web Output Check
+
+Default outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=20260630#bolt` and independently recalculated from the app formulas.
+
+| Tab | Default case | Checked output | Status |
+| --- | --- | --- | --- |
+| Bolt | M24 8.8/S, N plane | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; group shear 133.4 kN; ply bearing 304.1 kN; edge limit 162.4 kN; minimum edge distance 42.0 mm | DOM output matched independent calculation |
+| Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm | DOM output matched independent calculation |
+| Beam | 310UB40.4 300PLUS | `Ag` 5210 mm2; `Aw` 1730 mm2; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; `kf` 0.952; `phi Ms` 182.3 kNm; `phi Vv` 298.9 kN | DOM output matched independent calculation |
+| Beam | 200UC46.2 300PLUS | `Ag` 5900 mm2; `Aw` 1324 mm2; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; `kf` 1.000; `phi Ms` 133.4 kNm; `phi Vv` 214.5 kN | DOM output matched independent calculation |
+| Axial Member | 114.3 x 3.2 CHS, C350L0, `Le` 3.0 m | computed `Ag` 1117 mm2; `r` 39.3 mm; `Le/r` 76.3; `lambda_n` 90.3; `alpha_c` 0.672; section compression 351.8 kN; member compression 236.5 kN; tension 351.8 kN | DOM output matched independent calculation; CHS geometry is formula-derived from `D` and `t`, not a catalogue row value |
+| Concrete | 1000 mm strip, 500 mm top pad, top face compression, N16/N20 active mats | `x` 39.8 mm; `Cc` 909.4 kN; `Muo` 343.3 kNm; `phi Muo` 291.8 kNm; `phi` 0.85; `Vuc` 229.1 kN; `dv` 405.0 mm; `phi Vuc` 160.4 kN; residual 0.000 kN | DOM output matched app formula; shear remains a visible quick-screen assumption |
+
 ## Duplicate / Secondary Reference Notes
 
 - `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` should be the primary hot-rolled catalogue for current web-table values unless a specific OneSteel 8th edition table is intentionally retained for historical consistency.
@@ -76,8 +101,8 @@ The primary standard formula pages above have been visually checked. These items
 
 ## Next Row-Level Verification Order
 
-1. InfraBuild UB/UC default rows: 310UB40.4 and 200UC46.2.
-2. InfraBuild PFC / equal angle / rod rows used by the app.
-3. Orrcon CHS default rows used by the app.
+1. InfraBuild PFC / equal angle / rod rows used by the app.
+2. Orrcon CHS default rows used by the app, if the handbook moves from formula-derived CHS geometry to embedded catalogue rows.
+3. Remaining InfraBuild UB/UC rows beyond the two defaults, if they are promoted from lookup convenience to checked catalogue data.
 4. AS 4100 Table 6.3.3 `alpha_b` option mapping for non-default member axes and fabrication routes.
 5. AS 3600 `kv` and shear model only if the concrete tab is expanded from warning screen to design check.
