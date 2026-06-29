@@ -1130,8 +1130,8 @@ Required AS 4100 basis:
 - Section moment capacity uses AS 4100 Clause 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
 - Catalogue `Zex`, compactness and `kf` may be taken from the section-capacity table instead of recalculating plate slenderness in the browser.
 - Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
-- Nominal web shear capacity uses AS 4100 Clause 5.12 web shear provisions for an unstiffened web; report `phi Vv` with `phi = 0.90`.
-- If `V* > 0.60 phi Vv`, flag high shear and require AS 4100 Clause 5.12 bending-shear interaction review. Do not silently report an unreduced bending capacity as a pass.
+- Nominal web shear capacity is reported as `phi Vv` with `phi = 0.90` using the relevant AS 4100 Clause 5.11 web shear provisions for an unstiffened web.
+- If `V* > 0.60 phi Vv`, flag high shear and require AS 4100 Clause 5.12 shear-bending interaction review. Do not silently report an unreduced bending capacity as a pass.
 
 Custom section mode must stay explicit and conservative:
 
