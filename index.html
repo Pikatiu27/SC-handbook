@@ -330,6 +330,15 @@
 
       <section class="lookup-card beam-card">
         <div class="beam-type-switch" role="group" aria-label="Beam section source"><button class="beam-type active" type="button" data-beam-type="ub">UB</button><button class="beam-type" type="button" data-beam-type="uc">UC</button><button class="beam-type" type="button" data-beam-type="custom">Custom</button></div>
+
+        <details class="section-guide-card" id="beamSectionGuide">
+          <summary><span><b>Section guide</b><small>Symbolic UB/UC dimension sketch; not a source of numeric properties</small></span><i>+</i></summary>
+          <div class="section-guide diagram-guide" aria-label="Beam section guide">
+            <article class="manual-section-card" data-beam-guide="ub"><img class="section-diagram" src="assets/generated/beam-section-ub.svg" alt="UB section diagram showing d, bf, tw, tf and x/y axes"><div><strong>UB</strong><small>d, bf, tw, tf; x/y axes - OneSteel / InfraBuild basis</small></div></article>
+            <article class="manual-section-card" data-beam-guide="uc" hidden><img class="section-diagram" src="assets/generated/beam-section-uc.svg" alt="UC section diagram showing d, bf, tw, tf and x/y axes"><div><strong>UC</strong><small>d, bf, tw, tf; x/y axes - OneSteel / InfraBuild basis</small></div></article>
+          </div>
+        </details>
+
         <div class="primary-inputs beam-inputs">
           <label class="size-field" id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam or column section"></select></label>
           <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>

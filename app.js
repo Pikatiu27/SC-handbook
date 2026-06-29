@@ -446,10 +446,14 @@ function populateBeamGrades() {
 function setBeamType(type) {
   beamSectionType = type;
   document.querySelectorAll(".beam-type").forEach(button => button.classList.toggle("active", button.dataset.beamType === type));
+  document.querySelectorAll("[data-beam-guide]").forEach(card => {
+    card.hidden = card.dataset.beamGuide !== type;
+  });
   const custom = type === "custom";
   $("beamSectionField").hidden = custom;
   $("beamGradeField").hidden = custom;
   $("beamCustomInputs").hidden = !custom;
+  $("beamSectionGuide").hidden = custom;
   populateBeamOptions();
 }
 

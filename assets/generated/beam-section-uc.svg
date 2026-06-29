@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">UC section guide</title>
+  <desc id="desc">Symbolic Universal Column section guide generated for SC Handbook; not a source of numeric section properties.</desc>
+  <defs>
+    <style>
+.panel { fill: #fbfdff; }
+  .section { fill: #eef4f2; stroke: #25312d; stroke-width: 2.2; stroke-linejoin: round; }
+  .guide { fill: none; stroke: #9aa6a0; stroke-width: 1; }
+  .dim { fill: none; stroke: #2f3840; stroke-width: 1.35; }
+  .arrow { fill: #2f3840; stroke: none; }
+  .axis { fill: none; stroke: #697870; stroke-width: 1; stroke-dasharray: 14 4 3 4; }
+  .dim-label { font: 700 14px Aptos, Calibri, Arial, sans-serif; fill: #25312d; }
+  .axis-label { font: 700 13px Aptos, Calibri, Arial, sans-serif; fill: #52625a; }
+    </style>
+  </defs>
+  <rect class="panel" x="0" y="0" width="360" height="240" rx="14" />
+
+  <polygon class="section" points="103.0,70.0 257.0,70.0 257.0,94.0 196.0,94.0 196.0,170.0 257.0,170.0 257.0,194.0 103.0,194.0 103.0,170.0 164.0,170.0 164.0,94.0 103.0,94.0" />
+
+  <line class="axis" x1="77.0" y1="132.0" x2="283.0" y2="132.0" />
+  <line class="axis" x1="180.0" y1="60.0" x2="180.0" y2="204.0" />
+  <text class="axis-label" x="68.0" y="137.0" text-anchor="middle">x</text>
+  <text class="axis-label" x="292.0" y="137.0" text-anchor="middle">x</text>
+  <text class="axis-label" x="180.0" y="53.0" text-anchor="middle">y</text>
+  <text class="axis-label" x="180.0" y="221.0" text-anchor="middle">y</text>
+
+  <line class="dim" x1="65.0" y1="70.0" x2="65.0" y2="194.0" />
+  <path class="arrow" d="M 65.0 70 L 61.5 77 L 68.5 77 Z" />
+  <path class="arrow" d="M 65.0 194 L 61.5 187 L 68.5 187 Z" />
+  <line class="guide" x1="98.0" y1="70.0" x2="57.0" y2="70.0" />
+  <line class="guide" x1="98.0" y1="194.0" x2="57.0" y2="194.0" />
+  <text class="dim-label" x="51.0" y="137.0" text-anchor="middle">d</text>
+
+  <line class="dim" x1="103.0" y1="40.0" x2="257.0" y2="40.0" />
+  <path class="arrow" d="M 103.0 40 L 110.0 36.5 L 110.0 43.5 Z" />
+  <path class="arrow" d="M 257.0 40 L 250.0 36.5 L 250.0 43.5 Z" />
+  <line class="guide" x1="103.0" y1="66.0" x2="103.0" y2="34.0" />
+  <line class="guide" x1="257.0" y1="66.0" x2="257.0" y2="34.0" />
+  <text class="dim-label" x="180.0" y="32.0" text-anchor="middle">bf</text>
+
+  <line class="dim" x1="164.0" y1="124.0" x2="196.0" y2="124.0" />
+  <path class="arrow" d="M 164.0 124 L 171.0 120.5 L 171.0 127.5 Z" />
+  <path class="arrow" d="M 196.0 124 L 189.0 120.5 L 189.0 127.5 Z" />
+  <line class="guide" x1="164.0" y1="100.0" x2="164.0" y2="132.0" />
+  <line class="guide" x1="196.0" y1="100.0" x2="196.0" y2="132.0" />
+  <text class="dim-label" x="210.0" y="129.0">tw</text>
+
+  <line class="dim" x1="286.0" y1="70.0" x2="286.0" y2="94.0" />
+  <path class="arrow" d="M 286.0 70 L 282.5 77 L 289.5 77 Z" />
+  <path class="arrow" d="M 286.0 94 L 282.5 87 L 289.5 87 Z" />
+  <line class="guide" x1="262.0" y1="70.0" x2="294.0" y2="70.0" />
+  <line class="guide" x1="262.0" y1="94.0" x2="294.0" y2="94.0" />
+  <text class="dim-label" x="299.0" y="87.0">tf</text>
+</svg>
