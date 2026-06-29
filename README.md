@@ -44,7 +44,7 @@ The beam tool covers major-axis section moment and web shear capacity for catalo
 - design section shear capacity `phi Vv`;
 - optional design actions `M*` and `V*` and governing section utilisation ratio.
 
-The primary basis is AS 4100:2020 Section 5 for beam section capacity. Moment capacity uses Clause 5.2 with `Ms = fy Ze` and `phi = 0.90`. Web shear capacity uses the AS 4100 Clause 5.12 unstiffened web shear provisions with `Aw = d1 tw` for catalogue UB/UC sections. For catalogue sections, the effective section modulus `Zex`, compactness and `kf` are taken from the OneSteel / InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom sections, the user is responsible for the entered section properties, shear area and material/product basis.
+The primary basis is AS 4100:2020 Section 5 for beam section capacity. Moment capacity uses Clause 5.2 with `Ms = fy Ze` and `phi = 0.90`. Web shear capacity is reported as `phi Vv` using the relevant AS 4100 Clause 5.11 web shear provisions with `Aw = d1 tw` for catalogue UB/UC sections; Clause 5.12 is treated as the shear-bending interaction review where bending is present. For catalogue sections, the effective section modulus `Zex`, compactness and `kf` are taken from the OneSteel / InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom sections, the user is responsible for the entered section properties, shear area and material/product basis.
 
 The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, minor-axis bending, biaxial bending, axial interaction, web bearing, web buckling under concentrated forces, stiffeners, copes, holes, composite action, fire, deflection or vibration. If `V* > 0.60 phi Vv`, the tool flags high shear and requires AS 4100 Clause 5.12 bending-shear interaction review rather than silently treating the unreduced moment capacity as a pass.
 
@@ -58,7 +58,7 @@ The concrete pad tool is a compact AS 3600-style reinforced-concrete flexural se
 - pad-on-pad composite-action warning where combined depth is used;
 - a small collapsed section-analysis schematic for strain, stress block and resultants.
 
-This is a moment section-capacity view only, not a full footing or slab design check. It does not check punching shear, one-way shear, soil bearing, base-plate or column bearing, development length, anchorage, crack control, deflection, load combinations, interface shear or plain-concrete footing capacity. For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check.
+This is a moment section-capacity view with a one-way shear screen only, not a full footing or slab design check. It does not check punching shear, soil bearing, base-plate or column bearing, development length, anchorage, crack control, deflection, load combinations, interface shear or plain-concrete footing capacity. For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check.
 
 ### Weld Capacity
 
@@ -98,6 +98,8 @@ Relevant source files include:
 - `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf`.
 
 These manufacturer publications support product selection and independent table checks. A licensed current copy of AS 4100 remains the controlling design source.
+
+See `REFERENCE_TRACEABILITY.md` for the current source matrix, readable-pack status, duplicate-reference notes and visual-check gaps.
 
 ## Verification boundary
 
