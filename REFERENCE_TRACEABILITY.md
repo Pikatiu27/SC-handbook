@@ -52,7 +52,7 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Axial Member | `k_t` values | `AS4100.pdf` | Table 7.3.2 visually checked on PDF page 113 | Visual checked |
 | Axial Member | CHS D/t and grade | `Orrcon-National-Product-Catalogue-2024.pdf` | CHS tables visually checked on PDF pages 10-12; includes 114.3 CHS and C250L0/C350L0 context | Visual checked for source location; row-level numeric check required if values are embedded |
 | Axial Member | CHS compression method | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | Part 6 compression method and CHS capacity table context visually checked on PDF pages 112-117 | Visual checked for method context; row-level table values still need numeric check if used |
-| Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Parallel Flange Channels, Equal Angles and Rounds visually located on catalogue pages | Visual located; embedded table values need row-level numeric check |
+| Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | PFC Tables 15-16, Equal Angle Tables 19-21, Rounds Table 3 and round-bar strength Table 38 visually checked for default rows | Default PFC / EA / Rod rows checked; remaining embedded rows still need row-level numeric check |
 | Concrete | Stress block and bending section theory | `AS3600.pdf` | Clauses 8.1.3 and 8.1.5 visually checked on PDF pages 113-114 | Visual checked |
 | Concrete | Capacity factor | `AS3600.pdf` | Table 2.2.2 visually checked on PDF pages 38-39 | Visual checked |
 | Concrete | One-way shear screen | `AS3600.pdf` | Clauses 8.2.1.9, 8.2.3 and 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
@@ -61,8 +61,8 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 
 The primary standard formula pages above have been visually checked. These items remain controlled limitations for the handbook:
 
-- InfraBuild / OneSteel embedded section values require row-level numeric checks, especially 310UB40.4 and 200UC46.2.
-- InfraBuild PFC / equal angle / rod rows require row-level numeric checks if their catalogue values are embedded in the app.
+- Remaining non-default InfraBuild / OneSteel embedded section values require row-level numeric checks if they are promoted from lookup convenience to checked catalogue data.
+- Remaining non-default InfraBuild PFC / equal angle / rod rows require row-level numeric checks if they are promoted from lookup convenience to checked catalogue data.
 - Orrcon CHS rows require row-level numeric checks if dimensions or grades are embedded rather than entered by the user.
 - AS 4100 Table 6.3.3 `alpha_b` values have been visually checked, but non-default option mapping remains project/member-axis dependent.
 - AS 3600 one-way shear is kept as a lightweight screen with visible assumptions. It is not a full shear design engine unless `kv`, reinforcement layout and detailing checks are expanded later.
@@ -92,6 +92,40 @@ Default outputs were checked on the local static page at `http://127.0.0.1:8765/
 | Axial Member | 114.3 x 3.2 CHS, C350L0, `Le` 3.0 m | computed `Ag` 1117 mm2; `r` 39.3 mm; `Le/r` 76.3; `lambda_n` 90.3; `alpha_c` 0.672; section compression 351.8 kN; member compression 236.5 kN; tension 351.8 kN | DOM output matched independent calculation; CHS geometry is formula-derived from `D` and `t`, not a catalogue row value |
 | Concrete | 1000 mm strip, 500 mm top pad, top face compression, N16/N20 active mats | `x` 39.8 mm; `Cc` 909.4 kN; `Muo` 343.3 kNm; `phi Muo` 291.8 kNm; `phi` 0.85; `Vuc` 229.1 kN; `dv` 405.0 mm; `phi Vuc` 160.4 kN; residual 0.000 kN | DOM output matched app formula; shear remains a visible quick-screen assumption |
 
+## 2026-06-30 Axial Member PFC / EA / Rod Audit
+
+### InfraBuild Default Rows
+
+The current Axial Member non-CHS defaults were visually checked against `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`.
+
+| App default | Source pages | Checked app values | Status |
+| --- | --- | --- | --- |
+| 150PFC, 300PLUS | Table 15 / 16 PDF page 17 | mass 17.7 kg/m; `Ag` 2250 mm2; `rmin` 23.9 mm; `fy` 320 MPa; `kf` 1.000 | Row checked |
+| 100 x 100 x 10 EA, 300PLUS | Tables 19-21 PDF pages 19-21 | `Ag` 1810 mm2; principal-axis radius `rn = rp = 30.6 mm`; `fy` 320 MPa; `kf` 1.000 | Row checked; this is a principal-axis screen, not a weak-axis or flexural-torsional design |
+| Ø24 Rod, 300PLUS | Table 3 PDF page 9; Table 38 PDF page 31 | mass 3.55 kg/m; `Ag = pi d^2 / 4 = 452 mm2`; `r = d / 4 = 6.0 mm`; `fy` 300 MPa for d <= 50 mm; `fu` 440 MPa | Row checked |
+
+### Calculation Compliance Check
+
+The Axial Member formulas remain aligned with the visually checked AS 4100 basis:
+
+- Compression section capacity: `phi Ns = 0.90 kf Ag fy`.
+- Member compression capacity: `phi Nc = alpha_c phi Ns`, using Clause 6.3.3 `lambda_n`, `alpha_a`, `eta`, `xi` and `alpha_c`.
+- Tension capacity: `phi Nt = min(phi Ag fy, phi 0.85 kt An fu)`.
+- `An`, `kt`, `Le` and non-CHS `alpha_b` remain project inputs; the app warnings correctly keep these out of the checked product-table scope.
+- Equal Angle uses the catalogue principal-axis radius `rn = rp` for a quick principal-axis screen. The webpage now states that weak-axis, flexural-torsional buckling, load eccentricity and connection eccentricity are not checked.
+- Rod `fy` is now diameter-dependent to match AS/NZS 3679.1 round-bar Table 38: for d <= 50 mm, 300PLUS uses 300 MPa and Grade 350 uses 340 MPa; for 50 < d < 100 mm, 300PLUS uses 290 MPa and Grade 350 uses 330 MPa.
+
+### DOM Output Check
+
+Outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=20260630b#member` and independently recalculated from the app formulas.
+
+| Tab case | Checked output | Status |
+| --- | --- | --- |
+| 150PFC, 300PLUS, `Le` 3.0 m, `alpha_b` 0.5 | `Le/r` 125.5; `lambda_n` 142.0; `alpha_c` 0.298; section compression 648.0 kN; member compression 192.9 kN; tension 648.0 kN | DOM output matched independent calculation |
+| 100 x 100 x 10 EA, 300PLUS, `Le` 3.0 m, `alpha_b` 0.5, `kt` 0.85 | `Le/r` 98.0; `lambda_n` 110.9; `alpha_c` 0.426; section compression 521.3 kN; member compression 222.1 kN; tension 517.9 kN | DOM output matched independent calculation |
+| Ø24 Rod, 300PLUS, `Le` 3.0 m, `alpha_b` 0.0 | `Le/r` 500.0; `lambda_n` 547.7; `alpha_c` 0.026; section compression 122.1 kN; member compression 3.1 kN; tension 122.1 kN | DOM output matched independent calculation |
+| Ø24 Rod, Grade 350, `Le` 3.0 m, `alpha_b` 0.0 | `fy` 340 MPa; `Le/r` 500.0; `lambda_n` 583.1; `alpha_c` 0.023; section compression 138.4 kN; member compression 3.2 kN; tension 138.4 kN | DOM output matched independent calculation after diameter-dependent `fy` correction |
+
 ## Duplicate / Secondary Reference Notes
 
 - `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` should be the primary hot-rolled catalogue for current web-table values unless a specific OneSteel 8th edition table is intentionally retained for historical consistency.
@@ -101,8 +135,8 @@ Default outputs were checked on the local static page at `http://127.0.0.1:8765/
 
 ## Next Row-Level Verification Order
 
-1. InfraBuild PFC / equal angle / rod rows used by the app.
-2. Orrcon CHS default rows used by the app, if the handbook moves from formula-derived CHS geometry to embedded catalogue rows.
-3. Remaining InfraBuild UB/UC rows beyond the two defaults, if they are promoted from lookup convenience to checked catalogue data.
+1. Orrcon CHS default rows used by the app, if the handbook moves from formula-derived CHS geometry to embedded catalogue rows.
+2. Remaining InfraBuild UB/UC, PFC, Equal Angle and Rod rows beyond checked defaults, if they are promoted from lookup convenience to checked catalogue data.
+3. Consider whether the Equal Angle quick screen should add an optional weak-axis conservative mode; keep current principal-axis mode clearly labelled unless that scope is expanded.
 4. AS 4100 Table 6.3.3 `alpha_b` option mapping for non-default member axes and fabrication routes.
 5. AS 3600 `kv` and shear model only if the concrete tab is expanded from warning screen to design check.

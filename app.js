@@ -223,6 +223,13 @@ const pfcSections = [
   grades: { "300PLUS": { fy, fu: 440, kf: 1 } }
 }));
 
+function rodGrades(diameter) {
+  return {
+    "300PLUS": { fy: diameter <= 50 ? 300 : diameter < 100 ? 290 : 280, fu: 440, kf: 1 },
+    "Grade 350": { fy: diameter <= 50 ? 340 : diameter < 100 ? 330 : 320, fu: 480, kf: 1 }
+  };
+}
+
 const rodSections = [
   [10, 0.616], [12, 0.887], [13, 1.04], [14, 1.21], [15, 1.39], [16, 1.58],
   [17, 1.78], [18, 1.99], [19, 2.23], [20, 2.46], [22, 2.98], [24, 3.55],
@@ -235,10 +242,7 @@ const rodSections = [
   mass,
   area: Math.PI * diameter ** 2 / 4,
   r: diameter / 4,
-  grades: {
-    "300PLUS": { fy: 300, fu: 440, kf: 1 },
-    "Grade 350": { fy: 350, fu: 480, kf: 1 }
-  }
+  grades: rodGrades(diameter)
 }));
 
 const chsGrades = {
@@ -700,7 +704,7 @@ function calculateMember() {
   $("memberAssumption").innerHTML = memberType === "chs"
     ? "&alpha;<sub>b</sub> = -0.5 - assumes cold-formed non-stress-relieved CHS"
     : memberType === "ea"
-      ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - equal-angle principal-axis screen`
+      ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - equal-angle principal-axis screen using catalogue r<sub>n</sub> = r<sub>p</sub>`
       : memberType === "pfc"
         ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - hot-rolled channel default for PFC r<sub>min</sub> axial screen`
         : `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - solid circular rod geometry`;
@@ -723,13 +727,13 @@ function calculateMember() {
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Centroidal axial load only. Default &alpha;<sub>b</sub> assumes cold-formed non-stress-relieved CHS; confirm hot-formed or stress-relieved sections separately. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length, grade certificate and the actual connection.${netAreaWarning}`
     : memberType === "ea"
-      ? `Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; unequal angles connected by the short leg may require 0.75, and uniform force distribution may justify 1.0. Flexural-torsional buckling is not checked.${netAreaWarning}`
+      ? `Equal Angle quick check uses the catalogue principal-axis radius r<sub>n</sub> = r<sub>p</sub>, not a weak-axis or flexural-torsional design. Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; unequal angles connected by the short leg may require 0.75, and uniform force distribution may justify 1.0.${netAreaWarning}`
       : memberType === "pfc"
         ? `PFC quick check uses catalogue A<sub>g</sub> and r<sub>min</sub> for centroidal axial load only, with hot-rolled channel &alpha;<sub>b</sub> = 0.5 by default. Check axis-specific buckling, torsional/flexural-torsional buckling and connection eccentricity separately.${netAreaWarning}`
         : `Confirm rod product grade, &alpha;<sub>b</sub> to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
     <div><b>Design input status</b><code>&alpha;<sub>b</sub>, A<sub>n</sub> and k<sub>t</sub> are connection- and axis-dependent design inputs; confirm them from AS 4100 and project details before issue</code></div>
-    <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>min</sub> = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
+    <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
     <div><b>Gross-section yielding - 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(grossYield)} kN</code></div>
     <div><b>Net-section fracture - 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${grade.fu} / 1000 = ${fixed(netFracture)} kN</code></div>
     <div><b>Design tension capacity - 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
