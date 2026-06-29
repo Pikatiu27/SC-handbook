@@ -28,48 +28,44 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 
 | Tab | Item | Source document | Located evidence | Status |
 | --- | --- | --- | --- | --- |
-| Bolt | Capacity factor `phi` for bolts and ply bearing | `AS4100.pdf` | Table 3.4 text is partly noisy; page with bolt capacity factors located around PDF page 47 by search for bolt factors | Text located; visual PDF check required before `Checked` |
-| Bolt | Bolt shear capacity, N/X planes, `k_rd` | `AS4100.pdf` | Clause 9.2.2.1 area; exact clause-number search is noisy in generated text | Source present; visual PDF check required |
-| Bolt | Bolt tension capacity | `AS4100.pdf` | Clause 9.2.2.2 area; generated text locates nominal tensile capacity of the bolt around PDF page 135 | Source present; visual PDF check required |
-| Bolt | Combined shear and tension strength check | `AS4100.pdf` | Clause 9.2.2.3 area; user-provided screenshot already used for formula form | Source present; visual PDF check required before final issue |
-| Bolt | TF slip resistance | `AS4100.pdf` | Clause 9.2.3.1 area; generated text around PDF page 135 identifies `Vsf`, `Ntf`, `Nti` context | Source present; visual PDF check required |
-| Bolt | TF combined slip interaction | `AS4100.pdf` | Clause 9.2.3.3 area; user-provided screenshot confirms `Ntf = Nti` and interaction form | Source present; visual PDF check required before final issue |
-| Bolt | Minimum bolt tension `Nti` | `AS4100.pdf` | Table 15.2.2.2 located around PDF page 179 | Text located; visual table check required for M16/M20/M24/M30/M36 values |
-| Bolt | Minimum edge distance | `AS4100.pdf` | Table 9.5.2 located around PDF page 138 | Text located; visual table check required |
-| Weld | Weld capacity factor and direct weld capacity | `AS4100.pdf` | Clause 9.6 / Table 3.4 / Table 9.6.3.10 area; generated text locates weld metal and welded lap context around PDF page 147 | Text located; visual PDF check required |
-| Weld | Welded lap reduction `k_r` | `AS4100.pdf` | Table 9.6.3.10(B) area expected around weld clause pages; exact search is noisy | Source present; visual PDF check required |
-| Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | ASI Simple Connections Table 2.14 located around PDF pages 18-19 | Text located; visual table check required |
-| Weld | Parent metal screen values | `5+SSC 2020.pdf` | Tables 2.15 and 2.16 located around PDF pages 19-21 | Text located; visual table check required |
-| Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | Clauses 2.3.2.1 to 2.3.2.3 and Figures 2.1, 2.8, 2.9, 2.10 located around PDF pages 8-15 | Text located; visual figure check required |
-| Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | Section 5 starts around PDF page 66; Clause 5.2 needs direct visual check | Source present; visual PDF check required |
-| Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | Web shear capacity text located around PDF pages 33 and 89; use Clause 5.11 for base web shear and Clause 5.12 for shear-bending interaction | Text located; visual PDF check required |
-| Beam | Shear-bending interaction | `AS4100.pdf` | User screenshot confirms Clause 5.12, 5.12.1, 5.12.2 and `Vvm = Vv` relationship | Source present; visual PDF check required before final issue |
-| Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns located around PDF pages 10-15; 310UB40.4 and 200UC46.2 text appears in catalogue/tolerance pages | Text located; row-by-row table check required |
-| Axial Member | Section compression capacity | `AS4100.pdf` | Section 6 starts around PDF page 100 | Source present; visual PDF check required |
-| Axial Member | Member buckling reduction | `AS4100.pdf` | Clause 6.3.3 / Table 6.3.3 extraction is noisy; section present around PDF pages 100-106 | Source present; visual PDF check required |
-| Axial Member | Tension gross yielding / net fracture | `AS4100.pdf` | Section 7 starts around PDF page 112 | Source present; visual PDF check required |
-| Axial Member | `k_t` values | `AS4100.pdf` | Table 7.3.2 extraction is noisy; Section 7 present around PDF page 112 | Source present; visual PDF check required |
-| Axial Member | CHS D/t and grade | `Orrcon-National-Product-Catalogue-2024.pdf` | CHS and C350L0 located around PDF pages 10-12; 114.3 CHS located on PDF page 10/12 text | Text located; row-by-row visual table check required |
-| Axial Member | CHS compression method | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | CHS, C350 and compression method context located; Part 6 compression listed | Text located; method pages need visual check |
-| Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Parallel Flange Channels, Equal Angles and Rounds located in catalogue index and pages | Text located; embedded table values need visual row check |
-| Concrete | Stress block and bending section theory | `AS3600.pdf` | Rectangular stress block located around PDF page 113; Clause 8.1.5 located around PDF page 114 | Text located; visual PDF check required |
-| Concrete | Capacity factor | `AS3600.pdf` | Table 2.2.2 located around PDF pages 38-39 | Text located; visual table check required |
-| Concrete | One-way shear screen | `AS3600.pdf` | Clause 8.2 strength of beams in shear located around PDF page 116; `Vuc` notation located around PDF page 117 | Text located; visual PDF check required |
+| Bolt | Capacity factor `phi` for bolts and ply bearing | `AS4100.pdf` | Table 3.4 visually checked on PDF page 47 | Visual checked |
+| Bolt | Bolt shear capacity, N/X planes, `k_rd` | `AS4100.pdf` | Clause 9.2.2.1 visually checked on PDF pages 131-132 | Visual checked |
+| Bolt | Bolt tension capacity | `AS4100.pdf` | Clause 9.2.2.2 visually checked on PDF page 132 | Visual checked |
+| Bolt | Combined shear and tension strength check | `AS4100.pdf` | Clause 9.2.2.3 visually checked on PDF page 132; user screenshot also matched formula form | Visual checked |
+| Bolt | TF slip resistance | `AS4100.pdf` | Clause 9.2.3.1 visually checked on PDF page 134 | Visual checked |
+| Bolt | TF combined slip interaction | `AS4100.pdf` | Clause 9.2.3.3 visually checked on PDF page 135; includes `Ntf = Nti` context | Visual checked |
+| Bolt | Minimum bolt tension `Nti` | `AS4100.pdf` | Table 15.2.2.2 visually checked on PDF page 192 for M16/M20/M24/M30/M36: 8.8 = 95/145/210/335/490 kN, 10.9 = 130/205/295/465/680 kN | Visual checked |
+| Bolt | Minimum edge distance | `AS4100.pdf` | Table 9.5.2 visually checked on PDF page 138 | Visual checked |
+| Weld | Weld capacity factor and direct weld capacity | `AS4100.pdf` | Table 3.4 visually checked on PDF page 47; Clause 9.6.3.10 visually checked on PDF page 147 | Visual checked |
+| Weld | Welded lap reduction `k_r` | `AS4100.pdf` | Table 9.6.3.10(B) visually checked on PDF page 147 | Visual checked |
+| Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | AS 4100 Table 9.6.3.10(A) visually checked on PDF page 147; ASI Simple Connections Table 2.14 visually checked on PDF page 19 | Visual checked |
+| Weld | Parent metal screen values | `5+SSC 2020.pdf` | Tables 2.15 and 2.16 visually checked on PDF pages 20-21 | Visual checked |
+| Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | Figure 2.1 visually checked on PDF page 9; Clauses 2.3.2.1 to 2.3.2.3 and Figures 2.8 to 2.10 visually checked on PDF pages 14-15 | Visual checked |
+| Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | Section 5 / Clause 5.2 visually checked on PDF page 66 | Visual checked |
+| Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | Clauses 5.11.4 and 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
+| Beam | Shear-bending interaction | `AS4100.pdf` | Clause 5.12 visually checked on PDF page 89, including 5.12.1, 5.12.2 and `Vvm = Vv` for the proportioning method | Visual checked |
+| Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns visually located on PDF pages 12-15 | Visual located; row-level numeric check still required for embedded section values |
+| Axial Member | Section compression capacity | `AS4100.pdf` | Clause 6.2 visually checked on PDF page 100; `Ns = kf Ag fy` confirmed | Visual checked |
+| Axial Member | Member buckling reduction | `AS4100.pdf` | Clause 6.3.3 and Tables 6.3.3(A/B/C) visually checked on PDF pages 103-106 | Visual checked |
+| Axial Member | Tension gross yielding / net fracture | `AS4100.pdf` | Clause 7.2 visually checked on PDF page 112 | Visual checked |
+| Axial Member | `k_t` values | `AS4100.pdf` | Table 7.3.2 visually checked on PDF page 113 | Visual checked |
+| Axial Member | CHS D/t and grade | `Orrcon-National-Product-Catalogue-2024.pdf` | CHS tables visually checked on PDF pages 10-12; includes 114.3 CHS and C250L0/C350L0 context | Visual checked for source location; row-level numeric check required if values are embedded |
+| Axial Member | CHS compression method | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | Part 6 compression method and CHS capacity table context visually checked on PDF pages 112-117 | Visual checked for method context; row-level table values still need numeric check if used |
+| Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Parallel Flange Channels, Equal Angles and Rounds visually located on catalogue pages | Visual located; embedded table values need row-level numeric check |
+| Concrete | Stress block and bending section theory | `AS3600.pdf` | Clauses 8.1.3 and 8.1.5 visually checked on PDF pages 113-114 | Visual checked |
+| Concrete | Capacity factor | `AS3600.pdf` | Table 2.2.2 visually checked on PDF pages 38-39 | Visual checked |
+| Concrete | One-way shear screen | `AS3600.pdf` | Clauses 8.2.1.9, 8.2.3 and 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
 
-## Current Source Gaps
+## Remaining Source Gaps / Row-Level Checks
 
-These items should stay `For Review` until the visual checks are completed:
+The primary standard formula pages above have been visually checked. These items remain controlled limitations for the handbook:
 
-- AS 4100 Table 3.4 capacity factors used across bolt, weld, beam and axial member.
-- AS 4100 Clause 9.2 bolt shear, tension, bearing and TF slip formulas.
-- AS 4100 Table 15.2.2.2 preload values row-by-row.
-- AS 4100 Table 9.5.2 edge-distance values row-by-row.
-- AS 4100 Table 9.6.3.10 and 9.6.3.10(B) weld metal / lap reduction values.
-- AS 4100 Clause 5.11 web shear and Clause 5.12 shear-bending interaction.
-- AS 4100 Table 6.3.3 `alpha_b` values and Table 7.3.2 `k_t` values.
-- InfraBuild / OneSteel UB/UC embedded section values, especially 310UB40.4 and 200UC46.2.
-- Orrcon CHS row values used by the app, especially the default CHS.
-- AS 3600 stress block, capacity factor and one-way shear assumptions.
+- InfraBuild / OneSteel embedded section values require row-level numeric checks, especially 310UB40.4 and 200UC46.2.
+- InfraBuild PFC / equal angle / rod rows require row-level numeric checks if their catalogue values are embedded in the app.
+- Orrcon CHS rows require row-level numeric checks if dimensions or grades are embedded rather than entered by the user.
+- AS 4100 Table 6.3.3 `alpha_b` values have been visually checked, but non-default option mapping remains project/member-axis dependent.
+- AS 3600 one-way shear is kept as a lightweight screen with visible assumptions. It is not a full shear design engine unless `kv`, reinforcement layout and detailing checks are expanded later.
+- AS/NZS 1554.3 currently has 0% text extraction in the generated pack. Treat it as visual-check-only or OCR-needed.
 
 ## Duplicate / Secondary Reference Notes
 
@@ -78,11 +74,10 @@ These items should stay `For Review` until the visual checks are completed:
 - `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` and `design-capacity-tables-for-structural-steel-hollow-sections.pdf` appear to cover the same hollow-section design-capacity table family. Use one as the cited method source and keep the duplicate as backup unless the content differs.
 - `AS/NZS 1554.3` currently has 0% text extraction in the generated pack. Treat it as visual-check-only or OCR-needed.
 
-## Next Verification Order
+## Next Row-Level Verification Order
 
-1. AS 4100 bolt pages: Table 3.4, 9.2.2.1 to 9.2.2.4, 9.2.3.1, 9.2.3.3, Table 15.2.2.2, Table 9.5.2.
-2. AS 4100 weld pages: 9.6, Table 9.6.3.10 and 9.6.3.10(B), plus ASI Simple Connections Tables 2.14 to 2.16.
-3. AS 4100 beam pages: 5.2, 5.11, 5.12.
-4. AS 4100 axial pages: 6.2, 6.3.3, Table 6.3.3, 7.2, 7.3 and Table 7.3.2.
-5. Catalogue values: InfraBuild UB/UC default rows, PFC/EA/Rod rows, and Orrcon CHS default rows.
-6. AS 3600 concrete pages: Table 2.2.2, 8.1.3, 8.1.5, 8.2.
+1. InfraBuild UB/UC default rows: 310UB40.4 and 200UC46.2.
+2. InfraBuild PFC / equal angle / rod rows used by the app.
+3. Orrcon CHS default rows used by the app.
+4. AS 4100 Table 6.3.3 `alpha_b` option mapping for non-default member axes and fabrication routes.
+5. AS 3600 `kv` and shear model only if the concrete tab is expanded from warning screen to design check.
