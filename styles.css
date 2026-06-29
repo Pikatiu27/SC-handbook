@@ -77,6 +77,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .tool-tab[data-tool="weld"].active { background: var(--weld-soft); color: var(--weld-dark); }
 .tool-tab[data-tool="concrete"].active { background: var(--concrete-soft); color: var(--concrete-dark); }
 .tool-tab:focus-visible, .member-type:focus-visible, .beam-type:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }
+.tool-panel [hidden] { display: none !important; }
 .tool-panel[hidden] { display: none; }
 #boltPanel { --green: var(--bolt-accent); --green-dark: var(--bolt-dark); --green-soft: var(--bolt-soft); --panel-bg: var(--bolt-panel); --line: #cfe8da; }
 #memberPanel { --green: var(--member-accent); --green-dark: var(--member-dark); --green-soft: var(--member-soft); --panel-bg: var(--member-panel); --line: #d1e4f4; }
