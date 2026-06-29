@@ -1110,7 +1110,54 @@ Do not imply the member tab is a full steel design engine unless all required li
 - Connection design not included.
 - Flexural-torsional buckling not included unless specifically implemented.
 
-### 15.11 Concrete Pad Moment Web Tab Rules
+### 15.11 Beam Section Web Tab Rules
+
+The beam tab is a lightweight AS 4100 section-capacity check. It is not a full beam or member design engine.
+
+Use this scope:
+
+- Hot-rolled Universal Beam and Universal Column catalogue sections.
+- Custom section input when catalogue data is not available.
+- Major-axis section moment capacity only.
+- Major-axis web shear capacity only.
+- Optional design actions `M*` and `V*`.
+- Section utilisation based on the governing of `M* / phi Ms` and `V* / phi Vv`.
+
+Use Australian product data first. For UB/UC sections, section properties and dimensions should come from OneSteel / InfraBuild hot-rolled product tables wherever possible. Catalogue data may define availability, `Ag`, mass, `Sx`, `Zx`, `Zex`, compactness, `kf`, `d1`, and `tw`; design equations still need to trace back to AS 4100.
+
+Required AS 4100 basis:
+
+- Section moment capacity uses AS 4100 Clause 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
+- Catalogue `Zex`, compactness and `kf` may be taken from the section-capacity table instead of recalculating plate slenderness in the browser.
+- Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
+- Nominal web shear capacity uses AS 4100 Clause 5.12 web shear provisions for an unstiffened web; report `phi Vv` with `phi = 0.90`.
+- If `V* > 0.60 phi Vv`, flag high shear and require AS 4100 Clause 5.12 bending-shear interaction review. Do not silently report an unreduced bending capacity as a pass.
+
+Custom section mode must stay explicit and conservative:
+
+- User-entered `fy`, `Zex`, `Sx`, `Zx`, `Aw`, compactness, `kf`, area and mass values are not catalogue-verified.
+- Do not auto-infer custom web shear area from gross area.
+- Keep the custom labels tied to the selected-axis section capacity, not a whole-member design.
+
+Required exclusions:
+
+- Member moment capacity `Mb`.
+- Lateral-torsional buckling.
+- Restraint spacing.
+- Minor-axis bending.
+- Biaxial bending.
+- Axial load interaction.
+- Web bearing and web buckling under concentrated forces.
+- Web stiffener design.
+- Cope cuts, penetrations, large holes or reduced web areas.
+- Torsion.
+- Composite action.
+- Fire.
+- Deflection and vibration.
+
+The Beam tab may include collapsed UB/UC section guide drawings, but they are visual guides only and must not be treated as numeric data sources.
+
+### 15.12 Concrete Pad Moment Web Tab Rules
 
 The concrete pad tab is a compact reinforced-concrete flexural section-capacity view for rectangular pad strips. It is not a full footing, slab, or concrete design engine.
 
@@ -1140,7 +1187,7 @@ Concrete tab warnings must stay visible and concise. If no reinforcement mat is 
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
-### 15.12 Web Local Update and Deployment Workflow
+### 15.13 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 

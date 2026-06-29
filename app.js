@@ -74,6 +74,57 @@ const concreteBarProducts = Object.fromEntries(
   }))
 );
 
+const beamShearDimensions = {
+  "610UB125": { d1: 572.4, tw: 11.9 },
+  "610UB113": { d1: 572.4, tw: 11.2 },
+  "610UB101": { d1: 572.4, tw: 10.6 },
+  "530UB92.4": { d1: 501.8, tw: 10.2 },
+  "530UB82.0": { d1: 501.8, tw: 9.6 },
+  "460UB82.1": { d1: 422.4, tw: 9.9 },
+  "460UB74.6": { d1: 428.4, tw: 9.1 },
+  "460UB67.1": { d1: 428.4, tw: 8.5 },
+  "410UB59.7": { d1: 380.8, tw: 7.8 },
+  "410UB53.7": { d1: 380.8, tw: 7.6 },
+  "360UB56.7": { d1: 332.6, tw: 8.0 },
+  "360UB50.7": { d1: 332.6, tw: 7.3 },
+  "360UB44.7": { d1: 332.6, tw: 6.9 },
+  "310UB46.2": { d1: 283.6, tw: 6.7 },
+  "310UB40.4": { d1: 283.6, tw: 6.1 },
+  "310UB32.0": { d1: 282.0, tw: 5.5 },
+  "250UB37.3": { d1: 234.4, tw: 6.4 },
+  "250UB31.4": { d1: 234.4, tw: 6.1 },
+  "250UB25.7": { d1: 220.4, tw: 5.0 },
+  "200UB29.8": { d1: 187.8, tw: 6.3 },
+  "200UB25.4": { d1: 187.6, tw: 5.8 },
+  "200UB22.3": { d1: 187.6, tw: 5.0 },
+  "200UB18.2": { d1: 184.0, tw: 4.5 },
+  "180UB22.2": { d1: 159.0, tw: 5.0 },
+  "180UB18.1": { d1: 159.0, tw: 5.0 },
+  "180UB16.1": { d1: 159.0, tw: 4.5 },
+  "150UB18.0": { d1: 136.6, tw: 6.0 },
+  "150UB14.0": { d1: 136.0, tw: 5.0 },
+  "310UC158": { d1: 277.2, tw: 15.7 },
+  "310UC137": { d1: 277.2, tw: 13.8 },
+  "310UC118": { d1: 277.2, tw: 11.9 },
+  "310UC96.8": { d1: 277.2, tw: 9.9 },
+  "250UC89.5": { d1: 225.4, tw: 10.5 },
+  "250UC72.9": { d1: 225.4, tw: 8.6 },
+  "200UC59.5": { d1: 181.4, tw: 9.3 },
+  "200UC52.2": { d1: 181.4, tw: 8.0 },
+  "200UC46.2": { d1: 181.4, tw: 7.3 },
+  "150UC37.2": { d1: 138.8, tw: 8.1 },
+  "150UC30.0": { d1: 138.8, tw: 6.6 },
+  "150UC23.4": { d1: 138.8, tw: 6.1 },
+  "100UC14.8": { d1: 83.0, tw: 5.0 }
+};
+
+function beamSectionRecord([designation, mass, area, Sx, Zx, grades]) {
+  const shear = beamShearDimensions[designation] || {};
+  const d1 = shear.d1 || 0;
+  const tw = shear.tw || 0;
+  return { designation, mass, area, Sx, Zx, d1, tw, Aw: d1 * tw, grades };
+}
+
 const ubSections = [
   ["610UB125",125,16000,3680,3230,{ "300PLUS": { fy: 280, Ze: 3680, compactness: "C", kf: 0.950 }, "Grade 350": { fy: 340, Ze: 3680, compactness: "C", kf: 0.916 } }],
   ["610UB113",113,14500,3290,2880,{ "300PLUS": { fy: 280, Ze: 3290, compactness: "C", kf: 0.926 }, "Grade 350": { fy: 340, Ze: 3290, compactness: "C", kf: 0.891 } }],
@@ -103,7 +154,7 @@ const ubSections = [
   ["180UB16.1",16.1,2040,138,123,{ "300PLUS": { fy: 320, Ze: 138, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 138, compactness: "C", kf: 1.000 } }],
   ["150UB18.0",18.0,2300,135,117,{ "300PLUS": { fy: 320, Ze: 135, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 135, compactness: "C", kf: 1.000 } }],
   ["150UB14.0",14.0,1780,102,88.8,{ "300PLUS": { fy: 320, Ze: 102, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 102, compactness: "C", kf: 1.000 } }]
-].map(([designation, mass, area, Sx, Zx, grades]) => ({ designation, mass, area, Sx, Zx, grades }));
+].map(beamSectionRecord);
 
 const ucSections = [
   ["310UC158",158,20100,2680,2370,{ "300PLUS": { fy: 280, Ze: 2680, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 340, Ze: 2680, compactness: "C", kf: 1.000 } }],
@@ -119,7 +170,7 @@ const ucSections = [
   ["150UC30.0",30.0,3860,250,223,{ "300PLUS": { fy: 320, Ze: 250, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 248, compactness: "N", kf: 1.000 } }],
   ["150UC23.4",23.4,2980,184,166,{ "300PLUS": { fy: 320, Ze: 176, compactness: "N", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 174, compactness: "N", kf: 1.000 } }],
   ["100UC14.8",14.8,1890,74.4,65.6,{ "300PLUS": { fy: 320, Ze: 74.4, compactness: "C", kf: 1.000 }, "Grade 350": { fy: 360, Ze: 74.4, compactness: "C", kf: 1.000 } }]
-].map(([designation, mass, area, Sx, Zx, grades]) => ({ designation, mass, area, Sx, Zx, grades }));
+].map(beamSectionRecord);
 
 const chsSections = [
   [26.9,2.6],[33.7,2.0],[33.7,2.6],[33.7,3.2],[33.7,4.0],
@@ -197,7 +248,7 @@ const chsGrades = {
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
-const beamCustomInputIds = ["beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx", "beamCustomCompactness", "beamCustomKf"];
+const beamCustomInputIds = ["beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx", "beamCustomCompactness", "beamCustomKf"];
 const toolNames = ["bolt", "member", "beam", "weld", "concrete"];
 let beamSectionType = "ub";
 let memberType = "chs";
@@ -389,6 +440,10 @@ function formatBeamModulus(number) {
   return number > 0 ? `${formatBeamNumber(number, 1)} x 10^3 mm3` : "-";
 }
 
+function formatBeamArea(number) {
+  return number > 0 ? `${formatBeamNumber(number, 0)} mm²` : "-";
+}
+
 function compactnessText(compactness) {
   return compactness === "C" ? "Compact" : compactness === "N" ? "Non-compact" : "Slender";
 }
@@ -400,6 +455,9 @@ function customBeamSection() {
     designation,
     mass: value("beamCustomMass"),
     area: value("beamCustomArea"),
+    Aw: value("beamCustomAw"),
+    d1: 0,
+    tw: 0,
     Sx: value("beamCustomSx"),
     Zx: value("beamCustomZx"),
     custom: true,
@@ -465,56 +523,98 @@ function calculateBeam() {
   if (!grade) return;
   const isCustom = beamSectionType === "custom";
   const phi = 0.9;
-  const valid = grade.fy > 0 && grade.Ze > 0;
-  const sectionCapacity = valid ? phi * grade.fy * grade.Ze / 1000 : NaN;
-  const elasticYield = valid && section.Zx > 0 ? phi * grade.fy * section.Zx / 1000 : NaN;
-  const plasticLimit = valid && section.Sx > 0 ? phi * grade.fy * section.Sx / 1000 : NaN;
-  const demand = value("beamMomentDemand");
-  const utilisation = valid && sectionCapacity > 0 ? demand / sectionCapacity : Infinity;
-  const hasDemand = demand > 0;
+  const validMoment = grade.fy > 0 && grade.Ze > 0;
+  const validShear = grade.fy > 0 && section.Aw > 0;
+  const valid = validMoment && validShear;
+  const sectionCapacity = validMoment ? phi * grade.fy * grade.Ze / 1000 : NaN;
+  const shearCapacity = validShear ? phi * 0.6 * grade.fy * section.Aw / 1000 : NaN;
+  const elasticYield = validMoment && section.Zx > 0 ? phi * grade.fy * section.Zx / 1000 : NaN;
+  const plasticLimit = validMoment && section.Sx > 0 ? phi * grade.fy * section.Sx / 1000 : NaN;
+  const momentDemand = value("beamMomentDemand");
+  const shearDemand = value("beamShearDemand");
+  const momentRatio = validMoment && sectionCapacity > 0 ? momentDemand / sectionCapacity : Infinity;
+  const shearRatio = validShear && shearCapacity > 0 ? shearDemand / shearCapacity : Infinity;
+  const utilisation = valid ? Math.max(momentDemand > 0 ? momentRatio : 0, shearDemand > 0 ? shearRatio : 0) : Infinity;
+  const hasDemand = momentDemand > 0 || shearDemand > 0;
+  const highShear = validShear && shearDemand > 0.6 * shearCapacity;
+  const interactionReview = highShear && momentDemand > 0;
   const compactnessLabel = compactnessText(grade.compactness);
   const sourceBasis = isCustom ? "User-entered section properties" : `OneSteel / InfraBuild ${beamSectionType.toUpperCase()} catalogue data`;
+  const shearAreaBasis = isCustom
+    ? `A<sub>w</sub> = ${formatBeamArea(section.Aw)} user-entered`
+    : `A<sub>w</sub> = d<sub>1</sub>t<sub>w</sub> = ${formatBeamNumber(section.d1, 1)} x ${formatBeamNumber(section.tw, 1)} = ${formatBeamArea(section.Aw)}`;
 
   $("beamDesignation").textContent = `${section.designation} - ${gradeName}`;
   $("beamAssumption").textContent = isCustom
-    ? "selected-axis section capacity only; user-entered properties are not catalogue-checked"
-    : "x-axis section capacity only; member capacity and lateral restraint are not checked";
+    ? "selected-axis moment and web shear only; user-entered properties are not catalogue-checked"
+    : "x-axis section moment and web shear only; member capacity and lateral restraint are not checked";
   $("beamMass").textContent = formatBeamOptional(section.mass, "kg/m", 1);
-  $("beamArea").textContent = formatBeamOptional(section.area, "mm2", 0);
+  $("beamArea").textContent = formatBeamArea(section.area);
+  $("beamAw").textContent = formatBeamArea(section.Aw);
   $("beamFy").textContent = grade.fy > 0 ? `${formatBeamNumber(grade.fy, 0)} MPa` : "-";
   $("beamZex").textContent = formatBeamModulus(grade.Ze);
   $("beamCompactness").textContent = compactnessLabel;
   $("beamSectionCapacity").textContent = Number.isFinite(sectionCapacity) ? fixed(sectionCapacity) : "-";
-  $("beamElasticYield").textContent = Number.isFinite(elasticYield) ? fixed(elasticYield) : "-";
+  $("beamShearCapacity").textContent = Number.isFinite(shearCapacity) ? fixed(shearCapacity) : "-";
   $("beamPlasticLimit").textContent = Number.isFinite(plasticLimit) ? fixed(plasticLimit) : "-";
   $("beamSxValue").textContent = formatBeamModulus(section.Sx);
   $("beamZxValue").textContent = formatBeamModulus(section.Zx);
+  $("beamAwValue").textContent = formatBeamArea(section.Aw);
   $("beamKfValue").textContent = grade.kf > 0 ? grade.kf.toFixed(3) : "-";
   $("beamClassification").textContent = compactnessLabel;
   $("beamGoverning").textContent = isCustom
-    ? "User-entered Zex controls"
+    ? "User-entered Zex and Aw"
     : grade.compactness === "C"
-      ? "Effective section modulus equals Sx"
-      : "Effective section modulus reduced from Sx";
+      ? "Catalogue Zex and Aw"
+      : "Catalogue reduced Zex and Aw";
   $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
-  $("beamStatus").textContent = !valid ? "Invalid input" : !hasDemand ? "Enter design moment" : utilisation <= 1 ? "PASS" : "FAIL";
-  $("beamStatus").className = !valid ? "fail" : !hasDemand ? "" : utilisation <= 1 ? "pass" : "fail";
-  $("beamWarning").textContent = "Section capacity only. Check member moment capacity, lateral restraint, shear, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.";
+  $("beamStatus").textContent = !valid
+    ? "Invalid input"
+    : !hasDemand
+      ? "Enter design actions"
+      : utilisation > 1
+        ? "FAIL"
+        : interactionReview
+          ? "CHECK"
+          : "PASS";
+  $("beamStatus").className = !valid
+    ? "fail"
+    : !hasDemand
+      ? ""
+      : utilisation > 1
+        ? "fail"
+        : interactionReview
+          ? "check"
+          : "pass";
+  $("beamWarning").textContent = !valid
+    ? "Enter positive fy, Zex and Aw values before using the Beam Section capacity check."
+    : utilisation > 1
+      ? "Design action exceeds the reported AS 4100 section design capacity. Increase the section or revise the design action before design issue."
+      : interactionReview
+        ? "High shear: V* exceeds 0.60 phi Vv while bending is present. Complete AS 4100 Clause 5.12 bending-shear interaction review before design issue."
+        : highShear
+          ? "V* exceeds 0.60 phi Vv. Shear capacity is still shown, but any concurrent bending must be checked to AS 4100 Clause 5.12."
+          : "Section capacity only. Check member moment capacity, lateral restraint, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.";
 
   if (!valid) {
     $("beamFormulaSteps").innerHTML = `
-      <div><b>Required input</b><code>Enter positive f<sub>y</sub> and Z<sub>ex</sub> values before using Custom Section capacity.</code></div>
-      <div><b>Design boundary</b><code>Section capacity only; M<sub>b</sub>, lateral restraint, shear, web bearing, deflection and combined actions are not checked.</code></div>`;
+      <div><b>Required input</b><code>Enter positive f<sub>y</sub>, Z<sub>ex</sub> and A<sub>w</sub> values before using Beam Section capacity.</code></div>
+      <div><b>Design boundary</b><code>Section capacity only; M<sub>b</sub>, lateral restraint, web bearing, web buckling, deflection and concentrated-load checks are not included.</code></div>`;
     return;
   }
 
   $("beamFormulaSteps").innerHTML = `
-    <div><b>Section data</b><code>${section.designation}; A<sub>g</sub> = ${formatBeamOptional(section.area, "mm&sup2;", 0)}; mass = ${formatBeamOptional(section.mass, "kg/m", 1)}; source = ${sourceBasis}</code></div>
+    <div><b>Section data</b><code>${section.designation}; A<sub>g</sub> = ${formatBeamArea(section.area)}; mass = ${formatBeamOptional(section.mass, "kg/m", 1)}; source = ${sourceBasis}</code></div>
     <div><b>Section moduli</b><code>S<sub>x</sub> = ${formatBeamModulus(section.Sx)}; Z<sub>x</sub> = ${formatBeamModulus(section.Zx)}; Z<sub>ex</sub> = ${formatBeamModulus(grade.Ze)}</code></div>
     <div><b>Compactness</b><code>${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)}${isCustom ? "; user-entered reference value" : " from OneSteel / InfraBuild section-capacity table"}</code></div>
     <div><b>Elastic yield reference</b><code>${Number.isFinite(elasticYield) ? `&phi;f<sub>y</sub>Z<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Zx, 1)} x 10&sup3; / 10&sup6; = ${fixed(elasticYield)} kNm` : "Not shown - enter Zx for custom reference value"}</code></div>
     <div><b>Plastic limit reference</b><code>${Number.isFinite(plasticLimit) ? `&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Sx, 1)} x 10&sup3; / 10&sup6; = ${fixed(plasticLimit)} kNm` : "Not shown - enter Sx for custom reference value"}</code></div>
-    <div><b>Section capacity</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(grade.Ze, 1)} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>`;
+    <div><b>Moment capacity - AS 4100 Cl. 5.2</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(grade.Ze, 1)} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>
+    <div><b>Web shear area</b><code>${shearAreaBasis}</code></div>
+    <div><b>Shear capacity - AS 4100 Cl. 5.12</b><code>&phi;V<sub>v</sub> = 0.90 x 0.6 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamArea(section.Aw)} / 1000 = ${fixed(shearCapacity)} kN</code></div>
+    <div><b>Design action check</b><code>M* / &phi;M<sub>s</sub> = ${fixed(momentDemand)} / ${fixed(sectionCapacity)} = ${momentRatio.toFixed(2)}; V* / &phi;V<sub>v</sub> = ${fixed(shearDemand)} / ${fixed(shearCapacity)} = ${shearRatio.toFixed(2)}; governing ratio = ${utilisation.toFixed(2)}</code></div>
+    <div><b>High shear threshold</b><code>0.60&phi;V<sub>v</sub> = ${fixed(0.6 * shearCapacity)} kN; provided V* = ${fixed(shearDemand)} kN - ${highShear ? "AS 4100 Cl. 5.12 bending-shear review required where bending is present" : "below high-shear threshold"}</code></div>
+    <div><b>Design boundary</b><code>Section capacity only; member capacity M<sub>b</sub>, lateral restraint, web bearing, web buckling, stiffeners, concentrated loads, openings, torsion, serviceability and composite action are not checked.</code></div>`;
 }
 
 function chsProperties(section) {
@@ -1001,6 +1101,7 @@ function initialise() {
   $("beamSection").addEventListener("change", populateBeamGrades);
   $("beamGrade").addEventListener("change", calculateBeam);
   $("beamMomentDemand").addEventListener("input", calculateBeam);
+  $("beamShearDemand").addEventListener("input", calculateBeam);
   beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
   $("beamCustomCompactness").addEventListener("change", calculateBeam);
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));

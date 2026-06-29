@@ -94,7 +94,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .primary-inputs { display: grid; gap: 12px; align-items: end; }
 .primary-inputs.three-inputs { grid-template-columns: .8fr 1.35fr 1.15fr; }
 .primary-inputs.weld-inputs { grid-template-columns: 1.05fr .8fr .9fr 1fr .8fr .7fr; }
-.primary-inputs.beam-inputs { grid-template-columns: 1.35fr 1fr .85fr; }
+.primary-inputs.beam-inputs { grid-template-columns: 1.35fr .9fr .8fr .8fr; }
 .primary-inputs.concrete-inputs { grid-template-columns: 1.15fr .85fr .85fr .85fr .85fr .7fr; }
 .concrete-input-stack { display: grid; gap: 10px; }
 .concrete-input-row { display: grid; gap: 12px; align-items: end; }
@@ -287,7 +287,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .tension-limits span, .tension-limits strong, .tension-limits small { display: block; }
 .tension-limits span, .tension-limits small { color: var(--muted); font-size: var(--fs-xs); }
 .tension-limits strong { margin: 2px 0; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
-.beam-metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; margin-top: 12px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--line); }
+.beam-metrics { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; margin-top: 12px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--line); }
 .beam-metrics > div { padding: 9px 11px; background: #fbf8ff; }
 .beam-metrics span, .beam-metrics strong { display: block; }
 .beam-metrics span { color: var(--muted); font-size: var(--fs-xs); }
@@ -385,6 +385,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .interaction-result strong { font-size: var(--fs-md); font-weight: 700; font-variant-numeric: tabular-nums; }
 .interaction-result b { padding: 5px 8px; border-radius: 99px; color: var(--ink); background: #dce4df; font-size: var(--fs-xs); }
 .interaction-result b.pass { background: var(--green-soft); color: var(--green-dark); }
+.interaction-result b.check { background: #fff3df; color: #9b5b11; }
 .interaction-result b.fail { background: #fde8e5; color: var(--red); }
 
 .source-body { display: grid; grid-template-columns: 1.15fr .85fr; gap: 22px; padding-top: 18px; }

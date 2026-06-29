@@ -33,19 +33,20 @@ For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design in
 
 ### Beam Section
 
-The beam tool covers major-axis section moment capacity for catalogue hot-rolled Universal Beams / Universal Columns and user-entered custom sections:
+The beam tool covers major-axis section moment and web shear capacity for catalogue hot-rolled Universal Beams / Universal Columns and user-entered custom sections:
 
 - selected UB and UC section entries from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition;
 - 300PLUS and Grade 350 section-capacity data where tabulated for UB/UC sections;
-- Custom section mode using user-entered `fy`, `Zex`, `Sx`, `Zx`, compactness, area and mass values;
-- gross area, mass, `Sx`, `Zx`, `Zex`, compactness and form factor `kf`;
+- catalogue `d1` and `tw` values used to calculate web shear area `Aw = d1 tw`;
+- Custom section mode using user-entered `fy`, `Zex`, `Sx`, `Zx`, `Aw`, compactness, area and mass values;
+- gross area, mass, `Sx`, `Zx`, `Zex`, `Aw`, compactness and form factor `kf`;
 - design section moment capacity `phi Ms`;
-- elastic yield and plastic limit reference values;
-- optional design moment `M*` and utilisation ratio.
+- design section shear capacity `phi Vv`;
+- optional design actions `M*` and `V*` and governing section utilisation ratio.
 
-The primary basis is AS 4100:2020 Section 5 for beam section capacity, using `phi Ms = phi fy Ze` with `phi = 0.90`. For catalogue sections, the effective section modulus `Zex`, compactness and `kf` are taken from the OneSteel / InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom sections, the user is responsible for the entered section properties and material/product basis.
+The primary basis is AS 4100:2020 Section 5 for beam section capacity. Moment capacity uses Clause 5.2 with `Ms = fy Ze` and `phi = 0.90`. Web shear capacity uses the AS 4100 Clause 5.12 unstiffened web shear provisions with `Aw = d1 tw` for catalogue UB/UC sections. For catalogue sections, the effective section modulus `Zex`, compactness and `kf` are taken from the OneSteel / InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom sections, the user is responsible for the entered section properties, shear area and material/product basis.
 
-The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, shear, combined bending and shear, web bearing, web buckling, concentrated loads, copes, holes, composite action, fire or deflection.
+The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, minor-axis bending, biaxial bending, axial interaction, web bearing, web buckling under concentrated forces, stiffeners, copes, holes, composite action, fire, deflection or vibration. If `V* > 0.60 phi Vv`, the tool flags high shear and requires AS 4100 Clause 5.12 bending-shear interaction review rather than silently treating the unreduced moment capacity as a pass.
 
 ### Concrete Pad Moment
 
