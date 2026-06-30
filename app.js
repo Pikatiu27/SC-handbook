@@ -1367,6 +1367,7 @@ function setMemberType(type) {
     card.hidden = card.dataset.memberGuide !== type;
   });
   $("alphaBField").hidden = true;
+  $("memberSectionGroup").hidden = type === "custom";
   $("memberSectionField").hidden = type === "custom";
   $("memberGradeField").hidden = type === "custom";
   $("memberLengthField").hidden = type === "custom";

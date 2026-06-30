@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701g">
+  <link rel="stylesheet" href="styles.css?v=20260701h">
 </head>
 <body>
   <header class="topbar">
@@ -532,16 +532,19 @@
         </details>
 
         <div class="input-cluster input-cluster-four">
-          <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Section properties</b><small>Catalogue section, geometry-derived section or custom input.</small></span>
-            <div class="input-group-fields">
+          <section class="input-group input-group-section" id="memberSectionGroup">
+            <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Catalogue section and editable radius of gyration for the checked buckling axis.</small></span>
+            <div class="input-group-fields two">
               <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
+              <label id="memberRadiusField"><span>r <i>editable</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
             </div>
           </section>
           <section class="input-group input-group-material">
-            <span class="input-group-heading"><b>Material property</b><small>Steel grade selection before editable overrides.</small></span>
-            <div class="input-group-fields">
+            <span class="input-group-heading"><b>Material property</b><small>Grade lookup with editable strength values for project data.</small></span>
+            <div class="input-group-fields three">
               <label id="memberGradeField"><span>Steel grade</span><select id="memberGrade"></select></label>
+              <label><span>f<sub>y</sub> <i>editable</i></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
+              <label><span>f<sub>u</sub> <i>editable</i></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
             </div>
           </section>
           <section class="input-group input-group-factor">
@@ -583,12 +586,6 @@
           </section>
         </div>
 
-        <div class="material-strength-inputs" aria-label="Editable member defaults">
-          <div><span>Section / material overrides</span><small id="memberRadiusSource">Default r is from the selected section. Edit r, f<sub>y</sub> or f<sub>u</sub> to match the checked buckling axis and project data.</small></div>
-          <label id="memberRadiusField"><span>r <i>editable</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
-          <label><span>f<sub>y</sub> <i>editable</i></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
-          <label><span>f<sub>u</sub> <i>editable</i></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
-        </div>
 
         <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r</dt><dd id="memberRadius">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>w</sub></dt><dd id="memberWebThickness">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>f</sub></dt><dd id="memberFlangeThickness">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
@@ -644,6 +641,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701g"></script>
+  <script src="app.js?v=20260701h"></script>
 </body>
 </html>
