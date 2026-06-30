@@ -726,6 +726,25 @@ function memberProperties(section) {
   return memberType === "chs" ? chsProperties(section) : { area: section.area, r: section.r };
 }
 
+function memberAlphaBDefault() {
+  if (memberType === "chs") return -0.5;
+  if (memberType === "rod") return 0.5;
+  return 0.5;
+}
+
+function memberAlphaBBasis() {
+  if (memberType === "chs") {
+    return "AS 4100 Table 6.3.3(A), cold-formed non-stress-relieved CHS";
+  }
+  if (memberType === "ea") {
+    return "AS 4100 Table 6.3.3(A), angles";
+  }
+  if (memberType === "pfc") {
+    return "AS 4100 Table 6.3.3(A), hot-rolled channels";
+  }
+  return "AS 4100 Table 6.3.3(A), other sections not listed in the table";
+}
+
 function memberNetAreaInput(properties) {
   const autoAvailable = memberType === "ea" || memberType === "pfc";
   const mode = autoAvailable ? $("memberNetAreaMode").value : "manual";
@@ -803,7 +822,7 @@ function calculateMember() {
   const grade = memberType === "chs" ? chsGrades[gradeName] : section.grades[gradeName];
   if (!grade) return;
   const properties = memberProperties(section);
-  const alphaB = memberType === "chs" ? -0.5 : Number($("memberAlphaB").value);
+  const alphaB = memberAlphaBDefault();
   const netInput = memberNetAreaInput(properties);
   const netArea = netInput.netArea;
   const kt = Math.min(1, value("memberKt"));
@@ -833,12 +852,12 @@ function calculateMember() {
 
   $("memberDesignation").textContent = `${section.designation} - ${gradeName}`;
   $("memberAssumption").innerHTML = memberType === "chs"
-    ? "&alpha;<sub>b</sub> = -0.5 - assumes cold-formed non-stress-relieved CHS"
+    ? "&alpha;<sub>b</sub> = -0.5 - AS 4100 Table 6.3.3(A), cold-formed non-stress-relieved CHS"
     : memberType === "ea"
-      ? `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - equal-angle principal-axis screen using catalogue r<sub>n</sub> = r<sub>p</sub>`
+      ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - AS 4100 Table 6.3.3(A), angles; catalogue r<sub>n</sub> = r<sub>p</sub>`
       : memberType === "pfc"
-        ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - hot-rolled channel default for PFC r<sub>min</sub> axial screen`
-        : `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - solid circular rod geometry`;
+        ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - AS 4100 Table 6.3.3(A), hot-rolled channels`
+        : `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - AS 4100 Table 6.3.3(A), other sections not listed`;
   $("memberArea").textContent = formatArea(properties.area);
   $("memberRadius").textContent = `${properties.r.toFixed(1)} mm`;
   document.querySelectorAll(".member-pfc-dimension").forEach(field => {
@@ -872,12 +891,12 @@ function calculateMember() {
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Centroidal axial load only. Default &alpha;<sub>b</sub> assumes cold-formed non-stress-relieved CHS; confirm hot-formed or stress-relieved sections separately. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length, grade certificate and the actual connection.${netAreaWarning}`
     : memberType === "ea"
-      ? `Equal Angle quick check uses the catalogue principal-axis radius r<sub>n</sub> = r<sub>p</sub>, not a weak-axis or flexural-torsional design. Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; unequal angles connected by the short leg may require 0.75, and uniform force distribution may justify 1.0.${netAreaWarning}`
+      ? `Equal Angle quick check uses the catalogue principal-axis radius r<sub>n</sub> = r<sub>p</sub>, not a weak-axis or flexural-torsional design. &alpha;<sub>b</sub> defaults to 0.5 from AS 4100 Table 6.3.3(A). Confirm A<sub>n</sub> / k<sub>t</sub> to AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; unequal angles connected by the short leg may require 0.75, and uniform force distribution may justify 1.0.${netAreaWarning}`
       : memberType === "pfc"
         ? `PFC quick check uses catalogue A<sub>g</sub> and r<sub>min</sub> for centroidal axial load only, with hot-rolled channel &alpha;<sub>b</sub> = 0.5 by default. Check axis-specific buckling, torsional/flexural-torsional buckling and connection eccentricity separately.${netAreaWarning}`
-        : `Confirm rod product grade, &alpha;<sub>b</sub> to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
+        : `Rod quick check uses solid circular geometry and &alpha;<sub>b</sub> = 0.5 from AS 4100 Table 6.3.3(A), treated as other sections not listed in the table. Confirm product grade, effective length, straightness and connection net area.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
-    <div><b>Design input status</b><code>&alpha;<sub>b</sub>, A<sub>n</sub> and k<sub>t</sub> are connection- and axis-dependent design inputs; confirm them from AS 4100 and project details before issue</code></div>
+    <div><b>Design input status</b><code>&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} from ${memberAlphaBBasis()}; A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> remain project-specific inputs</code></div>
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
     <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; A<sub>n</sub> is used only in net-section fracture and the final tension-capacity minimum</code></div>
     <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(grossYield)} kN</code></div>
@@ -1217,15 +1236,17 @@ function setMemberType(type) {
   document.querySelectorAll("[data-member-guide]").forEach(card => {
     card.hidden = card.dataset.memberGuide !== type;
   });
-  $("alphaBField").hidden = type === "chs";
+  $("alphaBField").hidden = true;
   $("memberAlphaBAssumption").innerHTML = type === "chs"
-    ? "&alpha;<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS."
+    ? "&alpha;<sub>b</sub> = -0.5 from AS 4100 Table 6.3.3(A), cold-formed non-stress-relieved CHS."
+    : type === "ea"
+      ? "&alpha;<sub>b</sub> = 0.5 from AS 4100 Table 6.3.3(A), angles."
     : type === "pfc"
-      ? "&alpha;<sub>b</sub> = 0.5 hot-rolled channel default."
-      : "User-selected &alpha;<sub>b</sub>; confirm AS 4100 Table 6.3.3 for the actual member axis.";
+      ? "&alpha;<sub>b</sub> = 0.5 from AS 4100 Table 6.3.3(A), hot-rolled channels."
+      : "&alpha;<sub>b</sub> = 0.5 from AS 4100 Table 6.3.3(A), other sections not listed.";
   if (type === "ea") $("memberAlphaB").value = "0.5";
   if (type === "pfc") $("memberAlphaB").value = "0.5";
-  if (type === "rod") $("memberAlphaB").value = "0";
+  if (type === "rod") $("memberAlphaB").value = "0.5";
   populateMemberOptions();
 }
 
