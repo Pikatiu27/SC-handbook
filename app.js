@@ -747,12 +747,13 @@ function memberNetAreaInput(properties) {
   $("memberNetArea").readOnly = mode === "auto";
   $("memberHoleCount").disabled = !autoAvailable || mode !== "auto";
   $("memberHoleDiameter").disabled = !autoAvailable || mode !== "auto";
+  $("memberHoleThickness").disabled = memberType !== "pfc" || mode !== "auto";
   $("memberNetAreaMode").disabled = !autoAvailable;
   document.querySelectorAll(".member-net-method, .member-hole-field").forEach(field => {
     field.hidden = !autoAvailable;
   });
   document.querySelectorAll(".member-thickness-field").forEach(field => {
-    field.hidden = memberType !== "pfc" || mode !== "auto";
+    field.hidden = memberType !== "pfc";
   });
   return {
     mode,
