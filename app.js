@@ -205,21 +205,23 @@ const eaSections = [
 }));
 
 const pfcSections = [
-  [380, 55.2, 7030, 30.4, 280],
-  [300, 40.1, 5110, 28.1, 300],
-  [250, 35.5, 4520, 28.4, 300],
-  [230, 25.1, 3200, 23.5, 300],
-  [200, 22.9, 2920, 23.8, 300],
-  [180, 20.9, 2660, 23.8, 300],
-  [150, 17.7, 2250, 23.9, 320],
-  [125, 11.9, 1520, 20.8, 320],
-  [100, 8.33, 1060, 15.9, 320],
-  [75, 5.92, 754, 12.6, 320]
-].map(([depth, mass, area, r, fy]) => ({
+  [380, 55.2, 7030, 30.4, 280, 10.0, 17.5],
+  [300, 40.1, 5110, 28.1, 300, 8.0, 16.0],
+  [250, 35.5, 4520, 28.4, 300, 8.0, 15.0],
+  [230, 25.1, 3200, 23.5, 300, 6.5, 12.0],
+  [200, 22.9, 2920, 23.8, 300, 6.0, 12.0],
+  [180, 20.9, 2660, 23.8, 300, 6.0, 11.0],
+  [150, 17.7, 2250, 23.9, 320, 6.0, 9.5],
+  [125, 11.9, 1520, 20.8, 320, 4.7, 7.5],
+  [100, 8.33, 1060, 15.9, 320, 4.2, 6.7],
+  [75, 5.92, 754, 12.6, 320, 3.8, 6.1]
+].map(([depth, mass, area, r, fy, tw, tf]) => ({
   designation: `${depth}PFC`,
   mass,
   area,
   r,
+  tw,
+  tf,
   grades: { "300PLUS": { fy, fu: 440, kf: 1 } }
 }));
 
@@ -264,7 +266,7 @@ const manualInputIds = [
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx",
-  "memberLength", "memberHoleCount", "memberHoleDiameter", "memberNetArea"
+  "memberLength", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea"
 ];
 const referenceInputIds = [
   "boltSize", "category", "shearPlane", "kr", "edgeCondition", "holeFactor",
@@ -725,12 +727,17 @@ function memberProperties(section) {
 }
 
 function memberNetAreaInput(properties) {
-  const autoAvailable = memberType === "ea";
+  const autoAvailable = memberType === "ea" || memberType === "pfc";
   const mode = autoAvailable ? $("memberNetAreaMode").value : "manual";
   const grossArea = properties.area;
   const holeCount = Math.max(0, Math.round(value("memberHoleCount")));
   const holeDiameter = value("memberHoleDiameter");
-  const deductionThickness = autoAvailable ? (memberSections()[Number($("memberSection").value) || 0]?.t || 0) : 0;
+  const selectedSection = memberSections()[Number($("memberSection").value) || 0];
+  const deductionThickness = memberType === "ea"
+    ? selectedSection?.t || 0
+    : memberType === "pfc"
+      ? value("memberHoleThickness")
+      : 0;
   const holeDeduction = holeCount * holeDiameter * deductionThickness;
   const automaticNetArea = Math.max(0, Math.min(grossArea, grossArea - holeDeduction));
   const manualNetArea = Math.min(grossArea, value("memberNetArea"));
@@ -743,6 +750,9 @@ function memberNetAreaInput(properties) {
   $("memberNetAreaMode").disabled = !autoAvailable;
   document.querySelectorAll(".member-net-method, .member-hole-field").forEach(field => {
     field.hidden = !autoAvailable;
+  });
+  document.querySelectorAll(".member-thickness-field").forEach(field => {
+    field.hidden = memberType !== "pfc" || mode !== "auto";
   });
   return {
     mode,
@@ -774,9 +784,10 @@ function populateMemberGrades() {
   $("memberGrade").innerHTML = Object.keys(grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
   $("memberGrade").value = memberType === "chs" ? "C350L0" : "300PLUS";
   const properties = memberProperties(section);
-  $("memberNetAreaMode").value = memberType === "ea" ? "auto" : "manual";
-  $("memberHoleCount").value = memberType === "ea" ? "1" : "0";
-  $("memberHoleDiameter").value = memberType === "ea" ? "22" : "0";
+  $("memberNetAreaMode").value = memberType === "ea" || memberType === "pfc" ? "auto" : "manual";
+  $("memberHoleCount").value = memberType === "ea" || memberType === "pfc" ? "1" : "0";
+  $("memberHoleDiameter").value = memberType === "ea" || memberType === "pfc" ? "22" : "0";
+  $("memberHoleThickness").value = memberType === "pfc" ? (section.tw || 0).toFixed(1) : "0";
   $("memberNetArea").value = properties.area.toFixed(0);
   $("memberNetArea").max = properties.area.toFixed(0);
   $("memberKt").value = memberType === "ea" ? "0.85" : "1";
@@ -849,9 +860,9 @@ function calculateMember() {
       ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm² for this quick lookup.`
       : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm².`;
   const manualReason = memberType === "pfc"
-    ? " PFC uses manual A_n here because the net path may pass through web, flange or connected elements."
+    ? ` PFC default t = t_w = ${fixed(section.tw || 0)} mm from InfraBuild Table 15/16; change t to t_f = ${fixed(section.tf || 0)} mm or another verified thickness if the net path is through the flange or connected element.`
     : "";
-  $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for stagger, slots, cope cuts or multiple possible net-section paths.`;
+  $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} A<sub>n</sub> affects net-section fracture and final axial tension capacity only; compression uses A<sub>g</sub> in this quick lookup.`;
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Centroidal axial load only. Default &alpha;<sub>b</sub> assumes cold-formed non-stress-relieved CHS; confirm hot-formed or stress-relieved sections separately. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length, grade certificate and the actual connection.${netAreaWarning}`
     : memberType === "ea"
@@ -862,7 +873,7 @@ function calculateMember() {
   $("memberFormulaSteps").innerHTML = `
     <div><b>Design input status</b><code>&alpha;<sub>b</sub>, A<sub>n</sub> and k<sub>t</sub> are connection- and axis-dependent design inputs; confirm them from AS 4100 and project details before issue</code></div>
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
-    <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; use manual input for PFC web/flange paths, stagger, slots, cope cuts or multiple possible net-section paths</code></div>
+    <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; A<sub>n</sub> is used only in net-section fracture and the final tension-capacity minimum</code></div>
     <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(grossYield)} kN</code></div>
     <div><b>Net-section fracture - AS 4100 Cl. 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${grade.fu} / 1000 = ${fixed(netFracture)} kN</code></div>
     <div><b>Design tension capacity - AS 4100 Cl. 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
@@ -1267,6 +1278,7 @@ function initialise() {
   $("memberNetAreaMode").addEventListener("change", calculateMember);
   $("memberHoleCount").addEventListener("input", calculateMember);
   $("memberHoleDiameter").addEventListener("input", calculateMember);
+  $("memberHoleThickness").addEventListener("input", calculateMember);
   $("memberNetArea").addEventListener("input", calculateMember);
   $("memberKt").addEventListener("input", calculateMember);
   populateBeamOptions();
