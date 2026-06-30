@@ -97,6 +97,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .input-cluster-two { grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr); }
 .input-cluster-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .input-cluster-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.member-main-inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
 .input-group { min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.62); }
 .input-group-section { background: rgba(255,255,255,.78); }
 .input-group-material { background: #f5faf7; }
@@ -458,7 +459,7 @@ footer b { white-space: nowrap; }
 
 @media (max-width: 760px) {
   .intro { padding-top: 25px; }
-  .input-cluster-two, .input-cluster-three, .input-cluster-four, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.seven, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .custom-member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
+  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.seven, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .custom-member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .bolt-summary, .member-summary, .beam-summary { align-items: flex-start; }
   .weld-summary { display: block; }
   .bolt-summary dl { gap: 14px; flex-wrap: wrap; }

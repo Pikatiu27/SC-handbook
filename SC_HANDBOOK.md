@@ -947,6 +947,9 @@ Web input grouping:
 
 - Input sections must be grouped by engineering purpose before visual layout is considered. Use these group names where applicable: `Section properties`, `Material properties`, `Relevant factors`, `Design actions`, and `Connection / detailing inputs`.
 - Do not mix section properties, material properties, factors and demand/actions in one undifferentiated row. If a compact desktop row is needed, keep each group visually labelled and preserve the same order on mobile.
+- Do not force all input cards into one desktop row. Use multiple rows or two-column wrapping when four equal cards make labels, units or controls cramped.
+- Effective length, checked radius, gross area and similar member geometry/restraint values belong with `Section properties` or geometry inputs, not `Relevant factors`.
+- `Relevant factors` should be reserved for coefficients, reduction factors, category modifiers and code factors such as `alpha_b`, `k_t`, `k_r`, `k_h`, `phi`, `M_t` or similar.
 - Keep fully manual project inputs visually distinct from values selected from a lookup table, derived by the app, or defaulted from a cited source but still editable.
 - Fully manual inputs include design actions, actual dimensions, effective length, net area, material strengths entered from project documents, and connection-specific values.
 - Lookup / derived / overrideable inputs include catalogue section selection, standard category selection, table-based factors, default correction factors, and editable factors such as `alpha_b`, `k_t`, `k_r`, or `k_h` when the page provides a cited default or lookup basis.

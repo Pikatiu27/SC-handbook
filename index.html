@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701h">
+  <link rel="stylesheet" href="styles.css?v=20260701i">
 </head>
 <body>
   <header class="topbar">
@@ -531,12 +531,13 @@
           </div>
         </details>
 
-        <div class="input-cluster input-cluster-four">
+        <div class="input-cluster input-cluster-four member-main-inputs">
           <section class="input-group input-group-section" id="memberSectionGroup">
-            <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Catalogue section and editable radius of gyration for the checked buckling axis.</small></span>
-            <div class="input-group-fields two">
+            <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Catalogue section, checked radius and effective length geometry.</small></span>
+            <div class="input-group-fields three">
               <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
               <label id="memberRadiusField"><span>r <i>editable</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
+              <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
             </div>
           </section>
           <section class="input-group input-group-material">
@@ -548,9 +549,8 @@
             </div>
           </section>
           <section class="input-group input-group-factor">
-            <span class="input-group-heading"><b>Relevant factors</b><small>Effective length and member section constant.</small></span>
-            <div class="input-group-fields two">
-              <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
+            <span class="input-group-heading"><b>Relevant factors</b><small>Code coefficients used in the compression reduction.</small></span>
+            <div class="input-group-fields">
               <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
             </div>
           </section>
@@ -641,6 +641,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701h"></script>
+  <script src="app.js?v=20260701i"></script>
 </body>
 </html>

@@ -904,6 +904,9 @@ function calculateMember() {
   const kf = memberKfValue(grade);
   const alphaB = memberAlphaBDefault(kf);
   const alphaBBasis = memberAlphaBBasis(kf);
+  if (memberType !== "custom") {
+    $("memberAlphaB").value = String(alphaB);
+  }
   const designR = memberDesignRadius(properties.r);
   const radiusOverridden = memberType !== "custom" && Math.abs(designR - properties.r) > 0.05;
   const radiusBasis = memberType === "custom"
@@ -1366,7 +1369,7 @@ function setMemberType(type) {
   document.querySelectorAll("[data-member-guide]").forEach(card => {
     card.hidden = card.dataset.memberGuide !== type;
   });
-  $("alphaBField").hidden = true;
+  $("alphaBField").hidden = type === "custom";
   $("memberSectionGroup").hidden = type === "custom";
   $("memberSectionField").hidden = type === "custom";
   $("memberGradeField").hidden = type === "custom";
@@ -1385,6 +1388,8 @@ function setMemberType(type) {
         ? "Custom / Built-up uses user-entered effective properties for axial capacity only."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";
   if (type === "ea") $("memberAlphaB").value = "0.5";
+  $("memberAlphaB").disabled = type !== "custom";
+  if (type === "chs") $("memberAlphaB").value = "-0.5";
   if (type === "pfc") $("memberAlphaB").value = "0.5";
   if (type === "rod") $("memberAlphaB").value = "0.5";
   if (type === "custom") $("memberAlphaB").value = "0.5";
