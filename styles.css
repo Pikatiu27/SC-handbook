@@ -146,7 +146,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .lookup-note-grid b, .lookup-note-grid span { display: block; }
 .lookup-note-grid b { color: var(--green-dark); font-size: var(--fs-sm); font-weight: 900; }
 .lookup-note-grid span { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
-.member-inputs { display: grid; grid-template-columns: 1.35fr 1fr .85fr .85fr; gap: 12px; align-items: end; }
+.member-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; align-items: end; }
 .member-inputs label > span:first-child { display: block; margin-bottom: 6px; color: #45534c; font-size: var(--fs-sm); line-height: 1.2; font-weight: 700; }
 .member-inputs select, .member-inputs input { width: 100%; min-height: 46px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 10px 12px; outline: none; font-size: var(--fs-sm); font-weight: 700; }
 .member-inputs .size-field > span:first-child { color: var(--ink); font-size: var(--fs-sm); font-weight: 900; }

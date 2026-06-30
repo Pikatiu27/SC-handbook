@@ -458,6 +458,8 @@
         <div class="member-inputs">
           <label class="size-field"><span>Section</span><select id="memberSection"></select></label>
           <label><span>Steel grade</span><select id="memberGrade"></select></label>
+          <label><span>f<sub>y</sub> <i>editable default</i></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
+          <label><span>f<sub>u</sub> <i>editable default</i></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
           <label><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
           <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
         </div>
@@ -485,7 +487,7 @@
           <div class="member-metrics"><div><span>L<sub>e</sub>/r</span><strong id="memberSlenderness">—</strong></div><div><span>λ<sub>n</sub></span><strong id="memberLambdaN">—</strong></div><div><span>α<sub>c</sub></span><strong id="memberAlphaC">—</strong></div><div><span>Governing</span><strong id="memberGoverning">—</strong></div></div>
           <div class="tension-limits"><div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>φA<sub>g</sub>f<sub>y</sub></small></div><div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>φ(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>)</small></div><div><span>Tension governing limit state</span><strong id="tensionGoverning">—</strong><small>AS 4100 Cl. 7.2 - lesser value</small></div></div>
           <p class="result-note" id="memberWarning">Results calculate after section and grade selection. Verify effective length, section availability and all connection effects.</p>
-          <p class="result-note user-input-note" id="memberInputStatus">Lookup values: k<sub>f</sub>, α<sub>b</sub> and default k<sub>t</sub>. Confirm A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual connection.</p>
+          <p class="result-note user-input-note" id="memberInputStatus">f<sub>y</sub> / f<sub>u</sub> default from selected grade and may be overridden. Confirm A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual connection.</p>
         </section>
       </section>
 
@@ -505,7 +507,7 @@
           </div>
           <div class="source-notes">
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
-            <p><b>Project inputs</b> &middot; Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
+            <p><b>Project inputs</b> &middot; f<sub>y</sub> and f<sub>u</sub> default from the selected grade but are editable for certificate or project-specific values. Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
             <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated properties are catalogue-derived. Compression section capacity assumes no penetrations or unfilled holes, so A<sub>n</sub> = A<sub>g</sub> for this quick check.</p>
             <p>Equal Angle checks use catalogue r<sub>n</sub> = r<sub>p</sub>. PFC checks use r<sub>min</sub>. Weak-axis, torsional/flexural-torsional buckling, connection eccentricity, bending, shear, combined actions and connection capacity are excluded.</p>
           </div>
@@ -515,6 +517,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260630e"></script>
+  <script src="app.js?v=20260701a"></script>
 </body>
 </html>
