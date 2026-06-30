@@ -161,7 +161,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .bolt-summary dl div { text-align: right; }
 .bolt-summary dt { color: var(--muted); font-size: var(--fs-xs); }
 .bolt-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; }
-.member-summary { margin: 16px 0 20px; padding: 13px 14px; border-radius: 11px; background: var(--green-soft); display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.member-summary { margin: 16px 0 20px; padding: 13px 14px; border-radius: 11px; background: var(--green-soft); display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 11px; }
 .beam-summary { margin: 16px 0 10px; padding: 13px 14px; border-radius: 11px; background: var(--green-soft); display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .weld-summary { margin: 16px 0 10px; padding: 13px 14px; border-radius: 11px; background: var(--green-soft); display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .member-summary > div > span, .member-summary > div > strong, .member-summary > div > small { display: block; }
@@ -176,10 +176,10 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-summary > div > small { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); }
 .beam-summary > div > small { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); }
 .weld-summary > div > small { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); }
-.member-summary dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(58px, auto)); gap: 14px 18px; margin: 0; }
+.member-summary dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(86px, 1fr)); gap: 8px 12px; margin: 0; }
 .beam-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
 .weld-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
-.member-summary dl div { text-align: right; }
+.member-summary dl div { text-align: left; min-width: 0; }
 .beam-summary dl div { text-align: right; }
 .weld-summary dl div { text-align: right; }
 .member-summary dt { color: var(--muted); font-size: var(--fs-xs); }

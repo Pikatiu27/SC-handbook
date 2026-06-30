@@ -833,12 +833,14 @@ Use only three main visual font levels:
 
 Practical rules:
 
+- The primary web target is a normal desktop browser. Phone and tablet layouts must adapt cleanly, but desktop web should not be compromised by mobile-only density decisions.
 - Use shared CSS font variables across every tab.
 - Keep member-page typography aligned with bolt-page typography.
 - Input controls such as `Bolt Size M24` and `Bolt Category` should use the same size and weight.
 - Do not create a new font scale for every tab.
 - Avoid all-caps except for small tags such as `RESULTS`.
 - If helper text is important enough to show, it must be readable on phone.
+- Summary strips such as `Selected member` should use clear stacked rows when the label/value block and metric block would otherwise stretch to opposite sides of a wide web card.
 
 ### 15.5 Mobile Layout Rules
 
@@ -1113,7 +1115,7 @@ For product dimensions and section properties, use Australian manufacturer data 
 
 Connection- and axis-dependent terms must stay explicit:
 
-- Use table-derived default `alpha_b` values where the selected section family and embedded `k_f` condition match AS 4100 Table 6.3.3. For the current quick-screen member tab with `k_f = 1.0`, use AS 4100 Table 6.3.3(A): cold-formed non-stress-relieved CHS = -0.5, angles = 0.5, hot-rolled channels = 0.5, and Rod / solid round bar as `other sections not listed` = 0.5. State the table row in the lookup panel and calculation steps. Do not ask the user to manually choose `alpha_b` unless the page provides an explicit advanced override for a different table row, axis, fabrication condition, or `k_f < 1.0` case.
+- Use table-derived default `alpha_b` values where the selected section family and embedded `k_f` condition match AS 4100 Table 6.3.3. Apply Table 6.3.3(A) when `k_f = 1.0` and Table 6.3.3(B) when `k_f < 1.0`. For the current member tab, this means cold-formed non-stress-relieved CHS = -0.5, PFC with `k_f = 1.0` = 0.5, Equal Angle with `k_f = 1.0` = 0.5, Equal Angle with `k_f < 1.0` = 1.0 as `other sections not listed` in Table 6.3.3(B), and Rod / solid round bar with `k_f = 1.0` = 0.5 as `other sections not listed` in Table 6.3.3(A). State the table row in the lookup panel and calculation steps. Do not ask the user to manually choose `alpha_b` unless the page provides an explicit advanced override for a different table row, axis, fabrication condition, or `k_f` case.
 - Do not imply `A_n` is known from the catalogue section alone; it must come from the actual connection net section.
 - For EA tension checks, provide a lightweight straight-line bolt-hole deduction option (`A_n = A_g - n_h d_h t`) using the selected angle thickness. For PFCs, show catalogue `t_w` / `t_f` from the manufacturer table, default the net-area deduction thickness to `t_w`, and allow manual override where the net path passes through the flange or a connected element. Keep a manual `A_n` override for staggered holes, slots, cope cuts, multiple net-section paths, or any topology-dependent connection geometry.
 - Use `k_t = 0.85` as the Equal Angle default only for the applicable eccentrically connected equal-angle condition. Keep it editable and state that it must be confirmed to AS 4100 Cl. 7.3 / AS 4100 Table 7.3.2.
