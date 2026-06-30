@@ -403,7 +403,7 @@
         </details>
 
         <details class="section-guide-card member-lookup-card">
-          <summary><span><b>AS 4100 factor lookup</b><small>Quick guides for k<sub>f</sub>, α<sub>b</sub> and k<sub>t</sub>; A<sub>n</sub> and L<sub>e</sub> remain project inputs</small></span><i>+</i></summary>
+          <summary><span><b>AS 4100 factor lookup</b><small>Quick guides for r, k<sub>f</sub>, α<sub>b</sub> and k<sub>t</sub>; A<sub>n</sub> and L<sub>e</sub> remain project inputs</small></span><i>+</i></summary>
           <div class="lookup-table-stack">
             <section>
               <h3>α<sub>b</sub> member section constant guide</h3>
@@ -451,6 +451,7 @@
             <section class="lookup-note-grid">
               <article><b>A<sub>n</sub></b><span>Not a catalogue lookup. Calculate from the actual holes, slots, stagger, threads, cope cuts and net-section path.</span></article>
               <article><b>L<sub>e</sub></b><span>Not a section-table lookup. Determine from actual end restraint, frame action and effective-length assumptions.</span></article>
+              <article><b>r</b><span>Axis-dependent radius of gyration used in L<sub>e</sub>/r. The quick default is editable when a specific buckling axis governs.</span></article>
               <article><b>Excluded</b><span>Combined actions, flexural-torsional buckling, connection eccentricity and connection capacity remain outside this quick tab.</span></article>
             </section>
           </div>
@@ -475,6 +476,11 @@
           <label><span>α<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
           <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
           <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+        </div>
+
+        <div class="section-property-inputs" aria-label="Editable section property">
+          <div><span>Section property override</span><small id="memberRadiusSource">Default r is from the selected section. Edit when checking a specific buckling axis.</small></div>
+          <label><span>r <i>editable default</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
         </div>
 
         <div class="material-strength-inputs" aria-label="Editable material strengths">
@@ -505,7 +511,7 @@
           <div class="member-metrics"><div><span>L<sub>e</sub>/r</span><strong id="memberSlenderness">—</strong></div><div><span>λ<sub>n</sub></span><strong id="memberLambdaN">—</strong></div><div><span>α<sub>c</sub></span><strong id="memberAlphaC">—</strong></div><div><span>Governing</span><strong id="memberGoverning">—</strong></div></div>
           <div class="tension-limits"><div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>φA<sub>g</sub>f<sub>y</sub></small></div><div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>φ(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>)</small></div><div><span>Tension governing limit state</span><strong id="tensionGoverning">—</strong><small>AS 4100 Cl. 7.2 - lesser value</small></div></div>
           <p class="result-note" id="memberWarning">Results calculate after section and grade selection. Verify effective length, section availability and all connection effects.</p>
-          <p class="result-note user-input-note" id="memberInputStatus">f<sub>y</sub> / f<sub>u</sub> default from selected grade and may be overridden. Confirm A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual connection.</p>
+          <p class="result-note user-input-note" id="memberInputStatus">f<sub>y</sub> / f<sub>u</sub> and r default from the selected lookup basis and may be overridden. Confirm A<sub>n</sub>, k<sub>t</sub>, L<sub>e</sub> and the checked buckling axis from the actual member.</p>
         </section>
       </section>
 
@@ -526,8 +532,8 @@
           </div>
           <div class="source-notes">
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
-            <p><b>Project inputs</b> &middot; f<sub>y</sub> and f<sub>u</sub> default from the selected grade but are editable for certificate or project-specific values. Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
-            <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated properties are catalogue-derived. Compression section capacity assumes no penetrations or unfilled holes, so A<sub>n</sub> = A<sub>g</sub> for this quick check.</p>
+            <p><b>Project inputs</b> &middot; f<sub>y</sub>, f<sub>u</sub> and the quick-check r default are editable for certificate, section-axis or project-specific values. Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
+            <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated properties are catalogue-derived. Radius of gyration r is the value about the checked buckling axis; this quick tab defaults to the current geometry/catalogue governing value, including PFC r<sub>min</sub>. Compression section capacity assumes no penetrations or unfilled holes, so A<sub>n</sub> = A<sub>g</sub> for this quick check.</p>
             <p>Equal Angle checks use catalogue r<sub>n</sub> = r<sub>p</sub>. PFC checks use r<sub>min</sub>. For custom / built-up inputs, verify connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling and local buckling separately. Weak-axis, torsional/flexural-torsional buckling, connection eccentricity, bending, shear, combined actions and connection capacity are excluded unless explicitly entered through effective properties and independently checked.</p>
           </div>
         </div>
@@ -536,6 +542,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701c"></script>
+  <script src="app.js?v=20260701d"></script>
 </body>
 </html>

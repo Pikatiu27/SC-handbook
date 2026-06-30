@@ -280,7 +280,7 @@ const referenceInputIds = [
   "concreteDirection", "concretePhi", "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteComposite",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
   "beamSection", "beamGrade", "beamCustomCompactness", "beamCustomKf",
-  "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberAlphaB", "memberNetAreaMode", "memberKt"
+  "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberNetAreaMode", "memberKt"
 ];
 
 function numericValue(raw) {
@@ -769,6 +769,27 @@ function memberKfValue(grade) {
   return memberType === "custom" ? Math.max(0.001, value("memberCustomKf") || grade.kf) : grade.kf;
 }
 
+function memberRadiusBasis(defaultR) {
+  if (memberType === "chs") return `CHS geometry r = ${defaultR.toFixed(1)} mm; circular section uses the same r about any centroidal axis.`;
+  if (memberType === "rod") return `Solid round geometry r = d/4 = ${defaultR.toFixed(1)} mm; same r about any centroidal axis.`;
+  if (memberType === "pfc") return `PFC catalogue r<sub>min</sub> = ${defaultR.toFixed(1)} mm used as the governing quick-check radius.`;
+  if (memberType === "ea") return `Equal Angle catalogue r = ${defaultR.toFixed(1)} mm used by this quick lookup; confirm actual buckling axis for project design.`;
+  return `Default r = ${defaultR.toFixed(1)} mm.`;
+}
+
+function setMemberRadiusDefault(properties = null) {
+  if (memberType === "custom") return;
+  const selected = selectedMemberGrade();
+  const props = properties || (selected ? memberProperties(selected.section) : null);
+  if (!props) return;
+  $("memberRadiusInput").value = props.r.toFixed(1);
+}
+
+function memberDesignRadius(defaultR) {
+  if (memberType === "custom") return defaultR;
+  return Math.max(0.1, value("memberRadiusInput") || defaultR);
+}
+
 function compressionReduction(lambdaN, alphaB) {
   let alphaC = 1;
   let alphaA = 0;
@@ -849,6 +870,7 @@ function populateMemberGrades() {
   $("memberGrade").value = memberType === "chs" ? "C350L0" : memberType === "custom" ? "User input" : "300PLUS";
   const properties = memberProperties(section);
   setMemberStrengthDefaults();
+  setMemberRadiusDefault(properties);
   $("memberNetAreaMode").value = memberType === "ea" || memberType === "pfc" ? "auto" : "manual";
   $("memberHoleCount").value = memberType === "ea" || memberType === "pfc" ? "1" : "0";
   $("memberHoleDiameter").value = memberType === "ea" || memberType === "pfc" ? "22" : "0";
@@ -882,6 +904,16 @@ function calculateMember() {
   const kf = memberKfValue(grade);
   const alphaB = memberAlphaBDefault(kf);
   const alphaBBasis = memberAlphaBBasis(kf);
+  const designR = memberDesignRadius(properties.r);
+  const radiusOverridden = memberType !== "custom" && Math.abs(designR - properties.r) > 0.05;
+  const radiusBasis = memberType === "custom"
+    ? "r entered separately by axis"
+    : radiusOverridden
+      ? `r manually overridden to ${designR.toFixed(1)} mm from default ${properties.r.toFixed(1)} mm`
+      : memberRadiusBasis(properties.r);
+  if (memberType !== "custom") {
+    $("memberRadiusSource").innerHTML = `${memberRadiusBasis(properties.r)} Current r is used for L<sub>e</sub>/r, &lambda;<sub>n</sub>, &alpha;<sub>c</sub> and &phi;N<sub>c</sub>.`;
+  }
   $("memberNetArea").max = properties.area.toFixed(0);
   const netInput = memberNetAreaInput(properties);
   const netArea = netInput.netArea;
@@ -900,7 +932,7 @@ function calculateMember() {
         { label: "x", title: "x-axis", r: properties.rx, effectiveLength: value("memberCustomLex") * 1000, alphaB: value("memberCustomAlphaBx") },
         { label: "y", title: "y-axis", r: properties.ry, effectiveLength: value("memberCustomLey") * 1000, alphaB: value("memberCustomAlphaBy") }
       ]
-    : [{ label: "", title: "selected axis", r: properties.r, effectiveLength: value("memberLength") * 1000, alphaB }];
+    : [{ label: "", title: "selected axis", r: designR, effectiveLength: value("memberLength") * 1000, alphaB }];
   const axisResults = axes.map(axis => {
     const leOverR = axis.r > 0 ? axis.effectiveLength / axis.r : 0;
     const lambdaN = leOverR * Math.sqrt(kf) * Math.sqrt(fy / 250);
@@ -922,16 +954,16 @@ function calculateMember() {
 
   $("memberDesignation").textContent = memberType === "custom" ? $("memberCustomName").value || section.designation : `${section.designation} - ${gradeName}`;
   $("memberAssumption").innerHTML = memberType === "chs"
-    ? `&alpha;<sub>b</sub> = -0.5 - ${alphaBBasis}`
+    ? `&alpha;<sub>b</sub> = -0.5 - ${alphaBBasis}; ${radiusBasis}`
     : memberType === "ea"
-      ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - ${alphaBBasis}; catalogue r<sub>n</sub> = r<sub>p</sub>`
+      ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - ${alphaBBasis}; ${radiusBasis}`
       : memberType === "pfc"
-        ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - ${alphaBBasis}`
+        ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - ${alphaBBasis}; ${radiusBasis}`
         : memberType === "custom"
           ? `User-entered A<sub>g</sub>, r<sub>x</sub>, r<sub>y</sub>, k<sub>f</sub>, &alpha;<sub>b,x</sub>, &alpha;<sub>b,y</sub>, L<sub>ex</sub> and L<sub>ey</sub>`
-          : `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - ${alphaBBasis}`;
+          : `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - ${alphaBBasis}; ${radiusBasis}`;
   $("memberArea").textContent = formatArea(properties.area);
-  $("memberRadius").textContent = memberType === "custom" ? `x ${properties.rx.toFixed(1)} / y ${properties.ry.toFixed(1)} mm` : `${properties.r.toFixed(1)} mm`;
+  $("memberRadius").textContent = memberType === "custom" ? `x ${properties.rx.toFixed(1)} / y ${properties.ry.toFixed(1)} mm` : `${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)})` : ""}`;
   document.querySelectorAll(".member-pfc-dimension").forEach(field => {
     field.hidden = memberType !== "pfc";
   });
@@ -961,24 +993,24 @@ function calculateMember() {
     : "";
   $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} A<sub>n</sub> affects net-section fracture and final axial tension capacity only; compression uses A<sub>g</sub> in this quick lookup.`;
   $("memberWarning").innerHTML = memberType === "chs"
-    ? `Centroidal axial load only. k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = -0.5 are the current quick-screen assumptions for cold-formed non-stress-relieved CHS. Confirm hot-formed or stress-relieved sections separately.${netAreaWarning}`
+    ? `Centroidal axial load only. r = ${designR.toFixed(1)} mm, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = -0.5 are the current quick-screen assumptions for cold-formed non-stress-relieved CHS. Confirm hot-formed or stress-relieved sections separately.${netAreaWarning}`
     : memberType === "ea"
-      ? `Equal Angle quick check uses catalogue r<sub>n</sub> = r<sub>p</sub>, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}. Weak-axis buckling, flexural-torsional buckling and connection eccentricity are not checked.${netAreaWarning}`
+      ? `Equal Angle quick check uses r = ${designR.toFixed(1)} mm, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}. Weak-axis buckling, flexural-torsional buckling and connection eccentricity are not checked.${netAreaWarning}`
       : memberType === "pfc"
-        ? `PFC quick check uses catalogue A<sub>g</sub>, r<sub>min</sub>, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} for centroidal axial load only. Torsional/flexural-torsional buckling and connection eccentricity are not checked.${netAreaWarning}`
+        ? `PFC quick check uses catalogue A<sub>g</sub>, r = ${designR.toFixed(1)} mm, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} for centroidal axial load only. Default r is r<sub>min</sub> unless overridden. Torsional/flexural-torsional buckling and connection eccentricity are not checked.${netAreaWarning}`
         : memberType === "custom"
           ? `Custom / Built-up quick check uses user-entered effective properties only. Verify built-up member detailing, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, connection eccentricity and local buckling separately.${netAreaWarning}`
-          : `Rod quick check uses solid circular geometry, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}. Confirm product grade, effective length, straightness and connection net area.${netAreaWarning}`;
+          : `Rod quick check uses r = ${designR.toFixed(1)} mm from solid circular geometry, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}. Confirm product grade, effective length, straightness and connection net area.${netAreaWarning}`;
   const sectionDataText = memberType === "custom"
     ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
-    : `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
+    : `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
   const compressionSteps = memberType === "custom"
     ? `<div><b>Compression axes - AS 4100 Cl. 6.3</b><code>${axisResults.map(axis => `${axis.label}: L<sub>e</sub>/r = ${axis.leOverR.toFixed(1)}, &lambda;<sub>n</sub> = ${axis.lambdaN.toFixed(1)}, &alpha;<sub>b</sub> = ${axis.alphaB.toFixed(1)}, &alpha;<sub>c</sub> = ${axis.alphaC.toFixed(3)}, &phi;N<sub>c,${axis.label}</sub> = ${fixed(axis.memberCompression)} kN`).join("; ")}; governing = ${governingAxis.title}</code></div>`
-    : `<div><b>Nominal slenderness</b><code>&lambda;<sub>n</sub> = (L<sub>e</sub>/r) &radic;k<sub>f</sub> &radic;(f<sub>y</sub>/250) = ${axisResults[0].lambdaN.toFixed(1)}</code></div>
+    : `<div><b>Nominal slenderness</b><code>L<sub>e</sub>/r = ${fixed(axisResults[0].effectiveLength / 1000)} m / ${axisResults[0].r.toFixed(1)} mm = ${axisResults[0].leOverR.toFixed(1)}; &lambda;<sub>n</sub> = (L<sub>e</sub>/r) &radic;k<sub>f</sub> &radic;(f<sub>y</sub>/250) = ${axisResults[0].lambdaN.toFixed(1)}</code></div>
     <div><b>Modified slenderness</b><code>&lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub> = ${axisResults[0].modifiedLambda.toFixed(1)}; &alpha;<sub>a</sub> = ${axisResults[0].alphaA.toFixed(2)}</code></div>
     <div><b>Member reduction - AS 4100 Cl. 6.3.3</b><code>&eta; = 0.00326(&lambda; - 13.5) = ${axisResults[0].eta.toFixed(3)}; &xi; = ${axisResults[0].xi.toFixed(3)}; &alpha;<sub>c</sub> = ${axisResults[0].alphaC.toFixed(3)}</code></div>`;
   $("memberFormulaSteps").innerHTML = `
-    <div><b>Design input status</b><code>${strengthBasis}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${memberType === "custom" ? `${axisResults.map(axis => `${axis.label} ${axis.alphaB.toFixed(1)}`).join(" / ")}` : alphaB.toFixed(1)} from ${alphaBBasis}; k<sub>t</sub> = ${kt.toFixed(2)} - ${ktGuidance}</code></div>
+    <div><b>Design input status</b><code>${strengthBasis}; ${radiusBasis}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${memberType === "custom" ? `${axisResults.map(axis => `${axis.label} ${axis.alphaB.toFixed(1)}`).join(" / ")}` : alphaB.toFixed(1)} from ${alphaBBasis}; k<sub>t</sub> = ${kt.toFixed(2)} - ${ktGuidance}</code></div>
     <div><b>Section data</b><code>${sectionDataText}</code></div>
     <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; A<sub>n</sub> is used only in net-section fracture and the final tension-capacity minimum</code></div>
     <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${fy} / 1000 = ${fixed(grossYield)} kN</code></div>
@@ -1320,6 +1352,9 @@ function setMemberType(type) {
   $("memberSectionField").hidden = type === "custom";
   $("memberGradeField").hidden = type === "custom";
   $("memberLengthField").hidden = type === "custom";
+  document.querySelectorAll(".section-property-inputs").forEach(panel => {
+    panel.hidden = type === "custom";
+  });
   document.querySelectorAll(".custom-member-inputs").forEach(panel => {
     panel.hidden = type !== "custom";
   });
@@ -1394,6 +1429,7 @@ function initialise() {
   });
   $("memberFyInput").addEventListener("input", calculateMember);
   $("memberFuInput").addEventListener("input", calculateMember);
+  $("memberRadiusInput").addEventListener("input", calculateMember);
   ["memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"].forEach(id => $(id).addEventListener("input", calculateMember));
   $("memberLength").addEventListener("input", calculateMember);
   $("memberAlphaB").addEventListener("change", calculateMember);
