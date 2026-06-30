@@ -271,7 +271,7 @@ const manualInputIds = [
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx",
-  "memberLength", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
+  "memberLength", "memberAxialDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
   "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
@@ -280,7 +280,7 @@ const referenceInputIds = [
   "concreteDirection", "concretePhi", "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteComposite",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
   "beamSection", "beamGrade", "beamCustomCompactness", "beamCustomKf",
-  "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberNetAreaMode", "memberKt"
+  "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberActionType", "memberNetAreaMode", "memberKt"
 ];
 
 function numericValue(raw) {
@@ -953,6 +953,17 @@ function calculateMember() {
   const netFracture = 0.9 * 0.85 * kt * netArea * fu / 1000;
   const tensionCapacity = Math.min(grossYield, netFracture);
   const tensionGoverning = grossYield <= netFracture ? "Gross-section yielding" : "Net-section fracture";
+  const actionType = $("memberActionType").value;
+  const axialDemand = value("memberAxialDemand");
+  const demandCapacity = actionType === "tension" ? tensionCapacity : memberCompression;
+  const demandRatio = demandCapacity > 0 ? axialDemand / demandCapacity : Infinity;
+  const demandLabel = actionType === "tension" ? "Tension" : "Compression";
+  const demandReference = actionType === "tension" ? "&phi;N<sub>t</sub>" : "&phi;N<sub>c</sub>";
+  const demandStep = axialDemand <= 0
+    ? "No N* entered; capacity only."
+    : Number.isFinite(demandRatio)
+      ? `${demandLabel} N<sup>*</sup> / ${demandReference} = ${fixed(axialDemand)} / ${fixed(demandCapacity)} = ${demandRatio.toFixed(2)}`
+      : `${demandLabel} N<sup>*</sup> entered, but the selected design capacity is not positive.`;
 
   $("memberDesignation").textContent = memberType === "custom" ? $("memberCustomName").value || section.designation : `${section.designation} - ${gradeName}`;
   $("memberAssumption").innerHTML = memberType === "chs"
@@ -984,6 +995,10 @@ function calculateMember() {
   $("memberLambdaN").textContent = memberType === "custom" ? axisResults.map(axis => `${axis.label} ${axis.lambdaN.toFixed(1)}`).join(" / ") : axisResults[0].lambdaN.toFixed(1);
   $("memberAlphaC").textContent = memberType === "custom" ? axisResults.map(axis => `${axis.label} ${axis.alphaC.toFixed(3)}`).join(" / ") : axisResults[0].alphaC.toFixed(3);
   $("memberGoverning").textContent = governingAxis.alphaC < 0.999 ? (memberType === "custom" ? `${governingAxis.title} buckling` : "Member buckling") : "Section capacity";
+  $("memberUtilisation").textContent = axialDemand > 0 && Number.isFinite(demandRatio) ? demandRatio.toFixed(2) : "—";
+  const memberUtilisationStatus = $("memberUtilisationStatus");
+  memberUtilisationStatus.textContent = axialDemand > 0 ? (demandRatio <= 1 ? "PASS" : "FAIL") : "Optional N*";
+  memberUtilisationStatus.className = axialDemand > 0 ? (demandRatio <= 1 ? "pass" : "fail") : "check";
   const netAreaWarning = value("memberNetArea") > properties.area ? " Net area has been limited to gross area." : "";
   const autoNetAreaText = netInput.mode === "auto"
     ? `Auto A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm².`
@@ -1020,7 +1035,8 @@ function calculateMember() {
     <div><b>Design tension capacity - AS 4100 Cl. 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
     ${compressionSteps}
     <div><b>Section capacity - AS 4100 Cl. 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>g</sub>f<sub>y</sub>; quick check assumes no penetrations or unfilled holes, so A<sub>g</sub> = ${properties.area.toFixed(0)} mm2; capacity = ${fixed(sectionCompression)} kN</code></div>
-    <div><b>Member capacity - AS 4100 Cl. 6.3</b><code>&phi;N<sub>c</sub> = ${memberType === "custom" ? `min(&phi;N<sub>c,x</sub>, &phi;N<sub>c,y</sub>) = ${fixed(memberCompression)} kN` : `&alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${governingAxis.alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN`}</code></div>`;
+    <div><b>Member capacity - AS 4100 Cl. 6.3</b><code>&phi;N<sub>c</sub> = ${memberType === "custom" ? `min(&phi;N<sub>c,x</sub>, &phi;N<sub>c,y</sub>) = ${fixed(memberCompression)} kN` : `&alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${governingAxis.alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN`}</code></div>
+    <div><b>Optional axial demand</b><code>${demandStep}</code></div>`;
 }
 
 function concreteLayer(index, depth, direction, width) {
@@ -1433,6 +1449,8 @@ function initialise() {
   ["memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"].forEach(id => $(id).addEventListener("input", calculateMember));
   $("memberLength").addEventListener("input", calculateMember);
   $("memberAlphaB").addEventListener("change", calculateMember);
+  $("memberActionType").addEventListener("change", calculateMember);
+  $("memberAxialDemand").addEventListener("input", calculateMember);
   $("memberNetAreaMode").addEventListener("change", calculateMember);
   $("memberHoleCount").addEventListener("input", calculateMember);
   $("memberHoleDiameter").addEventListener("input", calculateMember);

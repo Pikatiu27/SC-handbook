@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701f">
+  <link rel="stylesheet" href="styles.css?v=20260701g">
 </head>
 <body>
   <header class="topbar">
@@ -97,12 +97,13 @@
       <div class="tool-heading"><div><p class="kicker">Welded connections · AS 4100 Cl. 9.6</p><h2>Weld Capacity</h2></div><span class="tool-status">For Review · AS/NZS 1554.1 notes</span></div>
 
       <section class="lookup-card weld-card">
-        <div class="input-cluster input-cluster-two">
+        <div class="input-cluster input-cluster-three">
           <section class="input-group input-group-section" aria-label="Weld geometry inputs">
-            <span class="input-group-heading"><b>Section / weld geometry</b><small>Weld type, size, effective length and identical effective weld lines.</small></span>
-            <div class="input-group-fields four">
+            <span class="input-group-heading"><b>Section / weld geometry</b><small>Weld type, size or throat, effective length and identical effective weld lines.</small></span>
+            <div class="input-group-fields five">
               <label class="size-field"><span>Weld type</span><select id="weldType" aria-label="Weld type"><option value="fillet">Fillet weld</option><option value="cpbw">Complete penetration butt weld</option><option value="ipbw">Incomplete penetration butt weld</option><option value="compound">Compound weld</option></select></label>
               <label><span>Fillet size, s</span><select id="weldSize" aria-label="Fillet weld size"></select></label>
+              <label><span>a<sub>w</sub> butt-weld throat</span><span class="unit"><input id="weldEffectiveThroat" type="number" min="1" step="0.5" value="10"><em>mm</em></span></label>
               <label><span>Effective length, l<sub>w</sub></span><span class="unit"><input id="weldLength" type="number" min="1" step="1" value="100"><em>mm</em></span></label>
               <label><span>Effective weld lines</span><input id="weldRuns" type="number" min="1" max="12" step="1" value="2"></label>
             </div>
@@ -112,6 +113,12 @@
             <div class="input-group-fields two">
               <label><span>Weld category</span><select id="weldCategory" aria-label="Weld category"><option value="SP">SP - structural purpose</option><option value="GP">GP - general purpose</option></select></label>
               <label><span>Weld metal strength, f<sub>uw</sub></span><select id="weldStrength" aria-label="Nominal tensile strength of weld metal"><option value="430">430 MPa</option><option value="490" selected>490 MPa</option><option value="550">550 MPa</option></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-action">
+            <span class="input-group-heading"><b>Design action</b><small>Direct shear action for utilisation reporting.</small></span>
+            <div class="input-group-fields">
+              <label><span>V* design action</span><span class="unit"><input id="weldDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
             </div>
           </section>
         </div>
@@ -259,28 +266,26 @@
             <article class="capacity-card"><span>Capacity per mm per run</span><strong><output id="weldCapacityPerMm">1.00</output><small> kN/mm</small></strong><p>&phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub></p></article>
             <article class="capacity-card alternate-shear"><span>Parent metal screen</span><strong><output id="parentGoverningPerMm">2.21</output><small> kN/mm</small></strong><p id="parentGoverningNote">warning only</p></article>
           </div>
-          <div class="weld-extra-inputs input-cluster input-cluster-three">
-            <section class="input-group input-group-section">
-              <span class="input-group-heading"><b>Section / parent geometry</b><small>Butt-weld throat and parent ply thickness.</small></span>
-              <div class="input-group-fields two">
-                <label><span>a<sub>w</sub> butt-weld throat</span><span class="unit"><input id="weldEffectiveThroat" type="number" min="1" step="0.5" value="10"><em>mm</em></span></label>
-                <label><span>Ply thickness, t</span><span class="unit"><input id="weldParentThickness" type="number" min="0" step="0.5" value="10"><em>mm</em></span></label>
+          <details class="advanced-input-card">
+            <summary><span><b>Warning-only parent metal / lap inputs</b><small>Use only when the parent-metal screen or welded-lap reduction is relevant.</small></span><i>+</i></summary>
+            <div class="advanced-input-body">
+              <div class="weld-extra-inputs input-cluster input-cluster-two">
+                <section class="input-group input-group-warning">
+                  <span class="input-group-heading"><b>Parent metal screen</b><small>Warning-only; does not replace connected-part design.</small></span>
+                  <div class="input-group-fields two">
+                    <label><span>Ply thickness, t</span><span class="unit"><input id="weldParentThickness" type="number" min="0" step="0.5" value="10"><em>mm</em></span></label>
+                    <label><span>Parent metal grade</span><select id="weldParentGrade" aria-label="Parent metal grade"></select></label>
+                  </div>
+                </section>
+                <section class="input-group input-group-factor">
+                  <span class="input-group-heading"><b>Relevant factor</b><small>Apply only to a welded lap connection.</small></span>
+                  <div class="input-group-fields">
+                    <label><span>Welded lap connection</span><select id="weldLapConnection" aria-label="Apply welded lap connection reduction"><option value="no" selected>No</option><option value="yes">Yes - apply kr</option></select></label>
+                  </div>
+                </section>
               </div>
-            </section>
-            <section class="input-group input-group-material">
-              <span class="input-group-heading"><b>Material property</b><small>Parent metal grade for the warning-only screen.</small></span>
-              <div class="input-group-fields">
-                <label><span>Parent metal grade</span><select id="weldParentGrade" aria-label="Parent metal grade"></select></label>
-              </div>
-            </section>
-            <section class="input-group input-group-action">
-              <span class="input-group-heading"><b>Relevant factor / action</b><small>Lap reduction selection and design shear action.</small></span>
-              <div class="input-group-fields two">
-                <label><span>Welded lap connection</span><select id="weldLapConnection" aria-label="Apply welded lap connection reduction"><option value="no" selected>No</option><option value="yes">Yes - apply kr</option></select></label>
-                <label><span>V* design action</span><span class="unit"><input id="weldDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
-              </div>
-            </section>
-          </div>
+            </div>
+          </details>
           <div class="interaction-result weld-utilisation"><span>Weld utilisation ratio</span><strong id="weldUtilisation">0.00</strong><b id="weldStatus">Enter design action</b></div>
           <p class="result-note">Capacity view only. Not a full weld or joint design check. This view uses weld-metal throat area for the selected weld type. Weld category changes the capacity factor where AS 4100 Table 3.4 gives different SP/GP values. Parent metal check is warning-only; HAZ, tear-out, block shear, eccentric weld groups, fatigue, lamellar tearing and inspection acceptance remain project checks.</p>
         </section>
@@ -318,14 +323,19 @@
           </section>
 
           <section class="input-group input-group-factor">
-            <span class="input-group-heading"><b>Relevant factors / analysis assumptions</b><small>Derived stress-block values and visible quick-screen assumptions.</small></span>
+            <span class="input-group-heading"><b>Relevant factors / assumptions</b><small>Only editable quick-screen assumptions stay visible.</small></span>
             <div class="concrete-input-row concrete-row-analysis">
-              <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
-              <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
-              <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
               <label><span>One-way shear k<sub>v</sub></span><input id="concreteKv" type="number" min="0.01" max="0.40" step="0.01" value="0.10"></label>
               <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
             </div>
+            <details class="advanced-input-card">
+              <summary><span><b>Derived section-analysis values</b><small>Read-only stress-block values calculated from the selected inputs.</small></span><i>+</i></summary>
+              <div class="advanced-input-body concrete-input-row concrete-row-analysis">
+                <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
+                <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
+                <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
+              </div>
+            </details>
           </section>
         </div>
 
@@ -521,7 +531,7 @@
           </div>
         </details>
 
-        <div class="input-cluster input-cluster-three">
+        <div class="input-cluster input-cluster-four">
           <section class="input-group input-group-section">
             <span class="input-group-heading"><b>Section properties</b><small>Catalogue section, geometry-derived section or custom input.</small></span>
             <div class="input-group-fields">
@@ -539,6 +549,13 @@
             <div class="input-group-fields two">
               <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
               <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-action">
+            <span class="input-group-heading"><b>Design action</b><small>Optional axial demand check against the selected limit state.</small></span>
+            <div class="input-group-fields two">
+              <label><span>Action type</span><select id="memberActionType"><option value="compression">Compression N*</option><option value="tension">Tension N*</option></select></label>
+              <label><span>N* axial action</span><span class="unit"><input id="memberAxialDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
             </div>
           </section>
         </div>
@@ -594,6 +611,7 @@
           </div>
           <div class="member-metrics"><div><span>L<sub>e</sub>/r</span><strong id="memberSlenderness">—</strong></div><div><span>λ<sub>n</sub></span><strong id="memberLambdaN">—</strong></div><div><span>α<sub>c</sub></span><strong id="memberAlphaC">—</strong></div><div><span>Governing</span><strong id="memberGoverning">—</strong></div></div>
           <div class="tension-limits"><div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>φA<sub>g</sub>f<sub>y</sub></small></div><div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>φ(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>)</small></div><div><span>Tension governing limit state</span><strong id="tensionGoverning">—</strong><small>AS 4100 Cl. 7.2 - lesser value</small></div></div>
+          <div class="interaction-result member-utilisation"><span>Axial utilisation ratio</span><strong id="memberUtilisation">—</strong><b id="memberUtilisationStatus">Optional N*</b></div>
           <p class="result-note" id="memberWarning">Results calculate after section and grade selection. Verify effective length, section availability and all connection effects.</p>
           <p class="result-note user-input-note" id="memberInputStatus">f<sub>y</sub> / f<sub>u</sub> and r default from the selected lookup basis and may be overridden. Confirm A<sub>n</sub>, k<sub>t</sub>, L<sub>e</sub> and the checked buckling axis from the actual member.</p>
         </section>
@@ -626,6 +644,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701e"></script>
+  <script src="app.js?v=20260701g"></script>
 </body>
 </html>
