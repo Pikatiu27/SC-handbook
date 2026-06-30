@@ -389,7 +389,7 @@
       <div class="tool-heading"><div><p class="kicker">Axial members · AS 4100 Cl. 6 and AS 4100 Cl. 7</p><h2>Axial Member Capacity</h2></div><span class="tool-status">For Review · user-confirmed inputs</span></div>
 
       <section class="lookup-card member-card">
-        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button></div>
+        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up</button></div>
 
         <details class="section-guide-card">
           <summary><span><b>Section guide</b><small>Product-catalogue style dimension sketches</small></span><i>+</i></summary>
@@ -398,6 +398,7 @@
             <article class="manual-section-card" data-member-guide="ea" hidden><img class="section-diagram" src="assets/generated/member-section-equal-angle.svg" alt="Equal angle section diagram showing b, t and r dimensions"><div><strong>Equal Angle</strong><small>b, t, r · OneSteel / InfraBuild Tables 19-21</small></div></article>
             <article class="manual-section-card" data-member-guide="pfc" hidden><img class="section-diagram" src="assets/generated/member-section-pfc.svg" alt="PFC section diagram showing d, bf, tw, tf and r dimensions"><div><strong>PFC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, r · OneSteel / InfraBuild Tables 15-16</small></div></article>
             <article class="manual-section-card" data-member-guide="rod" hidden><img class="section-diagram" src="assets/generated/member-section-rod.svg" alt="Round bar or rod section diagram showing diameter d"><div><strong>Rod</strong><small>d · OneSteel / InfraBuild Table 3</small></div></article>
+            <article class="manual-section-card custom-section-card" data-member-guide="custom" hidden><div><strong>Custom / Built-up</strong><small>User-entered effective properties. Axial capacity only.</small></div></article>
           </div>
         </details>
 
@@ -456,14 +457,31 @@
         </details>
 
         <div class="member-inputs">
-          <label class="size-field"><span>Section</span><select id="memberSection"></select></label>
-          <label><span>Steel grade</span><select id="memberGrade"></select></label>
-          <label><span>f<sub>y</sub> <i>editable default</i></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
-          <label><span>f<sub>u</sub> <i>editable default</i></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
-          <label><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
+          <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
+          <label id="memberGradeField"><span>Steel grade</span><select id="memberGrade"></select></label>
+          <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
           <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
         </div>
         <p class="result-note user-input-note" id="memberAlphaBAssumption">α<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS.</p>
+
+        <div class="custom-member-inputs" hidden>
+          <div><span>Custom section properties</span><small>Enter effective properties from your section calculation. The quick check does not verify built-up member detailing.</small></div>
+          <label><span>Name</span><input id="memberCustomName" type="text" value="Custom built-up member"></label>
+          <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
+          <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
+          <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
+          <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.01" max="1" step="0.001" value="1"></label>
+          <label><span>α<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
+          <label><span>α<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
+          <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+          <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+        </div>
+
+        <div class="material-strength-inputs" aria-label="Editable material strengths">
+          <div><span>Material strengths</span><small>Defaults from selected grade. Edit f<sub>y</sub> / f<sub>u</sub> to match certificate or project-specific values.</small></div>
+          <label><span>f<sub>y</sub> <i>editable</i></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
+          <label><span>f<sub>u</sub> <i>editable</i></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
+        </div>
 
         <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r</dt><dd id="memberRadius">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>w</sub></dt><dd id="memberWebThickness">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>f</sub></dt><dd id="memberFlangeThickness">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
@@ -502,6 +520,7 @@
             <p><b>CHS product source</b> &middot; Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0. Browser properties are geometric from D/t unless a table value is explicitly shown.</p>
             <p><b>Equal Angle / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. Equal Angle properties use Tables 19&ndash;21; PFC properties use Tables 15&ndash;16.</p>
             <p><b>Rod properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size availability and mass; Table 38 for diameter-dependent AS/NZS 3679.1 round-bar yield stress. Circular solid-bar geometry is used for A<sub>g</sub> and r.</p>
+            <p><b>Custom / Built-up</b> &middot; Uses user-entered effective A<sub>g</sub>, r<sub>x</sub>, r<sub>y</sub>, k<sub>f</sub>, α<sub>b,x</sub>, α<sub>b,y</sub>, L<sub>ex</sub> and L<sub>ey</sub>. The page does not verify the source section calculation.</p>
             <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
             <p><b>Axial tension</b> &middot; AS 4100 Cl. 7.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3.</p>
           </div>
@@ -509,7 +528,7 @@
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
             <p><b>Project inputs</b> &middot; f<sub>y</sub> and f<sub>u</sub> default from the selected grade but are editable for certificate or project-specific values. Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
             <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated properties are catalogue-derived. Compression section capacity assumes no penetrations or unfilled holes, so A<sub>n</sub> = A<sub>g</sub> for this quick check.</p>
-            <p>Equal Angle checks use catalogue r<sub>n</sub> = r<sub>p</sub>. PFC checks use r<sub>min</sub>. Weak-axis, torsional/flexural-torsional buckling, connection eccentricity, bending, shear, combined actions and connection capacity are excluded.</p>
+            <p>Equal Angle checks use catalogue r<sub>n</sub> = r<sub>p</sub>. PFC checks use r<sub>min</sub>. For custom / built-up inputs, verify connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling and local buckling separately. Weak-axis, torsional/flexural-torsional buckling, connection eccentricity, bending, shear, combined actions and connection capacity are excluded unless explicitly entered through effective properties and independently checked.</p>
           </div>
         </div>
       </details>
@@ -517,6 +536,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701a"></script>
+  <script src="app.js?v=20260701c"></script>
 </body>
 </html>

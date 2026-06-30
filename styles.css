@@ -131,6 +131,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .section-guide.diagram-guide { grid-template-columns: 1fr; }
 .section-guide.diagram-guide article { background: #fff; }
 .section-guide [hidden] { display: none !important; }
+.custom-section-card { min-height: 76px; align-content: center; }
 .section-diagram { display: block; width: clamp(96px, 18vw, 150px); max-height: 96px; height: auto; margin: 0 auto; border: 1px solid #d7e4ee; border-radius: 8px; background: #fbfdff; object-fit: contain; }
 .manual-tag { width: max-content; max-width: 100%; padding: 4px 7px; border-radius: 999px; background: #edf6fd; color: var(--member-dark); font-size: var(--fs-xs); line-height: 1; font-weight: 900; }
 .lookup-table-stack { padding: 0 11px 12px; display: grid; gap: 11px; }
@@ -151,6 +152,21 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-inputs select, .member-inputs input { width: 100%; min-height: 46px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 10px 12px; outline: none; font-size: var(--fs-sm); font-weight: 700; }
 .member-inputs .size-field > span:first-child { color: var(--ink); font-size: var(--fs-sm); font-weight: 900; }
 .member-inputs .size-field select { color: var(--ink); font-size: var(--fs-sm); font-weight: 700; letter-spacing: 0; }
+.material-strength-inputs { margin: -2px 0 16px; padding: 13px; display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(2, minmax(140px, .8fr)); align-items: end; gap: 12px 14px; border: 1px solid rgba(65, 111, 158, .24); border-radius: 10px; background: #f3f8fc; }
+.material-strength-inputs > div > span, .material-strength-inputs > div > small { display: block; }
+.material-strength-inputs > div > span { color: #355d82; font-size: var(--fs-sm); font-weight: 900; }
+.material-strength-inputs > div > small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
+.material-strength-inputs label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
+.material-strength-inputs label i { font-style: normal; color: #416f9e; font-weight: 800; }
+.material-strength-inputs input { width: 100%; min-height: 42px; border: 1px solid #bfd2e5; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 8px 9px; outline: none; font-size: var(--fs-sm); font-weight: 800; }
+.custom-member-inputs { margin: 0 0 16px; padding: 13px; display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); align-items: end; gap: 12px 14px; border: 1px solid rgba(47, 123, 87, .24); border-radius: 10px; background: #f6fbf7; }
+.custom-member-inputs > div { grid-column: 1 / -1; }
+.custom-member-inputs > div > span, .custom-member-inputs > div > small { display: block; }
+.custom-member-inputs > div > span { color: var(--green-dark); font-size: var(--fs-sm); font-weight: 900; }
+.custom-member-inputs > div > small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
+.custom-member-inputs label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
+.custom-member-inputs label i { font-style: normal; font-weight: 700; }
+.custom-member-inputs input { width: 100%; min-height: 42px; border: 1px solid #c5d7ca; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 8px 9px; outline: none; font-size: var(--fs-sm); font-weight: 800; }
 
 .bolt-summary { margin: 16px 0 10px; padding: 13px 14px; border-radius: 11px; background: var(--green-soft); display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .bolt-summary > div > span, .bolt-summary > div > strong, .bolt-summary > div > small { display: block; }
@@ -420,7 +436,7 @@ footer b { white-space: nowrap; }
 
 @media (max-width: 760px) {
   .intro { padding-top: 25px; }
-  .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
+  .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .material-strength-inputs, .custom-member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .bolt-summary, .member-summary, .beam-summary { align-items: flex-start; }
   .weld-summary { display: block; }
   .bolt-summary dl { gap: 14px; flex-wrap: wrap; }
@@ -483,8 +499,8 @@ footer b { white-space: nowrap; }
   .tool-heading > span { display: block; margin-top: 3px; padding: 0; text-align: left; }
   .tool-panel { padding: 12px; border-radius: 14px; }
   .lookup-card { padding: 14px; }
-  .primary-inputs select, .primary-inputs input, .member-inputs select, .member-inputs input, .concrete-input-row input, .concrete-input-row select, .weld-extra-inputs input, .weld-extra-inputs select, .tension-inputs input, .tension-inputs select { min-height: 44px; font-size: 16px; }
-  .primary-inputs label > span, .member-inputs label > span:first-child { font-size: var(--fs-xs); }
+  .primary-inputs select, .primary-inputs input, .member-inputs select, .member-inputs input, .material-strength-inputs input, .custom-member-inputs input, .concrete-input-row input, .concrete-input-row select, .weld-extra-inputs input, .weld-extra-inputs select, .tension-inputs input, .tension-inputs select { min-height: 44px; font-size: 16px; }
+  .primary-inputs label > span, .member-inputs label > span:first-child, .material-strength-inputs label > span:first-child, .custom-member-inputs label > span:first-child { font-size: var(--fs-xs); }
   .bolt-summary { display: block; }
   .bolt-summary dl { margin-top: 11px; justify-content: space-between; }
   .bolt-summary dl div { text-align: left; }
