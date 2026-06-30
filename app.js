@@ -297,20 +297,45 @@ function calculateBolt() {
   const effectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
   const minimumEdge = value("edgeCondition") * bolt.d;
   const edgeDistancePass = actualEdge >= minimumEdge;
-  const bearingFull = 0.9 * 3.2 * bolt.d * value("plateThickness") * value("plateStrength") / 1000;
-  const bearingEdge = 0.9 * effectiveEdge * value("plateThickness") * value("plateStrength") / 1000;
+  const plateStrength = value("plateStrength");
+  const bearingFull = 0.9 * 3.2 * bolt.d * value("plateThickness") * plateStrength / 1000;
+  const bearingEdge = 0.9 * effectiveEdge * value("plateThickness") * plateStrength / 1000;
   const bearing = Math.min(bearingFull, bearingEdge);
   const preload = category.preload ? bolt[category.preload] : 0;
   const slip = category.type === "friction" ? 0.7 * value("slipFactor") * value("interfaces") * preload * value("holeFactor") : null;
   const slipGroupCapacity = slip === null ? null : count * slip;
   const slipTensionCapacity = preload > 0 ? 0.7 * count * preload : null;
+  const designShear = value("shearDemand");
+  const designTension = value("tensionDemand");
+  const groupPlyCapacity = count * bearing;
+  const boltShearRatio = groupShear > 0 ? designShear / groupShear : Infinity;
+  const plyBearingRatio = groupPlyCapacity > 0 ? designShear / groupPlyCapacity : Infinity;
+  const boltTensionRatio = count * tension > 0 ? designTension / (count * tension) : Infinity;
   const strengthRatio = groupShear > 0 && count * tension > 0
-    ? (value("shearDemand") / groupShear) ** 2 + (value("tensionDemand") / (count * tension)) ** 2
+    ? boltShearRatio ** 2 + boltTensionRatio ** 2
     : Infinity;
   const slipRatio = slipGroupCapacity && slipTensionCapacity
-    ? value("shearDemand") / slipGroupCapacity + value("tensionDemand") / slipTensionCapacity
+    ? designShear / slipGroupCapacity + designTension / slipTensionCapacity
     : Infinity;
-  const hasDemand = value("shearDemand") > 0 || value("tensionDemand") > 0;
+  const hasShearDemand = designShear > 0;
+  const hasTensionDemand = designTension > 0;
+  const hasDemand = hasShearDemand || hasTensionDemand;
+  let governingRatio = NaN;
+  let governingNote = "Enter design actions to identify whether bolt shear, bolt tension, combined bolt interaction or connected ply governs.";
+  if (hasShearDemand && !hasTensionDemand) {
+    governingRatio = Math.max(boltShearRatio, plyBearingRatio);
+    governingNote = plyBearingRatio > boltShearRatio
+      ? `Shear only: connected ply governs. Check V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${plyBearingRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.4; bolt shear ratio under Cl. 9.2.2.1 = ${boltShearRatio.toFixed(2)}.`
+      : `Shear only: bolt shear governs. Check V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${boltShearRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.1; connected ply ratio under Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+  } else if (!hasShearDemand && hasTensionDemand) {
+    governingRatio = boltTensionRatio;
+    governingNote = `Tension only: bolt tension governs under AS 4100 Cl. 9.2.2.2. Check N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${boltTensionRatio.toFixed(2)}.`;
+  } else if (hasShearDemand && hasTensionDemand) {
+    governingRatio = Math.max(strengthRatio, plyBearingRatio);
+    governingNote = plyBearingRatio > strengthRatio
+      ? `Shear and tension: connected ply governs in shear under AS 4100 Cl. 9.2.2.4 with ratio ${plyBearingRatio.toFixed(2)}. Bolt combined shear-tension ratio under Cl. 9.2.2.3 = ${strengthRatio.toFixed(2)}.`
+      : `Shear and tension: bolt combined shear-tension interaction governs under AS 4100 Cl. 9.2.2.3 with ratio ${strengthRatio.toFixed(2)}. Connected ply ratio under Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+  }
 
   const drawingCallout = `${size} ${categoryKey} - ${plane} plane`;
   $("selectionTitle").textContent = drawingCallout;
@@ -339,28 +364,44 @@ function calculateBolt() {
   $("edgeDistanceStatus").textContent = edgeDistancePass ? "PASS" : "FAIL";
   $("edgeDistanceStatus").className = edgeDistancePass ? "pass" : "fail";
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
-  $("interactionRatio").textContent = Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-";
+  $("interactionRatio").textContent = hasShearDemand && hasTensionDemand && Number.isFinite(strengthRatio)
+    ? strengthRatio.toFixed(2)
+    : "—";
   $("interactionStatus").textContent = !hasDemand
     ? "Enter design actions"
-    : strengthRatio <= 1
+    : hasShearDemand && hasTensionDemand
+        ? strengthRatio <= 1 ? "PASS" : "FAIL"
+        : "Not applicable";
+  $("interactionStatus").className = hasShearDemand && hasTensionDemand ? (strengthRatio <= 1 ? "pass" : "fail") : "";
+  $("strengthGoverningRatio").textContent = Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
+  $("strengthGoverningStatus").textContent = !hasDemand
+    ? "Enter design actions"
+    : governingRatio <= 1
         ? "PASS"
         : "FAIL";
-  $("interactionStatus").className = !hasDemand ? "" : strengthRatio <= 1 ? "pass" : "fail";
+  $("strengthGoverningStatus").className = !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
+  $("strengthGoverningNote").innerHTML = governingNote;
 
   const slipFormula = slip === null ? "<code>Not applicable - TF categories only</code>" : `<code>0.70 x ${value("slipFactor")} x ${value("interfaces")} x ${preload} x ${value("holeFactor")} = ${fixed(slip)} kN per bolt</code>`;
-  const strengthInteractionFormula = `<code>(V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub>)<sup>2</sup> = (${fixed(value("shearDemand"))} / ${fixed(groupShear)})<sup>2</sup> + (${fixed(value("tensionDemand"))} / ${fixed(count * tension)})<sup>2</sup> = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}; limit &le; 1.0</code>`;
+  const strengthInteractionFormula = hasShearDemand && hasTensionDemand
+    ? `<code>(V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub>)<sup>2</sup> = (${fixed(designShear)} / ${fixed(groupShear)})<sup>2</sup> + (${fixed(designTension)} / ${fixed(count * tension)})<sup>2</sup> = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}; limit &le; 1.0</code>`
+    : "<code>Not applicable unless both shear and tension design actions are entered. Use the separate bolt shear, bolt tension and connected-ply ratios for single-action checks.</code>";
   const slipInteractionFormula = slip === null
     ? "<code>Not applicable - AS 4100 Cl. 9.2.3.3 applies to friction-type categories where serviceability slip is limited</code>"
-    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(value("shearDemand"))} / ${fixed(slipGroupCapacity)} + ${fixed(value("tensionDemand"))} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check</code>`;
+    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designShear)} / ${fixed(slipGroupCapacity)} + ${fixed(designTension)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check</code>`;
   $("formulaSteps").innerHTML = `
     <div><b>Tension - 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
     <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
     <div><b>Shear X - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
     <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x</sub>k<sub>rd,X</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
-    <div><b>Ply bearing - 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
+    <div><b>Bolt shear ratio - 9.2.2.1</b><code>V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${fixed(designShear)} / ${fixed(groupShear)} = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}</code></div>
+    <div><b>Bolt tension ratio - 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
+    <div><b>Ply material input</b><code>f<sub>up</sub> = ${plateStrength.toFixed(0)} MPa. Default 410 MPa corresponds to AS/NZS 3678 Grade 250 plate; use 440 MPa only where the actual connected ply is AS/NZS 3679.1 Grade 300 flat bar/section or otherwise verified.</code></div>
+    <div><b>Ply bearing - 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN per bolt</code></div>
     <div><b>Edge limit - 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
     <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
-    <div><b>Governing ply capacity</b><code>min[${fixed(bearingFull)}, ${fixed(bearingEdge)}] = ${fixed(bearing)} kN</code></div>
+    <div><b>Ply bearing ratio - 9.2.2.4</b><code>V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${fixed(designShear)} / (${count} x ${fixed(bearing)}) = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}; governing ply capacity = ${fixed(groupPlyCapacity)} kN for ${count} bolt(s)</code></div>
+    <div><b>Strength governing check</b><code>${governingNote}</code></div>
     <div><b>Combined shear and tension - 9.2.2.3</b>${strengthInteractionFormula}</div>
     <div><b>TF slip - 9.2.3.1</b>${slipFormula}</div>
     <div><b>TF combined slip - 9.2.3.3</b>${slipInteractionFormula}</div>
