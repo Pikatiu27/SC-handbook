@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701j">
+  <link rel="stylesheet" href="styles.css?v=20260701k">
 </head>
 <body>
   <header class="topbar">
@@ -531,35 +531,21 @@
           </div>
         </details>
 
-        <div class="custom-member-inputs input-cluster" hidden>
-          <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Custom section properties</b><small>Enter effective geometry and effective lengths from your section calculation.</small></span>
-            <div class="input-group-fields three">
+        <div class="input-cluster input-cluster-four member-main-inputs">
+          <section class="input-group input-group-section" id="memberSectionGroup">
+            <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Section geometry, checked radius and effective length.</small></span>
+            <div class="input-group-fields three" id="memberCatalogueSectionFields">
+              <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
+              <label id="memberRadiusField"><span>r <i>editable</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
+              <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
+            </div>
+            <div class="input-group-fields three" id="memberCustomSectionFields" hidden>
               <label><span>Name</span><input id="memberCustomName" type="text" value="Custom built-up member"></label>
               <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
               <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
               <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
               <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
               <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
-            </div>
-          </section>
-          <section class="input-group input-group-factor">
-            <span class="input-group-heading"><b>Relevant factors</b><small>Compression coefficients by principal axis.</small></span>
-            <div class="input-group-fields three">
-              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.01" max="1" step="0.001" value="1"></label>
-              <label><span>α<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
-              <label><span>α<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
-            </div>
-          </section>
-        </div>
-
-        <div class="input-cluster input-cluster-four member-main-inputs">
-          <section class="input-group input-group-section" id="memberSectionGroup">
-            <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Catalogue section, checked radius and effective length geometry.</small></span>
-            <div class="input-group-fields three">
-              <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
-              <label id="memberRadiusField"><span>r <i>editable</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
-              <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
             </div>
           </section>
           <section class="input-group input-group-material" id="memberMaterialGroup">
@@ -572,8 +558,13 @@
           </section>
           <section class="input-group input-group-factor" id="memberFactorGroup">
             <span class="input-group-heading"><b>Relevant factors</b><small>Code coefficients used in the compression reduction.</small></span>
-            <div class="input-group-fields">
+            <div class="input-group-fields" id="memberCatalogueFactorFields">
               <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
+            </div>
+            <div class="input-group-fields three" id="memberCustomFactorFields" hidden>
+              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.001" max="1" step="0.001" value="1"></label>
+              <label><span>&alpha;<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
+              <label><span>&alpha;<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
             </div>
           </section>
           <section class="input-group input-group-action" id="memberActionGroup">
@@ -640,6 +631,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701j"></script>
+  <script src="app.js?v=20260701k"></script>
 </body>
 </html>

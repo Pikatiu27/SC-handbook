@@ -290,6 +290,11 @@ function numericValue(raw) {
 }
 
 function value(id) { return Math.max(0, numericValue($(id).value) || 0); }
+function signedValue(id, fallback = 0) {
+  const number = numericValue($(id).value);
+  return Number.isFinite(number) ? number : fallback;
+}
+function alphaBInput(id) { return Math.max(-1, Math.min(1, signedValue(id))); }
 function fixed(number) { return Number(number).toFixed(1); }
 function fixed2(number) { return Number(number).toFixed(2); }
 function weldLapReduction(lengthMm) {
@@ -740,7 +745,7 @@ function memberProperties(section) {
 }
 
 function memberAlphaBDefault(kf) {
-  if (memberType === "custom") return value("memberCustomAlphaBx");
+  if (memberType === "custom") return alphaBInput("memberCustomAlphaBx");
   if (memberType === "chs") return -0.5;
   if (kf < 1) return 1.0;
   return 0.5;
@@ -934,8 +939,8 @@ function calculateMember() {
   const sectionCompression = 0.9 * kf * properties.area * fy / 1000;
   const axes = memberType === "custom"
     ? [
-        { label: "x", title: "x-axis", r: properties.rx, effectiveLength: value("memberCustomLex") * 1000, alphaB: value("memberCustomAlphaBx") },
-        { label: "y", title: "y-axis", r: properties.ry, effectiveLength: value("memberCustomLey") * 1000, alphaB: value("memberCustomAlphaBy") }
+        { label: "x", title: "x-axis", r: properties.rx, effectiveLength: value("memberCustomLex") * 1000, alphaB: alphaBInput("memberCustomAlphaBx") },
+        { label: "y", title: "y-axis", r: properties.ry, effectiveLength: value("memberCustomLey") * 1000, alphaB: alphaBInput("memberCustomAlphaBy") }
       ]
     : [{ label: "", title: "selected axis", r: designR, effectiveLength: value("memberLength") * 1000, alphaB }];
   const axisResults = axes.map(axis => {
@@ -1365,21 +1370,25 @@ function setTool(tool, updateHash = true) {
 
 function setMemberType(type) {
   memberType = type;
+  const isCustom = type === "custom";
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
   document.querySelectorAll("[data-member-guide]").forEach(card => {
     card.hidden = card.dataset.memberGuide !== type;
   });
-  $("alphaBField").hidden = type === "custom";
-  $("memberFactorGroup").hidden = type === "custom";
-  $("memberSectionGroup").hidden = type === "custom";
-  $("memberSectionField").hidden = type === "custom";
-  $("memberGradeField").hidden = type === "custom";
-  $("memberLengthField").hidden = type === "custom";
-  $("memberRadiusField").hidden = type === "custom";
-  document.querySelectorAll(".custom-member-inputs").forEach(panel => {
-    panel.hidden = type !== "custom";
-  });
-  $("memberAlphaBAssumption").hidden = type === "custom";
+  $("memberSectionGroup").hidden = false;
+  $("memberMaterialGroup").hidden = false;
+  $("memberFactorGroup").hidden = false;
+  $("memberActionGroup").hidden = false;
+  $("memberCatalogueSectionFields").hidden = isCustom;
+  $("memberCustomSectionFields").hidden = !isCustom;
+  $("memberCatalogueFactorFields").hidden = isCustom;
+  $("memberCustomFactorFields").hidden = !isCustom;
+  $("alphaBField").hidden = isCustom;
+  $("memberSectionField").hidden = isCustom;
+  $("memberGradeField").hidden = isCustom;
+  $("memberLengthField").hidden = isCustom;
+  $("memberRadiusField").hidden = isCustom;
+  $("memberAlphaBAssumption").hidden = isCustom;
   $("memberAlphaBAssumption").innerHTML = type === "chs"
     ? "k<sub>f</sub> and &alpha;<sub>b</sub> are applied from the selected CHS quick-screen basis."
     : type === "ea"
