@@ -99,11 +99,9 @@ main, footer { max-width: 1040px; margin: auto; }
 
 .lookup-card, .detail-card, .source-card { background: rgba(255,255,255,.96); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
 .lookup-card { padding: 20px; }
-.input-cluster { margin: 0 0 16px; display: grid; gap: 12px; }
-.input-cluster-two { grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr); }
-.input-cluster-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.input-cluster-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.member-main-inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.input-cluster { margin: 0 0 16px; display: grid; grid-template-columns: 1fr; gap: 12px; }
+.input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs { grid-template-columns: 1fr; }
+.member-main-inputs { align-items: start; }
 .input-group { min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.62); }
 .input-group-section { background: rgba(255,255,255,.78); }
 .input-group-material { background: #f5faf7; }
@@ -126,6 +124,16 @@ main, footer { max-width: 1040px; margin: auto; }
 .input-group-fields.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .input-group-fields.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .input-group-fields.seven { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+@media (min-width: 761px) {
+  .input-group {
+    display: grid;
+    grid-template-columns: minmax(170px, .28fr) minmax(0, 1fr);
+    gap: 14px;
+    align-items: end;
+  }
+  .input-group-heading { margin: 0; align-self: center; }
+  .input-group-fields, .concrete-input-row { min-width: 0; }
+}
 .advanced-input-card { margin: 11px 0 0; border: 1px solid #efd6ad; border-radius: 9px; background: #fffaf1; overflow: hidden; }
 .advanced-input-card > summary { list-style: none; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; }
 .advanced-input-card > summary::-webkit-details-marker { display: none; }
@@ -287,7 +295,7 @@ main, footer { max-width: 1040px; margin: auto; }
 #concretePanel .alternate-shear { border-top-color: var(--concrete-accent); }
 .result-note { margin: 11px 0 0; color: var(--muted); font-size: var(--fs-xs); }
 .weld-extra-inputs { display: grid; grid-template-columns: .9fr .9fr 1.15fr .8fr .8fr; gap: 9px; margin-top: 12px; padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: #fffaf4; }
-.weld-extra-inputs.input-cluster { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 12px; padding: 0; border: 0; border-radius: 0; background: transparent; }
+.weld-extra-inputs.input-cluster { grid-template-columns: 1fr; margin-top: 12px; padding: 0; border: 0; border-radius: 0; background: transparent; }
 .weld-extra-inputs label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); }
 .weld-extra-inputs input, .weld-extra-inputs select { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: var(--control-radius); background: #fff; padding: 8px 9px; outline: none; font-size: var(--fs-sm); }
 .weld-utilisation { margin-top: 9px; }
