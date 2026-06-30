@@ -29,33 +29,33 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 
 | Tab | Item | Source document | Located evidence | Status |
 | --- | --- | --- | --- | --- |
-| Bolt | Capacity factor `phi` for bolts and ply bearing | `AS4100.pdf` | Table 3.4 visually checked on PDF page 47 | Visual checked |
-| Bolt | Bolt shear capacity, N/X planes, `k_rd` | `AS4100.pdf` | Clause 9.2.2.1 visually checked on PDF pages 131-132 | Visual checked |
-| Bolt | Bolt tension capacity | `AS4100.pdf` | Clause 9.2.2.2 visually checked on PDF page 132 | Visual checked |
-| Bolt | Combined shear and tension strength check | `AS4100.pdf` | Clause 9.2.2.3 visually checked on PDF page 132; user screenshot also matched formula form | Visual checked |
-| Bolt | TF slip resistance | `AS4100.pdf` | Clause 9.2.3.1 visually checked on PDF page 134 | Visual checked |
-| Bolt | TF combined slip interaction | `AS4100.pdf` | Clause 9.2.3.3 visually checked on PDF page 135; includes `Ntf = Nti` context | Visual checked |
-| Bolt | Minimum bolt tension `Nti` | `AS4100.pdf` | Table 15.2.2.2 visually checked on PDF page 192 for M16/M20/M24/M30/M36: 8.8 = 95/145/210/335/490 kN, 10.9 = 130/205/295/465/680 kN | Visual checked |
-| Bolt | Minimum edge distance | `AS4100.pdf` | Table 9.5.2 visually checked on PDF page 138 | Visual checked |
-| Weld | Weld capacity factor and direct weld capacity | `AS4100.pdf` | Table 3.4 visually checked on PDF page 47; Clause 9.6.3.10 visually checked on PDF page 147 | Visual checked |
-| Weld | Welded lap reduction `k_r` | `AS4100.pdf` | Table 9.6.3.10(B) visually checked on PDF page 147 | Visual checked |
+| Bolt | Capacity factor `phi` for bolts and ply bearing | `AS4100.pdf` | AS 4100 Table 3.4 visually checked on PDF page 47 | Visual checked |
+| Bolt | Bolt shear capacity, N/X planes, `k_rd` | `AS4100.pdf` | AS 4100 Cl. 9.2.2.1 visually checked on PDF pages 131-132 | Visual checked |
+| Bolt | Bolt tension capacity | `AS4100.pdf` | AS 4100 Cl. 9.2.2.2 visually checked on PDF page 132 | Visual checked |
+| Bolt | Combined shear and tension strength check | `AS4100.pdf` | AS 4100 Cl. 9.2.2.3 visually checked on PDF page 132; user screenshot also matched formula form | Visual checked |
+| Bolt | TF slip resistance | `AS4100.pdf` | AS 4100 Cl. 9.2.3.1 visually checked on PDF page 134 | Visual checked |
+| Bolt | TF combined slip interaction | `AS4100.pdf` | AS 4100 Cl. 9.2.3.3 visually checked on PDF page 135; includes `Ntf = Nti` context | Visual checked |
+| Bolt | Minimum bolt tension `Nti` | `AS4100.pdf` | AS 4100 Table 15.2.2.2 visually checked on PDF page 192 for M16/M20/M24/M30/M36: 8.8 = 95/145/210/335/490 kN, 10.9 = 130/205/295/465/680 kN | Visual checked |
+| Bolt | Minimum edge distance | `AS4100.pdf` | AS 4100 Table 9.5.2 visually checked on PDF page 138 | Visual checked |
+| Weld | Weld capacity factor and direct weld capacity | `AS4100.pdf` | AS 4100 Table 3.4 visually checked on PDF page 47; AS 4100 Cl. 9.6.3.10 visually checked on PDF page 147 | Visual checked |
+| Weld | Welded lap reduction `k_r` | `AS4100.pdf` | AS 4100 Table 9.6.3.10(B) visually checked on PDF page 147 | Visual checked |
 | Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | AS 4100 Table 9.6.3.10(A) visually checked on PDF page 147; ASI Simple Connections Table 2.14 visually checked on PDF page 19 | Visual checked |
-| Weld | Parent metal screen values | `5+SSC 2020.pdf` | Tables 2.15 and 2.16 visually checked on PDF pages 20-21 | Visual checked |
-| Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | Figure 2.1 visually checked on PDF page 9; Clauses 2.3.2.1 to 2.3.2.3 and Figures 2.8 to 2.10 visually checked on PDF pages 14-15 | Visual checked |
-| Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | Section 5 / Clause 5.2 visually checked on PDF page 66 | Visual checked |
-| Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | Clauses 5.11.4 and 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
-| Beam | Shear-bending interaction | `AS4100.pdf` | Clause 5.12 visually checked on PDF page 89, including 5.12.1, 5.12.2 and `Vvm = Vv` for the proportioning method | Visual checked |
+| Weld | Parent metal screen values | `5+SSC 2020.pdf` | ASI Simple Connections Tables 2.15 and 2.16 visually checked on PDF pages 20-21 | Visual checked |
+| Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | AS 1101.3 Fig. 2.1 visually checked on PDF page 9; AS 1101.3 Cl. 2.3.2.1 to AS 1101.3 Cl. 2.3.2.3 and AS 1101.3 Figs. 2.8 to 2.10 visually checked on PDF pages 14-15 | Visual checked |
+| Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | AS 4100 Section 5 / AS 4100 Cl. 5.2 visually checked on PDF page 66 | Visual checked |
+| Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | AS 4100 Cl. 5.11.4 and AS 4100 Cl. 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
+| Beam | Shear-bending interaction | `AS4100.pdf` | AS 4100 Cl. 5.12 visually checked on PDF page 89, including AS 4100 Cl. 5.12.1, AS 4100 Cl. 5.12.2 and `Vvm = Vv` for the proportioning method | Visual checked |
 | Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns visually located on PDF pages 12-15; default rows 310UB40.4 and 200UC46.2 row-checked on PDF pages 12-15 | Default UB/UC rows checked; remaining embedded UB/UC rows still need row-level numeric check |
-| Axial Member | Section compression capacity | `AS4100.pdf` | Clause 6.2 visually checked on PDF page 100; `Ns = kf Ag fy` confirmed | Visual checked |
-| Axial Member | Member buckling reduction | `AS4100.pdf` | Clause 6.3.3 and Tables 6.3.3(A/B/C) visually checked on PDF pages 103-106 | Visual checked |
-| Axial Member | Tension gross yielding / net fracture | `AS4100.pdf` | Clause 7.2 visually checked on PDF page 112 | Visual checked |
-| Axial Member | `k_t` values | `AS4100.pdf` | Table 7.3.2 visually checked on PDF page 113 | Visual checked |
+| Axial Member | Section compression capacity | `AS4100.pdf` | AS 4100 Cl. 6.2 visually checked on PDF page 100; `Ns = kf Ag fy` confirmed | Visual checked |
+| Axial Member | Member buckling reduction | `AS4100.pdf` | AS 4100 Cl. 6.3.3 and AS 4100 Tables 6.3.3(A/B/C) visually checked on PDF pages 103-106 | Visual checked |
+| Axial Member | Tension gross yielding / net fracture | `AS4100.pdf` | AS 4100 Cl. 7.2 visually checked on PDF page 112 | Visual checked |
+| Axial Member | `k_t` values | `AS4100.pdf` | AS 4100 Table 7.3.2 visually checked on PDF page 113 | Visual checked |
 | Axial Member | CHS D/t and grade | `Orrcon-National-Product-Catalogue-2024.pdf` | CHS tables visually checked on PDF pages 10-12; includes 114.3 CHS and C250L0/C350L0 context | Visual checked for source location; row-level numeric check required if values are embedded |
 | Axial Member | CHS compression method | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | Part 6 compression method and CHS capacity table context visually checked on PDF pages 112-117 | Visual checked for method context; row-level table values still need numeric check if used |
-| Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | PFC Tables 15-16, Equal Angle Tables 19-21, Rounds Table 3 and round-bar strength Table 38 visually checked for default rows | Default PFC / EA / Rod rows checked; remaining embedded rows still need row-level numeric check |
-| Concrete | Stress block and bending section theory | `AS3600.pdf` | Clauses 8.1.3 and 8.1.5 visually checked on PDF pages 113-114 | Visual checked |
-| Concrete | Capacity factor | `AS3600.pdf` | Table 2.2.2 visually checked on PDF pages 38-39 | Visual checked |
-| Concrete | One-way shear screen | `AS3600.pdf` | Clauses 8.2.1.9, 8.2.3 and 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
+| Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | OneSteel / InfraBuild PFC Tables 15-16, Equal Angle Tables 19-21, Rounds Table 3 and round-bar strength Table 38 visually checked for default rows | Default PFC / EA / Rod rows checked; remaining embedded rows still need row-level numeric check |
+| Concrete | Stress block and bending section theory | `AS3600.pdf` | AS 3600 Cl. 8.1.3 and AS 3600 Cl. 8.1.5 visually checked on PDF pages 113-114 | Visual checked |
+| Concrete | Capacity factor | `AS3600.pdf` | AS 3600 Table 2.2.2 visually checked on PDF pages 38-39 | Visual checked |
+| Concrete | One-way shear screen | `AS3600.pdf` | AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3 and AS 3600 Cl. 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
 
 ## Remaining Source Gaps / Row-Level Checks
 
@@ -76,8 +76,8 @@ The current Beam tab defaults were visually checked against `InfraBuild-Hot-Roll
 
 | App default | Source pages | Checked app values | Status |
 | --- | --- | --- | --- |
-| 310UB40.4, 300PLUS | Table 9 PDF page 12; Table 10 PDF page 13 | mass 40.4 kg/m; `Ag` 5210 mm2; `d1` 283.6 mm; `tw` 6.1 mm; `Sx` 633 x 10^3 mm3; `Zx` 569 x 10^3 mm3; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; compact; `kf` 0.952 | Row checked |
-| 200UC46.2, 300PLUS | Table 11 PDF page 14; Table 12 PDF page 15 | mass 46.2 kg/m; `Ag` 5900 mm2; `d1` 181.4 mm; `tw` 7.3 mm; `Sx` 500 x 10^3 mm3; `Zx` 451 x 10^3 mm3; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; non-compact; `kf` 1.000 | Row checked |
+| 310UB40.4, 300PLUS | OneSteel / InfraBuild Table 9 PDF page 12; OneSteel / InfraBuild Table 10 PDF page 13 | mass 40.4 kg/m; `Ag` 5210 mm2; `d1` 283.6 mm; `tw` 6.1 mm; `Sx` 633 x 10^3 mm3; `Zx` 569 x 10^3 mm3; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; compact; `kf` 0.952 | Row checked |
+| 200UC46.2, 300PLUS | OneSteel / InfraBuild Table 11 PDF page 14; OneSteel / InfraBuild Table 12 PDF page 15 | mass 46.2 kg/m; `Ag` 5900 mm2; `d1` 181.4 mm; `tw` 7.3 mm; `Sx` 500 x 10^3 mm3; `Zx` 451 x 10^3 mm3; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; non-compact; `kf` 1.000 | Row checked |
 
 ### Default Web Output Check
 
@@ -100,16 +100,16 @@ The current Axial Member non-CHS defaults were visually checked against `InfraBu
 
 | App default | Source pages | Checked app values | Status |
 | --- | --- | --- | --- |
-| 150PFC, 300PLUS | Table 15 / 16 PDF page 17 | mass 17.7 kg/m; `Ag` 2250 mm2; `rmin` 23.9 mm; `fy` 320 MPa; `kf` 1.000 | Row checked |
-| 100 x 100 x 10 EA, 300PLUS | Tables 19-21 PDF pages 19-21 | `Ag` 1810 mm2; principal-axis radius `rn = rp = 30.6 mm`; `fy` 320 MPa; `kf` 1.000 | Row checked; this is a principal-axis screen, not a weak-axis or flexural-torsional design |
-| Ø24 Rod, 300PLUS | Table 3 PDF page 9; Table 38 PDF page 31 | mass 3.55 kg/m; `Ag = pi d^2 / 4 = 452 mm2`; `r = d / 4 = 6.0 mm`; `fy` 300 MPa for d <= 50 mm; `fu` 440 MPa | Row checked |
+| 150PFC, 300PLUS | OneSteel / InfraBuild Tables 15 and 16 PDF page 17 | mass 17.7 kg/m; `Ag` 2250 mm2; `rmin` 23.9 mm; `fy` 320 MPa; `kf` 1.000 | Row checked |
+| 100 x 100 x 10 EA, 300PLUS | OneSteel / InfraBuild Tables 19-21 PDF pages 19-21 | `Ag` 1810 mm2; principal-axis radius `rn = rp = 30.6 mm`; `fy` 320 MPa; `kf` 1.000 | Row checked; this is a principal-axis screen, not a weak-axis or flexural-torsional design |
+| Ø24 Rod, 300PLUS | OneSteel / InfraBuild Table 3 PDF page 9; OneSteel / InfraBuild Table 38 PDF page 31 | mass 3.55 kg/m; `Ag = pi d^2 / 4 = 452 mm2`; `r = d / 4 = 6.0 mm`; `fy` 300 MPa for d <= 50 mm; `fu` 440 MPa | Row checked |
 
 ### Calculation Compliance Check
 
 The Axial Member formulas remain aligned with the visually checked AS 4100 basis:
 
 - Compression section capacity: `phi Ns = 0.90 kf Ag fy`.
-- Member compression capacity: `phi Nc = alpha_c phi Ns`, using Clause 6.3.3 `lambda_n`, `alpha_a`, `eta`, `xi` and `alpha_c`.
+- Member compression capacity: `phi Nc = alpha_c phi Ns`, using AS 4100 Cl. 6.3.3 `lambda_n`, `alpha_a`, `eta`, `xi` and `alpha_c`.
 - Tension capacity: `phi Nt = min(phi Ag fy, phi 0.85 kt An fu)`.
 - `An`, `kt`, `Le` and non-CHS `alpha_b` remain project inputs; the app warnings correctly keep these out of the checked product-table scope.
 - Equal Angle uses the catalogue principal-axis radius `rn = rp` for a quick principal-axis screen. The webpage now states that weak-axis, flexural-torsional buckling, load eccentricity and connection eccentricity are not checked.

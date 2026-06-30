@@ -716,7 +716,7 @@ Edge-distance notation must be explicit:
 - `d_f` is the nominal bolt diameter.
 - `e - d_h/2` is the clear distance from the hole edge to the ply edge.
 - `a_e` is the edge-distance parameter used for the edge-limited ply bearing expression in AS 4100 Cl. 9.2.2.4(2). In this handbook, calculate it as `a_e = e - d_h/2 + d_f/2` unless a project-specific standard interpretation requires otherwise.
-- Do not substitute the Table 9.5.2 minimum edge distance `e` directly into the edge-limited bearing formula without identifying the symbol conversion.
+- Do not substitute the minimum edge distance `e` from AS 4100 Table 9.5.2 directly into the edge-limited bearing formula without identifying the symbol conversion.
 - Do not substitute the clear hole-edge distance `e - d_h/2` directly for `a_e`.
 
 These formulas must be checked against the source references before issue-for-design use.
@@ -917,14 +917,19 @@ Subscript and superscript rules:
 - Do not display plain-text engineering notation such as `A_n`, `k_t`, `αb`, `V*`, or `N*` in the final UI when proper subscript or superscript notation is intended.
 - This rule applies to static HTML and JavaScript-generated text. If a generated result note or warning contains fixed trusted engineering notation, render it with `innerHTML` so the notation displays correctly, for example `A<sub>n</sub>`, `k<sub>t</sub>`, `&alpha;<sub>b</sub>`, `V<sup>*</sup>`, and `N<sup>*</sup>`.
 
-Clause and table references:
+Standard, clause, table, figure and section references:
 
-- Use compact reference labels:
+- Use compact reference labels with the source document repeated clearly:
   - `AS 4100 Cl. 9.2.2.1`
   - `AS 4100 Table 9.5.2`
+  - `AS 3600 Cl. 8.1.5`
+  - `AS 1101.3 Fig. 2.1`
+  - `OneSteel / InfraBuild Table 15`
+  - `Austube / ASI Part 6`
   - `AS/NZS 1554.1`
-- For AS 4100 clause references, write the full pattern every time: `AS 4100 Cl. x.x.x`. Do not mix `Clause x.x.x`, bare `Cl. x.x.x`, or `AS 4100 x.x.x` in user-facing web text or generated calculation steps.
-- For multiple AS 4100 clauses, repeat the standard name where practical, for example `AS 4100 Cl. 7.1 and AS 4100 Cl. 7.2`.
+- For any standard or catalogue reference, write the full pattern every time: `[source] [reference type] [number]`. Do not mix `Clause x.x.x`, bare `Cl. x.x.x`, bare `Table x`, bare `Figure x`, or `[source] x.x.x` in user-facing web text or generated calculation steps.
+- Preferred reference types are `Cl.`, `Table`, `Fig.`, `Section`, `Part`, and `Appendix`. Use one spelling consistently for a given reference type.
+- For multiple references, either repeat the source name or use a clearly scoped plural phrase, for example `AS 4100 Cl. 7.1 and AS 4100 Cl. 7.2`, or `OneSteel / InfraBuild Tables 15 and 16`.
 - Do not write long standard titles in every result card.
 - Put detailed source explanation in `Calculation basis and limitations`.
 - Use clause references near warnings only when they help the engineer know what to check next.
@@ -984,7 +989,7 @@ Technical diagram and symbol rules:
 - For section-shape guide figures, use deterministic Python-generated SVG assets in a product-catalogue style: simple cross-section geometry, symbolic dimension labels, and a short source-basis note. Do not copy catalogue artwork or use the sketch as the source of numeric properties.
 - For tab-dependent section guide figures, show only the currently selected section family. Do not display all guide figures at once. CSS rules must respect the HTML `hidden` attribute, and generated section-guide images must be constrained by explicit web display sizing rather than the raw SVG viewBox. Avoid duplicate labels inside the image when the card title already identifies the section.
 - Weld-symbol diagrams must explicitly show and label the reference line, arrow line, and the symbol position relative to the reference line. State the AS 1101.3 convention in the legend: arrow-side welds are shown by placing the weld symbol on the side of the reference line towards the reader; other-side welds are shown on the side away from the reader; both-side welds use symbols on both sides of the reference line.
-- Weld-symbol diagrams must keep the basic symbol geometry consistent with AS 1101.3 Figure 2.1 and the application convention in Figures 2.8 to 2.10. Do not redraw a fillet, butt/groove, plug/slot, spot/projection, seam, surfacing or supplementary symbol from memory.
+- Weld-symbol diagrams must keep the basic symbol geometry consistent with AS 1101.3 Fig. 2.1 and the application convention in AS 1101.3 Figs. 2.8 to 2.10. Do not redraw a fillet, butt/groove, plug/slot, spot/projection, seam, surfacing or supplementary symbol from memory.
 - Butt/groove, plug/slot, spot/projection, seam, surfacing and supplementary symbols must be explained with a short use note and a source-basis note. Do not rely on the SVG shape alone to communicate preparation, penetration, contour, finish, weld category, WPS or inspection requirements.
 - If a standard figure cannot be reproduced because of copyright or licensing, use a clearly attributed public reference image from a credible technical source, and state that the formal symbol or detail remains governed by the standard and project drawings.
 - If an online image is used, include the source page link, image source where practical, publisher/author where available, and a short note explaining whether it is a visual guide or a governing reference.

@@ -405,7 +405,7 @@ function calculateBolt() {
   $("alternateShearCapacity").textContent = fixed(alternateShear);
   $("alternateShearNote").textContent = plane === "N" ? "threads clear of plane" : "threads intercept plane";
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring Table 9.2.2.1 reduction.`;
+  $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring AS 4100 Table 9.2.2.1 reduction.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
   $("plyBearingLimit").textContent = `${fixed(bearingFull)} kN`;
   $("edgeTearoutLimit").textContent = `${fixed(bearingEdge)} kN`;
@@ -1046,7 +1046,7 @@ function calculateConcrete() {
     $("concreteWarningStatus").textContent = "CHECK";
     $("concreteWarningStatus").className = "fail";
     $("concreteLayerResults").innerHTML = "";
-    $("concreteFormulaSteps").innerHTML = `<div><b>Status</b><code>${result.message}</code></div><div><b>Plain concrete note</b><code>For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check. Do not report this as ductile reinforced-concrete phiMuo; Section 20 uses a linear stress-strain bending model and takes footing strength depth as nominal depth minus 50 mm.</code></div>`;
+    $("concreteFormulaSteps").innerHTML = `<div><b>Status</b><code>${result.message}</code></div><div><b>Plain concrete note</b><code>For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check. Do not report this as ductile reinforced-concrete phiMuo; AS 3600 Section 20 uses a linear stress-strain bending model and takes footing strength depth as nominal depth minus 50 mm.</code></div>`;
     return;
   }
 
