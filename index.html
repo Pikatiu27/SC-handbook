@@ -439,9 +439,10 @@
                 <table class="compact-lookup-table">
                   <thead><tr><th>Tension connection case</th><th>Use this value when</th><th>k<sub>t</sub></th><th>Status</th></tr></thead>
                   <tbody>
-                    <tr><td>Uniform force distribution</td><td>Connection develops the section so stress distribution is effectively uniform, e.g. suitable full-perimeter welded connection.</td><td>1.00</td><td>Checked against AS 4100 Cl. 7.3 basis in local hollow-section design tables.</td></tr>
-                    <tr><td>Equal Angle, one leg connected</td><td>Typical eccentrically connected equal-angle tension member.</td><td>0.85</td><td>Checked against local AS 4100 design-manual example citing AS 4100 Table 7.3.2.</td></tr>
-                    <tr><td>Unequal Angle, short leg connected</td><td>Use only where the actual unequal-angle connection matches the applicable AS 4100 Table 7.3.2 case.</td><td>0.75</td><td>For Review until the exact standard-table row is source-registered.</td></tr>
+                    <tr><td>Uniform force distribution</td><td>End connection satisfies AS 4100 Cl. 7.3.1.</td><td>1.00</td><td>AS 4100 Cl. 7.3.1.</td></tr>
+                    <tr><td>Angle, one leg connected</td><td>Table case (a); use 0.75 only for unequal angle connected by the short leg.</td><td>0.85</td><td>AS 4100 Table 7.3.2.</td></tr>
+                    <tr><td>Unequal Angle, short leg connected</td><td>Table case (a), unequal angle connected by the short leg.</td><td>0.75</td><td>AS 4100 Table 7.3.2.</td></tr>
+                    <tr><td>Channel / tee eccentric cases</td><td>Use the matching Table 7.3.2 configuration case.</td><td>0.85 / 0.90 / 1.00</td><td>AS 4100 Table 7.3.2.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -484,7 +485,7 @@
           <div class="member-metrics"><div><span>L<sub>e</sub>/r</span><strong id="memberSlenderness">—</strong></div><div><span>λ<sub>n</sub></span><strong id="memberLambdaN">—</strong></div><div><span>α<sub>c</sub></span><strong id="memberAlphaC">—</strong></div><div><span>Governing</span><strong id="memberGoverning">—</strong></div></div>
           <div class="tension-limits"><div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>φA<sub>g</sub>f<sub>y</sub></small></div><div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>φ(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>)</small></div><div><span>Tension governing limit state</span><strong id="tensionGoverning">—</strong><small>AS 4100 Cl. 7.2 - lesser value</small></div></div>
           <p class="result-note" id="memberWarning">Results calculate after section and grade selection. Verify effective length, section availability and all connection effects.</p>
-          <p class="result-note user-input-note" id="memberInputStatus">Lookup values: k<sub>f</sub> and α<sub>b</sub>. Project inputs: A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub>.</p>
+          <p class="result-note user-input-note" id="memberInputStatus">Lookup values: k<sub>f</sub>, α<sub>b</sub> and default k<sub>t</sub>. Confirm A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual connection.</p>
         </section>
       </section>
 
@@ -504,7 +505,7 @@
           </div>
           <div class="source-notes">
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
-            <p><b>Project inputs</b> &middot; Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
+            <p><b>Project inputs</b> &middot; Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
             <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated properties are catalogue-derived. Compression section capacity assumes no penetrations or unfilled holes, so A<sub>n</sub> = A<sub>g</sub> for this quick check.</p>
             <p>Equal Angle checks use catalogue r<sub>n</sub> = r<sub>p</sub>. PFC checks use r<sub>min</sub>. Weak-axis, torsional/flexural-torsional buckling, connection eccentricity, bending, shear, combined actions and connection capacity are excluded.</p>
           </div>
@@ -514,6 +515,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260630d"></script>
+  <script src="app.js?v=20260630e"></script>
 </body>
 </html>
