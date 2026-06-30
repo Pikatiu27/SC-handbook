@@ -51,6 +51,7 @@ html { font-size: var(--fs-md); }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font); font-size: var(--fs-sm); line-height: 1.48; overflow-wrap: break-word; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 button, input, select { font: inherit; }
 select, input { font-variant-numeric: tabular-nums; }
+input[type="text"].numeric-input { appearance: textfield; }
 img, svg { max-width: 100%; }
 
 .topbar { height: 58px; padding: 0 max(24px, calc((100vw - 1040px) / 2)); display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,.94); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(12px); }
@@ -193,6 +194,15 @@ main, footer { max-width: 1040px; margin: auto; }
 .tension-inputs > div > small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); }
 .tension-inputs label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); }
 .tension-inputs input { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: var(--control-radius); background: #fff; padding: 8px 9px; outline: none; font-size: var(--fs-sm); }
+.input-manual, .input-reference { padding: 7px; border-radius: 8px; border: 1px solid transparent; }
+.input-manual { background: #fff; border-color: rgba(104, 118, 111, .22); }
+.input-reference { background: #f3f8fc; border-color: rgba(65, 111, 158, .22); }
+#boltPanel .input-reference { background: #f1faf5; border-color: rgba(47, 123, 87, .22); }
+#weldPanel .input-reference { background: #fff6ea; border-color: rgba(156, 93, 34, .22); }
+#beamPanel .input-reference { background: #faf5ff; border-color: rgba(111, 87, 152, .22); }
+#concretePanel .input-reference { background: #f1fbf9; border-color: rgba(47, 116, 111, .22); }
+.input-reference input, .input-reference select { background: rgba(255,255,255,.86); }
+.input-manual input, .input-manual select { background: #fff; }
 .drawing-note { margin: 0 0 23px; padding: 8px 10px; border-left: 2px solid #aebbb4; background: #f7f9f7; color: var(--muted); font-size: var(--fs-xs); line-height: 1.45; font-weight: 400; }
 .symbol-key { margin: -13px 0 20px; padding: 9px 10px; display: flex; gap: 7px 16px; flex-wrap: wrap; border-radius: 7px; background: #f4f7f4; color: var(--muted); font-size: var(--fs-xs); }
 .symbol-key span { white-space: nowrap; }

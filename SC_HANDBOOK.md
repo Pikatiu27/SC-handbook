@@ -923,9 +923,19 @@ Clause and table references:
   - `AS 4100 Cl. 9.2.2.1`
   - `AS 4100 Table 9.5.2`
   - `AS/NZS 1554.1`
+- For AS 4100 clause references, write the full pattern every time: `AS 4100 Cl. x.x.x`. Do not mix `Clause x.x.x`, bare `Cl. x.x.x`, or `AS 4100 x.x.x` in user-facing web text or generated calculation steps.
+- For multiple AS 4100 clauses, repeat the standard name where practical, for example `AS 4100 Cl. 7.1 and AS 4100 Cl. 7.2`.
 - Do not write long standard titles in every result card.
 - Put detailed source explanation in `Calculation basis and limitations`.
 - Use clause references near warnings only when they help the engineer know what to check next.
+
+Web input grouping:
+
+- Keep fully manual project inputs visually distinct from values selected from a lookup table, derived by the app, or defaulted from a cited source but still editable.
+- Fully manual inputs include design actions, actual dimensions, effective length, net area, material strengths entered from project documents, and connection-specific values.
+- Lookup / derived / overrideable inputs include catalogue section selection, standard category selection, table-based factors, default correction factors, and editable factors such as `alpha_b`, `k_t`, `k_r`, or `k_h` when the page provides a cited default or lookup basis.
+- Use different subtle background fills for these two groups. Do not rely on colour alone; labels and warnings must still state which values remain project-confirmed.
+- On phone browsers, numeric fields must allow direct typing. Do not leave editable numeric inputs in a state where the user can only use increment / decrement controls.
 
 Reduction-factor inputs:
 
@@ -1041,7 +1051,7 @@ Bolt result checks should include:
 - Edge tear-out / ply tearing.
 - Minimum edge distance check.
 - Governing connected-ply capacity.
-- Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and connected-ply bearing / edge tear-out under Cl. 9.2.2.4; tension-only demand checks bolt tension under Cl. 9.2.2.2; combined shear and tension checks bolt interaction under Cl. 9.2.2.3 while still checking connected-ply bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or connected ply governs.
+- Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and connected-ply bearing / edge tear-out under AS 4100 Cl. 9.2.2.4; tension-only demand checks bolt tension under AS 4100 Cl. 9.2.2.2; combined shear and tension checks bolt interaction under AS 4100 Cl. 9.2.2.3 while still checking connected-ply bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or connected ply governs.
 - The main result should show one final `Governing capacity check` ratio only. Put supporting ratios, including the AS 4100 Cl. 9.2.2.3 combined bolt interaction ratio, in calculation steps rather than as competing primary result cards.
 - The default connected-ply tensile strength should not be an orphan number. Use f<sub>up</sub> = 410 MPa only as the AS/NZS 3678 Grade 250 plate default; use 440 MPa only for verified AS/NZS 3679.1 Grade 300 flat bar/section or another stated source.
 
@@ -1093,7 +1103,7 @@ Connection- and axis-dependent terms must stay explicit:
 
 - Do not auto-hide `alpha_b` for Equal Angle, PFC, or Rod checks; it must be confirmed against AS 4100 Table 6.3.3 for the actual member, axis, and fabrication condition.
 - Do not imply `A_n` is known from the catalogue section alone; it must come from the actual connection net section.
-- Use `k_t = 0.85` as the Equal Angle default only for the applicable eccentrically connected equal-angle condition. Keep it editable and state that it must be confirmed to AS 4100 Clause 7.3 / Table 7.3.2.
+- Use `k_t = 0.85` as the Equal Angle default only for the applicable eccentrically connected equal-angle condition. Keep it editable and state that it must be confirmed to AS 4100 Cl. 7.3 / AS 4100 Table 7.3.2.
 - Use `k_t = 1.0` only where force distribution is uniform or the governing source justifies it.
 
 For a quick-reference web tab, do not make the user leave the page for small repeated standard lookups. If a clause table is commonly needed, compact, and within the tool scope, embed a collapsed lookup table in the page with:
@@ -1130,11 +1140,11 @@ Use Australian product data first. For UB/UC sections, section properties and di
 
 Required AS 4100 basis:
 
-- Section moment capacity uses AS 4100 Clause 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
+- Section moment capacity uses AS 4100 Cl. 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
 - Catalogue `Zex`, compactness and `kf` may be taken from the section-capacity table instead of recalculating plate slenderness in the browser.
 - Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
-- Nominal web shear capacity is reported as `phi Vv` with `phi = 0.90` using the relevant AS 4100 Clause 5.11 web shear provisions for an unstiffened web.
-- If `V* > 0.60 phi Vv`, flag high shear and require AS 4100 Clause 5.12 shear-bending interaction review. Do not silently report an unreduced bending capacity as a pass.
+- Nominal web shear capacity is reported as `phi Vv` with `phi = 0.90` using the relevant AS 4100 Cl. 5.11 web shear provisions for an unstiffened web.
+- If `V* > 0.60 phi Vv`, flag high shear and require AS 4100 Cl. 5.12 shear-bending interaction review. Do not silently report an unreduced bending capacity as a pass.
 
 Custom section mode must stay explicit and conservative:
 

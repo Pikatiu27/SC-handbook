@@ -257,7 +257,31 @@ const toolNames = ["bolt", "member", "beam", "weld", "concrete"];
 let beamSectionType = "ub";
 let memberType = "chs";
 
-function value(id) { return Math.max(0, Number($(id).value) || 0); }
+const manualInputIds = [
+  "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
+  "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
+  "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteKv",
+  "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
+  "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
+  "beamMomentDemand", "beamShearDemand", "beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx",
+  "memberLength", "memberNetArea"
+];
+const referenceInputIds = [
+  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "holeFactor",
+  "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
+  "concreteDirection", "concretePhi", "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteComposite",
+  "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
+  "beamSection", "beamGrade", "beamCustomCompactness", "beamCustomKf",
+  "memberSection", "memberGrade", "memberAlphaB", "memberKt"
+];
+
+function numericValue(raw) {
+  const text = String(raw ?? "").trim().replace(/\s/g, "");
+  const normalised = text.includes(".") ? text.replace(/,/g, "") : text.replace(",", ".");
+  return Number(normalised);
+}
+
+function value(id) { return Math.max(0, numericValue($(id).value) || 0); }
 function fixed(number) { return Number(number).toFixed(1); }
 function fixed2(number) { return Number(number).toFixed(2); }
 function weldLapReduction(lengthMm) {
@@ -273,6 +297,35 @@ function weldCapacityFactor(type, category) {
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
 function standardHoleDiameter(diameter) { return diameter <= 24 ? diameter + 2 : diameter + 3; }
 function signedFixed(number, digits = 1) { return `${number >= 0 ? "+" : ""}${Number(number).toFixed(digits)}`; }
+
+function clampNumericInput(input) {
+  const current = numericValue(input.value);
+  if (!Number.isFinite(current)) return;
+  const min = input.getAttribute("min");
+  const max = input.getAttribute("max");
+  let next = current;
+  if (min !== null) next = Math.max(next, numericValue(min));
+  if (max !== null) next = Math.min(next, numericValue(max));
+  input.value = String(next);
+}
+
+function enhanceNumberInputs() {
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.enterKeyHint = "done";
+    if (input.readOnly) return;
+    input.type = "text";
+    input.inputMode = "decimal";
+    input.setAttribute("inputmode", "decimal");
+    input.classList.add("numeric-input");
+    input.autocomplete = "off";
+    input.addEventListener("blur", () => clampNumericInput(input));
+  });
+}
+
+function markInputSources() {
+  manualInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-manual"));
+  referenceInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-reference"));
+}
 
 function calculateBolt() {
   const size = $("boltSize").value;
@@ -325,16 +378,16 @@ function calculateBolt() {
   if (hasShearDemand && !hasTensionDemand) {
     governingRatio = Math.max(boltShearRatio, plyBearingRatio);
     governingNote = plyBearingRatio > boltShearRatio
-      ? `Shear only: connected ply governs. Check V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${plyBearingRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.4; bolt shear ratio under Cl. 9.2.2.1 = ${boltShearRatio.toFixed(2)}.`
-      : `Shear only: bolt shear governs. Check V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${boltShearRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.1; connected ply ratio under Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+      ? `Shear only: connected ply governs. Check V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${plyBearingRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.4; bolt shear ratio under AS 4100 Cl. 9.2.2.1 = ${boltShearRatio.toFixed(2)}.`
+      : `Shear only: bolt shear governs. Check V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${boltShearRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.1; connected ply ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
   } else if (!hasShearDemand && hasTensionDemand) {
     governingRatio = boltTensionRatio;
     governingNote = `Tension only: bolt tension governs under AS 4100 Cl. 9.2.2.2. Check N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${boltTensionRatio.toFixed(2)}.`;
   } else if (hasShearDemand && hasTensionDemand) {
     governingRatio = Math.max(strengthRatio, plyBearingRatio);
     governingNote = plyBearingRatio > strengthRatio
-      ? `Shear and tension: connected ply governs in shear under AS 4100 Cl. 9.2.2.4 with ratio ${plyBearingRatio.toFixed(2)}. Bolt combined shear-tension ratio under Cl. 9.2.2.3 = ${strengthRatio.toFixed(2)}.`
-      : `Shear and tension: bolt combined shear-tension interaction governs under AS 4100 Cl. 9.2.2.3 with ratio ${strengthRatio.toFixed(2)}. Connected ply ratio under Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+      ? `Shear and tension: connected ply governs in shear under AS 4100 Cl. 9.2.2.4 with ratio ${plyBearingRatio.toFixed(2)}. Bolt combined shear-tension ratio under AS 4100 Cl. 9.2.2.3 = ${strengthRatio.toFixed(2)}.`
+      : `Shear and tension: bolt combined shear-tension interaction governs under AS 4100 Cl. 9.2.2.3 with ratio ${strengthRatio.toFixed(2)}. Connected ply ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
   }
 
   const drawingCallout = `${size} ${categoryKey} - ${plane} plane`;
@@ -347,7 +400,7 @@ function calculateBolt() {
   $("strengthValue").textContent = `${category.fuf} MPa`;
   $("selectedShearLabel").textContent = `Shear capacity - ${plane}`;
   $("selectedShearCapacity").textContent = fixed(selectedShear);
-  $("selectedShearNote").innerHTML = plane === "N" ? "&phi;V<sub>f</sub> - threads intercept plane - Cl. 9.2.2.1" : "&phi;V<sub>f</sub> - threads clear of plane - Cl. 9.2.2.1";
+  $("selectedShearNote").innerHTML = plane === "N" ? "&phi;V<sub>f</sub> - threads intercept plane - AS 4100 Cl. 9.2.2.1" : "&phi;V<sub>f</sub> - threads clear of plane - AS 4100 Cl. 9.2.2.1";
   $("alternateShearLabel").textContent = `Shear capacity - ${plane === "N" ? "X" : "N"}`;
   $("alternateShearCapacity").textContent = fixed(alternateShear);
   $("alternateShearNote").textContent = plane === "N" ? "threads clear of plane" : "threads intercept plane";
@@ -381,21 +434,21 @@ function calculateBolt() {
     ? "<code>Not applicable - AS 4100 Cl. 9.2.3.3 applies to friction-type categories where serviceability slip is limited</code>"
     : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designShear)} / ${fixed(slipGroupCapacity)} + ${fixed(designTension)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check</code>`;
   $("formulaSteps").innerHTML = `
-    <div><b>Tension - 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
-    <div><b>Shear N - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
-    <div><b>Shear X - 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
-    <div><b>Bolt group shear - 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x</sub>k<sub>rd,X</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
-    <div><b>Bolt shear ratio - 9.2.2.1</b><code>V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${fixed(designShear)} / ${fixed(groupShear)} = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Bolt tension ratio - 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
+    <div><b>Tension - AS 4100 Cl. 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
+    <div><b>Shear N - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
+    <div><b>Shear X - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
+    <div><b>Bolt group shear - AS 4100 Cl. 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x</sub>k<sub>rd,X</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
+    <div><b>Bolt shear ratio - AS 4100 Cl. 9.2.2.1</b><code>V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${fixed(designShear)} / ${fixed(groupShear)} = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}</code></div>
+    <div><b>Bolt tension ratio - AS 4100 Cl. 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
     <div><b>Ply material input</b><code>f<sub>up</sub> = ${plateStrength.toFixed(0)} MPa. Default 410 MPa corresponds to AS/NZS 3678 Grade 250 plate; use 440 MPa only where the actual connected ply is AS/NZS 3679.1 Grade 300 flat bar/section or otherwise verified.</code></div>
-    <div><b>Ply bearing - 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN per bolt</code></div>
-    <div><b>Edge limit - 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
-    <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
-    <div><b>Ply bearing ratio - 9.2.2.4</b><code>V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${fixed(designShear)} / (${count} x ${fixed(bearing)}) = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}; governing ply capacity = ${fixed(groupPlyCapacity)} kN for ${count} bolt(s)</code></div>
+    <div><b>Ply bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN per bolt</code></div>
+    <div><b>Edge limit - AS 4100 Cl. 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
+    <div><b>Minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
+    <div><b>Ply bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${fixed(designShear)} / (${count} x ${fixed(bearing)}) = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}; governing ply capacity = ${fixed(groupPlyCapacity)} kN for ${count} bolt(s)</code></div>
     <div><b>Governing capacity check</b><code>${governingNote}</code></div>
-    <div><b>Combined shear and tension - 9.2.2.3</b>${strengthInteractionFormula}</div>
-    <div><b>TF slip - 9.2.3.1</b>${slipFormula}</div>
-    <div><b>TF combined slip - 9.2.3.3</b>${slipInteractionFormula}</div>
+    <div><b>Combined shear and tension - AS 4100 Cl. 9.2.2.3</b>${strengthInteractionFormula}</div>
+    <div><b>TF slip - AS 4100 Cl. 9.2.3.1</b>${slipFormula}</div>
+    <div><b>TF combined slip - AS 4100 Cl. 9.2.3.3</b>${slipInteractionFormula}</div>
     <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8. TF categories also require the separate serviceability slip checks above.</code></div>`;
 }
 
@@ -627,9 +680,9 @@ function calculateBeam() {
     : utilisation > 1
       ? "Design action exceeds the reported AS 4100 section design capacity. Increase the section or revise the design action before design issue."
       : interactionReview
-        ? "High shear: V* exceeds 0.60 phi Vv while bending is present. Complete AS 4100 Clause 5.12 bending-shear interaction review before design issue."
+        ? "High shear: V* exceeds 0.60 phi Vv while bending is present. Complete AS 4100 Cl. 5.12 bending-shear interaction review before design issue."
         : highShear
-          ? "V* exceeds 0.60 phi Vv. Shear capacity is still shown, but any concurrent bending must be checked to AS 4100 Clause 5.12."
+          ? "V* exceeds 0.60 phi Vv. Shear capacity is still shown, but any concurrent bending must be checked to AS 4100 Cl. 5.12."
           : "Section capacity only. Check member moment capacity, lateral restraint, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.";
 
   if (!valid) {
@@ -647,7 +700,7 @@ function calculateBeam() {
     <div><b>Plastic limit reference</b><code>${Number.isFinite(plasticLimit) ? `&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Sx, 1)} x 10&sup3; / 10&sup6; = ${fixed(plasticLimit)} kNm` : "Not shown - enter Sx for custom reference value"}</code></div>
     <div><b>Moment capacity - AS 4100 Cl. 5.2</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(grade.Ze, 1)} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>
     <div><b>Web shear area</b><code>${shearAreaBasis}</code></div>
-    <div><b>Web shear capacity - AS 4100 Cl. 5.11</b><code>&phi;V<sub>v</sub> = 0.90 x 0.6 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamArea(section.Aw)} / 1000 = ${fixed(shearCapacity)} kN; Cl. 5.12 interaction review applies where bending is present</code></div>
+    <div><b>Web shear capacity - AS 4100 Cl. 5.11</b><code>&phi;V<sub>v</sub> = 0.90 x 0.6 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamArea(section.Aw)} / 1000 = ${fixed(shearCapacity)} kN; AS 4100 Cl. 5.12 interaction review applies where bending is present</code></div>
     <div><b>Design action check</b><code>M* / &phi;M<sub>s</sub> = ${fixed(momentDemand)} / ${fixed(sectionCapacity)} = ${momentRatio.toFixed(2)}; V* / &phi;V<sub>v</sub> = ${fixed(shearDemand)} / ${fixed(shearCapacity)} = ${shearRatio.toFixed(2)}; governing ratio = ${utilisation.toFixed(2)}</code></div>
     <div><b>High shear threshold</b><code>0.60&phi;V<sub>v</sub> = ${fixed(0.6 * shearCapacity)} kN; provided V* = ${fixed(shearDemand)} kN - ${highShear ? "AS 4100 Cl. 5.12 bending-shear review required where bending is present" : "below high-shear threshold"}</code></div>
     <div><b>Design boundary</b><code>Section capacity only; member capacity M<sub>b</sub>, lateral restraint, web bearing, web buckling, stiffeners, concentrated loads, openings, torsion, serviceability and composite action are not checked.</code></div>`;
@@ -759,21 +812,21 @@ function calculateMember() {
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Centroidal axial load only. Default &alpha;<sub>b</sub> assumes cold-formed non-stress-relieved CHS; confirm hot-formed or stress-relieved sections separately. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length, grade certificate and the actual connection.${netAreaWarning}`
     : memberType === "ea"
-      ? `Equal Angle quick check uses the catalogue principal-axis radius r<sub>n</sub> = r<sub>p</sub>, not a weak-axis or flexural-torsional design. Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to Clauses 7.2 and 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; unequal angles connected by the short leg may require 0.75, and uniform force distribution may justify 1.0.${netAreaWarning}`
+      ? `Equal Angle quick check uses the catalogue principal-axis radius r<sub>n</sub> = r<sub>p</sub>, not a weak-axis or flexural-torsional design. Confirm &alpha;<sub>b</sub> to AS 4100 Table 6.3.3 and A<sub>n</sub> / k<sub>t</sub> to AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3. k<sub>t</sub> defaults to 0.85 for a typical eccentrically connected equal-angle input; unequal angles connected by the short leg may require 0.75, and uniform force distribution may justify 1.0.${netAreaWarning}`
       : memberType === "pfc"
         ? `PFC quick check uses catalogue A<sub>g</sub> and r<sub>min</sub> for centroidal axial load only, with hot-rolled channel &alpha;<sub>b</sub> = 0.5 by default. Check axis-specific buckling, torsional/flexural-torsional buckling and connection eccentricity separately.${netAreaWarning}`
         : `Confirm rod product grade, &alpha;<sub>b</sub> to AS 4100 Table 6.3.3, effective length and connection net area.${netAreaWarning}`;
   $("memberFormulaSteps").innerHTML = `
     <div><b>Design input status</b><code>&alpha;<sub>b</sub>, A<sub>n</sub> and k<sub>t</sub> are connection- and axis-dependent design inputs; confirm them from AS 4100 and project details before issue</code></div>
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
-    <div><b>Gross-section yielding - 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(grossYield)} kN</code></div>
-    <div><b>Net-section fracture - 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${grade.fu} / 1000 = ${fixed(netFracture)} kN</code></div>
-    <div><b>Design tension capacity - 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
+    <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(grossYield)} kN</code></div>
+    <div><b>Net-section fracture - AS 4100 Cl. 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${grade.fu} / 1000 = ${fixed(netFracture)} kN</code></div>
+    <div><b>Design tension capacity - AS 4100 Cl. 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
     <div><b>Nominal slenderness</b><code>&lambda;<sub>n</sub> = (L<sub>e</sub>/r) &radic;k<sub>f</sub> &radic;(f<sub>y</sub>/250) = ${lambdaN.toFixed(1)}</code></div>
     <div><b>Modified slenderness</b><code>&lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub> = ${modifiedLambda.toFixed(1)}; &alpha;<sub>a</sub> = ${alphaA.toFixed(2)}</code></div>
-    <div><b>Member reduction - 6.3.3</b><code>&eta; = 0.00326(&lambda; - 13.5) = ${eta.toFixed(3)}; &xi; = ${xi.toFixed(3)}; &alpha;<sub>c</sub> = ${alphaC.toFixed(3)}</code></div>
-    <div><b>Section capacity - 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>g</sub>f<sub>y</sub>; quick check assumes no penetrations or unfilled holes, so A<sub>g</sub> = ${properties.area.toFixed(0)} mm2; capacity = ${fixed(sectionCompression)} kN</code></div>
-    <div><b>Member capacity - 6.3</b><code>&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN</code></div>`;
+    <div><b>Member reduction - AS 4100 Cl. 6.3.3</b><code>&eta; = 0.00326(&lambda; - 13.5) = ${eta.toFixed(3)}; &xi; = ${xi.toFixed(3)}; &alpha;<sub>c</sub> = ${alphaC.toFixed(3)}</code></div>
+    <div><b>Section capacity - AS 4100 Cl. 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>g</sub>f<sub>y</sub>; quick check assumes no penetrations or unfilled holes, so A<sub>g</sub> = ${properties.area.toFixed(0)} mm2; capacity = ${fixed(sectionCompression)} kN</code></div>
+    <div><b>Member capacity - AS 4100 Cl. 6.3</b><code>&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN</code></div>`;
 }
 
 function concreteLayer(index, depth, direction, width) {
@@ -1116,6 +1169,8 @@ function setMemberType(type) {
 }
 
 function initialise() {
+  enhanceNumberInputs();
+  markInputSources();
   $("boltSize").innerHTML = Object.keys(boltData).map(size => `<option value="${size}">${size}</option>`).join("");
   $("boltSize").value = "M24";
   populateBoltCategories();
