@@ -176,7 +176,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-summary > div > small { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); }
 .beam-summary > div > small { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); }
 .weld-summary > div > small { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); }
-.member-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
+.member-summary dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(58px, auto)); gap: 14px 18px; margin: 0; }
 .beam-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
 .weld-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
 .member-summary dl div { text-align: right; }

@@ -841,6 +841,11 @@ function calculateMember() {
         : `user-selected &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} - solid circular rod geometry`;
   $("memberArea").textContent = formatArea(properties.area);
   $("memberRadius").textContent = `${properties.r.toFixed(1)} mm`;
+  document.querySelectorAll(".member-pfc-dimension").forEach(field => {
+    field.hidden = memberType !== "pfc";
+  });
+  $("memberWebThickness").textContent = memberType === "pfc" ? `${fixed(section.tw || 0)} mm` : "—";
+  $("memberFlangeThickness").textContent = memberType === "pfc" ? `${fixed(section.tf || 0)} mm` : "—";
   $("memberFy").textContent = `${grade.fy} MPa`;
   $("memberFu").textContent = `${grade.fu} MPa`;
   $("memberKf").textContent = grade.kf.toFixed(3);
