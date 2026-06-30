@@ -1370,6 +1370,7 @@ function setMemberType(type) {
     card.hidden = card.dataset.memberGuide !== type;
   });
   $("alphaBField").hidden = type === "custom";
+  $("memberFactorGroup").hidden = type === "custom";
   $("memberSectionGroup").hidden = type === "custom";
   $("memberSectionField").hidden = type === "custom";
   $("memberGradeField").hidden = type === "custom";
@@ -1378,6 +1379,7 @@ function setMemberType(type) {
   document.querySelectorAll(".custom-member-inputs").forEach(panel => {
     panel.hidden = type !== "custom";
   });
+  $("memberAlphaBAssumption").hidden = type === "custom";
   $("memberAlphaBAssumption").innerHTML = type === "chs"
     ? "k<sub>f</sub> and &alpha;<sub>b</sub> are applied from the selected CHS quick-screen basis."
     : type === "ea"

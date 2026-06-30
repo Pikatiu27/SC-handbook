@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701i">
+  <link rel="stylesheet" href="styles.css?v=20260701j">
 </head>
 <body>
   <header class="topbar">
@@ -531,6 +531,28 @@
           </div>
         </details>
 
+        <div class="custom-member-inputs input-cluster" hidden>
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Custom section properties</b><small>Enter effective geometry and effective lengths from your section calculation.</small></span>
+            <div class="input-group-fields three">
+              <label><span>Name</span><input id="memberCustomName" type="text" value="Custom built-up member"></label>
+              <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
+              <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
+              <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
+              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+            </div>
+          </section>
+          <section class="input-group input-group-factor">
+            <span class="input-group-heading"><b>Relevant factors</b><small>Compression coefficients by principal axis.</small></span>
+            <div class="input-group-fields three">
+              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.01" max="1" step="0.001" value="1"></label>
+              <label><span>α<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
+              <label><span>α<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
+            </div>
+          </section>
+        </div>
+
         <div class="input-cluster input-cluster-four member-main-inputs">
           <section class="input-group input-group-section" id="memberSectionGroup">
             <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Catalogue section, checked radius and effective length geometry.</small></span>
@@ -540,7 +562,7 @@
               <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
             </div>
           </section>
-          <section class="input-group input-group-material">
+          <section class="input-group input-group-material" id="memberMaterialGroup">
             <span class="input-group-heading"><b>Material property</b><small>Grade lookup with editable strength values for project data.</small></span>
             <div class="input-group-fields three">
               <label id="memberGradeField"><span>Steel grade</span><select id="memberGrade"></select></label>
@@ -548,13 +570,13 @@
               <label><span>f<sub>u</sub> <i>editable</i></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
             </div>
           </section>
-          <section class="input-group input-group-factor">
+          <section class="input-group input-group-factor" id="memberFactorGroup">
             <span class="input-group-heading"><b>Relevant factors</b><small>Code coefficients used in the compression reduction.</small></span>
             <div class="input-group-fields">
               <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
             </div>
           </section>
-          <section class="input-group input-group-action">
+          <section class="input-group input-group-action" id="memberActionGroup">
             <span class="input-group-heading"><b>Design action</b><small>Optional axial demand check against the selected limit state.</small></span>
             <div class="input-group-fields two">
               <label><span>Action type</span><select id="memberActionType"><option value="compression">Compression N*</option><option value="tension">Tension N*</option></select></label>
@@ -563,29 +585,6 @@
           </section>
         </div>
         <p class="result-note user-input-note" id="memberAlphaBAssumption">α<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS.</p>
-
-        <div class="custom-member-inputs input-cluster" hidden>
-          <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Custom section properties</b><small>Enter effective properties from your section calculation. Built-up detailing is not verified here.</small></span>
-            <div class="input-group-fields four">
-              <label><span>Name</span><input id="memberCustomName" type="text" value="Custom built-up member"></label>
-              <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
-              <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
-              <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
-            </div>
-          </section>
-          <section class="input-group input-group-factor">
-            <span class="input-group-heading"><b>Relevant factors</b><small>Compression factors and effective lengths by principal axis.</small></span>
-            <div class="input-group-fields five">
-              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.01" max="1" step="0.001" value="1"></label>
-              <label><span>α<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
-              <label><span>α<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
-              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
-              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
-            </div>
-          </section>
-        </div>
-
 
         <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r</dt><dd id="memberRadius">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>w</sub></dt><dd id="memberWebThickness">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>f</sub></dt><dd id="memberFlangeThickness">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
@@ -641,6 +640,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701i"></script>
+  <script src="app.js?v=20260701j"></script>
 </body>
 </html>
