@@ -264,7 +264,7 @@ const manualInputIds = [
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx",
-  "memberLength", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea"
+  "memberLength", "memberHoleCount", "memberHoleDiameter", "memberNetArea"
 ];
 const referenceInputIds = [
   "boltSize", "category", "shearPlane", "kr", "edgeCondition", "holeFactor",
@@ -724,18 +724,13 @@ function memberProperties(section) {
   return memberType === "chs" ? chsProperties(section) : { area: section.area, r: section.r };
 }
 
-function memberDefaultDeductionThickness(section) {
-  if (memberType === "chs") return section.t || 0;
-  if (memberType === "ea") return section.t || 0;
-  return 0;
-}
-
 function memberNetAreaInput(properties) {
-  const mode = $("memberNetAreaMode").value;
+  const autoAvailable = memberType === "ea";
+  const mode = autoAvailable ? $("memberNetAreaMode").value : "manual";
   const grossArea = properties.area;
   const holeCount = Math.max(0, Math.round(value("memberHoleCount")));
   const holeDiameter = value("memberHoleDiameter");
-  const deductionThickness = value("memberHoleThickness");
+  const deductionThickness = autoAvailable ? (memberSections()[Number($("memberSection").value) || 0]?.t || 0) : 0;
   const holeDeduction = holeCount * holeDiameter * deductionThickness;
   const automaticNetArea = Math.max(0, Math.min(grossArea, grossArea - holeDeduction));
   const manualNetArea = Math.min(grossArea, value("memberNetArea"));
@@ -743,6 +738,9 @@ function memberNetAreaInput(properties) {
     $("memberNetArea").value = automaticNetArea.toFixed(0);
   }
   $("memberNetArea").readOnly = mode === "auto";
+  $("memberHoleCount").disabled = !autoAvailable || mode !== "auto";
+  $("memberHoleDiameter").disabled = !autoAvailable || mode !== "auto";
+  $("memberNetAreaMode").disabled = !autoAvailable;
   return {
     mode,
     holeCount,
@@ -773,10 +771,9 @@ function populateMemberGrades() {
   $("memberGrade").innerHTML = Object.keys(grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
   $("memberGrade").value = memberType === "chs" ? "C350L0" : "300PLUS";
   const properties = memberProperties(section);
-  $("memberNetAreaMode").value = memberType === "ea" || memberType === "pfc" ? "auto" : "manual";
-  $("memberHoleCount").value = memberType === "ea" || memberType === "pfc" ? "1" : "0";
-  $("memberHoleDiameter").value = memberType === "ea" || memberType === "pfc" ? "22" : "0";
-  $("memberHoleThickness").value = memberDefaultDeductionThickness(section) ? memberDefaultDeductionThickness(section).toFixed(1) : "0";
+  $("memberNetAreaMode").value = memberType === "ea" ? "auto" : "manual";
+  $("memberHoleCount").value = memberType === "ea" ? "1" : "0";
+  $("memberHoleDiameter").value = memberType === "ea" ? "22" : "0";
   $("memberNetArea").value = properties.area.toFixed(0);
   $("memberNetArea").max = properties.area.toFixed(0);
   $("memberKt").value = memberType === "ea" ? "0.85" : "1";
@@ -844,12 +841,12 @@ function calculateMember() {
   $("memberGoverning").textContent = alphaC < 0.999 ? "Member buckling" : "Section capacity";
   const netAreaWarning = value("memberNetArea") > properties.area ? " Net area has been limited to gross area." : "";
   const autoNetAreaText = netInput.mode === "auto"
-    ? `Auto A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t<sub>d</sub> = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm².`
+    ? `Auto A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm².`
     : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm².`;
-  const pfcThicknessNote = memberType === "pfc" && netInput.mode === "auto" && netInput.deductionThickness <= 0
-    ? " Enter t_d as the actual web, flange or connected-element thickness on the selected net-section path."
+  const manualReason = memberType === "pfc"
+    ? " PFC uses manual A_n here because the net path may pass through web, flange or connected elements."
     : "";
-  $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${pfcThicknessNote} Use manual A<sub>n</sub> for stagger, slots, cope cuts or multiple possible net-section paths.`;
+  $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for stagger, slots, cope cuts or multiple possible net-section paths.`;
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Centroidal axial load only. Default &alpha;<sub>b</sub> assumes cold-formed non-stress-relieved CHS; confirm hot-formed or stress-relieved sections separately. Confirm A<sub>n</sub>, k<sub>t</sub>, effective length, grade certificate and the actual connection.${netAreaWarning}`
     : memberType === "ea"
@@ -860,7 +857,7 @@ function calculateMember() {
   $("memberFormulaSteps").innerHTML = `
     <div><b>Design input status</b><code>&alpha;<sub>b</sub>, A<sub>n</sub> and k<sub>t</sub> are connection- and axis-dependent design inputs; confirm them from AS 4100 and project details before issue</code></div>
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
-    <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t<sub>d</sub> = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; use manual input for stagger, slots, cope cuts or multiple possible net-section paths</code></div>
+    <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; use manual input for PFC web/flange paths, stagger, slots, cope cuts or multiple possible net-section paths</code></div>
     <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(grossYield)} kN</code></div>
     <div><b>Net-section fracture - AS 4100 Cl. 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${grade.fu} / 1000 = ${fixed(netFracture)} kN</code></div>
     <div><b>Design tension capacity - AS 4100 Cl. 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
@@ -1265,7 +1262,6 @@ function initialise() {
   $("memberNetAreaMode").addEventListener("change", calculateMember);
   $("memberHoleCount").addEventListener("input", calculateMember);
   $("memberHoleDiameter").addEventListener("input", calculateMember);
-  $("memberHoleThickness").addEventListener("input", calculateMember);
   $("memberNetArea").addEventListener("input", calculateMember);
   $("memberKt").addEventListener("input", calculateMember);
   populateBeamOptions();
