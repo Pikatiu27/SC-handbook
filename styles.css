@@ -188,7 +188,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .beam-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .weld-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
-.tension-inputs { margin: -11px 0 22px; padding: 11px 13px; display: grid; grid-template-columns: 1fr 170px 170px; align-items: end; gap: 12px; border: 1px solid var(--line); border-radius: 8px; background: #f8faf8; }
+.tension-inputs { margin: -11px 0 22px; padding: 11px 13px; display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(6, minmax(96px, 145px)); align-items: end; gap: 12px; border: 1px solid var(--line); border-radius: 8px; background: #f8faf8; }
 .tension-inputs > div > span, .tension-inputs > div > small { display: block; }
 .tension-inputs > div > span { color: var(--green-dark); font-size: var(--fs-sm); font-weight: 800; }
 .tension-inputs > div > small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); }

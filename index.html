@@ -450,8 +450,12 @@
         <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r</dt><dd id="memberRadius">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
         <div class="tension-inputs">
-          <div><span>Tension member inputs · AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3</span><small>Enter connection-specific A<sub>n</sub> and k<sub>t</sub>. Equal Angle defaults to k<sub>t</sub> = 0.85 for a typical eccentric single-angle input; unequal angles connected by the short leg may require 0.75, and uniform force distribution may justify 1.0.</small></div>
-          <label><span>A<sub>n</sub> <i>net area of cross-section</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="0"><em>mm²</em></span></label>
+          <div><span>Tension member inputs · AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3</span><small id="memberNetAreaSource">Use auto net area for a straight bolt-hole deduction, or manual A<sub>n</sub> for slots, stagger, cope cuts and other project-specific net-section paths.</small></div>
+          <label><span>A<sub>n</sub> method</span><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></label>
+          <label><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
+          <label><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
+          <label><span>t<sub>d</sub> <i>deduction thickness</i></span><span class="unit"><input id="memberHoleThickness" type="number" min="0" step="0.1" value="0"><em>mm</em></span></label>
+          <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="0"><em>mm²</em></span></label>
           <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0" max="1" step="0.05" value="1"></label>
         </div>
 
