@@ -451,9 +451,9 @@
 
         <div class="tension-inputs">
           <div><span>Tension member inputs · AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3</span><small id="memberNetAreaSource">Use auto net area for a straight bolt-hole deduction, or manual A<sub>n</sub> for slots, stagger, cope cuts and other project-specific net-section paths.</small></div>
-          <label><span>A<sub>n</sub> method</span><span class="unit"><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></span></label>
-          <label><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
-          <label><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
+          <label class="member-net-method"><span>A<sub>n</sub> method</span><span class="unit"><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></span></label>
+          <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
+          <label class="member-hole-field"><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
           <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="0"><em>mm²</em></span></label>
           <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0" max="1" step="0.05" value="1"></label>
         </div>

@@ -741,6 +741,9 @@ function memberNetAreaInput(properties) {
   $("memberHoleCount").disabled = !autoAvailable || mode !== "auto";
   $("memberHoleDiameter").disabled = !autoAvailable || mode !== "auto";
   $("memberNetAreaMode").disabled = !autoAvailable;
+  document.querySelectorAll(".member-net-method, .member-hole-field").forEach(field => {
+    field.hidden = !autoAvailable;
+  });
   return {
     mode,
     holeCount,
@@ -842,7 +845,9 @@ function calculateMember() {
   const netAreaWarning = value("memberNetArea") > properties.area ? " Net area has been limited to gross area." : "";
   const autoNetAreaText = netInput.mode === "auto"
     ? `Auto A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm².`
-    : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm².`;
+    : memberType === "chs" || memberType === "rod"
+      ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm² for this quick lookup.`
+      : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm².`;
   const manualReason = memberType === "pfc"
     ? " PFC uses manual A_n here because the net path may pass through web, flange or connected elements."
     : "";
@@ -857,7 +862,7 @@ function calculateMember() {
   $("memberFormulaSteps").innerHTML = `
     <div><b>Design input status</b><code>&alpha;<sub>b</sub>, A<sub>n</sub> and k<sub>t</sub> are connection- and axis-dependent design inputs; confirm them from AS 4100 and project details before issue</code></div>
     <div><b>Section data</b><code>A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${properties.r.toFixed(1)} mm; f<sub>y</sub> = ${grade.fy} MPa; f<sub>u</sub> = ${grade.fu} MPa; k<sub>f</sub> = ${grade.kf.toFixed(3)}</code></div>
-    <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; use manual input for PFC web/flange paths, stagger, slots, cope cuts or multiple possible net-section paths</code></div>
+    <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; use manual input for PFC web/flange paths, stagger, slots, cope cuts or multiple possible net-section paths</code></div>
     <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${grade.fy} / 1000 = ${fixed(grossYield)} kN</code></div>
     <div><b>Net-section fracture - AS 4100 Cl. 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${grade.fu} / 1000 = ${fixed(netFracture)} kN</code></div>
     <div><b>Design tension capacity - AS 4100 Cl. 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
