@@ -913,6 +913,8 @@ function calculateMember() {
       : memberRadiusBasis(properties.r);
   if (memberType !== "custom") {
     $("memberRadiusSource").innerHTML = `${memberRadiusBasis(properties.r)} Current r is used for L<sub>e</sub>/r, &lambda;<sub>n</sub>, &alpha;<sub>c</sub> and &phi;N<sub>c</sub>.`;
+  } else {
+    $("memberRadiusSource").innerHTML = `Custom / Built-up uses entered r<sub>x</sub> and r<sub>y</sub>. Edit f<sub>y</sub> / f<sub>u</sub> to match certificate or project-specific values.`;
   }
   $("memberNetArea").max = properties.area.toFixed(0);
   const netInput = memberNetAreaInput(properties);
@@ -1352,9 +1354,7 @@ function setMemberType(type) {
   $("memberSectionField").hidden = type === "custom";
   $("memberGradeField").hidden = type === "custom";
   $("memberLengthField").hidden = type === "custom";
-  document.querySelectorAll(".section-property-inputs").forEach(panel => {
-    panel.hidden = type === "custom";
-  });
+  $("memberRadiusField").hidden = type === "custom";
   document.querySelectorAll(".custom-member-inputs").forEach(panel => {
     panel.hidden = type !== "custom";
   });

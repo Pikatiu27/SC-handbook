@@ -152,14 +152,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-inputs select, .member-inputs input { width: 100%; min-height: 46px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 10px 12px; outline: none; font-size: var(--fs-sm); font-weight: 700; }
 .member-inputs .size-field > span:first-child { color: var(--ink); font-size: var(--fs-sm); font-weight: 900; }
 .member-inputs .size-field select { color: var(--ink); font-size: var(--fs-sm); font-weight: 700; letter-spacing: 0; }
-.section-property-inputs { margin: -2px 0 12px; padding: 13px; display: grid; grid-template-columns: minmax(220px, 1.4fr) minmax(140px, .8fr); align-items: end; gap: 12px 14px; border: 1px solid rgba(65, 111, 158, .24); border-radius: 10px; background: #f7fbff; }
-.section-property-inputs > div > span, .section-property-inputs > div > small { display: block; }
-.section-property-inputs > div > span { color: #355d82; font-size: var(--fs-sm); font-weight: 900; }
-.section-property-inputs > div > small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
-.section-property-inputs label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
-.section-property-inputs label i { font-style: normal; color: #416f9e; font-weight: 800; }
-.section-property-inputs input { width: 100%; min-height: 42px; border: 1px solid #bfd2e5; border-radius: var(--control-radius); background: #fff; color: var(--ink); padding: 8px 9px; outline: none; font-size: var(--fs-sm); font-weight: 800; }
-.material-strength-inputs { margin: -2px 0 16px; padding: 13px; display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(2, minmax(140px, .8fr)); align-items: end; gap: 12px 14px; border: 1px solid rgba(65, 111, 158, .24); border-radius: 10px; background: #f3f8fc; }
+.material-strength-inputs { margin: -2px 0 16px; padding: 13px; display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(130px, .8fr)); align-items: end; gap: 12px 14px; border: 1px solid rgba(65, 111, 158, .24); border-radius: 10px; background: #f3f8fc; }
 .material-strength-inputs > div > span, .material-strength-inputs > div > small { display: block; }
 .material-strength-inputs > div > span { color: #355d82; font-size: var(--fs-sm); font-weight: 900; }
 .material-strength-inputs > div > small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
@@ -443,7 +436,7 @@ footer b { white-space: nowrap; }
 
 @media (max-width: 760px) {
   .intro { padding-top: 25px; }
-  .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .section-property-inputs, .material-strength-inputs, .custom-member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
+  .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .material-strength-inputs, .custom-member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .bolt-summary, .member-summary, .beam-summary { align-items: flex-start; }
   .weld-summary { display: block; }
   .bolt-summary dl { gap: 14px; flex-wrap: wrap; }
@@ -506,8 +499,8 @@ footer b { white-space: nowrap; }
   .tool-heading > span { display: block; margin-top: 3px; padding: 0; text-align: left; }
   .tool-panel { padding: 12px; border-radius: 14px; }
   .lookup-card { padding: 14px; }
-  .primary-inputs select, .primary-inputs input, .member-inputs select, .member-inputs input, .section-property-inputs input, .material-strength-inputs input, .custom-member-inputs input, .concrete-input-row input, .concrete-input-row select, .weld-extra-inputs input, .weld-extra-inputs select, .tension-inputs input, .tension-inputs select { min-height: 44px; font-size: 16px; }
-  .primary-inputs label > span, .member-inputs label > span:first-child, .section-property-inputs label > span:first-child, .material-strength-inputs label > span:first-child, .custom-member-inputs label > span:first-child { font-size: var(--fs-xs); }
+  .primary-inputs select, .primary-inputs input, .member-inputs select, .member-inputs input, .material-strength-inputs input, .custom-member-inputs input, .concrete-input-row input, .concrete-input-row select, .weld-extra-inputs input, .weld-extra-inputs select, .tension-inputs input, .tension-inputs select { min-height: 44px; font-size: 16px; }
+  .primary-inputs label > span, .member-inputs label > span:first-child, .material-strength-inputs label > span:first-child, .custom-member-inputs label > span:first-child { font-size: var(--fs-xs); }
   .bolt-summary { display: block; }
   .bolt-summary dl { margin-top: 11px; justify-content: space-between; }
   .bolt-summary dl div { text-align: left; }

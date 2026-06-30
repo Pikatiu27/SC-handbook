@@ -478,13 +478,9 @@
           <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
         </div>
 
-        <div class="section-property-inputs" aria-label="Editable section property">
-          <div><span>Section property override</span><small id="memberRadiusSource">Default r is from the selected section. Edit when checking a specific buckling axis.</small></div>
-          <label><span>r <i>editable default</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
-        </div>
-
-        <div class="material-strength-inputs" aria-label="Editable material strengths">
-          <div><span>Material strengths</span><small>Defaults from selected grade. Edit f<sub>y</sub> / f<sub>u</sub> to match certificate or project-specific values.</small></div>
+        <div class="material-strength-inputs" aria-label="Editable member defaults">
+          <div><span>Editable defaults</span><small id="memberRadiusSource">Default r is from the selected section. Edit r, f<sub>y</sub> or f<sub>u</sub> to match the checked buckling axis and project data.</small></div>
+          <label id="memberRadiusField"><span>r <i>editable</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
           <label><span>f<sub>y</sub> <i>editable</i></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
           <label><span>f<sub>u</sub> <i>editable</i></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
         </div>
@@ -542,6 +538,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701d"></script>
+  <script src="app.js?v=20260701e"></script>
 </body>
 </html>
