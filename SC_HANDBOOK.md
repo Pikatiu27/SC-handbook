@@ -1042,6 +1042,7 @@ Bolt result checks should include:
 - Minimum edge distance check.
 - Governing connected-ply capacity.
 - Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and connected-ply bearing / edge tear-out under Cl. 9.2.2.4; tension-only demand checks bolt tension under Cl. 9.2.2.2; combined shear and tension checks bolt interaction under Cl. 9.2.2.3 while still checking connected-ply bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or connected ply governs.
+- The main result should show one final `Governing capacity check` ratio only. Put supporting ratios, including the AS 4100 Cl. 9.2.2.3 combined bolt interaction ratio, in calculation steps rather than as competing primary result cards.
 - The default connected-ply tensile strength should not be an orphan number. Use f<sub>up</sub> = 410 MPa only as the AS/NZS 3678 Grade 250 plate default; use 440 MPa only for verified AS/NZS 3679.1 Grade 300 flat bar/section or another stated source.
 
 Minimum edge distance and ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.

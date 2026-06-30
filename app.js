@@ -364,15 +364,6 @@ function calculateBolt() {
   $("edgeDistanceStatus").textContent = edgeDistancePass ? "PASS" : "FAIL";
   $("edgeDistanceStatus").className = edgeDistancePass ? "pass" : "fail";
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
-  $("interactionRatio").textContent = hasShearDemand && hasTensionDemand && Number.isFinite(strengthRatio)
-    ? strengthRatio.toFixed(2)
-    : "—";
-  $("interactionStatus").textContent = !hasDemand
-    ? "Enter design actions"
-    : hasShearDemand && hasTensionDemand
-        ? strengthRatio <= 1 ? "PASS" : "FAIL"
-        : "Not applicable";
-  $("interactionStatus").className = hasShearDemand && hasTensionDemand ? (strengthRatio <= 1 ? "pass" : "fail") : "";
   $("strengthGoverningRatio").textContent = Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
   $("strengthGoverningStatus").textContent = !hasDemand
     ? "Enter design actions"
@@ -401,7 +392,7 @@ function calculateBolt() {
     <div><b>Edge limit - 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; capacity = ${fixed(bearingEdge)} kN</code></div>
     <div><b>Minimum edge - 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
     <div><b>Ply bearing ratio - 9.2.2.4</b><code>V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${fixed(designShear)} / (${count} x ${fixed(bearing)}) = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}; governing ply capacity = ${fixed(groupPlyCapacity)} kN for ${count} bolt(s)</code></div>
-    <div><b>Strength governing check</b><code>${governingNote}</code></div>
+    <div><b>Governing capacity check</b><code>${governingNote}</code></div>
     <div><b>Combined shear and tension - 9.2.2.3</b>${strengthInteractionFormula}</div>
     <div><b>TF slip - 9.2.3.1</b>${slipFormula}</div>
     <div><b>TF combined slip - 9.2.3.3</b>${slipInteractionFormula}</div>
