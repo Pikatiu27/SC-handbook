@@ -260,9 +260,22 @@ const chsGrades = {
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx", "beamCustomCompactness", "beamCustomKf"];
-const toolNames = ["bolt", "member", "beam", "weld", "concrete"];
+const windInputIds = ["windLatitude", "windLongitude", "windReferenceHeight", "windRegionBranch", "windTopoModel", "windMlee"];
+const toolNames = ["bolt", "member", "beam", "weld", "concrete", "wind"];
 let beamSectionType = "ub";
 let memberType = "chs";
+let windState = { key: "", osmElements: null, elevationProfiles: null, fetchedAt: "", status: "No live data loaded", error: "" };
+
+const windDirections = [
+  { key: "N", bearing: 0, sector: "337.5-22.5" },
+  { key: "NE", bearing: 45, sector: "22.5-67.5" },
+  { key: "E", bearing: 90, sector: "67.5-112.5" },
+  { key: "SE", bearing: 135, sector: "112.5-157.5" },
+  { key: "S", bearing: 180, sector: "157.5-202.5" },
+  { key: "SW", bearing: 225, sector: "202.5-247.5" },
+  { key: "W", bearing: 270, sector: "247.5-292.5" },
+  { key: "NW", bearing: 315, sector: "292.5-337.5" }
+];
 
 const manualInputIds = [
   "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
@@ -272,7 +285,8 @@ const manualInputIds = [
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx",
   "memberLength", "memberAxialDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
-  "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
+  "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey",
+  "windLatitude", "windLongitude", "windReferenceHeight", "windMlee"
 ];
 const referenceInputIds = [
   "boltSize", "category", "shearPlane", "kr", "edgeCondition", "holeFactor",
@@ -280,7 +294,8 @@ const referenceInputIds = [
   "concreteDirection", "concretePhi", "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteComposite",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
   "beamSection", "beamGrade", "beamCustomCompactness", "beamCustomKf",
-  "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberActionType", "memberNetAreaMode", "memberKt"
+  "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberActionType", "memberNetAreaMode", "memberKt",
+  "windRegionBranch", "windTopoModel"
 ];
 
 function numericValue(raw) {
@@ -310,6 +325,55 @@ function weldCapacityFactor(type, category) {
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
 function standardHoleDiameter(diameter) { return diameter <= 24 ? diameter + 2 : diameter + 3; }
 function signedFixed(number, digits = 1) { return `${number >= 0 ? "+" : ""}${Number(number).toFixed(digits)}`; }
+function safeText(text) {
+  return String(text ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+function toRadians(degrees) { return degrees * Math.PI / 180; }
+function toDegrees(radians) { return radians * 180 / Math.PI; }
+function normaliseBearing(degrees) { return (degrees % 360 + 360) % 360; }
+function bearingDelta(a, b) { return Math.abs(((normaliseBearing(a) - normaliseBearing(b) + 540) % 360) - 180); }
+function distanceMetres(aLat, aLon, bLat, bLon) {
+  const radius = 6371000;
+  const phi1 = toRadians(aLat);
+  const phi2 = toRadians(bLat);
+  const dPhi = toRadians(bLat - aLat);
+  const dLambda = toRadians(bLon - aLon);
+  const h = Math.sin(dPhi / 2) ** 2 + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dLambda / 2) ** 2;
+  return 2 * radius * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+function bearingBetween(aLat, aLon, bLat, bLon) {
+  const phi1 = toRadians(aLat);
+  const phi2 = toRadians(bLat);
+  const lambda1 = toRadians(aLon);
+  const lambda2 = toRadians(bLon);
+  const y = Math.sin(lambda2 - lambda1) * Math.cos(phi2);
+  const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(lambda2 - lambda1);
+  return normaliseBearing(toDegrees(Math.atan2(y, x)));
+}
+function destinationPoint(lat, lon, bearing, distance) {
+  const radius = 6371000;
+  const angularDistance = distance / radius;
+  const theta = toRadians(bearing);
+  const phi1 = toRadians(lat);
+  const lambda1 = toRadians(lon);
+  const sinPhi2 = Math.sin(phi1) * Math.cos(angularDistance) + Math.cos(phi1) * Math.sin(angularDistance) * Math.cos(theta);
+  const phi2 = Math.asin(Math.max(-1, Math.min(1, sinPhi2)));
+  const y = Math.sin(theta) * Math.sin(angularDistance) * Math.cos(phi1);
+  const x = Math.cos(angularDistance) - Math.sin(phi1) * Math.sin(phi2);
+  const lambda2 = lambda1 + Math.atan2(y, x);
+  return { lat: toDegrees(phi2), lon: ((toDegrees(lambda2) + 540) % 360) - 180 };
+}
+function confidenceRank(label) { return ({ Low: 0, Medium: 1, High: 2 }[label] ?? 0); }
+function combinedConfidence(...labels) {
+  const rank = Math.min(...labels.map(confidenceRank));
+  return rank >= 2 ? "High" : rank >= 1 ? "Medium" : "Low";
+}
 
 function clampNumericInput(input) {
   const current = numericValue(input.value);
@@ -338,6 +402,358 @@ function enhanceNumberInputs() {
 function markInputSources() {
   manualInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-manual"));
   referenceInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-reference"));
+}
+
+function windInputs() {
+  const lat = numericValue($("windLatitude").value);
+  const lon = numericValue($("windLongitude").value);
+  const z = Math.max(1, value("windReferenceHeight"));
+  const xa = Math.max(500, 40 * z);
+  const xi = 20 * z;
+  const queryRadius = Math.min(2500, xa);
+  return {
+    lat,
+    lon,
+    z,
+    xa,
+    xi,
+    queryRadius,
+    profileDistance: Math.min(5000, Math.max(1000, xa)),
+    region: $("windRegionBranch").value,
+    topoModel: $("windTopoModel").value,
+    mlee: Math.max(1, value("windMlee")),
+    key: `${Number(lat).toFixed(6)},${Number(lon).toFixed(6)},${z.toFixed(1)}`
+  };
+}
+
+function validWindInputs(inputs) {
+  return Number.isFinite(inputs.lat) && Number.isFinite(inputs.lon) && Math.abs(inputs.lat) <= 90 && Math.abs(inputs.lon) <= 180;
+}
+
+function windDataMatches(inputs) {
+  return windState.key === inputs.key && (windState.osmElements || windState.elevationProfiles);
+}
+
+function windProfileDistances(maxDistance) {
+  const base = [100, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 4000, 5000];
+  const distances = base.filter(distance => distance <= maxDistance);
+  if (!distances.includes(Math.round(maxDistance))) distances.push(Math.round(maxDistance));
+  return [...new Set(distances)].sort((a, b) => a - b).slice(0, 11);
+}
+
+function osmElementCentre(element) {
+  const centre = element.center || element;
+  const lat = Number(centre.lat);
+  const lon = Number(centre.lon);
+  return Number.isFinite(lat) && Number.isFinite(lon) ? { lat, lon } : null;
+}
+
+function osmFeatureKind(tags = {}) {
+  const landuse = tags.landuse || "";
+  const natural = tags.natural || "";
+  if (tags.building) return "building";
+  if (natural === "water" || natural === "bay" || tags.waterway || landuse === "reservoir" || landuse === "basin") return "water";
+  if (["residential", "commercial", "retail", "industrial", "construction"].includes(landuse)) return "urban";
+  if (["farmland", "farmyard", "meadow", "grass", "orchard", "vineyard", "recreation_ground"].includes(landuse)) return "open";
+  if (["grassland", "heath", "scrub", "bare_rock", "sand"].includes(natural)) return "open";
+  if (natural === "wood" || landuse === "forest") return "forest";
+  return "other";
+}
+
+function osmBuildingHeight(tags = {}) {
+  const rawHeight = String(tags.height || "").replace(/[^\d.]/g, "");
+  const height = Number(rawHeight);
+  if (Number.isFinite(height) && height > 0) return height;
+  const levels = Number(tags["building:levels"]);
+  return Number.isFinite(levels) && levels > 0 ? levels * 3 : null;
+}
+
+function windSectorStats(direction, inputs) {
+  const stats = { buildings: 0, tallBuildings: 0, water: 0, urban: 0, open: 0, forest: 0, other: 0, total: 0 };
+  if (!windState.osmElements || inputs.xi >= inputs.queryRadius) return stats;
+  windState.osmElements.forEach(element => {
+    const centre = osmElementCentre(element);
+    if (!centre) return;
+    const distance = distanceMetres(inputs.lat, inputs.lon, centre.lat, centre.lon);
+    if (distance < inputs.xi || distance > inputs.queryRadius) return;
+    const bearing = bearingBetween(inputs.lat, inputs.lon, centre.lat, centre.lon);
+    if (bearingDelta(bearing, direction.bearing) > 22.5) return;
+    const tags = element.tags || {};
+    const kind = osmFeatureKind(tags);
+    stats.total += 1;
+    stats[kind] = (stats[kind] || 0) + 1;
+    if (kind === "building" && (osmBuildingHeight(tags) || 0) >= 10) stats.tallBuildings += 1;
+  });
+  return stats;
+}
+
+function suggestTerrainCategory(direction, inputs) {
+  if (!validWindInputs(inputs)) {
+    return { tc: "Review", basis: "Enter valid latitude and longitude.", confidence: "Low", stats: null };
+  }
+  if (!windState.osmElements || windState.key !== inputs.key) {
+    return { tc: "Review", basis: "Fetch current OSM sector data for this coordinate and height.", confidence: "Low", stats: null };
+  }
+  if (inputs.xi >= inputs.queryRadius) {
+    return { tc: "Review", basis: "Lag distance exceeds the capped OSM scan radius; increase source review outside the browser screen.", confidence: "Low", stats: null };
+  }
+  const stats = windSectorStats(direction, inputs);
+  const sectorAreaHa = Math.PI * (inputs.queryRadius ** 2 - inputs.xi ** 2) * (45 / 360) / 10000;
+  const buildingDensity = sectorAreaHa > 0 ? stats.buildings / sectorAreaHa : 0;
+  const tallDensity = sectorAreaHa > 0 ? stats.tallBuildings / sectorAreaHa : 0;
+  let tc = "TC2";
+  let confidence = "Medium";
+  let basis = `${stats.buildings} mapped buildings in ${sectorAreaHa.toFixed(1)} ha; density ${buildingDensity.toFixed(1)} buildings/ha.`;
+
+  if (stats.total === 0) {
+    return { tc: "Review", basis: "No OSM building or land-use records found in this upwind sector.", confidence: "Low", stats };
+  }
+  if (tallDensity >= 6 && buildingDensity >= 12) {
+    tc = "TC4";
+    confidence = "Medium";
+    basis += " OSM height/level tags suggest closely spaced taller construction.";
+  } else if (buildingDensity >= 10) {
+    tc = "TC3";
+    confidence = buildingDensity >= 16 ? "High" : "Medium";
+    basis += " Building density is consistent with suburban/light-industrial roughness; confirm obstruction permanence.";
+  } else if (buildingDensity >= 2) {
+    tc = "TC2.5";
+    confidence = "Medium";
+    basis += " Scattered obstruction density is in the draft TC2.5 range.";
+  } else if (stats.water > 0 && stats.buildings === 0) {
+    tc = "TC1";
+    confidence = "Low";
+    basis += " Water/open records dominate, but true over-water fetch must be confirmed from mapping.";
+  } else if (stats.open > 0 || stats.forest > 0) {
+    tc = "TC2";
+    confidence = stats.buildings === 0 ? "Medium" : "Low";
+    basis += " Open/farmland/forest records dominate; confirm obstruction height and spacing.";
+  } else if (stats.urban > 0 && stats.buildings < 2) {
+    tc = "TC2.5";
+    confidence = "Low";
+    basis += " Urban land-use is mapped but building records are sparse.";
+  }
+  return { tc, basis, confidence, stats };
+}
+
+function interpolateDistanceAtElevation(points, startIndex, targetElevation) {
+  for (let i = startIndex; i < points.length - 1; i += 1) {
+    const a = points[i];
+    const b = points[i + 1];
+    const da = a.elevation - targetElevation;
+    const db = b.elevation - targetElevation;
+    if (da === 0) return a.distance;
+    if (da * db <= 0 && b.distance > a.distance) {
+      const ratio = Math.abs(da) / (Math.abs(da) + Math.abs(db));
+      return a.distance + ratio * (b.distance - a.distance);
+    }
+  }
+  return null;
+}
+
+function windMtFromRegion(mh, inputs, siteElevation) {
+  const mlee = inputs.region === "general" ? 1 : inputs.mlee;
+  if (inputs.region === "a0") return { mt: 0.5 + 0.5 * mh, branch: "Region A0: Mt = 0.5 + 0.5Mh." };
+  if (inputs.region === "a4nz") {
+    const elevationFactor = 1 + 0.00015 * Math.max(0, siteElevation || 0);
+    return { mt: mh * mlee * elevationFactor, branch: `A4/NZ high elevation: Mt = Mh Mlee (1 + 0.00015E), E = ${fixed(siteElevation || 0)} m.` };
+  }
+  return { mt: Math.max(mh, 1), branch: "Australia general: Mlee taken as 1.0; Mt = max(Mh, 1.0)." };
+}
+
+function suggestTopographicMultiplier(direction, inputs) {
+  if (!validWindInputs(inputs)) {
+    return { mt: 1, mh: 1, basis: "Enter valid latitude and longitude.", confidence: "Low", profile: null };
+  }
+  const profiles = windState.elevationProfiles;
+  if (!profiles || windState.key !== inputs.key || !profiles[direction.key]) {
+    return { mt: 1, mh: 1, basis: "Fetch DEM profile data for this coordinate and height.", confidence: "Low", profile: null };
+  }
+  const rawPoints = profiles[direction.key].filter(point => Number.isFinite(point.elevation)).sort((a, b) => a.distance - b.distance);
+  if (rawPoints.length < 4) {
+    return { mt: 1, mh: 1, basis: "Not enough DEM profile points returned for this direction.", confidence: "Low", profile: rawPoints };
+  }
+  const crestIndex = rawPoints.reduce((best, point, index) => point.elevation > rawPoints[best].elevation ? index : best, 0);
+  const crest = rawPoints[crestIndex];
+  const beyondCrest = rawPoints.filter(point => point.distance >= crest.distance);
+  const lowPoint = (beyondCrest.length >= 2 ? beyondCrest : rawPoints).reduce((best, point) => point.elevation < best.elevation ? point : best, beyondCrest[0] || rawPoints[0]);
+  const H = Math.max(0, crest.elevation - lowPoint.elevation);
+  const hLimit = Math.min(0.4 * inputs.z, 5);
+  const flatRegion = windMtFromRegion(1, inputs, profiles.siteElevation);
+  if (H < hLimit) {
+    return {
+      mt: flatRegion.mt,
+      mh: 1,
+      basis: `H = ${fixed(H)} m is below min(0.4z, 5 m) = ${fixed(hLimit)} m; Mh = 1.0. ${flatRegion.branch}`,
+      confidence: "High",
+      profile: rawPoints
+    };
+  }
+  const halfLevel = crest.elevation - H / 2;
+  let halfDistance = interpolateDistanceAtElevation(rawPoints, crestIndex, halfLevel);
+  let confidence = "Medium";
+  if (!Number.isFinite(halfDistance)) {
+    halfDistance = rawPoints[rawPoints.length - 1].distance;
+    confidence = "Low";
+  }
+  const Lu = Math.max(1, Math.abs(halfDistance - crest.distance));
+  const slope = H / (2 * Lu);
+  const L1 = Math.max(0.36 * Lu, 0.4 * H);
+  const L2 = (inputs.topoModel === "escarpment" ? 10 : 4) * L1;
+  const x = Math.abs(crest.distance);
+  let mh = 1;
+  let equation = "Mh = 1.0";
+  if (slope < 0.05 || x > L2) {
+    mh = 1;
+    equation = slope < 0.05 ? "H/(2Lu) < 0.05; Mh = 1.0." : "|x| is outside L2; Mh = 1.0.";
+  } else if (slope <= 0.45) {
+    mh = 1 + (H / (3.5 * (inputs.z + L1))) * Math.max(0, 1 - x / L2);
+    equation = "AS/NZS 1170.2 Eq. 4.4(3) screen.";
+  } else if (x <= H / 4) {
+    mh = 1 + 0.71 * Math.max(0, 1 - x / L2);
+    equation = "AS/NZS 1170.2 Eq. 4.4(4) peak-zone screen.";
+  } else {
+    mh = 1 + (H / (3.5 * (inputs.z + L1))) * Math.max(0, 1 - x / L2);
+    equation = "Steep slope outside peak zone; Eq. 4.4(3) screen.";
+  }
+  mh = Math.max(1, mh);
+  const region = windMtFromRegion(mh, inputs, profiles.siteElevation);
+  const basis = `H=${fixed(H)} m, Lu=${fixed(Lu)} m, H/(2Lu)=${slope.toFixed(3)}, x=${fixed(x)} m, L1=${fixed(L1)} m, L2=${fixed(L2)} m; ${equation} ${region.branch}`;
+  return { mt: region.mt, mh, basis, confidence, profile: rawPoints };
+}
+
+function windSuggestionRows(inputs) {
+  return windDirections.map(direction => {
+    const terrain = suggestTerrainCategory(direction, inputs);
+    const topography = suggestTopographicMultiplier(direction, inputs);
+    return {
+      direction,
+      terrain,
+      topography,
+      confidence: combinedConfidence(terrain.confidence, topography.confidence)
+    };
+  });
+}
+
+function renderWindRows(rows) {
+  $("windDirectionRows").innerHTML = rows.map(row => {
+    const confidenceClass = `wind-confidence-${row.confidence.toLowerCase()}`;
+    return `<tr>
+      <td>${row.direction.key}</td>
+      <td>${row.direction.sector}&deg;</td>
+      <td>${safeText(row.terrain.tc)}</td>
+      <td>${safeText(row.terrain.basis)}</td>
+      <td>${Number(row.topography.mt).toFixed(2)}</td>
+      <td>${safeText(row.topography.basis)}</td>
+      <td class="${confidenceClass}">${row.confidence}</td>
+    </tr>`;
+  }).join("");
+}
+
+function renderWindDetails(rows) {
+  $("windFormulaSteps").innerHTML = rows.map(row => `<div><b>${row.direction.key}</b><code>TC suggestion: ${safeText(row.terrain.tc)} (${safeText(row.terrain.confidence)} confidence). Mh = ${Number(row.topography.mh).toFixed(2)}; Mt = ${Number(row.topography.mt).toFixed(2)} (${safeText(row.topography.confidence)} confidence).</code></div>`).join("");
+  $("windEvidenceNotes").innerHTML = rows.map(row => {
+    const stats = row.terrain.stats;
+    const profile = row.topography.profile;
+    const statsText = stats
+      ? `OSM sector records: buildings ${stats.buildings}, tall ${stats.tallBuildings}, open ${stats.open}, forest ${stats.forest}, water ${stats.water}, urban land-use ${stats.urban}.`
+      : "OSM sector records not loaded for this coordinate.";
+    const profileText = profile && profile.length
+      ? `DEM samples: ${profile.map(point => `${Math.round(point.distance)}m=${fixed(point.elevation)}m`).join(", ")}.`
+      : "DEM profile not loaded for this coordinate.";
+    return `<article><b>${row.direction.key} sector</b><span>${safeText(statsText)}</span><small>${safeText(profileText)}</small></article>`;
+  }).join("");
+}
+
+function calculateWind() {
+  const inputs = windInputs();
+  $("windScanDistance").textContent = `${Math.round(inputs.xa)} m`;
+  $("windLagDistance").textContent = `${Math.round(inputs.xi)} m`;
+  const rows = windSuggestionRows(inputs);
+  renderWindRows(rows);
+  renderWindDetails(rows);
+  const maxMt = rows.reduce((max, row) => Math.max(max, row.topography.mt), 1);
+  const lowCount = rows.filter(row => row.confidence === "Low").length;
+  $("windMaxMt").textContent = maxMt.toFixed(2);
+  $("windLowConfidence").textContent = String(lowCount);
+  const matched = windDataMatches(inputs);
+  $("windSuggestionStatus").textContent = matched ? "Draft data loaded" : "No current live data";
+  $("windDataStatus").textContent = matched
+    ? `${windState.status}${inputs.queryRadius < inputs.xa ? ` OSM radius capped at ${Math.round(inputs.queryRadius)} m.` : ""}`
+    : "Fetch suggestions after entering the coordinate and reference height.";
+  $("windWarning").innerHTML = matched
+    ? "Warning: values are automatic suggestions for screening only. Confirm terrain category, topographic profile and adopted M<sub>t</sub> against project mapping, survey, current aerial imagery and the licensed Standard before design issue."
+    : "Warning: no current coordinate data is loaded. Use the fetch button for draft suggestions, then complete engineering review before adopting any TC or M<sub>t</sub> value.";
+}
+
+async function fetchOsmWindData(inputs) {
+  const radius = Math.round(inputs.queryRadius);
+  const query = `[out:json][timeout:20];(
+way(around:${radius},${inputs.lat},${inputs.lon})["building"];
+relation(around:${radius},${inputs.lat},${inputs.lon})["building"];
+way(around:${radius},${inputs.lat},${inputs.lon})["landuse"];
+relation(around:${radius},${inputs.lat},${inputs.lon})["landuse"];
+way(around:${radius},${inputs.lat},${inputs.lon})["natural"];
+relation(around:${radius},${inputs.lat},${inputs.lon})["natural"];
+way(around:${radius},${inputs.lat},${inputs.lon})["waterway"];
+);out center tags;`;
+  const response = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`, { headers: { Accept: "application/json" } });
+  if (!response.ok) throw new Error(`OSM ${response.status}`);
+  const data = await response.json();
+  return (data.elements || []).filter(osmElementCentre);
+}
+
+async function fetchWindElevationProfiles(inputs) {
+  const distances = windProfileDistances(inputs.profileDistance);
+  const samples = [{ direction: "site", distance: 0, lat: inputs.lat, lon: inputs.lon }];
+  windDirections.forEach(direction => {
+    distances.forEach(distance => {
+      const point = destinationPoint(inputs.lat, inputs.lon, direction.bearing, distance);
+      samples.push({ direction: direction.key, distance, lat: point.lat, lon: point.lon });
+    });
+  });
+  const latitudes = samples.map(sample => sample.lat.toFixed(6)).join(",");
+  const longitudes = samples.map(sample => sample.lon.toFixed(6)).join(",");
+  const response = await fetch(`https://api.open-meteo.com/v1/elevation?latitude=${latitudes}&longitude=${longitudes}`, { headers: { Accept: "application/json" } });
+  if (!response.ok) throw new Error(`Elevation ${response.status}`);
+  const data = await response.json();
+  if (!Array.isArray(data.elevation) || data.elevation.length !== samples.length) throw new Error("Elevation response length mismatch");
+  const profiles = { siteElevation: Number(data.elevation[0]) || 0 };
+  windDirections.forEach(direction => { profiles[direction.key] = [{ distance: 0, elevation: profiles.siteElevation }]; });
+  samples.slice(1).forEach((sample, index) => {
+    profiles[sample.direction].push({ distance: sample.distance, elevation: Number(data.elevation[index + 1]) });
+  });
+  return profiles;
+}
+
+async function fetchWindSuggestions() {
+  const inputs = windInputs();
+  const button = $("windFetchButton");
+  if (!validWindInputs(inputs)) {
+    windState = { key: "", osmElements: null, elevationProfiles: null, fetchedAt: "", status: "Invalid coordinate", error: "Invalid coordinate" };
+    calculateWind();
+    return;
+  }
+  button.disabled = true;
+  button.textContent = "Fetching...";
+  $("windSuggestionStatus").textContent = "Fetching public data";
+  $("windDataStatus").textContent = "Requesting OSM sector records and DEM elevation samples.";
+  const [osmResult, elevationResult] = await Promise.allSettled([fetchOsmWindData(inputs), fetchWindElevationProfiles(inputs)]);
+  windState = {
+    key: inputs.key,
+    osmElements: osmResult.status === "fulfilled" ? osmResult.value : null,
+    elevationProfiles: elevationResult.status === "fulfilled" ? elevationResult.value : null,
+    fetchedAt: new Date().toISOString(),
+    status: "",
+    error: [osmResult, elevationResult].filter(result => result.status === "rejected").map(result => result.reason.message).join("; ")
+  };
+  const loaded = [];
+  if (windState.osmElements) loaded.push(`${windState.osmElements.length} OSM records`);
+  if (windState.elevationProfiles) loaded.push("DEM profiles");
+  windState.status = loaded.length ? `${loaded.join(" + ")} loaded.` : `Fetch failed: ${windState.error || "no data returned"}.`;
+  button.disabled = false;
+  button.textContent = "Fetch suggestions";
+  calculateWind();
 }
 
 function calculateBolt() {
@@ -1366,6 +1782,7 @@ function setTool(tool, updateHash = true) {
     history.replaceState(null, "", `#${selectedTool}`);
   }
   if (selectedTool === "concrete") calculateConcrete();
+  if (selectedTool === "wind") calculateWind();
 }
 
 function setMemberType(type) {
@@ -1398,9 +1815,9 @@ function setMemberType(type) {
       : type === "custom"
         ? "Custom / Built-up uses user-entered effective properties for axial capacity only."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";
-  if (type === "ea") $("memberAlphaB").value = "0.5";
   $("memberAlphaB").disabled = type !== "custom";
   if (type === "chs") $("memberAlphaB").value = "-0.5";
+  if (type === "ea") $("memberAlphaB").value = "0.5";
   if (type === "pfc") $("memberAlphaB").value = "0.5";
   if (type === "rod") $("memberAlphaB").value = "0.5";
   if (type === "custom") $("memberAlphaB").value = "0.5";
@@ -1423,6 +1840,8 @@ function initialise() {
   populateConcreteBarOptions();
   boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
   weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));
+  windInputIds.forEach(id => $(id).addEventListener("input", calculateWind));
+  $("windFetchButton").addEventListener("click", fetchWindSuggestions);
   concreteInputIds.forEach(id => {
     const depthMatch = id.match(/^layer([1-4])Y$/);
     if (depthMatch) {
@@ -1479,6 +1898,7 @@ function initialise() {
   calculateBolt();
   calculateWeld();
   calculateConcrete();
+  calculateWind();
   setTool(location.hash.slice(1) || "bolt", false);
 }
 

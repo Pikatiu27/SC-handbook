@@ -1,6 +1,6 @@
 # SC Handbook
 
-Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server, package installation or API is required.
+Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required. The `Wind Site` tab can optionally call public map/elevation APIs from the browser when draft coordinate-based suggestions are requested.
 
 ## Tools
 
@@ -82,6 +82,19 @@ The weld symbol legend uses inline SVG examples redrawn from the authorized AS 1
 The weld selection guide is a concise drafting aid for common cases such as shear cleats, gussets, base plates, full-strength splices, partial-strength butt joints, moment connections, tube cap/flange plates, fatigue-sensitive details and site welding. It is scenario-first: each item states the default weld choice, when to use it, when to avoid relying on it, and what still needs checking. ASI *Simple Connections* recommends specifying weld size, weld category and nominal weld metal strength while leaving the welding process selection to the fabricator.
 
 The parent-metal row is a lightweight warning-only per-mm screen using `phi 0.6 f_up t`; it does not change the weld PASS/FAIL status and does not replace tear-out, block shear, net-section rupture, HAZ, edge-distance, eccentric weld group, end return, intermittent weld, fatigue, seismic, lamellar tearing or inspection acceptance checks. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
+
+### Wind Site
+
+The wind site tool gives draft, coordinate-based suggestions for AS/NZS 1170.2 site exposure inputs:
+
+- latitude, longitude and reference height `z`;
+- eight 45-degree upwind sectors from N to NW;
+- suggested terrain category `TC` from OpenStreetMap building and land-use records;
+- suggested topographic multiplier `Mt` from public DEM profile sampling;
+- confidence and evidence notes for every direction;
+- folded calculation steps and limitations.
+
+This tab is deliberately not a signed wind assessment. The suggested `TC` and `Mt` values must be reviewed against project mapping, survey, current aerial imagery, site photos and the licensed current Standard before design issue. It does not calculate wind region, regional wind speed, `Md`, `Mz,cat`, `Ms`, aerodynamic shape factors, dynamic response, local pressures or design wind pressures.
 
 ## Reference files
 

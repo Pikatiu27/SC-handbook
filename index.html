@@ -26,6 +26,7 @@
       <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Section</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
       <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false">Pad Section</button>
+      <button class="tool-tab" type="button" data-tool="wind" aria-controls="windPanel" aria-selected="false">Wind Site</button>
     </nav>
 
     <section id="boltPanel" class="tool-panel active">
@@ -624,6 +625,82 @@
             <p><b>Project inputs</b> &middot; f<sub>y</sub>, f<sub>u</sub> and the quick-check r default are editable for certificate, section-axis or project-specific values. Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
             <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated properties are catalogue-derived. Radius of gyration r is the value about the checked buckling axis; this quick tab defaults to the current geometry/catalogue governing value, including PFC r<sub>min</sub>. Compression section capacity assumes no penetrations or unfilled holes, so A<sub>n</sub> = A<sub>g</sub> for this quick check.</p>
             <p>Equal Angle checks use catalogue r<sub>n</sub> = r<sub>p</sub>. PFC checks use r<sub>min</sub>. For custom / built-up inputs, verify connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling and local buckling separately. Weak-axis, torsional/flexural-torsional buckling, connection eccentricity, bending, shear, combined actions and connection capacity are excluded unless explicitly entered through effective properties and independently checked.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section id="windPanel" class="tool-panel" hidden>
+      <div class="tool-heading">
+        <div><p class="kicker">Wind actions · AS/NZS 1170.2 Section 4</p><h2>Wind Site</h2></div>
+        <span class="tool-status">Draft suggestions only</span>
+      </div>
+
+      <section class="lookup-card wind-card">
+        <div class="input-cluster input-cluster-three">
+          <section class="input-group input-group-section" aria-label="Wind site coordinate inputs">
+            <span class="input-group-heading"><b>Site coordinates</b><small>Coordinate, reference height and scan distance.</small></span>
+            <div class="input-group-fields three">
+              <label><span>Latitude</span><input id="windLatitude" type="number" min="-90" max="90" step="0.000001" value="-33.868800"></label>
+              <label><span>Longitude</span><input id="windLongitude" type="number" min="-180" max="180" step="0.000001" value="151.209300"></label>
+              <label><span>Reference height, z</span><span class="unit"><input id="windReferenceHeight" type="number" min="1" max="200" step="1" value="10"><em>m</em></span></label>
+            </div>
+          </section>
+          <section class="input-group input-group-factor" aria-label="Wind topographic assumptions">
+            <span class="input-group-heading"><b>Relevant factors</b><small>Regional formula branch and terrain model for the draft screen.</small></span>
+            <div class="input-group-fields two">
+              <label><span>Region branch</span><select id="windRegionBranch"><option value="general">Australia general / no NZ lee</option><option value="a0">Region A0</option><option value="a4nz">A4 or NZ high elevation</option></select></label>
+              <label><span>Topography model</span><select id="windTopoModel"><option value="hill">Hill / ridge screen</option><option value="escarpment">Escarpment screen</option></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-action" aria-label="Wind data action">
+            <span class="input-group-heading"><b>Data request</b><small>Browser-side public map and elevation lookup.</small></span>
+            <div class="wind-actions">
+              <button id="windFetchButton" class="data-action-button" type="button">Fetch suggestions</button>
+              <label><span>M<sub>lee</sub> override</span><input id="windMlee" type="number" min="1" max="1.5" step="0.01" value="1.00"></label>
+            </div>
+          </section>
+        </div>
+
+        <div class="wind-summary">
+          <div><span>Suggestion status</span><strong id="windSuggestionStatus">No live data loaded</strong><small id="windDataStatus">Rows are draft placeholders until coordinate data is fetched.</small></div>
+          <dl><div><dt>Scan x<sub>a</sub></dt><dd id="windScanDistance">500 m</dd></div><div><dt>Lag x<sub>i</sub></dt><dd id="windLagDistance">200 m</dd></div><div><dt>Max M<sub>t</sub></dt><dd id="windMaxMt">1.00</dd></div><div><dt>Low confidence</dt><dd id="windLowConfidence">8</dd></div></dl>
+        </div>
+
+        <section class="capacity-section" aria-live="polite">
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Draft exposure suggestions</h2></div><span>N to NW</span></div>
+          <div class="table-scroll">
+            <table class="compact-lookup-table wind-result-table">
+              <thead><tr><th>Direction</th><th>Sector</th><th>Suggested TC</th><th>TC basis</th><th>Suggested M<sub>t</sub></th><th>M<sub>t</sub> basis</th><th>Confidence</th></tr></thead>
+              <tbody id="windDirectionRows"></tbody>
+            </table>
+          </div>
+          <p class="checklist-warning wind-warning" id="windWarning">Warning: values are automatic suggestions for screening only. Terrain category and topographic multiplier must be reviewed against project mapping, survey, current aerial imagery and the licensed Standard before design issue.</p>
+        </section>
+      </section>
+
+      <details class="detail-card">
+        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Direction calculation notes</b></span><small>OSM terrain evidence, DEM profile values and M<sub>h</sub> / M<sub>t</sub> calculations</small></span><i>+</i></summary>
+        <div class="detail-body">
+          <section><h3>Calculation steps</h3><div id="windFormulaSteps" class="formula-list"></div></section>
+          <section><h3>Evidence notes</h3><div id="windEvidenceNotes" class="wind-evidence-grid"></div></section>
+        </div>
+      </details>
+
+      <details class="source-card">
+        <summary><span><b>Calculation basis and limitations</b><small>AS/NZS 1170.2 site exposure boundary and data-source warnings</small></span><i>+</i></summary>
+        <div class="source-body">
+          <div class="source-notes">
+            <p><b>Issue status</b> &middot; Draft / automatic suggestion only. This tab is not an issue-for-design wind assessment.</p>
+            <p><b>Primary basis</b> &middot; AS/NZS 1170.2 Cl. 4.2 for terrain category descriptions and AS/NZS 1170.2 Cl. 4.4 for the topographic multiplier M<sub>t</sub>.</p>
+            <p><b>Terrain category screen</b> &middot; The browser counts OpenStreetMap building and land-use records in each 45&deg; upwind sector, ignoring the inner lag distance x<sub>i</sub> = 20z and using x<sub>a</sub> = max(500 m, 40z). This is evidence for a suggested TC, not a replacement for engineering judgement.</p>
+            <p><b>Topographic screen</b> &middot; DEM profile points are sampled along each direction. The page estimates H, L<sub>u</sub>, x, L<sub>1</sub> and L<sub>2</sub>, then calculates M<sub>h</sub> and M<sub>t</sub>. Crest selection, hill/ridge/escarpment type and local topographic zone must be confirmed from project mapping or survey.</p>
+          </div>
+          <div class="source-notes">
+            <p><b>Public data sources</b> &middot; The live fetch uses <a href="https://wiki.openstreetmap.org/wiki/Overpass_API" target="_blank" rel="noopener">OpenStreetMap Overpass API</a> records and the <a href="https://open-meteo.com/en/docs/elevation-api" target="_blank" rel="noopener">Open-Meteo Elevation API</a>. API outages, sparse mapping, missing building heights, changed land use and DEM resolution can change the suggested values.</p>
+            <p><b>Excluded checks</b> &middot; Wind region, regional wind speed, M<sub>d</sub>, M<sub>z,cat</sub>, M<sub>s</sub>, aerodynamic shape factors, dynamic response, shielding, local pressure factors and final design wind pressures are not calculated by this tab.</p>
+            <p><b>Use</b> &middot; Keep the adopted TC and M<sub>t</sub> as project-confirmed inputs in the design calculation. Do not copy the automatic suggestion into a design report without a site-specific review trail.</p>
+            <p><b>Reference</b> &middot; AS/NZS 1170.2:2021 local PDF pages for Cl. 4.2 and Cl. 4.4 were checked visually in the project reference library before adding this draft tab.</p>
           </div>
         </div>
       </details>

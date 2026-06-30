@@ -771,7 +771,11 @@ Use one static app with multiple short tabs.
 Current core tabs:
 
 - `Bolt Capacity`
-- `Member Capacity`
+- `Axial Member`
+- `Beam Section`
+- `Weld Capacity`
+- `Pad Section`
+- `Wind Site`
 
 Future tabs may include:
 
@@ -950,11 +954,11 @@ Web input grouping:
 - Do not force all input cards into one desktop row. Use multiple rows or two-column wrapping when four equal cards make labels, units or controls cramped.
 - Effective length, checked radius, gross area and similar member geometry/restraint values belong with `Section properties` or geometry inputs, not `Relevant factors`.
 - `Relevant factors` should be reserved for coefficients, reduction factors, category modifiers and code factors such as `alpha_b`, `k_t`, `k_r`, `k_h`, `phi`, `M_t` or similar.
+- For `Custom / Built-up` inputs, keep the same engineering card sequence and switch fields inside each card. Custom geometry and effective lengths belong in `Section properties`; custom `k_f` and `alpha_b` values belong in `Relevant factors`. Do not add separate custom-only cards unless the value group has a different engineering purpose.
 - Keep fully manual project inputs visually distinct from values selected from a lookup table, derived by the app, or defaulted from a cited source but still editable.
 - Fully manual inputs include design actions, actual dimensions, effective length, net area, material strengths entered from project documents, and connection-specific values.
 - Lookup / derived / overrideable inputs include catalogue section selection, standard category selection, table-based factors, default correction factors, and editable factors such as `alpha_b`, `k_t`, `k_r`, or `k_h` when the page provides a cited default or lookup basis.
 - Overrideable section and material values must stay inside their engineering groups. For example, an editable radius of gyration `r` belongs with `Section properties`, while editable `fy` and `fu` belong with `Material properties`; do not create a separate override strip unless the override is cross-cutting and cannot be grouped cleanly.
-- For `Custom / Built-up` inputs, keep the same engineering card sequence and switch fields inside each card. Custom geometry and effective lengths belong in `Section properties`; custom `k_f` and `alpha_b` values belong in `Relevant factors`. Do not add separate custom-only cards unless the value group has a different engineering purpose.
 - Optional design-action inputs are allowed when they only report utilisation against an already displayed capacity. They must not expand the tab into a full design workflow or imply that excluded checks have been completed.
 - Warning-only inputs and screens, such as parent-metal checks or connected-part prompts, must be visually lower priority than governing capacity inputs and results. Prefer collapsed `details` panels when the values are not needed for the main quick lookup.
 - Derived read-only factors should be shown as derived values or placed in an advanced/details panel. Do not present calculated values such as stress-block factors as primary project inputs.
@@ -1239,7 +1243,31 @@ Concrete tab warnings must stay visible and concise. If no reinforcement mat is 
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
-### 15.13 Web Local Update and Deployment Workflow
+### 15.13 Wind Site Web Tab Rules
+
+The Wind Site tab is a draft site-exposure suggestion tool only. It must not be presented as a signed wind assessment or a complete AS/NZS 1170.2 wind-load calculator.
+
+Required scope:
+
+- Input site latitude and longitude.
+- Generate eight 45-degree upwind direction sectors: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, and `NW`.
+- Suggest, but do not adopt, terrain category `TC` for each sector from available public mapping evidence.
+- Suggest, but do not adopt, topographic multiplier `Mt` for each sector from public elevation profile evidence.
+- Show confidence and evidence notes for every direction.
+- Keep calculation steps and source limitations in folded details panels.
+- Keep a visible warning that automatic values are for screening only and require engineering review before design issue.
+
+Required exclusions:
+
+- Signed terrain-category adoption.
+- Signed topographic-multiplier adoption.
+- Final regional wind speed, wind region and annual-probability selection.
+- Final `Md`, `Mz,cat`, `Ms`, `Cfig`, `Cshp`, dynamic response, local pressure factors and design pressure calculation.
+- Automatic reliance on Google Earth, public DEM, OpenStreetMap, aerial imagery, or any other online source as the sole issue-for-design evidence.
+
+The browser-side coordinate fetch may use public map/elevation APIs only as draft evidence. If the request fails, data is sparse, building heights are missing, or the scan radius is capped, the row must stay low-confidence or require review. The adopted design values must remain project-confirmed inputs in the final engineering calculation.
+
+### 15.14 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 

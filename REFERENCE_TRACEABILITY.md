@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-06-30
+Last updated: 2026-07-01
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -15,6 +15,7 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | --- | --- | --- | --- |
 | AS 4100:2020 | `AS4100.pdf` | 233 pages, 227 text pages, 97% coverage | Bolt, weld, beam, axial member |
 | AS 3600:2018 | `AS3600.pdf` | 273 pages, 269 text pages, 99% coverage | Concrete pad section |
+| AS/NZS 1170.2:2021 | `AS11702-2021.pdf` | 131 pages, 128 text pages, 98% coverage | Wind Site draft exposure suggestions |
 | AS 1101.3:2005 | `11013-2005-pdf.pdf` | 121 pages, 121 text pages, 100% coverage | Weld symbol legend |
 | AS/NZS 1554.1:2014 | `4.1a+AS1554-1-2014.pdf` | 125 pages, 125 text pages, 100% coverage | Weld category / WPS / inspection context |
 | AS/NZS 1554.3:2014 | `4.2+AS1554-3-2014.pdf` | 78 pages, 0 text pages, OCR needed | Do not use as searchable source until OCR/visual check |
@@ -56,6 +57,8 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Concrete | Stress block and bending section theory | `AS3600.pdf` | AS 3600 Cl. 8.1.3 and AS 3600 Cl. 8.1.5 visually checked on PDF pages 113-114 | Visual checked |
 | Concrete | Capacity factor | `AS3600.pdf` | AS 3600 Table 2.2.2 visually checked on PDF pages 38-39 | Visual checked |
 | Concrete | One-way shear screen | `AS3600.pdf` | AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3 and AS 3600 Cl. 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
+| Wind Site | Terrain category definitions | `AS11702-2021.pdf` | AS/NZS 1170.2 Cl. 4.2 visually checked on PDF page 39; terrain averaging and lag distance visually checked on PDF page 40 | Visual checked for draft suggestion basis only |
+| Wind Site | Topographic multiplier `Mt` and hill-shape multiplier `Mh` | `AS11702-2021.pdf` | AS/NZS 1170.2 Cl. 4.4 visually checked on PDF pages 42-45, including Equations 4.4(1) to 4.4(4), Figs. 4.3 to 4.5 and Table 4.3 | Visual checked for draft suggestion basis only |
 
 ## Remaining Source Gaps / Row-Level Checks
 
@@ -66,6 +69,7 @@ The primary standard formula pages above have been visually checked. These items
 - Orrcon CHS rows require row-level numeric checks if dimensions or grades are embedded rather than entered by the user.
 - AS 4100 Table 6.3.3 `alpha_b` values have been visually checked, but non-default option mapping remains project/member-axis dependent.
 - AS 3600 one-way shear is kept as a lightweight screen with visible assumptions. It is not a full shear design engine unless `kv`, reinforcement layout and detailing checks are expanded later.
+- Wind Site uses public OSM and DEM data as draft evidence only. Coordinate-derived `TC` and `Mt` suggestions are not checked or adopted design values until a project-specific site review confirms the terrain category, topographic cross-section and data currency.
 - AS/NZS 1554.3 currently has 0% text extraction in the generated pack. Treat it as visual-check-only or OCR-needed.
 
 ## 2026-06-30 Default Row / Calculation Audit
