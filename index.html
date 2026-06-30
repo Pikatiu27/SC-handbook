@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260630d">
+  <link rel="stylesheet" href="styles.css?v=20260701f">
 </head>
 <body>
   <header class="topbar">
@@ -35,10 +35,15 @@
       </div>
 
       <section class="lookup-card">
-        <div class="primary-inputs three-inputs">
-          <label class="size-field"><span>Bolt size</span><select id="boltSize" aria-label="Bolt size"></select></label>
-          <label><span>Bolt category</span><select id="category" aria-label="Bolt category"></select></label>
-          <label><span>Shear plane</span><select id="shearPlane" aria-label="Shear-plane condition"><option value="N">N — threads intercept plane</option><option value="X">X — threads clear of plane</option></select></label>
+        <div class="input-cluster">
+          <section class="input-group input-group-section" aria-label="Bolt reference selection">
+            <span class="input-group-heading"><b>Section / fastener selection</b><small>Lookup values from bolt size, category and selected shear-plane condition.</small></span>
+            <div class="input-group-fields three">
+              <label class="size-field"><span>Bolt size</span><select id="boltSize" aria-label="Bolt size"></select></label>
+              <label><span>Bolt category</span><select id="category" aria-label="Bolt category"></select></label>
+              <label><span>Shear plane</span><select id="shearPlane" aria-label="Shear-plane condition"><option value="N">N — threads intercept plane</option><option value="X">X — threads clear of plane</option></select></label>
+            </div>
+          </section>
         </div>
 
         <div class="bolt-summary">
@@ -92,13 +97,23 @@
       <div class="tool-heading"><div><p class="kicker">Welded connections · AS 4100 Cl. 9.6</p><h2>Weld Capacity</h2></div><span class="tool-status">For Review · AS/NZS 1554.1 notes</span></div>
 
       <section class="lookup-card weld-card">
-        <div class="primary-inputs weld-inputs">
-          <label class="size-field"><span>Weld type</span><select id="weldType" aria-label="Weld type"><option value="fillet">Fillet weld</option><option value="cpbw">Complete penetration butt weld</option><option value="ipbw">Incomplete penetration butt weld</option><option value="compound">Compound weld</option></select></label>
-          <label><span>Fillet size, s</span><select id="weldSize" aria-label="Fillet weld size"></select></label>
-          <label><span>Weld category</span><select id="weldCategory" aria-label="Weld category"><option value="SP">SP - structural purpose</option><option value="GP">GP - general purpose</option></select></label>
-          <label><span>Weld metal strength, f<sub>uw</sub></span><select id="weldStrength" aria-label="Nominal tensile strength of weld metal"><option value="430">430 MPa</option><option value="490" selected>490 MPa</option><option value="550">550 MPa</option></select></label>
-          <label><span>Effective length, l<sub>w</sub></span><span class="unit"><input id="weldLength" type="number" min="1" step="1" value="100"><em>mm</em></span></label>
-          <label><span>Effective weld lines</span><input id="weldRuns" type="number" min="1" max="12" step="1" value="2"></label>
+        <div class="input-cluster input-cluster-two">
+          <section class="input-group input-group-section" aria-label="Weld geometry inputs">
+            <span class="input-group-heading"><b>Section / weld geometry</b><small>Weld type, size, effective length and identical effective weld lines.</small></span>
+            <div class="input-group-fields four">
+              <label class="size-field"><span>Weld type</span><select id="weldType" aria-label="Weld type"><option value="fillet">Fillet weld</option><option value="cpbw">Complete penetration butt weld</option><option value="ipbw">Incomplete penetration butt weld</option><option value="compound">Compound weld</option></select></label>
+              <label><span>Fillet size, s</span><select id="weldSize" aria-label="Fillet weld size"></select></label>
+              <label><span>Effective length, l<sub>w</sub></span><span class="unit"><input id="weldLength" type="number" min="1" step="1" value="100"><em>mm</em></span></label>
+              <label><span>Effective weld lines</span><input id="weldRuns" type="number" min="1" max="12" step="1" value="2"></label>
+            </div>
+          </section>
+          <section class="input-group input-group-material" aria-label="Weld material inputs">
+            <span class="input-group-heading"><b>Material properties / category</b><small>Weld category and nominal weld-metal strength.</small></span>
+            <div class="input-group-fields two">
+              <label><span>Weld category</span><select id="weldCategory" aria-label="Weld category"><option value="SP">SP - structural purpose</option><option value="GP">GP - general purpose</option></select></label>
+              <label><span>Weld metal strength, f<sub>uw</sub></span><select id="weldStrength" aria-label="Nominal tensile strength of weld metal"><option value="430">430 MPa</option><option value="490" selected>490 MPa</option><option value="550">550 MPa</option></select></label>
+            </div>
+          </section>
         </div>
 
         <div class="weld-summary">
@@ -244,12 +259,27 @@
             <article class="capacity-card"><span>Capacity per mm per run</span><strong><output id="weldCapacityPerMm">1.00</output><small> kN/mm</small></strong><p>&phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub></p></article>
             <article class="capacity-card alternate-shear"><span>Parent metal screen</span><strong><output id="parentGoverningPerMm">2.21</output><small> kN/mm</small></strong><p id="parentGoverningNote">warning only</p></article>
           </div>
-          <div class="weld-extra-inputs">
-            <label><span>a<sub>w</sub> butt-weld throat</span><span class="unit"><input id="weldEffectiveThroat" type="number" min="1" step="0.5" value="10"><em>mm</em></span></label>
-            <label><span>Ply thickness, t</span><span class="unit"><input id="weldParentThickness" type="number" min="0" step="0.5" value="10"><em>mm</em></span></label>
-            <label><span>Parent metal grade</span><select id="weldParentGrade" aria-label="Parent metal grade"></select></label>
-            <label><span>Welded lap connection</span><select id="weldLapConnection" aria-label="Apply welded lap connection reduction"><option value="no" selected>No</option><option value="yes">Yes - apply kr</option></select></label>
-            <label><span>V* design action</span><span class="unit"><input id="weldDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+          <div class="weld-extra-inputs input-cluster input-cluster-three">
+            <section class="input-group input-group-section">
+              <span class="input-group-heading"><b>Section / parent geometry</b><small>Butt-weld throat and parent ply thickness.</small></span>
+              <div class="input-group-fields two">
+                <label><span>a<sub>w</sub> butt-weld throat</span><span class="unit"><input id="weldEffectiveThroat" type="number" min="1" step="0.5" value="10"><em>mm</em></span></label>
+                <label><span>Ply thickness, t</span><span class="unit"><input id="weldParentThickness" type="number" min="0" step="0.5" value="10"><em>mm</em></span></label>
+              </div>
+            </section>
+            <section class="input-group input-group-material">
+              <span class="input-group-heading"><b>Material property</b><small>Parent metal grade for the warning-only screen.</small></span>
+              <div class="input-group-fields">
+                <label><span>Parent metal grade</span><select id="weldParentGrade" aria-label="Parent metal grade"></select></label>
+              </div>
+            </section>
+            <section class="input-group input-group-action">
+              <span class="input-group-heading"><b>Relevant factor / action</b><small>Lap reduction selection and design shear action.</small></span>
+              <div class="input-group-fields two">
+                <label><span>Welded lap connection</span><select id="weldLapConnection" aria-label="Apply welded lap connection reduction"><option value="no" selected>No</option><option value="yes">Yes - apply kr</option></select></label>
+                <label><span>V* design action</span><span class="unit"><input id="weldDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+              </div>
+            </section>
           </div>
           <div class="interaction-result weld-utilisation"><span>Weld utilisation ratio</span><strong id="weldUtilisation">0.00</strong><b id="weldStatus">Enter design action</b></div>
           <p class="result-note">Capacity view only. Not a full weld or joint design check. This view uses weld-metal throat area for the selected weld type. Weld category changes the capacity factor where AS 4100 Table 3.4 gives different SP/GP values. Parent metal check is warning-only; HAZ, tear-out, block shear, eccentric weld groups, fatigue, lamellar tearing and inspection acceptance remain project checks.</p>
@@ -267,27 +297,36 @@
       <div class="tool-heading"><div><p class="kicker">Concrete pads · AS 3600 section theory</p><h2>Concrete Pad Section</h2></div><span>RC moment and one-way shear screen</span></div>
 
       <section class="lookup-card concrete-card">
-        <div class="concrete-input-stack">
-          <div class="concrete-input-row concrete-row-main">
-            <label class="size-field"><span>Compression face</span><select id="concreteDirection" aria-label="Compression face"><option value="top">Top face in compression</option><option value="bottom">Bottom face in compression</option></select></label>
-            <label><span>Section width, b</span><span class="unit"><input id="concreteWidth" type="number" min="100" step="50" value="1000"><em>mm</em></span></label>
-            <label><span>Top pad depth, D<sub>top</sub></span><span class="unit"><input id="concreteTopDepth" type="number" min="0" step="10" value="500"><em>mm</em></span></label>
-            <label><span>Bottom pad depth, D<sub>bot</sub></span><span class="unit"><input id="concreteBottomDepth" type="number" min="0" step="10" value="0"><em>mm</em></span></label>
-          </div>
+        <div class="concrete-input-stack input-cluster">
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Section geometry</b><small>Compression face and pad strip dimensions.</small></span>
+            <div class="concrete-input-row concrete-row-main">
+              <label class="size-field"><span>Compression face</span><select id="concreteDirection" aria-label="Compression face"><option value="top">Top face in compression</option><option value="bottom">Bottom face in compression</option></select></label>
+              <label><span>Section width, b</span><span class="unit"><input id="concreteWidth" type="number" min="100" step="50" value="1000"><em>mm</em></span></label>
+              <label><span>Top pad depth, D<sub>top</sub></span><span class="unit"><input id="concreteTopDepth" type="number" min="0" step="10" value="500"><em>mm</em></span></label>
+              <label><span>Bottom pad depth, D<sub>bot</sub></span><span class="unit"><input id="concreteBottomDepth" type="number" min="0" step="10" value="0"><em>mm</em></span></label>
+            </div>
+          </section>
 
-          <div class="concrete-input-row concrete-row-material">
-            <label><span>Nominal cover, c<sub>nom</sub></span><span class="unit"><input id="concreteCover" type="number" min="0" step="5" value="40"><em>mm</em></span></label>
-            <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" max="120" step="1" value="32"><em>MPa</em></span></label>
-            <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.85" readonly></label>
-          </div>
+          <section class="input-group input-group-material">
+            <span class="input-group-heading"><b>Material properties</b><small>Cover, concrete strength and calculated capacity factor.</small></span>
+            <div class="concrete-input-row concrete-row-material">
+              <label><span>Nominal cover, c<sub>nom</sub></span><span class="unit"><input id="concreteCover" type="number" min="0" step="5" value="40"><em>mm</em></span></label>
+              <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" max="120" step="1" value="32"><em>MPa</em></span></label>
+              <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.85" readonly></label>
+            </div>
+          </section>
 
-          <div class="concrete-input-row concrete-row-analysis">
-            <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
-            <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
-            <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
-            <label><span>One-way shear k<sub>v</sub></span><input id="concreteKv" type="number" min="0.01" max="0.40" step="0.01" value="0.10"></label>
-            <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
-          </div>
+          <section class="input-group input-group-factor">
+            <span class="input-group-heading"><b>Relevant factors / analysis assumptions</b><small>Derived stress-block values and visible quick-screen assumptions.</small></span>
+            <div class="concrete-input-row concrete-row-analysis">
+              <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
+              <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
+              <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
+              <label><span>One-way shear k<sub>v</sub></span><input id="concreteKv" type="number" min="0.01" max="0.40" step="0.01" value="0.10"></label>
+              <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
+            </div>
+          </section>
         </div>
 
         <div class="concrete-summary">
@@ -341,23 +380,48 @@
           </div>
         </details>
 
-        <div class="primary-inputs beam-inputs">
-          <label class="size-field" id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam or column section"></select></label>
-          <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
-          <label><span>M* design moment</span><span class="unit"><input id="beamMomentDemand" type="number" min="0" step="1" value="0"><em>kNm</em></span></label>
-          <label><span>V* design shear</span><span class="unit"><input id="beamShearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+        <div class="input-cluster input-cluster-three">
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Section properties</b><small>Catalogue section or custom section source.</small></span>
+            <div class="input-group-fields">
+              <label class="size-field" id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam or column section"></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-material">
+            <span class="input-group-heading"><b>Material property</b><small>Steel grade for catalogue lookup.</small></span>
+            <div class="input-group-fields">
+              <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-action">
+            <span class="input-group-heading"><b>Design actions</b><small>Optional demand inputs for utilisation reporting.</small></span>
+            <div class="input-group-fields two">
+              <label><span>M* design moment</span><span class="unit"><input id="beamMomentDemand" type="number" min="0" step="1" value="0"><em>kNm</em></span></label>
+              <label><span>V* design shear</span><span class="unit"><input id="beamShearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+            </div>
+          </section>
         </div>
-        <div class="form-grid five beam-custom-inputs" id="beamCustomInputs" hidden>
-          <label><span>Custom name</span><input id="beamCustomName" type="text" value="Custom section"></label>
-          <label><span>f<sub>y</sub></span><span class="unit"><input id="beamCustomFy" type="number" min="0" step="1" value=""><em>MPa</em></span></label>
-          <label><span>Z<sub>ex</sub></span><span class="unit"><input id="beamCustomZex" type="number" min="0" step="0.1" value=""><em>10&sup3; mm&sup3;</em></span></label>
-          <label><span>S<sub>x</sub></span><span class="unit"><input id="beamCustomSx" type="number" min="0" step="0.1" value=""><em>10&sup3; mm&sup3;</em></span></label>
-          <label><span>Z<sub>x</sub></span><span class="unit"><input id="beamCustomZx" type="number" min="0" step="0.1" value=""><em>10&sup3; mm&sup3;</em></span></label>
-          <label><span>A<sub>g</sub></span><span class="unit"><input id="beamCustomArea" type="number" min="0" step="1" value=""><em>mm&sup2;</em></span></label>
-          <label><span>A<sub>w</sub></span><span class="unit"><input id="beamCustomAw" type="number" min="0" step="1" value=""><em>mm&sup2;</em></span></label>
-          <label><span>Mass</span><span class="unit"><input id="beamCustomMass" type="number" min="0" step="0.1" value=""><em>kg/m</em></span></label>
-          <label><span>Compactness</span><select id="beamCustomCompactness"><option value="C">Compact</option><option value="N">Non-compact</option><option value="S">Slender</option></select></label>
-          <label><span>k<sub>f</sub></span><input id="beamCustomKf" type="number" min="0" max="1" step="0.001" value="1"></label>
+        <div class="beam-custom-inputs input-cluster" id="beamCustomInputs" hidden>
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Custom section properties</b><small>Entered properties are not catalogue-verified.</small></span>
+            <div class="input-group-fields seven">
+              <label><span>Custom name</span><input id="beamCustomName" type="text" value="Custom section"></label>
+              <label><span>Z<sub>ex</sub></span><span class="unit"><input id="beamCustomZex" type="number" min="0" step="0.1" value=""><em>10&sup3; mm&sup3;</em></span></label>
+              <label><span>S<sub>x</sub></span><span class="unit"><input id="beamCustomSx" type="number" min="0" step="0.1" value=""><em>10&sup3; mm&sup3;</em></span></label>
+              <label><span>Z<sub>x</sub></span><span class="unit"><input id="beamCustomZx" type="number" min="0" step="0.1" value=""><em>10&sup3; mm&sup3;</em></span></label>
+              <label><span>A<sub>g</sub></span><span class="unit"><input id="beamCustomArea" type="number" min="0" step="1" value=""><em>mm&sup2;</em></span></label>
+              <label><span>A<sub>w</sub></span><span class="unit"><input id="beamCustomAw" type="number" min="0" step="1" value=""><em>mm&sup2;</em></span></label>
+              <label><span>Mass</span><span class="unit"><input id="beamCustomMass" type="number" min="0" step="0.1" value=""><em>kg/m</em></span></label>
+            </div>
+          </section>
+          <section class="input-group input-group-factor">
+            <span class="input-group-heading"><b>Material property / relevant factors</b><small>Yield stress, compactness class and form factor.</small></span>
+            <div class="input-group-fields three">
+              <label><span>f<sub>y</sub></span><span class="unit"><input id="beamCustomFy" type="number" min="0" step="1" value=""><em>MPa</em></span></label>
+              <label><span>Compactness</span><select id="beamCustomCompactness"><option value="C">Compact</option><option value="N">Non-compact</option><option value="S">Slender</option></select></label>
+              <label><span>k<sub>f</sub></span><input id="beamCustomKf" type="number" min="0" max="1" step="0.001" value="1"></label>
+            </div>
+          </section>
         </div>
 
         <div class="beam-summary">
@@ -457,29 +521,53 @@
           </div>
         </details>
 
-        <div class="member-inputs">
-          <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
-          <label id="memberGradeField"><span>Steel grade</span><select id="memberGrade"></select></label>
-          <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
-          <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
+        <div class="input-cluster input-cluster-three">
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Section properties</b><small>Catalogue section, geometry-derived section or custom input.</small></span>
+            <div class="input-group-fields">
+              <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-material">
+            <span class="input-group-heading"><b>Material property</b><small>Steel grade selection before editable overrides.</small></span>
+            <div class="input-group-fields">
+              <label id="memberGradeField"><span>Steel grade</span><select id="memberGrade"></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-factor">
+            <span class="input-group-heading"><b>Relevant factors</b><small>Effective length and member section constant.</small></span>
+            <div class="input-group-fields two">
+              <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
+              <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
+            </div>
+          </section>
         </div>
         <p class="result-note user-input-note" id="memberAlphaBAssumption">α<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS.</p>
 
-        <div class="custom-member-inputs" hidden>
-          <div><span>Custom section properties</span><small>Enter effective properties from your section calculation. The quick check does not verify built-up member detailing.</small></div>
-          <label><span>Name</span><input id="memberCustomName" type="text" value="Custom built-up member"></label>
-          <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
-          <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
-          <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
-          <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.01" max="1" step="0.001" value="1"></label>
-          <label><span>α<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
-          <label><span>α<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
-          <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
-          <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+        <div class="custom-member-inputs input-cluster" hidden>
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Custom section properties</b><small>Enter effective properties from your section calculation. Built-up detailing is not verified here.</small></span>
+            <div class="input-group-fields four">
+              <label><span>Name</span><input id="memberCustomName" type="text" value="Custom built-up member"></label>
+              <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
+              <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
+              <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
+            </div>
+          </section>
+          <section class="input-group input-group-factor">
+            <span class="input-group-heading"><b>Relevant factors</b><small>Compression factors and effective lengths by principal axis.</small></span>
+            <div class="input-group-fields five">
+              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.01" max="1" step="0.001" value="1"></label>
+              <label><span>α<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
+              <label><span>α<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
+              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+            </div>
+          </section>
         </div>
 
         <div class="material-strength-inputs" aria-label="Editable member defaults">
-          <div><span>Editable defaults</span><small id="memberRadiusSource">Default r is from the selected section. Edit r, f<sub>y</sub> or f<sub>u</sub> to match the checked buckling axis and project data.</small></div>
+          <div><span>Section / material overrides</span><small id="memberRadiusSource">Default r is from the selected section. Edit r, f<sub>y</sub> or f<sub>u</sub> to match the checked buckling axis and project data.</small></div>
           <label id="memberRadiusField"><span>r <i>editable</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
           <label><span>f<sub>y</sub> <i>editable</i></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
           <label><span>f<sub>u</sub> <i>editable</i></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
@@ -488,7 +576,7 @@
         <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r</dt><dd id="memberRadius">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>w</sub></dt><dd id="memberWebThickness">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>f</sub></dt><dd id="memberFlangeThickness">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
         <div class="tension-inputs">
-          <div><span>Tension member inputs · AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3</span><small id="memberNetAreaSource">Use auto net area for a straight bolt-hole deduction, or manual A<sub>n</sub> for slots, stagger, cope cuts and other project-specific net-section paths.</small></div>
+          <div><span>Connection / tension factors · AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3</span><small id="memberNetAreaSource">Use auto net area for a straight bolt-hole deduction, or manual A<sub>n</sub> for slots, stagger, cope cuts and other project-specific net-section paths.</small></div>
           <label class="member-net-method"><span>A<sub>n</sub> method</span><span class="unit"><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></span></label>
           <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
           <label class="member-hole-field"><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
