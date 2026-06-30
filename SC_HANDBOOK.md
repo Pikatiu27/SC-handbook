@@ -934,6 +934,13 @@ Standard, clause, table, figure and section references:
 - Put detailed source explanation in `Calculation basis and limitations`.
 - Use clause references near warnings only when they help the engineer know what to check next.
 
+Related project files:
+
+- `SC_HANDBOOK.md` is the only project outline and rulebook. Update it for durable scope, UI, terminology, calculation-boundary and formatting rules.
+- `README.md` is the public project summary. Keep it short and user-facing; do not duplicate detailed audit tables there.
+- `REFERENCE_TRACEABILITY.md` is the source evidence register. Put visual-check status, PDF page evidence, row-level checks and remaining source gaps there.
+- Source PDFs, converted Markdown packs and technical sheets live only in `C:\Users\silin\Documents\Codex\Reference`. Do not create a second reference folder inside this repo.
+
 Web input grouping:
 
 - Keep fully manual project inputs visually distinct from values selected from a lookup table, derived by the app, or defaulted from a cited source but still editable.

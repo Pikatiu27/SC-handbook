@@ -23,9 +23,9 @@ Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal pl
 The member tool contains four product families:
 
 - CHS: common AS/NZS 1163 C250L0 and C350L0 sizes from the Orrcon National Product Catalogue 2024;
-- Equal Angle: common 300PLUS and Grade 350 sizes, properties and form factors from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition;
+- Equal Angle: common 300PLUS and Grade 350 sizes, properties and form factors from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, OneSteel / InfraBuild Tables 19-21;
 - PFC: common 300PLUS Parallel Flange Channel sizes from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, OneSteel / InfraBuild Tables 15 and 16, using catalogue gross area, minimum radius of gyration and form factor;
-- Rod: common round bar diameters from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, OneSteel / InfraBuild Table 3 Rounds - Size Availability and Mass, using geometric area and radius. Confirm the actual Australian product grade and availability against the applicable manufacturer catalogue.
+- Rod: common round bar diameters from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, OneSteel / InfraBuild Table 3 Rounds - Size Availability and Mass and OneSteel / InfraBuild Table 38 round-bar yield-stress ranges, using geometric area and radius. Confirm the actual Australian product grade and availability against the applicable manufacturer catalogue.
 
 The axial compression calculation follows AS 4100 Cl. 6.2 and AS 4100 Cl. 6.3 and the published Austube Mills / Australian Steel Institute *Design Capacity Tables for Structural Steel Hollow Sections*. The axial tension calculation follows AS 4100 Cl. 7.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3 and takes the lesser of gross-section yielding and net-section fracture. It reports section compression capacity, member compression capacity, design tension capacity, the two tension limit states, slenderness and the member reduction factor.
 
@@ -84,6 +84,12 @@ The weld selection guide is a concise drafting aid for common cases such as shea
 The parent-metal row is a lightweight warning-only per-mm screen using `phi 0.6 f_up t`; it does not change the weld PASS/FAIL status and does not replace tear-out, block shear, net-section rupture, HAZ, edge-distance, eccentric weld group, end return, intermittent weld, fatigue, seismic, lamellar tearing or inspection acceptance checks. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
 
 ## Reference files
+
+The project documentation is split deliberately:
+
+- `SC_HANDBOOK.md` is the only project outline and rulebook.
+- `README.md` is this short public summary.
+- `REFERENCE_TRACEABILITY.md` is the calculation/source evidence register.
 
 The only working reference folder for this project is:
 
