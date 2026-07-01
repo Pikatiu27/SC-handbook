@@ -776,7 +776,7 @@ Current core tabs:
 - `Beam Section`
 - `Weld Capacity`
 - `Pad Section`
-- `Wind Site`
+- `Wind Site Draft`
 
 Future tabs may include:
 
@@ -996,9 +996,12 @@ Input grouping:
 - Fully manual inputs include design actions, actual dimensions, effective length, net area, material strengths entered from project documents, and connection-specific values.
 - Lookup / derived / overrideable inputs include catalogue section selection, standard category selection, table-based factors, default correction factors, and editable factors such as `alpha_b`, `k_t`, `k_r`, or `k_h` when the page provides a cited default or lookup basis.
 - Overrideable section and material values must stay inside their engineering groups. For example, an editable radius of gyration `r` belongs with `Section properties`, while editable `fy` and `fu` belong with `Material properties`; do not create a separate override strip unless the override is cross-cutting and cannot be grouped cleanly.
+- Read-only calculated design factors belong in `Derived values`, not `Material properties`. Examples include concrete `phi`, `alpha2`, `gamma` and ultimate strain where they are calculated from the selected section state or standard model.
+- Connection-specific net-section inputs should use their own `Connection / net-section inputs` or `Connection / detailing inputs` row. Do not mix `A_n`, `k_t`, bolt-hole counts, hole diameter or net-path thickness into section, material or compression-factor rows.
 - Optional design-action inputs are allowed when they only report utilisation against an already displayed capacity. They must not expand the tab into a full design workflow or imply that excluded checks have been completed.
 - Warning-only inputs and screens, such as parent-metal checks or connected-part prompts, must be visually lower priority than governing capacity inputs and results. Prefer collapsed `details` panels when the values are not needed for the main quick lookup.
 - Derived read-only factors should be shown as derived values or placed in an advanced/details panel. Do not present calculated values such as stress-block factors as primary project inputs.
+- Main visible warnings should stay concise: one base sentence plus short review flags where needed. Long exclusions, source uncertainty and derivation notes belong in the folded calculation-basis / limitations panels.
 - Use different subtle background fills for these two groups. Do not rely on colour alone; labels and warnings must still state which values remain project-confirmed.
 - Input controls must use a consistent control height, border radius, font size, label size and focus treatment across all tabs unless a dense table genuinely requires smaller controls. Main calculator inputs should use the shared form-control style rather than one-off sizing.
 - On phone browsers, numeric fields must allow direct typing. Do not leave editable numeric inputs in a state where the user can only use increment / decrement controls.
@@ -1184,7 +1187,7 @@ Connection- and axis-dependent terms must stay explicit:
 - Do not imply `A_n` is known from the catalogue section alone; it must come from the actual connection net section.
 - `f_y` and `f_u` may default from the selected material grade, manufacturer table or product standard, but keep them editable where project certificates, thickness ranges or product-specific values may govern. If the user overrides them, calculation steps must show the current values and state that `k_f`, `alpha_b` and catalogue geometry remain tied to the selected section / lookup basis unless separately changed.
 - `Custom / Built-up` member input may use user-entered effective properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`. Calculate compression about both entered axes and report the governing `phi N_c`. State clearly that the source section calculation, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, local buckling derivation and connection eccentricity are not verified by the web tab.
-- For EA tension checks, provide a lightweight straight-line bolt-hole deduction option (`A_n = A_g - n_h d_h t`) using the selected angle thickness. For PFCs, show catalogue `t_w` / `t_f` from the manufacturer table, default the net-area deduction thickness to `t_w`, and allow manual override where the net path passes through the flange or a connected element. Keep a manual `A_n` override for staggered holes, slots, cope cuts, multiple net-section paths, or any topology-dependent connection geometry.
+- For EA tension checks, provide a lightweight straight-line bolt-hole deduction option (`A_n = A_g - n_h d_h t`) using the selected angle thickness. For PFCs, show catalogue `t_w` / `t_f` from the manufacturer table, default the net-area deduction thickness to `t_w`, and allow manual override where the net path passes through the flange or a connected element. Keep a manual `A_n` override for staggered holes, slots, cope cuts, multiple net-section paths, or any topology-dependent connection geometry. Display these values in a `Connection / net-section inputs` row, separate from section properties, material strengths and compression reduction factors.
 - Use `k_t = 1.00` only where the end connection satisfies AS 4100 Cl. 7.3.1 uniform force distribution.
 - For eccentric tension connections, use AS 4100 Table 7.3.2. Current quick defaults: Equal Angle one-leg connection `k_t = 0.85`; PFC/channel eccentric quick default `k_t = 0.85` unless the actual Table 7.3.2 case supports `0.90` or `1.00`; unequal angle connected by the short leg `k_t = 0.75` when that case applies. Keep `k_t` editable and project-confirmed.
 
@@ -1265,7 +1268,7 @@ Use this scope:
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
 - One-way shear capacity screen using AS 3600-style `Vuc = kv bv dv sqrt(f'c)` notation, with `kv` kept as a visible engineering assumption and `phi = 0.70` unless compliant Class N fitments are verified.
 - Pad-on-pad composite action only when the user separately confirms composite action and interface shear design outside the calculator.
-- Keep concrete pad inputs in the standard row-band layout. `Pad-on-pad composite action` belongs in the visible `Relevant factors / assumptions` row and must not be forced into a narrow fixed-width control. Derived stress-block values should be a separate read-only row, not a nested card inside the assumptions row. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
+- Keep concrete pad inputs in the standard row-band layout. `Pad-on-pad composite action` belongs in the visible `Relevant factors / assumptions` row and must not be forced into a narrow fixed-width control. Derived stress-block values and calculated capacity factor `phi` should be a separate read-only `Derived values` row, not a nested card inside the assumptions row or a material-property field. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
 
 Required exclusions:
 
@@ -1279,13 +1282,13 @@ Required exclusions:
 - Interface shear design for pad-on-pad strengthening.
 - Plain-concrete footing capacity.
 
-Concrete tab warnings must stay visible and concise. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo` or reinforced-concrete `phi Vuc`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
+Concrete tab warnings must stay visible and concise. The main warning should be a short section-capacity boundary plus brief review flags; keep detailed exclusions and derivations in folded panels. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo` or reinforced-concrete `phi Vuc`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
-### 15.14 Wind Site Web Tab Rules
+### 15.14 Wind Site Draft Web Tab Rules
 
-The Wind Site tab is a draft site-exposure suggestion tool only. It must not be presented as a signed wind assessment or a complete AS/NZS 1170.2 wind-load calculator.
+The Wind Site Draft tab is a draft site-exposure suggestion tool only. It must not be presented as a signed wind assessment or a complete AS/NZS 1170.2 wind-load calculator.
 
 Required scope:
 
@@ -1295,7 +1298,7 @@ Required scope:
 - Suggest, but do not adopt, terrain category `TC` for each sector from available public mapping evidence.
 - Suggest, but do not adopt, topographic multiplier `Mt` for each sector from public elevation profile evidence.
 - Show confidence and evidence notes for every direction.
-- Display the public data resources used by the page, plus higher-quality optional resource upgrades, in the Wind Site page itself.
+- Display the public data resources used by the page, plus higher-quality optional resource upgrades, in the Wind Site Draft page itself.
 - Keep calculation steps and source limitations in folded details panels.
 - Keep a visible warning that automatic values are for screening only and require engineering review before design issue.
 - Keep the workflow exception-only where possible: provide a conservative automatic draft suggestion when evidence is coherent, then flag only terrain/topography exceptions for user review instead of requiring manual judgement for every sector.
@@ -1310,7 +1313,7 @@ Required exclusions:
 
 The browser-side coordinate fetch may use public map/elevation APIs only as draft evidence. If the request fails, data is sparse, building heights are missing, or the scan radius is capped, the row must stay low-confidence or require review. The adopted design values must remain project-confirmed inputs in the final engineering calculation.
 
-Wind Site resource wording must distinguish current live browser resources from optional future cross-check resources:
+Wind Site Draft resource wording must distinguish current live browser resources from optional future cross-check resources:
 
 - Current live resources may include OpenStreetMap Overpass records and public elevation API profiles.
 - Optional cross-check resources may include Overture Maps Buildings, Microsoft Global ML Building Footprints, DEA Land Cover, ABARES CLUM, ELVIS / state LiDAR DEM, GA SRTM 1 second DEM and Copernicus DEM.

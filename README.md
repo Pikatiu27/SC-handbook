@@ -1,6 +1,6 @@
 # SC Handbook
 
-Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required. The `Wind Site` tab can optionally call public map/elevation APIs from the browser when draft coordinate-based suggestions are requested.
+Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required. The `Wind Site Draft` tab can optionally call public map/elevation APIs from the browser when draft coordinate-based suggestions are requested.
 
 ## Tools
 
@@ -83,9 +83,9 @@ The weld selection guide is a concise drafting aid for common cases such as shea
 
 The parent-metal row is a lightweight warning-only per-mm screen using `phi 0.6 f_up t`; it does not change the weld PASS/FAIL status and does not replace tear-out, block shear, net-section rupture, HAZ, edge-distance, eccentric weld group, end return, intermittent weld, fatigue, seismic, lamellar tearing or inspection acceptance checks. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
 
-### Wind Site
+### Wind Site Draft
 
-The wind site tool gives draft, coordinate-based suggestions for AS/NZS 1170.2 site exposure inputs:
+The Wind Site Draft tool gives draft, coordinate-based suggestions for AS/NZS 1170.2 site exposure inputs:
 
 - latitude, longitude and reference height `z`;
 - eight 45-degree upwind sectors from N to NW;

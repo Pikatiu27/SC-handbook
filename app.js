@@ -1692,17 +1692,14 @@ function calculateConcrete() {
   $("concretePhi").value = result.phi.toFixed(2);
   const residualOk = Math.abs(residual) < 0.01;
   const coverWarnings = result.layers.filter(layer => layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2);
-  const coverNote = coverWarnings.length
-    ? ` Cover warning: ${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} centroid is inside c_nom + db/2.`
-    : "";
-  const bottomPadNote = bottomMatWithoutDepth ? " Bottom pad reinforcement is active but D_bot is zero; enter a bottom pad depth or turn those mats off." : "";
-  const legacyNote = legacyLayers.length ? ` Legacy Y bar selected in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}; verify actual yield strength, ductility and condition from project records.` : "";
-  const fsyCapNote = fsyCappedLayers.length ? ` AS 3600 reinforcement strength cap: f_sy above 600 MPa is capped for ${fsyCappedLayers.map(layer => `mat ${layer.index}`).join(", ")}.` : "";
-  const kuoNote = result.kuo > 0.36 ? ` AS 3600 Cl. 8.1.5 warning: k_uo = ${result.kuo.toFixed(3)} > 0.36; use only where the clause conditions for analysis, compression reinforcement and restraint are satisfied.` : "";
-  const shearNote = ` One-way shear shown is a V_uc screen using k_v = ${shear.kv.toFixed(2)} and phi = ${shear.phi.toFixed(2)}; confirm k_v, shear critical section and load path to AS 3600 before design issue.`;
-  const warningText = (data.composite === "yes"
-    ? "Moment section capacity and one-way shear screen only. Composite action is user-confirmed outside this calculator; still check punching shear, bearing, development length and crack control separately."
-    : "Moment section capacity and one-way shear screen only. Pad-on-pad composite action is not confirmed; check interface shear before using combined depth. Punching shear, bearing, development length and crack control are excluded.") + shearNote + coverNote + bottomPadNote + legacyNote + fsyCapNote + kuoNote;
+  const reviewFlags = [`confirm k_v = ${shear.kv.toFixed(2)} and the shear critical section`];
+  if (data.composite !== "yes") reviewFlags.push("pad-on-pad interface shear not confirmed");
+  if (coverWarnings.length) reviewFlags.push(`${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} cover check`);
+  if (bottomMatWithoutDepth) reviewFlags.push("bottom pad mats active with D_bot = 0");
+  if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
+  if (fsyCappedLayers.length) reviewFlags.push(`f_sy capped at 600 MPa for ${fsyCappedLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
+  if (result.kuo > 0.36) reviewFlags.push(`k_uo = ${result.kuo.toFixed(3)} > 0.36, check AS 3600 Cl. 8.1.5`);
+  const warningText = `Moment capacity and one-way shear screen only; verify punching, bearing, anchorage, crack control and interface shear separately. Review: ${reviewFlags.join("; ")}.`;
 
   $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
   $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;

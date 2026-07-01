@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701t">
+  <link rel="stylesheet" href="styles.css?v=20260701u">
 </head>
 <body>
   <header class="topbar">
@@ -24,7 +24,7 @@
       <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Section</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
       <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false">Pad Section</button>
-      <button class="tool-tab" type="button" data-tool="wind" aria-controls="windPanel" aria-selected="false">Wind Site</button>
+      <button class="tool-tab" type="button" data-tool="wind" aria-controls="windPanel" aria-selected="false">Wind Site Draft</button>
     </nav>
 
     <section id="boltPanel" class="tool-panel active">
@@ -286,7 +286,7 @@
             </div>
           </details>
           <div class="interaction-result weld-utilisation"><span>Weld utilisation ratio</span><strong id="weldUtilisation">0.00</strong><b id="weldStatus">Enter design action</b></div>
-          <p class="result-note">Capacity view only. Not a full weld or joint design check. This view uses weld-metal throat area for the selected weld type. Weld category changes the capacity factor where AS 4100 Table 3.4 gives different SP/GP values. Parent metal check is warning-only; HAZ, tear-out, block shear, eccentric weld groups, fatigue, lamellar tearing and inspection acceptance remain project checks.</p>
+          <p class="result-note">Capacity view only; not a full weld or joint design check. Parent metal, HAZ, eccentric weld groups, fatigue and inspection remain project checks.</p>
         </section>
       </section>
 
@@ -313,11 +313,10 @@
           </section>
 
           <section class="input-group input-group-material">
-            <span class="input-group-heading"><b>Material properties</b><small>Cover, concrete strength and calculated capacity factor.</small></span>
+            <span class="input-group-heading"><b>Material properties</b><small>Cover and concrete strength.</small></span>
             <div class="concrete-input-row concrete-row-material">
               <label><span>Nominal cover, c<sub>nom</sub></span><span class="unit"><input id="concreteCover" type="number" min="0" step="5" value="40"><em>mm</em></span></label>
               <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" max="120" step="1" value="32"><em>MPa</em></span></label>
-              <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.85" readonly></label>
             </div>
           </section>
 
@@ -330,8 +329,9 @@
           </section>
 
           <section class="input-group input-group-derived">
-            <span class="input-group-heading"><b>Derived values</b><small>Read-only stress-block values calculated from the selected inputs.</small></span>
+            <span class="input-group-heading"><b>Derived values</b><small>Read-only design factors calculated from the selected inputs.</small></span>
             <div class="concrete-input-row concrete-row-analysis concrete-row-derived">
+              <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.85" readonly></label>
               <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
               <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
               <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
@@ -361,13 +361,13 @@
         <section class="capacity-section" aria-live="polite">
           <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div><span>selected strip</span></div>
           <div class="capacity-grid concrete-results">
-            <article class="capacity-card selected-shear"><span>Design moment capacity &phi;M<sub>uo</sub></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong><p id="concretePhiNote">Capacity factor entered by user; verify to AS 3600.</p></article>
+            <article class="capacity-card selected-shear"><span>Design moment capacity &phi;M<sub>uo</sub></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong><p id="concretePhiNote">Capacity factor is calculated from the selected section state.</p></article>
             <article class="capacity-card"><span>Nominal moment capacity M<sub>uo</sub></span><strong><output id="concreteMuo">-</output><small> kNm</small></strong><p>Internal force couple about the top face datum</p></article>
             <article class="capacity-card"><span>Design one-way shear &phi;V<sub>uc</sub></span><strong><output id="concretePhiVuc">-</output><small> kN</small></strong><p id="concreteShearNote">Concrete contribution only; no shear reinforcement included</p></article>
             <article class="capacity-card alternate-shear"><span>Neutral axis depth x</span><strong><output id="concreteNa">-</output><small> mm</small></strong><p>measured from selected compression face</p></article>
           </div>
           <div class="interaction-result concrete-warning"><span>Section status</span><strong id="concreteEquilibrium">-</strong><b id="concreteWarningStatus">-</b></div>
-          <p class="result-note" id="concreteWarningText">Moment section capacity and one-way shear screen only. Check punching shear, bearing, development length, crack control and pad-on-pad interface shear separately.</p>
+          <p class="result-note" id="concreteWarningText">Moment capacity and one-way shear screen only; verify excluded footing checks separately.</p>
         </section>
       </section>
 
@@ -377,7 +377,7 @@
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Beam sections · AS 4100 Cl. 5</p><h2>Beam Section</h2></div><span class="tool-status">For Review · UB / UC / Custom</span></div>
+      <div class="tool-heading"><div><p class="kicker">Beam sections · AS 4100 Section 5</p><h2>Beam Section</h2></div><span class="tool-status">For Review · UB / UC / Custom</span></div>
 
       <section class="lookup-card beam-card">
         <div class="beam-type-switch" role="group" aria-label="Beam section source"><button class="beam-type active" type="button" data-beam-type="ub">UB</button><button class="beam-type" type="button" data-beam-type="uc">UC</button><button class="beam-type" type="button" data-beam-type="custom">Custom</button></div>
@@ -456,11 +456,11 @@
 
       <details class="detail-card"><summary><span><b>Calculation steps</b><small>Section properties, compactness, moment and shear-capacity calculation</small></span><i>+</i></summary><div class="detail-body"><section><h3>Calculation steps</h3><div id="beamFormulaSteps" class="formula-list"></div></section></div></details>
 
-      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100 section capacity and OneSteel / InfraBuild UB/UC data</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Issue status</b> - For Review. This tab is limited to selected UB and UC catalogue entries plus Custom input.</p><p><b>Primary basis</b> - AS 4100 Cl. 5 beam design. Section moment capacity is taken as &phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>e</sub> for the selected bending axis. Section shear capacity is reported as &phi;V<sub>v</sub> using unstiffened web shear area A<sub>w</sub> under AS 4100 Cl. 5.11; AS 4100 Cl. 5.12 is treated as the shear-bending interaction review where bending is present.</p><p><b>Product data</b> - OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, selected Universal Beams and Universal Columns section properties, dimensions and section-capacity table values for 300PLUS and Grade 350.</p><p><b>Effective modulus</b> - for catalogue UB/UC sections, Z<sub>ex</sub>, compactness and k<sub>f</sub> are taken from the catalogue table rather than recalculated from plate slenderness in the browser. A<sub>w</sub> is calculated from catalogue d<sub>1</sub> and t<sub>w</sub>. Custom sections use user-entered properties.</p></div><div class="source-notes"><p><b>Scope</b> - section-capacity lookup only: major-axis section moment capacity and major-axis web shear capacity for selected hot-rolled UB and UC catalogue sections, plus user-entered custom section properties. Other section families are not included in this Beam Section tab.</p><p><b>Custom section</b> - the user is responsible for the entered f<sub>y</sub>, Z<sub>ex</sub>, S<sub>x</sub>, Z<sub>x</sub>, A<sub>w</sub>, compactness and material/product basis. Custom input is not catalogue-verified.</p><p><b>Design boundary</b> - this is not a full beam design check. Member moment capacity M<sub>b</sub>, lateral-torsional buckling, restraint spacing, minor-axis bending, biaxial bending, axial interaction, web bearing, web buckling, stiffeners, concentrated loads, cope effects, holes, composite action, fire, deflection and vibration are excluded.</p><p><b>Use</b> - treat this as the first section-capacity lookup before completing the project-specific beam checks required by AS 4100. Where V* exceeds 0.60&phi;V<sub>v</sub> and bending is present, complete AS 4100 Cl. 5.12 shear-bending interaction review before design issue.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100 section capacity and OneSteel / InfraBuild UB/UC data</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Issue status</b> - For Review. This tab is limited to selected UB and UC catalogue entries plus Custom input.</p><p><b>Primary basis</b> - AS 4100 Section 5 beam design. Section moment capacity is taken as &phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>e</sub> under AS 4100 Cl. 5.2 for the selected bending axis. Section shear capacity is reported as &phi;V<sub>v</sub> using unstiffened web shear area A<sub>w</sub> under AS 4100 Cl. 5.11; AS 4100 Cl. 5.12 is treated as the shear-bending interaction review where bending is present.</p><p><b>Product data</b> - OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, selected Universal Beams and Universal Columns section properties, dimensions and section-capacity table values for 300PLUS and Grade 350.</p><p><b>Effective modulus</b> - for catalogue UB/UC sections, Z<sub>ex</sub>, compactness and k<sub>f</sub> are taken from the catalogue table rather than recalculated from plate slenderness in the browser. A<sub>w</sub> is calculated from catalogue d<sub>1</sub> and t<sub>w</sub>. Custom sections use user-entered properties.</p></div><div class="source-notes"><p><b>Scope</b> - section-capacity lookup only: major-axis section moment capacity and major-axis web shear capacity for selected hot-rolled UB and UC catalogue sections, plus user-entered custom section properties. Other section families are not included in this Beam Section tab.</p><p><b>Custom section</b> - the user is responsible for the entered f<sub>y</sub>, Z<sub>ex</sub>, S<sub>x</sub>, Z<sub>x</sub>, A<sub>w</sub>, compactness and material/product basis. Custom input is not catalogue-verified.</p><p><b>Design boundary</b> - this is not a full beam design check. Member moment capacity M<sub>b</sub>, lateral-torsional buckling, restraint spacing, minor-axis bending, biaxial bending, axial interaction, web bearing, web buckling, stiffeners, concentrated loads, cope effects, holes, composite action, fire, deflection and vibration are excluded.</p><p><b>Use</b> - treat this as the first section-capacity lookup before completing the project-specific beam checks required by AS 4100. Where V* exceeds 0.60&phi;V<sub>v</sub> and bending is present, complete AS 4100 Cl. 5.12 shear-bending interaction review before design issue.</p></div></div></details>
     </section>
 
     <section id="memberPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Axial members · AS 4100 Cl. 6 and AS 4100 Cl. 7</p><h2>Axial Member Capacity</h2></div><span class="tool-status">For Review · user-confirmed inputs</span></div>
+      <div class="tool-heading"><div><p class="kicker">Axial members · AS 4100 Sections 6 and 7</p><h2>Axial Member Capacity</h2></div><span class="tool-status">For Review · user-confirmed inputs</span></div>
 
       <section class="lookup-card member-card">
         <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up</button></div>
@@ -579,14 +579,18 @@
 
         <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r</dt><dd id="memberRadius">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>w</sub></dt><dd id="memberWebThickness">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>f</sub></dt><dd id="memberFlangeThickness">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
-        <div class="tension-inputs">
-          <div><span>Connection / tension factors · AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3</span><small id="memberNetAreaSource">Use auto net area for a straight bolt-hole deduction, or manual A<sub>n</sub> for slots, stagger, cope cuts and other project-specific net-section paths.</small></div>
-          <label class="member-net-method"><span>A<sub>n</sub> method</span><span class="unit"><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></span></label>
-          <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
-          <label class="member-hole-field"><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
-          <label class="member-thickness-field" hidden><span>PFC t for A<sub>n</sub> <i>default t<sub>w</sub>; use t<sub>f</sub> for flange path</i></span><span class="unit"><input id="memberHoleThickness" type="number" min="0" step="0.1" value="0"><em>mm</em></span></label>
-          <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="0"><em>mm²</em></span></label>
-          <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0" max="1" step="0.05" value="1"></label>
+        <div class="input-cluster member-connection-inputs">
+          <section class="input-group input-group-factor">
+            <span class="input-group-heading"><b>Connection / net-section inputs</b><small id="memberNetAreaSource">Use auto net area for a straight bolt-hole deduction, or manual A<sub>n</sub> for slots, stagger, cope cuts and other project-specific net-section paths.</small></span>
+            <div class="input-group-fields six">
+              <label class="member-net-method"><span>A<sub>n</sub> method</span><span class="unit"><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></span></label>
+              <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
+              <label class="member-hole-field"><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
+              <label class="member-thickness-field" hidden><span>PFC t for A<sub>n</sub> <i>default t<sub>w</sub>; use t<sub>f</sub> for flange path</i></span><span class="unit"><input id="memberHoleThickness" type="number" min="0" step="0.1" value="0"><em>mm</em></span></label>
+              <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="0"><em>mm²</em></span></label>
+              <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0" max="1" step="0.05" value="1"></label>
+            </div>
+          </section>
         </div>
 
         <section class="capacity-section" aria-live="polite">
@@ -631,13 +635,13 @@
 
     <section id="windPanel" class="tool-panel" hidden>
       <div class="tool-heading">
-        <div><p class="kicker">Wind actions · AS/NZS 1170.2 Section 4</p><h2>Wind Site</h2></div>
+        <div><p class="kicker">Wind actions · AS/NZS 1170.2 Section 4</p><h2>Wind Site Draft</h2></div>
         <span class="tool-status">Draft suggestions only</span>
       </div>
 
       <section class="lookup-card wind-card">
         <div class="input-cluster input-cluster-three">
-          <section class="input-group input-group-section" aria-label="Wind site coordinate inputs">
+          <section class="input-group input-group-section" aria-label="Wind Site Draft coordinate inputs">
             <span class="input-group-heading"><b>Site coordinates</b><small>Coordinate, reference height and scan distance.</small></span>
             <div class="input-group-fields three">
               <label><span>Latitude</span><input id="windLatitude" type="number" min="-90" max="90" step="0.000001" value="-33.868800"></label>
@@ -675,7 +679,7 @@
             </table>
           </div>
           <p class="checklist-warning wind-warning" id="windWarning">Warning: values are automatic suggestions for screening only. Terrain category and topographic multiplier must be reviewed against project mapping, survey, current aerial imagery and the licensed Standard before design issue.</p>
-          <div class="wind-resource-strip" aria-label="Wind Site data resources">
+          <div class="wind-resource-strip" aria-label="Wind Site Draft data resources">
             <a href="https://wiki.openstreetmap.org/wiki/Overpass_API" target="_blank" rel="noopener"><b>OSM Overpass</b><small>Live terrain tags used now</small></a>
             <a href="https://open-meteo.com/en/docs/elevation-api" target="_blank" rel="noopener"><b>Open-Meteo Elevation</b><small>Live DEM fallback used now</small></a>
             <a href="https://knowledge.dea.ga.gov.au/data/product/dea-land-cover-landsat/" target="_blank" rel="noopener"><b>DEA Land Cover</b><small>Future land-cover cross-check</small></a>
@@ -716,6 +720,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701l"></script>
+  <script src="app.js?v=20260701m"></script>
 </body>
 </html>
