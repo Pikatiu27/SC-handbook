@@ -277,6 +277,21 @@ const windDirections = [
   { key: "NW", bearing: 315, sector: "292.5-337.5" }
 ];
 
+const windMzCatTable = [
+  { z: 3, TC1: 0.97, TC2: 0.91, "TC2.5": 0.87, TC3: 0.83, TC4: 0.75 },
+  { z: 5, TC1: 1.01, TC2: 0.91, "TC2.5": 0.87, TC3: 0.83, TC4: 0.75 },
+  { z: 10, TC1: 1.08, TC2: 1.00, "TC2.5": 0.92, TC3: 0.83, TC4: 0.75 },
+  { z: 15, TC1: 1.12, TC2: 1.05, "TC2.5": 0.97, TC3: 0.89, TC4: 0.75 },
+  { z: 20, TC1: 1.14, TC2: 1.08, "TC2.5": 1.01, TC3: 0.94, TC4: 0.75 },
+  { z: 30, TC1: 1.18, TC2: 1.12, "TC2.5": 1.06, TC3: 1.00, TC4: 0.80 },
+  { z: 40, TC1: 1.21, TC2: 1.16, "TC2.5": 1.10, TC3: 1.04, TC4: 0.85 },
+  { z: 50, TC1: 1.23, TC2: 1.18, "TC2.5": 1.13, TC3: 1.07, TC4: 0.90 },
+  { z: 75, TC1: 1.27, TC2: 1.22, "TC2.5": 1.17, TC3: 1.12, TC4: 0.98 },
+  { z: 100, TC1: 1.31, TC2: 1.24, "TC2.5": 1.20, TC3: 1.16, TC4: 1.03 },
+  { z: 150, TC1: 1.36, TC2: 1.27, "TC2.5": 1.24, TC3: 1.21, TC4: 1.11 },
+  { z: 200, TC1: 1.39, TC2: 1.29, "TC2.5": 1.27, TC3: 1.24, TC4: 1.16 }
+];
+
 const manualInputIds = [
   "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "holeDiameter", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
@@ -374,6 +389,88 @@ function combinedConfidence(...labels) {
   const rank = Math.min(...labels.map(confidenceRank));
   return rank >= 2 ? "High" : rank >= 1 ? "Medium" : "Low";
 }
+function inRange(number, min, max) { return number >= min && number <= max; }
+function interpolateMzCat(tc, z) {
+  const key = windMzCatTable[0][tc] === undefined ? "TC2" : tc;
+  const height = Math.max(3, Math.min(200, z));
+  const lower = [...windMzCatTable].reverse().find(row => row.z <= height) || windMzCatTable[0];
+  const upper = windMzCatTable.find(row => row.z >= height) || windMzCatTable[windMzCatTable.length - 1];
+  if (lower.z === upper.z) return lower[key];
+  const ratio = (height - lower.z) / (upper.z - lower.z);
+  return lower[key] + ratio * (upper[key] - lower[key]);
+}
+function windRegionScreen(lat, lon) {
+  if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) {
+    return { region: "Review", confidence: "Low", basis: "Enter valid WGS84 latitude and longitude." };
+  }
+  if (inRange(lat, -47.5, -34) && inRange(lon, 166, 179.5)) {
+    return { region: "NZ", confidence: "Low", basis: "New Zealand region screen is not automated; use AS/NZS 1170.2 Figure 3.1(B)." };
+  }
+  if (!inRange(lat, -45, -9) || !inRange(lon, 112, 154)) {
+    return { region: "Review", confidence: "Low", basis: "Coordinate is outside the Australian mainland/Tasmania screen; use AS/NZS 1170.2 Figure 3.1(A/B)." };
+  }
+  if (inRange(lat, -44.2, -39.0) && inRange(lon, 143.0, 149.2)) {
+    return { region: "A4", confidence: "Medium", basis: "Tasmania screen from AS/NZS 1170.2 Figure 3.1(A); verify islands and local boundaries." };
+  }
+  if (inRange(lat, -37.9, -35.0) && inRange(lon, 149.0, 151.5)) {
+    return { region: "A2", confidence: "Medium", basis: "NSW south-coast screen from AS/NZS 1170.2 Figure 3.1(A); verify the coastal boundary." };
+  }
+  if (inRange(lat, -37.5, -30.0) && lon >= 150.0) {
+    return { region: "A2", confidence: "Medium", basis: "NSW coastal screen from AS/NZS 1170.2 Figure 3.1(A); verify the state/coastal boundary." };
+  }
+  if (inRange(lat, -30.5, -24.0) && lon >= 151.0) {
+    return { region: "B1", confidence: "Medium", basis: "South-east Queensland / north NSW coastal screen from AS/NZS 1170.2 Figure 3.1(A); verify the coastal boundary." };
+  }
+  if (inRange(lat, -24.5, -10.0) && lon >= 142.0) {
+    return { region: "B2/C", confidence: "Low", basis: "North Queensland / Cape York cyclonic transition screen; exact B2/C boundary requires AS/NZS 1170.2 Figure 3.1(A) and smoothed-coast distance." };
+  }
+  if (inRange(lat, -19.5, -10.0) && inRange(lon, 128.0, 142.5)) {
+    return { region: "B2/C", confidence: "Low", basis: "Northern Territory / Gulf cyclonic transition screen; exact B2/C boundary requires AS/NZS 1170.2 Figure 3.1(A)." };
+  }
+  if (inRange(lat, -29.5, -15.0) && inRange(lon, 113.0, 128.5)) {
+    return { region: "B2/C/D", confidence: "Low", basis: "North-west WA cyclonic transition screen; exact B2/C/D zone depends on distance from the smoothed coastline." };
+  }
+  if (lat <= -30.0 && lon <= 123.5) {
+    return { region: "A1", confidence: "Medium", basis: "South-west WA screen from AS/NZS 1170.2 Figure 3.1(A); verify boundary near the coast and transition lines." };
+  }
+  if (inRange(lat, -36.8, -30.0) && inRange(lon, 123.0, 137.5)) {
+    return { region: "A5", confidence: "Medium", basis: "Southern central Australia screen from AS/NZS 1170.2 Figure 3.1(A); verify A0/A5 transition." };
+  }
+  if (inRange(lat, -39.5, -30.0) && inRange(lon, 137.0, 150.2)) {
+    return { region: "A3", confidence: "Medium", basis: "South-east mainland screen from AS/NZS 1170.2 Figure 3.1(A); verify A2/A3/A4 local boundary." };
+  }
+  return { region: "A0", confidence: "Medium", basis: "Inland Australia screen from AS/NZS 1170.2 Figure 3.1(A); verify if near any regional boundary or island/coast rule." };
+}
+function windRegionSelection(inputs) {
+  if (inputs.regionOverride === "a0") return { region: "A0", confidence: "High", basis: "Manual Region A0 override selected." };
+  if (inputs.regionOverride === "a4nz") return { region: "A4/NZ high", confidence: "Medium", basis: "Manual A4/NZ high-elevation branch selected; verify site elevation and region." };
+  if (inputs.regionOverride === "general") return { region: "General", confidence: "Medium", basis: "Manual general branch selected; verify AS/NZS 1170.2 Figure 3.1(A/B)." };
+  return inputs.windRegion;
+}
+function windMtBranch(inputs, siteElevation = 0) {
+  const selected = windRegionSelection(inputs);
+  if (selected.region === "A0") return "a0";
+  if (selected.region === "A4/NZ high") return "a4nz";
+  if (selected.region === "A4" && Number(siteElevation) > 500) return "a4nz";
+  return "general";
+}
+function windA0MzCatRule(inputs) {
+  const selected = windRegionSelection(inputs);
+  if (selected.region !== "A0") return null;
+  if (inputs.z <= 100) {
+    const mzcat = interpolateMzCat("TC2", inputs.z);
+    return {
+      mzcat,
+      text: `M_z,cat,2 = ${mzcat.toFixed(2)}`,
+      basis: "AS/NZS 1170.2 Table 4.1 Note 1: Region A0 uses Mz,cat,2 for all z <= 100 m in all terrains."
+    };
+  }
+  return {
+    mzcat: 1.24,
+    text: "M_z,cat = 1.24",
+    basis: "AS/NZS 1170.2 Table 4.1 Note 1: Region A0 uses Mz,cat = 1.24 for 100 m < z <= 200 m in all terrains."
+  };
+}
 
 function clampNumericInput(input) {
   const current = numericValue(input.value);
@@ -414,6 +511,8 @@ function windInputs() {
   const xa = Math.max(500, 40 * z);
   const xi = 20 * z;
   const queryRadius = Math.min(2500, xa);
+  const regionOverride = $("windRegionBranch").value;
+  const windRegion = windRegionScreen(lat, lon);
   return {
     lat,
     lon,
@@ -422,7 +521,8 @@ function windInputs() {
     xi,
     queryRadius,
     profileDistance: Math.min(5000, Math.max(1000, xa)),
-    region: $("windRegionBranch").value,
+    regionOverride,
+    windRegion,
     topoModel: $("windTopoModel").value,
     mlee: Math.max(1, value("windMlee")),
     key: `${Number(lat).toFixed(6)},${Number(lon).toFixed(6)},${z.toFixed(1)}`
@@ -490,15 +590,48 @@ function windSectorStats(direction, inputs) {
   return stats;
 }
 
+function windTerrainResult(tc, basis, confidence, stats, inputs) {
+  const a0Rule = windA0MzCatRule(inputs);
+  if (a0Rule) {
+    const evidence = stats ? ` Terrain evidence only: ${basis}` : basis;
+    return {
+      tc,
+      rule: "Table 4.1 A0 rule",
+      metric: a0Rule.text,
+      mzcat: a0Rule.mzcat,
+      basis: `${a0Rule.basis} ${evidence}`,
+      confidence,
+      stats
+    };
+  }
+  if (!/^TC/.test(tc)) {
+    return { tc, rule: "Review", metric: "M_z,cat not set", mzcat: null, basis, confidence, stats };
+  }
+  const mzcat = interpolateMzCat(tc, inputs.z);
+  return {
+    tc,
+    rule: `Cl. 4.2 ${tc} screen`,
+    metric: `M_z,cat = ${mzcat.toFixed(2)}`,
+    mzcat,
+    basis: `${basis} Table 4.1 ${tc} interpolation at z = ${fixed(inputs.z)} m gives Mz,cat = ${mzcat.toFixed(2)} before any mixed-terrain distance averaging.`,
+    confidence,
+    stats
+  };
+}
+
 function suggestTerrainCategory(direction, inputs) {
   if (!validWindInputs(inputs)) {
-    return { tc: "Review", basis: "Enter valid latitude and longitude.", confidence: "Low", stats: null };
+    return windTerrainResult("Review", "Enter valid latitude and longitude.", "Low", null, inputs);
+  }
+  const a0Rule = windA0MzCatRule(inputs);
+  if (a0Rule && (!windState.osmElements || windState.key !== inputs.key)) {
+    return windTerrainResult("A0 evidence pending", "Fetch OSM sector data if physical terrain evidence is required; the A0 Mz,cat rule itself is independent of terrain category.", "Medium", null, inputs);
   }
   if (!windState.osmElements || windState.key !== inputs.key) {
-    return { tc: "Review", basis: "Fetch current OSM sector data for this coordinate and height.", confidence: "Low", stats: null };
+    return windTerrainResult("Review", "Fetch current OSM sector data for this coordinate and height.", "Low", null, inputs);
   }
   if (inputs.xi >= inputs.queryRadius) {
-    return { tc: "Review", basis: "Lag distance exceeds the capped OSM scan radius; increase source review outside the browser screen.", confidence: "Low", stats: null };
+    return windTerrainResult("Review", "Lag distance exceeds the capped OSM scan radius; increase source review outside the browser screen.", "Low", null, inputs);
   }
   const stats = windSectorStats(direction, inputs);
   const sectorAreaHa = Math.PI * (inputs.queryRadius ** 2 - inputs.xi ** 2) * (45 / 360) / 10000;
@@ -509,7 +642,7 @@ function suggestTerrainCategory(direction, inputs) {
   let basis = `${stats.buildings} mapped buildings in ${sectorAreaHa.toFixed(1)} ha; density ${buildingDensity.toFixed(1)} buildings/ha.`;
 
   if (stats.total === 0) {
-    return { tc: "Review", basis: "No OSM building or land-use records found in this upwind sector.", confidence: "Low", stats };
+    return windTerrainResult("Review", "No OSM building or land-use records found in this upwind sector.", "Low", stats, inputs);
   }
   if (tallDensity >= 6 && buildingDensity >= 12) {
     tc = "TC4";
@@ -536,7 +669,7 @@ function suggestTerrainCategory(direction, inputs) {
     confidence = "Low";
     basis += " Urban land-use is mapped but building records are sparse.";
   }
-  return { tc, basis, confidence, stats };
+  return windTerrainResult(tc, basis, confidence, stats, inputs);
 }
 
 function interpolateDistanceAtElevation(points, startIndex, targetElevation) {
@@ -555,9 +688,10 @@ function interpolateDistanceAtElevation(points, startIndex, targetElevation) {
 }
 
 function windMtFromRegion(mh, inputs, siteElevation) {
-  const mlee = inputs.region === "general" ? 1 : inputs.mlee;
-  if (inputs.region === "a0") return { mt: 0.5 + 0.5 * mh, branch: "Region A0: Mt = 0.5 + 0.5Mh." };
-  if (inputs.region === "a4nz") {
+  const branch = windMtBranch(inputs, siteElevation);
+  const mlee = branch === "general" ? 1 : inputs.mlee;
+  if (branch === "a0") return { mt: 0.5 + 0.5 * mh, branch: "Region A0: Mt = 0.5 + 0.5Mh." };
+  if (branch === "a4nz") {
     const elevationFactor = 1 + 0.00015 * Math.max(0, siteElevation || 0);
     return { mt: mh * mlee * elevationFactor, branch: `A4/NZ high elevation: Mt = Mh Mlee (1 + 0.00015E), E = ${fixed(siteElevation || 0)} m.` };
   }
@@ -644,8 +778,8 @@ function renderWindRows(rows) {
     return `<tr>
       <td>${row.direction.key}</td>
       <td>${row.direction.sector}&deg;</td>
-      <td>${safeText(row.terrain.tc)}</td>
-      <td>${safeText(row.terrain.basis)}</td>
+      <td>${safeText(row.terrain.rule)}</td>
+      <td><b>${safeText(row.terrain.metric)}</b><br>${safeText(row.terrain.basis)}</td>
       <td>${Number(row.topography.mt).toFixed(2)}</td>
       <td>${safeText(row.topography.basis)}</td>
       <td class="${confidenceClass}">${row.confidence}</td>
@@ -654,7 +788,7 @@ function renderWindRows(rows) {
 }
 
 function renderWindDetails(rows) {
-  $("windFormulaSteps").innerHTML = rows.map(row => `<div><b>${row.direction.key}</b><code>TC suggestion: ${safeText(row.terrain.tc)} (${safeText(row.terrain.confidence)} confidence). Mh = ${Number(row.topography.mh).toFixed(2)}; Mt = ${Number(row.topography.mt).toFixed(2)} (${safeText(row.topography.confidence)} confidence).</code></div>`).join("");
+  $("windFormulaSteps").innerHTML = rows.map(row => `<div><b>${row.direction.key}</b><code>Terrain rule: ${safeText(row.terrain.rule)}; ${safeText(row.terrain.metric)} (${safeText(row.terrain.confidence)} confidence). Evidence TC: ${safeText(row.terrain.tc)}. Mh = ${Number(row.topography.mh).toFixed(2)}; Mt = ${Number(row.topography.mt).toFixed(2)} (${safeText(row.topography.confidence)} confidence).</code></div>`).join("");
   $("windEvidenceNotes").innerHTML = rows.map(row => {
     const stats = row.terrain.stats;
     const profile = row.topography.profile;
@@ -670,6 +804,12 @@ function renderWindDetails(rows) {
 
 function calculateWind() {
   const inputs = windInputs();
+  const selectedRegion = windRegionSelection(inputs);
+  const a0MzCatRule = windA0MzCatRule(inputs);
+  const overrideNote = inputs.regionOverride === "auto" ? "" : ` Branch override applied: ${selectedRegion.basis}`;
+  $("windRegionScreen").textContent = `${inputs.windRegion.region}${inputs.windRegion.confidence === "Low" ? " - review" : ""}`;
+  $("windRegionBasis").textContent = `${inputs.windRegion.basis}${overrideNote}`;
+  $("windMzcatRule").textContent = a0MzCatRule ? a0MzCatRule.text : "Table 4.1 by sector TC";
   $("windScanDistance").textContent = `${Math.round(inputs.xa)} m`;
   $("windLagDistance").textContent = `${Math.round(inputs.xi)} m`;
   const rows = windSuggestionRows(inputs);
@@ -685,8 +825,8 @@ function calculateWind() {
     ? `${windState.status}${inputs.queryRadius < inputs.xa ? ` OSM radius capped at ${Math.round(inputs.queryRadius)} m.` : ""}`
     : "Fetch suggestions after entering the coordinate and reference height.";
   $("windWarning").innerHTML = matched
-    ? "Warning: values are automatic suggestions for screening only. Confirm terrain category, topographic profile and adopted M<sub>t</sub> against project mapping, survey, current aerial imagery and the licensed Standard before design issue."
-    : "Warning: no current coordinate data is loaded. Use the fetch button for draft suggestions, then complete engineering review before adopting any TC or M<sub>t</sub> value.";
+    ? "Warning: coordinate wind region, terrain rule, M<sub>z,cat</sub> and M<sub>t</sub> are automatic screening suggestions only. Confirm Figure 3.1 region, terrain averaging, topographic profile and adopted values against project mapping, survey, current aerial imagery and the licensed Standard before design issue."
+    : "Warning: no current coordinate data is loaded. The wind region screen is not an adopted value; use the fetch button for draft site evidence, then complete engineering review before adopting any wind region, TC, M<sub>z,cat</sub> or M<sub>t</sub> value.";
 }
 
 async function fetchOsmWindData(inputs) {

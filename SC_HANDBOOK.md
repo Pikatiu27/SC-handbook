@@ -1294,8 +1294,10 @@ Required scope:
 
 - Input site latitude and longitude.
 - Keep wind inputs in the standard engineering row-band layout: `Site coordinates` for latitude, longitude and reference height; `Relevant factors` for region branch, topography model and `Mlee` override; `Data request` for the fetch action only.
+- Display a coordinate-based wind region screen from AS/NZS 1170.2 Fig. 3.1(A/B), including a visible review warning for boundary sites, islands and cyclonic coastal transition zones.
 - Generate eight 45-degree upwind direction sectors: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, and `NW`.
-- Suggest, but do not adopt, terrain category `TC` for each sector from available public mapping evidence.
+- Show the AS/NZS 1170.2 terrain rule and `Mz,cat` screen for each sector. For Region A0, apply AS/NZS 1170.2 Table 4.1 Note 1 rather than describing the physical terrain as adopted TC2.
+- Suggest, but do not adopt, terrain-category evidence `TC` for each sector from available public mapping evidence.
 - Suggest, but do not adopt, topographic multiplier `Mt` for each sector from public elevation profile evidence.
 - Show confidence and evidence notes for every direction.
 - Display the public data resources used by the page, plus higher-quality optional resource upgrades, in the Wind Site Draft page itself.
@@ -1307,11 +1309,11 @@ Required exclusions:
 
 - Signed terrain-category adoption.
 - Signed topographic-multiplier adoption.
-- Final regional wind speed, wind region and annual-probability selection.
-- Final `Md`, `Mz,cat`, `Ms`, `Cfig`, `Cshp`, dynamic response, local pressure factors and design pressure calculation.
+- Adopted wind-region selection, final regional wind speed and annual-probability selection.
+- Final adopted `Md`, adopted `Mz,cat`, `Ms`, `Cfig`, `Cshp`, dynamic response, local pressure factors and design pressure calculation.
 - Automatic reliance on Google Earth, public DEM, OpenStreetMap, aerial imagery, or any other online source as the sole issue-for-design evidence.
 
-The browser-side coordinate fetch may use public map/elevation APIs only as draft evidence. If the request fails, data is sparse, building heights are missing, or the scan radius is capped, the row must stay low-confidence or require review. The adopted design values must remain project-confirmed inputs in the final engineering calculation.
+The browser-side coordinate fetch may use public map/elevation APIs only as draft evidence. Coordinate-derived wind region, terrain category, `Mz,cat` and `Mt` values are screening outputs only. If the request fails, data is sparse, building heights are missing, the scan radius is capped, or the wind region is near a boundary/transition zone, the row must stay low-confidence or require review. The adopted design values must remain project-confirmed inputs in the final engineering calculation.
 
 Wind Site Draft resource wording must distinguish current live browser resources from optional future cross-check resources:
 

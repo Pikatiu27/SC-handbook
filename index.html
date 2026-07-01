@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701v">
+  <link rel="stylesheet" href="styles.css?v=20260701w">
 </head>
 <body>
   <header class="topbar">
@@ -650,9 +650,9 @@
             </div>
           </section>
           <section class="input-group input-group-factor" aria-label="Wind topographic assumptions">
-            <span class="input-group-heading"><b>Relevant factors</b><small>Regional formula branch, terrain model and lee multiplier override.</small></span>
+            <span class="input-group-heading"><b>Relevant factors</b><small>Region rule override, terrain model and lee multiplier override.</small></span>
             <div class="input-group-fields three">
-              <label><span>Region branch</span><select id="windRegionBranch"><option value="general">Australia general / no NZ lee</option><option value="a0">Region A0</option><option value="a4nz">A4 or NZ high elevation</option></select></label>
+              <label><span>Region branch</span><select id="windRegionBranch"><option value="auto">Auto from coordinate</option><option value="general">Manual: general / no NZ lee</option><option value="a0">Manual: Region A0</option><option value="a4nz">Manual: A4 or NZ high elevation</option></select></label>
               <label><span>Topography model</span><select id="windTopoModel"><option value="hill">Hill / ridge screen</option><option value="escarpment">Escarpment screen</option></select></label>
               <label><span>M<sub>lee</sub> override</span><input id="windMlee" type="number" min="1" max="1.5" step="0.01" value="1.00"></label>
             </div>
@@ -667,14 +667,14 @@
 
         <div class="wind-summary">
           <div><span>Suggestion status</span><strong id="windSuggestionStatus">No live data loaded</strong><small id="windDataStatus">Rows are draft placeholders until coordinate data is fetched.</small></div>
-          <dl><div><dt>Scan x<sub>a</sub></dt><dd id="windScanDistance">500 m</dd></div><div><dt>Lag x<sub>i</sub></dt><dd id="windLagDistance">200 m</dd></div><div><dt>Max M<sub>t</sub></dt><dd id="windMaxMt">1.00</dd></div><div><dt>Low confidence</dt><dd id="windLowConfidence">8</dd></div></dl>
+          <dl><div><dt>Wind region</dt><dd id="windRegionScreen">Review</dd></div><div><dt>Region basis</dt><dd id="windRegionBasis">Enter coordinate</dd></div><div><dt>M<sub>z,cat</sub> rule</dt><dd id="windMzcatRule">Table 4.1 by sector</dd></div><div><dt>Scan x<sub>a</sub></dt><dd id="windScanDistance">500 m</dd></div><div><dt>Lag x<sub>i</sub></dt><dd id="windLagDistance">200 m</dd></div><div><dt>Max M<sub>t</sub></dt><dd id="windMaxMt">1.00</dd></div><div><dt>Low confidence</dt><dd id="windLowConfidence">8</dd></div></dl>
         </div>
 
         <section class="capacity-section" aria-live="polite">
           <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Draft exposure suggestions</h2></div><span>N to NW</span></div>
           <div class="table-scroll">
             <table class="compact-lookup-table wind-result-table">
-              <thead><tr><th>Direction</th><th>Sector</th><th>Suggested TC</th><th>TC basis</th><th>Suggested M<sub>t</sub></th><th>M<sub>t</sub> basis</th><th>Confidence</th></tr></thead>
+              <thead><tr><th>Direction</th><th>Sector</th><th>AS terrain rule</th><th>M<sub>z,cat</sub> / evidence</th><th>Suggested M<sub>t</sub></th><th>M<sub>t</sub> basis</th><th>Confidence</th></tr></thead>
               <tbody id="windDirectionRows"></tbody>
             </table>
           </div>
@@ -701,8 +701,9 @@
         <div class="source-body">
           <div class="source-notes">
             <p><b>Issue status</b> &middot; Draft / automatic suggestion only. This tab is not an issue-for-design wind assessment.</p>
-            <p><b>Primary basis</b> &middot; AS/NZS 1170.2 Cl. 4.2 for terrain category descriptions and AS/NZS 1170.2 Cl. 4.4 for the topographic multiplier M<sub>t</sub>.</p>
-            <p><b>Terrain category screen</b> &middot; The browser counts OpenStreetMap building and land-use records in each 45&deg; upwind sector, ignoring the inner lag distance x<sub>i</sub> = 20z and using x<sub>a</sub> = max(500 m, 40z). This is evidence for a suggested TC, not a replacement for engineering judgement.</p>
+            <p><b>Primary basis</b> &middot; AS/NZS 1170.2 Fig. 3.1(A/B) for wind regions, Cl. 4.2 and Table 4.1 for terrain category and M<sub>z,cat</sub>, and Cl. 4.4 for the topographic multiplier M<sub>t</sub>.</p>
+            <p><b>Wind region screen</b> &middot; The coordinate screen is a coarse AS/NZS 1170.2 Fig. 3.1(A) aid only. Boundary sites, islands, cyclonic coastal transition zones and New Zealand regions must be checked from the licensed Standard and project location data before adopting a region.</p>
+            <p><b>Terrain / M<sub>z,cat</sub> screen</b> &middot; For non-A0 regions, the browser counts OpenStreetMap building and land-use records in each 45&deg; upwind sector, ignoring x<sub>i</sub> = 20z and using x<sub>a</sub> = max(500 m, 40z), then shows the corresponding Table 4.1 M<sub>z,cat</sub> screen. For Region A0, Table 4.1 Note 1 is applied directly: M<sub>z,cat,2</sub> for z &le; 100 m, or M<sub>z,cat</sub> = 1.24 for 100 m &lt; z &le; 200 m. OSM data remains evidence only.</p>
             <p><b>Topographic screen</b> &middot; DEM profile points are sampled along each direction. The page estimates H, L<sub>u</sub>, x, L<sub>1</sub> and L<sub>2</sub>, then calculates M<sub>h</sub> and M<sub>t</sub>. Crest selection, hill/ridge/escarpment type and local topographic zone must be confirmed from project mapping or survey.</p>
             <p><b>Conservative workflow</b> &middot; The page should minimise user judgement by giving an automatic conservative draft value where the evidence is coherent, then flag only exception directions for terrain or topography review. Low confidence means the evidence chain is weak or conflicted; it does not mean the formula itself is unreliable.</p>
             <p><b>Confidence controls</b> &middot; Confidence is reduced when public map coverage is sparse, terrain evidence is mixed, building heights are missing, DEM spacing is coarse, the scan distance is capped, multiple ridges are possible, or H/(2L<sub>u</sub>) is close to a formula boundary.</p>
@@ -710,9 +711,9 @@
           <div class="source-notes">
             <p><b>Live resources used now</b> &middot; The live fetch uses <a href="https://wiki.openstreetmap.org/wiki/Overpass_API" target="_blank" rel="noopener">OpenStreetMap Overpass API</a> records and the <a href="https://open-meteo.com/en/docs/elevation-api" target="_blank" rel="noopener">Open-Meteo Elevation API</a>. API outages, sparse mapping, missing building heights, changed land use and DEM resolution can change the suggested values.</p>
             <p><b>Recommended resource upgrades</b> &middot; Use <a href="https://docs.overturemaps.org/schema/reference/buildings/building/" target="_blank" rel="noopener">Overture Maps Buildings</a> or <a href="https://github.com/microsoft/GlobalMLBuildingFootprints" target="_blank" rel="noopener">Microsoft Global ML Building Footprints</a> to cross-check building density; use <a href="https://knowledge.dea.ga.gov.au/data/product/dea-land-cover-landsat/" target="_blank" rel="noopener">DEA Land Cover</a> and <a href="https://knowledge.dea.ga.gov.au/data/external-data/abares-clum-2023/" target="_blank" rel="noopener">ABARES CLUM</a> to cross-check open, agricultural, urban, water and vegetation classes; use <a href="https://elevation.fsdf.org.au/" target="_blank" rel="noopener">ELVIS / state LiDAR</a>, <a href="https://ecat.ga.gov.au/geonetwork/srv/eng/catalog.search#/metadata/72759" target="_blank" rel="noopener">GA SRTM 1 second DEM</a> or <a href="https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM" target="_blank" rel="noopener">Copernicus DEM</a> to improve M<sub>t</sub> screening.</p>
-            <p><b>Excluded checks</b> &middot; Wind region, regional wind speed, M<sub>d</sub>, M<sub>z,cat</sub>, M<sub>s</sub>, aerodynamic shape factors, dynamic response, shielding, local pressure factors and final design wind pressures are not calculated by this tab.</p>
-            <p><b>Use</b> &middot; Keep the adopted TC and M<sub>t</sub> as project-confirmed inputs in the design calculation. Do not copy the automatic suggestion into a design report without a site-specific review trail.</p>
-            <p><b>Reference</b> &middot; AS/NZS 1170.2:2021 local PDF pages for Cl. 4.2 and Cl. 4.4 were checked visually in the project reference library before adding this draft tab.</p>
+            <p><b>Excluded checks</b> &middot; Adopted wind region, regional wind speed, adopted M<sub>d</sub>, adopted M<sub>z,cat</sub>, M<sub>s</sub>, aerodynamic shape factors, dynamic response, shielding, local pressure factors and final design wind pressures are not calculated by this tab.</p>
+            <p><b>Use</b> &middot; Keep the adopted wind region, TC / M<sub>z,cat</sub> and M<sub>t</sub> as project-confirmed inputs in the design calculation. Do not copy the automatic suggestion into a design report without a site-specific review trail.</p>
+            <p><b>Reference</b> &middot; AS/NZS 1170.2:2021 local PDF pages for Fig. 3.1(A), Cl. 4.2, Table 4.1 and Cl. 4.4 were checked visually in the project reference library before adding this draft tab.</p>
           </div>
         </div>
       </details>
@@ -720,6 +721,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701m"></script>
+  <script src="app.js?v=20260701n"></script>
 </body>
 </html>
