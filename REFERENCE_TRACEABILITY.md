@@ -9,6 +9,13 @@ This file is the project source-traceability register for the static web handboo
 
 Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md` before treating any source item as checked. Generated reference packs are search aids only; final equations, tables, and values must be visually checked against the source PDF page.
 
+## Document Hygiene
+
+- `SC_HANDBOOK.md` remains the only canonical outline and rule file.
+- Source-reference files remain outside this workspace in `C:\Users\silin\Documents\Codex\Reference`.
+- 2026-07-01 local text audit checked `SC_HANDBOOK.md`, `REFERENCE_TRACEABILITY.md`, `README.md`, `index.html` and `app.js` for common mojibake markers; no active mojibake remains in tracked handbook files.
+- `wind-region-workpack/` is an untracked local workpack and is not part of the checked source-traceability register unless explicitly promoted later.
+
 ## Reference Folder Snapshot
 
 | Source | Local file | Pack status | Current use |

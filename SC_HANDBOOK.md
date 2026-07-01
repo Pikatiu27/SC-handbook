@@ -4,20 +4,22 @@
 
 ## 1. Purpose
 
-`SC Handbook` is a single Excel-based engineering lookup and calculation handbook.
+`SC Handbook` is a lightweight engineering lookup and calculation handbook. The current primary deliverable is the static web handbook. Workbook generation remains an optional output path when explicitly requested.
 
-The workbook is intended for:
+The handbook is intended for:
 
 - Quick engineering lookup
-- Basic design calculation
+- Basic design calculation and screening
 - Transparent formula checking
 - Clear source traceability
-- Offline sharing
-- Future conversion to web or app tools
+- Practical engineering warnings and limitations
+- Offline-friendly sharing where practical
 
-The project default deliverable is:
+The current default deliverable is:
 
-`SC_Engineering_Handbook.xlsx`
+`index.html` with `app.js` and `styles.css`
+
+Optional workbook deliverables, when requested, should remain consistent with the same rules and source traceability.
 
 All project files, worksheet names, headings, field names, notes, and formulas must be written in English.
 
@@ -27,17 +29,17 @@ Every new lookup or calculation module must follow this sequence:
 
 1. Define the engineering task
 2. Identify the governing standard or reference
-3. Extract source values into a locked data sheet
-4. Write formulas using visible helper rows
-5. Build a clear user-facing lookup sheet
-6. Record all references in the `References` sheet
+3. Extract source values into locked data or clearly documented constants
+4. Write formulas with visible calculation steps
+5. Build a clear user-facing lookup interface
+6. Record all references in `REFERENCE_TRACEABILITY.md` or the workbook `References` sheet
 7. Verify sample cases before adding the module to the handbook
 
 No formula should be added only because it is convenient. Each formula must be traceable to a standard clause, table, source document, or clearly stated derived relationship.
 
-## 3. Workbook Structure
+## 3. Optional Workbook Structure
 
-Use one workbook with multiple function-specific tabs.
+When an Excel workbook is requested, use one workbook with multiple function-specific tabs.
 
 Required common worksheets:
 
