@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701o">
+  <link rel="stylesheet" href="styles.css?v=20260701p">
 </head>
 <body>
   <header class="topbar">
@@ -325,13 +325,13 @@
 
           <section class="input-group input-group-factor">
             <span class="input-group-heading"><b>Relevant factors / assumptions</b><small>Only editable quick-screen assumptions stay visible.</small></span>
-            <div class="concrete-input-row concrete-row-analysis">
+            <div class="concrete-input-row concrete-row-analysis concrete-row-assumptions">
               <label><span>One-way shear k<sub>v</sub></span><input id="concreteKv" type="number" min="0.01" max="0.40" step="0.01" value="0.10"></label>
               <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
             </div>
             <details class="advanced-input-card">
               <summary><span><b>Derived section-analysis values</b><small>Read-only stress-block values calculated from the selected inputs.</small></span><i>+</i></summary>
-              <div class="advanced-input-body concrete-input-row concrete-row-analysis">
+              <div class="advanced-input-body concrete-input-row concrete-row-analysis concrete-row-derived">
                 <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
                 <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
                 <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
