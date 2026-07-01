@@ -1147,6 +1147,7 @@ For the web bolt tab, separate the edge-distance terms visibly:
 - Result label: `Minimum edge distance, e - AS 4100 Table 9.5.2`.
 - Edge-limited bearing note: `a_e = e - d_h/2 + d_f/2`.
 - Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
+- Do not multiply the edge-limited ply capacity by total bolt count unless all bolts are actually on the loaded edge / critical line. Use a separate `n_e` input for bolts on the loaded edge. Where an adjacent bolt hole is the critical edge under AS 4100 Cl. 9.2.2.4, calculate `a_e` from the actual hole layout and do not infer it from total bolt count.
 
 ### 15.11 Member Web Tab Rules
 
