@@ -632,7 +632,7 @@
           <div class="source-notes">
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
             <p><b>Project inputs</b> &middot; f<sub>y</sub>, f<sub>u</sub> and the quick-check r default are editable for certificate, section-axis or project-specific values. Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
-            <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated properties are catalogue-derived. Radius of gyration r is the value about the checked buckling axis; this quick tab defaults to the current geometry/catalogue governing value, including PFC r<sub>min</sub>. Compression section capacity assumes no penetrations or unfilled holes, so A<sub>n</sub> = A<sub>g</sub> for this quick check.</p>
+            <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated A<sub>g</sub> properties are catalogue-derived. Radius of gyration r is the value about the checked buckling axis; this quick tab defaults to the current geometry/catalogue governing value, including PFC r<sub>min</sub>. Compression section capacity uses A<sub>n</sub> under AS 4100 Cl. 6.2; with no holes entered, A<sub>n</sub> = A<sub>g</sub>.</p>
             <p>Equal Angle checks use catalogue r<sub>n</sub> = r<sub>p</sub>. PFC checks use r<sub>min</sub>. For custom / built-up inputs, verify connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling and local buckling separately. Weak-axis, torsional/flexural-torsional buckling, connection eccentricity, bending, shear, combined actions and connection capacity are excluded unless explicitly entered through effective properties and independently checked.</p>
           </div>
         </div>
@@ -727,6 +727,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701x"></script>
+  <script src="app.js?v=20260701y"></script>
 </body>
 </html>

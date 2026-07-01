@@ -1704,7 +1704,8 @@ function calculateMember() {
   const ktGuidance = kt >= 0.999
     ? "AS 4100 Cl. 7.3.1 uniform force distribution"
     : "AS 4100 Table 7.3.2 eccentric connection case";
-  const sectionCompression = 0.9 * kf * properties.area * fy / 1000;
+  const compressionArea = netArea;
+  const sectionCompression = 0.9 * kf * compressionArea * fy / 1000;
   const axes = memberType === "custom"
     ? [
         { label: "x", title: "x-axis", r: properties.rx, effectiveLength: value("memberCustomLex") * 1000, alphaB: alphaBInput("memberCustomAlphaBx") },
@@ -1784,19 +1785,19 @@ function calculateMember() {
   const manualReason = memberType === "pfc"
     ? ` PFC default t = t_w = ${fixed(section.tw || 0)} mm from InfraBuild Table 15/16; change t to t_f = ${fixed(section.tf || 0)} mm or another verified thickness if the net path is through the flange or connected element.`
     : "";
-  $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} A<sub>n</sub> affects net-section fracture and final axial tension capacity only; compression uses A<sub>g</sub> in this quick lookup.`;
+  $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} A<sub>n</sub> is used for AS 4100 Cl. 6.2 compression section capacity and Cl. 7.2 net-section fracture.`;
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Centroidal axial load only. r = ${designR.toFixed(1)} mm, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = -0.5 are the current quick-screen assumptions for cold-formed non-stress-relieved CHS. Confirm hot-formed or stress-relieved sections separately.${netAreaWarning}`
     : memberType === "ea"
       ? `Equal Angle quick check uses r = ${designR.toFixed(1)} mm, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}. Weak-axis buckling, flexural-torsional buckling and connection eccentricity are not checked.${netAreaWarning}`
       : memberType === "pfc"
-        ? `PFC quick check uses catalogue A<sub>g</sub>, r = ${designR.toFixed(1)} mm, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} for centroidal axial load only. Default r is r<sub>min</sub> unless overridden. Torsional/flexural-torsional buckling and connection eccentricity are not checked.${netAreaWarning}`
+        ? `PFC quick check uses catalogue A<sub>g</sub>, current A<sub>n</sub>, r = ${designR.toFixed(1)} mm, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)} for centroidal axial load only. Default r is r<sub>min</sub> unless overridden. Torsional/flexural-torsional buckling and connection eccentricity are not checked.${netAreaWarning}`
         : memberType === "custom"
           ? `Custom / Built-up quick check uses user-entered effective properties only. Verify built-up member detailing, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, connection eccentricity and local buckling separately.${netAreaWarning}`
           : `Rod quick check uses r = ${designR.toFixed(1)} mm from solid circular geometry, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}. Confirm product grade, effective length, straightness and connection net area.${netAreaWarning}`;
   const sectionDataText = memberType === "custom"
-    ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
-    : `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; r = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
+    ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
+    : `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
   const compressionSteps = memberType === "custom"
     ? `<div><b>Compression axes - AS 4100 Cl. 6.3</b><code>${axisResults.map(axis => `${axis.label}: L<sub>e</sub>/r = ${axis.leOverR.toFixed(1)}, &lambda;<sub>n</sub> = ${axis.lambdaN.toFixed(1)}, &alpha;<sub>b</sub> = ${axis.alphaB.toFixed(1)}, &alpha;<sub>c</sub> = ${axis.alphaC.toFixed(3)}, &phi;N<sub>c,${axis.label}</sub> = ${fixed(axis.memberCompression)} kN`).join("; ")}; governing = ${governingAxis.title}</code></div>`
     : `<div><b>Nominal slenderness</b><code>L<sub>e</sub>/r = ${fixed(axisResults[0].effectiveLength / 1000)} m / ${axisResults[0].r.toFixed(1)} mm = ${axisResults[0].leOverR.toFixed(1)}; &lambda;<sub>n</sub> = (L<sub>e</sub>/r) &radic;k<sub>f</sub> &radic;(f<sub>y</sub>/250) = ${axisResults[0].lambdaN.toFixed(1)}</code></div>
@@ -1805,12 +1806,12 @@ function calculateMember() {
   $("memberFormulaSteps").innerHTML = `
     <div><b>Design input status</b><code>${strengthBasis}; ${radiusBasis}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${memberType === "custom" ? `${axisResults.map(axis => `${axis.label} ${axis.alphaB.toFixed(1)}`).join(" / ")}` : alphaB.toFixed(1)} from ${alphaBBasis}; k<sub>t</sub> = ${kt.toFixed(2)} - ${ktGuidance}</code></div>
     <div><b>Section data</b><code>${sectionDataText}</code></div>
-    <div><b>Net area input - AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; A<sub>n</sub> is used only in net-section fracture and the final tension-capacity minimum</code></div>
+    <div><b>Net area input - AS 4100 Cl. 6.2 and 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; A<sub>n</sub> is used for compression section capacity and net-section fracture</code></div>
     <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${fy} / 1000 = ${fixed(grossYield)} kN</code></div>
     <div><b>Net-section fracture - AS 4100 Cl. 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${fu} / 1000 = ${fixed(netFracture)} kN</code></div>
     <div><b>Design tension capacity - AS 4100 Cl. 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
     ${compressionSteps}
-    <div><b>Section capacity - AS 4100 Cl. 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>g</sub>f<sub>y</sub>; quick check assumes no penetrations or unfilled holes, so A<sub>g</sub> = ${properties.area.toFixed(0)} mm2; capacity = ${fixed(sectionCompression)} kN</code></div>
+    <div><b>Section capacity - AS 4100 Cl. 6.2</b><code>&phi;N<sub>s</sub> = 0.90 k<sub>f</sub>A<sub>n</sub>f<sub>y</sub> = 0.90 x ${kf.toFixed(3)} x ${compressionArea.toFixed(0)} x ${fy} / 1000 = ${fixed(sectionCompression)} kN</code></div>
     <div><b>Member capacity - AS 4100 Cl. 6.3</b><code>&phi;N<sub>c</sub> = ${memberType === "custom" ? `min(&phi;N<sub>c,x</sub>, &phi;N<sub>c,y</sub>) = ${fixed(memberCompression)} kN` : `&alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${governingAxis.alphaC.toFixed(3)} x ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN`}</code></div>
     <div><b>Optional axial demand</b><code>${demandStep}</code></div>`;
 }
