@@ -1228,7 +1228,7 @@ Use this scope:
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
 - One-way shear capacity screen using AS 3600-style `Vuc = kv bv dv sqrt(f'c)` notation, with `kv` kept as a visible engineering assumption and `phi = 0.70` unless compliant Class N fitments are verified.
 - Pad-on-pad composite action only when the user separately confirms composite action and interface shear design outside the calculator.
-- Keep concrete pad inputs in the standard row-band layout. `Pad-on-pad composite action` belongs in the visible `Relevant factors / assumptions` row and must not be forced into a narrow fixed-width control. Derived stress-block values may open as one read-only row on desktop. Reinforcement table inputs must use the shared form-control height, typography, border and focus style even though the table is compact.
+- Keep concrete pad inputs in the standard row-band layout. `Pad-on-pad composite action` belongs in the visible `Relevant factors / assumptions` row and must not be forced into a narrow fixed-width control. Derived stress-block values may open as one read-only row on desktop. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells must not expose native square number-input chrome or hard black inner outlines.
 
 Required exclusions:
 
