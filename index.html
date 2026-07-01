@@ -77,8 +77,8 @@
               <label><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="holeDiameter" type="number" min="0" step="1" value="26"><em>mm</em></span></label>
             </div>
             <div class="ply-result-grid">
-              <div><span>Ply bearing limit</span><strong id="plyBearingLimit">283.4 kN</strong><small>φ(3.2d<sub>f</sub>t<sub>p</sub>f<sub>up</sub>)</small></div>
-              <div><span>Edge tear-out limit</span><strong id="edgeTearoutLimit">151.3 kN</strong><small>φ(a<sub>e</sub>t<sub>p</sub>f<sub>up</sub>)</small></div>
+              <div><span>Ply bearing limit · group</span><strong id="plyBearingLimit">283.4 kN</strong><small id="plyBearingBasis">1 × φ(3.2d<sub>f</sub>t<sub>p</sub>f<sub>up</sub>)</small></div>
+              <div><span>Edge tear-out limit · group</span><strong id="edgeTearoutLimit">151.3 kN</strong><small id="edgeTearoutBasis">1 × φ(a<sub>e</sub>t<sub>p</sub>f<sub>up</sub>)</small></div>
               <div class="governing"><span>Governing ply capacity</span><strong id="bearingCapacity">151.3 kN</strong><small id="bearingGoverning">edge limit controls</small></div>
             </div>
             <div class="edge-check"><span>Minimum edge distance, e - AS 4100 Table 9.5.2</span><strong><output id="actualEdgeDistance">42.0</output> / <output id="minimumEdgeDistance">42.0</output> mm required</strong><b id="edgeDistanceStatus" class="pass">PASS</b><small>For edge-limited bearing: a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = <output id="effectiveEdgeDistance">41.0</output> mm</small></div>
