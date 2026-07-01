@@ -31,7 +31,7 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Tab | Item | Source document | Located evidence | Status |
 | --- | --- | --- | --- | --- |
 | Bolt | Capacity factor `phi` for bolts and ply bearing | `AS4100.pdf` | AS 4100 Table 3.4 visually checked on PDF page 47 | Visual checked |
-| Bolt | Bolt shear capacity, N/X planes, `k_rd` | `AS4100.pdf` | AS 4100 Cl. 9.2.2.1 visually checked on PDF pages 131-132 | Visual checked |
+| Bolt | Bolt shear capacity, N/X planes, `k_rd` and bolted-lap `k_r` | `AS4100.pdf` | AS 4100 Cl. 9.2.2.1 visually checked on PDF pages 131-132 | Visual checked; do not cite bolt `k_r` as a table, unlike welded-lap `k_r` from AS 4100 Table 9.6.3.10(B) |
 | Bolt | Bolt tension capacity | `AS4100.pdf` | AS 4100 Cl. 9.2.2.2 visually checked on PDF page 132 | Visual checked |
 | Bolt | Combined shear and tension strength check | `AS4100.pdf` | AS 4100 Cl. 9.2.2.3 visually checked on PDF page 132; user screenshot also matched formula form | Visual checked |
 | Bolt | TF slip resistance | `AS4100.pdf` | AS 4100 Cl. 9.2.3.1 visually checked on PDF page 134 | Visual checked |

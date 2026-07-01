@@ -16,6 +16,8 @@ Static, English-language engineering lookup handbook with traceable quick-refere
 
 The primary basis is AS 4100 Table 3.4, AS 4100 Cl. 9.1.8, AS 4100 Cl. 9.2.2.1, AS 4100 Cl. 9.2.2.2, AS 4100 Cl. 9.2.2.3, AS 4100 Cl. 9.2.2.4, AS 4100 Cl. 9.2.3.1, AS 4100 Cl. 9.2.3.3 and AS 4100 Cl. 9.5.2. The edge check distinguishes hole-centre edge distance `e` from the effective edge distance `a_e` used for edge-limited ply bearing. Australian drawing callouts use the category and shear-plane condition, for example `M24 8.8/S - N plane`, `M24 8.8/TB - X plane` or `M24 8.8/TF - N plane`. TB is a fully tensioned bearing category, not a fixed N or X plane. For grade 10.9 bolts, `k_rd = 0.83` applies where threads intercept the shear plane and `k_rd = 1.00` applies where threads do not intercept the shear plane. The strength combined check uses AS 4100 Cl. 9.2.2.3. The TF serviceability slip combined check uses AS 4100 Cl. 9.2.3.3 and is a separate check for friction-type connections where slip is limited.
 
+For bolt shear, `k_r` is treated as the AS 4100 Cl. 9.2.2.1 bolted-lap reduction factor and defaults to 1.0 unless the actual bolted lap detail requires a lower value. It is not a welded-lap table value.
+
 Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal plain-shank area, `A_c` is minor diameter area, and `A_s` is tensile stress area. M10 and M12 are included for `/S` categories only because AS 4100 Table 15.2.2.2 does not provide minimum bolt tensions below M16.
 
 ### Axial Member Capacity
@@ -59,6 +61,8 @@ The concrete pad tool is a compact AS 3600-style reinforced-concrete flexural se
 - a small collapsed section-analysis schematic for strain, stress block and resultants.
 
 This is a moment section-capacity view with a one-way shear screen only, not a full footing or slab design check. It does not check punching shear, soil bearing, base-plate or column bearing, development length, anchorage, crack control, deflection, load combinations, interface shear or plain-concrete footing capacity. For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check.
+
+Concrete pad capacity factor `phi` is shown for the current pure-bending quick-screen assumption using AS 3600 Table 2.2.2 `k_uo` notation for N-class reinforcement. Legacy Y bars use a conservative review value until the actual bar grade and ductility equivalence are verified. The one-way shear result is not a complete AS 3600 shear design check; `k_v` remains a user-confirmed assumption.
 
 ### Weld Capacity
 

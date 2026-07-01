@@ -468,7 +468,7 @@ function calculateBolt() {
     ? `threads clear of plane; includes k<sub>r</sub> = ${kr.toFixed(2)}`
     : `threads intercept plane; includes k<sub>r</sub> = ${kr.toFixed(2)}`;
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `One shear-plane &phi;V<sub>f</sub> includes k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} and k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring AS 4100 Table 9.2.2.1 reduction.`;
+  $("boltResultNote").innerHTML = `One shear-plane &phi;V<sub>f</sub> includes k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} and k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring AS 4100 Cl. 9.2.2.1 reduction.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
   $("groupShearBasis").innerHTML = `${count} bolt${count === 1 ? "" : "s"} × (${nThread} N + ${nShank} X) plane${nThread + nShank === 1 ? "" : "s"} per bolt = ${totalThreadPlanes} N + ${totalShankPlanes} X = ${totalShearPlanes} total shear plane${totalShearPlanes === 1 ? "" : "s"}. Change k<sub>r</sub> only for bolted lap connection reduction.`;
   $("plyBearingLimit").textContent = `${fixed(groupBearingFull)} kN`;
@@ -1110,14 +1110,14 @@ function calculateMember() {
   memberUtilisationStatus.className = axialDemand > 0 ? (demandRatio <= 1 ? "pass" : "fail") : "check";
   const netAreaWarning = value("memberNetArea") > properties.area ? " Net area has been limited to gross area." : "";
   const autoNetAreaText = netInput.mode === "auto"
-    ? `Auto A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm².`
+    ? `Auto straight-line A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm².`
     : memberType === "chs" || memberType === "rod"
       ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm² for this quick lookup.`
       : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm².`;
   const manualReason = memberType === "pfc"
     ? ` PFC default t = t_w = ${fixed(section.tw || 0)} mm from InfraBuild Table 15/16; change t to t_f = ${fixed(section.tf || 0)} mm or another verified thickness if the net path is through the flange or connected element.`
     : "";
-  $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} A<sub>n</sub> is used for AS 4100 Cl. 6.2 compression section capacity and Cl. 7.2 net-section fracture.`;
+  $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Auto mode is only a straight-line bolt-hole deduction; use manual A<sub>n</sub> for staggered holes, slots, cope cuts or any project-specific net path. A<sub>n</sub> is used for AS 4100 Cl. 6.2 compression section capacity and AS 4100 Cl. 7.2 net-section fracture.`;
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Centroidal axial load only. r = ${designR.toFixed(1)} mm, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = -0.5 are the current quick-screen assumptions for cold-formed non-stress-relieved CHS. Confirm hot-formed or stress-relieved sections separately.${netAreaWarning}`
     : memberType === "ea"
@@ -1138,7 +1138,7 @@ function calculateMember() {
   $("memberFormulaSteps").innerHTML = `
     <div><b>Design input status</b><code>${strengthBasis}; ${radiusBasis}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${memberType === "custom" ? `${axisResults.map(axis => `${axis.label} ${axis.alphaB.toFixed(1)}`).join(" / ")}` : alphaB.toFixed(1)} from ${alphaBBasis}; k<sub>t</sub> = ${kt.toFixed(2)} - ${ktGuidance}</code></div>
     <div><b>Section data</b><code>${sectionDataText}</code></div>
-    <div><b>Net area input - AS 4100 Cl. 6.2 and 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; A<sub>n</sub> is used for compression section capacity and net-section fracture</code></div>
+    <div><b>Net area input - AS 4100 Cl. 6.2 and AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `Straight-line A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} x ${fixed(netInput.holeDiameter)} x ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²; not a staggered-hole, slot, cope or multiple-path check` : memberType === "chs" || memberType === "rod" ? `Default A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}; A<sub>n</sub> is used for compression section capacity and net-section fracture</code></div>
     <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 x ${properties.area.toFixed(0)} x ${fy} / 1000 = ${fixed(grossYield)} kN</code></div>
     <div><b>Net-section fracture - AS 4100 Cl. 7.2</b><code>&phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub> = 0.90 x 0.85 x ${kt.toFixed(2)} x ${netArea.toFixed(0)} x ${fu} / 1000 = ${fixed(netFracture)} kN</code></div>
     <div><b>Design tension capacity - AS 4100 Cl. 7.1</b><code>&phi;N<sub>t</sub> = min[${fixed(grossYield)}, ${fixed(netFracture)}] = ${fixed(tensionCapacity)} kN</code></div>
@@ -1352,8 +1352,8 @@ function calculateConcrete() {
   const legacyLayers = data.layers.filter(layer => layer.legacy);
   const fsyCappedLayers = data.layers.filter(layer => layer.fsyInput > 600);
   $("concretePhiNote").textContent = legacyLayers.length
-    ? "Legacy Y bar selected: conservative capacity factor phi = 0.65 is used unless N-class equivalence is verified."
-    : "Capacity factor calculated from AS 3600-style pure bending k_uo for N-class reinforcement.";
+    ? "Legacy Y bar selected: conservative capacity factor phi = 0.65 is used pending bar-grade verification."
+    : "Capacity factor from AS 3600 Table 2.2.2 pure-bending k_uo expression for N-class reinforcement.";
 
   if (!result.ok) {
     ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo", "concretePhiVuc"].forEach(id => $(id).textContent = "-");
@@ -1415,10 +1415,10 @@ function calculateConcrete() {
     <div><b>Steel stress</b><code>f<sub>si</sub> = E<sub>s</sub>&epsilon;<sub>si</sub>, capped at +/- f<sub>sy</sub>; for a bar inside the rectangular concrete block, F<sub>si</sub> = A<sub>si</sub>(f<sub>si</sub> - &alpha;<sub>2</sub>f'<sub>c</sub>) to avoid double-counting displaced concrete</code></div>
     <div><b>Force equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual</code></div>
     <div><b>Nominal moment</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
-    <div><b>Capacity factor</b><code>${legacyLayers.length ? `Legacy Y bar selected: &phi; = 0.65 unless N-class equivalence is verified` : `k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
+    <div><b>Capacity factor - AS 3600 Table 2.2.2</b><code>${legacyLayers.length ? `Legacy Y bar selected: conservative quick-screen &phi; = 0.65 unless actual bar grade and N-class equivalence are verified` : `Pure-bending N-class reinforcement assumption: k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
     <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
     <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
-    <div><b>One-way shear screen</b><code>d = ${fixed(shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm; V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(2)} x ${fixed(data.width)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &phi;V<sub>uc</sub> = ${shear.phi.toFixed(2)} x ${fixed(shear.vuc)} = ${fixed(shear.phiVuc)} kN. k<sub>v</sub> is not fixed by this page; confirm it from AS 3600 Cl. 8.2.4.2 general method, AS 3600 Cl. 8.2.4.3 simplified method, or a project calculation example.</code></div>`;
+    <div><b>One-way shear screen</b><code>d = ${fixed(shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm; V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(2)} x ${fixed(data.width)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &phi;V<sub>uc</sub> = ${shear.phi.toFixed(2)} x ${fixed(shear.vuc)} = ${fixed(shear.phiVuc)} kN. This is not a complete AS 3600 shear design check; k<sub>v</sub> is not fixed by this page and must be confirmed from AS 3600 Cl. 8.2.4.2, AS 3600 Cl. 8.2.4.3, or a project calculation example.</code></div>`;
 }
 
 function setPrimaryPlane() {
