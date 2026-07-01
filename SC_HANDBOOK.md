@@ -1296,14 +1296,14 @@ Required scope:
 - Keep wind inputs in the standard engineering row-band layout: `Site coordinates` for latitude, longitude and reference height; `Relevant factors` for region branch, topography model and `Mlee` override; `Data request` for the fetch action only.
 - Display a coordinate-based wind region screen from AS/NZS 1170.2 Fig. 3.1(A/B), including a visible review warning for boundary sites, islands and cyclonic coastal transition zones.
 - Generate eight 45-degree upwind direction sectors: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, and `NW`.
-- Show the AS/NZS 1170.2 terrain rule and `Mz,cat` screen for each sector. For Region A0, apply AS/NZS 1170.2 Table 4.1 Note 1 rather than describing the physical terrain as adopted TC2.
+- Show the AS/NZS 1170.2 terrain rule and `Mz,cat` screen for each sector. For non-A0 regions, the browser screen should split the upwind sector into distance bands after ignoring `xi = 20z`, screen each band against AS/NZS 1170.2 Cl. 4.2 evidence, then distance-weight the Table 4.1 `Mz,cat` values. For Region A0, apply AS/NZS 1170.2 Table 4.1 Note 1 rather than describing the physical terrain as adopted TC2.
 - Suggest, but do not adopt, terrain-category evidence `TC` for each sector from available public mapping evidence.
 - Suggest, but do not adopt, topographic multiplier `Mt` for each sector from public elevation profile evidence.
-- Show confidence and evidence notes for every direction.
+- Show confidence/action flags and evidence notes for every direction, including `Auto OK`, `Conservative OK`, `Review Region`, `Review Terrain` and `Review Topography`.
 - Display the public data resources used by the page, plus higher-quality optional resource upgrades, in the Wind Site Draft page itself.
 - Keep calculation steps and source limitations in folded details panels.
 - Keep a visible warning that automatic values are for screening only and require engineering review before design issue.
-- Keep the workflow exception-only where possible: provide a conservative automatic draft suggestion when evidence is coherent, then flag only terrain/topography exceptions for user review instead of requiring manual judgement for every sector.
+- Keep the workflow exception-only where possible: provide a conservative automatic draft suggestion when evidence is coherent, then flag only region/terrain/topography exceptions for user review instead of requiring manual judgement for every sector.
 
 Required exclusions:
 

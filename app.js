@@ -571,23 +571,110 @@ function osmBuildingHeight(tags = {}) {
   return Number.isFinite(levels) && levels > 0 ? levels * 3 : null;
 }
 
-function windSectorStats(direction, inputs) {
+function windSectorStats(direction, inputs, minDistance = inputs.xi, maxDistance = inputs.queryRadius) {
   const stats = { buildings: 0, tallBuildings: 0, water: 0, urban: 0, open: 0, forest: 0, other: 0, total: 0 };
   if (!windState.osmElements || inputs.xi >= inputs.queryRadius) return stats;
   windState.osmElements.forEach(element => {
     const centre = osmElementCentre(element);
     if (!centre) return;
     const distance = distanceMetres(inputs.lat, inputs.lon, centre.lat, centre.lon);
-    if (distance < inputs.xi || distance > inputs.queryRadius) return;
+    if (distance < minDistance || distance > maxDistance) return;
     const bearing = bearingBetween(inputs.lat, inputs.lon, centre.lat, centre.lon);
     if (bearingDelta(bearing, direction.bearing) > 22.5) return;
     const tags = element.tags || {};
     const kind = osmFeatureKind(tags);
     stats.total += 1;
-    stats[kind] = (stats[kind] || 0) + 1;
-    if (kind === "building" && (osmBuildingHeight(tags) || 0) >= 10) stats.tallBuildings += 1;
+    if (kind === "building") {
+      stats.buildings += 1;
+      if ((osmBuildingHeight(tags) || 0) >= 10) stats.tallBuildings += 1;
+    } else {
+      stats[kind] = (stats[kind] || 0) + 1;
+    }
   });
   return stats;
+}
+
+function windClassifyTerrain(stats, sectorAreaHa) {
+  const buildingDensity = sectorAreaHa > 0 ? stats.buildings / sectorAreaHa : 0;
+  const tallDensity = sectorAreaHa > 0 ? stats.tallBuildings / sectorAreaHa : 0;
+  let tc = "TC2";
+  let confidence = "Medium";
+  let basis = `${stats.buildings} mapped buildings in ${sectorAreaHa.toFixed(1)} ha; density ${buildingDensity.toFixed(1)} buildings/ha.`;
+
+  if (stats.total === 0) {
+    return { tc: "Review", basis: "No OSM building or land-use records found.", confidence: "Low", buildingDensity, tallDensity };
+  }
+  if (tallDensity >= 6 && buildingDensity >= 12) {
+    tc = "TC4";
+    confidence = "Medium";
+    basis += " OSM height/level tags suggest closely spaced taller construction.";
+  } else if (buildingDensity >= 10) {
+    tc = "TC3";
+    confidence = buildingDensity >= 16 ? "High" : "Medium";
+    basis += " Building density is consistent with suburban/light-industrial roughness; confirm obstruction permanence.";
+  } else if (buildingDensity >= 2) {
+    tc = "TC2.5";
+    confidence = "Medium";
+    basis += " Scattered obstruction density is in the draft TC2.5 range.";
+  } else if (stats.water > 0 && stats.buildings === 0) {
+    tc = "TC1";
+    confidence = "Low";
+    basis += " Water/open records dominate, but true over-water fetch must be confirmed from mapping.";
+  } else if (stats.forest > 0) {
+    tc = "TC3";
+    confidence = "Low";
+    basis += " Forest records require review because dense forests may satisfy TC3 but sparse vegetation may not.";
+  } else if (stats.open > 0) {
+    tc = "TC2";
+    confidence = stats.buildings === 0 ? "Medium" : "Low";
+    basis += " Open/farmland records dominate; confirm obstruction height and spacing.";
+  } else if (stats.urban > 0 && stats.buildings < 2) {
+    tc = "TC2.5";
+    confidence = "Low";
+    basis += " Urban land-use is mapped but building records are sparse.";
+  }
+  return { tc, basis, confidence, buildingDensity, tallDensity };
+}
+
+function windSectorSegments(direction, inputs) {
+  if (!windState.osmElements || inputs.xi >= inputs.queryRadius) return [];
+  const usableDistance = inputs.queryRadius - inputs.xi;
+  const segmentCount = Math.max(1, Math.min(6, Math.ceil(usableDistance / 500)));
+  return Array.from({ length: segmentCount }, (_, index) => {
+    const start = inputs.xi + index * usableDistance / segmentCount;
+    const end = inputs.xi + (index + 1) * usableDistance / segmentCount;
+    const stats = windSectorStats(direction, inputs, start, end);
+    const areaHa = Math.PI * (end ** 2 - start ** 2) * (45 / 360) / 10000;
+    const classification = windClassifyTerrain(stats, areaHa);
+    const tcForMz = /^TC/.test(classification.tc) ? classification.tc : "TC2";
+    const mzcat = interpolateMzCat(tcForMz, inputs.z);
+    return { start, end, length: end - start, stats, areaHa, ...classification, tcForMz, mzcat };
+  });
+}
+
+function windWeightedMzCat(direction, inputs) {
+  const segments = windSectorSegments(direction, inputs);
+  const validSegments = segments.filter(segment => segment.length > 0);
+  if (!validSegments.length) return null;
+  const weighted = validSegments.reduce((sum, segment) => sum + segment.mzcat * segment.length, 0) /
+    validSegments.reduce((sum, segment) => sum + segment.length, 0);
+  const confidence = combinedConfidence(...validSegments.map(segment => segment.confidence));
+  const reviewCount = validSegments.filter(segment => segment.confidence === "Low" || segment.tc === "Review").length;
+  const dominant = Object.entries(validSegments.reduce((counts, segment) => {
+    counts[segment.tcForMz] = (counts[segment.tcForMz] || 0) + segment.length;
+    return counts;
+  }, {})).sort((a, b) => b[1] - a[1])[0]?.[0] || "Review";
+  const summary = validSegments.map(segment =>
+    `${Math.round(segment.start)}-${Math.round(segment.end)} m ${segment.tc}${segment.tc === "Review" ? " using TC2 placeholder" : ""}`
+  ).join("; ");
+  return {
+    mzcat: weighted,
+    tc: dominant,
+    confidence: reviewCount ? "Low" : confidence,
+    reviewCount,
+    segments: validSegments,
+    summary
+  };
 }
 
 function windTerrainResult(tc, basis, confidence, stats, inputs) {
@@ -635,41 +722,26 @@ function suggestTerrainCategory(direction, inputs) {
   }
   const stats = windSectorStats(direction, inputs);
   const sectorAreaHa = Math.PI * (inputs.queryRadius ** 2 - inputs.xi ** 2) * (45 / 360) / 10000;
-  const buildingDensity = sectorAreaHa > 0 ? stats.buildings / sectorAreaHa : 0;
-  const tallDensity = sectorAreaHa > 0 ? stats.tallBuildings / sectorAreaHa : 0;
-  let tc = "TC2";
-  let confidence = "Medium";
-  let basis = `${stats.buildings} mapped buildings in ${sectorAreaHa.toFixed(1)} ha; density ${buildingDensity.toFixed(1)} buildings/ha.`;
+  const aggregate = windClassifyTerrain(stats, sectorAreaHa);
 
   if (stats.total === 0) {
     return windTerrainResult("Review", "No OSM building or land-use records found in this upwind sector.", "Low", stats, inputs);
   }
-  if (tallDensity >= 6 && buildingDensity >= 12) {
-    tc = "TC4";
-    confidence = "Medium";
-    basis += " OSM height/level tags suggest closely spaced taller construction.";
-  } else if (buildingDensity >= 10) {
-    tc = "TC3";
-    confidence = buildingDensity >= 16 ? "High" : "Medium";
-    basis += " Building density is consistent with suburban/light-industrial roughness; confirm obstruction permanence.";
-  } else if (buildingDensity >= 2) {
-    tc = "TC2.5";
-    confidence = "Medium";
-    basis += " Scattered obstruction density is in the draft TC2.5 range.";
-  } else if (stats.water > 0 && stats.buildings === 0) {
-    tc = "TC1";
-    confidence = "Low";
-    basis += " Water/open records dominate, but true over-water fetch must be confirmed from mapping.";
-  } else if (stats.open > 0 || stats.forest > 0) {
-    tc = "TC2";
-    confidence = stats.buildings === 0 ? "Medium" : "Low";
-    basis += " Open/farmland/forest records dominate; confirm obstruction height and spacing.";
-  } else if (stats.urban > 0 && stats.buildings < 2) {
-    tc = "TC2.5";
-    confidence = "Low";
-    basis += " Urban land-use is mapped but building records are sparse.";
+  const weighted = windWeightedMzCat(direction, inputs);
+  if (weighted) {
+    const coverageNote = inputs.queryRadius < inputs.xa ? ` OSM fetch radius is capped at ${Math.round(inputs.queryRadius)} m versus xa = ${Math.round(inputs.xa)} m.` : "";
+    return {
+      tc: weighted.tc,
+      rule: "Cl. 4.2 + 4.2.3 screen",
+      metric: `Weighted M_z,cat = ${weighted.mzcat.toFixed(2)}`,
+      mzcat: weighted.mzcat,
+      basis: `${aggregate.basis} Weighted Table 4.1 screen by upwind distance after xi = ${Math.round(inputs.xi)} m: ${weighted.summary}.${coverageNote}`,
+      confidence: weighted.confidence,
+      stats,
+      segments: weighted.segments
+    };
   }
-  return windTerrainResult(tc, basis, confidence, stats, inputs);
+  return windTerrainResult(aggregate.tc, aggregate.basis, aggregate.confidence, stats, inputs);
 }
 
 function interpolateDistanceAtElevation(points, startIndex, targetElevation) {
@@ -760,16 +832,28 @@ function suggestTopographicMultiplier(direction, inputs) {
 }
 
 function windSuggestionRows(inputs) {
+  const region = windRegionSelection(inputs);
   return windDirections.map(direction => {
     const terrain = suggestTerrainCategory(direction, inputs);
     const topography = suggestTopographicMultiplier(direction, inputs);
+    const confidence = combinedConfidence(region.confidence, terrain.confidence, topography.confidence);
+    const action = windReviewAction(region, terrain, topography, confidence);
     return {
       direction,
       terrain,
       topography,
-      confidence: combinedConfidence(terrain.confidence, topography.confidence)
+      region,
+      confidence,
+      action
     };
   });
+}
+
+function windReviewAction(region, terrain, topography, confidence) {
+  if (region.confidence === "Low") return "Review Region";
+  if (terrain.rule === "Review" || terrain.confidence === "Low") return "Review Terrain";
+  if (topography.confidence === "Low" || Number(topography.mt) > 1.0) return "Review Topography";
+  return confidence === "High" ? "Auto OK" : "Conservative OK";
 }
 
 function renderWindRows(rows) {
@@ -782,13 +866,13 @@ function renderWindRows(rows) {
       <td><b>${safeText(row.terrain.metric)}</b><br>${safeText(row.terrain.basis)}</td>
       <td>${Number(row.topography.mt).toFixed(2)}</td>
       <td>${safeText(row.topography.basis)}</td>
-      <td class="${confidenceClass}">${row.confidence}</td>
+      <td class="${confidenceClass}"><b>${safeText(row.action)}</b><small>${safeText(row.confidence)}</small></td>
     </tr>`;
   }).join("");
 }
 
 function renderWindDetails(rows) {
-  $("windFormulaSteps").innerHTML = rows.map(row => `<div><b>${row.direction.key}</b><code>Terrain rule: ${safeText(row.terrain.rule)}; ${safeText(row.terrain.metric)} (${safeText(row.terrain.confidence)} confidence). Evidence TC: ${safeText(row.terrain.tc)}. Mh = ${Number(row.topography.mh).toFixed(2)}; Mt = ${Number(row.topography.mt).toFixed(2)} (${safeText(row.topography.confidence)} confidence).</code></div>`).join("");
+  $("windFormulaSteps").innerHTML = rows.map(row => `<div><b>${row.direction.key}</b><code>Action: ${safeText(row.action)}. Region ${safeText(row.region.region)} (${safeText(row.region.confidence)}); terrain rule: ${safeText(row.terrain.rule)}; ${safeText(row.terrain.metric)} (${safeText(row.terrain.confidence)}). Evidence TC: ${safeText(row.terrain.tc)}. Mh = ${Number(row.topography.mh).toFixed(2)}; Mt = ${Number(row.topography.mt).toFixed(2)} (${safeText(row.topography.confidence)}).</code></div>`).join("");
   $("windEvidenceNotes").innerHTML = rows.map(row => {
     const stats = row.terrain.stats;
     const profile = row.topography.profile;
@@ -816,9 +900,9 @@ function calculateWind() {
   renderWindRows(rows);
   renderWindDetails(rows);
   const maxMt = rows.reduce((max, row) => Math.max(max, row.topography.mt), 1);
-  const lowCount = rows.filter(row => row.confidence === "Low").length;
+  const reviewCount = rows.filter(row => row.action.startsWith("Review")).length;
   $("windMaxMt").textContent = maxMt.toFixed(2);
-  $("windLowConfidence").textContent = String(lowCount);
+  $("windLowConfidence").textContent = `${reviewCount} review`;
   const matched = windDataMatches(inputs);
   $("windSuggestionStatus").textContent = matched ? "Draft data loaded" : "No current live data";
   $("windDataStatus").textContent = matched

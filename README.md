@@ -90,13 +90,13 @@ The Wind Site Draft tool gives draft, coordinate-based suggestions for AS/NZS 11
 - latitude, longitude and reference height `z`;
 - coordinate-based wind region screen from AS/NZS 1170.2 Figure 3.1(A), with boundary and cyclonic-transition review warnings;
 - eight 45-degree upwind sectors from N to NW;
-- AS/NZS 1170.2 terrain rule and `Mz,cat` screen from Table 4.1, including the Region A0 Note 1 rule;
+- AS/NZS 1170.2 terrain rule and radial-band weighted `Mz,cat` screen from Table 4.1, including the Region A0 Note 1 rule;
 - terrain-category evidence from OpenStreetMap building and land-use records;
 - suggested topographic multiplier `Mt` from public DEM profile sampling;
-- confidence and evidence notes for every direction;
+- action flags and evidence notes for every direction;
 - folded calculation steps and limitations.
 
-The intended workflow is exception-only: the page should give an automatic conservative draft value where the public evidence is coherent, then flag only the directions that need terrain or topography review. Users should not have to classify every direction manually. Low confidence means the map/DEM evidence is sparse, conflicted or close to a formula boundary; it does not mean the AS/NZS 1170.2 formula itself is unreliable.
+The intended workflow is exception-only: the page should give an automatic conservative draft value where the public evidence is coherent, then flag only the directions that need region, terrain or topography review. Users should not have to classify every direction manually. Low confidence means the map/DEM evidence is sparse, conflicted or close to a formula boundary; it does not mean the AS/NZS 1170.2 formula itself is unreliable.
 
 Current live resources are browser-side OpenStreetMap Overpass API records and Open-Meteo elevation profiles. Better future cross-checks include Overture Maps Buildings, Microsoft Global ML Building Footprints, DEA Land Cover, ABARES CLUM, ELVIS / state LiDAR DEM, GA SRTM 1 second DEM and Copernicus DEM. These resources improve screening evidence but do not turn the output into an adopted design value.
 
