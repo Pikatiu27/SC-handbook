@@ -1307,7 +1307,8 @@ Use this scope:
 - User-selected compression face.
 - N-class and legacy Y-bar reinforcement mats.
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
-- One-way shear capacity screen using AS 3600-style `Vuc = kv bv dv sqrt(f'c)` notation, with `kv` kept as a visible engineering assumption and `phi = 0.70` unless compliant Class N fitments are verified.
+- One-way shear capacity screen using AS 3600 Cl. 8.2.1.9 and AS 3600 Cl. 8.2.4.1 notation `Vuc = kv bv dv sqrt(f'c)`, with `kv` kept as a visible engineering assumption and `phi = 0.70` unless compliant Class N fitments are verified.
+- Reinforcement area must use standard nominal Australian bar table areas for N/Y bars, not raw `pi d^2 / 4` geometry, so outputs match normal reo tables and detailing practice.
 - Pad-on-pad composite action only when the user separately confirms composite action and interface shear design outside the calculator.
 - Keep concrete pad inputs in the standard row-band layout. `Pad-on-pad composite action` belongs in the visible `Relevant factors / assumptions` row and must not be forced into a narrow fixed-width control. Derived stress-block values and calculated capacity factor `phi` should be a separate read-only `Derived values` row, not a nested card inside the assumptions row or a material-property field. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
 
@@ -1324,6 +1325,8 @@ Required exclusions:
 - Plain-concrete footing capacity.
 
 Concrete tab warnings must stay visible and concise. The main warning should be a short section-capacity boundary plus brief review flags; keep detailed exclusions and derivations in folded panels. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo` or reinforced-concrete `phi Vuc`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
+
+Do not auto-calculate `kv` unless the page is expanded into a full AS 3600 shear design workflow. AS 3600 Cl. 8.2.4.2 derives `kv` from longitudinal strain, aggregate-size terms and effective shear depth; AS 3600 Cl. 8.2.4.3 simplified values depend on reinforcement and detailing conditions. In this quick handbook page, show `kv` as a user-confirmed assumption and cite the clauses to check.
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 

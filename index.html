@@ -328,7 +328,7 @@
           <section class="input-group input-group-factor">
             <span class="input-group-heading"><b>Relevant factors / assumptions</b><small>Only editable quick-screen assumptions stay visible.</small></span>
             <div class="concrete-input-row concrete-row-analysis concrete-row-assumptions">
-              <label><span>One-way shear k<sub>v</sub></span><input id="concreteKv" type="number" min="0.01" max="0.40" step="0.01" value="0.10"></label>
+              <label><span>k<sub>v</sub> shear assumption</span><input id="concreteKv" type="number" min="0.01" max="0.40" step="0.01" value="0.10"></label>
               <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
             </div>
           </section>
@@ -350,6 +350,7 @@
         </div>
 
         <div class="symbol-key" aria-label="Concrete pad layout symbols"><span><b>b</b> section strip width</span><span><b>D<sub>top</sub></b> top pad depth</span><span><b>D<sub>bot</sub></b> bottom pad depth</span><span><b>c<sub>nom</sub></b> nominal concrete cover to bar surface</span><span><b>y<sub>i</sub></b> reinforcement mat depth from top face</span><span><b>N/Y16 @ 200</b> bar designation and spacing</span></div>
+        <p class="result-note">Reo areas use standard nominal Australian bar table areas. k<sub>v</sub> is a user-confirmed AS 3600 shear assumption, not an automatic value from this quick screen.</p>
 
         <section class="concrete-layer-table" aria-label="Reinforcement mats">
           <div class="layer-header"><span>Reinforcement mat</span><span>Active</span><span>Auto fill y<sub>i</sub></span><span>Depth y<sub>i</sub></span><span>Bar size</span><span>Spacing</span><span>f<sub>sy</sub></span><span>E<sub>s</sub></span></div>
@@ -367,7 +368,7 @@
           <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div><span>selected strip</span></div>
           <div class="capacity-grid concrete-results">
             <article class="capacity-card selected-shear"><span>Design moment capacity &phi;M<sub>uo</sub></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong><p id="concretePhiNote">Capacity factor is calculated from the selected section state.</p></article>
-            <article class="capacity-card"><span>Nominal moment capacity M<sub>uo</sub></span><strong><output id="concreteMuo">-</output><small> kNm</small></strong><p>Internal force couple about the top face datum</p></article>
+            <article class="capacity-card"><span>Nominal moment capacity M<sub>uo</sub></span><strong><output id="concreteMuo">-</output><small> kNm</small></strong><p>Internal force couple after force equilibrium</p></article>
             <article class="capacity-card"><span>Design one-way shear &phi;V<sub>uc</sub></span><strong><output id="concretePhiVuc">-</output><small> kN</small></strong><p id="concreteShearNote">Concrete contribution only; no shear reinforcement included</p></article>
             <article class="capacity-card alternate-shear"><span>Neutral axis depth x</span><strong><output id="concreteNa">-</output><small> mm</small></strong><p>measured from selected compression face</p></article>
           </div>
@@ -378,7 +379,27 @@
 
       <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed section checks</b></span><small>Reinforcement mat strains, stresses, forces and force-equilibrium residual</small></span><i>+</i></summary><div class="detail-body"><section><h3>Reinforcement mat results</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation steps</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
 
-      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 3600 section theory and pad design boundary</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Primary basis</b> - reinforced concrete ultimate flexural section analysis using AS 3600-style rectangular stress-block section theory. Stress-block factors, ultimate strain, ductility limits and capacity factor must be checked against AS 3600 before issue for design.</p><p><b>Stress block</b> - &alpha;<sub>2</sub> and &gamma; are calculated from f'<sub>c</sub> using &alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) and &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67). The f'<sub>c</sub> input is limited to 20 to 120 MPa.</p><p><b>Capacity factor</b> - for N-class reinforcement in pure bending, this tool calculates &phi; from k<sub>uo</sub> using the AS 3600-style expression &phi; = 1.24 - 13k<sub>uo</sub>/12, limited to 0.65 to 0.85. Legacy Y bars use conservative &phi; = 0.65 unless N-class equivalence is verified. Compression-dominant axial-load cases are not implemented.</p><p><b>One-way shear screen</b> - concrete shear contribution is shown as &phi;V<sub>uc</sub> using AS 3600 Cl. 8.2 style notation V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub>, d<sub>v</sub> = max(0.72D, 0.9d), and &phi; = 0.70 where Class N fitments are not verified. The k<sub>v</sub> input is a visible engineering assumption and must be confirmed for the actual shear model, strain condition and aggregate/detailing conditions.</p><p><b>Ductility limit</b> - where k<sub>uo</sub> exceeds 0.36, AS 3600 Cl. 8.1.5 imposes additional conditions on analysis, compression reinforcement and restraint; this tool flags the section for engineering review.</p><p><b>Reinforcement basis</b> - Australian N bar designations are provided for current common deformed reinforcing bars. Legacy Y bar designations are provided for old drawings, with default f<sub>sy</sub> = 410 MPa and the same nominal diameter area; verify actual grade, ductility and condition from the original drawings, specifications, supplier certificate or test records. User-entered f<sub>sy</sub> above 600 MPa is capped at 600 MPa in the design model.</p><p><b>Section theory</b> - plane sections remain plane; strain is linear; concrete tension is ignored at ultimate; ultimate concrete strain is fixed at &epsilon;<sub>cu</sub> = 0.0030; steel stress is calculated from strain and capped at yield.</p><p><b>Neutral axis</b> - x is measured from the selected compression face and solved by axial force equilibrium for pure bending with N<sup>*</sup> = 0.</p></div><div class="source-notes"><p><b>Scope</b> - rectangular pad strip only. Results are for the selected strip width b; use b = 1000 mm for the usual per-metre capacity.</p><p><b>Plain concrete</b> - if no reinforcement mat is active, this tool does not calculate an RC ultimate moment or reinforced-concrete one-way shear capacity. Use a separate plain-concrete footing check to AS 3600 Section 20 where applicable.</p><p><b>Excluded checks</b> - punching shear, base-plate or column bearing, soil bearing, development length, anchorage, bar spacing, crack control, deflection and load combinations.</p><p><b>Pad-on-pad</b> - do not rely on the combined depth unless composite action and interface shear transfer have been separately designed and documented.</p></div></div></details>
+      <details class="source-card">
+        <summary><span><b>Calculation basis and limitations</b><small>AS 3600 section theory and pad design boundary</small></span><i>+</i></summary>
+        <div class="source-body">
+          <div class="source-notes">
+            <p><b>Primary basis</b> - reinforced concrete ultimate flexural section analysis using AS 3600-style rectangular stress-block section theory. Stress-block factors, ultimate strain, ductility limits and capacity factor must be checked against AS 3600 before issue for design.</p>
+            <p><b>Stress block</b> - &alpha;<sub>2</sub> and &gamma; are calculated from f'<sub>c</sub> using &alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) and &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67). The f'<sub>c</sub> input is limited to 20 to 120 MPa.</p>
+            <p><b>Capacity factor</b> - for N-class reinforcement in pure bending, this tool calculates &phi; from k<sub>uo</sub> using the AS 3600-style expression &phi; = 1.24 - 13k<sub>uo</sub>/12, limited to 0.65 to 0.85. Legacy Y bars use conservative &phi; = 0.65 unless N-class equivalence is verified. Compression-dominant axial-load cases are not implemented.</p>
+            <p><b>One-way shear screen</b> - concrete shear contribution is shown as &phi;V<sub>uc</sub> using AS 3600 Cl. 8.2.1.9 effective shear depth and AS 3600 Cl. 8.2.4.1 notation V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub>, with &phi; = 0.70 where Class N fitments are not verified. The k<sub>v</sub> input is a visible engineering assumption and must be confirmed using AS 3600 Cl. 8.2.4.2, AS 3600 Cl. 8.2.4.3, or a project calculation example.</p>
+            <p><b>Ductility limit</b> - where k<sub>uo</sub> exceeds 0.36, AS 3600 Cl. 8.1.5 imposes additional conditions on analysis, compression reinforcement and restraint; this tool flags the section for engineering review.</p>
+            <p><b>Reinforcement basis</b> - Australian N and legacy Y bar designations use standard nominal Australian bar table areas, not raw circular area from bar diameter. Legacy Y bars are provided for old drawings, with default f<sub>sy</sub> = 410 MPa; verify actual grade, ductility and condition from the original drawings, specifications, supplier certificate or test records. User-entered f<sub>sy</sub> above 600 MPa is capped at 600 MPa in the design model.</p>
+            <p><b>Section theory</b> - plane sections remain plane; strain is linear; concrete tension is ignored at ultimate; ultimate concrete strain is fixed at &epsilon;<sub>cu</sub> = 0.0030; steel stress is calculated from strain and capped at yield.</p>
+            <p><b>Neutral axis</b> - x is measured from the selected compression face and solved by axial force equilibrium for pure bending with N<sup>*</sup> = 0.</p>
+          </div>
+          <div class="source-notes">
+            <p><b>Scope</b> - rectangular pad strip only. Results are for the selected strip width b; use b = 1000 mm for the usual per-metre capacity.</p>
+            <p><b>Plain concrete</b> - if no reinforcement mat is active, this tool does not calculate an RC ultimate moment or reinforced-concrete one-way shear capacity. Use a separate plain-concrete footing check to AS 3600 Section 20 where applicable.</p>
+            <p><b>Excluded checks</b> - punching shear, base-plate or column bearing, soil bearing, development length, anchorage, bar spacing, crack control, deflection and load combinations.</p>
+            <p><b>Pad-on-pad</b> - do not rely on the combined depth unless composite action and interface shear transfer have been separately designed and documented.</p>
+          </div>
+        </div>
+      </details>
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
@@ -641,6 +662,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701weld1"></script>
+  <script src="app.js?v=20260701pad1"></script>
 </body>
 </html>

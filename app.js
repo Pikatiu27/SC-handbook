@@ -64,12 +64,22 @@ const concreteInputIds = [
   "layer4Active", "layer4Auto", "layer4Y", "layer4Bar", "layer4Spacing", "layer4Fsy", "layer4Es"
 ];
 const concreteBarDiameters = [12, 16, 20, 24, 28, 32, 36];
+const concreteBarAreas = {
+  12: 110,
+  16: 200,
+  20: 310,
+  24: 450,
+  28: 620,
+  32: 800,
+  36: 1020
+};
 const concreteBarProducts = Object.fromEntries(
   ["N", "Y"].flatMap(prefix => concreteBarDiameters.map(diameter => {
     const legacy = prefix === "Y";
     return [`${prefix}${diameter}`, {
       designation: `${prefix}${diameter}`,
       diameter,
+      area: concreteBarAreas[diameter],
       fsy: legacy ? 410 : 500,
       legacy
     }];
@@ -1147,7 +1157,7 @@ function concreteLayer(index, depth, direction, width) {
   const fsyInput = value(`layer${index}Fsy`) || product.fsy;
   const fsy = Math.min(600, fsyInput);
   const es = value(`layer${index}Es`);
-  const barArea = Math.PI * bar ** 2 / 4;
+  const barArea = product.area || Math.PI * bar ** 2 / 4;
   const areaPerMetre = spacing > 0 ? barArea * 1000 / spacing : 0;
   const area = spacing > 0 ? barArea * width / spacing : 0;
   return {
@@ -1363,7 +1373,7 @@ function calculateConcrete() {
   $("concretePhi").value = result.phi.toFixed(2);
   const residualOk = Math.abs(residual) < 0.01;
   const coverWarnings = result.layers.filter(layer => layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2);
-  const reviewFlags = [`confirm k_v = ${shear.kv.toFixed(2)} and the shear critical section`];
+  const reviewFlags = [`confirm k_v = ${shear.kv.toFixed(2)} from AS 3600 Cl. 8.2.4.2 or AS 3600 Cl. 8.2.4.3`];
   if (data.composite !== "yes") reviewFlags.push("pad-on-pad interface shear not confirmed");
   if (coverWarnings.length) reviewFlags.push(`${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} cover check`);
   if (bottomMatWithoutDepth) reviewFlags.push("bottom pad mats active with D_bot = 0");
@@ -1398,7 +1408,7 @@ function calculateConcrete() {
     <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
     <div><b>Pad geometry</b><code>D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; bottom pad mats require D_bot > 0</code></div>
     <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface; editing a y_i value turns off auto fill for that mat</code></div>
-    <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar</sub> x b / spacing, using nominal bar diameter; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten; design-model f<sub>sy</sub> is capped at 600 MPa</code></div>
+    <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar,table</sub> x b / spacing. A<sub>bar,table</sub> uses standard nominal Australian bar areas N/Y12-36 rather than &pi;d<sup>2</sup>/4; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten; design-model f<sub>sy</sub> is capped at 600 MPa</code></div>
     <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
     <div><b>Concrete block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
     <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
@@ -1408,7 +1418,7 @@ function calculateConcrete() {
     <div><b>Capacity factor</b><code>${legacyLayers.length ? `Legacy Y bar selected: &phi; = 0.65 unless N-class equivalence is verified` : `k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
     <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
     <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
-    <div><b>One-way shear screen</b><code>d = ${fixed(shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm; V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(2)} x ${fixed(data.width)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &phi;V<sub>uc</sub> = ${shear.phi.toFixed(2)} x ${fixed(shear.vuc)} = ${fixed(shear.phiVuc)} kN</code></div>`;
+    <div><b>One-way shear screen</b><code>d = ${fixed(shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm; V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(2)} x ${fixed(data.width)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &phi;V<sub>uc</sub> = ${shear.phi.toFixed(2)} x ${fixed(shear.vuc)} = ${fixed(shear.phiVuc)} kN. k<sub>v</sub> is not fixed by this page; confirm it from AS 3600 Cl. 8.2.4.2 general method, AS 3600 Cl. 8.2.4.3 simplified method, or a project calculation example.</code></div>`;
 }
 
 function setPrimaryPlane() {

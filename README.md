@@ -53,7 +53,7 @@ The tool is deliberately limited to section capacity. It does not check member m
 The concrete pad tool is a compact AS 3600-style reinforced-concrete flexural section check for a rectangular pad strip:
 
 - section width, top pad depth, optional bottom pad depth and bending direction;
-- N-class and legacy Y-bar reinforcement mats with spacing, depth, yield strength and modulus inputs;
+- N-class and legacy Y-bar reinforcement mats with standard nominal Australian bar table areas, spacing, depth, yield strength and modulus inputs;
 - neutral-axis solution, concrete compression force, nominal moment capacity `Muo`, design moment capacity `phi Muo` and `k_uo` warning status;
 - pad-on-pad composite-action warning where combined depth is used;
 - a small collapsed section-analysis schematic for strain, stress block and resultants.
