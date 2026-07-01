@@ -127,6 +127,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .input-group-fields.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .input-group-fields.six { grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
 .input-group-fields.seven { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.input-group-fields.beam-custom-properties { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (min-width: 761px) {
   .input-group {
     display: grid;
@@ -509,7 +510,7 @@ footer b { white-space: nowrap; }
 
 @media (max-width: 760px) {
   .intro { padding-top: 18px; }
-  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.six, .input-group-fields.seven, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .wind-actions, .wind-evidence-grid, .wind-resource-strip, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
+  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.six, .input-group-fields.seven, .input-group-fields.beam-custom-properties, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .wind-actions, .wind-evidence-grid, .wind-resource-strip, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .bolt-summary, .member-summary, .beam-summary, .wind-summary { align-items: flex-start; }
   .weld-summary { display: block; }
   .wind-summary { display: block; }
