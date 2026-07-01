@@ -1261,7 +1261,42 @@ Required exclusions:
 
 The Beam tab may include collapsed UB/UC section guide drawings, but they are visual guides only and must not be treated as numeric data sources.
 
-### 15.13 Concrete Pad Section Web Tab Rules
+### 15.13 Weld Capacity Web Tab Rules
+
+The weld tab is a lightweight throat-capacity lookup and drafting aid. It is not a full welded-joint design engine.
+
+Use this scope:
+
+- Ordinary equal-leg fillet weld throat capacity.
+- CPBW, IPBW and compound weld selections as capacity views only.
+- Weld category `SP` / `GP`.
+- Nominal weld metal tensile strength `f_uw`.
+- Effective length `l_w`.
+- Number of identical effective weld lines acting together.
+- Optional direct design action for utilisation.
+- Optional warning-only parent-metal per-mm screen.
+- Optional AS 4100 welded lap reduction `k_r` when the user confirms that condition.
+
+Required AS 4100 and reference basis:
+
+- Fillet weld capacity must follow AS 4100 Cl. 9.6.3.10: `v_w = 0.6 f_uw t_t k_r`, reported as `phi R / l_w = phi 0.6 f_uw t_t k_r`.
+- Use `t_t = 0.707s` for an ordinary equal-leg fillet weld.
+- Use AS 4100 Table 3.4 for weld capacity factors: `phi = 0.90` for SP CPBW, `phi = 0.80` for SP other fillet weld / IPBW, and `phi = 0.60` for GP welds in the current web scope.
+- Do not silently use `phi = 0.80` for the AS 4100 Table 3.4 special case of longitudinal fillet welds in RHS where `t < 3 mm`; this case is out of scope unless a specific input and warning are added.
+- Use AS 4100 Table 9.6.3.10(A) and ASI Simple Connections 2020 Table 2.14 for the displayed weld-metal strength options.
+- Use AS 4100 Table 9.6.3.10(B) for `k_r`; the table length `l_w` is in metres. Convert the user-entered millimetre length before applying the table formula.
+- For all non-welded-lap connection types, keep `k_r = 1.0`.
+- Use ASI Simple Connections 2020 Tables 2.15 and 2.16 only for the warning-only parent-metal screen. Do not let the parent screen change PASS / FAIL unless a full connected-part check is added.
+
+Display and limitation rules:
+
+- The main quick result should remain `kN/mm per weld line`; total capacity is secondary.
+- State that effective weld lines are not welding passes.
+- CPBW, IPBW and compound welds require project-confirmed effective throat, joint preparation, WPS, inspection and acceptance criteria.
+- Keep plug / slot welds, weld groups, longitudinal RHS fillet welds where `t < 3 mm`, parent-metal rupture, HAZ, block shear, net-section rupture, eccentric weld groups, intermittent weld rules, fatigue, seismic detailing, lamellar tearing, fabrication access and inspection acceptance outside the quick calculator unless they are deliberately added as separate sourced checks.
+- Weld symbols are visual guides only and must continue to follow AS 1101.3 Fig. 2.1 and AS 1101.3 Figs. 2.8 to 2.10 conventions.
+
+### 15.14 Concrete Pad Section Web Tab Rules
 
 The concrete pad tab is a compact reinforced-concrete section-capacity view for rectangular pad strips. It is not a full footing, slab, or concrete design engine.
 
@@ -1292,7 +1327,7 @@ Concrete tab warnings must stay visible and concise. The main warning should be 
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
-### 15.14 Web Local Update and Deployment Workflow
+### 15.15 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 

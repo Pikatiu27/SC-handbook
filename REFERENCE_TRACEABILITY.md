@@ -39,9 +39,9 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Bolt | Minimum bolt tension `Nti` | `AS4100.pdf` | AS 4100 Table 15.2.2.2 visually checked on PDF page 192 for M16/M20/M24/M30/M36: 8.8 = 95/145/210/335/490 kN, 10.9 = 130/205/295/465/680 kN | Visual checked |
 | Bolt | Minimum edge distance | `AS4100.pdf` | AS 4100 Table 9.5.2 visually checked on PDF page 138 | Visual checked |
 | Weld | Weld capacity factor and direct weld capacity | `AS4100.pdf` | AS 4100 Table 3.4 visually checked on PDF page 47; AS 4100 Cl. 9.6.3.10 visually checked on PDF page 147 | Visual checked |
-| Weld | Welded lap reduction `k_r` | `AS4100.pdf` | AS 4100 Table 9.6.3.10(B) visually checked on PDF page 147 | Visual checked |
-| Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | AS 4100 Table 9.6.3.10(A) visually checked on PDF page 147; ASI Simple Connections Table 2.14 visually checked on PDF page 19 | Visual checked |
-| Weld | Parent metal screen values | `5+SSC 2020.pdf` | ASI Simple Connections Tables 2.15 and 2.16 visually checked on PDF pages 20-21 | Visual checked |
+| Weld | Welded lap reduction `k_r` | `AS4100.pdf` | AS 4100 Table 9.6.3.10(B) visually checked on PDF page 148; table length `l_w` is in metres | Visual checked |
+| Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | AS 4100 Table 9.6.3.10(A) visually checked on PDF pages 147-148; ASI Simple Connections 2020 Table 2.14 visually checked on PDF page 19 | Visual checked |
+| Weld | Parent metal screen values | `5+SSC 2020.pdf` | ASI Simple Connections 2020 Tables 2.15 and 2.16 visually checked on PDF pages 20-21; Grade 300 flat bar / sections use `f_up = 440 MPa` | Visual checked |
 | Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | AS 1101.3 Fig. 2.1 visually checked on PDF page 9; AS 1101.3 Cl. 2.3.2.1 to AS 1101.3 Cl. 2.3.2.3 and AS 1101.3 Figs. 2.8 to 2.10 visually checked on PDF pages 14-15 | Visual checked |
 | Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | AS 4100 Section 5 / AS 4100 Cl. 5.2 visually checked on PDF page 66 | Visual checked |
 | Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | AS 4100 Cl. 5.11.4 and AS 4100 Cl. 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
@@ -94,7 +94,7 @@ Default outputs were checked on the local static page at `http://127.0.0.1:8765/
 | Tab | Default case | Checked output | Status |
 | --- | --- | --- | --- |
 | Bolt | M24 8.8/S, N plane | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; group shear 133.4 kN; ply bearing 304.1 kN; edge limit 162.4 kN; minimum edge distance 42.0 mm | DOM output matched independent calculation |
-| Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm | DOM output matched independent calculation |
+| Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm for Grade 250 plate, 10 mm | DOM output matched independent calculation |
 | Beam | 310UB40.4 300PLUS | `Ag` 5210 mm2; `Aw` 1730 mm2; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; `kf` 0.952; `phi Ms` 182.3 kNm; `phi Vv` 298.9 kN | DOM output matched independent calculation |
 | Beam | 200UC46.2 300PLUS | `Ag` 5900 mm2; `Aw` 1324 mm2; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; `kf` 1.000; `phi Ms` 133.4 kNm; `phi Vv` 214.5 kN | DOM output matched independent calculation |
 | Axial Member | 114.3 x 3.2 CHS, C350L0, `Le` 3.0 m | computed `Ag` 1117 mm2; `r` 39.3 mm; `Le/r` 76.3; `lambda_n` 90.3; `alpha_c` 0.672; section compression 351.8 kN; member compression 236.5 kN; tension 351.8 kN | DOM output matched independent calculation; CHS geometry is formula-derived from `D` and `t`, not a catalogue row value |
