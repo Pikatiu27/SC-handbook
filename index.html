@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701r">
+  <link rel="stylesheet" href="styles.css?v=20260701s">
 </head>
 <body>
   <header class="topbar">
@@ -327,14 +327,15 @@
               <label><span>One-way shear k<sub>v</sub></span><input id="concreteKv" type="number" min="0.01" max="0.40" step="0.01" value="0.10"></label>
               <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
             </div>
-            <details class="advanced-input-card">
-              <summary><span><b>Derived section-analysis values</b><small>Read-only stress-block values calculated from the selected inputs.</small></span><i>+</i></summary>
-              <div class="advanced-input-body concrete-input-row concrete-row-analysis concrete-row-derived">
-                <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
-                <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
-                <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
-              </div>
-            </details>
+          </section>
+
+          <section class="input-group input-group-derived">
+            <span class="input-group-heading"><b>Derived values</b><small>Read-only stress-block values calculated from the selected inputs.</small></span>
+            <div class="concrete-input-row concrete-row-analysis concrete-row-derived">
+              <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
+              <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
+              <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
+            </div>
           </section>
         </div>
 
@@ -347,10 +348,10 @@
 
         <section class="concrete-layer-table" aria-label="Reinforcement mats">
           <div class="layer-header"><span>Reinforcement mat</span><span>Active</span><span>Auto fill y<sub>i</sub></span><span>Depth y<sub>i</sub></span><span>Bar size</span><span>Spacing</span><span>f<sub>sy</sub></span><span>E<sub>s</sub></span></div>
-          <div class="layer-row"><strong>Top pad top mat</strong><label><input id="layer1Active" type="checkbox" checked><span>include</span></label><label><input id="layer1Auto" type="checkbox" checked><span>auto</span></label><label><input id="layer1Y" type="number" min="0" step="5" value="48"><em>mm</em></label><label><select id="layer1Bar" data-default-bar="N16" aria-label="Top pad top mat bar size"></select></label><label><input id="layer1Spacing" type="number" min="50" step="5" value="200"><em>mm</em></label><label><input id="layer1Fsy" type="number" min="200" max="600" step="10" value="500"><em>MPa</em></label><label><input id="layer1Es" type="number" min="100000" step="1000" value="200000"><em>MPa</em></label></div>
-          <div class="layer-row"><strong>Top pad bottom mat</strong><label><input id="layer2Active" type="checkbox" checked><span>include</span></label><label><input id="layer2Auto" type="checkbox" checked><span>auto</span></label><label><input id="layer2Y" type="number" min="0" step="5" value="450"><em>mm</em></label><label><select id="layer2Bar" data-default-bar="N20" aria-label="Top pad bottom mat bar size"></select></label><label><input id="layer2Spacing" type="number" min="50" step="5" value="200"><em>mm</em></label><label><input id="layer2Fsy" type="number" min="200" max="600" step="10" value="500"><em>MPa</em></label><label><input id="layer2Es" type="number" min="100000" step="1000" value="200000"><em>MPa</em></label></div>
-          <div class="layer-row"><strong>Bottom pad top mat</strong><label><input id="layer3Active" type="checkbox"><span>include</span></label><label><input id="layer3Auto" type="checkbox" checked><span>auto</span></label><label><input id="layer3Y" type="number" min="0" step="5" value="548"><em>mm</em></label><label><select id="layer3Bar" data-default-bar="N16" aria-label="Bottom pad top mat bar size"></select></label><label><input id="layer3Spacing" type="number" min="50" step="5" value="200"><em>mm</em></label><label><input id="layer3Fsy" type="number" min="200" max="600" step="10" value="500"><em>MPa</em></label><label><input id="layer3Es" type="number" min="100000" step="1000" value="200000"><em>MPa</em></label></div>
-          <div class="layer-row"><strong>Bottom pad bottom mat</strong><label><input id="layer4Active" type="checkbox"><span>include</span></label><label><input id="layer4Auto" type="checkbox" checked><span>auto</span></label><label><input id="layer4Y" type="number" min="0" step="5" value="950"><em>mm</em></label><label><select id="layer4Bar" data-default-bar="N16" aria-label="Bottom pad bottom mat bar size"></select></label><label><input id="layer4Spacing" type="number" min="50" step="5" value="200"><em>mm</em></label><label><input id="layer4Fsy" type="number" min="200" max="600" step="10" value="500"><em>MPa</em></label><label><input id="layer4Es" type="number" min="100000" step="1000" value="200000"><em>MPa</em></label></div>
+          <div class="layer-row"><strong>Top pad top mat</strong><label><input id="layer1Active" type="checkbox" checked><span>include</span></label><label><input id="layer1Auto" type="checkbox" checked><span>auto</span></label><label data-field="Depth y_i"><input id="layer1Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="48"><em>mm</em></label><label data-field="Bar size"><select id="layer1Bar" data-default-bar="N16" aria-label="Top pad top mat bar size"></select></label><label data-field="Spacing"><input id="layer1Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer1Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer1Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
+          <div class="layer-row"><strong>Top pad bottom mat</strong><label><input id="layer2Active" type="checkbox" checked><span>include</span></label><label><input id="layer2Auto" type="checkbox" checked><span>auto</span></label><label data-field="Depth y_i"><input id="layer2Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="450"><em>mm</em></label><label data-field="Bar size"><select id="layer2Bar" data-default-bar="N20" aria-label="Top pad bottom mat bar size"></select></label><label data-field="Spacing"><input id="layer2Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer2Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer2Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
+          <div class="layer-row"><strong>Bottom pad top mat</strong><label><input id="layer3Active" type="checkbox"><span>include</span></label><label><input id="layer3Auto" type="checkbox" checked><span>auto</span></label><label data-field="Depth y_i"><input id="layer3Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="548"><em>mm</em></label><label data-field="Bar size"><select id="layer3Bar" data-default-bar="N16" aria-label="Bottom pad top mat bar size"></select></label><label data-field="Spacing"><input id="layer3Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer3Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer3Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
+          <div class="layer-row"><strong>Bottom pad bottom mat</strong><label><input id="layer4Active" type="checkbox"><span>include</span></label><label><input id="layer4Auto" type="checkbox" checked><span>auto</span></label><label data-field="Depth y_i"><input id="layer4Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="950"><em>mm</em></label><label data-field="Bar size"><select id="layer4Bar" data-default-bar="N16" aria-label="Bottom pad bottom mat bar size"></select></label><label data-field="Spacing"><input id="layer4Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer4Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer4Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
         </section>
 
         <section class="concrete-visual-grid">
@@ -706,6 +707,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701k"></script>
+  <script src="app.js?v=20260701l"></script>
 </body>
 </html>

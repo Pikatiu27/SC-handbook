@@ -378,8 +378,8 @@ function combinedConfidence(...labels) {
 function clampNumericInput(input) {
   const current = numericValue(input.value);
   if (!Number.isFinite(current)) return;
-  const min = input.getAttribute("min");
-  const max = input.getAttribute("max");
+  const min = input.getAttribute("min") ?? input.dataset.min;
+  const max = input.getAttribute("max") ?? input.dataset.max;
   let next = current;
   if (min !== null) next = Math.max(next, numericValue(min));
   if (max !== null) next = Math.min(next, numericValue(max));
@@ -387,7 +387,7 @@ function clampNumericInput(input) {
 }
 
 function enhanceNumberInputs() {
-  document.querySelectorAll('input[type="number"]').forEach(input => {
+  document.querySelectorAll('input[type="number"], input.numeric-input').forEach(input => {
     input.enterKeyHint = "done";
     if (input.readOnly) return;
     input.type = "text";
@@ -395,7 +395,10 @@ function enhanceNumberInputs() {
     input.setAttribute("inputmode", "decimal");
     input.classList.add("numeric-input");
     input.autocomplete = "off";
-    input.addEventListener("blur", () => clampNumericInput(input));
+    if (input.dataset.numericEnhanced !== "true") {
+      input.addEventListener("blur", () => clampNumericInput(input));
+      input.dataset.numericEnhanced = "true";
+    }
   });
 }
 

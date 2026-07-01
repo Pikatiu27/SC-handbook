@@ -795,6 +795,24 @@ Tab rules:
 - Keep tab names short and direct.
 - Page title and UI labels must be English.
 
+Page-level layout order:
+
+1. Compact header with brand only.
+2. Short page intro only where useful; do not use a marketing hero.
+3. Horizontal tab navigation.
+4. Active tool panel.
+
+Per-tab layout order:
+
+1. Tool heading: discipline / standard note, tab title, review status.
+2. Input area: engineering row bands grouped by purpose.
+3. Summary strip: selected item, current assumptions and key intermediate values.
+4. Main results: governing capacity, utilisation, PASS / FAIL / CHECK status.
+5. Secondary aids: compact tables, symbols, figures or warnings that support quick lookup.
+6. Folded details: calculation steps, evidence notes and source limitations.
+
+Do not place decorative cards, large hero blocks or explanatory feature text above the active calculator. The engineer should reach the first meaningful input quickly on desktop and phone.
+
 ### 15.3 Web Result Layout
 
 Every web calculator should use the same result structure:
@@ -846,6 +864,8 @@ Practical rules:
 - Avoid all-caps except for small tags such as `RESULTS`.
 - If helper text is important enough to show, it must be readable on phone.
 - Summary strips such as `Selected member` should use clear stacked rows when the label/value block and metric block would otherwise stretch to opposite sides of a wide web card.
+- Cards should represent real workflow groups or repeated results, not general page decoration. Do not put cards inside cards unless the inner item is a collapsed details panel, repeated result card, or compact table row that has a distinct purpose.
+- Desktop layouts may use horizontal field rows inside one engineering group, but different engineering groups should stack vertically in a predictable order.
 
 ### 15.5 Mobile Layout Rules
 
@@ -948,7 +968,21 @@ Related project files:
 - `REFERENCE_TRACEABILITY.md` is the source evidence register. Put visual-check status, PDF page evidence, row-level checks and remaining source gaps there.
 - Source PDFs, converted Markdown packs and technical sheets live only in `C:\Users\silin\Documents\Codex\Reference`. Do not create a second reference folder inside this repo.
 
-Web input grouping:
+### 15.8 Web Input Layout Logic
+
+The input area is the main workflow surface. Build it from engineering logic first and CSS convenience second.
+
+Input zone order:
+
+1. `Section / geometry` or selected item.
+2. `Material properties`.
+3. `Relevant factors / assumptions`.
+4. `Connection / detailing inputs` where applicable.
+5. `Design actions` where the tab reports utilisation.
+6. `Derived values` as read-only values, separate from editable assumptions unless there is a specific reason to collapse them.
+7. Warning-only or advanced screens in a lower-priority row or collapsed details panel.
+
+Input grouping:
 
 - Input sections must be grouped by engineering purpose before visual layout is considered. Use these group names where applicable: `Section properties`, `Material properties`, `Relevant factors`, `Design actions`, and `Connection / detailing inputs`.
 - Desktop input layout should use engineering row bands: one labelled horizontal row/card per engineering group, in the order `Section / geometry`, `Material properties`, `Relevant factors`, `Connection / detailing`, `Design actions`, then warning-only or advanced inputs where applicable. Inputs inside a row may be arranged horizontally and wrap, but different engineering groups should not be placed side-by-side simply to save vertical height.
@@ -968,8 +1002,10 @@ Web input grouping:
 - Use different subtle background fills for these two groups. Do not rely on colour alone; labels and warnings must still state which values remain project-confirmed.
 - Input controls must use a consistent control height, border radius, font size, label size and focus treatment across all tabs unless a dense table genuinely requires smaller controls. Main calculator inputs should use the shared form-control style rather than one-off sizing.
 - On phone browsers, numeric fields must allow direct typing. Do not leave editable numeric inputs in a state where the user can only use increment / decrement controls.
+- If JavaScript changes numeric inputs from `type="number"` to text inputs for mobile typing, CSS selectors must target a stable class such as `.numeric-input`, not only `input[type="number"]`.
+- Dense editable tables should become clear field groups on phone: show the row title first, then short binary controls, then full-width numeric/select fields with visible field labels and units. Do not leave a table in a form where the header disappears and the user cannot tell what each input means.
 
-Responsive web / phone mode:
+Phone and responsive input behaviour:
 
 - Desktop is the full engineering quick-reference view: complete inputs, result cards, formula steps, source notes, limitations and compact figures remain available.
 - Phone mode is a field quick-check view. Keep the same calculation logic, but prioritise primary inputs, governing result cards, utilisation / PASS-FAIL status and critical warnings in the first screen sequence.
@@ -1047,7 +1083,7 @@ CAD technical drawing rules:
 - Title blocks, revision blocks, north points, grid bubbles, material callouts, weld symbols, section marks, detail bubbles, and other formal drawing elements should only be included when they serve the quick-reference purpose. Do not add full drawing-sheet decoration to calculator figures.
 - Before publishing a CAD-style figure, check it at desktop and phone width for clipping, overlapping labels, unreadable text, incorrect line hierarchy, and horizontal overflow.
 
-### 15.8 Web Warning and Limitation Style
+### 15.9 Web Warning and Limitation Style
 
 Warnings should be concise and professional.
 
@@ -1059,7 +1095,7 @@ Use action language:
 
 Avoid long paragraphs in the main result area. If the warning needs explanation, put the explanation in the collapsed basis panel.
 
-### 15.9 Bolt Web Tab Rules
+### 15.10 Bolt Web Tab Rules
 
 The bolt tab should follow Australian steel drawing and AS 4100 language.
 
@@ -1106,7 +1142,7 @@ For the web bolt tab, separate the edge-distance terms visibly:
 - Edge-limited bearing note: `a_e = e - d_h/2 + d_f/2`.
 - Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
 
-### 15.10 Member Web Tab Rules
+### 15.11 Member Web Tab Rules
 
 The member tab should use AS 4100 member-design language.
 
@@ -1169,7 +1205,7 @@ Do not imply the member tab is a full steel design engine unless all required li
 - Connection design not included.
 - Flexural-torsional buckling not included unless specifically implemented.
 
-### 15.11 Beam Section Web Tab Rules
+### 15.12 Beam Section Web Tab Rules
 
 The beam tab is a lightweight AS 4100 section-capacity check. It is not a full beam or member design engine.
 
@@ -1216,7 +1252,7 @@ Required exclusions:
 
 The Beam tab may include collapsed UB/UC section guide drawings, but they are visual guides only and must not be treated as numeric data sources.
 
-### 15.12 Concrete Pad Section Web Tab Rules
+### 15.13 Concrete Pad Section Web Tab Rules
 
 The concrete pad tab is a compact reinforced-concrete section-capacity view for rectangular pad strips. It is not a full footing, slab, or concrete design engine.
 
@@ -1229,7 +1265,7 @@ Use this scope:
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
 - One-way shear capacity screen using AS 3600-style `Vuc = kv bv dv sqrt(f'c)` notation, with `kv` kept as a visible engineering assumption and `phi = 0.70` unless compliant Class N fitments are verified.
 - Pad-on-pad composite action only when the user separately confirms composite action and interface shear design outside the calculator.
-- Keep concrete pad inputs in the standard row-band layout. `Pad-on-pad composite action` belongs in the visible `Relevant factors / assumptions` row and must not be forced into a narrow fixed-width control. Derived stress-block values may open as one read-only row on desktop. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells must not expose native square number-input chrome or hard black inner outlines.
+- Keep concrete pad inputs in the standard row-band layout. `Pad-on-pad composite action` belongs in the visible `Relevant factors / assumptions` row and must not be forced into a narrow fixed-width control. Derived stress-block values should be a separate read-only row, not a nested card inside the assumptions row. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
 
 Required exclusions:
 
@@ -1247,7 +1283,7 @@ Concrete tab warnings must stay visible and concise. If no reinforcement mat is 
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
-### 15.13 Wind Site Web Tab Rules
+### 15.14 Wind Site Web Tab Rules
 
 The Wind Site tab is a draft site-exposure suggestion tool only. It must not be presented as a signed wind assessment or a complete AS/NZS 1170.2 wind-load calculator.
 
@@ -1272,7 +1308,7 @@ Required exclusions:
 
 The browser-side coordinate fetch may use public map/elevation APIs only as draft evidence. If the request fails, data is sparse, building heights are missing, or the scan radius is capped, the row must stay low-confidence or require review. The adopted design values must remain project-confirmed inputs in the final engineering calculation.
 
-### 15.14 Web Local Update and Deployment Workflow
+### 15.15 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
