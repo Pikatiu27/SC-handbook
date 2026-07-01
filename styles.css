@@ -422,7 +422,9 @@ main, footer { max-width: 1040px; margin: auto; }
 .wind-result-table { min-width: 920px; }
 .wind-result-table td:nth-child(3), .wind-result-table td:nth-child(5), .wind-result-table td:nth-child(7) { color: var(--ink); font-weight: 900; text-align: center; white-space: nowrap; }
 .wind-result-table td:nth-child(4), .wind-result-table td:nth-child(6) { color: var(--muted); font-size: var(--fs-xs); }
+.wind-result-table td:nth-child(3) b, .wind-result-table td:nth-child(3) small,
 .wind-result-table td:nth-child(7) b, .wind-result-table td:nth-child(7) small { display: block; }
+.wind-result-table td:nth-child(3) small,
 .wind-result-table td:nth-child(7) small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); font-weight: 800; }
 .wind-confidence-high { color: var(--green-dark) !important; }
 .wind-confidence-medium { color: #8a641f !important; }
@@ -552,6 +554,7 @@ footer b { white-space: nowrap; }
   .compact-lookup-table td:nth-child(1) { color: var(--ink); font-weight: 900; }
   .compact-lookup-table td:nth-child(3) { width: max-content; max-width: 100%; padding: 3px 8px; border-radius: 999px; background: #eaf4fb; color: var(--member-dark); text-align: left; font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
   .compact-lookup-table td:nth-child(4)::before { content: "Status: "; color: var(--ink); font-weight: 900; }
+  .wind-result-table td:nth-child(3)::before { content: "Suggested TC / rule: "; color: var(--ink); font-weight: 900; }
   .wind-result-table td:nth-child(4)::before { content: "Mz,cat / evidence: "; color: var(--ink); font-weight: 900; }
   .wind-result-table td:nth-child(6)::before { content: "Mt basis: "; color: var(--ink); font-weight: 900; }
   .wind-result-table td:nth-child(7)::before { content: "Action: "; color: var(--ink); font-weight: 900; }

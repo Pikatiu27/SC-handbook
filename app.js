@@ -677,6 +677,50 @@ function windWeightedMzCat(direction, inputs) {
   };
 }
 
+function windA0TerrainEvidence(direction, inputs) {
+  if (!windState.osmElements || windState.key !== inputs.key) {
+    return {
+      tc: "Evidence pending",
+      basis: "Fetch OSM sector data if physical terrain evidence is required; the A0 Mz,cat rule itself is independent of terrain category.",
+      confidence: "Medium",
+      stats: null,
+      segments: null
+    };
+  }
+  if (inputs.xi >= inputs.queryRadius) {
+    return {
+      tc: "Review",
+      basis: "Lag distance exceeds the capped OSM scan radius; physical terrain evidence requires source review outside the browser screen.",
+      confidence: "Low",
+      stats: null,
+      segments: null
+    };
+  }
+  const stats = windSectorStats(direction, inputs);
+  const sectorAreaHa = Math.PI * (inputs.queryRadius ** 2 - inputs.xi ** 2) * (45 / 360) / 10000;
+  const aggregate = windClassifyTerrain(stats, sectorAreaHa);
+  if (stats.total === 0) {
+    return {
+      tc: "Review",
+      basis: "No OSM building or land-use records found in this upwind sector.",
+      confidence: "Low",
+      stats,
+      segments: null
+    };
+  }
+  const weighted = windWeightedMzCat(direction, inputs);
+  if (weighted) {
+    return {
+      tc: weighted.tc,
+      basis: `${aggregate.basis} Physical terrain evidence by radial band after xi = ${Math.round(inputs.xi)} m: ${weighted.summary}.`,
+      confidence: weighted.confidence,
+      stats,
+      segments: weighted.segments
+    };
+  }
+  return { ...aggregate, stats, segments: null };
+}
+
 function windTerrainResult(tc, basis, confidence, stats, inputs) {
   const a0Rule = windA0MzCatRule(inputs);
   if (a0Rule) {
@@ -711,8 +755,21 @@ function suggestTerrainCategory(direction, inputs) {
     return windTerrainResult("Review", "Enter valid latitude and longitude.", "Low", null, inputs);
   }
   const a0Rule = windA0MzCatRule(inputs);
-  if (a0Rule && (!windState.osmElements || windState.key !== inputs.key)) {
-    return windTerrainResult("A0 evidence pending", "Fetch OSM sector data if physical terrain evidence is required; the A0 Mz,cat rule itself is independent of terrain category.", "Medium", null, inputs);
+  if (a0Rule) {
+    const evidence = windA0TerrainEvidence(direction, inputs);
+    const tcRule = a0Rule.text.includes("M_z,cat,2") ? "TC2 table" : "A0 rule";
+    return {
+      tc: tcRule,
+      evidenceTc: evidence.tc,
+      rule: "Table 4.1 A0 rule",
+      metric: a0Rule.text,
+      mzcat: a0Rule.mzcat,
+      basis: `${a0Rule.basis} Physical TC evidence is shown for review only and does not override the A0 rule. ${evidence.basis}`,
+      confidence: "High",
+      evidenceConfidence: evidence.confidence,
+      stats: evidence.stats,
+      segments: evidence.segments
+    };
   }
   if (!windState.osmElements || windState.key !== inputs.key) {
     return windTerrainResult("Review", "Fetch current OSM sector data for this coordinate and height.", "Low", null, inputs);
@@ -856,14 +913,31 @@ function windReviewAction(region, terrain, topography, confidence) {
   return confidence === "High" ? "Auto OK" : "Conservative OK";
 }
 
+function windTerrainTcDisplay(terrain) {
+  const primary = terrain?.tc || "Review";
+  if (terrain?.rule === "Table 4.1 A0 rule") {
+    const evidence = terrain.evidenceTc && terrain.evidenceTc !== "Evidence pending"
+      ? `physical evidence ${terrain.evidenceTc}`
+      : "physical evidence pending";
+    return { primary, note: evidence };
+  }
+  if (/^TC/.test(primary)) {
+    const segmentTcs = terrain.segments ? [...new Set(terrain.segments.map(segment => segment.tcForMz))] : [];
+    const mixed = segmentTcs.length > 1;
+    return { primary: mixed ? `${primary} effective` : primary, note: mixed ? "distance-weighted bands" : terrain.rule };
+  }
+  return { primary, note: terrain?.rule || "Review" };
+}
+
 function renderWindRows(rows) {
   $("windDirectionRows").innerHTML = rows.map(row => {
     const confidenceClass = `wind-confidence-${row.confidence.toLowerCase()}`;
+    const tcDisplay = windTerrainTcDisplay(row.terrain);
     return `<tr>
       <td>${row.direction.key}</td>
       <td>${row.direction.sector}&deg;</td>
-      <td>${safeText(row.terrain.rule)}</td>
-      <td><b>${safeText(row.terrain.metric)}</b><br>${safeText(row.terrain.basis)}</td>
+      <td><b>${safeText(tcDisplay.primary)}</b><small>${safeText(tcDisplay.note)}</small></td>
+      <td><b>${safeText(row.terrain.metric)}</b><br>${safeText(row.terrain.rule)}. ${safeText(row.terrain.basis)}</td>
       <td>${Number(row.topography.mt).toFixed(2)}</td>
       <td>${safeText(row.topography.basis)}</td>
       <td class="${confidenceClass}"><b>${safeText(row.action)}</b><small>${safeText(row.confidence)}</small></td>
@@ -872,7 +946,11 @@ function renderWindRows(rows) {
 }
 
 function renderWindDetails(rows) {
-  $("windFormulaSteps").innerHTML = rows.map(row => `<div><b>${row.direction.key}</b><code>Action: ${safeText(row.action)}. Region ${safeText(row.region.region)} (${safeText(row.region.confidence)}); terrain rule: ${safeText(row.terrain.rule)}; ${safeText(row.terrain.metric)} (${safeText(row.terrain.confidence)}). Evidence TC: ${safeText(row.terrain.tc)}. Mh = ${Number(row.topography.mh).toFixed(2)}; Mt = ${Number(row.topography.mt).toFixed(2)} (${safeText(row.topography.confidence)}).</code></div>`).join("");
+  $("windFormulaSteps").innerHTML = rows.map(row => {
+    const tcDisplay = windTerrainTcDisplay(row.terrain);
+    const evidenceTc = row.terrain.evidenceTc ? ` Physical evidence TC: ${row.terrain.evidenceTc} (${row.terrain.evidenceConfidence || row.terrain.confidence}).` : "";
+    return `<div><b>${row.direction.key}</b><code>Action: ${safeText(row.action)}. Region ${safeText(row.region.region)} (${safeText(row.region.confidence)}); TC / rule: ${safeText(tcDisplay.primary)} (${safeText(tcDisplay.note)}); ${safeText(row.terrain.metric)} (${safeText(row.terrain.confidence)}).${safeText(evidenceTc)} Mh = ${Number(row.topography.mh).toFixed(2)}; Mt = ${Number(row.topography.mt).toFixed(2)} (${safeText(row.topography.confidence)}).</code></div>`;
+  }).join("");
   $("windEvidenceNotes").innerHTML = rows.map(row => {
     const stats = row.terrain.stats;
     const profile = row.topography.profile;

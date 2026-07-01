@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701x">
+  <link rel="stylesheet" href="styles.css?v=20260701y">
 </head>
 <body>
   <header class="topbar">
@@ -674,7 +674,7 @@
           <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Draft exposure suggestions</h2></div><span>N to NW</span></div>
           <div class="table-scroll">
             <table class="compact-lookup-table wind-result-table">
-              <thead><tr><th>Direction</th><th>Sector</th><th>AS terrain rule</th><th>M<sub>z,cat</sub> / evidence</th><th>Suggested M<sub>t</sub></th><th>M<sub>t</sub> basis</th><th>Action</th></tr></thead>
+              <thead><tr><th>Direction</th><th>Sector</th><th>Suggested TC / rule</th><th>M<sub>z,cat</sub> / evidence</th><th>Suggested M<sub>t</sub></th><th>M<sub>t</sub> basis</th><th>Action</th></tr></thead>
               <tbody id="windDirectionRows"></tbody>
             </table>
           </div>
@@ -703,7 +703,7 @@
             <p><b>Issue status</b> &middot; Draft / automatic suggestion only. This tab is not an issue-for-design wind assessment.</p>
             <p><b>Primary basis</b> &middot; AS/NZS 1170.2 Fig. 3.1(A/B) for wind regions, Cl. 4.2 and Table 4.1 for terrain category and M<sub>z,cat</sub>, and Cl. 4.4 for the topographic multiplier M<sub>t</sub>.</p>
             <p><b>Wind region screen</b> &middot; The coordinate screen is a coarse AS/NZS 1170.2 Fig. 3.1(A) aid only. Boundary sites, islands, cyclonic coastal transition zones and New Zealand regions must be checked from the licensed Standard and project location data before adopting a region.</p>
-            <p><b>Terrain / M<sub>z,cat</sub> screen</b> &middot; For non-A0 regions, the browser counts OpenStreetMap building and land-use records in each 45&deg; upwind sector, ignores x<sub>i</sub> = 20z, divides the remaining x<sub>a</sub> distance into radial bands, screens each band against AS/NZS 1170.2 Cl. 4.2, then distance-weights the Table 4.1 M<sub>z,cat</sub> values. For Region A0, Table 4.1 Note 1 is applied directly: M<sub>z,cat,2</sub> for z &le; 100 m, or M<sub>z,cat</sub> = 1.24 for 100 m &lt; z &le; 200 m. OSM data remains evidence only.</p>
+            <p><b>TC / M<sub>z,cat</sub> screen</b> &middot; The results table shows the suggested TC or governing A0 rule first, then the associated M<sub>z,cat</sub>. For non-A0 regions, the browser counts OpenStreetMap building and land-use records in each 45&deg; upwind sector, ignores x<sub>i</sub> = 20z, divides the remaining x<sub>a</sub> distance into radial bands, screens each band against AS/NZS 1170.2 Cl. 4.2, then distance-weights the Table 4.1 M<sub>z,cat</sub> values. For Region A0, Table 4.1 Note 1 is applied directly: M<sub>z,cat,2</sub> for z &le; 100 m, or M<sub>z,cat</sub> = 1.24 for 100 m &lt; z &le; 200 m. OSM physical TC evidence is review-only and does not override the A0 rule.</p>
             <p><b>Topographic screen</b> &middot; DEM profile points are sampled along each direction. The page estimates H, L<sub>u</sub>, x, L<sub>1</sub> and L<sub>2</sub>, then calculates M<sub>h</sub> and M<sub>t</sub>. Crest selection, hill/ridge/escarpment type and local topographic zone must be confirmed from project mapping or survey.</p>
             <p><b>Conservative workflow</b> &middot; The page should minimise user judgement by giving an automatic conservative draft value where the evidence is coherent, then flag only exception directions as Auto OK, Conservative OK, Review Region, Review Terrain or Review Topography. Low confidence means the evidence chain is weak or conflicted; it does not mean the formula itself is unreliable.</p>
             <p><b>Confidence controls</b> &middot; Confidence is reduced when public map coverage is sparse, terrain evidence is mixed, building heights are missing, DEM spacing is coarse, the scan distance is capped, multiple ridges are possible, or H/(2L<sub>u</sub>) is close to a formula boundary.</p>
@@ -721,6 +721,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701p"></script>
+  <script src="app.js?v=20260701q"></script>
 </body>
 </html>
