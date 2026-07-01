@@ -755,6 +755,7 @@ Core rules:
 - Compact assumptions, warnings, and references.
 - Phone, tablet, and desktop responsive layout.
 - Calculation basis available, but not forced into the main view.
+- Top-level branding should stay compact. Do not repeat `SC Handbook` as a large hero title when the header already shows it, and do not add decorative header badges such as `LOOKUP` unless they carry operational status.
 
 Each tab should answer:
 

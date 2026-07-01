@@ -66,13 +66,12 @@ img, svg { max-width: 100%; }
 .brand strong, .brand small { display: block; }
 .brand strong { font-size: var(--fs-sm); line-height: 1.15; font-weight: 900; }
 .brand small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); }
-.standard-badge { color: var(--green); font-size: var(--fs-xs); font-weight: 800; letter-spacing: 0; }
 
 main, footer { max-width: 1040px; margin: auto; }
-.intro { padding: 30px 0 16px; }
+.intro { padding: 22px 0 12px; }
 .kicker { margin: 0 0 6px; color: var(--green); font-size: var(--fs-xs); font-weight: 800; letter-spacing: 0; }
-.intro h1 { margin: 0; font-size: var(--fs-xl); line-height: 1.08; font-weight: 900; letter-spacing: 0; }
-.intro > p:last-child { margin: 8px 0 0; max-width: 760px; color: var(--muted); font-size: var(--fs-md); }
+.intro h1 { margin: 0; font-size: var(--fs-lg); line-height: 1.12; font-weight: 900; letter-spacing: 0; }
+.intro > p:last-child { margin: 5px 0 0; max-width: 560px; color: var(--muted); font-size: var(--fs-sm); }
 
 .tool-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 16px; padding: 5px; width: fit-content; border: 1px solid #eadfd4; border-radius: 12px; background: #f4ede5; }
 .tool-tab, .member-type, .beam-type { border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-size: var(--fs-sm); font-weight: 800; }
@@ -512,7 +511,7 @@ footer b { white-space: nowrap; }
 }
 
 @media (max-width: 760px) {
-  .intro { padding-top: 25px; }
+  .intro { padding-top: 18px; }
   .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.seven, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .wind-actions, .wind-evidence-grid, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .bolt-summary, .member-summary, .beam-summary, .wind-summary { align-items: flex-start; }
   .weld-summary { display: block; }
@@ -564,15 +563,14 @@ footer b { white-space: nowrap; }
   .brand { gap: 8px; }
   .brand-mark { width: 34px; height: 30px; border-radius: 7px 7px 7px 2px; }
   .brand small { display: none; }
-  .standard-badge { font-size: var(--fs-xs); }
-  .intro { padding: 18px 0 12px; }
-  .intro h1 { font-size: var(--fs-lg); }
+  .intro { padding: 12px 0 10px; }
+  .intro h1 { font-size: var(--fs-md); }
   .intro > p:last-child { margin-top: 5px; font-size: var(--fs-xs); line-height: 1.35; }
   .tool-tabs { width: 100%; position: sticky; top: 54px; z-index: 4; overflow-x: auto; flex-wrap: nowrap; padding: 4px; scrollbar-width: none; }
   .tool-tabs::-webkit-scrollbar { display: none; }
   .tool-tab { min-width: max-content; flex: 0 0 auto; padding: 9px 11px; font-size: var(--fs-xs); white-space: nowrap; }
   .tool-heading { display: block; }
-  .tool-heading .kicker, .tool-heading > span, .section-heading > span, .standard-badge { overflow-wrap: anywhere; }
+  .tool-heading .kicker, .tool-heading > span, .section-heading > span { overflow-wrap: anywhere; }
   .tool-heading h2 { font-size: var(--fs-md); }
   .tool-heading > span { display: block; margin-top: 3px; padding: 0; text-align: left; }
   .tool-panel { padding: 12px; border-radius: 14px; }
