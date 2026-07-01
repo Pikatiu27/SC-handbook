@@ -1144,8 +1144,9 @@ For the web bolt tab, separate the edge-distance terms visibly:
 
 - Input label: `e` = hole centre to edge.
 - Input label: `d_h` = actual hole diameter.
+- Input label: `θ` = force angle from edge normal; default 0° for force acting directly towards the edge.
 - Result label: `Minimum edge distance, e - AS 4100 Table 9.5.2`.
-- Edge-limited bearing note: `a_e = e - d_h/2 + d_f/2`.
+- Edge-limited bearing note: `a_e = e/cosθ - d_h/2 + d_f/2` for a standard hole at a physical ply edge.
 - Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
 - Do not multiply the edge-limited ply capacity by total bolt count unless all bolts are actually on the loaded edge / critical line. Use a separate `Bolts on edge line` input; default it to total bolt count, but allow manual adjustment. Where an adjacent bolt hole is the critical edge under AS 4100 Cl. 9.2.2.4, calculate `a_e` from the actual hole layout and do not infer it from total bolt count.
 
