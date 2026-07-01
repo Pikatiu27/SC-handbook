@@ -467,7 +467,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .form-grid input, .form-grid select { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: var(--control-radius); background: #fbfcfa; padding: 8px 9px; outline: none; font-size: var(--fs-sm); }
 .unit { position: relative; margin: 0 !important; }
 .unit input { padding-right: 48px; }
-.unit em { position: absolute; right: 9px; top: 10px; color: var(--muted); font-size: var(--fs-xs); font-style: normal; }
+.unit em { position: absolute; right: 9px; top: 10px; color: var(--muted); font-size: var(--fs-xs); font-style: normal; pointer-events: none; }
 .compact-result { margin-top: 10px; padding: 9px 11px; display: flex; align-items: center; gap: 11px; border-radius: 7px; background: #f4f7f4; }
 .compact-result span { color: var(--muted); font-size: var(--fs-xs); }
 .compact-result strong { margin-left: auto; font-size: var(--fs-md); font-variant-numeric: tabular-nums; }

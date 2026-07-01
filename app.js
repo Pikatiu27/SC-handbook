@@ -1095,8 +1095,11 @@ function calculateBolt() {
   const count = Math.max(1, Math.round(value("boltCount")));
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
+  const totalThreadPlanes = count * nThread;
+  const totalShankPlanes = count * nShank;
+  const totalShearPlanes = totalThreadPlanes + totalShankPlanes;
   const kr = Math.min(1, Math.max(0.75, value("kr")));
-  const groupShear = count * 0.8 * 0.62 * category.fuf * kr * (nThread * threadKrd * bolt.Ac + nShank * shankKrd * bolt.Ao) / 1000;
+  const groupShear = 0.8 * 0.62 * category.fuf * kr * (totalThreadPlanes * threadKrd * bolt.Ac + totalShankPlanes * shankKrd * bolt.Ao) / 1000;
   const actualEdge = value("edgeDistance");
   const holeDiameter = value("holeDiameter");
   const effectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
@@ -1159,6 +1162,7 @@ function calculateBolt() {
   $("tensionCapacity").textContent = fixed(tension);
   $("boltResultNote").innerHTML = `One shear plane; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring AS 4100 Table 9.2.2.1 reduction.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
+  $("groupShearBasis").innerHTML = `${count} bolt${count === 1 ? "" : "s"} × (${nThread} N + ${nShank} X) plane${nThread + nShank === 1 ? "" : "s"} per bolt = ${totalThreadPlanes} N + ${totalShankPlanes} X = ${totalShearPlanes} total shear plane${totalShearPlanes === 1 ? "" : "s"}. Change k<sub>r</sub> only for bolted lap connection reduction.`;
   $("plyBearingLimit").textContent = `${fixed(bearingFull)} kN`;
   $("edgeTearoutLimit").textContent = `${fixed(bearingEdge)} kN`;
   $("bearingCapacity").textContent = `${fixed(bearing)} kN`;
@@ -1189,7 +1193,7 @@ function calculateBolt() {
     <div><b>Tension - AS 4100 Cl. 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
     <div><b>Shear N - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
     <div><b>Shear X - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
-    <div><b>Bolt group shear - AS 4100 Cl. 9.2.2.1</b><code>&phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x</sub>k<sub>rd,X</sub>A<sub>o</sub>) x bolt count = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
+    <div><b>Bolt group shear - AS 4100 Cl. 9.2.2.1</b><code>n<sub>n,total</sub> = ${count} x ${nThread} = ${totalThreadPlanes}; n<sub>x,total</sub> = ${count} x ${nShank} = ${totalShankPlanes}; &phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n,total</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x,total</sub>k<sub>rd,X</sub>A<sub>o</sub>) = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
     <div><b>Bolt shear ratio - AS 4100 Cl. 9.2.2.1</b><code>V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${fixed(designShear)} / ${fixed(groupShear)} = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}</code></div>
     <div><b>Bolt tension ratio - AS 4100 Cl. 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
     <div><b>Ply material input</b><code>f<sub>up</sub> = ${plateStrength.toFixed(0)} MPa. Default 410 MPa corresponds to AS/NZS 3678 Grade 250 plate; use 440 MPa only where the actual connected ply is AS/NZS 3679.1 Grade 300 flat bar/section or otherwise verified.</code></div>

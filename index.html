@@ -66,7 +66,7 @@
       <details class="detail-card" id="connectionDetails">
         <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed connection checks</b></span><small>Bolt group, shear planes, ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
         <div class="detail-body">
-          <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="1"></label><label><span>N shear planes</span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes</span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>default 1.0</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result"><span>Design shear capacity of bolt group</span><strong id="groupShearCapacity">133.4 kN</strong><small>Change k<sub>r</sub> only for bolted lap connection reduction.</small></div></section>
+          <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="1"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>default 1.0</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result"><span>Design shear capacity of bolt group</span><strong id="groupShearCapacity">133.4 kN</strong><small id="groupShearBasis">1 bolt × 1 N plane per bolt = 1 total shear plane.</small></div></section>
           <section>
             <h3>Connected ply - bearing, edge tear-out and minimum edge distance</h3>
             <div class="form-grid five">
@@ -721,6 +721,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701r"></script>
+  <script src="app.js?v=20260701s"></script>
 </body>
 </html>
