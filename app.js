@@ -20,6 +20,8 @@ const categories = {
   "10.9/TF": { grade: "10.9", fuf: 1040, type: "friction", preload: "preload109", description: "fully tensioned, friction" }
 };
 
+let edgeBoltCountManual = false;
+
 const weldSizes = [3, 4, 5, 6, 8, 10, 12, 16];
 const parentMetalGrades = {
   "Grade 250 plate": { fup: 410, standard: "AS/NZS 3678" },
@@ -1119,7 +1121,9 @@ function calculateBolt() {
   const effectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
   const minimumEdge = value("edgeCondition") * bolt.d;
   const edgeDistancePass = actualEdge >= minimumEdge;
+  $("edgeBoltCount").max = String(count);
   const edgeBoltCount = Math.max(1, Math.min(count, Math.round(value("edgeBoltCount"))));
+  if (String(edgeBoltCount) !== $("edgeBoltCount").value.trim()) $("edgeBoltCount").value = String(edgeBoltCount);
   const plateStrength = value("plateStrength");
   const bearingFull = 0.9 * 3.2 * bolt.d * value("plateThickness") * plateStrength / 1000;
   const bearingEdge = 0.9 * effectiveEdge * value("plateThickness") * plateStrength / 1000;
@@ -1183,8 +1187,8 @@ function calculateBolt() {
   $("edgeTearoutLimit").textContent = `${fixed(groupBearingEdge)} kN`;
   $("bearingCapacity").textContent = `${fixed(groupPlyCapacity)} kN`;
   $("plyBearingBasis").innerHTML = `${count} &times; ${fixed(bearingFull)} kN per bolt`;
-  $("edgeTearoutBasis").innerHTML = `${edgeBoltCount} &times; ${fixed(bearingEdge)} kN per critical bolt`;
-  $("bearingGoverning").textContent = groupBearingEdge <= groupBearingFull ? `edge limit controls; n_e = ${edgeBoltCount}` : `bearing limit controls; ${count} bolt${count === 1 ? "" : "s"}`;
+  $("edgeTearoutBasis").innerHTML = `${edgeBoltCount} &times; ${fixed(bearingEdge)} kN per edge-line bolt`;
+  $("bearingGoverning").textContent = groupBearingEdge <= groupBearingFull ? `edge limit controls; edge-line bolts = ${edgeBoltCount}` : `bearing limit controls; ${count} bolt${count === 1 ? "" : "s"}`;
   $("actualEdgeDistance").textContent = fixed(actualEdge);
   $("minimumEdgeDistance").textContent = fixed(minimumEdge);
   $("effectiveEdgeDistance").textContent = fixed(effectiveEdge);
@@ -1216,7 +1220,7 @@ function calculateBolt() {
     <div><b>Bolt tension ratio - AS 4100 Cl. 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
     <div><b>Ply material input</b><code>f<sub>up</sub> = ${plateStrength.toFixed(0)} MPa. Default 410 MPa corresponds to AS/NZS 3678 Grade 250 plate; use 440 MPa only where the actual connected ply is AS/NZS 3679.1 Grade 300 flat bar/section or otherwise verified.</code></div>
     <div><b>Ply bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>per bolt = 0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN; group = ${count} x ${fixed(bearingFull)} = ${fixed(groupBearingFull)} kN</code></div>
-    <div><b>Edge limit - AS 4100 Cl. 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; per critical bolt = ${fixed(bearingEdge)} kN; group = n<sub>e</sub> x ${fixed(bearingEdge)} = ${edgeBoltCount} x ${fixed(bearingEdge)} = ${fixed(groupBearingEdge)} kN</code></div>
+    <div><b>Edge limit - AS 4100 Cl. 9.2.2.4(2)</b><code>e is hole-centre edge distance; clear edge = e - d<sub>h</sub>/2; a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = ${fixed(effectiveEdge)} mm; per edge-line bolt = ${fixed(bearingEdge)} kN; group = edge-line bolts x ${fixed(bearingEdge)} = ${edgeBoltCount} x ${fixed(bearingEdge)} = ${fixed(groupBearingEdge)} kN</code></div>
     <div><b>Minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
     <div><b>Ply bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${fixed(designShear)} / ${fixed(groupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}; governing ply capacity is the lesser of ${fixed(groupBearingFull)} kN bearing and ${fixed(groupBearingEdge)} kN edge limit</code></div>
     <div><b>Governing capacity check</b><code>${governingNote}</code></div>
@@ -2179,7 +2183,17 @@ function initialise() {
   $("weldParentGrade").value = "Grade 250 plate";
   $("shearPlane").value = "N";
   populateConcreteBarOptions();
-  boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
+  boltInputIds
+    .filter(id => id !== "boltCount" && id !== "edgeBoltCount")
+    .forEach(id => $(id).addEventListener("input", calculateBolt));
+  $("boltCount").addEventListener("input", () => {
+    if (!edgeBoltCountManual) $("edgeBoltCount").value = $("boltCount").value;
+    calculateBolt();
+  });
+  $("edgeBoltCount").addEventListener("input", () => {
+    edgeBoltCountManual = true;
+    calculateBolt();
+  });
   weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));
   windInputIds.forEach(id => $(id).addEventListener("input", calculateWind));
   $("windFetchButton").addEventListener("click", fetchWindSuggestions);
