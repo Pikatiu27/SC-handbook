@@ -1232,13 +1232,15 @@ Required AS 4100 basis:
 - Section moment capacity uses AS 4100 Cl. 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
 - Catalogue `Zex`, compactness and `kf` may be taken from the section-capacity table instead of recalculating plate slenderness in the browser.
 - Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
-- Nominal web shear capacity is reported as `phi Vv` with `phi = 0.90` using the relevant AS 4100 Cl. 5.11 web shear provisions for an unstiffened web.
-- If `V* > 0.60 phi Vv`, flag high shear and require AS 4100 Cl. 5.12 shear-bending interaction review. Do not silently report an unreduced bending capacity as a pass.
+- Web shear yield starts from AS 4100 Cl. 5.11.4: `Vw = 0.6 fy Aw`; report the design value with `phi = 0.90`.
+- For catalogue UB/UC rows, apply a lightweight unstiffened-web shear-buckling screen from AS 4100 Cl. 5.11.5 using `lambda_w = (d1/tw) sqrt(fy/250)` and `alpha_v = 1.0` where `lambda_w <= 82`, otherwise `alpha_v = (82/lambda_w)^2`. Report `phi Vv = phi alpha_v Vw`. This is a quick screen using catalogue `d1` and `tw`, not a substitute for stiffened-web, non-uniform shear, transverse-load or detailed web-panel design.
+- If `V* > 0.60 phi Vv`, show `CHECK` and require AS 4100 Cl. 5.12 shear-bending interaction review unless bending is confirmed absent. Do not silently report an unreduced `phi Ms` as a pass when high shear and bending coexist.
 
 Custom section mode must stay explicit and conservative:
 
 - User-entered `fy`, `Zex`, `Sx`, `Zx`, `Aw`, compactness, `kf`, area and mass values are not catalogue-verified.
 - Do not auto-infer custom web shear area from gross area.
+- Do not derive custom web shear-buckling reduction unless explicit web-panel geometry, stiffener condition and shear-stress distribution inputs are added. For the current lightweight tab, custom `Aw` is user-entered and AS 4100 Cl. 5.11.5 remains a project verification warning.
 - Keep the custom labels tied to the selected-axis section capacity, not a whole-member design.
 
 Required exclusions:

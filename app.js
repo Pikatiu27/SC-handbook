@@ -593,6 +593,28 @@ function compactnessText(compactness) {
   return compactness === "C" ? "Compact" : compactness === "N" ? "Non-compact" : "Slender";
 }
 
+function beamWebShearReduction(section, grade, isCustom) {
+  if (isCustom || !(section.d1 > 0) || !(section.tw > 0) || !(grade.fy > 0)) {
+    return {
+      alphaV: 1,
+      slenderness: NaN,
+      threshold: 82,
+      basis: "Custom A_w entered; web slenderness and stiffener conditions are not derived by this quick lookup."
+    };
+  }
+  const slenderness = section.d1 / section.tw * Math.sqrt(grade.fy / 250);
+  const threshold = 82;
+  const alphaV = slenderness <= threshold ? 1 : Math.min(1, (threshold / slenderness) ** 2);
+  return {
+    alphaV,
+    slenderness,
+    threshold,
+    basis: slenderness <= threshold
+      ? "Web shear yield governs for this catalogue quick screen."
+      : "Unstiffened web shear-buckling reduction applied for this catalogue quick screen."
+  };
+}
+
 function customBeamSection() {
   const designation = $("beamCustomName").value.trim() || "Custom section";
   const kf = value("beamCustomKf") || 1;
@@ -672,7 +694,9 @@ function calculateBeam() {
   const validShear = grade.fy > 0 && section.Aw > 0;
   const valid = validMoment && validShear;
   const sectionCapacity = validMoment ? phi * grade.fy * grade.Ze / 1000 : NaN;
-  const shearCapacity = validShear ? phi * 0.6 * grade.fy * section.Aw / 1000 : NaN;
+  const webShear = beamWebShearReduction(section, grade, isCustom);
+  const shearYieldCapacity = validShear ? phi * 0.6 * grade.fy * section.Aw / 1000 : NaN;
+  const shearCapacity = validShear ? shearYieldCapacity * webShear.alphaV : NaN;
   const elasticYield = validMoment && section.Zx > 0 ? phi * grade.fy * section.Zx / 1000 : NaN;
   const plasticLimit = validMoment && section.Sx > 0 ? phi * grade.fy * section.Sx / 1000 : NaN;
   const momentDemand = value("beamMomentDemand");
@@ -683,11 +707,15 @@ function calculateBeam() {
   const hasDemand = momentDemand > 0 || shearDemand > 0;
   const highShear = validShear && shearDemand > 0.6 * shearCapacity;
   const interactionReview = highShear && momentDemand > 0;
+  const shearReductionApplied = validShear && webShear.alphaV < 0.9995;
   const compactnessLabel = compactnessText(grade.compactness);
   const sourceBasis = isCustom ? "User-entered section properties" : `OneSteel / InfraBuild ${beamSectionType.toUpperCase()} catalogue data`;
   const shearAreaBasis = isCustom
     ? `A<sub>w</sub> = ${formatBeamArea(section.Aw)} user-entered`
     : `A<sub>w</sub> = d<sub>1</sub>t<sub>w</sub> = ${formatBeamNumber(section.d1, 1)} x ${formatBeamNumber(section.tw, 1)} = ${formatBeamArea(section.Aw)}`;
+  const webShearBasis = isCustom
+    ? "Custom A_w only; verify AS 4100 Cl. 5.11.5 web shear buckling separately where web slenderness may govern."
+    : `d<sub>1</sub>/t<sub>w</sub> &radic;(f<sub>y</sub>/250) = ${formatBeamNumber(webShear.slenderness, 1)}; AS 4100 Cl. 5.11.5 screen limit = ${webShear.threshold}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}. ${webShear.basis}`;
 
   $("beamDesignation").textContent = `${section.designation} - ${gradeName}`;
   $("beamAssumption").textContent = isCustom
@@ -709,9 +737,11 @@ function calculateBeam() {
   $("beamClassification").textContent = compactnessLabel;
   $("beamGoverning").textContent = isCustom
     ? "User-entered Zex and Aw"
-    : grade.compactness === "C"
-      ? "Catalogue Zex and Aw"
-      : "Catalogue reduced Zex and Aw";
+    : shearReductionApplied
+      ? "Catalogue Zex and reduced shear"
+      : grade.compactness === "C"
+        ? "Catalogue Zex and Aw"
+        : "Catalogue reduced Zex and Aw";
   $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
   $("beamStatus").textContent = !valid
     ? "Invalid input"
@@ -719,7 +749,7 @@ function calculateBeam() {
       ? "Enter design actions"
       : utilisation > 1
         ? "FAIL"
-        : interactionReview
+        : highShear
           ? "CHECK"
           : "PASS";
   $("beamStatus").className = !valid
@@ -728,18 +758,32 @@ function calculateBeam() {
       ? ""
       : utilisation > 1
         ? "fail"
-        : interactionReview
+        : highShear
           ? "check"
           : "pass";
-  $("beamWarning").textContent = !valid
-    ? "Enter positive fy, Zex and Aw values before using the Beam Section capacity check."
-    : utilisation > 1
-      ? "Design action exceeds the reported AS 4100 section design capacity. Increase the section or revise the design action before design issue."
-      : interactionReview
-        ? "High shear: V* exceeds 0.60 phi Vv while bending is present. Complete AS 4100 Cl. 5.12 bending-shear interaction review before design issue."
-        : highShear
-          ? "V* exceeds 0.60 phi Vv. Shear capacity is still shown, but any concurrent bending must be checked to AS 4100 Cl. 5.12."
-          : "Section capacity only. Check member moment capacity, lateral restraint, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.";
+  if (!valid) {
+    $("beamWarning").textContent = "Enter positive fy, Zex and Aw values before using the Beam Section capacity check.";
+  } else {
+    const beamWarnings = [];
+    if (utilisation > 1) {
+      beamWarnings.push("Design action exceeds the reported AS 4100 section design capacity.");
+    }
+    if (interactionReview) {
+      beamWarnings.push("High shear with bending: V* exceeds 0.60 phi Vv. Complete AS 4100 Cl. 5.12 shear-bending interaction review; the unreduced phi Ms is not a final pass value.");
+    } else if (highShear) {
+      beamWarnings.push("High shear: V* exceeds 0.60 phi Vv. Treat the result as CHECK unless concurrent bending is confirmed absent; otherwise complete AS 4100 Cl. 5.12.");
+    }
+    if (shearReductionApplied) {
+      beamWarnings.push(`AS 4100 Cl. 5.11.5 web shear-buckling reduction applied with alpha_v = ${webShear.alphaV.toFixed(3)}.`);
+    }
+    if (isCustom) {
+      beamWarnings.push("Custom Aw is user-entered; web slenderness, stiffeners and shear-buckling reduction are not checked.");
+    }
+    if (!beamWarnings.length) {
+      beamWarnings.push("Section capacity only. Check member moment capacity, lateral restraint, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.");
+    }
+    $("beamWarning").textContent = beamWarnings.join(" ");
+  }
 
   if (!valid) {
     $("beamFormulaSteps").innerHTML = `
@@ -756,9 +800,11 @@ function calculateBeam() {
     <div><b>Plastic limit reference</b><code>${Number.isFinite(plasticLimit) ? `&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Sx, 1)} x 10&sup3; / 10&sup6; = ${fixed(plasticLimit)} kNm` : "Not shown - enter Sx for custom reference value"}</code></div>
     <div><b>Moment capacity - AS 4100 Cl. 5.2</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(grade.Ze, 1)} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>
     <div><b>Web shear area</b><code>${shearAreaBasis}</code></div>
-    <div><b>Web shear capacity - AS 4100 Cl. 5.11</b><code>&phi;V<sub>v</sub> = 0.90 x 0.6 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamArea(section.Aw)} / 1000 = ${fixed(shearCapacity)} kN; AS 4100 Cl. 5.12 interaction review applies where bending is present</code></div>
+    <div><b>Web shear yield - AS 4100 Cl. 5.11.4</b><code>&phi;V<sub>w</sub> = 0.90 x 0.6 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamArea(section.Aw)} / 1000 = ${fixed(shearYieldCapacity)} kN</code></div>
+    <div><b>Web shear buckling screen - AS 4100 Cl. 5.11.5</b><code>${webShearBasis}</code></div>
+    <div><b>Design web shear capacity - AS 4100 Cl. 5.11</b><code>&phi;V<sub>v</sub> = &alpha;<sub>v</sub>&phi;V<sub>w</sub> = ${webShear.alphaV.toFixed(3)} x ${fixed(shearYieldCapacity)} = ${fixed(shearCapacity)} kN</code></div>
     <div><b>Design action check</b><code>M* / &phi;M<sub>s</sub> = ${fixed(momentDemand)} / ${fixed(sectionCapacity)} = ${momentRatio.toFixed(2)}; V* / &phi;V<sub>v</sub> = ${fixed(shearDemand)} / ${fixed(shearCapacity)} = ${shearRatio.toFixed(2)}; governing ratio = ${utilisation.toFixed(2)}</code></div>
-    <div><b>High shear threshold</b><code>0.60&phi;V<sub>v</sub> = ${fixed(0.6 * shearCapacity)} kN; provided V* = ${fixed(shearDemand)} kN - ${highShear ? "AS 4100 Cl. 5.12 bending-shear review required where bending is present" : "below high-shear threshold"}</code></div>
+    <div><b>High shear threshold - AS 4100 Cl. 5.12</b><code>0.60&phi;V<sub>v</sub> = ${fixed(0.6 * shearCapacity)} kN; provided V* = ${fixed(shearDemand)} kN - ${highShear ? "CHECK: shear-bending interaction review required unless bending is confirmed absent" : "below high-shear threshold"}</code></div>
     <div><b>Design boundary</b><code>Section capacity only; member capacity M<sub>b</sub>, lateral restraint, web bearing, web buckling, stiffeners, concentrated loads, openings, torsion, serviceability and composite action are not checked.</code></div>`;
 }
 
