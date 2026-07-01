@@ -1006,6 +1006,9 @@ Input grouping:
 - Input controls must use a consistent control height, border radius, font size, label size and focus treatment across all tabs unless a dense table genuinely requires smaller controls. Main calculator inputs should use the shared form-control style rather than one-off sizing.
 - On phone browsers, numeric fields must allow direct typing. Do not leave editable numeric inputs in a state where the user can only use increment / decrement controls.
 - If JavaScript changes numeric inputs from `type="number"` to text inputs for mobile typing, CSS selectors must target a stable class such as `.numeric-input`, not only `input[type="number"]`.
+- Editable numeric fields must allow intermediate typing states such as blank, decimal point, comma decimal, plus sign or minus sign until blur. Do not coerce these states to `0` on input, Enter, or calculation refresh.
+- Clamp numeric limits on blur only, and only when the field contains a valid number. Calculation functions may use an internal fallback for incomplete inputs, but they must not write that fallback back into an editable input.
+- Calculation refreshes may update read-only derived fields, selected lookup defaults, and inactive auto fields. They must not overwrite the currently focused editable project input except where the user has explicitly changed a controlling selector or reset mode.
 - Dense editable tables should become clear field groups on phone: show the row title first, then short binary controls, then full-width numeric/select fields with visible field labels and units. Do not leave a table in a form where the header disappears and the user cannot tell what each input means.
 
 Phone and responsive input behaviour:

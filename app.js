@@ -315,11 +315,16 @@ const referenceInputIds = [
 
 function numericValue(raw) {
   const text = String(raw ?? "").trim().replace(/\s/g, "");
+  if (!text || ["+", "-", ".", ",", "+.", "-.", "+,", "-,"].includes(text)) return NaN;
   const normalised = text.includes(".") ? text.replace(/,/g, "") : text.replace(",", ".");
-  return Number(normalised);
+  const number = Number(normalised);
+  return Number.isFinite(number) ? number : NaN;
 }
 
-function value(id) { return Math.max(0, numericValue($(id).value) || 0); }
+function value(id) {
+  const number = numericValue($(id).value);
+  return Number.isFinite(number) ? Math.max(0, number) : 0;
+}
 function signedValue(id, fallback = 0) {
   const number = numericValue($(id).value);
   return Number.isFinite(number) ? number : fallback;
@@ -473,13 +478,16 @@ function windA0MzCatRule(inputs) {
 }
 
 function clampNumericInput(input) {
+  if (!String(input.value ?? "").trim()) return;
   const current = numericValue(input.value);
   if (!Number.isFinite(current)) return;
   const min = input.getAttribute("min") ?? input.dataset.min;
   const max = input.getAttribute("max") ?? input.dataset.max;
   let next = current;
-  if (min !== null) next = Math.max(next, numericValue(min));
-  if (max !== null) next = Math.min(next, numericValue(max));
+  const minimum = numericValue(min);
+  const maximum = numericValue(max);
+  if (Number.isFinite(minimum)) next = Math.max(next, minimum);
+  if (Number.isFinite(maximum)) next = Math.min(next, maximum);
   input.value = String(next);
 }
 
@@ -494,6 +502,12 @@ function enhanceNumberInputs() {
     input.autocomplete = "off";
     if (input.dataset.numericEnhanced !== "true") {
       input.addEventListener("blur", () => clampNumericInput(input));
+      input.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          input.blur();
+        }
+      });
       input.dataset.numericEnhanced = "true";
     }
   });
@@ -1962,7 +1976,6 @@ function calculateConcrete() {
   const width = value("concreteWidth");
   const fcInput = value("concreteFc");
   const fc = Math.min(120, Math.max(20, fcInput));
-  if (fc !== fcInput) $("concreteFc").value = fixed(fc);
   const stressBlock = concreteStressBlockFactors(fc);
   $("concreteAlpha2").value = stressBlock.alpha2.toFixed(3);
   $("concreteGamma").value = stressBlock.gamma.toFixed(3);
