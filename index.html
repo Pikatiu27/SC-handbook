@@ -69,14 +69,18 @@
           <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="1"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>default 1.0</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result"><span>Design shear capacity of bolt group</span><strong id="groupShearCapacity">133.4 kN</strong><small id="groupShearBasis">1 bolt × 1 N plane per bolt = 1 total shear plane.</small></div></section>
           <section>
             <h3>Connected ply - bearing, edge tear-out and minimum edge distance</h3>
-            <div class="form-grid seven">
-              <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="plateThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
-              <label><span>f<sub>up</sub> <i>ply tensile strength</i></span><span class="unit"><input id="plateStrength" type="number" min="1" step="1" value="410"><em>MPa</em></span></label>
-              <label><span>Edge condition</span><select id="edgeCondition"><option value="1.75">Sheared / hand flame cut</option><option value="1.5">Machine cut / sawn / planed</option><option value="1.25">Rolled edge</option></select></label>
-              <label><span>e <i>hole centre to edge</i></span><span class="unit"><input id="edgeDistance" type="number" min="0" step="1" value="42"><em>mm</em></span></label>
-              <label><span>θ <i>force to edge normal</i></span><span class="unit"><input id="edgeForceAngle" type="number" min="0" max="85" step="1" value="0"><em>°</em></span></label>
-              <label><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="holeDiameter" type="number" min="0" step="1" value="26"><em>mm</em></span></label>
-              <label><span>Bolts on edge line</span><input id="edgeBoltCount" type="number" min="1" max="100" step="1" value="1"></label>
+            <div class="ply-input-rows">
+              <div class="form-grid four">
+                <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="plateThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
+                <label><span>f<sub>up</sub> <i>ply tensile strength</i></span><span class="unit"><input id="plateStrength" type="number" min="1" step="1" value="410"><em>MPa</em></span></label>
+                <label><span>Edge condition</span><select id="edgeCondition"><option value="1.75">Sheared / hand flame cut</option><option value="1.5">Machine cut / sawn / planed</option><option value="1.25">Rolled edge</option></select></label>
+                <label><span>e <i>hole centre to edge</i></span><span class="unit"><input id="edgeDistance" type="number" min="0" step="1" value="42"><em>mm</em></span></label>
+              </div>
+              <div class="form-grid three">
+                <label><span>θ <i>force to edge normal</i></span><span class="unit"><input id="edgeForceAngle" type="number" min="0" max="85" step="1" value="0"><em>°</em></span></label>
+                <label><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="holeDiameter" type="number" min="0" step="1" value="26"><em>mm</em></span></label>
+                <label><span>Bolts on edge line</span><input id="edgeBoltCount" type="number" min="1" max="100" step="1" value="1"></label>
+              </div>
             </div>
             <div class="ply-result-grid">
               <div><span>Ply bearing limit · group</span><strong id="plyBearingLimit">283.4 kN</strong><small id="plyBearingBasis">1 × φ(3.2d<sub>f</sub>t<sub>p</sub>f<sub>up</sub>)</small></div>
@@ -723,6 +727,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701w"></script>
+  <script src="app.js?v=20260701x"></script>
 </body>
 </html>

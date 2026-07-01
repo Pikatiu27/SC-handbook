@@ -467,6 +467,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .form-grid label > span:first-child { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); }
 .form-grid label i { font-style: normal; }
 .form-grid input, .form-grid select { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: var(--control-radius); background: #fbfcfa; padding: 8px 9px; outline: none; font-size: var(--fs-sm); }
+.ply-input-rows { display: grid; gap: 9px; }
 .unit { position: relative; margin: 0 !important; }
 .unit input { padding-right: 48px; }
 .unit em { position: absolute; right: 9px; top: 10px; color: var(--muted); font-size: var(--fs-xs); font-style: normal; pointer-events: none; }
