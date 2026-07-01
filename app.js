@@ -602,7 +602,14 @@ function windClassifyTerrain(stats, sectorAreaHa) {
   let basis = `${stats.buildings} mapped buildings in ${sectorAreaHa.toFixed(1)} ha; density ${buildingDensity.toFixed(1)} buildings/ha.`;
 
   if (stats.total === 0) {
-    return { tc: "Review", basis: "No OSM building or land-use records found.", confidence: "Low", buildingDensity, tallDensity };
+    return {
+      tc: "TC2",
+      basis: "No OSM building or land-use records found. TC2 is shown as a draft open-terrain fallback; review aerial imagery and confirm this is not true over-water TC1 exposure.",
+      confidence: "Low",
+      buildingDensity,
+      tallDensity,
+      fallback: true
+    };
   }
   if (tallDensity >= 6 && buildingDensity >= 12) {
     tc = "TC4";
@@ -659,19 +666,21 @@ function windWeightedMzCat(direction, inputs) {
   const weighted = validSegments.reduce((sum, segment) => sum + segment.mzcat * segment.length, 0) /
     validSegments.reduce((sum, segment) => sum + segment.length, 0);
   const confidence = combinedConfidence(...validSegments.map(segment => segment.confidence));
-  const reviewCount = validSegments.filter(segment => segment.confidence === "Low" || segment.tc === "Review").length;
+  const reviewCount = validSegments.filter(segment => segment.confidence === "Low" || segment.fallback).length;
+  const fallback = validSegments.some(segment => segment.fallback);
   const dominant = Object.entries(validSegments.reduce((counts, segment) => {
     counts[segment.tcForMz] = (counts[segment.tcForMz] || 0) + segment.length;
     return counts;
   }, {})).sort((a, b) => b[1] - a[1])[0]?.[0] || "Review";
   const summary = validSegments.map(segment =>
-    `${Math.round(segment.start)}-${Math.round(segment.end)} m ${segment.tc}${segment.tc === "Review" ? " using TC2 placeholder" : ""}`
+    `${Math.round(segment.start)}-${Math.round(segment.end)} m ${segment.tc}${segment.fallback ? " fallback" : ""}`
   ).join("; ");
   return {
     mzcat: weighted,
     tc: dominant,
     confidence: reviewCount ? "Low" : confidence,
     reviewCount,
+    fallback,
     segments: validSegments,
     summary
   };
@@ -701,11 +710,12 @@ function windA0TerrainEvidence(direction, inputs) {
   const aggregate = windClassifyTerrain(stats, sectorAreaHa);
   if (stats.total === 0) {
     return {
-      tc: "Review",
-      basis: "No OSM building or land-use records found in this upwind sector.",
+      tc: "TC2",
+      basis: "No OSM building or land-use records found in this upwind sector. Physical evidence uses a TC2 draft fallback pending imagery review.",
       confidence: "Low",
       stats,
-      segments: null
+      segments: null,
+      fallback: true
     };
   }
   const weighted = windWeightedMzCat(direction, inputs);
@@ -715,13 +725,14 @@ function windA0TerrainEvidence(direction, inputs) {
       basis: `${aggregate.basis} Physical terrain evidence by radial band after xi = ${Math.round(inputs.xi)} m: ${weighted.summary}.`,
       confidence: weighted.confidence,
       stats,
-      segments: weighted.segments
+      segments: weighted.segments,
+      fallback: weighted.fallback
     };
   }
   return { ...aggregate, stats, segments: null };
 }
 
-function windTerrainResult(tc, basis, confidence, stats, inputs) {
+function windTerrainResult(tc, basis, confidence, stats, inputs, options = {}) {
   const a0Rule = windA0MzCatRule(inputs);
   if (a0Rule) {
     const evidence = stats ? ` Terrain evidence only: ${basis}` : basis;
@@ -732,7 +743,8 @@ function windTerrainResult(tc, basis, confidence, stats, inputs) {
       mzcat: a0Rule.mzcat,
       basis: `${a0Rule.basis} ${evidence}`,
       confidence,
-      stats
+      stats,
+      fallback: Boolean(options.fallback)
     };
   }
   if (!/^TC/.test(tc)) {
@@ -741,12 +753,13 @@ function windTerrainResult(tc, basis, confidence, stats, inputs) {
   const mzcat = interpolateMzCat(tc, inputs.z);
   return {
     tc,
-    rule: `Cl. 4.2 ${tc} screen`,
+    rule: options.rule || `Cl. 4.2 ${tc} screen`,
     metric: `M_z,cat = ${mzcat.toFixed(2)}`,
     mzcat,
     basis: `${basis} Table 4.1 ${tc} interpolation at z = ${fixed(inputs.z)} m gives Mz,cat = ${mzcat.toFixed(2)} before any mixed-terrain distance averaging.`,
     confidence,
-    stats
+    stats,
+    fallback: Boolean(options.fallback)
   };
 }
 
@@ -768,21 +781,22 @@ function suggestTerrainCategory(direction, inputs) {
       confidence: "High",
       evidenceConfidence: evidence.confidence,
       stats: evidence.stats,
-      segments: evidence.segments
+      segments: evidence.segments,
+      fallback: evidence.fallback
     };
   }
   if (!windState.osmElements || windState.key !== inputs.key) {
-    return windTerrainResult("Review", "Fetch current OSM sector data for this coordinate and height.", "Low", null, inputs);
+    return windTerrainResult("TC2", "No current OSM sector data is loaded. TC2 is shown as a draft open-terrain fallback until the coordinate fetch is run; review is required and true over-water TC1 exposure is not excluded.", "Low", null, inputs, { fallback: true, rule: "TC2 default screen" });
   }
   if (inputs.xi >= inputs.queryRadius) {
-    return windTerrainResult("Review", "Lag distance exceeds the capped OSM scan radius; increase source review outside the browser screen.", "Low", null, inputs);
+    return windTerrainResult("TC2", "Lag distance exceeds the capped OSM scan radius. TC2 is shown as a draft fallback because the browser cannot screen the required upwind distance.", "Low", null, inputs, { fallback: true, rule: "TC2 default screen" });
   }
   const stats = windSectorStats(direction, inputs);
   const sectorAreaHa = Math.PI * (inputs.queryRadius ** 2 - inputs.xi ** 2) * (45 / 360) / 10000;
   const aggregate = windClassifyTerrain(stats, sectorAreaHa);
 
   if (stats.total === 0) {
-    return windTerrainResult("Review", "No OSM building or land-use records found in this upwind sector.", "Low", stats, inputs);
+    return windTerrainResult("TC2", "No OSM building or land-use records found in this upwind sector. TC2 is shown as a draft open-terrain fallback; check aerial imagery and land-cover data before adopting it.", "Low", stats, inputs, { fallback: true, rule: "TC2 default screen" });
   }
   const weighted = windWeightedMzCat(direction, inputs);
   if (weighted) {
@@ -795,7 +809,8 @@ function suggestTerrainCategory(direction, inputs) {
       basis: `${aggregate.basis} Weighted Table 4.1 screen by upwind distance after xi = ${Math.round(inputs.xi)} m: ${weighted.summary}.${coverageNote}`,
       confidence: weighted.confidence,
       stats,
-      segments: weighted.segments
+      segments: weighted.segments,
+      fallback: weighted.fallback
     };
   }
   return windTerrainResult(aggregate.tc, aggregate.basis, aggregate.confidence, stats, inputs);
@@ -920,6 +935,9 @@ function windTerrainTcDisplay(terrain) {
       ? `physical evidence ${terrain.evidenceTc}`
       : "physical evidence pending";
     return { primary, note: evidence };
+  }
+  if (terrain?.fallback) {
+    return { primary, note: "default - review" };
   }
   if (/^TC/.test(primary)) {
     const segmentTcs = terrain.segments ? [...new Set(terrain.segments.map(segment => segment.tcForMz))] : [];

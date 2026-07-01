@@ -91,12 +91,13 @@ The Wind Site Draft tool gives draft, coordinate-based suggestions for AS/NZS 11
 - coordinate-based wind region screen from AS/NZS 1170.2 Figure 3.1(A), with boundary and cyclonic-transition review warnings;
 - eight 45-degree upwind sectors from N to NW;
 - visible `TC` / A0 governing rule, plus the radial-band weighted `Mz,cat` screen from AS/NZS 1170.2 Table 4.1;
+- `TC2` draft fallback where map evidence is missing or sparse, with `Review Terrain` action rather than hiding the TC result;
 - terrain-category evidence from OpenStreetMap building and land-use records;
 - suggested topographic multiplier `Mt` from public DEM profile sampling;
 - action flags and evidence notes for every direction;
 - folded calculation steps and limitations.
 
-The intended workflow is exception-only: the page should give an automatic conservative draft value where the public evidence is coherent, then flag only the directions that need region, terrain or topography review. Users should not have to classify every direction manually. Low confidence means the map/DEM evidence is sparse, conflicted or close to a formula boundary; it does not mean the AS/NZS 1170.2 formula itself is unreliable.
+The intended workflow is exception-only: the page should give an automatic conservative draft value where the public evidence is coherent, and a clearly marked `TC2` fallback where map evidence is missing or sparse, then flag only the directions that need region, terrain or topography review. Users should not have to classify every direction manually. Low confidence means the map/DEM evidence is sparse, conflicted or close to a formula boundary; it does not mean the AS/NZS 1170.2 formula itself is unreliable.
 
 Current live resources are browser-side OpenStreetMap Overpass API records and Open-Meteo elevation profiles. Better future cross-checks include Overture Maps Buildings, Microsoft Global ML Building Footprints, DEA Land Cover, ABARES CLUM, ELVIS / state LiDAR DEM, GA SRTM 1 second DEM and Copernicus DEM. These resources improve screening evidence but do not turn the output into an adopted design value.
 

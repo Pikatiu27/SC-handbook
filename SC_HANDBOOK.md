@@ -1297,6 +1297,7 @@ Required scope:
 - Display a coordinate-based wind region screen from AS/NZS 1170.2 Fig. 3.1(A/B), including a visible review warning for boundary sites, islands and cyclonic coastal transition zones.
 - Generate eight 45-degree upwind direction sectors: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, and `NW`.
 - Show the suggested `TC` or governing A0 rule, `Mz,cat` screen and `Mt` value visibly in the main results table for each sector. For non-A0 regions, the browser screen should split the upwind sector into distance bands after ignoring `xi = 20z`, screen each band against AS/NZS 1170.2 Cl. 4.2 evidence, then distance-weight the Table 4.1 `Mz,cat` values. For Region A0, apply AS/NZS 1170.2 Table 4.1 Note 1 rather than describing the physical terrain as adopted TC2.
+- When map evidence is missing, sparse or beyond the browser scan radius, show a concrete `TC2` draft fallback with `Review Terrain` action instead of hiding the TC as `Review`. The warning text must state that this fallback is not a signed value and does not rule out true over-water TC1 exposure.
 - Suggest, but do not adopt, terrain-category evidence `TC` for each sector from available public mapping evidence.
 - Suggest, but do not adopt, topographic multiplier `Mt` for each sector from public elevation profile evidence.
 - Show confidence/action flags and evidence notes for every direction, including `Auto OK`, `Conservative OK`, `Review Region`, `Review Terrain` and `Review Topography`.
