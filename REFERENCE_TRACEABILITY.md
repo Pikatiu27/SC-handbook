@@ -59,6 +59,8 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Concrete | One-way shear screen | `AS3600.pdf` | AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3 and AS 3600 Cl. 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
 | Wind Site | Terrain category definitions | `AS11702-2021.pdf` | AS/NZS 1170.2 Cl. 4.2 visually checked on PDF page 39; terrain averaging and lag distance visually checked on PDF page 40 | Visual checked for draft suggestion basis only |
 | Wind Site | Topographic multiplier `Mt` and hill-shape multiplier `Mh` | `AS11702-2021.pdf` | AS/NZS 1170.2 Cl. 4.4 visually checked on PDF pages 42-45, including Equations 4.4(1) to 4.4(4), Figs. 4.3 to 4.5 and Table 4.3 | Visual checked for draft suggestion basis only |
+| Wind Site | Public terrain evidence resources | OpenStreetMap Overpass API; Overture Maps Buildings; Microsoft Global ML Building Footprints; DEA Land Cover; ABARES CLUM | Resource links are displayed in the Wind Site page as live or future cross-check evidence aids | Draft evidence only; not source verification for adopted `TC` |
+| Wind Site | Public elevation evidence resources | Open-Meteo Elevation API; ELVIS / state LiDAR DEM; GA SRTM 1 second DEM; Copernicus DEM | Resource links are displayed in the Wind Site page as live or future cross-check evidence aids | Draft evidence only; not source verification for adopted `Mt` |
 
 ## Remaining Source Gaps / Row-Level Checks
 
@@ -69,7 +71,7 @@ The primary standard formula pages above have been visually checked. These items
 - Orrcon CHS rows require row-level numeric checks if dimensions or grades are embedded rather than entered by the user.
 - AS 4100 Table 6.3.3 `alpha_b` values have been visually checked, but non-default option mapping remains project/member-axis dependent.
 - AS 3600 one-way shear is kept as a lightweight screen with visible assumptions. It is not a full shear design engine unless `kv`, reinforcement layout and detailing checks are expanded later.
-- Wind Site uses public OSM and DEM data as draft evidence only. Coordinate-derived `TC` and `Mt` suggestions are not checked or adopted design values until a project-specific site review confirms the terrain category, topographic cross-section and data currency.
+- Wind Site uses public OSM, land-cover, building-footprint and DEM data as draft evidence only. Coordinate-derived `TC` and `Mt` suggestions are not checked or adopted design values until a project-specific site review confirms the terrain category, topographic cross-section and data currency.
 - AS/NZS 1554.3 currently has 0% text extraction in the generated pack. Treat it as visual-check-only or OCR-needed.
 
 ## 2026-06-30 Default Row / Calculation Audit

@@ -94,6 +94,10 @@ The wind site tool gives draft, coordinate-based suggestions for AS/NZS 1170.2 s
 - confidence and evidence notes for every direction;
 - folded calculation steps and limitations.
 
+The intended workflow is exception-only: the page should give an automatic conservative draft value where the public evidence is coherent, then flag only the directions that need terrain or topography review. Users should not have to classify every direction manually. Low confidence means the map/DEM evidence is sparse, conflicted or close to a formula boundary; it does not mean the AS/NZS 1170.2 formula itself is unreliable.
+
+Current live resources are browser-side OpenStreetMap Overpass API records and Open-Meteo elevation profiles. Better future cross-checks include Overture Maps Buildings, Microsoft Global ML Building Footprints, DEA Land Cover, ABARES CLUM, ELVIS / state LiDAR DEM, GA SRTM 1 second DEM and Copernicus DEM. These resources improve screening evidence but do not turn the output into an adopted design value.
+
 This tab is deliberately not a signed wind assessment. The suggested `TC` and `Mt` values must be reviewed against project mapping, survey, current aerial imagery, site photos and the licensed current Standard before design issue. It does not calculate wind region, regional wind speed, `Md`, `Mz,cat`, `Ms`, aerodynamic shape factors, dynamic response, local pressures or design wind pressures.
 
 ## Reference files

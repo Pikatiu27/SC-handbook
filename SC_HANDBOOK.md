@@ -1295,8 +1295,10 @@ Required scope:
 - Suggest, but do not adopt, terrain category `TC` for each sector from available public mapping evidence.
 - Suggest, but do not adopt, topographic multiplier `Mt` for each sector from public elevation profile evidence.
 - Show confidence and evidence notes for every direction.
+- Display the public data resources used by the page, plus higher-quality optional resource upgrades, in the Wind Site page itself.
 - Keep calculation steps and source limitations in folded details panels.
 - Keep a visible warning that automatic values are for screening only and require engineering review before design issue.
+- Keep the workflow exception-only where possible: provide a conservative automatic draft suggestion when evidence is coherent, then flag only terrain/topography exceptions for user review instead of requiring manual judgement for every sector.
 
 Required exclusions:
 
@@ -1307,6 +1309,12 @@ Required exclusions:
 - Automatic reliance on Google Earth, public DEM, OpenStreetMap, aerial imagery, or any other online source as the sole issue-for-design evidence.
 
 The browser-side coordinate fetch may use public map/elevation APIs only as draft evidence. If the request fails, data is sparse, building heights are missing, or the scan radius is capped, the row must stay low-confidence or require review. The adopted design values must remain project-confirmed inputs in the final engineering calculation.
+
+Wind Site resource wording must distinguish current live browser resources from optional future cross-check resources:
+
+- Current live resources may include OpenStreetMap Overpass records and public elevation API profiles.
+- Optional cross-check resources may include Overture Maps Buildings, Microsoft Global ML Building Footprints, DEA Land Cover, ABARES CLUM, ELVIS / state LiDAR DEM, GA SRTM 1 second DEM and Copernicus DEM.
+- Resource links are evidence aids only. They must not be worded as source verification for adopted `TC` or `Mt` values.
 
 ### 15.15 Web Local Update and Deployment Workflow
 
