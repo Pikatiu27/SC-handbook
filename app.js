@@ -1270,8 +1270,8 @@ function calculateWeld() {
   $("weldThroatValue").textContent = `${fixed2(throat)} mm`;
   $("weldLengthValue").textContent = `${fixed(length)} mm`;
   $("weldRunsValue").textContent = String(runs);
-  $("weldCapacityLabel").innerHTML = type === "fillet" ? "Design weld capacity &phi;V<sub>w</sub>" : "Capacity view only";
-  $("weldCapacityBasis").textContent = `capacity view only; not a full weld or joint design check; ${typeData.scope}; ${typeData.note}; category ${category}, phi ${phi.toFixed(2)} from AS 4100 Table 3.4`;
+  $("weldCapacityLabel").textContent = "Capacity per mm per weld line";
+  $("weldCapacityBasis").textContent = `${typeData.scope}; category ${category}, phi ${phi.toFixed(2)} from AS 4100 Table 3.4`;
   $("weldCapacity").textContent = fixed(capacity);
   $("weldCapacityPerMm").textContent = capacityPerMm.toFixed(2);
   $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";
@@ -1287,9 +1287,9 @@ function calculateWeld() {
   $("weldFormulaSteps").innerHTML = `
     <div><b>Selected weld</b><code>${typeData.label} - ${typeData.scope}</code></div>
     <div><b>Design throat</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : type === "compound" ? `${effectiveThroat.toFixed(1)} + 0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${fixed2(throat)} mm</code></div>
-    <div><b>Weld-metal capacity</b><code>&phi;R = ${phi.toFixed(2)} x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x ${fixed(length)} / 1000 x k<sub>r</sub> ${kr.toFixed(2)} = ${fixed(capacity / runs)} kN per run</code></div>
+    <div><b>Per-mm capacity</b><code>&phi;R / l<sub>w</sub> = ${phi.toFixed(2)} x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x k<sub>r</sub> ${kr.toFixed(2)} / 1000 = ${capacityPerMm.toFixed(2)} kN/mm per weld line</code></div>
     <div><b>Lap reduction</b><code>${lapReductionActive ? `AS 4100 Table 9.6.3.10(B); l<sub>w</sub> = ${(length / 1000).toFixed(2)} m, k<sub>r</sub> = ${kr.toFixed(2)}` : "Not applied - welded lap connection option is No or weld type is not fillet"}</code></div>
-    <div><b>Effective weld lines</b><code>${runs} identical effective weld line${runs === 1 ? "" : "s"} x ${fixed(capacity / runs)} = ${fixed(capacity)} kN; not welding passes</code></div>
+    <div><b>Total weld capacity</b><code>${capacityPerMm.toFixed(2)} kN/mm x ${fixed(length)} mm x ${runs} identical effective weld line${runs === 1 ? "" : "s"} = ${fixed(capacity)} kN; lines are not welding passes</code></div>
     <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x ${parentGrade.fup} x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm; warning only, not used in PASS/FAIL` : "Not checked - enter ply thickness"}</code></div>
     <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; capacity view only, not a full weld or joint design check; check parent metal, joint preparation, WPS, inspection, fatigue and effective length separately</code></div>`;
 }
