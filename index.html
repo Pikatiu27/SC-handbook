@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -24,7 +24,6 @@
       <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Section</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
       <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false">Pad Section</button>
-      <button class="tool-tab" type="button" data-tool="wind" aria-controls="windPanel" aria-selected="false">Wind Site Draft</button>
     </nav>
 
     <section id="boltPanel" class="tool-panel active">
@@ -91,11 +90,11 @@
           </section>
           <section><h3>TF slip resistance</h3><div class="form-grid three"><label><span>n<sub>ei</sub> <i>effective interfaces</i></span><input id="interfaces" type="number" min="1" max="10" step="1" value="1"></label><label><span>μ <i>slip factor</i></span><input id="slipFactor" type="number" min="0" max="1" step="0.01" value="0.35"></label><label><span>k<sub>h</sub> <i>hole factor</i></span><select id="holeFactor"><option value="1">1.00 · standard</option><option value="0.85">0.85 · short slot / oversize</option><option value="0.7">0.70 · long slot</option></select></label></div><div class="compact-result"><span>Design slip resistance per bolt</span><strong id="slipCapacity">Not applicable</strong><small>TF categories only</small></div></section>
           <section><h3>Combined shear and tension</h3><div class="form-grid two"><label><span>V<sub>f</sub><sup>*</sup> <i>design shear action</i></span><span class="unit"><input id="shearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label><label><span>N<sub>tf</sub><sup>*</sup> <i>design tension action</i></span><span class="unit"><input id="tensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label></div><div class="interaction-result"><span>Governing capacity check</span><strong id="strengthGoverningRatio">—</strong><b id="strengthGoverningStatus">Enter design actions</b></div><p class="checklist-warning" id="strengthGoverningNote">Enter design actions to identify whether bolt shear, bolt tension, combined bolt interaction or connected ply governs.</p><p class="checklist-warning">Warning: include any prying force in bolt tensile action where applicable; refer AS 4100 Cl. 9.1.8. TF categories also require the separate serviceability slip interaction in AS 4100 Cl. 9.2.3.3.</p></section>
-          <section><h3>Checklists / warnings</h3><p class="checklist-warning">Verify block shear for coped beams, gussets and locally reduced plates; refer AS 4100 Cl. 9.1.9. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring AS 4100 Table 9.2.2.1 reduction. Check any separate bolt-group long-joint provisions outside this quick lookup.</p></section>
+          <section><h3>Checklists / warnings</h3><p class="checklist-warning">Verify block shear for coped beams, gussets and locally reduced plates; refer AS 4100 Cl. 9.1.9. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring AS 4100 Table 9.2.2.1 reduction. This quick lookup applies the entered k<sub>r</sub>, but does not auto-derive it from the connection length or hole layout.</p></section>
         </div>
       </details>
 
-      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>Equations, AS 4100 references and data boundaries</small></span><i>+</i></summary><div class="source-body"><div id="formulaSteps" class="formula-list"></div><div class="source-notes"><p><b>Issue status</b> · For Review. Clause pages for AS 4100 bolt shear, tension, combined shear-tension and bearing checks have been visually checked against the local reference PDF; product table values still require project-specific source-register traceability before `Checked` release.</p><p><b>Primary basis</b> · AS 4100 Table 3.4; AS 4100 Cl. 9.1.8, AS 4100 Cl. 9.2.2.1, AS 4100 Cl. 9.2.2.2, AS 4100 Cl. 9.2.2.3, AS 4100 Cl. 9.2.2.4, AS 4100 Cl. 9.2.3.1, AS 4100 Cl. 9.2.3.3 and AS 4100 Cl. 9.5.2.</p><p><b>Material standards</b> · Connected ply strengths should be verified against AS/NZS 3678 or AS/NZS 3679.1 as applicable. The default f<sub>up</sub> = 410 MPa is for AS/NZS 3678 Grade 250 plate from ASI Simple Connections 2020 Table 2.15; use 440 MPa only for a verified AS/NZS 3679.1 Grade 300 flat bar/section or equivalent source. Fastener property class and structural bolt assemblies should be verified against AS 1110 and AS/NZS 1252 as applicable.</p><p><b>Symbols</b> · d<sub>f</sub> is the nominal bolt diameter; d<sub>h</sub> is the actual hole diameter; e is the hole-centre edge distance used for AS 4100 Table 9.5.2; A<sub>o</sub> is the nominal plain-shank area; A<sub>c</sub> is the minor diameter area; A<sub>s</sub> is the tensile stress area.</p><p><b>N/X and category</b> · `/S`, `/TB` and `/TF` identify installation and connection category. N or X identifies the shear plane condition and is selected separately; TB is not inherently N or X.</p><p><b>Edge notation</b> · The minimum edge-distance check uses e, measured from hole centre to ply edge. The edge-limited bearing check uses a<sub>e</sub> for AS 4100 Cl. 9.2.2.4(2), calculated here as e/cosθ - d<sub>h</sub>/2 + d<sub>f</sub>/2 for a standard hole at a physical ply edge, where θ is measured from the edge normal to the force direction. Use Bolts on edge line for bolts on the loaded edge or critical line only. Where the critical edge is an adjacent bolt hole, determine a<sub>e</sub> from the actual hole layout rather than total bolt count.</p><p><b>Demand checks</b> · Shear-only demand checks AS 4100 Cl. 9.2.2.1 for the bolt and AS 4100 Cl. 9.2.2.4 for the connected ply. Tension-only demand checks AS 4100 Cl. 9.2.2.2. Combined shear and tension checks AS 4100 Cl. 9.2.2.3 for the bolt, while the connected-ply bearing / edge tear-out check remains separate.</p><p>Minimum edge distance assumes a standard hole measured from hole centre to ply edge. Enter the actual hole diameter used to derive a<sub>e</sub>. Non-standard holes require the measurement convention in AS 4100 Cl. 9.5.2(b).</p><p>Topology-dependent checks such as prying action, block shear, coped-beam tearing, gusset tear-out and long-joint reduction are not calculated by this quick-reference tool and must be checked from the actual connection geometry.</p><p>AS 4100 Table 15.2.2.2 gives minimum bolt tensions only for M16 to M36. Accordingly, M10 and M12 are available only in /S categories in this tool.</p><p>A<sub>s</sub> and A<sub>c</sub> use metric coarse-thread data. Verify against the applicable fastener and thread Standards before issue for design.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>Equations, AS 4100 references and data boundaries</small></span><i>+</i></summary><div class="source-body"><div id="formulaSteps" class="formula-list"></div><div class="source-notes"><p><b>Issue status</b> · For Review. Clause pages for AS 4100 bolt shear, tension, combined shear-tension and bearing checks have been visually checked against the local reference PDF; product table values still require project-specific source-register traceability before `Checked` release.</p><p><b>Primary basis</b> · AS 4100 Table 3.4; AS 4100 Cl. 9.1.8, AS 4100 Cl. 9.2.2.1, AS 4100 Cl. 9.2.2.2, AS 4100 Cl. 9.2.2.3, AS 4100 Cl. 9.2.2.4, AS 4100 Cl. 9.2.3.1, AS 4100 Cl. 9.2.3.3 and AS 4100 Cl. 9.5.2.</p><p><b>Material standards</b> · Connected ply strengths should be verified against AS/NZS 3678 or AS/NZS 3679.1 as applicable. The default f<sub>up</sub> = 410 MPa is for AS/NZS 3678 Grade 250 plate from ASI Simple Connections 2020 Table 2.15; use 440 MPa only for a verified AS/NZS 3679.1 Grade 300 flat bar/section or equivalent source. Fastener property class and structural bolt assemblies should be verified against AS 1110 and AS/NZS 1252 as applicable.</p><p><b>Symbols</b> · d<sub>f</sub> is the nominal bolt diameter; d<sub>h</sub> is the actual hole diameter; e is the hole-centre edge distance used for AS 4100 Table 9.5.2; A<sub>o</sub> is the nominal plain-shank area; A<sub>c</sub> is the minor diameter area; A<sub>s</sub> is the tensile stress area.</p><p><b>N/X and category</b> · `/S`, `/TB` and `/TF` identify installation and connection category. N or X identifies the shear plane condition and is selected separately; TB is not inherently N or X.</p><p><b>Edge notation</b> · The minimum edge-distance check uses e, measured from hole centre to ply edge. The edge-limited bearing check uses a<sub>e</sub> for AS 4100 Cl. 9.2.2.4(2), calculated here as e/cosθ - d<sub>h</sub>/2 + d<sub>f</sub>/2 for a standard hole at a physical ply edge, where θ is measured from the edge normal to the force direction. Use Bolts on edge line for bolts on the loaded edge or critical line only. Where the critical edge is an adjacent bolt hole, determine a<sub>e</sub> from the actual hole layout rather than total bolt count.</p><p><b>Demand checks</b> · Shear-only demand checks AS 4100 Cl. 9.2.2.1 for the bolt and AS 4100 Cl. 9.2.2.4 for the connected ply. Tension-only demand checks AS 4100 Cl. 9.2.2.2. Combined shear and tension checks AS 4100 Cl. 9.2.2.3 for the bolt, while the connected-ply bearing / edge tear-out check remains separate.</p><p>Minimum edge distance assumes a standard hole measured from hole centre to ply edge. Enter the actual hole diameter used to derive a<sub>e</sub>. Non-standard holes require the measurement convention in AS 4100 Cl. 9.5.2(b).</p><p>Topology-dependent checks such as prying action, block shear, coped-beam tearing and gusset tear-out are not calculated by this quick-reference tool and must be checked from the actual connection geometry. The entered k<sub>r</sub> is applied to AS 4100 Cl. 9.2.2.1 bolt shear capacity, but the tool does not auto-derive k<sub>r</sub> from bolted lap connection length.</p><p>AS 4100 Table 15.2.2.2 gives minimum bolt tensions only for M16 to M36. Accordingly, M10 and M12 are available only in /S categories in this tool.</p><p>A<sub>s</sub> and A<sub>c</sub> use metric coarse-thread data. Verify against the applicable fastener and thread Standards before issue for design.</p></div></div></details>
     </section>
 
     <section id="weldPanel" class="tool-panel" hidden>
@@ -639,91 +638,6 @@
       </details>
     </section>
 
-    <section id="windPanel" class="tool-panel" hidden>
-      <div class="tool-heading">
-        <div><p class="kicker">Wind actions · AS/NZS 1170.2 Section 4</p><h2>Wind Site Draft</h2></div>
-        <span class="tool-status">Draft suggestions only</span>
-      </div>
-
-      <section class="lookup-card wind-card">
-        <div class="input-cluster input-cluster-three">
-          <section class="input-group input-group-section" aria-label="Wind Site Draft coordinate inputs">
-            <span class="input-group-heading"><b>Site coordinates</b><small>Coordinate, reference height and scan distance.</small></span>
-            <div class="input-group-fields three">
-              <label><span>Latitude</span><input id="windLatitude" type="number" min="-90" max="90" step="0.000001" value="-33.868800"></label>
-              <label><span>Longitude</span><input id="windLongitude" type="number" min="-180" max="180" step="0.000001" value="151.209300"></label>
-              <label><span>Reference height, z</span><span class="unit"><input id="windReferenceHeight" type="number" min="1" max="200" step="1" value="10"><em>m</em></span></label>
-            </div>
-          </section>
-          <section class="input-group input-group-factor" aria-label="Wind topographic assumptions">
-            <span class="input-group-heading"><b>Relevant factors</b><small>Region rule override, terrain model and lee multiplier override.</small></span>
-            <div class="input-group-fields three">
-              <label><span>Region branch</span><select id="windRegionBranch"><option value="auto">Auto from coordinate</option><option value="general">Manual: general / no NZ lee</option><option value="a0">Manual: Region A0</option><option value="a4nz">Manual: A4 or NZ high elevation</option></select></label>
-              <label><span>Topography model</span><select id="windTopoModel"><option value="hill">Hill / ridge screen</option><option value="escarpment">Escarpment screen</option></select></label>
-              <label><span>M<sub>lee</sub> override</span><input id="windMlee" type="number" min="1" max="1.5" step="0.01" value="1.00"></label>
-            </div>
-          </section>
-          <section class="input-group input-group-action" aria-label="Wind data action">
-            <span class="input-group-heading"><b>Data request</b><small>Fetch public map and elevation evidence for current coordinates.</small></span>
-            <div class="wind-actions">
-              <button id="windFetchButton" class="data-action-button" type="button">Fetch suggestions</button>
-            </div>
-          </section>
-        </div>
-
-        <div class="wind-summary">
-          <div><span>Suggestion status</span><strong id="windSuggestionStatus">No live data loaded</strong><small id="windDataStatus">Rows are draft placeholders until coordinate data is fetched.</small></div>
-          <dl><div><dt>Wind region</dt><dd id="windRegionScreen">Review</dd></div><div><dt>Region basis</dt><dd id="windRegionBasis">Enter coordinate</dd></div><div><dt>M<sub>z,cat</sub> rule</dt><dd id="windMzcatRule">Table 4.1 by sector</dd></div><div><dt>Scan x<sub>a</sub></dt><dd id="windScanDistance">500 m</dd></div><div><dt>Lag x<sub>i</sub></dt><dd id="windLagDistance">200 m</dd></div><div><dt>Max M<sub>t</sub></dt><dd id="windMaxMt">1.00</dd></div><div><dt>Review flags</dt><dd id="windLowConfidence">8 review</dd></div></dl>
-        </div>
-
-        <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Draft exposure suggestions</h2></div><span>N to NW</span></div>
-          <div class="table-scroll">
-            <table class="compact-lookup-table wind-result-table">
-              <thead><tr><th>Direction</th><th>Sector</th><th>Suggested TC / rule</th><th>M<sub>z,cat</sub> / evidence</th><th>Suggested M<sub>t</sub></th><th>M<sub>t</sub> basis</th><th>Action</th></tr></thead>
-              <tbody id="windDirectionRows"></tbody>
-            </table>
-          </div>
-          <p class="checklist-warning wind-warning" id="windWarning">Warning: values are automatic suggestions for screening only. Terrain category and topographic multiplier must be reviewed against project mapping, survey, current aerial imagery and the licensed Standard before design issue.</p>
-          <div class="wind-resource-strip" aria-label="Wind Site Draft data resources">
-            <a href="https://wiki.openstreetmap.org/wiki/Overpass_API" target="_blank" rel="noopener"><b>OSM Overpass</b><small>Live terrain tags used now</small></a>
-            <a href="https://open-meteo.com/en/docs/elevation-api" target="_blank" rel="noopener"><b>Open-Meteo Elevation</b><small>Live DEM fallback used now</small></a>
-            <a href="https://knowledge.dea.ga.gov.au/data/product/dea-land-cover-landsat/" target="_blank" rel="noopener"><b>DEA Land Cover</b><small>Future land-cover cross-check</small></a>
-            <a href="https://elevation.fsdf.org.au/" target="_blank" rel="noopener"><b>ELVIS / LiDAR</b><small>Preferred DEM upgrade where available</small></a>
-          </div>
-        </section>
-      </section>
-
-      <details class="detail-card">
-        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Direction calculation notes</b></span><small>OSM terrain evidence, DEM profile values and M<sub>h</sub> / M<sub>t</sub> calculations</small></span><i>+</i></summary>
-        <div class="detail-body">
-          <section><h3>Calculation steps</h3><div id="windFormulaSteps" class="formula-list"></div></section>
-          <section><h3>Evidence notes</h3><div id="windEvidenceNotes" class="wind-evidence-grid"></div></section>
-        </div>
-      </details>
-
-      <details class="source-card">
-        <summary><span><b>Calculation basis, resources and limitations</b><small>AS/NZS 1170.2 site exposure boundary, confidence model and data-source warnings</small></span><i>+</i></summary>
-        <div class="source-body">
-          <div class="source-notes">
-            <p><b>Issue status</b> &middot; Draft / automatic suggestion only. This tab is not an issue-for-design wind assessment.</p>
-            <p><b>Primary basis</b> &middot; AS/NZS 1170.2 Fig. 3.1(A/B) for wind regions, Cl. 4.2 and Table 4.1 for terrain category and M<sub>z,cat</sub>, and Cl. 4.4 for the topographic multiplier M<sub>t</sub>.</p>
-            <p><b>Wind region screen</b> &middot; The coordinate screen is a coarse AS/NZS 1170.2 Fig. 3.1(A) aid only. Boundary sites, islands, cyclonic coastal transition zones and New Zealand regions must be checked from the licensed Standard and project location data before adopting a region.</p>
-            <p><b>TC / M<sub>z,cat</sub> screen</b> &middot; The results table shows a suggested TC or governing A0 rule first, then the associated M<sub>z,cat</sub>. For non-A0 regions, the browser counts OpenStreetMap building and land-use records in each 45&deg; upwind sector, ignores x<sub>i</sub> = 20z, divides the remaining x<sub>a</sub> distance into radial bands, screens each band against AS/NZS 1170.2 Cl. 4.2, then distance-weights the Table 4.1 M<sub>z,cat</sub> values. Where map evidence is missing or too sparse, TC2 is shown as a draft fallback with Review Terrain action; it is not a signed value and does not exclude true over-water TC1 exposure. For Region A0, Table 4.1 Note 1 is applied directly: M<sub>z,cat,2</sub> for z &le; 100 m, or M<sub>z,cat</sub> = 1.24 for 100 m &lt; z &le; 200 m. OSM physical TC evidence is review-only and does not override the A0 rule.</p>
-            <p><b>Topographic screen</b> &middot; DEM profile points are sampled along each direction. The page estimates H, L<sub>u</sub>, x, L<sub>1</sub> and L<sub>2</sub>, then calculates M<sub>h</sub> and M<sub>t</sub>. Crest selection, hill/ridge/escarpment type and local topographic zone must be confirmed from project mapping or survey.</p>
-            <p><b>Conservative workflow</b> &middot; The page should minimise user judgement by giving an automatic conservative draft value where the evidence is coherent, then flag only exception directions as Auto OK, Conservative OK, Review Region, Review Terrain or Review Topography. Low confidence means the evidence chain is weak or conflicted; it does not mean the formula itself is unreliable.</p>
-            <p><b>Confidence controls</b> &middot; Confidence is reduced when public map coverage is sparse, terrain evidence is mixed, building heights are missing, DEM spacing is coarse, the scan distance is capped, multiple ridges are possible, or H/(2L<sub>u</sub>) is close to a formula boundary.</p>
-          </div>
-          <div class="source-notes">
-            <p><b>Live resources used now</b> &middot; The live fetch uses <a href="https://wiki.openstreetmap.org/wiki/Overpass_API" target="_blank" rel="noopener">OpenStreetMap Overpass API</a> records and the <a href="https://open-meteo.com/en/docs/elevation-api" target="_blank" rel="noopener">Open-Meteo Elevation API</a>. API outages, sparse mapping, missing building heights, changed land use and DEM resolution can change the suggested values.</p>
-            <p><b>Recommended resource upgrades</b> &middot; Use <a href="https://docs.overturemaps.org/schema/reference/buildings/building/" target="_blank" rel="noopener">Overture Maps Buildings</a> or <a href="https://github.com/microsoft/GlobalMLBuildingFootprints" target="_blank" rel="noopener">Microsoft Global ML Building Footprints</a> to cross-check building density; use <a href="https://knowledge.dea.ga.gov.au/data/product/dea-land-cover-landsat/" target="_blank" rel="noopener">DEA Land Cover</a> and <a href="https://knowledge.dea.ga.gov.au/data/external-data/abares-clum-2023/" target="_blank" rel="noopener">ABARES CLUM</a> to cross-check open, agricultural, urban, water and vegetation classes; use <a href="https://elevation.fsdf.org.au/" target="_blank" rel="noopener">ELVIS / state LiDAR</a>, <a href="https://ecat.ga.gov.au/geonetwork/srv/eng/catalog.search#/metadata/72759" target="_blank" rel="noopener">GA SRTM 1 second DEM</a> or <a href="https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM" target="_blank" rel="noopener">Copernicus DEM</a> to improve M<sub>t</sub> screening.</p>
-            <p><b>Excluded checks</b> &middot; Adopted wind region, regional wind speed, adopted M<sub>d</sub>, adopted M<sub>z,cat</sub>, M<sub>s</sub>, aerodynamic shape factors, dynamic response, shielding, local pressure factors and final design wind pressures are not calculated by this tab.</p>
-            <p><b>Use</b> &middot; Keep the adopted wind region, TC / M<sub>z,cat</sub> and M<sub>t</sub> as project-confirmed inputs in the design calculation. Do not copy the automatic suggestion into a design report without a site-specific review trail.</p>
-            <p><b>Reference</b> &middot; AS/NZS 1170.2:2021 local PDF pages for Fig. 3.1(A), Cl. 4.2, Table 4.1 and Cl. 4.4 were checked visually in the project reference library before adding this draft tab.</p>
-          </div>
-        </div>
-      </details>
-    </section>
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>

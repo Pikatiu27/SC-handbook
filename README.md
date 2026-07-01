@@ -1,6 +1,6 @@
 # SC Handbook
 
-Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required. The `Wind Site Draft` tab can optionally call public map/elevation APIs from the browser when draft coordinate-based suggestions are requested.
+Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
 ## Tools
 
@@ -84,26 +84,6 @@ The weld symbol legend uses inline SVG examples redrawn from the authorized AS 1
 The weld selection guide is a concise drafting aid for common cases such as shear cleats, gussets, base plates, full-strength splices, partial-strength butt joints, moment connections, tube cap/flange plates, fatigue-sensitive details and site welding. It is scenario-first: each item states the default weld choice, when to use it, when to avoid relying on it, and what still needs checking. ASI *Simple Connections* recommends specifying weld size, weld category and nominal weld metal strength while leaving the welding process selection to the fabricator.
 
 The parent-metal row is a lightweight warning-only per-mm screen using `phi 0.6 f_up t`; it does not change the weld PASS/FAIL status and does not replace tear-out, block shear, net-section rupture, HAZ, edge-distance, eccentric weld group, end return, intermittent weld, fatigue, seismic, lamellar tearing or inspection acceptance checks. Online calculator-style sources are not used as the governing calculation basis unless their formulas can be traced back to AS 4100 or a recognised standard-based design guide.
-
-### Wind Site Draft
-
-The Wind Site Draft tool gives draft, coordinate-based suggestions for AS/NZS 1170.2 site exposure inputs:
-
-- latitude, longitude and reference height `z`;
-- coordinate-based wind region screen from AS/NZS 1170.2 Figure 3.1(A), with boundary and cyclonic-transition review warnings;
-- eight 45-degree upwind sectors from N to NW;
-- visible `TC` / A0 governing rule, plus the radial-band weighted `Mz,cat` screen from AS/NZS 1170.2 Table 4.1;
-- `TC2` draft fallback where map evidence is missing or sparse, with `Review Terrain` action rather than hiding the TC result;
-- terrain-category evidence from OpenStreetMap building and land-use records;
-- suggested topographic multiplier `Mt` from public DEM profile sampling;
-- action flags and evidence notes for every direction;
-- folded calculation steps and limitations.
-
-The intended workflow is exception-only: the page should give an automatic conservative draft value where the public evidence is coherent, and a clearly marked `TC2` fallback where map evidence is missing or sparse, then flag only the directions that need region, terrain or topography review. Users should not have to classify every direction manually. Low confidence means the map/DEM evidence is sparse, conflicted or close to a formula boundary; it does not mean the AS/NZS 1170.2 formula itself is unreliable.
-
-Current live resources are browser-side OpenStreetMap Overpass API records and Open-Meteo elevation profiles. Better future cross-checks include Overture Maps Buildings, Microsoft Global ML Building Footprints, DEA Land Cover, ABARES CLUM, ELVIS / state LiDAR DEM, GA SRTM 1 second DEM and Copernicus DEM. These resources improve screening evidence but do not turn the output into an adopted design value.
-
-This tab is deliberately not a signed wind assessment. The screened wind region, displayed `TC` / A0 rule, `Mz,cat` and `Mt` values must be reviewed against project mapping, survey, current aerial imagery, site photos and the licensed current Standard before design issue. It does not calculate regional wind speed, adopted `Md`, adopted `Mz,cat`, `Ms`, aerodynamic shape factors, dynamic response, local pressures or design wind pressures.
 
 ## Reference files
 

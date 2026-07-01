@@ -731,7 +731,6 @@ Candidate future modules:
 - `Section_SHS_RHS`
 - `Weld_Capacity`
 - `Plate_Bearing`
-- `Wind_Reference`
 - `Member_Check`
 
 Each future module must follow this file before workbook implementation starts.
@@ -776,7 +775,6 @@ Current core tabs:
 - `Beam Section`
 - `Weld Capacity`
 - `Pad Section`
-- `Wind Site Draft`
 
 Future tabs may include:
 
@@ -785,7 +783,6 @@ Future tabs may include:
 - `Base Plate`
 - `Section Properties`
 - `Connection Checks`
-- `Wind Actions`
 
 Tab rules:
 
@@ -1188,11 +1185,13 @@ For product dimensions and section properties, use Australian manufacturer data 
 Connection- and axis-dependent terms must stay explicit:
 
 - Use table-derived default `alpha_b` values where the selected section family and embedded `k_f` condition match AS 4100 Table 6.3.3. Apply Table 6.3.3(A) when `k_f = 1.0` and Table 6.3.3(B) when `k_f < 1.0`. For the current member tab, this means cold-formed non-stress-relieved CHS = -0.5, PFC with `k_f = 1.0` = 0.5, Equal Angle with `k_f = 1.0` = 0.5, Equal Angle with `k_f < 1.0` = 1.0 as `other sections not listed` in Table 6.3.3(B), and Rod / solid round bar with `k_f = 1.0` = 0.5 as `other sections not listed` in Table 6.3.3(A). State the table row in the lookup panel and calculation steps. Do not ask the user to manually choose `alpha_b` unless the page provides an explicit advanced override for a different table row, axis, fabrication condition, or `k_f` case.
+- AS 4100 Cl. 6.2 compression section capacity must be written as `N_s = k_f A_n f_y`, with design capacity `phi N_s = 0.90 k_f A_n f_y`. Do not replace `A_n` with `A_g` in the displayed formula. Catalogue examples and unholed member tables may calculate the same value using `A_g` only because `A_n = A_g` for an unperforated section. The calculation steps must state this assumption when no holes or penetrations are entered.
+- Calculation examples should make the area basis explicit: `no holes: A_n = A_g`; `straight-line hole deduction: A_n = A_g - n_h d_h t`; `manual net area: A_n` is user/project verified. Keep these examples short and use them to explain the limitation, not to expand the tab into a full connection-design tool.
 - Treat radius of gyration `r` as an axis-dependent compression input. AS 4100 slenderness uses `L_e/r` about the checked buckling axis; therefore a one-axis quick check may default to the governing catalogue/geometry value such as `r_min`, but the default must be visible and editable. CHS and Rod defaults may be geometry-derived because the radius is the same about any centroidal axis. EA/PFC defaults should state the catalogue/quick-check basis. Custom / Built-up input should keep separate `r_x`, `r_y`, `L_ex` and `L_ey` and report the governing axis.
 - Do not imply `A_n` is known from the catalogue section alone; it must come from the actual connection net section.
 - `f_y` and `f_u` may default from the selected material grade, manufacturer table or product standard, but keep them editable where project certificates, thickness ranges or product-specific values may govern. If the user overrides them, calculation steps must show the current values and state that `k_f`, `alpha_b` and catalogue geometry remain tied to the selected section / lookup basis unless separately changed.
 - `Custom / Built-up` member input may use user-entered effective properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`. Calculate compression about both entered axes and report the governing `phi N_c`. State clearly that the source section calculation, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, local buckling derivation and connection eccentricity are not verified by the web tab.
-- For EA/PFC net-section checks, provide a lightweight straight-line bolt-hole deduction option (`A_n = A_g - n_h d_h t`) using the selected angle thickness for EA. For PFCs, show catalogue `t_w` / `t_f` from the manufacturer table, default the net-area deduction thickness to `t_w`, and allow manual override where the net path passes through the flange or a connected element. Keep a manual `A_n` override for staggered holes, slots, cope cuts, multiple net-section paths, or any topology-dependent connection geometry. Display these values in a `Connection / net-section inputs` row, separate from section properties, material strengths and compression reduction factors. AS 4100 Cl. 6.2 compression section capacity uses `A_n`; where no holes or penetrations are entered, `A_n = A_g`.
+- For EA/PFC net-section checks, provide a lightweight straight-line bolt-hole deduction option (`A_n = A_g - n_h d_h t`) using the selected angle thickness for EA. For PFCs, show catalogue `t_w` / `t_f` from the manufacturer table, default the net-area deduction thickness to `t_w`, and allow manual override where the net path passes through the flange or a connected element. Keep a manual `A_n` override for staggered holes, slots, cope cuts, multiple net-section paths, or any topology-dependent connection geometry. Display these values in a `Connection / net-section inputs` row, separate from section properties, material strengths and compression reduction factors.
 - Use `k_t = 1.00` only where the end connection satisfies AS 4100 Cl. 7.3.1 uniform force distribution.
 - For eccentric tension connections, use AS 4100 Table 7.3.2. Current quick defaults: Equal Angle one-leg connection `k_t = 0.85`; PFC/channel eccentric quick default `k_t = 0.85` unless the actual Table 7.3.2 case supports `0.90` or `1.00`; unequal angle connected by the short leg `k_t = 0.75` when that case applies. Keep `k_t` editable and project-confirmed.
 
@@ -1291,43 +1290,7 @@ Concrete tab warnings must stay visible and concise. The main warning should be 
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
-### 15.14 Wind Site Draft Web Tab Rules
-
-The Wind Site Draft tab is a draft site-exposure suggestion tool only. It must not be presented as a signed wind assessment or a complete AS/NZS 1170.2 wind-load calculator.
-
-Required scope:
-
-- Input site latitude and longitude.
-- Keep wind inputs in the standard engineering row-band layout: `Site coordinates` for latitude, longitude and reference height; `Relevant factors` for region branch, topography model and `Mlee` override; `Data request` for the fetch action only.
-- Display a coordinate-based wind region screen from AS/NZS 1170.2 Fig. 3.1(A/B), including a visible review warning for boundary sites, islands and cyclonic coastal transition zones.
-- Generate eight 45-degree upwind direction sectors: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, and `NW`.
-- Show the suggested `TC` or governing A0 rule, `Mz,cat` screen and `Mt` value visibly in the main results table for each sector. For non-A0 regions, the browser screen should split the upwind sector into distance bands after ignoring `xi = 20z`, screen each band against AS/NZS 1170.2 Cl. 4.2 evidence, then distance-weight the Table 4.1 `Mz,cat` values. For Region A0, apply AS/NZS 1170.2 Table 4.1 Note 1 rather than describing the physical terrain as adopted TC2.
-- When map evidence is missing, sparse or beyond the browser scan radius, show a concrete `TC2` draft fallback with `Review Terrain` action instead of hiding the TC as `Review`. The warning text must state that this fallback is not a signed value and does not rule out true over-water TC1 exposure.
-- Suggest, but do not adopt, terrain-category evidence `TC` for each sector from available public mapping evidence.
-- Suggest, but do not adopt, topographic multiplier `Mt` for each sector from public elevation profile evidence.
-- Show confidence/action flags and evidence notes for every direction, including `Auto OK`, `Conservative OK`, `Review Region`, `Review Terrain` and `Review Topography`.
-- Display the public data resources used by the page, plus higher-quality optional resource upgrades, in the Wind Site Draft page itself.
-- Keep calculation steps and source limitations in folded details panels.
-- Keep a visible warning that automatic values are for screening only and require engineering review before design issue.
-- Keep the workflow exception-only where possible: provide a conservative automatic draft suggestion when evidence is coherent, then flag only region/terrain/topography exceptions for user review instead of requiring manual judgement for every sector.
-
-Required exclusions:
-
-- Signed terrain-category adoption.
-- Signed topographic-multiplier adoption.
-- Adopted wind-region selection, final regional wind speed and annual-probability selection.
-- Final adopted `Md`, adopted `Mz,cat`, `Ms`, `Cfig`, `Cshp`, dynamic response, local pressure factors and design pressure calculation.
-- Automatic reliance on Google Earth, public DEM, OpenStreetMap, aerial imagery, or any other online source as the sole issue-for-design evidence.
-
-The browser-side coordinate fetch may use public map/elevation APIs only as draft evidence. Coordinate-derived wind region, terrain category, `Mz,cat` and `Mt` values are screening outputs only. If the request fails, data is sparse, building heights are missing, the scan radius is capped, or the wind region is near a boundary/transition zone, the row must stay low-confidence or require review. The adopted design values must remain project-confirmed inputs in the final engineering calculation.
-
-Wind Site Draft resource wording must distinguish current live browser resources from optional future cross-check resources:
-
-- Current live resources may include OpenStreetMap Overpass records and public elevation API profiles.
-- Optional cross-check resources may include Overture Maps Buildings, Microsoft Global ML Building Footprints, DEA Land Cover, ABARES CLUM, ELVIS / state LiDAR DEM, GA SRTM 1 second DEM and Copernicus DEM.
-- Resource links are evidence aids only. They must not be worded as source verification for adopted `TC` or `Mt` values.
-
-### 15.15 Web Local Update and Deployment Workflow
+### 15.14 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
