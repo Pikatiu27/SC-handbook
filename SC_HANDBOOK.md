@@ -1252,6 +1252,7 @@ The Wind Site tab is a draft site-exposure suggestion tool only. It must not be 
 Required scope:
 
 - Input site latitude and longitude.
+- Keep wind inputs in the standard engineering row-band layout: `Site coordinates` for latitude, longitude and reference height; `Relevant factors` for region branch, topography model and `Mlee` override; `Data request` for the fetch action only.
 - Generate eight 45-degree upwind direction sectors: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, and `NW`.
 - Suggest, but do not adopt, terrain category `TC` for each sector from available public mapping evidence.
 - Suggest, but do not adopt, topographic multiplier `Mt` for each sector from public elevation profile evidence.

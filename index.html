@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260701n">
+  <link rel="stylesheet" href="styles.css?v=20260701o">
 </head>
 <body>
   <header class="topbar">
@@ -647,17 +647,17 @@
             </div>
           </section>
           <section class="input-group input-group-factor" aria-label="Wind topographic assumptions">
-            <span class="input-group-heading"><b>Relevant factors</b><small>Regional formula branch and terrain model for the draft screen.</small></span>
-            <div class="input-group-fields two">
+            <span class="input-group-heading"><b>Relevant factors</b><small>Regional formula branch, terrain model and lee multiplier override.</small></span>
+            <div class="input-group-fields three">
               <label><span>Region branch</span><select id="windRegionBranch"><option value="general">Australia general / no NZ lee</option><option value="a0">Region A0</option><option value="a4nz">A4 or NZ high elevation</option></select></label>
               <label><span>Topography model</span><select id="windTopoModel"><option value="hill">Hill / ridge screen</option><option value="escarpment">Escarpment screen</option></select></label>
+              <label><span>M<sub>lee</sub> override</span><input id="windMlee" type="number" min="1" max="1.5" step="0.01" value="1.00"></label>
             </div>
           </section>
           <section class="input-group input-group-action" aria-label="Wind data action">
-            <span class="input-group-heading"><b>Data request</b><small>Browser-side public map and elevation lookup.</small></span>
+            <span class="input-group-heading"><b>Data request</b><small>Fetch public map and elevation evidence for current coordinates.</small></span>
             <div class="wind-actions">
               <button id="windFetchButton" class="data-action-button" type="button">Fetch suggestions</button>
-              <label><span>M<sub>lee</sub> override</span><input id="windMlee" type="number" min="1" max="1.5" step="0.01" value="1.00"></label>
             </div>
           </section>
         </div>
