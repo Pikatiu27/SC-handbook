@@ -986,7 +986,7 @@ Input zone order:
 3. `Relevant factors / assumptions`.
 4. `Connection / detailing inputs` where applicable.
 5. `Design actions` where the tab reports utilisation.
-6. `Derived values` as read-only values, separate from editable assumptions unless there is a specific reason to collapse them.
+6. `Derived values` only where the values are useful for the main workflow; otherwise put calculated process values in calculation steps or a folded details panel.
 7. Warning-only or advanced screens in a lower-priority row or collapsed details panel.
 
 Input grouping:
@@ -1003,11 +1003,11 @@ Input grouping:
 - Fully manual inputs include design actions, actual dimensions, effective length, net area, material strengths entered from project documents, and connection-specific values.
 - Lookup / derived / overrideable inputs include catalogue section selection, standard category selection, table-based factors, default correction factors, and editable factors such as `alpha_b`, `k_t`, `k_r`, or `k_h` when the page provides a cited default or lookup basis.
 - Overrideable section and material values must stay inside their engineering groups. For example, an editable radius of gyration `r` belongs with `Section properties`, while editable `fy` and `fu` belong with `Material properties`; do not create a separate override strip unless the override is cross-cutting and cannot be grouped cleanly.
-- Read-only calculated design factors belong in `Derived values`, not `Material properties`. Examples include concrete `phi`, `alpha2`, `gamma` and ultimate strain where they are calculated from the selected section state or standard model.
+- Read-only calculated design factors must not be presented as editable project inputs. Put them in a `Derived values` row only when they are genuinely useful in the main workflow; otherwise show them in calculation steps or a folded details panel.
 - Connection-specific net-section inputs should use their own `Connection / net-section inputs` or `Connection / detailing inputs` row. Do not mix `A_n`, `k_t`, bolt-hole counts, hole diameter or net-path thickness into section, material or compression-factor rows.
 - Optional design-action inputs are allowed when they only report utilisation against an already displayed capacity. They must not expand the tab into a full design workflow or imply that excluded checks have been completed.
 - Warning-only inputs and screens, such as parent-metal checks or connected-part prompts, must be visually lower priority than governing capacity inputs and results. Prefer collapsed `details` panels when the values are not needed for the main quick lookup.
-- Derived read-only factors should be shown as derived values or placed in an advanced/details panel. Do not present calculated values such as stress-block factors as primary project inputs.
+- Derived read-only factors should be shown as derived values only when they help the main workflow, or placed in calculation steps / an advanced details panel. Do not present calculated values such as stress-block factors as primary project inputs.
 - Main visible warnings should stay concise: one base sentence plus short review flags where needed. Long exclusions, source uncertainty and derivation notes belong in the folded calculation-basis / limitations panels.
 - Use different subtle background fills for these two groups. Do not rely on colour alone; labels and warnings must still state which values remain project-confirmed.
 - Input controls must use a consistent control height, border radius, font size, label size and focus treatment across all tabs unless a dense table genuinely requires smaller controls. Main calculator inputs should use the shared form-control style rather than one-off sizing.
@@ -1319,10 +1319,10 @@ Use this scope:
 - User-selected compression face.
 - N-class and legacy Y-bar reinforcement mats.
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
-- One-way shear capacity screen using AS 3600 Cl. 8.2.1.9 and AS 3600 Cl. 8.2.4.1 notation `Vuc = kv bv dv sqrt(f'c)`, with `kv` kept as a visible engineering assumption and `phi = 0.70` unless compliant Class N fitments are verified. State clearly that this is not a complete AS 3600 shear design check.
+- One-way shear capacity screen using AS 3600 Cl. 8.2.1.5, Cl. 8.2.1.9, Cl. 8.2.3.1, Cl. 8.2.4.1, Cl. 8.2.4.3 and Cl. 8.2.5.2. For this non-prestressed rectangular-strip quick screen, calculate `bv = b`, `dv = max(0.72D, 0.9d)`, simplified `kv`, optional vertical-fitment `Vus`, web-crushing limit `Vu.max`, and `phi Vu`. State clearly that ducts, voids, stepped widths, actual demand location, punching shear and detailed footing shear design are outside scope.
 - Reinforcement area must use standard nominal Australian bar table areas for N/Y bars, not raw `pi d^2 / 4` geometry, so outputs match normal reo tables and detailing practice.
-- Pad-on-pad composite action only when the user separately confirms composite action and interface shear design outside the calculator.
-- Keep concrete pad inputs in the standard row-band layout. `Pad-on-pad composite action` belongs in the visible `Relevant factors / assumptions` row and must not be forced into a narrow fixed-width control. Derived stress-block values and calculated capacity factor `phi` should be a separate read-only `Derived values` row, not a nested card inside the assumptions row or a material-property field. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
+- Pad-on-pad analysis must be an explicit mode choice. Default to `Separate pads`, which calculates only the selected top or bottom pad. Use `Combined section` only when the user intends D_top + D_bot and active mats from both pads to act as one section, with composite action and interface shear design checked outside the calculator.
+- Keep concrete pad inputs in the standard row-band layout. `Pad analysis mode` belongs in the first visible `Analysis basis` row, before geometry, because it controls whether the page calculates a single pad or the combined pad-on-pad section. Do not place derived process values such as stress-block factors, calculated `phi`, `kv`, `theta_v`, `bv` or `dv` in editable-looking inputs on the main page; show them in the calculation steps and final result notes instead. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
 
 Required exclusions:
 
@@ -1340,7 +1340,9 @@ Concrete tab warnings must stay visible and concise. The main warning should be 
 
 Concrete `phi` must cite AS 3600 Table 2.2.2 when using the pure-bending `k_uo` expression for N-class reinforcement. If legacy Y bars are selected, describe `phi = 0.65` as a conservative quick-screen review value pending actual bar-grade and ductility verification, not as a universal Y-bar code rule.
 
-Do not auto-calculate `kv` unless the page is expanded into a full AS 3600 shear design workflow. AS 3600 Cl. 8.2.4.2 derives `kv` from longitudinal strain, aggregate-size terms and effective shear depth; AS 3600 Cl. 8.2.4.3 simplified values depend on reinforcement and detailing conditions. In this quick handbook page, show `kv` as a user-confirmed assumption and cite the clauses to check.
+Concrete shear `kv` should be auto-calculated from AS 3600 Cl. 8.2.4.3 simplified non-prestressed rules because the quick page does not collect the design actions needed for the Cl. 8.2.4.2 general strain method. Use `theta_v = 36 deg`; use `kv = min(200/(1000 + 1.3dv), 0.15)` where minimum transverse shear reinforcement is not verified, and `kv = 0.15` where the provided vertical fitments satisfy `Asv.min/s = 0.08 sqrt(f'c) bv / fsy.f`. Shear reinforcement area must be calculated from the Australian bar table, `Asv = nsv Abar`, with user inputs for fitment bar size, number of legs and spacing; do not require the user to manually type `Asv` except in a deliberate future override mode. If `Asv/s` is below the minimum, show a warning and do not switch to the minimum-reinforcement `kv` or `phi = 0.75` basis. Keep `phi = 0.70` unless compliant Class N fitments meeting AS 3600 Cl. 8.2.1.7 are verified; use `phi = 0.75` only for that verified fitment case. Always show the formula steps so changes to fitment bar size, `nsv`, `s`, `fsy.f`, `bv`, `dv` and `kv` are visible.
+
+The optional vertical-fitment input row should be titled `Shear reinforcement`, not a generic relevant-factors row, because it controls `Asv`, `Vus`, `kv` branch selection and shear capacity rather than a broad assumption factor.
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
