@@ -307,6 +307,14 @@
 
       <section class="lookup-card concrete-card">
         <div class="concrete-input-stack input-cluster">
+          <section class="input-group input-group-factor">
+            <span class="input-group-heading"><b>Analysis basis</b><small>Choose separate pad or combined section behaviour first.</small></span>
+            <div class="concrete-input-row concrete-row-analysis concrete-row-assumptions">
+              <label><span>Pad analysis mode</span><select id="concreteComposite"><option value="separate">Separate pads</option><option value="combined">Combined section</option></select></label>
+              <label><span>Pad checked</span><select id="concreteSeparatePad"><option value="top">Top pad</option><option value="bottom">Bottom pad</option></select></label>
+            </div>
+          </section>
+
           <section class="input-group input-group-section">
             <span class="input-group-heading"><b>Section geometry</b><small>Compression face and pad strip dimensions.</small></span>
             <div class="concrete-input-row concrete-row-main">
@@ -326,14 +334,13 @@
           </section>
 
           <section class="input-group input-group-factor">
-            <span class="input-group-heading"><b>Relevant factors / assumptions</b><small>Only editable quick-screen assumptions stay visible.</small></span>
+            <span class="input-group-heading"><b>Shear reinforcement</b><small>Optional vertical fitments for one-way shear capacity.</small></span>
             <div class="concrete-input-row concrete-row-analysis concrete-row-assumptions">
               <label><span>Shear reinforcement</span><select id="concreteShearReo"><option value="none">None / not verified</option><option value="vertical">Vertical fitments</option></select></label>
               <label><span>Fitment bar</span><select id="concreteShearBar" data-default-bar="N12" aria-label="Shear reinforcement bar size"></select></label>
               <label><span>n<sub>sv</sub> legs</span><input id="concreteNsv" type="number" min="0" step="1" value="2"></label>
               <label><span>s<sub>v</sub> spacing</span><span class="unit"><input id="concreteSv" type="number" min="50" step="10" value="200"><em>mm</em></span></label>
               <label><span>f<sub>sy.f</sub></span><span class="unit"><input id="concreteFsyf" type="number" min="200" max="600" step="10" value="500"><em>MPa</em></span></label>
-              <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
             </div>
           </section>
 
@@ -391,7 +398,7 @@
             <p><b>Scope</b> - rectangular pad strip only. Results are for the selected strip width b; use b = 1000 mm for the usual per-metre capacity.</p>
             <p><b>Plain concrete</b> - if no reinforcement mat is active, this tool does not calculate an RC ultimate moment or reinforced-concrete one-way shear capacity. Use a separate plain-concrete footing check to AS 3600 Section 20 where applicable.</p>
             <p><b>Excluded checks</b> - punching shear, base-plate or column bearing, soil bearing, development length, anchorage, bar spacing, crack control, deflection and load combinations.</p>
-            <p><b>Pad-on-pad</b> - do not rely on the combined depth unless composite action and interface shear transfer have been separately designed and documented.</p>
+            <p><b>Pad-on-pad</b> - Separate pads calculates only the selected pad. Combined section uses D<sub>top</sub> + D<sub>bot</sub> and active mats from both pads, and should be used only where composite action and interface shear transfer have been separately designed and documented.</p>
           </div>
         </div>
       </details>

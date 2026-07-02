@@ -57,7 +57,7 @@ const weldTypeData = {
 const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentThickness", "weldParentGrade"];
 const concreteInputIds = [
   "concreteDirection", "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc",
-  "concreteShearReo", "concreteShearBar", "concreteNsv", "concreteSv", "concreteFsyf", "concreteComposite",
+  "concreteComposite", "concreteSeparatePad", "concreteShearReo", "concreteShearBar", "concreteNsv", "concreteSv", "concreteFsyf",
   "layer1Active", "layer1Auto", "layer1Y", "layer1Bar", "layer1Spacing", "layer1Fsy", "layer1Es",
   "layer2Active", "layer2Auto", "layer2Y", "layer2Bar", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Active", "layer3Auto", "layer3Y", "layer3Bar", "layer3Spacing", "layer3Fsy", "layer3Es",
@@ -288,7 +288,7 @@ const manualInputIds = [
 const referenceInputIds = [
   "boltSize", "category", "shearPlane", "kr", "edgeCondition", "holeFactor",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
-  "concreteDirection", "concreteShearReo", "concreteShearBar", "concreteComposite",
+  "concreteDirection", "concreteComposite", "concreteSeparatePad", "concreteShearReo", "concreteShearBar",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
   "beamSection", "beamGrade", "beamCustomCompactness", "beamCustomKf",
   "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberActionType", "memberNetAreaMode", "memberKt"
@@ -1148,9 +1148,10 @@ function calculateMember() {
     <div><b>Optional axial demand</b><code>${demandStep}</code></div>`;
 }
 
-function concreteLayer(index, depth, direction, width) {
+function concreteLayer(index, depth, direction, width, yOffset = 0) {
   const active = $(`layer${index}Active`).checked;
-  const yTop = value(`layer${index}Y`);
+  const yGlobal = value(`layer${index}Y`);
+  const yTop = yGlobal - yOffset;
   const product = concreteBarProduct(index);
   const bar = product.diameter;
   const spacing = value(`layer${index}Spacing`);
@@ -1165,6 +1166,7 @@ function concreteLayer(index, depth, direction, width) {
     name: index === 1 ? "Pad / upper pad top mat" : index === 2 ? "Pad / upper pad bottom mat" : index === 3 ? "Lower pad top mat" : "Lower pad bottom mat",
     active,
     yTop,
+    yGlobal,
     d: direction === "top" ? yTop : depth - yTop,
     bar,
     designation: product.designation,
@@ -1315,6 +1317,10 @@ function concreteOneWayShear(data, result) {
   const d = centroidArea > 0
     ? tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0) / centroidArea
     : result.d0;
+  const dBasis = centroidArea > 0
+    ? tensionLayers.map(layer => `Mat ${layer.index}: A_s = ${fixed(layer.area)} mm2, d = ${fixed(layer.d)} mm`).join("; ")
+    : `No reinforcement mat in the tensile half-depth; fallback d = d_o = ${fixed(result.d0)} mm`;
+  const dNumerator = tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0);
   const dv = Math.max(0.72 * data.depth, 0.9 * d);
   const bv = data.width;
   const shearReoMode = $("concreteShearReo").value;
@@ -1342,6 +1348,9 @@ function concreteOneWayShear(data, result) {
   const phi = minShearReoProvided ? 0.75 : 0.70;
   return {
     d,
+    dBasis,
+    dNumerator,
+    centroidArea,
     dv,
     bv,
     kv,
@@ -1374,8 +1383,15 @@ function concreteOneWayShear(data, result) {
 function calculateConcrete() {
   const topDepth = value("concreteTopDepth");
   const bottomDepth = value("concreteBottomDepth");
-  const depth = topDepth + bottomDepth;
+  const totalDepth = topDepth + bottomDepth;
   const direction = $("concreteDirection").value;
+  const analysisMode = $("concreteComposite").value;
+  const separatePad = $("concreteSeparatePad").value;
+  const combinedSection = analysisMode === "combined";
+  const checkedPad = combinedSection ? "combined" : separatePad;
+  const depth = combinedSection ? totalDepth : separatePad === "bottom" ? bottomDepth : topDepth;
+  const yOffset = combinedSection || separatePad === "top" ? 0 : topDepth;
+  const layerIndices = combinedSection ? [1, 2, 3, 4] : separatePad === "bottom" ? [3, 4] : [1, 2];
   const cover = value("concreteCover");
   const width = value("concreteWidth");
   const fcInput = value("concreteFc");
@@ -1394,18 +1410,25 @@ function calculateConcrete() {
     alpha2: stressBlock.alpha2,
     gamma: stressBlock.gamma,
     ecu,
-    composite: $("concreteComposite").value,
-    layers: [1, 2, 3, 4].map(index => concreteLayer(index, depth, direction, width)).filter(layer => layer.active && layer.area > 0 && layer.yTop >= 0 && layer.yTop <= depth)
+    analysisMode,
+    combinedSection,
+    checkedPad,
+    yOffset,
+    layers: layerIndices.map(index => concreteLayer(index, depth, direction, width, yOffset)).filter(layer => layer.active && layer.area > 0 && layer.yTop >= 0 && layer.yTop <= depth)
   };
-  const bottomMatWithoutDepth = bottomDepth <= 0 && ($("layer3Active").checked || $("layer4Active").checked);
+  const bottomMatWithoutDepth = bottomDepth <= 0 && (combinedSection || separatePad === "bottom") && ($("layer3Active").checked || $("layer4Active").checked);
 
   let result = { ok: false, message: "Plain concrete section: no RC ultimate flexural capacity is calculated without active reinforcement mats" };
   if (data.width > 0 && data.depth > 0 && data.fc > 0 && data.ecu > 0 && data.layers.length) {
     result = solveConcreteSection(data);
   }
 
-  $("concreteSummaryTitle").textContent = `${fixed(data.width)} mm strip; D_top ${fixed(data.topDepth)} + D_bot ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`;
-  $("concreteSummaryNote").textContent = data.composite === "yes" ? "Composite action marked as separately confirmed." : "Pad-on-pad composite action not confirmed; do not rely on combined depth without interface design.";
+  $("concreteSummaryTitle").textContent = combinedSection
+    ? `${fixed(data.width)} mm strip; combined D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`
+    : `${fixed(data.width)} mm strip; ${separatePad === "bottom" ? "bottom pad" : "top pad"} D = ${fixed(data.depth)} mm`;
+  $("concreteSummaryNote").textContent = combinedSection
+    ? "Combined section selected: use only where composite action and interface shear transfer are designed separately."
+    : `Separate pads selected: calculating the ${separatePad === "bottom" ? "bottom" : "top"} pad only; the other pad is not included in section capacity.`;
   const legacyLayers = data.layers.filter(layer => layer.legacy);
   const fsyCappedLayers = data.layers.filter(layer => layer.fsyInput > 600);
   $("concretePhiNote").textContent = legacyLayers.length
@@ -1432,7 +1455,8 @@ function calculateConcrete() {
   if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A_sv/s below AS 3600 Cl. 8.2.1.7 minimum (${shear.asvPerS.toFixed(3)} < ${shear.asvMinPerS.toFixed(3)} mm2/mm)`);
   if (shear.webCrushingLimited) reviewFlags.push(`V_u limited by AS 3600 Cl. 8.2.3.3 web crushing`);
   if (!shear.hasShearReo) reviewFlags.push("no shear reinforcement credited; check AS 3600 Cl. 8.2.1.6 for actual V*");
-  if (data.composite !== "yes") reviewFlags.push("pad-on-pad interface shear not confirmed");
+  if (combinedSection) reviewFlags.push("combined section requires separate interface shear and composite-action verification");
+  if (!combinedSection && totalDepth > depth) reviewFlags.push(`${separatePad === "bottom" ? "top" : "bottom"} pad not included in separate-pad calculation`);
   if (coverWarnings.length) reviewFlags.push(`${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} cover check`);
   if (bottomMatWithoutDepth) reviewFlags.push("bottom pad mats active with D_bot = 0");
   if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
@@ -1452,7 +1476,7 @@ function calculateConcrete() {
   $("concreteShearNote").innerHTML = `V<sub>uc</sub> = ${fixed(shear.vuc)} kN; V<sub>us</sub> = ${fixed(shear.vus)} kN; d<sub>v</sub> = ${fixed(shear.dv)} mm`;
   $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
   const shearWarning = (shear.hasShearReo && !shear.minShearReoProvided) || shear.webCrushingLimited;
-  const sectionSolved = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && !shearWarning && result.kuo <= 0.36;
+  const sectionSolved = residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && !shearWarning && result.kuo <= 0.36;
   $("concreteWarningStatus").textContent = sectionSolved ? "SOLVED" : "CHECK";
   $("concreteWarningStatus").className = sectionSolved ? "pass" : "fail";
   $("concreteWarningText").textContent = warningText;
@@ -1466,7 +1490,7 @@ function calculateConcrete() {
 
   $("concreteFormulaSteps").innerHTML = `
     <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
-    <div><b>Pad geometry</b><code>D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; bottom pad mats require D_bot > 0</code></div>
+    <div><b>Pad analysis mode</b><code>${data.combinedSection ? `Combined section: D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; active top and bottom pad mats may participate` : `Separate pads: calculating the ${data.checkedPad === "bottom" ? "bottom" : "top"} pad only; D = ${fixed(data.depth)} mm; only that pad's active mats participate`}</code></div>
     <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface; editing a y_i value turns off auto fill for that mat</code></div>
     <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar,table</sub> x b / spacing. A<sub>bar,table</sub> uses standard nominal Australian bar areas N/Y12-36 rather than &pi;d<sup>2</sup>/4; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten; design-model f<sub>sy</sub> is capped at 600 MPa</code></div>
     <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
@@ -1478,7 +1502,8 @@ function calculateConcrete() {
     <div><b>Capacity factor - AS 3600 Table 2.2.2</b><code>${legacyLayers.length ? `Legacy Y bar selected: conservative quick-screen &phi; = 0.65 unless actual bar grade and N-class equivalence are verified` : `Pure-bending N-class reinforcement assumption: k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
     <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
     <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
-    <div><b>Shear geometry - AS 3600 Cl. 8.2.1.5 and 8.2.1.9</b><code>b<sub>v</sub> = b = ${fixed(shear.bv)} mm for this rectangular strip without ducts or voids; d = ${fixed(shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm</code></div>
+    <div><b>Shear effective depth basis - AS 3600 Cl. 8.2.1.9</b><code>d is the distance from the compression face to the centroid of longitudinal tension reinforcement in the tensile half-depth. ${shear.dBasis}; ${shear.centroidArea > 0 ? `d = &Sigma;(A<sub>s</sub>d) / &Sigma;A<sub>s</sub> = ${fixed(shear.dNumerator)} / ${fixed(shear.centroidArea)} = ${fixed(shear.d)} mm` : `d = ${fixed(shear.d)} mm`}</code></div>
+    <div><b>Shear geometry - AS 3600 Cl. 8.2.1.5 and 8.2.1.9</b><code>b<sub>v</sub> = b = ${fixed(shear.bv)} mm for this rectangular strip without ducts or voids; d<sub>v</sub> = max(0.72D, 0.9d) = max(0.72 x ${fixed(data.depth)}, 0.9 x ${fixed(shear.d)}) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm</code></div>
     <div><b>Shear reinforcement area</b><code>${shear.hasShearReo ? `A<sub>sv</sub> = n<sub>sv</sub>A<sub>bar,table</sub> = ${shear.nsv.toFixed(0)} x ${fixed(shear.shearBarArea)} = ${fixed(shear.asv)} mm2 per spacing using ${shear.shearDesignation}; A<sub>sv</sub>/s = ${fixed(shear.asv)} / ${fixed(shear.sv)} = ${shear.asvPerS.toFixed(3)} mm2/mm` : `No vertical shear reinforcement selected; A<sub>sv</sub>/s = 0 mm2/mm`}</code></div>
     <div><b>Simplified shear factor - AS 3600 Cl. 8.2.4.3</b><code>&theta;<sub>v</sub> = ${shear.theta.toFixed(0)} deg; A<sub>sv,min</sub>/s = 0.08&radic;f'<sub>c</sub>b<sub>v</sub>/f<sub>sy.f</sub> = ${shear.asvMinPerS.toFixed(3)} mm2/mm; ${shear.minShearReoProvided ? `provided A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm >= minimum, so k<sub>v</sub> = 0.15` : `provided A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm < minimum, so k<sub>v</sub> = min(200/(1000 + 1.3d<sub>v</sub>), 0.15) = ${shear.kv.toFixed(3)}`}</code></div>
     <div><b>Concrete shear contribution - AS 3600 Cl. 8.2.4.1</b><code>V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(3)} x ${fixed(shear.bv)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &radic;f'<sub>c</sub> is limited to 8.0 MPa</code></div>
