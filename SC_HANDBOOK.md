@@ -1185,6 +1185,8 @@ Use standard language:
 
 For product dimensions and section properties, use Australian manufacturer data where possible, such as OneSteel / InfraBuild / Austube / Orrcon catalogues. Manufacturer data can define product availability and section properties, but design equations still need to trace back to AS 4100 or another governing standard.
 
+For the current CHS quick screen, keep the lightweight strategy: use nominal CHS `D` and `t` from the Australian product catalogue context, derive `A_g` and `r` by transparent circular hollow-section geometry, and apply the AS 4100 member-capacity method. Do not replace this with Austube / Orrcon table capacity values unless the scope changes to a row-checked hollow-section capacity-table lookup. The page must state that CHS values are formula-derived from nominal size and are not a certified table-capacity extraction.
+
 Connection- and axis-dependent terms must stay explicit:
 
 - Use table-derived default `alpha_b` values where the selected section family and embedded `k_f` condition match AS 4100 Table 6.3.3. Apply Table 6.3.3(A) when `k_f = 1.0` and Table 6.3.3(B) when `k_f < 1.0`. For the current member tab, this means cold-formed non-stress-relieved CHS = -0.5, PFC with `k_f = 1.0` = 0.5, Equal Angle with `k_f = 1.0` = 0.5, Equal Angle with `k_f < 1.0` = 1.0 as `other sections not listed` in Table 6.3.3(B), and Rod / solid round bar with `k_f = 1.0` = 0.5 as `other sections not listed` in Table 6.3.3(A). State the table row in the lookup panel and calculation steps. Do not ask the user to manually choose `alpha_b` unless the page provides an explicit advanced override for a different table row, axis, fabrication condition, or `k_f` case.

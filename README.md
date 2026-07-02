@@ -24,7 +24,7 @@ Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal pl
 
 The member tool contains four product families:
 
-- CHS: common AS/NZS 1163 C250L0 and C350L0 sizes from the Orrcon National Product Catalogue 2024;
+- CHS: common AS/NZS 1163 C250L0 and C350L0 nominal sizes from the Orrcon National Product Catalogue 2024 context, with `Ag` and `r` derived from nominal `D` and `t` geometry rather than embedded manufacturer capacity-table values;
 - Equal Angle: common 300PLUS and Grade 350 sizes, properties and form factors from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, OneSteel / InfraBuild Tables 19-21;
 - PFC: common 300PLUS Parallel Flange Channel sizes from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, OneSteel / InfraBuild Tables 15 and 16, using catalogue gross area, minimum radius of gyration and form factor;
 - Rod: common round bar diameters from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition, OneSteel / InfraBuild Table 3 Rounds - Size Availability and Mass and OneSteel / InfraBuild Table 38 round-bar yield-stress ranges, using geometric area and radius. Confirm the actual Australian product grade and availability against the applicable manufacturer catalogue.

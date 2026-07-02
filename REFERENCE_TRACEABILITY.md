@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-07-01
+Last updated: 2026-07-02
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -13,8 +13,8 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 
 - `SC_HANDBOOK.md` remains the only canonical outline and rule file.
 - Source-reference files remain outside this workspace in `C:\Users\silin\Documents\Codex\Reference`.
-- 2026-07-01 local text audit checked `SC_HANDBOOK.md`, `REFERENCE_TRACEABILITY.md`, `README.md`, `index.html` and `app.js` for common mojibake markers; no active mojibake remains in tracked handbook files.
-- `wind-region-workpack/` is an untracked local workpack and is not part of the checked source-traceability register unless explicitly promoted later.
+- 2026-07-02 local text audit checked `SC_HANDBOOK.md`, `REFERENCE_TRACEABILITY.md`, `README.md`, `index.html`, `app.js` and `styles.css` for common mojibake markers; no active mojibake remains in tracked handbook files.
+- `wind-region-workpack/` is not present in the current detached audit worktree and is not part of the checked source-traceability register unless explicitly promoted later.
 
 ## Reference Folder Snapshot
 
@@ -53,14 +53,14 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | AS 4100 Section 5 / AS 4100 Cl. 5.2 visually checked on PDF page 66 | Visual checked |
 | Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | AS 4100 Cl. 5.11.4 and AS 4100 Cl. 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
 | Beam | Shear-bending interaction | `AS4100.pdf` | AS 4100 Cl. 5.12 visually checked on PDF page 89, including AS 4100 Cl. 5.12.1, AS 4100 Cl. 5.12.2 and `Vvm = Vv` for the proportioning method | Visual checked |
-| Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns visually located on PDF pages 12-15; default rows 310UB40.4 and 200UC46.2 row-checked on PDF pages 12-15 | Default UB/UC rows checked; remaining embedded UB/UC rows still need row-level numeric check |
+| Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns visually located on PDF pages 12-15; embedded UB/UC rows checked on 2026-07-02 against OneSteel / InfraBuild Tables 9-12 | Embedded UB/UC rows checked |
 | Axial Member | Section compression capacity | `AS4100.pdf` | AS 4100 Cl. 6.2 visually checked on PDF page 100; `Ns = kf Ag fy` confirmed | Visual checked |
 | Axial Member | Member buckling reduction | `AS4100.pdf` | AS 4100 Cl. 6.3.3 and AS 4100 Tables 6.3.3(A/B/C) visually checked on PDF pages 103-106 | Visual checked |
 | Axial Member | Tension gross yielding / net fracture | `AS4100.pdf` | AS 4100 Cl. 7.2 visually checked on PDF page 112 | Visual checked |
 | Axial Member | `k_t` values | `AS4100.pdf` | AS 4100 Table 7.3.2 visually checked on PDF page 113 | Visual checked |
-| Axial Member | CHS D/t and grade | `Orrcon-National-Product-Catalogue-2024.pdf` | CHS tables visually checked on PDF pages 10-12; includes 114.3 CHS and C250L0/C350L0 context | Visual checked for source location; row-level numeric check required if values are embedded |
-| Axial Member | CHS compression method | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | Part 6 compression method and CHS capacity table context visually checked on PDF pages 112-117 | Visual checked for method context; row-level table values still need numeric check if used |
-| Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | OneSteel / InfraBuild Tables 15 and 16 for PFC, OneSteel / InfraBuild Tables 19-21 for Equal Angle, OneSteel / InfraBuild Table 3 for Rounds and OneSteel / InfraBuild Table 38 for round-bar strength visually checked for default rows | Default PFC / EA / Rod rows checked; remaining embedded rows still need row-level numeric check |
+| Axial Member | CHS D/t and grade | `Orrcon-National-Product-Catalogue-2024.pdf` | CHS tables visually checked on PDF pages 10-12; includes 114.3 CHS and C250L0/C350L0 context | Visual checked for source location; current app uses nominal D/t plus formula-derived geometry, not CHS capacity table values |
+| Axial Member | CHS compression method | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | Part 6 compression method and CHS capacity table context visually checked on PDF pages 112-117 | Visual checked for method context; table capacities are not embedded in the current quick screen |
+| Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | OneSteel / InfraBuild Tables 15 and 16 for PFC, OneSteel / InfraBuild Tables 19-21 for Equal Angle, OneSteel / InfraBuild Table 3 for Rounds and OneSteel / InfraBuild Table 38 for round-bar strength checked on 2026-07-02 | Embedded PFC / Equal Angle / Rod rows checked |
 | Concrete | Stress block and bending section theory | `AS3600.pdf` | AS 3600 Cl. 8.1.3 and AS 3600 Cl. 8.1.5 visually checked on PDF pages 113-114 | Visual checked |
 | Concrete | Capacity factor | `AS3600.pdf` | AS 3600 Table 2.2.2 visually checked on PDF pages 38-39 | Visual checked |
 | Concrete | One-way shear screen | `AS3600.pdf` | AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3 and AS 3600 Cl. 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
@@ -76,9 +76,9 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 
 The primary standard formula pages above have been visually checked. These items remain controlled limitations for the handbook:
 
-- Remaining non-default InfraBuild / OneSteel embedded section values require row-level numeric checks if they are promoted from lookup convenience to checked catalogue data.
-- Remaining non-default InfraBuild PFC / equal angle / rod rows require row-level numeric checks if they are promoted from lookup convenience to checked catalogue data.
-- Orrcon CHS rows require row-level numeric checks if dimensions or grades are embedded rather than entered by the user.
+- Future InfraBuild / OneSteel rows added after 2026-07-02 require row-level numeric checks before being described as checked catalogue data.
+- Future PFC / equal angle / rod rows added after 2026-07-02 require row-level numeric checks before being described as checked catalogue data.
+- CHS remains a nominal D/t geometry-derived quick screen. Do not describe it as an Austube / Orrcon table-capacity lookup unless the app is changed to embed and row-check table values.
 - AS 4100 Table 6.3.3 `alpha_b` values have been visually checked, but non-default option mapping remains project/member-axis dependent.
 - AS 3600 one-way shear is kept as a lightweight screen with visible assumptions. It is not a full shear design engine unless `kv`, reinforcement layout and detailing checks are expanded later.
 - Wind Site Draft uses public OSM, land-cover, building-footprint and DEM data as draft evidence only. Coordinate-derived wind region, `TC` / `Mz,cat` and `Mt` suggestions are not checked or adopted design values until a project-specific site review confirms the wind region, terrain category, topographic cross-section and data currency.
@@ -142,6 +142,27 @@ Outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=2
 | Ø24 Rod, 300PLUS, `Le` 3.0 m, `alpha_b` 0.0 | `Le/r` 500.0; `lambda_n` 547.7; `alpha_c` 0.026; section compression 122.1 kN; member compression 3.1 kN; tension 122.1 kN | DOM output matched independent calculation |
 | Ø24 Rod, Grade 350, `Le` 3.0 m, `alpha_b` 0.0 | `fy` 340 MPa; `Le/r` 500.0; `lambda_n` 583.1; `alpha_c` 0.023; section compression 138.4 kN; member compression 3.2 kN; tension 138.4 kN | DOM output matched independent calculation after diameter-dependent `fy` correction |
 
+## 2026-07-02 Embedded Catalogue Row Audit
+
+The embedded steel catalogue rows in `app.js` were checked by a local script against values extracted from `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` / OneSteel hot-rolled tables already located in the Codex reference pack. This was a local file audit, not a live browser rendering pass.
+
+| Area | Rows checked | Source pages / tables | Fields checked | Result |
+| --- | ---: | --- | --- | --- |
+| Beam UB | 28 | OneSteel / InfraBuild Tables 9 and 10, PDF pages 12-13 | designation order, mass, `Ag`, `Sx`, `Zx`, `d1`, `tw`, 300PLUS and Grade 350 `fy`, `Zex`, compactness and `kf` | No mismatches |
+| Beam UC | 13 | OneSteel / InfraBuild Tables 11 and 12, PDF pages 14-15 | designation order, mass, `Ag`, `Sx`, `Zx`, `d1`, `tw`, 300PLUS and Grade 350 `fy`, `Zex`, compactness and `kf` | No mismatches |
+| Axial PFC | 10 | OneSteel / InfraBuild Tables 15 and 16, PDF page 17 | designation, mass, `Ag`, `r_min`, `fy`, `tw`, `tf` | No mismatches |
+| Axial Equal Angle | 13 selected embedded rows | OneSteel / InfraBuild Tables 19-21, PDF pages 19-21 | leg size, thickness, area, principal-axis radius, 300PLUS and Grade 350 `fy` and `kf` | No mismatches |
+| Axial Rod | 26 | OneSteel / InfraBuild Table 3, PDF page 9; Table 38 strength ranges, PDF page 31 | diameter, mass and diameter-dependent strength range basis | No mismatches |
+
+CHS was deliberately not converted to an Austube / Orrcon table-capacity lookup. The current quick-screen strategy is to keep CHS as nominal D/t plus formula-derived `Ag` and `r`, with AS 4100 / Austube method context and visible limitations.
+
+## 2026-07-02 Mobile / Cleanup Sweep
+
+- `styles.css` contains responsive breakpoints for desktop, tablet and phone widths, including narrow-width control sizing, collapsed input grids, compact result grids, and mobile table/card transforms.
+- The stylesheet uses stable `.numeric-input` / shared form-control styling so mobile typing and compact reinforcement-table controls are not tied only to native `input[type="number"]` styling.
+- A local `390 x 844` browser check at `http://127.0.0.1:8765/index.html?audit=20260702#member` reported no whole-page horizontal overflow (`documentElement.scrollWidth = 375` in the checked viewport). The loaded view exposed Wind Site Draft resource cards, and several long resource/link entries still overflow their card bounds; treat this as the next mobile formatting target if Wind Site Draft is kept in the public page.
+- No `wind-region-workpack/` folder exists in the current detached audit worktree.
+
 ## Duplicate / Secondary Reference Notes
 
 - `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` should be the primary hot-rolled catalogue for current web-table values unless a specific OneSteel 8th edition table is intentionally retained for historical consistency.
@@ -151,8 +172,8 @@ Outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=2
 
 ## Next Row-Level Verification Order
 
-1. Orrcon CHS default rows used by the app, if the handbook moves from formula-derived CHS geometry to embedded catalogue rows.
-2. Remaining InfraBuild UB/UC, PFC, Equal Angle and Rod rows beyond checked defaults, if they are promoted from lookup convenience to checked catalogue data.
-3. Consider whether the Equal Angle quick screen should add an optional weak-axis conservative mode; keep current principal-axis mode clearly labelled unless that scope is expanded.
-4. AS 4100 Table 6.3.3 `alpha_b` option mapping for non-default member axes and fabrication routes.
-5. AS 3600 `kv` and shear model only if the concrete tab is expanded from warning screen to design check.
+1. Orrcon CHS D/t rows only if the app moves from formula-derived CHS geometry to embedded catalogue rows.
+2. Consider whether the Equal Angle quick screen should add an optional weak-axis conservative mode; keep current principal-axis mode clearly labelled unless that scope is expanded.
+3. AS 4100 Table 6.3.3 `alpha_b` option mapping for non-default member axes and fabrication routes.
+4. AS 3600 `kv` and shear model only if the concrete tab is expanded from warning screen to design check.
+5. Wind Site Draft mobile resource-card wrapping, because the 2026-07-02 `390 x 844` local browser check still found long resource/link entries overflowing their cards.
