@@ -329,24 +329,14 @@
             <span class="input-group-heading"><b>Relevant factors / assumptions</b><small>Only editable quick-screen assumptions stay visible.</small></span>
             <div class="concrete-input-row concrete-row-analysis concrete-row-assumptions">
               <label><span>Shear reinforcement</span><select id="concreteShearReo"><option value="none">None / not verified</option><option value="vertical">Vertical fitments</option></select></label>
-              <label><span>A<sub>sv</sub> per spacing</span><span class="unit"><input id="concreteAsv" type="number" min="0" step="10" value="0"><em>mm2</em></span></label>
+              <label><span>Fitment bar</span><select id="concreteShearBar" data-default-bar="N12" aria-label="Shear reinforcement bar size"></select></label>
+              <label><span>n<sub>sv</sub> legs</span><input id="concreteNsv" type="number" min="0" step="1" value="2"></label>
               <label><span>s<sub>v</sub> spacing</span><span class="unit"><input id="concreteSv" type="number" min="50" step="10" value="200"><em>mm</em></span></label>
               <label><span>f<sub>sy.f</sub></span><span class="unit"><input id="concreteFsyf" type="number" min="200" max="600" step="10" value="500"><em>MPa</em></span></label>
               <label><span>Pad-on-pad composite action</span><select id="concreteComposite"><option value="no">Not confirmed</option><option value="yes">Confirmed separately</option></select></label>
             </div>
           </section>
 
-          <section class="input-group input-group-derived">
-            <span class="input-group-heading"><b>Derived values</b><small>Read-only design factors calculated from the selected inputs.</small></span>
-            <div class="concrete-input-row concrete-row-analysis concrete-row-derived">
-              <label><span>Capacity factor, &phi;</span><input id="concretePhi" type="number" min="0.1" max="1" step="0.01" value="0.85" readonly></label>
-              <label><span>Stress block &alpha;<sub>2</sub></span><input id="concreteAlpha2" type="number" min="0.1" max="1" step="0.001" value="0.802" readonly></label>
-              <label><span>Stress block &gamma;</span><input id="concreteGamma" type="number" min="0.1" max="1" step="0.001" value="0.890" readonly></label>
-              <label><span>Ultimate concrete strain</span><input id="concreteEcu" type="number" min="0.001" max="0.01" step="0.0001" value="0.0030" readonly></label>
-              <label><span>Shear factor, k<sub>v</sub></span><input id="concreteKv" type="number" min="0" max="1" step="0.001" value="0.121" readonly></label>
-              <label><span>Strut angle, &theta;<sub>v</sub></span><span class="unit"><input id="concreteTheta" type="number" min="0" max="90" step="1" value="36" readonly><em>deg</em></span></label>
-            </div>
-          </section>
         </div>
 
         <div class="concrete-summary">
