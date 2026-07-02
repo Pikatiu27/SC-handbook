@@ -57,7 +57,7 @@ const weldTypeData = {
 const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentThickness", "weldParentGrade"];
 const concreteInputIds = [
   "concreteDirection", "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concretePhi",
-  "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteKv", "concreteComposite",
+  "concreteAlpha2", "concreteGamma", "concreteEcu", "concreteKv", "concreteTheta", "concreteShearReo", "concreteAsv", "concreteSv", "concreteFsyf", "concreteComposite",
   "layer1Active", "layer1Auto", "layer1Y", "layer1Bar", "layer1Spacing", "layer1Fsy", "layer1Es",
   "layer2Active", "layer2Auto", "layer2Y", "layer2Bar", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Active", "layer3Auto", "layer3Y", "layer3Bar", "layer3Spacing", "layer3Fsy", "layer3Es",
@@ -278,7 +278,7 @@ let memberType = "chs";
 const manualInputIds = [
   "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
-  "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteKv",
+  "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteAsv", "concreteSv", "concreteFsyf",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx",
@@ -1304,11 +1304,53 @@ function concreteOneWayShear(data, result) {
     ? tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0) / centroidArea
     : result.d0;
   const dv = Math.max(0.72 * data.depth, 0.9 * d);
-  const kv = Math.max(0.01, Math.min(0.40, value("concreteKv")));
+  const bv = data.width;
+  const shearReoMode = $("concreteShearReo").value;
+  const fsyf = Math.max(1, Math.min(600, value("concreteFsyf")));
+  const sv = Math.max(1, value("concreteSv"));
+  const asv = Math.max(0, value("concreteAsv"));
+  const asvPerS = shearReoMode === "vertical" ? asv / sv : 0;
+  const asvMinPerS = 0.08 * Math.sqrt(data.fc) * bv / fsyf;
+  const hasShearReo = shearReoMode === "vertical" && asv > 0 && sv > 0;
+  const minShearReoProvided = hasShearReo && asvPerS >= asvMinPerS;
+  const theta = 36;
+  const thetaRad = theta * Math.PI / 180;
+  const cotTheta = 1 / Math.tan(thetaRad);
+  const kvNoMinimum = Math.min(0.15, 200 / (1000 + 1.3 * dv));
+  const kv = minShearReoProvided ? 0.15 : kvNoMinimum;
   const rootFc = Math.min(Math.sqrt(data.fc), 8.0);
-  const vuc = kv * data.width * dv * rootFc / 1000;
-  const phi = 0.70;
-  return { d, dv, kv, rootFc, vuc, phi, phiVuc: phi * vuc };
+  const vuc = kv * bv * dv * rootFc / 1000;
+  const vus = hasShearReo ? asvPerS * fsyf * dv * cotTheta / 1000 : 0;
+  const vuRaw = vuc + vus;
+  const vuMax = 0.55 * 0.9 * data.fc * bv * dv * (cotTheta / (1 + cotTheta ** 2)) / 1000;
+  const vu = Math.min(vuRaw, vuMax);
+  const phi = minShearReoProvided ? 0.75 : 0.70;
+  return {
+    d,
+    dv,
+    bv,
+    kv,
+    kvNoMinimum,
+    rootFc,
+    vuc,
+    shearReoMode,
+    asv,
+    sv,
+    fsyf,
+    asvPerS,
+    asvMinPerS,
+    hasShearReo,
+    minShearReoProvided,
+    theta,
+    cotTheta,
+    vus,
+    vuRaw,
+    vuMax,
+    vu,
+    webCrushingLimited: vu < vuRaw,
+    phi,
+    phiVu: phi * vu
+  };
 }
 
 function calculateConcrete() {
@@ -1356,8 +1398,10 @@ function calculateConcrete() {
     : "Capacity factor from AS 3600 Table 2.2.2 pure-bending k_uo expression for N-class reinforcement.";
 
   if (!result.ok) {
-    ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo", "concretePhiVuc"].forEach(id => $(id).textContent = "-");
+    ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
     $("concretePhi").value = "";
+    $("concreteKv").value = "";
+    $("concreteTheta").value = "";
     $("concreteShearNote").innerHTML = "RC one-way shear not calculated without active reinforcement";
     $("concreteStatusValue").textContent = "No solution";
     $("concreteEquilibrium").textContent = result.message;
@@ -1371,9 +1415,14 @@ function calculateConcrete() {
   const residual = result.axial / 1000;
   const shear = concreteOneWayShear(data, result);
   $("concretePhi").value = result.phi.toFixed(2);
+  $("concreteKv").value = shear.kv.toFixed(3);
+  $("concreteTheta").value = shear.theta.toFixed(0);
   const residualOk = Math.abs(residual) < 0.01;
   const coverWarnings = result.layers.filter(layer => layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2);
-  const reviewFlags = [`confirm k_v = ${shear.kv.toFixed(2)} from AS 3600 Cl. 8.2.4.2 or AS 3600 Cl. 8.2.4.3`];
+  const reviewFlags = [`one-way shear uses AS 3600 Cl. 8.2.4.3 simplified k_v`];
+  if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A_sv/s below AS 3600 Cl. 8.2.1.7 minimum (${shear.asvPerS.toFixed(3)} < ${shear.asvMinPerS.toFixed(3)} mm2/mm)`);
+  if (shear.webCrushingLimited) reviewFlags.push(`V_u limited by AS 3600 Cl. 8.2.3.3 web crushing`);
+  if (!shear.hasShearReo) reviewFlags.push("no shear reinforcement credited; check AS 3600 Cl. 8.2.1.6 for actual V*");
   if (data.composite !== "yes") reviewFlags.push("pad-on-pad interface shear not confirmed");
   if (coverWarnings.length) reviewFlags.push(`${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} cover check`);
   if (bottomMatWithoutDepth) reviewFlags.push("bottom pad mats active with D_bot = 0");
@@ -1390,11 +1439,13 @@ function calculateConcrete() {
   $("concreteNa").textContent = fixed(result.x);
   $("concreteMuo").textContent = fixed(result.muo);
   $("concretePhiMuo").textContent = fixed(result.phiMuo);
-  $("concretePhiVuc").textContent = fixed(shear.phiVuc);
-  $("concreteShearNote").innerHTML = `V<sub>uc</sub> = ${fixed(shear.vuc)} kN; d<sub>v</sub> = ${fixed(shear.dv)} mm`;
+  $("concretePhiVu").textContent = fixed(shear.phiVu);
+  $("concreteShearNote").innerHTML = `V<sub>uc</sub> = ${fixed(shear.vuc)} kN; V<sub>us</sub> = ${fixed(shear.vus)} kN; d<sub>v</sub> = ${fixed(shear.dv)} mm`;
   $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
-  $("concreteWarningStatus").textContent = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && result.kuo <= 0.36 ? "SOLVED" : "CHECK";
-  $("concreteWarningStatus").className = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && result.kuo <= 0.36 ? "pass" : "fail";
+  const shearWarning = (shear.hasShearReo && !shear.minShearReoProvided) || shear.webCrushingLimited;
+  const sectionSolved = data.composite === "yes" && residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && !shearWarning && result.kuo <= 0.36;
+  $("concreteWarningStatus").textContent = sectionSolved ? "SOLVED" : "CHECK";
+  $("concreteWarningStatus").className = sectionSolved ? "pass" : "fail";
   $("concreteWarningText").textContent = warningText;
 
   $("concreteLayerResults").innerHTML = result.layers.map(layer => {
@@ -1418,7 +1469,11 @@ function calculateConcrete() {
     <div><b>Capacity factor - AS 3600 Table 2.2.2</b><code>${legacyLayers.length ? `Legacy Y bar selected: conservative quick-screen &phi; = 0.65 unless actual bar grade and N-class equivalence are verified` : `Pure-bending N-class reinforcement assumption: k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
     <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
     <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
-    <div><b>One-way shear screen</b><code>d = ${fixed(shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm; V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(2)} x ${fixed(data.width)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &phi;V<sub>uc</sub> = ${shear.phi.toFixed(2)} x ${fixed(shear.vuc)} = ${fixed(shear.phiVuc)} kN. This is not a complete AS 3600 shear design check; k<sub>v</sub> is not fixed by this page and must be confirmed from AS 3600 Cl. 8.2.4.2, AS 3600 Cl. 8.2.4.3, or a project calculation example.</code></div>`;
+    <div><b>Shear geometry - AS 3600 Cl. 8.2.1.5 and 8.2.1.9</b><code>b<sub>v</sub> = b = ${fixed(shear.bv)} mm for this rectangular strip without ducts or voids; d = ${fixed(shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm</code></div>
+    <div><b>Simplified shear factor - AS 3600 Cl. 8.2.4.3</b><code>&theta;<sub>v</sub> = ${shear.theta.toFixed(0)} deg; A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm; A<sub>sv,min</sub>/s = 0.08&radic;f'<sub>c</sub>b<sub>v</sub>/f<sub>sy.f</sub> = ${shear.asvMinPerS.toFixed(3)} mm2/mm; ${shear.minShearReoProvided ? `minimum shear reinforcement provided, so k<sub>v</sub> = 0.15` : `minimum shear reinforcement not verified, so k<sub>v</sub> = min(200/(1000 + 1.3d<sub>v</sub>), 0.15) = ${shear.kv.toFixed(3)}`}</code></div>
+    <div><b>Concrete shear contribution - AS 3600 Cl. 8.2.4.1</b><code>V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(3)} x ${fixed(shear.bv)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &radic;f'<sub>c</sub> is limited to 8.0 MPa</code></div>
+    <div><b>Shear reinforcement contribution - AS 3600 Cl. 8.2.5.2</b><code>${shear.hasShearReo ? `V<sub>us</sub> = (A<sub>sv</sub>f<sub>sy.f</sub>d<sub>v</sub>/s)cot&theta;<sub>v</sub> = (${fixed(shear.asv)} x ${fixed(shear.fsyf)} x ${fixed(shear.dv)} / ${fixed(shear.sv)}) x ${shear.cotTheta.toFixed(3)} / 1000 = ${fixed(shear.vus)} kN` : `No vertical shear reinforcement selected; V<sub>us</sub> = 0 kN`}${shear.hasShearReo && !shear.minShearReoProvided ? `; CHECK: provided A<sub>sv</sub>/s is below the AS 3600 Cl. 8.2.1.7 minimum` : ``}</code></div>
+    <div><b>One-way shear design capacity - AS 3600 Cl. 8.2.3.1 and Table 2.2.2</b><code>V<sub>u,raw</sub> = V<sub>uc</sub> + V<sub>us</sub> = ${fixed(shear.vuc)} + ${fixed(shear.vus)} = ${fixed(shear.vuRaw)} kN; V<sub>u,max</sub> web-crushing limit = ${fixed(shear.vuMax)} kN; V<sub>u</sub> = ${shear.webCrushingLimited ? `min(V<sub>u,raw</sub>, V<sub>u,max</sub>) = ` : ``}${fixed(shear.vu)} kN; &phi; = ${shear.phi.toFixed(2)} ${shear.minShearReoProvided ? `for verified minimum Class N fitments` : `without verified minimum Class N fitments`}; &phi;V<sub>u</sub> = ${shear.phi.toFixed(2)} x ${fixed(shear.vu)} = ${fixed(shear.phiVu)} kN</code></div>`;
 }
 
 function setPrimaryPlane() {
