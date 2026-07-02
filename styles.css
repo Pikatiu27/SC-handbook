@@ -131,6 +131,12 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-net-section-group { display: block; }
 .member-net-section-group .input-group-heading { margin: 0 0 12px; }
 .member-net-section-fields { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.member-dimension-panel { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(112, 132, 122, .22); }
+.member-dimension-panel .member-subheading { margin-bottom: 10px; }
+.member-dimension-toggle { grid-template-columns: minmax(180px, 260px); margin-bottom: 12px; }
+.checkbox-field { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 46px; padding: 10px 12px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: #fff; }
+.input-group-fields .checkbox-field > span:first-child { margin: 0; }
+.checkbox-field input[type="checkbox"] { width: 20px; min-height: 20px; accent-color: var(--green); }
 @media (min-width: 761px) {
   .input-group {
     display: grid;
@@ -139,6 +145,8 @@ main, footer { max-width: 1040px; margin: auto; }
     align-items: end;
   }
   .input-group-heading { margin: 0; align-self: center; }
+  .member-dimension-panel { grid-column: 2; }
+  .member-dimension-panel .member-subheading { margin: 0 0 10px; }
   .input-group-fields, .concrete-input-row { min-width: 0; }
   .member-net-section-group { display: block; }
   .member-net-section-group .input-group-heading { margin: 0 0 12px; }
@@ -241,12 +249,14 @@ main, footer { max-width: 1040px; margin: auto; }
 .beam-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
 .weld-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
 .member-summary dl div { text-align: left; min-width: 0; }
+.member-summary dl .member-dimensions-cell { grid-column: span 2; }
 .beam-summary dl div { text-align: right; }
 .weld-summary dl div { text-align: right; }
 .member-summary dt { color: var(--muted); font-size: var(--fs-xs); }
 .beam-summary dt { color: var(--muted); font-size: var(--fs-xs); }
 .weld-summary dt { color: var(--muted); font-size: var(--fs-xs); }
 .member-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
+.member-summary .member-dimensions-cell dd { white-space: normal; line-height: 1.25; }
 .beam-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .weld-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .input-manual, .input-reference { padding: 7px; border-radius: 8px; border: 1px solid transparent; }

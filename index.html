@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260702net1">
+  <link rel="stylesheet" href="styles.css?v=20260702memberpush1">
 </head>
 <body>
   <header class="topbar">
@@ -575,6 +575,24 @@
               <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
               <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
             </div>
+            <div class="member-dimension-panel" id="memberDimensionCard">
+              <span class="input-group-heading member-subheading"><b>Custom section dimensions</b><small id="memberDimensionNote">Optional geometry override for the selected CHS / EA / PFC / Rod family.</small></span>
+              <div class="input-group-fields member-dimension-toggle">
+                <label class="checkbox-field"><span>Use custom dimensions</span><input id="memberDimensionOverride" type="checkbox"></label>
+              </div>
+              <div class="input-group-fields four member-dimension-fields" id="memberDimensionFields">
+                <label data-member-dim="chs"><span>D <i>outside diameter</i></span><span class="unit"><input id="memberDimChsD" type="number" min="0" step="0.1" value="60.3"><em>mm</em></span></label>
+                <label data-member-dim="chs"><span>t <i>wall thickness</i></span><span class="unit"><input id="memberDimChsT" type="number" min="0" step="0.1" value="3.2"><em>mm</em></span></label>
+                <label data-member-dim="ea" hidden><span>b <i>leg length</i></span><span class="unit"><input id="memberDimEaB" type="number" min="0" step="1" value="100"><em>mm</em></span></label>
+                <label data-member-dim="ea" hidden><span>t <i>leg thickness</i></span><span class="unit"><input id="memberDimEaT" type="number" min="0" step="0.1" value="10"><em>mm</em></span></label>
+                <label data-member-dim="pfc" hidden><span>d <i>overall depth</i></span><span class="unit"><input id="memberDimPfcD" type="number" min="0" step="1" value="150"><em>mm</em></span></label>
+                <label data-member-dim="pfc" hidden><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="memberDimPfcBf" type="number" min="0" step="1" value="75"><em>mm</em></span></label>
+                <label data-member-dim="pfc" hidden><span>t<sub>w</sub></span><span class="unit"><input id="memberDimPfcTw" type="number" min="0" step="0.1" value="6"><em>mm</em></span></label>
+                <label data-member-dim="pfc" hidden><span>t<sub>f</sub></span><span class="unit"><input id="memberDimPfcTf" type="number" min="0" step="0.1" value="9.5"><em>mm</em></span></label>
+                <label data-member-dim="rod" hidden><span>d <i>diameter</i></span><span class="unit"><input id="memberDimRodD" type="number" min="0" step="0.1" value="24"><em>mm</em></span></label>
+              </div>
+              <p class="result-note user-input-note" id="memberDimensionStatus">Catalogue data is currently used. Custom geometry keeps the same AS 4100 axial member calculation flow.</p>
+            </div>
           </section>
           <section class="input-group input-group-material" id="memberMaterialGroup">
             <span class="input-group-heading"><b>Material property</b><small>Grade lookup with editable strength values for project data.</small></span>
@@ -605,7 +623,7 @@
         </div>
         <p class="result-note user-input-note" id="memberAlphaBAssumption">α<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS.</p>
 
-        <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r</dt><dd id="memberRadius">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>w</sub></dt><dd id="memberWebThickness">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>f</sub></dt><dd id="memberFlangeThickness">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
+        <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div class="member-dimensions-cell"><dt>Dimensions</dt><dd id="memberDimensions">—</dd></div><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r<sub>x</sub></dt><dd id="memberRx">—</dd></div><div><dt>r<sub>y</sub></dt><dd id="memberRy">—</dd></div><div><dt>r used</dt><dd id="memberRadius">—</dd></div><div class="member-round-property" hidden><dt>I<sub>x</sub> = I<sub>y</sub></dt><dd id="memberInertia">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
         <div class="input-cluster member-connection-inputs">
           <section class="input-group input-group-factor member-net-section-group">
@@ -648,6 +666,7 @@
             <p><b>Equal Angle / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. Equal Angle properties use Tables 19&ndash;21; PFC properties use Tables 15&ndash;16.</p>
             <p><b>Rod properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size availability and mass; Table 38 for diameter-dependent AS/NZS 3679.1 round-bar yield stress. Circular solid-bar geometry is used for A<sub>g</sub> and r.</p>
             <p><b>Custom / Built-up</b> &middot; Uses user-entered effective A<sub>g</sub>, r<sub>x</sub>, r<sub>y</sub>, k<sub>f</sub>, α<sub>b,x</sub>, α<sub>b,y</sub>, L<sub>ex</sub> and L<sub>ey</sub>. The page does not verify the source section calculation.</p>
+            <p><b>Family custom dimensions</b> &middot; CHS, Equal Angle, PFC and Rod may use the custom-dimension override in Section properties. CHS and Rod derive A<sub>g</sub>, r and I from circular geometry. Equal Angle and PFC derive A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub> from simplified rectangular geometry; fillets/root radii are not reconstructed.</p>
             <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
             <p><b>Axial tension</b> &middot; AS 4100 Cl. 7.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3.</p>
           </div>
@@ -664,6 +683,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260702net1"></script>
+  <script src="app.js?v=20260702memberpush1"></script>
 </body>
 </html>
