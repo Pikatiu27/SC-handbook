@@ -911,6 +911,13 @@ Each tab should have its own colour layer:
 - soft result-card background;
 - border colour.
 
+Input colour must communicate editing responsibility consistently across all tabs:
+
+- Fully manual / project-required inputs use the tab's light accent fill so the user can see what normally needs project confirmation.
+- Auto-filled but editable lookup / override values use a grey-tinted version of the tab accent. The field must look available for editing, but less demanding than a manual project input. Examples include table-selected `f_y`, `f_u`, `r`, `k_f`, `alpha_b`, `k_t`, `k_r`, `k_h` and other cited defaults that can be overridden.
+- Read-only derived values use a neutral pale grey and should not look like normal required inputs. Examples include calculated stress-block factors, auto net area while locked, calculated capacity factors and disabled controls.
+- Warning, invalid and fail states keep the standard yellow/red status colours rather than adopting the tab theme.
+
 Do not rely only on colour to communicate engineering meaning. Status text such as `PASS`, `FAIL`, `Governing`, or `Not applicable` must be visible in words.
 
 ### 15.7 Web Symbols, Formulas, and References

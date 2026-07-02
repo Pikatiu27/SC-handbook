@@ -86,12 +86,12 @@ main, footer { max-width: 1040px; margin: auto; }
 .tool-tab:focus-visible, .member-type:focus-visible, .beam-type:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }
 .tool-panel [hidden] { display: none !important; }
 .tool-panel[hidden] { display: none; }
-#boltPanel { --green: var(--bolt-accent); --green-dark: var(--bolt-dark); --green-soft: var(--bolt-soft); --panel-bg: var(--bolt-panel); --line: #cfe8da; }
-#memberPanel { --green: var(--member-accent); --green-dark: var(--member-dark); --green-soft: var(--member-soft); --panel-bg: var(--member-panel); --line: #d1e4f4; }
-#beamPanel { --green: var(--beam-accent); --green-dark: var(--beam-dark); --green-soft: var(--beam-soft); --panel-bg: var(--beam-panel); --line: #e4d9f1; }
-#weldPanel { --green: var(--weld-accent); --green-dark: var(--weld-dark); --green-soft: var(--weld-soft); --panel-bg: var(--weld-panel); --line: #efdcc7; }
-#concretePanel { --green: var(--concrete-accent); --green-dark: var(--concrete-dark); --green-soft: var(--concrete-soft); --panel-bg: var(--concrete-panel); --line: #cde7e4; }
-#windPanel { --green: var(--wind-accent); --green-dark: var(--wind-dark); --green-soft: var(--wind-soft); --panel-bg: var(--wind-panel); --line: #cde1ea; }
+#boltPanel { --green: var(--bolt-accent); --green-dark: var(--bolt-dark); --green-soft: var(--bolt-soft); --panel-bg: var(--bolt-panel); --line: #cfe8da; --input-manual-bg: #f0fbf5; --input-auto-bg: #f2f5f3; --input-auto-border: rgba(47, 123, 87, .24); }
+#memberPanel { --green: var(--member-accent); --green-dark: var(--member-dark); --green-soft: var(--member-soft); --panel-bg: var(--member-panel); --line: #d1e4f4; --input-manual-bg: #edf7ff; --input-auto-bg: #f2f5f8; --input-auto-border: rgba(65, 111, 158, .24); }
+#beamPanel { --green: var(--beam-accent); --green-dark: var(--beam-dark); --green-soft: var(--beam-soft); --panel-bg: var(--beam-panel); --line: #e4d9f1; --input-manual-bg: #f7f1ff; --input-auto-bg: #f5f3f8; --input-auto-border: rgba(111, 87, 152, .24); }
+#weldPanel { --green: var(--weld-accent); --green-dark: var(--weld-dark); --green-soft: var(--weld-soft); --panel-bg: var(--weld-panel); --line: #efdcc7; --input-manual-bg: #fff7ec; --input-auto-bg: #f7f4ef; --input-auto-border: rgba(156, 93, 34, .24); }
+#concretePanel { --green: var(--concrete-accent); --green-dark: var(--concrete-dark); --green-soft: var(--concrete-soft); --panel-bg: var(--concrete-panel); --line: #cde7e4; --input-manual-bg: #ecfaf8; --input-auto-bg: #f1f5f4; --input-auto-border: rgba(47, 116, 111, .24); }
+#windPanel { --green: var(--wind-accent); --green-dark: var(--wind-dark); --green-soft: var(--wind-soft); --panel-bg: var(--wind-panel); --line: #cde1ea; --input-manual-bg: #eef8fd; --input-auto-bg: #f1f5f7; --input-auto-border: rgba(49, 102, 127, .24); }
 .tool-panel { padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(180deg, var(--panel-bg), rgba(255,255,255,.55)); }
 .tool-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin: 0 2px 12px; }
 .tool-heading .kicker { margin-bottom: 3px; }
@@ -245,15 +245,12 @@ main, footer { max-width: 1040px; margin: auto; }
 .beam-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .weld-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .input-manual, .input-reference { padding: 7px; border-radius: 8px; border: 1px solid transparent; }
-.input-manual { background: #fff; border-color: rgba(104, 118, 111, .22); }
-.input-reference { background: #f3f8fc; border-color: rgba(65, 111, 158, .22); }
-#boltPanel .input-reference { background: #f1faf5; border-color: rgba(47, 123, 87, .22); }
-#weldPanel .input-reference { background: #fff6ea; border-color: rgba(156, 93, 34, .22); }
-#beamPanel .input-reference { background: #faf5ff; border-color: rgba(111, 87, 152, .22); }
-#concretePanel .input-reference { background: #f1fbf9; border-color: rgba(47, 116, 111, .22); }
-#windPanel .input-reference { background: #f1f9fd; border-color: rgba(49, 102, 127, .22); }
-.input-reference input, .input-reference select { background: rgba(255,255,255,.86); }
+.input-manual { background: var(--input-manual-bg, var(--green-soft)); border-color: rgba(104, 118, 111, .20); }
+.input-reference { background: var(--input-auto-bg, #f2f5f3); border-color: var(--input-auto-border, rgba(104, 118, 111, .24)); }
 .input-manual input, .input-manual select { background: #fff; }
+.input-reference input, .input-reference select { background: rgba(255,255,255,.70); border-color: var(--input-auto-border, #c7d0ca); }
+input[readonly], input:disabled, select:disabled { background: #eef1ef !important; color: #69756f; border-color: #d3dad5 !important; cursor: not-allowed; }
+.input-reference input:not([readonly]):not(:disabled), .input-reference select:not(:disabled) { box-shadow: inset 0 0 0 999px rgba(236, 239, 237, .20); }
 .drawing-note { margin: 0 0 23px; padding: 8px 10px; border-left: 2px solid #aebbb4; background: #f7f9f7; color: var(--muted); font-size: var(--fs-xs); line-height: 1.45; font-weight: 400; }
 .symbol-key { margin: -13px 0 20px; padding: 9px 10px; display: flex; gap: 7px 16px; flex-wrap: wrap; border-radius: 7px; background: #f4f7f4; color: var(--muted); font-size: var(--fs-xs); }
 .symbol-key span { white-space: nowrap; }
