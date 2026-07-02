@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260702input1">
+  <link rel="stylesheet" href="styles.css?v=20260702net1">
 </head>
 <body>
   <header class="topbar">
@@ -606,9 +606,9 @@
         <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r</dt><dd id="memberRadius">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>w</sub></dt><dd id="memberWebThickness">—</dd></div><div class="member-pfc-dimension" hidden><dt>t<sub>f</sub></dt><dd id="memberFlangeThickness">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
         <div class="input-cluster member-connection-inputs">
-          <section class="input-group input-group-factor">
+          <section class="input-group input-group-factor member-net-section-group">
             <span class="input-group-heading"><b>Connection / net-section inputs</b><small id="memberNetAreaSource">Use auto net area only for a straight-line bolt-hole deduction, or manual A<sub>n</sub> for slots, stagger, cope cuts and other project-specific net-section paths.</small></span>
-            <div class="input-group-fields six">
+            <div class="input-group-fields six member-net-section-fields">
               <label class="member-net-method"><span>A<sub>n</sub> method</span><span class="unit"><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></span></label>
               <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
               <label class="member-hole-field"><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
@@ -662,6 +662,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260701check1"></script>
+  <script src="app.js?v=20260702net1"></script>
 </body>
 </html>

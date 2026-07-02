@@ -128,6 +128,9 @@ main, footer { max-width: 1040px; margin: auto; }
 .input-group-fields.six { grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
 .input-group-fields.seven { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .input-group-fields.beam-custom-properties { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.member-net-section-group { display: block; }
+.member-net-section-group .input-group-heading { margin: 0 0 12px; }
+.member-net-section-fields { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 @media (min-width: 761px) {
   .input-group {
     display: grid;
@@ -137,6 +140,8 @@ main, footer { max-width: 1040px; margin: auto; }
   }
   .input-group-heading { margin: 0; align-self: center; }
   .input-group-fields, .concrete-input-row { min-width: 0; }
+  .member-net-section-group { display: block; }
+  .member-net-section-group .input-group-heading { margin: 0 0 12px; }
 }
 .advanced-input-card { margin: 11px 0 0; border: 1px solid #efd6ad; border-radius: 9px; background: #fffaf1; overflow: hidden; }
 .advanced-input-card > summary { list-style: none; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; }

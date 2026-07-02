@@ -977,8 +977,8 @@ function populateMemberGrades() {
   setMemberStrengthDefaults();
   setMemberRadiusDefault(properties);
   $("memberNetAreaMode").value = memberType === "ea" || memberType === "pfc" ? "auto" : "manual";
-  $("memberHoleCount").value = memberType === "ea" || memberType === "pfc" ? "1" : "0";
-  $("memberHoleDiameter").value = memberType === "ea" || memberType === "pfc" ? "22" : "0";
+  $("memberHoleCount").value = "0";
+  $("memberHoleDiameter").value = "0";
   $("memberHoleThickness").value = memberType === "pfc" ? (section.tw || 0).toFixed(1) : "0";
   $("memberNetArea").value = properties.area.toFixed(0);
   $("memberNetArea").max = properties.area.toFixed(0);
