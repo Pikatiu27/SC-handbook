@@ -86,55 +86,64 @@ const concreteBarProducts = Object.fromEntries(
   }))
 );
 
+const customBeamGradeYields = {
+  "Grade 250": 250,
+  "Grade 300": 300,
+  "Grade 350": 350
+};
+
 const beamShearDimensions = {
-  "610UB125": { d1: 572.4, tw: 11.9 },
-  "610UB113": { d1: 572.4, tw: 11.2 },
-  "610UB101": { d1: 572.4, tw: 10.6 },
-  "530UB92.4": { d1: 501.8, tw: 10.2 },
-  "530UB82.0": { d1: 501.8, tw: 9.6 },
-  "460UB82.1": { d1: 422.4, tw: 9.9 },
-  "460UB74.6": { d1: 428.4, tw: 9.1 },
-  "460UB67.1": { d1: 428.4, tw: 8.5 },
-  "410UB59.7": { d1: 380.8, tw: 7.8 },
-  "410UB53.7": { d1: 380.8, tw: 7.6 },
-  "360UB56.7": { d1: 332.6, tw: 8.0 },
-  "360UB50.7": { d1: 332.6, tw: 7.3 },
-  "360UB44.7": { d1: 332.6, tw: 6.9 },
-  "310UB46.2": { d1: 283.6, tw: 6.7 },
-  "310UB40.4": { d1: 283.6, tw: 6.1 },
-  "310UB32.0": { d1: 282.0, tw: 5.5 },
-  "250UB37.3": { d1: 234.4, tw: 6.4 },
-  "250UB31.4": { d1: 234.4, tw: 6.1 },
-  "250UB25.7": { d1: 220.4, tw: 5.0 },
-  "200UB29.8": { d1: 187.8, tw: 6.3 },
-  "200UB25.4": { d1: 187.6, tw: 5.8 },
-  "200UB22.3": { d1: 187.6, tw: 5.0 },
-  "200UB18.2": { d1: 184.0, tw: 4.5 },
-  "180UB22.2": { d1: 159.0, tw: 5.0 },
-  "180UB18.1": { d1: 159.0, tw: 5.0 },
-  "180UB16.1": { d1: 159.0, tw: 4.5 },
-  "150UB18.0": { d1: 136.6, tw: 6.0 },
-  "150UB14.0": { d1: 136.0, tw: 5.0 },
-  "310UC158": { d1: 277.2, tw: 15.7 },
-  "310UC137": { d1: 277.2, tw: 13.8 },
-  "310UC118": { d1: 277.2, tw: 11.9 },
-  "310UC96.8": { d1: 277.2, tw: 9.9 },
-  "250UC89.5": { d1: 225.4, tw: 10.5 },
-  "250UC72.9": { d1: 225.4, tw: 8.6 },
-  "200UC59.5": { d1: 181.4, tw: 9.3 },
-  "200UC52.2": { d1: 181.4, tw: 8.0 },
-  "200UC46.2": { d1: 181.4, tw: 7.3 },
-  "150UC37.2": { d1: 138.8, tw: 8.1 },
-  "150UC30.0": { d1: 138.8, tw: 6.6 },
-  "150UC23.4": { d1: 138.8, tw: 6.1 },
-  "100UC14.8": { d1: 83.0, tw: 5.0 }
+  "610UB125": { d: 611.6, bf: 229.0, tf: 19.6, d1: 572.4, tw: 11.9 },
+  "610UB113": { d: 607.0, bf: 228.0, tf: 17.3, d1: 572.4, tw: 11.2 },
+  "610UB101": { d: 602.6, bf: 227.6, tf: 14.8, d1: 572.4, tw: 10.6 },
+  "530UB92.4": { d: 533.0, bf: 209.0, tf: 16.5, d1: 501.8, tw: 10.2 },
+  "530UB82.0": { d: 528.2, bf: 209.0, tf: 13.2, d1: 501.8, tw: 9.6 },
+  "460UB82.1": { d: 460.4, bf: 191.0, tf: 16.0, d1: 422.4, tw: 9.9 },
+  "460UB74.6": { d: 457.4, bf: 190.0, tf: 14.5, d1: 428.4, tw: 9.1 },
+  "460UB67.1": { d: 453.8, bf: 190.0, tf: 12.7, d1: 428.4, tw: 8.5 },
+  "410UB59.7": { d: 406.4, bf: 178.0, tf: 12.8, d1: 380.8, tw: 7.8 },
+  "410UB53.7": { d: 402.6, bf: 178.0, tf: 10.9, d1: 380.8, tw: 7.6 },
+  "360UB56.7": { d: 358.6, bf: 172.0, tf: 13.0, d1: 332.6, tw: 8.0 },
+  "360UB50.7": { d: 355.6, bf: 171.0, tf: 11.5, d1: 332.6, tw: 7.3 },
+  "360UB44.7": { d: 352.6, bf: 171.0, tf: 9.7, d1: 332.6, tw: 6.9 },
+  "310UB46.2": { d: 307.2, bf: 166.0, tf: 11.8, d1: 283.6, tw: 6.7 },
+  "310UB40.4": { d: 304.0, bf: 165.0, tf: 10.2, d1: 283.6, tw: 6.1 },
+  "310UB32.0": { d: 298.0, bf: 149.0, tf: 8.0, d1: 282.0, tw: 5.5 },
+  "250UB37.3": { d: 256.2, bf: 146.0, tf: 10.9, d1: 234.4, tw: 6.4 },
+  "250UB31.4": { d: 251.6, bf: 146.0, tf: 8.6, d1: 234.4, tw: 6.1 },
+  "250UB25.7": { d: 248.0, bf: 124.0, tf: 8.0, d1: 220.4, tw: 5.0 },
+  "200UB29.8": { d: 207.0, bf: 134.0, tf: 9.6, d1: 187.8, tw: 6.3 },
+  "200UB25.4": { d: 203.2, bf: 133.0, tf: 7.8, d1: 187.6, tw: 5.8 },
+  "200UB22.3": { d: 201.6, bf: 133.0, tf: 7.0, d1: 187.6, tw: 5.0 },
+  "200UB18.2": { d: 198.0, bf: 99.0, tf: 7.0, d1: 184.0, tw: 4.5 },
+  "180UB22.2": { d: 179.0, bf: 90.0, tf: 10.0, d1: 159.0, tw: 5.0 },
+  "180UB18.1": { d: 175.0, bf: 90.0, tf: 8.0, d1: 159.0, tw: 5.0 },
+  "180UB16.1": { d: 173.0, bf: 90.0, tf: 7.0, d1: 159.0, tw: 4.5 },
+  "150UB18.0": { d: 155.0, bf: 75.0, tf: 9.5, d1: 136.6, tw: 6.0 },
+  "150UB14.0": { d: 150.0, bf: 75.0, tf: 7.0, d1: 136.0, tw: 5.0 },
+  "310UC158": { d: 327.2, bf: 311.0, tf: 25.0, d1: 277.2, tw: 15.7 },
+  "310UC137": { d: 320.6, bf: 309.0, tf: 21.7, d1: 277.2, tw: 13.8 },
+  "310UC118": { d: 314.6, bf: 307.0, tf: 18.7, d1: 277.2, tw: 11.9 },
+  "310UC96.8": { d: 308.0, bf: 305.0, tf: 15.4, d1: 277.2, tw: 9.9 },
+  "250UC89.5": { d: 260.0, bf: 256.0, tf: 17.3, d1: 225.4, tw: 10.5 },
+  "250UC72.9": { d: 253.8, bf: 254.0, tf: 14.2, d1: 225.4, tw: 8.6 },
+  "200UC59.5": { d: 209.8, bf: 205.0, tf: 14.2, d1: 181.4, tw: 9.3 },
+  "200UC52.2": { d: 206.4, bf: 204.0, tf: 12.5, d1: 181.4, tw: 8.0 },
+  "200UC46.2": { d: 203.4, bf: 203.0, tf: 11.0, d1: 181.4, tw: 7.3 },
+  "150UC37.2": { d: 161.8, bf: 154.0, tf: 11.5, d1: 138.8, tw: 8.1 },
+  "150UC30.0": { d: 157.6, bf: 153.0, tf: 9.4, d1: 138.8, tw: 6.6 },
+  "150UC23.4": { d: 152.4, bf: 152.0, tf: 6.8, d1: 138.8, tw: 6.1 },
+  "100UC14.8": { d: 97.0, bf: 99.0, tf: 7.0, d1: 83.0, tw: 5.0 }
 };
 
 function beamSectionRecord([designation, mass, area, Sx, Zx, grades]) {
   const shear = beamShearDimensions[designation] || {};
+  const d = shear.d || 0;
+  const bf = shear.bf || 0;
   const d1 = shear.d1 || 0;
   const tw = shear.tw || 0;
-  return { designation, mass, area, Sx, Zx, d1, tw, Aw: d1 * tw, grades };
+  const tf = shear.tf || 0;
+  return { designation, mass, area, Sx, Zx, d, bf, d1, tw, tf, Aw: d1 * tw, grades };
 }
 
 const ubSections = [
@@ -281,7 +290,7 @@ const chsGrades = {
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
-const beamCustomInputIds = ["beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx", "beamCustomCompactness", "beamCustomKf"];
+const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
 const toolNames = ["bolt", "member", "beam", "weld", "concrete"];
 let beamSectionType = "ub";
 let memberType = "chs";
@@ -291,7 +300,7 @@ const manualInputIds = [
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
-  "beamMomentDemand", "beamShearDemand", "beamCustomName", "beamCustomMass", "beamCustomArea", "beamCustomAw", "beamCustomFy", "beamCustomZex", "beamCustomSx", "beamCustomZx",
+  "beamMomentDemand", "beamShearDemand", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
   "memberLength", "memberAxialDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
   "memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD",
   "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
@@ -301,7 +310,7 @@ const referenceInputIds = [
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteComposite", "concreteSeparatePad", "concreteShearReo", "concreteShearBar",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
-  "beamSection", "beamGrade", "beamCustomCompactness", "beamCustomKf",
+  "beamSection", "beamGrade",
   "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberActionType", "memberNetAreaMode", "memberKt", "memberDimensionOverride"
 ];
 
@@ -615,24 +624,47 @@ function formatBeamOptional(number, unit, digits = 1) {
 }
 
 function formatBeamModulus(number) {
-  return number > 0 ? `${formatBeamNumber(number, 1)} x 10^3 mm3` : "-";
+  return number > 0 ? `${formatBeamNumber(number, 1)} × 10³ mm³` : "-";
 }
 
 function formatBeamArea(number) {
   return number > 0 ? `${formatBeamNumber(number, 0)} mm²` : "-";
 }
 
+function formatBeamDimension(number) {
+  return number > 0 ? `${formatBeamNumber(number, 1)} mm` : "-";
+}
+
+function beamDimensionsHtml(section) {
+  const parts = [
+    section.d > 0 ? `d = ${formatBeamDimension(section.d)}` : "",
+    section.bf > 0 ? `b<sub>f</sub> = ${formatBeamDimension(section.bf)}` : "",
+    section.tw > 0 ? `t<sub>w</sub> = ${formatBeamDimension(section.tw)}` : "",
+    section.tf > 0 ? `t<sub>f</sub> = ${formatBeamDimension(section.tf)}` : "",
+    section.d1 > 0 ? `d<sub>1</sub> = ${formatBeamDimension(section.d1)}` : ""
+  ].filter(Boolean);
+  return parts.length ? parts.join("; ") : "-";
+}
+
+function beamWebScreenHtml(webShear) {
+  if (!Number.isFinite(webShear.slenderness)) return "-";
+  return `&lambda;<sub>w</sub> = ${formatBeamNumber(webShear.slenderness, 1)}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}`;
+}
+
 function compactnessText(compactness) {
-  return compactness === "C" ? "Compact" : compactness === "N" ? "Non-compact" : "Slender";
+  if (compactness === "C") return "Compact";
+  if (compactness === "N") return "Non-compact";
+  if (compactness === "E") return "Elastic basis";
+  return "Slender";
 }
 
 function beamWebShearReduction(section, grade, isCustom) {
-  if (isCustom || !(section.d1 > 0) || !(section.tw > 0) || !(grade.fy > 0)) {
+  if (!(section.d1 > 0) || !(section.tw > 0) || !(grade.fy > 0)) {
     return {
       alphaV: 1,
       slenderness: NaN,
       threshold: 82,
-      basis: "Custom A_w entered; web slenderness and stiffener conditions are not derived by this quick lookup."
+      basis: "Web slenderness is not available for this quick lookup."
     };
   }
   const slenderness = section.d1 / section.tw * Math.sqrt(grade.fy / 250);
@@ -643,32 +675,57 @@ function beamWebShearReduction(section, grade, isCustom) {
     slenderness,
     threshold,
     basis: slenderness <= threshold
-      ? "Web shear yield governs for this catalogue quick screen."
-      : "Unstiffened web shear-buckling reduction applied for this catalogue quick screen."
+      ? `${isCustom ? "Ideal custom" : "Catalogue"} web shear yield governs for this quick screen.`
+      : `Unstiffened web shear-buckling reduction applied for this ${isCustom ? "ideal custom" : "catalogue"} quick screen.`
   };
 }
 
+function customBeamGeometry() {
+  const d = value("beamCustomDepth");
+  const bf = value("beamCustomFlangeWidth");
+  const tw = value("beamCustomWebThickness");
+  const tf = value("beamCustomFlangeThickness");
+  const d1 = Math.max(0, d - 2 * tf);
+  const valid = d > 0 && bf > 0 && tw > 0 && tf > 0 && d1 > 0 && bf >= tw;
+
+  if (!valid) {
+    return { d, bf, tw, tf, d1, area: 0, Aw: 0, mass: 0, Sx: 0, Zx: 0 };
+  }
+
+  const area = 2 * bf * tf + d1 * tw;
+  const mass = area * 0.00785;
+  const ix = (bf * d ** 3 - (bf - tw) * d1 ** 3) / 12;
+  const zx = ix / (d / 2) / 1000;
+  const sx = (bf * tf * (d - tf) + tw * d1 ** 2 / 4) / 1000;
+
+  return { d, bf, tw, tf, d1, area, Aw: d1 * tw, mass, Sx: sx, Zx: zx };
+}
+
 function customBeamSection() {
-  const designation = $("beamCustomName").value.trim() || "Custom section";
-  const kf = value("beamCustomKf") || 1;
+  const geometry = customBeamGeometry();
+  const designation = geometry.d > 0 && geometry.bf > 0
+    ? `Custom I d=${formatBeamNumber(geometry.d, 0)} bf=${formatBeamNumber(geometry.bf, 0)} tw=${formatBeamNumber(geometry.tw, 1)} tf=${formatBeamNumber(geometry.tf, 1)}`
+    : "Custom I-section";
+  const grades = Object.fromEntries(Object.entries(customBeamGradeYields).map(([name, fy]) => [name, {
+    fy,
+    Ze: geometry.Zx,
+    compactness: "E",
+    kf: 0
+  }]));
   return {
     designation,
-    mass: value("beamCustomMass"),
-    area: value("beamCustomArea"),
-    Aw: value("beamCustomAw"),
-    d1: 0,
-    tw: 0,
-    Sx: value("beamCustomSx"),
-    Zx: value("beamCustomZx"),
+    mass: geometry.mass,
+    area: geometry.area,
+    Aw: geometry.Aw,
+    d1: geometry.d1,
+    tw: geometry.tw,
+    d: geometry.d,
+    bf: geometry.bf,
+    tf: geometry.tf,
+    Sx: geometry.Sx,
+    Zx: geometry.Zx,
     custom: true,
-    grades: {
-      "User entered": {
-        fy: value("beamCustomFy"),
-        Ze: value("beamCustomZex"),
-        compactness: $("beamCustomCompactness").value || "C",
-        kf
-      }
-    }
+    grades
   };
 }
 
@@ -680,7 +737,7 @@ function selectedBeamSection() {
 
 function populateBeamOptions() {
   if (beamSectionType === "custom") {
-    calculateBeam();
+    populateBeamGrades();
     return;
   }
   const sections = beamCatalogueSections();
@@ -694,10 +751,11 @@ function populateBeamOptions() {
 
 function populateBeamGrades() {
   const section = selectedBeamSection();
-  const previousGrade = $("beamGrade").value || "300PLUS";
+  const previousGrade = $("beamGrade").value || (beamSectionType === "custom" ? "Grade 300" : "300PLUS");
   const grades = Object.keys(section.grades);
   $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${grade}</option>`).join("");
-  $("beamGrade").value = grades.includes(previousGrade) ? previousGrade : grades[0];
+  const defaultGrade = beamSectionType === "custom" && grades.includes("Grade 300") ? "Grade 300" : grades[0];
+  $("beamGrade").value = grades.includes(previousGrade) ? previousGrade : defaultGrade;
   calculateBeam();
 }
 
@@ -709,7 +767,7 @@ function setBeamType(type) {
   });
   const custom = type === "custom";
   $("beamSectionField").hidden = custom;
-  $("beamGradeField").hidden = custom;
+  $("beamGradeField").hidden = false;
   $("beamCustomInputs").hidden = !custom;
   $("beamSectionGuide").hidden = custom;
   populateBeamOptions();
@@ -718,7 +776,7 @@ function setBeamType(type) {
 function calculateBeam() {
   const section = selectedBeamSection();
   if (!section) return;
-  const gradeName = beamSectionType === "custom" ? "User entered" : $("beamGrade").value;
+  const gradeName = $("beamGrade").value;
   const grade = section.grades[gradeName];
   if (!grade) return;
   const isCustom = beamSectionType === "custom";
@@ -742,39 +800,44 @@ function calculateBeam() {
   const interactionReview = highShear && momentDemand > 0;
   const shearReductionApplied = validShear && webShear.alphaV < 0.9995;
   const compactnessLabel = compactnessText(grade.compactness);
-  const sourceBasis = isCustom ? "User-entered section properties" : `OneSteel / InfraBuild ${beamSectionType.toUpperCase()} catalogue data`;
+  const sourceBasis = isCustom ? "Dimension-generated symmetric I-section geometry" : `OneSteel / InfraBuild ${beamSectionType.toUpperCase()} catalogue data`;
   const shearAreaBasis = isCustom
-    ? `A<sub>w</sub> = ${formatBeamArea(section.Aw)} user-entered`
+    ? `A<sub>w</sub> = d<sub>1</sub>t<sub>w</sub> = ${formatBeamNumber(section.d1, 1)} x ${formatBeamNumber(section.tw, 1)} = ${formatBeamArea(section.Aw)} from custom dimensions`
     : `A<sub>w</sub> = d<sub>1</sub>t<sub>w</sub> = ${formatBeamNumber(section.d1, 1)} x ${formatBeamNumber(section.tw, 1)} = ${formatBeamArea(section.Aw)}`;
   const webShearBasis = isCustom
-    ? "Custom A_w only; verify AS 4100 Cl. 5.11.5 web shear buckling separately where web slenderness may govern."
+    ? `d<sub>1</sub>/t<sub>w</sub> &radic;(f<sub>y</sub>/250) = ${formatBeamNumber(webShear.slenderness, 1)}; AS 4100 Cl. 5.11.5 screen limit = ${webShear.threshold}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}. ${webShear.basis}`
     : `d<sub>1</sub>/t<sub>w</sub> &radic;(f<sub>y</sub>/250) = ${formatBeamNumber(webShear.slenderness, 1)}; AS 4100 Cl. 5.11.5 screen limit = ${webShear.threshold}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}. ${webShear.basis}`;
 
   $("beamDesignation").textContent = `${section.designation} - ${gradeName}`;
   $("beamAssumption").textContent = isCustom
-    ? "selected-axis moment and web shear only; user-entered properties are not catalogue-checked"
+    ? "dimension-generated symmetric I-section; elastic Zx used as Zex for moment"
     : "x-axis section moment and web shear only; member capacity and lateral restraint are not checked";
   $("beamMass").textContent = formatBeamOptional(section.mass, "kg/m", 1);
   $("beamArea").textContent = formatBeamArea(section.area);
   $("beamAw").textContent = formatBeamArea(section.Aw);
+  $("beamDimensions").innerHTML = beamDimensionsHtml(section);
+  $("beamSummarySx").innerHTML = formatBeamModulus(section.Sx);
+  $("beamSummaryZx").innerHTML = formatBeamModulus(section.Zx);
   $("beamFy").textContent = grade.fy > 0 ? `${formatBeamNumber(grade.fy, 0)} MPa` : "-";
-  $("beamZex").textContent = formatBeamModulus(grade.Ze);
+  $("beamZex").innerHTML = formatBeamModulus(grade.Ze);
+  $("beamSummaryKf").textContent = grade.kf > 0 ? grade.kf.toFixed(3) : "-";
   $("beamCompactness").textContent = compactnessLabel;
+  $("beamWebScreen").innerHTML = beamWebScreenHtml(webShear);
   $("beamSectionCapacity").textContent = Number.isFinite(sectionCapacity) ? fixed(sectionCapacity) : "-";
   $("beamShearCapacity").textContent = Number.isFinite(shearCapacity) ? fixed(shearCapacity) : "-";
   $("beamPlasticLimit").textContent = Number.isFinite(plasticLimit) ? fixed(plasticLimit) : "-";
-  $("beamSxValue").textContent = formatBeamModulus(section.Sx);
-  $("beamZxValue").textContent = formatBeamModulus(section.Zx);
+  $("beamSxValue").innerHTML = formatBeamModulus(section.Sx);
+  $("beamZxValue").innerHTML = formatBeamModulus(section.Zx);
   $("beamAwValue").textContent = formatBeamArea(section.Aw);
   $("beamKfValue").textContent = grade.kf > 0 ? grade.kf.toFixed(3) : "-";
   $("beamClassification").textContent = compactnessLabel;
-  $("beamGoverning").textContent = isCustom
-    ? "User-entered Zex and Aw"
+  $("beamGoverning").innerHTML = isCustom
+    ? (shearReductionApplied ? "Auto geometry, reduced shear" : "Auto geometry, Z<sub>ex</sub> = Z<sub>x</sub>")
     : shearReductionApplied
-      ? "Catalogue Zex and reduced shear"
+      ? "Catalogue Z<sub>ex</sub> and reduced shear"
       : grade.compactness === "C"
-        ? "Catalogue Zex and Aw"
-        : "Catalogue reduced Zex and Aw";
+        ? "Catalogue Z<sub>ex</sub> and A<sub>w</sub>"
+        : "Catalogue reduced Z<sub>ex</sub> and A<sub>w</sub>";
   $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
   $("beamStatus").textContent = !valid
     ? "Invalid input"
@@ -795,7 +858,7 @@ function calculateBeam() {
           ? "check"
           : "pass";
   if (!valid) {
-    $("beamWarning").textContent = "Enter positive fy, Zex and Aw values before using the Beam Section capacity check.";
+    $("beamWarning").textContent = "Enter valid custom I-section dimensions and select a steel grade before using the Beam Section capacity check.";
   } else {
     const beamWarnings = [];
     if (utilisation > 1) {
@@ -810,7 +873,7 @@ function calculateBeam() {
       beamWarnings.push(`AS 4100 Cl. 5.11.5 web shear-buckling reduction applied with alpha_v = ${webShear.alphaV.toFixed(3)}.`);
     }
     if (isCustom) {
-      beamWarnings.push("Custom Aw is user-entered; web slenderness, stiffeners and shear-buckling reduction are not checked.");
+      beamWarnings.push("Custom mode uses ideal symmetric I-section geometry with Zex = Zx. Verify plate slenderness classification, fillets, weld details, holes, tolerances and member design separately.");
     }
     if (!beamWarnings.length) {
       beamWarnings.push("Section capacity only. Check member moment capacity, lateral restraint, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.");
@@ -820,7 +883,7 @@ function calculateBeam() {
 
   if (!valid) {
     $("beamFormulaSteps").innerHTML = `
-      <div><b>Required input</b><code>Enter positive f<sub>y</sub>, Z<sub>ex</sub> and A<sub>w</sub> values before using Beam Section capacity.</code></div>
+      <div><b>Required input</b><code>Enter positive d, b<sub>f</sub>, t<sub>w</sub> and t<sub>f</sub> values with d &gt; 2t<sub>f</sub> and b<sub>f</sub> &ge; t<sub>w</sub>.</code></div>
       <div><b>Design boundary</b><code>Section capacity only; M<sub>b</sub>, lateral restraint, web bearing, web buckling, deflection and concentrated-load checks are not included.</code></div>`;
     return;
   }
@@ -828,14 +891,14 @@ function calculateBeam() {
   $("beamFormulaSteps").innerHTML = `
     <div><b>Section data</b><code>${section.designation}; A<sub>g</sub> = ${formatBeamArea(section.area)}; mass = ${formatBeamOptional(section.mass, "kg/m", 1)}; source = ${sourceBasis}</code></div>
     <div><b>Section moduli</b><code>S<sub>x</sub> = ${formatBeamModulus(section.Sx)}; Z<sub>x</sub> = ${formatBeamModulus(section.Zx)}; Z<sub>ex</sub> = ${formatBeamModulus(grade.Ze)}</code></div>
-    <div><b>Compactness</b><code>${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)}${isCustom ? "; user-entered reference value" : " from OneSteel / InfraBuild section-capacity table"}</code></div>
-    <div><b>Elastic yield reference</b><code>${Number.isFinite(elasticYield) ? `&phi;f<sub>y</sub>Z<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Zx, 1)} x 10&sup3; / 10&sup6; = ${fixed(elasticYield)} kNm` : "Not shown - enter Zx for custom reference value"}</code></div>
-    <div><b>Plastic limit reference</b><code>${Number.isFinite(plasticLimit) ? `&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(section.Sx, 1)} x 10&sup3; / 10&sup6; = ${fixed(plasticLimit)} kNm` : "Not shown - enter Sx for custom reference value"}</code></div>
-    <div><b>Moment capacity - AS 4100 Cl. 5.2</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamNumber(grade.Ze, 1)} x 10&sup3; / 10&sup6; = ${fixed(sectionCapacity)} kNm</code></div>
+    <div><b>Compactness</b><code>${isCustom ? `${compactnessLabel}; custom moment check uses elastic Z<sub>x</sub> as Z<sub>ex</sub>, so plastic compactness is not claimed` : `${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)} from OneSteel / InfraBuild section-capacity table`}</code></div>
+    <div><b>Elastic yield reference</b><code>${Number.isFinite(elasticYield) ? `&phi;f<sub>y</sub>Z<sub>x</sub> = 0.90 × ${formatBeamNumber(grade.fy, 0)} × ${formatBeamNumber(section.Zx, 1)} × 10³ / 10⁶ = ${fixed(elasticYield)} kNm` : "Not shown - enter Zx for custom reference value"}</code></div>
+    <div><b>Plastic limit reference</b><code>${Number.isFinite(plasticLimit) ? `&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 × ${formatBeamNumber(grade.fy, 0)} × ${formatBeamNumber(section.Sx, 1)} × 10³ / 10⁶ = ${fixed(plasticLimit)} kNm` : "Not shown - enter Sx for custom reference value"}</code></div>
+    <div><b>Moment capacity - AS 4100 Cl. 5.2</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 × ${formatBeamNumber(grade.fy, 0)} × ${formatBeamNumber(grade.Ze, 1)} × 10³ / 10⁶ = ${fixed(sectionCapacity)} kNm</code></div>
     <div><b>Web shear area</b><code>${shearAreaBasis}</code></div>
-    <div><b>Web shear yield - AS 4100 Cl. 5.11.4</b><code>&phi;V<sub>w</sub> = 0.90 x 0.6 x ${formatBeamNumber(grade.fy, 0)} x ${formatBeamArea(section.Aw)} / 1000 = ${fixed(shearYieldCapacity)} kN</code></div>
+    <div><b>Web shear yield - AS 4100 Cl. 5.11.4</b><code>&phi;V<sub>w</sub> = 0.90 × 0.6 × ${formatBeamNumber(grade.fy, 0)} × ${formatBeamArea(section.Aw)} / 1000 = ${fixed(shearYieldCapacity)} kN</code></div>
     <div><b>Web shear buckling screen - AS 4100 Cl. 5.11.5</b><code>${webShearBasis}</code></div>
-    <div><b>Design web shear capacity - AS 4100 Cl. 5.11</b><code>&phi;V<sub>v</sub> = &alpha;<sub>v</sub>&phi;V<sub>w</sub> = ${webShear.alphaV.toFixed(3)} x ${fixed(shearYieldCapacity)} = ${fixed(shearCapacity)} kN</code></div>
+    <div><b>Design web shear capacity - AS 4100 Cl. 5.11</b><code>&phi;V<sub>v</sub> = &alpha;<sub>v</sub>&phi;V<sub>w</sub> = ${webShear.alphaV.toFixed(3)} × ${fixed(shearYieldCapacity)} = ${fixed(shearCapacity)} kN</code></div>
     <div><b>Design action check</b><code>M* / &phi;M<sub>s</sub> = ${fixed(momentDemand)} / ${fixed(sectionCapacity)} = ${momentRatio.toFixed(2)}; V* / &phi;V<sub>v</sub> = ${fixed(shearDemand)} / ${fixed(shearCapacity)} = ${shearRatio.toFixed(2)}; governing ratio = ${utilisation.toFixed(2)}</code></div>
     <div><b>High shear threshold - AS 4100 Cl. 5.12</b><code>0.60&phi;V<sub>v</sub> = ${fixed(0.6 * shearCapacity)} kN; provided V* = ${fixed(shearDemand)} kN - ${highShear ? "CHECK: shear-bending interaction review required unless bending is confirmed absent" : "below high-shear threshold"}</code></div>
     <div><b>Design boundary</b><code>Section capacity only; member capacity M<sub>b</sub>, lateral restraint, web bearing, web buckling, stiffeners, concentrated loads, openings, torsion, serviceability and composite action are not checked.</code></div>`;
@@ -1857,7 +1920,6 @@ function initialise() {
   $("beamMomentDemand").addEventListener("input", calculateBeam);
   $("beamShearDemand").addEventListener("input", calculateBeam);
   beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
-  $("beamCustomCompactness").addEventListener("change", calculateBeam);
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
   $("memberSection").addEventListener("change", populateMemberGrades);
   $("memberGrade").addEventListener("change", () => {

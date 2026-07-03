@@ -438,7 +438,7 @@ Rules:
 - Do not mix unit text into formula cells
 - Do not combine incompatible units in one column
 - Show conversion factors in `Units` or in a visible helper row
-- Use `mm`, `mm2`, `mm3`, `mm4`, `MPa`, `GPa`, `kN`, `kNm`, and `kg/m` consistently
+- Use `mm`, `mm2`, `mm3`, `mm4`, `MPa`, `GPa`, `kN`, `kNm`, and `kg/m` consistently for internal plain-text unit tokens, data keys and spreadsheet unit fields. User-facing web labels and calculation text must use formal engineering typography such as `mm²`, `mm³`, `mm⁴`, or HTML superscripts, not visible `mm2`, `mm3`, `mm^3`, or `mm4`.
 
 ### 10.5 Example Check
 
@@ -1285,18 +1285,19 @@ The beam tab is a lightweight AS 4100 section-capacity check. It is not a full b
 Use this scope:
 
 - Hot-rolled Universal Beam and Universal Column catalogue sections.
-- Custom section input when catalogue data is not available.
+- Custom symmetric I-section input when catalogue data is not available.
 - Major-axis section moment capacity only.
 - Major-axis web shear capacity only.
 - Optional design actions `M*` and `V*`.
 - Section utilisation based on the governing of `M* / phi Ms` and `V* / phi Vv`.
 
-Use Australian product data first. For UB/UC sections, section properties and dimensions should come from OneSteel / InfraBuild hot-rolled product tables wherever possible. Catalogue data may define availability, `Ag`, mass, `Sx`, `Zx`, `Zex`, compactness, `kf`, `d1`, and `tw`; design equations still need to trace back to AS 4100.
+Use Australian product data first. For UB/UC sections, section properties and dimensions should come from OneSteel / InfraBuild hot-rolled product tables wherever possible. Catalogue data may define availability, `d`, `bf`, `tw`, `tf`, `d1`, `Ag`, mass, `Sx`, `Zx`, `Zex`, compactness and `kf`; design equations still need to trace back to AS 4100.
 
 Required AS 4100 basis:
 
 - Section moment capacity uses AS 4100 Cl. 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
 - Catalogue `Zex`, compactness and `kf` may be taken from the section-capacity table instead of recalculating plate slenderness in the browser.
+- The selected-section summary should automatically show catalogue or generated values for dimensions, mass, `Ag`, `Aw`, `Sx`, `Zx`, `Zex`, `fy`, `kf`, compactness and the web-slenderness screen. Do not require manual entry for those values in UB/UC selected-section mode.
 - Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
 - Web shear yield starts from AS 4100 Cl. 5.11.4: `Vw = 0.6 fy Aw`; report the design value with `phi = 0.90`.
 - For catalogue UB/UC rows, apply a lightweight unstiffened-web shear-buckling screen from AS 4100 Cl. 5.11.5 using `lambda_w = (d1/tw) sqrt(fy/250)` and `alpha_v = 1.0` where `lambda_w <= 82`, otherwise `alpha_v = (82/lambda_w)^2`. Report `phi Vv = phi alpha_v Vw`. This is a quick screen using catalogue `d1` and `tw`, not a substitute for stiffened-web, non-uniform shear, transverse-load or detailed web-panel design.
@@ -1304,9 +1305,10 @@ Required AS 4100 basis:
 
 Custom section mode must stay explicit and conservative:
 
-- User-entered `fy`, `Zex`, `Sx`, `Zx`, `Aw`, compactness, `kf`, area and mass values are not catalogue-verified.
-- Do not auto-infer custom web shear area from gross area.
-- Do not derive custom web shear-buckling reduction unless explicit web-panel geometry, stiffener condition and shear-stress distribution inputs are added. For the current lightweight tab, custom `Aw` is user-entered and AS 4100 Cl. 5.11.5 remains a project verification warning.
+- Custom inputs should be dimensions only for the current lightweight page: `d`, `bf`, `tw`, and `tf` for a symmetric I-section, plus the shared steel-grade and design-action inputs.
+- Generate `Ag`, `Aw`, mass, `Ix`, `Zx`, `Sx`, `Zex`, web slenderness, `alpha_v`, `phi Ms` and `phi Vv` from those dimensions.
+- For custom symmetric I-sections, use `Zex = Zx` as a conservative elastic section basis unless the full AS 4100 plate compactness / effective-section calculation is implemented. Do not automatically claim compact plastic capacity from geometry alone.
+- Custom web shear-buckling screening may use `d1 = d - 2tf` and `tw` for the current ideal unstiffened-web screen, but fillets, weld access holes, asymmetric geometry, stiffeners, reduced webs, holes, copes and non-uniform shear stress distribution remain project checks.
 - Keep the custom labels tied to the selected-axis section capacity, not a whole-member design.
 
 Required exclusions:

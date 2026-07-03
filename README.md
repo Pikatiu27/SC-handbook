@@ -35,18 +35,18 @@ For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design in
 
 ### Beam Section
 
-The beam tool covers major-axis section moment and web shear capacity for catalogue hot-rolled Universal Beams / Universal Columns and user-entered custom sections:
+The beam tool covers major-axis section moment and web shear capacity for catalogue hot-rolled Universal Beams / Universal Columns and dimension-generated custom I-sections:
 
 - selected UB and UC section entries from the OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition;
 - 300PLUS and Grade 350 section-capacity data where tabulated for UB/UC sections;
-- catalogue `d1` and `tw` values used to calculate web shear area `Aw = d1 tw`;
-- Custom section mode using user-entered `fy`, `Zex`, `Sx`, `Zx`, `Aw`, compactness, area and mass values;
-- gross area, mass, `Sx`, `Zx`, `Zex`, `Aw`, compactness and form factor `kf`;
+- catalogue `d`, `bf`, `tw`, `tf` and `d1` values used for selected-section display and to calculate web shear area `Aw = d1 tw`;
+- Custom section mode using user-entered symmetric I-section dimensions `d`, `bf`, `tw` and `tf`;
+- gross area, mass, `Sx`, `Zx`, `Zex`, `Aw`, web slenderness, compactness basis and form factor / modulus basis;
 - design section moment capacity `phi Ms`;
 - design section shear capacity `phi Vv`;
 - optional design actions `M*` and `V*` and governing section utilisation ratio.
 
-The primary basis is AS 4100 Section 5 for beam section capacity. Moment capacity uses AS 4100 Cl. 5.2 with `Ms = fy Ze` and `phi = 0.90`. Web shear starts from AS 4100 Cl. 5.11.4, `Vw = 0.6 fy Aw`; catalogue UB/UC sections use `Aw = d1 tw` and a lightweight AS 4100 Cl. 5.11.5 unstiffened-web screen from catalogue `d1/tw`. AS 4100 Cl. 5.12 is treated as the shear-bending interaction review where bending is present. For catalogue sections, the effective section modulus `Zex`, compactness and `kf` are taken from the OneSteel / InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom sections, the user is responsible for the entered section properties, shear area, web slenderness and material/product basis.
+The primary basis is AS 4100 Section 5 for beam section capacity. Moment capacity uses AS 4100 Cl. 5.2 with `Ms = fy Ze` and `phi = 0.90`. Web shear starts from AS 4100 Cl. 5.11.4, `Vw = 0.6 fy Aw`; catalogue UB/UC sections use `Aw = d1 tw` and a lightweight AS 4100 Cl. 5.11.5 unstiffened-web screen from catalogue `d1/tw`. AS 4100 Cl. 5.12 is treated as the shear-bending interaction review where bending is present. For catalogue sections, the selected-section summary separates product table values and derived quick-screen values: `d`, `bf`, `tw`, `tf`, `d1`, mass, `Ag`, `Aw`, `Sx`, `Zx`, `Zex`, `fy`, `kf`, compactness and the web-slenderness screen are shown automatically after section and grade selection. The effective section modulus `Zex`, compactness and `kf` are taken from the OneSteel / InfraBuild catalogue section-capacity table rather than recalculated from plate slenderness in the browser. For custom symmetric I-sections, `Ag`, `Aw`, mass, `Sx`, `Zx`, web slenderness and shear capacity are generated from dimensions, with `Zex = Zx` used as a conservative elastic moment basis.
 
 The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, minor-axis bending, biaxial bending, axial interaction, web bearing, web buckling under concentrated forces, stiffeners, copes, holes, composite action, fire, deflection or vibration. If `V* > 0.60 phi Vv`, the tool reports `CHECK` unless bending is confirmed absent; where bending is present, AS 4100 Cl. 5.12 shear-bending interaction review is required rather than silently treating the unreduced moment capacity as a pass.
 
