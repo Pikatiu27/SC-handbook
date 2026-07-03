@@ -249,7 +249,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .beam-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
 .weld-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
 .member-summary dl div { text-align: left; min-width: 0; }
-.member-summary dl .member-dimensions-cell { grid-column: span 2; }
+.member-summary dl .member-dimensions-cell { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .beam-summary dl div { text-align: right; }
 .weld-summary dl div { text-align: right; }
 .member-summary dt { color: var(--muted); font-size: var(--fs-xs); }
@@ -462,6 +462,8 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .summary-heading { display: flex !important; align-items: center; gap: 8px; }
 .summary-heading .section-tag { display: inline-block; flex: 0 0 auto; }
 .detail-card > summary b, .source-card > summary b { font-size: var(--fs-sm); }
+.detail-card.major-detail > summary b { font-size: var(--fs-md); line-height: 1.2; font-weight: 900; }
+.detail-card.major-detail > summary { padding: 15px 16px; }
 .detail-card > summary small, .source-card > summary small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); font-weight: 400; }
 .detail-card > summary i, .source-card > summary i { color: var(--green); font-size: var(--fs-md); font-style: normal; transition: transform .2s; }
 .detail-card[open] > summary i, .source-card[open] > summary i { transform: rotate(45deg); }

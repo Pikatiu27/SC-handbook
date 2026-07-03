@@ -212,7 +212,7 @@ const eaSections = [
   [50,5,443,15.2,320,1.000,360,1.000],
   [50,3,295,15.3,320,0.907,360,0.858]
 ].map(([b,t,area,r,fy300,kf300,fy350,kf350]) => ({
-  designation: `${b} x ${b} x ${t} EA`, area, r, rx: r, ry: r, b, t,
+  designation: `${b} x ${b} x ${t} EA`, area, r, rx: r, ry: r, ix: area * r ** 2, iy: area * r ** 2, b, t,
   grades: { "300PLUS": { fy: fy300, fu: 440, kf: kf300 }, "Grade 350": { fy: fy350, fu: 480, kf: kf350 } }
 }));
 
@@ -234,8 +234,8 @@ const pfcSections = [
   r: Math.min(rx, ry),
   rx,
   ry,
-  ix,
-  iy,
+  ix: ix * 1e6,
+  iy: iy * 1e6,
   d: depth,
   bf,
   tw,
@@ -853,10 +853,10 @@ function memberDimensionOverrideActive() {
 }
 
 function memberDimensionLabel(properties) {
-  if (memberType === "chs") return `D ${formatDimension(properties.D)} · t ${formatDimension(properties.t)}`;
-  if (memberType === "rod") return `d ${formatDimension(properties.diameter)}`;
-  if (memberType === "ea") return `b ${formatDimension(properties.b, 0)} · t ${formatDimension(properties.t)}`;
-  if (memberType === "pfc") return `d ${formatDimension(properties.d, 0)} · b<sub>f</sub> ${formatDimension(properties.bf, 0)} · t<sub>w</sub> ${formatDimension(properties.tw)} · t<sub>f</sub> ${formatDimension(properties.tf)}`;
+  if (memberType === "chs") return `D = ${formatDimension(properties.D)} mm; t = ${formatDimension(properties.t)} mm`;
+  if (memberType === "rod") return `d = ${formatDimension(properties.diameter)} mm`;
+  if (memberType === "ea") return `b = ${formatDimension(properties.b, 0)} mm; t = ${formatDimension(properties.t)} mm`;
+  if (memberType === "pfc") return `d = ${formatDimension(properties.d, 0)} mm; b<sub>f</sub> = ${formatDimension(properties.bf, 0)} mm; t<sub>w</sub> = ${formatDimension(properties.tw)} mm; t<sub>f</sub> = ${formatDimension(properties.tf)} mm`;
   return "User-entered effective properties";
 }
 
@@ -957,7 +957,7 @@ function memberProperties(section) {
     const area = value("memberCustomArea") || 1;
     const rx = value("memberCustomRx") || 0.1;
     const ry = value("memberCustomRy") || 0.1;
-    return { area, r: Math.min(rx, ry), rx, ry };
+    return { area, r: Math.min(rx, ry), rx, ry, ix: area * rx ** 2, iy: area * ry ** 2 };
   }
   const override = memberDimensionProperties(section);
   if (override) return override;
@@ -1057,6 +1057,7 @@ function setMemberDimensionDefaults(section) {
 function updateMemberDimensionUi(properties = null) {
   const active = memberDimensionOverrideActive();
   if ($("memberDimensionCard")) $("memberDimensionCard").hidden = memberType === "custom";
+  if ($("memberDimensionFields")) $("memberDimensionFields").hidden = !active || memberType === "custom";
   document.querySelectorAll("[data-member-dim]").forEach(field => {
     field.hidden = field.dataset.memberDim !== memberType;
   });
@@ -1066,10 +1067,11 @@ function updateMemberDimensionUi(properties = null) {
   if ($("memberDimensionOverride")) $("memberDimensionOverride").disabled = memberType === "custom";
   if ($("memberRadiusField")) $("memberRadiusField").hidden = memberType === "custom" || active;
   const props = properties || (selectedMemberGrade() ? memberProperties(selectedMemberGrade().section) : null);
-  const sourceText = active
-    ? `Custom ${memberType.toUpperCase()} dimensions are used for A<sub>g</sub>, r<sub>x</sub>, r<sub>y</sub> and r used${memberType === "ea" || memberType === "pfc" ? " from simplified rectangular geometry" : " from circular geometry"}.`
-    : "Catalogue data is currently used. Custom geometry keeps the same AS 4100 axial member calculation flow.";
-  if ($("memberDimensionStatus")) $("memberDimensionStatus").innerHTML = props ? `${sourceText} Current A<sub>g</sub> = ${formatArea(props.area)}; r<sub>x</sub> = ${props.rx.toFixed(1)} mm; r<sub>y</sub> = ${props.ry.toFixed(1)} mm.` : sourceText;
+  if ($("memberDimensionStatus")) {
+    $("memberDimensionStatus").hidden = !active || memberType === "custom";
+    const sourceText = `${memberType.toUpperCase()} dimensions are used for A<sub>g</sub>, r<sub>x</sub>, r<sub>y</sub> and r used${memberType === "ea" || memberType === "pfc" ? " from simplified rectangular geometry" : " from circular geometry"}.`;
+    $("memberDimensionStatus").innerHTML = props ? `${sourceText} Current A<sub>g</sub> = ${formatArea(props.area)}; r<sub>x</sub> = ${props.rx.toFixed(1)} mm; r<sub>y</sub> = ${props.ry.toFixed(1)} mm.` : sourceText;
+  }
 }
 
 function setMemberRadiusDefault(properties = null) {
@@ -1285,11 +1287,9 @@ function calculateMember() {
   $("memberDimensions").innerHTML = memberDimensionLabel(properties);
   $("memberRx").textContent = `${properties.rx.toFixed(1)} mm`;
   $("memberRy").textContent = `${properties.ry.toFixed(1)} mm`;
+  $("memberIx").innerHTML = formatInertia(properties.ix);
+  $("memberIy").innerHTML = formatInertia(properties.iy);
   $("memberRadius").textContent = memberType === "custom" ? `${properties.r.toFixed(1)} mm` : `${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)})` : ""}`;
-  document.querySelectorAll(".member-round-property").forEach(field => {
-    field.hidden = !(memberType === "chs" || memberType === "rod");
-  });
-  $("memberInertia").innerHTML = memberType === "chs" || memberType === "rod" ? formatInertia(properties.ix) : "—";
   $("memberFy").textContent = `${fy} MPa`;
   $("memberFu").textContent = `${fu} MPa`;
   $("memberKf").textContent = kf.toFixed(3);
@@ -1330,8 +1330,8 @@ function calculateMember() {
           ? `Custom / Built-up quick check uses user-entered effective properties only. Verify built-up member detailing, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, connection eccentricity and local buckling separately.${netAreaWarning}`
           : `Rod quick check uses r = ${designR.toFixed(1)} mm from solid circular geometry, k<sub>f</sub> = ${kf.toFixed(3)} and &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}. Confirm product grade, effective length, straightness and connection net area.${netAreaWarning}`;
   const sectionDataText = memberType === "custom"
-    ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
-    : `${properties.customGeometry ? "Custom geometry" : "Catalogue data"}; dimensions: ${memberDimensionLabel(properties)}; A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; r used = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}${memberType === "chs" || memberType === "rod" ? `; I<sub>x</sub> = I<sub>y</sub> = ${formatInertia(properties.ix)}` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
+    ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
+    : `${properties.customGeometry ? "Custom geometry" : "Catalogue data"}; dimensions: ${memberDimensionLabel(properties)}; A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; r used = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
   const compressionSteps = memberType === "custom"
     ? `<div><b>Compression axes - AS 4100 Cl. 6.3</b><code>${axisResults.map(axis => `${axis.label}: L<sub>e</sub>/r = ${axis.leOverR.toFixed(1)}, &lambda;<sub>n</sub> = ${axis.lambdaN.toFixed(1)}, &alpha;<sub>b</sub> = ${axis.alphaB.toFixed(1)}, &alpha;<sub>c</sub> = ${axis.alphaC.toFixed(3)}, &phi;N<sub>c,${axis.label}</sub> = ${fixed(axis.memberCompression)} kN`).join("; ")}; governing = ${governingAxis.title}</code></div>`
     : `<div><b>Nominal slenderness</b><code>L<sub>e</sub>/r = ${fixed(axisResults[0].effectiveLength / 1000)} m / ${axisResults[0].r.toFixed(1)} mm = ${axisResults[0].leOverR.toFixed(1)}; &lambda;<sub>n</sub> = (L<sub>e</sub>/r) &radic;k<sub>f</sub> &radic;(f<sub>y</sub>/250) = ${axisResults[0].lambdaN.toFixed(1)}</code></div>

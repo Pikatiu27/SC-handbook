@@ -62,8 +62,8 @@
         </section>
       </section>
 
-      <details class="detail-card" id="connectionDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed connection checks</b></span><small>Bolt group, shear planes, ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
+      <details class="detail-card major-detail" id="connectionDetails">
+        <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Bolt group, shear planes, ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
         <div class="detail-body">
           <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="1"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>default 1.0</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result"><span>Design shear capacity of bolt group</span><strong id="groupShearCapacity">133.4 kN</strong><small id="groupShearBasis">1 bolt × 1 N plane per bolt = 1 total shear plane.</small></div></section>
           <section>
@@ -576,11 +576,10 @@
               <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
             </div>
             <div class="member-dimension-panel" id="memberDimensionCard">
-              <span class="input-group-heading member-subheading"><b>Custom section dimensions</b><small id="memberDimensionNote">Optional geometry override for the selected CHS / EA / PFC / Rod family.</small></span>
               <div class="input-group-fields member-dimension-toggle">
-                <label class="checkbox-field"><span>Use custom dimensions</span><input id="memberDimensionOverride" type="checkbox"></label>
+                <label class="checkbox-field"><span>Custom dimensions</span><input id="memberDimensionOverride" type="checkbox"></label>
               </div>
-              <div class="input-group-fields four member-dimension-fields" id="memberDimensionFields">
+              <div class="input-group-fields four member-dimension-fields" id="memberDimensionFields" hidden>
                 <label data-member-dim="chs"><span>D <i>outside diameter</i></span><span class="unit"><input id="memberDimChsD" type="number" min="0" step="0.1" value="60.3"><em>mm</em></span></label>
                 <label data-member-dim="chs"><span>t <i>wall thickness</i></span><span class="unit"><input id="memberDimChsT" type="number" min="0" step="0.1" value="3.2"><em>mm</em></span></label>
                 <label data-member-dim="ea" hidden><span>b <i>leg length</i></span><span class="unit"><input id="memberDimEaB" type="number" min="0" step="1" value="100"><em>mm</em></span></label>
@@ -591,7 +590,7 @@
                 <label data-member-dim="pfc" hidden><span>t<sub>f</sub></span><span class="unit"><input id="memberDimPfcTf" type="number" min="0" step="0.1" value="9.5"><em>mm</em></span></label>
                 <label data-member-dim="rod" hidden><span>d <i>diameter</i></span><span class="unit"><input id="memberDimRodD" type="number" min="0" step="0.1" value="24"><em>mm</em></span></label>
               </div>
-              <p class="result-note user-input-note" id="memberDimensionStatus">Catalogue data is currently used. Custom geometry keeps the same AS 4100 axial member calculation flow.</p>
+              <p class="result-note user-input-note" id="memberDimensionStatus" hidden></p>
             </div>
           </section>
           <section class="input-group input-group-material" id="memberMaterialGroup">
@@ -623,7 +622,7 @@
         </div>
         <p class="result-note user-input-note" id="memberAlphaBAssumption">α<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS.</p>
 
-        <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div class="member-dimensions-cell"><dt>Dimensions</dt><dd id="memberDimensions">—</dd></div><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r<sub>x</sub></dt><dd id="memberRx">—</dd></div><div><dt>r<sub>y</sub></dt><dd id="memberRy">—</dd></div><div><dt>r used</dt><dd id="memberRadius">—</dd></div><div class="member-round-property" hidden><dt>I<sub>x</sub> = I<sub>y</sub></dt><dd id="memberInertia">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
+        <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div class="member-dimensions-cell"><dt>Dimensions</dt><dd id="memberDimensions">—</dd></div><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r<sub>x</sub></dt><dd id="memberRx">—</dd></div><div><dt>r<sub>y</sub></dt><dd id="memberRy">—</dd></div><div><dt>I<sub>x</sub></dt><dd id="memberIx">—</dd></div><div><dt>I<sub>y</sub></dt><dd id="memberIy">—</dd></div><div><dt>r used</dt><dd id="memberRadius">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
 
         <div class="input-cluster member-connection-inputs">
           <section class="input-group input-group-factor member-net-section-group">
