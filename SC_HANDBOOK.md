@@ -114,7 +114,7 @@ Use `Status` values:
 
 ## 5. Module Template
 
-Each new module should be documented before building the Excel tab.
+Each new module should be documented before building the web tab or optional workbook tab.
 
 ### 5.1 Module Definition
 
@@ -744,6 +744,21 @@ These rules apply when a handbook module is implemented as a static web tab.
 
 The web page is still part of `SC Handbook`. It must follow the same source hierarchy, engineering language, formula traceability, and validation standard as the workbook. The web version should be a fast engineering lookup interface, not a full design report generator.
 
+### 15.0 Current Web Implementation Checklist
+
+Use this checklist before editing, reviewing, committing, or pushing any web-tab work:
+
+1. Confirm the active app root is `C:\桌面\SC Handbook` and the affected files are `index.html`, `app.js`, `styles.css`, and, where durable rules changed, `SC_HANDBOOK.md`.
+2. Keep the UI English-only and use Australian engineering language.
+3. Check the local reference folder first: `C:\Users\silin\Documents\Codex\Reference`.
+4. If the governing source cannot be found or read, tell the user and mark the item `Source_Not_Verified`; do not present it as checked.
+5. Keep the web page a quick-reference handbook, not a full design engine. Add clear limitations instead of forcing complex topology into the page.
+6. Use the standard web order: inputs, selected-item summary, main capacity result, detailed checks, calculation basis and limitations.
+7. Main capacity titles may use the `RESULTS` tag; detailed-check headings should not repeat it when it makes the hierarchy noisy.
+8. Keep phone layout readable: wrap rows, avoid horizontal overflow, and collapse secondary material where practical.
+9. Run basic checks before commit: `git status --short`, `git diff --stat`, JavaScript syntax check, and a DOM id reference check where JavaScript ids changed.
+10. Push only reviewed `Bolt Capacity`, `Member Capacity`, and accepted global framework changes in this chat.
+
 ### 15.1 Web Product Logic
 
 The web app is a local-first, static engineering calculation handbook.
@@ -1196,22 +1211,53 @@ For product dimensions and section properties, use Australian manufacturer data 
 
 For the current CHS quick screen, keep the lightweight strategy: use nominal CHS `D` and `t` from the Australian product catalogue context, derive `A_g` and `r` by transparent circular hollow-section geometry, and apply the AS 4100 member-capacity method. Do not replace this with Austube / Orrcon table capacity values unless the scope changes to a row-checked hollow-section capacity-table lookup. The page must state that CHS values are formula-derived from nominal size and are not a certified table-capacity extraction.
 
+#### 15.11.1 Member Calculation Basis
+
 Connection- and axis-dependent terms must stay explicit:
 
 - Use table-derived default `alpha_b` values where the selected section family and embedded `k_f` condition match AS 4100 Table 6.3.3. Apply Table 6.3.3(A) when `k_f = 1.0` and Table 6.3.3(B) when `k_f < 1.0`. For the current member tab, this means cold-formed non-stress-relieved CHS = -0.5, PFC with `k_f = 1.0` = 0.5, Equal Angle with `k_f = 1.0` = 0.5, Equal Angle with `k_f < 1.0` = 1.0 as `other sections not listed` in Table 6.3.3(B), and Rod / solid round bar with `k_f = 1.0` = 0.5 as `other sections not listed` in Table 6.3.3(A). State the table row in the lookup panel and calculation steps. Do not ask the user to manually choose `alpha_b` unless the page provides an explicit advanced override for a different table row, axis, fabrication condition, or `k_f` case.
 - AS 4100 Cl. 6.2 compression section capacity must be written as `N_s = k_f A_n f_y`, with design capacity `phi N_s = 0.90 k_f A_n f_y`. Do not replace `A_n` with `A_g` in the displayed formula. Catalogue examples and unholed member tables may calculate the same value using `A_g` only because `A_n = A_g` for an unperforated section. The calculation steps must state this assumption when no holes or penetrations are entered.
 - Calculation examples should make the area basis explicit: `no holes: A_n = A_g`; `straight-line hole deduction only: A_n = A_g - n_h d_h t`; `manual net area: A_n` is user/project verified. Keep these examples short and use them to explain the limitation, not to expand the tab into a full connection-design tool.
 - Treat radius of gyration `r` as an axis-dependent compression input. AS 4100 slenderness uses `L_e/r` about the checked buckling axis; therefore a one-axis quick check may default to the governing catalogue/geometry value such as `r_min`, but the default must be visible and editable. CHS and Rod defaults may be geometry-derived because the radius is the same about any centroidal axis. EA/PFC defaults should state the catalogue/quick-check basis. Custom / Built-up input should keep separate `r_x`, `r_y`, `L_ex` and `L_ey` and report the governing axis.
-- The selected-member summary may show `r_x` and `r_y`, but the compression calculation must still identify the actual `r used` for `L_e/r`. If the embedded catalogue data only has a quick governing radius rather than verified `r_x/r_y`, show `r_x/r_y` as the current quick basis or user-entered values, not as certified manufacturer table values.
-- Selected-member geometry quick lookup should stay compact: CHS shows `D`, `t`, `A_g`, `r_x = r_y`, `I_x = I_y`; Rod shows `d`, `A_g`, `r_x = r_y`, `I_x = I_y`; Equal Angle shows `b`, `t`, `A_g`, `r_x`, `r_y`, `I_x`, `I_y`, `r used`; PFC shows `d`, `b_f`, `t_w`, `t_f`, `A_g`, `r_x`, `r_y`, `I_x`, `I_y`, `r used`. Write the dimensions as one clear parameter line with equals signs and units, for example `d = 150 mm; b_f = 75 mm; t_w = 6.0 mm; t_f = 9.5 mm`, rather than using dot-separated shorthand. Where only `A_g` and `r` are embedded for Equal Angle catalogue rows, display `I = A_g r²`; where PFC catalogue inertia is embedded in `×10^6 mm^4`, convert it before display.
-- Do not imply `A_n` is known from the catalogue section alone; it must come from the actual connection net section.
-- `f_y` and `f_u` may default from the selected material grade, manufacturer table or product standard, but keep them editable where project certificates, thickness ranges or product-specific values may govern. If the user overrides them, calculation steps must show the current values and state that `k_f`, `alpha_b` and catalogue geometry remain tied to the selected section / lookup basis unless separately changed.
-- `Custom / Built-up` member input may use user-entered effective properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`. Calculate compression about both entered axes and report the governing `phi N_c`. State clearly that the source section calculation, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, local buckling derivation and connection eccentricity are not verified by the web tab.
-- CHS / Equal Angle / PFC / Rod may include a family-specific dimension override inside the Section properties card. Keep it collapsed by default: show only one concise `Custom dimensions` checkbox without a repeated heading or explanatory subtitle, and expand the dimension inputs and geometry note only after it is selected. This is a quick geometry screen that must feed the same member-capacity workflow (`A_g`, `A_n`, `r_x`, `r_y`, `r used`, `k_f`, `alpha_b`, `L_e`, material strengths and `k_t`) instead of creating a separate calculation path. CHS and Rod geometry derive `A_g`, `r_x = r_y` and `I_x = I_y` from circular geometry. Equal Angle and PFC custom dimensions derive `A_g`, `r_x` and `r_y` automatically from simplified rectangular component geometry; do not ask the user to manually enter `r_x/r_y` for these family overrides. State that fillets/root radii and full manufacturer table properties are not reconstructed by the browser.
 - Do not imply `k_f` is automatically derived from simplified custom family geometry unless the AS 4100 form-factor calculation is explicitly implemented. If custom Equal Angle dimensions are entered, state the current `k_f` source and require verification for slender angle geometry.
-- For EA/PFC net-section checks, provide a lightweight straight-line bolt-hole deduction option (`A_n = A_g - n_h d_h t`) using the selected angle thickness for EA. Label this as a straight-line deduction only. For PFCs, show catalogue `t_w` / `t_f` from the manufacturer table, default the net-area deduction thickness to `t_w`, and allow manual override where the net path passes through the flange or a connected element. Keep a manual `A_n` override for staggered holes, slots, cope cuts, multiple net-section paths, or any topology-dependent connection geometry. Display these values in a `Connection / net-section inputs` row, separate from section properties, material strengths and compression reduction factors.
+
+#### 15.11.2 Selected Member Summary
+
+The `Selected member` strip is a quick geometry and assumption lookup. It should stay compact and use one consistent display pattern.
+
+- Always identify the actual `r used` for `L_e/r`, even when `r_x` and `r_y` are also shown.
+- If embedded catalogue data only has a quick governing radius rather than verified `r_x/r_y`, show `r_x/r_y` as the current quick basis or user-entered values, not as certified manufacturer table values.
+- CHS should show `D`, `t`, `A_g`, `r_x = r_y`, `I_x = I_y`.
+- Rod should show `d`, `A_g`, `r_x = r_y`, `I_x = I_y`.
+- Equal Angle should show `b`, `t`, `A_g`, `r_x`, `r_y`, `I_x`, `I_y`, `r used`.
+- PFC should show `d`, `b_f`, `t_w`, `t_f`, `A_g`, `r_x`, `r_y`, `I_x`, `I_y`, `r used`.
+- Write dimensions as one clear parameter line with equals signs and units, for example `d = 150 mm; b_f = 75 mm; t_w = 6.0 mm; t_f = 9.5 mm`, rather than using dot-separated shorthand.
+- Where only `A_g` and `r` are embedded for Equal Angle catalogue rows, display `I = A_g r²`.
+- Where PFC catalogue inertia is embedded in `×10^6 mm^4`, convert it before display.
+
+#### 15.11.3 Member Inputs and Overrides
+
+- `f_y` and `f_u` may default from the selected material grade, manufacturer table or product standard, but keep them editable where project certificates, thickness ranges or product-specific values may govern. If the user overrides them, calculation steps must show the current values and state that `k_f`, `alpha_b` and catalogue geometry remain tied to the selected section / lookup basis unless separately changed.
+- Do not imply `A_n` is known from the catalogue section alone; it must come from the actual connection net section.
+- For EA/PFC net-section checks, provide a lightweight straight-line bolt-hole deduction option (`A_n = A_g - n_h d_h t`) using the selected angle thickness for EA. Label this as a straight-line deduction only. For PFCs, show catalogue `t_w` / `t_f` from the manufacturer table, default the net-area deduction thickness to `t_w`, and allow manual override where the net path passes through the flange or a connected element.
+- Keep a manual `A_n` override for staggered holes, slots, cope cuts, multiple net-section paths, or any topology-dependent connection geometry.
+- Display net-section values in a `Connection / net-section inputs` row, separate from section properties, material strengths and compression reduction factors.
 - Use `k_t = 1.00` only where the end connection satisfies AS 4100 Cl. 7.3.1 uniform force distribution.
 - For eccentric tension connections, use AS 4100 Table 7.3.2. Current quick defaults: Equal Angle one-leg connection `k_t = 0.85`; PFC/channel eccentric quick default `k_t = 0.85` unless the actual Table 7.3.2 case supports `0.90` or `1.00`; unequal angle connected by the short leg `k_t = 0.75` when that case applies. Keep `k_t` editable and project-confirmed.
+
+#### 15.11.4 Custom Member Geometry
+
+- `Custom / Built-up` member input may use user-entered effective properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`.
+- Calculate compression about both entered axes and report the governing `phi N_c`.
+- State clearly that the source section calculation, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, local buckling derivation and connection eccentricity are not verified by the web tab.
+- CHS / Equal Angle / PFC / Rod may include a family-specific dimension override inside the Section properties card.
+- Keep family-specific dimension override collapsed by default: show only one concise `Custom dimensions` checkbox without a repeated heading or explanatory subtitle, and expand the dimension inputs and geometry note only after it is selected.
+- The family override must feed the same member-capacity workflow (`A_g`, `A_n`, `r_x`, `r_y`, `r used`, `k_f`, `alpha_b`, `L_e`, material strengths and `k_t`) instead of creating a separate calculation path.
+- CHS and Rod geometry derive `A_g`, `r_x = r_y` and `I_x = I_y` from circular geometry.
+- Equal Angle and PFC custom dimensions derive `A_g`, `r_x` and `r_y` automatically from simplified rectangular component geometry; do not ask the user to manually enter `r_x/r_y` for these family overrides.
+- State that fillets/root radii and full manufacturer table properties are not reconstructed by the browser.
+
+#### 15.11.5 Factor Lookup Tables
 
 For a quick-reference web tab, do not make the user leave the page for small repeated standard lookups. If a clause table is commonly needed, compact, and within the tool scope, embed a collapsed lookup table in the page with:
 
@@ -1221,6 +1267,8 @@ For a quick-reference web tab, do not make the user leave the page for small rep
 - the source status, such as `Checked`, `For Review`, or `Source_Not_Verified`.
 
 Keep genuinely project-specific inputs outside these lookup tables. For member design this includes actual net area `A_n`, effective length `L_e`, end restraint, connection eccentricity, hole layout, stagger, cope cuts, and flexural-torsional buckling assumptions.
+
+#### 15.11.6 Member Calculation Boundary
 
 Do not imply the member tab is a full steel design engine unless all required limit states are implemented. State exclusions clearly, for example:
 
