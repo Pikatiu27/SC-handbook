@@ -1053,10 +1053,18 @@ Reduction-factor inputs:
 
 Web engineering figure and chart rules:
 
-- Figures, diagrams, sketches, and charts must support fast engineering lookup. They are not journal figures, marketing graphics, or decorative illustrations.
+- Figures, diagrams, sketches, and charts must support fast engineering lookup. They should read like journal-quality engineering schematics, not marketing graphics, decorative illustrations, or oversized publication figures.
 - The web target is screen reading on phone, tablet, and desktop. Do not apply IEEE, Nature, Elsevier, or other print-publication sizing rules such as single-column inch widths, DPI targets, or EPS/PDF-first export unless the task is explicitly to produce a publication or report figure.
 - Prefer static HTML, SVG, or Canvas for interactive web figures. Use Python / Matplotlib / SciencePlots only for exported reports, static publication figures, or generated assets that are committed as normal web files.
 - Every technical figure must have a clear engineering purpose: geometry identification, symbol convention, load path, stress/resultant relationship, section layout, or source-table lookup support.
+- Use three figure levels:
+  - `Level 1 - Inline schematic`: default web figure beside an input or result group. It explains one immediate input or assumption, such as bolt edge distance, weld throat, beam web area, effective depth, or wind direction sector.
+  - `Level 2 - Calculation schematic`: placed in a collapsed calculation/source panel when the figure explains a formula relationship, such as concrete compression block, shear-bending review, section stress resultants, or buckling length convention.
+  - `Level 3 - Reference figure`: used only when a recognised standard, handbook, catalogue, or drafting convention needs a more complete visual guide. Keep it collapsed or expandable unless it is essential to first-pass use.
+- Scientific and engineering rigor comes before visual polish. Every symbol in a figure must match the calculator input label, formula step, and source note exactly; do not mix equivalent-looking symbols such as `Aw`, `A_w`, `d1`, and `d_1` within the same tab.
+- Do not draw parameters, checks, boundary conditions, or load cases that the page does not calculate or explicitly warn about. A figure must not imply that the handbook has completed a design check that is outside the tab scope.
+- Technical figures should normally state `schematic only, not to scale` in the caption or source note unless the drawing is intentionally a scaled catalogue or CAD-style reference.
+- Figures that represent a standard clause, table, catalogue geometry, or textbook convention must be traceable in the tab source notes or project reference traceability record.
 - Keep figures compact. A figure should clarify the calculation faster than text; if it needs long explanation, move the explanation to `Calculation basis and limitations`.
 - Default web figures should be small inline engineering aids, not large feature images. Simple section-shape guide images should normally display at about 190 to 360 px wide on desktop, and no more than about 70% of the phone content width on mobile.
 - Ordinary calculator diagrams should usually fit within a 180 to 260 px display height. Larger figures must have a specific engineering reason, such as showing a strain/stress relationship or source-table interpretation that cannot be read at smaller size.
@@ -1075,6 +1083,7 @@ Web engineering figure and chart rules:
 - Use colour-blind-safe, low-saturation colours consistent with the web colour system. Avoid pure red, pure green, strong neon colours, dark low-contrast fills, and one-hue decorative palettes.
 - Use line weight intentionally: structural outlines and axes should be lighter than the highlighted force, dimension, or governing result. Avoid heavy borders around every object.
 - Gridlines, backgrounds, shadows, gradients, and decorative fills should be removed unless they directly help interpretation.
+- Aesthetic quality should come from clear hierarchy, spacing, alignment, restrained colour, and consistent typography. Do not use visual effects to make a figure look polished if they reduce engineering clarity.
 - Legends must not cover important geometry or data. If a legend is needed, keep it short or place it outside the main drawing area.
 - For charts, show enough tick marks to read the engineering trend or threshold, but do not overload the chart with dense minor ticks. Axis labels must include units.
 - For PASS / FAIL / CHECK or governing result graphics, show the text status visibly. Colour is secondary.
