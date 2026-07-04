@@ -1145,6 +1145,39 @@ CAD technical drawing rules:
   - Labels do not overlap geometry or each other on desktop or phone.
   - The caption/source note states the limitation and source basis.
 
+Page annotation rules:
+
+- Use minimal annotation in the main calculator view. The drawing should help the user locate an input or understand one calculation assumption, not repeat the full formula, source note, and limitation text.
+- A main-view drawing should normally have no more than two to four visible annotations on desktop and one to two visible annotations on phone. If more labels are needed, move the extra information to a collapsed calculation/source panel.
+- Use a two-level annotation hierarchy:
+  - `Primary annotations`: short symbols or dimensions that directly support the current input or governing result, such as `e`, `d_h`, `A_w`, `d_1`, `t_w`, `t_t`, `l_w`, `d`, `cover`, `M*`, or `V*`.
+  - `Secondary notes`: short explanatory text, accuracy class, source basis, and limitations. Put these in the caption, source note, warning, formula step, or collapsed details panel rather than inside the figure whenever possible.
+- Do not place full sentences inside the drawing area unless the sentence is essential to avoid a dangerous misunderstanding. Prefer compact labels such as `edge distance e`, `web area A_w`, `compression face`, or `schematic only`.
+- Do not label every visible part of a section or connection. Label only the parts used by the current calculator state or required to understand a warning.
+- Do not repeat a value in both the figure and a nearby result card unless the figure is value-driven and the repeated value helps visual checking. When repeated, the value, units, and rounding must match the calculator exactly.
+- Place labels outside the object geometry where possible. Use leaders or dimension lines to connect the label to the exact measured point, face, hole, weld throat, reinforcement layer, load arrow, or section component.
+- Reserve dimension lines for actual measured dimensions. Use leaders for explanatory callouts. Do not use a leader when the user expects a dimension line, and do not use a dimension line for a general note.
+- Label placement should follow a stable order: dimensions outside the object first, primary symbols nearest the related geometry second, secondary notes in the caption or details third.
+- Avoid label clutter. If labels cross, overlap, touch hatch, sit on object lines, or require very small text, reduce the number of visible labels or split the figure.
+- Phone layout must simplify annotation rather than shrink it. Hide secondary labels, stack a short legend below the SVG, or show the detailed drawing only in `details`; do not force a dense desktop drawing into a phone viewport.
+- Use one restrained accent colour only for the active or governing item. All other labels should remain neutral. Colour must reinforce the label, not replace it.
+- Do not label out-of-scope checks in the drawing. If the page excludes lateral-torsional buckling, prying, block shear, web bearing, stiffeners, anchorage, or detailed wind adoption, show that in the warning/source note rather than drawing detailed geometry for it.
+- Use tab-specific main-view label budgets:
+  - Bolt: show `e`, `d_h` or `d_f`, and the governing action direction only. Put edge convention, N/X plane notes, bearing definitions, and topology warnings in details.
+  - Weld: show `t_t`, `l_w`, weld side convention, or arrow/reference line only. Put WPS, inspection, category, parent metal, and full symbol explanation in details.
+  - Axial member: show section family, `L_e` and the relevant radius/axis only when it supports the current check. Put flexural-torsional exclusions and alpha-factor context in details.
+  - Beam: show `A_w = d_1 t_w`, `M*`, or `V*` only as needed. Put compactness, shear-bending interaction, lateral restraint, and `M_b` exclusions in details.
+  - Concrete pad: show `d`, reinforcement layer, compression face, and selected strip only. Put stress-block equations, shear-screen assumptions, reinforcement table context, and excluded detailing checks in details.
+  - Wind Site Draft: show site point, wind direction sector, terrain band, or topographic section only. Put data-source uncertainty, region adoption, terrain averaging, and topographic review notes in details.
+- For value-driven drawings, labels may show numeric dimensions only when they are calculated from current inputs or selected catalogue data. For schematic-only drawings, prefer symbol-only labels and the caption `schematic only, not to scale`.
+- If a product catalogue or handbook figure is used as a visual convention, keep the web drawing sparse and symbolic. Do not copy the catalogue's dense callout style unless the app reproduces the same level of verified data.
+- Annotation QA before publish:
+  - The user can identify the relevant input in under a few seconds.
+  - The drawing does not contain labels unrelated to the current calculation.
+  - Every symbol appears in the input, formula, result, or source note.
+  - Captions and notes carry the limitation instead of crowding the drawing.
+  - Desktop and phone layouts remain readable without overlapping labels.
+
 Drawing implementation tools:
 
 - No external CAD package is required for the web handbook standard. The preferred implementation stack is deterministic SVG generated by JavaScript or small repository scripts, shared CSS drawing classes, and browser viewport checks.
