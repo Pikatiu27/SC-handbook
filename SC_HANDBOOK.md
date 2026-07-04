@@ -1061,9 +1061,14 @@ Web engineering figure and chart rules:
   - `Level 1 - Inline schematic`: default web figure beside an input or result group. It explains one immediate input or assumption, such as bolt edge distance, weld throat, beam web area, effective depth, or wind direction sector.
   - `Level 2 - Calculation schematic`: placed in a collapsed calculation/source panel when the figure explains a formula relationship, such as concrete compression block, shear-bending review, section stress resultants, or buckling length convention.
   - `Level 3 - Reference figure`: used only when a recognised standard, handbook, catalogue, or drafting convention needs a more complete visual guide. Keep it collapsed or expandable unless it is essential to first-pass use.
+- Use three drawing-accuracy classes:
+  - `Schematic only`: concept diagram only, not drawn to scale. Use for quick symbol explanation and simple load/path convention figures.
+  - `Proportional schematic`: geometry is drawn with a clear scale relationship or realistic proportions, but is still not a construction drawing. Use for section shapes, pad depth, reinforcement layers, web/flange proportions, and similar visual checks.
+  - `Value-driven drawing`: geometry is generated from the entered values or selected catalogue row. Use only when the plotted positions, dimensions, or proportions are actually calculated from the same data used by the calculator. Label it as `drawn from entered values` or `drawn from selected catalogue data`.
 - Scientific and engineering rigor comes before visual polish. Every symbol in a figure must match the calculator input label, formula step, and source note exactly; do not mix equivalent-looking symbols such as `Aw`, `A_w`, `d1`, and `d_1` within the same tab.
 - Do not draw parameters, checks, boundary conditions, or load cases that the page does not calculate or explicitly warn about. A figure must not imply that the handbook has completed a design check that is outside the tab scope.
 - Technical figures should normally state `schematic only, not to scale` in the caption or source note unless the drawing is intentionally a scaled catalogue or CAD-style reference.
+- Value-driven figures must not be described as construction drawings or issued design drawings. They are visual checks of the entered values and must still carry the handbook's calculation limitations.
 - Figures that represent a standard clause, table, catalogue geometry, or textbook convention must be traceable in the tab source notes or project reference traceability record.
 - Keep figures compact. A figure should clarify the calculation faster than text; if it needs long explanation, move the explanation to `Calculation basis and limitations`.
 - Default web figures should be small inline engineering aids, not large feature images. Simple section-shape guide images should normally display at about 190 to 360 px wide on desktop, and no more than about 70% of the phone content width on mobile.
@@ -1111,16 +1116,41 @@ CAD technical drawing rules:
 
 - Handbook diagrams are not construction drawings, but they should still follow normal CAD drafting discipline where applicable.
 - Use Australian drawing conventions first. Common reference families include `AS 1100` technical drawing, `AS 1101` graphical symbols, and project/client drafting standards. International references such as `ISO 128` for presentation, `ISO 129` for dimensioning, `ISO 5455` for scales, `ISO 5457` for sheet layout, and `ISO 7200` for title-block data may be used as background when Australian or project rules do not give enough detail.
+- Prefer deterministic SVG for CAD-style handbook figures. Use HTML/CSS only for simple legends or labels; use bitmap images only when the source is a verified external visual reference or when a raster export is explicitly required.
+- Draw value-driven SVG figures from an internal engineering coordinate model, then map the model to the SVG `viewBox`. Do not position important geometry by visual trial and error.
+- Keep drawing helpers reusable. Standard helpers should cover object lines, dimension lines, extension lines, leaders, arrowheads, centre lines, hidden lines, hatching, load/action arrows, labels, and captions.
+- Use CSS variables or shared classes for CAD drawing styles so all tabs share the same line weights, arrowheads, text size, caption style, fill opacity, hatching, and highlight colours.
 - Keep object geometry, dimensions, centre lines, hidden lines, section hatching, leaders, reference lines, and annotations visually distinct. Do not use the same line weight and style for every element.
 - Use a small, consistent line-weight hierarchy: heavier for visible object outlines and governing load paths, lighter for dimensions, leaders, centre lines, construction lines, and hatching. Hidden or secondary geometry should never compete with the governing result.
 - Use standard CAD line types consistently: continuous visible lines, dashed hidden lines, chain centre lines, thin dimension and leader lines, and consistent hatch patterns for cut material. Do not encode engineering meaning with colour alone.
 - Dimensions must be unambiguous. Show units where the context is not obvious, keep arrowheads/ticks consistent, avoid duplicate dimensions, and avoid dimensions that cross through important geometry. Prefer one clear labelled dimension over several crowded labels.
+- Dimension text must describe exactly what is being measured. Use formula symbols where the calculator uses formula symbols, for example `d_f`, `d_h`, `e`, `A_w`, `d_1`, `t_w`, `L_e`, `r`, `M*`, and `V*`; use plain engineering names only where the formula does not have a symbol.
+- Show numeric values only when they come from the current input or selected catalogue row. Otherwise show symbol-only labels to avoid false precision.
+- Use the same rounding and unit convention in the figure label, input group, result card, and formula step. A drawing must not show a different rounded value from the calculator output unless the label states it is approximate.
+- Leaders and dimension lines must point to the measured object or action, not merely to nearby space. Avoid crossing leaders, labels over geometry, text on top of hatch, and arrowheads that touch unrelated objects.
 - Text, dimensions, and symbols must remain readable at the intended display size. For web handbook figures, simplify or split the figure before reducing text below the standard small-text level.
 - Use consistent terminology and notation between the diagram, calculator labels, formulas, and source notes. The drawing label should not introduce a different symbol for the same variable.
 - CAD-style figures should be drawn to a clear scale relationship where scale helps understanding, but web handbook sketches may be schematic when exact scale would reduce readability. Label schematic figures as visual guides where necessary.
 - Keep layers or SVG groups logically separated by purpose when generating assets: geometry, dimensions, loads/actions, labels, hatching, reference/source notes, and interactive states. This makes later review and updates traceable.
 - Title blocks, revision blocks, north points, grid bubbles, material callouts, weld symbols, section marks, detail bubbles, and other formal drawing elements should only be included when they serve the quick-reference purpose. Do not add full drawing-sheet decoration to calculator figures.
 - Before publishing a CAD-style figure, check it at desktop and phone width for clipping, overlapping labels, unreadable text, incorrect line hierarchy, and horizontal overflow.
+- Before publishing a value-driven figure, test at least one normal case and one extreme-but-valid input case. The geometry must stay inside the viewBox, labels must remain readable, and the displayed dimensions must still match the calculator values.
+- CAD-style drawings should be reviewed against this acceptance checklist:
+  - The figure purpose is clear and limited to one calculation idea.
+  - The accuracy class is stated or obvious from context.
+  - Symbols match inputs, formulas, and source notes.
+  - Numeric labels come from the same data as the calculation.
+  - Line types and line weights follow the shared CAD style.
+  - Units and rounding are consistent with the calculator.
+  - Labels do not overlap geometry or each other on desktop or phone.
+  - The caption/source note states the limitation and source basis.
+
+Drawing implementation tools:
+
+- No external CAD package is required for the web handbook standard. The preferred implementation stack is deterministic SVG generated by JavaScript or small repository scripts, shared CSS drawing classes, and browser viewport checks.
+- Use Python scripts only for repeatable generated SVG assets where a script is clearer than hand-editing SVG. Keep the script in the repository when the generated asset is committed.
+- Use a browser screenshot or DOM inspection check before publishing any new or revised drawing. A drawing change is not complete until desktop and phone widths have been visually checked.
+- Use full CAD software only when importing or comparing against project drawings, not for routine handbook schematic generation.
 
 ### 15.9 Web Warning and Limitation Style
 
