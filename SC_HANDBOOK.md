@@ -1316,6 +1316,7 @@ The `Selected member` strip is a quick geometry and assumption lookup. It should
 - Display net-section values in a `Connection / net-section inputs` row, separate from section properties, material strengths and compression reduction factors.
 - Use `k_t = 1.00` only where the end connection satisfies AS 4100 Cl. 7.3.1 uniform force distribution.
 - For eccentric tension connections, use AS 4100 Table 7.3.2. Current quick defaults: Equal Angle one-leg connection `k_t = 0.85`; PFC/channel eccentric quick default `k_t = 0.85` unless the actual Table 7.3.2 case supports `0.90` or `1.00`; unequal angle connected by the short leg `k_t = 0.75` when that case applies. Keep `k_t` editable and project-confirmed.
+- Where the member tab reports utilisation, keep compression and tension design actions as separate optional project inputs (`N_c*` and `N_t*`). Do not use a single action-type selector; report `N_c* / phi N_c`, `N_t* / phi N_t` and the governing utilisation ratio without implying the actions act simultaneously.
 
 #### 15.11.4 Custom Member Geometry
 

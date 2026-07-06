@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260703beamnotation1">
+  <link rel="stylesheet" href="styles.css?v=20260706memberrefgap1">
 </head>
 <body>
   <header class="topbar">
@@ -494,75 +494,9 @@
       <section class="lookup-card member-card">
         <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up</button></div>
 
-        <details class="section-guide-card">
-          <summary><span><b>Section guide</b><small>Product-catalogue style dimension sketches</small></span><i>+</i></summary>
-          <div class="section-guide diagram-guide" aria-label="Member section guide">
-            <article class="manual-section-card" data-member-guide="chs"><img class="section-diagram" src="assets/generated/member-section-chs.svg" alt="CHS section diagram showing D and t dimensions"><div><strong>CHS</strong><small>D, t · Orrcon catalogue / AS/NZS 1163 basis</small></div></article>
-            <article class="manual-section-card" data-member-guide="ea" hidden><img class="section-diagram" src="assets/generated/member-section-equal-angle.svg" alt="Equal angle section diagram showing b, t and r dimensions"><div><strong>Equal Angle</strong><small>b, t, r · OneSteel / InfraBuild Tables 19-21</small></div></article>
-            <article class="manual-section-card" data-member-guide="pfc" hidden><img class="section-diagram" src="assets/generated/member-section-pfc.svg" alt="PFC section diagram showing d, bf, tw, tf and r dimensions"><div><strong>PFC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, r · OneSteel / InfraBuild Tables 15-16</small></div></article>
-            <article class="manual-section-card" data-member-guide="rod" hidden><img class="section-diagram" src="assets/generated/member-section-rod.svg" alt="Round bar or rod section diagram showing diameter d"><div><strong>Rod</strong><small>d · OneSteel / InfraBuild Table 3</small></div></article>
-            <article class="manual-section-card custom-section-card" data-member-guide="custom" hidden><div><strong>Custom / Built-up</strong><small>User-entered effective properties. Axial capacity only.</small></div></article>
-          </div>
-        </details>
-
-        <details class="section-guide-card member-lookup-card">
-          <summary><span><b>AS 4100 factor lookup</b><small>Quick guides for r, k<sub>f</sub>, α<sub>b</sub> and k<sub>t</sub>; A<sub>n</sub> and L<sub>e</sub> remain project inputs</small></span><i>+</i></summary>
-          <div class="lookup-table-stack">
-            <section>
-              <h3>α<sub>b</sub> member section constant guide</h3>
-              <div class="table-scroll">
-                <table class="compact-lookup-table">
-                  <thead><tr><th>Member case</th><th>Use this value when</th><th>α<sub>b</sub></th><th>Status</th></tr></thead>
-                  <tbody>
-                    <tr><td>CHS</td><td>Cold-formed, non-stress-relieved CHS.</td><td>-0.5</td><td>AS 4100 Table 6.3.3(A) or (B), CHS row selected by k<sub>f</sub>.</td></tr>
-                    <tr><td>PFC</td><td>Hot-rolled channel with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), hot-rolled channels.</td></tr>
-                    <tr><td>Equal Angle</td><td>Angle with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), angles.</td></tr>
-                    <tr><td>Equal Angle</td><td>Angle with k<sub>f</sub> &lt; 1.0.</td><td>1.0</td><td>AS 4100 Table 6.3.3(B), other sections not listed.</td></tr>
-                    <tr><td>Rod</td><td>Solid circular rod with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), other sections not listed.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
-            <section>
-              <h3>k<sub>f</sub> form factor guide</h3>
-              <div class="table-scroll">
-                <table class="compact-lookup-table">
-                  <thead><tr><th>Member case</th><th>k<sub>f</sub> used</th><th>Source / basis</th></tr></thead>
-                  <tbody>
-                    <tr><td>CHS</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, A<sub>e</sub> = A<sub>g</sub> for this quick CHS geometry screen.</td></tr>
-                    <tr><td>PFC</td><td>1.000</td><td>OneSteel / InfraBuild Tables 15–16, form factor row.</td></tr>
-                    <tr><td>Equal Angle</td><td>catalogue value</td><td>OneSteel / InfraBuild Tables 19–21, form factor row; some thin angles are below 1.0.</td></tr>
-                    <tr><td>Rod</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, solid round geometry with A<sub>e</sub> = A<sub>g</sub>.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
-            <section>
-              <h3>k<sub>t</sub> tension correction guide</h3>
-              <div class="table-scroll">
-                <table class="compact-lookup-table">
-                  <thead><tr><th>Tension connection case</th><th>Use this value when</th><th>k<sub>t</sub></th><th>Status</th></tr></thead>
-                  <tbody>
-                    <tr><td>Uniform force distribution</td><td>End connection satisfies AS 4100 Cl. 7.3.1.</td><td>1.00</td><td>AS 4100 Cl. 7.3.1.</td></tr>
-                    <tr><td>Angle, one leg connected</td><td>Table case (a); use 0.75 only for unequal angle connected by the short leg.</td><td>0.85</td><td>AS 4100 Table 7.3.2.</td></tr>
-                    <tr><td>Unequal Angle, short leg connected</td><td>Table case (a), unequal angle connected by the short leg.</td><td>0.75</td><td>AS 4100 Table 7.3.2.</td></tr>
-                    <tr><td>Channel / tee eccentric cases</td><td>Use the matching Table 7.3.2 configuration case.</td><td>0.85 / 0.90 / 1.00</td><td>AS 4100 Table 7.3.2.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
-            <section class="lookup-note-grid">
-              <article><b>A<sub>n</sub></b><span>Not a catalogue lookup. Calculate from the actual holes, slots, stagger, threads, cope cuts and net-section path.</span></article>
-              <article><b>L<sub>e</sub></b><span>Not a section-table lookup. Determine from actual end restraint, frame action and effective-length assumptions.</span></article>
-              <article><b>r</b><span>Axis-dependent radius of gyration used in L<sub>e</sub>/r. The quick default is editable when a specific buckling axis governs.</span></article>
-              <article><b>Excluded</b><span>Combined actions, flexural-torsional buckling, connection eccentricity and connection capacity remain outside this quick tab.</span></article>
-            </section>
-          </div>
-        </details>
-
         <div class="input-cluster input-cluster-four member-main-inputs">
           <section class="input-group input-group-section" id="memberSectionGroup">
-            <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Section geometry, checked radius and effective length.</small></span>
+            <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Geometry, r and L<sub>e</sub>.</small></span>
             <div class="input-group-fields three" id="memberCatalogueSectionFields">
               <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
               <label id="memberRadiusField"><span>r <i>editable</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
@@ -595,7 +529,7 @@
             </div>
           </section>
           <section class="input-group input-group-material" id="memberMaterialGroup">
-            <span class="input-group-heading"><b>Material property</b><small>Grade lookup with editable strength values for project data.</small></span>
+            <span class="input-group-heading"><b>Material properties</b><small>Grade values; edit for project data.</small></span>
             <div class="input-group-fields three">
               <label id="memberGradeField"><span>Steel grade</span><select id="memberGrade"></select></label>
               <label><span>f<sub>y</sub> <i>editable</i></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
@@ -603,7 +537,7 @@
             </div>
           </section>
           <section class="input-group input-group-factor" id="memberFactorGroup">
-            <span class="input-group-heading"><b>Relevant factors</b><small>Code coefficients used in the compression reduction.</small></span>
+            <span class="input-group-heading"><b>Compression reduction factors</b><small>Form factor k<sub>f</sub> and member section constant &alpha;<sub>b</sub>.</small></span>
             <div class="input-group-fields" id="memberCatalogueFactorFields">
               <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
             </div>
@@ -613,21 +547,12 @@
               <label><span>&alpha;<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
             </div>
           </section>
-          <section class="input-group input-group-action" id="memberActionGroup">
-            <span class="input-group-heading"><b>Design action</b><small>Optional axial demand check against the selected limit state.</small></span>
-            <div class="input-group-fields two">
-              <label><span>Action type</span><select id="memberActionType"><option value="compression">Compression N*</option><option value="tension">Tension N*</option></select></label>
-              <label><span>N* axial action</span><span class="unit"><input id="memberAxialDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
-            </div>
-          </section>
         </div>
         <p class="result-note user-input-note" id="memberAlphaBAssumption">α<sub>b</sub> = -0.5 assumed cold-formed non-stress-relieved CHS.</p>
 
-        <div class="member-summary"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl><div class="member-dimensions-cell"><dt>Dimensions</dt><dd id="memberDimensions">—</dd></div><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r<sub>x</sub></dt><dd id="memberRx">—</dd></div><div><dt>r<sub>y</sub></dt><dd id="memberRy">—</dd></div><div><dt>I<sub>x</sub></dt><dd id="memberIx">—</dd></div><div><dt>I<sub>y</sub></dt><dd id="memberIy">—</dd></div><div><dt>r used</dt><dd id="memberRadius">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div></dl></div>
-
         <div class="input-cluster member-connection-inputs">
           <section class="input-group input-group-factor member-net-section-group">
-            <span class="input-group-heading"><b>Connection / net-section inputs</b><small id="memberNetAreaSource">Use auto net area only for a straight-line bolt-hole deduction, or manual A<sub>n</sub> for slots, stagger, cope cuts and other project-specific net-section paths.</small></span>
+            <span class="input-group-heading"><b>Connection / net-section inputs</b><small id="memberNetAreaSource">A<sub>n</sub> and k<sub>t</sub> for AS 4100 tension and compression checks.</small></span>
             <div class="input-group-fields six member-net-section-fields">
               <label class="member-net-method"><span>A<sub>n</sub> method</span><span class="unit"><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></span></label>
               <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
@@ -639,25 +564,126 @@
           </section>
         </div>
 
-        <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Axial design capacities</h2></div><span>φ = 0.90</span></div>
-          <div class="capacity-grid member-results">
-            <article class="capacity-card selected-shear"><span class="capacity-label">Design member capacity in axial compression <b>φN<sub>c</sub></b></span><strong><output id="memberCompression">—</output><small> kN</small></strong><p>AS 4100 Cl. 6.3</p></article>
-            <article class="capacity-card"><span class="capacity-label">Design section capacity in compression <b>φN<sub>s</sub></b></span><strong><output id="sectionCompression">—</output><small> kN</small></strong><p>AS 4100 Cl. 6.2</p></article>
-            <article class="capacity-card alternate-shear"><span class="capacity-label">Design capacity in axial tension <b>φN<sub>t</sub></b></span><strong><output id="memberTension">—</output><small> kN</small></strong><p>AS 4100 Cl. 7.1 and AS 4100 Cl. 7.2</p></article>
+        <div class="member-summary member-selected-section">
+          <div class="member-summary-visual" aria-label="Selected member section guide">
+            <div class="section-guide diagram-guide">
+              <article class="manual-section-card" data-member-guide="chs"><img class="section-diagram" src="assets/generated/member-section-chs.svg" alt="CHS section diagram showing D and t dimensions"><div><strong>CHS</strong><small>D, t · Orrcon catalogue / AS/NZS 1163 basis</small></div></article>
+              <article class="manual-section-card" data-member-guide="ea" hidden><img class="section-diagram" src="assets/generated/member-section-equal-angle.svg" alt="Equal angle section diagram showing b, t and r dimensions"><div><strong>Equal Angle</strong><small>b, t, r · OneSteel / InfraBuild Tables 19-21</small></div></article>
+              <article class="manual-section-card" data-member-guide="pfc" hidden><img class="section-diagram" src="assets/generated/member-section-pfc.svg" alt="PFC section diagram showing d, bf, tw, tf and r dimensions"><div><strong>PFC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, r · OneSteel / InfraBuild Tables 15-16</small></div></article>
+              <article class="manual-section-card" data-member-guide="rod" hidden><img class="section-diagram" src="assets/generated/member-section-rod.svg" alt="Round bar or rod section diagram showing diameter d"><div><strong>Rod</strong><small>d · OneSteel / InfraBuild Table 3</small></div></article>
+              <article class="manual-section-card custom-section-card" data-member-guide="custom" hidden><div><strong>Custom / Built-up</strong><small>User-entered effective properties.</small></div></article>
+            </div>
           </div>
-          <div class="member-metrics"><div><span>L<sub>e</sub>/r</span><strong id="memberSlenderness">—</strong></div><div><span>λ<sub>n</sub></span><strong id="memberLambdaN">—</strong></div><div><span>α<sub>c</sub></span><strong id="memberAlphaC">—</strong></div><div><span>Governing</span><strong id="memberGoverning">—</strong></div></div>
-          <div class="tension-limits"><div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>φA<sub>g</sub>f<sub>y</sub></small></div><div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>φ(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>)</small></div><div><span>Tension governing limit state</span><strong id="tensionGoverning">—</strong><small>AS 4100 Cl. 7.2 - lesser value</small></div></div>
-          <div class="interaction-result member-utilisation"><span>Axial utilisation ratio</span><strong id="memberUtilisation">—</strong><b id="memberUtilisationStatus">Optional N*</b></div>
-          <p class="result-note" id="memberWarning">Results calculate after section and grade selection. Verify effective length, section availability and all connection effects.</p>
-          <p class="result-note user-input-note" id="memberInputStatus">f<sub>y</sub> / f<sub>u</sub> and r default from the selected lookup basis and may be overridden. Confirm A<sub>n</sub>, k<sub>t</sub>, L<sub>e</sub> and the checked buckling axis from the actual member.</p>
+          <div class="member-summary-copy"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl class="member-summary-metrics"><div data-member-summary-cell="D"><dt>D</dt><dd id="memberDimD">—</dd></div><div data-member-summary-cell="d"><dt>d</dt><dd id="memberDimDepth">—</dd></div><div data-member-summary-cell="b"><dt>b</dt><dd id="memberDimB">—</dd></div><div data-member-summary-cell="bf"><dt>b<sub>f</sub></dt><dd id="memberDimBf">—</dd></div><div data-member-summary-cell="t"><dt>t</dt><dd id="memberDimT">—</dd></div><div data-member-summary-cell="tw"><dt>t<sub>w</sub></dt><dd id="memberDimTw">—</dd></div><div data-member-summary-cell="tf"><dt>t<sub>f</sub></dt><dd id="memberDimTf">—</dd></div><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r used</dt><dd id="memberRadius">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div><div><dt>r<sub>x</sub></dt><dd id="memberRx">—</dd></div><div><dt>r<sub>y</sub></dt><dd id="memberRy">—</dd></div><div><dt>I<sub>x</sub></dt><dd id="memberIx">—</dd></div><div><dt>I<sub>y</sub></dt><dd id="memberIy">—</dd></div></dl><p class="member-drawing-note">Schematic only; not a source of section properties.</p></div>
+        </div>
+
+        <section class="capacity-section" aria-live="polite">
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Member capacity</h2></div><span>capacity factor &phi; = 0.90</span></div>
+          <div class="capacity-grid member-results">
+            <article class="capacity-card selected-shear"><span class="capacity-label">Design compression capacity <b>&phi;N<sub>c</sub></b></span><strong><output id="memberCompression">—</output><small> kN</small></strong><p>AS 4100 Cl. 6.3 member capacity</p></article>
+            <article class="capacity-card alternate-shear"><span class="capacity-label">Design tension capacity <b>&phi;N<sub>t</sub></b></span><strong><output id="memberTension">—</output><small> kN</small></strong><p>min(gross-section yielding, net-section fracture)</p></article>
+          </div>
+          <details class="member-demand-check" id="memberActionGroup" open>
+            <summary><span><b>Design action check</b><small>Optional project actions and governing utilisation.</small></span><i>+</i></summary>
+            <div class="member-demand-body">
+              <div class="member-demand-row">
+                <div class="member-demand-copy"><b>Design actions</b><small>Optional actions from relevant load combinations.</small></div>
+                <div class="member-demand-controls">
+                  <label><span>Compression design action N<sub>c</sub><sup>*</sup></span><span class="unit"><input id="memberCompressionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                  <label><span>Tension design action N<sub>t</sub><sup>*</sup></span><span class="unit"><input id="memberTensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                </div>
+              </div>
+              <div class="member-demand-row">
+                <div class="member-demand-copy"><b>Governing utilisation ratio</b><small>Maximum ratio from entered compression and tension actions.</small></div>
+                <div class="member-demand-ratio-box"><strong id="memberUtilisation">&mdash;</strong><small id="memberUtilisationStatus" class="check">No design action</small></div>
+              </div>
+            </div>
+          </details>
+          <p class="result-note" id="memberWarning">Select section and grade to calculate member capacity.</p>
+          <p class="result-note user-input-note" id="memberInputStatus">Confirm A<sub>n</sub>, k<sub>t</sub>, effective length L<sub>e</sub> and checked buckling axis for the project member.</p>
         </section>
       </section>
 
-      <details class="detail-card"><summary><span><b>Calculation steps</b><small>Axial tension, section compression, slenderness and member reduction</small></span><i>+</i></summary><div class="detail-body"><div id="memberFormulaSteps" class="formula-list member-formulas"></div></div></details>
+      <details class="detail-card member-result-details">
+        <summary><span><b>Detailed calculation</b><small>Capacity components and formula trace</small></span><i>+</i></summary>
+        <div class="detail-body">
+          <section>
+            <h3>Capacity components</h3>
+            <div class="member-check-grid">
+              <div><span>Design section capacity</span><strong><output id="sectionCompression">—</output><small> kN</small></strong><small>&phi;N<sub>s</sub>, AS 4100 Cl. 6.2</small></div>
+              <div><span>Slenderness</span><strong id="memberSlenderness">—</strong><small>L<sub>e</sub>/r</small></div>
+              <div><span>Compression reduction factor</span><strong id="memberAlphaC">—</strong><small>&alpha;<sub>c</sub>, AS 4100 Cl. 6.3.3</small></div>
+              <div><span>Compression limit state</span><strong id="memberGoverning">—</strong><small>governing &phi;N<sub>c</sub> basis</small></div>
+              <div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>&phi;A<sub>g</sub>f<sub>y</sub></small></div>
+              <div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>&phi;(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>)</small></div>
+              <div><span>Tension limit state</span><strong id="tensionGoverning">—</strong><small>governing AS 4100 Cl. 7.2 basis</small></div>
+            </div>
+            <span id="memberLambdaN" hidden>—</span>
+          </section>
+          <section>
+            <h3>Calculation steps</h3>
+            <div id="memberFormulaSteps" class="formula-list member-formulas"></div>
+          </section>
+        </div>
+      </details>
+
+      <details class="section-guide-card member-lookup-card">
+        <summary><span><b>Reference values</b><small>AS 4100 factors and section constants</small></span><i>+</i></summary>
+        <div class="lookup-table-stack">
+          <section>
+            <h3>&alpha;<sub>b</sub> member section constant</h3>
+            <div class="table-scroll">
+              <table class="compact-lookup-table">
+                <thead><tr><th>Member case</th><th>Use this value when</th><th>α<sub>b</sub></th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>CHS</td><td>Cold-formed, non-stress-relieved CHS.</td><td>-0.5</td><td>AS 4100 Table 6.3.3(A) or (B), CHS row selected by k<sub>f</sub>.</td></tr>
+                  <tr><td>PFC</td><td>Hot-rolled channel with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), hot-rolled channels.</td></tr>
+                  <tr><td>Equal Angle</td><td>Angle with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), angles.</td></tr>
+                  <tr><td>Equal Angle</td><td>Angle with k<sub>f</sub> &lt; 1.0.</td><td>1.0</td><td>AS 4100 Table 6.3.3(B), other sections not listed.</td></tr>
+                  <tr><td>Rod</td><td>Solid circular rod with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), other sections not listed.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section>
+            <h3>k<sub>f</sub> form factor</h3>
+            <div class="table-scroll">
+              <table class="compact-lookup-table">
+                <thead><tr><th>Member case</th><th>Form factor k<sub>f</sub></th><th>Source basis</th></tr></thead>
+                <tbody>
+                  <tr><td>CHS</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, A<sub>e</sub> = A<sub>g</sub> for this quick CHS geometry screen.</td></tr>
+                  <tr><td>PFC</td><td>1.000</td><td>OneSteel / InfraBuild Tables 15–16, form factor row.</td></tr>
+                  <tr><td>Equal Angle</td><td>catalogue value</td><td>OneSteel / InfraBuild Tables 19–21, form factor row; some thin angles are below 1.0.</td></tr>
+                  <tr><td>Rod</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, solid round geometry with A<sub>e</sub> = A<sub>g</sub>.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section>
+            <h3>k<sub>t</sub> tension correction factor</h3>
+            <div class="table-scroll">
+              <table class="compact-lookup-table">
+                <thead><tr><th>Tension connection case</th><th>Use this value when</th><th>k<sub>t</sub></th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Uniform force distribution</td><td>End connection satisfies AS 4100 Cl. 7.3.1.</td><td>1.00</td><td>AS 4100 Cl. 7.3.1.</td></tr>
+                  <tr><td>Angle, one leg connected</td><td>Table case (a); use 0.75 only for unequal angle connected by the short leg.</td><td>0.85</td><td>AS 4100 Table 7.3.2.</td></tr>
+                  <tr><td>Unequal Angle, short leg connected</td><td>Table case (a), unequal angle connected by the short leg.</td><td>0.75</td><td>AS 4100 Table 7.3.2.</td></tr>
+                  <tr><td>Channel / tee eccentric cases</td><td>Use the matching Table 7.3.2 configuration case.</td><td>0.85 / 0.90 / 1.00</td><td>AS 4100 Table 7.3.2.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section class="lookup-note-grid">
+            <article><b>A<sub>n</sub></b><span>Not a catalogue lookup. Calculate from the actual holes, slots, stagger, threads, cope cuts and net-section path.</span></article>
+            <article><b>L<sub>e</sub></b><span>Not a section-table lookup. Determine the effective length from actual end restraint, frame action and project assumptions.</span></article>
+            <article><b>r</b><span>Axis-dependent radius of gyration used in L<sub>e</sub>/r. The quick default is editable when a specific buckling axis governs.</span></article>
+            <article><b>Not covered</b><span>Combined actions, flexural-torsional buckling, connection eccentricity and connection capacity remain outside this quick tab.</span></article>
+          </section>
+        </div>
+      </details>
 
       <details class="source-card">
-        <summary><span><b>Calculation basis and limitations</b><small>Manufacturer data and AS 4100 design boundaries</small></span><i>+</i></summary>
+        <summary><span><b>Basis and limitations</b><small>Manufacturer data and AS 4100 design boundaries</small></span><i>+</i></summary>
         <div class="source-body">
           <div class="source-notes">
             <p><b>Issue status</b> &middot; For Review. Default PFC, Equal Angle and Rod rows have source-register traceability; remaining non-default embedded rows still need row traceability before `Checked` release.</p>
@@ -672,9 +698,9 @@
           </div>
           <div class="source-notes">
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
-            <p><b>Project inputs</b> &middot; f<sub>y</sub>, f<sub>u</sub> and the quick-check r default are editable for certificate, section-axis or project-specific values. Determine A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub> from the actual member and connection. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases must match AS 4100 Table 7.3.2. Recheck k<sub>f</sub> / &alpha;<sub>b</sub> only if the actual member differs from the selected quick-screen row.</p>
-            <p><b>Source status</b> &middot; CHS D/t and Rod diameter are geometry-derived; Equal Angle and PFC tabulated A<sub>g</sub> properties are catalogue-derived. Radius of gyration r is the value about the checked buckling axis; this quick tab defaults to the current geometry/catalogue governing value, including PFC r<sub>min</sub>. Compression section capacity uses A<sub>n</sub> under AS 4100 Cl. 6.2; with no holes entered, A<sub>n</sub> = A<sub>g</sub>.</p>
-            <p>Equal Angle checks use catalogue r<sub>n</sub> = r<sub>p</sub>. PFC checks use r<sub>min</sub>. For custom / built-up inputs, verify connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling and local buckling separately. Weak-axis, torsional/flexural-torsional buckling, connection eccentricity, bending, shear, combined actions and connection capacity are excluded unless explicitly entered through effective properties and independently checked.</p>
+            <p><b>Project inputs</b> &middot; Editable: f<sub>y</sub>, f<sub>u</sub> and r. Project-defined: A<sub>n</sub>, k<sub>t</sub>, L<sub>e</sub> and checked axis. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases use AS 4100 Table 7.3.2.</p>
+            <p><b>Source status</b> &middot; CHS and Rod values are geometry-derived. Equal Angle and PFC values are catalogue-derived. AS 4100 Cl. 6.2 uses A<sub>n</sub>; if no holes are entered, A<sub>n</sub> = A<sub>g</sub>.</p>
+            <p><b>Excluded</b> &middot; Flexural-torsional buckling, connection eccentricity, bending, shear, combined actions, connection capacity, built-up connector spacing and local buckling.</p>
           </div>
         </div>
       </details>
@@ -683,6 +709,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260703beamnotation1"></script>
+  <script src="app.js?v=20260706memberparams2"></script>
 </body>
 </html>
