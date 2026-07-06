@@ -543,7 +543,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .summary-heading { display: flex !important; align-items: center; gap: 8px; }
 .summary-heading .section-tag { display: inline-block; flex: 0 0 auto; }
 .detail-card > summary b, .source-card > summary b { font-size: var(--fs-md); line-height: 1.2; font-weight: 800; }
-.detail-card.major-detail > summary b { font-size: var(--fs-md); line-height: 1.2; font-weight: 900; }
+.detail-card.major-detail > summary b { font-size: var(--fs-md); line-height: 1.2; font-weight: 800; }
 .detail-card.major-detail > summary { padding: 15px 16px; }
 .detail-card > summary small, .source-card > summary small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); font-weight: 400; }
 .detail-card > summary i, .source-card > summary i { color: var(--green); font-size: var(--fs-md); font-style: normal; transition: transform .2s; }

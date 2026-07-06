@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260706weldresults2">
+  <link rel="stylesheet" href="styles.css?v=20260706boltchecks2">
 </head>
 <body>
   <header class="topbar">
@@ -63,7 +63,7 @@
       </section>
 
       <details class="detail-card major-detail" id="connectionDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Bolt group, shear planes, ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
+        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed connection checks</b></span><small>Bolt group, shear planes, ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
         <div class="detail-body">
           <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="1"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>default 1.0</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result"><span>Design shear capacity of bolt group</span><strong id="groupShearCapacity">133.4 kN</strong><small id="groupShearBasis">1 bolt × 1 N plane per bolt = 1 total shear plane.</small></div></section>
           <section>
