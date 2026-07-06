@@ -251,18 +251,31 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-summary { margin: 12px 0 16px; padding: 10px 12px; border-radius: 10px; background: var(--green-soft); display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 9px; }
 .member-selected-section { grid-template-columns: minmax(0, 1fr) minmax(190px, 220px); align-items: stretch; gap: 0; padding: 0; background: #f2f8ff; border: 1px solid #cfe1ef; overflow: hidden; }
 .member-summary-visual { order: 2; width: 100%; max-width: 220px; min-width: 0; align-self: stretch; justify-self: stretch; padding-top: 0; display: grid; }
+.beam-summary-visual { order: 2; width: 100%; max-width: 220px; min-width: 0; align-self: stretch; justify-self: stretch; padding-top: 0; display: grid; }
 .member-summary-visual .section-guide { height: 100%; padding: 0; display: grid; }
+.beam-summary-visual .section-guide { height: 100%; padding: 0; display: grid; }
 .member-summary-visual .section-guide article { height: 100%; padding: 12px; border-width: 0 0 0 1px; border-color: #cfe1ef; border-radius: 0; background: #fff; gap: 8px; grid-template-rows: minmax(0, 1fr) auto; align-items: stretch; }
+.beam-summary-visual .section-guide article { height: 100%; padding: 12px; border-width: 0 0 0 1px; border-color: #dbcdec; border-radius: 0; background: #fff; gap: 8px; grid-template-rows: minmax(0, 1fr) auto; align-items: stretch; }
 .member-summary-visual .section-guide strong { font-size: var(--fs-xs); }
+.beam-summary-visual .section-guide strong { font-size: var(--fs-xs); }
 .member-summary-visual .section-guide small { font-size: 11px; line-height: 1.25; }
+.beam-summary-visual .section-guide small { font-size: 11px; line-height: 1.25; }
 .member-summary-visual .section-diagram { width: 100%; height: 100%; min-height: 136px; max-height: none; }
+.beam-summary-visual .section-diagram { width: 100%; height: 100%; min-height: 136px; max-height: none; }
 .member-summary-copy { order: 1; min-width: 0; padding: 10px 14px 10px 12px; text-align: left; }
+.beam-summary-copy { order: 1; min-width: 0; padding: 10px 14px 10px 12px; text-align: left; }
 .member-summary-copy > div > span, .member-summary-copy > div > strong, .member-summary-copy > div > small { display: block; }
+.beam-summary-copy > div > span, .beam-summary-copy > div > strong, .beam-summary-copy > div > small { display: block; }
 .member-summary-copy > div > span { color: var(--ink); font-size: 16px; line-height: 1.2; font-weight: 800; text-transform: none; letter-spacing: 0; text-align: left; }
+.beam-summary-copy > div > span { color: var(--ink); font-size: 16px; line-height: 1.2; font-weight: 800; text-transform: none; letter-spacing: 0; text-align: left; }
 .member-summary-copy > div > strong { margin-top: 2px; font-size: var(--fs-md); line-height: 1.2; font-weight: 850; }
+.beam-summary-copy > div > strong { margin-top: 2px; font-size: var(--fs-md); line-height: 1.2; font-weight: 850; }
 .member-summary-copy > div > small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.3; }
+.beam-summary-copy > div > small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.3; }
 .member-drawing-note { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.3; }
+.beam-drawing-note { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.3; }
 .beam-summary { margin: 16px 0 20px; padding: 13px 14px; border-radius: 11px; background: var(--green-soft); display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 11px; }
+.beam-summary.beam-selected-section { grid-template-columns: minmax(0, 1fr) minmax(190px, 220px); align-items: stretch; gap: 0; padding: 0; background: #f8f4ff; border: 1px solid #dbcdec; overflow: hidden; }
 .weld-summary { margin: 16px 0 10px; padding: 13px 14px; border-radius: 11px; background: var(--green-soft); display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .member-summary > div > span, .member-summary > div > strong, .member-summary > div > small { display: block; }
 .beam-summary > div > span, .beam-summary > div > strong, .beam-summary > div > small { display: block; }
@@ -281,7 +294,6 @@ main, footer { max-width: 1040px; margin: auto; }
 .weld-summary dl { display: grid; grid-template-columns: repeat(5, auto); gap: 18px; margin: 0; }
 .member-summary dl div { text-align: left; min-width: 0; }
 .beam-summary dl div { text-align: left; min-width: 0; }
-.beam-summary dl .beam-dimensions-cell { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .weld-summary dl div { text-align: right; }
 .member-summary dt { color: var(--muted); font-size: 11px; line-height: 1.15; font-weight: 700; }
 .beam-summary dt { color: var(--muted); font-size: var(--fs-xs); }
@@ -289,7 +301,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-summary dd { margin: 3px 0 0; color: var(--ink); font-size: var(--fs-xs); line-height: 1.25; font-weight: 700; white-space: normal; overflow-wrap: anywhere; }
 .member-summary-metrics dd { white-space: nowrap; }
 .beam-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
-.beam-summary .beam-dimensions-cell dd { white-space: normal; line-height: 1.25; }
+.beam-summary-metrics dd { margin: 3px 0 0; color: var(--ink); font-size: var(--fs-xs); line-height: 1.25; font-weight: 700; white-space: nowrap; overflow-wrap: anywhere; }
 .weld-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .input-manual, .input-reference { padding: 7px; border-radius: 8px; border: 1px solid transparent; }
 .input-manual { background: var(--input-manual-bg, var(--green-soft)); border-color: rgba(104, 118, 111, .20); }
@@ -313,6 +325,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .section-tag { padding: 4px 7px; border-radius: 4px; color: #fff; background: var(--green); font-size: var(--fs-xs); line-height: 1; font-weight: 900; letter-spacing: 0; }
 .capacity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .member-results { grid-template-columns: repeat(2, 1fr); }
+.beam-results { grid-template-columns: repeat(2, 1fr); }
 .member-secondary-results { grid-template-columns: minmax(0, 1fr); margin-top: 4px; }
 .weld-results { grid-template-columns: 1fr; }
 .weld-results .capacity-card { display: grid; grid-template-columns: minmax(170px, .9fr) auto minmax(180px, 1fr); align-items: center; gap: 8px 16px; }
@@ -350,6 +363,8 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .member-demand-ratio-box small.pass { color: var(--green-dark); }
 .member-demand-ratio-box small.check { color: #9b5b11; }
 .member-demand-ratio-box small.fail { color: var(--red); }
+.beam-demand-check > summary i { color: var(--beam-accent); }
+.beam-demand-check .member-demand-ratio-box { grid-column: 1 / -1; }
 .selected-shear { border-color: var(--green); border-top-color: var(--green); background: linear-gradient(145deg, var(--green-soft), var(--card)); }
 .alternate-shear { border-top-color: #8b9290; }
 #boltPanel .selected-shear { border-color: #a8dabd; }
@@ -432,12 +447,6 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .member-check-grid small.pass { color: var(--green-dark); font-weight: 700; }
 .member-check-grid small.check { color: #9b5b11; font-weight: 700; }
 .member-check-grid small.fail { color: var(--red); font-weight: 700; }
-.beam-metrics { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; margin-top: 12px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--line); }
-.beam-metrics > div { padding: 9px 11px; background: #fbf8ff; }
-.beam-metrics span, .beam-metrics strong { display: block; }
-.beam-metrics span { color: var(--muted); font-size: var(--fs-xs); }
-.beam-metrics strong { margin-top: 1px; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
-.beam-utilisation { margin-top: 9px; }
 .beam-custom-inputs { margin-top: 12px; padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: #fbf8ff; }
 .beam-custom-inputs.input-cluster { padding: 0; border: 0; border-radius: 0; background: transparent; }
 .concrete-secondary-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 12px; padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: #f8fcfb; }
@@ -621,9 +630,11 @@ footer b { white-space: nowrap; }
   .weld-summary dl div { text-align: left; }
   .member-summary { display: block; }
   .member-selected-section { display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 10px; }
+  .beam-summary.beam-selected-section { display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 10px; }
   .member-summary dl { margin-top: 12px; grid-template-columns: repeat(4, 1fr); }
   .member-summary dl div { text-align: left; }
   .beam-summary { display: block; }
+  .beam-summary.beam-selected-section { display: grid; }
   .beam-summary dl { margin-top: 12px; grid-template-columns: repeat(3, 1fr); }
   .beam-summary dl div { text-align: left; }
   .concrete-summary { display: block; }
@@ -638,7 +649,6 @@ footer b { white-space: nowrap; }
   .layer-row label[data-field]::before { content: attr(data-field); display: block; margin-bottom: 5px; color: #45534c; font-size: var(--fs-xs); line-height: 1.2; font-weight: 800; }
   .concrete-layer-results { grid-template-columns: 1fr; }
   .member-metrics { grid-template-columns: repeat(2, 1fr); }
-  .beam-metrics { grid-template-columns: repeat(2, 1fr); }
   .tension-limits { grid-template-columns: 1fr; }
   .lookup-note-grid { grid-template-columns: 1fr; }
   .table-scroll { overflow-x: visible; }
@@ -702,10 +712,14 @@ footer b { white-space: nowrap; }
   .weld-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .member-type-switch, .beam-type-switch { width: 100%; }
   .member-selected-section { grid-template-columns: 1fr; padding: 10px; }
+  .beam-summary.beam-selected-section { grid-template-columns: 1fr; padding: 10px; }
   .member-summary-visual { max-width: none; justify-self: stretch; padding-top: 0; }
+  .beam-summary-visual { max-width: none; justify-self: stretch; padding-top: 0; }
   .member-summary-visual .section-guide article { grid-template-columns: 84px minmax(0, 1fr); align-items: center; padding: 7px; gap: 5px; }
+  .beam-summary-visual .section-guide article { grid-template-columns: 84px minmax(0, 1fr); align-items: center; padding: 7px; gap: 5px; }
   .member-summary-visual .section-diagram { width: 84px; max-height: 64px; }
-  .member-summary-visual .section-guide small, .member-drawing-note { display: none; }
+  .beam-summary-visual .section-diagram { width: 84px; max-height: 64px; }
+  .member-summary-visual .section-guide small, .beam-summary-visual .section-guide small, .member-drawing-note, .beam-drawing-note { display: none; }
   .member-type, .beam-type { flex: 1 1 calc(50% - 3px); min-width: 0; }
   .section-guide-card { margin-bottom: 12px; }
   .section-guide-card > summary, .weld-legend-card > summary, .weld-guide > summary { padding: 10px 11px; }
@@ -720,6 +734,7 @@ footer b { white-space: nowrap; }
   .compact-lookup-table { min-width: 0; }
   .member-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .member-selected-section dl { gap: 8px; }
+  .beam-selected-section dl { gap: 8px; }
   .beam-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .concrete-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .layer-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -730,13 +745,13 @@ footer b { white-space: nowrap; }
   .capacity-card { padding: 13px; }
   .capacity-card strong { font-size: var(--fs-result); }
   .member-demand-row { grid-template-columns: 1fr; }
+  .beam-demand-check .member-demand-controls { grid-template-columns: 1fr; }
   .member-demand-controls { grid-template-columns: 1fr; }
   .weld-results .capacity-card { grid-template-columns: 1fr; gap: 5px; }
   .weld-results .capacity-card strong { text-align: left; }
   .capacity-card.alternate-shear:not(.selected-shear) { background: rgba(255,255,255,.64); }
   .beam-results .capacity-card.alternate-shear, .concrete-results .capacity-card.alternate-shear { display: none; }
-  .beam-metrics, .member-metrics, .tension-limits { gap: 7px; }
-  .beam-metrics div:nth-child(n+4) { display: none; }
+  .member-metrics, .tension-limits { gap: 7px; }
   .capacity-card > span, .capacity-card p, .result-note, .checklist-warning, .source-notes { overflow-wrap: anywhere; }
   .detail-card > summary, .source-card > summary { padding: 14px 16px; }
   .detail-card > summary small, .source-card > summary small { display: none; }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260706memberrefgap1">
+  <link rel="stylesheet" href="styles.css?v=20260706beamsection2">
 </head>
 <body>
   <header class="topbar">
@@ -408,21 +408,19 @@
       <div class="tool-heading"><div><p class="kicker">Beam sections · AS 4100 Section 5</p><h2>Beam Section</h2></div><span class="tool-status">For Review · UB / UC / Custom</span></div>
 
       <section class="lookup-card beam-card">
-        <div class="beam-type-switch" role="group" aria-label="Beam section source"><button class="beam-type active" type="button" data-beam-type="ub">UB</button><button class="beam-type" type="button" data-beam-type="uc">UC</button><button class="beam-type" type="button" data-beam-type="custom">Custom</button></div>
+        <div class="beam-type-switch" role="group" aria-label="Beam section source"><button class="beam-type active" type="button" data-beam-type="ub" aria-pressed="true">UB</button><button class="beam-type" type="button" data-beam-type="uc" aria-pressed="false">UC</button><button class="beam-type" type="button" data-beam-type="custom" aria-pressed="false">Custom</button></div>
 
-        <details class="section-guide-card" id="beamSectionGuide">
-          <summary><span><b>Section guide</b><small>Symbolic UB/UC dimension sketch; not a source of numeric properties</small></span><i>+</i></summary>
-          <div class="section-guide diagram-guide" aria-label="Beam section guide">
-            <article class="manual-section-card" data-beam-guide="ub"><img class="section-diagram" src="assets/generated/beam-section-ub.svg" alt="UB section diagram showing d, bf, tw, tf and x/y axes"><div><strong>UB</strong><small>d, bf, tw, tf; x/y axes - OneSteel / InfraBuild basis</small></div></article>
-            <article class="manual-section-card" data-beam-guide="uc" hidden><img class="section-diagram" src="assets/generated/beam-section-uc.svg" alt="UC section diagram showing d, bf, tw, tf and x/y axes"><div><strong>UC</strong><small>d, bf, tw, tf; x/y axes - OneSteel / InfraBuild basis</small></div></article>
-          </div>
-        </details>
-
-        <div class="input-cluster input-cluster-three">
-          <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Section properties</b><small>Catalogue section or custom section source.</small></span>
-            <div class="input-group-fields">
+        <div class="input-cluster input-cluster-three beam-main-inputs">
+          <section class="input-group input-group-section" id="beamSectionGroup">
+            <span class="input-group-heading"><b>Section properties</b><small id="beamSectionSource">Catalogue section properties from the selected UB/UC row.</small></span>
+            <div class="input-group-fields" id="beamCatalogueSectionFields">
               <label class="size-field" id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam or column section"></select></label>
+            </div>
+            <div class="input-group-fields beam-custom-properties" id="beamCustomFields" hidden>
+              <label><span>d <i>overall depth</i></span><span class="unit"><input id="beamCustomDepth" type="number" min="0" step="1" value="300"><em>mm</em></span></label>
+              <label><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="beamCustomFlangeWidth" type="number" min="0" step="1" value="150"><em>mm</em></span></label>
+              <label><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="beamCustomWebThickness" type="number" min="0" step="0.1" value="6"><em>mm</em></span></label>
+              <label><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="beamCustomFlangeThickness" type="number" min="0" step="0.1" value="10"><em>mm</em></span></label>
             </div>
           </section>
           <section class="input-group input-group-material">
@@ -431,55 +429,39 @@
               <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
             </div>
           </section>
-          <section class="input-group input-group-action">
-            <span class="input-group-heading"><b>Design actions</b><small>Optional demand inputs for utilisation reporting.</small></span>
-            <div class="input-group-fields two">
-              <label><span>M* design moment</span><span class="unit"><input id="beamMomentDemand" type="number" min="0" step="1" value="0"><em>kNm</em></span></label>
-              <label><span>V* design shear</span><span class="unit"><input id="beamShearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
-            </div>
-          </section>
-        </div>
-        <div class="beam-custom-inputs input-cluster" id="beamCustomInputs" hidden>
-          <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Custom I-section dimensions</b><small>Symmetric I-section geometry; section properties are generated automatically.</small></span>
-            <div class="input-group-fields beam-custom-properties">
-              <label><span>d <i>overall depth</i></span><span class="unit"><input id="beamCustomDepth" type="number" min="0" step="1" value="300"><em>mm</em></span></label>
-              <label><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="beamCustomFlangeWidth" type="number" min="0" step="1" value="150"><em>mm</em></span></label>
-              <label><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="beamCustomWebThickness" type="number" min="0" step="0.1" value="6"><em>mm</em></span></label>
-              <label><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="beamCustomFlangeThickness" type="number" min="0" step="0.1" value="10"><em>mm</em></span></label>
-            </div>
-          </section>
         </div>
 
-        <div class="beam-summary">
-          <div><span>Selected section</span><strong id="beamDesignation">310UB40.4 - 300PLUS</strong><small id="beamAssumption">section-capacity lookup only; not a full beam design check</small></div>
-          <dl>
-            <div class="beam-dimensions-cell"><dt>Dimensions</dt><dd id="beamDimensions">d = 304.0 mm; b<sub>f</sub> = 165.0 mm; t<sub>w</sub> = 6.1 mm; t<sub>f</sub> = 10.2 mm; d<sub>1</sub> = 283.6 mm</dd></div>
-            <div><dt>mass</dt><dd id="beamMass">40.4 kg/m</dd></div>
-            <div><dt>A<sub>g</sub></dt><dd id="beamArea">5,210 mm&sup2;</dd></div>
-            <div><dt>A<sub>w</sub></dt><dd id="beamAw">1,730 mm&sup2;</dd></div>
-            <div><dt>S<sub>x</sub></dt><dd id="beamSummarySx">633 &times; 10&sup3; mm&sup3;</dd></div>
-            <div><dt>Z<sub>x</sub></dt><dd id="beamSummaryZx">569 &times; 10&sup3; mm&sup3;</dd></div>
-            <div><dt>Z<sub>ex</sub></dt><dd id="beamZex">633 &times; 10&sup3; mm&sup3;</dd></div>
-            <div><dt>f<sub>y</sub></dt><dd id="beamFy">320 MPa</dd></div>
-            <div><dt>k<sub>f</sub></dt><dd id="beamSummaryKf">0.952</dd></div>
-            <div><dt>class</dt><dd id="beamCompactness">Compact</dd></div>
-            <div><dt>Web screen</dt><dd id="beamWebScreen">&lambda;<sub>w</sub> = 51.3; &alpha;<sub>v</sub> = 1.000</dd></div>
-          </dl>
+        <div class="beam-summary beam-selected-section">
+          <div class="beam-summary-visual" aria-label="Selected beam section guide">
+            <div class="section-guide diagram-guide">
+              <article class="manual-section-card" data-beam-guide="ub"><img class="section-diagram" src="assets/generated/beam-section-ub.svg" alt="UB section diagram showing d, bf, tw, tf and x/y axes"><div><strong>UB</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, d<sub>1</sub> - OneSteel / InfraBuild basis</small></div></article>
+              <article class="manual-section-card" data-beam-guide="uc" hidden><img class="section-diagram" src="assets/generated/beam-section-uc.svg" alt="UC section diagram showing d, bf, tw, tf and x/y axes"><div><strong>UC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, d<sub>1</sub> - OneSteel / InfraBuild basis</small></div></article>
+              <article class="manual-section-card custom-section-card" data-beam-guide="custom" hidden><div><strong>Custom I-section</strong><small>Symmetric I-section geometry from entered dimensions.</small></div></article>
+            </div>
+          </div>
+          <div class="beam-summary-copy"><div><span>Selected section</span><strong id="beamDesignation">310UB40.4 - 300PLUS</strong><small id="beamAssumption">section-capacity lookup only; not a full beam design check</small></div><dl class="beam-summary-metrics"><div data-beam-summary-cell="d"><dt>d</dt><dd id="beamDimDepth">304.0 mm</dd></div><div data-beam-summary-cell="bf"><dt>b<sub>f</sub></dt><dd id="beamDimBf">165.0 mm</dd></div><div data-beam-summary-cell="tw"><dt>t<sub>w</sub></dt><dd id="beamDimTw">6.1 mm</dd></div><div data-beam-summary-cell="tf"><dt>t<sub>f</sub></dt><dd id="beamDimTf">10.2 mm</dd></div><div data-beam-summary-cell="d1"><dt>d<sub>1</sub></dt><dd id="beamDimD1">283.6 mm</dd></div><div><dt>mass</dt><dd id="beamMass">40.4 kg/m</dd></div><div><dt>A<sub>g</sub></dt><dd id="beamArea">5,210 mm&sup2;</dd></div><div><dt>A<sub>w</sub></dt><dd id="beamAw">1,730 mm&sup2;</dd></div><div><dt>S<sub>x</sub></dt><dd id="beamSummarySx">633 &times; 10&sup3; mm&sup3;</dd></div><div><dt>Z<sub>x</sub></dt><dd id="beamSummaryZx">569 &times; 10&sup3; mm&sup3;</dd></div><div><dt>Z<sub>ex</sub></dt><dd id="beamZex">633 &times; 10&sup3; mm&sup3;</dd></div><div><dt>f<sub>y</sub></dt><dd id="beamFy">320 MPa</dd></div><div><dt>k<sub>f</sub></dt><dd id="beamSummaryKf">0.952</dd></div><div><dt>class</dt><dd id="beamCompactness">Compact</dd></div></dl><p class="beam-drawing-note">Schematic only; not a source of section properties.</p></div>
         </div>
-
-        <div class="symbol-key" aria-label="AS 4100 beam symbols"><span><b>M<sub>s</sub></b> section moment capacity</span><span><b>V<sub>v</sub></b> section shear capacity</span><span><b>A<sub>w</sub></b> web shear area</span><span><b>Z<sub>ex</sub></b> effective section modulus about selected axis</span><span><b>S<sub>x</sub></b> plastic section modulus</span><span><b>Z<sub>x</sub></b> elastic section modulus</span><span><b>f<sub>y</sub></b> yield stress used for section capacity</span></div>
 
         <section class="capacity-section" aria-live="polite">
           <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Beam section capacity</h2></div><span>&phi; = 0.90</span></div>
           <div class="capacity-grid beam-results">
             <article class="capacity-card selected-shear"><span>Design section moment capacity &phi;M<sub>s</sub></span><strong><output id="beamSectionCapacity">182.3</output><small> kNm</small></strong><p>AS 4100 Cl. 5.2 using Z<sub>ex</sub></p></article>
             <article class="capacity-card"><span>Design section shear capacity &phi;V<sub>v</sub></span><strong><output id="beamShearCapacity">298.9</output><small> kN</small></strong><p>AS 4100 Cl. 5.11 using A<sub>w</sub></p></article>
-            <article class="capacity-card alternate-shear"><span>Plastic limit reference</span><strong><output id="beamPlasticLimit">182.3</output><small> kNm</small></strong><p>&phi;f<sub>y</sub>S<sub>x</sub></p></article>
           </div>
-          <div class="beam-metrics"><div><span>S<sub>x</sub></span><strong id="beamSxValue">633 &times; 10&sup3; mm&sup3;</strong></div><div><span>Z<sub>x</sub></span><strong id="beamZxValue">569 &times; 10&sup3; mm&sup3;</strong></div><div><span>A<sub>w</sub></span><strong id="beamAwValue">1,730 mm&sup2;</strong></div><div><span>k<sub>f</sub></span><strong id="beamKfValue">0.952</strong></div><div><span>Compactness</span><strong id="beamClassification">Compact</strong></div><div><span>Capacity basis</span><strong id="beamGoverning">Catalogue Z<sub>ex</sub> and A<sub>w</sub></strong></div></div>
-          <div class="interaction-result beam-utilisation"><span>Section utilisation ratio</span><strong id="beamUtilisation">0.00</strong><b id="beamStatus">Enter design actions</b></div>
-          <p class="result-note" id="beamWarning">Section-capacity lookup only. Catalogue web shear includes the lightweight AS 4100 Cl. 5.11 unstiffened-web screen; verify member capacity, lateral restraint, web bearing, concentrated loads, deflection and combined actions separately.</p>
+          <details class="member-demand-check beam-demand-check">
+            <summary><span><b>Design action and utilisation review</b><small>Optional M* / V* demand check below the main section capacities.</small></span><i>+</i></summary>
+            <div class="member-demand-body">
+              <div class="member-demand-row">
+                <div class="member-demand-copy"><b>Section utilisation</b><small>Uses the governing of M* / &phi;M<sub>s</sub> and V* / &phi;V<sub>v</sub>. Treat high shear with bending as CHECK for AS 4100 Cl. 5.12 review.</small></div>
+                <div class="member-demand-controls">
+                  <label><span>M* design moment</span><span class="unit"><input id="beamMomentDemand" type="number" min="0" step="1" value="0"><em>kNm</em></span></label>
+                  <label><span>V* design shear</span><span class="unit"><input id="beamShearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                  <div class="member-demand-ratio-box"><strong id="beamUtilisation">0.00</strong><small id="beamStatus">Enter design actions</small></div>
+                </div>
+              </div>
+              <p class="result-note" id="beamWarning">Section-capacity lookup only. Catalogue web shear includes the lightweight AS 4100 Cl. 5.11 unstiffened-web screen; verify member capacity, lateral restraint, web bearing, concentrated loads, deflection and combined actions separately.</p>
+            </div>
+          </details>
         </section>
       </section>
 
@@ -709,6 +691,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260706memberparams2"></script>
+  <script src="app.js?v=20260706beamsection2"></script>
 </body>
 </html>

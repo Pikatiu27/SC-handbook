@@ -635,20 +635,20 @@ function formatBeamDimension(number) {
   return number > 0 ? `${formatBeamNumber(number, 1)} mm` : "-";
 }
 
-function beamDimensionsHtml(section) {
-  const parts = [
-    section.d > 0 ? `d = ${formatBeamDimension(section.d)}` : "",
-    section.bf > 0 ? `b<sub>f</sub> = ${formatBeamDimension(section.bf)}` : "",
-    section.tw > 0 ? `t<sub>w</sub> = ${formatBeamDimension(section.tw)}` : "",
-    section.tf > 0 ? `t<sub>f</sub> = ${formatBeamDimension(section.tf)}` : "",
-    section.d1 > 0 ? `d<sub>1</sub> = ${formatBeamDimension(section.d1)}` : ""
-  ].filter(Boolean);
-  return parts.length ? parts.join("; ") : "-";
+function setBeamSummaryCell(id, html, hidden = false) {
+  const element = $(id);
+  if (!element) return;
+  element.innerHTML = html;
+  const cell = element.closest("[data-beam-summary-cell]");
+  if (cell) cell.hidden = hidden;
 }
 
-function beamWebScreenHtml(webShear) {
-  if (!Number.isFinite(webShear.slenderness)) return "-";
-  return `&lambda;<sub>w</sub> = ${formatBeamNumber(webShear.slenderness, 1)}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}`;
+function updateBeamSummaryDimensions(section) {
+  setBeamSummaryCell("beamDimDepth", formatBeamDimension(section.d), !(section.d > 0));
+  setBeamSummaryCell("beamDimBf", formatBeamDimension(section.bf), !(section.bf > 0));
+  setBeamSummaryCell("beamDimTw", formatBeamDimension(section.tw), !(section.tw > 0));
+  setBeamSummaryCell("beamDimTf", formatBeamDimension(section.tf), !(section.tf > 0));
+  setBeamSummaryCell("beamDimD1", formatBeamDimension(section.d1), !(section.d1 > 0));
 }
 
 function compactnessText(compactness) {
@@ -761,15 +761,22 @@ function populateBeamGrades() {
 
 function setBeamType(type) {
   beamSectionType = type;
-  document.querySelectorAll(".beam-type").forEach(button => button.classList.toggle("active", button.dataset.beamType === type));
+  document.querySelectorAll(".beam-type").forEach(button => {
+    const active = button.dataset.beamType === type;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", active ? "true" : "false");
+  });
   document.querySelectorAll("[data-beam-guide]").forEach(card => {
     card.hidden = card.dataset.beamGuide !== type;
   });
   const custom = type === "custom";
   $("beamSectionField").hidden = custom;
+  $("beamCatalogueSectionFields").hidden = custom;
+  $("beamCustomFields").hidden = !custom;
   $("beamGradeField").hidden = false;
-  $("beamCustomInputs").hidden = !custom;
-  $("beamSectionGuide").hidden = custom;
+  $("beamSectionSource").innerHTML = custom
+    ? "Symmetric I-section dimensions; properties are generated automatically."
+    : "Catalogue section properties from the selected UB/UC row.";
   populateBeamOptions();
 }
 
@@ -810,34 +817,20 @@ function calculateBeam() {
 
   $("beamDesignation").textContent = `${section.designation} - ${gradeName}`;
   $("beamAssumption").textContent = isCustom
-    ? "dimension-generated symmetric I-section; elastic Zx used as Zex for moment"
-    : "x-axis section moment and web shear only; member capacity and lateral restraint are not checked";
+    ? "Custom symmetric I-section; derived properties for section check only."
+    : "Section moment and web shear only; member checks excluded.";
   $("beamMass").textContent = formatBeamOptional(section.mass, "kg/m", 1);
   $("beamArea").textContent = formatBeamArea(section.area);
   $("beamAw").textContent = formatBeamArea(section.Aw);
-  $("beamDimensions").innerHTML = beamDimensionsHtml(section);
+  updateBeamSummaryDimensions(section);
   $("beamSummarySx").innerHTML = formatBeamModulus(section.Sx);
   $("beamSummaryZx").innerHTML = formatBeamModulus(section.Zx);
   $("beamFy").textContent = grade.fy > 0 ? `${formatBeamNumber(grade.fy, 0)} MPa` : "-";
   $("beamZex").innerHTML = formatBeamModulus(grade.Ze);
   $("beamSummaryKf").textContent = grade.kf > 0 ? grade.kf.toFixed(3) : "-";
   $("beamCompactness").textContent = compactnessLabel;
-  $("beamWebScreen").innerHTML = beamWebScreenHtml(webShear);
   $("beamSectionCapacity").textContent = Number.isFinite(sectionCapacity) ? fixed(sectionCapacity) : "-";
   $("beamShearCapacity").textContent = Number.isFinite(shearCapacity) ? fixed(shearCapacity) : "-";
-  $("beamPlasticLimit").textContent = Number.isFinite(plasticLimit) ? fixed(plasticLimit) : "-";
-  $("beamSxValue").innerHTML = formatBeamModulus(section.Sx);
-  $("beamZxValue").innerHTML = formatBeamModulus(section.Zx);
-  $("beamAwValue").textContent = formatBeamArea(section.Aw);
-  $("beamKfValue").textContent = grade.kf > 0 ? grade.kf.toFixed(3) : "-";
-  $("beamClassification").textContent = compactnessLabel;
-  $("beamGoverning").innerHTML = isCustom
-    ? (shearReductionApplied ? "Auto geometry, reduced shear" : "Auto geometry, Z<sub>ex</sub> = Z<sub>x</sub>")
-    : shearReductionApplied
-      ? "Catalogue Z<sub>ex</sub> and reduced shear"
-      : grade.compactness === "C"
-        ? "Catalogue Z<sub>ex</sub> and A<sub>w</sub>"
-        : "Catalogue reduced Z<sub>ex</sub> and A<sub>w</sub>";
   $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
   $("beamStatus").textContent = !valid
     ? "Invalid input"
@@ -1988,7 +1981,7 @@ function initialise() {
   $("memberHoleThickness").addEventListener("input", calculateMember);
   $("memberNetArea").addEventListener("input", calculateMember);
   $("memberKt").addEventListener("input", calculateMember);
-  populateBeamOptions();
+  setBeamType(beamSectionType);
   setMemberType(memberType);
   calculateBolt();
   calculateWeld();

@@ -1361,8 +1361,8 @@ Use this scope:
 - Custom symmetric I-section input when catalogue data is not available.
 - Major-axis section moment capacity only.
 - Major-axis web shear capacity only.
-- Optional design actions `M*` and `V*`.
-- Section utilisation based on the governing of `M* / phi Ms` and `V* / phi Vv`.
+- Optional design actions `M*` and `V*`, folded below the main capacity result.
+- Section utilisation based on the governing of `M* / phi Ms` and `V* / phi Vv`, reported only inside the folded design-action review.
 
 Use Australian product data first. For UB/UC sections, section properties and dimensions should come from OneSteel / InfraBuild hot-rolled product tables wherever possible. Catalogue data may define availability, `d`, `bf`, `tw`, `tf`, `d1`, `Ag`, mass, `Sx`, `Zx`, `Zex`, compactness and `kf`; design equations still need to trace back to AS 4100.
 
@@ -1370,7 +1370,9 @@ Required AS 4100 basis:
 
 - Section moment capacity uses AS 4100 Cl. 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
 - Catalogue `Zex`, compactness and `kf` may be taken from the section-capacity table instead of recalculating plate slenderness in the browser.
-- The selected-section summary should automatically show catalogue or generated values for dimensions, mass, `Ag`, `Aw`, `Sx`, `Zx`, `Zex`, `fy`, `kf`, compactness and the web-slenderness screen. Do not require manual entry for those values in UB/UC selected-section mode.
+- The selected-section summary should automatically show catalogue or generated section-property values only: dimensions, mass, `Ag`, `Aw`, `Sx`, `Zx`, `Zex`, `fy`, `kf` and compactness. Do not repeat capacity basis or the web-slenderness screen in the selected-section strip; keep those in calculation steps and basis text.
+- Keep the UB/UC/custom section guide inside the selected-section summary as a compact visual cue. Do not keep a separate first-screen section-guide card unless a future reference guide needs more detail.
+- Keep the main result cards limited to design section moment capacity `phi Ms` and design section shear capacity `phi Vv`. Plastic-limit or elastic-yield references belong in calculation steps, not as peer result cards.
 - Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
 - Web shear yield starts from AS 4100 Cl. 5.11.4: `Vw = 0.6 fy Aw`; report the design value with `phi = 0.90`.
 - For catalogue UB/UC rows, apply a lightweight unstiffened-web shear-buckling screen from AS 4100 Cl. 5.11.5 using `lambda_w = (d1/tw) sqrt(fy/250)` and `alpha_v = 1.0` where `lambda_w <= 82`, otherwise `alpha_v = (82/lambda_w)^2`. Report `phi Vv = phi alpha_v Vw`. This is a quick screen using catalogue `d1` and `tw`, not a substitute for stiffened-web, non-uniform shear, transverse-load or detailed web-panel design.
@@ -1400,7 +1402,7 @@ Required exclusions:
 - Fire.
 - Deflection and vibration.
 
-The Beam tab may include collapsed UB/UC section guide drawings, but they are visual guides only and must not be treated as numeric data sources.
+The Beam tab may include UB/UC section guide drawings inside the selected-section summary, but they are visual guides only and must not be treated as numeric data sources.
 
 ### 15.13 Weld Capacity Web Tab Rules
 
