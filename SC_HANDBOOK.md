@@ -748,7 +748,7 @@ The web page is still part of `SC Handbook`. It must follow the same source hier
 
 Use this checklist before editing, reviewing, committing, or pushing any web-tab work:
 
-1. Confirm the active app root is `C:\桌面\SC Handbook` and the affected files are `index.html`, `app.js`, `styles.css`, and, where durable rules changed, `SC_HANDBOOK.md`.
+1. Confirm the active app root is the current `SC Handbook` checkout and the affected files are `index.html`, `app.js`, `styles.css`, and, where durable rules changed, `SC_HANDBOOK.md`.
 2. Keep the UI English-only and use Australian engineering language.
 3. Check the local reference folder first: `C:\Users\silin\Documents\Codex\Reference`.
 4. If the governing source cannot be found or read, tell the user and mark the item `Source_Not_Verified`; do not present it as checked.
@@ -757,7 +757,7 @@ Use this checklist before editing, reviewing, committing, or pushing any web-tab
 7. Main capacity titles may use the `RESULTS` tag; detailed-check headings should not repeat it when it makes the hierarchy noisy.
 8. Keep phone layout readable: wrap rows, avoid horizontal overflow, and collapse secondary material where practical.
 9. Run basic checks before commit: `git status --short`, `git diff --stat`, JavaScript syntax check, and a DOM id reference check where JavaScript ids changed.
-10. Push only reviewed `Bolt Capacity`, `Member Capacity`, and accepted global framework changes in this chat.
+10. Push only reviewed, accepted tab changes and accepted global framework changes.
 
 ### 15.1 Web Product Logic
 
@@ -796,7 +796,6 @@ Current core tabs:
 
 Future tabs may include:
 
-- `Weld Capacity`
 - `Plate Capacity`
 - `Base Plate`
 - `Section Properties`
@@ -943,17 +942,17 @@ Use standard engineering notation consistently.
 
 Formula notation:
 
-- Use `φ` for design capacity expressions where the capacity factor is included.
-- If a formula is shown as a design capacity, include `φ` in the displayed expression.
+- Use `&phi;` in HTML source for design capacity expressions where the capacity factor is included.
+- If a formula is shown as a design capacity, include the rendered `&phi;` symbol in the displayed expression.
 - Prefer bracketed expressions when the capacity factor applies to the whole term.
 - Do not mix nominal-capacity notation and design-capacity notation without explaining the difference.
 
 Examples:
 
-- `φ(3.2d_f t_p f_up)`
-- `φ(a_e t_p f_up)`
-- `φ(0.85k_t A_n f_u)`
-- `0.90 × 3.2 × d_f × t_p × f_up`
+- `&phi;(3.2d_f t_p f_up)`
+- `&phi;(a_e t_p f_up)`
+- `&phi;(0.85k_t A_n f_u)`
+- `0.90 &times; 3.2 &times; d_f &times; t_p &times; f_up`
 
 Subscript and superscript rules:
 
@@ -965,7 +964,7 @@ Subscript and superscript rules:
   - `k<sub>t</sub>`
   - `V<sup>*</sup>`
   - `N<sup>*</sup>`
-- Do not display plain-text engineering notation such as `A_n`, `k_t`, `αb`, `V*`, or `N*` in the final UI when proper subscript or superscript notation is intended.
+- Do not display plain-text engineering notation such as `A_n`, `k_t`, `alpha_b`, `V*`, or `N*` in the final UI when proper subscript, superscript, or Greek notation is intended.
 - This rule applies to static HTML and JavaScript-generated text. If a generated result note or warning contains fixed trusted engineering notation, render it with `innerHTML` so the notation displays correctly, for example `A<sub>n</sub>`, `k<sub>t</sub>`, `&alpha;<sub>b</sub>`, `V<sup>*</sup>`, and `N<sup>*</sup>`.
 
 Standard, clause, table, figure and section references:
@@ -1095,6 +1094,7 @@ Web engineering figure and chart rules:
 - For generated bitmap assets, keep the source script or generation method traceable where practical, and export at a resolution suitable for the displayed web size. Do not use large bitmap files when a compact SVG or Canvas drawing is sufficient.
 - Figures copied or redrawn from standards, handbooks, catalogues, or online sources must follow the source hierarchy and copyright rules below. A drawing used as a visual guide must not become the source of numeric properties unless the source explicitly provides those values.
 - If a figure cannot be verified against a standard, handbook, manufacturer document, or accepted project convention, label it as a draft visual guide or leave it out.
+- Existing or inherited page figures are not automatically compliant with this drawing standard. Before describing any figure as CAD-style, proportional, value-driven, or source-checked, review it against the drawing-accuracy class, annotation rules, source basis, and desktop/phone layout checks in this section.
 
 Technical diagram and symbol rules:
 
@@ -1492,7 +1492,7 @@ Preferred workflow:
 
 Current GitHub Pages repo:
 
-- Local repo: `C:\桌面\SC Handbook`
+- Local repo: current `SC Handbook` checkout.
 - Remote: `https://github.com/Pikatiu27/SC-handbook.git`
 - Branch: `main`
 - Published page: `https://pikatiu27.github.io/SC-handbook/`
@@ -1500,7 +1500,7 @@ Current GitHub Pages repo:
 Standard push sequence:
 
 ```powershell
-cd "C:\桌面\SC Handbook"
+cd "<SC Handbook checkout>"
 git status --short
 git diff --stat
 git diff
@@ -1519,7 +1519,7 @@ Rules before committing:
 - Only `git add` the files that belong to the accepted change.
 - Do not push experimental tabs, draft calculators, or unverified standard formulas.
 - If any formula, factor, table value, symbol convention, or product property is `Source_Not_Verified`, report the gap to the user before commit/push and keep it out of any verified calculator release unless the user explicitly accepts it as draft or placeholder content.
-- In this chat, deploy only reviewed `Bolt Capacity`, `Member Capacity`, and accepted global framework changes.
+- Deploy only reviewed, accepted tab changes and accepted global framework changes.
 
 Rules after pushing:
 
