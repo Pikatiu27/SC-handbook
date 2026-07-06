@@ -1423,25 +1423,29 @@ function calculateConcrete() {
     result = solveConcreteSection(data);
   }
 
+  const compressionFaceLabel = direction === "top" ? "top face in compression" : "bottom face in compression";
+  const checkedSectionLabel = combinedSection ? "Combined section" : separatePad === "bottom" ? "Bottom pad only" : "Top pad only";
   $("concreteSummaryTitle").textContent = combinedSection
-    ? `${fixed(data.width)} mm strip; combined D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`
-    : `${fixed(data.width)} mm strip; ${separatePad === "bottom" ? "bottom pad" : "top pad"} D = ${fixed(data.depth)} mm`;
+    ? `${checkedSectionLabel}; b = ${fixed(data.width)} mm; D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; ${compressionFaceLabel}`
+    : `${checkedSectionLabel}; b = ${fixed(data.width)} mm; D = ${fixed(data.depth)} mm; ${compressionFaceLabel}`;
   $("concreteSummaryNote").textContent = combinedSection
-    ? "Combined section selected: use only where composite action and interface shear transfer are designed separately."
-    : `Separate pads selected: calculating the ${separatePad === "bottom" ? "bottom" : "top"} pad only; the other pad is not included in section capacity.`;
+    ? "Capacity applies to the combined strip only; use only where composite action and interface shear transfer are separately verified."
+    : `Capacity applies to the ${separatePad === "bottom" ? "bottom" : "top"} pad strip only; the other pad is excluded from this section-capacity calculation.`;
+  $("concreteModeValue").textContent = combinedSection ? "Combined" : separatePad === "bottom" ? "Separate bottom" : "Separate top";
+  $("concreteWidthValue").textContent = `${fixed(data.width)} mm`;
+  $("concreteDepthValue").textContent = `${fixed(data.depth)} mm`;
   const legacyLayers = data.layers.filter(layer => layer.legacy);
   const fsyCappedLayers = data.layers.filter(layer => layer.fsyInput > 600);
   $("concretePhiNote").textContent = legacyLayers.length
     ? "Legacy Y bar selected: conservative capacity factor phi = 0.65 is used pending bar-grade verification."
-    : "Capacity factor from AS 3600 Table 2.2.2 pure-bending k_uo expression for N-class reinforcement.";
+    : "Capacity factor from the AS 3600 Table 2.2.2 pure-bending k_uo expression for N-class reinforcement.";
 
   if (!result.ok) {
-    ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
+    ["concreteDvValue", "concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
+    $("concreteResultScope").textContent = "selected strip";
     $("concreteShearNote").innerHTML = "RC one-way shear not calculated without active reinforcement";
-    $("concreteStatusValue").textContent = "No solution";
-    $("concreteEquilibrium").textContent = result.message;
-    $("concreteWarningStatus").textContent = "CHECK";
-    $("concreteWarningStatus").className = "fail";
+    $("concreteStatusValue").textContent = "Review";
+    $("concreteSectionState").innerHTML = "";
     $("concreteLayerResults").innerHTML = "";
     $("concreteFormulaSteps").innerHTML = `<div><b>Status</b><code>${result.message}</code></div><div><b>Plain concrete note</b><code>For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check. Do not report this as ductile reinforced-concrete phiMuo; AS 3600 Section 20 uses a linear stress-strain bending model and takes footing strength depth as nominal depth minus 50 mm.</code></div>`;
     return;
@@ -1462,48 +1466,43 @@ function calculateConcrete() {
   if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
   if (fsyCappedLayers.length) reviewFlags.push(`f_sy capped at 600 MPa for ${fsyCappedLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
   if (result.kuo > 0.36) reviewFlags.push(`k_uo = ${result.kuo.toFixed(3)} > 0.36, check AS 3600 Cl. 8.1.5`);
-  const warningText = `Moment capacity and one-way shear screen only; verify punching, bearing, anchorage, crack control and interface shear separately. Review: ${reviewFlags.join("; ")}.`;
+  const warningText = `Section-capacity check only; verify punching shear, bearing, anchorage, crack control, interface shear and design actions separately. Review: ${reviewFlags.join("; ")}.`;
 
-  $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
-  $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;
-  $("concreteMuoValue").textContent = `${fixed(result.muo)} kNm`;
-  $("concretePhiMuoValue").textContent = `${fixed(result.phiMuo)} kNm`;
-  $("concreteStatusValue").textContent = residualOk ? "Solved" : "Check residual";
-  $("concreteNa").textContent = fixed(result.x);
-  $("concreteMuo").textContent = fixed(result.muo);
+  $("concreteResultScope").textContent = combinedSection ? "combined section" : `${separatePad === "bottom" ? "bottom" : "top"} pad only`;
+  $("concreteDvValue").textContent = `${fixed(shear.dv)} mm`;
   $("concretePhiMuo").textContent = fixed(result.phiMuo);
   $("concretePhiVu").textContent = fixed(shear.phiVu);
   $("concreteShearNote").innerHTML = `V<sub>uc</sub> = ${fixed(shear.vuc)} kN; V<sub>us</sub> = ${fixed(shear.vus)} kN; d<sub>v</sub> = ${fixed(shear.dv)} mm`;
-  $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
   const shearWarning = (shear.hasShearReo && !shear.minShearReoProvided) || shear.webCrushingLimited;
   const sectionSolved = residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && !shearWarning && result.kuo <= 0.36;
-  $("concreteWarningStatus").textContent = sectionSolved ? "SOLVED" : "CHECK";
-  $("concreteWarningStatus").className = sectionSolved ? "pass" : "fail";
+  $("concreteStatusValue").textContent = sectionSolved ? "OK" : "Review";
   $("concreteWarningText").textContent = warningText;
 
+  $("concreteSectionState").innerHTML = `
+    <article><b>Flexural section state</b><span>Neutral axis depth x = ${fixed(result.x)} mm from the selected compression face; d<sub>o</sub> = ${fixed(result.d0)} mm; k<sub>uo</sub> = ${result.kuo.toFixed(3)}; M<sub>uo</sub> = ${fixed(result.muo)} kNm</span><small>C<sub>c</sub> = ${fixed(result.cc / 1000)} kN; &phi; = ${result.phi.toFixed(2)}; &phi;M<sub>uo</sub> = ${fixed(result.phiMuo)} kNm; axial-force equilibrium residual = ${residual.toFixed(3)} kN</small></article>
+    <article><b>One-way shear state</b><span>d<sub>v</sub> = ${fixed(shear.dv)} mm; b<sub>v</sub> = ${fixed(shear.bv)} mm; k<sub>v</sub> = ${shear.kv.toFixed(3)}; V<sub>uc</sub> = ${fixed(shear.vuc)} kN; V<sub>us</sub> = ${fixed(shear.vus)} kN</span><small>V<sub>u</sub> = ${fixed(shear.vu)} kN; V<sub>u.max</sub> = ${fixed(shear.vuMax)} kN; &phi; = ${shear.phi.toFixed(2)}; &phi;V<sub>u</sub> = ${fixed(shear.phiVu)} kN</small></article>`;
+
   $("concreteLayerResults").innerHTML = result.layers.map(layer => {
-    const status = Math.abs(layer.strain) < 0.00005 ? "Near neutral axis" : layer.force > 0 ? "Compression" : "Tension";
-    const coverStatus = layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2 ? "cover check required" : "cover reference OK";
+    const status = Math.abs(layer.strain) < 0.00005 ? "near neutral axis" : layer.force > 0 ? "compression" : "tension";
+    const coverStatus = layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2 ? "nominal cover review required" : "within nominal cover reference";
     const displacementNote = layer.displacedConcreteStress > 0 ? `; net stress = ${signedFixed(layer.netStress, 1)} MPa after displaced concrete` : "";
-    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${layer.designation} @ ${fixed(layer.spacing)}; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2 per strip (${fixed(layer.areaPerMetre)} mm2/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
+    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${layer.designation} @ ${fixed(layer.spacing)} mm; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2 per strip (${fixed(layer.areaPerMetre)} mm2/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
   }).join("");
 
   $("concreteFormulaSteps").innerHTML = `
-    <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
-    <div><b>Pad analysis mode</b><code>${data.combinedSection ? `Combined section: D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; active top and bottom pad mats may participate` : `Separate pads: calculating the ${data.checkedPad === "bottom" ? "bottom" : "top"} pad only; D = ${fixed(data.depth)} mm; only that pad's active mats participate`}</code></div>
-    <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface; editing a y_i value turns off auto fill for that mat</code></div>
+    <div><b>Analysis basis</b><code>${direction === "top" ? "top face" : "bottom face"} selected as the compression face; each reinforcement mat is transformed to distance d<sub>i</sub> from that face. ${data.combinedSection ? `Combined section: D = D<sub>top</sub> + D<sub>bot</sub> = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; active top and bottom pad mats may participate` : `Separate pads: calculating the ${data.checkedPad === "bottom" ? "bottom" : "top"} pad only; D = ${fixed(data.depth)} mm; only that pad's active mats participate`}</code></div>
     <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar,table</sub> x b / spacing. A<sub>bar,table</sub> uses standard nominal Australian bar areas N/Y12-36 rather than &pi;d<sup>2</sup>/4; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten; design-model f<sub>sy</sub> is capped at 600 MPa</code></div>
     <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
-    <div><b>Concrete block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
+    <div><b>Equivalent concrete stress block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
     <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
     <div><b>Steel stress</b><code>f<sub>si</sub> = E<sub>s</sub>&epsilon;<sub>si</sub>, capped at +/- f<sub>sy</sub>; for a bar inside the rectangular concrete block, F<sub>si</sub> = A<sub>si</sub>(f<sub>si</sub> - &alpha;<sub>2</sub>f'<sub>c</sub>) to avoid double-counting displaced concrete</code></div>
-    <div><b>Force equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual</code></div>
-    <div><b>Nominal moment</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
+    <div><b>Neutral-axis equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual for N<sup>*</sup> = 0</code></div>
+    <div><b>Nominal flexural capacity</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
     <div><b>Capacity factor - AS 3600 Table 2.2.2</b><code>${legacyLayers.length ? `Legacy Y bar selected: conservative quick-screen &phi; = 0.65 unless actual bar grade and N-class equivalence are verified` : `Pure-bending N-class reinforcement assumption: k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
     <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
-    <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
-    <div><b>Shear effective depth basis - AS 3600 Cl. 8.2.1.9</b><code>d is the distance from the compression face to the centroid of longitudinal tension reinforcement in the tensile half-depth. ${shear.dBasis}; ${shear.centroidArea > 0 ? `d = &Sigma;(A<sub>s</sub>d) / &Sigma;A<sub>s</sub> = ${fixed(shear.dNumerator)} / ${fixed(shear.centroidArea)} = ${fixed(shear.d)} mm` : `d = ${fixed(shear.d)} mm`}</code></div>
-    <div><b>Shear geometry - AS 3600 Cl. 8.2.1.5 and 8.2.1.9</b><code>b<sub>v</sub> = b = ${fixed(shear.bv)} mm for this rectangular strip without ducts or voids; d<sub>v</sub> = max(0.72D, 0.9d) = max(0.72 x ${fixed(data.depth)}, 0.9 x ${fixed(shear.d)}) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm</code></div>
+    <div><b>Design flexural capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
+    <div><b>Shear effective depth - AS 3600 Cl. 8.2.1.9</b><code>d is the distance from the compression face to the centroid of longitudinal tension reinforcement in the tensile half-depth. ${shear.dBasis}; ${shear.centroidArea > 0 ? `d = &Sigma;(A<sub>s</sub>d) / &Sigma;A<sub>s</sub> = ${fixed(shear.dNumerator)} / ${fixed(shear.centroidArea)} = ${fixed(shear.d)} mm` : `d = ${fixed(shear.d)} mm`}</code></div>
+    <div><b>Effective web width and shear depth - AS 3600 Cl. 8.2.1.5 and 8.2.1.9</b><code>b<sub>v</sub> = b = ${fixed(shear.bv)} mm for this rectangular strip without ducts or voids; d<sub>v</sub> = max(0.72D, 0.9d) = max(0.72 x ${fixed(data.depth)}, 0.9 x ${fixed(shear.d)}) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm</code></div>
     <div><b>Shear reinforcement area</b><code>${shear.hasShearReo ? `A<sub>sv</sub> = n<sub>sv</sub>A<sub>bar,table</sub> = ${shear.nsv.toFixed(0)} x ${fixed(shear.shearBarArea)} = ${fixed(shear.asv)} mm2 per spacing using ${shear.shearDesignation}; A<sub>sv</sub>/s = ${fixed(shear.asv)} / ${fixed(shear.sv)} = ${shear.asvPerS.toFixed(3)} mm2/mm` : `No vertical shear reinforcement selected; A<sub>sv</sub>/s = 0 mm2/mm`}</code></div>
     <div><b>Simplified shear factor - AS 3600 Cl. 8.2.4.3</b><code>&theta;<sub>v</sub> = ${shear.theta.toFixed(0)} deg; A<sub>sv,min</sub>/s = 0.08&radic;f'<sub>c</sub>b<sub>v</sub>/f<sub>sy.f</sub> = ${shear.asvMinPerS.toFixed(3)} mm2/mm; ${shear.minShearReoProvided ? `provided A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm >= minimum, so k<sub>v</sub> = 0.15` : `provided A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm < minimum, so k<sub>v</sub> = min(200/(1000 + 1.3d<sub>v</sub>), 0.15) = ${shear.kv.toFixed(3)}`}</code></div>
     <div><b>Concrete shear contribution - AS 3600 Cl. 8.2.4.1</b><code>V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(3)} x ${fixed(shear.bv)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &radic;f'<sub>c</sub> is limited to 8.0 MPa</code></div>

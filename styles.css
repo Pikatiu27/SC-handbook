@@ -271,6 +271,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .section-tag { padding: 4px 7px; border-radius: 4px; color: #fff; background: var(--green); font-size: var(--fs-xs); line-height: 1; font-weight: 900; letter-spacing: 0; }
 .capacity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .member-results { grid-template-columns: repeat(3, 1fr); }
+.concrete-results { grid-template-columns: repeat(2, 1fr); }
 .weld-results { grid-template-columns: 1fr; }
 .weld-results .capacity-card { display: grid; grid-template-columns: minmax(170px, .9fr) auto minmax(180px, 1fr); align-items: center; gap: 8px 16px; }
 .weld-results .capacity-card strong { margin: 0; text-align: right; }
@@ -417,6 +418,12 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .concrete-layer-results b { color: var(--green-dark); font-size: var(--fs-sm); }
 .concrete-layer-results span { margin-top: 3px; color: var(--ink); font-size: var(--fs-xs); font-weight: 800; }
 .concrete-layer-results small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
+.concrete-detail-card { background: #fbfefd; }
+.concrete-detail-card > summary b { font-size: var(--fs-md); }
+.concrete-detail-card .detail-body { background: linear-gradient(180deg, #fbfefd 0%, #ffffff 72%); }
+.concrete-detail-card .detail-body h3 { color: var(--green-dark); font-size: var(--fs-sm); font-weight: 900; }
+.concrete-detail-card .formula-list > div { grid-template-columns: 180px 1fr; }
+.concrete-detail-card .formula-list b { color: var(--green-dark); }
 .concrete-warning { margin-top: 9px; }
 .wind-actions { display: grid; grid-template-columns: minmax(180px, 260px); gap: 10px; align-items: end; }
 .data-action-button { width: 100%; min-height: 46px; border: 0; border-radius: var(--control-radius); background: var(--green-dark); color: #fff; cursor: pointer; font-size: var(--fs-sm); font-weight: 900; }
@@ -569,7 +576,7 @@ footer b { white-space: nowrap; }
   .edge-check > strong { grid-column: 1; }
   .edge-check > b { grid-column: 2; grid-row: 2; align-self: center; }
   .edge-check > small { grid-column: 1 / -1; }
-  .formula-list > div { grid-template-columns: 1fr; gap: 3px; }
+  .formula-list > div, .concrete-detail-card .formula-list > div { grid-template-columns: 1fr; gap: 3px; }
 }
 
 @media (max-width: 500px) {

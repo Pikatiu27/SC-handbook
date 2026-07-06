@@ -347,12 +347,12 @@
         </div>
 
         <div class="concrete-summary">
-          <div><span>Selected section</span><strong id="concreteSummaryTitle">1000 x 500 mm strip - top compression</strong><small id="concreteSummaryNote">Neutral axis solved from internal force equilibrium with concrete tension ignored.</small></div>
-          <dl><div><dt>x</dt><dd id="concreteNaValue">-</dd></div><div><dt>C<sub>c</sub></dt><dd id="concreteCcValue">-</dd></div><div><dt>M<sub>uo</sub></dt><dd id="concreteMuoValue">-</dd></div><div><dt>&phi;M<sub>uo</sub></dt><dd id="concretePhiMuoValue">-</dd></div><div><dt>status</dt><dd id="concreteStatusValue">-</dd></div></dl>
+          <div><span>Checked section</span><strong id="concreteSummaryTitle">Top pad only; b = 1000 mm; D = 500 mm; top face in compression</strong><small id="concreteSummaryNote">Capacity applies to this checked strip only.</small></div>
+          <dl><div><dt>basis</dt><dd id="concreteModeValue">-</dd></div><div><dt>b</dt><dd id="concreteWidthValue">-</dd></div><div><dt>D</dt><dd id="concreteDepthValue">-</dd></div><div><dt>d<sub>v</sub></dt><dd id="concreteDvValue">-</dd></div><div><dt>status</dt><dd id="concreteStatusValue">-</dd></div></dl>
         </div>
 
         <div class="symbol-key" aria-label="Concrete pad layout symbols"><span><b>b</b> section strip width</span><span><b>D<sub>top</sub></b> top pad depth</span><span><b>D<sub>bot</sub></b> bottom pad depth</span><span><b>c<sub>nom</sub></b> nominal concrete cover to bar surface</span><span><b>y<sub>i</sub></b> reinforcement mat depth from top face</span><span><b>N/Y16 @ 200</b> bar designation and spacing</span></div>
-        <p class="result-note">Reo areas use standard nominal Australian bar table areas. One-way shear uses the AS 3600 simplified non-prestressed method; verify the actual design shear plane, detailing and demand separately.</p>
+        <p class="result-note">Reinforcement areas use standard nominal Australian bar table areas. One-way shear uses the AS 3600 simplified non-prestressed method; verify the actual design shear plane, detailing and design action separately.</p>
 
         <section class="concrete-layer-table" aria-label="Reinforcement mats">
           <div class="layer-header"><span>Reinforcement mat</span><span>Active</span><span>Auto fill y<sub>i</sub></span><span>Depth y<sub>i</sub></span><span>Bar size</span><span>Spacing</span><span>f<sub>sy</sub></span><span>E<sub>s</sub></span></div>
@@ -367,19 +367,16 @@
         </section>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div><span>selected strip</span></div>
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div><span id="concreteResultScope">selected strip</span></div>
           <div class="capacity-grid concrete-results">
-            <article class="capacity-card selected-shear"><span>Design moment capacity &phi;M<sub>uo</sub></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong><p id="concretePhiNote">Capacity factor is calculated from the selected section state.</p></article>
-            <article class="capacity-card"><span>Nominal moment capacity M<sub>uo</sub></span><strong><output id="concreteMuo">-</output><small> kNm</small></strong><p>Internal force couple after force equilibrium</p></article>
-            <article class="capacity-card"><span>Design one-way shear &phi;V<sub>u</sub></span><strong><output id="concretePhiVu">-</output><small> kN</small></strong><p id="concreteShearNote">Concrete contribution only; no shear reinforcement included</p></article>
-            <article class="capacity-card alternate-shear"><span>Neutral axis depth x</span><strong><output id="concreteNa">-</output><small> mm</small></strong><p>measured from selected compression face</p></article>
+            <article class="capacity-card selected-shear"><span class="capacity-label">Design flexural capacity <b>&phi;M<sub>uo</sub></b></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong><p id="concretePhiNote">Capacity factor from the selected section state.</p></article>
+            <article class="capacity-card"><span class="capacity-label">Design one-way shear capacity <b>&phi;V<sub>u</sub></b></span><strong><output id="concretePhiVu">-</output><small> kN</small></strong><p id="concreteShearNote">Concrete contribution only; no shear reinforcement included</p></article>
           </div>
-          <div class="interaction-result concrete-warning"><span>Section status</span><strong id="concreteEquilibrium">-</strong><b id="concreteWarningStatus">-</b></div>
-          <p class="result-note" id="concreteWarningText">Moment capacity and one-way shear screen only; verify excluded footing checks separately.</p>
+          <p class="result-note" id="concreteWarningText">Section-capacity check only; verify excluded footing and detailing checks separately.</p>
         </section>
       </section>
 
-      <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed section checks</b></span><small>Reinforcement mat strains, stresses, forces and force-equilibrium residual</small></span><i>+</i></summary><div class="detail-body"><section><h3>Reinforcement mat results</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation steps</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
+      <details class="detail-card concrete-detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Detailed section checks</b></span><small>Section state, reinforcement forces and calculation basis</small></span><i>+</i></summary><div class="detail-body"><section><h3>Section state and checks</h3><div id="concreteSectionState" class="concrete-layer-results"></div></section><section><h3>Reinforcement state</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation basis</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
 
       <details class="source-card">
         <summary><span><b>Calculation basis and limitations</b><small>AS 3600 section theory and pad design boundary</small></span><i>+</i></summary>
