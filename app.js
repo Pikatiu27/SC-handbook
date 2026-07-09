@@ -279,7 +279,7 @@ const rodSections = [
 }));
 
 const customSections = [{
-  designation: "Custom / Built-up",
+  designation: "Custom / Built-up properties",
   grades: { "User input": { fy: 350, fu: 450, kf: 1 } }
 }];
 
@@ -2260,7 +2260,7 @@ function calculateMember() {
   if (memberType !== "custom") {
     $("memberRadiusSource").innerHTML = `${properties.customGeometry ? radiusBasis : memberRadiusBasis(properties.r)} Used for slenderness L<sub>e</sub>/r and design member capacity &phi;N<sub>c</sub>.`;
   } else {
-    $("memberRadiusSource").innerHTML = `Custom effective properties and effective lengths.`;
+    $("memberRadiusSource").innerHTML = `User-defined effective section properties from CAD or a section-property report.`;
   }
   $("memberNetArea").max = properties.area.toFixed(0);
   const netInput = memberNetAreaInput(properties);
@@ -3801,9 +3801,9 @@ function setMemberType(type) {
     : type === "ea"
       ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
     : type === "pfc"
-      ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
+        ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
       : type === "custom"
-        ? "Custom / Built-up: axial capacity from entered effective properties."
+        ? "Custom / Built-up properties: axial capacity from entered effective section properties; k<sub>f</sub> and &alpha;<sub>b</sub> remain project-confirmed."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";
   $("memberAlphaB").disabled = type !== "custom";
   if (type === "chs") $("memberAlphaB").value = "-0.5";

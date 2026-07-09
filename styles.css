@@ -135,6 +135,11 @@ main, footer { max-width: 1040px; margin: auto; }
 .input-group-fields.seven { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .input-group-fields.beam-custom-properties { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .member-net-section-group { display: block; }
+.member-custom-subheading { grid-column: 1 / -1; padding: 2px 0 0; }
+.member-custom-subheading b,
+.member-custom-subheading small { display: block; }
+.member-custom-subheading b { color: var(--green-dark); font-size: var(--fs-xs); line-height: 1.25; font-weight: 800; }
+.member-custom-subheading small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
 #memberPanel .lookup-card { padding: 18px; }
 #memberPanel .input-cluster { margin-bottom: 12px; gap: 10px; }
 #memberPanel .input-group { padding: 10px 12px; background: #fbfcfd; }
