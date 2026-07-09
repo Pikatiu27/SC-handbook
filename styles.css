@@ -261,6 +261,9 @@ main, footer { max-width: 1040px; margin: auto; }
 .bolt-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; }
 .member-summary { margin: 12px 0 16px; padding: 10px 12px; border-radius: 10px; background: var(--green-soft); display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 9px; }
 .member-selected-section { grid-template-columns: minmax(0, 1fr) minmax(190px, 220px); align-items: stretch; gap: 0; padding: 0; background: #f2f8ff; border: 1px solid #cfe1ef; overflow: hidden; }
+.member-selected-section.member-selected-custom { grid-template-columns: minmax(0, 1fr); }
+.member-selected-section.member-selected-custom .member-summary-visual,
+.member-selected-section.member-selected-custom .member-drawing-note { display: none; }
 .member-summary-visual { order: 2; width: 100%; max-width: 220px; min-width: 0; align-self: stretch; justify-self: stretch; padding-top: 0; display: grid; }
 .beam-summary-visual { order: 2; width: 100%; max-width: 220px; min-width: 0; align-self: stretch; justify-self: stretch; padding-top: 0; display: grid; }
 .member-summary-visual .section-guide { height: 100%; padding: 0; display: grid; }

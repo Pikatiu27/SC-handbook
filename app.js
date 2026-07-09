@@ -2260,7 +2260,7 @@ function calculateMember() {
   if (memberType !== "custom") {
     $("memberRadiusSource").innerHTML = `${properties.customGeometry ? radiusBasis : memberRadiusBasis(properties.r)} Used for slenderness L<sub>e</sub>/r and design member capacity &phi;N<sub>c</sub>.`;
   } else {
-    $("memberRadiusSource").innerHTML = `User-defined effective section properties from CAD or a section-property report.`;
+    $("memberRadiusSource").innerHTML = `User-defined effective section properties from a verified section-property calculation.`;
   }
   $("memberNetArea").max = properties.area.toFixed(0);
   const netInput = memberNetAreaInput(properties);
@@ -3779,6 +3779,8 @@ function setMemberType(type) {
   memberType = type;
   const isCustom = type === "custom";
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
+  const selectedMember = document.querySelector(".member-selected-section");
+  if (selectedMember) selectedMember.classList.toggle("member-selected-custom", isCustom);
   document.querySelectorAll("[data-member-guide]").forEach(card => {
     card.hidden = card.dataset.memberGuide !== type;
   });
@@ -3801,9 +3803,9 @@ function setMemberType(type) {
     : type === "ea"
       ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
     : type === "pfc"
-        ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
+      ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
       : type === "custom"
-        ? "Custom / Built-up properties: axial capacity from entered effective section properties; k<sub>f</sub> and &alpha;<sub>b</sub> remain project-confirmed."
+        ? "Custom / Built-up properties: entered effective section properties; k<sub>f</sub> and &alpha;<sub>b</sub> are adopted AS 4100 compression factors."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";
   $("memberAlphaB").disabled = type !== "custom";
   if (type === "chs") $("memberAlphaB").value = "-0.5";

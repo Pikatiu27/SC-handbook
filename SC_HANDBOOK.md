@@ -1321,7 +1321,8 @@ The `Selected member` strip is a quick geometry and assumption lookup. It should
 #### 15.11.4 Custom Member Geometry
 
 - `Custom / Built-up properties` member input may use user-entered effective properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`.
-- Treat this mode as a CAD / section-property-report quick check. If the source report gives `I_x` and `I_y`, the user should enter `r_x = sqrt(I_x / A_g)` and `r_y = sqrt(I_y / A_g)`.
+- Treat this mode as a verified section-property-calculation quick check. If the source report gives `I_x` and `I_y`, the user should enter `r_x = sqrt(I_x / A_g)` and `r_y = sqrt(I_y / A_g)`.
+- Hide catalogue section-guide imagery in this mode because no standard section geometry is being selected.
 - Calculate compression about both entered axes and report the governing `phi N_c`.
 - State clearly that the source section calculation, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, local buckling derivation and connection eccentricity are not verified by the web tab.
 - CHS / Equal Angle / PFC / Rod may include a family-specific dimension override inside the Section properties card.

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260709membercustom2">
+  <link rel="stylesheet" href="styles.css?v=20260709membercustom3">
 </head>
 <body>
   <header class="topbar">
@@ -488,12 +488,12 @@
               <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
             </div>
             <div class="input-group-fields three" id="memberCustomSectionFields" hidden>
-              <div class="member-custom-subheading"><b>CAD / section properties</b><small>Use effective centroidal section properties from CAD or a section-property report. If I<sub>x</sub> and I<sub>y</sub> are provided, enter r<sub>x</sub> = √(I<sub>x</sub> / A<sub>g</sub>) and r<sub>y</sub> = √(I<sub>y</sub> / A<sub>g</sub>).</small></div>
+              <div class="member-custom-subheading"><b>User-defined section properties</b><small>Enter effective centroidal properties from a verified section-property calculation. If I<sub>x</sub> and I<sub>y</sub> are provided, use r<sub>x</sub> = sqrt(I<sub>x</sub> / A<sub>g</sub>) and r<sub>y</sub> = sqrt(I<sub>y</sub> / A<sub>g</sub>).</small></div>
               <label><span>Name</span><input id="memberCustomName" type="text" value="Custom built-up member"></label>
               <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
               <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
               <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
-              <div class="member-custom-subheading"><b>Member design assumptions</b><small>Effective length is a project restraint assumption, not a CAD section property.</small></div>
+              <div class="member-custom-subheading"><b>Effective lengths</b><small>Use the same value for L<sub>ex</sub> and L<sub>ey</sub> when restraint conditions are the same about both axes.</small></div>
               <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
               <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
             </div>
@@ -529,8 +529,8 @@
               <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
             </div>
             <div class="input-group-fields three" id="memberCustomFactorFields" hidden>
-              <div class="member-custom-subheading"><b>Compression design assumptions</b><small>Confirm k<sub>f</sub> and &alpha;<sub>b</sub> from AS 4100 judgement. These values are not derived from CAD area or inertia.</small></div>
-              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.001" max="1" step="0.001" value="1"></label>
+              <div class="member-custom-subheading"><b>Compression factors</b><small>Initial values: k<sub>f</sub> = 1.000 and &alpha;<sub>b,x</sub> = &alpha;<sub>b,y</sub> = 0.5. Confirm the adopted AS 4100 compression basis.</small></div>
+              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.001" max="1" step="0.001" value="1.000"></label>
               <label><span>&alpha;<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
               <label><span>&alpha;<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
             </div>
@@ -679,7 +679,7 @@
             <p><b>CHS product source</b> &middot; Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0. Browser properties are geometric from D/t unless a table value is explicitly shown.</p>
             <p><b>Equal Angle / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. Equal Angle properties use Tables 19&ndash;21; PFC properties use Tables 15&ndash;16.</p>
             <p><b>Rod properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size availability and mass; Table 38 for diameter-dependent AS/NZS 3679.1 round-bar yield stress. Circular solid-bar geometry is used for A<sub>g</sub> and r.</p>
-            <p><b>Custom / Built-up properties</b> &middot; Uses user-entered effective A<sub>g</sub>, r<sub>x</sub>, r<sub>y</sub>, k<sub>f</sub>, α<sub>b,x</sub>, α<sub>b,y</sub>, L<sub>ex</sub> and L<sub>ey</sub>. The page does not verify the source section calculation, local slenderness, built-up connectors or connection eccentricity.</p>
+            <p><b>Custom / Built-up properties</b> &middot; Uses user-entered effective section properties. The page does not verify the source section-property calculation, local slenderness, built-up connectors, torsional buckling or connection eccentricity.</p>
             <p><b>Family custom dimensions</b> &middot; CHS, Equal Angle, PFC and Rod may use the custom-dimension override in Section properties. CHS and Rod derive A<sub>g</sub>, r and I from circular geometry. Equal Angle and PFC derive A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub> from simplified rectangular geometry; fillets/root radii are not reconstructed.</p>
             <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
             <p><b>Axial tension</b> &middot; AS 4100 Cl. 7.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3.</p>
@@ -885,6 +885,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260709membercustom2"></script>
+  <script src="app.js?v=20260709membercustom3"></script>
 </body>
 </html>
