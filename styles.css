@@ -486,8 +486,8 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-source-pill.source-user { border-color: #d8c8d6; background: #fbf3fb; color: #684c67; }
 .mini-action { min-height: 30px; border: 1px solid #c4d8d1; border-radius: 7px; background: #fff; color: var(--green-dark); padding: 6px 8px; font-size: var(--fs-xs); line-height: 1; font-weight: 900; cursor: pointer; }
 .mini-action:hover { border-color: var(--green-dark); background: #f5faf0; }
-.screw-selected-card { margin: 16px 0 10px; padding: 18px; border: 1px solid #c1d7cc; border-left: 4px solid var(--screw-accent); border-radius: 8px; background: linear-gradient(180deg, #ffffff 0%, #f6faf6 100%); box-shadow: 0 1px 0 rgba(54, 83, 68, .06); }
-.screw-review-panel { margin: 14px 0 10px; border: 1px solid #d5e2da; border-radius: 8px; background: #ffffff; overflow: hidden; }
+.screw-selected-card { margin: 16px 0 10px; padding: 18px; border: 1px solid #c8d9d0; border-left: 4px solid var(--screw-accent); border-radius: 8px; background: #ffffff; }
+.screw-review-panel { margin: 12px 0 4px; border: 1px solid #d5e2da; border-radius: 8px; background: #ffffff; overflow: hidden; }
 .screw-review-panel > summary { list-style: none; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; background: #fbfdfb; }
 .screw-review-panel > summary::-webkit-details-marker { display: none; }
 .screw-review-panel > summary span, .screw-review-panel > summary b, .screw-review-panel > summary small { display: block; }
@@ -497,24 +497,36 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-review-panel > summary > b { flex: 0 0 auto; padding: 6px 9px; border-radius: 999px; background: #fff; border: 1px solid #cbded3; color: var(--green-dark); font-size: var(--fs-xs); line-height: 1.1; font-weight: 900; text-align: center; }
 .screw-review-panel > summary > i { color: var(--green); font-size: var(--fs-md); font-style: normal; transition: transform .2s; }
 .screw-review-panel[open] > summary > i { transform: rotate(45deg); }
-.screw-review-body { padding: 0 13px 13px; }
+.screw-review-heading { padding: 11px 13px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #dce7e1; background: #f8fbfd; }
+.screw-review-heading span, .screw-review-heading b, .screw-review-heading small { display: block; }
+.screw-review-heading > span > b { color: var(--ink); font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
+.screw-review-heading small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.25; font-weight: 700; }
+.screw-review-heading > b { flex: 0 0 auto; padding: 6px 9px; border: 1px solid #cbded3; border-radius: 999px; background: #fff; color: var(--green-dark); font-size: var(--fs-xs); line-height: 1.1; font-weight: 900; }
+.screw-review-heading > b.pass { border-color: #bed6c6; background: var(--green-soft); color: var(--green-dark); }
+.screw-review-heading > b.check { border-color: #ead6ac; background: #fff3df; color: #8a5a19; }
+.screw-review-heading > b.fail { border-color: #e8c4be; background: #fde8e5; color: var(--red); }
+.screw-review-body { padding: 12px 13px 10px; }
 .screw-review-panel .screw-driver-panel { margin: 0; padding-top: 0; border-top: 0; }
 .screw-site-panel > summary { background: #f8fbfd; }
 .screw-advice-panel { border-color: #ead9b7; }
 .screw-advice-panel > summary { background: #fffaf0; }
 .screw-advice-panel > summary > span > b { color: #3e3727; }
-.screw-selected-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; padding-bottom: 13px; border-bottom: 1px solid #dce8e1; }
+.screw-selected-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e1e9e4; }
 .screw-selected-header h2 { margin: 2px 0 0; color: var(--ink); font-size: var(--fs-lg); line-height: 1.1; font-weight: 900; letter-spacing: 0; }
-.screw-selected-header p { margin: 5px 0 0; max-width: 760px; color: #596960; font-size: var(--fs-sm); line-height: 1.35; font-weight: 700; }
+.screw-selected-header p { margin: 5px 0 0; max-width: 760px; color: #65726b; font-size: var(--fs-xs); line-height: 1.35; font-weight: 700; }
 .screw-selected-header > b { flex: 0 0 auto; padding: 7px 10px; border-radius: 999px; background: #f7fbf4; color: var(--green-dark); border: 1px solid #bed6c6; font-size: var(--fs-xs); line-height: 1.1; font-weight: 900; text-align: center; }
+.screw-selected-header > b.data-directional { border-color: #b9d4c2; background: #edf7ef; color: #376749; }
+.screw-selected-header > b.data-compression, .screw-selected-header > b.data-partial { border-color: #e2cf9f; background: #fff7e5; color: #7b571d; }
+.screw-selected-header > b.data-geometry, .screw-selected-header > b.data-project { border-color: #d4dbe0; background: #f4f6f7; color: #59656c; }
+.screw-selected-header > b.data-typical { border-color: #cbd7e3; background: #f0f6fb; color: #365d7b; }
 .screw-readiness-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; }
 .screw-readiness-strip div { min-width: 0; padding: 9px 10px; border: 1px solid #d7e2e8; border-radius: 8px; background: #f8fbfd; }
 .screw-readiness-strip span, .screw-readiness-strip strong, .screw-readiness-strip em { display: block; }
 .screw-readiness-strip span { color: #60717a; font-size: var(--fs-xs); line-height: 1.15; font-weight: 900; }
 .screw-readiness-strip strong { margin-top: 3px; color: #315d72; font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; overflow-wrap: anywhere; }
 .screw-readiness-strip em { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.25; font-style: normal; font-weight: 700; overflow-wrap: anywhere; }
-.screw-selected-overview { display: grid; grid-template-columns: 1fr; gap: 12px; align-items: start; margin-bottom: 12px; }
-.screw-selected-summary { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.screw-selected-overview { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: start; }
+.screw-selected-summary { min-width: 0; display: flex; flex-direction: column; gap: 9px; }
 .screw-visual-card { min-width: 0; margin: 0; padding: 12px 12px 10px; border: 1px solid #d2e3dd; border-radius: 8px; background: #fff; overflow: hidden; }
 .screw-pile-sketch { display: block; width: 100%; min-height: 278px; aspect-ratio: 5 / 3; }
 .screw-sketch-bg { fill: #ffffff; }
@@ -548,8 +560,9 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-sketch-title { fill: var(--ink); font-size: 13px; font-weight: 900; }
 .screw-visual-card figcaption { margin-top: 6px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; font-weight: 700; }
 .screw-capacity-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
-.screw-selected-summary .screw-capacity-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 0; }
-.screw-capacity-strip > div { min-width: 0; padding: 12px 13px; border: 1px solid #c9ddd3; border-top: 3px solid var(--screw-accent); border-radius: 8px; background: #ffffff; box-shadow: 0 1px 0 rgba(54, 83, 68, .05); }
+.screw-selected-summary .screw-capacity-strip { grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, .78fr); margin-bottom: 0; }
+.screw-capacity-strip > div { min-width: 0; padding: 12px 13px; border: 1px solid #c9ddd3; border-top: 3px solid var(--screw-accent); border-radius: 8px; background: #ffffff; }
+.screw-capacity-strip > div.secondary { border-color: #d8e0dc; border-top-color: #8b9992; background: #fafcfa; }
 .screw-capacity-strip span, .screw-capacity-strip strong, .screw-capacity-strip em { display: block; }
 .screw-capacity-strip span { color: #53665c; font-size: var(--fs-xs); line-height: 1.15; font-weight: 900; }
 .screw-capacity-strip strong { margin-top: 5px; color: var(--green-dark); font-size: var(--fs-lg); line-height: 1; font-weight: 900; }
@@ -566,17 +579,21 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-capacity-editor[open] > summary i { transform: rotate(45deg); }
 .screw-capacity-editor-body { padding: 0 11px 11px; }
 .screw-system-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.screw-system-facts div { min-width: 0; padding: 10px 11px; border: 1px solid #d9e5dd; border-radius: 8px; background: #fbfdfb; }
+.screw-system-facts div { min-width: 0; padding: 10px 11px; border: 1px solid #e0e7e2; border-radius: 7px; background: #fbfcfb; }
 .screw-system-facts span, .screw-system-facts strong, .screw-system-facts em { display: block; }
 .screw-system-facts span { color: var(--muted); font-size: var(--fs-xs); line-height: 1.15; font-weight: 900; }
 .screw-system-facts strong { margin-top: 4px; color: var(--ink); font-size: var(--fs-sm); line-height: 1.25; font-weight: 700; overflow-wrap: anywhere; }
 .screw-system-facts em { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.25; font-style: normal; font-weight: 700; overflow-wrap: anywhere; }
-.screw-decision-strip { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 8px; }
-.screw-decision-strip div { min-width: 0; padding: 10px 11px; border: 1px solid #ead9b7; border-radius: 8px; background: #fffaf0; }
-.screw-decision-strip div.wide { grid-column: 1 / -1; }
-.screw-decision-strip span, .screw-decision-strip strong { display: block; }
-.screw-decision-strip span { color: #765f31; font-size: var(--fs-xs); line-height: 1.15; font-weight: 900; }
-.screw-decision-strip strong { margin-top: 4px; color: #3e3727; font-size: var(--fs-sm); line-height: 1.25; font-weight: 700; overflow-wrap: anywhere; }
+.screw-technical-limits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.screw-technical-limits div { min-width: 0; padding: 9px 10px; border-top: 1px solid #dfe6e2; background: #fff; }
+.screw-technical-limits span, .screw-technical-limits strong { display: block; }
+.screw-technical-limits span { color: var(--muted); font-size: var(--fs-xs); line-height: 1.15; font-weight: 900; }
+.screw-technical-limits strong { margin-top: 3px; color: var(--ink); font-size: var(--fs-xs); line-height: 1.35; font-weight: 700; overflow-wrap: anywhere; }
+.screw-selection-flag { padding: 10px 12px; border-left: 3px solid #b9974d; border-radius: 4px; background: #fffaf0; }
+.screw-selection-flag span, .screw-selection-flag strong, .screw-selection-flag em { display: block; }
+.screw-selection-flag > span:first-child { color: #765f31; font-size: var(--fs-xs); line-height: 1.15; font-weight: 900; }
+.screw-selection-flag strong { margin-top: 3px; color: #3e3727; font-size: var(--fs-sm); line-height: 1.3; font-weight: 800; overflow-wrap: anywhere; }
+.screw-selection-flag em { margin-top: 2px; color: #71664e; font-size: var(--fs-xs); line-height: 1.3; font-style: normal; font-weight: 700; }
 .screw-selected-details { margin-top: 12px; border: 1px solid #d2e3dd; border-radius: 8px; background: rgba(255,255,255,.54); overflow: hidden; }
 .screw-selected-details > summary { list-style: none; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; }
 .screw-selected-details > summary::-webkit-details-marker { display: none; }
@@ -693,10 +710,10 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .wind-resource-strip a:hover { border-color: var(--green); background: var(--green-soft); }
 
 .screw-capacity-grid { grid-template-columns: repeat(4, 1fr); }
-.screw-note-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
-.screw-note-grid article { min-width: 0; padding: 10px 11px; border: 1px solid #ead9b7; border-radius: 7px; background: #fffaf0; }
+.screw-note-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.screw-note-grid article { min-width: 0; padding: 9px 10px; border: 1px solid #dce5e0; border-radius: 7px; background: #fafcfb; }
 .screw-note-grid b, .screw-note-grid span { display: block; }
-.screw-note-grid b { color: #765f31; font-size: var(--fs-xs); line-height: 1.2; font-weight: 900; }
+.screw-note-grid b { color: var(--green-dark); font-size: var(--fs-xs); line-height: 1.2; font-weight: 900; }
 .screw-note-grid span { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
 .screw-risk-result, .screw-demand-result { margin-top: 10px; }
 .screw-demand-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 0 0 10px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--line); }
@@ -704,6 +721,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-demand-metrics span, .screw-demand-metrics strong { display: block; }
 .screw-demand-metrics span { color: var(--muted); font-size: var(--fs-xs); }
 .screw-demand-metrics strong { margin-top: 1px; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+.screw-demand-metrics small { display: block; margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
 .screw-reaction-table { min-width: 760px; }
 .screw-reaction-table td:nth-child(2),
 .screw-reaction-table td:nth-child(3),
@@ -824,6 +842,7 @@ footer b { white-space: nowrap; }
   .screw-selected-overview { gap: 12px; }
   .screw-driver-heading { display: block; }
   .screw-driver-heading span { display: block; margin-top: 3px; text-align: left; }
+  .screw-review-heading { align-items: flex-start; }
   .bolt-summary, .member-summary, .beam-summary, .screw-summary, .wind-summary { align-items: flex-start; }
   .weld-summary { display: block; }
   .screw-summary { display: block; }
@@ -915,7 +934,7 @@ footer b { white-space: nowrap; }
   .tool-panel { padding: 12px; border-radius: 14px; }
   .lookup-card { padding: 14px; }
   .screw-selected-card { padding: 11px; }
-  .screw-capacity-strip, .screw-selected-summary .screw-capacity-strip, .screw-readiness-strip, .screw-system-facts, .screw-decision-strip, .screw-detail-grid { grid-template-columns: 1fr; }
+  .screw-capacity-strip, .screw-selected-summary .screw-capacity-strip, .screw-readiness-strip, .screw-system-facts, .screw-technical-limits, .screw-decision-strip, .screw-detail-grid { grid-template-columns: 1fr; }
   .screw-decision-strip div.wide { grid-column: auto; }
   .screw-review-panel > summary { align-items: flex-start; }
   .screw-review-panel > summary > b { margin-left: auto; }

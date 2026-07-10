@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260706screwpush1">
+  <link rel="stylesheet" href="styles.css?v=20260710standards1">
 </head>
 <body>
   <header class="topbar">
@@ -694,7 +694,7 @@
     <section id="screwPanel" class="tool-panel" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Screw piles &middot; selector</p><h2>Screw Piles Selector</h2></div>
-        <span class="tool-status">Draft &middot; selector + optional check</span>
+        <span class="tool-status">Draft &middot; selection + action screen</span>
       </div>
 
       <section class="lookup-card screw-card">
@@ -704,7 +704,7 @@
             <div class="input-group-fields three">
               <label class="size-field"><span>System</span><select id="screwManufacturer"><option value="katana">Katana</option><option value="ideal">Ideal Foundations</option><option value="blade">Blade Pile</option><option value="piletech">Piletech</option><option value="driven">Driven Engineering</option><option value="keller">Keller</option><option value="minmetals">Minmetals Helicast</option><option value="surefoot">Surefoot</option><option value="stopdigging">StopDigging AU</option><option value="groundscrews">Ground Screws Australia</option><option value="hpa">Helical Piles Australia</option><option value="custom">Custom / other</option></select></label>
               <label class="size-field"><span>Series</span><select id="screwSeries"></select></label>
-              <label><span>Application</span><select id="screwApplication"><option value="generic">General support</option><option value="monopole">Monopole / pole</option><option value="tower">Lattice tower</option><option value="sign">Sign / lighting structure</option><option value="platform">Equipment platform</option><option value="anchor">Retaining / anchor</option></select></label>
+              <label><span>Application</span><select id="screwApplication"><option value="monopole">Pole / monopole foundation</option><option value="tower">Lattice tower foundation</option><option value="generic">General support</option><option value="sign">Sign / lighting structure</option><option value="platform">Equipment platform</option><option value="anchor">Retaining / anchor</option></select></label>
             </div>
           </section>
         </div>
@@ -714,39 +714,35 @@
             <div>
               <span class="section-tag">SELECTED SYSTEM</span>
               <h2 id="screwDesignation">Katana 80 kN series</h2>
-              <p id="screwAssumption">Verify source, site and installation evidence.</p>
+              <p id="screwAssumption">Conventional steel screw pile &middot; preliminary selection.</p>
             </div>
             <b id="screwCapacityStatus">preliminary selector</b>
-          </div>
-
-          <div class="screw-readiness-strip" aria-label="Selection status">
-            <div><span>Pile category</span><strong id="screwReadinessType">Helical screw pile</strong><em id="screwReadinessTypeNote">Catalogue family.</em></div>
-            <div><span>Axial coverage</span><strong id="screwReadinessCoverage">Rc/Rt 2 of 2</strong><em id="screwReadinessCoverageNote">Compression and tension values available.</em></div>
-            <div><span>Next evidence</span><strong id="screwReadinessEvidence">Obtain lateral value</strong><em id="screwReadinessEvidenceNote">Use supplier design, geotechnical design or load test.</em></div>
           </div>
 
           <div class="screw-selected-overview">
             <div class="screw-selected-summary">
               <div class="screw-capacity-strip" aria-label="Selected system capacity values">
                 <div hidden><output id="screwAxialClass">80</output><em id="screwAxialBasis">Series class from current certificate.</em></div>
-                <div><span>Compression Rc</span><strong><output id="screwCompressionResult">80</output><small id="screwCompressionUnit"> kN</small></strong><em id="screwCompressionBasis">Selected source value.</em></div>
-                <div><span>Tension / uplift Rt</span><strong><output id="screwUpliftResult">80</output><small id="screwUpliftUnit"> kN</small></strong><em id="screwUpliftBasis">Selected source value.</em></div>
-                <div><span>Lateral Rv</span><strong><output id="screwLateralResult">Not stated</output><small id="screwLateralUnit"></small></strong><em id="screwLateralBasis">Required for lateral or moment use.</em></div>
+                <div><span>Published compression</span><strong><output id="screwCompressionResult">80</output><small id="screwCompressionUnit"> kN</small></strong><em id="screwCompressionBasis">Series value; verify load basis.</em></div>
+                <div><span>Published uplift</span><strong><output id="screwUpliftResult">Not stated</output><small id="screwUpliftUnit"></small></strong><em id="screwUpliftBasis">No direction-specific value.</em></div>
+                <div class="secondary"><span>Published lateral</span><strong><output id="screwLateralResult">Not stated</output><small id="screwLateralUnit"></small></strong><em id="screwLateralBasis">No direction-specific value.</em></div>
               </div>
 
               <div class="screw-system-facts" aria-label="Selected system key dimensions">
-                <div><span>Shaft</span><strong id="screwFactShaft">76.1 mm OD / 4.0 mm wall</strong></div>
-                <div><span>Helix / bearing</span><strong id="screwFactHelix">1 helix; 250 x 8 mm</strong></div>
-                <div><span>Length / connection</span><strong id="screwFactLength">1.0-4.0 m series range noted</strong><em id="screwFactExtension">0.5 m increments; extension sections available</em></div>
-                <div><span>Material</span><strong id="screwFactSteel">AS/NZS 1163 CHS, guide table</strong></div>
-                <div><span>Source / traceability</span><strong id="screwFactSourceStatus">Local certificate context</strong><em id="screwFactSource">Katana Performance Guide Rev Z / CodeMark</em></div>
-                <div><span>Capacity basis</span><strong id="screwFactCapacityBasis">Series class and published compression SWL.</strong></div>
+                <div><span>Shaft</span><strong id="screwFactShaft">76.1 mm OD / 4.0 mm wall</strong><em id="screwFactSteel">AS/NZS 1163 CHS</em></div>
+                <div><span>Helix / bearing</span><strong id="screwFactHelixCount">1 helix</strong><em id="screwFactHelix">250 mm dia x 8 mm plate</em></div>
+                <div><span>Length / extension</span><strong id="screwFactLength">1.0-4.0 m series range noted</strong><em id="screwFactExtension">0.5 m increments; extension sections available</em></div>
+                <div><span>Source / data basis</span><strong id="screwFactSourceStatus">Series context</strong><em id="screwFactSource">Katana Performance Guide Rev Z / CodeMark</em><em id="screwFactCapacityBasis">Published compression series.</em></div>
               </div>
 
-              <div class="screw-decision-strip" aria-label="Selected system decision flags">
-                <div class="wide"><span>Site / soil control</span><strong id="screwFactSiteAdvice">Candidate only; verify geotechnical and installation evidence.</strong></div>
-                <div><span>Installation control</span><strong id="screwFactInstall">Example guide torque: 4000 Nm</strong></div>
-                <div><span>Design gap</span><strong id="screwFactLimitation">Confirm Rc, Rt and Rv.</strong></div>
+              <div class="screw-technical-limits" aria-label="Selected system technical limits">
+                <div><span>Installation / torque</span><strong id="screwFactTorqueLimit">Guide torque 4000 Nm; shaft limit not stated.</strong></div>
+                <div><span>Pile-head connection</span><strong id="screwFactHeadConnection">Project tension and shear-transfer detail required.</strong></div>
+                <div><span>Durability</span><strong id="screwFactDurability">Design life and corrosion allowance not stated.</strong></div>
+              </div>
+
+              <div class="screw-selection-flag" aria-label="Selection constraint">
+                <span>Selection constraint</span><strong id="screwFactLimitation">Obtain certified R<sub>t</sub> and complete lateral/rotation design.</strong>
               </div>
 
               <div class="screw-capacity-editor" hidden aria-hidden="true">
@@ -791,31 +787,24 @@
 
         </section>
 
-        <details class="screw-review-panel screw-site-panel" open>
-          <summary><span><b>Site context</b><small>Inputs that change review flags only.</small></span><b>advice input</b><i>+</i></summary>
+        <section class="screw-review-panel screw-site-panel">
+          <div class="screw-review-heading"><span><b>Site review</b><small>Flags only; source values are unchanged.</small></span><b id="screwRiskStatus" class="check">Project review</b></div>
           <div class="screw-review-body">
             <div class="input-group-fields four">
               <label><span>Soil condition</span><select id="screwSoil"><option value="unknown">Unknown / no geotechnical report</option><option value="controlled-fill">Controlled fill</option><option value="uncontrolled-fill">Uncontrolled fill</option><option value="dense-sand">Dense sand / gravel</option><option value="loose-sand">Loose sand</option><option value="stiff-clay">Stiff clay</option><option value="soft-clay">Soft clay</option><option value="reactive-clay">Reactive clay</option><option value="rock-refusal">Rock / refusal likely</option><option value="saturated-sand">Saturated sand / liquefaction</option><option value="sensitive-clay">Sensitive clay</option></select></label>
               <label><span>Exposure</span><select id="screwExposure"><option value="normal">Normal</option><option value="aggressive">Aggressive soil</option><option value="coastal">Coastal / marine</option><option value="very-severe">Very severe</option></select></label>
-              <label><span>Installation evidence</span><select id="screwInstallEvidence"><option value="none">No record</option><option value="torque">Torque record</option><option value="test">Load test</option><option value="complete">Record available</option></select></label>
-              <label><span>Lateral sensitivity</span><select id="screwLateralSensitivity"><option value="normal">Normal</option><option value="significant">Lateral / moment use</option><option value="critical">Displacement critical</option></select></label>
+              <label><span>Installation record</span><select id="screwInstallEvidence"><option value="none">Not available</option><option value="torque">Torque / depth record</option><option value="test">Load test</option><option value="complete">Complete installation record</option></select></label>
+              <label><span>Movement criterion</span><select id="screwLateralSensitivity"><option value="undefined">Not defined</option><option value="defined">Project limit defined</option><option value="critical">Movement-critical</option></select></label>
             </div>
-            <p class="result-note">These inputs identify geotechnical, durability, installation and lateral evidence required before adopting the selected pile.</p>
+            <span id="screwRiskLevel" hidden>Review required</span>
+            <div id="screwRiskNotes" class="screw-note-grid" aria-label="Screw pile site review"></div>
+            <p class="result-note" id="screwCapacityNote">Confirm geotechnical, durability, installation and pile-head requirements before issue.</p>
           </div>
-        </details>
-
-        <details class="screw-review-panel screw-advice-panel">
-          <summary><span><b>Adoption advice</b><small>Review flags from selected system and site inputs.</small></span><b id="screwRiskStatus" class="check">Preliminary candidate</b><i>+</i></summary>
-          <div class="screw-review-body">
-          <div class="interaction-result screw-risk-result"><span>Advice level</span><strong id="screwRiskLevel">Review required</strong></div>
-          <div id="screwRiskNotes" class="screw-note-grid" aria-label="Screw pile adoption advice"></div>
-          <p class="result-note" id="screwCapacityNote">Site inputs do not calculate capacity; they identify the geotechnical, durability, installation and lateral evidence needed before adoption.</p>
-          </div>
-        </details>
+        </section>
       </section>
 
       <details class="detail-card" id="screwDemandDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">OPTIONAL CHECK</span><b>Base reaction to pile actions</b></span><small>Rigid-cap load split; not pile capacity design.</small></span><i>+</i></summary>
+        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">OPTIONAL CHECK</span><b>Rectangular pile-group action screen</b></span><small>Symmetric rigid-pad distribution; not resistance design.</small></span><i>+</i></summary>
         <div class="detail-body">
           <section>
             <h3>Base reaction inputs</h3>
@@ -827,33 +816,31 @@
               <label><span>My* moment</span><span class="unit"><input id="screwDemandMy" type="number" step="1" value="0"><em>kNm</em></span></label>
               <label><span>Tz* torsion</span><span class="unit"><input id="screwDemandTz" type="number" step="1" value="0"><em>kNm</em></span></label>
             </div>
-            <div class="screw-note-grid screw-demand-definition-grid" aria-label="Screw pile demand input definitions">
-              <article><b>Sign</b><span>N* &gt; 0 compression; N* &lt; 0 uplift.</span></article>
-              <article><b>Origin</b><span>Group centroid; x<sub>i</sub>, y<sub>i</sub> in metres.</span></article>
-              <article><b>Model</b><span>Rigid cap; equal axial stiffness.</span></article>
-              <article><b>Output</b><span>Per-pile N* and V* for comparison with selected Rc, Rt and Rv.</span></article>
-            </div>
+            <p class="result-note">Enter design action effects at the pile-group centroid on one ULS or SLS basis. N* &gt; 0 denotes compression. Include project eccentricities; pile-position tolerance effects are excluded.</p>
           </section>
           <section>
-            <h3>Pile layout</h3>
-            <div class="form-grid three">
-              <label><span>Layout</span><select id="screwLayout"><option value="two-x">2 piles - X line</option><option value="two-y">2 piles - Y line</option><option value="three">3 piles - triangular</option><option value="four">4 piles - square</option><option value="circular">Circular group</option></select></label>
-              <label><span>Pile count, n</span><input id="screwPileCount" type="number" min="2" max="24" step="1" value="2"></label>
-              <label><span>Spacing / diameter</span><span class="unit"><input id="screwGroupDimension" type="number" min="0.1" step="0.1" value="2.0"><em>m</em></span></label>
+            <h3>Rectangular layout</h3>
+            <div class="form-grid five screw-layout-inputs">
+              <label><span>Arrangement</span><select id="screwLayout"><option value="rect-perimeter">Perimeter rows</option><option value="rect-grid">Full grid</option></select></label>
+              <label><span id="screwPileColumnsLabel">Piles per X edge, n<sub>x</sub></span><input id="screwPileColumns" type="number" min="2" max="8" step="1" value="3"></label>
+              <label><span id="screwPileRowsLabel">Piles per Y edge, n<sub>y</sub></span><input id="screwPileRows" type="number" min="2" max="8" step="1" value="3"></label>
+              <label><span>Group span, L<sub>x</sub></span><span class="unit"><input id="screwGroupLengthX" type="number" min="0.1" step="0.1" value="3.0"><em>m</em></span></label>
+              <label><span>Group span, L<sub>y</sub></span><span class="unit"><input id="screwGroupLengthY" type="number" min="0.1" step="0.1" value="3.0"><em>m</em></span></label>
             </div>
-            <div class="interaction-result screw-demand-result"><span>Action / selected value</span><strong id="screwDemandRatio">0.00</strong><b id="screwDemandStatus">No demand entered</b></div>
+            <p class="result-note" id="screwLayoutNote">Counts include corner piles. L<sub>x</sub> and L<sub>y</sub> are centre-to-centre spans between outer piles.</p>
+            <div class="interaction-result screw-demand-result"><span>Selected-value comparison</span><strong id="screwDemandRatio">&eta; = 0.00</strong><b id="screwDemandStatus">No demand entered</b></div>
           </section>
           <section>
-            <h3>Distributed pile actions</h3>
+            <h3>Pile reactions</h3>
             <div class="screw-demand-metrics">
-              <div><span>Max compression</span><strong id="screwDemandCompression">0.0 kN</strong></div>
-              <div><span>Max uplift</span><strong id="screwDemandUplift">0.0 kN</strong></div>
-              <div><span>Max lateral</span><strong id="screwDemandLateral">0.0 kN</strong></div>
-              <div><span>Critical pile</span><strong id="screwCriticalPile">-</strong></div>
+              <div><span>Pile count</span><strong id="screwDemandPileCount">8</strong></div>
+              <div><span>Max compression</span><strong id="screwDemandCompression">0.0 kN</strong><small id="screwDemandCompressionPile">Pile -</small></div>
+              <div><span>Max uplift</span><strong id="screwDemandUplift">0.0 kN</strong><small id="screwDemandUpliftPile">Pile -</small></div>
+              <div><span>Max lateral screen</span><strong id="screwDemandLateral">0.0 kN</strong><small id="screwDemandLateralPile">Pile -</small></div>
             </div>
             <div class="table-scroll">
               <table class="compact-lookup-table screw-reaction-table">
-                <thead><tr><th>Pile</th><th>x<sub>i</sub></th><th>y<sub>i</sub></th><th>N<sub>i</sub>* axial</th><th>State</th><th>V<sub>i</sub>* lateral</th></tr></thead>
+                <thead><tr><th>Pile</th><th>x<sub>i</sub></th><th>y<sub>i</sub></th><th>N<sub>i</sub>* axial</th><th>State</th><th>V<sub>i</sub>* screen</th></tr></thead>
                 <tbody id="screwReactionRows"></tbody>
               </table>
             </div>
@@ -861,7 +848,7 @@
           <section>
             <h3>Formula and limits</h3>
             <div id="screwDemandFormulaSteps" class="formula-list"></div>
-            <p class="checklist-warning">This is an action-effect splitter only. It does not calculate AS 2159 geotechnical strength, structural strength, serviceability movement, durability, pile cap/connection capacity, installation acceptance or load testing.</p>
+            <p class="checklist-warning">Derived action distribution only. Complete AS 2159 pile/group resistance, movement, pile structural design, durability, connection, installation and testing checks separately.</p>
           </section>
         </div>
       </details>
@@ -870,10 +857,10 @@
         <summary><span><b>Basis / limits</b><small>Scope and source status</small></span><i>+</i></summary>
         <div class="source-body">
           <div class="source-notes">
-            <p><b>Scope</b> - Select a screw pile / pier candidate from available source rows and compare listed Rc, Rt and Rv values with an optional rigid-cap action split.</p>
-            <p><b>Assumptions</b> - Rc, Rt and Rv are selected source values. Site, exposure and installation inputs generate review flags only; they do not calculate capacity.</p>
-            <p><b>Not covered</b> - AS 2159 geotechnical or structural resistance design, settlement, serviceability movement, durability design, pile-cap design, connection design, group interaction and testing acceptance.</p>
-            <p><b>Use with engineering judgement</b> - Source-unverified supplier rows remain selection prompts. Obtain supplier, project geotechnical or load-test evidence before issue.</p>
+            <p><b>Scope</b> - Product selection and preliminary action effects for a symmetric rectangular pile group.</p>
+            <p><b>Assumptions</b> - Rigid pad; vertical identical piles; equal axial stiffness in compression and tension; equal lateral stiffness; centroidal actions; no pad-soil resistance; one ULS or SLS basis.</p>
+            <p><b>Not covered</b> - AS 2159 pile/group/block resistance, settlement or rotation, soil-pile lateral response, pile bending or positional tolerance, cap/head connection, durability, installation or test acceptance.</p>
+            <p><b>Use with engineering judgement</b> - Compare only certified direction-specific project values with action effects on the same design basis.</p>
           </div>
         </div>
       </details>
@@ -882,6 +869,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260706screwpush1"></script>
+  <script src="app.js?v=20260710standards1"></script>
 </body>
 </html>
