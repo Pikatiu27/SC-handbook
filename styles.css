@@ -89,6 +89,10 @@ main, footer { max-width: 1040px; margin: auto; }
 .tool-tab[data-tool="screw"].active { background: var(--screw-soft); color: var(--screw-dark); }
 .tool-tab[data-tool="wind"].active { background: var(--wind-soft); color: var(--wind-dark); }
 .tool-tab:focus-visible, .member-type:focus-visible, .beam-type:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }
+.branch-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 14px; padding: 5px; width: fit-content; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.64); }
+.branch-tab { border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; padding: 8px 12px; font-size: var(--fs-sm); line-height: 1.15; font-weight: 800; }
+.branch-tab.active { background: var(--green-soft); color: var(--green-dark); box-shadow: 0 1px 5px rgba(55, 61, 56, .10); }
+.branch-tab:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }
 .tool-panel [hidden] { display: none !important; }
 .tool-panel[hidden] { display: none; }
 #boltPanel { --green: var(--bolt-accent); --green-dark: var(--bolt-dark); --green-soft: var(--bolt-soft); --panel-bg: var(--bolt-panel); --line: #cfe8da; --input-manual-bg: #f0fbf5; --input-auto-bg: #f2f5f3; --input-auto-border: rgba(47, 123, 87, .24); }
@@ -135,6 +139,11 @@ main, footer { max-width: 1040px; margin: auto; }
 .input-group-fields.seven { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .input-group-fields.beam-custom-properties { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .member-net-section-group { display: block; }
+.member-custom-subheading { grid-column: 1 / -1; padding: 2px 0 0; }
+.member-custom-subheading b,
+.member-custom-subheading small { display: block; }
+.member-custom-subheading b { color: var(--green-dark); font-size: var(--fs-xs); line-height: 1.25; font-weight: 800; }
+.member-custom-subheading small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
 #memberPanel .lookup-card { padding: 18px; }
 #memberPanel .input-cluster { margin-bottom: 12px; gap: 10px; }
 #memberPanel .input-group { padding: 10px 12px; background: #fbfcfd; }
@@ -254,8 +263,26 @@ main, footer { max-width: 1040px; margin: auto; }
 .bolt-summary dl div { text-align: right; }
 .bolt-summary dt { color: var(--muted); font-size: var(--fs-xs); }
 .bolt-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; }
+.ubolt-card { margin-top: 0; }
+.ubolt-card .input-cluster { gap: 10px; margin-bottom: 14px; }
+.ubolt-summary { border: 1px solid #cfe2d6; border-radius: 8px; }
+.ubolt-summary > div { flex: 1 1 38%; min-width: 0; }
+.ubolt-summary dl { flex: 1 1 58%; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(78px, 1fr)); gap: 12px 16px; }
+.ubolt-summary dl div { min-width: 0; }
+.ubolt-summary dd { max-width: none; overflow-wrap: anywhere; }
+.ubolt-results .capacity-card strong { font-size: 23px; }
+.capacity-grid.ubolt-results-single { grid-template-columns: minmax(0, 1fr); }
+.ubolt-results-single .capacity-card { display: grid; grid-template-columns: minmax(210px, .38fr) minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: 28px; }
+.ubolt-results-single .capacity-card > span { grid-column: 1; grid-row: 1; }
+.ubolt-results-single .capacity-card > strong { grid-column: 1; grid-row: 2; }
+.ubolt-results-single .capacity-card > p { grid-column: 2; grid-row: 1 / 3; padding-left: 22px; border-left: 1px solid var(--line); line-height: 1.45; }
+.ubolt-source-state { padding: 4px 7px; border: 1px solid #efd6ad; border-radius: 4px; background: #fff7e8; color: #9b5b11 !important; font-weight: 800 !important; }
+.ubolt-source-state.is-checked { border-color: #b8d8c4; background: var(--green-soft); color: var(--green-dark) !important; }
 .member-summary { margin: 12px 0 16px; padding: 10px 12px; border-radius: 10px; background: var(--green-soft); display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 9px; }
 .member-selected-section { grid-template-columns: minmax(0, 1fr) minmax(190px, 220px); align-items: stretch; gap: 0; padding: 0; background: #f2f8ff; border: 1px solid #cfe1ef; overflow: hidden; }
+.member-selected-section.member-selected-custom { grid-template-columns: minmax(0, 1fr); }
+.member-selected-section.member-selected-custom .member-summary-visual,
+.member-selected-section.member-selected-custom .member-drawing-note { display: none; }
 .member-summary-visual { order: 2; width: 100%; max-width: 220px; min-width: 0; align-self: stretch; justify-self: stretch; padding-top: 0; display: grid; }
 .beam-summary-visual { order: 2; width: 100%; max-width: 220px; min-width: 0; align-self: stretch; justify-self: stretch; padding-top: 0; display: grid; }
 .member-summary-visual .section-guide { height: 100%; padding: 0; display: grid; }
@@ -854,6 +881,13 @@ footer b { white-space: nowrap; }
   .wind-summary dl div { text-align: left; }
   .wind-summary dd { max-width: none; }
   .bolt-summary dl { gap: 14px; flex-wrap: wrap; }
+  .ubolt-summary dl { min-width: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+  .ubolt-summary dl div { text-align: left; }
+  .ubolt-results-single .capacity-card { grid-template-columns: 1fr; grid-template-rows: auto; row-gap: 0; }
+  .ubolt-results-single .capacity-card > span,
+  .ubolt-results-single .capacity-card > strong,
+  .ubolt-results-single .capacity-card > p { grid-column: 1; grid-row: auto; }
+  .ubolt-results-single .capacity-card > p { padding: 8px 0 0; border: 0; }
   .weld-summary dl { margin-top: 12px; grid-template-columns: repeat(5, 1fr); }
   .weld-summary dl div { text-align: left; }
   .member-summary { display: block; }
@@ -927,6 +961,8 @@ footer b { white-space: nowrap; }
   .tool-tabs { width: 100%; position: sticky; top: 54px; z-index: 4; overflow-x: auto; flex-wrap: nowrap; padding: 4px; scrollbar-width: none; }
   .tool-tabs::-webkit-scrollbar { display: none; }
   .tool-tab { min-width: max-content; flex: 0 0 auto; padding: 9px 11px; font-size: var(--fs-xs); white-space: nowrap; }
+  .branch-tabs { width: 100%; padding: 4px; }
+  .branch-tab { flex: 1 1 auto; padding: 8px 9px; font-size: var(--fs-xs); }
   .tool-heading { display: block; }
   .tool-heading .kicker, .tool-heading > span, .section-heading > span { overflow-wrap: anywhere; }
   .tool-heading h2 { font-size: var(--fs-md); }
