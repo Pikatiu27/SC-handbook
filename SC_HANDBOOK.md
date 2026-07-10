@@ -1500,7 +1500,61 @@ The optional vertical-fitment input row should be titled `Shear reinforcement`, 
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
-### 15.15 Web Local Update and Deployment Workflow
+### 15.15 Screw Piles Selector Web Tab Rules
+
+The Screw Piles Selector is a product-selection aid with an optional pile-group action screen. It is not an AS 2159 pile design engine.
+
+Use this primary workflow:
+
+1. Select a system and series.
+2. Show the published direction-specific values and key product geometry.
+3. Identify the data status and the controlling product limitation.
+4. Apply concise soil, exposure, installation-evidence and movement flags.
+5. Optionally distribute supplied base action effects to a symmetric rectangular pile layout.
+
+The selected-system summary must prioritise:
+
+- published compression, uplift and lateral values, with `Not stated` where a direction-specific value is unavailable;
+- shaft diameter and wall thickness;
+- helix or bearing-element count, diameter and thickness;
+- length, extension or splice basis;
+- installation torque/acceptance information, pile-head connection and durability information;
+- source and data status: `Directional product data`, `Compression only`, `Geometry only`, `Typical SWL benchmark` or `Project input`.
+
+Do not infer uplift or lateral resistance from a compression series class. Manufacturer dimensions or typical capacity benchmarks must not be presented as project design strengths.
+
+The optional rectangular pile-group action screen may use a perimeter-row or full-grid layout. It is a derived rigid-pad equilibrium model, not a clause-prescribed AS 2159 resistance calculation. For the generated symmetric layouts, `sum(x_i) = sum(y_i) = sum(x_i y_i) = 0`, and:
+
+- `N_i* = N*/n + M_x* y_i / sum(y_j^2) + M_y* x_i / sum(x_j^2)`;
+- `V_x,i* = V_x*/n - T_z* y_i / sum(r_j^2)`;
+- `V_y,i* = V_y*/n + T_z* x_i / sum(r_j^2)`;
+- `V_i* = sqrt[(V_x,i*)^2 + (V_y,i*)^2]`.
+
+State these assumptions with the result:
+
+- rigid pad and symmetric rectangular layout;
+- vertical identical piles;
+- equal axial stiffness in compression and tension;
+- equal lateral stiffness;
+- actions applied at the pile-group centroid on one consistent ULS or SLS basis;
+- project eccentricities included in the supplied actions;
+- no pad-soil bearing or lateral-resistance contribution.
+
+Report maximum compression, uplift and lateral screen values with the relevant pile number. Only report a complete selected-value comparison when every demanded direction has a selected published/project value on the same design basis. `R_c`, `R_t` and `R_v` are selected comparison values; the page does not calculate AS 2159 design geotechnical or structural strength.
+
+Required AS 2159 boundaries:
+
+- Cl. 3.2.2: action effects, structural strength and geotechnical strength remain distinct checks;
+- Cl. 4.4.3.1: pile-group interaction and group/block geotechnical resistance remain project checks;
+- Cl. 4.5: settlement, lateral deflection and rotation remain project serviceability checks;
+- Cl. 5.2.2: pile bending, positional tolerance and pile-cap force transfer remain project structural checks;
+- Cl. 7.3.5.3: installation torque, shaft overstress, calibrated monitoring and installation acceptance remain project controls.
+
+Also exclude durability design, corrosion allowance, pile-head and splice design, cyclic/dynamic response, liquefaction, pile-position tolerance analysis, installation refusal and load-test acceptance. Soil/site flags may change the advice and review status, but must not alter published product values.
+
+Validation must include equilibrium checks for axial force, biaxial moment, direct shear and torsion; perimeter and full-grid pile counts; compression/uplift sign convention; missing direction-specific values; and a same-basis comparison case.
+
+### 15.16 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
