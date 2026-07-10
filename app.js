@@ -20,6 +20,194 @@ const categories = {
   "10.9/TF": { grade: "10.9", fuf: 1040, type: "friction", preload: "preload109", description: "fully tensioned, friction" }
 };
 
+const uBoltProducts = [
+  {
+    id: "hilti-mp-ub-oc-m10",
+    application: "Mounting pipe / round member",
+    manufacturer: "Hilti",
+    series: "MP-UB OC metric",
+    product: "MP-UB OC M10 family",
+    code: "r12293804 family",
+    thread: "M10",
+    fitKey: "D 60-89 mm",
+    fit: "MP-UB 60-89 range",
+    finish: "Outdoor HDG",
+    material: "Q235 or better steel - outdoor HDG - C3/C4-low",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The Australian product page publishes geometry, finish and application data, but no rated structural capacity.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Hilti Australia MP-UB OC metric product page",
+    sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
+  },
+  {
+    id: "hilti-mp-ub-oc-m12",
+    application: "Mounting pipe / round member",
+    manufacturer: "Hilti",
+    series: "MP-UB OC metric",
+    product: "MP-UB OC M12 family",
+    code: "r12293804 family",
+    thread: "M12",
+    fitKey: "D 102-324 mm",
+    fit: "MP-UB 102-324 range",
+    finish: "Outdoor HDG",
+    material: "Q235 or better steel - outdoor HDG - C3/C4-low",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The Australian product page publishes geometry, finish and application data, but no rated structural capacity.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Hilti Australia MP-UB OC metric product page",
+    sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
+  },
+  {
+    id: "hilti-mp-ub-oc-m20",
+    application: "Mounting pipe / round member",
+    manufacturer: "Hilti",
+    series: "MP-UB OC metric",
+    product: "MP-UB OC M20 option",
+    code: "r12293804 family",
+    thread: "M20",
+    fitKey: "350 mm nominal",
+    fit: "350 mm nominal - verify configured item",
+    finish: "Outdoor HDG",
+    material: "Q235 or better steel - outdoor HDG - C3/C4-low",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The Australian configurator lists an M20 option; confirm the selected item geometry before specification.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Hilti Australia MP-UB OC metric product page",
+    sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
+  },
+  {
+    id: "hilti-mqt-f-m12",
+    application: "Beam / channel clamp assembly",
+    manufacturer: "Hilti",
+    series: "MQT-F beam clamp",
+    product: "MQT-F M12 beam clamp family",
+    code: "r2937 family",
+    thread: "M12",
+    fitKey: "MQ strut / steel beam",
+    fit: "MQ strut to steel beam",
+    finish: "Outdoor HDG",
+    material: "S235-series steel U-bolt - outdoor HDG - C3/C4-low",
+    publishedCapacity: "Not published",
+    capacityDirection: "Assembly-specific",
+    capacityBasis: "This is a beam-clamp assembly. Use the configured Hilti item and assembly data; do not treat it as a free U-bolt capacity.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Hilti Australia MQT-F beam clamp product page",
+    sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_SYS_CONNECTORS_INT/r2937"
+  },
+  ...[
+    { d: 60, code: "E14-060H", thread: "M10", workingLoad: "752 kg" },
+    { d: 76, code: "E14-076H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 89, code: "E14-089H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 102, code: "E14-102H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 114, code: "E14-114H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 140, code: "E14-140H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 165, code: "E14-165H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 219, code: "E14-219H", thread: "M16", workingLoad: "2,069 kg" },
+    { d: 273, code: "E14-273H", thread: "M20", workingLoad: "3,252 kg" }
+  ].map(row => ({
+    id: `ezystrut-${row.code.toLowerCase()}`,
+    application: "Mounting pipe / round member",
+    manufacturer: "EzyStrut",
+    series: "E14 Heavy Duty U Bolt HDG",
+    product: `E14 Heavy Duty U Bolt - D ${row.d} mm`,
+    code: row.code,
+    thread: row.thread,
+    fitKey: `D ${row.d} mm`,
+    fit: `Pipe / round member D ${row.d} mm`,
+    finish: "Outdoor HDG",
+    material: "AS/NZS 1594 steel - HDG to AS/NZS 4680",
+    publishedCapacity: `${row.workingLoad} working load`,
+    capacityDirection: "Load direction not stated",
+    capacityBasis: "Manufacturer working load with a stated 3:1 safety factor. Verify load direction and complete assembly applicability before project use.",
+    sourceStatus: "Source_Checked",
+    sourceName: "EzyStrut E14 Heavy Duty U Bolt HDG product table",
+    sourceUrl: "https://www.ezystrut.com.au/products/pipe-support-systems/u-bolts/e14h/"
+  })),
+  ...[
+    { code: "F21050", beamWidth: "64-102 mm" },
+    { code: "F21100", beamWidth: "127-190 mm" },
+    { code: "F21150", beamWidth: "210-270 mm" }
+  ].map(row => ({
+    id: `unistrut-${row.code.toLowerCase()}`,
+    application: "Beam / channel clamp assembly",
+    manufacturer: "Unistrut",
+    series: "F21000 Heavy Duty Beam Clamp",
+    product: `F21000 beam clamp - ${row.beamWidth} beam width`,
+    code: row.code,
+    thread: "M12",
+    fitKey: `Beam ${row.beamWidth}`,
+    fit: `Beam width ${row.beamWidth}`,
+    finish: "Outdoor HDG",
+    material: "50 x 5 steel strip - M12 U-bolt - HDG",
+    publishedCapacity: "Not published",
+    capacityDirection: "Assembly-specific",
+    capacityBasis: "The catalogue identifies the M12 U-bolt beam-clamp assembly and geometry, but no rated capacity is published in the reviewed table.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Unistrut Australia electrical and mechanical catalogue",
+    sourceUrl: "https://unistrut.com.au/wp-content/uploads/2021/06/2018-08-unistrut-australia-catalogue-web.pdf"
+  })),
+  {
+    id: "anzor-pipe-ubp6051m10",
+    application: "General pipe support",
+    manufacturer: "Anzor",
+    series: "Pipe U Bolts",
+    product: "2 Pipe x M10 316 U Bolt",
+    code: "UBP6051M10",
+    thread: "M10",
+    fitKey: "2 in pipe",
+    fit: "2 in pipe",
+    finish: "Stainless steel",
+    material: "316 stainless steel",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "No manufacturer-rated capacity in the reviewed product listing.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Anzor Pipe U Bolts product listing",
+    sourceUrl: "https://www.anzor.com.au/tube-pipe-fittings/u-bolts/pipe-u-bolts"
+  },
+  {
+    id: "anzor-tube-ubm612nb90",
+    application: "General pipe support",
+    manufacturer: "Anzor",
+    series: "Tube U Bolts",
+    product: "M12 x 90 NB 316 U-Bolt Kit",
+    code: "UBM612NB90",
+    thread: "M12",
+    fitKey: "90 NB",
+    fit: "90 NB",
+    finish: "Stainless steel",
+    material: "316 stainless steel",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "No manufacturer-rated capacity in the reviewed product listing.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Anzor Tube U Bolts product listing",
+    sourceUrl: "https://www.anzor.com.au/tube-pipe-fittings/u-bolts/tube-u-bolts"
+  },
+  {
+    id: "anzor-marine-mfubsm408115",
+    application: "General pipe support",
+    manufacturer: "Anzor",
+    series: "Marine Shouldered U Bolts",
+    product: "S547 M8 x 115 304 Shouldered U Bolt",
+    code: "MFUBSM408115",
+    thread: "M8",
+    fitKey: "115 mm shouldered",
+    fit: "115 mm shouldered",
+    finish: "Stainless steel",
+    material: "304 stainless steel",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "No manufacturer-rated capacity in the reviewed product listing.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Anzor Shouldered U Bolts product listing",
+    sourceUrl: "https://www.anzor.com.au/marine-deck-hardware/u-bolts/shouldered-u-bolts"
+  }
+];
+
 let edgeBoltCountManual = false;
 
 const weldSizes = [3, 4, 5, 6, 8, 10, 12, 16];
@@ -1240,6 +1428,7 @@ const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
 const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw"];
+let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";
 const manualInputIds = [
@@ -1256,6 +1445,7 @@ const manualInputIds = [
 ];
 const referenceInputIds = [
   "boltSize", "category", "shearPlane", "kr", "edgeCondition", "holeFactor",
+  "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteComposite", "concreteSeparatePad", "concreteShearReo", "concreteShearBar",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
@@ -1497,6 +1687,133 @@ function calculateBolt() {
     <div><b>TF slip - AS 4100 Cl. 9.2.3.1</b>${slipFormula}</div>
     <div><b>TF combined slip - AS 4100 Cl. 9.2.3.3</b>${slipInteractionFormula}</div>
     <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8. TF categories also require the separate serviceability slip checks above.</code></div>`;
+}
+
+function uniqueSorted(list, key) {
+  return [...new Set(list.map(item => item[key]))].sort((a, b) => String(a).localeCompare(String(b)));
+}
+
+function setUBoltOptions(selectId, values, options = {}) {
+  const select = $(selectId);
+  const previous = select.value;
+  const hadOptions = select.options.length > 0;
+  const entries = options.allLabel
+    ? [{ value: "", label: options.allLabel }, ...values.map(value => ({ value, label: value }))]
+    : values.map(value => ({ value, label: value }));
+  select.innerHTML = entries.map(entry => `<option value="${safeText(entry.value)}">${safeText(entry.label)}</option>`).join("");
+  if (hadOptions && entries.some(entry => entry.value === previous)) select.value = previous;
+  else if (options.preferred && entries.some(entry => entry.value === options.preferred)) select.value = options.preferred;
+  else if (entries.length) select.value = entries[0].value;
+}
+
+function filteredUBoltProducts(includeManufacturer = true) {
+  const application = $("uBoltApplication")?.value;
+  const rodSize = $("uBoltRodSize")?.value;
+  const fit = $("uBoltFitFilter")?.value;
+  const finish = $("uBoltFinish")?.value;
+  const manufacturer = $("uBoltManufacturer")?.value;
+  return uBoltProducts.filter(product =>
+    (!application || product.application === application) &&
+    (!rodSize || product.thread === rodSize) &&
+    (!fit || product.fitKey === fit) &&
+    (!finish || product.finish === finish) &&
+    (!includeManufacturer || !manufacturer || product.manufacturer === manufacturer)
+  );
+}
+
+function selectedUBoltProduct() {
+  const selectedId = $("uBoltProduct")?.value;
+  const products = filteredUBoltProducts();
+  return products.find(product => product.id === selectedId) || products[0] || null;
+}
+
+function populateUBoltFilters(initial = false) {
+  setUBoltOptions("uBoltApplication", uniqueSorted(uBoltProducts, "application"), {
+    preferred: initial ? "Mounting pipe / round member" : ""
+  });
+  const application = $("uBoltApplication").value;
+  const applicationProducts = uBoltProducts.filter(product => product.application === application);
+  setUBoltOptions("uBoltRodSize", uniqueSorted(applicationProducts, "thread"), {
+    allLabel: "Any rod size",
+    preferred: initial ? "M12" : ""
+  });
+  const rodSize = $("uBoltRodSize").value;
+  const rodProducts = applicationProducts.filter(product => !rodSize || product.thread === rodSize);
+  setUBoltOptions("uBoltFinish", uniqueSorted(rodProducts, "finish"), {
+    allLabel: "Any finish",
+    preferred: initial ? "Outdoor HDG" : ""
+  });
+  const finish = $("uBoltFinish").value;
+  const finishProducts = rodProducts.filter(product => !finish || product.finish === finish);
+  setUBoltOptions("uBoltFitFilter", uniqueSorted(finishProducts, "fitKey"), { allLabel: "Any fit" });
+  const manufacturerProducts = filteredUBoltProducts(false);
+  setUBoltOptions("uBoltManufacturer", uniqueSorted(manufacturerProducts, "manufacturer"), {
+    allLabel: "All manufacturers",
+    preferred: initial ? "Hilti" : ""
+  });
+  populateUBoltProducts();
+}
+
+function populateUBoltProducts() {
+  const products = filteredUBoltProducts();
+  const select = $("uBoltProduct");
+  const previous = select.value;
+  const showManufacturer = !$("uBoltManufacturer").value;
+  select.innerHTML = products.map(product => {
+    const label = showManufacturer ? `${product.manufacturer} - ${product.product}` : product.product;
+    return `<option value="${safeText(product.id)}">${safeText(label)}</option>`;
+  }).join("");
+  if (products.some(product => product.id === previous)) select.value = previous;
+}
+
+function publishedCapacityText(product) {
+  return product.publishedCapacity || "Not published";
+}
+
+function calculateUBolt() {
+  const product = selectedUBoltProduct();
+  if (!product) return;
+  const sourceLink = $("uBoltSourceLink");
+
+  $("uBoltSelectionTitle").textContent = product.product;
+  $("uBoltSelectionNote").textContent = `${product.manufacturer} - ${product.series} - ${product.material}`;
+  $("uBoltCode").textContent = product.code;
+  $("uBoltThread").textContent = product.thread;
+  $("uBoltFit").textContent = product.fit;
+  $("uBoltMaterial").textContent = product.finish;
+  $("uBoltPublishedCapacity").textContent = publishedCapacityText(product);
+  const directionNote = product.capacityDirection && product.capacityDirection !== "Not published"
+    ? `${product.capacityDirection}. `
+    : "";
+  $("uBoltCapacityBasis").textContent = `${directionNote}${product.capacityBasis}`;
+  const sourceStatus = $("uBoltSourceStatus");
+  sourceStatus.textContent = product.sourceStatus;
+  sourceStatus.classList.toggle("is-checked", product.sourceStatus === "Source_Checked");
+  sourceLink.textContent = product.sourceName;
+  sourceLink.href = product.sourceUrl || "#";
+}
+
+function setBoltMode(mode) {
+  boltMode = mode === "ubolt" ? "ubolt" : "standard";
+  document.querySelectorAll("[data-bolt-mode]").forEach(button => {
+    const active = button.dataset.boltMode === boltMode;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  document.querySelectorAll("#boltPanel [data-bolt-mode-panel]").forEach(panel => {
+    panel.hidden = panel.dataset.boltModePanel !== boltMode;
+  });
+  const standardDetails = $("connectionDetails");
+  const standardSource = document.querySelector("#boltPanel > details.source-card:not([data-bolt-mode-panel])");
+  if (standardDetails) standardDetails.hidden = boltMode !== "standard";
+  if (standardSource) standardSource.hidden = boltMode !== "standard";
+  if (boltMode === "ubolt") calculateUBolt();
+  if (boltMode === "standard") calculateBolt();
+}
+
+function initialBoltMode() {
+  const params = new URLSearchParams(location.search);
+  return params.get("boltmode") === "ubolt" || params.has("ubolt") ? "ubolt" : "standard";
 }
 
 function calculateWeld() {
@@ -3822,6 +4139,7 @@ function initialise() {
   $("boltSize").innerHTML = Object.keys(boltData).map(size => `<option value="${size}">${size}</option>`).join("");
   $("boltSize").value = "M24";
   populateBoltCategories();
+  populateUBoltFilters(true);
   $("category").value = "8.8/S";
   $("weldSize").innerHTML = weldSizes.map(size => `<option value="${size}">${size} mm</option>`).join("");
   $("weldParentGrade").innerHTML = Object.keys(parentMetalGrades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
@@ -3862,6 +4180,17 @@ function initialise() {
   });
   $("boltSize").addEventListener("change", setBoltSize);
   $("shearPlane").addEventListener("input", setPrimaryPlane);
+  $("boltModeStandard").addEventListener("click", () => setBoltMode("standard"));
+  $("boltModeUBolt").addEventListener("click", () => setBoltMode("ubolt"));
+  ["uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish"].forEach(id => $(id).addEventListener("change", () => {
+    populateUBoltFilters();
+    calculateUBolt();
+  }));
+  $("uBoltManufacturer").addEventListener("change", () => {
+    populateUBoltProducts();
+    calculateUBolt();
+  });
+  $("uBoltProduct").addEventListener("change", calculateUBolt);
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {
@@ -3923,9 +4252,11 @@ function initialise() {
   setBeamType(beamSectionType);
   setMemberType(memberType);
   calculateBolt();
+  calculateUBolt();
   calculateWeld();
   calculateConcrete();
   calculateScrew();
+  setBoltMode(initialBoltMode());
   setTool(location.hash.slice(1) || "bolt", false);
 }
 

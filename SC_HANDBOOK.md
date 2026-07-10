@@ -1234,6 +1234,25 @@ Bolt result checks should include:
 - The main result should show one final `Governing capacity check` ratio only. Put supporting ratios, including the AS 4100 Cl. 9.2.2.3 combined bolt interaction ratio, in calculation steps rather than as competing primary result cards.
 - The default connected-ply tensile strength should not be an orphan number. Use f<sub>up</sub> = 410 MPa only as the AS/NZS 3678 Grade 250 plate default; use 440 MPa only for verified AS/NZS 3679.1 Grade 300 flat bar/section or another stated source.
 
+U-bolt product lookup branch:
+
+- Treat U-bolt lookup as a manufacturer product branch inside the Bolt tab, not as an AS 4100 ordinary bolt-capacity calculation path.
+- For telecom headframe use, filter in this order: application, rod size, fit diameter or member range, finish/environment, manufacturer, then product. Default the common screen to M12 and outdoor HDG products.
+- Follow the Standard bolt branch layout: grouped inputs, one selected-product confirmation strip, one primary published-product result, then one collapsed basis-and-limitations panel.
+- Split the six U-bolt selectors into two three-field groups: `Project requirement` for application, rod size and fit; `Catalogue product` for finish, manufacturer and product.
+- Keep the selected-product strip compact. Show `Reference`, `Rod`, `Fit` and `Finish`; place manufacturer, series and material in the supporting line.
+- Where only one published product load is reported, use one full-width horizontal result rather than a single narrow card in a three-column result grid.
+- Show source status once in the result heading. Do not repeat lookup/status tags below the primary result.
+- Keep mounting-pipe / round-member products separate from beam or channel clamp assemblies. Main headframe-to-monopole clamps are OEM or project-engineered assemblies and are outside the standard-product lookup.
+- Required row fields are manufacturer, product family, product code, thread or rod size, pipe/tube fit, material/finish, published capacity, capacity direction and source status.
+- Show published capacity only where the manufacturer source states a rated load, working load, WLL, SWL, recommended load or equivalent basis.
+- Where a manufacturer publishes a working load but its direction or assembly applicability has not been verified, display the published value and basis but do not calculate an action ratio.
+- Do not show generic N*, V* or M* inputs, or a utilisation ratio, in the product-lookup branch. Project actions cannot be compared until the manufacturer load condition and action basis are both verified.
+- If a future manufacturer record provides a directional allowable load, any comparison must use a compatible project action basis and the matching published load condition. Do not compare ultimate design actions directly with Working Load or ASD Allowable Load.
+- Keep the priority project checks concise within the collapsed basis-and-limitations panel: U-bolt and thread strength, leg-force distribution and bend effects; clamp slip, contact and local bearing/crushing; attachment details and prying; fatigue, corrosion, installation and inspection.
+- If no published capacity is available, show `No published rated capacity` or `Not published`, mark the item `Source_Not_Verified`, and do not report an action ratio.
+- Do not derive U-bolt product capacity from AS 4100 ordinary bolt shear or tension equations. Those checks belong to the connected steelwork or fastener components where applicable.
+
 Minimum edge distance and ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
 
 For the web bolt tab, separate the edge-distance terms visibly:
