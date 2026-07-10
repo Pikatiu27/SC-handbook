@@ -127,6 +127,110 @@ const uBoltProducts = [
     sourceUrl: "https://www.ezystrut.com.au/products/pipe-support-systems/u-bolts/e14h/"
   })),
   ...[
+    { nb: 50, d: 60, l: 110, t: 50, code: "KURMSGCM100060", thread: "M10" },
+    { nb: 65, d: 76, l: 127, t: 50, code: "KURMSGCM120076", thread: "M12" },
+    { nb: 80, d: 89, l: 140, t: 50, code: "KURMSGCM120089", thread: "M12" },
+    { nb: 90, d: 102, l: 152, t: 50, code: "KURMSGCM120102", thread: "M12" },
+    { nb: 100, d: 114, l: 165, t: 50, code: "KURMSGCM120114", thread: "M12" },
+    { nb: 125, d: 140, l: 190, t: 50, code: "KURMSGCM120140", thread: "M12" },
+    { nb: 150, d: 165, l: 215, t: 50, code: "KURMSGCM120165", thread: "M12" },
+    { nb: 150, d: 168, l: 220, t: 50, code: "KURMSGCM120168", thread: "M12" },
+    { nb: 200, d: 219, l: 295, t: 75, code: "KURMSGCM160219", thread: "M16" },
+    { nb: 250, d: 273, l: 370, t: 100, code: "KURMSGCM200273", thread: "M20" },
+    { nb: 300, d: 324, l: 420, t: 100, code: "KURMSGCM200324", thread: "M20" }
+  ].map(row => ({
+    id: `hobson-${row.code.toLowerCase()}`,
+    application: "Mounting pipe / round member",
+    manufacturer: "Hobson Engineering",
+    supplier: "Hobson Engineering",
+    series: "Metric Round U Bolt Kit",
+    product: `HDG round U-bolt - ${row.nb}NB / D ${row.d} mm`,
+    code: row.code,
+    thread: row.thread,
+    fitKey: `D ${row.d} mm`,
+    fit: `${row.nb}NB pipe / D ${row.d} mm - L ${row.l} mm`,
+    finish: "Outdoor HDG",
+    material: `Mild steel - HDG - two nuts - thread length ${row.t} mm`,
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The official technical sheet publishes product geometry and pack data, but no rated structural capacity.",
+    sourceStatus: "Source_Checked",
+    sourceName: "Hobson Engineering U Bolts technical sheet",
+    sourceUrl: "https://cdn.hobson.com.au/documents/tech-ubolts-230426.pdf"
+  })),
+  ...[
+    { nb: 65, d: 76, l: 153, t: 89, code: "CSWUBNB06", thread: "M12" },
+    { nb: 80, d: 89, l: 180, t: 100, code: "CSWUBNB07", thread: "M12" },
+    { nb: 90, d: 102, l: 200, t: 100, code: "CSWUBRTMS45G", thread: "M12" },
+    { nb: 100, d: 114, l: 165, t: 100, code: "CSWUBNB08", thread: "M12" },
+    { nb: 125, d: 141, l: 200, t: 100, code: "CSWUBRTMS55G", thread: "M12" },
+    { nb: 150, d: 165, l: 220, t: 100, code: "CSWUBNB09", thread: "M12" }
+  ].map(row => ({
+    id: `csw-${row.code.toLowerCase()}`,
+    application: "Mounting pipe / round member",
+    manufacturer: "CSW Products",
+    supplier: "CSW Products",
+    series: "U Bolts Nominal Bore Pipe",
+    product: `Galvanised pipe U-bolt - ${row.nb}NB / D ${row.d} mm`,
+    code: row.code,
+    thread: row.thread,
+    fitKey: `D ${row.d} mm`,
+    fit: `${row.nb}NB pipe / D ${row.d} mm - L ${row.l} mm`,
+    finish: "Galvanised - verify coating",
+    material: `Mild steel - thread rolled - thread length ${row.t} mm`,
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The reviewed catalogue publishes geometry and a galvanised finish, but no rated capacity or coating standard. Confirm current availability and finish before use.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "CSW Products catalogue - U Bolts Nominal Bore Pipe",
+    sourceUrl: "https://www.cswproducts.com.au/content/products/CSWCatalogue11.pdf"
+  })),
+  ...[
+    { w: 40, l: 110, t: 50, code: "CSWUBST21" },
+    { w: 50, l: 100, t: 50, code: "CSWUBST22" },
+    { w: 50, l: 170, t: 50, code: "CSWUBST23" },
+    { w: 75, l: 150, t: 50, code: "CSWUBST26" }
+  ].map(row => ({
+    id: `csw-${row.code.toLowerCase()}`,
+    application: "Beam / channel clamp assembly",
+    manufacturer: "CSW Products",
+    supplier: "CSW Products",
+    series: "U Bolts Square Top Galvanised",
+    product: `Galvanised square-top M12 - W ${row.w} x L ${row.l} mm`,
+    code: row.code,
+    thread: "M12",
+    fitKey: `Square W ${row.w} x L ${row.l} mm`,
+    fit: `Square member / W ${row.w} x L ${row.l} mm`,
+    finish: "Galvanised - verify coating",
+    material: `Mild steel - thread rolled - thread length ${row.t} mm`,
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The reviewed catalogue publishes geometry and a galvanised finish, but no rated capacity or coating standard. Confirm current availability and finish before use.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "CSW Products catalogue - U Bolts Square Top Galvanised",
+    sourceUrl: "https://www.cswproducts.com.au/content/products/CSWCatalogue11.pdf"
+  })),
+  {
+    id: "allthread-custom-ubolt",
+    application: "Custom / project-manufactured",
+    manufacturer: "Allthread Industries",
+    supplier: "Allthread Industries",
+    series: "Custom thread-rolled bolt manufacture",
+    product: "Custom traceable U-bolt",
+    code: "Project-specific",
+    thread: "Project-specific",
+    fitKey: "Custom geometry",
+    fit: "Project-specific geometry",
+    finish: "Project-specified",
+    material: "Project-specified material, thread and coating",
+    publishedCapacity: "Project-specific",
+    capacityDirection: "Project-specific",
+    capacityBasis: "Manufacturer capability and traceability are published. Obtain the certified drawing, material certificate, testing, coating and rated capacity for the ordered product.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Allthread Industries manufacturing capability",
+    sourceUrl: "https://allthread.com.au/"
+  },
+  ...[
     { code: "F21050", beamWidth: "64-102 mm" },
     { code: "F21100", beamWidth: "127-190 mm" },
     { code: "F21150", beamWidth: "210-270 mm" }
@@ -1748,7 +1852,7 @@ function populateUBoltFilters(initial = false) {
   setUBoltOptions("uBoltFitFilter", uniqueSorted(finishProducts, "fitKey"), { allLabel: "Any fit" });
   const manufacturerProducts = filteredUBoltProducts(false);
   setUBoltOptions("uBoltManufacturer", uniqueSorted(manufacturerProducts, "manufacturer"), {
-    allLabel: "All manufacturers",
+    allLabel: "All brands / manufacturers",
     preferred: initial ? "Hilti" : ""
   });
   populateUBoltProducts();
@@ -1781,6 +1885,7 @@ function calculateUBolt() {
   $("uBoltThread").textContent = product.thread;
   $("uBoltFit").textContent = product.fit;
   $("uBoltMaterial").textContent = product.finish;
+  $("uBoltSupplier").textContent = product.supplier || product.manufacturer;
   $("uBoltPublishedCapacity").textContent = publishedCapacityText(product);
   const directionNote = product.capacityDirection && product.capacityDirection !== "Not published"
     ? `${product.capacityDirection}. `

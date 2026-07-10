@@ -1237,14 +1237,16 @@ Bolt result checks should include:
 U-bolt product lookup branch:
 
 - Treat U-bolt lookup as a manufacturer product branch inside the Bolt tab, not as an AS 4100 ordinary bolt-capacity calculation path.
-- For telecom headframe use, filter in this order: application, rod size, fit diameter or member range, finish/environment, manufacturer, then product. Default the common screen to M12 and outdoor HDG products.
+- For telecom headframe use, filter in this order: application, rod size, fit diameter or member range, finish/environment, brand or manufacturer, then product. Default the common screen to M12 and outdoor HDG products.
 - Follow the Standard bolt branch layout: grouped inputs, one selected-product confirmation strip, one primary published-product result, then one collapsed basis-and-limitations panel.
 - Split the six U-bolt selectors into two three-field groups: `Project requirement` for application, rod size and fit; `Catalogue product` for finish, manufacturer and product.
 - Keep the selected-product strip compact. Show `Reference`, `Rod`, `Fit` and `Finish`; place manufacturer, series and material in the supporting line.
 - Where only one published product load is reported, use one full-width horizontal result rather than a single narrow card in a three-column result grid.
 - Show source status once in the result heading. Do not repeat lookup/status tags below the primary result.
 - Keep mounting-pipe / round-member products separate from beam or channel clamp assemblies. Main headframe-to-monopole clamps are OEM or project-engineered assemblies and are outside the standard-product lookup.
-- Required row fields are manufacturer, product family, product code, thread or rod size, pipe/tube fit, material/finish, published capacity, capacity direction and source status.
+- Required row fields are brand or manufacturer, supplier, product family, product code, thread or rod size, pipe/tube fit, material/finish, published capacity, capacity direction and source status.
+- Keep catalogue brands separate from supply channels. Use `Brand / manufacturer` for the filter and show `Supplier` independently in the selected-product confirmation strip.
+- Use a separate `Custom / project-manufactured` application for traceable made-to-order U-bolts. Do not present custom manufacturing capability as a stocked product or published capacity.
 - Show published capacity only where the manufacturer source states a rated load, working load, WLL, SWL, recommended load or equivalent basis.
 - Where a manufacturer publishes a working load but its direction or assembly applicability has not been verified, display the published value and basis but do not calculate an action ratio.
 - Do not show generic N*, V* or M* inputs, or a utilisation ratio, in the product-lookup branch. Project actions cannot be compared until the manufacturer load condition and action basis are both verified.

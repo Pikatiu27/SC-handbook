@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260710ubolt7">
+  <link rel="stylesheet" href="styles.css?v=20260710ubolt8">
 </head>
 <body>
   <header class="topbar">
@@ -112,10 +112,10 @@
             </div>
           </section>
           <section class="input-group input-group-section" aria-label="U-bolt catalogue product">
-            <span class="input-group-heading"><b>Catalogue product</b><small>Select the finish, manufacturer and product reference.</small></span>
+            <span class="input-group-heading"><b>Catalogue product</b><small>Select the finish, brand or manufacturer, and product reference.</small></span>
             <div class="input-group-fields three">
               <label><span>Finish</span><select id="uBoltFinish" aria-label="U-bolt finish"></select></label>
-              <label><span>Manufacturer</span><select id="uBoltManufacturer" aria-label="U-bolt manufacturer"></select></label>
+              <label><span>Brand / manufacturer</span><select id="uBoltManufacturer" aria-label="U-bolt brand or manufacturer"></select></label>
               <label class="size-field"><span>Product</span><select id="uBoltProduct" aria-label="U-bolt product"></select></label>
             </div>
           </section>
@@ -123,7 +123,7 @@
 
         <div class="bolt-summary ubolt-summary">
           <div><span>Selected product</span><strong id="uBoltSelectionTitle">U-bolt product lookup</strong><small id="uBoltSelectionNote">Select a catalogue product before adopting any project capacity.</small></div>
-          <dl><div><dt>Reference</dt><dd id="uBoltCode">-</dd></div><div><dt>Rod</dt><dd id="uBoltThread">-</dd></div><div><dt>Fit</dt><dd id="uBoltFit">-</dd></div><div><dt>Finish</dt><dd id="uBoltMaterial">-</dd></div></dl>
+          <dl><div><dt>Reference</dt><dd id="uBoltCode">-</dd></div><div><dt>Rod</dt><dd id="uBoltThread">-</dd></div><div><dt>Fit</dt><dd id="uBoltFit">-</dd></div><div><dt>Finish</dt><dd id="uBoltMaterial">-</dd></div><div><dt>Supplier</dt><dd id="uBoltSupplier">-</dd></div></dl>
         </div>
 
         <section class="capacity-section" aria-live="polite">
@@ -939,6 +939,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260710ubolt7"></script>
+  <script src="app.js?v=20260710ubolt8"></script>
 </body>
 </html>
