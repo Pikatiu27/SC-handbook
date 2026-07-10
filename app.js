@@ -1871,35 +1871,67 @@ function populateUBoltProducts() {
 }
 
 function publishedCapacityText(product) {
-  return product.publishedCapacity || "Not published";
+  if (!product.publishedCapacity || product.publishedCapacity === "Not published") return "No rated load published";
+  return product.publishedCapacity;
+}
+
+function publishedLoadLabel(product) {
+  if (/working load/i.test(product.publishedCapacity || "")) return "Manufacturer working load";
+  if (product.publishedCapacity === "Project-specific") return "Rated load";
+  return "Manufacturer-rated load";
 }
 
 function calculateUBolt() {
   const product = selectedUBoltProduct();
   if (!product) return;
   const sourceLink = $("uBoltSourceLink");
+  const customEntry = product.application === "Custom / project-manufactured";
+  const assemblyEntry = product.application === "Beam / channel clamp assembly";
+  const familyEntry = /family/i.test(`${product.product} ${product.code}`);
 
+  $("uBoltProductGroupTitle").textContent = customEntry ? "Manufacturing source" : "Product source";
+  $("uBoltProductGroupNote").textContent = customEntry
+    ? "Select the proposed manufacturer and project-specific entry."
+    : "Select the finish, brand or manufacturer, and catalogue entry.";
+  $("uBoltProductFieldLabel").textContent = customEntry ? "Manufacturing entry" : "Catalogue entry";
+  $("uBoltSelectionTypeLabel").textContent = customEntry
+    ? "Selected manufacturing entry"
+    : assemblyEntry
+      ? "Selected assembly"
+      : familyEntry
+        ? "Selected product family"
+        : "Selected catalogue entry";
   $("uBoltSelectionTitle").textContent = product.product;
-  $("uBoltSelectionNote").textContent = `${product.manufacturer} - ${product.series} - ${product.material}`;
+  $("uBoltSelectionNote").textContent = `${product.manufacturer} · ${product.series}`;
   $("uBoltCode").textContent = product.code;
   $("uBoltThread").textContent = product.thread;
-  $("uBoltFit").textContent = product.fit;
+  $("uBoltFit").textContent = product.fitKey || product.fit;
   $("uBoltMaterial").textContent = product.finish;
-  $("uBoltSupplier").textContent = product.supplier || product.manufacturer;
+  $("uBoltSupplier").textContent = product.supplier || "Not specified";
+  $("uBoltPublishedGeometry").textContent = product.fit || product.fitKey || "Not stated";
+  $("uBoltPublishedMaterial").textContent = product.material || "Not stated";
+  $("uBoltPublishedLoadLabel").textContent = publishedLoadLabel(product);
   $("uBoltPublishedCapacity").textContent = publishedCapacityText(product);
   const directionNote = product.capacityDirection && product.capacityDirection !== "Not published"
     ? `${product.capacityDirection}. `
     : "";
   $("uBoltCapacityBasis").textContent = `${directionNote}${product.capacityBasis}`;
   const sourceStatus = $("uBoltSourceStatus");
-  sourceStatus.textContent = product.sourceStatus;
-  sourceStatus.classList.toggle("is-checked", product.sourceStatus === "Source_Checked");
+  const sourceChecked = product.sourceStatus === "Source_Checked";
+  sourceStatus.textContent = sourceChecked ? "Local reference checked" : "Online source only";
+  sourceStatus.classList.toggle("is-checked", sourceChecked);
+  sourceStatus.href = product.sourceUrl || "#";
+  sourceStatus.title = product.sourceName;
   sourceLink.textContent = product.sourceName;
   sourceLink.href = product.sourceUrl || "#";
 }
 
 function setBoltMode(mode) {
   boltMode = mode === "ubolt" ? "ubolt" : "standard";
+  const uBoltActive = boltMode === "ubolt";
+  $("boltToolKicker").textContent = uBoltActive ? "U-bolt products · manufacturer data" : "Bolted connections · AS 4100 Cl. 9.2";
+  $("boltToolTitle").textContent = uBoltActive ? "U-bolt Product Lookup" : "Bolt Capacity";
+  $("boltToolStatus").textContent = uBoltActive ? "Manufacturer data · no design capacity" : "For Review · AS 4100:2020";
   document.querySelectorAll("[data-bolt-mode]").forEach(button => {
     const active = button.dataset.boltMode === boltMode;
     button.classList.toggle("active", active);

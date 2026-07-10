@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260710handbook1">
+  <link rel="stylesheet" href="styles.css?v=20260710ubolt10">
 </head>
 <body>
   <header class="topbar">
@@ -29,8 +29,8 @@
 
     <section id="boltPanel" class="tool-panel active">
       <div class="tool-heading">
-        <div><p class="kicker">Bolted connections · AS 4100 Cl. 9.2</p><h2>Bolt Capacity</h2></div>
-        <span class="tool-status">For Review · AS 4100:2020</span>
+        <div><p id="boltToolKicker" class="kicker">Bolted connections · AS 4100 Cl. 9.2</p><h2 id="boltToolTitle">Bolt Capacity</h2></div>
+        <span id="boltToolStatus" class="tool-status">For Review · AS 4100:2020</span>
       </div>
 
       <div class="branch-tabs bolt-mode-tabs" role="tablist" aria-label="Bolt tab mode">
@@ -111,27 +111,32 @@
               <label><span>Fit</span><select id="uBoltFitFilter" aria-label="U-bolt fit"></select></label>
             </div>
           </section>
-          <section class="input-group input-group-section" aria-label="U-bolt catalogue product">
-            <span class="input-group-heading"><b>Catalogue product</b><small>Select the finish, brand or manufacturer, and product reference.</small></span>
+          <section class="input-group input-group-section" aria-label="U-bolt product source">
+            <span class="input-group-heading"><b id="uBoltProductGroupTitle">Product source</b><small id="uBoltProductGroupNote">Select the finish, brand or manufacturer, and catalogue entry.</small></span>
             <div class="input-group-fields three">
               <label><span>Finish</span><select id="uBoltFinish" aria-label="U-bolt finish"></select></label>
               <label><span>Brand / manufacturer</span><select id="uBoltManufacturer" aria-label="U-bolt brand or manufacturer"></select></label>
-              <label class="size-field"><span>Product</span><select id="uBoltProduct" aria-label="U-bolt product"></select></label>
+              <label class="size-field"><span id="uBoltProductFieldLabel">Catalogue entry</span><select id="uBoltProduct" aria-label="U-bolt catalogue entry"></select></label>
             </div>
           </section>
         </div>
 
         <div class="bolt-summary ubolt-summary">
-          <div><span>Selected product</span><strong id="uBoltSelectionTitle">U-bolt product lookup</strong><small id="uBoltSelectionNote">Select a catalogue product before adopting any project capacity.</small></div>
-          <dl><div><dt>Reference</dt><dd id="uBoltCode">-</dd></div><div><dt>Rod</dt><dd id="uBoltThread">-</dd></div><div><dt>Fit</dt><dd id="uBoltFit">-</dd></div><div><dt>Finish</dt><dd id="uBoltMaterial">-</dd></div><div><dt>Supplier</dt><dd id="uBoltSupplier">-</dd></div></dl>
+          <div><span id="uBoltSelectionTypeLabel">Selected catalogue entry</span><strong id="uBoltSelectionTitle">U-bolt product lookup</strong><small id="uBoltSelectionNote">Select an entry to review its published data.</small></div>
+          <dl><div><dt>Product reference</dt><dd id="uBoltCode">-</dd></div><div><dt>Rod size</dt><dd id="uBoltThread">-</dd></div><div><dt>Member fit</dt><dd id="uBoltFit">-</dd></div><div><dt>Finish</dt><dd id="uBoltMaterial">-</dd></div><div><dt>Supplier</dt><dd id="uBoltSupplier">-</dd></div></dl>
         </div>
 
+        <details class="ubolt-specification">
+          <summary><span><b>Published dimensions and material</b><small>Manufacturer-stated ordering information</small></span><i>+</i></summary>
+          <div class="ubolt-specification-grid"><div><span>Published fit / geometry</span><strong id="uBoltPublishedGeometry">-</strong></div><div><span>Material / coating</span><strong id="uBoltPublishedMaterial">-</strong></div></div>
+        </details>
+
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Published product data</h2></div><span id="uBoltSourceStatus" class="ubolt-source-state">Source_Not_Verified</span></div>
+          <div class="section-heading"><div><span class="section-tag">PRODUCT DATA</span><h2>Manufacturer-published data</h2></div><a id="uBoltSourceStatus" class="ubolt-source-state" href="#" target="_blank" rel="noreferrer">Online source only</a></div>
           <div class="capacity-grid ubolt-results ubolt-results-single">
-            <article class="capacity-card selected-shear"><span>Published load</span><strong><output id="uBoltPublishedCapacity">Not published</output></strong><p id="uBoltCapacityBasis">No rated product load has been entered for the selected product.</p></article>
+            <article class="capacity-card selected-shear"><span id="uBoltPublishedLoadLabel">Rated load</span><strong><output id="uBoltPublishedCapacity">No rated load published</output></strong><p id="uBoltCapacityBasis">No manufacturer-rated load is published for the selected entry.</p></article>
           </div>
-          <p class="result-note">Product lookup only. No project action ratio or AS 4100 U-bolt capacity is derived.</p>
+          <p class="result-note">Catalogue lookup only. No project capacity check is performed.</p>
         </section>
       </section>
 
@@ -926,6 +931,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260710handbook1"></script>
+  <script src="app.js?v=20260710ubolt10"></script>
 </body>
 </html>
