@@ -267,7 +267,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .ubolt-card .input-cluster { gap: 10px; margin-bottom: 14px; }
 .ubolt-summary { border: 1px solid #cfe2d6; border-radius: 8px; }
 .ubolt-summary > div { flex: 1 1 38%; min-width: 0; }
-.ubolt-summary dl { flex: 1 1 58%; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(78px, 1fr)); gap: 12px 16px; }
+.ubolt-summary dl { flex: 1 1 60%; min-width: 0; display: grid; grid-template-columns: repeat(5, minmax(72px, 1fr)); gap: 10px 12px; }
 .ubolt-summary dl div { min-width: 0; }
 .ubolt-summary dd { max-width: none; overflow-wrap: anywhere; }
 .ubolt-results .capacity-card strong { font-size: 23px; }
