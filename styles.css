@@ -557,6 +557,8 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-selected-header > b { flex: 0 0 auto; padding: 7px 10px; border-radius: 999px; background: #f7fbf4; color: var(--green-dark); border: 1px solid #bed6c6; font-size: var(--fs-xs); line-height: 1.1; font-weight: 900; text-align: center; }
 .screw-selected-header > b.data-directional { border-color: #b9d4c2; background: #edf7ef; color: #376749; }
 .screw-selected-header > b.data-compression, .screw-selected-header > b.data-partial { border-color: #e2cf9f; background: #fff7e5; color: #7b571d; }
+.screw-selected-header > b.data-reference { border-color: #c7d8e4; background: #f0f6fa; color: #355f78; }
+.screw-selected-header > b.data-rating { border-color: #d9d3c2; background: #f8f6ef; color: #655d46; }
 .screw-selected-header > b.data-geometry, .screw-selected-header > b.data-project { border-color: #d4dbe0; background: #f4f6f7; color: #59656c; }
 .screw-selected-header > b.data-typical { border-color: #cbd7e3; background: #f0f6fb; color: #365d7b; }
 .screw-readiness-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; }
@@ -620,10 +622,12 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-capacity-editor-body { padding: 0 11px 11px; }
 .screw-system-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .screw-system-facts div { min-width: 0; padding: 10px 11px; border: 1px solid #e0e7e2; border-radius: 7px; background: #fbfcfb; }
-.screw-system-facts span, .screw-system-facts strong, .screw-system-facts em { display: block; }
+.screw-system-facts span, .screw-system-facts strong, .screw-system-facts em, .screw-system-facts a { display: block; }
 .screw-system-facts span { color: var(--muted); font-size: var(--fs-xs); line-height: 1.15; font-weight: 900; }
 .screw-system-facts strong { margin-top: 4px; color: var(--ink); font-size: var(--fs-sm); line-height: 1.25; font-weight: 700; overflow-wrap: anywhere; }
 .screw-system-facts em { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.25; font-style: normal; font-weight: 700; overflow-wrap: anywhere; }
+.screw-system-facts a { margin-top: 3px; color: #2d6652; font-size: var(--fs-xs); line-height: 1.25; font-weight: 800; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; overflow-wrap: anywhere; }
+.screw-system-facts a[aria-disabled="true"] { color: var(--muted); text-decoration: none; }
 .screw-technical-limits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .screw-technical-limits div { min-width: 0; padding: 9px 10px; border-top: 1px solid #dfe6e2; background: #fff; }
 .screw-technical-limits span, .screw-technical-limits strong { display: block; }
@@ -756,6 +760,19 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-note-grid b { color: var(--green-dark); font-size: var(--fs-xs); line-height: 1.2; font-weight: 900; }
 .screw-note-grid span { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
 .screw-risk-result, .screw-demand-result { margin-top: 10px; }
+.screw-basis-row { display: grid; grid-template-columns: minmax(230px, 310px) minmax(0, 1fr); gap: 12px; align-items: end; margin-bottom: 10px; }
+.screw-basis-row label > span { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); }
+.screw-basis-row select { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: var(--control-radius); background: #fbfcfa; padding: 8px 9px; outline: none; font-size: var(--fs-sm); }
+.screw-basis-row p { margin: 0 0 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; font-weight: 700; }
+.screw-project-inputs { margin-top: 11px; padding-top: 10px; border-top: 1px solid var(--line); }
+.screw-project-inputs > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; }
+.screw-project-inputs > summary::-webkit-details-marker { display: none; }
+.screw-project-inputs > summary span, .screw-project-inputs > summary b, .screw-project-inputs > summary small { display: block; }
+.screw-project-inputs > summary b { color: var(--green-dark); font-size: var(--fs-sm); line-height: 1.2; }
+.screw-project-inputs > summary small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.3; font-weight: 700; }
+.screw-project-inputs > summary i { color: var(--green); font-size: var(--fs-md); font-style: normal; transition: transform .2s; }
+.screw-project-inputs[open] > summary i { transform: rotate(45deg); }
+.screw-project-inputs .form-grid { margin-top: 10px; }
 .screw-demand-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 0 0 10px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--line); }
 .screw-demand-metrics > div { padding: 9px 11px; background: #f9fcf4; }
 .screw-demand-metrics span, .screw-demand-metrics strong { display: block; }
@@ -875,7 +892,7 @@ footer b { white-space: nowrap; }
 
 @media (max-width: 760px) {
   .intro { padding-top: 18px; }
-  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.six, .input-group-fields.seven, .input-group-fields.beam-custom-properties, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .screw-capacity-grid, .screw-note-grid, .screw-demand-metrics, .screw-readiness-strip, .screw-selected-overview, .screw-selected-grid, .screw-driver-grid, .screw-capacity-editor-body, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .wind-actions, .wind-evidence-grid, .wind-resource-strip, .form-grid.seven, .form-grid.six, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
+  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.six, .input-group-fields.seven, .input-group-fields.beam-custom-properties, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .screw-capacity-grid, .screw-note-grid, .screw-demand-metrics, .screw-readiness-strip, .screw-selected-overview, .screw-selected-grid, .screw-driver-grid, .screw-capacity-editor-body, .screw-basis-row, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .wind-actions, .wind-evidence-grid, .wind-resource-strip, .form-grid.seven, .form-grid.six, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .screw-selected-header { display: block; }
   .screw-selected-header > b { display: inline-block; margin-top: 8px; }
   .screw-capacity-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -995,7 +1012,7 @@ footer b { white-space: nowrap; }
   .input-group { padding: 10px; }
   .input-group-heading small { display: none; }
   .advanced-input-card > summary small { display: none; }
-  .primary-inputs select, .primary-inputs input, .input-group-fields select, .input-group-fields input, .member-inputs select, .member-inputs input, .concrete-input-row input, .concrete-input-row select, .layer-row .numeric-input, .layer-row select, .weld-extra-inputs input, .weld-extra-inputs select { min-height: 44px; font-size: 16px; }
+  .primary-inputs select, .primary-inputs input, .input-group-fields select, .input-group-fields input, .member-inputs select, .member-inputs input, .concrete-input-row input, .concrete-input-row select, .layer-row .numeric-input, .layer-row select, .weld-extra-inputs input, .weld-extra-inputs select, .form-grid input, .form-grid select, .screw-basis-row select { min-height: 44px; font-size: 16px; }
   .primary-inputs label > span, .input-group-fields label > span:first-child, .member-inputs label > span:first-child { font-size: var(--fs-xs); }
   .bolt-summary { display: block; }
   .ubolt-summary { display: grid; padding: 14px; }

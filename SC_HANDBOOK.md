@@ -1504,28 +1504,30 @@ The section-analysis schematic should stay small and collapsed by default. It is
 
 ### 15.15 Screw Piles Selector Web Tab Rules
 
-The Screw Piles Selector is a product-selection aid with an optional pile-group action screen. It is not an AS 2159 pile design engine.
+The Screw Piles Selector is a product-selection aid with an optional pile-group action-distribution model. It is not an AS 2159 pile design engine.
 
 Use this primary workflow:
 
 1. Select a system and series.
-2. Show the published direction-specific values and key product geometry.
+2. Show the available value with its exact type, then show key product geometry.
 3. Identify the data status and the controlling product limitation.
-4. Apply concise soil, exposure, installation-evidence and movement flags.
+4. Apply concise ground, AS 2159 steel-exposure, verification-evidence and movement flags.
 5. Optionally distribute supplied base action effects to a symmetric rectangular pile layout.
 
 The selected-system summary must prioritise:
 
-- published compression, uplift and lateral values, with `Not stated` where a direction-specific value is unavailable;
+- direction-specific compression, tension and lateral values, where published;
+- system SWL, indicative rating or typical benchmark only when clearly labelled as such;
 - shaft diameter and wall thickness;
 - helix or bearing-element count, diameter and thickness;
 - length, extension or splice basis;
 - installation torque/acceptance information, pile-head connection and durability information;
-- source and data status: `Directional product data`, `Compression only`, `Geometry only`, `Typical SWL benchmark` or `Project input`.
+- direct source link and data status: `Published directional values`, `Compression SWL up to`, `System SWL up to`, `Indicative system rating`, `Typical SWL benchmark`, `Geometry only` or `Project input`;
+- visible distinction between a local checked reference and an external official source whose local pack remains pending.
 
-Do not infer uplift or lateral resistance from a compression series class. Manufacturer dimensions or typical capacity benchmarks must not be presented as project design strengths.
+Do not infer uplift or lateral resistance from a compression series class. Manufacturer dimensions, system ratings and typical benchmarks must not be presented as project design strengths.
 
-The optional rectangular pile-group action screen may use a perimeter-row or full-grid layout. It is a derived rigid-pad equilibrium model, not a clause-prescribed AS 2159 resistance calculation. For the generated symmetric layouts, `sum(x_i) = sum(y_i) = sum(x_i y_i) = 0`, and:
+The optional rectangular pile-group action distribution may use a perimeter-row or full-grid layout. It is a derived rigid-pad equilibrium model, not a clause-prescribed AS 2159 resistance calculation. For the generated symmetric layouts, `sum(x_i) = sum(y_i) = sum(x_i y_i) = 0`, and:
 
 - `N_i* = N*/n + M_x* y_i / sum(y_j^2) + M_y* x_i / sum(x_j^2)`;
 - `V_x,i* = V_x*/n - T_z* y_i / sum(r_j^2)`;
@@ -1539,10 +1541,21 @@ State these assumptions with the result:
 - equal axial stiffness in compression and tension;
 - equal lateral stiffness;
 - actions applied at the pile-group centroid on one consistent ULS or SLS basis;
+- action basis identified as ULS design action effects, SLS design action effects or unfactored/service reference actions;
+- positive `M_x*` increases compression at `+y`, positive `M_y*` increases compression at `+x`, and positive `T_z*` acts counter-clockwise in the x-y plane;
 - project eccentricities included in the supplied actions;
 - no pad-soil bearing or lateral-resistance contribution.
 
-Report maximum compression, uplift and lateral screen values with the relevant pile number. Only report a complete selected-value comparison when every demanded direction has a selected published/project value on the same design basis. `R_c`, `R_t` and `R_v` are selected comparison values; the page does not calculate AS 2159 design geotechnical or structural strength.
+Report maximum compression action, tension action and resultant horizontal action with the relevant pile number. Apply these comparison rules:
+
+- all manufacturer values, including direction-specific product values and published `up to` values, may produce a reference ratio only and must not produce a design acceptance statement;
+- use `Q_c,ref`, `Q_t,ref` and `Q_h,ref` for manufacturer reference values so they are not presented as AS 2159 design strengths;
+- project values may produce a project-value comparison only when a source reference is entered and the project value basis matches the action basis;
+- place optional `R_c,proj`, `R_t,proj` and `R_h,proj` inputs inside the Optional Check, not in the selected-system summary;
+- indicative system ratings and typical technique benchmarks must not be used in the ratio;
+- where a demanded direction has no qualifying value, report the missing direction rather than a complete ratio.
+
+The page does not calculate AS 2159 design geotechnical or structural strength. A project-value comparison relies entirely on the entered project source and basis, and does not assess combined axial-horizontal interaction.
 
 Required AS 2159 boundaries:
 
@@ -1552,9 +1565,9 @@ Required AS 2159 boundaries:
 - Cl. 5.2.2: pile bending, positional tolerance and pile-cap force transfer remain project structural checks;
 - Cl. 7.3.5.3: installation torque, shaft overstress, calibrated monitoring and installation acceptance remain project controls.
 
-Also exclude durability design, corrosion allowance, pile-head and splice design, cyclic/dynamic response, liquefaction, pile-position tolerance analysis, installation refusal and load-test acceptance. Soil/site flags may change the advice and review status, but must not alter published product values.
+Use the AS 2159 steel-pile exposure classes `Non-aggressive`, `Mild`, `Moderate`, `Severe` and `Very severe`, plus `Not assessed`. Do not use `Normal`, `Aggressive soil` or `Coastal / marine` as if they were formal exposure classifications. Also exclude durability design, corrosion allowance, pile-head and splice design, cyclic/dynamic response, liquefaction, pile-position tolerance analysis, installation refusal and load-test acceptance. Soil/site flags may change the advice and review status, but must not alter published product values.
 
-Validation must include equilibrium checks for axial force, biaxial moment, direct shear and torsion; perimeter and full-grid pile counts; compression/uplift sign convention; missing direction-specific values; and a same-basis comparison case.
+Validation must include equilibrium checks for axial force, biaxial moment, direct horizontal action and torsion; perimeter and full-grid pile counts; compression/tension sign convention; missing direction-specific values; reference-only comparison; project source missing; project/action basis mismatch; and a valid same-basis project comparison.
 
 ### 15.16 Web Local Update and Deployment Workflow
 
