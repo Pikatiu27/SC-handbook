@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260710screwpub1">
+  <link rel="stylesheet" href="styles.css?v=20260710productaudit1">
 </head>
 <body>
   <header class="topbar">
@@ -780,16 +780,16 @@
             <div class="screw-selected-summary">
               <div class="screw-capacity-strip" aria-label="Selected system capacity values">
                 <div hidden><output id="screwAxialClass">80</output><em id="screwAxialBasis">Series class from current certificate.</em></div>
-                <div><span>Published compression</span><strong><output id="screwCompressionResult">80</output><small id="screwCompressionUnit"> kN</small></strong><em id="screwCompressionBasis">Series value; verify load basis.</em></div>
-                <div><span>Published uplift</span><strong><output id="screwUpliftResult">Not stated</output><small id="screwUpliftUnit"></small></strong><em id="screwUpliftBasis">No direction-specific value.</em></div>
-                <div class="secondary"><span>Published lateral</span><strong><output id="screwLateralResult">Not stated</output><small id="screwLateralUnit"></small></strong><em id="screwLateralBasis">No direction-specific value.</em></div>
+                <div><span id="screwCompressionLabel">Compression SWL up to</span><strong><output id="screwCompressionResult">80</output><small id="screwCompressionUnit"> kN</small></strong><em id="screwCompressionBasis">Guide SWL up to; stated conditions apply.</em></div>
+                <div><span id="screwUpliftLabel">Published uplift</span><strong><output id="screwUpliftResult">Not stated</output><small id="screwUpliftUnit"></small></strong><em id="screwUpliftBasis">No direction-specific value.</em></div>
+                <div class="secondary"><span id="screwLateralLabel">Published lateral</span><strong><output id="screwLateralResult">Not stated</output><small id="screwLateralUnit"></small></strong><em id="screwLateralBasis">No direction-specific value.</em></div>
               </div>
 
               <div class="screw-system-facts" aria-label="Selected system key dimensions">
                 <div><span>Shaft</span><strong id="screwFactShaft">76.1 mm OD / 4.0 mm wall</strong><em id="screwFactSteel">AS/NZS 1163 CHS</em></div>
                 <div><span>Helix / bearing</span><strong id="screwFactHelixCount">1 helix</strong><em id="screwFactHelix">250 mm dia x 8 mm plate</em></div>
                 <div><span>Length / extension</span><strong id="screwFactLength">1.0-4.0 m series range noted</strong><em id="screwFactExtension">0.5 m increments; extension sections available</em></div>
-                <div><span>Source / data basis</span><strong id="screwFactSourceStatus">Series context</strong><em id="screwFactSource">Katana Performance Guide Rev Z / CodeMark</em><em id="screwFactCapacityBasis">Published compression series.</em></div>
+                <div><span>Source / data basis</span><strong id="screwFactSourceStatus">Official guide + certificate</strong><a id="screwFactSource" href="https://katanafoundations.com.au/wp-content/uploads/2024/12/241001-Katana-Screw-Pile-_-Performance-Guide.pdf" target="_blank" rel="noreferrer">Performance Guide Rev Z, pp. 8 and 12-13</a><em id="screwFactCapacityBasis">Compression SWL up to in stated guide conditions.</em></div>
               </div>
 
               <div class="screw-technical-limits" aria-label="Selected system technical limits">
@@ -805,7 +805,7 @@
               <div class="screw-capacity-editor" hidden aria-hidden="true">
                 <div class="screw-capacity-editor-body input-group-fields four">
                   <label><span>Compression Rc</span><span class="unit"><input id="screwCompressionCap" type="number" min="0" step="1" value="80"><em>kN</em></span></label>
-                  <label><span>Tension / uplift Rt</span><span class="unit"><input id="screwUpliftCap" type="number" min="0" step="1" value="80"><em>kN</em></span></label>
+                  <label><span>Tension / uplift Rt</span><span class="unit"><input id="screwUpliftCap" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
                   <label><span>Lateral Rv</span><span class="unit"><input id="screwLateralCap" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
                   <label><span>Value basis</span><select id="screwCapacitySource"><option value="series">Series / certificate</option><option value="manufacturer">Manufacturer table</option><option value="geotech">Project geotechnical</option><option value="test">Load test</option><option value="user">User estimate</option></select></label>
                 </div>
@@ -885,7 +885,7 @@
               <label><span>Group span, L<sub>y</sub></span><span class="unit"><input id="screwGroupLengthY" type="number" min="0.1" step="0.1" value="3.0"><em>m</em></span></label>
             </div>
             <p class="result-note" id="screwLayoutNote">Counts include corner piles. L<sub>x</sub> and L<sub>y</sub> are centre-to-centre spans between outer piles.</p>
-            <div class="interaction-result screw-demand-result"><span>Selected-value comparison</span><strong id="screwDemandRatio">&eta; = 0.00</strong><b id="screwDemandStatus">No demand entered</b></div>
+            <div class="interaction-result screw-demand-result"><span id="screwDemandComparisonLabel">Reference-only comparison</span><strong id="screwDemandRatio">&eta; = 0.00</strong><b id="screwDemandStatus">No demand entered</b></div>
           </section>
           <section>
             <h3>Pile reactions</h3>
@@ -917,7 +917,7 @@
             <p><b>Scope</b> - Product selection and preliminary action effects for a symmetric rectangular pile group.</p>
             <p><b>Assumptions</b> - Rigid pad; vertical identical piles; equal axial stiffness in compression and tension; equal lateral stiffness; centroidal actions; no pad-soil resistance; one ULS or SLS basis.</p>
             <p><b>Not covered</b> - AS 2159 pile/group/block resistance, settlement or rotation, soil-pile lateral response, pile bending or positional tolerance, cap/head connection, durability, installation or test acceptance.</p>
-            <p><b>Use with engineering judgement</b> - Compare only certified direction-specific project values with action effects on the same design basis.</p>
+            <p><b>Comparison</b> - Direction-specific product or project values may be compared on a matching basis. Published "up to" values are reference-only. Indicative system ratings and typical benchmarks are not compared.</p>
           </div>
         </div>
       </details>
@@ -926,6 +926,6 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260710screwpub1"></script>
+  <script src="app.js?v=20260710productaudit1"></script>
 </body>
 </html>
