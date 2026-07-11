@@ -201,7 +201,7 @@ CHS was deliberately not converted to an Austube / Orrcon table-capacity lookup.
 
 ## 2026-07-10 Rock Anchor Selector Source Status
 
-The standalone `rock-anchor-selector/` page is a product selector only. It does not calculate anchor actions, bond resistance, governing resistance or utilisation.
+The `Rock Anchor` tab is a product selector only. It does not calculate anchor actions, bond resistance, governing resistance or utilisation.
 
 | Source area | Selector use | Status |
 | --- | --- | --- |

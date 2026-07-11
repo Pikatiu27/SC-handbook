@@ -13,7 +13,15 @@ It helps users:
 
 It is not an anchor-force calculator or a complete ground-anchor design tool.
 
-## Page Structure
+## Tab Structure
+
+Follow the SC Handbook web-tab order:
+
+1. Tool heading and review status.
+2. Product-selection input group.
+3. Selected-product summary and published tendon values.
+4. Product specification and adoption limitation.
+5. Folded calculation basis, limitations and source notes.
 
 ### 1. Product Selection
 
@@ -52,10 +60,11 @@ State clearly that the selector does not calculate:
 
 ## Website Integration
 
-- Publish as the standalone route `/rock-anchor-selector/`.
-- Link from the main SC Handbook tool navigation as `Rock Anchor`.
-- Keep the standalone page header, content width, typography, cards and responsive spacing aligned with the main website.
-- Keep both asset cache tokens on the same release identifier.
+- Implement as the `Rock Anchor` tool tab in the main SC Handbook `index.html`.
+- Use the shared page header, horizontal tab navigation, `tool-panel`, `tool-heading`, `lookup-card`, input-group and source-card patterns.
+- Use a dedicated pastel colour layer through the shared CSS variables.
+- Do not publish or link a separate Rock Anchor page.
+- Keep the Rock Anchor data/interaction module static and local-first.
 
 ## Source Status Model
 
@@ -109,6 +118,6 @@ Manufacturer load terminology must be retained. Do not silently convert yield, p
 - Supplier selection updates the available product/system list.
 - Product/system selection updates the selected-product parameters directly.
 - No product-results or comparison table is shown.
-- Main-site navigation and the standalone return link are present.
-- CSS and JavaScript use the same cache token.
+- Main-site tab navigation and `rockPanel` are present.
+- The tab follows the shared desktop and mobile layout rules.
 - Run syntax, DOM, filter, selection and responsive checks before publication.

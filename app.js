@@ -1651,7 +1651,7 @@ const screwInputIds = [
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
-const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw"];
+const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw", "rock"];
 let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260711rockanchor2">
+  <link rel="stylesheet" href="styles.css?v=20260711rocktab1">
 </head>
 <body>
   <header class="topbar">
@@ -25,7 +25,7 @@
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
       <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false">Pad Section</button>
       <button class="tool-tab" type="button" data-tool="screw" aria-controls="screwPanel" aria-selected="false">Screw Piles</button>
-      <a class="tool-link" href="rock-anchor-selector/">Rock Anchor</a>
+      <button class="tool-tab" type="button" data-tool="rock" aria-controls="rockPanel" aria-selected="false">Rock Anchor</button>
     </nav>
 
     <section id="boltPanel" class="tool-panel active">
@@ -935,9 +935,87 @@
       </details>
     </section>
 
+    <section id="rockPanel" class="tool-panel" hidden>
+      <div class="tool-heading">
+        <div><p class="kicker">Foundation anchors &middot; product selector</p><h2>Rock Anchor Selector</h2></div>
+        <span class="tool-status">Draft &middot; product data &middot; source status</span>
+      </div>
+
+      <section class="lookup-card rock-card">
+        <section class="input-group input-group-section rock-selection-panel" aria-label="Rock anchor product selection">
+          <span class="input-group-heading"><b>Product selection</b><small>Select a supplier and published product or system.</small></span>
+          <div class="input-group-fields two">
+            <label><span>Supplier</span><select id="supplierFilter"></select></label>
+            <label><span>Product / system</span><select id="productFilter"></select></label>
+          </div>
+        </section>
+
+        <section class="rock-selected-card" id="selectedProductCard" aria-live="polite">
+          <div class="rock-selected-header">
+            <div>
+              <span class="section-tag">SELECTED PRODUCT</span>
+              <h2 id="selectedName">Freyssibar 32 mm</h2>
+              <p id="selectedSummary">Prestressed bar tendon for active foundation anchoring.</p>
+            </div>
+            <b id="dataStatus" class="status-pill status-row">Tendon property row</b>
+          </div>
+
+          <div class="rock-selected-metadata">
+            <span id="sourceStatus" class="status-pill status-external">Manufacturer row &middot; Jan 2014 &middot; archived</span>
+            <span id="supplyStatus" class="status-pill status-us">Australian supply confirmation required</span>
+          </div>
+
+          <div class="rock-capacity-strip" aria-label="Published tendon reference loads">
+            <article><span id="factYieldLabel">Published yield load</span><strong><output id="factYieldLoad">672</output><small id="factYieldUnit"> kN</small></strong><em id="factYieldNote">Manufacturer tendon value; not anchor resistance.</em></article>
+            <article><span id="factUltimateLabel">Published ultimate load</span><strong><output id="factUltimateLoad">828</output><small id="factUltimateUnit"> kN</small></strong><em id="factUltimateNote">Manufacturer tendon value; not anchor resistance.</em></article>
+          </div>
+
+          <section class="rock-product-specification" aria-label="Selected product specification">
+            <h3>Product specification</h3>
+            <div class="rock-specification-grid">
+              <div><span>Supplier</span><strong id="factProvider">Freyssinet</strong></div>
+              <div><span>Anchor form</span><strong id="factType">Prestressed bar</strong></div>
+              <div><span>Tendon</span><strong id="factTendon">32 mm threaded bar</strong></div>
+              <div><span>Available protection</span><strong id="factProtection">Temporary and permanent anchor systems</strong><em>Confirm selected configuration.</em></div>
+              <div><span>Typical components</span><strong id="factHardware">Nut, plate, coupler, protective cap and trumpet</strong><em>Confirm ordered assembly.</em></div>
+              <div class="wide rock-source-fact"><span>Source / data basis</span><strong id="factSource">Freyssinet anchoring systems brochure, C IX 0 - 01/14, p.10</strong><em id="factSourceNote">Confirm current Australian supply.</em><a id="factSourceLink" href="#" target="_blank" rel="noreferrer">Open source</a><small id="factSourceMeta">Global &middot; checked 10 Jul 2026</small></div>
+            </div>
+          </section>
+
+          <div class="rock-product-limitation">
+            <span>Before adoption</span>
+            <strong id="selectionConstraint">Confirm Australian supply, anchor assembly, design resistance, corrosion protection and testing.</strong>
+          </div>
+        </section>
+      </section>
+
+      <details class="source-card">
+        <summary><span><b>Calculation basis and limitations</b><small>Product-data scope and source status.</small></span><i>+</i></summary>
+        <div class="source-body rock-source-body">
+          <div class="source-notes">
+            <p><b>Scope</b> &middot; Product selection for active post-tensioned foundation anchors.</p>
+            <p><b>Published loads</b> &middot; Manufacturer tendon reference values; not anchor design resistance.</p>
+            <p><b>Not covered</b> &middot; Load distribution, anchor resistance, rock-mass failure, concrete anchorage, durability, stressing or acceptance.</p>
+            <p><b>Before adoption</b> &middot; Confirm product revision, Australian supply, project design and execution requirements.</p>
+          </div>
+          <div class="rock-source-grid">
+            <article><b>Freyssinet</b><span>Anchoring systems for geotechnical engineering, C IX 0 - 01/14.</span><a href="https://www.freyssinet.com/wp-content/uploads/sites/1/2021/08/Brochure-Freyssinet-anchoring-systems-for-geotechnical-engineering-1.pdf">Open PDF</a></article>
+            <article><b>DYWIDAG</b><span>PT Threadbar Technical Specification, October 2024.</span><a href="https://assets.ctfassets.net/wz1xpzqb46pe/4i3VUcbjerya1EklUSmpwM/8e603f793e164b15063c8326529010c9/DYWIDAG_PT_Threadbar_Technical_Specification_Oct24_EN_Web.pdf">Open PDF</a></article>
+            <article><b>Williams</b><span>Prestressed ground-anchor, MCP and Spin-Lock systems.</span><a href="https://www.williamsform.com/rock/tieback-tiedown-anchors/">Open source</a></article>
+            <article><b>SAS</b><span>Post-tensioning bar design guide, January 2026.</span><a href="https://www.annahuette.com/wp-content/uploads/jet-form-builder/d48dacaabeb4eeb673b4828b7de2b0d5/2026/02/SAS-pt-system_en_01-2026-_SAS-950-1050_SAS-835-1035-Vorspannsystem.pdf">Open PDF</a></article>
+            <article><b>VSL</b><span>Ground-anchor system range and protection pathways.</span><a href="https://vsl.com/technology/ground-anchors/">Open source</a></article>
+            <article><b>BBR</b><span>CONA CMG strand ground anchor, ETA 21/1053.</span><a href="https://www.bbrnetwork.com/fileadmin/userdaten/Zulassungen%20EU/CONA_CMG_ground/BBR_ETA-21-1053_CMG_EN_Rev1_1023-short.pdf">Open ETA</a></article>
+            <article><b>Keller Australia</b><span>Australian bar, strand and SBMA pathways.</span><a href="https://www.keller.com.au/expertise/techniques/anchors">Open source</a></article>
+            <article><b>SRG Global</b><span>Australian high-capacity anchoring capability.</span><a href="https://srgglobal.com.au/what-we-do/technology/dam-anchoring-and-monitoring/">Open source</a></article>
+          </div>
+        </div>
+      </details>
+    </section>
+
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260711screwsimple1"></script>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.6.0 local</b></footer>
+  <script src="app.js?v=20260711rocktab1"></script>
+  <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
