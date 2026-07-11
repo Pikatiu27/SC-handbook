@@ -74,8 +74,10 @@ main, footer { max-width: 1040px; margin: auto; }
 .intro > p:last-child { margin: 5px 0 0; max-width: 560px; color: var(--muted); font-size: var(--fs-sm); }
 
 .tool-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 16px; padding: 5px; width: fit-content; border: 1px solid #eadfd4; border-radius: 12px; background: #f4ede5; }
-.tool-tab, .member-type, .beam-type { border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-size: var(--fs-sm); font-weight: 800; }
-.tool-tab { min-width: 150px; padding: 10px 16px; }
+.tool-tab, .tool-link, .member-type, .beam-type { border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-size: var(--fs-sm); font-weight: 800; }
+.tool-tab, .tool-link { min-width: 150px; padding: 10px 16px; }
+.tool-link { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.tool-link:hover, .tool-link:focus-visible { background: var(--bolt-soft); color: var(--bolt-dark); }
 .tool-tab.active, .member-type.active, .beam-type.active { background: var(--card); color: var(--green-dark); box-shadow: 0 1px 5px rgba(55, 61, 56, .10); }
 .tool-tab[data-tool="bolt"].active { background: var(--bolt-soft); color: var(--bolt-dark); }
 .tool-tab[data-tool="member"].active { background: var(--member-soft); color: var(--member-dark); }
@@ -685,7 +687,7 @@ footer b { white-space: nowrap; }
   .intro > p:last-child { margin-top: 5px; font-size: var(--fs-xs); line-height: 1.35; }
   .tool-tabs { width: 100%; position: sticky; top: 54px; z-index: 4; overflow-x: auto; flex-wrap: nowrap; padding: 4px; scrollbar-width: none; }
   .tool-tabs::-webkit-scrollbar { display: none; }
-  .tool-tab { min-width: max-content; flex: 0 0 auto; padding: 9px 11px; font-size: var(--fs-xs); white-space: nowrap; }
+  .tool-tab, .tool-link { min-width: max-content; flex: 0 0 auto; padding: 9px 11px; font-size: var(--fs-xs); white-space: nowrap; }
   .tool-heading { display: block; }
   .tool-heading .kicker, .tool-heading > span, .section-heading > span { overflow-wrap: anywhere; }
   .tool-heading h2 { font-size: var(--fs-md); }

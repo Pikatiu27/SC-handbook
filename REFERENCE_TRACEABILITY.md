@@ -177,3 +177,20 @@ CHS was deliberately not converted to an Austube / Orrcon table-capacity lookup.
 3. AS 4100 Table 6.3.3 `alpha_b` option mapping for non-default member axes and fabrication routes.
 4. AS 3600 `kv` and shear model only if the concrete tab is expanded from warning screen to design check.
 5. Wind Site Draft mobile resource-card wrapping, because the 2026-07-02 `390 x 844` local browser check still found long resource/link entries overflowing their cards.
+
+## 2026-07-10 Rock Anchor Selector Source Status
+
+The standalone `rock-anchor-selector/` page is a product selector only. It does not calculate anchor actions, bond resistance, governing resistance or utilisation.
+
+| Source area | Selector use | Status |
+| --- | --- | --- |
+| Freyssinet `Anchoring systems for geotechnical engineering`, C IX 0 - 01/14 | Freyssibar 26.5-50 mm and 2-13 T15.7 strand published tendon yield / ultimate rows | Official archived global rows; confirm current Australian revision and supply |
+| DYWIDAG `PT Threadbar Technical Specification`, October 2024, ASTM A722 | Grade 150 threadbar 26-75 mm published minimum ultimate-load rows | Official US rows; confirm Australian grade, assembly and availability |
+| SAS post-tensioning system design guide, January 2026 | SAS 950/1050 and 835/1035 published tendon rows | Current external manufacturer rows; confirm Australian ground-anchor applicability; resolve the 65 mm 2,780 / 2,790 kN yield-load discrepancy before adoption |
+| VSL Ground Anchors public system page | Bar / strand family and corrosion-protection pathways | System-family entry only; no row-level load embedded |
+| BBR VT CONA CMG / ETA 21/1053 | Strand ground-anchor family scope | System-family entry only; confirm Australian acceptance and current schedule |
+| Keller Australia Anchors | Australian bar, strand and SBMA delivery pathways | Provider pathway only; certified project schedule required |
+| SRG Global anchoring capability | Australian high-capacity strand and stress-bar delivery pathways | Provider pathway only; certified project system schedule required |
+| Austroads ATS 5140-26, Edition 2.0 | Execution, corrosion protection, stressing, testing and monitoring boundary | Scope reference only; no numeric design criteria embedded in the selector |
+
+Published tendon values are reference product data and must not be described as complete anchor design resistance.
