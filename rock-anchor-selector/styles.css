@@ -49,7 +49,7 @@ main, footer { max-width: 1040px; margin: auto; }
 .section-heading > span { color: var(--muted); font-size: var(--fs-xs); font-weight: 800; text-align: right; }
 .section-tag { color: var(--green-dark); font-size: 10px; font-weight: 900; letter-spacing: .07em; }
 
-.filter-grid { max-width: 620px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+.filter-grid { max-width: 760px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 label > span:first-child { display: block; margin-bottom: 5px; color: #4e6257; font-size: var(--fs-xs); font-weight: 900; }
 .field-note { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.25; }
 input, select { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid #bacac1; border-radius: 8px; background: white; }

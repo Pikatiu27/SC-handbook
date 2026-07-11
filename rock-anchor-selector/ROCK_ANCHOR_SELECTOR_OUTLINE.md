@@ -17,9 +17,10 @@ It is not an anchor-force calculator or a complete ground-anchor design tool.
 
 ### 1. Product Selection
 
-- Select one product or system from a single list labelled by provider and name.
+- Select a supplier.
+- Select one product or system from that supplier's list.
 
-Do not show separate search, filter, sort or product-results controls.
+Do not show separate search, sort or product-results controls.
 
 ### 2. Selected Product
 
@@ -71,6 +72,7 @@ Use separate data and source labels.
 
 - `Manufacturer row · Jan 2014 · archived`
 - `Manufacturer row · Jan 2026 · external`
+- `Manufacturer row · 2025 · external`
 - `Manufacturer row · Oct 2024 · US`
 - `System family page · external`
 - `Australian provider pathway`
@@ -92,6 +94,7 @@ Manufacturer load terminology must be retained. Do not silently convert yield, p
 - Freyssinet: archived global row-level bar and T15.7 strand tendon loads.
 - DYWIDAG: current US ASTM A722 minimum ultimate-load rows; Australian grade and assembly require confirmation.
 - SAS: current external manufacturer bar rows; Australian ground-anchor applicability requires confirmation.
+- Williams Form Engineering: R7S Spin-Lock manufacturer rows plus MCP I, MCP II, MCP III and multi-strand system families; Australian acceptance and supply require confirmation.
 - VSL and BBR: system-family entries without embedded row-level loads.
 - Keller Australia and SRG Global: Australian provider pathways requiring a certified project schedule.
 - Custom / project: project-defined entry without embedded manufacturer values.
@@ -103,6 +106,7 @@ Manufacturer load terminology must be retained. Do not silently convert yield, p
 - No action distribution, bond calculation, governing resistance or utilisation.
 - No manufacturer tendon value is presented as anchor design resistance.
 - Source and data status remain visible.
+- Supplier selection updates the available product/system list.
 - Product/system selection updates the selected-product parameters directly.
 - No product-results or comparison table is shown.
 - Main-site navigation and the standalone return link are present.

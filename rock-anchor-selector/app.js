@@ -90,6 +90,60 @@ const sasRows = makeRows("sas", "SAS Stressteel", [
   summary: "Prestressing threadbar requiring project ground-anchor detailing."
 });
 
+const williamsRows = makeRows("williams", "Williams Form Engineering", [
+  [25, 324, 404], [32, 517, 647], [38, 750, 937]
+].map(([diameter, yieldLoad, ultimateLoad]) => ({
+  id: `williams-spinlock-${diameter}`,
+  name: `R7S Spin-Lock ${diameter} mm`,
+  tendon: `${diameter} mm Grade 150 KSI Spin-Lock bar`,
+  yieldLoad,
+  ultimateLoad
+})), {
+  formGroup: "bar",
+  type: "Mechanical prestressed rock anchor",
+  protection: "Prestress-and-grout system; project corrosion protection required",
+  hardware: "Expansion shell, hollow bar, bearing plate and anchor nut",
+  sourceKind: "current-williams-row",
+  source: "Williams Ground Engineering Systems, R7S Spin-Lock Rock Anchor table, 2025",
+  sourceNote: "Official manufacturer row; confirm Australian acceptance, supply and project corrosion protection.",
+  summary: "Mechanical rock-anchor system that can be prestressed and subsequently grouted."
+});
+
+const williamsFamilyRows = [
+  {
+    providerKey: "williams", provider: "Williams Form Engineering", id: "williams-mcp-i", name: "Williams MCP I",
+    formGroup: "bar", type: "Grout-bonded prestressed bar anchor", tendon: "Grade 150 KSI All-Thread Bar; 26 to 75 mm system range",
+    protection: "PTI Class II; two barriers in free-stressing zone", hardware: "Bar, sleeves, centralizers, plate, nut and protective cap",
+    sourceKind: "global-family", source: "Williams Multiple Corrosion Protection Anchors product page",
+    sourceNote: "Official system family; obtain the project tendon, load and drill-hole schedule.",
+    summary: "MCP I grout-bonded bar anchor with Class II corrosion protection."
+  },
+  {
+    providerKey: "williams", provider: "Williams Form Engineering", id: "williams-mcp-ii", name: "Williams MCP II",
+    formGroup: "bar", type: "Grout-bonded prestressed bar anchor", tendon: "Grade 150 KSI All-Thread Bar; 26 to 75 mm system range",
+    protection: "PTI Class I; two barriers around the bar full length", hardware: "Pre-grouted corrugated tube, sleeve, centralizers, plate and nut",
+    sourceKind: "global-family", source: "Williams Multiple Corrosion Protection Anchors product page",
+    sourceNote: "Official system family; obtain the project tendon, load and drill-hole schedule.",
+    summary: "MCP II grout-bonded bar anchor with Class I corrosion protection."
+  },
+  {
+    providerKey: "williams", provider: "Williams Form Engineering", id: "williams-mcp-iii", name: "Williams MCP III",
+    formGroup: "bar", type: "Grout-bonded prestressed bar anchor", tendon: "Grade 150 KSI All-Thread Bar; 26 to 75 mm system range",
+    protection: "PTI Class I; three free-zone barriers and two bond-zone barriers", hardware: "Pre-grouted corrugated tube, sleeve, trumpet, plate, nut and cap",
+    sourceKind: "global-family", source: "Williams Multiple Corrosion Protection Anchors product page",
+    sourceNote: "Official system family; obtain the project tendon, load and drill-hole schedule.",
+    summary: "MCP III grout-bonded bar anchor with enhanced Class I corrosion protection."
+  },
+  {
+    providerKey: "williams", provider: "Williams Form Engineering", id: "williams-strand", name: "Williams multi-strand ground anchor",
+    formGroup: "strand", type: "Multi-strand anchor", tendon: "270 KSI low-relaxation strand; project strand count",
+    protection: "PTI Class I or Class II project configuration", hardware: "Multi-strand head, bearing plate, free zone and bonded tendon zone",
+    sourceKind: "global-family", source: "Williams Tieback & Tiedown Anchors product page",
+    sourceNote: "Official prestressed ground-anchor family; obtain the current project strand and load schedule.",
+    summary: "Project-configured multi-strand prestressed ground-anchor system."
+  }
+];
+
 const familyRows = [
   {
     providerKey: "vsl", provider: "VSL", id: "vsl-strand", name: "VSL strand ground anchor",
@@ -158,7 +212,7 @@ const projectRow = {
   summary: "Use for a certified project product not listed in the selector."
 };
 
-const products = [...freyssinetBars, ...freyssinetStrands, ...dywidagRows, ...sasRows, ...familyRows, projectRow];
+const products = [...freyssinetBars, ...freyssinetStrands, ...dywidagRows, ...sasRows, ...williamsRows, ...williamsFamilyRows, ...familyRows, projectRow];
 let selectedProductId = "frey-bar-32";
 
 function safeText(value) {
@@ -174,6 +228,7 @@ function sourceMeta(product) {
   const map = {
     "archived-global-row": { label: "Manufacturer row · Jan 2014 · archived", className: "status-external" },
     "current-external-row": { label: "Manufacturer row · Jan 2026 · external", className: "status-external" },
+    "current-williams-row": { label: "Manufacturer row · 2025 · external", className: "status-external" },
     "us-row": { label: "Manufacturer row · Oct 2024 · US", className: "status-us" },
     "global-family": { label: "System family page · external", className: "status-family" },
     "au-pathway": { label: "Australian provider pathway", className: "status-au" },
@@ -212,6 +267,11 @@ function sourceRecord(product) {
       url: "https://www.annahuette.com/wp-content/uploads/jet-form-builder/d48dacaabeb4eeb673b4828b7de2b0d5/2026/02/SAS-pt-system_en_01-2026-_SAS-950-1050_SAS-835-1035-Vorspannsystem.pdf",
       region: "External manufacturer",
       checked: "10 Jul 2026"
+    },
+    williams: {
+      url: "https://www.williamsform.com/rock/tieback-tiedown-anchors/",
+      region: "United States",
+      checked: "11 Jul 2026"
     },
     vsl: { url: "https://vsl.com/technology/ground-anchors/", region: "Global", checked: "10 Jul 2026" },
     bbr: { url: "https://www.bbrnetwork.com/fileadmin/userdaten/Zulassungen%20EU/CONA_CMG_ground/BBR_ETA-21-1053_CMG_EN_Rev1_1023-short.pdf", region: "European ETA", checked: "10 Jul 2026" },
@@ -287,12 +347,27 @@ function renderSelected() {
   $("selectionConstraint").textContent = productConstraint(product);
 }
 
-function populateProductFilter() {
-  const models = [...products].sort((a, b) => `${a.provider} ${a.name}`.localeCompare(`${b.provider} ${b.name}`, "en-AU", { numeric: true }));
-  $("productFilter").innerHTML = models
-    .map(product => `<option value="${safeText(product.id)}">${safeText(product.provider)} — ${safeText(product.name)}</option>`)
+function populateSupplierFilter() {
+  const suppliers = [...new Map(products.map(product => [product.providerKey, product.provider])).entries()];
+  $("supplierFilter").innerHTML = suppliers
+    .map(([key, label]) => `<option value="${safeText(key)}">${safeText(label)}</option>`)
     .join("");
-  $("productFilter").value = selectedProductId;
+  $("supplierFilter").value = selectedProduct().providerKey;
+}
+
+function populateProductFilter() {
+  const supplier = $("supplierFilter").value;
+  const models = products
+    .filter(product => product.providerKey === supplier)
+    .sort((a, b) => a.name.localeCompare(b.name, "en-AU", { numeric: true }));
+  const selected = models.find(product => product.id === selectedProductId) || models[0];
+  $("productFilter").innerHTML = models
+    .map(product => `<option value="${safeText(product.id)}">${safeText(product.name)}</option>`)
+    .join("");
+  if (selected) {
+    selectedProductId = selected.id;
+    $("productFilter").value = selected.id;
+  }
 }
 
 function selectProduct(id) {
@@ -302,7 +377,12 @@ function selectProduct(id) {
 }
 
 function initialise() {
+  $("supplierFilter").addEventListener("change", () => {
+    populateProductFilter();
+    renderSelected();
+  });
   $("productFilter").addEventListener("change", event => selectProduct(event.target.value));
+  populateSupplierFilter();
   populateProductFilter();
   renderSelected();
 }
