@@ -64,6 +64,16 @@ This is a moment section-capacity view with a one-way shear screen only, not a f
 
 Concrete pad capacity factor `phi` is shown for the current pure-bending quick-screen assumption using AS 3600 Table 2.2.2 `k_uo` notation for N-class reinforcement. Legacy Y bars use a conservative review value until the actual bar grade and ductility equivalence are verified. The one-way shear result is not a complete AS 3600 shear design check; `k_v` remains a user-confirmed assumption.
 
+### Reo Lapping Check
+
+The Reo Lapping Check is a straight 500N tensile lap-length quick check to AS 3600:2018 incorporating Amendments 1 and 2, Section 13. It supports N10 to N40 bars, wide and narrow members, contact and non-contact laps, basic and refined development-length methods, casting-position effects, epoxy-coated and lightweight-concrete modifiers, and the default or fully qualified `k7` branch.
+
+The result shows the raw and rounded-up required lap, lap-to-diameter ratio, development length used, governing formula candidate, Figure 13.2.2 stagger guide and a complete calculation trail. A separate provided-length comparison and same-condition N10 to N40 schedule are included. The product table keeps AS/NZS 4671 nominal calculation properties separate from InfraBuild / OneSteel ordering mass, metres-per-tonne and availability data. The current supplier page is distinguished from the older 2021 guide where their listed size ranges differ.
+
+This is a detailing aid, not a complete reinforced-concrete member design. It excludes bars larger than 40 mm, tension-tie lap splices, compression laps, mesh, bundled bars, hooks/cogs/heads, welded or mechanical splices, proprietary high-strength systems, seismic and bridge-specific requirements, and complete cover, spacing, anchorage, crack-control or member-capacity verification.
+
+The Reo calculation core is isolated in `reo-calculation.js`. Run `node tests/reo-lapping.test.js` for the maintained representative calculation cases.
+
 ### Weld Capacity
 
 The weld tool covers a compact weld-type guide plus a throat-capacity view for common structural welds:

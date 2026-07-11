@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-07-03
+Last updated: 2026-07-10
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -21,7 +21,8 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Source | Local file | Pack status | Current use |
 | --- | --- | --- | --- |
 | AS 4100:2020 | `AS4100.pdf` | 233 pages, 227 text pages, 97% coverage | Bolt, weld, beam, axial member |
-| AS 3600:2018 | `AS3600.pdf` | 273 pages, 269 text pages, 99% coverage | Concrete pad section |
+| AS 3600:2018 incorporating Amd 1 and Amd 2 | `AS3600.pdf` | 273 pages, 269 text pages, 99% coverage | Concrete pad section; Reo Lapping Check |
+| AS/NZS 4671:2019 | External licensed Standard / supplier-aligned data table | Nominal bar data transcribed into `research/rebar-lap/rebar-data.csv` | Reo Lapping bar diameter and nominal area |
 | AS/NZS 1170.2:2021 | `AS11702-2021.pdf` | 131 pages, 128 text pages, 98% coverage | Wind Site Draft exposure suggestions |
 | AS 2159:2009 | `AS2159_2009.pdf` | 97 pages, 97 text pages, 100% coverage | Screw Piles Selector design, installation, serviceability, durability and testing boundary |
 | AS 1726:2017 | `AS1726_2017.pdf` | 81 pages, 81 text pages, 100% coverage | Screw Piles Selector geotechnical investigation and ground-model context |
@@ -67,6 +68,13 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Concrete | Capacity factor | `AS3600.pdf` | AS 3600 Table 2.2.2 visually checked on PDF pages 38-39 | Visual checked |
 | Concrete | One-way shear screen | `AS3600.pdf` | AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3 and AS 3600 Cl. 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
 | Concrete | Reinforcement bar areas | Standard Australian reo table values | N/Y12=110, N/Y16=200, N/Y20=310, N/Y24=450, N/Y28=620, N/Y32=800, N/Y36=1020 mm2; use table areas rather than `pi d^2 / 4` | Checked against common Australian reo table convention; source register should be upgraded to AS/NZS 4671 or manufacturer reo table when added |
+| Reo Lapping | Basic tension development length | `AS3600.pdf` | AS 3600 Cl. 13.1.2.2 visually checked on PDF pages 190-191; equation, `k1`, `k2`, `k3`, 65 MPa concrete-strength cap and epoxy/lightweight multipliers confirmed | Visual checked |
+| Reo Lapping | Refined tension development length | `AS3600.pdf` | AS 3600 Cl. 13.1.2.3 visually checked on PDF pages 191-192; `K`, `lambda`, `k4`, `k5`, minimum transverse reinforcement and `k3 k4 k5 >= 0.7` confirmed | Visual checked |
+| Reo Lapping | Tension lap eligibility and length | `AS3600.pdf` | AS 3600 Cl. 13.2.1 and Cl. 13.2.2 visually checked on PDF pages 196-197; `k7`, wide/narrow equations, `sb <= 3db` treatment, tension-tie restriction and bar-size limit confirmed | Visual checked |
+| Reo Lapping | Nominal 500N bar diameter and area | AS/NZS 4671:2019 Table 7.5(A); `research/rebar-lap/rebar-data.csv` | N10 to N50 nominal diameter and area rows recorded; calculation is limited to N10 to N40 | Data register checked; licensed Standard remains governing |
+| Reo Lapping | Supplier mass, metres per tonne and product context | InfraBuild *Reinforcing Product Guide* 2023; InfraBuild *Construction Solutions Product Guide* 2021; current InfraBuild Class N product page | Supplier mass and ordering values are stored separately from nominal design area. Live check on 2026-07-10 found N10-N40 on the current page, with N40 on request; N50 remains in the 2021 guide only. | Product reference only; not used in lap calculation. Current supplier page cites an older AS/NZS 4671 edition, so AS/NZS 4671:2019 and project certification remain the material-data control. |
+| Reo Lapping | Staggered splice layout guide | `AS3600.pdf` | AS 3600 Figure 13.2.2 visually checked on PDF page 196; 50% staggered splice arrangement shows adjacent splice ends separated by at least `0.3 Lsy.t.lap` | Visual checked; displayed as a detailing guide, not proof of the percentage spliced at every section |
+| Reo Lapping | Historical lap table context | OneSteel *Reinforcing Products* / AS 3600:2009-era data table | Historical tabulated lap lengths retained as research context only | Historical only; not embedded as current calculation data |
 | Wind Site Draft | Wind region screen | `AS11702-2021.pdf` | AS/NZS 1170.2 Section 3 and Fig. 3.1(A) visually checked on PDF page 37; Tables 3.1(A) and 3.2(A) visually checked on PDF pages 34 and 36 for regional speed / `Md` context | Visual checked for draft coordinate screen only; adopted wind region still requires project review |
 | Wind Site Draft | Terrain category definitions and averaging | `AS11702-2021.pdf` | AS/NZS 1170.2 Cl. 4.2 visually checked on PDF page 39; terrain averaging distance `xa` and lag distance `xi` visually checked on PDF page 40 | Visual checked for radial-band draft screen basis only |
 | Wind Site Draft | Terrain-height multiplier `Mz,cat` and Region A0 note | `AS11702-2021.pdf` | AS/NZS 1170.2 Table 4.1 and Note 1 visually checked on PDF page 40, including distance-weighted `Mz,cat` averaging context, Region A0 use of `Mz,cat,2` for `z <= 100 m` and `Mz,cat = 1.24` for `100 m < z <= 200 m` | Visual checked for draft screen basis only |

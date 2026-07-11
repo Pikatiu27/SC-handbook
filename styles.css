@@ -28,6 +28,10 @@
   --concrete-dark: #2f746f;
   --concrete-soft: #e2f6f4;
   --concrete-panel: #f3fbfa;
+  --reo-accent: #b47762;
+  --reo-dark: #7f4938;
+  --reo-soft: #f5e7e1;
+  --reo-panel: #fcf7f4;
   --screw-accent: #8fa96a;
   --screw-dark: #587235;
   --screw-soft: #edf5e4;
@@ -79,13 +83,14 @@ main, footer { max-width: 1040px; margin: auto; }
 
 .tool-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 16px; padding: 5px; width: fit-content; border: 1px solid #eadfd4; border-radius: 12px; background: #f4ede5; }
 .tool-tab, .member-type, .beam-type { border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-size: var(--fs-sm); font-weight: 800; }
-.tool-tab { min-width: 150px; padding: 10px 16px; }
+.tool-tab { min-width: 134px; padding: 10px 12px; }
 .tool-tab.active, .member-type.active, .beam-type.active { background: var(--card); color: var(--green-dark); box-shadow: 0 1px 5px rgba(55, 61, 56, .10); }
 .tool-tab[data-tool="bolt"].active { background: var(--bolt-soft); color: var(--bolt-dark); }
 .tool-tab[data-tool="member"].active { background: var(--member-soft); color: var(--member-dark); }
 .tool-tab[data-tool="beam"].active { background: var(--beam-soft); color: var(--beam-dark); }
 .tool-tab[data-tool="weld"].active { background: var(--weld-soft); color: var(--weld-dark); }
 .tool-tab[data-tool="concrete"].active { background: var(--concrete-soft); color: var(--concrete-dark); }
+.tool-tab[data-tool="reo"].active { background: var(--reo-soft); color: var(--reo-dark); }
 .tool-tab[data-tool="screw"].active { background: var(--screw-soft); color: var(--screw-dark); }
 .tool-tab[data-tool="wind"].active { background: var(--wind-soft); color: var(--wind-dark); }
 .tool-tab:focus-visible, .member-type:focus-visible, .beam-type:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }
@@ -100,6 +105,7 @@ main, footer { max-width: 1040px; margin: auto; }
 #beamPanel { --green: var(--beam-accent); --green-dark: var(--beam-dark); --green-soft: var(--beam-soft); --panel-bg: var(--beam-panel); --line: #e4d9f1; --input-manual-bg: #f7f1ff; --input-auto-bg: #f5f3f8; --input-auto-border: rgba(111, 87, 152, .24); }
 #weldPanel { --green: var(--weld-accent); --green-dark: var(--weld-dark); --green-soft: var(--weld-soft); --panel-bg: var(--weld-panel); --line: #efdcc7; --input-manual-bg: #fff7ec; --input-auto-bg: #f7f4ef; --input-auto-border: rgba(156, 93, 34, .24); }
 #concretePanel { --green: var(--concrete-accent); --green-dark: var(--concrete-dark); --green-soft: var(--concrete-soft); --panel-bg: var(--concrete-panel); --line: #cde7e4; --input-manual-bg: #ecfaf8; --input-auto-bg: #f1f5f4; --input-auto-border: rgba(47, 116, 111, .24); }
+#reoPanel { --green: var(--reo-accent); --green-dark: var(--reo-dark); --green-soft: var(--reo-soft); --panel-bg: var(--reo-panel); --line: #ead5cd; --input-manual-bg: #fcf2ee; --input-auto-bg: #f5f1ef; --input-auto-border: rgba(127, 73, 56, .24); }
 #screwPanel { --green: var(--screw-accent); --green-dark: var(--screw-dark); --green-soft: var(--screw-soft); --panel-bg: var(--screw-panel); --line: #d9e7c8; --input-manual-bg: #f3f9ec; --input-auto-bg: #f2f5ef; --input-auto-border: rgba(88, 114, 53, .24); }
 #windPanel { --green: var(--wind-accent); --green-dark: var(--wind-dark); --green-soft: var(--wind-soft); --panel-bg: var(--wind-panel); --line: #cde1ea; --input-manual-bg: #eef8fd; --input-auto-bg: #f1f5f7; --input-auto-border: rgba(49, 102, 127, .24); }
 .tool-panel { padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(180deg, var(--panel-bg), rgba(255,255,255,.55)); }
@@ -882,6 +888,47 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .source-notes p { margin: 0 0 9px; }
 .source-notes p:last-child { margin-bottom: 0; }
 .source-notes a { color: var(--green-dark); }
+.reo-card { display: grid; gap: 14px; }
+.reo-card .reo-input-stack { margin-bottom: 0; }
+.reo-card .input-group-fields > * { min-width: 0; }
+.reo-refined-card { margin: 0; box-shadow: none; background: #fffaf7; }
+.reo-refined-card .detail-body { padding-top: 14px; }
+.reo-refined-card .detail-body > section { padding: 0; }
+.reo-geometry-summary { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(360px, 1.2fr); gap: 14px; align-items: stretch; }
+.reo-geometry-summary figure { margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 11px; background: #fffaf7; }
+.reo-geometry-summary svg { display: block; width: 100%; height: 126px; }
+.reo-geometry-summary figcaption { margin-top: 6px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
+.reo-concrete-shape { fill: #f8eee9; stroke: #caa99b; stroke-width: 2; }
+.reo-bar-line { stroke: var(--reo-dark); stroke-width: 12; stroke-linecap: round; }
+.reo-second-bar { stroke: var(--reo-accent); }
+.reo-bar-end { fill: var(--reo-dark); stroke: #fff; stroke-width: 2; }
+.reo-dim-line { stroke: #68766f; stroke-width: 1.4; }
+#reoLapSketch text { fill: #5d6862; font-family: var(--font); font-size: 13px; font-weight: 800; }
+.reo-derived-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.reo-derived-strip div { min-width: 0; padding: 16px 12px; display: grid; align-content: center; border: 1px solid var(--line); border-radius: 11px; background: var(--green-soft); text-align: center; }
+.reo-derived-strip span, .reo-derived-strip strong { display: block; }
+.reo-derived-strip span { color: var(--muted); font-size: var(--fs-xs); }
+.reo-derived-strip strong { margin-top: 5px; color: var(--reo-dark); font-size: 20px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.reo-derived-strip small { margin-top: 3px; color: var(--muted); font-size: 10px; line-height: 1.25; }
+.reo-results { grid-template-columns: 1.15fr 1fr 1fr; }
+.reo-primary-result { background: linear-gradient(180deg, #fff, var(--reo-soft)); border-top-width: 4px; }
+.reo-provided-inputs { align-items: stretch; }
+.reo-provided-inputs .interaction-result { margin-top: 0; min-height: 68px; }
+.reo-lap-table td:nth-child(3), .reo-product-table td:nth-child(3) { width: auto; padding: 8px 9px; border-radius: 0; background: transparent; color: var(--ink); text-align: left; font-size: inherit; }
+.reo-lap-table tr.is-selected td { background: #fbefea; }
+.reo-lap-table tr.is-selected td:first-child { box-shadow: inset 3px 0 0 var(--reo-dark); }
+.reo-product-table { min-width: 980px; }
+.reo-product-table td:last-child { font-weight: 800; }
+.reo-product-table tr.is-excluded td { color: #8b5e56; background: #fff6f3; }
+.reo-manual-grid { margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.reo-manual-grid article { padding: 12px; border: 1px solid var(--line); border-radius: 9px; background: #fffaf7; }
+.reo-manual-grid b, .reo-manual-grid span, .reo-manual-grid a { display: block; }
+.reo-manual-grid b { color: var(--reo-dark); font-size: var(--fs-sm); }
+.reo-manual-grid span { margin: 3px 0 9px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
+.reo-manual-grid a { width: max-content; color: var(--reo-dark); font-size: var(--fs-xs); font-weight: 800; }
+#reoPanel .formula-list b { color: var(--reo-dark); }
+#reoPanel .result-note.is-warning { padding: 9px 10px; border-left: 3px solid var(--amber); background: #fff8ea; color: #745b3d; }
+#reoPanel .result-note.is-ineligible { padding: 9px 10px; border-left: 3px solid var(--red); background: #fff1ef; color: #8b433e; }
 .member-formulas { padding-top: 12px; }
 footer { padding: 20px 0 30px; display: flex; justify-content: space-between; gap: 18px; color: var(--muted); font-size: var(--fs-xs); }
 footer b { white-space: nowrap; }
@@ -892,7 +939,7 @@ footer b { white-space: nowrap; }
 
 @media (max-width: 760px) {
   .intro { padding-top: 18px; }
-  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.six, .input-group-fields.seven, .input-group-fields.beam-custom-properties, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .screw-capacity-grid, .screw-note-grid, .screw-demand-metrics, .screw-readiness-strip, .screw-selected-overview, .screw-selected-grid, .screw-driver-grid, .screw-capacity-editor-body, .screw-basis-row, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .wind-actions, .wind-evidence-grid, .wind-resource-strip, .form-grid.seven, .form-grid.six, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
+  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.six, .input-group-fields.seven, .input-group-fields.beam-custom-properties, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .screw-capacity-grid, .screw-note-grid, .screw-demand-metrics, .screw-readiness-strip, .screw-selected-overview, .screw-selected-grid, .screw-driver-grid, .screw-capacity-editor-body, .screw-basis-row, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .reo-geometry-summary, .reo-manual-grid, .wind-actions, .wind-evidence-grid, .wind-resource-strip, .form-grid.seven, .form-grid.six, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .screw-selected-header { display: block; }
   .screw-selected-header > b { display: inline-block; margin-top: 8px; }
   .screw-capacity-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -953,6 +1000,19 @@ footer b { white-space: nowrap; }
   .compact-lookup-table td:nth-child(1) { color: var(--ink); font-weight: 900; }
   .compact-lookup-table td:nth-child(3) { width: max-content; max-width: 100%; padding: 3px 8px; border-radius: 999px; background: #eaf4fb; color: var(--member-dark); text-align: left; font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
   .compact-lookup-table td:nth-child(4)::before { content: "Status: "; color: var(--ink); font-weight: 900; }
+  .reo-lap-table td:nth-child(2)::before { content: "Area: "; color: var(--ink); font-weight: 900; }
+  .reo-lap-table td:nth-child(3)::before { content: "Development length: "; color: var(--ink); font-weight: 900; }
+  .reo-lap-table td:nth-child(4)::before { content: "Required lap: "; color: var(--ink); font-weight: 900; }
+  .reo-lap-table td:nth-child(5)::before { content: "Ratio: "; color: var(--ink); font-weight: 900; }
+  .reo-lap-table td:nth-child(6)::before { content: "Governing: "; color: var(--ink); font-weight: 900; }
+  .reo-lap-table td:nth-child(3), .reo-product-table td:nth-child(3) { width: 100%; padding: 0; border-radius: 0; background: transparent; color: var(--muted); text-align: left; font-size: var(--fs-xs); line-height: 1.35; font-weight: 700; white-space: normal; }
+  .reo-product-table td:nth-child(2)::before { content: "Nominal diameter: "; color: var(--ink); font-weight: 900; }
+  .reo-product-table td:nth-child(3)::before { content: "Nominal area: "; color: var(--ink); font-weight: 900; }
+  .reo-product-table td:nth-child(4)::before { content: "Standard mass: "; color: var(--ink); font-weight: 900; }
+  .reo-product-table td:nth-child(5)::before { content: "Supplier mass: "; color: var(--ink); font-weight: 900; }
+  .reo-product-table td:nth-child(6)::before { content: "Approx. metres / tonne: "; color: var(--ink); font-weight: 900; }
+  .reo-product-table td:nth-child(7)::before { content: "Supplier availability: "; color: var(--ink); font-weight: 900; }
+  .reo-product-table td:nth-child(8)::before { content: "Lap eligibility: "; color: var(--ink); font-weight: 900; }
   .screw-market-panel { padding: 10px; }
   .screw-market-summary { margin-bottom: 8px; }
   .screw-market-scroll { max-height: 520px; overflow-x: visible; overflow-y: auto; }
@@ -1011,6 +1071,9 @@ footer b { white-space: nowrap; }
   .input-cluster { gap: 10px; margin-bottom: 13px; }
   .input-group { padding: 10px; }
   .input-group-heading small { display: none; }
+  .reo-derived-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reo-derived-strip div:last-child { grid-column: 1 / -1; }
+  .reo-geometry-summary svg { height: 105px; }
   .advanced-input-card > summary small { display: none; }
   .primary-inputs select, .primary-inputs input, .input-group-fields select, .input-group-fields input, .member-inputs select, .member-inputs input, .concrete-input-row input, .concrete-input-row select, .layer-row .numeric-input, .layer-row select, .weld-extra-inputs input, .weld-extra-inputs select, .form-grid input, .form-grid select, .screw-basis-row select { min-height: 44px; font-size: 16px; }
   .primary-inputs label > span, .input-group-fields label > span:first-child, .member-inputs label > span:first-child { font-size: var(--fs-xs); }

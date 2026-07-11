@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260710handbook2">
+  <link rel="stylesheet" href="styles.css?v=20260711reolap3">
 </head>
 <body>
   <header class="topbar">
@@ -24,6 +24,7 @@
       <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Section</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
       <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false">Pad Section</button>
+      <button class="tool-tab" type="button" data-tool="reo" aria-controls="reoPanel" aria-selected="false">Reo Lapping</button>
       <button class="tool-tab" type="button" data-tool="screw" aria-controls="screwPanel" aria-selected="false">Screw Piles</button>
     </nav>
 
@@ -753,6 +754,158 @@
       </details>
     </section>
 
+    <section id="reoPanel" class="tool-panel" hidden>
+      <div class="tool-heading">
+        <div><p class="kicker">Reinforcement detailing &middot; AS 3600 Section 13</p><h2>Reo Lapping Check</h2></div>
+        <span class="tool-status">For Review &middot; AS 3600:2018 Amd 1 and 2</span>
+      </div>
+
+      <section class="lookup-card reo-card">
+        <div class="input-cluster reo-input-stack">
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Lap classification</b><small>Confirm eligibility and the applicable wide or narrow formula branch.</small></span>
+            <div class="input-group-fields four">
+              <label><span>Member role</span><select id="reoMemberRole"><option value="standard">Standard member / element</option><option value="tension-tie">Tension-tie member</option></select></label>
+              <label><span>Member category</span><select id="reoMemberType"><option value="wide">Wide element / member</option><option value="narrow">Narrow element / member</option></select></label>
+              <label><span>Lap arrangement</span><select id="reoLapType"><option value="contact">Contact lap</option><option value="noncontact">Non-contact lap</option></select></label>
+              <label><span>Development method</span><select id="reoMethod"><option value="basic">Basic &middot; Cl. 13.1.2.2</option><option value="refined">Refined &middot; Cl. 13.1.2.3</option></select></label>
+            </div>
+          </section>
+
+          <section class="input-group input-group-material">
+            <span class="input-group-heading"><b>Bar and concrete</b><small>500N straight deformed bars; concrete strength is limited to 65 MPa in the expression.</small></span>
+            <div class="input-group-fields four">
+              <label class="size-field"><span>Bar designation</span><select id="reoBar"></select></label>
+              <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="reoConcreteStrength" type="number" min="20" max="120" step="1" value="32"><em>MPa</em></span></label>
+              <label><span>Casting position</span><select id="reoCastingPosition"><option value="other">All other bars &middot; k<sub>1</sub> = 1.0</option><option value="top">More than 300 mm cast below &middot; k<sub>1</sub> = 1.3</option></select></label>
+              <label><span>Material condition</span><select id="reoMaterialCondition"><option value="standard">Standard-weight, uncoated</option><option value="epoxy">Epoxy-coated bar &middot; 1.5</option><option value="lightweight">Lightweight concrete &middot; 1.3</option><option value="both">Epoxy + lightweight &middot; 1.95</option></select></label>
+            </div>
+          </section>
+
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Actual splice geometry</b><small>Enter clear dimensions at the lap; c<sub>d</sub> is derived as min(a/2, c).</small></span>
+            <div class="input-group-fields four">
+              <label><span>Concrete cover, c</span><span class="unit"><input id="reoCover" type="number" min="1" step="5" value="40"><em>mm</em></span></label>
+              <label><span>Clear bar spacing, a</span><span class="unit"><input id="reoClearSpacing" type="number" min="1" step="5" value="100"><em>mm</em></span></label>
+              <label id="reoBarGapField"><span>Non-contact gap, s<sub>b</sub></span><span class="unit"><input id="reoBarGap" type="number" min="0" step="5" value="80"><em>mm</em></span></label>
+              <label><span>Derived c<sub>d</sub></span><span class="unit"><input id="reoCd" type="text" value="40.0" readonly><em>mm</em></span></label>
+            </div>
+          </section>
+
+          <section class="input-group input-group-factor">
+            <span class="input-group-heading"><b>Lap factor, k<sub>7</sub></b><small>The reduced branch requires two separate project confirmations.</small></span>
+            <div class="input-group-fields three">
+              <label><span>k<sub>7</sub> basis</span><select id="reoK7Basis"><option value="default">Default &middot; k<sub>7</sub> = 1.25</option><option value="qualified">Qualified reduction &middot; k<sub>7</sub> = 1.0</option></select></label>
+              <label id="reoDoubleAreaField" class="checkbox-field"><span>A<sub>s,provided</sub> &ge; 2A<sub>s,required</sub></span><input id="reoDoubleArea" type="checkbox"></label>
+              <label id="reoHalfSplicedField" class="checkbox-field"><span>No more than 50% spliced at the section</span><input id="reoHalfSpliced" type="checkbox"></label>
+            </div>
+          </section>
+        </div>
+
+        <details id="reoRefinedDetails" class="detail-card reo-refined-card">
+          <summary><span><b>Refined development parameters</b><small>AS 3600 Cl. 13.1.2.3 transverse reinforcement and pressure factors.</small></span><i>+</i></summary>
+          <div class="detail-body">
+            <section>
+              <div class="input-group-fields four">
+                <label><span>Transverse arrangement</span><select id="reoRefinedArrangement"><option value="none">No effective transverse reinforcement</option><option value="circular">Circular column &middot; K = 0.10</option><option value="rectangular">Rectangular column &middot; calculated K</option><option value="beam">Beam &middot; typical K = 0.075</option><option value="slab-fitments">Slab / wall with fitments &middot; K = 0.10</option><option value="slab-no-fitments">Slab / wall without fitments &middot; K = 0.05</option><option value="custom">Custom n<sub>f</sub> / n<sub>bs</sub></option></select></label>
+                <label><span>&Sigma;A<sub>tr,min</sub> basis</span><select id="reoAtrMinBasis"><option value="beam-column">Beam / column &middot; 0.25A<sub>s</sub></option><option value="slab-wall">Slab / wall &middot; zero</option></select></label>
+                <label id="reoNfField"><span>n<sub>f</sub> effective legs</span><input id="reoNf" type="number" min="0" step="1" value="2"></label>
+                <label id="reoNbsField"><span>n<sub>bs</sub> bars developed</span><input id="reoNbs" type="number" min="1" step="1" value="4"></label>
+                <label><span>&Sigma;A<sub>tr</sub> along lap length</span><span class="unit"><input id="reoAtrTotal" type="number" min="0" step="10" value="200"><em>mm&sup2;</em></span></label>
+                <label><span>Transverse compressive pressure, &rho;<sub>p</sub> at ULS</span><span class="unit"><input id="reoPressure" type="number" min="0" step="0.5" value="0"><em>MPa</em></span></label>
+                <label><span>Derived K</span><input id="reoKValue" type="text" value="0.000" readonly></label>
+                <label><span>Derived &lambda; / k<sub>4</sub> / k<sub>5</sub></span><input id="reoCombinedFactor" type="text" value="0.000 / 1.000 / 1.000" readonly></label>
+              </div>
+              <p class="result-note" id="reoRefinedNote">Select the refined method above to apply these parameters.</p>
+            </section>
+          </div>
+        </details>
+
+        <section class="reo-geometry-summary" aria-label="Lap geometry guide">
+          <figure>
+            <svg id="reoLapSketch" viewBox="0 0 420 150" role="img" aria-labelledby="reoSketchTitle reoSketchDesc">
+              <title id="reoSketchTitle">Reinforcing bar lap geometry</title><desc id="reoSketchDesc">Plan-style guide showing cover, clear spacing, bar diameter and lap gap.</desc>
+              <rect x="18" y="18" width="384" height="114" rx="8" class="reo-concrete-shape"/>
+              <line x1="92" y1="72" x2="276" y2="72" class="reo-bar-line"/><line x1="146" y1="94" x2="330" y2="94" class="reo-bar-line reo-second-bar"/>
+              <line x1="18" y1="42" x2="92" y2="42" class="reo-dim-line"/><text x="55" y="35">c</text>
+              <line x1="92" y1="118" x2="146" y2="118" class="reo-dim-line"/><text x="119" y="112">a</text>
+              <line id="reoGapDimension" x1="276" y1="60" x2="330" y2="60" class="reo-dim-line"/><text id="reoGapLabel" x="303" y="53">s<tspan baseline-shift="sub">b</tspan></text>
+              <circle cx="92" cy="72" r="7" class="reo-bar-end"/><text x="82" y="91">d<tspan baseline-shift="sub">b</tspan></text>
+            </svg>
+            <figcaption id="reoGeometryCaption">Wide element &middot; contact lap &middot; c<sub>d</sub> = min(a/2, c).</figcaption>
+          </figure>
+          <div class="reo-derived-strip">
+            <div><span>k<sub>1</sub></span><strong id="reoK1">1.00</strong></div><div><span>k<sub>2</sub></span><strong id="reoK2">1.12</strong></div><div><span>k<sub>3</sub></span><strong id="reoK3">0.78</strong></div><div><span>k<sub>7</sub></span><strong id="reoK7">1.25</strong></div><div><span>Stagger guide</span><strong id="reoStaggerGuide">-</strong><small>Figure 13.2.2 &middot; &ge;0.3L<sub>lap</sub></small></div>
+          </div>
+        </section>
+
+        <section class="capacity-section reo-result-section" aria-live="polite">
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Required tensile lap</h2></div><span id="reoResultStatus">CALCULATED</span></div>
+          <div class="capacity-grid reo-results">
+            <article class="capacity-card reo-primary-result"><span class="capacity-label">Required lap length <b>L<sub>lap,adopted</sub></b></span><strong><output id="reoRequiredLength">-</output><small> mm</small></strong><p>Raw value rounded up to the next 10 mm.</p></article>
+            <article class="capacity-card"><span class="capacity-label">Raw calculated length <b>L<sub>lap</sub></b></span><strong><output id="reoRawLength">-</output><small> mm</small></strong><p id="reoGoverning">Governing branch not calculated.</p></article>
+            <article class="capacity-card"><span class="capacity-label">Lap / bar diameter <b>L<sub>lap,adopted</sub> / d<sub>b</sub></b></span><strong><output id="reoLapRatio">-</output><small> d<sub>b</sub></small></strong><p id="reoDevelopmentLength">Development length used: -</p></article>
+          </div>
+          <p class="result-note" id="reoResultNote">Straight 500N bars in tension only. Confirm actual geometry and complete detailing before issue.</p>
+        </section>
+      </section>
+
+      <details class="detail-card" id="reoProvidedDetails">
+        <summary><span><b>Provided lap comparison</b><small>Length-only comparison; it does not confirm complete detailing compliance.</small></span><i>+</i></summary>
+        <div class="detail-body"><section>
+          <div class="input-group-fields two reo-provided-inputs">
+            <label><span>Provided lap length</span><span class="unit"><input id="reoProvidedLength" type="number" min="0" step="10" value="0"><em>mm</em></span></label>
+            <div class="interaction-result"><span>Provided / required</span><strong id="reoProvidedRatio">&mdash;</strong><b id="reoProvidedStatus">NO LENGTH ENTERED</b></div>
+          </div>
+          <p class="result-note" id="reoProvidedNote">Enter a provided lap length to compare it with the rounded-up requirement.</p>
+        </section></div>
+      </details>
+
+      <details class="detail-card">
+        <summary><span><b>Same-condition lap schedule</b><small>N10 to N40 calculated using the current geometry and assumptions.</small></span><i>+</i></summary>
+        <div class="detail-body"><section><div class="table-scroll"><table class="compact-lookup-table reo-lap-table"><thead><tr><th>Bar</th><th>Area</th><th>L<sub>sy.t</sub></th><th>Required lap</th><th>Ratio</th><th>Governing branch</th></tr></thead><tbody id="reoLapTableRows"></tbody></table></div></section></div>
+      </details>
+
+      <details class="detail-card">
+        <summary><span><b>Calculation details</b><small>Clause-by-clause factor and formula trace.</small></span><i>+</i></summary>
+        <div class="detail-body"><section><div id="reoFormulaSteps" class="formula-list"></div></section></div>
+      </details>
+
+      <details class="detail-card">
+        <summary><span><b>Reo data and product manuals</b><small>Nominal design data kept separate from supplier ordering data.</small></span><i>+</i></summary>
+        <div class="detail-body">
+          <section><h3>500N deformed reinforcing bar data</h3><div class="table-scroll"><table class="compact-lookup-table reo-product-table"><thead><tr><th>Bar</th><th>Nominal d<sub>b</sub></th><th>Nominal area</th><th>Standard mass</th><th>Supplier mass</th><th>Approx. metres / tonne</th><th>Supplier availability</th><th>Lap eligibility</th></tr></thead><tbody id="reoProductTableRows"></tbody></table></div><p class="result-note">Diameter and nominal area are calculation properties. Supplier mass, metres per tonne and availability are ordering references only and do not enter the lap formula.</p></section>
+          <section class="reo-manual-grid">
+            <article><b>InfraBuild Reinforcing Product Guide 2023</b><span>Reinforcing bar, mesh and accessory product information.</span><a href="https://www.infrabuild.com/wp-content/uploads/sites/8/2021/04/InfraBuild-Reinforcing-Product-Guide_2023.pdf" target="_blank" rel="noreferrer">Open product guide</a></article>
+            <article><b>InfraBuild Construction Solutions Product Guide 2021</b><span>Construction reinforcing products and ordering context.</span><a href="https://www.infrabuild.com/wp-content/uploads/sites/8/2021/04/InfraBuild-Construction-Solutions-Product-Guide_MAR2021.pdf" target="_blank" rel="noreferrer">Open solutions guide</a></article>
+            <article><b>InfraBuild Class N reinforcing bar</b><span>Current supplier product-family page; confirm availability and certificate.</span><a href="https://www.infrabuild.com/reinforcing/products/reinforcing-bar/deformed-reinforcing-bar-rebar-class-n/" target="_blank" rel="noreferrer">Open product page</a></article>
+            <article><b>SENSE 600</b><span>Proprietary higher-strength system; excluded from this 500N calculation.</span><a href="https://www.infrabuild.com/sense-solutions/sense600/" target="_blank" rel="noreferrer">Open system page</a></article>
+          </section>
+        </div>
+      </details>
+
+      <details class="source-card">
+        <summary><span><b>Calculation basis and limitations</b><small>AS 3600 Section 13, product-data boundary and excluded checks.</small></span><i>+</i></summary>
+        <div class="source-body">
+          <div class="source-notes">
+            <p><b>Primary basis</b> - AS 3600:2018 incorporating Amendments 1 and 2, Cl. 13.1.2.2, Cl. 13.1.2.3, Cl. 13.2.1 and Cl. 13.2.2. The licensed current Standard governs.</p>
+            <p><b>Calculation scope</b> - straight deformed 500N bars, N10 to N40, in tension. Wide/narrow and contact/non-contact branches are supported.</p>
+            <p><b>Lap lower limit</b> - L<sub>sy.t</sub> used in the lap expression is calculated without first imposing the Cl. 13.1.2.2 basic-development lower limit. The final lap is separately compared with 0.058f<sub>sy</sub>k<sub>1</sub>d<sub>b</sub> under Cl. 13.2.2.</p>
+            <p><b>Practical rounding</b> - the raw result is rounded up to the next 10 mm for presentation. This is not a separate AS 3600 equation.</p>
+            <p><b>Staggered splices</b> - Figure 13.2.2 illustrates adjacent 50% staggered splice zones separated by at least 0.3L<sub>sy.t.lap</sub>. The guide is shown only after the no-more-than-50%-spliced condition is confirmed; otherwise it reads `N/A`. Its displayed length is rounded up to the next 10 mm and does not by itself confirm the percentage spliced at every section.</p>
+            <p><b>Product data</b> - AS/NZS 4671 nominal diameter and area support calculation. InfraBuild / OneSteel mass and metres-per-tonne data are supplier ordering references only. Historical AS 3600:2009 lap tables are not calculation inputs.</p>
+          </div>
+          <div class="source-notes">
+            <p><b>Not permitted in this calculation</b> - bars larger than 40 mm and tension-tie lapped splices. Tension-tie splices require welded or mechanical means under AS 3600 Cl. 13.2.1.</p>
+            <p><b>Excluded</b> - compression laps, mesh, bundled bars, hooks, cogs, headed bars, welded or mechanical splice design, proprietary high-strength systems, seismic plastic-hinge detailing and bridge-specific requirements.</p>
+            <p><b>Project checks</b> - complete cover and spacing compliance, anchorage zones, transverse splitting resistance, congestion, construction tolerance, crack control, member capacity, drawing coordination and current project specifications remain the engineer's responsibility.</p>
+            <p><b>Supplier status</b> - the current InfraBuild Class N page lists N10 to N40 and identifies N40 as available on request. N50 remains visible only as a 2021-guide reference and is not eligible for this lap calculation. The current supplier page still cites an older AS/NZS 4671 edition; verify AS/NZS 4671:2019 conformity and the project certificate independently.</p>
+            <p><b>Issue status</b> - For Review. Use engineering judgement and verify the calculation against the licensed Standard before issue for design.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
     <section id="screwPanel" class="tool-panel" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Screw piles &middot; selector</p><h2>Screw Piles Selector</h2></div>
@@ -945,7 +1098,8 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260710handbook2"></script>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.6.0 local</b></footer>
+  <script src="reo-calculation.js?v=20260711reolap3"></script>
+  <script src="app.js?v=20260711reolap3"></script>
 </body>
 </html>

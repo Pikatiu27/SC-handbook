@@ -1648,10 +1648,22 @@ const screwInputIds = [
   "screwLayout", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY"
 ];
 
+const reoBars = globalThis.reoLapping.bars;
+const reoBarByDesignation = globalThis.reoLapping.barByDesignation;
+const reoLapCalculation = globalThis.reoLapping.calculateLap;
+const reoProvidedComparison = globalThis.reoLapping.compareProvided;
+
+const reoInputIds = [
+  "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoConcreteStrength",
+  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap", "reoK7Basis",
+  "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoNf", "reoNbs",
+  "reoAtrTotal", "reoPressure", "reoProvidedLength"
+];
+
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
-const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw"];
+const toolNames = ["bolt", "member", "beam", "weld", "concrete", "reo", "screw"];
 let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";
@@ -1659,6 +1671,7 @@ const manualInputIds = [
   "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
+  "reoConcreteStrength", "reoCover", "reoClearSpacing", "reoBarGap", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoProvidedLength",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
@@ -1672,6 +1685,7 @@ const referenceInputIds = [
   "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteComposite", "concreteSeparatePad", "concreteShearReo", "concreteShearBar",
+  "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoCastingPosition", "reoMaterialCondition", "reoK7Basis", "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
   "beamSection", "beamGrade",
   "screwManufacturer", "screwSeries", "screwApplication", "screwCapacitySource", "screwSoil", "screwExposure", "screwInstallEvidence", "screwLateralSensitivity", "screwDemandBasis", "screwProjectBasis", "screwProjectSource", "screwLayout",
@@ -4512,6 +4526,180 @@ function calculateScrew() {
   calculateScrewDemand(comparisonValues);
 }
 
+function readReoOptions() {
+  return {
+    memberRole: $("reoMemberRole").value,
+    memberType: $("reoMemberType").value,
+    lapType: $("reoLapType").value,
+    method: $("reoMethod").value,
+    fc: numericValue($("reoConcreteStrength").value),
+    castingPosition: $("reoCastingPosition").value,
+    materialCondition: $("reoMaterialCondition").value,
+    cover: numericValue($("reoCover").value),
+    clearSpacing: numericValue($("reoClearSpacing").value),
+    barGap: numericValue($("reoBarGap").value),
+    k7Basis: $("reoK7Basis").value,
+    doubleArea: $("reoDoubleArea").checked,
+    halfSpliced: $("reoHalfSpliced").checked,
+    refinedArrangement: $("reoRefinedArrangement").value,
+    atrMinBasis: $("reoAtrMinBasis").value,
+    nf: numericValue($("reoNf").value),
+    nbs: numericValue($("reoNbs").value),
+    atrTotal: numericValue($("reoAtrTotal").value),
+    pressure: numericValue($("reoPressure").value)
+  };
+}
+
+function populateReoData() {
+  $("reoBar").innerHTML = reoBars.map(bar => `<option value="${bar.designation}">${bar.designation}${bar.diameter > 40 ? " · reference only" : ""}</option>`).join("");
+  $("reoBar").value = "N20";
+  $("reoProductTableRows").innerHTML = reoBars.map(bar => `<tr class="${bar.diameter > 40 ? "is-excluded" : ""}"><td>${bar.designation}</td><td>${bar.diameter} mm</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${bar.standardMass.toFixed(bar.standardMass < 1 ? 3 : 2)} kg/m</td><td>${bar.supplierMass.toFixed(2)} kg/m</td><td>${bar.metresPerTonne.toLocaleString("en-AU")} m/t</td><td>${bar.availability}</td><td>${bar.diameter > 40 ? "Not permitted for a lapped splice" : "Within calculator scope"}</td></tr>`).join("");
+}
+
+function updateReoConditionalFields(options) {
+  const showGap = options.memberType === "narrow" && options.lapType === "noncontact";
+  $("reoBarGapField").hidden = !showGap;
+  const showK7Confirmations = options.k7Basis === "qualified";
+  $("reoDoubleAreaField").hidden = !showK7Confirmations;
+  $("reoHalfSplicedField").hidden = !showK7Confirmations;
+  $("reoRefinedDetails").hidden = options.method !== "refined";
+  if (options.method === "refined") $("reoRefinedDetails").open = true;
+  const countBasedK = ["rectangular", "custom"].includes(options.refinedArrangement);
+  $("reoNfField").hidden = !countBasedK;
+  $("reoNbsField").hidden = !countBasedK;
+  $("reoNf").disabled = !countBasedK;
+  $("reoNbs").disabled = !countBasedK;
+  const beamColumnArrangement = ["circular", "rectangular", "beam"].includes(options.refinedArrangement);
+  const slabWallArrangement = ["slab-fitments", "slab-no-fitments"].includes(options.refinedArrangement);
+  if (beamColumnArrangement) $("reoAtrMinBasis").value = "beam-column";
+  if (slabWallArrangement) $("reoAtrMinBasis").value = "slab-wall";
+  $("reoAtrMinBasis").disabled = beamColumnArrangement || slabWallArrangement;
+}
+
+function updateReoSketch(options, result) {
+  const nonContact = options.lapType === "noncontact";
+  const secondLine = document.querySelector("#reoLapSketch .reo-second-bar");
+  secondLine.setAttribute("y1", nonContact ? "94" : "76");
+  secondLine.setAttribute("y2", nonContact ? "94" : "76");
+  $("reoGapDimension").style.visibility = nonContact ? "visible" : "hidden";
+  $("reoGapLabel").style.visibility = nonContact ? "visible" : "hidden";
+  const category = options.memberType === "wide" ? "Wide element / member" : "Narrow element / member";
+  const arrangement = nonContact ? "non-contact lap" : "contact lap";
+  $("reoGeometryCaption").innerHTML = `${category} &middot; ${arrangement} &middot; c<sub>d</sub> = min(a/2, c)${result?.eligible ? ` = ${result.cd.toFixed(1)} mm` : ""}.`;
+}
+
+function updateReoSchedule(options, selectedDesignation) {
+  $("reoLapTableRows").innerHTML = reoBars.filter(bar => bar.diameter <= 40).map(bar => {
+    const result = reoLapCalculation(bar, options);
+    if (!result.eligible) return `<tr class="${bar.designation === selectedDesignation ? "is-selected" : ""}"><td>${bar.designation}</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Not eligible for current inputs</td></tr>`;
+    return `<tr class="${bar.designation === selectedDesignation ? "is-selected" : ""}"><td>${bar.designation}</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${Math.ceil(result.developmentLength)} mm</td><td><b>${result.adoptedLength} mm</b></td><td>${result.ratio.toFixed(1)}d<sub>b</sub></td><td>${result.governing.label}</td></tr>`;
+  }).join("");
+}
+
+function updateReoProvided(result) {
+  const provided = numericValue($("reoProvidedLength").value);
+  const comparison = reoProvidedComparison(result, provided);
+  const status = $("reoProvidedStatus");
+  if (!comparison.available) {
+    $("reoProvidedRatio").textContent = "—";
+    status.textContent = "NOT AVAILABLE";
+    status.className = "check";
+    $("reoProvidedNote").textContent = "A provided-length comparison is unavailable because the selected lap is not eligible.";
+    return;
+  }
+  if (comparison.ratio === null) {
+    $("reoProvidedRatio").textContent = "—";
+    status.textContent = "NO LENGTH ENTERED";
+    status.className = "";
+    $("reoProvidedNote").textContent = "Enter a provided lap length to compare it with the rounded-up requirement.";
+    return;
+  }
+  $("reoProvidedRatio").textContent = `${comparison.ratio.toFixed(2)} · ${provided.toFixed(0)} / ${result.adoptedLength} mm`;
+  status.textContent = comparison.status;
+  status.className = comparison.meets ? "pass" : "fail";
+  $("reoProvidedNote").textContent = comparison.meets
+    ? "The provided length meets the rounded-up length requirement only; confirm all other detailing requirements separately."
+    : `Increase the provided lap by at least ${Math.ceil(comparison.shortfall)} mm, then confirm all other detailing requirements.`;
+}
+
+function updateReoFormulaSteps(result, options) {
+  if (!result.eligible) {
+    $("reoFormulaSteps").innerHTML = `<div><b>Eligibility</b><code>${result.issues.map(safeText).join(" ")}</code></div>`;
+    return;
+  }
+  const refinement = options.method === "refined"
+    ? `<div><b>Refined factors &middot; Cl. 13.1.2.3</b><code>K = ${result.K.toFixed(3)}; &Sigma;A<sub>tr,min</sub> = ${result.atrMin.toFixed(1)} mm&sup2;; &lambda; = max[(${Math.max(0, options.atrTotal).toFixed(1)} - ${result.atrMin.toFixed(1)}) / ${result.bar.area.toFixed(1)}, 0] = ${result.lambda.toFixed(3)}; k<sub>4</sub> = ${result.k4.toFixed(3)}; k<sub>5</sub> = ${result.k5.toFixed(3)}.</code></div><div><b>Combined reduction limit</b><code>Requested k<sub>4</sub>k<sub>5</sub> = ${result.requestedRefinedFactor.toFixed(3)}; adopted refinement factor = ${result.refinedFactor.toFixed(3)} so k<sub>3</sub> &times; adopted factor = ${(result.k3 * result.refinedFactor).toFixed(3)} &ge; 0.700.</code></div>`
+    : `<div><b>Development method</b><code>Basic method selected; k<sub>4</sub> = k<sub>5</sub> = 1.000.</code></div>`;
+  const narrow = options.memberType === "narrow"
+    ? `<div><b>Narrow-member candidate</b><code>L<sub>sy.t</sub> + 1.5s<sub>b</sub> = ${result.developmentLength.toFixed(1)} + 1.5 &times; ${result.gapUsed.toFixed(1)} = ${result.narrowCandidate.toFixed(1)} mm${result.gapEntered <= 3 * result.bar.diameter ? `; entered s<sub>b</sub> = ${result.gapEntered.toFixed(1)} mm &le; 3d<sub>b</sub>, therefore s<sub>b</sub> = 0 for this candidate` : ""}.</code></div>`
+    : "";
+  const stagger = result.staggerApplicable
+    ? `<div><b>Staggered-splice guide &middot; Fig. 13.2.2</b><code>0.3L<sub>sy.t.lap</sub> = 0.3 &times; ${result.rawLength.toFixed(1)} = ${result.staggerGuideRaw.toFixed(1)} mm; displayed practical guide = ${result.staggerGuideAdopted} mm. Confirm the actual arrangement limits splices to no more than 50% at every section.</code></div>`
+    : `<div><b>Staggered-splice guide &middot; Fig. 13.2.2</b><code>Not applicable until the no-more-than-50%-spliced condition is explicitly confirmed.</code></div>`;
+  $("reoFormulaSteps").innerHTML = `
+    <div><b>Inputs and c<sub>d</sub></b><code>d<sub>b</sub> = ${result.bar.diameter} mm; A<sub>s</sub> = ${result.bar.area.toFixed(1)} mm&sup2;; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa; c<sub>d</sub> = min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)}) = ${result.cd.toFixed(1)} mm.</code></div>
+    <div><b>Basic factors &middot; Cl. 13.1.2.2</b><code>k<sub>1</sub> = ${result.k1.toFixed(2)}; k<sub>2</sub> = (132 - ${result.bar.diameter}) / 100 = ${result.k2.toFixed(3)}; k<sub>3</sub> = clamp[1 - 0.15(${result.cd.toFixed(1)} - ${result.bar.diameter})/${result.bar.diameter}, 0.7, 1.0] = ${result.k3.toFixed(3)}.</code></div>
+    <div><b>Basic development expression</b><code>L<sub>sy.tb,formula</sub> = 0.5k<sub>1</sub>k<sub>3</sub>f<sub>sy</sub>d<sub>b</sub> / [k<sub>2</sub>&radic;f'<sub>c</sub>] = ${result.basicFormula.toFixed(1)} mm; material-condition multiplier = ${result.conditionFactor.toFixed(2)}; modified value = ${result.basicModified.toFixed(1)} mm.</code></div>
+    ${refinement}
+    <div><b>Development length used</b><code>L<sub>sy.t</sub> = ${result.developmentLength.toFixed(1)} mm. The Cl. 13.1.2.2 basic lower limit is not imposed before the Cl. 13.2.2 lap calculation.</code></div>
+    <div><b>Lap candidates &middot; Cl. 13.2.2</b><code>k<sub>7</sub>L<sub>sy.t</sub> = ${result.k7.toFixed(2)} &times; ${result.developmentLength.toFixed(1)} = ${result.k7Candidate.toFixed(1)} mm; lap lower limit = 0.058 &times; 500 &times; ${result.k1.toFixed(2)} &times; ${result.bar.diameter} = ${result.lapLowerLimit.toFixed(1)} mm.</code></div>
+    ${narrow}
+    <div><b>Governing result</b><code>${result.governing.label} governs at ${result.rawLength.toFixed(1)} mm; adopted length = ceil(${result.rawLength.toFixed(1)} / 10) &times; 10 = ${result.adoptedLength} mm = ${result.ratio.toFixed(1)}d<sub>b</sub>. Rounding is a presentation convention.</code></div>
+    ${stagger}`;
+}
+
+function calculateReo() {
+  let options = readReoOptions();
+  const selectedBar = reoBarByDesignation($("reoBar").value);
+  updateReoConditionalFields(options);
+  options = readReoOptions();
+  const result = reoLapCalculation(selectedBar, options);
+  updateReoSketch(options, result);
+  updateReoSchedule(options, selectedBar?.designation || $("reoBar").value);
+  updateReoProvided(result);
+  updateReoFormulaSteps(result, options);
+
+  if (!result.eligible) {
+    $("reoCd").value = "—";
+    ["reoK1", "reoK2", "reoK3", "reoK7"].forEach(id => $(id).textContent = "—");
+    $("reoKValue").value = "—";
+    $("reoCombinedFactor").value = "—";
+    $("reoStaggerGuide").textContent = "—";
+    $("reoRequiredLength").textContent = "—";
+    $("reoRawLength").textContent = "—";
+    $("reoLapRatio").textContent = "—";
+    $("reoGoverning").textContent = "No lap result is available for the selected case.";
+    $("reoDevelopmentLength").textContent = "Development length used: —";
+    $("reoResultStatus").textContent = "NOT ELIGIBLE";
+    $("reoResultNote").textContent = result.issues.join(" ");
+    $("reoResultNote").className = "result-note is-ineligible";
+    $("reoRefinedNote").textContent = "Refined factors are unavailable for an ineligible case.";
+    return;
+  }
+
+  $("reoCd").value = result.cd.toFixed(1);
+  $("reoK1").textContent = result.k1.toFixed(2);
+  $("reoK2").textContent = result.k2.toFixed(3);
+  $("reoK3").textContent = result.k3.toFixed(3);
+  $("reoK7").textContent = result.k7.toFixed(2);
+  $("reoStaggerGuide").textContent = result.staggerApplicable ? `${result.staggerGuideAdopted} mm` : "N/A";
+  $("reoKValue").value = result.K.toFixed(3);
+  $("reoCombinedFactor").value = `${result.lambda.toFixed(3)} / ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}`;
+  $("reoRequiredLength").textContent = result.adoptedLength.toFixed(0);
+  $("reoRawLength").textContent = result.rawLength.toFixed(1);
+  $("reoLapRatio").textContent = result.ratio.toFixed(1);
+  $("reoGoverning").textContent = result.governing.label;
+  $("reoDevelopmentLength").textContent = `Development length used: ${result.developmentLength.toFixed(1)} mm`;
+  $("reoResultStatus").textContent = result.notices.length ? "CALCULATED · REVIEW" : "CALCULATED";
+  $("reoResultNote").textContent = result.notices.length
+    ? result.notices.join(" ")
+    : "Straight 500N bars in tension only. Confirm actual geometry and complete detailing before issue.";
+  $("reoResultNote").className = result.notices.length ? "result-note is-warning" : "result-note";
+  $("reoRefinedNote").textContent = options.method === "refined"
+    ? `K = ${result.K.toFixed(3)}; λ = ${result.lambda.toFixed(3)}; k4 = ${result.k4.toFixed(3)}; k5 = ${result.k5.toFixed(3)}${result.combinedFactorLimited ? "; combined reduction limited by k3k4k5 ≥ 0.7" : ""}.`
+    : "Select the refined method above to apply these parameters.";
+}
+
 function setTool(tool, updateHash = true) {
   const validTool = toolNames.includes(tool);
   const selectedTool = validTool ? tool : "bolt";
@@ -4530,6 +4718,7 @@ function setTool(tool, updateHash = true) {
     history.replaceState(null, "", `#${selectedTool}`);
   }
   if (selectedTool === "concrete") calculateConcrete();
+  if (selectedTool === "reo") calculateReo();
   if (selectedTool === "screw") {
     calculateScrew();
     window.requestAnimationFrame(calculateScrew);
@@ -4592,6 +4781,7 @@ function initialise() {
   $("weldParentGrade").value = "Grade 250 plate";
   $("shearPlane").value = "N";
   populateConcreteBarOptions();
+  populateReoData();
   boltInputIds
     .filter(id => id !== "boltCount" && id !== "edgeBoltCount")
     .forEach(id => $(id).addEventListener("input", calculateBolt));
@@ -4639,6 +4829,7 @@ function initialise() {
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {
     if (!$("concretePanel").hidden) calculateConcrete();
+    if (!$("reoPanel").hidden) calculateReo();
     if (!$("screwPanel").hidden) calculateScrew();
   });
   document.querySelector(".concrete-layout-details").addEventListener("toggle", event => {
@@ -4670,6 +4861,11 @@ function initialise() {
   $("screwDemandDetails").addEventListener("toggle", event => {
     if (event.target.open) calculateScrew();
   });
+  reoInputIds.forEach(id => {
+    const element = $(id);
+    element.addEventListener("input", calculateReo);
+    if (element.tagName === "SELECT") element.addEventListener("change", calculateReo);
+  });
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
   $("memberSection").addEventListener("change", populateMemberGrades);
   $("memberGrade").addEventListener("change", () => {
@@ -4699,6 +4895,7 @@ function initialise() {
   calculateUBolt();
   calculateWeld();
   calculateConcrete();
+  calculateReo();
   calculateScrew();
   setBoltMode(initialBoltMode());
   setTool(location.hash.slice(1) || "bolt", false);

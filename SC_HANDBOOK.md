@@ -793,6 +793,8 @@ Current core tabs:
 - `Beam Section`
 - `Weld Capacity`
 - `Pad Section`
+- `Reo Lapping`
+- `Screw Piles`
 
 Future tabs may include:
 
@@ -1569,7 +1571,64 @@ Use the AS 2159 steel-pile exposure classes `Non-aggressive`, `Mild`, `Moderate`
 
 Validation must include equilibrium checks for axial force, biaxial moment, direct horizontal action and torsion; perimeter and full-grid pile counts; compression/tension sign convention; missing direction-specific values; reference-only comparison; project source missing; project/action basis mismatch; and a valid same-basis project comparison.
 
-### 15.16 Web Local Update and Deployment Workflow
+### 15.16 Reo Lapping Check Web Tab Rules
+
+The Reo Lapping Check is a tensile lap-length detailing aid for straight 500N deformed reinforcing bars. Its governing design basis is AS 3600:2018 incorporating Amendments 1 and 2, Section 13. AS 4100 bolt, weld and structural-steel provisions must not be mixed into this tab.
+
+The supported calculation scope is:
+
+- N10 to N40 straight deformed 500N bars in tension;
+- wide and narrow elements or members;
+- contact and non-contact laps;
+- the basic development-length method in AS 3600 Cl. 13.1.2.2;
+- the optional refined method in AS 3600 Cl. 13.1.2.3;
+- the tensile lap equations and conditions in AS 3600 Cl. 13.2.1 and Cl. 13.2.2;
+- epoxy-coated and lightweight-concrete multipliers where deliberately selected;
+- optional comparison of a provided lap length and a same-condition N10 to N40 schedule.
+
+Treat the following as required project inputs: member category, lap arrangement, bar size, concrete strength, casting position, coating/concrete condition, actual cover, actual clear spacing and, for a narrow non-contact lap, bar-to-bar gap `sb`. Do not replace actual geometry with a generic table assumption. Show `cd = min(a/2, c)` as a derived value for the supported lap arrangement. For concrete strengths above 65 MPa, use 65 MPa in the development-length expression and show a review notice.
+
+For AS 3600 Cl. 13.1.2.2, calculate:
+
+- `Lsy.tb,formula = 0.5 k1 k3 fsy db / (k2 sqrt(f'c))`;
+- `k1 = 1.3` where more than 300 mm of fresh concrete is cast below the bar, otherwise `k1 = 1.0`;
+- `k2 = (132 - db) / 100`;
+- `k3 = 1 - 0.15(cd - db)/db`, limited to `0.7 <= k3 <= 1.0`;
+- the epoxy multiplier `1.5` and lightweight-concrete multiplier `1.3` where selected.
+
+When calculating a lap to AS 3600 Cl. 13.2.2, do not first force `Lsy.t` to the Cl. 13.1.2.2 basic-development lower limit. Calculate the applicable basic or refined `Lsy.t`, including selected material multipliers, then compare the lap candidates against the separate lap lower limit `0.058 fsy k1 db`.
+
+For the optional refined method, calculate and display the derived factors rather than presenting them as unexplained user overrides:
+
+- `Lsy.t = k4 k5 Lsy.tb`;
+- `k4 = 1 - K lambda`, limited to `0.7 <= k4 <= 1.0`;
+- `k5 = 1 - 0.04 rho_p`, limited to `0.7 <= k5 <= 1.0`;
+- `K = min[0.05(1 + nf/nbs), 0.10]`, or the applicable typical arrangement value;
+- `lambda = max[(sum Atr - sum Atr.min)/As, 0]`;
+- `sum Atr.min = 0.25As` for beams and columns and zero for slabs and walls;
+- enforce `k3 k4 k5 >= 0.7`.
+
+Do not credit transverse reinforcement where it is not between the longitudinal bars and the tensile face; use `K = 0` for that branch. The arrangement shortcut must remain transparent and must expose the applicable `nf`, `nbs`, transverse-reinforcement area and minimum-area basis in calculation details.
+
+For AS 3600 Cl. 13.2.2:
+
+- wide elements use `Llap = max(k7 Lsy.t, 0.058 fsy k1 db)`;
+- narrow elements also compare `Lsy.t + 1.5sb`;
+- where `sb <= 3db`, the supported narrow-member branch may take `sb = 0` in that candidate and must state that treatment;
+- use `k7 = 1.25` by default;
+- permit `k7 = 1.0` only when the user separately confirms both `As provided >= 2 As required` and no more than 50% of the reinforcement is spliced at the section.
+
+Where no more than 50% is spliced, also display the Figure 13.2.2 stagger guide `>= 0.3 Lsy.t.lap`. Base the guide on the raw governing lap length and round it up to the next 10 mm only as a clearly labelled presentation convention. State that this guide does not independently prove that no more than half the reinforcement is spliced at every section.
+
+The main result must show the required rounded-up lap length, the raw calculated value, the length-to-diameter ratio, the governing formula candidate, and the development length used. Round up to the next 10 mm as a presentation convention and state that this rounding is not an additional AS 3600 equation. A provided-length comparison may report `MEETS LENGTH` or `SHORT`, but must state that it does not establish complete member or detailing compliance.
+
+Keep these exclusions visible in the basis panel: bars larger than 40 mm; tension-tie lap splices; compression laps; mesh; bundled bars; hooks, cogs and headed bars; welded or mechanical splices; SENSE 600 and other proprietary high-strength systems; seismic plastic-hinge detailing; bridge-specific requirements; and complete cover, spacing, crack-control, anchorage, member-capacity or drawing review. AS 3600 Cl. 13.2.1 requires tension-tie splices to be welded or mechanical, and does not permit lapped splices for bars larger than 40 mm.
+
+Product and ordering data must remain separate from the calculation basis. Use AS/NZS 4671 nominal diameter and area for calculation. InfraBuild / OneSteel mass, metres per tonne and product availability may be displayed as product-reference data with source and edition. The current InfraBuild Class N page lists N10 to N40 and identifies N40 as available on request; if N50 is retained from the 2021 guide, label it as an older-guide availability reference and keep it ineligible for a lapped splice. Historical OneSteel AS 3600:2009 lap tables may be linked for context but must never be embedded as current calculation data. Where a current supplier page cites an older material-standard edition, retain AS/NZS 4671:2019 and project certification as the design-data control.
+
+Use a deterministic inline SVG geometry guide showing cover `c`, clear spacing `a`, bar diameter `db`, and non-contact gap `sb` where applicable. The SVG is explanatory only. Validation must cover wide and narrow branches, contact and non-contact laps, both `k7` branches, top bars, `k3` limits, refined `k4`/`k5` limits, the combined `k3 k4 k5` limit, coating/concrete multipliers, the lap lower limit, stagger guide, N40 eligibility, N50 rejection, invalid geometry, and provided-length comparison. Keep the pure calculation logic in `reo-calculation.js` and run `node tests/reo-lapping.test.js` before release.
+
+### 15.17 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
