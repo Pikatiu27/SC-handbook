@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260711rockanchor1">
+  <link rel="stylesheet" href="styles.css?v=20260711rockanchor2">
 </head>
 <body>
   <header class="topbar">
@@ -24,16 +24,22 @@
       <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false">Beam Section</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
       <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false">Pad Section</button>
+      <button class="tool-tab" type="button" data-tool="screw" aria-controls="screwPanel" aria-selected="false">Screw Piles</button>
       <a class="tool-link" href="rock-anchor-selector/">Rock Anchor</a>
     </nav>
 
     <section id="boltPanel" class="tool-panel active">
       <div class="tool-heading">
-        <div><p class="kicker">Bolted connections · AS 4100 Cl. 9.2</p><h2>Bolt Capacity</h2></div>
-        <span class="tool-status">For Review · AS 4100:2020</span>
+        <div><p id="boltToolKicker" class="kicker">Bolted connections · AS 4100 Cl. 9.2</p><h2 id="boltToolTitle">Bolt Capacity</h2></div>
+        <span id="boltToolStatus" class="tool-status">For Review · AS 4100:2020</span>
       </div>
 
-      <section class="lookup-card">
+      <div class="branch-tabs bolt-mode-tabs" role="tablist" aria-label="Bolt tab mode">
+        <button id="boltModeStandard" class="branch-tab active" type="button" role="tab" aria-selected="true" data-bolt-mode="standard">Standard bolt capacity</button>
+        <button id="boltModeUBolt" class="branch-tab" type="button" role="tab" aria-selected="false" data-bolt-mode="ubolt">U-bolt product lookup</button>
+      </div>
+
+      <section class="lookup-card" data-bolt-mode-panel="standard">
         <div class="input-cluster">
           <section class="input-group input-group-section" aria-label="Bolt reference selection">
             <span class="input-group-heading"><b>Section / fastener selection</b><small>Lookup values from bolt size, category and selected shear-plane condition.</small></span>
@@ -64,7 +70,7 @@
       </section>
 
       <details class="detail-card major-detail" id="connectionDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Bolt group, shear planes, ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
+        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed connection checks</b></span><small>Bolt group, shear planes, ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
         <div class="detail-body">
           <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="1"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>default 1.0</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result"><span>Design shear capacity of bolt group</span><strong id="groupShearCapacity">133.4 kN</strong><small id="groupShearBasis">1 bolt × 1 N plane per bolt = 1 total shear plane.</small></div></section>
           <section>
@@ -96,47 +102,95 @@
       </details>
 
       <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>Equations, AS 4100 references and data boundaries</small></span><i>+</i></summary><div class="source-body"><div id="formulaSteps" class="formula-list"></div><div class="source-notes"><p><b>Issue status</b> · For Review. Clause pages for AS 4100 bolt shear, tension, combined shear-tension and bearing checks have been visually checked against the local reference PDF; product table values still require project-specific source-register traceability before `Checked` release.</p><p><b>Primary basis</b> · AS 4100 Table 3.4; AS 4100 Cl. 9.1.8, AS 4100 Cl. 9.2.2.1, AS 4100 Cl. 9.2.2.2, AS 4100 Cl. 9.2.2.3, AS 4100 Cl. 9.2.2.4, AS 4100 Cl. 9.2.3.1, AS 4100 Cl. 9.2.3.3 and AS 4100 Cl. 9.5.2.</p><p><b>Material standards</b> · Connected ply strengths should be verified against AS/NZS 3678 or AS/NZS 3679.1 as applicable. The default f<sub>up</sub> = 410 MPa is for AS/NZS 3678 Grade 250 plate from ASI Simple Connections 2020 Table 2.15; use 440 MPa only for a verified AS/NZS 3679.1 Grade 300 flat bar/section or equivalent source. Fastener property class and structural bolt assemblies should be verified against AS 1110 and AS/NZS 1252 as applicable.</p><p><b>Symbols</b> · d<sub>f</sub> is the nominal bolt diameter; d<sub>h</sub> is the actual hole diameter; e is the hole-centre edge distance used for AS 4100 Table 9.5.2; A<sub>o</sub> is the nominal plain-shank area; A<sub>c</sub> is the minor diameter area; A<sub>s</sub> is the tensile stress area.</p><p><b>N/X and category</b> · `/S`, `/TB` and `/TF` identify installation and connection category. N or X identifies the shear plane condition and is selected separately; TB is not inherently N or X.</p><p><b>Edge notation</b> · The minimum edge-distance check uses e, measured from hole centre to ply edge. The edge-limited bearing check uses a<sub>e</sub> for AS 4100 Cl. 9.2.2.4(2), calculated here as e/cosθ - d<sub>h</sub>/2 + d<sub>f</sub>/2 for a standard hole at a physical ply edge, where θ is measured from the edge normal to the force direction. Use Bolts on edge line for bolts on the loaded edge or critical line only. Where the critical edge is an adjacent bolt hole, determine a<sub>e</sub> from the actual hole layout rather than total bolt count.</p><p><b>Demand checks</b> · Shear-only demand checks AS 4100 Cl. 9.2.2.1 for the bolt and AS 4100 Cl. 9.2.2.4 for the connected ply. Tension-only demand checks AS 4100 Cl. 9.2.2.2. Combined shear and tension checks AS 4100 Cl. 9.2.2.3 for the bolt, while the connected-ply bearing / edge tear-out check remains separate.</p><p>Minimum edge distance assumes a standard hole measured from hole centre to ply edge. Enter the actual hole diameter used to derive a<sub>e</sub>. Non-standard holes require the measurement convention in AS 4100 Cl. 9.5.2(b).</p><p>Topology-dependent checks such as prying action, block shear, coped-beam tearing and gusset tear-out are not calculated by this quick-reference tool and must be checked from the actual connection geometry. The entered k<sub>r</sub> is applied to AS 4100 Cl. 9.2.2.1 bolt shear capacity, but the tool does not auto-derive k<sub>r</sub> from bolted lap connection geometry.</p><p>AS 4100 Table 15.2.2.2 gives minimum bolt tensions only for M16 to M36. Accordingly, M10 and M12 are available only in /S categories in this tool.</p><p>A<sub>s</sub> and A<sub>c</sub> use metric coarse-thread data. Verify against the applicable fastener and thread Standards before issue for design.</p></div></div></details>
+      <section class="lookup-card ubolt-card" data-bolt-mode-panel="ubolt" hidden>
+        <div class="input-cluster">
+          <section class="input-group input-group-section" aria-label="U-bolt project requirement">
+            <span class="input-group-heading"><b>Project requirement</b><small>Define the application, rod size and member fit.</small></span>
+            <div class="input-group-fields three">
+              <label><span>Application</span><select id="uBoltApplication" aria-label="U-bolt application"></select></label>
+              <label><span>Rod size</span><select id="uBoltRodSize" aria-label="U-bolt rod size"></select></label>
+              <label><span>Fit</span><select id="uBoltFitFilter" aria-label="U-bolt fit"></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-section" aria-label="U-bolt product source">
+            <span class="input-group-heading"><b id="uBoltProductGroupTitle">Product source</b><small id="uBoltProductGroupNote">Select the finish, brand or manufacturer, and catalogue entry.</small></span>
+            <div class="input-group-fields three">
+              <label><span>Finish</span><select id="uBoltFinish" aria-label="U-bolt finish"></select></label>
+              <label><span>Brand / manufacturer</span><select id="uBoltManufacturer" aria-label="U-bolt brand or manufacturer"></select></label>
+              <label class="size-field"><span id="uBoltProductFieldLabel">Catalogue entry</span><select id="uBoltProduct" aria-label="U-bolt catalogue entry"></select></label>
+            </div>
+          </section>
+        </div>
+
+        <div class="bolt-summary ubolt-summary">
+          <div><span id="uBoltSelectionTypeLabel">Selected catalogue entry</span><strong id="uBoltSelectionTitle">U-bolt product lookup</strong><small id="uBoltSelectionNote">Select an entry to review its published data.</small></div>
+          <dl><div><dt>Product reference</dt><dd id="uBoltCode">-</dd></div><div><dt>Rod size</dt><dd id="uBoltThread">-</dd></div><div><dt>Member fit</dt><dd id="uBoltFit">-</dd></div><div><dt>Finish</dt><dd id="uBoltMaterial">-</dd></div><div><dt>Supplier</dt><dd id="uBoltSupplier">-</dd></div></dl>
+        </div>
+
+        <details class="ubolt-specification">
+          <summary><span><b>Published dimensions and material</b><small>Manufacturer-stated ordering information</small></span><i>+</i></summary>
+          <div class="ubolt-specification-grid"><div><span>Published fit / geometry</span><strong id="uBoltPublishedGeometry">-</strong></div><div><span>Material / coating</span><strong id="uBoltPublishedMaterial">-</strong></div></div>
+        </details>
+
+        <section class="capacity-section" aria-live="polite">
+          <div class="section-heading"><div><span class="section-tag">PRODUCT DATA</span><h2>Manufacturer-published data</h2></div><a id="uBoltSourceStatus" class="ubolt-source-state" href="#" target="_blank" rel="noreferrer">Online source only</a></div>
+          <div class="capacity-grid ubolt-results ubolt-results-single">
+            <article class="capacity-card selected-shear"><span id="uBoltPublishedLoadLabel">Rated load</span><strong><output id="uBoltPublishedCapacity">No rated load published</output></strong><p id="uBoltCapacityBasis">No manufacturer-rated load is published for the selected entry.</p></article>
+          </div>
+          <p class="result-note">Catalogue lookup only. No project capacity check is performed.</p>
+        </section>
+      </section>
+
+      <details class="source-card" data-bolt-mode-panel="ubolt" hidden>
+        <summary><span><b>Basis and limitations</b><small>Published data, design boundary and project checks</small></span><i>+</i></summary>
+        <div class="source-body">
+          <div class="source-notes">
+            <p><b>Product basis</b> - Published load, geometry and finish are reported as stated by the manufacturer. Values are not converted to AS 4100 design capacities.</p>
+            <p><b>Capacity basis</b> - Working Load or ASD Allowable Load requires a matching manufacturer load condition and compatible project action basis. No action ratio is calculated here.</p>
+            <p><b>Code boundary</b> - AS 4100 ordinary bolt provisions apply only to qualifying fasteners and connected steelwork. They do not establish curved U-bolt or complete clamp capacity.</p>
+          </div>
+          <div class="source-notes">
+            <p><b>Project design</b> - Check U-bolt and thread strength, leg-force distribution, bend effects, clamp slip and contact, pipe or member local bearing, attachment details, fatigue, corrosion and installation.</p>
+            <p><b>Headframe boundary</b> - Mounting-pipe products may be screened. Main headframe-to-monopole clamps remain project-engineered assemblies.</p>
+            <p><b>Source</b> - <a id="uBoltSourceLink" href="#" target="_blank" rel="noreferrer">Manufacturer product listing</a>. The displayed status confirms source traceability only, not project suitability.</p>
+          </div>
+        </div>
+      </details>
     </section>
 
     <section id="weldPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Welded connections · AS 4100 Cl. 9.6</p><h2>Weld Capacity</h2></div><span class="tool-status">For Review · AS/NZS 1554.1 notes</span></div>
+      <div class="tool-heading"><div><p class="kicker">Welded connections - AS 4100 Clause 9.6</p><h2>Weld Capacity</h2></div><span class="tool-status">For Review - AS/NZS 1554.1 coordination</span></div>
 
       <section class="lookup-card weld-card">
-        <div class="input-cluster input-cluster-three">
+        <div class="input-cluster input-cluster-two">
           <section class="input-group input-group-section" aria-label="Weld geometry inputs">
-            <span class="input-group-heading"><b>Section / weld geometry</b><small>Weld type, size or throat, effective length and identical effective weld lines.</small></span>
+            <span class="input-group-heading"><b>Weld geometry</b><small>Type, size, throat, effective length and effective weld lines.</small></span>
             <div class="input-group-fields five">
               <label class="size-field"><span>Weld type</span><select id="weldType" aria-label="Weld type"><option value="fillet">Fillet weld</option><option value="cpbw">Complete penetration butt weld</option><option value="ipbw">Incomplete penetration butt weld</option><option value="compound">Compound weld</option></select></label>
               <label><span>Fillet size, s</span><select id="weldSize" aria-label="Fillet weld size"></select></label>
-              <label><span>a<sub>w</sub> butt-weld throat</span><span class="unit"><input id="weldEffectiveThroat" type="number" min="1" step="0.5" value="10"><em>mm</em></span></label>
+              <label><span>Butt-weld throat, a<sub>w</sub></span><span class="unit"><input id="weldEffectiveThroat" type="number" min="1" step="0.5" value="10"><em>mm</em></span></label>
               <label><span>Effective length, l<sub>w</sub></span><span class="unit"><input id="weldLength" type="number" min="1" step="1" value="100"><em>mm</em></span></label>
               <label><span>Effective weld lines</span><input id="weldRuns" type="number" min="1" max="12" step="1" value="2"></label>
             </div>
           </section>
           <section class="input-group input-group-material" aria-label="Weld material inputs">
-            <span class="input-group-heading"><b>Material properties / category</b><small>Weld category and nominal weld-metal strength.</small></span>
+            <span class="input-group-heading"><b>Material properties</b><small>Weld category and nominal tensile strength of weld metal.</small></span>
             <div class="input-group-fields two">
-              <label><span>Weld category</span><select id="weldCategory" aria-label="Weld category"><option value="SP">SP - structural purpose</option><option value="GP">GP - general purpose</option></select></label>
-              <label><span>Weld metal strength, f<sub>uw</sub></span><select id="weldStrength" aria-label="Nominal tensile strength of weld metal"><option value="430">430 MPa</option><option value="490" selected>490 MPa</option><option value="550">550 MPa</option></select></label>
-            </div>
-          </section>
-          <section class="input-group input-group-action">
-            <span class="input-group-heading"><b>Design action</b><small>Direct shear action for utilisation reporting.</small></span>
-            <div class="input-group-fields">
-              <label><span>V* design action</span><span class="unit"><input id="weldDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+              <label><span>Weld category</span><select id="weldCategory" aria-label="Weld category"><option value="SP">SP - Structural Purpose</option><option value="GP">GP - General Purpose</option></select></label>
+              <label><span>f<sub>uw</sub> weld-metal strength</span><select id="weldStrength" aria-label="Nominal tensile strength of weld metal"><option value="430">430 MPa</option><option value="490" selected>490 MPa</option><option value="550">550 MPa</option></select></label>
             </div>
           </section>
         </div>
 
         <div class="weld-summary">
-          <div><span>Drawing callout</span><strong id="weldCallout">6 mm CFW, category SP, fuw 490 MPa</strong><small>Show weld type, size or throat, category and nominal weld metal strength on drawings.</small></div>
+          <div><span>Weld designation</span><strong id="weldCallout">6 mm CFW, category SP, f_uw 490 MPa</strong><small>Show weld type, size or throat, category and nominal weld-metal strength on drawings.</small></div>
           <dl><div><dt>type</dt><dd id="weldTypeValue">Fillet</dd></div><div><dt>t<sub>t</sub></dt><dd id="weldThroatValue">4.24 mm</dd></div><div><dt>l<sub>w</sub></dt><dd id="weldLengthValue">100 mm</dd></div><div><dt>lines</dt><dd id="weldRunsValue">2</dd></div><div><dt>&phi;</dt><dd id="weldPhiValue">0.80</dd></div></dl>
         </div>
 
-        <div class="symbol-key" aria-label="AS 4100 weld symbols"><span><b>s</b> fillet weld leg size</span><span><b>t<sub>t</sub></b> design throat thickness</span><span><b>a<sub>w</sub></b> specified butt-weld throat</span><span><b>l<sub>w</sub></b> effective weld length</span><span><b>f<sub>uw</sub></b> nominal tensile strength of weld metal</span></div>
+        <div class="symbol-key" aria-label="AS 4100 weld symbols"><span><b>s</b> fillet weld leg size</span><span><b>t<sub>t</sub></b> design throat thickness</span><span><b>a<sub>w</sub></b> butt-weld design throat</span><span><b>l<sub>w</sub></b> effective weld length</span><span><b>f<sub>uw</sub></b> nominal tensile strength of weld metal</span></div>
 
         <details class="weld-legend-card">
-          <summary><span><b>Weld symbol legend</b><small>Source-based SVG redraw; confirm final symbols to AS 1101.3 and project drawings</small></span><i>+</i></summary>
+          <summary><span><b>Weld symbol legend</b><small>Common AS 1101.3 symbol positions; verify project drawings.</small></span><i>+</i></summary>
           <section class="weld-figure-section" aria-label="Weld symbol legend examples">
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgArrowSideTitle">
@@ -148,7 +202,7 @@
                 <text x="76" y="66">6</text>
                 <text class="svg-caption" x="55" y="96">symbol below reference line</text>
               </svg>
-              <div><strong>Fillet weld - arrow side</strong><small>AS 1101.3 Cl. 2.3.2.1: place the weld symbol on the side of the reference line towards the reader.</small></div>
+              <div><strong>Fillet weld - arrow side</strong><small>Symbol below the reference line denotes the arrow-side weld.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgOtherSideTitle">
@@ -160,7 +214,7 @@
                 <text x="76" y="51">6</text>
                 <text class="svg-caption" x="55" y="18">symbol above reference line</text>
               </svg>
-              <div><strong>Fillet weld - other side</strong><small>AS 1101.3 Cl. 2.3.2.2: place the weld symbol on the side of the reference line away from the reader.</small></div>
+              <div><strong>Fillet weld - other side</strong><small>Symbol above the reference line denotes the other-side weld.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgBothSidesTitle">
@@ -174,7 +228,7 @@
                 <text x="76" y="73">6</text>
                 <text class="svg-caption" x="55" y="101">symbols on both sides</text>
               </svg>
-              <div><strong>Fillet weld - both sides</strong><small>AS 1101.3 Cl. 2.3.2.3: place weld symbols on both sides of the reference line, towards and away from the reader.</small></div>
+              <div><strong>Fillet weld - both sides</strong><small>Symbols on both sides of the reference line denote welds both sides.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgCpbwTitle">
@@ -186,7 +240,7 @@
                 <text class="svg-tag" x="90" y="48">CPBW</text>
                 <text class="svg-caption" x="55" y="101">callout text where specified</text>
               </svg>
-              <div><strong>Complete penetration butt weld</strong><small>Callout example only. AS 1101.3 places specification, procedure, process or other reference in the tail where used.</small></div>
+              <div><strong>Complete penetration butt weld</strong><small>Designation example only; specify preparation, WPS and inspection separately.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgSquareButtTitle">
@@ -197,7 +251,7 @@
                 <path class="svg-groove-mark" d="M101 50 L101 76 M121 50 L121 76"></path>
                 <text class="svg-caption" x="55" y="99">square butt symbol below line</text>
               </svg>
-              <div><strong>Square butt weld</strong><small>Basic butt-weld symbol from AS 1101.3 Fig. 2.1, shown on the arrow-side position for this quick legend.</small></div>
+              <div><strong>Square butt weld</strong><small>Basic butt-weld symbol shown in the arrow-side position.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgVButtTitle">
@@ -208,7 +262,7 @@
                 <path class="svg-groove-mark" d="M96 50 L111 76 L126 50"></path>
                 <text class="svg-caption" x="55" y="99">single-V symbol below line</text>
               </svg>
-              <div><strong>Single-V butt weld</strong><small>Basic V butt-weld symbol from AS 1101.3 Fig. 2.1, shown on the arrow-side position for this quick legend.</small></div>
+              <div><strong>Single-V butt weld</strong><small>Basic V butt-weld symbol shown in the arrow-side position.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgBevelButtTitle">
@@ -219,7 +273,7 @@
                 <path class="svg-groove-mark" d="M100 50 L100 76 L126 50"></path>
                 <text class="svg-caption" x="55" y="99">single-bevel symbol below line</text>
               </svg>
-              <div><strong>Single-bevel butt weld</strong><small>Basic bevel butt-weld symbol from AS 1101.3 Fig. 2.1. Confirm which member is prepared from the project drawing.</small></div>
+              <div><strong>Single-bevel butt weld</strong><small>Basic bevel butt-weld symbol. Confirm the prepared member on the project drawing.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgDoubleVButtTitle">
@@ -230,7 +284,7 @@
                 <path class="svg-groove-mark" d="M96 56 L111 34 L126 56 L111 78 Z"></path>
                 <text class="svg-caption" x="55" y="101">double-V both sides</text>
               </svg>
-              <div><strong>Double-V butt weld</strong><small>Both-side V butt-weld indication using the AS 1101.3 Fig. 2.1 V symbol mirrored across the reference line.</small></div>
+              <div><strong>Double-V butt weld</strong><small>V symbols mirrored across the reference line denote both-side preparation.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgIpbwTitle">
@@ -242,65 +296,76 @@
                 <text class="svg-tag" x="90" y="48">IPBW</text>
                 <text class="svg-caption" x="55" y="101">specified throat where required</text>
               </svg>
-              <div><strong>Incomplete penetration butt weld</strong><small>Callout example only. Specify the effective throat or preparation depth separately where required by design.</small></div>
+              <div><strong>Incomplete penetration butt weld</strong><small>Designation example only; specify the required design throat.</small></div>
             </article>
-            <p class="weld-legend-source">SVG redrawn as a visual guide from AS 1101.3:2005 Figs 2.1 and 2.8-2.10 for common structural-steel weld symbols only. AS 1101.3 describes arrow-side symbols as being on the side of the reference line towards the reader, other-side symbols as away from the reader, and both-side welds as symbols on both sides of the reference line. Weld size, length, pitch, process, contour, finish, weld category such as SP/GP, WPS and inspection notes must be specified separately on project drawings where required.</p>
+            <p class="weld-legend-source">SVG schematic redrawn from common AS 1101.3:2005 weld-symbol conventions. Use for quick reference only; project drawings must define size, length, pitch, process, contour, finish, weld category, WPS and inspection requirements where applicable.</p>
           </section>
         </details>
 
         <details class="weld-guide" aria-label="Weld selection guide">
-          <summary><span><b>Weld selection guide</b><small>Scenario-first defaults and limits</small></span><i>+</i></summary>
+          <summary><span><b>Weld selection guide</b><small>Common structural-steel use cases and limits.</small></span><i>+</i></summary>
           <div class="weld-scenario-grid">
-            <article><b>Shear cleat / web plate</b><strong>Default: fillet weld both sides</strong><span>Use when load transfer is simple shear and both sides are accessible. Typical mark: 6 or 8 mm CFW both sides, SP.</span><small>Avoid CPBW unless full-strength continuity is required. Check eccentric weld group if force is not direct.</small></article>
-            <article><b>Bracing gusset / cleat</b><strong>Default: continuous fillet weld</strong><span>Use for gusset-to-member shear transfer where fit-up is practical. Typical mark: 6 or 8 mm CFW all round or both sides, SP.</span><small>Prefer end returns where detailed. Check effective length, block shear path and local member wall/plate capacity.</small></article>
-            <article><b>Base plate to column</b><strong>Default: fillet weld around column</strong><span>Use when compression bears through the plate and weld transfers shear, erection loads or uplift. Typical mark: CFW, SP, f<sub>uw</sub> 490 MPa.</span><small>Do not rely on weld capacity alone. Check bearing, anchors, uplift, prying and column wall/flange limits.</small></article>
-            <article><b>Plate / member full-strength splice</b><strong>Select: complete penetration butt weld</strong><span>Use when the weld must develop member or plate continuity across the full thickness. Typical mark: CPBW, SP, f<sub>uw</sub> 490 MPa.</span><small>Avoid fillet-only detail for full-strength butt continuity. Requires joint preparation, WPS, NDT and distortion control.</small></article>
-            <article><b>Partial-strength butt joint</b><strong>Select: IPBW with specified a<sub>w</sub></strong><span>Use when a designed partial throat is intentional and full penetration is not required. Typical mark: IPBW, a<sub>w</sub> specified.</span><small>Avoid for fatigue-sensitive or full-strength continuity unless specifically justified. Check preparation and inspection acceptance.</small></article>
-            <article><b>Moment flange / heavy welded joint</b><strong>Select: CPBW or compound weld</strong><span>Use where flange force, restraint demand or geometry needs a butt weld plus superimposed fillet. Typical mark: CPBW + fillet where specified.</span><small>Project-specific detail. Check through-thickness effects, lamellar tearing risk, access, sequencing and inspection.</small></article>
-            <article><b>Tube / SSHS cap or flange plate</b><strong>Default: fillet weld where practical</strong><span>Use 6 or 8 mm CFW where geometry, wall thickness and access suit. Upgrade to butt or compound where large fillets become uneconomical.</span><small>Coordinate with fabricator for 10 mm+ fillets and closed-section access. Check local wall capacity.</small></article>
-            <article><b>Fatigue-sensitive detail</b><strong>Select: fatigue-specific weld detail</strong><span>Use only after fatigue category, weld profile, finish and inspection level are specified.</span><small>Do not select from capacity alone. Check AS/NZS 1554.5 and AS 4100 fatigue provisions.</small></article>
-            <article><b>Site welding / difficult access</b><strong>Select process after constructability check</strong><span>Use simpler fillet details where access and weather protection suit. MMAW is common for site work; shop GMAW/FCAW or SAW is usually preferable.</span><small>Confirm WPS, welder qualification, preheat, sheltering and inspection before relying on the detail.</small></article>
+            <article><b>Shear cleat / web plate</b><strong>Usual detail: fillet weld both sides</strong><span>Use for direct shear transfer where both sides are accessible. Typical designation: 6 or 8 mm CFW both sides, SP.</span><small>Check eccentric weld groups where the action is not concentric.</small></article>
+            <article><b>Bracing gusset / cleat</b><strong>Usual detail: continuous fillet weld</strong><span>Use for gusset-to-member shear transfer with practical fit-up. Typical designation: 6 or 8 mm CFW all round or both sides, SP.</span><small>Check effective length, block shear path and local wall or plate capacity.</small></article>
+            <article><b>Base plate to column</b><strong>Usual detail: fillet weld around column</strong><span>Use where bearing carries compression and the weld transfers shear, erection effects or uplift.</span><small>Check anchors, bearing, prying and column wall or flange limits separately.</small></article>
+            <article><b>Full-strength splice</b><strong>Select: complete penetration butt weld</strong><span>Use where the joint must develop full member or plate continuity through the thickness.</span><small>Requires preparation, WPS, NDT and distortion control.</small></article>
+            <article><b>Partial-strength butt joint</b><strong>Select: IPBW with specified a<sub>w</sub></strong><span>Use only where the required design throat is deliberately specified and full penetration is not required.</span><small>Avoid for fatigue-sensitive or full-strength continuity unless justified.</small></article>
+            <article><b>Moment flange / heavy joint</b><strong>Select: CPBW or compound weld</strong><span>Use where flange force, restraint demand or geometry requires a butt weld with a supplementary fillet.</span><small>Confirm access, sequencing, inspection and through-thickness risk.</small></article>
+            <article><b>Tube / SSHS plate</b><strong>Usual detail: fillet weld where practical</strong><span>Use CFW where wall thickness, access and weld size are practical.</span><small>Check local wall capacity and closed-section access.</small></article>
+            <article><b>Fatigue-sensitive detail</b><strong>Select: fatigue-specific weld detail</strong><span>Use only after fatigue category, weld profile, finish and inspection level are defined.</span><small>Do not select from static capacity alone.</small></article>
+            <article><b>Site welding / restricted access</b><strong>Select after constructability review</strong><span>Prefer simple fillet details where access, sheltering and WPS controls are practical.</span><small>Confirm welder qualification, preheat and inspection before issue.</small></article>
           </div>
-          <div class="weld-standard-strip"><span>AS 4100 Cl. 9.6</span><span>AS 4100 Table 9.6.3.10</span><span>AS/NZS 1554.1 WPS / inspection</span><span>ASI Simple Connections Fig. 2.7</span></div>
+          <div class="weld-standard-strip"><span>AS 4100 Clause 9.6</span><span>AS 4100 Table 9.6.3.10</span><span>AS/NZS 1554.1 WPS / inspection</span><span>ASI Simple Connections Figure 2.7</span></div>
         </details>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Weld capacity</h2></div><span>selected weld type</span></div>
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Weld capacity</h2></div><span>per effective weld line</span></div>
           <div class="capacity-grid weld-results">
             <article class="capacity-card selected-shear"><span id="weldCapacityLabel">Capacity per mm per weld line</span><strong><output id="weldCapacityPerMm">1.00</output><small> kN/mm</small></strong><p id="weldCapacityBasis">&phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub></p></article>
-            <article class="capacity-card"><span>Total weld capacity</span><strong><output id="weldCapacity">199.5</output><small> kN</small></strong><p>per-mm value &times; l<sub>w</sub> &times; lines</p></article>
             <article class="capacity-card alternate-shear"><span>Parent metal screen</span><strong><output id="parentGoverningPerMm">2.21</output><small> kN/mm</small></strong><p id="parentGoverningNote">warning only</p></article>
           </div>
           <details class="advanced-input-card">
-            <summary><span><b>Warning-only parent metal / lap inputs</b><small>Use only when the parent-metal screen or welded-lap reduction is relevant.</small></span><i>+</i></summary>
+            <summary><span><b>Optional screens: parent metal and welded lap</b><small>Warning-only parent-metal screen and AS 4100 welded-lap k<sub>r</sub>.</small></span><i>+</i></summary>
             <div class="advanced-input-body">
               <div class="weld-extra-inputs input-cluster input-cluster-two">
                 <section class="input-group input-group-warning">
-                  <span class="input-group-heading"><b>Parent metal screen</b><small>Warning-only; does not replace connected-part design.</small></span>
+                  <span class="input-group-heading"><b>Parent metal screen</b><small>Warning only; not a connected-part design check.</small></span>
                   <div class="input-group-fields two">
                     <label><span>Ply thickness, t</span><span class="unit"><input id="weldParentThickness" type="number" min="0" step="0.5" value="10"><em>mm</em></span></label>
                     <label><span>Parent metal grade</span><select id="weldParentGrade" aria-label="Parent metal grade"></select></label>
                   </div>
                 </section>
                 <section class="input-group input-group-factor">
-                  <span class="input-group-heading"><b>Relevant factor</b><small>Apply only to a welded lap connection.</small></span>
+                  <span class="input-group-heading"><b>Welded-lap reduction</b><small>Apply k<sub>r</sub> only for a welded lap connection.</small></span>
                   <div class="input-group-fields">
-                    <label><span>Welded lap connection</span><select id="weldLapConnection" aria-label="Apply welded lap connection reduction"><option value="no" selected>No</option><option value="yes">Yes - apply kr</option></select></label>
+                    <label><span>Welded lap connection</span><select id="weldLapConnection" aria-label="Apply welded lap connection reduction"><option value="no" selected>No</option><option value="yes">Yes - apply k_r</option></select></label>
                   </div>
                 </section>
               </div>
             </div>
           </details>
-          <div class="interaction-result weld-utilisation"><span>Weld utilisation ratio</span><strong id="weldUtilisation">0.00</strong><b id="weldStatus">Enter design action</b></div>
-          <p class="result-note">Capacity view only; not a full weld or joint design check. Parent metal, HAZ, eccentric weld groups, fatigue and inspection remain project checks.</p>
+          <details class="member-demand-check weld-demand-check">
+            <summary><span><b>Design action check</b><small>Optional direct shear action and utilisation against total weld capacity.</small></span><i>+</i></summary>
+            <div class="member-demand-body">
+              <div class="member-demand-row">
+                <div class="member-demand-copy"><b>Design action</b><small>Enter V* only for a direct shear check of this weld set.</small></div>
+                <div class="member-demand-controls">
+                  <label><span>V* design shear action</span><span class="unit"><input id="weldDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                  <div class="member-demand-ratio-box"><strong id="weldUtilisation">&mdash;</strong><small id="weldStatus" class="check">No design action</small></div>
+                </div>
+              </div>
+            </div>
+          </details>
+          <p class="result-note">Capacity view only; verify connected parts, HAZ, eccentric weld groups, fatigue and inspection separately.</p>
         </section>
       </section>
 
-      <details class="detail-card"><summary><span><b>Calculation details</b><small>Formula steps and parent-metal per-mm screen</small></span><i>+</i></summary><div class="detail-body">
-        <section><h3>Calculation steps</h3><div id="weldFormulaSteps" class="formula-list"></div></section>
+      <details class="detail-card"><summary><span><b>Calculation details</b><small>Formula trace, total capacity and warning-only parent-metal screen.</small></span><i>+</i></summary><div class="detail-body">
+        <section><h3>Formula trace</h3><div id="weldFormulaSteps" class="formula-list"></div></section>
+        <section><h3>Calculated values</h3><div class="member-check-grid weld-detail-grid"><div><span>Total weld capacity</span><strong><output id="weldCapacity">199.5</output><small> kN</small></strong><small>per-mm capacity x l<sub>w</sub> x effective weld lines</small></div></div></section>
       </div></details>
 
-      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100, AS/NZS 1554.1 and industry guidance</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Issue status</b> - For Review. Formula basis is shown, but weld-symbol redraws and product/process assumptions remain project-drawing dependent.</p><p><b>Primary basis</b> - AS 4100 Cl. 9.6 welded connections; fillet-weld throat-area capacity is calculated as &phi;R = &phi;0.6f<sub>uw</sub>t<sub>t</sub>l<sub>w</sub>k<sub>r</sub>. AS 4100 Table 3.4 gives &phi; = 0.90 for SP CPBW, &phi; = 0.80 for SP other fillet weld / IPBW and &phi; = 0.60 for GP. This tool does not include the AS 4100 Table 3.4 special case &phi; = 0.70 for longitudinal fillet welds in RHS where t &lt; 3 mm.</p><p><b>Weld metal strength</b> - AS 4100 Table 9.6.3.10(A), also summarised in ASI Simple Connections 2020 Table 2.14. Common strengths shown here are 430, 490 and 550 MPa.</p><p><b>Weld category</b> - SP/GP is included in the drawing callout and capacity calculation where AS 4100 Table 3.4 gives different capacity factors. CPBW, IPBW and compound selections still require project-specific effective throat, joint preparation, WPS, inspection and acceptance confirmation.</p><p><b>Effective weld lines</b> - use 2 only for two identical effective weld lines acting together, such as both sides of a plate. It is not the number of welding passes.</p><p><b>Lap connection reduction</b> - k<sub>r</sub> comes from AS 4100 Table 9.6.3.10(B) for a welded lap connection. In that table l<sub>w</sub> is in metres: k<sub>r</sub> = 1.00 for l<sub>w</sub> &le; 1.7 m, k<sub>r</sub> = 1.10 - 0.06l<sub>w</sub> for 1.7 &lt; l<sub>w</sub> &le; 8.0 m, and k<sub>r</sub> = 0.62 for l<sub>w</sub> &gt; 8.0 m. This quick tool applies it only when the welded-lap option is selected.</p><p><b>Parent metal screen</b> - indicative per-mm parent metal shear capacity is shown as &phi;0.6f<sub>up</sub>t using &phi; = 0.90 and AS/NZS 3678 / AS/NZS 3679.1 tensile strengths summarised in ASI Simple Connections 2020 Tables 2.15 and 2.16. It is warning-only and does not replace a connected-part check.</p><p><b>Welding process</b> - process selection should be by the fabricator under a qualified WPS to AS/NZS 1554.1.</p></div><div class="source-notes"><p><b>Symbols</b> - welding symbols are shown in the AS 1101.3 style: the basic weld symbol below the reference line indicates arrow-side weld; above the line indicates other-side weld. Verify exact drawing symbols, preparations and inspection category to AS/NZS 1554.1 on the project drawings.</p><p><b>Scope</b> - selected weld-type throat-capacity lookup under direct action: equal-leg fillet, CPBW, IPBW, or compound weld using user-entered effective length, effective weld lines and a<sub>w</sub> where relevant.</p><p><b>Design boundary</b> - this is not a full weld or joint design check. CPBW, IPBW and compound options are capacity views only, not full joint checks. Parent-metal screen is not a tear-out, block shear, net-section, HAZ or eccentric weld group check. Plug / slot welds, weld groups, longitudinal RHS fillet welds where t &lt; 3 mm, parent-metal rupture, HAZ, joint preparation, backing/gouging, eccentric weld groups, intermittent weld rules, fatigue, seismic detailing, lamellar tearing and inspection acceptance criteria are excluded.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100 weld capacity, AS/NZS 1554.1 coordination and excluded checks.</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Issue status</b> - For Review. Formula basis is shown; symbol redraws and fabrication requirements remain project-drawing dependent.</p><p><b>Primary basis</b> - AS 4100 Clause 9.6 welded connections. Fillet-weld throat capacity is calculated as &phi;R = &phi;0.6f<sub>uw</sub>t<sub>t</sub>l<sub>w</sub>k<sub>r</sub>. AS 4100 Table 3.4 gives &phi; = 0.90 for SP CPBW, &phi; = 0.80 for SP other fillet welds and IPBW, and &phi; = 0.60 for GP welds in this quick tool.</p><p><b>Strength data</b> - f<sub>uw</sub> options follow AS 4100 Table 9.6.3.10(A), also summarised in ASI Simple Connections 2020 Table 2.14.</p><p><b>Weld category</b> - SP/GP affects the capacity factor. CPBW, IPBW and compound selections still require project-confirmed throat, preparation, WPS, inspection and acceptance criteria.</p><p><b>Effective weld lines</b> - use only for identical effective weld lines acting together, such as both sides of a plate. It is not the number of welding passes.</p><p><b>Welded-lap reduction</b> - k<sub>r</sub> is from AS 4100 Table 9.6.3.10(B) and applies only when the welded-lap option is selected. The table length l<sub>w</sub> is in metres.</p><p><b>Parent metal screen</b> - the displayed parent-metal value is an indicative per-mm screen, &phi;0.6f<sub>up</sub>t with &phi; = 0.90. It is warning only and does not replace connected-part design.</p></div><div class="source-notes"><p><b>Symbols</b> - AS 1101.3-style examples show arrow-side symbols below the reference line and other-side symbols above it. Verify final symbols on project drawings.</p><p><b>Scope</b> - throat-capacity lookup for equal-leg fillet welds, CPBW, IPBW and compound welds under direct action.</p><p><b>Excluded</b> - longitudinal fillet welds in RHS where t &lt; 3 mm, plug and slot welds, weld groups, parent-metal rupture, HAZ, block shear, net-section rupture, joint preparation, backing/gouging, eccentricity, intermittent weld rules, fatigue, seismic detailing, lamellar tearing and inspection acceptance.</p></div></div></details>
     </section>
 
     <section id="concretePanel" class="tool-panel" hidden>
@@ -348,12 +413,12 @@
         </div>
 
         <div class="concrete-summary">
-          <div><span>Selected section</span><strong id="concreteSummaryTitle">1000 x 500 mm strip - top compression</strong><small id="concreteSummaryNote">Neutral axis solved from internal force equilibrium with concrete tension ignored.</small></div>
-          <dl><div><dt>x</dt><dd id="concreteNaValue">-</dd></div><div><dt>C<sub>c</sub></dt><dd id="concreteCcValue">-</dd></div><div><dt>M<sub>uo</sub></dt><dd id="concreteMuoValue">-</dd></div><div><dt>&phi;M<sub>uo</sub></dt><dd id="concretePhiMuoValue">-</dd></div><div><dt>status</dt><dd id="concreteStatusValue">-</dd></div></dl>
+          <div><span>Checked section</span><strong id="concreteSummaryTitle">Top pad only; b = 1000 mm; D = 500 mm; top face in compression</strong><small id="concreteSummaryNote">Capacity applies to this checked strip only.</small></div>
+          <dl><div><dt>basis</dt><dd id="concreteModeValue">-</dd></div><div><dt>b</dt><dd id="concreteWidthValue">-</dd></div><div><dt>D</dt><dd id="concreteDepthValue">-</dd></div><div><dt>d<sub>v</sub></dt><dd id="concreteDvValue">-</dd></div><div><dt>status</dt><dd id="concreteStatusValue">-</dd></div></dl>
         </div>
 
         <div class="symbol-key" aria-label="Concrete pad layout symbols"><span><b>b</b> section strip width</span><span><b>D<sub>top</sub></b> top pad depth</span><span><b>D<sub>bot</sub></b> bottom pad depth</span><span><b>c<sub>nom</sub></b> nominal concrete cover to bar surface</span><span><b>y<sub>i</sub></b> reinforcement mat depth from top face</span><span><b>N/Y16 @ 200</b> bar designation and spacing</span></div>
-        <p class="result-note">Reo areas use standard nominal Australian bar table areas. One-way shear uses the AS 3600 simplified non-prestressed method; verify the actual design shear plane, detailing and demand separately.</p>
+        <p class="result-note">Reinforcement areas use standard nominal Australian bar table areas. One-way shear uses the AS 3600 simplified non-prestressed method; verify the actual design shear plane, detailing and design action separately.</p>
 
         <section class="concrete-layer-table" aria-label="Reinforcement mats">
           <div class="layer-header"><span>Reinforcement mat</span><span>Active</span><span>Auto fill y<sub>i</sub></span><span>Depth y<sub>i</sub></span><span>Bar size</span><span>Spacing</span><span>f<sub>sy</sub></span><span>E<sub>s</sub></span></div>
@@ -368,19 +433,16 @@
         </section>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div><span>selected strip</span></div>
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div><span id="concreteResultScope">selected strip</span></div>
           <div class="capacity-grid concrete-results">
-            <article class="capacity-card selected-shear"><span>Design moment capacity &phi;M<sub>uo</sub></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong><p id="concretePhiNote">Capacity factor is calculated from the selected section state.</p></article>
-            <article class="capacity-card"><span>Nominal moment capacity M<sub>uo</sub></span><strong><output id="concreteMuo">-</output><small> kNm</small></strong><p>Internal force couple after force equilibrium</p></article>
-            <article class="capacity-card"><span>Design one-way shear &phi;V<sub>u</sub></span><strong><output id="concretePhiVu">-</output><small> kN</small></strong><p id="concreteShearNote">Concrete contribution only; no shear reinforcement included</p></article>
-            <article class="capacity-card alternate-shear"><span>Neutral axis depth x</span><strong><output id="concreteNa">-</output><small> mm</small></strong><p>measured from selected compression face</p></article>
+            <article class="capacity-card selected-shear"><span class="capacity-label">Design flexural capacity <b>&phi;M<sub>uo</sub></b></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong><p id="concretePhiNote">Capacity factor from the selected section state.</p></article>
+            <article class="capacity-card"><span class="capacity-label">Design one-way shear capacity <b>&phi;V<sub>u</sub></b></span><strong><output id="concretePhiVu">-</output><small> kN</small></strong><p id="concreteShearNote">Concrete contribution only; no shear reinforcement included</p></article>
           </div>
-          <div class="interaction-result concrete-warning"><span>Section status</span><strong id="concreteEquilibrium">-</strong><b id="concreteWarningStatus">-</b></div>
-          <p class="result-note" id="concreteWarningText">Moment capacity and one-way shear screen only; verify excluded footing checks separately.</p>
+          <p class="result-note" id="concreteWarningText">Section-capacity check only; verify excluded footing and detailing checks separately.</p>
         </section>
       </section>
 
-      <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed section checks</b></span><small>Reinforcement mat strains, stresses, forces and force-equilibrium residual</small></span><i>+</i></summary><div class="detail-body"><section><h3>Reinforcement mat results</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation steps</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
+      <details class="detail-card concrete-detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Detailed section checks</b></span><small>Section state, reinforcement forces and calculation basis</small></span><i>+</i></summary><div class="detail-body"><section><h3>Section state and checks</h3><div id="concreteSectionState" class="concrete-layer-results"></div></section><section><h3>Reinforcement state</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation basis</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
 
       <details class="source-card">
         <summary><span><b>Calculation basis and limitations</b><small>AS 3600 section theory and pad design boundary</small></span><i>+</i></summary>
@@ -475,7 +537,7 @@
       <div class="tool-heading"><div><p class="kicker">Axial members · AS 4100 Sections 6 and 7</p><h2>Axial Member Capacity</h2></div><span class="tool-status">For Review · user-confirmed inputs</span></div>
 
       <section class="lookup-card member-card">
-        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up</button></div>
+        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up properties</button></div>
 
         <div class="input-cluster input-cluster-four member-main-inputs">
           <section class="input-group input-group-section" id="memberSectionGroup">
@@ -486,10 +548,12 @@
               <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
             </div>
             <div class="input-group-fields three" id="memberCustomSectionFields" hidden>
+              <div class="member-custom-subheading"><b>User-defined section properties</b><small>Enter effective centroidal properties from a verified section-property calculation. If I<sub>x</sub> and I<sub>y</sub> are provided, use r<sub>x</sub> = sqrt(I<sub>x</sub> / A<sub>g</sub>) and r<sub>y</sub> = sqrt(I<sub>y</sub> / A<sub>g</sub>).</small></div>
               <label><span>Name</span><input id="memberCustomName" type="text" value="Custom built-up member"></label>
               <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
               <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
               <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
+              <div class="member-custom-subheading"><b>Effective lengths</b><small>Use the same value for L<sub>ex</sub> and L<sub>ey</sub> when restraint conditions are the same about both axes.</small></div>
               <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
               <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
             </div>
@@ -525,7 +589,8 @@
               <label id="alphaBField" hidden><span>α<sub>b</sub> <i>AS 4100 Table 6.3.3</i></span><select id="memberAlphaB"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
             </div>
             <div class="input-group-fields three" id="memberCustomFactorFields" hidden>
-              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.001" max="1" step="0.001" value="1"></label>
+              <div class="member-custom-subheading"><b>Compression factors</b><small>Initial values: k<sub>f</sub> = 1.000 and &alpha;<sub>b,x</sub> = &alpha;<sub>b,y</sub> = 0.5. Confirm the adopted AS 4100 compression basis.</small></div>
+              <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.001" max="1" step="0.001" value="1.000"></label>
               <label><span>&alpha;<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
               <label><span>&alpha;<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
             </div>
@@ -554,7 +619,7 @@
               <article class="manual-section-card" data-member-guide="ea" hidden><img class="section-diagram" src="assets/generated/member-section-equal-angle.svg" alt="Equal angle section diagram showing b, t and r dimensions"><div><strong>Equal Angle</strong><small>b, t, r · OneSteel / InfraBuild Tables 19-21</small></div></article>
               <article class="manual-section-card" data-member-guide="pfc" hidden><img class="section-diagram" src="assets/generated/member-section-pfc.svg" alt="PFC section diagram showing d, bf, tw, tf and r dimensions"><div><strong>PFC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, r · OneSteel / InfraBuild Tables 15-16</small></div></article>
               <article class="manual-section-card" data-member-guide="rod" hidden><img class="section-diagram" src="assets/generated/member-section-rod.svg" alt="Round bar or rod section diagram showing diameter d"><div><strong>Rod</strong><small>d · OneSteel / InfraBuild Table 3</small></div></article>
-              <article class="manual-section-card custom-section-card" data-member-guide="custom" hidden><div><strong>Custom / Built-up</strong><small>User-entered effective properties.</small></div></article>
+              <article class="manual-section-card custom-section-card" data-member-guide="custom" hidden><div><strong>Custom / Built-up properties</strong><small>User-entered effective section properties.</small></div></article>
             </div>
           </div>
           <div class="member-summary-copy"><div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div><dl class="member-summary-metrics"><div data-member-summary-cell="D"><dt>D</dt><dd id="memberDimD">—</dd></div><div data-member-summary-cell="d"><dt>d</dt><dd id="memberDimDepth">—</dd></div><div data-member-summary-cell="b"><dt>b</dt><dd id="memberDimB">—</dd></div><div data-member-summary-cell="bf"><dt>b<sub>f</sub></dt><dd id="memberDimBf">—</dd></div><div data-member-summary-cell="t"><dt>t</dt><dd id="memberDimT">—</dd></div><div data-member-summary-cell="tw"><dt>t<sub>w</sub></dt><dd id="memberDimTw">—</dd></div><div data-member-summary-cell="tf"><dt>t<sub>f</sub></dt><dd id="memberDimTf">—</dd></div><div><dt>A<sub>g</sub></dt><dd id="memberArea">—</dd></div><div><dt>r used</dt><dd id="memberRadius">—</dd></div><div><dt>f<sub>y</sub></dt><dd id="memberFy">—</dd></div><div><dt>f<sub>u</sub></dt><dd id="memberFu">—</dd></div><div><dt>k<sub>f</sub></dt><dd id="memberKf">—</dd></div><div><dt>r<sub>x</sub></dt><dd id="memberRx">—</dd></div><div><dt>r<sub>y</sub></dt><dd id="memberRy">—</dd></div><div><dt>I<sub>x</sub></dt><dd id="memberIx">—</dd></div><div><dt>I<sub>y</sub></dt><dd id="memberIy">—</dd></div></dl><p class="member-drawing-note">Schematic only; not a source of section properties.</p></div>
@@ -674,7 +739,7 @@
             <p><b>CHS product source</b> &middot; Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0. Browser properties are geometric from D/t unless a table value is explicitly shown.</p>
             <p><b>Equal Angle / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. Equal Angle properties use Tables 19&ndash;21; PFC properties use Tables 15&ndash;16.</p>
             <p><b>Rod properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size availability and mass; Table 38 for diameter-dependent AS/NZS 3679.1 round-bar yield stress. Circular solid-bar geometry is used for A<sub>g</sub> and r.</p>
-            <p><b>Custom / Built-up</b> &middot; Uses user-entered effective A<sub>g</sub>, r<sub>x</sub>, r<sub>y</sub>, k<sub>f</sub>, α<sub>b,x</sub>, α<sub>b,y</sub>, L<sub>ex</sub> and L<sub>ey</sub>. The page does not verify the source section calculation.</p>
+            <p><b>Custom / Built-up properties</b> &middot; Uses user-entered effective section properties. The page does not verify the source section-property calculation, local slenderness, built-up connectors, torsional buckling or connection eccentricity.</p>
             <p><b>Family custom dimensions</b> &middot; CHS, Equal Angle, PFC and Rod may use the custom-dimension override in Section properties. CHS and Rod derive A<sub>g</sub>, r and I from circular geometry. Equal Angle and PFC derive A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub> from simplified rectangular geometry; fillets/root radii are not reconstructed.</p>
             <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
             <p><b>Axial tension</b> &middot; AS 4100 Cl. 7.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3.</p>
@@ -689,9 +754,190 @@
       </details>
     </section>
 
+    <section id="screwPanel" class="tool-panel" hidden>
+      <div class="tool-heading">
+        <div><p class="kicker">Screw piles &middot; product selector</p><h2>Screw Piles Selector</h2></div>
+        <span class="tool-status">Product data &middot; geometry &middot; limitations</span>
+      </div>
+
+      <section class="lookup-card screw-card">
+        <section class="input-group input-group-section screw-selection-panel" aria-label="Screw pile product selection">
+          <span class="input-group-heading"><b>Product selection</b><small>Select a supplier and published product.</small></span>
+          <div class="input-group-fields two">
+            <label><span>Supplier</span><select id="screwManufacturer"><option value="katana">Katana</option><option value="ideal">Ideal Foundations</option><option value="blade">Blade Pile</option><option value="piletech">Piletech</option><option value="driven">Driven Engineering</option><option value="keller">Keller</option><option value="minmetals">Minmetals Helicast</option><option value="surefoot">Surefoot</option><option value="stopdigging">StopDigging AU</option><option value="groundscrews">Ground Screws Australia</option><option value="hpa">Helical Piles Australia</option><option value="custom">Custom / other</option></select></label>
+            <label><span>Product</span><select id="screwSeries"></select></label>
+          </div>
+          <div hidden aria-hidden="true">
+            <select id="screwApplication"><option value="monopole">Pole / monopole foundation</option></select>
+            <select id="screwSoil"><option value="unknown">Not assessed</option></select>
+            <select id="screwExposure"><option value="not-assessed">Not assessed</option></select>
+            <select id="screwInstallEvidence"><option value="none">Not available</option></select>
+            <select id="screwLateralSensitivity"><option value="undefined">Not defined</option></select>
+          </div>
+        </section>
+
+        <section class="screw-selected-card" aria-live="polite">
+          <div class="screw-selected-header">
+            <div>
+              <span class="section-tag">SELECTED PRODUCT</span>
+              <h2 id="screwDesignation">Katana 80 kN series</h2>
+              <p id="screwAssumption">Katana &middot; helical screw pile.</p>
+            </div>
+            <b id="screwCapacityStatus" hidden>Compression SWL up to</b>
+          </div>
+
+          <div class="screw-selected-overview">
+            <div class="screw-selected-summary">
+              <div class="screw-capacity-strip" aria-label="Selected product published values">
+                <div hidden><output id="screwAxialClass">80</output><em id="screwAxialBasis">Series class from current certificate.</em></div>
+                <div><span id="screwCompressionLabel">Compression SWL up to</span><strong><output id="screwCompressionResult">80</output><small id="screwCompressionUnit"> kN</small></strong><em id="screwCompressionBasis">Guide SWL up to; stated conditions apply.</em></div>
+                <div><span id="screwUpliftLabel">Published uplift load</span><strong><output id="screwUpliftResult">Not published</output><small id="screwUpliftUnit"></small></strong><em id="screwUpliftBasis">No direction-specific value published.</em></div>
+                <div class="secondary"><span id="screwLateralLabel">Published lateral load</span><strong><output id="screwLateralResult">Not published</output><small id="screwLateralUnit"></small></strong><em id="screwLateralBasis">No direction-specific value published.</em></div>
+              </div>
+
+              <section class="screw-product-specification" aria-label="Selected product specification">
+                <h3>Product specification</h3>
+                <div class="screw-specification-grid">
+                  <div><span>Shaft</span><p><strong id="screwFactShaft">76.1 mm OD / 4.0 mm wall</strong><em id="screwFactSteel">AS/NZS 1163 CHS</em></p></div>
+                  <div><span>Helix / bearing</span><p><strong id="screwFactHelixCount">1 helix</strong><em id="screwFactHelix">250 mm dia x 8 mm plate</em></p></div>
+                  <div><span>Pitch / spacing</span><p><strong id="screwFactPitch">Not published</strong></p></div>
+                  <div><span>Length / extension</span><p><strong id="screwFactLength">1.0-4.0 m series range noted</strong><em id="screwFactExtension">0.5 m increments; extension sections available</em></p></div>
+                  <div><span>Installation criterion</span><p><strong id="screwFactInstallCriterion">Guide torque: 4000 Nm for stated conditions.</strong></p></div>
+                  <div><span>Maximum allowable torque</span><p><strong id="screwFactTorqueLimit">Not published; verify shaft torsional limit.</strong></p></div>
+                  <div><span>Pile-head connection</span><p><strong id="screwFactHeadConnection">Project tension and shear-transfer detail required.</strong></p></div>
+                  <div><span>Durability</span><p><strong id="screwFactDurability">Design life and corrosion allowance not stated.</strong></p></div>
+                  <div class="wide"><span>Source / data basis</span><p><strong id="screwFactSourceStatus">Published + local certificate</strong><a id="screwFactSource" href="https://katanafoundations.com.au/wp-content/uploads/2024/12/241001-Katana-Screw-Pile-_-Performance-Guide.pdf" target="_blank" rel="noreferrer">Performance Guide Rev Z, pp. 8 and 12-13</a><em id="screwFactCapacityBasis">Compression SWL up to in stated guide conditions.</em><small id="screwFactSourceReview">Local source reviewed · 10 Jul 2026</small></p></div>
+                </div>
+              </section>
+
+              <div class="screw-product-limitation" aria-label="Selected product limitation">
+                <span>Product limitation</span><strong id="screwFactLimitation">Obtain project tension resistance and complete the lateral-response assessment.</strong>
+              </div>
+
+              <div class="screw-capacity-editor" hidden aria-hidden="true">
+                <div class="screw-capacity-editor-body input-group-fields four">
+                  <label><span>Published compression</span><span class="unit"><input id="screwCompressionCap" type="number" min="0" step="1" value="80"><em>kN</em></span></label>
+                  <label><span>Published tension</span><span class="unit"><input id="screwUpliftCap" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                  <label><span>Published lateral</span><span class="unit"><input id="screwLateralCap" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                  <label><span>Value basis</span><select id="screwCapacitySource"><option value="series">Series / certificate</option><option value="manufacturer">Manufacturer table</option><option value="geotech">Project geotechnical</option><option value="test">Load test</option><option value="user">User estimate</option></select></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <details class="screw-selected-details" hidden>
+            <summary><span><b>Detailed parameters</b><small>Geometry, source and controls.</small></span><i>+</i></summary>
+            <div class="screw-selected-grid">
+            <section>
+              <h3>Geometry and makeup</h3>
+              <dl class="screw-detail-grid">
+                <div><dt>System type</dt><dd id="screwSystem">Conventional steel screw pile</dd></div>
+                <div><dt>Shaft</dt><dd id="screwShaft">76.1 x 4.0 CHS</dd></div>
+                <div><dt>Diameter</dt><dd id="screwDiameter">76.1 mm OD</dd></div>
+                <div><dt>Wall</dt><dd id="screwWall">4.0 mm</dd></div>
+                <div><dt>Helix count</dt><dd id="screwHelixCount">1 helix</dd></div>
+                <div><dt>Helix / bearing element</dt><dd id="screwHelix">250 x 8 mm</dd></div>
+                <div><dt>Length / depth range</dt><dd id="screwLength">1.0-4.0 m series range noted</dd></div>
+                <div><dt>Extension</dt><dd id="screwExtension">0.5 m increments; extension sections available</dd></div>
+              </dl>
+            </section>
+            <section>
+              <h3>Selection controls</h3>
+              <dl class="screw-detail-grid">
+                <div><dt>Steel / material</dt><dd id="screwSteel">AS/NZS 1163 CHS, guide table</dd></div>
+                <div><dt>Soil requirement</dt><dd id="screwSoilRequirement">Stiff clay / dense sand indicator</dd></div>
+                <div><dt>Installation control</dt><dd id="screwInstallControl">Example guide correlation: 4000 Nm for 80 kN</dd></div>
+                <div><dt>Capacity basis</dt><dd id="screwCapacityBasis">Series class and published compression SWL.</dd></div>
+                <div><dt>Source</dt><dd id="screwSource">Katana Performance Guide Rev Z / CodeMark</dd></div>
+              </dl>
+            </section>
+            </div>
+          </details>
+
+        </section>
+      </section>
+
+      <details class="detail-card" id="screwDemandDetails">
+        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">OPTIONAL CHECK</span><b>Preliminary Pile-Group Action Distribution</b></span><small>Rectangular rigid-pad model; project design values required for comparison.</small></span><i>+</i></summary>
+        <div class="detail-body">
+          <section>
+            <h3>Design action effects at pile-group centroid</h3>
+            <div class="screw-basis-row">
+              <label><span>Action basis</span><select id="screwDemandBasis"><option value="uls">ULS design action effects</option><option value="sls">SLS design action effects</option><option value="service">Unfactored / service reference actions</option></select></label>
+              <p>Coordinates follow the project model. Positive M<sub>x</sub><sup>*</sup> increases compression at +y; positive M<sub>y</sub><sup>*</sup> at +x; positive T<sub>z</sub><sup>*</sup> acts counter-clockwise in the x-y plane.</p>
+            </div>
+            <div class="form-grid six">
+              <label><span>N<sup>*</sup> vertical</span><span class="unit"><input id="screwDemandN" type="number" step="1" value="0"><em>kN</em></span></label>
+              <label><span>V<sub>x</sub><sup>*</sup> horizontal</span><span class="unit"><input id="screwDemandVx" type="number" step="1" value="0"><em>kN</em></span></label>
+              <label><span>V<sub>y</sub><sup>*</sup> horizontal</span><span class="unit"><input id="screwDemandVy" type="number" step="1" value="0"><em>kN</em></span></label>
+              <label><span>M<sub>x</sub><sup>*</sup> moment</span><span class="unit"><input id="screwDemandMx" type="number" step="1" value="0"><em>kNm</em></span></label>
+              <label><span>M<sub>y</sub><sup>*</sup> moment</span><span class="unit"><input id="screwDemandMy" type="number" step="1" value="0"><em>kNm</em></span></label>
+              <label><span>T<sub>z</sub><sup>*</sup> torsion</span><span class="unit"><input id="screwDemandTz" type="number" step="1" value="0"><em>kNm</em></span></label>
+            </div>
+            <p class="result-note">N<sup>*</sup> &gt; 0 denotes compression. Include project eccentricities. Pile-position tolerance effects are excluded.</p>
+            <details class="screw-project-inputs">
+              <summary><span><b>Project comparison values</b><small>Optional; used instead of manufacturer reference values.</small></span><i>+</i></summary>
+              <div class="form-grid five">
+                <label><span>Compression, R<sub>c,proj</sub></span><span class="unit"><input id="screwProjectCompression" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                <label><span>Tension, R<sub>t,proj</sub></span><span class="unit"><input id="screwProjectTension" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                <label><span>Horizontal, R<sub>h,proj</sub></span><span class="unit"><input id="screwProjectHorizontal" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
+                <label><span>Value basis</span><select id="screwProjectBasis"><option value="uls">ULS design resistance</option><option value="sls">SLS acceptance value</option><option value="service">Unfactored / service reference</option></select></label>
+                <label><span>Source reference</span><input id="screwProjectSource" type="text" placeholder="Report, certificate or test"></label>
+              </div>
+              <p class="result-note">Use values issued for the selected pile, ground model and load direction. The value basis must match the action basis. Combined axial-horizontal interaction is not assessed.</p>
+            </details>
+          </section>
+          <section>
+            <h3>Rectangular layout</h3>
+            <div class="form-grid five screw-layout-inputs">
+              <label><span>Arrangement</span><select id="screwLayout"><option value="rect-perimeter">Perimeter rows</option><option value="rect-grid">Full grid</option></select></label>
+              <label><span id="screwPileColumnsLabel">Piles per X edge, n<sub>x</sub></span><input id="screwPileColumns" type="number" min="2" max="8" step="1" value="3"></label>
+              <label><span id="screwPileRowsLabel">Piles per Y edge, n<sub>y</sub></span><input id="screwPileRows" type="number" min="2" max="8" step="1" value="3"></label>
+              <label><span>Group span, L<sub>x</sub></span><span class="unit"><input id="screwGroupLengthX" type="number" min="0.1" step="0.1" value="3.0"><em>m</em></span></label>
+              <label><span>Group span, L<sub>y</sub></span><span class="unit"><input id="screwGroupLengthY" type="number" min="0.1" step="0.1" value="3.0"><em>m</em></span></label>
+            </div>
+            <p class="result-note" id="screwLayoutNote">Counts include corner piles. L<sub>x</sub> and L<sub>y</sub> are centre-to-centre spans between outer piles.</p>
+            <div class="interaction-result screw-demand-result"><span id="screwDemandComparisonLabel">Action distribution only</span><strong id="screwDemandRatio">Not assessed</strong><b id="screwDemandStatus">No demand entered</b></div>
+          </section>
+          <section>
+            <h3>Pile reactions</h3>
+            <div class="screw-demand-metrics">
+              <div><span>Pile count</span><strong id="screwDemandPileCount">8</strong></div>
+              <div><span>Maximum compression action</span><strong id="screwDemandCompression">0.0 kN</strong><small id="screwDemandCompressionPile">Pile -</small></div>
+              <div><span>Maximum tension action</span><strong id="screwDemandUplift">0.0 kN</strong><small id="screwDemandUpliftPile">Pile -</small></div>
+              <div><span>Maximum horizontal action</span><strong id="screwDemandLateral">0.0 kN</strong><small id="screwDemandLateralPile">Pile -</small></div>
+            </div>
+            <div class="table-scroll">
+              <table class="compact-lookup-table screw-reaction-table">
+                <thead><tr><th>Pile</th><th>x<sub>i</sub></th><th>y<sub>i</sub></th><th>N<sub>i</sub><sup>*</sup> axial</th><th>State</th><th>V<sub>i</sub><sup>*</sup> resultant</th></tr></thead>
+                <tbody id="screwReactionRows"></tbody>
+              </table>
+            </div>
+          </section>
+          <section>
+            <h3>Formula and limits</h3>
+            <div id="screwDemandFormulaSteps" class="formula-list"></div>
+            <p class="checklist-warning">Derived action distribution only. Complete AS 2159 pile/group resistance, movement, pile structural design, durability, connection, installation and testing checks separately.</p>
+          </section>
+        </div>
+      </details>
+
+      <details class="source-card">
+        <summary><span><b>Basis / limits</b><small>Scope and source status</small></span><i>+</i></summary>
+        <div class="source-body">
+          <div class="source-notes">
+            <p><b>Scope</b> - Product selection and preliminary action effects for a symmetric rectangular pile group.</p>
+            <p><b>Assumptions</b> - Rigid pad; vertical identical piles; equal axial stiffness in compression and tension; equal lateral stiffness; centroidal actions; no pad-soil resistance; one ULS or SLS basis.</p>
+            <p><b>Not covered</b> - AS 2159 pile/group/block resistance, settlement or rotation, soil-pile lateral response, combined axial-horizontal interaction, pile bending or positional tolerance, cap/head connection, durability, installation or test acceptance.</p>
+            <p><b>Comparison</b> - Manufacturer values are not compared automatically. A project directional comparison requires entered project values, a source reference and a value basis matching the action basis.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.5.0 local</b></footer>
-  <script src="app.js?v=20260706beamsection2"></script>
+  <script src="app.js?v=20260711screwsimple1"></script>
 </body>
 </html>

@@ -748,7 +748,7 @@ The web page is still part of `SC Handbook`. It must follow the same source hier
 
 Use this checklist before editing, reviewing, committing, or pushing any web-tab work:
 
-1. Confirm the active app root is `C:\桌面\SC Handbook` and the affected files are `index.html`, `app.js`, `styles.css`, and, where durable rules changed, `SC_HANDBOOK.md`.
+1. Confirm the active app root is the current `SC Handbook` checkout and the affected files are `index.html`, `app.js`, `styles.css`, and, where durable rules changed, `SC_HANDBOOK.md`.
 2. Keep the UI English-only and use Australian engineering language.
 3. Check the local reference folder first: `C:\Users\silin\Documents\Codex\Reference`.
 4. If the governing source cannot be found or read, tell the user and mark the item `Source_Not_Verified`; do not present it as checked.
@@ -757,7 +757,7 @@ Use this checklist before editing, reviewing, committing, or pushing any web-tab
 7. Main capacity titles may use the `RESULTS` tag; detailed-check headings should not repeat it when it makes the hierarchy noisy.
 8. Keep phone layout readable: wrap rows, avoid horizontal overflow, and collapse secondary material where practical.
 9. Run basic checks before commit: `git status --short`, `git diff --stat`, JavaScript syntax check, and a DOM id reference check where JavaScript ids changed.
-10. Push only reviewed `Bolt Capacity`, `Member Capacity`, and accepted global framework changes in this chat.
+10. Push only reviewed, accepted tab changes and accepted global framework changes.
 
 ### 15.1 Web Product Logic
 
@@ -796,7 +796,6 @@ Current core tabs:
 
 Future tabs may include:
 
-- `Weld Capacity`
 - `Plate Capacity`
 - `Base Plate`
 - `Section Properties`
@@ -943,17 +942,17 @@ Use standard engineering notation consistently.
 
 Formula notation:
 
-- Use `φ` for design capacity expressions where the capacity factor is included.
-- If a formula is shown as a design capacity, include `φ` in the displayed expression.
+- Use `&phi;` in HTML source for design capacity expressions where the capacity factor is included.
+- If a formula is shown as a design capacity, include the rendered `&phi;` symbol in the displayed expression.
 - Prefer bracketed expressions when the capacity factor applies to the whole term.
 - Do not mix nominal-capacity notation and design-capacity notation without explaining the difference.
 
 Examples:
 
-- `φ(3.2d_f t_p f_up)`
-- `φ(a_e t_p f_up)`
-- `φ(0.85k_t A_n f_u)`
-- `0.90 × 3.2 × d_f × t_p × f_up`
+- `&phi;(3.2d_f t_p f_up)`
+- `&phi;(a_e t_p f_up)`
+- `&phi;(0.85k_t A_n f_u)`
+- `0.90 &times; 3.2 &times; d_f &times; t_p &times; f_up`
 
 Subscript and superscript rules:
 
@@ -965,7 +964,7 @@ Subscript and superscript rules:
   - `k<sub>t</sub>`
   - `V<sup>*</sup>`
   - `N<sup>*</sup>`
-- Do not display plain-text engineering notation such as `A_n`, `k_t`, `αb`, `V*`, or `N*` in the final UI when proper subscript or superscript notation is intended.
+- Do not display plain-text engineering notation such as `A_n`, `k_t`, `alpha_b`, `V*`, or `N*` in the final UI when proper subscript, superscript, or Greek notation is intended.
 - This rule applies to static HTML and JavaScript-generated text. If a generated result note or warning contains fixed trusted engineering notation, render it with `innerHTML` so the notation displays correctly, for example `A<sub>n</sub>`, `k<sub>t</sub>`, `&alpha;<sub>b</sub>`, `V<sup>*</sup>`, and `N<sup>*</sup>`.
 
 Standard, clause, table, figure and section references:
@@ -1015,7 +1014,7 @@ Input grouping:
 - Do not force all input cards into one desktop row. Use multiple engineering rows when equal-width cards make labels, units or controls cramped.
 - Effective length, checked radius, gross area and similar member geometry/restraint values belong with `Section properties` or geometry inputs, not `Relevant factors`.
 - `Relevant factors` should be reserved for coefficients, reduction factors, category modifiers and code factors such as `alpha_b`, `k_t`, `k_r`, `k_h`, `phi`, `M_t` or similar.
-- For `Custom / Built-up` inputs, keep the same engineering card sequence and switch fields inside each card. Custom geometry and effective lengths belong in `Section properties`; custom `k_f` and `alpha_b` values belong in `Relevant factors`. Do not add separate custom-only cards unless the value group has a different engineering purpose.
+- For `Custom / Built-up properties` inputs, keep the same engineering card sequence and switch fields inside each card. User-defined effective section properties and effective lengths belong in `Section properties`; custom `k_f` and `alpha_b` values belong in `Relevant factors`. Do not add separate custom-only cards unless the value group has a different engineering purpose.
 - Keep fully manual project inputs visually distinct from values selected from a lookup table, derived by the app, or defaulted from a cited source but still editable.
 - Fully manual inputs include design actions, actual dimensions, effective length, net area, material strengths entered from project documents, and connection-specific values.
 - Lookup / derived / overrideable inputs include catalogue section selection, standard category selection, table-based factors, default correction factors, and editable factors such as `alpha_b`, `k_t`, `k_r`, or `k_h` when the page provides a cited default or lookup basis.
@@ -1095,6 +1094,7 @@ Web engineering figure and chart rules:
 - For generated bitmap assets, keep the source script or generation method traceable where practical, and export at a resolution suitable for the displayed web size. Do not use large bitmap files when a compact SVG or Canvas drawing is sufficient.
 - Figures copied or redrawn from standards, handbooks, catalogues, or online sources must follow the source hierarchy and copyright rules below. A drawing used as a visual guide must not become the source of numeric properties unless the source explicitly provides those values.
 - If a figure cannot be verified against a standard, handbook, manufacturer document, or accepted project convention, label it as a draft visual guide or leave it out.
+- Existing or inherited page figures are not automatically compliant with this drawing standard. Before describing any figure as CAD-style, proportional, value-driven, or source-checked, review it against the drawing-accuracy class, annotation rules, source basis, and desktop/phone layout checks in this section.
 
 Technical diagram and symbol rules:
 
@@ -1234,6 +1234,29 @@ Bolt result checks should include:
 - The main result should show one final `Governing capacity check` ratio only. Put supporting ratios, including the AS 4100 Cl. 9.2.2.3 combined bolt interaction ratio, in calculation steps rather than as competing primary result cards.
 - The default connected-ply tensile strength should not be an orphan number. Use f<sub>up</sub> = 410 MPa only as the AS/NZS 3678 Grade 250 plate default; use 440 MPa only for verified AS/NZS 3679.1 Grade 300 flat bar/section or another stated source.
 
+U-bolt product lookup branch:
+
+- Treat U-bolt lookup as a manufacturer product branch inside the Bolt tab, not as an AS 4100 ordinary bolt-capacity calculation path.
+- For telecom headframe use, filter in this order: application, rod size, fit diameter or member range, finish/environment, brand or manufacturer, then product. Default the common screen to M12 and outdoor HDG products.
+- Follow the Standard bolt branch layout: grouped inputs, one selected-product confirmation strip, one primary published-product result, then one collapsed basis-and-limitations panel.
+- Split the six U-bolt selectors into two three-field groups: `Project requirement` for application, rod size and fit; `Product source` for finish, brand or manufacturer, and catalogue entry. For custom manufacture, change the latter labels to `Manufacturing source` and `Manufacturing entry`.
+- Keep the selected-entry strip compact. Show `Product reference`, `Rod size`, `Member fit`, `Finish` and `Supplier`; place brand or manufacturer and series in the supporting line. Put additional manufacturer-stated geometry and material/coating in one collapsed `Published dimensions and material` row without repeating the confirmation values.
+- Where only one published product load is reported, use one full-width horizontal result rather than a single narrow card in a three-column result grid.
+- Show source status once in the result heading. Do not repeat lookup/status tags below the primary result.
+- In U-bolt mode, replace the AS 4100 bolt-capacity page identity with `U-bolt Product Lookup`, `U-bolt products · manufacturer data` and `Manufacturer data · no design capacity`. Use `PRODUCT DATA`, not `RESULTS`, for the primary manufacturer-data section.
+- Keep mounting-pipe / round-member products separate from beam or channel clamp assemblies. Main headframe-to-monopole clamps are OEM or project-engineered assemblies and are outside the standard-product lookup.
+- Required row fields are brand or manufacturer, supplier, product family, product code, thread or rod size, pipe/tube fit, material/finish, published capacity, capacity direction and source status.
+- Keep catalogue brands separate from supply channels. Use `Brand / manufacturer` for the filter and show `Supplier` independently in the selected-entry confirmation strip. Where no supply channel is explicitly supported by the source record, display `Not specified`; do not substitute the manufacturer name.
+- Use a separate `Custom / project-manufactured` application for traceable made-to-order U-bolts. Do not present custom manufacturing capability as a stocked product or published capacity.
+- Show published capacity only where the manufacturer source states a rated load, working load, WLL, SWL, recommended load or equivalent basis.
+- Label each value using its published basis, such as `Manufacturer working load` or `Manufacturer-rated load`. Where no value is published, show `No rated load published`; do not use a generic capacity label that implies design resistance.
+- Where a manufacturer publishes a working load but its direction or assembly applicability has not been verified, display the published value and basis but do not calculate an action ratio.
+- Do not show generic N*, V* or M* inputs, or a utilisation ratio, in the product-lookup branch. Project actions cannot be compared until the manufacturer load condition and action basis are both verified.
+- If a future manufacturer record provides a directional allowable load, any comparison must use a compatible project action basis and the matching published load condition. Do not compare ultimate design actions directly with Working Load or ASD Allowable Load.
+- Keep the priority project checks concise within the collapsed basis-and-limitations panel: U-bolt and thread strength, leg-force distribution and bend effects; clamp slip, contact and local bearing/crushing; attachment details and prying; fatigue, corrosion, installation and inspection.
+- If no published capacity is available, show `No published rated capacity` or `Not published`, mark the item `Source_Not_Verified`, and do not report an action ratio.
+- Do not derive U-bolt product capacity from AS 4100 ordinary bolt shear or tension equations. Those checks belong to the connected steelwork or fastener components where applicable.
+
 Minimum edge distance and ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
 
 For the web bolt tab, separate the edge-distance terms visibly:
@@ -1256,7 +1279,7 @@ Current member calculators:
 - `Equal Angle`
 - `PFC`
 - `Rod`
-- `Custom / Built-up`
+- `Custom / Built-up properties`
 
 Member checks should include, where applicable:
 
@@ -1290,7 +1313,7 @@ Connection- and axis-dependent terms must stay explicit:
 - Use table-derived default `alpha_b` values where the selected section family and embedded `k_f` condition match AS 4100 Table 6.3.3. Apply Table 6.3.3(A) when `k_f = 1.0` and Table 6.3.3(B) when `k_f < 1.0`. For the current member tab, this means cold-formed non-stress-relieved CHS = -0.5, PFC with `k_f = 1.0` = 0.5, Equal Angle with `k_f = 1.0` = 0.5, Equal Angle with `k_f < 1.0` = 1.0 as `other sections not listed` in Table 6.3.3(B), and Rod / solid round bar with `k_f = 1.0` = 0.5 as `other sections not listed` in Table 6.3.3(A). State the table row in the lookup panel and calculation steps. Do not ask the user to manually choose `alpha_b` unless the page provides an explicit advanced override for a different table row, axis, fabrication condition, or `k_f` case.
 - AS 4100 Cl. 6.2 compression section capacity must be written as `N_s = k_f A_n f_y`, with design capacity `phi N_s = 0.90 k_f A_n f_y`. Do not replace `A_n` with `A_g` in the displayed formula. Catalogue examples and unholed member tables may calculate the same value using `A_g` only because `A_n = A_g` for an unperforated section. The calculation steps must state this assumption when no holes or penetrations are entered.
 - Calculation examples should make the area basis explicit: `no holes: A_n = A_g`; `straight-line hole deduction only: A_n = A_g - n_h d_h t`; `manual net area: A_n` is user/project verified. Keep these examples short and use them to explain the limitation, not to expand the tab into a full connection-design tool.
-- Treat radius of gyration `r` as an axis-dependent compression input. AS 4100 slenderness uses `L_e/r` about the checked buckling axis; therefore a one-axis quick check may default to the governing catalogue/geometry value such as `r_min`, but the default must be visible and editable. CHS and Rod defaults may be geometry-derived because the radius is the same about any centroidal axis. EA/PFC defaults should state the catalogue/quick-check basis. Custom / Built-up input should keep separate `r_x`, `r_y`, `L_ex` and `L_ey` and report the governing axis.
+- Treat radius of gyration `r` as an axis-dependent compression input. AS 4100 slenderness uses `L_e/r` about the checked buckling axis; therefore a one-axis quick check may default to the governing catalogue/geometry value such as `r_min`, but the default must be visible and editable. CHS and Rod defaults may be geometry-derived because the radius is the same about any centroidal axis. EA/PFC defaults should state the catalogue/quick-check basis. Custom / Built-up properties input should keep separate `r_x`, `r_y`, `L_ex` and `L_ey` and report the governing axis.
 - Do not imply `k_f` is automatically derived from simplified custom family geometry unless the AS 4100 form-factor calculation is explicitly implemented. If custom Equal Angle dimensions are entered, state the current `k_f` source and require verification for slender angle geometry.
 
 #### 15.11.2 Selected Member Summary
@@ -1320,7 +1343,9 @@ The `Selected member` strip is a quick geometry and assumption lookup. It should
 
 #### 15.11.4 Custom Member Geometry
 
-- `Custom / Built-up` member input may use user-entered effective properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`.
+- `Custom / Built-up properties` member input may use user-entered effective properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`.
+- Treat this mode as a verified section-property-calculation quick check. If the source report gives `I_x` and `I_y`, the user should enter `r_x = sqrt(I_x / A_g)` and `r_y = sqrt(I_y / A_g)`.
+- Hide catalogue section-guide imagery in this mode because no standard section geometry is being selected.
 - Calculate compression about both entered axes and report the governing `phi N_c`.
 - State clearly that the source section calculation, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, local buckling derivation and connection eccentricity are not verified by the web tab.
 - CHS / Equal Angle / PFC / Rod may include a family-specific dimension override inside the Section properties card.
@@ -1477,7 +1502,73 @@ The optional vertical-fitment input row should be titled `Shear reinforcement`, 
 
 The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
 
-### 15.15 Web Local Update and Deployment Workflow
+### 15.15 Screw Piles Selector Web Tab Rules
+
+The Screw Piles Selector is a product-selection aid with an optional pile-group action-distribution model. It is not an AS 2159 pile design engine.
+
+Use this primary workflow:
+
+1. Select a supplier and one published product.
+2. Show the selected product's essential published values, geometry, source status and principal limitation.
+3. Keep the `Preliminary Pile-Group Action Distribution` collapsed and secondary to product selection.
+
+Use `Not published` rather than zero or an inferred value. The selected-product summary must prioritise:
+
+- direction-specific compression, tension and lateral values, where published;
+- system SWL, indicative rating or typical benchmark only when clearly labelled as such;
+- shaft diameter and wall thickness;
+- helix or bearing-element count, diameter and thickness;
+- length, extension or splice basis;
+- installation criterion, maximum allowable installation torque, pile-head connection and durability information as separate fields;
+- per-pile, complete-system or benchmark basis, together with the source load terminology (`SWL`, indicative rating or basis not stated);
+- direct source link and data status: `Published directional values`, `Compression SWL up to`, `System SWL up to`, `Indicative system rating`, `Typical SWL benchmark`, `Geometry only` or `Project input`;
+- concise visible source labels such as `Published + local certificate`, `Manufacturer published`, `Supplier range`, `Manufacturer dimensions`, `Published benchmark` or `Project input`; detailed local-pack status remains in traceability documentation rather than the main selector.
+
+Do not infer uplift or lateral resistance from a compression series class. Manufacturer dimensions, system ratings and typical benchmarks must not be presented as project design strengths.
+
+The optional Preliminary Pile-Group Action Distribution may use a perimeter-row or full-grid rectangular layout. It is a derived rigid-pad equilibrium model, not a clause-prescribed AS 2159 resistance calculation. For the generated symmetric layouts, `sum(x_i) = sum(y_i) = sum(x_i y_i) = 0`, and:
+
+- `N_i* = N*/n + M_x* y_i / sum(y_j^2) + M_y* x_i / sum(x_j^2)`;
+- `V_x,i* = V_x*/n - T_z* y_i / sum(r_j^2)`;
+- `V_y,i* = V_y*/n + T_z* x_i / sum(r_j^2)`;
+- `V_i* = sqrt[(V_x,i*)^2 + (V_y,i*)^2]`.
+
+State these assumptions with the result:
+
+- rigid pad and symmetric rectangular layout;
+- vertical identical piles;
+- equal axial stiffness in compression and tension;
+- equal lateral stiffness;
+- actions applied at the pile-group centroid on one consistent ULS or SLS basis;
+- action basis identified as ULS design action effects, SLS design action effects or unfactored/service reference actions;
+- positive `M_x*` increases compression at `+y`, positive `M_y*` increases compression at `+x`, and positive `T_z*` acts counter-clockwise in the x-y plane;
+- project eccentricities included in the supplied actions;
+- no pad-soil bearing or lateral-resistance contribution.
+
+Report maximum compression action, tension action and resultant horizontal action with the relevant pile number. Apply these comparison rules:
+
+- manufacturer values, including direction-specific product values and published `up to` values, must not be compared automatically in the Quick Check;
+- without entered project values, report pile action effects only and do not report a utilisation ratio;
+- project values may produce a project-value comparison only when a source reference is entered and the project value basis matches the action basis;
+- place optional `R_c,proj`, `R_t,proj` and `R_h,proj` inputs inside the Optional Check, not in the selected-product summary;
+- indicative system ratings and typical technique benchmarks must not be used in the ratio;
+- where a demanded direction has no qualifying value, report the missing direction rather than a complete ratio.
+
+The page does not calculate AS 2159 design geotechnical or structural strength. A project-value comparison relies entirely on the entered project source and basis, and does not assess combined axial-horizontal interaction.
+
+Required AS 2159 boundaries:
+
+- Cl. 3.2.2: action effects, structural strength and geotechnical strength remain distinct checks;
+- Cl. 4.4.3.1: pile-group interaction and group/block geotechnical resistance remain project checks;
+- Cl. 4.5: settlement, lateral deflection and rotation remain project serviceability checks;
+- Cl. 5.2.2: pile bending, positional tolerance and pile-cap force transfer remain project structural checks;
+- Cl. 7.3.5.3: installation torque, shaft overstress, calibrated monitoring and installation acceptance remain project controls.
+
+Durability remains a selected-product limitation; this selector does not perform the AS 2159 exposure classification or corrosion design. If a future exposure input is added, use `Non-aggressive`, `Mild`, `Moderate`, `Severe` and `Very severe`, plus `Not assessed`, rather than informal labels. Also exclude pile-head and splice design, cyclic/dynamic response, liquefaction, pile-position tolerance analysis, installation refusal and load-test acceptance. Ground/application filters may change the selection guidance, but must not alter published product values.
+
+Validation must include supplier/product selection states; equilibrium checks for axial force, biaxial moment, direct horizontal action and torsion; perimeter and full-grid pile counts; compression/tension sign convention; manufacturer-value exclusion; missing project direction values; project source missing; project/action basis mismatch; and a valid same-basis project comparison.
+
+### 15.16 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
@@ -1492,7 +1583,7 @@ Preferred workflow:
 
 Current GitHub Pages repo:
 
-- Local repo: `C:\桌面\SC Handbook`
+- Local repo: current `SC Handbook` checkout.
 - Remote: `https://github.com/Pikatiu27/SC-handbook.git`
 - Branch: `main`
 - Published page: `https://pikatiu27.github.io/SC-handbook/`
@@ -1500,7 +1591,7 @@ Current GitHub Pages repo:
 Standard push sequence:
 
 ```powershell
-cd "C:\桌面\SC Handbook"
+cd "<SC Handbook checkout>"
 git status --short
 git diff --stat
 git diff
@@ -1519,7 +1610,7 @@ Rules before committing:
 - Only `git add` the files that belong to the accepted change.
 - Do not push experimental tabs, draft calculators, or unverified standard formulas.
 - If any formula, factor, table value, symbol convention, or product property is `Source_Not_Verified`, report the gap to the user before commit/push and keep it out of any verified calculator release unless the user explicitly accepts it as draft or placeholder content.
-- In this chat, deploy only reviewed `Bolt Capacity`, `Member Capacity`, and accepted global framework changes.
+- Deploy only reviewed, accepted tab changes and accepted global framework changes.
 
 Rules after pushing:
 

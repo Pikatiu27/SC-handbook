@@ -20,6 +20,298 @@ const categories = {
   "10.9/TF": { grade: "10.9", fuf: 1040, type: "friction", preload: "preload109", description: "fully tensioned, friction" }
 };
 
+const uBoltProducts = [
+  {
+    id: "hilti-mp-ub-oc-m10",
+    application: "Mounting pipe / round member",
+    manufacturer: "Hilti",
+    series: "MP-UB OC metric",
+    product: "MP-UB OC M10 family",
+    code: "r12293804 family",
+    thread: "M10",
+    fitKey: "D 60-89 mm",
+    fit: "MP-UB 60-89 range",
+    finish: "Outdoor HDG",
+    material: "Q235 or better steel - outdoor HDG - C3/C4-low",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The Australian product page publishes geometry, finish and application data, but no rated structural capacity.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Hilti Australia MP-UB OC metric product page",
+    sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
+  },
+  {
+    id: "hilti-mp-ub-oc-m12",
+    application: "Mounting pipe / round member",
+    manufacturer: "Hilti",
+    series: "MP-UB OC metric",
+    product: "MP-UB OC M12 family",
+    code: "r12293804 family",
+    thread: "M12",
+    fitKey: "D 102-324 mm",
+    fit: "MP-UB 102-324 range",
+    finish: "Outdoor HDG",
+    material: "Q235 or better steel - outdoor HDG - C3/C4-low",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The Australian product page publishes geometry, finish and application data, but no rated structural capacity.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Hilti Australia MP-UB OC metric product page",
+    sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
+  },
+  {
+    id: "hilti-mp-ub-oc-m20",
+    application: "Mounting pipe / round member",
+    manufacturer: "Hilti",
+    series: "MP-UB OC metric",
+    product: "MP-UB OC M20 option",
+    code: "r12293804 family",
+    thread: "M20",
+    fitKey: "350 mm nominal",
+    fit: "350 mm nominal - verify configured item",
+    finish: "Outdoor HDG",
+    material: "Q235 or better steel - outdoor HDG - C3/C4-low",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The Australian configurator lists an M20 option; confirm the selected item geometry before specification.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Hilti Australia MP-UB OC metric product page",
+    sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
+  },
+  {
+    id: "hilti-mqt-f-m12",
+    application: "Beam / channel clamp assembly",
+    manufacturer: "Hilti",
+    series: "MQT-F beam clamp",
+    product: "MQT-F M12 beam clamp family",
+    code: "r2937 family",
+    thread: "M12",
+    fitKey: "MQ strut / steel beam",
+    fit: "MQ strut to steel beam",
+    finish: "Outdoor HDG",
+    material: "S235-series steel U-bolt - outdoor HDG - C3/C4-low",
+    publishedCapacity: "Not published",
+    capacityDirection: "Assembly-specific",
+    capacityBasis: "This is a beam-clamp assembly. Use the configured Hilti item and assembly data; do not treat it as a free U-bolt capacity.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Hilti Australia MQT-F beam clamp product page",
+    sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_SYS_CONNECTORS_INT/r2937"
+  },
+  ...[
+    { d: 60, code: "E14-060H", thread: "M10", workingLoad: "752 kg" },
+    { d: 76, code: "E14-076H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 89, code: "E14-089H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 102, code: "E14-102H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 114, code: "E14-114H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 140, code: "E14-140H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 165, code: "E14-165H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 219, code: "E14-219H", thread: "M16", workingLoad: "2,069 kg" },
+    { d: 273, code: "E14-273H", thread: "M20", workingLoad: "3,252 kg" }
+  ].map(row => ({
+    id: `ezystrut-${row.code.toLowerCase()}`,
+    application: "Mounting pipe / round member",
+    manufacturer: "EzyStrut",
+    series: "E14 Heavy Duty U Bolt HDG",
+    product: `E14 Heavy Duty U Bolt - D ${row.d} mm`,
+    code: row.code,
+    thread: row.thread,
+    fitKey: `D ${row.d} mm`,
+    fit: `Pipe / round member D ${row.d} mm`,
+    finish: "Outdoor HDG",
+    material: "AS/NZS 1594 steel - HDG to AS/NZS 4680",
+    publishedCapacity: `${row.workingLoad} working load`,
+    capacityDirection: "Load direction not stated",
+    capacityBasis: "Manufacturer working load with a stated 3:1 safety factor. Verify load direction and complete assembly applicability before project use.",
+    sourceStatus: "Source_Checked",
+    sourceName: "EzyStrut E14 Heavy Duty U Bolt HDG product table",
+    sourceUrl: "https://www.ezystrut.com.au/products/pipe-support-systems/u-bolts/e14h/"
+  })),
+  ...[
+    { nb: 50, d: 60, l: 110, t: 50, code: "KURMSGCM100060", thread: "M10" },
+    { nb: 65, d: 76, l: 127, t: 50, code: "KURMSGCM120076", thread: "M12" },
+    { nb: 80, d: 89, l: 140, t: 50, code: "KURMSGCM120089", thread: "M12" },
+    { nb: 90, d: 102, l: 152, t: 50, code: "KURMSGCM120102", thread: "M12" },
+    { nb: 100, d: 114, l: 165, t: 50, code: "KURMSGCM120114", thread: "M12" },
+    { nb: 125, d: 140, l: 190, t: 50, code: "KURMSGCM120140", thread: "M12" },
+    { nb: 150, d: 165, l: 215, t: 50, code: "KURMSGCM120165", thread: "M12" },
+    { nb: 150, d: 168, l: 220, t: 50, code: "KURMSGCM120168", thread: "M12" },
+    { nb: 200, d: 219, l: 295, t: 75, code: "KURMSGCM160219", thread: "M16" },
+    { nb: 250, d: 273, l: 370, t: 100, code: "KURMSGCM200273", thread: "M20" },
+    { nb: 300, d: 324, l: 420, t: 100, code: "KURMSGCM200324", thread: "M20" }
+  ].map(row => ({
+    id: `hobson-${row.code.toLowerCase()}`,
+    application: "Mounting pipe / round member",
+    manufacturer: "Hobson Engineering",
+    supplier: "Hobson Engineering",
+    series: "Metric Round U Bolt Kit",
+    product: `HDG round U-bolt - ${row.nb}NB / D ${row.d} mm`,
+    code: row.code,
+    thread: row.thread,
+    fitKey: `D ${row.d} mm`,
+    fit: `${row.nb}NB pipe / D ${row.d} mm - L ${row.l} mm`,
+    finish: "Outdoor HDG",
+    material: `Mild steel - HDG - two nuts - thread length ${row.t} mm`,
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The official technical sheet publishes product geometry and pack data, but no rated structural capacity.",
+    sourceStatus: "Source_Checked",
+    sourceName: "Hobson Engineering U Bolts technical sheet",
+    sourceUrl: "https://cdn.hobson.com.au/documents/tech-ubolts-230426.pdf"
+  })),
+  ...[
+    { nb: 65, d: 76, l: 153, t: 89, code: "CSWUBNB06", thread: "M12" },
+    { nb: 80, d: 89, l: 180, t: 100, code: "CSWUBNB07", thread: "M12" },
+    { nb: 90, d: 102, l: 200, t: 100, code: "CSWUBRTMS45G", thread: "M12" },
+    { nb: 100, d: 114, l: 165, t: 100, code: "CSWUBNB08", thread: "M12" },
+    { nb: 125, d: 141, l: 200, t: 100, code: "CSWUBRTMS55G", thread: "M12" },
+    { nb: 150, d: 165, l: 220, t: 100, code: "CSWUBNB09", thread: "M12" }
+  ].map(row => ({
+    id: `csw-${row.code.toLowerCase()}`,
+    application: "Mounting pipe / round member",
+    manufacturer: "CSW Products",
+    supplier: "CSW Products",
+    series: "U Bolts Nominal Bore Pipe",
+    product: `Galvanised pipe U-bolt - ${row.nb}NB / D ${row.d} mm`,
+    code: row.code,
+    thread: row.thread,
+    fitKey: `D ${row.d} mm`,
+    fit: `${row.nb}NB pipe / D ${row.d} mm - L ${row.l} mm`,
+    finish: "Galvanised - verify coating",
+    material: `Mild steel - thread rolled - thread length ${row.t} mm`,
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The reviewed catalogue publishes geometry and a galvanised finish, but no rated capacity or coating standard. Confirm current availability and finish before use.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "CSW Products catalogue - U Bolts Nominal Bore Pipe",
+    sourceUrl: "https://www.cswproducts.com.au/content/products/CSWCatalogue11.pdf"
+  })),
+  ...[
+    { w: 40, l: 110, t: 50, code: "CSWUBST21" },
+    { w: 50, l: 100, t: 50, code: "CSWUBST22" },
+    { w: 50, l: 170, t: 50, code: "CSWUBST23" },
+    { w: 75, l: 150, t: 50, code: "CSWUBST26" }
+  ].map(row => ({
+    id: `csw-${row.code.toLowerCase()}`,
+    application: "Beam / channel clamp assembly",
+    manufacturer: "CSW Products",
+    supplier: "CSW Products",
+    series: "U Bolts Square Top Galvanised",
+    product: `Galvanised square-top M12 - W ${row.w} x L ${row.l} mm`,
+    code: row.code,
+    thread: "M12",
+    fitKey: `Square W ${row.w} x L ${row.l} mm`,
+    fit: `Square member / W ${row.w} x L ${row.l} mm`,
+    finish: "Galvanised - verify coating",
+    material: `Mild steel - thread rolled - thread length ${row.t} mm`,
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "The reviewed catalogue publishes geometry and a galvanised finish, but no rated capacity or coating standard. Confirm current availability and finish before use.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "CSW Products catalogue - U Bolts Square Top Galvanised",
+    sourceUrl: "https://www.cswproducts.com.au/content/products/CSWCatalogue11.pdf"
+  })),
+  {
+    id: "allthread-custom-ubolt",
+    application: "Custom / project-manufactured",
+    manufacturer: "Allthread Industries",
+    supplier: "Allthread Industries",
+    series: "Custom thread-rolled bolt manufacture",
+    product: "Custom traceable U-bolt",
+    code: "Project-specific",
+    thread: "Project-specific",
+    fitKey: "Custom geometry",
+    fit: "Project-specific geometry",
+    finish: "Project-specified",
+    material: "Project-specified material, thread and coating",
+    publishedCapacity: "Project-specific",
+    capacityDirection: "Project-specific",
+    capacityBasis: "Manufacturer capability and traceability are published. Obtain the certified drawing, material certificate, testing, coating and rated capacity for the ordered product.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Allthread Industries manufacturing capability",
+    sourceUrl: "https://allthread.com.au/"
+  },
+  ...[
+    { code: "F21050", beamWidth: "64-102 mm" },
+    { code: "F21100", beamWidth: "127-190 mm" },
+    { code: "F21150", beamWidth: "210-270 mm" }
+  ].map(row => ({
+    id: `unistrut-${row.code.toLowerCase()}`,
+    application: "Beam / channel clamp assembly",
+    manufacturer: "Unistrut",
+    series: "F21000 Heavy Duty Beam Clamp",
+    product: `F21000 beam clamp - ${row.beamWidth} beam width`,
+    code: row.code,
+    thread: "M12",
+    fitKey: `Beam ${row.beamWidth}`,
+    fit: `Beam width ${row.beamWidth}`,
+    finish: "Outdoor HDG",
+    material: "50 x 5 steel strip - M12 U-bolt - HDG",
+    publishedCapacity: "Not published",
+    capacityDirection: "Assembly-specific",
+    capacityBasis: "The catalogue identifies the M12 U-bolt beam-clamp assembly and geometry, but no rated capacity is published in the reviewed table.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Unistrut Australia electrical and mechanical catalogue",
+    sourceUrl: "https://unistrut.com.au/wp-content/uploads/2021/06/2018-08-unistrut-australia-catalogue-web.pdf"
+  })),
+  {
+    id: "anzor-pipe-ubp6051m10",
+    application: "General pipe support",
+    manufacturer: "Anzor",
+    series: "Pipe U Bolts",
+    product: "2 Pipe x M10 316 U Bolt",
+    code: "UBP6051M10",
+    thread: "M10",
+    fitKey: "2 in pipe",
+    fit: "2 in pipe",
+    finish: "Stainless steel",
+    material: "316 stainless steel",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "No manufacturer-rated capacity in the reviewed product listing.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Anzor Pipe U Bolts product listing",
+    sourceUrl: "https://www.anzor.com.au/tube-pipe-fittings/u-bolts/pipe-u-bolts"
+  },
+  {
+    id: "anzor-tube-ubm612nb90",
+    application: "General pipe support",
+    manufacturer: "Anzor",
+    series: "Tube U Bolts",
+    product: "M12 x 90 NB 316 U-Bolt Kit",
+    code: "UBM612NB90",
+    thread: "M12",
+    fitKey: "90 NB",
+    fit: "90 NB",
+    finish: "Stainless steel",
+    material: "316 stainless steel",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "No manufacturer-rated capacity in the reviewed product listing.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Anzor Tube U Bolts product listing",
+    sourceUrl: "https://www.anzor.com.au/tube-pipe-fittings/u-bolts/tube-u-bolts"
+  },
+  {
+    id: "anzor-marine-mfubsm408115",
+    application: "General pipe support",
+    manufacturer: "Anzor",
+    series: "Marine Shouldered U Bolts",
+    product: "S547 M8 x 115 304 Shouldered U Bolt",
+    code: "MFUBSM408115",
+    thread: "M8",
+    fitKey: "115 mm shouldered",
+    fit: "115 mm shouldered",
+    finish: "Stainless steel",
+    material: "304 stainless steel",
+    publishedCapacity: "Not published",
+    capacityDirection: "Not published",
+    capacityBasis: "No manufacturer-rated capacity in the reviewed product listing.",
+    sourceStatus: "Source_Not_Verified",
+    sourceName: "Anzor Shouldered U Bolts product listing",
+    sourceUrl: "https://www.anzor.com.au/marine-deck-hardware/u-bolts/shouldered-u-bolts"
+  }
+];
+
 let edgeBoltCountManual = false;
 
 const weldSizes = [3, 4, 5, 6, 8, 10, 12, 16];
@@ -31,27 +323,27 @@ const parentMetalGrades = {
 const weldTypeData = {
   fillet: {
     label: "Fillet",
-    note: "AS 4100 direct weld capacity for effective throat area",
-    throatNote: "equal-leg fillet: 0.707s",
-    scope: "ordinary fillet-weld throat check"
+    note: "AS 4100 throat-capacity check",
+    throatNote: "equal-leg fillet: t_t = 0.707s",
+    scope: "fillet-weld throat capacity"
   },
   cpbw: {
     label: "CPBW",
-    note: "weld-metal throat capacity only; connected part and inspection may govern",
-    throatNote: "complete penetration: use joint thickness entered as a_w",
-    scope: "capacity view for complete-penetration butt weld"
+    note: "weld-metal throat capacity only",
+    throatNote: "complete penetration: use entered a_w",
+    scope: "complete-penetration butt-weld capacity view"
   },
   ipbw: {
     label: "IPBW",
-    note: "weld-metal throat capacity only; effective throat must be specified",
-    throatNote: "incomplete penetration: use specified effective throat a_w",
-    scope: "capacity view for incomplete-penetration butt weld"
+    note: "specified throat capacity only",
+    throatNote: "incomplete penetration: use specified a_w",
+    scope: "incomplete-penetration butt-weld capacity view"
   },
   compound: {
     label: "Compound",
-    note: "combined throat capacity only; project detail governs",
+    note: "combined throat capacity only",
     throatNote: "compound throat: a_w + 0.707s",
-    scope: "capacity view for butt weld with superimposed fillet"
+    scope: "butt weld plus superimposed fillet capacity view"
   }
 };
 const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentThickness", "weldParentGrade"];
@@ -279,7 +571,7 @@ const rodSections = [
 }));
 
 const customSections = [{
-  designation: "Custom / Built-up",
+  designation: "Custom / Built-up properties",
   grades: { "User input": { fy: 350, fu: 450, kf: 1 } }
 }];
 
@@ -288,10 +580,1079 @@ const chsGrades = {
   C350L0: { fy: 350, fu: 430, kf: 1 }
 };
 
+const screwPileCatalogues = {
+  katana: {
+    label: "Katana",
+    sourceUrl: "https://katanafoundations.com.au/wp-content/uploads/2024/12/241001-Katana-Screw-Pile-_-Performance-Guide.pdf",
+    defaultSeries: "katana-80",
+    series: {
+      "katana-40": {
+        label: "Katana 40 kN series",
+        system: "Conventional steel screw pile",
+        axialClass: 40,
+        compression: 40,
+        uplift: 0,
+        lateral: 0,
+        capacityType: "compression-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "60.3 x 4.5 CHS",
+        diameter: "60.3 mm OD",
+        wall: "4.5 mm",
+        steel: "AS/NZS 1163 CHS, guide table",
+        helixCount: "1 helix",
+        helix: "200 mm dia x 8 mm plate",
+        length: "1.0 m lead; extensions by design",
+        extension: "Available on request",
+        soilRequirement: "Geotechnical strength controls; guide basis is stiff/dense founding soil",
+        installControl: "Use project torque/test acceptance",
+        source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13",
+        defaultSource: "manufacturer",
+        capacityBasis: "Compression SWL up to 40 kN in the stated guide conditions; available on request and outside current CodeMark scope.",
+        note: "Smaller upon-request series. Confirm availability, certificate scope and installation torque before selection."
+      },
+      "katana-80": {
+        label: "Katana 80 kN series",
+        system: "Conventional steel screw pile",
+        axialClass: 80,
+        compression: 80,
+        uplift: 0,
+        lateral: 0,
+        capacityType: "compression-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "76.1 x 4.0 CHS",
+        diameter: "76.1 mm OD",
+        wall: "4.0 mm",
+        steel: "AS/NZS 1163 CHS, guide table",
+        helixCount: "1 helix",
+        helix: "250 mm dia x 8 mm plate",
+        length: "1.0-4.0 m series range noted",
+        extension: "0.5 m increments; extension sections available",
+        soilRequirement: "Stiff clay / dense sand indicator; soft or loose material needs test confirmation",
+        installControl: "Example guide correlation: 4000 Nm for 80 kN in stiff/dense soils",
+        source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13; CodeMark CM30096 Rev 6",
+        defaultSource: "series",
+        capacityBasis: "Compression SWL up to 80 kN in stiff clay/dense sand; within the current CodeMark series scope.",
+        note: "Common CodeMark-compliant series. Lateral graph is available for 80 kN clay/sand cases; do not select by axial class alone."
+      },
+      "katana-100": {
+        label: "Katana 100 kN series",
+        system: "Conventional steel screw pile",
+        axialClass: 100,
+        compression: 100,
+        uplift: 0,
+        lateral: 0,
+        capacityType: "compression-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "76.1 x 4.0 CHS",
+        diameter: "76.1 mm OD",
+        wall: "4.0 mm",
+        steel: "AS/NZS 1163 CHS, guide table",
+        helixCount: "1 helix",
+        helix: "300 mm dia x 8 mm plate",
+        length: "1.0-4.0 m series range noted",
+        extension: "0.5 m increments; helix extension option noted",
+        soilRequirement: "Geotechnical strength controls; confirm final torque and founding layer",
+        installControl: "Use SWL vs torque table and project acceptance",
+        source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13; CodeMark CM30096 Rev 6",
+        defaultSource: "series",
+        capacityBasis: "Compression SWL up to 100 kN in stiff clay/dense sand; within the current CodeMark series scope.",
+        note: "Same shaft as 80 kN with larger helix. Check helix size, torque and pile spacing before adopting."
+      },
+      "katana-150": {
+        label: "Katana 150 kN series",
+        system: "Conventional steel screw pile",
+        axialClass: 150,
+        compression: 150,
+        uplift: 0,
+        lateral: 0,
+        capacityType: "compression-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "88.9 x 5.5 CHS",
+        diameter: "88.9 mm OD",
+        wall: "5.5 mm",
+        steel: "AS/NZS 1163 CHS, guide table",
+        helixCount: "1 helix",
+        helix: "350 mm dia x 10 mm plate",
+        length: "1.0-4.0 m series range noted",
+        extension: "0.5 m increments; helix extension option noted",
+        soilRequirement: "Geotechnical strength controls; confirm final torque and founding layer",
+        installControl: "Use SWL vs torque table and project acceptance",
+        source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13; CodeMark CM30096 Rev 6",
+        defaultSource: "series",
+        capacityBasis: "Compression SWL up to 150 kN in stiff clay/dense sand; within the current CodeMark series scope.",
+        note: "Larger shaft and helix. Lateral graph is available for 150 kN clay/sand cases; head fixity remains project-specific."
+      },
+      "katana-200": {
+        label: "Katana 200 kN series",
+        system: "Conventional steel screw pile",
+        axialClass: 200,
+        compression: 200,
+        uplift: 0,
+        lateral: 0,
+        capacityType: "compression-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "88.9 x 5.5 CHS",
+        diameter: "88.9 mm OD",
+        wall: "5.5 mm",
+        steel: "AS/NZS 1163 CHS, guide table",
+        helixCount: "2 helices",
+        helix: "350 mm dia x 10 mm plate each",
+        length: "1.0-4.0 m series range noted",
+        extension: "0.5 m increments; extension sections available",
+        soilRequirement: "Geotechnical strength controls; pile group and helix spacing need review",
+        installControl: "Use SWL vs torque table and project acceptance",
+        source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13; CodeMark CM30096 Rev 6",
+        defaultSource: "series",
+        capacityBasis: "Compression SWL up to 200 kN in stiff clay/dense sand; within the current CodeMark series scope.",
+        note: "Two-helix option. Check inter-helix behaviour, pile spacing and installation torque before adopting."
+      },
+      "katana-250": {
+        label: "Katana 250 kN series",
+        system: "Conventional steel screw pile",
+        axialClass: 250,
+        compression: 250,
+        uplift: 0,
+        lateral: 0,
+        capacityType: "compression-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "114.3 x 6.0 CHS",
+        diameter: "114.3 mm OD",
+        wall: "6.0 mm",
+        steel: "AS/NZS 1163 CHS, guide table",
+        helixCount: "1 helix",
+        helix: "450 mm dia x 12 mm plate",
+        length: "1.0-4.0 m series range noted",
+        extension: "0.5 m increments; project-specific",
+        soilRequirement: "Commercial-load option; confirm founding layer and installation equipment capacity",
+        installControl: "Use SWL vs torque table and project acceptance",
+        source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13",
+        defaultSource: "manufacturer",
+        capacityBasis: "Compression SWL up to 250 kN; available on request and outside current CodeMark scope.",
+        note: "Higher-capacity commercial option. Check product availability, equipment torque and project certificate."
+      },
+      "katana-300": {
+        label: "Katana 300 kN series",
+        system: "Conventional steel screw pile",
+        axialClass: 300,
+        compression: 300,
+        uplift: 0,
+        lateral: 0,
+        capacityType: "compression-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "114.3 x 6.0 CHS",
+        diameter: "114.3 mm OD",
+        wall: "6.0 mm",
+        steel: "AS/NZS 1163 CHS, guide table",
+        helixCount: "2 helices",
+        helix: "450 mm dia x 12 mm plate each",
+        length: "1.0-4.0 m series range noted",
+        extension: "0.5 m increments; project-specific",
+        soilRequirement: "Commercial-load option; confirm founding layer and installation equipment capacity",
+        installControl: "Use SWL vs torque table and project acceptance",
+        source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13",
+        defaultSource: "manufacturer",
+        capacityBasis: "Compression SWL up to 300 kN; available on request and outside current CodeMark scope.",
+        note: "Largest Katana guide option captured here. Treat as manufacturer/project-confirmed selection, not simple residential default."
+      }
+    }
+  },
+  ideal: {
+    label: "Ideal Foundations",
+    sourceUrl: "https://www.idealfoundations.com.au/wp-content/uploads/sites/2/Screw_Pier_Specifiers_Technical_Guide-Ideal_Foundations.pdf",
+    series: {
+      "ideal-85": {
+        label: "Ideal modular 85 kN",
+        system: "Modular screw pier",
+        axialClass: 85,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 85,
+        capacityType: "system-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "76 x 4.0 CHS",
+        diameter: "76 mm OD",
+        wall: "4.0 mm",
+        steel: "C350L0 / API 5L / AS 1163 basis",
+        helixCount: "1 helix",
+        helix: "300 mm cast helix",
+        length: "1.0-3.0 m shafts; max depth up to 6 m",
+        extension: "Bolted modular extensions",
+        soilRequirement: "Min 200 kPa unfactored; DCP 8 blows/100 mm min",
+        installControl: "Install to specified pressure/torque; record Nm for every pier",
+        source: "Specifiers Technical Guide v1.2, selection table p. 8",
+        defaultSource: "manufacturer",
+        capacityBasis: "System SWL up to 85 kN for the guide row; confirm the selected option and load direction.",
+        note: "Off-the-shelf modular system. Use uplift/lateral values only from Ideal/project design."
+      },
+      "ideal-120": {
+        label: "Ideal 120 kN system",
+        system: "Manufactured screw pier",
+        axialClass: 120,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 120,
+        capacityType: "system-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "76 x 5.0 CHS",
+        diameter: "76 mm OD",
+        wall: "5.0 mm",
+        steel: "C350L0 / API 5L / AS 1163 basis",
+        helixCount: "1 helix",
+        helix: "280 mm cast helix",
+        length: "1.0-4.0 m shafts; max depth up to 9 m",
+        extension: "Extensions by system design",
+        soilRequirement: "Min 300 kPa unfactored; DCP 12 blows/100 mm min",
+        installControl: "Install to specified pressure/torque; record Nm for every pier",
+        source: "Specifiers Technical Guide v1.2, selection table p. 8",
+        defaultSource: "manufacturer",
+        capacityBasis: "System SWL up to 120 kN for the guide row; confirm the selected option and load direction.",
+        note: "Residential/commercial transition option. Select the helix form to match soil and project demand."
+      },
+      "ideal-200": {
+        label: "Ideal 200 kN system",
+        system: "Manufactured screw pier",
+        axialClass: 200,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 200,
+        capacityType: "system-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "88.9 x 5.5 CHS",
+        diameter: "88.9 mm OD",
+        wall: "5.5 mm",
+        steel: "C350L0 / API 5L / AS 1163 basis",
+        helixCount: "Helix or plate option",
+        helix: "280/350 mm helix or 400 mm plate",
+        length: "2.0-4.0 m shafts; max depth up to 12 m",
+        extension: "Extensions by system design",
+        soilRequirement: "Min 450 kPa unfactored; DCP 18 blows/100 mm min",
+        installControl: "Install to specified pressure/torque; record Nm for every pier",
+        source: "Specifiers Technical Guide v1.2, selection table p. 8",
+        defaultSource: "manufacturer",
+        capacityBasis: "System SWL up to 200 kN for the guide row; confirm the selected option and load direction.",
+        note: "Higher capacity manufactured range. Helix choice and soil class drive the selection."
+      },
+      "ideal-300": {
+        label: "Ideal 300 kN system",
+        system: "Manufactured screw pier",
+        axialClass: 300,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 300,
+        capacityType: "system-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "114 x 6.0 CHS",
+        diameter: "114 mm OD",
+        wall: "6.0 mm",
+        steel: "C350L0 / API 5L / AS 1163 basis",
+        helixCount: "Helix or plate option",
+        helix: "350/450 mm helix or 400/500 mm plate",
+        length: "2.0-6.0 m shafts; max depth up to 16 m",
+        extension: "Extensions by system design",
+        soilRequirement: "Min 600 kPa or rock 750 kPa; DCP 24+ to rock",
+        installControl: "Install to specified pressure/torque; record Nm for every pier",
+        source: "Specifiers Technical Guide v1.2, selection table p. 8",
+        defaultSource: "manufacturer",
+        capacityBasis: "System SWL up to 300 kN for the guide row; confirm the selected option and load direction.",
+        note: "Heavy manufactured range. Confirm equipment, founding stratum and pier head details."
+      },
+      "ideal-500-168": {
+        label: "Ideal 500 kN system - 168 mm",
+        system: "Manufactured screw pier",
+        axialClass: 500,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 500,
+        capacityType: "system-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "168 x 6.4 CHS",
+        diameter: "168 mm OD",
+        wall: "6.4 mm",
+        steel: "C350L0 / API 5L / AS 1163 basis",
+        helixCount: "Helix or plate option",
+        helix: "350/450 mm helix or 500 mm plate",
+        length: "2.0-6.0 m shafts; max depth up to 20 m",
+        extension: "Welded/manufactured extensions",
+        soilRequirement: "Rock founding, 1250 kPa+ guide basis",
+        installControl: "Project installation pressure/torque and certification required",
+        source: "Specifiers Technical Guide v1.2, selection table p. 8",
+        defaultSource: "manufacturer",
+        capacityBasis: "System SWL up to 500 kN for the 168 mm guide row; project design required.",
+        note: "Heavy project-specific screw pier. Not a simple catalogue pick without geotechnical and supplier design."
+      },
+      "ideal-500-219-64": {
+        label: "Ideal 500 kN system - 219 x 6.4 mm",
+        system: "Manufactured screw pier",
+        axialClass: 500,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 500,
+        capacityType: "system-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "219 x 6.4 CHS",
+        diameter: "219 mm OD",
+        wall: "6.4 mm",
+        steel: "C350L0 / API 5L / AS 1163 basis",
+        helixCount: "Helix or plate option",
+        helix: "450 mm helix or 600/750 mm plate",
+        length: "2.0-6.0 m shafts; max depth up to 30 m",
+        extension: "Welded/manufactured extensions",
+        soilRequirement: "Rock founding, 1250 kPa+ guide basis",
+        installControl: "Project installation pressure/torque and certification required",
+        source: "Specifiers Technical Guide v1.2, selection table p. 8",
+        defaultSource: "manufacturer",
+        capacityBasis: "System SWL up to 500 kN for the 219 x 6.4 mm guide row; project design required.",
+        note: "Deep heavy-pier option. Confirm the selected plate, shaft length and project resistance."
+      },
+      "ideal-500-219-82": {
+        label: "Ideal 500 kN system - 219 x 8.2 mm",
+        system: "Manufactured screw pier",
+        axialClass: 500,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 500,
+        capacityType: "system-swl-up-to",
+        comparisonBasis: "reference",
+        shaft: "219 x 8.2 CHS",
+        diameter: "219 mm OD",
+        wall: "8.2 mm",
+        steel: "C350L0 / API 5L / AS 1163 basis",
+        helixCount: "Plate option",
+        helix: "600 mm plate",
+        length: "2.0-6.0 m shafts; max depth up to 30 m",
+        extension: "Welded/manufactured extensions",
+        soilRequirement: "Rock founding, 1250 kPa+ guide basis",
+        installControl: "Project installation pressure/torque and certification required",
+        source: "Specifiers Technical Guide v1.2, selection table p. 8",
+        defaultSource: "manufacturer",
+        capacityBasis: "System SWL up to 500 kN for the 219 x 8.2 mm guide row; project design required.",
+        note: "Heavy-wall deep-pier option. Confirm plate geometry, torsional capacity and project resistance."
+      }
+    }
+  },
+  blade: {
+    label: "Blade Pile",
+    sourceUrl: "https://bladepile.com.au/screw-piles/",
+    defaultSeries: "blade-76",
+    series: {
+      "blade-76": {
+        label: "Blade Pile 76 mm residential",
+        system: "Round-shaft or twin-blade screw pile",
+        axialClass: 100,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 100,
+        capacityType: "typical-benchmark",
+        comparisonBasis: "reference",
+        shaft: "76.1 x 4.0 CHS",
+        diameter: "76.1 mm OD",
+        wall: "4.0 mm",
+        steel: "450 MPa minimum yield stated for 76 mm shafts",
+        helixCount: "Single blade or twin-blade option",
+        helix: "250-300 mm blade; 8/10 mm plate",
+        length: "Project-selected lead and extensions",
+        extension: "Bolt connection noted",
+        soilRequirement: "AS 2159 project design; geotechnical report controls",
+        installControl: "Record final torque, depth and founding stratum",
+        source: "Blade Pile screw-pile product page",
+        defaultSource: "manufacturer",
+        capacityBasis: "Public page indicates 76 mm residential piles up to 100 kN SWL; direction and soil case must be confirmed.",
+        note: "Use as a residential/light-commercial prompt. Uplift, lateral resistance, settlement and durability remain project design items."
+      },
+      "blade-88": {
+        label: "Blade Pile 88.9 mm range",
+        system: "Round-shaft or twin-blade screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "88.9 x 5.5 CHS",
+        diameter: "88.9 mm OD",
+        wall: "5.5 mm",
+        steel: "350 MPa minimum yield stated for larger shafts",
+        helixCount: "Single blade or twin-blade option",
+        helix: "250-400 mm blade; 10-16 mm plate",
+        length: "Project-selected lead and extensions",
+        extension: "Bolt connection noted",
+        soilRequirement: "AS 2159 project design; geotechnical report controls",
+        installControl: "Record final torque, depth and founding stratum",
+        source: "Blade Pile screw-pile product page",
+        defaultSource: "user",
+        capacityBasis: "Geometry range only in the selector; enter certified resistance before checking actions.",
+        note: "Intermediate shaft range. Confirm blade configuration and resistance from the supplier/project design."
+      },
+      "blade-114": {
+        label: "Blade Pile 114 mm commercial",
+        system: "Round-shaft or twin-blade screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "114 x 6.0 CHS",
+        diameter: "114 mm OD",
+        wall: "6.0 mm",
+        steel: "350 MPa minimum yield stated for larger shafts",
+        helixCount: "Single blade or twin-blade option",
+        helix: "250-500 mm blade; 10-20 mm plate",
+        length: "Project-selected lead and extensions",
+        extension: "Bolt connection noted",
+        soilRequirement: "AS 2159 project design; geotechnical report controls",
+        installControl: "Record final torque, depth and founding stratum",
+        source: "Blade Pile screw-pile product page",
+        defaultSource: "user",
+        capacityBasis: "Commercial range is project-dependent; obtain project compression, tension and horizontal values.",
+        note: "Commercial candidate. Do not infer resistance from shaft diameter alone."
+      },
+      "blade-heavy": {
+        label: "Blade Pile heavy range",
+        system: "Heavy round-shaft screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "141 / 168 / 219 / 273 mm CHS",
+        diameter: "141-273 mm OD",
+        wall: "6.0 / 7.1 / 8.2 / 12.7 mm",
+        steel: "350 MPa minimum yield stated for larger shafts",
+        helixCount: "Project-selected blades",
+        helix: "200-700 mm blade; project dependent",
+        length: "Project-specific depth and extensions",
+        extension: "Bolt or engineered connection by design",
+        soilRequirement: "Project geotechnical design and installation method statement required",
+        installControl: "High-torque installation and load-test regime by project",
+        source: "Blade Pile screw-pile product page",
+        defaultSource: "user",
+        capacityBasis: "Source identifies heavy project range; this row is dimensions-only until certified resistance is entered.",
+        note: "Heavy civil/commercial prompt. Capacity, settlement, buckling and durability are not catalogue defaults."
+      },
+      "blade-multi": {
+        label: "Blade Pile multi-helix range",
+        system: "Multi-helix screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "88.9-323 mm CHS",
+        diameter: "88.9-323 mm OD",
+        wall: "Supplier/project selected",
+        steel: "350 MPa minimum yield stated for larger shafts",
+        helixCount: "Multiple helices",
+        helix: "Project-selected blade stack",
+        length: "Project-specific depth and extensions",
+        extension: "Engineered splice or coupler by design",
+        soilRequirement: "Inter-helix spacing and founding layers require geotechnical design",
+        installControl: "Torque, depth and refusal criteria by project",
+        source: "Blade Pile screw-pile product page",
+        defaultSource: "user",
+        capacityBasis: "Source identifies a multi-helix product family; enter certified direction-specific resistance.",
+        note: "Use where a larger bearing zone or uplift resistance is needed. Verify helix spacing and group interaction."
+      }
+    }
+  },
+  piletech: {
+    label: "Piletech",
+    sourceUrl: "https://www.piletech.com.au/screw-piling",
+    defaultSeries: "piletech-range",
+    series: {
+      "piletech-range": {
+        label: "Piletech 76-323.9 mm range",
+        system: "Project-designed screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "76-323.9 mm CHS",
+        diameter: "76-323.9 mm OD",
+        wall: "Project-selected",
+        steel: "Supplier/project specification",
+        helixCount: "Single or multiple flights",
+        helix: "300-850 mm helix range",
+        length: "Single lengths up to 9 m; deeper projects noted",
+        extension: "Shop or site-welded extensions by design",
+        soilRequirement: "Site-specific geotechnical report and project design required",
+        installControl: "Rig torque, final depth and welding QA records required",
+        source: "Piletech screw-piling product page",
+        defaultSource: "user",
+        capacityBasis: "Public range notes high axial-load capability, but no row-specific compression, tension or horizontal resistance is embedded.",
+        note: "Project-designed contractor range. Use the row to frame an enquiry, then enter certified resistance values."
+      },
+      "piletech-heavy": {
+        label: "Piletech heavy/deep range",
+        system: "Heavy project-designed screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "219-323.9 mm CHS",
+        diameter: "219-323.9 mm OD",
+        wall: "Project-selected",
+        steel: "Supplier/project specification",
+        helixCount: "Multiple flights possible",
+        helix: "Large helix up to 850 mm",
+        length: "Deep installation by project method statement",
+        extension: "Engineered splice/weld by design",
+        soilRequirement: "High-capacity foundations need geotechnical design, settlement check and load testing",
+        installControl: "High-capacity torque equipment and QA hold points required",
+        source: "Piletech screw-piling product page",
+        defaultSource: "user",
+        capacityBasis: "Dimensions and installation capability prompt only; resistance must be project-certified.",
+        note: "Use for heavy civil enquiries. Check torsional capacity, weld QA, installation tolerance and testing scope."
+      }
+    }
+  },
+  driven: {
+    label: "Driven Engineering",
+    sourceUrl: "https://drivenengineering.com.au/product-category/screw-piles/",
+    defaultSeries: "driven-76",
+    series: {
+      "driven-76": {
+        label: "Driven 76.1 mm product row",
+        system: "Conventional steel screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "76.1 x 4.8 CHS",
+        diameter: "76.1 mm OD",
+        wall: "4.8 mm",
+        steel: "Supplier product specification required",
+        helixCount: "1 helix",
+        helix: "275 x 12 mm",
+        length: "3000 mm product row",
+        extension: "Coupler/flange details by product row",
+        soilRequirement: "Geotechnical resistance required before adoption",
+        installControl: "Use supplier installation torque and acceptance criteria",
+        source: "Driven Engineering screw-pile product category",
+        defaultSource: "user",
+        capacityBasis: "Public product row gives dimensions only; enter certified resistance before checking actions.",
+        note: "Procurement-size row. It helps shortlist geometry, not capacity."
+      },
+      "driven-88": {
+        label: "Driven 88.9 mm product row",
+        system: "Conventional steel screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "88.9 mm CHS",
+        diameter: "88.9 mm OD",
+        wall: "Supplier row to confirm",
+        steel: "Supplier product specification required",
+        helixCount: "1 helix",
+        helix: "275 x 12 mm",
+        length: "3000 mm product row",
+        extension: "Coupler/flange details by product row",
+        soilRequirement: "Geotechnical resistance required before adoption",
+        installControl: "Use supplier installation torque and acceptance criteria",
+        source: "Driven Engineering screw-pile product category",
+        defaultSource: "user",
+        capacityBasis: "Public product row gives dimensions only; enter certified resistance before checking actions.",
+        note: "Geometry option between common 76 mm and 114 mm ranges."
+      },
+      "driven-114": {
+        label: "Driven 114 mm product row",
+        system: "Conventional steel screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "114 mm CHS",
+        diameter: "114 mm OD",
+        wall: "Supplier row to confirm",
+        steel: "Supplier product specification required",
+        helixCount: "1 helix",
+        helix: "350 x 16 mm",
+        length: "3000 or 6000 mm product row",
+        extension: "Coupler/flange details by product row",
+        soilRequirement: "Geotechnical resistance required before adoption",
+        installControl: "Use supplier installation torque and acceptance criteria",
+        source: "Driven Engineering screw-pile product category",
+        defaultSource: "user",
+        capacityBasis: "Public product row gives dimensions only; enter certified resistance before checking actions.",
+        note: "Common medium commercial geometry. Confirm wall thickness and structural checks from supplier data."
+      },
+      "driven-168": {
+        label: "Driven 168 mm product row",
+        system: "Conventional steel screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "168 x 7.1 CHS",
+        diameter: "168 mm OD",
+        wall: "7.1 mm",
+        steel: "Supplier product specification required",
+        helixCount: "1 helix",
+        helix: "500 x 25 mm",
+        length: "3000 or 6000 mm product row",
+        extension: "Coupler/flange details by product row",
+        soilRequirement: "Geotechnical resistance required before adoption",
+        installControl: "Use supplier installation torque and acceptance criteria",
+        source: "Driven Engineering screw-pile product category",
+        defaultSource: "user",
+        capacityBasis: "Public product row gives dimensions only; enter certified resistance before checking actions.",
+        note: "Large product geometry. Check installability, torsional capacity and head connection before adoption."
+      },
+      "driven-219": {
+        label: "Driven 219 mm product row",
+        system: "Conventional steel screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "219 x 8.2 CHS",
+        diameter: "219 mm OD",
+        wall: "8.2 mm",
+        steel: "Supplier product specification required",
+        helixCount: "1 helix",
+        helix: "700 x 28 mm",
+        length: "3000 or 6000 mm product row",
+        extension: "Coupler/flange details by product row",
+        soilRequirement: "Geotechnical resistance required before adoption",
+        installControl: "Use supplier installation torque and acceptance criteria",
+        source: "Driven Engineering screw-pile product category",
+        defaultSource: "user",
+        capacityBasis: "Public product row gives dimensions only; enter certified resistance before checking actions.",
+        note: "Heavy product geometry. Treat as procurement information until supplier/geotechnical resistance is issued."
+      }
+    }
+  },
+  keller: {
+    label: "Keller",
+    sourceUrl: "https://www.keller.com/expertise/techniques/helical-screw-piles",
+    defaultSeries: "keller-typical",
+    series: {
+      "keller-typical": {
+        label: "Keller typical SWL range",
+        system: "Engineered helical screw pile",
+        axialClass: 300,
+        compression: 300,
+        uplift: 200,
+        lateral: 25,
+        capacityType: "typical-benchmark",
+        comparisonBasis: "none",
+        shaft: "Steel shaft; size by project",
+        diameter: "Project-selected",
+        wall: "Project-selected",
+        steel: "Supplier/project specification",
+        helixCount: "Helical flights by ground condition",
+        helix: "Various flight sizes",
+        length: "Advanced in sections to design depth",
+        extension: "Threaded, welded or bolted connection by system",
+        soilRequirement: "Subsurface ground conditions govern size, depth and resistance",
+        installControl: "Final torque reading over the last metre plus project acceptance criteria",
+        source: "Keller helical/screw piles technique page",
+        defaultSource: "manufacturer",
+        capacityBasis: "Public technique page gives typical SWL limits; verify project-specific resistance and settlement.",
+        note: "Useful benchmark for enquiry and preliminary comparison. Capacity remains ground-condition dependent."
+      }
+    }
+  },
+  minmetals: {
+    label: "Minmetals Helicast",
+    defaultSeries: "minmetals-helicast",
+    series: {
+      "minmetals-helicast": {
+        label: "Helicast cast-helix prompt",
+        system: "Cast-helix screw pile component",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "CHS selected to suit torque and resistance",
+        diameter: "Project-selected",
+        wall: "Project-selected",
+        steel: "Cast steel helix / supplier shaft specification",
+        helixCount: "Multi-turn cast helix option",
+        helix: "One-piece cast helix component",
+        length: "Project-specific pile length",
+        extension: "Supplier/project connection",
+        soilRequirement: "Hard-ground and high-torque use requires supplier design confirmation",
+        installControl: "Torque capacity, coupler and shaft wall thickness must be checked",
+        source: "Minmetals Helicast product note / supplier data required",
+        defaultSource: "user",
+        capacityBasis: "Product-family prompt only; no row-specific resistance embedded.",
+        note: "Use as a component enquiry prompt where cast helices may suit hard soils or higher installation torque."
+      }
+    }
+  },
+  surefoot: {
+    label: "Surefoot",
+    sourceUrl: "https://surefootwa.com.au/wp-content/uploads/2025/03/Indicative-Capacity-table-V8.5-002.pdf",
+    series: {
+      "surefoot-s150": {
+        label: "Surefoot S150 4W - rating 25 kN",
+        system: "Steel micro-pile footing",
+        axialClass: 25,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 25,
+        capacityType: "indicative-rating",
+        comparisonBasis: "none",
+        shaft: "25 NB mini micro piles",
+        diameter: "33.7 mm OD",
+        wall: "2.6 mm",
+        steel: "Galvanised mini pile",
+        helixCount: "No screw helix",
+        helix: "Micro piles through pile cap",
+        length: "Site-specific driven micro piles",
+        extension: "Not a conventional screw-pile extension system",
+        soilRequirement: "Site-specific soil and footing design required",
+        installControl: "Driven micro piles; not torque-selected screw pile",
+        source: "Indicative Capacity Table V8.5, pp. 1-3",
+        defaultSource: "manufacturer",
+        capacityBasis: "Maximum recommended system rating; actual gravity and uplift capacities depend on soil and embedment.",
+        note: "Alternative steel footing system, not a single screw pile. Use Surefoot/project certificate for uplift, shear and moment."
+      },
+      "surefoot-t150": {
+        label: "Surefoot T150 - rating 35 kN",
+        system: "Steel micro-pile footing",
+        axialClass: 35,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 35,
+        capacityType: "indicative-rating",
+        comparisonBasis: "none",
+        shaft: "3 x 32 NB micro piles",
+        diameter: "42.4 mm OD",
+        wall: "Light/medium/heavy pipe by design",
+        steel: "Galvanised pipe",
+        helixCount: "No screw helix",
+        helix: "3 driven micro piles",
+        length: "Site-specific driven micro piles",
+        extension: "Not a conventional screw-pile extension system",
+        soilRequirement: "Penetrable soils; site-specific soil type controls",
+        installControl: "Driven micro piles; typical install time about 10 min",
+        source: "Indicative Capacity Table V8.5, pp. 1-3",
+        defaultSource: "manufacturer",
+        capacityBasis: "Maximum recommended system rating; actual gravity and uplift capacities depend on soil and embedment.",
+        note: "Solar/fencing/decking footing option. Confirm uplift/shear/moment with Surefoot certification."
+      },
+      "surefoot-s250-8p": {
+        label: "Surefoot S250 8P - rating 100 kN",
+        system: "Steel micro-pile footing",
+        axialClass: 100,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 100,
+        capacityType: "indicative-rating",
+        comparisonBasis: "none",
+        shaft: "4, 6 or 8 x 32 NB micro piles",
+        diameter: "42.4 mm OD",
+        wall: "Light/medium/heavy pipe by design",
+        steel: "Galvanised pipe",
+        helixCount: "No screw helix",
+        helix: "2/3/4-way driven micro pile directions",
+        length: "Site-specific driven micro piles",
+        extension: "Multiple sleeve directions in cap",
+        soilRequirement: "Soil parameters set micro pile count and direction",
+        installControl: "Driven micro piles; use supplier/project certificate",
+        source: "Indicative Capacity Table V8.5, pp. 1-3",
+        defaultSource: "manufacturer",
+        capacityBasis: "Maximum recommended system rating; actual gravity and uplift capacities depend on soil and embedment.",
+        note: "Common light pole / camera pole footing option. Bending moment resistance depends on cap, micro-pile layout and soil."
+      },
+      "surefoot-s400": {
+        label: "Surefoot S400 12P - rating 200 kN",
+        system: "Steel micro-pile footing",
+        axialClass: 200,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 200,
+        capacityType: "indicative-rating",
+        comparisonBasis: "none",
+        shaft: "8, 10 or 12 micro piles possible",
+        diameter: "42.4 mm OD",
+        wall: "Light/medium/heavy pipe by design",
+        steel: "Galvanised pipe",
+        helixCount: "No screw helix",
+        helix: "Driven micro pile group",
+        length: "Site-specific driven micro piles",
+        extension: "Pile count set by engineering team",
+        soilRequirement: "Site-specific foundation and soil types",
+        installControl: "Driven micro piles; supplier/project certification required",
+        source: "Indicative Capacity Table V8.5, pp. 1-3",
+        defaultSource: "manufacturer",
+        capacityBasis: "Maximum recommended system rating; actual gravity and uplift capacities depend on soil and embedment.",
+        note: "Higher-load micro-pile footing used for solar, signs, shade and taller poles. Do not treat it as a single screw pile."
+      },
+      "surefoot-s600": {
+        label: "Surefoot S600 16P - rating 300 kN",
+        system: "Steel micro-pile footing",
+        axialClass: 300,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        rating: 300,
+        capacityType: "indicative-rating",
+        comparisonBasis: "none",
+        shaft: "16 x 32 NB micro piles",
+        diameter: "42.4 mm OD",
+        wall: "Light/medium/heavy pipe by design",
+        steel: "Galvanised pipe",
+        helixCount: "No screw helix",
+        helix: "16 driven micro piles",
+        length: "Site-specific driven micro piles",
+        extension: "Pile cap system; can be combined for higher moments",
+        soilRequirement: "Commercial/renewable projects; soil assessment by supplier engineer",
+        installControl: "Driven micro piles; typical install time about 40 min",
+        source: "Indicative Capacity Table V8.5, pp. 1-3",
+        defaultSource: "manufacturer",
+        capacityBasis: "Maximum recommended system rating; actual gravity and uplift capacities depend on soil and embedment.",
+        note: "Largest Surefoot option captured here. Use only with supplier design for high bending moment or lateral demand."
+      }
+    }
+  },
+  stopdigging: {
+    label: "StopDigging AU",
+    sourceUrl: "https://stopdigging.com.au/products/product-sheets/",
+    series: {
+      "sd-sgp-1200": {
+        label: "SGP adapter screw 1200",
+        system: "Light-duty ground screw",
+        axialClass: 12.5,
+        compression: 12.5,
+        uplift: 6.5,
+        lateral: 4.5,
+        capacityType: "directional-product",
+        comparisonBasis: "reference",
+        shaft: "SGP adapter screw",
+        diameter: "67 mm OD",
+        wall: "Product sheet not stated",
+        steel: "Galvanised steel, StopDigging sheet",
+        helixCount: "Continuous screw thread",
+        helix: "Integral ground-screw body",
+        length: "1200 mm",
+        extension: "No extension in selected sheet",
+        soilRequirement: "Ground conditions and quantity are calculated by installer/supplier",
+        installControl: "Installer selection and project confirmation",
+        source: "StopDigging SGP product sheet",
+        defaultSource: "manufacturer",
+        capacityBasis: "Product sheet provides compression, tensile and lateral capacities.",
+        note: "Lightweight adapter screw for small structures and solar racks. Not suitable for heavy pole/tower work without supplier design."
+      },
+      "sd-sgc-1600": {
+        label: "SGC adapter screw 1600",
+        system: "Ground screw",
+        axialClass: 35,
+        compression: 35,
+        uplift: 21.5,
+        lateral: 8.5,
+        capacityType: "directional-product",
+        comparisonBasis: "reference",
+        shaft: "SGC adapter screw",
+        diameter: "76 mm OD",
+        wall: "Product sheet not stated",
+        steel: "Galvanised steel, StopDigging sheet",
+        helixCount: "Continuous screw thread",
+        helix: "Integral ground-screw body",
+        length: "1600 mm",
+        extension: "No extension in selected sheet",
+        soilRequirement: "Ground conditions and quantity are calculated by installer/supplier",
+        installControl: "Installer selection and project confirmation",
+        source: "StopDigging SGC product sheet",
+        defaultSource: "manufacturer",
+        capacityBasis: "Product sheet provides compression, tensile and lateral capacities.",
+        note: "Useful for small prefabricated, solar or platform supports where published lateral value is needed."
+      },
+      "sd-sgc-2500": {
+        label: "SGC adapter screw 2500",
+        system: "Ground screw",
+        axialClass: 55,
+        compression: 55,
+        uplift: 41.5,
+        lateral: 14.5,
+        capacityType: "directional-product",
+        comparisonBasis: "reference",
+        shaft: "SGC adapter screw",
+        diameter: "76 mm OD",
+        wall: "Product sheet not stated",
+        steel: "Galvanised steel, StopDigging sheet",
+        helixCount: "Continuous screw thread",
+        helix: "Integral ground-screw body",
+        length: "2500 mm",
+        extension: "No extension in selected sheet",
+        soilRequirement: "Ground conditions and quantity are calculated by installer/supplier",
+        installControl: "Installer selection and project confirmation",
+        source: "StopDigging SGC product sheet",
+        defaultSource: "manufacturer",
+        capacityBasis: "Product sheet provides compression, tensile and lateral capacities.",
+        note: "Highest SGC option captured here. Still a ground screw, not a heavy helical pile."
+      },
+      "sd-sgn-89-2500": {
+        label: "SGN pipe screw 89 x 2500",
+        system: "Pipe ground screw",
+        axialClass: 55,
+        compression: 55,
+        uplift: 41.5,
+        lateral: 14.5,
+        capacityType: "directional-product",
+        comparisonBasis: "reference",
+        shaft: "SGN pipe screw",
+        diameter: "89 mm OD",
+        wall: "Product sheet not stated",
+        steel: "Galvanised steel, StopDigging sheet",
+        helixCount: "Continuous screw thread",
+        helix: "Integral ground-screw body",
+        length: "2500 mm",
+        extension: "No extension in selected sheet",
+        soilRequirement: "Ground conditions and quantity are calculated by installer/supplier",
+        installControl: "Installer selection and project confirmation",
+        source: "StopDigging SGN product sheet",
+        defaultSource: "manufacturer",
+        capacityBasis: "Product sheet provides compression, tensile and lateral capacities.",
+        note: "Pipe screw option for traffic signs, temporary fences and small pipe-supported items."
+      }
+    }
+  },
+  groundscrews: {
+    label: "Ground Screws Australia",
+    sourceUrl: "https://groundscrews.com.au/products/",
+    series: {
+      "gsa-os": {
+        label: "OS-Series - poles/signage",
+        system: "Australian ground screw family",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "Open section ground screw",
+        diameter: "Supplier selection",
+        wall: "Supplier selection",
+        steel: "C350 steel stated by supplier",
+        helixCount: "Ground screw profile",
+        helix: "Open section screw",
+        length: "Supplier selection",
+        extension: "Supplier selection",
+        soilRequirement: "Supplier design/certification required",
+        installControl: "Supplier/project installation method",
+        source: "Ground Screws Australia product range",
+        defaultSource: "user",
+        capacityBasis: "No public capacity table captured in this selector.",
+        note: "Listed as a product-family prompt for poles, masts, signage and fencing. Enter supplier design capacities before comparison."
+      },
+      "gsa-fca": {
+        label: "FCA-Series - solar",
+        system: "Australian ground screw family",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "Solar ground screw",
+        diameter: "Supplier selection",
+        wall: "Supplier selection",
+        steel: "C350 steel stated by supplier",
+        helixCount: "Ground screw profile",
+        helix: "Solar screw product",
+        length: "Supplier selection",
+        extension: "Supplier selection",
+        soilRequirement: "Supplier design/certification required",
+        installControl: "Supplier/project installation method",
+        source: "Ground Screws Australia product range",
+        defaultSource: "user",
+        capacityBasis: "No public capacity table captured in this selector.",
+        note: "Solar-focused product family. Use supplier resistance and project geotechnical confirmation."
+      }
+    }
+  },
+  hpa: {
+    label: "Helical Piles Australia",
+    sourceUrl: "https://helicalpilesaustralia.com.au/technical/",
+    series: {
+      "hpa-project": {
+        label: "HAI helical pile - project design",
+        system: "Engineered helical pile system",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        shaft: "2-3/8 to 7 in shaft families",
+        diameter: "Supplier-selected",
+        wall: "Supplier-selected",
+        steel: "HAI manual / supplier specification",
+        helixCount: "Single or multiple helices",
+        helix: "8-16 in helical plates in manual families",
+        length: "Leads and extensions by design",
+        extension: "Supplier-selected extensions",
+        soilRequirement: "Geotechnical design and installation torque/load test verification",
+        installControl: "Torque correlation plus load testing for critical work",
+        source: "Helical Piles Australia / HAI Engineering Manual",
+        defaultSource: "geotech",
+        capacityBasis: "Manual gives design method and product strength data, not a direct Australian capacity pick.",
+        note: "Use as an engineered helical-pile pathway. Enter project-specific compression, uplift and lateral capacities."
+      }
+    }
+  },
+  custom: {
+    label: "Custom / other",
+    series: {
+      custom: {
+        label: "Custom screw pile",
+        axialClass: 0,
+        compression: 0,
+        uplift: 0,
+        lateral: 0,
+        capacityType: "project",
+        comparisonBasis: "none",
+        shaft: "User-entered",
+        system: "User-defined system",
+        diameter: "User-entered",
+        wall: "User-entered",
+        steel: "User-entered",
+        helixCount: "User-entered",
+        helix: "User-entered",
+        length: "User-entered",
+        extension: "User-entered",
+        soilRequirement: "User-entered / project geotechnical report",
+        installControl: "User-entered / project specification",
+        source: "User-entered source",
+        defaultSource: "user",
+        capacityBasis: "User-entered resistance values.",
+        note: "Use this row for another manufacturer or a project-specific value."
+      }
+    }
+  }
+};
+
+const screwSoilRules = {
+  unknown: { label: "Unknown / no geotechnical report", severity: 2, note: "Require geotechnical report or proof load test." },
+  "controlled-fill": { label: "Controlled fill", severity: 1, note: "Check compaction, founding layer and torque record." },
+  "uncontrolled-fill": { label: "Uncontrolled fill", severity: 3, note: "Require geotechnical review or proof load test." },
+  "dense-sand": { label: "Dense sand / gravel", severity: 1, note: "Verify refusal and embedment." },
+  "loose-sand": { label: "Loose sand", severity: 2, note: "Review settlement, uplift and lateral movement." },
+  "stiff-clay": { label: "Stiff clay", severity: 1, note: "Check undrained strength and seasonal movement." },
+  "soft-clay": { label: "Soft clay", severity: 3, note: "Resistance and movement may govern. Require geotechnical review." },
+  "reactive-clay": { label: "Reactive clay", severity: 2, note: "Check shrink/swell movement and head restraint." },
+  "rock-refusal": { label: "Rock / refusal likely", severity: 3, note: "Check installability; consider pre-drill, socket or alternative footing." },
+  "saturated-sand": { label: "Saturated sand / liquefaction", severity: 4, note: "Geotechnical review required." },
+  "sensitive-clay": { label: "Sensitive clay", severity: 4, note: "Specialist geotechnical review required." }
+};
+
+const screwInputIds = [
+  "screwManufacturer", "screwSeries", "screwApplication", "screwCompressionCap", "screwUpliftCap", "screwLateralCap",
+  "screwCapacitySource", "screwSoil", "screwExposure", "screwInstallEvidence", "screwLateralSensitivity",
+  "screwDemandBasis", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwProjectBasis", "screwProjectSource",
+  "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz",
+  "screwLayout", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY"
+];
+
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
-const toolNames = ["bolt", "member", "beam", "weld", "concrete"];
+const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw"];
+let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";
 const manualInputIds = [
@@ -301,16 +1662,19 @@ const manualInputIds = [
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
+  "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
   "memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD",
   "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
   "boltSize", "category", "shearPlane", "kr", "edgeCondition", "holeFactor",
+  "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteComposite", "concreteSeparatePad", "concreteShearReo", "concreteShearBar",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
   "beamSection", "beamGrade",
+  "screwManufacturer", "screwSeries", "screwApplication", "screwCapacitySource", "screwSoil", "screwExposure", "screwInstallEvidence", "screwLateralSensitivity", "screwDemandBasis", "screwProjectBasis", "screwProjectSource", "screwLayout",
   "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberNetAreaMode", "memberKt", "memberDimensionOverride"
 ];
 
@@ -549,6 +1913,166 @@ function calculateBolt() {
     <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8. TF categories also require the separate serviceability slip checks above.</code></div>`;
 }
 
+function uniqueSorted(list, key) {
+  return [...new Set(list.map(item => item[key]))].sort((a, b) => String(a).localeCompare(String(b)));
+}
+
+function setUBoltOptions(selectId, values, options = {}) {
+  const select = $(selectId);
+  const previous = select.value;
+  const hadOptions = select.options.length > 0;
+  const entries = options.allLabel
+    ? [{ value: "", label: options.allLabel }, ...values.map(value => ({ value, label: value }))]
+    : values.map(value => ({ value, label: value }));
+  select.innerHTML = entries.map(entry => `<option value="${safeText(entry.value)}">${safeText(entry.label)}</option>`).join("");
+  if (hadOptions && entries.some(entry => entry.value === previous)) select.value = previous;
+  else if (options.preferred && entries.some(entry => entry.value === options.preferred)) select.value = options.preferred;
+  else if (entries.length) select.value = entries[0].value;
+}
+
+function filteredUBoltProducts(includeManufacturer = true) {
+  const application = $("uBoltApplication")?.value;
+  const rodSize = $("uBoltRodSize")?.value;
+  const fit = $("uBoltFitFilter")?.value;
+  const finish = $("uBoltFinish")?.value;
+  const manufacturer = $("uBoltManufacturer")?.value;
+  return uBoltProducts.filter(product =>
+    (!application || product.application === application) &&
+    (!rodSize || product.thread === rodSize) &&
+    (!fit || product.fitKey === fit) &&
+    (!finish || product.finish === finish) &&
+    (!includeManufacturer || !manufacturer || product.manufacturer === manufacturer)
+  );
+}
+
+function selectedUBoltProduct() {
+  const selectedId = $("uBoltProduct")?.value;
+  const products = filteredUBoltProducts();
+  return products.find(product => product.id === selectedId) || products[0] || null;
+}
+
+function populateUBoltFilters(initial = false) {
+  setUBoltOptions("uBoltApplication", uniqueSorted(uBoltProducts, "application"), {
+    preferred: initial ? "Mounting pipe / round member" : ""
+  });
+  const application = $("uBoltApplication").value;
+  const applicationProducts = uBoltProducts.filter(product => product.application === application);
+  setUBoltOptions("uBoltRodSize", uniqueSorted(applicationProducts, "thread"), {
+    allLabel: "Any rod size",
+    preferred: initial ? "M12" : ""
+  });
+  const rodSize = $("uBoltRodSize").value;
+  const rodProducts = applicationProducts.filter(product => !rodSize || product.thread === rodSize);
+  setUBoltOptions("uBoltFinish", uniqueSorted(rodProducts, "finish"), {
+    allLabel: "Any finish",
+    preferred: initial ? "Outdoor HDG" : ""
+  });
+  const finish = $("uBoltFinish").value;
+  const finishProducts = rodProducts.filter(product => !finish || product.finish === finish);
+  setUBoltOptions("uBoltFitFilter", uniqueSorted(finishProducts, "fitKey"), { allLabel: "Any fit" });
+  const manufacturerProducts = filteredUBoltProducts(false);
+  setUBoltOptions("uBoltManufacturer", uniqueSorted(manufacturerProducts, "manufacturer"), {
+    allLabel: "All brands / manufacturers",
+    preferred: initial ? "Hilti" : ""
+  });
+  populateUBoltProducts();
+}
+
+function populateUBoltProducts() {
+  const products = filteredUBoltProducts();
+  const select = $("uBoltProduct");
+  const previous = select.value;
+  const showManufacturer = !$("uBoltManufacturer").value;
+  select.innerHTML = products.map(product => {
+    const label = showManufacturer ? `${product.manufacturer} - ${product.product}` : product.product;
+    return `<option value="${safeText(product.id)}">${safeText(label)}</option>`;
+  }).join("");
+  if (products.some(product => product.id === previous)) select.value = previous;
+}
+
+function publishedCapacityText(product) {
+  if (!product.publishedCapacity || product.publishedCapacity === "Not published") return "No rated load published";
+  return product.publishedCapacity;
+}
+
+function publishedLoadLabel(product) {
+  if (/working load/i.test(product.publishedCapacity || "")) return "Manufacturer working load";
+  if (product.publishedCapacity === "Project-specific") return "Rated load";
+  return "Manufacturer-rated load";
+}
+
+function calculateUBolt() {
+  const product = selectedUBoltProduct();
+  if (!product) return;
+  const sourceLink = $("uBoltSourceLink");
+  const customEntry = product.application === "Custom / project-manufactured";
+  const assemblyEntry = product.application === "Beam / channel clamp assembly";
+  const familyEntry = /family/i.test(`${product.product} ${product.code}`);
+
+  $("uBoltProductGroupTitle").textContent = customEntry ? "Manufacturing source" : "Product source";
+  $("uBoltProductGroupNote").textContent = customEntry
+    ? "Select the proposed manufacturer and project-specific entry."
+    : "Select the finish, brand or manufacturer, and catalogue entry.";
+  $("uBoltProductFieldLabel").textContent = customEntry ? "Manufacturing entry" : "Catalogue entry";
+  $("uBoltSelectionTypeLabel").textContent = customEntry
+    ? "Selected manufacturing entry"
+    : assemblyEntry
+      ? "Selected assembly"
+      : familyEntry
+        ? "Selected product family"
+        : "Selected catalogue entry";
+  $("uBoltSelectionTitle").textContent = product.product;
+  $("uBoltSelectionNote").textContent = `${product.manufacturer} · ${product.series}`;
+  $("uBoltCode").textContent = product.code;
+  $("uBoltThread").textContent = product.thread;
+  $("uBoltFit").textContent = product.fitKey || product.fit;
+  $("uBoltMaterial").textContent = product.finish;
+  $("uBoltSupplier").textContent = product.supplier || "Not specified";
+  $("uBoltPublishedGeometry").textContent = product.fit || product.fitKey || "Not stated";
+  $("uBoltPublishedMaterial").textContent = product.material || "Not stated";
+  $("uBoltPublishedLoadLabel").textContent = publishedLoadLabel(product);
+  $("uBoltPublishedCapacity").textContent = publishedCapacityText(product);
+  const directionNote = product.capacityDirection && product.capacityDirection !== "Not published"
+    ? `${product.capacityDirection}. `
+    : "";
+  $("uBoltCapacityBasis").textContent = `${directionNote}${product.capacityBasis}`;
+  const sourceStatus = $("uBoltSourceStatus");
+  const sourceChecked = product.sourceStatus === "Source_Checked";
+  sourceStatus.textContent = sourceChecked ? "Local reference checked" : "Online source only";
+  sourceStatus.classList.toggle("is-checked", sourceChecked);
+  sourceStatus.href = product.sourceUrl || "#";
+  sourceStatus.title = product.sourceName;
+  sourceLink.textContent = product.sourceName;
+  sourceLink.href = product.sourceUrl || "#";
+}
+
+function setBoltMode(mode) {
+  boltMode = mode === "ubolt" ? "ubolt" : "standard";
+  const uBoltActive = boltMode === "ubolt";
+  $("boltToolKicker").textContent = uBoltActive ? "U-bolt products · manufacturer data" : "Bolted connections · AS 4100 Cl. 9.2";
+  $("boltToolTitle").textContent = uBoltActive ? "U-bolt Product Lookup" : "Bolt Capacity";
+  $("boltToolStatus").textContent = uBoltActive ? "Manufacturer data · no design capacity" : "For Review · AS 4100:2020";
+  document.querySelectorAll("[data-bolt-mode]").forEach(button => {
+    const active = button.dataset.boltMode === boltMode;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  document.querySelectorAll("#boltPanel [data-bolt-mode-panel]").forEach(panel => {
+    panel.hidden = panel.dataset.boltModePanel !== boltMode;
+  });
+  const standardDetails = $("connectionDetails");
+  const standardSource = document.querySelector("#boltPanel > details.source-card:not([data-bolt-mode-panel])");
+  if (standardDetails) standardDetails.hidden = boltMode !== "standard";
+  if (standardSource) standardSource.hidden = boltMode !== "standard";
+  if (boltMode === "ubolt") calculateUBolt();
+  if (boltMode === "standard") calculateBolt();
+}
+
+function initialBoltMode() {
+  const params = new URLSearchParams(location.search);
+  return params.get("boltmode") === "ubolt" || params.has("ubolt") ? "ubolt" : "standard";
+}
+
 function calculateWeld() {
   const type = $("weldType").value;
   const typeData = weldTypeData[type] || weldTypeData.fillet;
@@ -575,10 +2099,10 @@ function calculateWeld() {
   const utilisation = capacity > 0 ? demand / capacity : Infinity;
   const hasDemand = demand > 0;
   const callouts = {
-    fillet: `${size} mm CFW, category ${category}, fuw ${fuw} MPa`,
-    cpbw: `CPBW, a_w ${effectiveThroat.toFixed(1)} mm, category ${category}, fuw ${fuw} MPa`,
-    ipbw: `IPBW, a_w ${effectiveThroat.toFixed(1)} mm, category ${category}, fuw ${fuw} MPa`,
-    compound: `CPBW a_w ${effectiveThroat.toFixed(1)} mm + ${size} mm fillet, category ${category}, fuw ${fuw} MPa`
+    fillet: `${size} mm CFW, category ${category}, f_uw ${fuw} MPa`,
+    cpbw: `CPBW, a_w ${effectiveThroat.toFixed(1)} mm, category ${category}, f_uw ${fuw} MPa`,
+    ipbw: `IPBW, a_w ${effectiveThroat.toFixed(1)} mm, category ${category}, f_uw ${fuw} MPa`,
+    compound: `CPBW a_w ${effectiveThroat.toFixed(1)} mm + ${size} mm fillet, category ${category}, f_uw ${fuw} MPa`
   };
 
   $("weldCallout").textContent = callouts[type] || callouts.fillet;
@@ -588,27 +2112,27 @@ function calculateWeld() {
   $("weldRunsValue").textContent = String(runs);
   $("weldPhiValue").textContent = phi.toFixed(2);
   $("weldCapacityLabel").textContent = "Capacity per mm per weld line";
-  $("weldCapacityBasis").innerHTML = `${typeData.scope}; category ${category}, &phi; = ${phi.toFixed(2)} from AS 4100 Table 3.4`;
+  $("weldCapacityBasis").innerHTML = `${typeData.scope}; ${category}; &phi; = ${phi.toFixed(2)} from AS 4100 Table 3.4`;
   $("weldCapacity").textContent = fixed(capacity);
   $("weldCapacityPerMm").textContent = capacityPerMm.toFixed(2);
   $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";
   $("parentGoverningNote").textContent = !parentCheckActive
-    ? "enter ply thickness to check"
+    ? "enter ply thickness"
     : parentGoverns
-      ? `warning only; parent screen below weld, fup ${parentGrade.fup} MPa`
-      : "warning only; weld throat lower";
+      ? `warning only; parent screen lower, f_up ${parentGrade.fup} MPa`
+      : "warning only; weld capacity governs";
   $("parentGoverningNote").className = !parentCheckActive ? "" : parentGoverns ? "fail" : "pass";
-  $("weldUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
-  $("weldStatus").textContent = !hasDemand ? "Enter design action" : utilisation <= 1 ? "PASS" : "FAIL";
-  $("weldStatus").className = !hasDemand ? "" : utilisation <= 1 ? "pass" : "fail";
+  $("weldUtilisation").textContent = !hasDemand ? "\u2014" : Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
+  $("weldStatus").textContent = !hasDemand ? "No design action" : utilisation <= 1 ? "PASS" : "FAIL";
+  $("weldStatus").className = !hasDemand ? "check" : utilisation <= 1 ? "pass" : "fail";
   $("weldFormulaSteps").innerHTML = `
-    <div><b>Selected weld</b><code>${typeData.label} - ${typeData.scope}</code></div>
-    <div><b>Design throat</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : type === "compound" ? `${effectiveThroat.toFixed(1)} + 0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${fixed2(throat)} mm</code></div>
-    <div><b>Per-mm capacity</b><code>&phi;R / l<sub>w</sub> = ${phi.toFixed(2)} x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x k<sub>r</sub> (${kr.toFixed(2)}) / 1000 = ${capacityPerMm.toFixed(2)} kN/mm per weld line</code></div>
-    <div><b>Lap reduction</b><code>${lapReductionActive ? `AS 4100 Table 9.6.3.10(B); input l<sub>w</sub> = ${fixed(length)} mm = ${(length / 1000).toFixed(2)} m for the table, k<sub>r</sub> = ${kr.toFixed(2)}` : "Not applied - welded lap connection option is No or weld type is not fillet"}</code></div>
-    <div><b>Total weld capacity</b><code>${capacityPerMm.toFixed(2)} kN/mm x ${fixed(length)} mm x ${runs} identical effective weld line${runs === 1 ? "" : "s"} = ${fixed(capacity)} kN; lines are not welding passes</code></div>
-    <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x f<sub>up</sub> (${parentGrade.fup} MPa, ${parentGrade.standard}) x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm; warning only, not used in PASS/FAIL` : "Not checked - enter ply thickness"}</code></div>
-    <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}; capacity view only, not a full weld or joint design check. Excludes longitudinal fillet welds in RHS where t &lt; 3 mm, plug / slot welds, weld groups, parent-metal rupture, HAZ, joint preparation, WPS, inspection, fatigue and effective length checks.</code></div>`;
+    <div><b>Selected weld</b><code>${typeData.label}: ${typeData.scope}</code></div>
+    <div><b>Design throat thickness</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : type === "compound" ? `${effectiveThroat.toFixed(1)} + 0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${fixed2(throat)} mm</code></div>
+    <div><b>Per-mm design capacity</b><code>&phi;R / l<sub>w</sub> = ${phi.toFixed(2)} x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x k<sub>r</sub> (${kr.toFixed(2)}) / 1000 = ${capacityPerMm.toFixed(2)} kN/mm per weld line</code></div>
+    <div><b>Welded-lap reduction</b><code>${lapReductionActive ? `AS 4100 Table 9.6.3.10(B); l<sub>w</sub> = ${fixed(length)} mm = ${(length / 1000).toFixed(2)} m, k<sub>r</sub> = ${kr.toFixed(2)}` : "Not applied. The welded-lap option is No or the weld type is not a fillet weld."}</code></div>
+    <div><b>Total weld capacity</b><code>${capacityPerMm.toFixed(2)} kN/mm x ${fixed(length)} mm x ${runs} effective weld line${runs === 1 ? "" : "s"} = ${fixed(capacity)} kN. Effective weld lines are not welding passes.</code></div>
+    <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x f<sub>up</sub> (${parentGrade.fup} MPa, ${parentGrade.standard}) x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm. Warning only.` : "Not checked. Enter ply thickness if required."}</code></div>
+    <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}. Capacity view only; not a full welded-joint design check. Excludes weld groups, connected-part rupture, HAZ, joint preparation, WPS, inspection, fatigue and effective-length rules beyond the entered l<sub>w</sub>.</code></div>`;
 }
 
 function beamCatalogueSections() {
@@ -1310,7 +2834,7 @@ function calculateMember() {
   if (memberType !== "custom") {
     $("memberRadiusSource").innerHTML = `${properties.customGeometry ? radiusBasis : memberRadiusBasis(properties.r)} Used for slenderness L<sub>e</sub>/r and design member capacity &phi;N<sub>c</sub>.`;
   } else {
-    $("memberRadiusSource").innerHTML = `Custom effective properties and effective lengths.`;
+    $("memberRadiusSource").innerHTML = `User-defined effective section properties from a verified section-property calculation.`;
   }
   $("memberNetArea").max = properties.area.toFixed(0);
   const netInput = memberNetAreaInput(properties);
@@ -1727,25 +3251,29 @@ function calculateConcrete() {
     result = solveConcreteSection(data);
   }
 
+  const compressionFaceLabel = direction === "top" ? "top face in compression" : "bottom face in compression";
+  const checkedSectionLabel = combinedSection ? "Combined section" : separatePad === "bottom" ? "Bottom pad only" : "Top pad only";
   $("concreteSummaryTitle").textContent = combinedSection
-    ? `${fixed(data.width)} mm strip; combined D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm`
-    : `${fixed(data.width)} mm strip; ${separatePad === "bottom" ? "bottom pad" : "top pad"} D = ${fixed(data.depth)} mm`;
+    ? `${checkedSectionLabel}; b = ${fixed(data.width)} mm; D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; ${compressionFaceLabel}`
+    : `${checkedSectionLabel}; b = ${fixed(data.width)} mm; D = ${fixed(data.depth)} mm; ${compressionFaceLabel}`;
   $("concreteSummaryNote").textContent = combinedSection
-    ? "Combined section selected: use only where composite action and interface shear transfer are designed separately."
-    : `Separate pads selected: calculating the ${separatePad === "bottom" ? "bottom" : "top"} pad only; the other pad is not included in section capacity.`;
+    ? "Capacity applies to the combined strip only; use only where composite action and interface shear transfer are separately verified."
+    : `Capacity applies to the ${separatePad === "bottom" ? "bottom" : "top"} pad strip only; the other pad is excluded from this section-capacity calculation.`;
+  $("concreteModeValue").textContent = combinedSection ? "Combined" : separatePad === "bottom" ? "Separate bottom" : "Separate top";
+  $("concreteWidthValue").textContent = `${fixed(data.width)} mm`;
+  $("concreteDepthValue").textContent = `${fixed(data.depth)} mm`;
   const legacyLayers = data.layers.filter(layer => layer.legacy);
   const fsyCappedLayers = data.layers.filter(layer => layer.fsyInput > 600);
   $("concretePhiNote").textContent = legacyLayers.length
     ? "Legacy Y bar selected: conservative capacity factor phi = 0.65 is used pending bar-grade verification."
-    : "Capacity factor from AS 3600 Table 2.2.2 pure-bending k_uo expression for N-class reinforcement.";
+    : "Capacity factor from the AS 3600 Table 2.2.2 pure-bending k_uo expression for N-class reinforcement.";
 
   if (!result.ok) {
-    ["concreteNaValue", "concreteCcValue", "concreteMuoValue", "concretePhiMuoValue", "concreteNa", "concreteMuo", "concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
+    ["concreteDvValue", "concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
+    $("concreteResultScope").textContent = "selected strip";
     $("concreteShearNote").innerHTML = "RC one-way shear not calculated without active reinforcement";
-    $("concreteStatusValue").textContent = "No solution";
-    $("concreteEquilibrium").textContent = result.message;
-    $("concreteWarningStatus").textContent = "CHECK";
-    $("concreteWarningStatus").className = "fail";
+    $("concreteStatusValue").textContent = "Review";
+    $("concreteSectionState").innerHTML = "";
     $("concreteLayerResults").innerHTML = "";
     $("concreteFormulaSteps").innerHTML = `<div><b>Status</b><code>${result.message}</code></div><div><b>Plain concrete note</b><code>For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check. Do not report this as ductile reinforced-concrete phiMuo; AS 3600 Section 20 uses a linear stress-strain bending model and takes footing strength depth as nominal depth minus 50 mm.</code></div>`;
     return;
@@ -1766,48 +3294,43 @@ function calculateConcrete() {
   if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
   if (fsyCappedLayers.length) reviewFlags.push(`f_sy capped at 600 MPa for ${fsyCappedLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
   if (result.kuo > 0.36) reviewFlags.push(`k_uo = ${result.kuo.toFixed(3)} > 0.36, check AS 3600 Cl. 8.1.5`);
-  const warningText = `Moment capacity and one-way shear screen only; verify punching, bearing, anchorage, crack control and interface shear separately. Review: ${reviewFlags.join("; ")}.`;
+  const warningText = `Section-capacity check only; verify punching shear, bearing, anchorage, crack control, interface shear and design actions separately. Review: ${reviewFlags.join("; ")}.`;
 
-  $("concreteNaValue").textContent = `${fixed(result.x)} mm`;
-  $("concreteCcValue").textContent = `${fixed(result.cc / 1000)} kN`;
-  $("concreteMuoValue").textContent = `${fixed(result.muo)} kNm`;
-  $("concretePhiMuoValue").textContent = `${fixed(result.phiMuo)} kNm`;
-  $("concreteStatusValue").textContent = residualOk ? "Solved" : "Check residual";
-  $("concreteNa").textContent = fixed(result.x);
-  $("concreteMuo").textContent = fixed(result.muo);
+  $("concreteResultScope").textContent = combinedSection ? "combined section" : `${separatePad === "bottom" ? "bottom" : "top"} pad only`;
+  $("concreteDvValue").textContent = `${fixed(shear.dv)} mm`;
   $("concretePhiMuo").textContent = fixed(result.phiMuo);
   $("concretePhiVu").textContent = fixed(shear.phiVu);
   $("concreteShearNote").innerHTML = `V<sub>uc</sub> = ${fixed(shear.vuc)} kN; V<sub>us</sub> = ${fixed(shear.vus)} kN; d<sub>v</sub> = ${fixed(shear.dv)} mm`;
-  $("concreteEquilibrium").textContent = `Residual ${residual.toFixed(3)} kN`;
   const shearWarning = (shear.hasShearReo && !shear.minShearReoProvided) || shear.webCrushingLimited;
   const sectionSolved = residualOk && !coverWarnings.length && !bottomMatWithoutDepth && !legacyLayers.length && !fsyCappedLayers.length && !shearWarning && result.kuo <= 0.36;
-  $("concreteWarningStatus").textContent = sectionSolved ? "SOLVED" : "CHECK";
-  $("concreteWarningStatus").className = sectionSolved ? "pass" : "fail";
+  $("concreteStatusValue").textContent = sectionSolved ? "OK" : "Review";
   $("concreteWarningText").textContent = warningText;
 
+  $("concreteSectionState").innerHTML = `
+    <article><b>Flexural section state</b><span>Neutral axis depth x = ${fixed(result.x)} mm from the selected compression face; d<sub>o</sub> = ${fixed(result.d0)} mm; k<sub>uo</sub> = ${result.kuo.toFixed(3)}; M<sub>uo</sub> = ${fixed(result.muo)} kNm</span><small>C<sub>c</sub> = ${fixed(result.cc / 1000)} kN; &phi; = ${result.phi.toFixed(2)}; &phi;M<sub>uo</sub> = ${fixed(result.phiMuo)} kNm; axial-force equilibrium residual = ${residual.toFixed(3)} kN</small></article>
+    <article><b>One-way shear state</b><span>d<sub>v</sub> = ${fixed(shear.dv)} mm; b<sub>v</sub> = ${fixed(shear.bv)} mm; k<sub>v</sub> = ${shear.kv.toFixed(3)}; V<sub>uc</sub> = ${fixed(shear.vuc)} kN; V<sub>us</sub> = ${fixed(shear.vus)} kN</span><small>V<sub>u</sub> = ${fixed(shear.vu)} kN; V<sub>u.max</sub> = ${fixed(shear.vuMax)} kN; &phi; = ${shear.phi.toFixed(2)}; &phi;V<sub>u</sub> = ${fixed(shear.phiVu)} kN</small></article>`;
+
   $("concreteLayerResults").innerHTML = result.layers.map(layer => {
-    const status = Math.abs(layer.strain) < 0.00005 ? "Near neutral axis" : layer.force > 0 ? "Compression" : "Tension";
-    const coverStatus = layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2 ? "cover check required" : "cover reference OK";
+    const status = Math.abs(layer.strain) < 0.00005 ? "near neutral axis" : layer.force > 0 ? "compression" : "tension";
+    const coverStatus = layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2 ? "nominal cover review required" : "within nominal cover reference";
     const displacementNote = layer.displacedConcreteStress > 0 ? `; net stress = ${signedFixed(layer.netStress, 1)} MPa after displaced concrete` : "";
-    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${layer.designation} @ ${fixed(layer.spacing)}; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2 per strip (${fixed(layer.areaPerMetre)} mm2/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
+    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${layer.designation} @ ${fixed(layer.spacing)} mm; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2 per strip (${fixed(layer.areaPerMetre)} mm2/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
   }).join("");
 
   $("concreteFormulaSteps").innerHTML = `
-    <div><b>Compression face</b><code>${direction === "top" ? "top face" : "bottom face"}; each reinforcement mat is transformed to distance d_i from that face</code></div>
-    <div><b>Pad analysis mode</b><code>${data.combinedSection ? `Combined section: D = D_top + D_bot = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; active top and bottom pad mats may participate` : `Separate pads: calculating the ${data.checkedPad === "bottom" ? "bottom" : "top"} pad only; D = ${fixed(data.depth)} mm; only that pad's active mats participate`}</code></div>
-    <div><b>Cover reference</b><code>c_nom = ${fixed(data.cover)} mm is shown for each pad face; auto y_i uses c_nom + d_b/2 from the relevant pad surface; editing a y_i value turns off auto fill for that mat</code></div>
+    <div><b>Analysis basis</b><code>${direction === "top" ? "top face" : "bottom face"} selected as the compression face; each reinforcement mat is transformed to distance d<sub>i</sub> from that face. ${data.combinedSection ? `Combined section: D = D<sub>top</sub> + D<sub>bot</sub> = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; active top and bottom pad mats may participate` : `Separate pads: calculating the ${data.checkedPad === "bottom" ? "bottom" : "top"} pad only; D = ${fixed(data.depth)} mm; only that pad's active mats participate`}</code></div>
     <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar,table</sub> x b / spacing. A<sub>bar,table</sub> uses standard nominal Australian bar areas N/Y12-36 rather than &pi;d<sup>2</sup>/4; for b = 1000 mm this is the usual mm2/m table value. N bars default to f<sub>sy</sub> = 500 MPa; legacy Y bars default to f<sub>sy</sub> = 410 MPa unless manually overwritten; design-model f<sub>sy</sub> is capped at 600 MPa</code></div>
     <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
-    <div><b>Concrete block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
+    <div><b>Equivalent concrete stress block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
     <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
     <div><b>Steel stress</b><code>f<sub>si</sub> = E<sub>s</sub>&epsilon;<sub>si</sub>, capped at +/- f<sub>sy</sub>; for a bar inside the rectangular concrete block, F<sub>si</sub> = A<sub>si</sub>(f<sub>si</sub> - &alpha;<sub>2</sub>f'<sub>c</sub>) to avoid double-counting displaced concrete</code></div>
-    <div><b>Force equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual</code></div>
-    <div><b>Nominal moment</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
+    <div><b>Neutral-axis equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual for N<sup>*</sup> = 0</code></div>
+    <div><b>Nominal flexural capacity</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
     <div><b>Capacity factor - AS 3600 Table 2.2.2</b><code>${legacyLayers.length ? `Legacy Y bar selected: conservative quick-screen &phi; = 0.65 unless actual bar grade and N-class equivalence are verified` : `Pure-bending N-class reinforcement assumption: k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
     <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
-    <div><b>Design capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
-    <div><b>Shear effective depth basis - AS 3600 Cl. 8.2.1.9</b><code>d is the distance from the compression face to the centroid of longitudinal tension reinforcement in the tensile half-depth. ${shear.dBasis}; ${shear.centroidArea > 0 ? `d = &Sigma;(A<sub>s</sub>d) / &Sigma;A<sub>s</sub> = ${fixed(shear.dNumerator)} / ${fixed(shear.centroidArea)} = ${fixed(shear.d)} mm` : `d = ${fixed(shear.d)} mm`}</code></div>
-    <div><b>Shear geometry - AS 3600 Cl. 8.2.1.5 and 8.2.1.9</b><code>b<sub>v</sub> = b = ${fixed(shear.bv)} mm for this rectangular strip without ducts or voids; d<sub>v</sub> = max(0.72D, 0.9d) = max(0.72 x ${fixed(data.depth)}, 0.9 x ${fixed(shear.d)}) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm</code></div>
+    <div><b>Design flexural capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
+    <div><b>Shear effective depth - AS 3600 Cl. 8.2.1.9</b><code>d is the distance from the compression face to the centroid of longitudinal tension reinforcement in the tensile half-depth. ${shear.dBasis}; ${shear.centroidArea > 0 ? `d = &Sigma;(A<sub>s</sub>d) / &Sigma;A<sub>s</sub> = ${fixed(shear.dNumerator)} / ${fixed(shear.centroidArea)} = ${fixed(shear.d)} mm` : `d = ${fixed(shear.d)} mm`}</code></div>
+    <div><b>Effective web width and shear depth - AS 3600 Cl. 8.2.1.5 and 8.2.1.9</b><code>b<sub>v</sub> = b = ${fixed(shear.bv)} mm for this rectangular strip without ducts or voids; d<sub>v</sub> = max(0.72D, 0.9d) = max(0.72 x ${fixed(data.depth)}, 0.9 x ${fixed(shear.d)}) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) = ${fixed(shear.dv)} mm</code></div>
     <div><b>Shear reinforcement area</b><code>${shear.hasShearReo ? `A<sub>sv</sub> = n<sub>sv</sub>A<sub>bar,table</sub> = ${shear.nsv.toFixed(0)} x ${fixed(shear.shearBarArea)} = ${fixed(shear.asv)} mm2 per spacing using ${shear.shearDesignation}; A<sub>sv</sub>/s = ${fixed(shear.asv)} / ${fixed(shear.sv)} = ${shear.asvPerS.toFixed(3)} mm2/mm` : `No vertical shear reinforcement selected; A<sub>sv</sub>/s = 0 mm2/mm`}</code></div>
     <div><b>Simplified shear factor - AS 3600 Cl. 8.2.4.3</b><code>&theta;<sub>v</sub> = ${shear.theta.toFixed(0)} deg; A<sub>sv,min</sub>/s = 0.08&radic;f'<sub>c</sub>b<sub>v</sub>/f<sub>sy.f</sub> = ${shear.asvMinPerS.toFixed(3)} mm2/mm; ${shear.minShearReoProvided ? `provided A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm >= minimum, so k<sub>v</sub> = 0.15` : `provided A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm < minimum, so k<sub>v</sub> = min(200/(1000 + 1.3d<sub>v</sub>), 0.15) = ${shear.kv.toFixed(3)}`}</code></div>
     <div><b>Concrete shear contribution - AS 3600 Cl. 8.2.4.1</b><code>V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(3)} x ${fixed(shear.bv)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &radic;f'<sub>c</sub> is limited to 8.0 MPa</code></div>
@@ -1840,6 +3363,1276 @@ function setBoltSize() {
   setStandardHole();
 }
 
+function selectedScrewCatalogue() {
+  return screwPileCatalogues[$("screwManufacturer").value] || screwPileCatalogues.katana;
+}
+
+function selectedScrewPile() {
+  const catalogue = selectedScrewCatalogue();
+  return catalogue.series[$("screwSeries").value] || Object.values(catalogue.series)[0];
+}
+
+function screwCatalogueRows() {
+  return Object.entries(screwPileCatalogues).flatMap(([manufacturerKey, catalogue]) =>
+    Object.entries(catalogue.series).map(([seriesKey, pile]) => ({
+      manufacturerKey,
+      seriesKey,
+      manufacturer: catalogue.label,
+      pile
+    }))
+  );
+}
+
+function screwSystemType(pile) {
+  const system = `${pile.system || ""} ${pile.helixCount || ""} ${pile.helix || ""}`;
+  if (/micro[- ]pile|driven micro/i.test(system)) return "Micro-pile footing";
+  if (/ground screw|continuous screw thread|open section screw|solar screw/i.test(system)) return "Ground screw";
+  if (/engineered|project[- ]design|project design|HAI/i.test(system)) return "Engineered pathway";
+  if (/modular|manufactured screw pier/i.test(system)) return "Manufactured screw pier";
+  if (/conventional|helical|screw pile/i.test(system)) return "Helical screw pile";
+  return "Supplier system";
+}
+
+function screwSourceConfidence(manufacturerKey, pile) {
+  if (manufacturerKey === "custom") {
+    return { level: "Project input", detail: "Source reference required", className: "source-user" };
+  }
+  if (manufacturerKey === "katana") {
+    return { level: "Published + local certificate", detail: "Rev Z guide; CodeMark scope checked separately", className: "source-official" };
+  }
+  if (manufacturerKey === "stopdigging") {
+    return { level: "Manufacturer published", detail: "Directional values captured; project basis not verified", className: "source-official" };
+  }
+  if (manufacturerKey === "surefoot") {
+    return { level: "Manufacturer published", detail: "Indicative system rating only; project design controls", className: "source-official" };
+  }
+  if (manufacturerKey === "ideal") {
+    return { level: "Manufacturer published", detail: "System SWL only; project direction values required", className: "source-official" };
+  }
+  if (manufacturerKey === "blade") {
+    return { level: "Manufacturer published", detail: "Public range; project resistance required", className: "source-official" };
+  }
+  if (manufacturerKey === "piletech") {
+    return { level: "Supplier range", detail: "Public range; resistance by design", className: "source-prompt" };
+  }
+  if (manufacturerKey === "driven") {
+    return { level: "Manufacturer dimensions", detail: "Geometry only; capacity not stated", className: "source-prompt" };
+  }
+  if (manufacturerKey === "keller") {
+    return { level: "Published benchmark", detail: "Typical SWL; ground conditions govern", className: "source-prompt" };
+  }
+  if (manufacturerKey === "minmetals") {
+    return { level: "Supplier component", detail: "Supplier design required", className: "source-prompt" };
+  }
+  return { level: "Supplier confirmation", detail: "Capacity row not embedded", className: "source-prompt" };
+}
+
+function screwDataStatus(manufacturerKey, pile) {
+  const type = screwCapacityType(pile);
+  if (manufacturerKey === "custom" || type === "project") {
+    return { label: "Project input", detail: "Project traceability required", className: "data-project" };
+  }
+  if (type === "directional-product") {
+    return { label: "Published directional values", detail: "Reference only; design basis not verified", className: "data-directional" };
+  }
+  if (type === "compression-swl-up-to") {
+    return { label: "Compression SWL up to", detail: "Reference limit in stated guide conditions", className: "data-compression" };
+  }
+  if (type === "system-swl-up-to") {
+    return { label: "System SWL up to", detail: "Not a direction-specific resistance", className: "data-reference" };
+  }
+  if (type === "indicative-rating") {
+    return { label: "Indicative system rating", detail: "Not a pile resistance", className: "data-rating" };
+  }
+  if (type === "typical-benchmark") {
+    return { label: "Typical SWL benchmark", detail: "Not a project capacity row", className: "data-typical" };
+  }
+  return { label: "Geometry only", detail: "Project capacity values required", className: "data-geometry" };
+}
+
+function screwCapacityType(pile) {
+  if (pile.capacityType) return pile.capacityType;
+  const directionCount = [pile.compression, pile.uplift, pile.lateral].filter(valueNumber => (valueNumber || 0) > 0).length;
+  return directionCount === 3 ? "directional-product" : directionCount > 0 ? "partial-directional" : "geometry";
+}
+
+function screwCapacityLabels(pile) {
+  const type = screwCapacityType(pile);
+  if (type === "compression-swl-up-to") return { compression: "Compression SWL up to", uplift: "Published uplift load", lateral: "Published lateral load" };
+  if (type === "system-swl-up-to") return { compression: "System SWL up to", uplift: "Published uplift load", lateral: "Published lateral load" };
+  if (type === "indicative-rating") return { compression: "Maximum recommended rating", uplift: "Published uplift load", lateral: "Published lateral load" };
+  if (type === "typical-benchmark") return { compression: "Typical axial SWL up to", uplift: "Typical uplift SWL up to", lateral: "Typical lateral SWL up to" };
+  if (type === "project") return { compression: "Project compression", uplift: "Project tension", lateral: "Project lateral load" };
+  return { compression: "Published compression", uplift: "Published tension / uplift load", lateral: "Published lateral load" };
+}
+
+function screwDisplayCapacities(pile, enteredValues) {
+  const type = screwCapacityType(pile);
+  const ratingTypes = ["system-swl-up-to", "indicative-rating", "typical-benchmark"];
+  return {
+    compression: ratingTypes.includes(type) && (pile.rating || 0) > 0 ? pile.rating : enteredValues.compression,
+    uplift: enteredValues.uplift,
+    lateral: enteredValues.lateral
+  };
+}
+
+function screwComparisonCapacities(pile, displayValues) {
+  const actionBasis = $("screwDemandBasis").value;
+  const projectValues = {
+    compression: value("screwProjectCompression"),
+    uplift: value("screwProjectTension"),
+    lateral: value("screwProjectHorizontal")
+  };
+  const hasProjectValues = Object.values(projectValues).some(valueNumber => valueNumber > 0);
+  if (hasProjectValues) {
+    const valueBasis = $("screwProjectBasis").value;
+    const source = $("screwProjectSource").value.trim();
+    const basis = !source ? "project-source-missing" : valueBasis !== actionBasis ? "project-basis-mismatch" : "project";
+    return { ...projectValues, basis, actionBasis, valueBasis, source };
+  }
+  return { compression: 0, uplift: 0, lateral: 0, basis: "none", actionBasis, valueBasis: "none", source: "" };
+}
+
+function screwValueBasisText(pile) {
+  const type = screwCapacityType(pile);
+  if (type === "compression-swl-up-to") return "Guide SWL up to; stated ground and installation conditions apply.";
+  if (type === "system-swl-up-to") return "Guide system SWL up to; project direction values are required.";
+  if (type === "indicative-rating") return "Maximum recommended system rating; not a pile resistance.";
+  if (type === "typical-benchmark") return "Typical benchmark; project resistance is required.";
+  if (type === "directional-product") return "Published directional value; reference only, with design basis unverified.";
+  if (type === "project") return "Project value; source and design basis required.";
+  return "No published resistance value.";
+}
+
+function screwHasMultipleHelices(pile) {
+  return /2 helices|multiple|multi[- ]helix|single or multi|project-selected helices/i.test(`${pile.helixCount || ""} ${pile.helix || ""}`);
+}
+
+function screwTorqueLimit(pile) {
+  const type = screwSystemType(pile);
+  if (type === "Micro-pile footing") return "Not applicable; driven installation.";
+  return "Not published; verify shaft torsional limit.";
+}
+
+function screwInstallationCriterion(pile) {
+  return screwCompactFact(pile.installControl || "Supplier termination and refusal criteria required.", 92);
+}
+
+function screwPitchText(pile) {
+  const helix = String(pile.helix || "");
+  return /pitch|spacing/i.test(helix) ? screwCompactFact(helix, 72) : "Not published";
+}
+
+function screwSourceReviewText(manufacturerKey) {
+  if (manufacturerKey === "custom") return "Not reviewed";
+  if (manufacturerKey === "katana") return "Local source reviewed · 10 Jul 2026";
+  return "Public source accessed · 10 Jul 2026";
+}
+
+function screwHeadConnectionLimit(pile) {
+  const type = screwSystemType(pile);
+  if (type === "Micro-pile footing") return "Supplier-designed pile-cap connection.";
+  if (type === "Ground screw") return "Proprietary head; verify tension and shear transfer.";
+  return "Project tension and shear-transfer detail required.";
+}
+
+function screwDurabilityLimit() {
+  return "Design life and corrosion allowance not stated.";
+}
+
+function screwPrimaryLimitation(pile) {
+  const type = screwSystemType(pile);
+  const capacityType = screwCapacityType(pile);
+  const application = $("screwApplication").value;
+  const overturningUse = ["monopole", "tower", "sign"].includes(application);
+  if (capacityType === "indicative-rating") {
+    return "Indicative rating only; supplier footing design required.";
+  }
+  if (capacityType === "typical-benchmark") {
+    return "Benchmark only; obtain project pile resistances.";
+  }
+  if (capacityType === "system-swl-up-to") {
+    return "System SWL only; obtain direction-specific project values.";
+  }
+  if (type === "Micro-pile footing") {
+    return "Supplier-designed cap and pile arrangement required.";
+  }
+  if (type === "Ground screw") {
+    return overturningUse
+      ? "Not a default pole/tower pile; require project certification."
+      : "Confirm structural class, embedment and head movement.";
+  }
+  if (type === "Engineered pathway") {
+    return "Project compression, tension and horizontal resistance values required.";
+  }
+  if ((pile.compression || 0) <= 0 && (pile.uplift || 0) <= 0) {
+    return "Obtain project compression and tension resistance values.";
+  }
+  if ((pile.uplift || 0) <= 0) {
+    return overturningUse
+      ? "Obtain project tension resistance; complete the horizontal-response and rotation assessment."
+      : "Obtain project tension resistance for uplift loading.";
+  }
+  if ((pile.compression || 0) <= 0) {
+    return "Obtain project compression resistance.";
+  }
+  if ((pile.lateral || 0) <= 0) {
+    return overturningUse
+      ? "Axial reference values are available; horizontal response and rotation remain project checks."
+      : "Obtain project horizontal resistance.";
+  }
+  return overturningUse
+    ? "Check group uplift, cap connection and pile-head movement."
+    : "Confirm site and installation acceptance.";
+}
+
+function screwResistanceFieldsText(pile) {
+  const type = screwCapacityType(pile);
+  if ((pile.rating || 0) > 0) {
+    const label = type === "indicative-rating" ? "Rating" : type === "typical-benchmark" ? "Typical SWL" : "System SWL";
+    return `${label} ${screwCapacityText(pile.rating)} kN; direction-specific values by project`;
+  }
+  const axial = pile.axialClass > 0 ? `Class ${screwCapacityText(pile.axialClass)} kN` : "Class -";
+  const compression = pile.compression > 0 ? `Compression ${screwCapacityText(pile.compression)} kN` : "Compression -";
+  const uplift = pile.uplift > 0 ? `Tension ${screwCapacityText(pile.uplift)} kN` : "Tension -";
+  const lateral = pile.lateral > 0 ? `Horizontal ${screwCapacityText(pile.lateral)} kN` : "Horizontal -";
+  return `${axial}; ${compression}; ${uplift}; ${lateral}`;
+}
+
+function screwGeometryText(pile) {
+  const helix = screwSelectedText(pile.helixCount) === "-" ? screwSelectedText(pile.helix) : `${screwSelectedText(pile.helixCount)}; ${screwSelectedText(pile.helix)}`;
+  return `${screwSelectedText(pile.shaft)}; ${helix}; ${screwSelectedText(pile.length)}`;
+}
+
+function selectScrewCatalogueRow(manufacturerKey, seriesKey) {
+  if (!screwPileCatalogues[manufacturerKey]?.series?.[seriesKey]) return;
+  $("screwManufacturer").value = manufacturerKey;
+  populateScrewSeries();
+  $("screwSeries").value = seriesKey;
+  setScrewCapacityDefaults();
+}
+
+function screwSystemFilterKey(pile) {
+  const type = screwSystemType(pile);
+  if (type === "Helical screw pile" || type === "Manufactured screw pier") return "helical";
+  if (type === "Ground screw") return "ground";
+  if (type === "Micro-pile footing") return "micro";
+  return "engineered";
+}
+
+function screwDataFilterKey(pile) {
+  const type = screwCapacityType(pile);
+  if (type === "directional-product") return "directional";
+  if (["compression-swl-up-to", "system-swl-up-to", "partial-directional"].includes(type)) return "axial";
+  if (["indicative-rating", "typical-benchmark"].includes(type)) return "rating";
+  return "geometry";
+}
+
+function screwShaftFilterKey(pile) {
+  const numbers = screwMetricNumbers(`${pile.diameter || ""} ${pile.shaft || ""}`);
+  if (!numbers.length) return "unknown";
+  if (numbers[0] <= 90) return "small";
+  if (numbers[0] <= 150) return "medium";
+  return "large";
+}
+
+function screwHelixFilterKey(pile) {
+  const dimensions = screwSketchDimensions(pile);
+  if (dimensions.microPile || dimensions.continuousThread || dimensions.noHelix) return "other";
+  return dimensions.helixCount > 1 ? "multiple" : "single";
+}
+
+function screwProductCapacityValues(pile) {
+  const type = screwCapacityType(pile);
+  const rating = ["system-swl-up-to", "indicative-rating", "typical-benchmark"].includes(type) ? (pile.rating || 0) : 0;
+  return {
+    primaryLabel: type === "system-swl-up-to" ? "System SWL" : type === "indicative-rating" ? "Rating" : type === "typical-benchmark" ? "Typical SWL" : "Compression",
+    compression: rating || pile.compression || 0,
+    publishedCompression: pile.compression || 0,
+    tension: pile.uplift || 0,
+    lateral: pile.lateral || 0,
+    unitBasis: ["system-swl-up-to", "indicative-rating"].includes(type) ? "Complete system" : type === "typical-benchmark" ? "Technique benchmark" : "Per pile / product",
+    loadBasis: ["compression-swl-up-to", "system-swl-up-to", "typical-benchmark"].includes(type) ? "SWL / working reference" : type === "indicative-rating" ? "Indicative rating" : type === "directional-product" ? "Published load; basis not verified" : "Basis not stated"
+  };
+}
+
+function screwSelectionAdvice(pile, manufacturerKey = $("screwManufacturer")?.value || "custom") {
+  const soilKey = $("screwSoil")?.value || "unknown";
+  const soil = screwSoilRules[soilKey] || screwSoilRules.unknown;
+  const application = $("screwApplication")?.value || "generic";
+  const overturning = ["monopole", "tower", "sign"].includes(application);
+  const type = screwSystemType(pile);
+  const dataStatus = screwDataStatus(manufacturerKey, pile);
+  const missing = [];
+  if ((pile.compression || 0) <= 0) missing.push("compression");
+  if (overturning && (pile.uplift || 0) <= 0) missing.push("tension");
+  if (overturning && (pile.lateral || 0) <= 0) missing.push("lateral");
+
+  if (soilKey === "unknown") {
+    return { label: "Ground data required", note: "Confirm founding layer, groundwater and installation conditions.", className: "fit-check" };
+  }
+  if (soil.severity >= 3) {
+    return { label: "Geotechnical review", note: soil.note, className: "fit-alert" };
+  }
+  if (type === "Ground screw" && overturning) {
+    return { label: "Project certification", note: "Not a default pole or tower selection; confirm structural class and head movement.", className: "fit-alert" };
+  }
+  if (missing.length) {
+    return { label: "Project design values required", note: `Obtain ${missing.join(", ")} values for the selected ground and load basis.`, className: "fit-check" };
+  }
+  if (screwCapacityType(pile) === "directional-product") {
+    return { label: "Published data available", note: "Confirm source load basis, embedment and installation criteria.", className: "fit-data" };
+  }
+  return { label: "Project confirmation", note: `${dataStatus.label}; confirm applicability with the supplier and geotechnical design.`, className: "fit-neutral" };
+}
+
+function screwFilteredCatalogueRows() {
+  const supplier = $("screwFilterSupplier")?.value || "all";
+  const system = $("screwFilterSystem")?.value || "all";
+  const data = $("screwFilterData")?.value || "all";
+  const minimumCompression = value("screwFilterCompression");
+  const minimumTension = value("screwFilterTension");
+  const lateral = $("screwFilterLateral")?.value || "all";
+  const shaft = $("screwFilterShaft")?.value || "all";
+  const helix = $("screwFilterHelix")?.value || "all";
+  const sort = $("screwFilterSort")?.value || "supplier";
+  const rows = screwCatalogueRows().filter(row => {
+    const capacities = screwProductCapacityValues(row.pile);
+    return (
+    (supplier === "all" || row.manufacturerKey === supplier)
+    && (system === "all" || screwSystemFilterKey(row.pile) === system)
+    && (data === "all" || screwDataFilterKey(row.pile) === data)
+    && (minimumCompression <= 0 || capacities.publishedCompression >= minimumCompression)
+    && (minimumTension <= 0 || capacities.tension >= minimumTension)
+    && (lateral === "all" || capacities.lateral > 0)
+    && (shaft === "all" || screwShaftFilterKey(row.pile) === shaft)
+    && (helix === "all" || screwHelixFilterKey(row.pile) === helix)
+    );
+  });
+  const dataOrder = { directional: 0, axial: 1, rating: 2, geometry: 3 };
+  return rows.sort((left, right) => {
+    if (sort === "compression-desc") return screwProductCapacityValues(right.pile).publishedCompression - screwProductCapacityValues(left.pile).publishedCompression;
+    if (sort === "shaft-asc") {
+      const leftNumbers = screwMetricNumbers(`${left.pile.diameter || ""} ${left.pile.shaft || ""}`);
+      const rightNumbers = screwMetricNumbers(`${right.pile.diameter || ""} ${right.pile.shaft || ""}`);
+      return (leftNumbers[0] ?? Infinity) - (rightNumbers[0] ?? Infinity);
+    }
+    if (sort === "data") return dataOrder[screwDataFilterKey(left.pile)] - dataOrder[screwDataFilterKey(right.pile)];
+    return `${left.manufacturer} ${left.pile.label}`.localeCompare(`${right.manufacturer} ${right.pile.label}`);
+  });
+}
+
+function screwCapacityCell(pile, direction) {
+  const values = screwProductCapacityValues(pile);
+  const value = direction === "compression" ? values.compression : direction === "tension" ? values.tension : values.lateral;
+  const label = direction === "compression" ? values.primaryLabel : direction === "tension" ? "Tension" : "Lateral load";
+  const basis = direction === "compression" ? `${values.unitBasis} · ${values.loadBasis}` : value > 0 ? values.unitBasis : "No published value";
+  return `<div class="screw-table-capacity ${value > 0 ? "has-value" : "not-published"}">
+    <b>${safeText(value > 0 ? `${screwCapacityText(value)} kN` : "Not published")}</b>
+    <small>${safeText(value > 0 ? `${label} · ${basis}` : basis)}</small>
+  </div>`;
+}
+
+function updateScrewCatalogueMatrix() {
+  const body = $("screwCatalogueRows");
+  if (!body) return;
+  const selectedManufacturer = $("screwManufacturer").value;
+  const selectedSeries = $("screwSeries").value;
+  const allRows = screwCatalogueRows();
+  const rows = screwFilteredCatalogueRows();
+  const withDirectional = rows.filter(row => row.pile.compression > 0 && row.pile.uplift > 0 && row.pile.lateral > 0).length;
+  const supplierCount = new Set(rows.map(row => row.manufacturerKey)).size;
+  $("screwMarketSummary").innerHTML = [
+    `${rows.length} of ${allRows.length} products`,
+    `${supplierCount} suppliers`,
+    `${withDirectional} with directional data`
+  ].map(item => `<span>${safeText(item)}</span>`).join("");
+  if (!rows.length) {
+    body.innerHTML = `<tr><td colspan="9" class="screw-no-results"><b>No matching products</b><small>Adjust one or more selection filters.</small></td></tr>`;
+    return;
+  }
+  body.innerHTML = rows.map(row => {
+    const pile = row.pile;
+    const confidence = screwSourceConfidence(row.manufacturerKey, pile);
+    const dataStatus = screwDataStatus(row.manufacturerKey, pile);
+    const advice = screwSelectionAdvice(pile, row.manufacturerKey);
+    const active = row.manufacturerKey === selectedManufacturer && row.seriesKey === selectedSeries;
+    const shaftPrimary = screwSelectedText(pile.diameter || pile.shaft);
+    const shaftSecondary = pile.wall ? `Wall ${pile.wall}` : screwSelectedText(pile.shaft);
+    return `
+      <tr class="${active ? "is-selected" : ""}">
+        <td><b>${safeText(pile.label)}</b><small>${safeText(row.manufacturer)} · ${safeText(screwSystemType(pile))}</small><span class="screw-source-pill ${confidence.className}">${safeText(confidence.level)}</span></td>
+        <td data-label="Compression / rating">${screwCapacityCell(pile, "compression")}</td>
+        <td data-label="Tension">${screwCapacityCell(pile, "tension")}</td>
+        <td data-label="Lateral">${screwCapacityCell(pile, "lateral")}</td>
+        <td data-label="Shaft"><b>${safeText(shaftPrimary)}</b><small>${safeText(shaftSecondary)}</small></td>
+        <td data-label="Helix / bearing"><b>${safeText(screwSelectedText(pile.helixCount))}</b><small>${safeText(screwSelectedText(pile.helix))}</small></td>
+        <td data-label="Length"><b>${safeText(screwCompactFact(pile.length || "Project-specific", 42))}</b><small>${safeText(screwCompactFact(pile.extension || "Confirm extension detail", 46))}</small></td>
+        <td data-label="Data / limitation"><span class="screw-data-pill ${dataStatus.className}">${safeText(dataStatus.label)}</span><small><b class="${advice.className}">${safeText(advice.label)}</b>${safeText(screwPrimaryLimitation(pile))}</small></td>
+        <td><button type="button" class="mini-action" data-screw-select data-manufacturer="${safeText(row.manufacturerKey)}" data-series="${safeText(row.seriesKey)}">${active ? "Selected" : "View"}</button></td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function populateScrewSeries() {
+  const catalogue = selectedScrewCatalogue();
+  const previous = $("screwSeries").value;
+  const entries = Object.entries(catalogue.series);
+  $("screwSeries").innerHTML = entries.map(([key, item]) => `<option value="${key}">${item.label}</option>`).join("");
+  const fallback = catalogue.defaultSeries && entries.some(([key]) => key === catalogue.defaultSeries) ? catalogue.defaultSeries : entries[0][0];
+  $("screwSeries").value = entries.some(([key]) => key === previous) ? previous : fallback;
+  setScrewCapacityDefaults();
+}
+
+function setScrewCapacityDefaults() {
+  const pile = selectedScrewPile();
+  $("screwCompressionCap").value = pile.compression || "";
+  $("screwUpliftCap").value = pile.uplift || "";
+  $("screwLateralCap").value = pile.lateral || "";
+  $("screwCapacitySource").value = pile.defaultSource || (pile.axialClass ? "series" : "user");
+  $("screwProjectCompression").value = "0";
+  $("screwProjectTension").value = "0";
+  $("screwProjectHorizontal").value = "0";
+  $("screwProjectSource").value = "";
+  $("screwProjectBasis").value = $("screwDemandBasis").value || "uls";
+  calculateScrew();
+}
+
+function screwCapacityText(number) {
+  return Number.isFinite(number) && number > 0 ? fixed(number) : "-";
+}
+
+function screwSelectedText(text) {
+  const value = String(text ?? "").trim();
+  return value || "-";
+}
+
+function screwCapacityDriverText(value, missingLabel) {
+  return value > 0 ? `${screwCapacityText(value)} kN stated` : missingLabel;
+}
+
+function setOptionalText(id, text) {
+  const element = $(id);
+  if (element) element.textContent = screwSelectedText(text);
+}
+
+function setScrewSourceLink(id, text, url) {
+  const element = $(id);
+  if (!element) return;
+  element.textContent = screwSelectedText(text);
+  if (url) {
+    element.href = url;
+    element.removeAttribute("aria-disabled");
+  } else {
+    element.removeAttribute("href");
+    element.setAttribute("aria-disabled", "true");
+  }
+}
+
+function screwSketchText(text, maxLength = 34) {
+  const value = screwSelectedText(text);
+  return value.length > maxLength ? `${value.slice(0, maxLength - 1)}...` : value;
+}
+
+function screwMetricNumbers(text) {
+  const raw = String(text ?? "");
+  const fractionValues = [];
+  const withoutFractions = raw.replace(/(\d+)-(\d+)\/(\d+)/g, (_, whole, numerator, denominator) => {
+    const value = Number(whole) + Number(numerator) / Number(denominator);
+    if (Number.isFinite(value)) fractionValues.push(value);
+    return " ";
+  });
+  const decimalValues = [...withoutFractions.matchAll(/\d+(?:\.\d+)?/g)].map(match => Number(match[0])).filter(Number.isFinite);
+  const inchBased = /\bin\b|inch|["]/i.test(raw) && !/mm/i.test(raw);
+  return fractionValues.concat(decimalValues).map(number => inchBased ? number * 25.4 : number);
+}
+
+function screwFirstMetric(text, fallback) {
+  const numbers = screwMetricNumbers(text);
+  return numbers.length ? numbers[0] : fallback;
+}
+
+function screwLargestMetric(text, fallback, minimum = 0) {
+  const numbers = screwMetricNumbers(text).filter(number => number >= minimum);
+  return numbers.length ? Math.max(...numbers) : fallback;
+}
+
+function screwSketchDimensions(pile) {
+  const systemText = `${pile.system || ""} ${pile.helixCount || ""} ${pile.helix || ""}`;
+  const microPile = /micro[- ]pile|driven micro/i.test(systemText);
+  const continuousThread = /ground screw|continuous screw thread|integral ground-screw|open section screw|solar screw/i.test(systemText);
+  const noHelix = /no screw helix/i.test(systemText);
+  const countMatch = String(pile.helixCount || pile.helix || "").match(/(\d+)\s*(?:helices|helix|no\.|No\.)/i);
+  const variableMulti = /multiple|multi|project-selected|single or multi|single or multiple/i.test(systemText);
+  const helixCount = noHelix || microPile || continuousThread ? 0 : countMatch ? Math.max(1, Math.min(4, Number(countMatch[1]))) : variableMulti ? 2 : 1;
+  const shaftOd = screwFirstMetric(`${pile.diameter || ""} ${pile.shaft || ""}`, 76);
+  const wall = screwFirstMetric(pile.wall || "", NaN);
+  const helixDiameter = screwLargestMetric(pile.helix || "", continuousThread ? Math.max(shaftOd * 1.6, 140) : 250, 80);
+  const helixThickness = screwLargestMetric((String(pile.helix || "").match(/x\s*(\d+(?:\.\d+)?)\s*mm/i) || [])[1], NaN);
+  return { microPile, continuousThread, noHelix, helixCount, shaftOd, wall, helixDiameter, helixThickness };
+}
+
+function screwSvgText(x, y, text, className = "screw-sketch-value", anchor = "start") {
+  return `<text x="${x}" y="${y}" class="${className}" text-anchor="${anchor}">${safeText(text)}</text>`;
+}
+
+function screwSvgTextBlock(x, y, text, maxChars = 36, className = "screw-sketch-value") {
+  const words = String(text ?? "").split(/\s+/).filter(Boolean);
+  const lines = [];
+  let line = "";
+  words.forEach(word => {
+    const next = line ? `${line} ${word}` : word;
+    if (next.length > maxChars && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = next;
+    }
+  });
+  if (line) lines.push(line);
+  return `<text x="${x}" y="${y}" class="${className}">${lines.slice(0, 3).map((item, index) => `<tspan x="${x}" dy="${index ? 14 : 0}">${safeText(item)}</tspan>`).join("")}</text>`;
+}
+
+function screwSvgDefs() {
+  return `
+    <defs>
+      <pattern id="screwSoilHatch" patternUnits="userSpaceOnUse" width="14" height="14" patternTransform="rotate(28)">
+        <line x1="0" y1="0" x2="0" y2="14" />
+      </pattern>
+      <marker id="screwArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 Z" />
+      </marker>
+      <marker id="screwDimArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,4 L8,0 L8,8 Z" fill="#6b8278" />
+      </marker>
+      <marker id="screwLeaderArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#6b8278" />
+      </marker>
+    </defs>
+  `;
+}
+
+function screwHelixSvg(cx, cy, halfWidth, index) {
+  const ry = Math.max(9, Math.min(16, halfWidth * 0.19));
+  const left = cx - halfWidth;
+  const right = cx + halfWidth;
+  return `
+    <g class="screw-helix-group" data-helix="${index}">
+      <path class="screw-helix-plate" d="M${left} ${cy} C${left + halfWidth * 0.28} ${cy - ry} ${right - halfWidth * 0.28} ${cy - ry} ${right} ${cy} C${right - halfWidth * 0.28} ${cy + ry} ${left + halfWidth * 0.28} ${cy + ry} ${left} ${cy} Z" />
+      <path class="screw-helix-hidden" d="M${left} ${cy} C${left + halfWidth * 0.28} ${cy - ry} ${right - halfWidth * 0.28} ${cy - ry} ${right} ${cy}" />
+      <path class="screw-helix-rib" d="M${left} ${cy} C${left + halfWidth * 0.28} ${cy + ry} ${right - halfWidth * 0.28} ${cy + ry} ${right} ${cy}" />
+    </g>
+  `;
+}
+
+function screwManualHelixSvg(cx, cy, halfWidth, index) {
+  const ry = Math.max(8, Math.min(15, halfWidth * 0.17));
+  const left = cx - halfWidth;
+  const right = cx + halfWidth;
+  return `
+    <g class="screw-helix-group" data-helix="${index}">
+      <path class="screw-helix-hidden" d="M${left} ${cy} C${left + halfWidth * 0.32} ${cy - ry} ${right - halfWidth * 0.32} ${cy - ry} ${right} ${cy}" />
+      <path class="screw-helix-plate" d="M${left} ${cy} C${left + halfWidth * 0.30} ${cy + ry} ${right - halfWidth * 0.30} ${cy + ry} ${right} ${cy} C${right - halfWidth * 0.30} ${cy - ry} ${left + halfWidth * 0.30} ${cy - ry} ${left} ${cy} Z" />
+      <line class="screw-helix-rib" x1="${left + 8}" y1="${cy + ry * 0.2}" x2="${right - 8}" y2="${cy - ry * 0.2}" />
+    </g>
+  `;
+}
+
+function screwCompactFact(text, maxLength = 96) {
+  let valueText = screwSelectedText(text)
+    .replace(/series range noted/gi, "series")
+    .replace(/Example guide correlation:/gi, "Guide torque:")
+    .replace(/ for \d+ kN in stiff\/dense soils/gi, "")
+    .replace(/Use SWL vs torque table and project acceptance/gi, "Use torque table + acceptance")
+    .replace(/Install to specified pressure\/torque; record Nm for every pier/gi, "Record pressure/torque per pier")
+    .replace(/Project installation pressure\/torque and certification required/gi, "Project torque + certificate")
+    .replace(/Driven micro piles; supplier\/project certification required/gi, "Supplier/project certificate")
+    .replace(/Driven micro piles; not torque-selected screw pile/gi, "Driven piles; no torque selection")
+    .replace(/Installer selection and project confirmation/gi, "Installer/project confirmation")
+    .replace(/Geotechnical strength controls/gi, "Geotech strength controls")
+    .replace(/project-specific/gi, "project-specific")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (valueText.length <= maxLength) return valueText;
+  const shortened = valueText.slice(0, maxLength - 3).replace(/[ ,;:.]+[^ ,;:.]*$/, "");
+  return `${shortened}...`;
+}
+
+function screwCapacityCoverage(compressionCap, upliftCap, lateralCap) {
+  const directions = [
+    { key: "compression", value: compressionCap },
+    { key: "tension", value: upliftCap }
+  ];
+  const adopted = directions.filter(item => item.value > 0).map(item => item.key);
+  const missing = directions.filter(item => item.value <= 0).map(item => item.key);
+  const lateralMissing = lateralCap <= 0;
+  return {
+    adopted,
+    missing,
+    lateralMissing,
+    title: `Axial values ${adopted.length} of 2`,
+    note: missing.length
+      ? `Missing ${missing.join(", ")}. Request certified compression/tension values.`
+      : lateralMissing
+        ? "Axial values available; project horizontal resistance is still required for horizontal action or overturning."
+        : "Compression, tension and horizontal values are available from the selected source."
+  };
+}
+
+function screwNextEvidence(pile, compressionCap, upliftCap, lateralCap) {
+  const capacitySource = $("screwCapacitySource").value;
+  const coverage = screwCapacityCoverage(compressionCap, upliftCap, lateralCap);
+  const install = $("screwInstallEvidence").value;
+  const lateralSensitive = $("screwLateralSensitivity").value !== "undefined" || ["monopole", "tower", "sign", "anchor"].includes($("screwApplication").value);
+  if (coverage.missing.length) {
+    return {
+      title: `Request ${coverage.missing.join("/")}`,
+      note: "Ask supplier for certified compression/tension resistance and design basis."
+    };
+  }
+  if (capacitySource === "user") {
+    return {
+      title: "Provide source values",
+      note: "Use supplier, geotechnical or load-test values before issuing a selection."
+    };
+  }
+  if (install === "none") {
+    return {
+      title: "Installation record",
+      note: "Require torque, depth, termination and as-built evidence."
+    };
+  }
+  if (lateralSensitive) {
+    return {
+      title: lateralCap > 0 ? "Movement check" : "Request horizontal value",
+      note: lateralCap > 0 ? "Confirm head fixity, displacement limit and lateral model." : "Ask supplier for lateral resistance, head fixity and movement limits."
+    };
+  }
+  if (/project|supplier|user/i.test(`${pile.diameter} ${pile.wall} ${pile.helix}`)) {
+    return {
+      title: "Supplier detail",
+      note: "Confirm exact shaft, helix, connection and certificate."
+    };
+  }
+  return {
+    title: "Project certificate",
+    note: "Confirm AS 2159 design, durability and installation acceptance."
+  };
+}
+
+function setScrewResistanceOutput(outputId, unitId, basisId, valueNumber, adoptedText, missingText) {
+  const output = $(outputId);
+  const unit = $(unitId);
+  const basis = $(basisId);
+  if (valueNumber > 0) {
+    output.textContent = screwCapacityText(valueNumber);
+    if (unit) unit.textContent = " kN";
+    if (basis) basis.textContent = adoptedText;
+  } else {
+    output.textContent = "Not published";
+    if (unit) unit.textContent = "";
+    if (basis) basis.textContent = missingText;
+  }
+}
+
+function updateScrewSketch(pile, compressionCap, upliftCap, lateralCap) {
+  const sketch = $("screwPileSketch");
+  const dims = screwSketchDimensions(pile);
+  const confidence = screwSourceConfidence($("screwManufacturer").value, pile);
+  const system = screwSelectedText(pile.system || "Screw pile");
+  const shaftText = screwSelectedText(pile.shaft);
+  const helixText = screwSelectedText(pile.helix || "Project-specific bearing element");
+  const shaftFact = `${screwSelectedText(pile.diameter || shaftText)} / wall ${screwSelectedText(pile.wall)}`;
+  setOptionalText("screwFactSystem", system);
+  setOptionalText("screwFactShaft", shaftFact);
+  setOptionalText("screwFactHelixCount", screwSelectedText(pile.helixCount));
+  setOptionalText("screwFactHelix", helixText);
+  setOptionalText("screwFactPitch", screwPitchText(pile));
+  setOptionalText("screwFactLength", screwCompactFact(pile.length || "Project-specific", 72));
+  setOptionalText("screwFactExtension", screwCompactFact(pile.extension || "Project-specific connection", 80));
+  setOptionalText("screwFactSteel", screwCompactFact(pile.steel || "Supplier/project specification", 92));
+  setScrewSourceLink("screwFactSource", pile.source || "Project source", selectedScrewCatalogue().sourceUrl);
+  setOptionalText("screwFactSourceStatus", confidence.level);
+  setOptionalText("screwFactCapacityBasis", screwCompactFact(pile.capacityBasis || "Adopt certified resistance before action checks.", 110));
+  setOptionalText("screwFactSourceReview", screwSourceReviewText($("screwManufacturer").value));
+  setOptionalText("screwFactInstallCriterion", screwInstallationCriterion(pile));
+  setOptionalText("screwFactTorqueLimit", screwTorqueLimit(pile));
+  setOptionalText("screwFactHeadConnection", screwHeadConnectionLimit(pile));
+  setOptionalText("screwFactDurability", screwDurabilityLimit(pile));
+  setOptionalText("screwFactLimitation", screwPrimaryLimitation(pile));
+  const coverage = screwCapacityCoverage(compressionCap, upliftCap, lateralCap);
+  const nextEvidence = screwNextEvidence(pile, compressionCap, upliftCap, lateralCap);
+  setOptionalText("screwReadinessType", screwSystemType(pile));
+  setOptionalText("screwReadinessTypeNote", system);
+  setOptionalText("screwReadinessData", confidence.level);
+  setOptionalText("screwReadinessDataNote", confidence.detail);
+  setOptionalText("screwReadinessCoverage", coverage.title);
+  setOptionalText("screwReadinessCoverageNote", coverage.note);
+  setOptionalText("screwReadinessEvidence", nextEvidence.title);
+  setOptionalText("screwReadinessEvidenceNote", nextEvidence.note);
+  if (!sketch) return;
+
+  const compactSketch = (sketch.clientWidth > 0 && sketch.clientWidth < 360) || window.innerWidth < 540;
+
+  const viewWidth = compactSketch ? 360 : 600;
+  const cx = compactSketch ? 168 : 230;
+  const headY = 60;
+  const shaftTopY = 105;
+  const bottomY = 286;
+  const lengthDimX = compactSketch ? 324 : 430;
+  const shaftWidth = Math.max(16, Math.min(34, dims.shaftOd / 76.1 * 22));
+  const shaftHalf = shaftWidth / 2;
+  const helixHalf = Math.max(34, Math.min(compactSketch ? 78 : 104, shaftWidth * dims.helixDiameter / Math.max(dims.shaftOd, 1) / 2));
+  const shaftLeft = cx - shaftHalf;
+  const shaftRight = cx + shaftHalf;
+  const helixLabel = Number.isFinite(dims.helixDiameter) ? `helix dia ${Math.round(dims.helixDiameter)} mm` : "helix dia by supplier";
+  const shaftCallout = screwSketchText(`shaft ${shaftText}`, compactSketch ? 28 : 42);
+  const helixCallout = dims.noHelix
+    ? screwSketchText(pile.helix || "no screw helix", compactSketch ? 28 : 42)
+    : compactSketch
+      ? screwSketchText(`${screwSelectedText(pile.helix)}`, 26)
+      : screwSketchText(`${helixText}`, 46);
+  const lengthLabel = screwSketchText(
+    String(pile.length || "project-specific")
+      .replace(/\s*series range noted/i, "")
+      .replace(/;\s*.*$/, ""),
+    compactSketch ? 22 : 28
+  );
+  const helixYs = dims.helixCount <= 1 ? [238] : Array.from({ length: dims.helixCount }, (_, index) => 198 + index * Math.min(36, 74 / Math.max(dims.helixCount - 1, 1)));
+  const helixDimY = 318;
+  const helixDimRy = Math.max(9, Math.min(16, helixHalf * 0.19));
+  const helixDimStartY = helixYs[helixYs.length - 1] + helixDimRy;
+  const shaftCalloutX = compactSketch ? 224 : 350;
+  const shaftCalloutY = shaftTopY + 30;
+  const helixCalloutX = compactSketch ? 28 : 46;
+  const helixCalloutY = helixYs[0] - 18;
+  const helixSvg = helixYs.map((y, index) => screwManualHelixSvg(cx, y, helixHalf, index + 1)).join("");
+  const continuousThreadSvg = Array.from({ length: 9 }, (_, index) => {
+    const y = 126 + index * 16;
+    return `
+      <line class="screw-thread-line" x1="${cx - shaftHalf - 18}" y1="${y + 16}" x2="${cx + shaftHalf + 18}" y2="${y - 8}" />
+      <line class="screw-thread-line" x1="${cx - shaftHalf - 13}" y1="${y + 20}" x2="${cx + shaftHalf + 13}" y2="${y - 4}" />
+    `;
+  }).join("");
+  const microPileSvg = `
+    <rect class="screw-head-plate" x="${cx - 56}" y="${shaftTopY - 6}" width="112" height="26" rx="2" />
+    <circle class="screw-bolt-hole" cx="${cx - 34}" cy="${shaftTopY + 7}" r="3" />
+    <circle class="screw-bolt-hole" cx="${cx}" cy="${shaftTopY + 7}" r="3" />
+    <circle class="screw-bolt-hole" cx="${cx + 34}" cy="${shaftTopY + 7}" r="3" />
+    <line class="screw-shaft-line" x1="${cx - 44}" y1="${shaftTopY + 22}" x2="${cx - 84}" y2="${bottomY}" />
+    <line class="screw-shaft-line" x1="${cx - 16}" y1="${shaftTopY + 22}" x2="${cx - 30}" y2="${bottomY}" />
+    <line class="screw-shaft-line" x1="${cx + 16}" y1="${shaftTopY + 22}" x2="${cx + 30}" y2="${bottomY}" />
+    <line class="screw-shaft-line" x1="${cx + 44}" y1="${shaftTopY + 22}" x2="${cx + 84}" y2="${bottomY}" />
+    <line class="screw-shaft-centre" x1="${cx}" y1="${shaftTopY - 16}" x2="${cx}" y2="${bottomY + 8}" />
+    <line class="screw-leader" x1="${compactSketch ? 222 : 350}" y1="${shaftTopY + 5}" x2="${cx + 56}" y2="${shaftTopY + 7}" />
+    ${screwSvgText(compactSketch ? 226 : 358, shaftTopY + 8, "pile cap / sleeve", "screw-sketch-label")}
+    <line class="screw-leader" x1="${compactSketch ? 30 : 54}" y1="${bottomY - 18}" x2="${cx - 30}" y2="${bottomY - 2}" />
+    ${screwSvgTextBlock(compactSketch ? 30 : 54, bottomY - 22, "driven micro-piles; no screw helix", compactSketch ? 24 : 34, "screw-sketch-label")}
+  `;
+  const conventionalSvg = `
+    <rect class="screw-head-plate" x="${cx - 46}" y="${headY}" width="92" height="12" rx="2" />
+    <rect class="screw-drive-head" x="${cx - 28}" y="${headY + 17}" width="56" height="28" rx="2" />
+    <circle class="screw-bolt-hole" cx="${cx - 15}" cy="${headY + 31}" r="3" />
+    <circle class="screw-bolt-hole" cx="${cx + 15}" cy="${headY + 31}" r="3" />
+    <rect class="screw-drive-head" x="${cx - shaftHalf - 8}" y="${shaftTopY - 2}" width="${shaftWidth + 16}" height="34" rx="2" />
+    <circle class="screw-bolt-hole" cx="${cx - shaftHalf - 1}" cy="${shaftTopY + 15}" r="2.7" />
+    <circle class="screw-bolt-hole" cx="${cx + shaftHalf + 1}" cy="${shaftTopY + 15}" r="2.7" />
+    <rect class="screw-shaft" x="${shaftLeft}" y="${shaftTopY + 28}" width="${shaftWidth}" height="${bottomY - shaftTopY - 28}" rx="4" />
+    <line class="screw-shaft-centre" x1="${cx}" y1="${headY}" x2="${cx}" y2="${bottomY + 8}" />
+    <path class="screw-shaft-break" d="M${shaftLeft - 7} 158 L${shaftLeft + 7} 146 M${shaftRight - 7} 158 L${shaftRight + 7} 146" />
+    ${dims.continuousThread ? continuousThreadSvg : helixSvg}
+    <line class="screw-leader" x1="${shaftCalloutX - 8}" y1="${shaftCalloutY - 4}" x2="${shaftRight}" y2="${shaftTopY + 18}" />
+    ${screwSvgText(shaftCalloutX, shaftCalloutY, shaftCallout, "screw-sketch-label")}
+    <line class="screw-leader" x1="${helixCalloutX + (compactSketch ? 90 : 150)}" y1="${helixCalloutY - 2}" x2="${dims.continuousThread ? cx - shaftHalf - 13 : cx - helixHalf}" y2="${dims.continuousThread ? 180 : helixYs[0]}" />
+    ${screwSvgTextBlock(helixCalloutX, helixCalloutY, helixCallout, compactSketch ? 24 : 34, "screw-sketch-label")}
+    ${!dims.continuousThread ? `
+      <line class="screw-leader" x1="${compactSketch ? 226 : 360}" y1="${headY + 32}" x2="${cx + 28}" y2="${headY + 31}" />
+      ${screwSvgText(compactSketch ? 230 : 368, headY + 35, "head / coupler by series", "screw-sketch-label")}
+    ` : ""}
+    ${dims.continuousThread ? "" : `
+      <line class="screw-extension-line" x1="${cx - helixHalf}" y1="${helixDimStartY}" x2="${cx - helixHalf}" y2="${helixDimY - 6}" />
+      <line class="screw-extension-line" x1="${cx + helixHalf}" y1="${helixDimStartY}" x2="${cx + helixHalf}" y2="${helixDimY - 6}" />
+      <line class="screw-dim-line" x1="${cx - helixHalf}" y1="${helixDimY}" x2="${cx + helixHalf}" y2="${helixDimY}" />
+      ${screwSvgText(cx, helixDimY + 17, helixLabel, "screw-sketch-label", "middle")}
+    `}
+  `;
+  const embedmentLabelSvg = compactSketch
+    ? screwSvgText(lengthDimX - 7, 190, dims.microPile ? "pile length" : "lead length", "screw-sketch-label", "end")
+    : screwSvgTextBlock(lengthDimX + 11, 174, `${dims.microPile ? "pile length" : "lead length"} ${lengthLabel}`, 24, "screw-sketch-label");
+
+  sketch.setAttribute("viewBox", compactSketch ? "0 0 360 360" : "0 0 600 360");
+  sketch.innerHTML = `
+    <title id="screwSketchTitle">Selected screw pile schematic</title>
+    <desc id="screwSketchDesc">Product-manual style schematic showing the selected system head, shaft, coupler, helix or ground-screw body and key dimensions.</desc>
+    ${screwSvgDefs()}
+    <rect class="screw-sketch-bg" x="0" y="0" width="${viewWidth}" height="360" rx="12" />
+    <rect class="screw-cad-frame" x="14" y="14" width="${viewWidth - 28}" height="322" rx="4" />
+    ${screwSvgText(28, 38, dims.microPile ? "Product system detail" : dims.continuousThread ? "Ground screw product detail" : "Screw pile product detail", "screw-sketch-title")}
+    ${screwSvgText(viewWidth - 28, 38, "manual-style schematic; NTS", "screw-sketch-note", "end")}
+    ${dims.microPile ? microPileSvg : conventionalSvg}
+    <line class="screw-extension-line" x1="${shaftRight + 5}" y1="${shaftTopY}" x2="${lengthDimX - 7}" y2="${shaftTopY}" />
+    <line class="screw-extension-line" x1="${shaftRight + 5}" y1="${bottomY}" x2="${lengthDimX - 7}" y2="${bottomY}" />
+    <line class="screw-depth-line" x1="${lengthDimX}" y1="${shaftTopY}" x2="${lengthDimX}" y2="${bottomY}" />
+    ${embedmentLabelSvg}
+  `;
+  sketch.classList.toggle("no-helix", dims.noHelix || dims.microPile);
+}
+
+function screwTorsionDriver(pile) {
+  const shaft = pile.shaft || "";
+  const system = pile.system || "";
+  if (/76\.1 x 4\.0/i.test(shaft)) {
+    return "Local Katana torsion paper covers the 76.1 x 4.0 CHS family. Check final installation torque against supplier limit and shaft torsional strength before relying on torque correlation.";
+  }
+  if (/88\.9 x 5\.5/i.test(shaft)) {
+    return "Local Katana torsion paper covers the 88.9 x 5.5 CHS family. Check final installation torque against supplier limit and shaft torsional strength before relying on torque correlation.";
+  }
+  if (/micro-pile/i.test(system)) {
+    return "This system is driven rather than torque-selected. Use the supplier certificate, driven pile record and pile-cap layout for acceptance.";
+  }
+  if (/ground screw/i.test(system)) {
+    return "Use installer/supplier torque, refusal and ground-condition verification. Published small ground-screw values still need project acceptance criteria.";
+  }
+  return "No local torsion test row is captured for this shaft. Use the supplier structural torsion check and project installation specification.";
+}
+
+function screwLateralDriver(pile, lateralCap) {
+  const label = pile.label || "";
+  const source = pile.source || "";
+  if (/Katana/i.test(source) && /(80|150) kN/i.test(label)) {
+    return "Local lateral graphs cover selected Katana 80 kN / 150 kN clay and sand cases. Key inputs are shaft OD/wall, base diameter, clay cu or sand phi, fixed/free head, minimum embedment and accepted displacement.";
+  }
+  if (/micro-pile/i.test(pile.system || "")) {
+    return "Lateral and moment resistance comes from the cap, micro-pile count/direction, pile stiffness and soil reaction. Use the supplier/project certificate rather than a single-pile axial class.";
+  }
+  if (/ground screw/i.test(pile.system || "")) {
+    return lateralCap > 0
+      ? "A product-sheet lateral value is entered, but head movement, embedment, soil condition and connection rigidity still control suitability."
+      : "Add a supplier lateral value or test. Ground-screw axial values do not define lateral or moment acceptance.";
+  }
+  return "Needs a lateral graph, geotechnical model or test. Important inputs are head fixity, pile-head height/eccentricity, shaft stiffness, soil stiffness/strength, embedment and acceptable deflection.";
+}
+
+function updateScrewDrivers(pile, compressionCap, upliftCap, lateralCap) {
+  const driverNotes = $("screwDriverNotes");
+  if (!driverNotes) return;
+  const soil = screwSoilRules[$("screwSoil").value] || screwSoilRules.unknown;
+  const capacitySource = $("screwCapacitySource").selectedOptions?.[0]?.textContent || "Capacity basis";
+  const exposure = $("screwExposure").selectedOptions?.[0]?.textContent || "Exposure";
+  const installation = $("screwInstallEvidence").selectedOptions?.[0]?.textContent || "Installation evidence";
+  const helixDescription = `${screwSelectedText(pile.helixCount)}; ${screwSelectedText(pile.helix)}`;
+  const shaftDescription = `${screwSelectedText(pile.shaft)}; wall ${screwSelectedText(pile.wall)}`;
+  const cards = [
+    {
+      title: "Design actions / SLS limits",
+      value: "N*, V*, M*, Tz* + movement limits",
+      text: "Use ULS and SLS action effects from the supported-structure analysis. Include construction tolerance eccentricity, pile-head fixity and relevant ground-movement actions such as negative friction, swelling/heave or lateral ground movement."
+    },
+    {
+      title: "Axial compression",
+      value: screwCapacityDriverText(compressionCap, "resistance missing"),
+      text: `Driven by shaft, base and/or helix resistance, effective overburden, groundwater, soil strength and settlement. Selected geometry: ${shaftDescription}; ${helixDescription}; depth ${screwSelectedText(pile.length)}.`
+    },
+    {
+      title: "Uplift / tension",
+      value: screwCapacityDriverText(upliftCap, "tension resistance missing"),
+      text: `Check shaft friction and helix uplift below the active movement zone. Cyclic/repeated loading, sand disturbance and tubular shaft effects can reduce tensile resistance. Basis: ${capacitySource}.`
+    },
+    {
+      title: "Lateral / moment",
+      value: screwCapacityDriverText(lateralCap, "graph/test value missing"),
+      text: screwLateralDriver(pile, lateralCap)
+    },
+    {
+      title: "Installation proof",
+      value: installation,
+      text: `${screwSelectedText(pile.installControl)} ${screwTorsionDriver(pile)} If required torque or resistance is not achieved, use static proof/load testing, deeper installation or redesign. High-strain dynamic testing of screw piles should not be the sole basis unless correlated with static load testing for the site and pile geometry.`
+    },
+    {
+      title: "Soil model",
+      value: soil.label,
+      text: `The AS 1726 geotechnical model should identify soil and rock units, founding layer, fill status, cu for clays, phi/density for sands, unit weight, groundwater level/chemistry, rock/refusal risk and problematic soils such as liquefiable, sensitive, expansive, organic or acid sulfate materials.`
+    },
+    {
+      title: "Durability / group SLS",
+      value: exposure,
+      text: `AS 2159 durability checks depend on pH, chlorides, sulfates, resistivity, groundwater, coating/galvanizing, wall loss and design life. Group spacing, cap stiffness, settlement, lateral displacement, rotation and differential movement remain project SLS checks.`
+    }
+  ];
+  driverNotes.innerHTML = cards.map(card => `
+    <article>
+      <b>${safeText(card.title)}</b>
+      <strong>${safeText(card.value)}</strong>
+      <span>${safeText(card.text)}</span>
+    </article>
+  `).join("");
+}
+
+function setStatusClass(element, className) {
+  element.classList.remove("pass", "check", "fail");
+  if (className) element.classList.add(className);
+}
+
+function screwLayoutCoordinates() {
+  const layout = $("screwLayout").value;
+  const { columns, rows, lengthX, lengthY } = updateScrewLayoutControls();
+  const xValues = Array.from({ length: columns }, (_, index) => -lengthX / 2 + index * lengthX / (columns - 1));
+  const yValues = Array.from({ length: rows }, (_, index) => -lengthY / 2 + index * lengthY / (rows - 1));
+  let coordinates;
+  if (layout === "rect-grid") {
+    coordinates = yValues.slice().reverse().flatMap(y => xValues.map(x => ({ x, y })));
+  } else {
+    const top = xValues.map(x => ({ x, y: lengthY / 2 }));
+    const right = yValues.slice(1, -1).reverse().map(y => ({ x: lengthX / 2, y }));
+    const bottom = xValues.slice().reverse().map(x => ({ x, y: -lengthY / 2 }));
+    const left = yValues.slice(1, -1).map(y => ({ x: -lengthX / 2, y }));
+    coordinates = [...top, ...right, ...bottom, ...left];
+  }
+  return coordinates.map((point, index) => ({ id: index + 1, ...point }));
+}
+
+function updateScrewLayoutControls() {
+  const perimeter = $("screwLayout").value === "rect-perimeter";
+  const columns = Math.max(2, Math.min(8, Math.round(value("screwPileColumns") || 3)));
+  const rows = Math.max(2, Math.min(8, Math.round(value("screwPileRows") || 3)));
+  const enteredLengthX = value("screwGroupLengthX");
+  const enteredLengthY = value("screwGroupLengthY");
+  const lengthX = Math.max(0.1, enteredLengthX || 0.1);
+  const lengthY = Math.max(0.1, enteredLengthY || 0.1);
+  $("screwPileColumns").value = columns;
+  $("screwPileRows").value = rows;
+  $("screwPileColumnsLabel").innerHTML = perimeter ? "Piles per X edge, n<sub>x</sub>" : "Pile columns, n<sub>x</sub>";
+  $("screwPileRowsLabel").innerHTML = perimeter ? "Piles per Y edge, n<sub>y</sub>" : "Pile rows, n<sub>y</sub>";
+  $("screwLayoutNote").innerHTML = perimeter
+    ? "Counts include corner piles. L<sub>x</sub> and L<sub>y</sub> are centre-to-centre spans between outer piles."
+    : "All grid intersections contain a pile. L<sub>x</sub> and L<sub>y</sub> are centre-to-centre spans between outer piles.";
+  if (enteredLengthX < 0.1) $("screwGroupLengthX").value = lengthX;
+  if (enteredLengthY < 0.1) $("screwGroupLengthY").value = lengthY;
+  return { columns, rows, lengthX, lengthY };
+}
+
+function screwRiskNotes(pile, compressionCap, upliftCap, lateralCap) {
+  const notes = [];
+  let severity = 0;
+  const soilKey = $("screwSoil").value;
+  const soil = screwSoilRules[soilKey] || screwSoilRules.unknown;
+  const dimensions = screwSketchDimensions(pile);
+  const multipleHelices = screwHasMultipleHelices(pile);
+  const largeHelix = !dimensions.noHelix && Number.isFinite(dimensions.helixDiameter) && dimensions.helixDiameter >= 400;
+  severity += soil.severity;
+
+  const exposure = $("screwExposure").value;
+  let groundText = `${soil.label}. ${soil.note}`;
+  if (soilKey === "rock-refusal") {
+    groundText = multipleHelices || largeHelix
+      ? "Rock/refusal. Large or multiple helices increase installation risk; confirm rig torque and pre-drill/refusal criteria."
+      : "Rock/refusal. Confirm pre-drill/refusal criteria and founding detail.";
+  } else if (soilKey === "reactive-clay") {
+    groundText = "Reactive clay. Terminate the helix below the active movement zone and check shaft/head restraint.";
+  } else if (["soft-clay", "loose-sand"].includes(soilKey)) {
+    groundText = `${soil.label}. Depth, movement and load testing are likely to govern.`;
+  } else if (soilKey === "saturated-sand") {
+    groundText = "Saturated sand. Specialist liquefaction and cyclic uplift review required.";
+  } else if (soilKey === "sensitive-clay") {
+    groundText = "Sensitive clay. Specialist geotechnical design and installation review required.";
+  }
+  const exposureNotes = {
+    "not-assessed": { severity: 1, text: " Steel exposure classification has not been assessed." },
+    "non-aggressive": { severity: 0, text: " Confirm the non-aggressive classification from project soil and groundwater data." },
+    mild: { severity: 1, text: " Complete durability design for the AS 2159 mild exposure classification." },
+    moderate: { severity: 2, text: " Complete durability design for the AS 2159 moderate exposure classification." },
+    severe: { severity: 3, text: " Severe exposure requires project durability design and installation-compatible protection." },
+    "very-severe": { severity: 4, text: " Very severe exposure requires a site-specific durability assessment." }
+  };
+  const exposureNote = exposureNotes[exposure] || exposureNotes["not-assessed"];
+  severity += exposureNote.severity;
+  groundText += exposureNote.text;
+  if (exposure === "very-severe" && $("screwManufacturer").value === "katana") {
+    groundText += " The selected CodeMark scope excludes very severe exposure.";
+  }
+  notes.push({ title: "Ground / durability", text: groundText });
+
+  const install = $("screwInstallEvidence").value;
+  const installationNotes = [];
+  if (install === "none") {
+    severity += 1;
+    installationNotes.push("Require torque, depth, termination and as-built installation records.");
+  } else if (install === "torque") {
+    severity += 1;
+    installationNotes.push("Verify final torque, depth and founding layer against acceptance criteria.");
+  } else if (install === "test") {
+    installationNotes.push("Retain the static load-test method, load level, acceptance criteria and movement records.");
+  } else {
+    installationNotes.push("Verify the installation record and static load-test evidence.");
+  }
+  if (multipleHelices) {
+    installationNotes.push("Check helix spacing, interaction and installation torque.");
+  } else if (largeHelix) {
+    installationNotes.push("Confirm equipment torque and refusal risk for the selected helix.");
+  } else if (/No screw helix/i.test(pile.helixCount || "")) {
+    installationNotes.push("Supplier system certificate governs.");
+  }
+  notes.push({ title: "Installation", text: installationNotes.join(" ") });
+
+  const application = $("screwApplication").value;
+  const movementCriterion = $("screwLateralSensitivity").value;
+  const lateralImportant = ["monopole", "tower", "sign", "anchor"].includes(application) || movementCriterion !== "undefined";
+  const missing = [];
+  if (compressionCap <= 0) missing.push("compression resistance");
+  if (upliftCap <= 0) missing.push("tension resistance");
+  if (missing.length) {
+    severity += 1;
+  }
+  if (lateralImportant && lateralCap <= 0) {
+    severity += 2;
+  }
+  if (movementCriterion === "critical") {
+    severity += 2;
+  } else if (movementCriterion === "undefined" && lateralImportant) {
+    severity += 1;
+  }
+  const applicationNotes = {
+    monopole: "Overturning makes tension, cap connection and pile-head rotation key.",
+    tower: "Check biaxial overturning, group uplift and cap connection.",
+    sign: "Check overturning, cyclic response and pile-head rotation.",
+    anchor: "Confirm load direction, cyclic demand and connection detailing.",
+    platform: "Confirm axial distribution, bracing reactions and head connection.",
+    generic: "Confirm load direction, group behaviour and head connection."
+  };
+  const applicationText = applicationNotes[application] || applicationNotes.generic;
+  const type = screwSystemType(pile);
+  const typeNote = /Micro-pile footing|Ground screw|Engineered pathway/i.test(type)
+    ? ` ${type} requires supplier/project certification.`
+    : "";
+  const movementNotes = {
+    undefined: " Define pile-head translation and rotation limits.",
+    defined: " Apply the project movement limits.",
+    critical: " Movement governs screening."
+  };
+  notes.push({
+    title: "Application",
+    text: `${applicationText}${typeNote}${movementNotes[movementCriterion] || movementNotes.undefined}`
+  });
+  if (/Micro-pile footing|Ground screw|Engineered pathway/i.test(type)) {
+    severity += 1;
+  }
+  return { severity, notes };
+}
+
+function updateScrewRisk(pile, compressionCap, upliftCap, lateralCap) {
+  const advice = screwSelectionAdvice(pile);
+  const status = $("screwSelectionStatus");
+  if (!status) return;
+  status.textContent = advice.label;
+  setStatusClass(status, advice.className === "fit-data" ? "pass" : advice.className === "fit-alert" ? "fail" : "check");
+  setOptionalText("screwSelectionGuidance", advice.note);
+}
+
+function calculateScrewDemand(comparison) {
+  const compressionCap = comparison.compression || 0;
+  const upliftCap = comparison.uplift || 0;
+  const lateralCap = comparison.lateral || 0;
+  const comparisonBasis = comparison.basis || "none";
+  const actionBasis = comparison.actionBasis || $("screwDemandBasis").value;
+  const actionBasisLabels = {
+    uls: "ULS design action effects",
+    sls: "SLS design action effects",
+    service: "unfactored / service reference actions"
+  };
+  const actionBasisLabel = actionBasisLabels[actionBasis] || "action basis not stated";
+  const coords = screwLayoutCoordinates();
+  const n = coords.length;
+  const baseN = signedValue("screwDemandN");
+  const vx = signedValue("screwDemandVx");
+  const vy = signedValue("screwDemandVy");
+  const mx = signedValue("screwDemandMx");
+  const my = signedValue("screwDemandMy");
+  const tz = signedValue("screwDemandTz");
+  const directShearX = n > 0 ? vx / n : 0;
+  const directShearY = n > 0 ? vy / n : 0;
+  const sumX2 = coords.reduce((sum, point) => sum + point.x ** 2, 0);
+  const sumY2 = coords.reduce((sum, point) => sum + point.y ** 2, 0);
+  const sumXY = coords.reduce((sum, point) => sum + point.x * point.y, 0);
+  const sumR2 = coords.reduce((sum, point) => sum + point.x ** 2 + point.y ** 2, 0);
+  const reactions = coords.map(point => {
+    const axial = baseN / n
+      + (sumY2 > 0 ? mx * point.y / sumY2 : 0)
+      + (sumX2 > 0 ? my * point.x / sumX2 : 0);
+    const torsionShearX = sumR2 > 0 ? -tz * point.y / sumR2 : 0;
+    const torsionShearY = sumR2 > 0 ? tz * point.x / sumR2 : 0;
+    const lateralX = directShearX + torsionShearX;
+    const lateralY = directShearY + torsionShearY;
+    const lateral = Math.hypot(lateralX, lateralY);
+    return { ...point, axial, lateral, lateralX, lateralY };
+  });
+  const maxCompression = Math.max(0, ...reactions.map(item => item.axial));
+  const maxUplift = Math.max(0, ...reactions.map(item => -item.axial));
+  const maxLateral = Math.max(0, ...reactions.map(item => item.lateral));
+  const maxCompressionPile = maxCompression > 0
+    ? reactions.reduce((current, item) => item.axial > current.axial ? item : current)
+    : null;
+  const maxUpliftPile = maxUplift > 0
+    ? reactions.reduce((current, item) => -item.axial > -current.axial ? item : current)
+    : null;
+  const maxLateralPile = maxLateral > 0
+    ? reactions.reduce((current, item) => item.lateral > current.lateral ? item : current)
+    : null;
+  $("screwDemandPileCount").textContent = String(n);
+  $("screwDemandCompression").textContent = `${fixed(maxCompression)} kN`;
+  $("screwDemandUplift").textContent = `${fixed(maxUplift)} kN`;
+  $("screwDemandLateral").textContent = `${fixed(maxLateral)} kN`;
+  $("screwDemandCompressionPile").textContent = maxCompressionPile ? `Pile ${maxCompressionPile.id}` : "Pile -";
+  $("screwDemandUpliftPile").textContent = maxUpliftPile ? `Pile ${maxUpliftPile.id}` : "Pile -";
+  $("screwDemandLateralPile").textContent = maxLateralPile ? `Pile ${maxLateralPile.id}` : "Pile -";
+  $("screwReactionRows").innerHTML = reactions.map(item => {
+    const state = item.axial > 0.05 ? "Compression" : item.axial < -0.05 ? "Tension" : "Neutral";
+    return `<tr><td>${item.id}</td><td>${fixed2(item.x)} m</td><td>${fixed2(item.y)} m</td><td>${fixed(item.axial)} kN</td><td>${state}</td><td>${fixed(item.lateral)} kN</td></tr>`;
+  }).join("");
+
+  const hasDemand = maxCompression > 0 || maxUplift > 0 || maxLateral > 0;
+  const comparisonEnabled = comparisonBasis === "project";
+  const missingDirections = [];
+  if (comparisonEnabled && maxCompression > 0 && compressionCap <= 0) missingDirections.push("compression");
+  if (comparisonEnabled && maxUplift > 0 && upliftCap <= 0) missingDirections.push("tension");
+  if (comparisonEnabled && maxLateral > 0 && lateralCap <= 0) missingDirections.push("horizontal");
+  const comparisons = reactions.flatMap(item => {
+    const items = [];
+    if (item.axial > 0 && compressionCap > 0) items.push({ pile: item, direction: "compression", ratio: item.axial / compressionCap });
+    if (item.axial < 0 && upliftCap > 0) items.push({ pile: item, direction: "tension", ratio: -item.axial / upliftCap });
+    if (item.lateral > 0 && lateralCap > 0) items.push({ pile: item, direction: "horizontal", ratio: item.lateral / lateralCap });
+    return items;
+  });
+  const governing = comparisons.reduce((current, item) => !current || item.ratio > current.ratio ? item : current, null);
+  const missingCapacity = missingDirections.length > 0;
+  const utilisation = governing?.ratio || 0;
+  const comparisonNames = {
+    project: "Project directional comparison",
+    "project-source-missing": "Project comparison unavailable",
+    "project-basis-mismatch": "Project comparison unavailable",
+    none: "Action distribution only"
+  };
+  setOptionalText("screwDemandComparisonLabel", comparisonNames[comparisonBasis] || comparisonNames.none);
+  const ratioSymbol = "&eta;<sub>proj</sub>";
+  $("screwDemandRatio").innerHTML = !hasDemand || !comparisonEnabled ? "Not assessed" : missingCapacity ? `${ratioSymbol} = incomplete` : `${ratioSymbol} = ${utilisation.toFixed(2)}`;
+  if (!hasDemand) {
+    $("screwDemandStatus").textContent = "No demand entered";
+    setStatusClass($("screwDemandStatus"), "");
+  } else if (comparisonBasis === "project-source-missing") {
+    $("screwDemandStatus").textContent = "Project design-value source required";
+    setStatusClass($("screwDemandStatus"), "check");
+  } else if (comparisonBasis === "project-basis-mismatch") {
+    $("screwDemandStatus").textContent = "Action and project value bases do not match";
+    setStatusClass($("screwDemandStatus"), "check");
+  } else if (!comparisonEnabled) {
+    $("screwDemandStatus").textContent = "Pile actions only";
+    setStatusClass($("screwDemandStatus"), "");
+  } else if (missingCapacity) {
+    $("screwDemandStatus").textContent = `Project design value required for ${missingDirections.join(" / ")}`;
+    setStatusClass($("screwDemandStatus"), "check");
+  } else if (utilisation <= 1) {
+    $("screwDemandStatus").textContent = `Does not exceed entered project value · Pile ${governing.pile.id} / ${governing.direction}`;
+    setStatusClass($("screwDemandStatus"), "check");
+  } else {
+    $("screwDemandStatus").textContent = `Exceeds entered project value · Pile ${governing.pile.id} / ${governing.direction}`;
+    setStatusClass($("screwDemandStatus"), "fail");
+  }
+
+  const denominatorSymbols = { compression: "R<sub>c,proj</sub>", tension: "R<sub>t,proj</sub>", horizontal: "R<sub>h,proj</sub>" };
+  const capacityComparisons = [
+    maxCompression > 0 ? `N<sub>c,max</sub><sup>*</sup> / ${denominatorSymbols.compression} = ${fixed(maxCompression)} / ${compressionCap > 0 ? fixed(compressionCap) : "not stated"}` : "",
+    maxUplift > 0 ? `N<sub>t,max</sub><sup>*</sup> / ${denominatorSymbols.tension} = ${fixed(maxUplift)} / ${upliftCap > 0 ? fixed(upliftCap) : "not stated"}` : "",
+    maxLateral > 0 ? `V<sub>h,max</sub><sup>*</sup> / ${denominatorSymbols.horizontal} = ${fixed(maxLateral)} / ${lateralCap > 0 ? fixed(lateralCap) : "not stated"}` : ""
+  ].filter(Boolean).join("; ") || "no non-zero design action effect";
+
+  let comparisonFormula;
+  if (comparisonBasis === "project") {
+    comparisonFormula = `<div><b>Project directional comparison</b><code>&eta;<sub>proj</sub> is the maximum applicable non-zero action-to-project-value term. Current terms: ${capacityComparisons}. Entered source: ${safeText(comparison.source)}. Action and value basis: ${actionBasisLabel}. Combined axial-horizontal interaction is not assessed.</code></div>`;
+  } else if (comparisonBasis === "project-source-missing") {
+    comparisonFormula = `<div><b>Project comparison unavailable</b><code>Enter a source reference for the project design values. No ratio is reported.</code></div>`;
+  } else if (comparisonBasis === "project-basis-mismatch") {
+    comparisonFormula = `<div><b>Project comparison unavailable</b><code>The project value basis does not match ${actionBasisLabel}. No ratio is reported.</code></div>`;
+  } else {
+    comparisonFormula = `<div><b>Action distribution only</b><code>No project design values are entered. Manufacturer values are not compared automatically. The page reports pile action effects only.</code></div>`;
+  }
+
+  $("screwDemandFormulaSteps").innerHTML = `
+    <div><b>Action-distribution model</b><code>Symmetric rectangular layout; rigid pad; vertical identical piles; equal axial stiffness in compression and tension; equal horizontal stiffness; no pad-soil resistance. Coordinates are measured from the group centroid. n = ${n}; &Sigma;x<sub>j</sub>y<sub>j</sub> = ${fixed2(sumXY)} m<sup>2</sup>; &Sigma;x<sub>j</sub><sup>2</sup> = ${fixed2(sumX2)} m<sup>2</sup>; &Sigma;y<sub>j</sub><sup>2</sup> = ${fixed2(sumY2)} m<sup>2</sup>; &Sigma;r<sub>j</sub><sup>2</sup> = ${fixed2(sumR2)} m<sup>2</sup>. Action set: ${actionBasisLabel}.</code></div>
+    <div><b>Axial pile action</b><code>N<sub>i</sub><sup>*</sup> = N<sup>*</sup>/n + M<sub>x</sub><sup>*</sup>y<sub>i</sub>/&Sigma;y<sub>j</sub><sup>2</sup> + M<sub>y</sub><sup>*</sup>x<sub>i</sub>/&Sigma;x<sub>j</sub><sup>2</sup>. Positive N<sub>i</sub><sup>*</sup> denotes compression. N<sub>c,max</sub><sup>*</sup> = max<sub>i</sub>[max(N<sub>i</sub><sup>*</sup>, 0)]; N<sub>t,max</sub><sup>*</sup> = max<sub>i</sub>[max(-N<sub>i</sub><sup>*</sup>, 0)].</code></div>
+    <div><b>Horizontal pile action</b><code>V<sub>x,i</sub><sup>*</sup> = V<sub>x</sub><sup>*</sup>/n - T<sub>z</sub><sup>*</sup>y<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>y,i</sub><sup>*</sup> = V<sub>y</sub><sup>*</sup>/n + T<sub>z</sub><sup>*</sup>x<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>i</sub><sup>*</sup> = &radic;[(V<sub>x,i</sub><sup>*</sup>)<sup>2</sup> + (V<sub>y,i</sub><sup>*</sup>)<sup>2</sup>]. This equal-stiffness model excludes pile-head fixity, soil-pile interaction and horizontal displacement.</code></div>
+    ${comparisonFormula}
+  `;
+}
+
+function calculateScrew() {
+  const pile = selectedScrewPile();
+  const manufacturerKey = $("screwManufacturer").value;
+  const catalogue = selectedScrewCatalogue();
+  const confidence = screwSourceConfidence(manufacturerKey, pile);
+  const dataStatus = screwDataStatus(manufacturerKey, pile);
+  const valueBasis = screwValueBasisText(pile);
+  const capacityLabels = screwCapacityLabels(pile);
+  const enteredValues = {
+    compression: value("screwCompressionCap"),
+    uplift: value("screwUpliftCap"),
+    lateral: value("screwLateralCap")
+  };
+  const displayValues = screwDisplayCapacities(pile, enteredValues);
+  const comparisonValues = screwComparisonCapacities(pile, displayValues);
+  $("screwDesignation").textContent = pile.label;
+  $("screwAssumption").textContent = `${catalogue.label} · ${screwSystemType(pile)}.`;
+  $("screwSystem").textContent = pile.system || "Screw pile";
+  $("screwShaft").textContent = pile.shaft;
+  $("screwDiameter").textContent = pile.diameter || "-";
+  $("screwWall").textContent = pile.wall || "-";
+  $("screwHelixCount").textContent = pile.helixCount || "-";
+  $("screwHelix").textContent = pile.helix || "-";
+  $("screwSteel").textContent = pile.steel;
+  $("screwLength").textContent = screwCompactFact(pile.length, 110);
+  $("screwExtension").textContent = pile.extension || "-";
+  $("screwSoilRequirement").textContent = screwCompactFact(pile.soilRequirement || "-", 120);
+  $("screwInstallControl").textContent = screwCompactFact(pile.installControl || "-", 120);
+  $("screwCapacityBasis").textContent = screwCompactFact(pile.capacityBasis || "Basis not stated.", 120);
+  $("screwSource").textContent = pile.source;
+  $("screwAxialClass").textContent = screwCapacityText(pile.axialClass);
+  setOptionalText("screwCompressionLabel", capacityLabels.compression);
+  setOptionalText("screwUpliftLabel", capacityLabels.uplift);
+  setOptionalText("screwLateralLabel", capacityLabels.lateral);
+  setScrewResistanceOutput(
+    "screwCompressionResult",
+    "screwCompressionUnit",
+    "screwCompressionBasis",
+    displayValues.compression,
+    valueBasis,
+    "No direction-specific value published."
+  );
+  setScrewResistanceOutput(
+    "screwUpliftResult",
+    "screwUpliftUnit",
+    "screwUpliftBasis",
+    displayValues.uplift,
+    valueBasis,
+    "No direction-specific value published."
+  );
+  setScrewResistanceOutput(
+    "screwLateralResult",
+    "screwLateralUnit",
+    "screwLateralBasis",
+    displayValues.lateral,
+    valueBasis,
+    "No direction-specific value published."
+  );
+  $("screwAxialBasis").textContent = pile.axialClass > 0 ? "System class shown." : "No class entered.";
+  updateScrewSketch(pile, enteredValues.compression, enteredValues.uplift, enteredValues.lateral);
+  $("screwCapacityStatus").textContent = dataStatus.label;
+  $("screwCapacityStatus").className = dataStatus.className;
+  $("screwCapacityStatus").title = dataStatus.detail;
+  updateScrewCatalogueMatrix();
+  updateScrewDrivers(pile, enteredValues.compression, enteredValues.uplift, enteredValues.lateral);
+  updateScrewRisk(pile, enteredValues.compression, enteredValues.uplift, enteredValues.lateral);
+  calculateScrewDemand(comparisonValues);
+}
+
 function setTool(tool, updateHash = true) {
   const validTool = toolNames.includes(tool);
   const selectedTool = validTool ? tool : "bolt";
@@ -1858,12 +4651,18 @@ function setTool(tool, updateHash = true) {
     history.replaceState(null, "", `#${selectedTool}`);
   }
   if (selectedTool === "concrete") calculateConcrete();
+  if (selectedTool === "screw") {
+    calculateScrew();
+    window.requestAnimationFrame(calculateScrew);
+  }
 }
 
 function setMemberType(type) {
   memberType = type;
   const isCustom = type === "custom";
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
+  const selectedMember = document.querySelector(".member-selected-section");
+  if (selectedMember) selectedMember.classList.toggle("member-selected-custom", isCustom);
   document.querySelectorAll("[data-member-guide]").forEach(card => {
     card.hidden = card.dataset.memberGuide !== type;
   });
@@ -1888,7 +4687,7 @@ function setMemberType(type) {
     : type === "pfc"
       ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
       : type === "custom"
-        ? "Custom / Built-up: axial capacity from entered effective properties."
+        ? "Custom / Built-up properties: entered effective section properties; k<sub>f</sub> and &alpha;<sub>b</sub> are adopted AS 4100 compression factors."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";
   $("memberAlphaB").disabled = type !== "custom";
   if (type === "chs") $("memberAlphaB").value = "-0.5";
@@ -1905,6 +4704,7 @@ function initialise() {
   $("boltSize").innerHTML = Object.keys(boltData).map(size => `<option value="${size}">${size}</option>`).join("");
   $("boltSize").value = "M24";
   populateBoltCategories();
+  populateUBoltFilters(true);
   $("category").value = "8.8/S";
   $("weldSize").innerHTML = weldSizes.map(size => `<option value="${size}">${size} mm</option>`).join("");
   $("weldParentGrade").innerHTML = Object.keys(parentMetalGrades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
@@ -1945,10 +4745,22 @@ function initialise() {
   });
   $("boltSize").addEventListener("change", setBoltSize);
   $("shearPlane").addEventListener("input", setPrimaryPlane);
+  $("boltModeStandard").addEventListener("click", () => setBoltMode("standard"));
+  $("boltModeUBolt").addEventListener("click", () => setBoltMode("ubolt"));
+  ["uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish"].forEach(id => $(id).addEventListener("change", () => {
+    populateUBoltFilters();
+    calculateUBolt();
+  }));
+  $("uBoltManufacturer").addEventListener("change", () => {
+    populateUBoltProducts();
+    calculateUBolt();
+  });
+  $("uBoltProduct").addEventListener("change", calculateUBolt);
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {
     if (!$("concretePanel").hidden) calculateConcrete();
+    if (!$("screwPanel").hidden) calculateScrew();
   });
   document.querySelector(".concrete-layout-details").addEventListener("toggle", event => {
     if (event.target.open) calculateConcrete();
@@ -1959,6 +4771,26 @@ function initialise() {
   $("beamMomentDemand").addEventListener("input", calculateBeam);
   $("beamShearDemand").addEventListener("input", calculateBeam);
   beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
+  $("screwManufacturer").addEventListener("change", populateScrewSeries);
+  $("screwSeries").addEventListener("change", setScrewCapacityDefaults);
+  if ($("screwCatalogueRows")) {
+    $("screwCatalogueRows").addEventListener("click", event => {
+      const button = event.target.closest("[data-screw-select]");
+      if (!button) return;
+      selectScrewCatalogueRow(button.dataset.manufacturer, button.dataset.series);
+    });
+  }
+  $("screwLayout").addEventListener("change", calculateScrew);
+  screwInputIds
+    .filter(id => !["screwManufacturer", "screwSeries", "screwLayout"].includes(id))
+    .forEach(id => {
+      const element = $(id);
+      element.addEventListener("input", calculateScrew);
+      if (element.tagName === "SELECT") element.addEventListener("change", calculateScrew);
+    });
+  $("screwDemandDetails").addEventListener("toggle", event => {
+    if (event.target.open) calculateScrew();
+  });
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
   $("memberSection").addEventListener("change", populateMemberGrades);
   $("memberGrade").addEventListener("change", () => {
@@ -1981,11 +4813,15 @@ function initialise() {
   $("memberHoleThickness").addEventListener("input", calculateMember);
   $("memberNetArea").addEventListener("input", calculateMember);
   $("memberKt").addEventListener("input", calculateMember);
+  populateScrewSeries();
   setBeamType(beamSectionType);
   setMemberType(memberType);
   calculateBolt();
+  calculateUBolt();
   calculateWeld();
   calculateConcrete();
+  calculateScrew();
+  setBoltMode(initialBoltMode());
   setTool(location.hash.slice(1) || "bolt", false);
 }
 
