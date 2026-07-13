@@ -1261,13 +1261,16 @@ Minimum edge distance and ply checks should reference AS 4100 terminology and cl
 
 For the web bolt tab, separate the edge-distance terms visibly:
 
-- Input label: `e` = hole centre to edge.
+- Input label: `e` = critical bolt centre to the selected physical edge.
 - Input label: `d_h` = actual hole diameter.
-- Input label: `θ` = force angle from edge normal; default 0° for force acting directly towards the edge.
+- Input control: `a_e basis` = `Automatic · end edge / pitch` or `Manual · connection drawing`.
 - Result label: `Minimum edge distance, e - AS 4100 Table 9.5.2`.
-- Edge-limited bearing note: `a_e = e/cosθ - d_h/2 + d_f/2` for a standard hole at a physical ply edge.
+- For equal holes aligned with the force, calculate `a_e,end = e - d_h/2 + d_f/2` and `a_e,pitch = p - d_h + d_f/2`, then use the lesser value.
+- For angled edges, corners, non-collinear holes or other drawing-derived geometry, require a manual `a_e`.
 - Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
-- Do not multiply the edge-limited ply capacity by total bolt count unless all bolts are actually on the loaded edge / critical line. Use a separate `Bolts on edge line` input; default it to total bolt count, but allow manual adjustment. Where an adjacent bolt hole is the critical edge under AS 4100 Cl. 9.2.2.4, calculate `a_e` from the actual hole layout and do not infer it from total bolt count.
+- Keep the lightweight connected-ply check on a critical-hole basis. Assume concentric shear and equal bolt sharing, calculate `V_b,bolt* = V*/n`, and compare it with the lesser of the full-bearing and edge-limited capacities at the critical bolt hole.
+- Present `n` times the critical-hole capacity as the equal-share connected-ply group capacity; keep the single-hole values in Calculation steps.
+- Do not calculate net-section rupture, actual tear-out paths, block shear, eccentric bolt-group reactions, overlapping failure paths or minimum bolt spacing.
 
 ### 15.11 Member Web Tab Rules
 
