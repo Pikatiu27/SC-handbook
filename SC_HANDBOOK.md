@@ -744,11 +744,24 @@ These rules apply when a handbook module is implemented as a static web tab.
 
 The web page is still part of `SC Handbook`. It must follow the same source hierarchy, engineering language, formula traceability, and validation standard as the workbook. The web version should be a fast engineering lookup interface, not a full design report generator.
 
+Web outline map:
+
+- `15.0` is the working checklist for any web edit, review, commit, or push.
+- `15.1` to `15.3` define product logic, tab structure, and result hierarchy.
+- `15.4` to `15.6` define visual format: typography, responsive layout, mobile behaviour, and colour system.
+- `15.7` defines symbols, formulas, source references, and project-file responsibilities.
+- `15.8` defines input layout, editable-field behaviour, figure/chart rules, CAD-style drawing rules, and page annotation rules.
+- `15.9` defines warning and limitation style.
+- `15.10` onward defines tab-specific engineering scope, formula boundaries, display rules, and exclusions.
+- `15.17` defines local update, commit, push, and GitHub Pages verification workflow.
+
+When editing the web app, use the global web rules first, then the affected tab-specific section. If a layout, notation, drawing, warning, or input rule is intended to survive beyond one edit, record it here rather than only in CSS, JavaScript, or a chat note.
+
 ### 15.0 Current Web Implementation Checklist
 
 Use this checklist before editing, reviewing, committing, or pushing any web-tab work:
 
-1. Confirm the active app root is the current `SC Handbook` checkout and the affected files are `index.html`, `app.js`, `styles.css`, and, where durable rules changed, `SC_HANDBOOK.md`.
+1. Confirm the active app root is the current `SC Handbook` checkout and the affected files are `index.html`, `app.js`, `styles.css`, any scoped tab module such as `rock-anchor-selector/app.js`, and, where durable rules changed, `SC_HANDBOOK.md`.
 2. Keep the UI English-only and use Australian engineering language.
 3. Check the local reference folder first: `C:\Users\silin\Documents\Codex\Reference`.
 4. If the governing source cannot be found or read, tell the user and mark the item `Source_Not_Verified`; do not present it as checked.
@@ -793,6 +806,20 @@ Current core tabs:
 - `Beam Section`
 - `Weld Capacity`
 - `Pad Section`
+- `Screw Piles`
+- `Rock Anchor`
+
+Current tab register:
+
+| Tab | Short nav label | Role | Source status | Publish posture |
+| --- | --- | --- | --- | --- |
+| `Bolt Capacity` | `Bolt` | AS 4100 bolt / ply quick capacity and demand screen | For Review with checked core clauses | Active quick-reference tab |
+| `Axial Member` | `Axial` | AS 4100 axial member compression / tension quick screen | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
+| `Beam Section` | `Beam` | AS 4100 UB/UC and symmetric custom I-section section-capacity lookup | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
+| `Weld Capacity` | `Weld` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
+| `Pad Section` | `Pad` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
+| `Screw Piles` | `Screw` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
+| `Rock Anchor` | `Rock` | Product selector and quick rock-anchor lookup aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 
 Future tabs may include:
 
@@ -808,6 +835,11 @@ Tab rules:
 - Do not mix unrelated checks in the same visual block.
 - Keep tab names short and direct.
 - Page title and UI labels must be English.
+- Navigation labels may be shorter than full tab names when the tab count makes the top navigation crowded. Use short labels such as `Bolt`, `Axial`, `Beam`, `Weld`, `Pad`, `Screw`, and `Rock` in the tab bar, then show the full tool name in the tool heading.
+- The active tab must be visually stronger than inactive tabs: filled pill background, tab theme colour, heavier font weight, clear border or shadow, and `aria-selected="true"`. Do not rely on font weight alone.
+- Inactive tabs should remain readable but visually quieter. Avoid making every tab bold, large, and high-contrast at the same time.
+- Desktop tab navigation should stay one compact toolbar where practical. If more than about seven or eight active tabs are added, introduce domain grouping or a tool selector rather than letting the toolbar become a dense multi-row block.
+- Phone tab navigation should use horizontal scroll with direct access to every tool. Do not force all tabs into a tall wrapped block above the calculator.
 
 Page-level layout order:
 
@@ -850,6 +882,23 @@ For member capacity:
 - `Calculation basis and limitations`
 
 The first block shows the governing answer. The second block shows secondary checks and intermediate capacities. The third block gives source clauses, assumptions, exclusions, and limitations.
+
+Web component standard:
+
+| Component | Purpose | Main rule |
+| --- | --- | --- |
+| Tab navigation | Switch between tools | Keep labels short, make the active tab obvious, and preserve direct access on phone. |
+| Tool heading | Confirm current tool and scope | Show full tool name, standard family and issue status; do not repeat marketing copy. |
+| Input row band | Collect project or lookup inputs | Group by engineering purpose before visual layout: geometry, material, factors, detailing and actions. |
+| Selected summary | Show current lookup basis | Show selected section/category/material and key intermediate values only; do not duplicate formula notes. |
+| Main result card | Show governing quick answer | Use the strongest result hierarchy for the capacity or status the engineer needs first. |
+| Detailed check row | Show secondary capacities or warnings | Keep clause notes concise and stack cleanly on phone. |
+| Warning note | Mark review boundary | Use short action language; move long exclusions to details. |
+| Calculation basis panel | Provide traceability | Include formulas, references, assumptions, source status and excluded checks. |
+| Compact lookup table | Keep small repeated references on-page | Use only for compact, frequently needed, source-checked values inside the tab scope. |
+| Engineering figure | Clarify one input, geometry or assumption | Keep small, source-aware and labelled according to the drawing rules below. |
+
+Do not create one-off component styles unless a tab has a real engineering workflow need. Shared components should carry the same spacing, typography, control height, border radius, focus state and responsive behaviour across all tabs.
 
 ### 15.4 Web Layout and Typography
 
@@ -1568,7 +1617,53 @@ Durability remains a selected-product limitation; this selector does not perform
 
 Validation must include supplier/product selection states; equilibrium checks for axial force, biaxial moment, direct horizontal action and torsion; perimeter and full-grid pile counts; compression/tension sign convention; manufacturer-value exclusion; missing project direction values; project source missing; project/action basis mismatch; and a valid same-basis project comparison.
 
-### 15.16 Web Local Update and Deployment Workflow
+### 15.16 Rock Anchor Selector Web Tab Rules
+
+The Rock Anchor Selector is a product-selection aid for active post-tensioned foundation anchor products and systems. It is not a rock-anchor design calculator and must not report anchor resistance, project demand, utilisation or pass/fail status unless a future project-specific verified check is deliberately added.
+
+Use this primary workflow:
+
+1. Select a supplier.
+2. Select one published product, tendon row or provider pathway.
+3. Show the selected product's published tendon values, source status, Australian supply/adoption status and principal adoption constraint.
+
+The main selected-product card must prioritise:
+
+- supplier and product/system name;
+- anchor form: prestressed bar, multi-strand anchor, mechanical rock anchor, provider pathway or project-defined system;
+- tendon description, including diameter, strand count, bar grade or area where published;
+- published yield/proof load and ultimate load where a row-level source provides them;
+- protection and typical hardware only as product/system information, not as project detailing approval;
+- source/data basis, including document name, page or product-family basis where available;
+- source status: archived global row, current external row, US row, global family, Australian provider pathway or project-defined system;
+- visible supply/adoption status, especially where Australian supply, grade, ETA acceptance or provider confirmation is still required;
+- a concise `Before adoption` constraint.
+
+Use `Not published` rather than zero or an inferred value. Manufacturer tendon values are not anchor design resistance. Do not convert tendon yield or ultimate load into allowable resistance, working load, ULS capacity or utilisation without a verified project design basis.
+
+Keep the selector scope narrow:
+
+- It may show product rows, family-level systems and Australian provider pathways.
+- It may include `Custom / project schedule` for a certified project product not listed in the selector.
+- It must not infer bond length, free length, fixed length, drill-hole diameter, grout strength, rock cone failure, concrete breakout, tendon relaxation, lock-off load or acceptance load.
+- It must not compare products automatically unless the compared field is a like-for-like published tendon property and the comparison is labelled as product data only.
+
+Required visible limitations:
+
+- Published loads are manufacturer tendon reference values, not anchor resistance.
+- Confirm current product revision, Australian supply, anchor assembly, corrosion protection, project resistance and testing requirements before adoption.
+- Load distribution, anchor design resistance, rock-mass failure, concrete anchorage, durability design, stressing sequence, proof testing and acceptance remain project checks.
+
+Implementation rule:
+
+- The tab is part of the shared `index.html` tool-panel system and uses the short nav label `Rock`.
+- The current data/update logic may live in the scoped module `rock-anchor-selector/app.js`; do not treat this as a separate standalone page when editing the main handbook.
+- Keep the product-card layout consistent with other tabs: input row, selected summary, compact published values, specification grid and folded limitations/source panel.
+- Keep all visible text English-only and concise.
+
+Validation must include supplier/product selection, default row rendering, project-defined/custom row rendering, `Not published` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values.
+
+### 15.17 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
