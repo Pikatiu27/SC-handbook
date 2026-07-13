@@ -1649,7 +1649,7 @@ const screwInputIds = [
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "boltPitch", "edgeDistanceBasis", "effectiveEdgeInput", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
-const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw"];
+const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw", "rock"];
 let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";
@@ -1660,7 +1660,7 @@ const manualInputIds = [
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
-  "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
+  "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
   "memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD",
   "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
@@ -3400,36 +3400,36 @@ function screwSystemType(pile) {
 
 function screwSourceConfidence(manufacturerKey, pile) {
   if (manufacturerKey === "custom") {
-    return { level: "User-entered", detail: "No traceability until supplied", className: "source-user" };
+    return { level: "Project input", detail: "Source reference required", className: "source-user" };
   }
   if (manufacturerKey === "katana") {
-    return { level: "Official guide + local certificate", detail: "Rev Z values; CodeMark scope checked separately", className: "source-official" };
+    return { level: "Published + local certificate", detail: "Rev Z guide; CodeMark scope checked separately", className: "source-official" };
   }
   if (manufacturerKey === "stopdigging") {
-    return { level: "External official · pack pending", detail: "Directional values captured; project basis not verified", className: "source-prompt" };
+    return { level: "Manufacturer published", detail: "Directional values captured; project basis not verified", className: "source-official" };
   }
   if (manufacturerKey === "surefoot") {
-    return { level: "External official · pack pending", detail: "Indicative system rating only; project design controls", className: "source-prompt" };
+    return { level: "Manufacturer published", detail: "Indicative system rating only; project design controls", className: "source-official" };
   }
   if (manufacturerKey === "ideal") {
-    return { level: "External official · pack pending", detail: "System SWL only; project direction values required", className: "source-prompt" };
+    return { level: "Manufacturer published", detail: "System SWL only; project direction values required", className: "source-official" };
   }
   if (manufacturerKey === "blade") {
-    return { level: "External official · pack pending", detail: "Public range; project resistance required", className: "source-prompt" };
+    return { level: "Manufacturer published", detail: "Public range; project resistance required", className: "source-official" };
   }
   if (manufacturerKey === "piletech") {
-    return { level: "Project-design prompt", detail: "Public range; resistance by design", className: "source-prompt" };
+    return { level: "Supplier range", detail: "Public range; resistance by design", className: "source-prompt" };
   }
   if (manufacturerKey === "driven") {
-    return { level: "Product dimension row", detail: "Geometry only; capacity not stated", className: "source-prompt" };
+    return { level: "Manufacturer dimensions", detail: "Geometry only; capacity not stated", className: "source-prompt" };
   }
   if (manufacturerKey === "keller") {
-    return { level: "Official external benchmark", detail: "Typical SWL; ground conditions govern", className: "source-prompt" };
+    return { level: "Published benchmark", detail: "Typical SWL; ground conditions govern", className: "source-prompt" };
   }
   if (manufacturerKey === "minmetals") {
-    return { level: "Component prompt", detail: "Supplier design required", className: "source-prompt" };
+    return { level: "Supplier component", detail: "Supplier design required", className: "source-prompt" };
   }
-  return { level: "Supplier prompt", detail: "Capacity row not embedded", className: "source-prompt" };
+  return { level: "Supplier confirmation", detail: "Capacity row not embedded", className: "source-prompt" };
 }
 
 function screwDataStatus(manufacturerKey, pile) {
@@ -3463,12 +3463,12 @@ function screwCapacityType(pile) {
 
 function screwCapacityLabels(pile) {
   const type = screwCapacityType(pile);
-  if (type === "compression-swl-up-to") return { compression: "Compression SWL up to", uplift: "Published uplift", lateral: "Published lateral" };
-  if (type === "system-swl-up-to") return { compression: "System SWL up to", uplift: "Published uplift", lateral: "Published lateral" };
-  if (type === "indicative-rating") return { compression: "Maximum recommended rating", uplift: "Published uplift", lateral: "Published lateral" };
+  if (type === "compression-swl-up-to") return { compression: "Compression SWL up to", uplift: "Published uplift load", lateral: "Published lateral load" };
+  if (type === "system-swl-up-to") return { compression: "System SWL up to", uplift: "Published uplift load", lateral: "Published lateral load" };
+  if (type === "indicative-rating") return { compression: "Maximum recommended rating", uplift: "Published uplift load", lateral: "Published lateral load" };
   if (type === "typical-benchmark") return { compression: "Typical axial SWL up to", uplift: "Typical uplift SWL up to", lateral: "Typical lateral SWL up to" };
-  if (type === "project") return { compression: "Project compression", uplift: "Project tension", lateral: "Project lateral" };
-  return { compression: "Published compression", uplift: "Published tension", lateral: "Published lateral" };
+  if (type === "project") return { compression: "Project compression", uplift: "Project tension", lateral: "Project lateral load" };
+  return { compression: "Published compression", uplift: "Published tension / uplift load", lateral: "Published lateral load" };
 }
 
 function screwDisplayCapacities(pile, enteredValues) {
@@ -3495,10 +3495,6 @@ function screwComparisonCapacities(pile, displayValues) {
     const basis = !source ? "project-source-missing" : valueBasis !== actionBasis ? "project-basis-mismatch" : "project";
     return { ...projectValues, basis, actionBasis, valueBasis, source };
   }
-  const selectedBasis = pile.comparisonBasis || "none";
-  if (selectedBasis === "reference") {
-    return { ...displayValues, basis: "reference", actionBasis, valueBasis: "published-reference", source: pile.source || "Published source" };
-  }
   return { compression: 0, uplift: 0, lateral: 0, basis: "none", actionBasis, valueBasis: "none", source: "" };
 }
 
@@ -3519,11 +3515,23 @@ function screwHasMultipleHelices(pile) {
 
 function screwTorqueLimit(pile) {
   const type = screwSystemType(pile);
-  if (type === "Micro-pile footing") return "Driven system; supplier installation criteria.";
-  const control = screwCompactFact(pile.installControl || "Project installation criteria required.", 72);
-  return /\d[\d, ]*\s*Nm/i.test(control)
-    ? `${control}; shaft limit not stated.`
-    : `${control}; verify shaft torsional limit.`;
+  if (type === "Micro-pile footing") return "Not applicable; driven installation.";
+  return "Not published; verify shaft torsional limit.";
+}
+
+function screwInstallationCriterion(pile) {
+  return screwCompactFact(pile.installControl || "Supplier termination and refusal criteria required.", 92);
+}
+
+function screwPitchText(pile) {
+  const helix = String(pile.helix || "");
+  return /pitch|spacing/i.test(helix) ? screwCompactFact(helix, 72) : "Not published";
+}
+
+function screwSourceReviewText(manufacturerKey) {
+  if (manufacturerKey === "custom") return "Not reviewed";
+  if (manufacturerKey === "katana") return "Local source reviewed · 10 Jul 2026";
+  return "Public source accessed · 10 Jul 2026";
 }
 
 function screwHeadConnectionLimit(pile) {
@@ -3609,32 +3617,164 @@ function selectScrewCatalogueRow(manufacturerKey, seriesKey) {
   setScrewCapacityDefaults();
 }
 
+function screwSystemFilterKey(pile) {
+  const type = screwSystemType(pile);
+  if (type === "Helical screw pile" || type === "Manufactured screw pier") return "helical";
+  if (type === "Ground screw") return "ground";
+  if (type === "Micro-pile footing") return "micro";
+  return "engineered";
+}
+
+function screwDataFilterKey(pile) {
+  const type = screwCapacityType(pile);
+  if (type === "directional-product") return "directional";
+  if (["compression-swl-up-to", "system-swl-up-to", "partial-directional"].includes(type)) return "axial";
+  if (["indicative-rating", "typical-benchmark"].includes(type)) return "rating";
+  return "geometry";
+}
+
+function screwShaftFilterKey(pile) {
+  const numbers = screwMetricNumbers(`${pile.diameter || ""} ${pile.shaft || ""}`);
+  if (!numbers.length) return "unknown";
+  if (numbers[0] <= 90) return "small";
+  if (numbers[0] <= 150) return "medium";
+  return "large";
+}
+
+function screwHelixFilterKey(pile) {
+  const dimensions = screwSketchDimensions(pile);
+  if (dimensions.microPile || dimensions.continuousThread || dimensions.noHelix) return "other";
+  return dimensions.helixCount > 1 ? "multiple" : "single";
+}
+
+function screwProductCapacityValues(pile) {
+  const type = screwCapacityType(pile);
+  const rating = ["system-swl-up-to", "indicative-rating", "typical-benchmark"].includes(type) ? (pile.rating || 0) : 0;
+  return {
+    primaryLabel: type === "system-swl-up-to" ? "System SWL" : type === "indicative-rating" ? "Rating" : type === "typical-benchmark" ? "Typical SWL" : "Compression",
+    compression: rating || pile.compression || 0,
+    publishedCompression: pile.compression || 0,
+    tension: pile.uplift || 0,
+    lateral: pile.lateral || 0,
+    unitBasis: ["system-swl-up-to", "indicative-rating"].includes(type) ? "Complete system" : type === "typical-benchmark" ? "Technique benchmark" : "Per pile / product",
+    loadBasis: ["compression-swl-up-to", "system-swl-up-to", "typical-benchmark"].includes(type) ? "SWL / working reference" : type === "indicative-rating" ? "Indicative rating" : type === "directional-product" ? "Published load; basis not verified" : "Basis not stated"
+  };
+}
+
+function screwSelectionAdvice(pile, manufacturerKey = $("screwManufacturer")?.value || "custom") {
+  const soilKey = $("screwSoil")?.value || "unknown";
+  const soil = screwSoilRules[soilKey] || screwSoilRules.unknown;
+  const application = $("screwApplication")?.value || "generic";
+  const overturning = ["monopole", "tower", "sign"].includes(application);
+  const type = screwSystemType(pile);
+  const dataStatus = screwDataStatus(manufacturerKey, pile);
+  const missing = [];
+  if ((pile.compression || 0) <= 0) missing.push("compression");
+  if (overturning && (pile.uplift || 0) <= 0) missing.push("tension");
+  if (overturning && (pile.lateral || 0) <= 0) missing.push("lateral");
+
+  if (soilKey === "unknown") {
+    return { label: "Ground data required", note: "Confirm founding layer, groundwater and installation conditions.", className: "fit-check" };
+  }
+  if (soil.severity >= 3) {
+    return { label: "Geotechnical review", note: soil.note, className: "fit-alert" };
+  }
+  if (type === "Ground screw" && overturning) {
+    return { label: "Project certification", note: "Not a default pole or tower selection; confirm structural class and head movement.", className: "fit-alert" };
+  }
+  if (missing.length) {
+    return { label: "Project design values required", note: `Obtain ${missing.join(", ")} values for the selected ground and load basis.`, className: "fit-check" };
+  }
+  if (screwCapacityType(pile) === "directional-product") {
+    return { label: "Published data available", note: "Confirm source load basis, embedment and installation criteria.", className: "fit-data" };
+  }
+  return { label: "Project confirmation", note: `${dataStatus.label}; confirm applicability with the supplier and geotechnical design.`, className: "fit-neutral" };
+}
+
+function screwFilteredCatalogueRows() {
+  const supplier = $("screwFilterSupplier")?.value || "all";
+  const system = $("screwFilterSystem")?.value || "all";
+  const data = $("screwFilterData")?.value || "all";
+  const minimumCompression = value("screwFilterCompression");
+  const minimumTension = value("screwFilterTension");
+  const lateral = $("screwFilterLateral")?.value || "all";
+  const shaft = $("screwFilterShaft")?.value || "all";
+  const helix = $("screwFilterHelix")?.value || "all";
+  const sort = $("screwFilterSort")?.value || "supplier";
+  const rows = screwCatalogueRows().filter(row => {
+    const capacities = screwProductCapacityValues(row.pile);
+    return (
+    (supplier === "all" || row.manufacturerKey === supplier)
+    && (system === "all" || screwSystemFilterKey(row.pile) === system)
+    && (data === "all" || screwDataFilterKey(row.pile) === data)
+    && (minimumCompression <= 0 || capacities.publishedCompression >= minimumCompression)
+    && (minimumTension <= 0 || capacities.tension >= minimumTension)
+    && (lateral === "all" || capacities.lateral > 0)
+    && (shaft === "all" || screwShaftFilterKey(row.pile) === shaft)
+    && (helix === "all" || screwHelixFilterKey(row.pile) === helix)
+    );
+  });
+  const dataOrder = { directional: 0, axial: 1, rating: 2, geometry: 3 };
+  return rows.sort((left, right) => {
+    if (sort === "compression-desc") return screwProductCapacityValues(right.pile).publishedCompression - screwProductCapacityValues(left.pile).publishedCompression;
+    if (sort === "shaft-asc") {
+      const leftNumbers = screwMetricNumbers(`${left.pile.diameter || ""} ${left.pile.shaft || ""}`);
+      const rightNumbers = screwMetricNumbers(`${right.pile.diameter || ""} ${right.pile.shaft || ""}`);
+      return (leftNumbers[0] ?? Infinity) - (rightNumbers[0] ?? Infinity);
+    }
+    if (sort === "data") return dataOrder[screwDataFilterKey(left.pile)] - dataOrder[screwDataFilterKey(right.pile)];
+    return `${left.manufacturer} ${left.pile.label}`.localeCompare(`${right.manufacturer} ${right.pile.label}`);
+  });
+}
+
+function screwCapacityCell(pile, direction) {
+  const values = screwProductCapacityValues(pile);
+  const value = direction === "compression" ? values.compression : direction === "tension" ? values.tension : values.lateral;
+  const label = direction === "compression" ? values.primaryLabel : direction === "tension" ? "Tension" : "Lateral load";
+  const basis = direction === "compression" ? `${values.unitBasis} · ${values.loadBasis}` : value > 0 ? values.unitBasis : "No published value";
+  return `<div class="screw-table-capacity ${value > 0 ? "has-value" : "not-published"}">
+    <b>${safeText(value > 0 ? `${screwCapacityText(value)} kN` : "Not published")}</b>
+    <small>${safeText(value > 0 ? `${label} · ${basis}` : basis)}</small>
+  </div>`;
+}
+
 function updateScrewCatalogueMatrix() {
   const body = $("screwCatalogueRows");
   if (!body) return;
   const selectedManufacturer = $("screwManufacturer").value;
   const selectedSeries = $("screwSeries").value;
-  const rows = screwCatalogueRows();
+  const allRows = screwCatalogueRows();
+  const rows = screwFilteredCatalogueRows();
   const withDirectional = rows.filter(row => row.pile.compression > 0 && row.pile.uplift > 0 && row.pile.lateral > 0).length;
   const supplierCount = new Set(rows.map(row => row.manufacturerKey)).size;
   $("screwMarketSummary").innerHTML = [
-    `${rows.length} catalogue rows`,
-    `${withDirectional} with published directional values`,
-    `${supplierCount} suppliers / systems`,
-    "Select a row to update the card"
+    `${rows.length} of ${allRows.length} products`,
+    `${supplierCount} suppliers`,
+    `${withDirectional} with directional data`
   ].map(item => `<span>${safeText(item)}</span>`).join("");
+  if (!rows.length) {
+    body.innerHTML = `<tr><td colspan="9" class="screw-no-results"><b>No matching products</b><small>Adjust one or more selection filters.</small></td></tr>`;
+    return;
+  }
   body.innerHTML = rows.map(row => {
     const pile = row.pile;
     const confidence = screwSourceConfidence(row.manufacturerKey, pile);
+    const dataStatus = screwDataStatus(row.manufacturerKey, pile);
+    const advice = screwSelectionAdvice(pile, row.manufacturerKey);
     const active = row.manufacturerKey === selectedManufacturer && row.seriesKey === selectedSeries;
+    const shaftPrimary = screwSelectedText(pile.diameter || pile.shaft);
+    const shaftSecondary = pile.wall ? `Wall ${pile.wall}` : screwSelectedText(pile.shaft);
     return `
       <tr class="${active ? "is-selected" : ""}">
-        <td><b>${safeText(pile.label)}</b><small>${safeText(row.manufacturer)}</small><span class="screw-source-pill ${confidence.className}">${safeText(confidence.level)}</span></td>
-        <td>${safeText(screwSystemType(pile))}</td>
-        <td>${safeText(screwGeometryText(pile))}</td>
-        <td>${safeText(screwResistanceFieldsText(pile))}</td>
-        <td>${safeText(screwPrimaryLimitation(pile))}</td>
-        <td><button type="button" class="mini-action" data-screw-select data-manufacturer="${safeText(row.manufacturerKey)}" data-series="${safeText(row.seriesKey)}">${active ? "Selected" : "Select"}</button></td>
+        <td><b>${safeText(pile.label)}</b><small>${safeText(row.manufacturer)} · ${safeText(screwSystemType(pile))}</small><span class="screw-source-pill ${confidence.className}">${safeText(confidence.level)}</span></td>
+        <td data-label="Compression / rating">${screwCapacityCell(pile, "compression")}</td>
+        <td data-label="Tension">${screwCapacityCell(pile, "tension")}</td>
+        <td data-label="Lateral">${screwCapacityCell(pile, "lateral")}</td>
+        <td data-label="Shaft"><b>${safeText(shaftPrimary)}</b><small>${safeText(shaftSecondary)}</small></td>
+        <td data-label="Helix / bearing"><b>${safeText(screwSelectedText(pile.helixCount))}</b><small>${safeText(screwSelectedText(pile.helix))}</small></td>
+        <td data-label="Length"><b>${safeText(screwCompactFact(pile.length || "Project-specific", 42))}</b><small>${safeText(screwCompactFact(pile.extension || "Confirm extension detail", 46))}</small></td>
+        <td data-label="Data / limitation"><span class="screw-data-pill ${dataStatus.className}">${safeText(dataStatus.label)}</span><small><b class="${advice.className}">${safeText(advice.label)}</b>${safeText(screwPrimaryLimitation(pile))}</small></td>
+        <td><button type="button" class="mini-action" data-screw-select data-manufacturer="${safeText(row.manufacturerKey)}" data-series="${safeText(row.seriesKey)}">${active ? "Selected" : "View"}</button></td>
       </tr>
     `;
   }).join("");
@@ -3895,7 +4035,7 @@ function setScrewResistanceOutput(outputId, unitId, basisId, valueNumber, adopte
     if (unit) unit.textContent = " kN";
     if (basis) basis.textContent = adoptedText;
   } else {
-    output.textContent = "Not stated";
+    output.textContent = "Not published";
     if (unit) unit.textContent = "";
     if (basis) basis.textContent = missingText;
   }
@@ -3913,12 +4053,15 @@ function updateScrewSketch(pile, compressionCap, upliftCap, lateralCap) {
   setOptionalText("screwFactShaft", shaftFact);
   setOptionalText("screwFactHelixCount", screwSelectedText(pile.helixCount));
   setOptionalText("screwFactHelix", helixText);
+  setOptionalText("screwFactPitch", screwPitchText(pile));
   setOptionalText("screwFactLength", screwCompactFact(pile.length || "Project-specific", 72));
   setOptionalText("screwFactExtension", screwCompactFact(pile.extension || "Project-specific connection", 80));
   setOptionalText("screwFactSteel", screwCompactFact(pile.steel || "Supplier/project specification", 92));
   setScrewSourceLink("screwFactSource", pile.source || "Project source", selectedScrewCatalogue().sourceUrl);
   setOptionalText("screwFactSourceStatus", confidence.level);
   setOptionalText("screwFactCapacityBasis", screwCompactFact(pile.capacityBasis || "Adopt certified resistance before action checks.", 110));
+  setOptionalText("screwFactSourceReview", screwSourceReviewText($("screwManufacturer").value));
+  setOptionalText("screwFactInstallCriterion", screwInstallationCriterion(pile));
   setOptionalText("screwFactTorqueLimit", screwTorqueLimit(pile));
   setOptionalText("screwFactHeadConnection", screwHeadConnectionLimit(pile));
   setOptionalText("screwFactDurability", screwDurabilityLimit(pile));
@@ -4283,27 +4426,12 @@ function screwRiskNotes(pile, compressionCap, upliftCap, lateralCap) {
 }
 
 function updateScrewRisk(pile, compressionCap, upliftCap, lateralCap) {
-  const { severity, notes } = screwRiskNotes(pile, compressionCap, upliftCap, lateralCap);
-  let level = "No additional site flag";
-  let status = "No additional site flag";
-  let className = "";
-  if (severity > 6) {
-    level = "Project design required";
-    status = "Project design required";
-    className = "fail";
-  } else if (severity > 4) {
-    level = "Evidence required";
-    status = "Evidence required";
-    className = "fail";
-  } else if (severity > 2) {
-    level = "Review required";
-    status = "Review required";
-    className = "check";
-  }
-  setOptionalText("screwRiskLevel", level);
-  $("screwRiskStatus").textContent = status;
-  setStatusClass($("screwRiskStatus"), className);
-  $("screwRiskNotes").innerHTML = notes.slice(0, 3).map(note => `<article><b>${note.title}</b><span>${note.text}</span></article>`).join("");
+  const advice = screwSelectionAdvice(pile);
+  const status = $("screwSelectionStatus");
+  if (!status) return;
+  status.textContent = advice.label;
+  setStatusClass(status, advice.className === "fit-data" ? "pass" : advice.className === "fit-alert" ? "fail" : "check");
+  setOptionalText("screwSelectionGuidance", advice.note);
 }
 
 function calculateScrewDemand(comparison) {
@@ -4368,7 +4496,7 @@ function calculateScrewDemand(comparison) {
   }).join("");
 
   const hasDemand = maxCompression > 0 || maxUplift > 0 || maxLateral > 0;
-  const comparisonEnabled = ["reference", "project"].includes(comparisonBasis);
+  const comparisonEnabled = comparisonBasis === "project";
   const missingDirections = [];
   if (comparisonEnabled && maxCompression > 0 && compressionCap <= 0) missingDirections.push("compression");
   if (comparisonEnabled && maxUplift > 0 && upliftCap <= 0) missingDirections.push("tension");
@@ -4384,44 +4512,38 @@ function calculateScrewDemand(comparison) {
   const missingCapacity = missingDirections.length > 0;
   const utilisation = governing?.ratio || 0;
   const comparisonNames = {
-    reference: "Reference comparison only",
-    project: "Project-value comparison",
+    project: "Project directional comparison",
     "project-source-missing": "Project comparison unavailable",
     "project-basis-mismatch": "Project comparison unavailable",
     none: "Action distribution only"
   };
   setOptionalText("screwDemandComparisonLabel", comparisonNames[comparisonBasis] || comparisonNames.none);
-  const ratioSymbol = comparisonBasis === "reference" ? "&eta;<sub>ref</sub>" : "&eta;";
-  $("screwDemandRatio").innerHTML = !hasDemand ? `${ratioSymbol} = 0.00` : !comparisonEnabled ? "Not assessed" : missingCapacity ? `${ratioSymbol} = incomplete` : `${ratioSymbol} = ${utilisation.toFixed(2)}`;
+  const ratioSymbol = "&eta;<sub>proj</sub>";
+  $("screwDemandRatio").innerHTML = !hasDemand || !comparisonEnabled ? "Not assessed" : missingCapacity ? `${ratioSymbol} = incomplete` : `${ratioSymbol} = ${utilisation.toFixed(2)}`;
   if (!hasDemand) {
     $("screwDemandStatus").textContent = "No demand entered";
     setStatusClass($("screwDemandStatus"), "");
   } else if (comparisonBasis === "project-source-missing") {
-    $("screwDemandStatus").textContent = "Project comparison-value source required";
+    $("screwDemandStatus").textContent = "Project design-value source required";
     setStatusClass($("screwDemandStatus"), "check");
   } else if (comparisonBasis === "project-basis-mismatch") {
     $("screwDemandStatus").textContent = "Action and project value bases do not match";
     setStatusClass($("screwDemandStatus"), "check");
   } else if (!comparisonEnabled) {
-    $("screwDemandStatus").textContent = "Project comparison values required";
-    setStatusClass($("screwDemandStatus"), "check");
+    $("screwDemandStatus").textContent = "Pile actions only";
+    setStatusClass($("screwDemandStatus"), "");
   } else if (missingCapacity) {
-    const missingPrefix = comparisonBasis === "reference" ? "Published reference lacks" : "Project value required for";
-    $("screwDemandStatus").textContent = `${missingPrefix} ${missingDirections.join(" / ")}`;
+    $("screwDemandStatus").textContent = `Project design value required for ${missingDirections.join(" / ")}`;
     setStatusClass($("screwDemandStatus"), "check");
   } else if (utilisation <= 1) {
-    const withinLabel = comparisonBasis === "reference" ? "Reference ratio only · basis unverified" : "Within entered project values";
-    $("screwDemandStatus").textContent = `${withinLabel} · Pile ${governing.pile.id} / ${governing.direction}`;
-    setStatusClass($("screwDemandStatus"), comparisonBasis === "project" ? "pass" : "check");
+    $("screwDemandStatus").textContent = `Does not exceed entered project value · Pile ${governing.pile.id} / ${governing.direction}`;
+    setStatusClass($("screwDemandStatus"), "check");
   } else {
-    const exceedsLabel = comparisonBasis === "reference" ? "Above published reference" : "Exceeds project values";
-    $("screwDemandStatus").textContent = `${exceedsLabel} · Pile ${governing.pile.id} / ${governing.direction}`;
+    $("screwDemandStatus").textContent = `Exceeds entered project value · Pile ${governing.pile.id} / ${governing.direction}`;
     setStatusClass($("screwDemandStatus"), "fail");
   }
 
-  const denominatorSymbols = comparisonBasis === "project"
-    ? { compression: "R<sub>c,proj</sub>", tension: "R<sub>t,proj</sub>", horizontal: "R<sub>h,proj</sub>" }
-    : { compression: "Q<sub>c,ref</sub>", tension: "Q<sub>t,ref</sub>", horizontal: "Q<sub>h,ref</sub>" };
+  const denominatorSymbols = { compression: "R<sub>c,proj</sub>", tension: "R<sub>t,proj</sub>", horizontal: "R<sub>h,proj</sub>" };
   const capacityComparisons = [
     maxCompression > 0 ? `N<sub>c,max</sub><sup>*</sup> / ${denominatorSymbols.compression} = ${fixed(maxCompression)} / ${compressionCap > 0 ? fixed(compressionCap) : "not stated"}` : "",
     maxUplift > 0 ? `N<sub>t,max</sub><sup>*</sup> / ${denominatorSymbols.tension} = ${fixed(maxUplift)} / ${upliftCap > 0 ? fixed(upliftCap) : "not stated"}` : "",
@@ -4429,16 +4551,14 @@ function calculateScrewDemand(comparison) {
   ].filter(Boolean).join("; ") || "no non-zero design action effect";
 
   let comparisonFormula;
-  if (comparisonBasis === "reference") {
-    comparisonFormula = `<div><b>Reference comparison only</b><code>&eta;<sub>ref</sub> is the maximum applicable non-zero action-to-reference term. Current terms: ${capacityComparisons}. The Q values are manufacturer-published references, not AS 2159 design geotechnical or structural strengths. &eta;<sub>ref</sub> &le; 1 is not design acceptance. Action set: ${actionBasisLabel}.</code></div>`;
-  } else if (comparisonBasis === "project") {
-    comparisonFormula = `<div><b>Project-value comparison</b><code>&eta; is the maximum applicable non-zero action-to-project-value term. Current terms: ${capacityComparisons}. Entered source: ${safeText(comparison.source)}. Action and value basis: ${actionBasisLabel}. Combined axial-horizontal interaction is not assessed.</code></div>`;
+  if (comparisonBasis === "project") {
+    comparisonFormula = `<div><b>Project directional comparison</b><code>&eta;<sub>proj</sub> is the maximum applicable non-zero action-to-project-value term. Current terms: ${capacityComparisons}. Entered source: ${safeText(comparison.source)}. Action and value basis: ${actionBasisLabel}. Combined axial-horizontal interaction is not assessed.</code></div>`;
   } else if (comparisonBasis === "project-source-missing") {
-    comparisonFormula = `<div><b>Project comparison unavailable</b><code>Enter a source reference for the project resistance values. No ratio is reported.</code></div>`;
+    comparisonFormula = `<div><b>Project comparison unavailable</b><code>Enter a source reference for the project design values. No ratio is reported.</code></div>`;
   } else if (comparisonBasis === "project-basis-mismatch") {
     comparisonFormula = `<div><b>Project comparison unavailable</b><code>The project value basis does not match ${actionBasisLabel}. No ratio is reported.</code></div>`;
   } else {
-    comparisonFormula = `<div><b>Resistance comparison</b><code>No qualifying project values or manufacturer reference values are available. The page reports pile action effects only.</code></div>`;
+    comparisonFormula = `<div><b>Action distribution only</b><code>No project design values are entered. Manufacturer values are not compared automatically. The page reports pile action effects only.</code></div>`;
   }
 
   $("screwDemandFormulaSteps").innerHTML = `
@@ -4452,6 +4572,7 @@ function calculateScrewDemand(comparison) {
 function calculateScrew() {
   const pile = selectedScrewPile();
   const manufacturerKey = $("screwManufacturer").value;
+  const catalogue = selectedScrewCatalogue();
   const confidence = screwSourceConfidence(manufacturerKey, pile);
   const dataStatus = screwDataStatus(manufacturerKey, pile);
   const valueBasis = screwValueBasisText(pile);
@@ -4464,7 +4585,7 @@ function calculateScrew() {
   const displayValues = screwDisplayCapacities(pile, enteredValues);
   const comparisonValues = screwComparisonCapacities(pile, displayValues);
   $("screwDesignation").textContent = pile.label;
-  $("screwAssumption").textContent = `${screwSystemType(pile)} · ${confidence.level} · preliminary selection.`;
+  $("screwAssumption").textContent = `${catalogue.label} · ${screwSystemType(pile)}.`;
   $("screwSystem").textContent = pile.system || "Screw pile";
   $("screwShaft").textContent = pile.shaft;
   $("screwDiameter").textContent = pile.diameter || "-";
@@ -4488,7 +4609,7 @@ function calculateScrew() {
     "screwCompressionBasis",
     displayValues.compression,
     valueBasis,
-    "No direction-specific value."
+    "No direction-specific value published."
   );
   setScrewResistanceOutput(
     "screwUpliftResult",
@@ -4496,7 +4617,7 @@ function calculateScrew() {
     "screwUpliftBasis",
     displayValues.uplift,
     valueBasis,
-    "No direction-specific value."
+    "No direction-specific value published."
   );
   setScrewResistanceOutput(
     "screwLateralResult",
@@ -4504,7 +4625,7 @@ function calculateScrew() {
     "screwLateralBasis",
     displayValues.lateral,
     valueBasis,
-    "No direction-specific value."
+    "No direction-specific value published."
   );
   $("screwAxialBasis").textContent = pile.axialClass > 0 ? "System class shown." : "No class entered.";
   updateScrewSketch(pile, enteredValues.compression, enteredValues.uplift, enteredValues.lateral);
