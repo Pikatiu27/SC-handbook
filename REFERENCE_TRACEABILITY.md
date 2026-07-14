@@ -120,11 +120,11 @@ The current Beam tab defaults were visually checked against `InfraBuild-Hot-Roll
 
 ### Default Web Output Check
 
-Default outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=20260630#bolt` and independently recalculated from the app formulas. The Bolt equal-load group row was recalculated and rechecked in the DOM on 2026-07-14 at `http://127.0.0.1:8000/?local=20260714boltgroup#bolt`.
+Default outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=20260630#bolt` and independently recalculated from the app formulas. The Bolt equal-share group row was recalculated and rechecked in the DOM on 2026-07-14 at `http://127.0.0.1:8000/?local=20260714merged#bolt`.
 
 | Tab | Default case | Checked output | Status |
 | --- | --- | --- | --- |
-| Bolt | M24 8.8/S, N plane, `n = 1` | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; equal-load group shear 133.4 kN; equal-load group ply bearing 283.4 kN; equal-load group edge limit 151.3 kN; minimum edge distance 42.0 mm | DOM output matched independent calculation; for identical bolts under concentric equal action, group limits scale by `n` |
+| Bolt | M24 8.8/S, N plane, `n = 2` | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; equal-share group shear 266.8 kN; critical-hole full bearing 283.4 kN; critical-hole edge limit 151.3 kN; equal-share group ply capacity 302.6 kN; minimum edge distance 42.0 mm | DOM output matched independent calculation; identical bolts, concentric action and equal sharing assumed |
 | Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm for Grade 250 plate, 10 mm | DOM output matched independent calculation |
 | Beam | 310UB40.4 300PLUS | `Ag` 5210 mm2; `Aw` 1730 mm2; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; `kf` 0.952; `phi Ms` 182.3 kNm; `phi Vv` 298.9 kN | DOM output matched independent calculation |
 | Beam | 200UC46.2 300PLUS | `Ag` 5900 mm2; `Aw` 1324 mm2; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; `kf` 1.000; `phi Ms` 133.4 kNm; `phi Vv` 214.5 kN | DOM output matched independent calculation |
