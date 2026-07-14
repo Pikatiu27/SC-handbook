@@ -704,13 +704,21 @@ Formula basis:
 | Bearing, edge limit, `phiVb` | `phi * ae * tp * fup / 1000` |
 | Governing bearing capacity | `MIN(bearing_no_edge_limit, bearing_edge_limit)` |
 
+Equal-load bolt-group model:
+
+- The quick group calculation assumes identical bolts in a concentric connection with equal action per bolt.
+- For total group shear `V*` and `n` bolts, use `Vi* = V* / n`.
+- Calculate the group connected-ply limit as `phiVb,group = n * MIN(phiVb,full, phiVb,edge)`, where the entered edge condition is the critical per-bolt edge condition.
+- Do not multiply the edge capacity only by a separate edge-line bolt count. Under equal action, any bolt with the critical edge condition limits its own `V* / n` share and therefore limits the total group action to `n` times that per-bolt capacity.
+- State that eccentric actions, non-uniform bolt stiffness, unequal bolt forces and redistribution after a bolt reaches its limit are outside this quick model.
+
 Bolt shear reduction notation must be explicit:
 
 - `k_rd = 1.0` for grade 4.6 and grade 8.8 bolts.
 - `k_rd = 1.0` for grade 10.9 bolts where threads do not intercept the shear plane.
 - `k_rd = 0.83` for grade 10.9 bolts where threads intercept the shear plane.
 - For a bolt-group expression with both `nn` and `nx` entered, apply `k_rd` to the AS 4100 parenthesised shear expression shown above, not independently to only one displayed term.
-- Treat bolt `k_r` as an AS 4100 Cl. 9.2.2.1 bolted-lap reduction factor. Do not label it as `AS 4100 Table 9.2.2.1`. Keep `k_r = 1.0` unless the actual bolted lap detail justifies a reduction, and state that the quick page does not auto-derive it from connection geometry.
+- Treat bolt `k_r` as the bolted-lap reduction factor in AS 4100 Table 9.2.2.1, referenced by AS 4100 Cl. 9.2.2.1. Keep `k_r = 1.0` unless the actual bolted lap detail and connection length `l_j` justify a reduction, and state that the quick page does not auto-derive it from connection geometry.
 
 Edge-distance notation must be explicit:
 
@@ -1316,7 +1324,7 @@ For the web bolt tab, separate the edge-distance terms visibly:
 - Result label: `Minimum edge distance, e - AS 4100 Table 9.5.2`.
 - Edge-limited bearing note: `a_e = e/cosθ - d_h/2 + d_f/2` for a standard hole at a physical ply edge.
 - Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
-- Do not multiply the edge-limited ply capacity by total bolt count unless all bolts are actually on the loaded edge / critical line. Use a separate `Bolts on edge line` input; default it to total bolt count, but allow manual adjustment. Where an adjacent bolt hole is the critical edge under AS 4100 Cl. 9.2.2.4, calculate `a_e` from the actual hole layout and do not infer it from total bolt count.
+- Under the stated concentric equal-action premise, use `V_i* = V*/n` and multiply the governing per-bolt edge / bearing limit by the total number of identical bolts. Do not add a separate `Bolts on edge line` input. Where an adjacent bolt hole is the critical edge under AS 4100 Cl. 9.2.2.4, calculate `a_e` from the actual hole layout and do not infer it from bolt count.
 
 ### 15.11 Member Web Tab Rules
 
@@ -1450,7 +1458,7 @@ Required AS 4100 basis:
 - Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
 - Web shear yield starts from AS 4100 Cl. 5.11.4: `Vw = 0.6 fy Aw`; report the design value with `phi = 0.90`.
 - For catalogue UB/UC rows, apply a lightweight unstiffened-web shear-buckling screen from AS 4100 Cl. 5.11.5 using `lambda_w = (d1/tw) sqrt(fy/250)` and `alpha_v = 1.0` where `lambda_w <= 82`, otherwise `alpha_v = (82/lambda_w)^2`. Report `phi Vv = phi alpha_v Vw`. This is a quick screen using catalogue `d1` and `tw`, not a substitute for stiffened-web, non-uniform shear, transverse-load or detailed web-panel design.
-- If `V* > 0.60 phi Vv`, show `CHECK` and require AS 4100 Cl. 5.12 shear-bending interaction review unless bending is confirmed absent. Do not silently report an unreduced `phi Ms` as a pass when high shear and bending coexist.
+- Apply the AS 4100 Cl. 5.12.3 reduced-moment method when both major-axis moment and web shear are entered. Use `Vvm = Vv` where `M* <= 0.75 phi Ms`. For `0.75 phi Ms < M* <= phi Ms`, use `Vvm = Vv[2.2 - 1.6M*/(phi Ms)]`, then check `V* <= phi Vvm`. Report the governing of `M*/(phi Ms)` and `V*/(phi Vvm)`. Do not present `0.60 phi Vv` as a direct code threshold.
 
 Custom section mode must stay explicit and conservative:
 
@@ -1485,7 +1493,8 @@ The weld tab is a lightweight throat-capacity lookup and drafting aid. It is not
 Use this scope:
 
 - Ordinary equal-leg fillet weld throat capacity.
-- CPBW, IPBW and compound weld selections as capacity views only.
+- IPBW capacity using a project-specified design throat and the fillet-weld method required by AS 4100 Cl. 9.6.2.7.
+- CPBW and compound weld selections as reference-only terminology / detailing views with no capacity or PASS/FAIL output.
 - Weld category `SP` / `GP`.
 - Nominal weld metal tensile strength `f_uw`.
 - Effective length `l_w`.
@@ -1498,6 +1507,9 @@ Required AS 4100 and reference basis:
 
 - Fillet weld capacity must follow AS 4100 Cl. 9.6.3.10: `v_w = 0.6 f_uw t_t k_r`, reported as `phi R / l_w = phi 0.6 f_uw t_t k_r`.
 - Use `t_t = 0.707s` for an ordinary equal-leg fillet weld.
+- For IPBW, use the project-specified design throat and calculate capacity by the fillet-weld method in accordance with AS 4100 Cl. 9.6.2.7.
+- For CPBW, do not calculate weld-metal throat capacity. AS 4100 Cl. 9.6.2.7 takes design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor; report `Not evaluated` until that joined-part limit state is defined.
+- For compound welds, do not use `a_w + 0.707s`. AS 4100 Cl. 9.6.5.2 requires the design throat to be determined from the actual total weld cross-section; report `Not evaluated` when that geometry is not defined.
 - Use AS 4100 Table 3.4 for weld capacity factors: `phi = 0.90` for SP CPBW, `phi = 0.80` for SP other fillet weld / IPBW, and `phi = 0.60` for GP welds in the current web scope.
 - Do not silently use `phi = 0.80` for the AS 4100 Table 3.4 special case of longitudinal fillet welds in RHS where `t < 3 mm`; this case is out of scope unless a specific input and warning are added.
 - Use AS 4100 Table 9.6.3.10(A) and ASI Simple Connections 2020 Table 2.14 for the displayed weld-metal strength options.
@@ -1507,9 +1519,9 @@ Required AS 4100 and reference basis:
 
 Display and limitation rules:
 
-- The main quick result should remain `kN/mm per weld line`; total capacity is secondary.
+- For fillet weld and IPBW, the main quick result should remain `kN/mm per weld line`; total capacity is secondary.
 - State that effective weld lines are not welding passes.
-- CPBW, IPBW and compound welds require project-confirmed effective throat, joint preparation, WPS, inspection and acceptance criteria.
+- CPBW, IPBW and compound welds require project-confirmed joint preparation, WPS, inspection and acceptance criteria. IPBW additionally requires a specified design throat. CPBW and compound selections must not display a numeric capacity from the limited weld-metal inputs.
 - Keep plug / slot welds, weld groups, longitudinal RHS fillet welds where `t < 3 mm`, parent-metal rupture, HAZ, block shear, net-section rupture, eccentric weld groups, intermittent weld rules, fatigue, seismic detailing, lamellar tearing, fabrication access and inspection acceptance outside the quick calculator unless they are deliberately added as separate sourced checks.
 - Weld symbols are visual guides only and must continue to follow AS 1101.3 Fig. 2.1 and AS 1101.3 Figs. 2.8 to 2.10 conventions.
 
@@ -1524,7 +1536,7 @@ Use this scope:
 - User-selected compression face.
 - N-class and legacy Y-bar reinforcement mats.
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
-- One-way shear capacity screen using AS 3600 Cl. 8.2.1.5, Cl. 8.2.1.9, Cl. 8.2.3.1, Cl. 8.2.4.1, Cl. 8.2.4.3 and Cl. 8.2.5.2. For this non-prestressed rectangular-strip quick screen, calculate `bv = b`, `dv = max(0.72D, 0.9d)`, simplified `kv`, optional vertical-fitment `Vus`, web-crushing limit `Vu.max`, and `phi Vu`. State clearly that ducts, voids, stepped widths, actual demand location, punching shear and detailed footing shear design are outside scope.
+- One-way shear capacity screen using AS 3600 Cl. 8.2.1.5, AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3.1, AS 3600 Cl. 8.2.4.1, AS 3600 Cl. 8.2.4.3 and AS 3600 Cl. 8.2.5.2. Evaluate it only for normal-weight, non-prestressed concrete without axial tension or torsion, with `f'c <= 65 MPa`, reinforcement `fsy <= 500 MPa` and maximum aggregate size at least 10 mm. Where detectable inputs are outside this scope, report `Not evaluated - outside simplified-method scope` and do not show a shear capacity. The remaining conditions are fixed project assumptions stated beside the result.
 - Reinforcement area must use standard nominal Australian bar table areas for N/Y bars, not raw `pi d^2 / 4` geometry, so outputs match normal reo tables and detailing practice.
 - Pad-on-pad analysis must be an explicit mode choice. Default to `Separate pads`, which calculates only the selected top or bottom pad. Use `Combined section` only when the user intends D_top + D_bot and active mats from both pads to act as one section, with composite action and interface shear design checked outside the calculator.
 - Keep concrete pad inputs in the standard row-band layout. `Pad analysis mode` belongs in the first visible `Analysis basis` row, before geometry, because it controls whether the page calculates a single pad or the combined pad-on-pad section. Do not place derived process values such as stress-block factors, calculated `phi`, `kv`, `theta_v`, `bv` or `dv` in editable-looking inputs on the main page; show them in the calculation steps and final result notes instead. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
@@ -1545,7 +1557,7 @@ Concrete tab warnings must stay visible and concise. The main warning should be 
 
 Concrete `phi` must cite AS 3600 Table 2.2.2 when using the pure-bending `k_uo` expression for N-class reinforcement. If legacy Y bars are selected, describe `phi = 0.65` as a conservative quick-screen review value pending actual bar-grade and ductility verification, not as a universal Y-bar code rule.
 
-Concrete shear `kv` should be auto-calculated from AS 3600 Cl. 8.2.4.3 simplified non-prestressed rules because the quick page does not collect the design actions needed for the Cl. 8.2.4.2 general strain method. Use `theta_v = 36 deg`; use `kv = min(200/(1000 + 1.3dv), 0.15)` where minimum transverse shear reinforcement is not verified, and `kv = 0.15` where the provided vertical fitments satisfy `Asv.min/s = 0.08 sqrt(f'c) bv / fsy.f`. Shear reinforcement area must be calculated from the Australian bar table, `Asv = nsv Abar`, with user inputs for fitment bar size, number of legs and spacing; do not require the user to manually type `Asv` except in a deliberate future override mode. If `Asv/s` is below the minimum, show a warning and do not switch to the minimum-reinforcement `kv` or `phi = 0.75` basis. Keep `phi = 0.70` unless compliant Class N fitments meeting AS 3600 Cl. 8.2.1.7 are verified; use `phi = 0.75` only for that verified fitment case. Always show the formula steps so changes to fitment bar size, `nsv`, `s`, `fsy.f`, `bv`, `dv` and `kv` are visible.
+Concrete shear `kv` should be auto-calculated from AS 3600 Cl. 8.2.4.3 simplified non-prestressed rules because the quick page does not collect the design actions needed for the AS 3600 Cl. 8.2.4.2 general strain method. Use `theta_v = 36 deg`; use `kv = min(200/(1000 + 1.3dv), 0.15)` where minimum transverse shear reinforcement is not verified, and `kv = 0.15` where the provided vertical fitments satisfy `Asv.min/s = 0.08 sqrt(f'c) bv / fsy.f`. Shear reinforcement area must be calculated from the Australian bar table, `Asv = nsv Abar`, with user inputs for fitment bar size, number of legs and spacing; do not require the user to manually type `Asv` except in a deliberate future override mode. If `Asv/s` is below the minimum, show a warning and do not switch to the minimum-reinforcement `kv` or `phi = 0.75` basis. Under AS 3600 Table 2.2.2, use `phi = 0.75` only where compliant Class N fitments are verified and strength is not limited by web crushing; otherwise use `phi = 0.70`. Always show the formula steps so changes to fitment bar size, `nsv`, `s`, `fsy.f`, `bv`, `dv` and `kv` are visible.
 
 The optional vertical-fitment input row should be titled `Shear reinforcement`, not a generic relevant-factors row, because it controls `Asv`, `Vus`, `kv` branch selection and shear capacity rather than a broad assumption factor.
 

@@ -40,21 +40,23 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Tab | Item | Source document | Located evidence | Status |
 | --- | --- | --- | --- | --- |
 | Bolt | Capacity factor `phi` for bolts and ply bearing | `AS4100.pdf` | AS 4100 Table 3.4 visually checked on PDF page 47 | Visual checked |
-| Bolt | Bolt shear capacity, N/X planes, `k_rd` and bolted-lap `k_r` | `AS4100.pdf` | AS 4100 Cl. 9.2.2.1 visually checked on PDF pages 131-132 | Visual checked; do not cite bolt `k_r` as a table, unlike welded-lap `k_r` from AS 4100 Table 9.6.3.10(B) |
+| Bolt | Bolt shear capacity, N/X planes, `k_rd` and bolted-lap `k_r` | `AS4100.pdf` | AS 4100 Cl. 9.2.2.1 and AS 4100 Table 9.2.2.1 visually checked on PDF pages 131-132 | Visual checked; bolted-lap `k_r` is tabulated in AS 4100 Table 9.2.2.1 and is separate from welded-lap `k_r` in AS 4100 Table 9.6.3.10(B) |
 | Bolt | Bolt tension capacity | `AS4100.pdf` | AS 4100 Cl. 9.2.2.2 visually checked on PDF page 132 | Visual checked |
 | Bolt | Combined shear and tension strength check | `AS4100.pdf` | AS 4100 Cl. 9.2.2.3 visually checked on PDF page 132; user screenshot also matched formula form | Visual checked |
 | Bolt | TF slip resistance | `AS4100.pdf` | AS 4100 Cl. 9.2.3.1 visually checked on PDF page 134 | Visual checked |
 | Bolt | TF combined slip interaction | `AS4100.pdf` | AS 4100 Cl. 9.2.3.3 visually checked on PDF page 135; includes `Ntf = Nti` context | Visual checked |
 | Bolt | Minimum bolt tension `Nti` | `AS4100.pdf` | AS 4100 Table 15.2.2.2 visually checked on PDF page 192 for M16/M20/M24/M30/M36: 8.8 = 95/145/210/335/490 kN, 10.9 = 130/205/295/465/680 kN | Visual checked |
 | Bolt | Minimum edge distance | `AS4100.pdf` | AS 4100 Table 9.5.2 visually checked on PDF page 138 | Visual checked |
+| Bolt | Equal-load connected-ply group aggregation | `AS4100.pdf` | Per-bolt bearing and edge limits are from AS 4100 Cl. 9.2.2.4; group relation uses the stated derived assumption `V_i* = V*/n`, giving `phi Vb,group = n min(phi Vb,full, phi Vb,edge)` | Derived equal-action model; eccentric and non-uniform bolt-force distributions excluded |
 | Weld | Weld capacity factor and direct weld capacity | `AS4100.pdf` | AS 4100 Table 3.4 visually checked on PDF page 47; AS 4100 Cl. 9.6.3.10 visually checked on PDF page 147 | Visual checked |
+| Weld | CPBW, IPBW and compound-weld capacity boundaries | `AS4100.pdf` | AS 4100 Cl. 9.6.2.7 visually checked on printed page 129; AS 4100 Cl. 9.6.5.2 visually checked on printed page 136 | IPBW uses the fillet-weld method with specified design throat; CPBW follows weaker joined-part capacity; compound throat requires actual total weld cross-section. CPBW and compound therefore return Not evaluated in the quick page |
 | Weld | Welded lap reduction `k_r` | `AS4100.pdf` | AS 4100 Table 9.6.3.10(B) visually checked on PDF page 148; table length `l_w` is in metres | Visual checked |
 | Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | AS 4100 Table 9.6.3.10(A) visually checked on PDF pages 147-148; ASI Simple Connections 2020 Table 2.14 visually checked on PDF page 19 | Visual checked |
 | Weld | Parent metal screen values | `5+SSC 2020.pdf` | ASI Simple Connections 2020 Tables 2.15 and 2.16 visually checked on PDF pages 20-21; Grade 300 flat bar / sections use `f_up = 440 MPa` | Visual checked |
 | Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | AS 1101.3 Fig. 2.1 visually checked on PDF page 9; AS 1101.3 Cl. 2.3.2.1 to AS 1101.3 Cl. 2.3.2.3 and AS 1101.3 Figs. 2.8 to 2.10 visually checked on PDF pages 14-15 | Visual checked |
 | Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | AS 4100 Section 5 / AS 4100 Cl. 5.2 visually checked on PDF page 66 | Visual checked |
 | Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | AS 4100 Cl. 5.11.4 and AS 4100 Cl. 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
-| Beam | Shear-bending interaction | `AS4100.pdf` | AS 4100 Cl. 5.12 visually checked on PDF page 89, including AS 4100 Cl. 5.12.1, AS 4100 Cl. 5.12.2 and `Vvm = Vv` for the proportioning method | Visual checked |
+| Beam | Shear-bending interaction | `AS4100.pdf` | AS 4100 Cl. 5.12.3 visually checked on printed pages 76-77: `Vvm = Vv` for `M* <= 0.75 phi Ms`; otherwise `Vvm = Vv[2.2 - 1.6M*/(phi Ms)]` for `M* <= phi Ms`, with `V* <= phi Vvm` | Visual checked; exact reduced-method equation implemented |
 | Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns visually located on PDF pages 12-15; embedded UB/UC rows checked on 2026-07-02 against OneSteel / InfraBuild Tables 9-12 | Embedded UB/UC rows checked |
 | Axial Member | Section compression capacity | `AS4100.pdf` | AS 4100 Cl. 6.2 visually checked on PDF page 100; `Ns = kf Ag fy` confirmed | Visual checked |
 | Axial Member | Member buckling reduction | `AS4100.pdf` | AS 4100 Cl. 6.3.3 and AS 4100 Tables 6.3.3(A/B/C) visually checked on PDF pages 103-106 | Visual checked |
@@ -65,7 +67,7 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Axial Member | PFC / Equal Angle / Rod catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | OneSteel / InfraBuild Tables 15 and 16 for PFC, OneSteel / InfraBuild Tables 19-21 for Equal Angle, OneSteel / InfraBuild Table 3 for Rounds and OneSteel / InfraBuild Table 38 for round-bar strength checked on 2026-07-02 | Embedded PFC / Equal Angle / Rod rows checked |
 | Concrete | Stress block and bending section theory | `AS3600.pdf` | AS 3600 Cl. 8.1.3 and AS 3600 Cl. 8.1.5 visually checked on PDF pages 113-114 | Visual checked |
 | Concrete | Capacity factor | `AS3600.pdf` | AS 3600 Table 2.2.2 visually checked on PDF pages 38-39 | Visual checked |
-| Concrete | One-way shear screen | `AS3600.pdf` | AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3 and AS 3600 Cl. 8.2.4 visually checked on PDF pages 118 and 120-122 | Visual checked for quick-screen context; detailed `kv` design remains a visible user assumption |
+| Concrete | One-way shear screen | `AS3600.pdf` | AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3 and AS 3600 Cl. 8.2.4 visually checked on printed pages 117-119; AS 3600 Table 2.2.2 checked on printed page 36 | Simplified method limited to stated Cl. 8.2.4 scope; detectable out-of-scope inputs return Not evaluated; `phi = 0.70` where web crushing limits strength |
 | Concrete | Reinforcement bar areas | Standard Australian reo table values | N/Y12=110, N/Y16=200, N/Y20=310, N/Y24=450, N/Y28=620, N/Y32=800, N/Y36=1020 mm2; use table areas rather than `pi d^2 / 4` | Checked against common Australian reo table convention; source register should be upgraded to AS/NZS 4671 or manufacturer reo table when added |
 | Wind Site Draft | Wind region screen | `AS11702-2021.pdf` | AS/NZS 1170.2 Section 3 and Fig. 3.1(A) visually checked on PDF page 37; Tables 3.1(A) and 3.2(A) visually checked on PDF pages 34 and 36 for regional speed / `Md` context | Visual checked for draft coordinate screen only; adopted wind region still requires project review |
 | Wind Site Draft | Terrain category definitions and averaging | `AS11702-2021.pdf` | AS/NZS 1170.2 Cl. 4.2 visually checked on PDF page 39; terrain averaging distance `xa` and lag distance `xi` visually checked on PDF page 40 | Visual checked for radial-band draft screen basis only |
@@ -118,11 +120,11 @@ The current Beam tab defaults were visually checked against `InfraBuild-Hot-Roll
 
 ### Default Web Output Check
 
-Default outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=20260630#bolt` and independently recalculated from the app formulas.
+Default outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=20260630#bolt` and independently recalculated from the app formulas. The Bolt equal-load group row was recalculated and rechecked in the DOM on 2026-07-14 at `http://127.0.0.1:8000/?local=20260714boltgroup#bolt`.
 
 | Tab | Default case | Checked output | Status |
 | --- | --- | --- | --- |
-| Bolt | M24 8.8/S, N plane | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; group shear 133.4 kN; ply bearing 304.1 kN; edge limit 162.4 kN; minimum edge distance 42.0 mm | DOM output matched independent calculation |
+| Bolt | M24 8.8/S, N plane, `n = 1` | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; equal-load group shear 133.4 kN; equal-load group ply bearing 283.4 kN; equal-load group edge limit 151.3 kN; minimum edge distance 42.0 mm | DOM output matched independent calculation; for identical bolts under concentric equal action, group limits scale by `n` |
 | Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm for Grade 250 plate, 10 mm | DOM output matched independent calculation |
 | Beam | 310UB40.4 300PLUS | `Ag` 5210 mm2; `Aw` 1730 mm2; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; `kf` 0.952; `phi Ms` 182.3 kNm; `phi Vv` 298.9 kN | DOM output matched independent calculation |
 | Beam | 200UC46.2 300PLUS | `Ag` 5900 mm2; `Aw` 1324 mm2; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; `kf` 1.000; `phi Ms` 133.4 kNm; `phi Vv` 214.5 kN | DOM output matched independent calculation |
