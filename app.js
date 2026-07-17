@@ -1650,6 +1650,8 @@ const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "boltPitch", "edgeDistanceBasis", "effectiveEdgeInput", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
 const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw", "rock"];
+const toolAliases = { pad: "concrete", axial: "member" };
+const publicToolHashes = { concrete: "pad" };
 let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";
@@ -3249,6 +3251,10 @@ function concreteOneWayShear(data, result) {
 function calculateConcrete() {
   const topDepth = value("concreteTopDepth");
   const bottomDepth = value("concreteBottomDepth");
+  const bottomMatsActive = $("layer3Active").checked || $("layer4Active").checked;
+  const hideInactiveBottomMats = bottomDepth <= 0 && !bottomMatsActive;
+  [$("layer3Row"), $("layer4Row")].forEach(row => { row.hidden = hideInactiveBottomMats; });
+  $("bottomPadLayerNote").hidden = !hideInactiveBottomMats;
   const totalDepth = topDepth + bottomDepth;
   const direction = $("concreteDirection").value;
   const analysisMode = $("concreteComposite").value;
@@ -4684,12 +4690,15 @@ function calculateScrew() {
 }
 
 function setTool(tool, updateHash = true) {
-  const validTool = toolNames.includes(tool);
-  const selectedTool = validTool ? tool : "bolt";
+  const resolvedTool = toolAliases[tool] || tool;
+  const validTool = toolNames.includes(resolvedTool);
+  const selectedTool = validTool ? resolvedTool : "bolt";
+  let activeButton = null;
   document.querySelectorAll(".tool-tab").forEach(button => {
     const active = button.dataset.tool === selectedTool;
     button.classList.toggle("active", active);
     button.setAttribute("aria-selected", String(active));
+    if (active) activeButton = button;
   });
   toolNames.forEach(name => {
     const panel = $(`${name}Panel`);
@@ -4697,9 +4706,16 @@ function setTool(tool, updateHash = true) {
     panel.hidden = !active;
     panel.classList.toggle("active", active);
   });
-  if ((updateHash || !validTool) && location.hash !== `#${selectedTool}`) {
-    history.replaceState(null, "", `#${selectedTool}`);
+  const publicHash = publicToolHashes[selectedTool] || selectedTool;
+  if ((updateHash || !validTool || tool !== publicHash) && location.hash !== `#${publicHash}`) {
+    history.replaceState(null, "", `#${publicHash}`);
   }
+  window.requestAnimationFrame(() => {
+    const tabs = activeButton?.parentElement;
+    if (!tabs || tabs.scrollWidth <= tabs.clientWidth) return;
+    const left = activeButton.offsetLeft - (tabs.clientWidth - activeButton.offsetWidth) / 2;
+    tabs.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+  });
   if (selectedTool === "concrete") calculateConcrete();
   if (selectedTool === "screw") {
     calculateScrew();

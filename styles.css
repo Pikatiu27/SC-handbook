@@ -4,7 +4,7 @@
 
 :root {
   --ink: #2f3b36;
-  --muted: #68766f;
+  --muted: #5d6b64;
   --paper: #fbf7f0;
   --card: #ffffff;
   --line: #dfe8e1;
@@ -77,7 +77,7 @@ img, svg { max-width: 100%; }
 
 main, footer { max-width: 1040px; margin: auto; }
 .intro { padding: 22px 0 12px; }
-.kicker { margin: 0 0 6px; color: var(--green); font-size: var(--fs-xs); font-weight: 800; letter-spacing: 0; }
+.kicker { margin: 0 0 6px; color: var(--green-dark); font-size: var(--fs-xs); font-weight: 800; letter-spacing: 0; }
 .intro h1 { margin: 0; font-size: var(--fs-lg); line-height: 1.12; font-weight: 900; letter-spacing: 0; }
 .intro > p:last-child { margin: 5px 0 0; max-width: 560px; color: var(--muted); font-size: var(--fs-sm); }
 
@@ -789,6 +789,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .layer-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--green); }
 .layer-row em { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: var(--fs-xs); font-style: normal; pointer-events: none; }
 .layer-row label[data-field]::before { display: none; }
+.layer-inactive-note { padding: 10px 12px; border-top: 1px solid var(--line); background: #f5f8f6; color: var(--muted); font-size: var(--fs-sm); font-weight: 700; }
 .concrete-visual-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0 0 18px; }
 .concrete-visual-card { min-width: 0; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: #fbfefe; overflow: hidden; }
 .concrete-layout-details > summary { list-style: none; padding: 11px 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; }
@@ -1078,9 +1079,9 @@ footer b { white-space: nowrap; }
   .intro { padding: 12px 0 10px; }
   .intro h1 { font-size: var(--fs-md); }
   .intro > p:last-child { margin-top: 5px; font-size: var(--fs-xs); line-height: 1.35; }
-  .tool-tabs { width: 100%; position: sticky; top: 54px; z-index: 4; overflow-x: auto; flex-wrap: nowrap; padding: 4px; scrollbar-width: none; }
+  .tool-tabs { width: 100%; position: sticky; top: 54px; z-index: 4; overflow-x: auto; flex-wrap: nowrap; padding: 4px; scrollbar-width: none; scroll-snap-type: x proximity; }
   .tool-tabs::-webkit-scrollbar { display: none; }
-  .tool-tab { min-width: max-content; flex: 0 0 auto; padding: 9px 13px; font-size: var(--fs-sm); white-space: nowrap; }
+  .tool-tab { min-width: max-content; min-height: 44px; flex: 0 0 auto; padding: 9px 13px; font-size: var(--fs-sm); white-space: nowrap; scroll-snap-align: center; }
   .branch-tabs { width: 100%; padding: 4px; }
   .branch-tab { flex: 1 1 auto; padding: 8px 9px; font-size: var(--fs-xs); }
   .tool-heading { display: block; }
@@ -1116,7 +1117,8 @@ footer b { white-space: nowrap; }
   .symbol-key, .notation-key { gap: 5px; margin-bottom: 14px; }
   .symbol-key span, .notation-key span { max-width: 100%; white-space: normal; }
   .symbol-key span:nth-child(n+4) { display: none; }
-  .notation-key span { padding: 4px 7px; }
+  .notation-key { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .notation-key span { padding: 4px 6px; line-height: 1.3; }
   .weld-figure-card { grid-template-columns: 1fr; }
   .weld-symbol-svg { max-height: 72px; }
   .weld-figure-card small, .weld-legend-source { font-size: 11px; line-height: 1.3; }
@@ -1127,9 +1129,9 @@ footer b { white-space: nowrap; }
   .member-summary-visual { max-width: none; justify-self: stretch; padding-top: 0; }
   .beam-summary-visual { max-width: none; justify-self: stretch; padding-top: 0; }
   .member-summary-visual .section-guide article { grid-template-columns: 84px minmax(0, 1fr); align-items: center; padding: 7px; gap: 5px; }
-  .beam-summary-visual .section-guide article { grid-template-columns: 84px minmax(0, 1fr); align-items: center; padding: 7px; gap: 5px; }
+  .beam-summary-visual .section-guide article { grid-template-columns: 136px minmax(0, 1fr); grid-template-rows: auto; align-items: center; padding: 7px; gap: 7px; }
   .member-summary-visual .section-diagram { width: 84px; max-height: 64px; }
-  .beam-summary-visual .section-diagram { width: 84px; max-height: 64px; }
+  .beam-summary-visual .section-diagram { width: 136px; height: auto; min-height: 0; max-height: 94px; justify-self: start; }
   .member-summary-visual .section-guide small, .beam-summary-visual .section-guide small, .member-drawing-note, .beam-drawing-note { display: none; }
   .member-type, .beam-type { flex: 1 1 calc(50% - 3px); min-width: 0; }
   .section-guide-card { margin-bottom: 12px; }

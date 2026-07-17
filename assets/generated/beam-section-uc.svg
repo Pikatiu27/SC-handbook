@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="29 24 302 205" role="img" aria-labelledby="title desc">
   <title id="title">UC section guide</title>
   <desc id="desc">Symbolic Universal Column section guide generated for SC Handbook; not a source of numeric section properties.</desc>
   <defs>
@@ -9,8 +9,8 @@
   .dim { fill: none; stroke: #2f3840; stroke-width: 1.35; }
   .arrow { fill: #2f3840; stroke: none; }
   .axis { fill: none; stroke: #697870; stroke-width: 1; stroke-dasharray: 14 4 3 4; }
-  .dim-label { font: 700 14px Aptos, Calibri, Arial, sans-serif; fill: #25312d; }
-  .axis-label { font: 700 13px Aptos, Calibri, Arial, sans-serif; fill: #52625a; }
+  .dim-label { font: 700 20px Aptos, Calibri, Arial, sans-serif; fill: #25312d; }
+  .axis-label { font: 700 17px Aptos, Calibri, Arial, sans-serif; fill: #52625a; }
     </style>
   </defs>
   <rect class="panel" x="0" y="0" width="360" height="240" rx="14" />
@@ -36,19 +36,19 @@
   <path class="arrow" d="M 257.0 40 L 250.0 36.5 L 250.0 43.5 Z" />
   <line class="guide" x1="103.0" y1="66.0" x2="103.0" y2="34.0" />
   <line class="guide" x1="257.0" y1="66.0" x2="257.0" y2="34.0" />
-  <text class="dim-label" x="180.0" y="32.0" text-anchor="middle">bf</text>
+  <text class="dim-label" x="180.0" y="32.0" text-anchor="middle">b<tspan baseline-shift="sub" font-size="75%">f</tspan></text>
 
   <line class="dim" x1="164.0" y1="124.0" x2="196.0" y2="124.0" />
   <path class="arrow" d="M 164.0 124 L 171.0 120.5 L 171.0 127.5 Z" />
   <path class="arrow" d="M 196.0 124 L 189.0 120.5 L 189.0 127.5 Z" />
   <line class="guide" x1="164.0" y1="100.0" x2="164.0" y2="132.0" />
   <line class="guide" x1="196.0" y1="100.0" x2="196.0" y2="132.0" />
-  <text class="dim-label" x="210.0" y="129.0">tw</text>
+  <text class="dim-label" x="210.0" y="129.0">t<tspan baseline-shift="sub" font-size="75%">w</tspan></text>
 
   <line class="dim" x1="286.0" y1="70.0" x2="286.0" y2="94.0" />
   <path class="arrow" d="M 286.0 70 L 282.5 77 L 289.5 77 Z" />
   <path class="arrow" d="M 286.0 94 L 282.5 87 L 289.5 87 Z" />
   <line class="guide" x1="262.0" y1="70.0" x2="294.0" y2="70.0" />
   <line class="guide" x1="262.0" y1="94.0" x2="294.0" y2="94.0" />
-  <text class="dim-label" x="299.0" y="87.0">tf</text>
+  <text class="dim-label" x="299.0" y="87.0">t<tspan baseline-shift="sub" font-size="75%">f</tspan></text>
 </svg>

@@ -12,8 +12,8 @@ STYLE = """
   .dim { fill: none; stroke: #2f3840; stroke-width: 1.35; }
   .arrow { fill: #2f3840; stroke: none; }
   .axis { fill: none; stroke: #697870; stroke-width: 1; stroke-dasharray: 14 4 3 4; }
-  .dim-label { font: 700 14px Aptos, Calibri, Arial, sans-serif; fill: #25312d; }
-  .axis-label { font: 700 13px Aptos, Calibri, Arial, sans-serif; fill: #52625a; }
+  .dim-label { font: 700 20px Aptos, Calibri, Arial, sans-serif; fill: #25312d; }
+  .axis-label { font: 700 17px Aptos, Calibri, Arial, sans-serif; fill: #52625a; }
 """.strip()
 
 
@@ -66,7 +66,7 @@ def make_svg(title, desc, y0, depth, flange_width, flange_thickness, web_thickne
     axis_y0 = y0 - 10
     axis_y1 = y1 + 10
 
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="29 24 302 205" role="img" aria-labelledby="title desc">
   <title id="title">{title}</title>
   <desc id="desc">{desc}</desc>
   <defs>
@@ -97,21 +97,21 @@ def make_svg(title, desc, y0, depth, flange_width, flange_thickness, web_thickne
   {arrow_right(x1, y_bf)}
   <line class="guide" x1="{x0:.1f}" y1="{y0 - 4:.1f}" x2="{x0:.1f}" y2="{y_bf - 6:.1f}" />
   <line class="guide" x1="{x1:.1f}" y1="{y0 - 4:.1f}" x2="{x1:.1f}" y2="{y_bf - 6:.1f}" />
-  <text class="dim-label" x="{cx:.1f}" y="{y_bf - 8:.1f}" text-anchor="middle">bf</text>
+  <text class="dim-label" x="{cx:.1f}" y="{y_bf - 8:.1f}" text-anchor="middle">b<tspan baseline-shift="sub" font-size="75%">f</tspan></text>
 
   <line class="dim" x1="{wx0:.1f}" y1="{y_tw:.1f}" x2="{wx1:.1f}" y2="{y_tw:.1f}" />
   {arrow_left(wx0, y_tw)}
   {arrow_right(wx1, y_tw)}
   <line class="guide" x1="{wx0:.1f}" y1="{y0 + flange_thickness + 6:.1f}" x2="{wx0:.1f}" y2="{y_tw + 8:.1f}" />
   <line class="guide" x1="{wx1:.1f}" y1="{y0 + flange_thickness + 6:.1f}" x2="{wx1:.1f}" y2="{y_tw + 8:.1f}" />
-  <text class="dim-label" x="{wx1 + 14:.1f}" y="{y_tw + 5:.1f}">tw</text>
+  <text class="dim-label" x="{wx1 + 14:.1f}" y="{y_tw + 5:.1f}">t<tspan baseline-shift="sub" font-size="75%">w</tspan></text>
 
   <line class="dim" x1="{x_tf:.1f}" y1="{y0:.1f}" x2="{x_tf:.1f}" y2="{y0 + flange_thickness:.1f}" />
   {arrow_up(x_tf, y0)}
   {arrow_down(x_tf, y0 + flange_thickness)}
   <line class="guide" x1="{x1 + 5:.1f}" y1="{y0:.1f}" x2="{x_tf + 8:.1f}" y2="{y0:.1f}" />
   <line class="guide" x1="{x1 + 5:.1f}" y1="{y0 + flange_thickness:.1f}" x2="{x_tf + 8:.1f}" y2="{y0 + flange_thickness:.1f}" />
-  <text class="dim-label" x="{x_tf + 13:.1f}" y="{y0 + flange_thickness / 2 + 5:.1f}">tf</text>
+  <text class="dim-label" x="{x_tf + 13:.1f}" y="{y0 + flange_thickness / 2 + 5:.1f}">t<tspan baseline-shift="sub" font-size="75%">f</tspan></text>
 </svg>
 """
 

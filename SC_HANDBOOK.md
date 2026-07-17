@@ -953,6 +953,9 @@ Mobile rules:
 - Result cards should stack vertically if three cards cannot fit comfortably.
 - Avoid horizontal scrolling except for unavoidable tables.
 - Keep minimum touch target height around 40-46 px for selects, inputs, and tab buttons.
+- When the phone tool navigation overflows horizontally, automatically bring the active tool tab fully into view. A direct hash link must never leave the selected tool off-screen.
+- Keep public hash routes stable. User-facing aliases such as `#pad` may map to an internal panel name, but existing shared links must not silently fall back to another tool.
+- The published footer must show a neutral build identifier, version, date, or commit reference. Do not label the public page as a `local` build.
 
 Detailed-check rows must not remain as rigid desktop grids on phone. For cards with a label, value, status chip, and note, use a phone layout such as:
 
@@ -961,6 +964,8 @@ Detailed-check rows must not remain as rigid desktop grids on phone. For cards w
 - row 3: clause note or derived-value note across the full width.
 
 Do not allow important labels such as `Minimum edge distance - AS 4100 Table 9.5.2` to collapse into one word per line. If this happens, change the mobile grid rather than reducing the font below the standard small-text level.
+
+Keep repeated notation compact. If the selected callout already explains a symbol distinction, do not repeat the same explanation as several full-width phone chips.
 
 Do not keep a visible `Device Preview` option in the final page. Responsiveness should be built into the CSS.
 
@@ -1134,6 +1139,7 @@ Web engineering figure and chart rules:
 - Generated bitmap and SVG assets must have explicit responsive constraints such as `width`, `max-width`, `max-height`, `aspect-ratio`, or container sizing. Do not rely on raw pixel dimensions, SVG `viewBox`, or Matplotlib export size to control the web display size.
 - If an image is generated at high resolution for clarity, control the displayed size in CSS separately from the exported file size. Commit the smallest practical web asset that remains readable at the intended display size.
 - For phone layouts, ordinary supporting images should be compact enough to occupy only about three to four lines of body text unless a larger view is clearly needed. Section guide figures should normally target about 80 to 130 px display height on phone; compact concrete or calculation schematics should normally target about 80 to 100 px display height on phone. Desktop figures can be larger, but must not dominate the first screen.
+- Mobile figure containers must reset inherited desktop `height` and `min-height` rules. The actual engineering linework should occupy the intended compact slot; do not leave a large blank card around an unreadably small drawing.
 - Labels must be readable at mobile width. Do not shrink labels below the small-text level to force a dense drawing to fit; simplify the drawing or stack the labels.
 - Figure text must be visually consistent. Inline SVG labels, SVG captions, figure captions, and short explanatory `small` text should normally use the same small-text level, currently `--fs-xs` / about 12 px in the static web app. Do not mix noticeably different caption sizes such as 10 px, 12 px, and 14 px within one figure group unless there is a specific hierarchy that improves lookup speed.
 - Figure captions and explanatory notes should use normal sentence case. Avoid all-caps labels, forced uppercase, negative letter spacing, and decorative tracking in mobile-visible text. Use bold weight, colour, spacing, or compact badges for emphasis instead.
@@ -1544,6 +1550,7 @@ Use this scope:
 - Reinforcement area must use standard nominal Australian bar table areas for N/Y bars, not raw `pi d^2 / 4` geometry, so outputs match normal reo tables and detailing practice.
 - Pad-on-pad analysis must be an explicit mode choice. Default to `Separate pads`, which calculates only the selected top or bottom pad. Use `Combined section` only when the user intends D_top + D_bot and active mats from both pads to act as one section, with composite action and interface shear design checked outside the calculator.
 - Keep concrete pad inputs in the standard row-band layout. `Pad analysis mode` belongs in the first visible `Analysis basis` row, before geometry, because it controls whether the page calculates a single pad or the combined pad-on-pad section. Do not place derived process values such as stress-block factors, calculated `phi`, `kv`, `theta_v`, `bv` or `dv` in editable-looking inputs on the main page; show them in the calculation steps and final result notes instead. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
+- When `D_bot = 0` and both bottom-pad mats are inactive, replace their disabled input rows with one concise not-applicable note. If either bottom-pad mat is active, keep the rows visible so the existing invalid-state warning remains actionable.
 
 Required exclusions:
 
