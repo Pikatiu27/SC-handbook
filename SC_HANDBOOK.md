@@ -940,6 +940,56 @@ Practical rules:
 - Cards should represent real workflow groups or repeated results, not general page decoration. Do not put cards inside cards unless the inner item is a collapsed details panel, repeated result card, or compact table row that has a distinct purpose.
 - Desktop layouts may use horizontal field rows inside one engineering group, but different engineering groups should stack vertically in a predictable order.
 
+#### 15.4.1 Canonical Web Typography Tokens
+
+All tabs must use the shared font stack and CSS size tokens. Do not introduce a tab-specific font family, fluid viewport-based font scaling, or a second type scale.
+
+Use this implementation contract:
+
+| Token | Current size | Required use |
+| --- | ---: | --- |
+| `--font` | `Aptos, Calibri, Arial, sans-serif` | All interface text, controls, results and notes |
+| `--fs-xs` | `12px` | Source notes, units, metadata, captions, limitations and short helper text |
+| `--fs-sm` | `13px` | Tab labels, field labels, input values, group headings and result labels |
+| `--fs-md` | `15px` | Section headings, folded-panel headings and compact phone tool titles |
+| `--fs-lg` | `22px` | Desktop page or active-tool title only |
+| `--fs-xl` | `34px` | Reserved exceptional display value; do not use for ordinary headings |
+| `--fs-result` | `28px` | Governing numeric result values |
+
+Typography mapping:
+
+- Brand name, active tab and principal group labels may use `800-900` weight; ordinary labels and values use `700`; helper and source text use `400-700` according to importance.
+- Tool title uses `--fs-lg` on desktop and `--fs-md` on phone. Section and folded-panel titles use `--fs-md`. Input-group headings, field labels, control values and result labels use `--fs-sm`. Units, captions, helper notes, source notes and limitations use `--fs-xs`.
+- Main result numbers use `--fs-result`, tabular numerals and a compact line height. Units remain `--fs-xs` or `--fs-sm`; they must not visually compete with the value.
+- Main calculator controls use the shared `46px` minimum height. Phone controls and tool tabs must remain at least `44px` high, and editable phone inputs must render at `16px` to support reliable touch typing and prevent browser auto-zoom.
+- Use letter spacing `0`. Do not use condensed type, negative letter spacing, forced uppercase headings, or viewport-width font scaling.
+- Do not reduce text below `--fs-xs` to solve overflow. Change the grid, wrap the label, shorten duplicated wording, or move secondary text into a folded panel.
+- A new tab may add a component-specific weight or line-height adjustment only when needed for legibility. It must continue to use the shared size tokens unless a durable global exception is recorded here.
+
+#### 15.4.2 Canonical New-Tab Page Contract
+
+Build every new tab from the shared app structure and component classes. A new tab must not create a standalone visual system inside the handbook.
+
+Required page skeleton:
+
+1. Add one short `.tool-tab` control with `data-tool`, a stable public hash and `aria-selected` support.
+2. Add one matching `.tool-panel` with a compact `.tool-heading`: kicker / standard family, full English tool name, and one short scope phrase.
+3. Put the main workflow in one `.lookup-card`. Inside it, stack `.input-group` row bands in engineering order and use `.input-group-fields` or the equivalent shared responsive grid for controls.
+4. Place one selected-item or checked-basis summary after the inputs when the user needs to confirm the current section, product, material, assumptions or intermediate basis.
+5. Place the governing answer in the shared `.capacity-section` and `.capacity-card` hierarchy. Show secondary capacities only when they change an engineering decision.
+6. Put formula trace and secondary checks in `.detail-card`; put standards, source status, assumptions, exclusions and limitations in `.source-card`.
+7. Keep compact figures, symbol keys and lookup tables below the main result or inside a folded panel unless they are essential to selecting an input.
+
+Shared implementation requirements:
+
+- Register the tab in the existing `toolNames` / route logic and provide a stable short public hash. Do not create a second navigation system or separate mobile page.
+- Add one tab theme using the existing four-variable pattern: accent, dark, soft and panel colours. Map the panel to shared `--green`, `--green-dark`, `--green-soft`, `--panel-bg`, `--line`, `--input-manual-bg`, `--input-auto-bg` and `--input-auto-border` variables.
+- Reuse `.tool-tabs`, `.tool-tab`, `.tool-heading`, `.lookup-card`, `.input-group`, `.input-group-heading`, `.input-group-fields`, `.capacity-section`, `.capacity-card`, `.detail-card`, `.source-card`, `.result-note` and shared form-control styles wherever their engineering purpose matches.
+- Do not copy an existing tab's one-off selectors as the foundation for a new layout. Promote genuinely reusable behaviour to a shared class first.
+- Keep input group labels and order consistent with Section 15.8. A visual row is an engineering category, not merely a convenient number of equal-width fields.
+- Use the same DOM and calculation outputs at every viewport. Mobile adaptation is CSS-driven and may collapse secondary material, but it must not fork formulas, values, warnings or references.
+- Before acceptance, compare the new tab beside at least one established tab at desktop and phone widths. Check title hierarchy, field-label size, control height, focus state, manual/override/read-only fills, result hierarchy, warning density, horizontal overflow and active-tab visibility.
+
 ### 15.5 Mobile Layout Rules
 
 The web layout must work on phone, tablet, and desktop.
