@@ -50,17 +50,20 @@ The primary basis is AS 4100 Section 5 for beam section capacity. Moment capacit
 
 The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, minor-axis bending, biaxial bending, axial interaction, web bearing, web buckling under concentrated forces, stiffeners, copes, holes, composite action, fire, deflection or vibration.
 
-### Concrete Pad Moment
+### Concrete Pad Section
 
-The concrete pad tool is a compact AS 3600-style reinforced-concrete flexural section check for a rectangular pad strip:
+The concrete pad tool is a compact AS 3600:2018 reinforced-concrete flexural and one-way shear section-capacity check for a rectangular pad strip:
 
-- section width, top pad depth, optional bottom pad depth and bending direction;
-- N-class and legacy Y-bar reinforcement mats with standard nominal Australian bar table areas, spacing, depth, yield strength and modulus inputs;
+- section width, top and bottom pad depths, compression face and reinforcement direction;
+- automatic single-pad or composite pad-on-pad section detection from the entered depths;
+- N-class reinforcement using current InfraBuild nominal bar areas from N10 to N40, plus legacy Y-bar options for existing drawings;
+- automatic directional mat depths from cover, bar stacking and orthogonal bar size, with manual depth override;
 - neutral-axis solution, concrete compression force, nominal moment capacity `Muo`, design moment capacity `phi Muo` and `k_uo` warning status;
-- pad-on-pad composite-action warning where combined depth is used;
+- optional vertical fitments in the one-way shear capacity calculation;
+- a concise pad-on-pad interface warning when both pad depths form the checked section;
 - a small collapsed section-analysis schematic for strain, stress block and resultants.
 
-This is a moment section-capacity view with a one-way shear screen only, not a full footing or slab design check. It does not check punching shear, soil bearing, base-plate or column bearing, development length, anchorage, crack control, deflection, load combinations, interface shear or plain-concrete footing capacity. For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check.
+This is a section-capacity view, not a full footing or slab design check. It does not check minimum flexural reinforcement, punching shear, soil bearing, base-plate or column bearing, development length, anchorage, crack control, deflection, load combinations, interface shear or plain-concrete footing capacity. For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check.
 
 Concrete pad capacity factor `phi` is shown for the current pure-bending quick-screen assumption using AS 3600 Table 2.2.2 `k_uo` notation for N-class reinforcement. Legacy Y bars use a conservative review value until the actual bar grade and ductility equivalence are verified. One-way shear uses the AS 3600 Cl. 8.2.4 simplified method only for normal-weight, non-prestressed concrete without axial tension or torsion, with `f'c <= 65 MPa`, reinforcement `fsy <= 500 MPa` and maximum aggregate size at least 10 mm. Detectable out-of-scope inputs return `Not evaluated`. Under AS 3600 Table 2.2.2, shear uses `phi = 0.75` only with verified minimum Class N fitments and no web-crushing limit; otherwise `phi = 0.70`. This remains a one-way shear screen, not a complete concrete shear design.
 
