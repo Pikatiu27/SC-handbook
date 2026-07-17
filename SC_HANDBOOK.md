@@ -1538,12 +1538,18 @@ Use this scope:
 - Rectangular strip section only.
 - Pure flexural section analysis with `N* = 0`.
 - User-selected compression face.
-- N-class and legacy Y-bar reinforcement mats.
+- Current N-class and legacy Y-bar reinforcement mats.
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
 - One-way shear capacity screen using AS 3600 Cl. 8.2.1.5, AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3.1, AS 3600 Cl. 8.2.4.1, AS 3600 Cl. 8.2.4.3 and AS 3600 Cl. 8.2.5.2. Evaluate it only for normal-weight, non-prestressed concrete without axial tension or torsion, with `f'c <= 65 MPa`, reinforcement `fsy <= 500 MPa` and maximum aggregate size at least 10 mm. Where detectable inputs are outside this scope, report `Not evaluated - outside simplified-method scope` and do not show a shear capacity. The remaining conditions are fixed project assumptions stated beside the result.
-- Reinforcement area must use standard nominal Australian bar table areas for N/Y bars, not raw `pi d^2 / 4` geometry, so outputs match normal reo tables and detailing practice.
-- Pad-on-pad analysis must be an explicit mode choice. Default to `Separate pads`, which calculates only the selected top or bottom pad. Use `Combined section` only when the user intends D_top + D_bot and active mats from both pads to act as one section, with composite action and interface shear design checked outside the calculator.
-- Keep concrete pad inputs in the standard row-band layout. `Pad analysis mode` belongs in the first visible `Analysis basis` row, before geometry, because it controls whether the page calculates a single pad or the combined pad-on-pad section. Do not place derived process values such as stress-block factors, calculated `phi`, `kv`, `theta_v`, `bv` or `dv` in editable-looking inputs on the main page; show them in the calculation steps and final result notes instead. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
+- Current N-bar reinforcement areas must use the nominal values in the current InfraBuild Reinforcing 500PLUS design table: N10/N12/N16/N20/N24/N28/N32/N36/N40 = 79/113/201/314/452/616/804/1018/1257 mm2 per bar. Treat N40 as an on-request product where applicable. Retain legacy Y-bar designations only for old drawings, use the matching nominal diameter area, default to the documented conservative legacy-grade assumption, and require project verification of the actual bar grade and condition.
+- Keep two-way reinforcement handling directional and lightweight. Calculate one strip direction at a time using only reinforcement parallel to the checked direction; provide `X` / `Y` as a scope label rather than combining orthogonal reinforcement in one section solution. Repeat the check for the other direction. Do not describe the lower directional capacity as governing unless compatible design actions are also compared.
+- Auto depth may place the checked-direction bars either closest to the concrete face or immediately inside one orthogonal crossing-bar layer. For the inside option, assume the orthogonal bars are in contact and offset the checked bar centre by the crossing-bar diameter; retain manual `y_i` override for actual layer gaps, unusual stacking or drawing-derived depths. Default to the inside option as a conservative critical-depth screen, but show the selected basis in the checked-section summary and calculation steps.
+- For one-way shear, derive `d` and `dv` from the checked-direction longitudinal tension reinforcement only. Do not use orthogonal distribution bars in `Ast`, `d` or `dv`. Punching shear remains excluded; a future punching check must use the AS 3600 Section 9.3 `dom` basis rather than reusing the minimum directional `d` or `dv`.
+- Use `N20` for the default flexural mats and orthogonal crossing bar, `c_nom = 75 mm`, and `No shear reinforcement` for the initial quick-screen state. When no shear reinforcement is selected, keep fitment bar, leg count, spacing and `fsy.f` hidden and inactive; reveal them only for the vertical-fitment branch.
+- Determine the concrete section automatically from the entered pad depths; do not ask the user to choose `Separate` or `Combined`. Where only `D_top` is positive, calculate the top pad with Mats 1 and 2. Where only `D_bot` is positive, calculate the bottom pad with Mats 3 and 4. Where both depths are positive, calculate one composite pad-on-pad strip with `D = D_top + D_bot` and all active mats. Where both depths are zero, do not calculate. For a composite pad-on-pad strip, state visibly that interface shear transfer, anchorage and composite action require separate verification.
+- Use one adopted `f'c` for the full checked strip. Where pad-on-pad pours have different concrete strengths, use an appropriately conservative adopted strength in this lightweight model or perform a separate piecewise concrete-section analysis.
+- Keep concrete pad inputs lightweight and in dependency order: analysis basis; geometry; material; longitudinal reinforcement mats; optional shear reinforcement; checked-section summary; main capacities. Put `Compression face`, checked reinforcement direction, bar-stacking basis and orthogonal bar size in the first row. Keep per-mat `E_s` fixed at 200,000 MPa and out of the main table; retain `f_sy` only as the compact material override needed for legacy bars. Place the checked-section summary after every input. Do not place derived process values such as stress-block factors, calculated `phi`, `kv`, `theta_v`, `bv` or `dv` in editable-looking inputs on the main page; show them in the calculation steps and final result notes instead. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
+- When a pad depth is zero, disable and visually mute that pad's two reinforcement rows, clear their displayed `y_i` to `N/A`, and exclude them from the section solution. Preserve the previous active/material/manual-depth state while the row is unavailable and restore it if the pad depth becomes positive again. A defined pad may remain plain concrete by leaving its mats inactive; an RC capacity is still calculated when another active mat participates in the composite section.
 
 Required exclusions:
 
@@ -1551,13 +1557,14 @@ Required exclusions:
 - Soil bearing.
 - Base-plate, column, or pedestal bearing.
 - Development length and anchorage.
+- Minimum flexural reinforcement.
 - Bar spacing and cover compliance beyond warning-level screens.
 - Crack control, service stress, and deflection.
 - Load combinations and design actions.
 - Interface shear design for pad-on-pad strengthening.
 - Plain-concrete footing capacity.
 
-Concrete tab warnings must stay visible and concise. The main warning should be a short section-capacity boundary plus brief review flags; keep detailed exclusions and derivations in folded panels. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo` or reinforced-concrete `phi Vuc`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
+Concrete tab warnings must stay visible and concise. Use `Calculated` or `Review required` as calculation status, never `OK`, because the page does not compare design actions. The main warning should be a short section-capacity boundary plus brief review flags; keep detailed exclusions and derivations in folded panels. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo` or reinforced-concrete `phi Vuc`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
 
 Concrete `phi` must cite AS 3600 Table 2.2.2 when using the pure-bending `k_uo` expression for N-class reinforcement. If legacy Y bars are selected, describe `phi = 0.65` as a conservative quick-screen review value pending actual bar-grade and ductility verification, not as a universal Y-bar code rule.
 
@@ -1565,7 +1572,23 @@ Concrete shear `kv` should be auto-calculated from AS 3600 Cl. 8.2.4.3 simplifie
 
 The optional vertical-fitment input row should be titled `Shear reinforcement`, not a generic relevant-factors row, because it controls `Asv`, `Vus`, `kv` branch selection and shear capacity rather than a broad assumption factor.
 
-The section-analysis schematic should stay small and collapsed by default. It is a visual guide only. It must not push the main inputs, results, or warnings down the page.
+The section-analysis schematic should stay small, collapsed by default and below the main capacity results. It is a visual guide only and must not interrupt the input-to-result workflow.
+
+Concrete section-analysis figure rules:
+
+- Treat the figure as a Level 2 calculation schematic. Keep the cross-section, linear strain distribution and equivalent rectangular stress block as three restrained panels with one consistent annotation size.
+- Measure neutral-axis depth `x` from the selected compression face. Define the equivalent stress-block depth as `a = gamma x`, stress intensity as `alpha_2 f'_c`, and locate `C_c` at `a/2 = gamma x/2` from the compression face. Never place a `gamma x/2` label between the stress-block base and the neutral axis, because that implies the wrong reference distance.
+- Where a representative single tension layer is shown, write `T = A_s f_s`; use `f_sy` only when yielding is explicitly assumed. State in the caption that the calculator uses every active reinforcement mat.
+- Keep long equilibrium and capacity equations out of the image. Show only the symbols needed to identify geometry, strain and resultant location; leave full formulas in `Calculation steps`.
+- Keep the figure default-collapsed. On desktop, keep the expanded schematic compact at approximately `190 px` high and centred; on mobile, use the dedicated vertical asset at its natural responsive width. Use semibold notation at a source size that remains clear after responsive scaling, and preserve the source aspect ratio without crowding.
+- Keep `(a)`, `(b)` and `(c)` on one common caption baseline in the horizontal asset and at one consistent offset below each panel in the mobile asset. Dimension symbols such as `b` must have clear space from both the dimension arrow and the subfigure caption.
+
+Concrete page copy and spacing rules:
+
+- Use one short helper sentence per input group. Do not repeat the same section type, direction, `b`, `D`, compression face or source statement in adjacent headings, summaries and result scopes.
+- The checked-section title should contain only section type, checked direction and compression face. Show `b`, `D`, depth basis and calculation status once in the summary metrics.
+- Keep the symbol key collapsed by default. Keep the visible reinforcement-source note to one line and move full manufacturer values and limitations to the folded basis panel.
+- Keep main result notes to one short standard/source statement plus the governing section-capacity limitation. Detailed derivations and solver evidence belong only in folded panels.
 
 ### 15.15 Screw Piles Selector Web Tab Rules
 
