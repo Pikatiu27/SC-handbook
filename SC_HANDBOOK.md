@@ -762,12 +762,15 @@ Web outline map:
 - `15.9` defines warning and limitation style.
 - `15.10` onward defines tab-specific engineering scope, formula boundaries, display rules, and exclusions.
 - `15.17` defines local update, commit, push, and GitHub Pages verification workflow.
+- `15.18` is the mandatory professional audit protocol whenever the user asks to `check`, `audit`, `review`, `verify`, or `核查` a tab, calculation, figure, source, or the full handbook.
 
 When editing the web app, use the global web rules first, then the affected tab-specific section. If a layout, notation, drawing, warning, or input rule is intended to survive beyond one edit, record it here rather than only in CSS, JavaScript, or a chat note.
 
 ### 15.0 Current Web Implementation Checklist
 
 Use this checklist before editing, reviewing, committing, or pushing any web-tab work:
+
+For a formal page or calculation audit, this short implementation checklist is only the entry check. Complete the full protocol in Section 15.18.
 
 1. Confirm the active app root is the current `SC Handbook` checkout and the affected files are `index.html`, `app.js`, `styles.css`, any scoped tab module such as `rock-anchor-selector/app.js`, and, where durable rules changed, `SC_HANDBOOK.md`.
 2. Keep the UI English-only and use Australian engineering language.
@@ -1815,3 +1818,330 @@ Token and browser notes:
 - Visitors using the static GitHub Pages calculator do not consume Codex or OpenAI tokens.
 - Local browser use, clicking the page, or sharing the page link does not consume model tokens.
 - Token usage only occurs when asking Codex to inspect, edit, convert references, reason, or generate code/content.
+
+### 15.18 Professional Web Audit Protocol
+
+This is the single mandatory audit workflow for SC Handbook. Whenever the user asks to `check`, `audit`, `review`, `verify`, `核查`, `检查`, `复核`, or asks whether a page or calculation still has problems, use this protocol unless the user explicitly narrows the scope.
+
+#### 15.18.1 Audit Mode and Change Control
+
+Default audit behaviour:
+
+1. Start read-only. Do not change files during the first audit pass unless the user explicitly asks for immediate correction.
+2. State the audit scope: full handbook, selected tab, selected calculation, page logic, visual layout, source evidence, or deployment state.
+3. Identify the exact local checkout, branch, commit, build identifier and files reviewed. Do not assume the open browser is showing the same revision as the worktree.
+4. Read this handbook first, then the tab-specific rules, then the implementation and traceability record.
+5. Use `C:\Users\silin\Documents\Codex\Reference` as the only default reference library. Follow its routing and source-register files before opening individual source documents.
+6. Report findings before editing using the standard audit report in Section 15.18.16.
+7. After the user accepts a finding, modify only the accepted scope, run the applicable regression matrix, and show the resulting local state.
+8. Commit, merge, push or deploy only when the user requests it. Verify local, remote and published states separately.
+
+Do not silently combine these phases:
+
+- source verification;
+- engineering judgement;
+- implementation correction;
+- visual redesign;
+- git merge or deployment.
+
+#### 15.18.2 Audit Scope Inventory
+
+Before checking individual formulas, inventory the audited surface:
+
+- visible tab name, public hash, internal panel id and script ownership;
+- input groups and every editable, overrideable, derived, locked or hidden field;
+- selectors, modes, optional branches and dependent controls;
+- outputs, governing results, utilisation ratios, status labels and warnings;
+- formulas, lookup tables, embedded product data and generated assets;
+- source cards, clause/table references, limitations and issue status;
+- desktop, tablet and phone layouts;
+- local and published asset versions where deployment is in scope.
+
+Confirm that the current tab register in Section 15.2 matches the actual navigation and route logic. Record missing, orphaned or duplicated panels before deeper review.
+
+#### 15.18.3 Source and Evidence Audit
+
+For every formula, factor, default, table value, material strength and product property:
+
+1. Identify whether it is `Standard-derived`, `Catalogue-derived`, `Geometry-derived`, `Project input`, `User override`, `Conservative assumption`, or `Source_Not_Verified`.
+2. Locate the governing document, edition, clause/table/figure, PDF page or catalogue row.
+3. Confirm the source is applicable to the selected material, product, geometry, fabrication method, limit state and design situation.
+4. Check that the page has not copied explanatory context from one clause while calculating with another clause's equation or capacity factor.
+5. Confirm table headings, footnotes, units, interpolation rules, exceptions and adjacent clauses that control application.
+6. Compare embedded rows with the source, including designation, dimensions, strengths, factors, units and availability status.
+7. Record page-level or row-level evidence in `REFERENCE_TRACEABILITY.md`; do not overload visible web text with audit detail.
+8. Mark unreadable, missing or edition-uncertain evidence `Source_Not_Verified`. Do not describe it as verified because a secondary website repeats the same value.
+
+Use primary standards and manufacturer documents where available. Reference books and worked examples may confirm interpretation and arithmetic, but they do not replace the governing standard.
+
+#### 15.18.4 Formula and Numerical Audit
+
+Audit every active calculation branch, not only the default example:
+
+- transcribe the governing equation independently from the source;
+- map every code symbol to the page variable and displayed notation;
+- confirm nominal capacity versus design capacity and the placement of `phi`;
+- confirm characteristic, nominal, design, ultimate and service quantities are not mixed;
+- verify unit conversion at input, intermediate and output stages;
+- verify exponent, square-root, bracket, minimum/maximum and interaction expressions;
+- verify sign convention, axis, plane, compression/tension direction and interface count;
+- verify gross, net, effective and shear areas are selected for the correct limit state;
+- verify capacity factors, reduction factors and table branches change under the correct conditions;
+- verify rounding occurs only for display and does not feed back into governing calculations;
+- verify the governing result uses the correct `min`, `max`, interaction or comparison logic;
+- verify a hidden or inactive branch cannot continue contributing to a result;
+- verify no `NaN`, infinity, stale result, silent zero or plausible-looking fallback is presented as calculated.
+
+For each governing formula, complete at least one independent hand calculation or separate script calculation using displayed inputs. For conditional formulas, test each branch and one value immediately either side of the branch boundary. Compare the independent result with the browser output using unrounded intermediate values and record the acceptable numerical tolerance.
+
+#### 15.18.5 Input Classification and Engineering Order
+
+Check every field against the engineering grouping rules in Section 15.8:
+
+- `Section / geometry`;
+- `Material properties`;
+- `Relevant factors / assumptions`;
+- `Connection / detailing`;
+- `Design actions`;
+- useful `Derived values`;
+- advanced or warning-only checks.
+
+Confirm:
+
+- geometry, radius, area, thickness and effective length are not mislabelled as factors;
+- `f_y`, `f_u`, concrete strength and weld strength remain material properties;
+- code coefficients and reduction factors are not mixed with project dimensions;
+- connection-specific holes, net paths, edge distances and weld details have their own group;
+- fully manual project values, lookup/override values and read-only derived values use the correct fill and label treatment;
+- optional advanced inputs do not interrupt the main quick-reference workflow;
+- no input is collected if it does not affect a visible result, warning, summary or calculation step;
+- no required input is hidden inside a details panel after its branch becomes governing.
+
+#### 15.18.6 Dependency and State-Transition Audit
+
+Treat the page as an engineering state machine. For every selector, checkbox, auto/manual toggle and optional mode, verify:
+
+1. Initial default state is valid, common and clearly sourced or labelled as an assumption.
+2. Changing a controlling field updates every dependent value, summary, figure, formula step, warning and result.
+3. Auto-derived values update when their source changes and stop updating when a deliberate manual override is active.
+4. Returning to auto mode restores the current derived value, not a stale historical value.
+5. Disabled or not-applicable fields are excluded from calculations and cannot submit stale values.
+6. Hidden fields are used only when the user does not need them to resolve the current warning. Keep an invalid controlling field visible and actionable.
+7. Changing section/product/type does not retain incompatible material, factor, geometry or demand values without a visible warning.
+8. Reset/default behaviour is deterministic and returns the complete tab to one documented state.
+9. URL hash navigation opens the requested tab, updates active styling and brings the active mobile tab into view.
+10. Browser refresh and direct links reproduce the same selected tab and valid initial calculation.
+
+Use a transition matrix for non-trivial tabs: `start state -> user action -> expected input state -> expected result state -> expected warning/state text`.
+
+#### 15.18.7 Editable Numeric Input Audit
+
+Check every editable numeric field with keyboard entry, not only increment/decrement controls:
+
+- blank temporary state;
+- integer and decimal entry;
+- leading decimal point;
+- comma decimal where supported by the parser;
+- negative sign where negative values are meaningful;
+- zero;
+- minimum and maximum valid values;
+- just below and just above each limit;
+- pasted value with surrounding spaces;
+- Enter, Tab, blur and refocus;
+- replacement of the complete existing value;
+- phone numeric keyboard behaviour.
+
+An incomplete editing state must not be written back as `0`. Clamp only a valid completed value on blur. Invalid, missing and out-of-range values must produce an explicit state and must not leave the previous capacity looking current.
+
+#### 15.18.8 Boundary, Invalid and Out-of-Scope Matrix
+
+For each calculation branch, test:
+
+- common default case;
+- smallest valid input;
+- largest valid input within the stated method;
+- zero and blank inputs;
+- negative or physically impossible inputs;
+- equal values at governing intersections;
+- each side of table or formula thresholds;
+- missing material/product/source data;
+- inactive optional reinforcement, holes, interfaces or components;
+- incompatible selections;
+- known out-of-scope geometry, grade, slenderness, action or design condition.
+
+Expected statuses must distinguish:
+
+- `Calculated`;
+- `PASS` / `FAIL` only when a compatible design action and every stated governing check are evaluated;
+- `Review required`;
+- `Not evaluated - outside simplified-method scope`;
+- `Not applicable`;
+- `Not published`;
+- `Invalid input`;
+- `Source_Not_Verified` in audit records or deliberate draft surfaces.
+
+Do not show `OK`, `PASS`, a utilisation ratio, or a numeric capacity when the required comparison basis or applicable method is incomplete.
+
+#### 15.18.9 Result Hierarchy and Explanation Audit
+
+Check the result sequence against Section 15.3:
+
+1. The first result answers the tab's main engineering question.
+2. Nominal and design capacities are labelled distinctly.
+3. Governing limit state, axis, plane, direction, section/product and action basis are visible where needed to interpret the value.
+4. Units appear once, use formal engineering typography and remain consistent through inputs, formulas and results.
+5. Secondary results do not compete visually with the governing answer.
+6. A utilisation ratio identifies both numerator and denominator and uses compatible ULS/SLS or project-value bases.
+7. Calculation steps reproduce the actual active branch and current values; they are not static textbook text.
+8. Visible result notes remain short. Detailed derivation, evidence and exclusions stay in folded panels.
+9. Warnings tell the engineer what remains to be checked rather than merely saying the result may be inaccurate.
+
+#### 15.18.10 Scope, Limitation and Safety Audit
+
+Confirm the visible page and source panel state:
+
+- what the page calculates;
+- what assumptions are fixed;
+- what the user must confirm;
+- what limit states and project checks are excluded;
+- whether the result is a capacity, action distribution, product value, selector output or warning-only screen;
+- whether product/catalogue data is current, archived, indicative, `up to`, SWL, geometry-only or project-defined;
+- whether combined actions, stability, fatigue, serviceability, durability, anchorage, connection transfer, geotechnical resistance or inspection remain outside scope.
+
+Limitations must be specific enough to prevent predictable misuse but concise enough to preserve the handbook workflow. Do not compensate for an unclear scope by adding every possible design check.
+
+#### 15.18.11 English, Terminology, Symbols and Reference Audit
+
+Review all visible text and generated text:
+
+- English-only UI using concise Australian engineering language;
+- consistent component, material and limit-state terminology;
+- correct `phi`, Greek symbols, subscripts, superscripts, primes and multiplication signs;
+- formal units such as `mm²`, `mm³`, `mm⁴`, `MPa`, `kN` and `kNm`;
+- no raw variable names such as `alpha_b`, `A_n` or `V*` in final visible text where formatted notation is intended;
+- standard references use the complete pattern `[source] [reference type] [number]`, for example `AS 4100 Cl. 9.2.2.1`;
+- clause, table, figure, section, catalogue and handbook references are not mixed or abbreviated inconsistently;
+- headings, labels, warnings and captions use sentence case except deliberate tags such as `RESULTS`;
+- helper text is reduced where it repeats the heading, selected summary or result note.
+
+#### 15.18.12 Page Logic, Layout and Typography Audit
+
+Review the page against Sections 15.2 to 15.6 and the canonical contract in Sections 15.4.1 and 15.4.2:
+
+- compact brand header, short navigation and immediate access to the active calculator;
+- one clear tool title, not a repeated hero heading;
+- engineering input row bands in dependency order;
+- one selected-basis summary where useful;
+- governing result before secondary aids and folded details;
+- no decorative card nesting or empty custom cards;
+- shared typography tokens and no tab-specific font scale;
+- consistent field labels, control height, radius, focus state and unit alignment;
+- manual, lookup/override and read-only fields visually distinct without relying only on colour;
+- adequate text contrast for normal, muted, warning and disabled states;
+- no clipped labels, overlapping controls, unstable card heights or excessive empty space;
+- figures remain compact, proportional and subordinate to the engineering workflow;
+- source and limitation panels remain available without dominating the first screen.
+
+Judge density by engineering scanning efficiency, not by fitting the maximum number of controls in one row.
+
+#### 15.18.13 Responsive and Accessibility Audit
+
+Test at minimum:
+
+- wide desktop around `1440 px`;
+- normal desktop around `1024 px`;
+- tablet around `768 px`;
+- phone around `390 px`;
+- narrow phone around `320-360 px` where practical.
+
+At each relevant width confirm:
+
+- no incoherent horizontal page overflow;
+- active navigation remains visible and every tab remains directly reachable;
+- input group order is unchanged;
+- controls meet the shared height and phone font requirements;
+- important labels do not collapse into one word per line;
+- results stack without label/value/status overlap;
+- tables have a deliberate scroll or mobile-field treatment;
+- captions, symbols and dimensions remain readable and do not overlap geometry;
+- collapsed details can be opened, read and closed;
+- focus indication, keyboard navigation, labels, `aria-selected`, `aria-live`, disabled states and contrast remain meaningful;
+- phone mode hides or folds only secondary content and never changes calculation logic.
+
+#### 15.18.14 Figure and Engineering Drawing Audit
+
+Apply the figure rules and CAD-style acceptance checklist in Section 15.8. For each displayed asset confirm:
+
+- stated drawing-accuracy class and purpose;
+- source geometry or declared schematic status;
+- proportional framing and stable viewBox/aspect ratio;
+- correct section orientation, axis, load direction and dimension extension lines;
+- minimum necessary dimensions and symbols only;
+- consistent annotation font, size, line weight, arrowheads and caption style;
+- no floating, crossed, duplicated or ambiguous labels;
+- no use of the illustration as a numeric source unless it is explicitly value-driven and verified;
+- separate mobile asset only where responsive scaling cannot preserve legibility;
+- deterministic regeneration when a generator script owns the asset.
+
+#### 15.18.15 Technical, Regression and Deployment Audit
+
+Run the checks appropriate to the change:
+
+- inspect `git status`, exact diff and changed-file ownership;
+- check unresolved merge markers, duplicate HTML ids and missing DOM references;
+- run JavaScript syntax checks with the available trusted runtime;
+- parse generated SVG/XML and verify deterministic generator output;
+- check UTF-8 text and replacement characters; distinguish terminal mojibake from file corruption;
+- open every affected tab locally and inspect browser console warnings/errors;
+- exercise representative interactions and the boundary/state matrix;
+- verify no unrelated tab's default results or layout changed;
+- confirm cache-busting asset versions where HTML, JavaScript, CSS or generated assets changed;
+- after push, confirm remote `main`, published HTML, script/style asset versions, public hash routes and browser-rendered behaviour;
+- confirm the local worktree is clean or explicitly list remaining unrelated files.
+
+No audit is complete because `git status` is clean, a formula looks familiar, or the default page renders. Evidence must cover the changed engineering branch and the changed interface state.
+
+#### 15.18.16 Standard Audit Report Format
+
+Report findings first, ordered by severity and tied to the affected tab, field, formula, source or file location.
+
+Use these severities:
+
+| Severity | Meaning | Typical action |
+| --- | --- | --- |
+| `P0 Critical` | Wrong or unsafe governing result, unit/sign/factor error, or false PASS | Remove or block the result until corrected |
+| `P1 Major` | Material calculation, source, branch, stale-state or scope error that can mislead design use | Must correct before normal release |
+| `P2 Moderate` | Page logic, traceability, terminology, warning or responsive defect with limited engineering impact | Correct in the next accepted update |
+| `P3 Minor` | Consistency, density, typography or polish issue that does not change interpretation | Improve when touching the area |
+
+The audit response must contain these sections, even when a section has no findings:
+
+1. `Audit scope and version` - tab(s), files, branch/commit/build, standards and sources reviewed.
+2. `Executive verdict` - suitable for quick-reference use, suitable with stated limitations, or not ready.
+3. `Must modify` - P0/P1 items and release blockers.
+4. `Should modify` - P2 items that improve page logic, traceability or professional use.
+5. `Add` - missing warning, evidence, state, test or lightweight function genuinely required by scope.
+6. `Delete or simplify` - duplicated text, unused input/output, misleading result, excess card or unnecessary calculation.
+7. `Unclear / source gap` - questions and `Source_Not_Verified` items that cannot be resolved from available evidence.
+8. `Verified - no change` - formulas, branches and layout areas independently checked and retained.
+9. `Test matrix and evidence` - cases run, independent calculations, browser widths and source pages checked.
+10. `Residual limitations` - remaining project checks and risks after accepted corrections.
+
+Each actionable finding should state:
+
+`ID | Severity | Tab/location | Current behaviour | Evidence/requirement | Engineering or user impact | Recommended action`
+
+Keep recommendations proportional to the handbook. Prefer one clear warning or one verified lookup over expanding a tab into a full design engine.
+
+#### 15.18.17 Audit Completion Gate
+
+An audit may be described as complete only when:
+
+- every in-scope formula branch has a verified source status;
+- governing formulas have independent numerical evidence;
+- input dependencies and invalid states have been exercised;
+- result/status semantics and limitations match the implemented scope;
+- desktop and phone workflows have been checked;
+- findings are classified into modify, add, delete/simplify, unclear and verified-no-change;
+- unresolved source gaps and residual limitations are stated explicitly;
+- no modification or deployment is claimed unless its separate verification has succeeded.
