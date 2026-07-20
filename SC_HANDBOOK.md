@@ -815,6 +815,7 @@ Current core tabs:
 - `Bolt Capacity`
 - `Axial Member`
 - `Beam Section`
+- `Section Properties`
 - `Weld Capacity`
 - `Pad Section`
 - `Screw Piles`
@@ -827,6 +828,7 @@ Current tab register:
 | `Bolt Capacity` | `Bolt` | AS 4100 bolt / ply quick capacity and demand screen | For Review with checked core clauses | Active quick-reference tab |
 | `Axial Member` | `Axial` | AS 4100 axial member compression / tension quick screen | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
 | `Beam Section` | `Beam` | AS 4100 UB/UC and symmetric custom I-section section-capacity lookup | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
+| `Section Properties` | `Properties` | Catalogue lookup and ideal-geometry section properties | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
 | `Weld Capacity` | `Weld` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
 | `Pad Section` | `Pad` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
 | `Screw Piles` | `Screw` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
@@ -836,7 +838,6 @@ Future tabs may include:
 
 - `Plate Capacity`
 - `Base Plate`
-- `Section Properties`
 - `Connection Checks`
 
 Tab rules:
@@ -1495,6 +1496,41 @@ Do not imply the member tab is a full steel design engine unless all required li
 - Combined actions not included.
 - Connection design not included.
 - Flexural-torsional buckling not included unless specifically implemented.
+
+#### 15.11.7 Shared Section Geometry and Section Properties Tab
+
+Purpose and modes:
+
+- Use one shared geometry layer for dimension-derived section properties. Beam, Axial Member and future tabs must call this layer rather than reimplementing ideal-shape formulas.
+- Open the Section Properties tab in `Catalogue sections` mode and provide a separate `Custom geometry` mode.
+- Reuse only checked manufacturer rows already accepted elsewhere in the handbook. Custom geometry may cover ideal rectangles, RHS/SHS, solid circles, CHS, symmetric I-sections, equal angles and simplified channels.
+
+Shared calculation contract:
+
+- gross area `A`;
+- centroid coordinates `cx`, `cy` from the geometry origin;
+- centroidal second moments `Ix`, `Iy` about axes parallel to the entered overall dimensions;
+- elastic section moduli `Zx`, `Zy` to the furthest idealised edge;
+- radii of gyration `rx`, `ry` from `sqrt(I/A)`.
+
+Page and evidence requirements:
+
+- Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx`, elastic `Zy`, `rx` and `ry`.
+- Label every result as catalogue, derived from catalogue data, derived from entered geometry or unavailable.
+- Use a compact scalar summary plus an x/y property table rather than repeating a large card for each axis value.
+- Include one compact deterministic SVG for the current section only, showing the centroid and positive `x` and `y` directions. Use selected nominal dimensions in catalogue mode and entered dimensions in custom mode.
+- Mark the axis location as indicative when a checked catalogue row lacks the centroid coordinates required to place both centroidal axes. The SVG is a convention guide, not a numeric source.
+- Show the publisher, catalogue edition or year and checked-row status. Describe nominal dimensions combined with geometric formulas as a mixed basis, not a manufacturer table-property lookup.
+
+Scope boundaries:
+
+- State that no material standard governs the pure geometric relationships.
+- Treat custom shapes as sharp-corner ideal geometry. Show the formulas and identify composite addition or subtraction where used.
+- Keep x/y axes explicit; do not describe unsymmetric x/y values as principal-axis properties.
+- Do not replace unavailable rolled-section properties with sharp-corner geometry. Use verified manufacturer values when available.
+- Do not report plastic modulus, principal-axis rotation, `Ixy`, torsion constants, warping constants, effective properties, local buckling, material strength or design capacity unless separately implemented and reviewed.
+- Keep root radii, corner radii, tapers, welds, holes, copes and manufacturing tolerances outside the ideal geometry model.
+- Keep catalogue availability and material capacity outside this lookup unless separately verified and implemented.
 
 ### 15.12 Beam Section Web Tab Rules
 

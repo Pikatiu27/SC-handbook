@@ -575,6 +575,16 @@ const rodSections = [
   grades: rodGrades(diameter)
 }));
 
+const sectionCatalogueFamilies = SectionCatalogue.create({
+  pfc: pfcSections,
+  ub: ubSections,
+  uc: ucSections,
+  chs: chsSections,
+  ea: eaSections,
+  rod: rodSections
+}, SectionGeometry);
+let sectionPropertiesMode = "catalogue";
+
 const customSections = [{
   designation: "Custom / Built-up properties",
   grades: { "User input": { fy: 350, fu: 450, kf: 1 } }
@@ -1656,7 +1666,8 @@ const screwInputIds = [
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "boltPitch", "edgeDistanceBasis", "effectiveEdgeInput", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
-const toolNames = ["bolt", "member", "beam", "weld", "concrete", "screw", "rock"];
+const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
+const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "screw", "rock"];
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };
 let boltMode = "standard";
@@ -1669,6 +1680,7 @@ const manualInputIds = [
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
+  ...sectionPropertyInputIds,
   "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
   "memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD",
@@ -1680,7 +1692,7 @@ const referenceInputIds = [
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteReoDirection", "concreteDepthBasis", "concreteCrossingBar", "concreteShearReo", "concreteShearBar",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
-  "beamSection", "beamGrade",
+  "beamSection", "beamGrade", "sectionCatalogueFamily", "sectionCatalogueDesignation", "sectionShape",
   "screwManufacturer", "screwSeries", "screwApplication", "screwCapacitySource", "screwSoil", "screwExposure", "screwInstallEvidence", "screwLateralSensitivity", "screwDemandBasis", "screwProjectBasis", "screwProjectSource", "screwLayout",
   "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberNetAreaMode", "memberKt", "memberDimensionOverride"
 ];
@@ -2225,6 +2237,375 @@ function compactnessText(compactness) {
   return "Slender";
 }
 
+const sectionShapeNames = {
+  rectangle: "Rectangle",
+  rhs: "RHS / SHS",
+  circle: "Solid circle",
+  chs: "CHS",
+  i: "Symmetric I-section",
+  angle: "Equal angle",
+  channel: "Channel"
+};
+
+const sectionCatalogueFamilyNames = {
+  pfc: "PFC",
+  ub: "UB",
+  uc: "UC",
+  chs: "CHS",
+  ea: "Equal angle",
+  rod: "Round bar"
+};
+
+function sectionPowerValue(number) {
+  const amount = Number(number);
+  if (!Number.isFinite(amount) || amount <= 0) return "—";
+  const exponent = amount >= 1e9 ? 9 : amount >= 1e6 ? 6 : amount >= 1e3 ? 3 : 0;
+  if (!exponent) return amount.toLocaleString("en-AU", { maximumFractionDigits: 1 });
+  const coefficient = amount / 10 ** exponent;
+  const maximumFractionDigits = coefficient >= 100 ? 1 : coefficient >= 10 ? 2 : 3;
+  return `${coefficient.toLocaleString("en-AU", { maximumFractionDigits })} × 10<sup>${exponent}</sup>`;
+}
+
+function currentSectionGeometry() {
+  const shape = $("sectionShape").value;
+  if (shape === "rectangle") return SectionGeometry.rectangle(value("sectionWidth"), value("sectionHeight"));
+  if (shape === "rhs") return SectionGeometry.rectangularHollow(value("sectionWidth"), value("sectionHeight"), value("sectionThickness"));
+  if (shape === "circle") return SectionGeometry.circle(value("sectionDiameter"));
+  if (shape === "chs") return SectionGeometry.circularHollow(value("sectionDiameter"), value("sectionThickness"));
+  if (shape === "i") return SectionGeometry.symmetricI(value("sectionDepth"), value("sectionFlangeWidth"), value("sectionWebThickness"), value("sectionFlangeThickness"));
+  if (shape === "angle") return SectionGeometry.equalAngle(value("sectionLeg"), value("sectionAngleThickness"));
+  return SectionGeometry.channel(value("sectionDepth"), value("sectionFlangeWidth"), value("sectionWebThickness"), value("sectionFlangeThickness"));
+}
+
+function sectionDimensionText(shape) {
+  if (shape === "rectangle") return `b = ${formatDimension(value("sectionWidth"))} mm; h = ${formatDimension(value("sectionHeight"))} mm`;
+  if (shape === "rhs") return `b = ${formatDimension(value("sectionWidth"))} mm; h = ${formatDimension(value("sectionHeight"))} mm; t = ${formatDimension(value("sectionThickness"))} mm`;
+  if (shape === "circle") return `D = ${formatDimension(value("sectionDiameter"))} mm`;
+  if (shape === "chs") return `D = ${formatDimension(value("sectionDiameter"))} mm; t = ${formatDimension(value("sectionThickness"))} mm`;
+  if (shape === "angle") return `b = ${formatDimension(value("sectionLeg"))} mm; t = ${formatDimension(value("sectionAngleThickness"))} mm`;
+  return `d = ${formatDimension(value("sectionDepth"))} mm; b<sub>f</sub> = ${formatDimension(value("sectionFlangeWidth"))} mm; t<sub>w</sub> = ${formatDimension(value("sectionWebThickness"))} mm; t<sub>f</sub> = ${formatDimension(value("sectionFlangeThickness"))} mm`;
+}
+
+function sectionCompositionText(shape) {
+  if (shape === "rectangle") return "Single solid rectangle.";
+  if (shape === "rhs") return "Outside rectangle minus the concentric inside rectangle.";
+  if (shape === "circle") return "Single solid circle.";
+  if (shape === "chs") return "Outside circle minus the concentric inside circle.";
+  if (shape === "i") return "Two flange rectangles plus the clear web rectangle.";
+  if (shape === "angle") return "Two leg rectangles minus their overlapping corner square.";
+  return "Two flange rectangles plus the clear web rectangle.";
+}
+
+function sectionDrawingFromInputs(shape) {
+  if (shape === "rectangle") return { shape, b: value("sectionWidth"), h: value("sectionHeight") };
+  if (shape === "rhs") return { shape, b: value("sectionWidth"), h: value("sectionHeight"), t: value("sectionThickness") };
+  if (shape === "circle") return { shape, D: value("sectionDiameter") };
+  if (shape === "chs") return { shape, D: value("sectionDiameter"), t: value("sectionThickness") };
+  if (shape === "angle") return { shape, b: value("sectionLeg"), t: value("sectionAngleThickness") };
+  return {
+    shape,
+    d: value("sectionDepth"),
+    bf: value("sectionFlangeWidth"),
+    tw: value("sectionWebThickness"),
+    tf: value("sectionFlangeThickness")
+  };
+}
+
+function idealDrawingProperties(drawing) {
+  if (drawing.shape === "rectangle") return SectionGeometry.rectangle(drawing.b, drawing.h);
+  if (drawing.shape === "rhs") return SectionGeometry.rectangularHollow(drawing.b, drawing.h, drawing.t);
+  if (drawing.shape === "circle") return SectionGeometry.circle(drawing.D);
+  if (drawing.shape === "chs") return SectionGeometry.circularHollow(drawing.D, drawing.t);
+  if (drawing.shape === "i") return SectionGeometry.symmetricI(drawing.d, drawing.bf, drawing.tw, drawing.tf);
+  if (drawing.shape === "angle") return SectionGeometry.equalAngle(drawing.b, drawing.t);
+  return SectionGeometry.channel(drawing.d, drawing.bf, drawing.tw, drawing.tf);
+}
+
+function renderSectionPropertiesDiagram(drawing, properties, title, catalogueMode = false) {
+  const svg = $("sectionPropertiesDiagram");
+  const shape = drawing.shape;
+  const width = shape === "rectangle" || shape === "rhs" ? drawing.b
+    : shape === "circle" || shape === "chs" ? drawing.D
+      : shape === "angle" ? drawing.b : drawing.bf;
+  const height = shape === "rectangle" || shape === "rhs" ? drawing.h
+    : shape === "circle" || shape === "chs" ? drawing.D
+      : shape === "angle" ? drawing.b : drawing.d;
+  if (!(width > 0) || !(height > 0)) return;
+
+  const scale = Math.min(108 / width, 112 / height);
+  const drawnWidth = width * scale;
+  const drawnHeight = height * scale;
+  const x0 = 120 - drawnWidth / 2;
+  const y0 = 82 - drawnHeight / 2;
+  const limitThickness = number => {
+    const maximum = Math.min(drawnWidth, drawnHeight) * 0.24;
+    return Math.max(Math.min(4, maximum), Math.min(number * scale, maximum));
+  };
+  const line = number => Number(number).toFixed(2);
+  let geometryMarkup = "";
+
+  if (shape === "rectangle") {
+    geometryMarkup = `<rect class="section-properties-shape" x="${line(x0)}" y="${line(y0)}" width="${line(drawnWidth)}" height="${line(drawnHeight)}" rx="1" />`;
+  } else if (shape === "rhs") {
+    const t = limitThickness(drawing.t);
+    geometryMarkup = `<path class="section-properties-shape" fill-rule="evenodd" d="M ${line(x0)} ${line(y0)} H ${line(x0 + drawnWidth)} V ${line(y0 + drawnHeight)} H ${line(x0)} Z M ${line(x0 + t)} ${line(y0 + t)} V ${line(y0 + drawnHeight - t)} H ${line(x0 + drawnWidth - t)} V ${line(y0 + t)} Z" />`;
+  } else if (shape === "circle" || shape === "chs") {
+    const radius = drawnWidth / 2;
+    geometryMarkup = `<circle class="section-properties-shape" cx="120" cy="82" r="${line(radius)}" />`;
+    if (shape === "chs") {
+      const innerRadius = Math.max(1, radius - limitThickness(drawing.t));
+      geometryMarkup += `<circle class="section-properties-void" cx="120" cy="82" r="${line(innerRadius)}" />`;
+    }
+  } else if (shape === "i") {
+    const tw = limitThickness(drawing.tw);
+    const tf = limitThickness(drawing.tf);
+    const webLeft = x0 + (drawnWidth - tw) / 2;
+    const webRight = webLeft + tw;
+    geometryMarkup = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + drawnWidth)} V ${line(y0 + tf)} H ${line(webRight)} V ${line(y0 + drawnHeight - tf)} H ${line(x0 + drawnWidth)} V ${line(y0 + drawnHeight)} H ${line(x0)} V ${line(y0 + drawnHeight - tf)} H ${line(webLeft)} V ${line(y0 + tf)} H ${line(x0)} Z" />`;
+  } else if (shape === "angle") {
+    const t = limitThickness(drawing.t);
+    geometryMarkup = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + drawnWidth)} V ${line(y0 + t)} H ${line(x0 + t)} V ${line(y0 + drawnHeight)} H ${line(x0)} Z" />`;
+  } else {
+    const tw = limitThickness(drawing.tw);
+    const tf = limitThickness(drawing.tf);
+    geometryMarkup = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + drawnWidth)} V ${line(y0 + tf)} H ${line(x0 + tw)} V ${line(y0 + drawnHeight - tf)} H ${line(x0 + drawnWidth)} V ${line(y0 + drawnHeight)} H ${line(x0)} Z" />`;
+  }
+
+  const coordinateValue = property => {
+    const raw = property && typeof property === "object" ? property.value : property;
+    return raw === null || raw === undefined || raw === "" ? NaN : Number(raw);
+  };
+  let axisProperties = properties;
+  let indicative = !Number.isFinite(coordinateValue(properties?.cx)) || !Number.isFinite(coordinateValue(properties?.cy));
+  if (indicative) axisProperties = idealDrawingProperties(drawing);
+  const cx = coordinateValue(axisProperties?.cx);
+  const cy = coordinateValue(axisProperties?.cy);
+  const axisX = x0 + cx * scale;
+  const axisY = y0 + drawnHeight - cy * scale;
+  const xStart = Math.max(12, x0 - 18);
+  const xEnd = Math.min(226, x0 + drawnWidth + 21);
+  const yStart = Math.min(154, y0 + drawnHeight + 17);
+  const yEnd = Math.max(10, y0 - 18);
+  const description = `${title} schematic showing ${indicative ? "indicative x and y axis positions" : "centroidal x and y axes"}.`;
+
+  svg.innerHTML = `
+    <title id="sectionPropertiesDiagramTitle">${safeText(title)} section and x/y axes</title>
+    <desc id="sectionPropertiesDiagramDescription">${safeText(description)}</desc>
+    <defs><marker id="sectionAxisArrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z"></path></marker></defs>
+    ${geometryMarkup}
+    <line class="section-properties-axis" x1="${line(xStart)}" y1="${line(axisY)}" x2="${line(xEnd)}" y2="${line(axisY)}" marker-end="url(#sectionAxisArrow)" />
+    <line class="section-properties-axis" x1="${line(axisX)}" y1="${line(yStart)}" x2="${line(axisX)}" y2="${line(yEnd)}" marker-end="url(#sectionAxisArrow)" />
+    <circle class="section-properties-centroid" cx="${line(axisX)}" cy="${line(axisY)}" r="3.4" />
+    <text class="section-properties-axis-label" x="${line(xEnd - 1)}" y="${line(axisY - 7)}" text-anchor="end">x</text>
+    <text class="section-properties-axis-label" x="${line(axisX + 7)}" y="${line(yEnd + 10)}">y</text>
+    <text class="section-properties-centroid-label" x="${line(axisX + 7)}" y="${line(axisY + 13)}">C</text>`;
+  $("sectionPropertiesDiagramCaption").textContent = indicative
+    ? "Schematic only · x/y axis position indicative"
+    : catalogueMode
+      ? "Selected dimensions · centroidal x/y axes"
+      : "Entered dimensions · centroidal x/y axes";
+}
+
+function selectedSectionCatalogueFamily() {
+  return sectionCatalogueFamilies.find(family => family.key === $("sectionCatalogueFamily").value) || sectionCatalogueFamilies[0];
+}
+
+function selectedSectionCatalogueRecord() {
+  const family = selectedSectionCatalogueFamily();
+  return family.sections.find(section => section.id === $("sectionCatalogueDesignation").value) || family.sections[0];
+}
+
+function populateSectionCatalogueFamilies() {
+  $("sectionCatalogueFamily").innerHTML = sectionCatalogueFamilies
+    .map(family => `<option value="${family.key}">${safeText(family.label)}</option>`)
+    .join("");
+  $("sectionCatalogueFamily").value = "pfc";
+  populateSectionCatalogueDesignations(false);
+}
+
+function populateSectionCatalogueDesignations(recalculate = true) {
+  const family = selectedSectionCatalogueFamily();
+  $("sectionCatalogueDesignation").innerHTML = family.sections
+    .map(section => `<option value="${safeText(section.id)}">${safeText(section.designation)}</option>`)
+    .join("");
+  if (family.sections.length) $("sectionCatalogueDesignation").value = family.sections[0].id;
+  if (recalculate) calculateSectionProperties();
+}
+
+function setSectionPropertyMode(mode) {
+  sectionPropertiesMode = mode === "custom" ? "custom" : "catalogue";
+  document.querySelectorAll(".section-properties-mode").forEach(button => {
+    const active = button.dataset.sectionPropertiesMode === sectionPropertiesMode;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  $("sectionCatalogueGroup").hidden = sectionPropertiesMode !== "catalogue";
+  $("sectionCustomGroup").hidden = sectionPropertiesMode !== "custom";
+  calculateSectionProperties();
+}
+
+function setSectionSummary(label, name, dimensions, metrics) {
+  $("sectionSelectionLabel").textContent = label;
+  $("sectionGeometryName").textContent = name;
+  $("sectionGeometryDimensions").innerHTML = dimensions;
+  metrics.forEach((metric, index) => {
+    const key = ["One", "Two", "Three", "Four"][index];
+    $(`sectionMetric${key}Label`).innerHTML = metric.label;
+    $(`sectionMetric${key}`).innerHTML = metric.value;
+  });
+}
+
+function sectionBasisLabel(property, plural = false) {
+  if (!property || property.value === null) return SectionCatalogue.BASIS.unavailable;
+  const label = SectionCatalogue.BASIS[property.basis] || property.basis;
+  return plural && label.endsWith("value") ? `${label}s` : label;
+}
+
+function setSectionPropertyOutput(outputId, basisId, property, kind) {
+  const output = $(outputId);
+  const basis = $(basisId);
+  if (!property || property.value === null || !Number.isFinite(property.value)) {
+    output.innerHTML = "&mdash;";
+    basis.textContent = SectionCatalogue.BASIS.unavailable;
+    basis.classList.add("unavailable");
+    return;
+  }
+  if (kind === "area") output.textContent = property.value.toLocaleString("en-AU", { maximumFractionDigits: 1 });
+  else if (kind === "decimal") output.textContent = property.value.toLocaleString("en-AU", { maximumFractionDigits: 2 });
+  else output.innerHTML = sectionPowerValue(property.value);
+  basis.textContent = sectionBasisLabel(property);
+  basis.classList.remove("unavailable");
+}
+
+function sectionPropertyStep(label, property, unit) {
+  if (!property || property.value === null) {
+    return `<div><b>${label}</b><code>${SectionCatalogue.BASIS.unavailable}.</code></div>`;
+  }
+  const valueText = ["mm²", "mm", "kg/m"].includes(unit)
+    ? property.value.toLocaleString("en-AU", { maximumFractionDigits: 1 })
+    : sectionPowerValue(property.value);
+  return `<div><b>${label}</b><code>${sectionBasisLabel(property)}: ${valueText} ${unit}.</code></div>`;
+}
+
+function clearSectionPropertyOutputs(message) {
+  ["sectionMass", "sectionArea", "sectionCx", "sectionCy", "sectionIx", "sectionIy", "sectionZx", "sectionZy", "sectionRx", "sectionRy"].forEach(id => {
+    $(id).innerHTML = "—";
+  });
+  ["sectionMassBasis", "sectionAreaBasis", "sectionCxBasis", "sectionCyBasis", "sectionIxBasis", "sectionIyBasis", "sectionZxBasis", "sectionZyBasis", "sectionRxBasis", "sectionRyBasis"].forEach(id => {
+    $(id).textContent = SectionCatalogue.BASIS.unavailable;
+    $(id).classList.add("unavailable");
+  });
+  $("sectionAuxiliaryProperty").hidden = true;
+  $("sectionFormulaSteps").innerHTML = `<div><b>Invalid geometry</b><code>${safeText(message)}</code></div>`;
+  $("sectionPropertiesWarning").textContent = message;
+}
+
+function calculateCustomSectionProperties() {
+  const shape = $("sectionShape").value;
+  document.querySelectorAll("[data-section-shapes]").forEach(field => {
+    field.hidden = !field.dataset.sectionShapes.split(" ").includes(shape);
+  });
+  setSectionSummary("Custom ideal geometry", sectionShapeNames[shape], sectionDimensionText(shape), [
+    { label: "Family", value: "Custom" },
+    { label: "Axes", value: "Centroidal x / y" },
+    { label: "Basis", value: "Entered geometry" },
+    { label: "Status", value: "Draft" }
+  ]);
+
+  try {
+    const properties = currentSectionGeometry();
+    renderSectionPropertiesDiagram(sectionDrawingFromInputs(shape), properties, sectionShapeNames[shape]);
+    const customValue = value => ({ value, basis: "custom" });
+    setSectionPropertyOutput("sectionMass", "sectionMassBasis", null, "decimal");
+    setSectionPropertyOutput("sectionArea", "sectionAreaBasis", customValue(properties.area), "area");
+    setSectionPropertyOutput("sectionCx", "sectionCxBasis", customValue(properties.cx), "decimal");
+    setSectionPropertyOutput("sectionCy", "sectionCyBasis", customValue(properties.cy), "decimal");
+    setSectionPropertyOutput("sectionIx", "sectionIxBasis", customValue(properties.ix), "power");
+    setSectionPropertyOutput("sectionIy", "sectionIyBasis", customValue(properties.iy), "power");
+    setSectionPropertyOutput("sectionZx", "sectionZxBasis", customValue(properties.zx), "power");
+    setSectionPropertyOutput("sectionZy", "sectionZyBasis", customValue(properties.zy), "power");
+    setSectionPropertyOutput("sectionRx", "sectionRxBasis", customValue(properties.rx), "decimal");
+    setSectionPropertyOutput("sectionRy", "sectionRyBasis", customValue(properties.ry), "decimal");
+    $("sectionAuxiliaryProperty").hidden = true;
+    $("sectionPropertiesWarning").textContent = "Section properties only. Strength, stability, effective-section and torsional checks are excluded.";
+    $("sectionCalculationSummary").textContent = "Standard geometric relationships for the entered dimensions";
+    $("sectionSourceSummary").textContent = "Ideal geometry · no product-table values";
+    $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Basis</b> &mdash; standard area, centroid and parallel-axis relationships; Z = I/c and r = &radic;(I/A).</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry.</p>`;
+    $("sectionFormulaSteps").innerHTML = `
+      <div><b>Geometry model</b><code>${sectionCompositionText(shape)} ${sectionDimensionText(shape)}</code></div>
+      <div><b>Gross area</b><code>A = ${formatArea(properties.area)}</code></div>
+      <div><b>Centroid</b><code>x&#772; = ${properties.cx.toFixed(2)} mm; y&#772; = ${properties.cy.toFixed(2)} mm</code></div>
+      <div><b>Second moments of area</b><code>I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}</code></div>
+      <div><b>Elastic section moduli</b><code>Z<sub>x</sub> = I<sub>x</sub> / c<sub>y,max</sub> = ${sectionPowerValue(properties.zx)} mm<sup>3</sup>; Z<sub>y</sub> = I<sub>y</sub> / c<sub>x,max</sub> = ${sectionPowerValue(properties.zy)} mm<sup>3</sup></code></div>
+      <div><b>Radii of gyration</b><code>r<sub>x</sub> = &radic;(I<sub>x</sub> / A) = ${properties.rx.toFixed(2)} mm; r<sub>y</sub> = &radic;(I<sub>y</sub> / A) = ${properties.ry.toFixed(2)} mm</code></div>
+      <div><b>Scope</b><code>Ideal geometric properties only. Principal-axis rotation, torsion, plastic modulus, effective properties and design capacity are excluded.</code></div>`;
+  } catch (error) {
+    clearSectionPropertyOutputs(error instanceof Error ? error.message : "Invalid section geometry.");
+  }
+}
+
+function calculateCatalogueSectionProperties() {
+  const family = selectedSectionCatalogueFamily();
+  const section = selectedSectionCatalogueRecord();
+  if (!section) {
+    clearSectionPropertyOutputs("No checked catalogue rows are available for this product family.");
+    return;
+  }
+  const properties = section.properties;
+  const source = section.source;
+  setSectionSummary("Selected catalogue section", section.designation, section.dimensions || "Dimensions not available in the current checked row", [
+    { label: "Family", value: sectionCatalogueFamilyNames[family.key] || family.label },
+    { label: "Axes", value: "Centroidal x / y" },
+    { label: "Basis", value: "Stated by value" },
+    { label: "Source", value: `${safeText(source.publisher)} ${safeText(source.document.match(/\b\d{4}\b/)?.[0] || "catalogue")}` }
+  ]);
+  renderSectionPropertiesDiagram(section.drawing, properties, section.designation, true);
+
+  const massProperty = Number.isFinite(section.mass) ? { value: section.mass, basis: "catalogue" } : null;
+  setSectionPropertyOutput("sectionMass", "sectionMassBasis", massProperty, "decimal");
+  setSectionPropertyOutput("sectionArea", "sectionAreaBasis", properties.area, "area");
+  setSectionPropertyOutput("sectionCx", "sectionCxBasis", properties.cx, "decimal");
+  setSectionPropertyOutput("sectionCy", "sectionCyBasis", properties.cy, "decimal");
+  setSectionPropertyOutput("sectionIx", "sectionIxBasis", properties.ix, "power");
+  setSectionPropertyOutput("sectionIy", "sectionIyBasis", properties.iy, "power");
+  setSectionPropertyOutput("sectionZx", "sectionZxBasis", properties.zx, "power");
+  setSectionPropertyOutput("sectionZy", "sectionZyBasis", properties.zy, "power");
+  setSectionPropertyOutput("sectionRx", "sectionRxBasis", properties.rx, "decimal");
+  setSectionPropertyOutput("sectionRy", "sectionRyBasis", properties.ry, "decimal");
+  const auxiliary = $("sectionAuxiliaryProperty");
+  if (section.auxiliary?.rMin?.value !== null) {
+    auxiliary.innerHTML = `<b>Additional catalogue property</b> &mdash; minimum principal-axis radius r<sub>min</sub> = ${section.auxiliary.rMin.value.toFixed(1)} mm.`;
+    auxiliary.hidden = false;
+  } else {
+    auxiliary.hidden = true;
+  }
+
+  $("sectionPropertiesWarning").textContent = family.key === "chs" || family.key === "rod"
+    ? "Catalogue dimensions and derived properties are identified separately. Strength, stability and torsional checks are excluded."
+    : "The basis of each value is stated. Missing catalogue properties are not replaced by idealised rolled-section geometry.";
+  $("sectionCalculationSummary").textContent = "Catalogue values and stated derivations";
+  $("sectionSourceSummary").textContent = `${source.publisher} · ${source.status}`;
+  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. The combined catalogue workflow remains Draft.</p><p><b>Derivation</b> &mdash; ${safeText(section.derivation)}</p>`;
+  $("sectionFormulaSteps").innerHTML = [
+    sectionPropertyStep("Mass per metre", massProperty, "kg/m"),
+    sectionPropertyStep("Gross area A", properties.area, "mm²"),
+    sectionPropertyStep("Centroid x̄", properties.cx, "mm"),
+    sectionPropertyStep("Centroid ȳ", properties.cy, "mm"),
+    sectionPropertyStep("Second moment Ix", properties.ix, "mm⁴"),
+    sectionPropertyStep("Second moment Iy", properties.iy, "mm⁴"),
+    sectionPropertyStep("Elastic modulus Zx", properties.zx, "mm³"),
+    sectionPropertyStep("Elastic modulus Zy", properties.zy, "mm³"),
+    sectionPropertyStep("Radius rx", properties.rx, "mm"),
+    sectionPropertyStep("Radius ry", properties.ry, "mm"),
+    `<div><b>Scope</b><code>Section properties only. Strength, stability, effective-section, torsion and warping checks are excluded.</code></div>`
+  ].join("");
+}
+
+function calculateSectionProperties() {
+  if (sectionPropertiesMode === "custom") calculateCustomSectionProperties();
+  else calculateCatalogueSectionProperties();
+}
+
 function beamWebShearReduction(section, grade, isCustom) {
   if (!(section.d1 > 0) || !(section.tw > 0) || !(grade.fy > 0)) {
     return {
@@ -2259,10 +2640,10 @@ function customBeamGeometry() {
     return { d, bf, tw, tf, d1, area: 0, Aw: 0, mass: 0, Sx: 0, Zx: 0 };
   }
 
-  const area = 2 * bf * tf + d1 * tw;
+  const properties = SectionGeometry.symmetricI(d, bf, tw, tf);
+  const area = properties.area;
   const mass = area * 0.00785;
-  const ix = (bf * d ** 3 - (bf - tw) * d1 ** 3) / 12;
-  const zx = ix / (d / 2) / 1000;
+  const zx = properties.zx / 1000;
   const sx = (bf * tf * (d - tf) + tw * d1 ** 2 / 4) / 1000;
 
   return { d, bf, tw, tf, d1, area, Aw: d1 * tw, mass, Sx: sx, Zx: zx };
@@ -2460,10 +2841,8 @@ function calculateBeam() {
 }
 
 function chsProperties(section) {
-  const inner = section.D - 2 * section.t;
-  const area = Math.PI / 4 * (section.D ** 2 - inner ** 2);
-  const inertia = Math.PI / 64 * (section.D ** 4 - inner ** 4);
-  return { area, r: Math.sqrt(inertia / area), ix: inertia, iy: inertia };
+  const properties = SectionGeometry.circularHollow(section.D, section.t);
+  return { area: properties.area, r: properties.rx, ix: properties.ix, iy: properties.iy };
 }
 
 function memberDimensionOverrideActive() {
@@ -2514,64 +2893,31 @@ function updateMemberSummaryDimensions(properties) {
 }
 
 function chsGeometry(D, t) {
-  const outsideDiameter = Math.max(0.1, D);
-  const wallThickness = Math.max(0.1, Math.min(t, outsideDiameter / 2 - 0.05));
-  const inner = outsideDiameter - 2 * wallThickness;
-  const area = Math.PI / 4 * (outsideDiameter ** 2 - inner ** 2);
-  const inertia = Math.PI / 64 * (outsideDiameter ** 4 - inner ** 4);
-  const radius = Math.sqrt(inertia / area);
-  return { designation: `${outsideDiameter.toFixed(1)} x ${wallThickness.toFixed(1)} CHS`, area, r: radius, rx: radius, ry: radius, ix: inertia, iy: inertia, D: outsideDiameter, t: wallThickness, customGeometry: true };
+  const outsideDiameter = Math.max(0.2, D);
+  const wallThickness = Math.max(0.05, Math.min(t, outsideDiameter / 2 - 0.05));
+  const properties = SectionGeometry.circularHollow(outsideDiameter, wallThickness);
+  return { designation: `${outsideDiameter.toFixed(1)} x ${wallThickness.toFixed(1)} CHS`, area: properties.area, r: properties.rx, rx: properties.rx, ry: properties.ry, ix: properties.ix, iy: properties.iy, D: outsideDiameter, t: wallThickness, customGeometry: true };
 }
 
 function rodGeometry(diameter) {
   const d = Math.max(0.1, diameter);
-  const radius = d / 4;
-  const inertia = Math.PI * d ** 4 / 64;
-  return { designation: `Round ${d.toFixed(1)}`, area: Math.PI * d ** 2 / 4, r: radius, rx: radius, ry: radius, ix: inertia, iy: inertia, diameter: d, customGeometry: true };
-}
-
-function compositeSectionProperties(parts) {
-  const area = parts.reduce((sum, part) => sum + part.sign * part.area, 0);
-  const xBar = parts.reduce((sum, part) => sum + part.sign * part.area * part.x, 0) / area;
-  const yBar = parts.reduce((sum, part) => sum + part.sign * part.area * part.y, 0) / area;
-  const ix = parts.reduce((sum, part) => sum + part.sign * (part.ix + part.area * (part.y - yBar) ** 2), 0);
-  const iy = parts.reduce((sum, part) => sum + part.sign * (part.iy + part.area * (part.x - xBar) ** 2), 0);
-  return { area, xBar, yBar, ix, iy, rx: Math.sqrt(ix / area), ry: Math.sqrt(iy / area) };
-}
-
-function rectanglePart(width, height, x, y, sign = 1) {
-  return {
-    sign,
-    area: width * height,
-    x,
-    y,
-    ix: width * height ** 3 / 12,
-    iy: height * width ** 3 / 12
-  };
+  const properties = SectionGeometry.circle(d);
+  return { designation: `Round ${d.toFixed(1)}`, area: properties.area, r: properties.rx, rx: properties.rx, ry: properties.ry, ix: properties.ix, iy: properties.iy, diameter: d, customGeometry: true };
 }
 
 function eaGeometry(b, t) {
   const leg = Math.max(0.1, b);
-  const thickness = Math.max(0.1, Math.min(t, leg));
-  const section = compositeSectionProperties([
-    rectanglePart(leg, thickness, leg / 2, thickness / 2),
-    rectanglePart(thickness, leg, thickness / 2, leg / 2),
-    rectanglePart(thickness, thickness, thickness / 2, thickness / 2, -1)
-  ]);
+  const thickness = Math.max(0.05, Math.min(t, leg - 0.05));
+  const section = SectionGeometry.equalAngle(leg, thickness);
   return { designation: `${leg.toFixed(0)} x ${leg.toFixed(0)} x ${thickness.toFixed(1)} EA`, area: section.area, r: Math.min(section.rx, section.ry), rx: section.rx, ry: section.ry, ix: section.ix, iy: section.iy, b: leg, t: thickness, customGeometry: true };
 }
 
 function pfcGeometry(d, bf, tw, tf) {
-  const depth = Math.max(0.1, d);
+  const depth = Math.max(0.2, d);
   const flangeWidth = Math.max(0.1, bf);
   const webThickness = Math.max(0.1, Math.min(tw, flangeWidth));
-  const flangeThickness = Math.max(0.1, Math.min(tf, depth / 2));
-  const flangeProjection = Math.max(0, flangeWidth - webThickness);
-  const section = compositeSectionProperties([
-    rectanglePart(webThickness, depth, webThickness / 2, depth / 2),
-    rectanglePart(flangeProjection, flangeThickness, webThickness + flangeProjection / 2, flangeThickness / 2),
-    rectanglePart(flangeProjection, flangeThickness, webThickness + flangeProjection / 2, depth - flangeThickness / 2)
-  ]);
+  const flangeThickness = Math.max(0.05, Math.min(tf, depth / 2 - 0.05));
+  const section = SectionGeometry.channel(depth, flangeWidth, webThickness, flangeThickness);
   return {
     designation: `${depth.toFixed(0)}PFC custom`,
     area: section.area,
@@ -4808,6 +5154,7 @@ function setTool(tool, updateHash = true) {
     tabs.scrollTo({ left: Math.max(0, left), behavior: "auto" });
   });
   if (selectedTool === "concrete") calculateConcrete();
+  if (selectedTool === "properties") calculateSectionProperties();
   if (selectedTool === "screw") {
     calculateScrew();
     window.requestAnimationFrame(calculateScrew);
@@ -4918,6 +5265,11 @@ function initialise() {
   $("beamMomentDemand").addEventListener("input", calculateBeam);
   $("beamShearDemand").addEventListener("input", calculateBeam);
   beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
+  document.querySelectorAll(".section-properties-mode").forEach(button => button.addEventListener("click", () => setSectionPropertyMode(button.dataset.sectionPropertiesMode)));
+  $("sectionCatalogueFamily").addEventListener("change", populateSectionCatalogueDesignations);
+  $("sectionCatalogueDesignation").addEventListener("change", calculateSectionProperties);
+  $("sectionShape").addEventListener("change", calculateSectionProperties);
+  sectionPropertyInputIds.forEach(id => $(id).addEventListener("input", calculateSectionProperties));
   $("screwManufacturer").addEventListener("change", populateScrewSeries);
   $("screwSeries").addEventListener("change", setScrewCapacityDefaults);
   if ($("screwCatalogueRows")) {
@@ -4961,12 +5313,14 @@ function initialise() {
   $("memberNetArea").addEventListener("input", calculateMember);
   $("memberKt").addEventListener("input", calculateMember);
   populateScrewSeries();
+  populateSectionCatalogueFamilies();
   setBeamType(beamSectionType);
   setMemberType(memberType);
   calculateBolt();
   calculateUBolt();
   calculateWeld();
   calculateConcrete();
+  setSectionPropertyMode(sectionPropertiesMode);
   calculateScrew();
   setBoltMode(initialBoltMode());
   setTool(location.hash.slice(1) || "bolt", false);

@@ -50,6 +50,10 @@ The primary basis is AS 4100 Section 5 for beam section capacity. Moment capacit
 
 The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, minor-axis bending, biaxial bending, axial interaction, web bearing, web buckling under concentrated forces, stiffeners, copes, holes, composite action, fire, deflection or vibration.
 
+### Section Properties
+
+The Section Properties tool opens as a catalogue lookup for the checked UB, UC, PFC, CHS, equal-angle and round-bar rows already used by the handbook, with a separate Custom Geometry mode for rectangles, RHS/SHS, solid circles, CHS, symmetric I-sections, equal angles and simplified channels. The compact result set reports mass per metre where available, gross area, centroid coordinates, centroidal `Ix` / `Iy`, elastic `Zx` / `Zy` and separate `rx` / `ry` values. A deterministic inline SVG shows the current section, centroid marker and positive x/y directions; its caption identifies catalogue cases where the axis position is indicative because the checked row does not contain complete centroid coordinates. Each numeric value is labelled as catalogue, derived from catalogue data, derived from entered geometry or unavailable. The catalogue lookup does not replace missing rolled-section properties with sharp-corner geometry. Beam and Axial Member use the same `section-geometry.js` layer for dimension-derived properties. Manufacturer radii, tapers, holes, torsional properties, plastic modulus, effective properties and design capacity remain outside the tool.
+
 ### Concrete Pad Section
 
 The concrete pad tool is a compact AS 3600:2018 reinforced-concrete flexural and one-way shear section-capacity check for a rectangular pad strip:

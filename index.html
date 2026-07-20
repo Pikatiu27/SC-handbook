@@ -22,6 +22,7 @@
       <button class="tool-tab active" type="button" data-tool="bolt" aria-controls="boltPanel" aria-selected="true" aria-label="Bolt Capacity">Bolt</button>
       <button class="tool-tab" type="button" data-tool="member" aria-controls="memberPanel" aria-selected="false" aria-label="Axial Member">Axial</button>
       <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false" aria-label="Beam Section">Beam</button>
+      <button class="tool-tab" type="button" data-tool="properties" aria-controls="propertiesPanel" aria-selected="false" aria-label="Section Properties">Properties</button>
       <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false" aria-label="Weld Capacity">Weld</button>
       <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false" aria-label="Pad Section">Pad</button>
       <button class="tool-tab" type="button" data-tool="screw" aria-controls="screwPanel" aria-selected="false" aria-label="Screw Piles">Screw</button>
@@ -465,6 +466,80 @@
           </div>
         </div>
       </details>
+    </section>
+
+    <section id="propertiesPanel" class="tool-panel" hidden>
+      <div class="tool-heading"><div><p class="kicker">Catalogue and geometric section properties</p><h2>Section Properties</h2></div><span class="tool-status">Draft &middot; catalogue and derived data</span></div>
+
+      <section class="lookup-card">
+        <div class="section-properties-mode-switch" role="group" aria-label="Section property source">
+          <button class="section-properties-mode active" type="button" data-section-properties-mode="catalogue" aria-pressed="true">Catalogue</button>
+          <button class="section-properties-mode" type="button" data-section-properties-mode="custom" aria-pressed="false">Custom geometry</button>
+        </div>
+        <div class="input-cluster">
+          <section class="input-group input-group-section" id="sectionCatalogueGroup">
+            <span class="input-group-heading"><b>Catalogue section</b><small>Checked Australian product rows. The basis of each value is stated below.</small></span>
+            <div class="input-group-fields two section-properties-catalogue-inputs">
+              <label class="size-field"><span>Product family</span><select id="sectionCatalogueFamily"></select></label>
+              <label class="size-field"><span>Section designation</span><select id="sectionCatalogueDesignation"></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-section" id="sectionCustomGroup" hidden>
+            <span class="input-group-heading"><b>Custom geometry</b><small>Ideal sharp-corner dimensions, in millimetres.</small></span>
+            <div class="input-group-fields four section-properties-inputs">
+              <label class="size-field"><span>Shape</span><select id="sectionShape"><option value="rectangle">Rectangle</option><option value="rhs">RHS / SHS</option><option value="circle">Solid circle</option><option value="chs">CHS</option><option value="i">Symmetric I-section</option><option value="angle">Equal angle</option><option value="channel">Channel</option></select></label>
+              <label data-section-shapes="rectangle rhs"><span>b <i>width</i></span><span class="unit"><input id="sectionWidth" type="number" min="0.1" step="1" value="200"><em>mm</em></span></label>
+              <label data-section-shapes="rectangle rhs"><span>h <i>height</i></span><span class="unit"><input id="sectionHeight" type="number" min="0.1" step="1" value="300"><em>mm</em></span></label>
+              <label data-section-shapes="rhs chs"><span>t <i>wall thickness</i></span><span class="unit"><input id="sectionThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
+              <label data-section-shapes="circle chs" hidden><span>D <i>diameter</i></span><span class="unit"><input id="sectionDiameter" type="number" min="0.1" step="1" value="100"><em>mm</em></span></label>
+              <label data-section-shapes="i channel" hidden><span>d <i>overall depth</i></span><span class="unit"><input id="sectionDepth" type="number" min="0.1" step="1" value="300"><em>mm</em></span></label>
+              <label data-section-shapes="i channel" hidden><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="sectionFlangeWidth" type="number" min="0.1" step="1" value="150"><em>mm</em></span></label>
+              <label data-section-shapes="i channel" hidden><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="sectionWebThickness" type="number" min="0.1" step="0.1" value="8"><em>mm</em></span></label>
+              <label data-section-shapes="i channel" hidden><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="sectionFlangeThickness" type="number" min="0.1" step="0.1" value="12"><em>mm</em></span></label>
+              <label data-section-shapes="angle" hidden><span>b <i>equal leg length</i></span><span class="unit"><input id="sectionLeg" type="number" min="0.1" step="1" value="100"><em>mm</em></span></label>
+              <label data-section-shapes="angle" hidden><span>t <i>thickness</i></span><span class="unit"><input id="sectionAngleThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
+            </div>
+          </section>
+        </div>
+
+        <div class="member-summary section-properties-summary" aria-live="polite">
+          <figure class="section-properties-figure">
+            <svg id="sectionPropertiesDiagram" viewBox="0 0 240 170" role="img" aria-labelledby="sectionPropertiesDiagramTitle sectionPropertiesDiagramDescription">
+              <title id="sectionPropertiesDiagramTitle">Selected section and x/y axis convention</title>
+              <desc id="sectionPropertiesDiagramDescription">PFC schematic with indicative centroidal x and y axes.</desc>
+            </svg>
+            <figcaption id="sectionPropertiesDiagramCaption">Schematic only &middot; x/y axis position indicative</figcaption>
+          </figure>
+          <div class="section-properties-summary-copy"><span id="sectionSelectionLabel">Selected catalogue section</span><strong id="sectionGeometryName">380PFC</strong><small id="sectionGeometryDimensions">d = 380 mm; bf = 100 mm; tw = 10 mm; tf = 17.5 mm</small></div>
+          <dl><div><dt id="sectionMetricOneLabel">Family</dt><dd id="sectionMetricOne">PFC</dd></div><div><dt id="sectionMetricTwoLabel">Axes</dt><dd id="sectionMetricTwo">Centroidal x / y</dd></div><div><dt id="sectionMetricThreeLabel">Basis</dt><dd id="sectionMetricThree">Stated by value</dd></div><div><dt id="sectionMetricFourLabel">Source</dt><dd id="sectionMetricFour">InfraBuild 2019</dd></div></dl>
+        </div>
+
+        <section class="capacity-section" aria-live="polite">
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section properties</h2></div><span>Centroidal axes &middot; mm units</span></div>
+          <div class="section-properties-overview">
+            <article><span>Mass per metre</span><strong><output id="sectionMass">55.2</output><small> kg/m</small></strong><p class="property-basis" id="sectionMassBasis">Catalogue</p></article>
+            <article><span>Gross area <i>A</i></span><strong><output id="sectionArea">7,030</output><small> mm<sup>2</sup></small></strong><p class="property-basis" id="sectionAreaBasis">Catalogue</p></article>
+            <article><span>Centroid <i>x&#772;</i></span><strong><output id="sectionCx">&mdash;</output><small> mm</small></strong><p class="property-basis unavailable" id="sectionCxBasis">Not available</p></article>
+            <article><span>Centroid <i>y&#772;</i></span><strong><output id="sectionCy">190.0</output><small> mm</small></strong><p class="property-basis" id="sectionCyBasis">Derived &middot; catalogue data</p></article>
+          </div>
+          <div class="section-properties-table-wrap">
+            <table class="section-properties-table">
+              <thead><tr><th scope="col">Property</th><th scope="col">x-axis</th><th scope="col">y-axis</th></tr></thead>
+              <tbody>
+                <tr><th scope="row"><strong>Second moment of area</strong><small><i>I</i> &middot; mm<sup>4</sup></small></th><td><output id="sectionIx">152 &times; 10<sup>6</sup></output><p class="property-basis" id="sectionIxBasis">Catalogue</p></td><td><output id="sectionIy">6.48 &times; 10<sup>6</sup></output><p class="property-basis" id="sectionIyBasis">Catalogue</p></td></tr>
+                <tr><th scope="row"><strong>Elastic section modulus</strong><small><i>Z</i> &middot; mm<sup>3</sup></small></th><td><output id="sectionZx">800 &times; 10<sup>3</sup></output><p class="property-basis" id="sectionZxBasis">Derived &middot; catalogue data</p></td><td><output id="sectionZy">&mdash;</output><p class="property-basis unavailable" id="sectionZyBasis">Not available</p></td></tr>
+                <tr><th scope="row"><strong>Radius of gyration</strong><small><i>r</i> &middot; mm</small></th><td><output id="sectionRx">147.0</output><p class="property-basis" id="sectionRxBasis">Catalogue</p></td><td><output id="sectionRy">30.4</output><p class="property-basis" id="sectionRyBasis">Catalogue</p></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="section-property-auxiliary" id="sectionAuxiliaryProperty" hidden></p>
+          <p class="result-note" id="sectionPropertiesWarning">The basis of each value is stated. Missing catalogue properties are not replaced by idealised rolled-section geometry.</p>
+        </section>
+      </section>
+
+      <details class="detail-card"><summary><span><b>Basis of values</b><small id="sectionCalculationSummary">Catalogue values and stated derivations</small></span><i>+</i></summary><div class="detail-body"><section><h3>Basis of values</h3><div id="sectionFormulaSteps" class="formula-list"></div></section></div></details>
+
+      <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue source, verification status and exclusions</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Axes</b> &mdash; x and y are centroidal axes parallel to the overall section dimensions. For unsymmetric sections, they are not principal axes.</p><p><b>Exclusions</b> &mdash; root and corner radii, tapers, welds, holes, copes, manufacturing tolerances, principal-axis rotation, I<sub>xy</sub>, torsion, warping, plastic modulus, effective properties, local buckling, material strength and design capacity.</p><p><b>Application</b> &mdash; confirm the current product, actual geometry and governing design standard before use. Product availability is not established by this lookup.</p></div></div></details>
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
@@ -1014,8 +1089,10 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook · Build 0.6.0</b></footer>
-  <script src="app.js?v=20260717mobileaudit3"></script>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.0</b></footer>
+  <script src="section-geometry.js?v=20260719sectionproperties2"></script>
+  <script src="section-catalogue.js?v=20260719sectionproperties2"></script>
+  <script src="app.js?v=20260719sectionproperties2"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
