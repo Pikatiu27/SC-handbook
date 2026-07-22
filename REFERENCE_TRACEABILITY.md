@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-07-03
+Last updated: 2026-07-20
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -15,6 +15,57 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 - Source-reference files remain outside this workspace in `C:\Users\silin\Documents\Codex\Reference`.
 - 2026-07-02 local text audit checked `SC_HANDBOOK.md`, `REFERENCE_TRACEABILITY.md`, `README.md`, `index.html`, `app.js` and `styles.css` for common mojibake markers; no active mojibake remains in tracked handbook files.
 - `wind-region-workpack/` is not present in the current detached audit worktree and is not part of the checked source-traceability register unless explicitly promoted later.
+
+## Calculation Contract Register
+
+`SC_HANDBOOK.md` Section 6.2 defines the canonical calculation contract. Every new or materially changed governing calculation must receive a stable `Calculation_ID` before it is described as checked. Existing evidence sections in this file remain valid; assign and consolidate stable IDs when each legacy calculation is next audited or changed rather than inventing IDs without rechecking the source and implementation.
+
+Use one record per governing capacity, interaction, utilisation, action-distribution or screening equation. Do not combine materially different limit states or branches under one record merely because they appear on the same result card.
+
+Required calculation record:
+
+| Field | Required content |
+| --- | --- |
+| `Calculation_ID` | Stable topic-result identifier, for example `BOLT-SHEAR-01` |
+| Tab / output | Visible tool and governing result label |
+| Engineering question | Exact question answered by the result |
+| Result type | Nominal, design, utilisation, distribution, published value, selector or screen |
+| Limit state / value basis | ULS, SLS, manufacturer-published basis or project-defined comparison basis |
+| Governing source | Document title, edition, amendment status, clause/table/figure and PDF page |
+| Evidence class | `Normative`, `Catalogue`, `Interpretive`, `Worked example`, `Derived`, `Project input`, or `Source_Not_Verified` |
+| Applicability | Material, grade, product form, geometry, fabrication, action and method conditions |
+| Equation / branch | Governing expression plus table selection, threshold, `min`, `max` or interaction logic |
+| Symbol / unit map | Source symbol, implementation variable, visible notation, internal unit and display unit |
+| Defaults / overrides | Source of defaults, override permission and post-override status |
+| Exclusions | Limit states, actions, detailing or project checks not evaluated |
+| Implementation owner | File and function/module responsible for the calculation |
+| Verification evidence | Test IDs, independent method, result difference, tolerance and browser/build checked |
+| Status | `Draft`, `For Review`, `Checked`, `Superseded`, `Do_Not_Use`, or `Source_Not_Verified` |
+| Checked record | Checked date, reviewer status and unresolved source or interpretation gap |
+
+Required verification-case record:
+
+| Field | Required content |
+| --- | --- |
+| `Test_ID` | Stable case identifier linked to one or more `Calculation_ID` values |
+| Case type | Common, independent, branch, boundary, invalid, out-of-scope, invariant or regression |
+| Input set | Unrounded values and units sufficient to reproduce the case |
+| Expected result | Independently calculated value or required status |
+| Browser / workbook result | Value or status produced by the implementation |
+| Difference | Absolute and/or relative difference as appropriate |
+| Tolerance | Reasoned acceptance tolerance based on lookup precision, arithmetic or iterative method |
+| Evidence method | Hand calculation, separate script, source example or independent reconstruction |
+| Build / commit | Exact implementation version checked |
+| Checked date / status | Date and `Pass`, `Fail`, `Blocked`, or `Source_Not_Verified` |
+
+Calculation-record rules:
+
+- The independent evidence method must not call or copy the production calculation function.
+- Exact catalogue lookups require exact row agreement after stated unit conversion; do not hide a wrong row behind a percentage tolerance.
+- Governing comparisons use unrounded values. Display rounding is checked separately and must not change the selected branch or result status.
+- Record every active formula branch and the relevant threshold cases, not only the default page state.
+- A source edition, formula, factor, default or branch change triggers reverification of every affected `Calculation_ID`.
+- Detailed evidence stays in this file. The visible page retains only the concise basis, critical assumption, status and limitation required for quick engineering use.
 
 ## Reference Folder Snapshot
 
