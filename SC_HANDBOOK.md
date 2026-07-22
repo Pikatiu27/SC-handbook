@@ -1507,20 +1507,36 @@ Purpose and modes:
 
 Shared calculation contract:
 
-- gross area `A`;
+- gross area `Ag` for catalogue sections and `A` for entered ideal geometry;
 - centroid coordinates `cx`, `cy` from the geometry origin;
 - centroidal second moments `Ix`, `Iy` about axes parallel to the entered overall dimensions;
 - elastic section moduli `Zx`, `Zy` to the furthest idealised edge;
-- radii of gyration `rx`, `ry` from `sqrt(I/A)`.
+- plastic section moduli `Sx`, `Sy` where they are published by the checked catalogue or implemented by a reviewed ideal-geometry formula;
+- for unsymmetric custom geometry, locate the plastic neutral axis for each direction independently from the equal-area condition, then calculate `S` as the first absolute area moment about that axis; do not substitute the elastic centroid for the plastic neutral axis;
+- radii of gyration `rx`, `ry` from `sqrt(I/A)`;
+- product of inertia `Ixy`, polar second moment `Ix + Iy`, principal second moments `Iu` / `Iv`, principal radii `ru` / `rv`, and principal-axis angle `thetaU` for entered ideal geometry or catalogue shapes whose symmetry establishes the transformation;
+- geometric clear-web area `Aw` for I-sections and channels, and horizontal-wall `Awx` plus vertical-wall `Awy` for ideal RHS/SHS. None is a design-standard effective shear area `Av`.
 
 Page and evidence requirements:
 
-- Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx`, elastic `Zy`, `rx` and `ry`.
+- Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx` / `Zy`, plastic `Sx` / `Sy`, and `rx` / `ry`. Orrcon CHS mass is a catalogue value; its remaining properties are geometry-derived from published nominal `D` / `t`. For custom geometry, a steel mass may be derived from `0.00785A kg/m` only when the assumed density `7850 kg/m3` is stated.
+- Present common catalogue supplementary properties when the checked row publishes them: torsion constant `J`, warping constant `Iw`, PFC centroid coordinate `XL`, PFC shear-centre coordinate `XO`, directional elastic moduli, and principal-axis properties for angles. For entered ideal geometry calculate `Zx,T`, `Zx,B`, `Zy,R` and `Zy,L` from the matching extreme-fibre distances; do not collapse an unsymmetric section to a single unexplained `Z` value.
+- Label the polar second moment as `Ix + Iy`, without introducing `Jp`; state that it is equal to the St Venant torsion constant `J` only for circular sections.
+- Present dimensionless geometric ratios such as `D/t`, `b/t`, `d1/tw`, `(bf-tw)/(2tf)` for symmetric UB/UC or I-sections, and `(bf-tw)/tf` for channels without assigning a section classification.
 - Label every result as catalogue, derived from catalogue data, derived from entered geometry or unavailable.
+- Do not show a bare zero for product of inertia. State whether `Ixy = 0` follows from symmetry, whether rotational symmetry makes every centroidal axis principal, or whether a non-zero value requires the reported principal axes. Keep unavailable catalogue data visually distinct from a calculated zero.
 - Use a compact scalar summary plus an x/y property table rather than repeating a large card for each axis value.
-- Include one compact deterministic SVG for the current section only, showing the centroid and positive `x` and `y` directions. Use selected nominal dimensions in catalogue mode and entered dimensions in custom mode.
+- Organise the visible result hierarchy by section family: selected section and geometry; gross section basis; properties about the displayed reference axes; applicable section-specific constants; principal-axis relationship; then geometric ratios, calculation basis and source limitations.
+- For rotationally symmetric CHS, solid circles and round bars, show one equivalent centroidal-axis column and state that every centroidal diameter has the same properties. Do not repeat identical x/y values as separate decision information.
+- For equal angles, place actual thickness, root/toe radii and centroid distances with the gross product geometry; keep n-n / p-p centroidal properties in the main axis table; then present the principal x-x / y-y inertia, radii, angle and moduli as a separate structured group.
+- Hide family-inapplicable supplementary cards instead of filling the main result hierarchy with unavailable J, Iw, XO or shear-reference placeholders. Retain unavailable status in the detailed basis where it is useful for completeness.
+- Include one compact deterministic SVG for the current section only. Use catalogue-style chain centre lines, without positive-direction arrowheads, and mark the centroid `C`. Use selected nominal dimensions in catalogue mode and entered dimensions in custom mode.
 - Mark the axis location as indicative when a checked catalogue row lacks the centroid coordinates required to place both centroidal axes. The SVG is a convention guide, not a numeric source.
+- For PFC catalogue rows, use published `XL` to place the centroidal `y-y` axis and show published `XO` separately; do not replace either value with ideal sharp-corner geometry.
+- Use positive horizontal coordinates to the right, positive vertical coordinates upward and positive principal-axis rotation counter-clockwise.
+- For equal angles, follow the InfraBuild catalogue convention: centroidal `n-n` is horizontal, centroidal `p-p` is vertical, and `x-x` / `y-y` are principal axes at 45 degrees. Keep the complete 46-row Table 19 / Table 21 directory, including mass, actual thickness, radii, centroid distances, directional `Z`, plastic moduli, `I_np`, principal properties and `J`. Do not substitute sharp-corner ideal geometry for a published rolled-angle value. The Axial Member tool may continue using its smaller, separately verified strength-data subset.
 - Show the publisher, catalogue edition or year and checked-row status. Describe nominal dimensions combined with geometric formulas as a mixed basis, not a manufacturer table-property lookup.
+- Treat section compactness, element slenderness classification, `kf`, effective properties and design capacity as grade- and standard-dependent design outputs. Keep them in Beam or Axial Member workflows unless Section Properties gains an explicit material-grade and AS 4100 classification branch.
 
 Scope boundaries:
 
@@ -1528,7 +1544,9 @@ Scope boundaries:
 - Treat custom shapes as sharp-corner ideal geometry. Show the formulas and identify composite addition or subtraction where used.
 - Keep x/y axes explicit; do not describe unsymmetric x/y values as principal-axis properties.
 - Do not replace unavailable rolled-section properties with sharp-corner geometry. Use verified manufacturer values when available.
-- Do not report plastic modulus, principal-axis rotation, `Ixy`, torsion constants, warping constants, effective properties, local buckling, material strength or design capacity unless separately implemented and reviewed.
+- Report plastic modulus, torsion constant and warping constant only where the selected catalogue row publishes them or a reviewed ideal-geometry formula is implemented. Otherwise show `Not available`; never infer rolled-section values from simplified sharp-corner geometry.
+- Report `Ixy` and principal-axis transformation only from reviewed ideal geometry or symmetry. Do not infer them for an incomplete rolled-section catalogue row.
+- Do not report effective properties, local buckling classification, material strength or design capacity unless separately implemented and reviewed.
 - Keep root radii, corner radii, tapers, welds, holes, copes and manufacturing tolerances outside the ideal geometry model.
 - Keep catalogue availability and material capacity outside this lookup unless separately verified and implemented.
 

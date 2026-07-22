@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260717mobileaudit3">
+  <link rel="stylesheet" href="styles.css?v=20260722propertieshierarchy2">
 </head>
 <body>
   <header class="topbar">
@@ -505,41 +505,73 @@
         <div class="member-summary section-properties-summary" aria-live="polite">
           <figure class="section-properties-figure">
             <svg id="sectionPropertiesDiagram" viewBox="0 0 240 170" role="img" aria-labelledby="sectionPropertiesDiagramTitle sectionPropertiesDiagramDescription">
-              <title id="sectionPropertiesDiagramTitle">Selected section and x/y axis convention</title>
-              <desc id="sectionPropertiesDiagramDescription">PFC schematic with indicative centroidal x and y axes.</desc>
+              <title id="sectionPropertiesDiagramTitle">Selected section and x-x / y-y axis convention</title>
+              <desc id="sectionPropertiesDiagramDescription">PFC schematic with centroidal x-x and y-y axes.</desc>
             </svg>
-            <figcaption id="sectionPropertiesDiagramCaption">Schematic only &middot; x/y axis position indicative</figcaption>
+            <figcaption id="sectionPropertiesDiagramCaption">Selected dimensions &middot; centroidal x-x / y-y axes</figcaption>
           </figure>
           <div class="section-properties-summary-copy"><span id="sectionSelectionLabel">Selected catalogue section</span><strong id="sectionGeometryName">380PFC</strong><small id="sectionGeometryDimensions">d = 380 mm; bf = 100 mm; tw = 10 mm; tf = 17.5 mm</small></div>
-          <dl><div><dt id="sectionMetricOneLabel">Family</dt><dd id="sectionMetricOne">PFC</dd></div><div><dt id="sectionMetricTwoLabel">Axes</dt><dd id="sectionMetricTwo">Centroidal x / y</dd></div><div><dt id="sectionMetricThreeLabel">Basis</dt><dd id="sectionMetricThree">Stated by value</dd></div><div><dt id="sectionMetricFourLabel">Source</dt><dd id="sectionMetricFour">InfraBuild 2019</dd></div></dl>
+          <dl><div><dt id="sectionMetricOneLabel">Family</dt><dd id="sectionMetricOne">PFC</dd></div><div><dt id="sectionMetricTwoLabel">Axes</dt><dd id="sectionMetricTwo">Centroidal x-x / y-y</dd></div><div><dt id="sectionMetricThreeLabel">Basis</dt><dd id="sectionMetricThree">Stated by value</dd></div><div><dt id="sectionMetricFourLabel">Source</dt><dd id="sectionMetricFour">InfraBuild 2019</dd></div></dl>
         </div>
 
-        <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section properties</h2></div><span>Centroidal axes &middot; mm units</span></div>
-          <div class="section-properties-overview">
-            <article><span>Mass per metre</span><strong><output id="sectionMass">55.2</output><small> kg/m</small></strong><p class="property-basis" id="sectionMassBasis">Catalogue</p></article>
-            <article><span>Gross area <i>A</i></span><strong><output id="sectionArea">7,030</output><small> mm<sup>2</sup></small></strong><p class="property-basis" id="sectionAreaBasis">Catalogue</p></article>
-            <article><span>Centroid <i>x&#772;</i></span><strong><output id="sectionCx">&mdash;</output><small> mm</small></strong><p class="property-basis unavailable" id="sectionCxBasis">Not available</p></article>
-            <article><span>Centroid <i>y&#772;</i></span><strong><output id="sectionCy">190.0</output><small> mm</small></strong><p class="property-basis" id="sectionCyBasis">Derived &middot; catalogue data</p></article>
+        <section class="capacity-section section-properties-results" id="sectionPropertyResults" aria-live="polite" data-section-layout="orthogonal">
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section properties</h2></div><span id="sectionResultContext">Selected section &middot; mm units</span></div>
+          <div class="section-properties-group-heading">
+            <div><span>Section basis</span><h3 id="sectionCoreHeading">Gross section and centroid</h3></div>
+            <p id="sectionCoreDescription">Identity, mass, gross area and centroid coordinates.</p>
           </div>
-          <div class="section-properties-table-wrap">
+          <div class="section-properties-overview">
+            <article id="sectionMassCard"><span id="sectionMassLabel">Mass per metre</span><strong><output id="sectionMass">55.2</output><small> kg/m</small></strong><p class="property-basis" id="sectionMassBasis">Catalogue</p></article>
+            <article id="sectionAreaCard"><span id="sectionAreaLabel">Gross area <i>A<sub>g</sub></i></span><strong><output id="sectionArea">7,030</output><small> mm<sup>2</sup></small></strong><p class="property-basis" id="sectionAreaBasis">Catalogue</p></article>
+            <article id="sectionCxCard"><span id="sectionCxLabel">Centroid <i>X<sub>L</sub></i></span><strong><output id="sectionCx">27.5</output><small> mm</small></strong><p class="property-basis" id="sectionCxBasis">Catalogue</p></article>
+            <article id="sectionCyCard"><span id="sectionCyLabel">Centroid <i>y&#772;</i></span><strong><output id="sectionCy">190.0</output><small> mm</small></strong><p class="property-basis" id="sectionCyBasis">Derived &middot; catalogue data</p></article>
+          </div>
+          <div class="section-property-auxiliary section-angle-product-geometry" id="sectionProductGeometry" hidden></div>
+          <div class="section-properties-group-heading section-properties-axis-heading">
+            <div><span>Axis properties</span><h3 id="sectionAxisHeading">Centroidal x-x / y-y properties</h3></div>
+            <p id="sectionAxisDescription">Second moments, section moduli and radii about the displayed axes.</p>
+          </div>
+          <div class="section-properties-table-wrap" id="sectionAxisProperties">
             <table class="section-properties-table">
-              <thead><tr><th scope="col">Property</th><th scope="col">x-axis</th><th scope="col">y-axis</th></tr></thead>
+              <thead><tr><th scope="col">Property</th><th scope="col" id="sectionAxisOneHeader">x-x axis</th><th scope="col" id="sectionAxisTwoHeader">y-y axis</th></tr></thead>
               <tbody>
                 <tr><th scope="row"><strong>Second moment of area</strong><small><i>I</i> &middot; mm<sup>4</sup></small></th><td><output id="sectionIx">152 &times; 10<sup>6</sup></output><p class="property-basis" id="sectionIxBasis">Catalogue</p></td><td><output id="sectionIy">6.48 &times; 10<sup>6</sup></output><p class="property-basis" id="sectionIyBasis">Catalogue</p></td></tr>
-                <tr><th scope="row"><strong>Elastic section modulus</strong><small><i>Z</i> &middot; mm<sup>3</sup></small></th><td><output id="sectionZx">800 &times; 10<sup>3</sup></output><p class="property-basis" id="sectionZxBasis">Derived &middot; catalogue data</p></td><td><output id="sectionZy">&mdash;</output><p class="property-basis unavailable" id="sectionZyBasis">Not available</p></td></tr>
+                <tr><th scope="row"><strong>Elastic section modulus</strong><small><i>Z</i> &middot; mm<sup>3</sup></small></th><td><div class="section-directional-value"><span id="sectionZxDirection">T</span><output id="sectionZx">798 &times; 10<sup>3</sup></output></div><div class="section-directional-value" id="sectionZxAltWrap" hidden><span id="sectionZxAltDirection">B</span><output id="sectionZxAlt">&mdash;</output></div><p class="property-basis" id="sectionZxBasis">Catalogue</p></td><td><div class="section-directional-value"><span id="sectionZyDirection">R</span><output id="sectionZy">89.4 &times; 10<sup>3</sup></output></div><div class="section-directional-value" id="sectionZyAltWrap"><span id="sectionZyAltDirection">L</span><output id="sectionZyAlt">236 &times; 10<sup>3</sup></output></div><p class="property-basis" id="sectionZyBasis">Catalogue</p></td></tr>
+                <tr><th scope="row"><strong>Plastic section modulus</strong><small><i>S</i> &middot; mm<sup>3</sup></small></th><td><output id="sectionSx">946 &times; 10<sup>3</sup></output><p class="property-basis" id="sectionSxBasis">Catalogue</p></td><td><output id="sectionSy">161 &times; 10<sup>3</sup></output><p class="property-basis" id="sectionSyBasis">Catalogue</p></td></tr>
                 <tr><th scope="row"><strong>Radius of gyration</strong><small><i>r</i> &middot; mm</small></th><td><output id="sectionRx">147.0</output><p class="property-basis" id="sectionRxBasis">Catalogue</p></td><td><output id="sectionRy">30.4</output><p class="property-basis" id="sectionRyBasis">Catalogue</p></td></tr>
               </tbody>
             </table>
           </div>
-          <p class="section-property-auxiliary" id="sectionAuxiliaryProperty" hidden></p>
+          <div class="section-properties-group-heading" id="sectionSupplementaryHeading">
+            <div><span>Section-specific</span><h3 id="sectionSupplementaryTitle">Torsion, warping and shear references</h3></div>
+            <p id="sectionSupplementaryDescription">Only properties applicable to the selected section family are shown.</p>
+          </div>
+          <div class="section-properties-supplementary" id="sectionSupplementaryProperties">
+            <article id="sectionJCard"><span>St Venant torsion <i>J</i></span><strong><output id="sectionJ">491 &times; 10<sup>3</sup></output><small> mm<sup>4</sup></small></strong><p class="property-basis" id="sectionJBasis">Catalogue</p></article>
+            <article id="sectionIwCard"><span>Warping constant <i>I<sub>w</sub></i></span><strong><output id="sectionIw">151 &times; 10<sup>9</sup></output><small> mm<sup>6</sup></small></strong><p class="property-basis" id="sectionIwBasis">Catalogue</p></article>
+            <article id="sectionXoCard"><span>Shear-centre offset <i>X<sub>O</sub></i></span><strong><output id="sectionXo">56.7</output><small> mm</small></strong><p class="property-basis" id="sectionXoBasis">Catalogue</p></article>
+            <article id="sectionAwCard"><span id="sectionAwLabel">Clear web area <i>A<sub>w</sub></i></span><div class="section-directional-value"><span id="sectionAwDirection" hidden>y</span><strong><output id="sectionAw">3.45 &times; 10<sup>3</sup></output><small> mm<sup>2</sup></small></strong></div><div class="section-directional-value" id="sectionAwAltWrap" hidden><span id="sectionAwAltDirection">x</span><strong><output id="sectionAwAlt">&mdash;</output><small> mm<sup>2</sup></small></strong></div><p class="property-basis" id="sectionAwBasis">Derived &middot; catalogue data</p></article>
+            <article id="sectionJpCard"><span>Polar second moment <i>I<sub>x</sub> + I<sub>y</sub></i></span><strong><output id="sectionJp">158 &times; 10<sup>6</sup></output><small> mm<sup>4</sup></small></strong><p class="property-basis" id="sectionJpBasis">Derived &middot; catalogue data</p></article>
+          </div>
+          <div class="section-properties-group-heading" id="sectionPrincipalHeading">
+            <div><span>Axis relationship</span><h3 id="sectionPrincipalTitle">Principal-axis relationship</h3></div>
+            <p id="sectionPrincipalDescription">Product of inertia and the relationship between displayed and principal axes.</p>
+          </div>
+          <div class="section-properties-principal" id="sectionPrincipalProperties">
+            <article id="sectionIxyCard"><span id="sectionIxyLabel">Product of inertia <i>I<sub>xy</sub></i></span><strong><output id="sectionIxy">0</output><small> mm<sup>4</sup></small></strong><p class="section-property-interpretation" id="sectionIxyInterpretation">Zero by symmetry &middot; shown axes are principal</p><p class="property-basis" id="sectionIxyBasis">Derived &middot; catalogue data</p></article>
+            <article id="sectionPrincipalInertiaCard"><span>Principal second moments</span><div class="section-property-pair"><span id="sectionPrincipalAxisOne">u</span><output id="sectionIu">152 &times; 10<sup>6</sup></output></div><div class="section-property-pair"><span id="sectionPrincipalAxisTwo">v</span><output id="sectionIv">6.48 &times; 10<sup>6</sup></output></div><p class="property-basis" id="sectionIuBasis">Derived &middot; catalogue data</p></article>
+            <article id="sectionPrincipalRadiusCard"><span>Principal radii</span><div class="section-property-pair"><span id="sectionPrincipalRadiusOne">u</span><output id="sectionRu">147.0</output><small> mm</small></div><div class="section-property-pair"><span id="sectionPrincipalRadiusTwo">v</span><output id="sectionRv">30.4</output><small> mm</small></div><p class="property-basis" id="sectionRuBasis">Derived &middot; catalogue data</p></article>
+            <article id="sectionPrincipalAngleCard"><span id="sectionThetaLabel">Principal-axis angle <i>&theta;<sub>u</sub></i></span><strong><output id="sectionThetaU">0.0</output><small>&deg;</small></strong><p class="property-basis" id="sectionThetaUBasis">Derived &middot; catalogue data</p></article>
+          </div>
+          <p class="section-property-ratios" id="sectionGeometricRatios"><b>Geometric ratios</b> &mdash; (d−2t<sub>f</sub>)/t<sub>w</sub> = 34.5; (b<sub>f</sub>−t<sub>w</sub>)/t<sub>f</sub> = 5.14. No section classification is assigned.</p>
+          <div class="section-property-auxiliary section-angle-principal-moduli" id="sectionPrincipalModuli" hidden></div>
           <p class="result-note" id="sectionPropertiesWarning">The basis of each value is stated. Missing catalogue properties are not replaced by idealised rolled-section geometry.</p>
         </section>
       </section>
 
       <details class="detail-card"><summary><span><b>Basis of values</b><small id="sectionCalculationSummary">Catalogue values and stated derivations</small></span><i>+</i></summary><div class="detail-body"><section><h3>Basis of values</h3><div id="sectionFormulaSteps" class="formula-list"></div></section></div></details>
 
-      <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue source, verification status and exclusions</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Axes</b> &mdash; x and y are centroidal axes parallel to the overall section dimensions. For unsymmetric sections, they are not principal axes.</p><p><b>Exclusions</b> &mdash; root and corner radii, tapers, welds, holes, copes, manufacturing tolerances, principal-axis rotation, I<sub>xy</sub>, torsion, warping, plastic modulus, effective properties, local buckling, material strength and design capacity.</p><p><b>Application</b> &mdash; confirm the current product, actual geometry and governing design standard before use. Product availability is not established by this lookup.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue source, verification status and exclusions</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Axes</b> &mdash; positive horizontal and vertical directions are right and up. Positive rotation is counter-clockwise. For equal angles, n-n is horizontal, p-p is vertical, and the catalogue x-x / y-y axes are principal axes at 45&deg;; other shapes use centroidal x-x / y-y axes parallel to the overall dimensions. Directional Z values retain the catalogue edge labels.</p><p><b>Shear reference</b> &mdash; A<sub>w</sub> is clear web area for I-sections and channels. A<sub>wx</sub> and A<sub>wy</sub> are the two-horizontal-wall and two-vertical-wall areas for ideal RHS/SHS. These are geometric reference areas, not design-standard effective shear area A<sub>v</sub>, and are not used for capacity.</p><p><b>Geometry boundary</b> &mdash; published EA radii and actual thickness are retained as catalogue data; ideal custom geometry does not reconstruct root/corner radii, tapers, welds, holes, copes or manufacturing tolerances. Effective properties and design capacity are excluded. Geometric width/thickness ratios are reported without Compact, Non-compact or Slender classification; classification remains material-grade and standard dependent.</p><p><b>Application</b> &mdash; confirm the current product, actual geometry and governing design standard before use. Product availability is not established by this lookup.</p></div></div></details>
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
@@ -1090,9 +1122,9 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.0</b></footer>
-  <script src="section-geometry.js?v=20260719sectionproperties2"></script>
-  <script src="section-catalogue.js?v=20260719sectionproperties2"></script>
-  <script src="app.js?v=20260719sectionproperties2"></script>
+  <script src="section-geometry.js?v=20260722propertieshierarchy2"></script>
+  <script src="section-catalogue.js?v=20260722propertieshierarchy2"></script>
+  <script src="app.js?v=20260722propertieshierarchy2"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
