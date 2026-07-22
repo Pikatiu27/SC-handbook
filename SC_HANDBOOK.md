@@ -989,7 +989,7 @@ Current core tabs:
 
 - `Bolt Capacity`
 - `Axial Member Capacity`
-- `Beam Section`
+- `Beam Section Capacity`
 - `Section Properties`
 - `Weld Capacity`
 - `Concrete Pad Section`
@@ -1002,8 +1002,8 @@ Current tab register:
 | --- | --- | --- | --- | --- |
 | `Bolt Capacity` | `Steel Connections` | AS 4100 bolt / ply quick capacity and demand screen | For Review with checked core clauses | Active quick-reference tab |
 | `Axial Member Capacity` | `Steel Members` | AS 4100 axial member compression / tension quick screen | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
-| `Beam Section` | `Steel Members` | AS 4100 UB/UC and symmetric custom I-section section-capacity lookup | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
-| `Section Properties` | `Reference Tools` | Catalogue lookup and ideal-geometry section properties | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
+| `Beam Section Capacity` | `Steel Members` | AS 4100 UB/UC and symmetric custom I-section section-capacity lookup | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
+| `Section Properties` | `Steel Members` | Catalogue lookup and ideal-geometry section properties used by member workflows | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
 | `Weld Capacity` | `Steel Connections` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
 | `Concrete Pad Section` | `Foundations` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
 | `Screw Piles Selector` | `Foundations` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
@@ -1012,9 +1012,10 @@ Current tab register:
 Navigation categories:
 
 - `Steel Connections`: `Bolt Capacity`, `Weld Capacity`, and future `Base Plate` when accepted and integrated.
-- `Steel Members`: `Axial Member Capacity` and `Beam Section`.
+- `Steel Members`: `Section Properties`, `Axial Member Capacity`, and `Beam Section Capacity`.
 - `Foundations`: `Concrete Pad Section`, `Screw Piles Selector`, and `Rock Anchor Selector`.
-- `Reference Tools`: `Section Properties`, with future material lookups and compact design tables added only when accepted.
+
+Do not create a permanent top-level category for one accepted tool. A future `Reference Tools` category may be introduced only when multiple independent material lookups or compact design tables have been accepted; until then, place each lookup with its primary engineering workflow.
 
 Future tabs may include:
 
@@ -1033,6 +1034,7 @@ Tab rules:
 - The active tab must be visually stronger than inactive tabs: filled pill background, tab theme colour, heavier font weight, clear border or shadow, and `aria-selected="true"`. Do not rely on font weight alone.
 - Inactive tabs should remain readable but visually quieter. Avoid making every tab bold, large, and high-contrast at the same time.
 - Use two visible levels: an engineering category row and one tool row containing only tools in the active category. Category controls and tool controls must use distinct visual treatments; tab-internal mode controls must be quieter again.
+- Keep the primary navigation taxonomy task-based. Existing tools use only `Steel Connections`, `Steel Members`, and `Foundations`; do not display empty, speculative, or single-tool top-level categories.
 - Selecting a different category activates its first accepted tool so the visible category, tool row and active panel can never disagree. A direct tool hash must activate the correct category and tool automatically.
 - Desktop category and tool rows should remain compact single rows. Phone category and tool rows use horizontal scrolling and automatically bring both active controls fully into view.
 - Keep all existing public tool hashes stable. Grouping changes navigation presentation, not calculator routes.
@@ -1161,7 +1163,7 @@ Build every new tab from the shared app structure and component classes. A new t
 
 Required page skeleton:
 
-1. Add one full-name `.tool-tab` control with `data-category`, `data-tool`, a stable public hash and `aria-selected` support. Register it under the correct existing category; add a new category only when a distinct engineering domain has at least one accepted tool.
+1. Add one full-name `.tool-tab` control with `data-category`, `data-tool`, a stable public hash and `aria-selected` support. Register it under the correct existing category; add a new category only when a distinct engineering domain has multiple accepted tools or an approved near-term group that cannot fit an existing workflow.
 2. Add one matching `.tool-panel` with a compact `.tool-heading`: kicker / standard family, full English tool name, and one short scope phrase.
 3. Put the main workflow in one `.lookup-card`. Inside it, stack `.input-group` row bands in engineering order and use `.input-group-fields` or the equivalent shared responsive grid for controls.
 4. Place one selected-item or checked-basis summary after the inputs when the user needs to confirm the current section, product, material, assumptions or intermediate basis.
@@ -1718,7 +1720,7 @@ Scope boundaries:
 - Keep root radii, corner radii, tapers, welds, holes, copes and manufacturing tolerances outside the ideal geometry model.
 - Keep catalogue availability and material capacity outside this lookup unless separately verified and implemented.
 
-### 15.12 Beam Section Web Tab Rules
+### 15.12 Beam Section Capacity Web Tab Rules
 
 The beam tab is a lightweight AS 4100 section-capacity check. It is not a full beam or member design engine.
 

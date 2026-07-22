@@ -1668,6 +1668,11 @@ const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shan
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
 const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "screw", "rock"];
+const toolCategories = {
+  "steel-connections": ["bolt", "weld"],
+  "steel-members": ["properties", "member", "beam"],
+  foundations: ["concrete", "screw", "rock"]
+};
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };
 let boltMode = "standard";
@@ -2573,7 +2578,7 @@ function calculateCatalogueSectionProperties() {
   setSectionPropertyOutput("sectionRx", "sectionRxBasis", properties.rx, "decimal");
   setSectionPropertyOutput("sectionRy", "sectionRyBasis", properties.ry, "decimal");
   const auxiliary = $("sectionAuxiliaryProperty");
-  if (section.auxiliary?.rMin?.value !== null) {
+  if (Number.isFinite(section.auxiliary?.rMin?.value)) {
     auxiliary.innerHTML = `<b>Additional catalogue property</b> &mdash; minimum principal-axis radius r<sub>min</sub> = ${section.auxiliary.rMin.value.toFixed(1)} mm.`;
     auxiliary.hidden = false;
   } else {
@@ -2796,7 +2801,7 @@ function calculateBeam() {
           ? "fail"
           : "pass";
   if (!valid) {
-    $("beamWarning").textContent = "Enter valid custom I-section dimensions and select a steel grade before using the Beam Section capacity check.";
+    $("beamWarning").textContent = "Enter valid custom I-section dimensions and select a steel grade before using the Beam Section Capacity check.";
   } else {
     const beamWarnings = [];
     if (utilisation > 1) {
@@ -5130,9 +5135,18 @@ function setTool(tool, updateHash = true) {
   const resolvedTool = toolAliases[tool] || tool;
   const validTool = toolNames.includes(resolvedTool);
   const selectedTool = validTool ? resolvedTool : "bolt";
+  const selectedCategory = Object.keys(toolCategories).find(category => toolCategories[category].includes(selectedTool)) || "steel-connections";
   let activeButton = null;
+  let activeCategoryButton = null;
+  document.querySelectorAll(".tool-category").forEach(button => {
+    const active = button.dataset.category === selectedCategory;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+    if (active) activeCategoryButton = button;
+  });
   document.querySelectorAll(".tool-tab").forEach(button => {
     const active = button.dataset.tool === selectedTool;
+    button.hidden = button.dataset.category !== selectedCategory;
     button.classList.toggle("active", active);
     button.setAttribute("aria-selected", String(active));
     if (active) activeButton = button;
@@ -5148,10 +5162,12 @@ function setTool(tool, updateHash = true) {
     history.replaceState(null, "", `#${publicHash}`);
   }
   window.requestAnimationFrame(() => {
-    const tabs = activeButton?.parentElement;
-    if (!tabs || tabs.scrollWidth <= tabs.clientWidth) return;
-    const left = activeButton.offsetLeft - (tabs.clientWidth - activeButton.offsetWidth) / 2;
-    tabs.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+    [activeCategoryButton, activeButton].forEach(button => {
+      const strip = button?.parentElement;
+      if (!strip || strip.scrollWidth <= strip.clientWidth) return;
+      const left = button.offsetLeft - (strip.clientWidth - button.offsetWidth) / 2;
+      strip.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+    });
   });
   if (selectedTool === "concrete") calculateConcrete();
   if (selectedTool === "properties") calculateSectionProperties();
@@ -5250,6 +5266,10 @@ function initialise() {
     calculateUBolt();
   });
   $("uBoltProduct").addEventListener("change", calculateUBolt);
+  document.querySelectorAll(".tool-category").forEach(button => button.addEventListener("click", () => {
+    const firstTool = toolCategories[button.dataset.category]?.[0];
+    if (firstTool) setTool(firstTool);
+  }));
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {

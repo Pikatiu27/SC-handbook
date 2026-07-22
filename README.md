@@ -33,7 +33,7 @@ The axial compression calculation follows AS 4100 Cl. 6.2 and AS 4100 Cl. 6.3 an
 
 For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design input. Confirm it from AS 4100 Table 6.3.3 for the actual axis, member and fabrication condition. CHS defaults to `alpha_b = -0.5`, which assumes cold-formed non-stress-relieved CHS; confirm hot-formed or stress-relieved sections separately. PFC defaults to `alpha_b = 0.5` for hot-rolled channels. Enter connection-specific `A_n` and `k_t`; the Equal Angle default is `k_t = 0.85` for the applicable eccentrically connected equal-angle configuration, unequal angles connected by the short leg may require `k_t = 0.75`, and `k_t = 1.0` should be used where force distribution is uniform or otherwise justified. The compression section capacity screen assumes no penetrations or unfilled holes, so `A_n = A_g`. The tool uses the published minimum principal radius for Equal Angles, catalogue `r_min` for PFCs, and catalogue round-bar diameters with geometric properties for Rods. It does not check section/member bending, shear, combined actions, connection capacity, axis-specific PFC buckling, torsional buckling or flexural-torsional buckling.
 
-### Beam Section
+### Beam Section Capacity
 
 The beam tool covers major-axis section moment and web shear capacity for catalogue hot-rolled Universal Beams / Universal Columns and dimension-generated custom I-sections:
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260717mobileaudit3">
+  <link rel="stylesheet" href="styles.css?v=20260722navmerge1">
 </head>
 <body>
   <header class="topbar">
@@ -13,21 +13,26 @@
   </header>
 
   <main id="top">
-    <section class="intro">
-      <h1>Engineering quick reference</h1>
-      <p>Clear inputs, concise results, traceable references.</p>
-    </section>
+    <h1 class="visually-hidden">SC Handbook engineering tools</h1>
 
-    <nav class="tool-tabs" aria-label="SC Handbook tools">
-      <button class="tool-tab active" type="button" data-tool="bolt" aria-controls="boltPanel" aria-selected="true" aria-label="Bolt Capacity">Bolt</button>
-      <button class="tool-tab" type="button" data-tool="member" aria-controls="memberPanel" aria-selected="false" aria-label="Axial Member">Axial</button>
-      <button class="tool-tab" type="button" data-tool="beam" aria-controls="beamPanel" aria-selected="false" aria-label="Beam Section">Beam</button>
-      <button class="tool-tab" type="button" data-tool="properties" aria-controls="propertiesPanel" aria-selected="false" aria-label="Section Properties">Properties</button>
-      <button class="tool-tab" type="button" data-tool="weld" aria-controls="weldPanel" aria-selected="false" aria-label="Weld Capacity">Weld</button>
-      <button class="tool-tab" type="button" data-tool="concrete" aria-controls="concretePanel" aria-selected="false" aria-label="Pad Section">Pad</button>
-      <button class="tool-tab" type="button" data-tool="screw" aria-controls="screwPanel" aria-selected="false" aria-label="Screw Piles">Screw</button>
-      <button class="tool-tab" type="button" data-tool="rock" aria-controls="rockPanel" aria-selected="false" aria-label="Rock Anchor">Rock</button>
-    </nav>
+    <section class="tool-navigation" aria-label="Engineering tool navigation">
+      <nav class="tool-categories" aria-label="Engineering categories">
+        <button class="tool-category active" type="button" data-category="steel-connections" aria-pressed="true">Steel Connections</button>
+        <button class="tool-category" type="button" data-category="steel-members" aria-pressed="false">Steel Members</button>
+        <button class="tool-category" type="button" data-category="foundations" aria-pressed="false">Foundations</button>
+      </nav>
+
+      <nav class="tool-tabs" aria-label="SC Handbook tools">
+        <button class="tool-tab active" type="button" data-category="steel-connections" data-tool="bolt" aria-controls="boltPanel" aria-selected="true">Bolt Capacity</button>
+        <button class="tool-tab" type="button" data-category="steel-connections" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
+        <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-selected="false" hidden>Section Properties</button>
+        <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-selected="false" hidden>Axial Member Capacity</button>
+        <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-selected="false" hidden>Beam Section Capacity</button>
+        <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-selected="false" hidden>Concrete Pad Section</button>
+        <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-selected="false" hidden>Screw Piles Selector</button>
+        <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-selected="false" hidden>Rock Anchor Selector</button>
+      </nav>
+    </section>
 
     <section id="boltPanel" class="tool-panel active">
       <div class="tool-heading">
@@ -53,7 +58,7 @@
         </div>
 
         <div class="bolt-summary">
-          <div><span>Drawing callout</span><strong id="selectionTitle">M24 8.8/S</strong><small id="drawingNote">N: threads intercept shear plane · X: threads clear of shear plane</small></div>
+          <div><span>Selected bolt basis</span><strong id="selectionTitle">M24 8.8/S</strong><small id="drawingNote">N: threads intercept shear plane · X: threads clear of shear plane</small></div>
           <dl><div><dt>d<sub>f</sub></dt><dd id="diameterValue">24 mm</dd></div><div><dt>A<sub>s</sub></dt><dd id="stressAreaValue">353 mm²</dd></div><div><dt>A<sub>c</sub></dt><dd id="coreAreaValue">324 mm²</dd></div><div><dt>A<sub>o</sub></dt><dd id="shankAreaValue">452 mm²</dd></div><div><dt>f<sub>uf</sub></dt><dd id="strengthValue">830 MPa</dd></div></dl>
         </div>
         <div class="symbol-key" aria-label="AS 4100 bolt symbols"><span><b>d<sub>f</sub></b> nominal bolt diameter</span><span><b>A<sub>s</sub></b> tensile stress area</span><span><b>A<sub>c</sub></b> minor diameter area</span><span><b>A<sub>o</sub></b> nominal plain-shank area</span><span><b>f<sub>uf</sub></b> bolt tensile strength</span></div>
@@ -71,7 +76,7 @@
       </section>
 
       <details class="detail-card major-detail" id="connectionDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">RESULTS</span><b>Detailed connection checks</b></span><small>Bolt group, local ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
+        <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Bolt group, local ply bearing, TF slip and combined actions</small></span><i>+</i></summary>
         <div class="detail-body">
           <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="2"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>default 1.0</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result"><span>Design shear capacity of bolt group</span><strong id="groupShearCapacity">266.8 kN</strong><small id="groupShearBasis">2 bolts × 1 N plane per bolt = 2 total shear planes.</small></div></section>
           <section>
@@ -543,7 +548,7 @@
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Beam sections · AS 4100 Section 5</p><h2>Beam Section</h2></div><span class="tool-status">For Review · UB / UC / Custom</span></div>
+      <div class="tool-heading"><div><p class="kicker">Beam sections · AS 4100 Section 5</p><h2>Beam Section Capacity</h2></div><span class="tool-status">For Review · UB / UC / Custom</span></div>
 
       <section class="lookup-card beam-card">
         <div class="beam-type-switch" role="group" aria-label="Beam section source"><button class="beam-type active" type="button" data-beam-type="ub" aria-pressed="true">UB</button><button class="beam-type" type="button" data-beam-type="uc" aria-pressed="false">UC</button><button class="beam-type" type="button" data-beam-type="custom" aria-pressed="false">Custom</button></div>
@@ -1092,7 +1097,7 @@
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.0</b></footer>
   <script src="section-geometry.js?v=20260719sectionproperties2"></script>
   <script src="section-catalogue.js?v=20260719sectionproperties2"></script>
-  <script src="app.js?v=20260719sectionproperties2"></script>
+  <script src="app.js?v=20260722navmerge1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
