@@ -8,17 +8,18 @@ Static, English-language engineering lookup handbook with traceable quick-refere
 
 - bolt tension capacity;
 - bolt shear capacity for N (threads intercept) and X (threads clear) shear planes;
-- connected-ply bearing, edge tear-out limit and governing ply capacity;
-- minimum edge distance check by edge condition;
-- TF slip resistance;
+- local hole-bearing capacity for two connected plies treated as identical or checked separately;
+- minimum pitch, general maximum pitch and minimum edge distance checks;
+- detailing non-compliance gating for the visible result status;
+- TF-only slip resistance with separate serviceability slip actions;
 - combined shear and tension strength interaction;
 - TF slip combined shear and tension serviceability interaction.
 
-The primary basis is AS 4100 Table 3.4, AS 4100 Cl. 9.1.8, AS 4100 Cl. 9.2.2.1, AS 4100 Cl. 9.2.2.2, AS 4100 Cl. 9.2.2.3, AS 4100 Cl. 9.2.2.4, AS 4100 Cl. 9.2.3.1, AS 4100 Cl. 9.2.3.3 and AS 4100 Cl. 9.5.2. The edge check distinguishes hole-centre edge distance `e` from the effective edge distance `a_e` used for edge-limited ply bearing. Bolt-group shear, tension and connected-ply capacities assume identical bolts in a concentric connection with equal action per bolt; for total group shear `V*`, `Vi* = V*/n` and the group ply limit is `n` times the governing per-bolt capacity. Eccentric and non-uniform bolt-force distributions are excluded. Australian drawing callouts use the category and shear-plane condition, for example `M24 8.8/S - N plane`, `M24 8.8/TB - X plane` or `M24 8.8/TF - N plane`. TB is a fully tensioned bearing category, not a fixed N or X plane. For grade 10.9 bolts, `k_rd = 0.83` applies where threads intercept the shear plane and `k_rd = 1.00` applies where threads do not intercept the shear plane. The strength combined check uses AS 4100 Cl. 9.2.2.3. The TF serviceability slip combined check uses AS 4100 Cl. 9.2.3.3 and is a separate check for friction-type connections where slip is limited.
+The primary basis is AS 4100 Table 3.4, AS 4100 Cl. 9.1.8, AS 4100 Cl. 9.2.2.1, AS 4100 Cl. 9.2.2.2, AS 4100 Cl. 9.2.2.3, AS 4100 Cl. 9.2.2.4, AS 4100 Cl. 9.2.3.1, AS 4100 Cl. 9.2.3.3, AS 4100 Cl. 9.5.1, AS 4100 Cl. 9.5.2 and AS 4100 Cl. 9.5.3. The edge check distinguishes hole-centre edge distance `e` from the effective edge distance `a_e` used for edge-limited local hole bearing. Bolt-group shear, tension and local hole-bearing capacities assume identical bolts in a concentric connection with equal action per bolt; for total group shear `V*`, `Vi* = V*/n` and the group local hole-bearing limit is `n` times the governing per-bolt value. The two connected plies are explicitly treated as identical or checked separately; in separate mode the lower ply value governs. This is not a complete connected-plate resistance check. Eccentric and non-uniform bolt-force distributions, net-section rupture, block shear and actual tear-out paths are excluded. Australian drawing callouts use the category and shear-plane condition, for example `M24 8.8/S - N plane`, `M24 8.8/TB - X plane` or `M24 8.8/TF - N plane`. TB is a fully tensioned bearing category, not a fixed N or X plane. For grade 10.9 bolts, `k_rd = 0.83` applies where threads intercept the shear plane and `k_rd = 1.00` applies where threads do not intercept the shear plane. The strength combined check uses AS 4100 Cl. 9.2.2.3. The TF serviceability slip combined check uses separately entered slip actions under AS 4100 Cl. 9.2.3.3. Any applicable pitch or minimum edge-distance FAIL changes the visible result status to `NON-COMPLIANT`.
 
 For bolt shear, `k_r` is the bolted-lap reduction factor in AS 4100 Table 9.2.2.1, referenced by AS 4100 Cl. 9.2.2.1. It defaults to 1.0 unless the actual lap connection length `l_j` requires a lower value. It is separate from the welded-lap table.
 
-Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal plain-shank area, `A_c` is minor diameter area, and `A_s` is tensile stress area. M10 and M12 are included for `/S` categories only because AS 4100 Table 15.2.2.2 does not provide minimum bolt tensions below M16.
+Bolt symbols follow AS 4100: `d_f` is nominal bolt diameter, `A_o` is nominal plain-shank area, `A_c` is minor diameter area, and `A_s` is tensile stress area. The selected bolt basis reports `Nti` for `/TB` and `/TF` and provides a collapsed M16-M36 lookup; `Nti` is installation preload, not `phi Ntf`. The main page keeps symbol and category definitions in the collapsed calculation basis, and TF slip inputs are shown only for `/TF`. M10 and M12 are included for `/S` categories only because AS 4100 Table 15.2.2.2 does not provide minimum bolt tensions below M16.
 
 ### Axial Member Capacity
 

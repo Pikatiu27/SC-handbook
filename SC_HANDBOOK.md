@@ -1527,16 +1527,29 @@ Display logic:
 - If threads are clear of the shear plane and X shear capacity is used, show `M24 8.8 X/S`.
 - Under the callout, keep the explanation short: `N: threads intercept shear plane · X: threads clear of shear plane`.
 
+- Include `Nti` in the selected-bolt basis. For `/TB` and `/TF`, show the minimum installed bolt tension from AS 4100 Table 15.2.2.2. For `/S`, show `Not required`.
+- Place one collapsed `Minimum installed bolt tension, Nti` lookup directly below the selected-bolt basis. Show M16 to M36 in rows and property classes 8.8 and 10.9 in columns.
+- Do not repeat the selected `Nti` in the lookup summary. Use the summary support line for the table source and size range.
+- In the lookup, state the installation categories in one concise note: `Nti` is not applicable to `/S`; `/TB` and `/TF` are fully tensioned and use the same tabulated `Nti`.
+- Do not list M10 or M12 `Nti` values because AS 4100 Table 15.2.2.2 does not tabulate them. These sizes remain available for `/S` only.
+- State explicitly that `Nti` is an installation preload, not the design tensile capacity `phi Ntf`. Do not subtract `Nti` from `phi Ntf` and do not present it as a competing capacity result.
+- Keep the primary page sequence as `Inputs -> Selected bolt -> optional Nti lookup -> Results`. Place symbol definitions and `/S`, `/TB`, `/TF` explanations in `Calculation basis and limitations`; do not add separate legend bands before Results.
+- Show the `TF slip check` only for `/TF` categories. Keep its slip parameters, serviceability slip actions and utilisation status together. For `/S` and `/TB`, hide the complete section.
+- Label the strength-action section `Project design actions`. Either shear or tension may be entered independently; combined strength interaction applies only when both are non-zero.
+- Do not reuse the strength actions as TF slip actions. Use separate `V_sf*` and `N_tf*` inputs for the serviceability slip check so action bases are not silently mixed.
+
 Bolt result checks should include:
 
 - Bolt shear capacity.
 - Bolt tension capacity where relevant.
-- Bolt bearing on connected ply.
-- Edge tear-out / ply tearing.
+- Local hole bearing in each connected ply.
+- Edge-limited local hole bearing.
 - Minimum edge distance check.
-- Governing connected-ply capacity.
-- Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and connected-ply bearing / edge tear-out under AS 4100 Cl. 9.2.2.4; tension-only demand checks bolt tension under AS 4100 Cl. 9.2.2.2; combined shear and tension checks bolt interaction under AS 4100 Cl. 9.2.2.3 while still checking connected-ply bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or connected ply governs.
-- The main result should show one final `Governing capacity check` ratio only. Put supporting ratios, including the AS 4100 Cl. 9.2.2.3 combined bolt interaction ratio, in calculation steps rather than as competing primary result cards.
+- Governing local hole-bearing capacity.
+- Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and local hole bearing under AS 4100 Cl. 9.2.2.4; tension-only demand checks bolt tension under AS 4100 Cl. 9.2.2.2; combined shear and tension checks bolt interaction under AS 4100 Cl. 9.2.2.3 while still checking local hole bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or local hole bearing governs.
+- The main strength result should show one `Strength utilisation ratio`. Put supporting strength ratios in Calculation steps rather than as competing primary result cards.
+- For `/TF`, show one additional `TF slip utilisation ratio`. Keep this serviceability result visibly separate from the strength ratio.
+- Detailing compliance is a release gate, not another utilisation ratio. If any applicable minimum pitch, general maximum pitch or active-ply minimum edge-distance check fails, show `NON-COMPLIANT` on the visible strength result and TF slip result where applicable. Do not allow a green PASS while detailing is non-compliant.
 - The default connected-ply tensile strength should not be an orphan number. Use f<sub>up</sub> = 410 MPa only as the AS/NZS 3678 Grade 250 plate default; use 440 MPa only for verified AS/NZS 3679.1 Grade 300 flat bar/section or another stated source.
 
 U-bolt product lookup branch:
@@ -1562,7 +1575,7 @@ U-bolt product lookup branch:
 - If no published capacity is available, show `No published rated capacity` or `Not published`, mark the item `Source_Not_Verified`, and do not report an action ratio.
 - Do not derive U-bolt product capacity from AS 4100 ordinary bolt shear or tension equations. Those checks belong to the connected steelwork or fastener components where applicable.
 
-Minimum edge distance and ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
+Minimum edge distance, minimum pitch and connected-ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
 
 For the web bolt tab, separate the edge-distance terms visibly:
 
@@ -1576,7 +1589,111 @@ For the web bolt tab, separate the edge-distance terms visibly:
 - Keep the lightweight connected-ply check on a critical-hole basis. Assume concentric shear and equal bolt sharing, calculate `V_b,bolt* = V*/n`, and compare it with the lesser of the full-bearing and edge-limited capacities at the critical bolt hole.
 - Under that equal-action premise, use `phi Vb,group = n * MIN(phi Vb,full, phi Vb,edge)` for the critical bolt hole. Do not add a separate `Bolts on edge line` input.
 - Present `n` times the critical-hole capacity as the equal-share connected-ply group capacity; keep the single-hole values in Calculation steps.
-- Do not calculate net-section rupture, actual tear-out paths, block shear, eccentric bolt-group reactions, overlapping failure paths or minimum bolt spacing.
+- Do not calculate net-section rupture, actual tear-out paths, block shear, eccentric bolt-group reactions or overlapping failure paths.
+
+#### 15.10.1 Detailed Connection Input Structure
+
+Keep the detailed connection input in this order:
+
+1. `Bolt group` - bolt count, shear-plane condition and k<sub>r</sub>.
+2. `Connected plies and detailing` - shared hole geometry and an explicit connected-ply basis.
+3. `TF slip check` - TF only, including separate serviceability slip actions.
+4. `Project actions` - shear and tension demand.
+
+The connected-ply section should use one shared geometry row:
+
+- `d_h` = actual hole diameter.
+- `p` = centre-to-centre pitch of equal holes aligned with the force.
+- Disable `p` only for a one-bolt connection. Keep it available when manual `a_e` is selected because the minimum-pitch check remains applicable.
+
+Use one explicit `Connected-ply basis` control:
+
+- `Both plies identical` - default. Use the primary-ply properties for both connected parts and state this assumption in the result basis.
+- `Check plies separately` - show the second-ply fields and assess both connected parts independently.
+
+Do not use an unchecked optional-ply control that can be read as permission to omit the second connected part.
+
+Each active ply requires:
+
+- `t_p` - connected-ply thickness.
+- `f_up` - connected-ply ultimate tensile strength.
+- `Edge condition` - selected AS 4100 Table 9.5.2 edge category.
+- `e` - critical bolt centre to the selected physical edge.
+- `a_e basis` - `Automatic - end edge / pitch` or `Manual - connection drawing`.
+- `Governing a_e` - calculated and read-only for Automatic, directly entered for Manual.
+
+Do not duplicate `d_h` or `p` for the second ply. Each ply may have different thickness, material strength, edge condition, edge distance and effective edge distance.
+
+#### 15.10.2 Connected-Ply Capacity Logic
+
+For equal holes aligned with the force, calculate separately for each active ply:
+
+- `a_e,end = e - d_h/2 + d_f/2`.
+- `a_e,pitch = p - d_h + d_f/2` where more than one bolt is present.
+- `a_e = MIN(a_e,end, a_e,pitch)`.
+
+For angled edges, corners, non-collinear holes or other drawing-derived geometry, require a manual `a_e`. Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
+
+Keep the lightweight capacity check on a critical-hole basis. Assume concentric shear and equal bolt sharing, calculate `V_b,bolt* = V*/n`, and compare it with the lesser of the full-bearing and edge-limited capacities at the critical bolt hole.
+
+For each active ply use:
+
+- `phi V_b,full = phi 3.2 d_f t_p f_up`.
+- `phi V_b,edge = phi a_e t_p f_up`.
+- `phi V_b,local = MIN(phi V_b,full, phi V_b,edge)`.
+- `phi V_b,group = n phi V_b,local`.
+
+Do not add a separate `Bolts on edge line` input. Under the stated equal-action premise, every bolt is assessed using the entered critical-hole condition.
+
+For `Both plies identical`, use the primary-ply result and label the basis `Both connected plies identical`. For `Check plies separately`, the governing local hole-bearing capacity is the lesser ply group capacity. The local hole-bearing demand ratio must use that governing value.
+
+This result is not a complete connected-plate resistance. The visible label must be `Governing local hole-bearing capacity`, and a concise note must state that net-section rupture, block shear and actual tear-out paths are not evaluated.
+
+#### 15.10.3 Detailing Checks
+
+Show a compact detailing table below the local hole-bearing capacity result:
+
+- `Minimum pitch, p - AS 4100 Cl. 9.5.1`.
+- `Maximum pitch, p - AS 4100 Cl. 9.5.3 general limit`.
+- `Primary ply edge distance, e - AS 4100 Table 9.5.2`.
+- `Second ply edge distance, e - AS 4100 Table 9.5.2`, only where the second ply is active.
+
+For minimum pitch use:
+
+- `p_min = 2.5 d_f`.
+- Apply the check only where `n > 1`.
+- For one bolt, report `Not applicable`; do not display PASS or FAIL.
+
+For maximum pitch use the AS 4100 Cl. 9.5.3 general limit:
+
+- `p_max = min(15 t_p,min, 200 mm)`.
+- `t_p,min` is the thinner active connected ply.
+- Apply the check only where `n > 1`.
+- For one bolt, report `Not applicable`; do not display PASS or FAIL.
+- Do not auto-apply the special cases in Cl. 9.5.3(a) or (b); state that they require separate assessment.
+
+Pitch and edge-distance checks are detailing-compliance checks, not design capacities. Keep their individual statuses separate from the strength ratio, but treat any applicable FAIL as a visible `NON-COMPLIANT` release gate. Maximum edge distance and connection-specific detailing remain outside this lightweight check.
+
+#### 15.10.4 Result Hierarchy
+
+Keep the connected-ply result hierarchy concise:
+
+1. One primary result: `Governing local hole-bearing capacity`.
+2. Show the basis as `Both connected plies identical` or identify the governing separately checked ply. When separate checking is active, use one compact comparison row for `Primary ply` and `Second ply`; do not create competing result cards.
+3. One compact detailing table for minimum pitch, general maximum pitch and active-ply minimum edge distances.
+4. Single-hole capacities, `a_e` components and equations remain in `Calculation steps`.
+5. Show one `Strength utilisation ratio`; show a separate `TF slip utilisation ratio` only for `/TF`.
+
+The primary result basis line should identify the governing ply and the governing local condition, for example `Second ply - edge-limited bearing governs`. If both plies are equal, state `Both plies equal`.
+
+#### 15.10.5 Scope Boundary
+
+This remains a lightweight straight-line bolt-group check. State these assumptions and exclusions clearly:
+
+- Included: concentric action, equal bolt sharing, straight aligned holes, local hole bearing, minimum pitch, general maximum pitch, minimum edge distance and two connected plies treated as identical or checked separately.
+- Manual `a_e`: permitted for drawing-derived directional geometry, but the entered value is not geometrically verified by the tool.
+- Excluded from the local hole-bearing result: net-section rupture, actual tear-out paths, block shear, eccentric bolt-group reactions, overlapping failure paths, special maximum-pitch cases under AS 4100 Cl. 9.5.3(a) and (b), maximum edge distance, prying action, coped-beam tearing and gusset tear-out.
+- Additional connected plies require a separate check; do not infer their properties from either displayed ply.
 
 ### 15.11 Member Web Tab Rules
 

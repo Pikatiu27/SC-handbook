@@ -1770,7 +1770,7 @@ const screwInputIds = [
 ];
 
 const $ = id => document.getElementById(id);
-const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "boltPitch", "edgeDistanceBasis", "effectiveEdgeInput", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
+const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "holeDiameter", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeDistanceBasis", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "edgeDistanceBasis2", "effectiveEdgeInput2", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
 const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "screw", "rock"];
@@ -1785,7 +1785,7 @@ let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";
 const manualInputIds = [
-  "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "holeDiameter", "boltPitch", "effectiveEdgeInput", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
+  "boltCount", "threadPlanes", "shankPlanes", "holeDiameter", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
@@ -1798,7 +1798,7 @@ const manualInputIds = [
   "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
-  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeDistanceBasis", "holeFactor",
+  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeDistanceBasis", "edgeCondition2", "edgeDistanceBasis2", "holeFactor",
   "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteReoDirection", "concreteDepthBasis", "concreteCrossingBar", "concreteShearReo", "concreteShearBar",
@@ -1901,6 +1901,74 @@ function markInputSources() {
   referenceInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-reference"));
 }
 
+function calculateConnectedPly(config, bolt, count, holeDiameter, boltPitch) {
+  const actualEdge = value(config.edgeDistanceId);
+  const basis = $(config.edgeDistanceBasisId).value;
+  const endEffectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
+  const hasAdjacentHole = count > 1;
+  const pitchEffectiveEdge = hasAdjacentHole ? Math.max(0, boltPitch - holeDiameter + bolt.d / 2) : Infinity;
+  const automaticEffectiveEdge = Math.min(endEffectiveEdge, pitchEffectiveEdge);
+  const automaticEdgeControl = pitchEffectiveEdge < endEffectiveEdge ? "adjacent hole" : "end edge";
+  const effectiveEdgeInput = $(config.effectiveEdgeInputId);
+  effectiveEdgeInput.readOnly = basis !== "manual";
+  if (basis !== "manual") effectiveEdgeInput.value = automaticEffectiveEdge.toFixed(1);
+
+  const effectiveEdge = basis === "manual" ? Math.max(0, value(config.effectiveEdgeInputId)) : automaticEffectiveEdge;
+  const minimumEdge = value(config.edgeConditionId) * bolt.d;
+  const edgeDistancePass = actualEdge >= minimumEdge;
+  const plateStrength = value(config.plateStrengthId);
+  const plateThickness = value(config.plateThicknessId);
+  const bearingFull = 0.9 * 3.2 * bolt.d * plateThickness * plateStrength / 1000;
+  const bearingEdge = 0.9 * effectiveEdge * plateThickness * plateStrength / 1000;
+  const localCapacity = Math.min(bearingFull, bearingEdge);
+  const groupCapacity = count * localCapacity;
+
+  return {
+    ...config,
+    actualEdge,
+    basis,
+    endEffectiveEdge,
+    hasAdjacentHole,
+    pitchEffectiveEdge,
+    automaticEdgeControl,
+    effectiveEdge,
+    minimumEdge,
+    edgeDistancePass,
+    plateStrength,
+    plateThickness,
+    bearingFull,
+    bearingEdge,
+    localCapacity,
+    groupCapacity,
+    controlLabel: bearingEdge <= bearingFull ? "Edge-limited bearing" : "Full bearing"
+  };
+}
+
+function updateConnectedPlyOutputs(ply, suffix = "") {
+  $(`actualEdgeDistance${suffix}`).textContent = fixed(ply.actualEdge);
+  $(`minimumEdgeDistance${suffix}`).textContent = fixed(ply.minimumEdge);
+  $(`edgeDistanceStatus${suffix}`).textContent = ply.edgeDistancePass ? "PASS" : "FAIL";
+  $(`edgeDistanceStatus${suffix}`).className = ply.edgeDistancePass ? "pass" : "fail";
+  $(`edgeDistanceBasisNote${suffix}`).innerHTML = ply.basis === "manual"
+    ? `Manual drawing basis: a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm. Minimum edge-distance compliance still uses e.`
+    : ply.hasAdjacentHole
+      ? `Automatic: a<sub>e,end</sub> = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm.`
+      : `Automatic: a<sub>e,end</sub> = ${fixed(ply.effectiveEdge)} mm. Adjacent-hole pitch is not applicable to one bolt.`;
+}
+
+function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
+  const effectiveEdgeBasis = ply.basis === "manual"
+    ? `manual drawing value a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
+    : ply.hasAdjacentHole
+      ? `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(boltPitch)} - ${fixed(holeDiameter)} + ${fixed(bolt.d)}/2 = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
+      : `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.effectiveEdge)} mm`;
+  return `
+    <div><b>${ply.label} full bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>f<sub>up</sub> = ${ply.plateStrength.toFixed(0)} MPa; per bolt = 0.90 x 3.2 x ${fixed(bolt.d)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingFull)} kN</code></div>
+    <div><b>${ply.label} edge-limited bearing - AS 4100 Cl. 9.2.2.4(2)</b><code>${effectiveEdgeBasis}; per bolt = 0.90 x ${fixed(ply.effectiveEdge)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingEdge)} kN</code></div>
+    <div><b>${ply.label} minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value(ply.edgeConditionId).toFixed(2)}d<sub>f</sub> = ${fixed(ply.minimumEdge)} mm; provided e = ${fixed(ply.actualEdge)} mm - ${ply.edgeDistancePass ? "PASS" : "FAIL"}</code></div>
+    <div><b>${ply.label} local hole-bearing capacity</b><code>critical-hole capacity = min(${fixed(ply.bearingFull)}, ${fixed(ply.bearingEdge)}) = ${fixed(ply.localCapacity)} kN; equal-share group capacity = ${count} x ${fixed(ply.localCapacity)} = ${fixed(ply.groupCapacity)} kN</code></div>`;
+}
+
 function calculateBolt() {
   const size = $("boltSize").value;
   const categoryKey = $("category").value;
@@ -1922,34 +1990,65 @@ function calculateBolt() {
   const totalShankPlanes = count * nShank;
   const totalShearPlanes = totalThreadPlanes + totalShankPlanes;
   const groupShear = 0.8 * 0.62 * category.fuf * kr * (totalThreadPlanes * threadKrd * bolt.Ac + totalShankPlanes * shankKrd * bolt.Ao) / 1000;
-  const actualEdge = value("edgeDistance");
   const holeDiameter = value("holeDiameter");
   const boltPitch = Math.max(0, value("boltPitch"));
-  const edgeDistanceBasis = $("edgeDistanceBasis").value;
-  const endEffectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
-  const hasAdjacentHole = count > 1 && boltPitch > 0;
-  const pitchEffectiveEdge = hasAdjacentHole ? Math.max(0, boltPitch - holeDiameter + bolt.d / 2) : Infinity;
-  const automaticEffectiveEdge = Math.min(endEffectiveEdge, pitchEffectiveEdge);
-  const automaticEdgeControl = pitchEffectiveEdge < endEffectiveEdge ? "adjacent hole" : "end edge";
-  const boltPitchInput = $("boltPitch");
-  const effectiveEdgeInput = $("effectiveEdgeInput");
-  boltPitchInput.disabled = count <= 1 || edgeDistanceBasis === "manual";
-  effectiveEdgeInput.readOnly = edgeDistanceBasis !== "manual";
-  if (edgeDistanceBasis !== "manual") effectiveEdgeInput.value = automaticEffectiveEdge.toFixed(1);
-  const effectiveEdge = edgeDistanceBasis === "manual" ? Math.max(0, value("effectiveEdgeInput")) : automaticEffectiveEdge;
-  const minimumEdge = value("edgeCondition") * bolt.d;
-  const edgeDistancePass = actualEdge >= minimumEdge;
-  const plateStrength = value("plateStrength");
-  const bearingFull = 0.9 * 3.2 * bolt.d * value("plateThickness") * plateStrength / 1000;
-  const bearingEdge = 0.9 * effectiveEdge * value("plateThickness") * plateStrength / 1000;
-  const localPlyCapacity = Math.min(bearingFull, bearingEdge);
-  const equalShareGroupPlyCapacity = count * localPlyCapacity;
+  const minimumPitch = 2.5 * bolt.d;
+  const pitchApplicable = count > 1;
+  const pitchPass = !pitchApplicable || boltPitch >= minimumPitch;
+  $("boltPitch").disabled = !pitchApplicable;
+
+  const primaryPly = calculateConnectedPly({
+    label: "Primary ply",
+    plateThicknessId: "plateThickness",
+    plateStrengthId: "plateStrength",
+    edgeConditionId: "edgeCondition",
+    edgeDistanceId: "edgeDistance",
+    edgeDistanceBasisId: "edgeDistanceBasis",
+    effectiveEdgeInputId: "effectiveEdgeInput"
+  }, bolt, count, holeDiameter, boltPitch);
+  const secondPly = calculateConnectedPly({
+    label: "Second ply",
+    plateThicknessId: "plateThickness2",
+    plateStrengthId: "plateStrength2",
+    edgeConditionId: "edgeCondition2",
+    edgeDistanceId: "edgeDistance2",
+    edgeDistanceBasisId: "edgeDistanceBasis2",
+    effectiveEdgeInputId: "effectiveEdgeInput2"
+  }, bolt, count, holeDiameter, boltPitch);
+  const separatePlyCheck = $("connectedPlyBasis").value === "separate";
+  $("secondPlyFields").hidden = !separatePlyCheck;
+  $("boltPlyGrid").classList.toggle("has-second-ply", separatePlyCheck);
+  $("plyComparison").hidden = !separatePlyCheck;
+  $("secondPlyEdgeCheck").hidden = !separatePlyCheck;
+  $("connectedPlyBasisNote").textContent = separatePlyCheck
+    ? "Each connected part is assessed using its entered properties and edge geometry."
+    : "Primary-ply properties are adopted for both connected parts.";
+  const thinnerPlyThickness = separatePlyCheck
+    ? Math.min(primaryPly.plateThickness, secondPly.plateThickness)
+    : primaryPly.plateThickness;
+  const maximumPitch = Math.min(15 * thinnerPlyThickness, 200);
+  const maximumPitchPass = !pitchApplicable || boltPitch <= maximumPitch;
+
+  const capacitiesEqual = separatePlyCheck && Math.abs(primaryPly.groupCapacity - secondPly.groupCapacity) < 0.05;
+  const governingPly = separatePlyCheck && secondPly.groupCapacity < primaryPly.groupCapacity ? secondPly : primaryPly;
+  const governingPlyLabel = !separatePlyCheck
+    ? "Both connected plies identical"
+    : capacitiesEqual
+      ? "Both plies equal"
+      : governingPly.label;
+  const governingPlyDemandLabel = !separatePlyCheck || capacitiesEqual
+    ? "local hole bearing"
+    : `local hole bearing in the ${governingPly.label.toLowerCase()}`;
+  const localPlyCapacity = governingPly.localCapacity;
+  const equalShareGroupPlyCapacity = governingPly.groupCapacity;
   const preload = category.preload ? bolt[category.preload] : 0;
   const slip = category.type === "friction" ? 0.7 * value("slipFactor") * value("interfaces") * preload * value("holeFactor") : null;
   const slipGroupCapacity = slip === null ? null : count * slip;
   const slipTensionCapacity = preload > 0 ? 0.7 * count * preload : null;
   const designShear = value("shearDemand");
   const designTension = value("tensionDemand");
+  const slipShearDemand = value("slipShearDemand");
+  const slipTensionDemand = value("slipTensionDemand");
   const criticalBoltShear = designShear / count;
   const boltShearRatio = groupShear > 0 ? designShear / groupShear : Infinity;
   const plyBearingRatio = localPlyCapacity > 0 ? criticalBoltShear / localPlyCapacity : Infinity;
@@ -1958,27 +2057,45 @@ function calculateBolt() {
     ? boltShearRatio ** 2 + boltTensionRatio ** 2
     : Infinity;
   const slipRatio = slipGroupCapacity && slipTensionCapacity
-    ? designShear / slipGroupCapacity + designTension / slipTensionCapacity
+    ? slipShearDemand / slipGroupCapacity + slipTensionDemand / slipTensionCapacity
     : Infinity;
   const hasShearDemand = designShear > 0;
   const hasTensionDemand = designTension > 0;
   const hasDemand = hasShearDemand || hasTensionDemand;
+  const hasSlipDemand = slipShearDemand > 0 || slipTensionDemand > 0;
   let governingRatio = NaN;
-  let governingNote = "Enter design actions to identify whether bolt shear, bolt tension, combined bolt interaction or connected ply governs.";
+  let governingNote = "Enter design actions to identify whether bolt strength or local hole bearing governs.";
   if (hasShearDemand && !hasTensionDemand) {
     governingRatio = Math.max(boltShearRatio, plyBearingRatio);
     governingNote = plyBearingRatio > boltShearRatio
-      ? `Shear only: connected ply governs. Check V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${plyBearingRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.4; bolt shear ratio under AS 4100 Cl. 9.2.2.1 = ${boltShearRatio.toFixed(2)}.`
-      : `Shear only: bolt shear governs. Check V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${boltShearRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.1; connected ply ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+      ? `Shear only: ${governingPlyDemandLabel} governs. Check V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${plyBearingRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.4; bolt shear ratio under AS 4100 Cl. 9.2.2.1 = ${boltShearRatio.toFixed(2)}.`
+      : `Shear only: bolt shear governs. Check V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${boltShearRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.1; local hole-bearing ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
   } else if (!hasShearDemand && hasTensionDemand) {
     governingRatio = boltTensionRatio;
     governingNote = `Tension only: bolt tension governs under AS 4100 Cl. 9.2.2.2. Check N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${boltTensionRatio.toFixed(2)}.`;
   } else if (hasShearDemand && hasTensionDemand) {
     governingRatio = Math.max(strengthRatio, plyBearingRatio);
     governingNote = plyBearingRatio > strengthRatio
-      ? `Shear and tension: connected ply governs in shear under AS 4100 Cl. 9.2.2.4 with ratio ${plyBearingRatio.toFixed(2)}. Bolt combined shear-tension ratio under AS 4100 Cl. 9.2.2.3 = ${strengthRatio.toFixed(2)}.`
-      : `Shear and tension: bolt combined shear-tension interaction governs under AS 4100 Cl. 9.2.2.3 with ratio ${strengthRatio.toFixed(2)}. Connected ply ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+      ? `Shear and tension: ${governingPlyDemandLabel} governs in shear under AS 4100 Cl. 9.2.2.4 with ratio ${plyBearingRatio.toFixed(2)}. Bolt combined shear-tension ratio under AS 4100 Cl. 9.2.2.3 = ${strengthRatio.toFixed(2)}.`
+      : `Shear and tension: bolt combined shear-tension interaction governs under AS 4100 Cl. 9.2.2.3 with ratio ${strengthRatio.toFixed(2)}. Local hole-bearing ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
   }
+  const detailingFailures = [];
+  if (pitchApplicable && !pitchPass) detailingFailures.push("minimum pitch");
+  if (pitchApplicable && !maximumPitchPass) detailingFailures.push("maximum pitch");
+  if (!primaryPly.edgeDistancePass) detailingFailures.push(separatePlyCheck ? "primary-ply edge distance" : "edge distance");
+  if (separatePlyCheck && !secondPly.edgeDistancePass) detailingFailures.push("second-ply edge distance");
+  const detailingCompliant = detailingFailures.length === 0;
+  const detailingFailureNote = detailingCompliant
+    ? ""
+    : `Detailing non-compliant: ${detailingFailures.join(", ")}. Correct the connection detailing before using the calculated resistance.`;
+  const strengthDisplayNote = detailingCompliant
+    ? governingNote
+    : `${detailingFailureNote}${hasDemand ? ` ${governingNote}` : ""}`;
+  const slipDisplayNote = !detailingCompliant
+    ? detailingFailureNote
+    : !hasSlipDemand
+      ? "Enter serviceability slip actions for the AS 4100 Cl. 9.2.3.3 check."
+      : `AS 4100 Cl. 9.2.3.3: Vsf* / \u03c6Vsf + Ntf* / \u03c6Ntf = ${slipRatio.toFixed(2)}; limit \u2264 1.0.`;
 
   const drawingCallout = `${size} ${categoryKey} - ${plane} plane`;
   $("selectionTitle").textContent = drawingCallout;
@@ -1988,6 +2105,18 @@ function calculateBolt() {
   $("coreAreaValue").textContent = `${bolt.Ac} mm²`;
   $("shankAreaValue").textContent = `${bolt.Ao} mm²`;
   $("strengthValue").textContent = `${category.fuf} MPa`;
+  const hasInstalledTension = Boolean(category.preload && Number.isFinite(preload));
+  $("installedTensionValue").textContent = hasInstalledTension ? `${preload.toFixed(0)} kN` : "Not required";
+  $("boltPreloadLookup").hidden = !hasInstalledTension;
+  if (!hasInstalledTension) $("boltPreloadLookup").open = false;
+  $("tfSlipSection").hidden = category.type !== "friction";
+  document.querySelectorAll(".bolt-preload-table tbody tr").forEach(row => {
+    const selectedSize = row.dataset.boltSize === size;
+    row.classList.toggle("is-selected", hasInstalledTension && selectedSize);
+    row.querySelectorAll("[data-grade]").forEach(cell => {
+      cell.classList.toggle("is-selected-grade", hasInstalledTension && selectedSize && cell.dataset.grade === category.grade);
+    });
+  });
   $("selectedShearLabel").textContent = `Shear capacity - ${plane}`;
   $("selectedShearCapacity").textContent = fixed(selectedShear);
   $("selectedShearNote").innerHTML = plane === "N"
@@ -2002,48 +2131,81 @@ function calculateBolt() {
   $("boltResultNote").innerHTML = `One shear-plane &phi;V<sub>f</sub> includes k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} and k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring the AS 4100 Table 9.2.2.1 reduction referenced by AS 4100 Cl. 9.2.2.1.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
   $("groupShearBasis").innerHTML = `${count} bolt${count === 1 ? "" : "s"} × (${nThread} N + ${nShank} X) plane${nThread + nShank === 1 ? "" : "s"} per bolt = ${totalThreadPlanes} N + ${totalShankPlanes} X = ${totalShearPlanes} total shear plane${totalShearPlanes === 1 ? "" : "s"}. Equal action per identical bolt is assumed. Change k<sub>r</sub> only for bolted lap connection reduction.`;
+  $("primaryPlyCapacity").textContent = `${fixed(primaryPly.groupCapacity)} kN`;
+  $("primaryPlyControl").textContent = primaryPly.controlLabel;
+  $("secondPlyCapacity").textContent = `${fixed(secondPly.groupCapacity)} kN`;
+  $("secondPlyControl").textContent = secondPly.controlLabel;
   $("bearingGroupCapacity").textContent = `${fixed(equalShareGroupPlyCapacity)} kN`;
-  $("bearingGroupBasis").textContent = `Equal-share group · ${fixed(localPlyCapacity)} kN at critical bolt hole × ${count} · ${bearingEdge <= bearingFull ? `${edgeDistanceBasis === "manual" ? "manual a_e" : automaticEdgeControl} governs` : "full bearing governs"}`;
-  $("actualEdgeDistance").textContent = fixed(actualEdge);
-  $("minimumEdgeDistance").textContent = fixed(minimumEdge);
-  $("effectiveEdgeDistance").textContent = fixed(effectiveEdge);
-  $("edgeDistanceBasisNote").innerHTML = edgeDistanceBasis === "manual"
-    ? `Manual drawing basis: a<sub>e</sub> = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm. Minimum edge-distance compliance still uses e.`
-    : hasAdjacentHole
-      ? `Automatic: a<sub>e,end</sub> = ${fixed(endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(pitchEffectiveEdge)} mm; governing a<sub>e</sub> = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm (${automaticEdgeControl}).`
-      : `Automatic: a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm. Adjacent-hole pitch is not applicable to one bolt.`;
-  $("edgeDistanceStatus").textContent = edgeDistancePass ? "PASS" : "FAIL";
-  $("edgeDistanceStatus").className = edgeDistancePass ? "pass" : "fail";
+  $("bearingGroupBasis").textContent = `${governingPlyLabel} · ${governingPly.controlLabel.toLowerCase()} governs · ${fixed(localPlyCapacity)} kN per critical hole × ${count}`;
+  updateConnectedPlyOutputs(primaryPly);
+  updateConnectedPlyOutputs(secondPly, "2");
+  $("pitchCheckValue").innerHTML = pitchApplicable
+    ? `<output id="actualPitch">${fixed(boltPitch)}</output> / <output id="minimumPitch">${fixed(minimumPitch)}</output> mm required`
+    : "Not applicable to one bolt";
+  $("pitchStatus").textContent = pitchApplicable ? (pitchPass ? "PASS" : "FAIL") : "N/A";
+  $("pitchStatus").className = pitchApplicable ? (pitchPass ? "pass" : "fail") : "neutral";
+  $("maximumPitchCheckValue").innerHTML = pitchApplicable
+    ? `<output id="actualMaximumPitch">${fixed(boltPitch)}</output> / <output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted`
+    : "Not applicable to one bolt";
+  $("maximumPitchStatus").textContent = pitchApplicable ? (maximumPitchPass ? "PASS" : "FAIL") : "N/A";
+  $("maximumPitchStatus").className = pitchApplicable ? (maximumPitchPass ? "pass" : "fail") : "neutral";
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
+  $("slipCapacityBasis").textContent = slip === null
+    ? "TF categories only"
+    : `Per bolt · ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
   $("strengthGoverningRatio").textContent = Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
-  $("strengthGoverningStatus").textContent = !hasDemand
+  $("strengthGoverningStatus").textContent = !detailingCompliant
+    ? "NON-COMPLIANT"
+    : !hasDemand
     ? "Enter design actions"
     : governingRatio <= 1
         ? "PASS"
         : "FAIL";
-  $("strengthGoverningStatus").className = !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
-  $("strengthGoverningNote").innerHTML = governingNote;
+  $("strengthGoverningStatus").className = !detailingCompliant ? "fail" : !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
+  $("strengthGoverningNote").innerHTML = strengthDisplayNote;
+  $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
+  $("slipGoverningStatus").textContent = !detailingCompliant
+    ? "NON-COMPLIANT"
+    : !hasSlipDemand
+      ? "Enter slip actions"
+      : slipRatio <= 1
+        ? "PASS"
+        : "FAIL";
+  $("slipGoverningStatus").className = !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
+  $("slipGoverningNote").textContent = slipDisplayNote;
 
   const slipFormula = slip === null ? "<code>Not applicable - TF categories only</code>" : `<code>0.70 x ${value("slipFactor")} x ${value("interfaces")} x ${preload} x ${value("holeFactor")} = ${fixed(slip)} kN per bolt</code>`;
   const strengthInteractionFormula = hasShearDemand && hasTensionDemand
     ? `<code>(V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub>)<sup>2</sup> = (${fixed(designShear)} / ${fixed(groupShear)})<sup>2</sup> + (${fixed(designTension)} / ${fixed(count * tension)})<sup>2</sup> = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}; limit &le; 1.0</code>`
-    : "<code>Not applicable unless both shear and tension design actions are entered. Use the separate bolt shear, bolt tension and connected-ply ratios for single-action checks.</code>";
+    : "<code>Not applicable unless both shear and tension design actions are entered. Use the separate bolt shear, bolt tension and local hole-bearing ratios for single-action checks.</code>";
   const slipInteractionFormula = slip === null
     ? "<code>Not applicable - AS 4100 Cl. 9.2.3.3 applies to friction-type categories where serviceability slip is limited</code>"
-    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designShear)} / ${fixed(slipGroupCapacity)} + ${fixed(designTension)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check</code>`;
+    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(slipShearDemand)} / ${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check; actions are entered separately from the strength check</code>`;
+  const activePlyFormulaRows = connectedPlyFormulaRows(primaryPly, bolt, count, holeDiameter, boltPitch)
+    + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count, holeDiameter, boltPitch) : "");
+  const pitchFormula = pitchApplicable
+    ? `<code>p<sub>min</sub> = 2.5d<sub>f</sub> = 2.5 x ${fixed(bolt.d)} = ${fixed(minimumPitch)} mm; provided p = ${fixed(boltPitch)} mm - ${pitchPass ? "PASS" : "FAIL"}</code>`
+    : "<code>Not applicable to a one-bolt connection</code>";
+  const maximumPitchFormula = pitchApplicable
+    ? `<code>t<sub>p,min</sub> = ${fixed(thinnerPlyThickness)} mm; p<sub>max</sub> = min(15t<sub>p,min</sub>, 200) = ${fixed(maximumPitch)} mm; provided p = ${fixed(boltPitch)} mm - ${maximumPitchPass ? "PASS" : "FAIL"}. General limit only; Cl. 9.5.3(a) and (b) are not applied.</code>`
+    : "<code>Not applicable to a one-bolt connection</code>";
+  const installedTensionFormula = hasInstalledTension
+    ? `<code>N<sub>ti</sub> = ${preload.toFixed(0)} kN for ${size} property class ${category.grade}. This is the minimum installed bolt tension, not &phi;N<sub>tf</sub>.</code>`
+    : `<code>Not required for ${categoryKey}. Snug-tight categories have no specified minimum installed bolt tension.</code>`;
   $("formulaSteps").innerHTML = `
     <div><b>Tension - AS 4100 Cl. 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
+    <div><b>Minimum installed bolt tension - AS 4100 Table 15.2.2.2</b>${installedTensionFormula}</div>
     <div><b>Shear N - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x k<sub>r</sub> (${kr.toFixed(2)}) x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
     <div><b>Shear X - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x k<sub>r</sub> (${kr.toFixed(2)}) x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
     <div><b>Bolt group shear - AS 4100 Cl. 9.2.2.1</b><code>Equal action per identical bolt is assumed. n<sub>n,total</sub> = ${count} x ${nThread} = ${totalThreadPlanes}; n<sub>x,total</sub> = ${count} x ${nShank} = ${totalShankPlanes}; &phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n,total</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x,total</sub>k<sub>rd,X</sub>A<sub>o</sub>) = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
     <div><b>Bolt shear ratio - AS 4100 Cl. 9.2.2.1</b><code>V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${fixed(designShear)} / ${fixed(groupShear)} = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}</code></div>
     <div><b>Bolt tension ratio - AS 4100 Cl. 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Ply material input</b><code>f<sub>up</sub> = ${plateStrength.toFixed(0)} MPa. Default 410 MPa corresponds to AS/NZS 3678 Grade 250 plate; use 440 MPa only where the actual connected ply is AS/NZS 3679.1 Grade 300 flat bar/section or otherwise verified.</code></div>
-    <div><b>Full ply bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>per bolt = 0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
-    <div><b>Edge-limited ply bearing - AS 4100 Cl. 9.2.2.4(2)</b><code>${edgeDistanceBasis === "manual" ? `manual drawing value a<sub>e</sub> = ${fixed(effectiveEdge)} mm` : hasAdjacentHole ? `a<sub>e,end</sub> = ${fixed(actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(boltPitch)} - ${fixed(holeDiameter)} + ${fixed(bolt.d)}/2 = ${fixed(pitchEffectiveEdge)} mm; ${automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(effectiveEdge)} mm` : `a<sub>e,end</sub> = ${fixed(actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(effectiveEdge)} mm`}; per critical bolt hole = 0.90 x a<sub>e</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingEdge)} kN</code></div>
-    <div><b>Minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
-    <div><b>Connected-ply bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>equal sharing: V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n = ${fixed(designShear)}/${count} = ${fixed(criticalBoltShear)} kN; critical-hole capacity = min(${fixed(bearingFull)}, ${fixed(bearingEdge)}) = ${fixed(localPlyCapacity)} kN; equal-share group capacity = ${count} x ${fixed(localPlyCapacity)} = ${fixed(equalShareGroupPlyCapacity)} kN; ratio = ${fixed(designShear)}/${fixed(equalShareGroupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Governing capacity check</b><code>${governingNote}</code></div>
+    <div><b>Minimum pitch - AS 4100 Cl. 9.5.1</b>${pitchFormula}</div>
+    <div><b>Maximum pitch - AS 4100 Cl. 9.5.3</b>${maximumPitchFormula}</div>
+    ${activePlyFormulaRows}
+    <div><b>Governing local hole-bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>${governingPlyLabel}; equal sharing: V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n = ${fixed(designShear)}/${count} = ${fixed(criticalBoltShear)} kN; governing group capacity = ${fixed(equalShareGroupPlyCapacity)} kN; ratio = ${fixed(designShear)}/${fixed(equalShareGroupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}</code></div>
+    <div><b>Detailing compliance</b><code>${detailingCompliant ? "All applicable lightweight detailing checks pass." : detailingFailureNote}</code></div>
+    <div><b>Strength governing check</b><code>${governingNote}</code></div>
     <div><b>Combined shear and tension - AS 4100 Cl. 9.2.2.3</b>${strengthInteractionFormula}</div>
     <div><b>TF slip - AS 4100 Cl. 9.2.3.1</b>${slipFormula}</div>
     <div><b>TF combined slip - AS 4100 Cl. 9.2.3.3</b>${slipInteractionFormula}</div>
