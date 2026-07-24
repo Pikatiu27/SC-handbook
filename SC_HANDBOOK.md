@@ -1150,6 +1150,7 @@ Current core tabs:
 - `Section Properties`
 - `Weld Capacity`
 - `Concrete Pad Section`
+- `Reinforcement`
 - `Screw Piles Selector`
 - `Rock Anchor Selector`
 
@@ -1163,6 +1164,7 @@ Current tab register:
 | `Section Properties` | `Steel Members` | Catalogue lookup and ideal-geometry section properties used by member workflows | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
 | `Weld Capacity` | `Steel Connections` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
 | `Concrete Pad Section` | `Foundations` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
+| `Reinforcement` | `Foundations` | AS 3600 reinforcement development, anchorage and lap-length reference | For Review with checked Section 13 calculation paths and stated PIR boundary | Active quick-reference tab |
 | `Screw Piles Selector` | `Foundations` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 | `Rock Anchor Selector` | `Foundations` | Product selector and quick rock-anchor lookup aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 
@@ -1170,7 +1172,7 @@ Navigation categories:
 
 - `Steel Connections`: `Bolt Capacity`, `Weld Capacity`, and future `Base Plate` when accepted and integrated.
 - `Steel Members`: `Section Properties`, `Axial Member Capacity`, and `Beam Section Capacity`.
-- `Foundations`: `Concrete Pad Section`, `Screw Piles Selector`, and `Rock Anchor Selector`.
+- `Foundations`: `Concrete Pad Section`, `Reinforcement`, `Screw Piles Selector`, and `Rock Anchor Selector`.
 
 Do not create a permanent top-level category for one accepted tool. A future `Reference Tools` category may be introduced only when multiple independent material lookups or compact design tables have been accepted; until then, place each lookup with its primary engineering workflow.
 
@@ -2720,7 +2722,72 @@ Implementation rule:
 
 Validation must include supplier/product selection, default row rendering, project-defined/custom row rendering, `Not published` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values.
 
-### 15.17 Web Local Update and Deployment Workflow
+### 15.17 Reinforcement Development & Lap Lengths Web Tab Rules
+
+The Reinforcement Development & Lap Lengths page is a lightweight task-and-length aid for N10 to N40 500N reinforcing bars in tension. State the tension scope once at page level; do not repeat `tension` in every task and result label. The two design checks are `Lap splice` and `Development at termination`. The page calculates AS 3600 lap and cast-in development/anchorage references. For PIR it returns an expressly labelled AS 3600 reference depth and hands the user off to the separate manufacturer or qualified project design. Do not show a qualified-report form, product selector, site-fit comparison, extension load-path summary or TN08 report floor on this page. The page does not calculate AS 5216 or proprietary adhesive capacity, nor does it design the concrete interface, pad, pedestal or foundation. AS 4100 bolt, weld and structural-steel provisions must not be mixed into this tab.
+
+The module issue status is `For Review` until every release gate below is complete. A calculated lap length or development reference must not be presented as complete design compliance. Product-specific PIR design and acceptance remain outside the handbook.
+
+The 2026-07-24 terminology and flow revision places the page under the level 1 `Foundations` category and level 2 `Reinforcement` tab, then separates design check, bar installation and anchorage method within the page. It changes route, evidence and display gates only; it does not change the verified AS 3600 lap/development equations or their clause sequence.
+
+The visible page order is mandatory:
+
+1. identity and concise scope;
+2. check definition: design check, bar size and, for development only, bar installation;
+3. applicable AS 3600 inputs, including stress basis where relevant;
+4. path-specific primary results;
+5. optional engineering adjustments;
+6. secondary lookup; and
+7. calculation details and references / limitations.
+
+On desktop, applicable inputs and primary results may share a two-column work area, but the DOM must preserve that engineering order. On phone, use the same order as a single-column stack. Keep optional comparisons, schedules, product data and formula trails collapsed where practical.
+
+Use `Design check` as the primary classification: `Lap splice` or `Development at termination`. Where a development check is active, show `Bar installation` as the secondary route: `Cast-in reinforcement` or `Post-installed reinforcement (PIR)`. Show `Bar size` for every length-producing check. Do not show a project-scenario selector: general members, foundation extensions and tower/monopole pedestal modifications do not change the AS 3600 expression and remain project context rather than a calculation branch. For cast-in development at termination, separately select the `Anchorage method`: `Straight development`, `Standard hook`, or `Standard cog`; a hook or cog is an anchorage method and never a lap reduction. For PIR, the selected full-yield or qualified project steel-stress basis calculates an `AS 3600 reference depth`, not a preliminary recommendation or installation depth. Product selection and the current qualified project report remain external to this quick-reference page.
+
+Apply this path contract:
+
+| Design check | Bar installation / anchorage method | Required result label |
+| --- | --- | --- |
+| Lap splice | Not applicable | `LAP` |
+| Development at termination | Cast-in / straight | `DEVELOPMENT REFERENCE` |
+| Development at termination | Cast-in / standard hook/cog | `HOOK / COG ANCHORAGE REFERENCE` |
+| Development at termination | PIR | `AS 3600 REFERENCE` |
+
+Do not show a three-line extension summary, interface-design record or global design status. A concise note may state that interface transfer and foundation design remain separate project checks.
+
+The selected case must control eligibility, visible inputs, active calculations, result blocks, formula trail and warnings. Do not merely hide fields while retaining an unrelated result. Clear every path-dependent output when an input becomes invalid or the selected case changes. Reset dependent engineering confirmations, including `k7`, final-length transverse-reinforcement count and pressure basis, whenever their case, bar, method, material or geometry basis changes. The only permitted invalid-state retention is an independently calculated, explicitly labelled `BASIC REFERENCE - REFINED INPUT REQUIRED` while a Refined-only input is incomplete; never present that fallback as the selected Refined result. A lap-specific restriction, including the tension-tie restriction, must not block an otherwise valid development-reference-only path.
+
+Keep the new-work lap basis and existing-concrete basis independent. Each needs its own concrete strength, AS 3600 casting-position basis, bar-coating / concrete-density condition, cover, clear spacing, member geometry and Refined data. Do not require a project-document checkbox. Place one concise note beneath the lap result: `Use only where the project drawings or specification permit the splice · AS 3600 Cl. 13.2.1(a).` The note does not change the calculation state. Do not describe adhesive mortar as an epoxy-coated bar. For PIR, identify the casting-position input as an AS 3600 cast-in reference assumption, not a product-design parameter. Do not silently copy new-concrete properties to existing concrete.
+
+Basic is the default. Label it as recommended and label Refined as requiring verified confinement. Keep Refined inputs collapsed until deliberately selected. A verified custom transverse-reinforcement arrangement requires a non-negative whole-number `nf`, a positive whole-number `nbs`, non-negative qualifying transverse-reinforcement area and the applicable minimum-area basis. `Sigma Atr = 0` is valid and gives `lambda = 0`, therefore no `k4` reduction; it must not invalidate the Basic lap or development reference. Require confirmation of the effective transverse-reinforcement location only where `Sigma Atr > Sigma Atr,min` could produce confinement credit. Define `nf` as the number of fitment bars within one longitudinal spacing or pitch that the governing potential splitting crack crosses; `nf = 0` is a valid AS 3600 arrangement and must not be rejected. It is not the total fitment-leg count. Define `nbs` as the number of longitudinal bars being developed or spliced at which that crack can develop, and include only qualifying area within the displayed candidate Refined length in `Sigma Atr`. Select `No verified confinement credit` to use `K = 0` without custom confinement inputs. Do not provide default confinement credit or an unexplained arrangement shortcut. Show derived factors as outputs, not disabled editable-looking controls. Use a two-stage result: calculate and display the `Candidate refined length` without adopting the reduction, then require confirmation that the transverse-reinforcement count and any pressure evidence apply throughout that candidate length. Only then may the candidate become the `Adopted length`. A narrow-member Refined case must use the beam/column `Sigma Atr,min = 0.25As` basis. Apply the Cl. 13.1.2.3 limits to `k4`, `k5` and `k3 k4 k5`. Pressure is an independent optional credit and must use the AS 3600 symbol `rho_p`: keep its source and confirmation hidden while `rho_p = 0`; when `rho_p > 0`, prefill `Pressure source / reference` with `Structural analysis · governing ULS load combination`, allow replacement with the project reference, and apply `k5 < 1.0` only after explicit applicability confirmation for the candidate length and governing splitting plane. The prefilled source is not confirmation. Clear confirmations whenever an input changes the candidate length or evidence. Identify every missing Refined value at the field and expose its invalid state programmatically while retaining the separately labelled Basic adopted reference. `k7` eligibility remains independent of Refined-input completeness. Use one full-width Refined layout: a three-column desktop input grid, a full-width calculated-factor strip, and only applicable confirmations; do not retain unequal columns or empty review-panel space.
+
+For AS 3600 Cl. 13.1.2.2, calculate `Lsy.tb,formula = 0.5 k1 k3 fsy db / (k2 sqrt(f'c))`, with `k1`, `k2`, `k3`, the concrete-strength cap, applicable lower limit and selected epoxy-coated-bar / lightweight-concrete multipliers in the correct clause sequence. For lap geometry use `cd = min(a/2, c)`. For straight development use `cd = min(a/2, c)` in wide members and `cd = min(a/2, c1, c)` in narrow members. For standard hooked or cogged bars use the separate Figure 13.1.2.2 geometry: `cd = a/2` in wide members and `cd = min(a/2, c1)` in narrow members. Do not calculate a straight-bar development result and then apply the hook/cog factor to that mismatched geometry.
+
+The standalone full-yield development reference must be calculated independently from the lap branch. Apply the Cl. 13.1.2.2 lower limit at the basic-development stage, then the selected material multiplier, then valid Cl. 13.1.2.3 Refined factors. When `Lsy.t` is used in the Cl. 13.2.2 lap calculation, do not first force it to the Cl. 13.1.2.2 lower limit; the lap equation applies its separate lower-limit candidate.
+
+For Cl. 13.2.2, use `Llap = max(k7 Lsy.t, 0.058 fsy k1 db)` for wide elements. For narrow elements also compare `Lsy.t + 1.5sb`; where `sb <= 3db`, the supported branch may take `sb = 0` in that candidate and must state that treatment. Do not use a separate editable `k7 basis` selector. Derive `k7 = 1.00` only when the user confirms both `As,provided >= 2As,required` from the member design and no more than 50% spliced at the section; otherwise use `k7 = 1.25`. Keep the `Lap reduction` panel to those two conditions and show the potential/adopted reduction once in its summary. Do not include a physical-stagger control or lap drawing. Keep the partial-utilisation and cog/hook boundaries in `References & limitations`, not in the `k7` panel. Do not scale the lap continuously by bar utilisation or `sigma_st/fsy`: Cl. 13.2.2 explicitly calls up `Lsy.t` from Cl. 13.1.2.1, while Cl. 13.1.2.4 is a separate less-than-yield development-length provision.
+
+A standard cog or hook is an independent cast-in anchorage method at bar termination, not an additional Cl. 13.2.2 lap reduction. The InfraBuild *Reinforcing Product Guide*, pp. 36-37, states that a standard cog/hook provides half the tensile development length for that end of the bar, measured from its outside, under Cl. 13.1.2.6-13.1.2.7. Before requesting one concise detailing confirmation, calculate and display the qualification requirements: straight extension `max(4db, 70 mm)`; bend diameter to Cl. 17.2.3.3; for a cog, 90-degree geometry, bend diameter not exceeding `8db`, and the same total bar length as a 180-degree hook; and, where `sigma_st > 400 MPa`, a transverse bar at least equal to the anchored-bar diameter placed in contact and extending at least `4db` each side. Show the supporting half-development reference only after these requirements are confirmed; otherwise use `HOOK / COG DETAILING REQUIRED`. Do not subtract the value from `Llap`, multiply a straight lap by 0.5, or treat the cog/hook as a `k7` qualification.
+
+For Cl. 13.1.2.4, require only a positive `sigma_st <= fsy` before showing the stress-based reference. The page does not collect a stress-source classification, calculation/drawing reference or separate applicability confirmation. For straight development, instruct the user to enter the design tensile stress in the bar at the assessed section; for a standard hook or cog, use the maximum design tensile stress in the bar being anchored. Require verification against the project calculation before issue. Calculate `Lst = Lsy.t sigma_st/fsy` and conservatively retain the `12db` minimum for every supported case, while stating that any clause-specific slab alternative is not implemented. Missing or zero `sigma_st` makes the selected stress-based reference unavailable; retain the separately labelled full-yield reference as context only. If `sigma_st > fsy`, stop the reduction and require project-action/bar-stress review. Where actual-stress and Refined reductions are combined, display the reduced-length candidate first and require separate confirmation that the Refined confinement and pressure evidence remains valid throughout that candidate `Lst` length before adoption. Do not derive stress from a fixed `phi` or use a universal `phi = 0.8`.
+
+Place primary results immediately after applicable inputs. Keep lap and development at termination as independent blocks. The lap block shows `Adopted lap length` and its governing basis. The PIR block gives primary emphasis to `AS 3600 reference depth` and states `Not an installation depth - product design required`. Use `FULL-YIELD REFERENCE`, `STRESS-BASED REFERENCE` or `INPUT REQUIRED`. Do not show available embedment, a product selector, a report form or a site-fit comparison. For a cast-in starter, show the selected straight-development or hook/cog reference as the primary result.
+
+Do not include a lap drawing or application schematic. Define `db`, `c`, `a`, `sb` and `cd` through professional field labels, calculated outputs and the folded formula trail.
+
+Do not include a provided-lap comparison. The module returns the required lap length and its qualified reduction assessment. A cast-in development path returns the applicable straight or standard hook/cog reference. A PIR path stops at the expressly labelled AS 3600 reference depth and external-design warning. Product selection, AS 5216 checks, manufacturer-software calculations, report review, available-depth verification and site-fit acceptance remain separate project workflows.
+
+Keep the Reo layout compact and check-ordered. Group headings sit above their controls so route selectors and four-field engineering rows use the full card width. Do not add extension summary cards. Place the primary reference immediately after applicable inputs; secondary schedules, formula trails and source material remain collapsed.
+
+Keep the same-condition N10 to N40 schedule, formula trail, Reo data and product manuals secondary and collapsed. The schedule is available only for the Basic method with default `k7 = 1.25`; do not propagate Refined confinement data or a qualified `k7 = 1.00` across bar sizes. N10 to N40 are the only calculator selections. N50 may appear only in the reference table as an April 2022 Product Guide on-request item that is omitted from the current product page and remains outside the calculator scope. Use AS/NZS 4671:2019 nominal diameter and area for calculation and keep supplier mass, metres per tonne and availability as product references only. Describe the local InfraBuild guide as fourth edition with information current April 2022. Historical OneSteel AS 3600:2009 lap tables remain research context only.
+
+Use this source hierarchy: AS 3600:2018 incorporating Amendments 1 and 2 for cast-in development, hook/cog anchorage and lap; AS/NZS 4671:2019 for nominal reinforcement data; and manufacturer/supplier manuals as supporting product and detailing references only. Product-specific PIR design must use the project-nominated AS 5216 edition, current product assessment and manufacturer software or qualified report outside this page. No proprietary product-capacity equation is implemented or labelled checked. Record source locations as Cl. 13.1.2.2 on PDF page 188; Figure 13.1.2.2 on PDF page 189; Cl. 13.1.2.3 on PDF pages 190 to 192; Cl. 13.1.2.4 on PDF page 192; Cl. 13.2.1 on PDF pages 195 to 196; and Cl. 13.2.2 / Figure 13.2.2 on PDF page 196.
+
+Keep these exclusions explicit: bars larger than 40 mm; tension-tie lap splices; compression laps; mesh and bundled bars; complete hook/cog geometry and detailing design; headed bars, welded and mechanical splices; mixed bar sizes; proprietary high-strength systems; seismic plastic-hinge and bridge-specific detailing; complete cover, spacing, crack-control and member-capacity review; AS 5216 PIR capacity design; adhesive resistance, edge/spacing, splitting, breakout, installation and approval calculations; interface transfer; pad and pedestal reinforcement; anchor-cage coordination; soil, bearing and foundation capacity.
+
+Release requires: source-page checks; the Cl. 13.2.1(a) project-use note; independent lap and development regression cases; correct lower-limit and material-multiplier ordering; automatic `k7` selection from the two confirmations; default-versus-qualified reduction reporting where the `k7`, lower-limit or narrow-gap candidate governs; wide/narrow and contact/non-contact cases; Refined-data eligibility, explicit candidate-to-adopt reconciliation, pressure-evidence gating, field-level invalid state and independently labelled Basic fallback; independent straight and standard hook/cog cast-in routes with displayed detailing prerequisites and no lap reduction; cast-in/PIR origin labels; missing/zero, valid and over-yield `sigma_st` cases; N40 permitted and N50 absent from calculator selection; same-condition schedule enabled only for Basic/default `k7`; invalid-input, stale-result clearing and dependent-confirmation resets; raw/candidate/adopted comparison boundaries; every design-check and installation branch; PIR stopping at the AS 3600 reference depth plus one external-design warning; no project-scenario selector, extension summary, hidden product-report or site-fit workflow; active mobile tool visibility; and desktop/phone verification of the lightweight no-drawing layout. Keep pure length logic in `reo-calculation.js`, run `node tests/reo-lapping.test.js`, and retain module status `For Review` until all gates pass.
+
+### 15.18 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
@@ -2778,7 +2845,7 @@ Token and browser notes:
 - Local browser use, clicking the page, or sharing the page link does not consume model tokens.
 - Token usage only occurs when asking Codex to inspect, edit, convert references, reason, or generate code/content.
 
-### 15.18 Professional Web Audit Protocol
+### 15.19 Professional Web Audit Protocol
 
 This is the single mandatory audit workflow for SC Handbook. Section 6.2 defines the required calculation contract; this section verifies that the source evidence, implementation, interface and test record satisfy that contract. Whenever a page or calculation is requested to be checked, audited, reviewed or verified, or the user asks whether problems remain, use this protocol unless the scope is explicitly narrowed.
 

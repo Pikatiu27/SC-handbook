@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260724beamrelease1">
+  <link rel="stylesheet" href="styles.css?v=20260724reorelease1">
 </head>
 <body>
   <header class="topbar">
@@ -29,6 +29,7 @@
         <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-selected="false" hidden>Axial Member Capacity</button>
         <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-selected="false" hidden>Beam Section Capacity</button>
         <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-selected="false" hidden>Concrete Pad Section</button>
+        <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-selected="false" hidden>Reinforcement</button>
         <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-selected="false" hidden>Screw Piles Selector</button>
         <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-selected="false" hidden>Rock Anchor Selector</button>
       </nav>
@@ -1021,6 +1022,238 @@
       </details>
     </section>
 
+    <section id="reoPanel" class="tool-panel" hidden>
+      <div class="tool-heading">
+        <div><p class="kicker">AS 3600 reference for 500N reinforcing bars in tension</p><h2>Reinforcement Development &amp; Lap Lengths</h2></div>
+        <span class="tool-status">For Review &middot; AS 3600</span>
+      </div>
+
+      <section class="lookup-card reo-card">
+        <div class="input-cluster reo-input-stack">
+          <section class="input-group input-group-action reo-context-group">
+            <span class="input-group-heading"><b>Quick setup</b><small>Select the check and bar size. Relevant engineering defaults are preselected.</small></span>
+            <div class="input-group-fields reo-context-fields">
+              <label id="reoRebarPathField"><span>Design check</span><select id="reoRebarPath"><option value="starter-lap">Lap splice</option><option value="end-anchorage">Development at termination</option></select></label>
+              <label class="size-field reo-bar-field"><span>Bar size</span><select id="reoBar"></select></label>
+              <label class="reo-secondary-classification" id="reoExistingBarOriginField" hidden><span id="reoExistingBarOriginLabel">Bar installation</span><select id="reoExistingBarOrigin"><option value="pir">Post-installed reinforcement (PIR)</option><option value="cast-in">Cast-in reinforcement</option></select></label>
+            </div>
+            <details class="reo-assumptions" id="reoAssumptionsDetails">
+              <summary><span><b id="reoAssumptionsTitle">Common assumptions</b><small id="reoAssumptionSummary">General member &middot; wide member &middot; contact lap &middot; Basic &middot; other casting position</small></span><i aria-hidden="true">+</i></summary>
+              <div class="input-group-fields two reo-assumption-fields">
+                <label id="reoMemberRoleField"><span>Tension-tie status</span><select id="reoMemberRole"><option value="standard">Not a tension-tie</option><option value="tension-tie">Tension-tie member</option></select></label>
+                <label id="reoMemberTypeField"><span>Member classification</span><select id="reoMemberType"><option value="wide">Wide / bars in member plane</option><option value="narrow">Narrow / beam web or column core</option></select><small class="field-help">Wide: bars distributed in the member plane. Narrow: bars confined to a beam web or column core.</small></label>
+                <label id="reoLapTypeField"><span>Lap arrangement</span><select id="reoLapType"><option value="contact">Contact lap</option><option value="noncontact">Non-contact lap</option></select></label>
+                <label id="reoMethodField"><span>Development basis</span><select id="reoMethod"><option value="basic">Basic &middot; recommended</option><option value="refined">Refined &middot; project-verified inputs</option></select></label>
+                <label id="reoCastingPositionField"><span>Casting position</span><select id="reoCastingPosition"><option value="other">Other bars &middot; k<sub>1</sub> = 1.0</option><option value="top">Horizontal bar &middot; &gt;300 mm concrete below &middot; k<sub>1</sub> = 1.3</option></select></label>
+                <label id="reoMaterialConditionField"><span>Material condition</span><select id="reoMaterialCondition"><option value="standard">Normal-weight &middot; uncoated</option><option value="epoxy">Epoxy-coated bar &middot; 1.5</option><option value="lightweight">Lightweight concrete &middot; 1.3</option><option value="both">Epoxy-coated + lightweight &middot; 1.95</option></select></label>
+              </div>
+            </details>
+          </section>
+
+          <div class="reo-path-stack" id="reoLapPathInputs">
+            <div class="reo-path-heading"><span>LAP SPLICE</span><strong>Lap design basis</strong><small>Straight 500N deformed bars.</small></div>
+
+            <section class="input-group input-group-section" id="reoLapGeometryGroup">
+              <span class="input-group-heading"><b>Required inputs</b><small>Straight 500N bar; f'<sub>c</sub> capped at 65 MPa; c<sub>d</sub> = min(a/2, c).</small></span>
+              <div class="input-group-fields four">
+                <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="reoConcreteStrength" type="number" min="20" max="120" step="1" value="32" aria-describedby="reoConcreteStrengthError"><em>MPa</em></span><small class="field-error" id="reoConcreteStrengthError" hidden>Enter at least 20 MPa.</small></label>
+                <label><span>Clear cover, c</span><span class="unit"><input id="reoCover" type="number" min="1" step="5" value="40" aria-describedby="reoCoverError"><em>mm</em></span><small class="field-error" id="reoCoverError" hidden>Enter a value greater than zero.</small></label>
+                <label><span>Clear bar spacing, a</span><span class="unit"><input id="reoClearSpacing" type="number" min="1" step="5" value="100" aria-describedby="reoClearSpacingError"><em>mm</em></span><small class="field-error" id="reoClearSpacingError" hidden>Enter a value greater than zero.</small></label>
+                <label id="reoBarGapField"><span>Non-contact gap, s<sub>b</sub></span><span class="unit"><input id="reoBarGap" type="number" min="0" step="5" value="80" aria-describedby="reoBarGapError"><em>mm</em></span><small class="field-error" id="reoBarGapError" hidden>Enter zero or a positive value.</small></label>
+                <label class="reo-derived-value"><span>Calculated c<sub>d</sub></span><span class="unit reo-derived-line"><output id="reoCd">40.0</output><em>mm</em></span></label>
+              </div>
+            </section>
+
+            <section class="capacity-section reo-result-section" id="reoLapResultSection">
+              <div class="section-heading"><div><span class="section-tag">RESULT</span><h2>Required lap length</h2></div><span id="reoResultStatus" role="status" aria-live="polite">AS 3600 REFERENCE</span></div>
+              <div class="capacity-grid reo-results">
+                <article class="capacity-card reo-primary-result"><span class="capacity-label"><span id="reoPrimaryResultLabel">Adopted lap length</span> <b>L<sub>lap,adopted</sub></b></span><strong aria-live="polite" aria-atomic="true"><output id="reoRequiredLength">-</output><small> mm</small></strong><p class="reo-result-meta"><span><output id="reoLapRatio">-</output>d<sub>b</sub></span><span id="reoGoverning">Governing expression not calculated.</span><small id="reoDevelopmentLength">L<sub>sy.t</sub> = -</small><small>Rounded up to the next 10 mm.</small></p></article>
+              </div>
+              <p class="result-note" id="reoResultNote">Use only where the project drawings or specification permit the splice &middot; AS 3600 Cl. 13.2.1(a). Same-size bars assumed.</p>
+            </section>
+
+            <details class="detail-card reo-k7-card" id="reoLapFactorGroup">
+              <summary><span><b>Lap reduction</b><small><span id="reoK7SummaryValue">k<sub>7</sub> = 1.25 &middot; qualification required</span></small></span><i>+</i></summary>
+              <div class="detail-body"><section>
+                <div class="reo-reduction-conditions">
+                  <label class="checkbox-field"><span><b>Strength reserve</b><small>A<sub>s,provided</sub> &ge; 2A<sub>s,required</sub> &middot; member design.</small></span><input id="reoDoubleArea" type="checkbox"></label>
+                  <label class="checkbox-field"><span><b>Splice proportion</b><small>&le;50% of reinforcement spliced at the section.</small></span><input id="reoHalfSpliced" type="checkbox"></label>
+                </div>
+                <p class="result-note reo-reduction-effect" id="reoK7ReductionNote">Both conditions are required for k<sub>7</sub> = 1.00.</p>
+              </section></div>
+            </details>
+
+            <details id="reoRefinedDetails" class="detail-card reo-refined-card" hidden>
+              <summary><span><b>Verified development refinement</b><small>Optional k<sub>4</sub> / k<sub>5</sub> credit &middot; project-verified data only.</small></span><i>+</i></summary>
+              <div class="detail-body"><section>
+                <div class="reo-refined-layout">
+                  <div class="reo-refined-panel reo-refined-input-panel">
+                    <span class="reo-refined-panel-heading"><b>Refinement inputs</b></span>
+                    <details class="reo-counting-guide" id="reoCountingGuide">
+                      <summary>How to count transverse reinforcement</summary>
+                      <p><b>n<sub>f</sub></b> is the number of fitment bars within one longitudinal spacing or pitch that the governing splitting crack crosses; zero is permitted. Do not use the total fitment-leg count. <b>n<sub>bs</sub></b> is the number of longitudinal bars developed or spliced at which that crack can develop. <b>&Sigma;A<sub>tr</sub></b> is the qualifying transverse-bar area within the displayed candidate Refined lap.</p>
+                    </details>
+                    <div class="input-group-fields reo-refined-input-grid" id="reoRefinedInputGrid">
+                      <label><span>Confinement basis</span><select id="reoRefinedArrangement"><option value="none">No verified confinement credit</option><option value="custom">Custom verified confinement</option></select></label>
+                      <label id="reoAtrMinBasisField"><span>&Sigma;A<sub>tr,min</sub> basis</span><select id="reoAtrMinBasis"><option value="slab-wall">Slab / wall &middot; zero</option><option value="beam-column">Beam / column &middot; 0.25A<sub>s</sub></option></select><small class="field-help" id="reoAtrMinHelp">Narrow members require the beam / column basis.</small></label>
+                      <label id="reoNfField"><span>Fitment bars crossed, n<sub>f</sub></span><input id="reoNf" type="number" min="0" step="1" value="0" aria-describedby="reoNfError"><small class="field-error" id="reoNfError" hidden>Enter a whole-number count of zero or greater.</small></label>
+                      <label id="reoNbsField"><span>Bars developed on splitting plane, n<sub>bs</sub></span><input id="reoNbs" type="number" min="1" step="1" value="1" aria-describedby="reoNbsError"><small class="field-error" id="reoNbsError" hidden>Enter a whole-number count of at least one.</small></label>
+                      <label id="reoAtrTotalField"><span>Qualifying area in candidate lap, &Sigma;A<sub>tr</sub></span><span class="unit"><input id="reoAtrTotal" type="number" min="0" step="10" value="0" aria-describedby="reoAtrTotalError"><em>mm&sup2;</em></span><small class="field-error" id="reoAtrTotalError" hidden>Enter zero or a verified positive area.</small></label>
+                      <label><span>Verified transverse compressive pressure, &rho;<sub>p</sub></span><span class="unit"><input id="reoPressure" type="number" min="0" step="0.5" value="0" aria-describedby="reoPressureError"><em>MPa</em></span><small class="field-error" id="reoPressureError" hidden>Enter zero or a verified non-negative pressure.</small></label>
+                      <label class="reo-pressure-reference" id="reoPressureReferenceField" hidden><span>Pressure source / reference</span><input id="reoPressureReference" type="text" value="Structural analysis · governing ULS load combination"><small class="field-help">Replace with the project calculation or model reference before issue.</small></label>
+                      <label class="checkbox-field reo-pressure-confirm" id="reoPressureBasisConfirmedField" hidden><span><b>Pressure basis confirmed</b><small>ULS pressure applies throughout the candidate lap and governing splitting plane.</small></span><input id="reoPressureBasisConfirmed" type="checkbox"></label>
+                    </div>
+                  </div>
+                  <div class="reo-refined-panel reo-refined-review-panel">
+                    <span class="reo-refined-panel-heading"><b>Calculated factors</b></span>
+                    <div class="reo-refined-factor-grid" aria-label="Calculated refined factors">
+                      <div class="reo-factor-output"><span>K</span><output id="reoKValue">0.000</output></div>
+                      <div class="reo-factor-output"><span>&lambda; / k<sub>4</sub> / k<sub>5</sub></span><output id="reoCombinedFactor">0.000 / 1.000 / 1.000</output></div>
+                      <div class="reo-factor-output"><span>Candidate refined lap</span><output><span id="reoRefinedCandidateLength">-</span> mm</output></div>
+                    </div>
+                    <label id="reoTransverseLocationField" class="checkbox-field reo-refined-confirm"><span><b>Effective location confirmed</b><small>Qualifying transverse reinforcement lies between the developed bars and the tensile face.</small><small class="field-error" id="reoTransverseLocationError" hidden>Confirm the qualifying location.</small></span><input id="reoTransverseLocationConfirmed" type="checkbox" aria-describedby="reoTransverseLocationError"></label>
+                    <label id="reoAtrCountConfirmedField" class="checkbox-field reo-refined-confirm"><span><b>Candidate-length reinforcement confirmed</b><small>&Sigma;A<sub>tr</sub> is counted throughout the displayed candidate lap.</small><small class="field-error" id="reoAtrCountConfirmedError" hidden>Confirm the candidate-length count.</small></span><input id="reoAtrCountConfirmed" type="checkbox" aria-describedby="reoAtrCountConfirmedError"></label>
+                  </div>
+                </div>
+                <p class="result-note" id="reoRefinedNote">No confinement reduction until the refined basis and bar location are confirmed.</p>
+              </section></div>
+            </details>
+          </div>
+
+          <div class="reo-path-stack reo-existing-path" id="reoAnchorageInputs" hidden>
+            <div class="reo-path-heading"><span id="reoAnchoragePathTag">DEVELOPMENT</span><strong id="reoAnchoragePathTitle">Development at bar termination</strong><small id="reoAnchoragePathNote">Determine the development required before the bar terminates.</small></div>
+
+            <section class="input-group input-group-action">
+              <span class="input-group-heading"><b id="reoReferenceBasisHeading">Development basis</b><small id="reoReferenceBasisHelp">Post-installed reinforcement requires a qualified project design report.</small></span>
+              <div class="input-group-fields four reo-origin-fields">
+                <label id="reoCastInTerminationField" hidden><span>Anchorage method</span><select id="reoCastInTermination"><option value="straight">Straight development</option><option value="hook">Standard hook</option><option value="cog">Standard cog</option></select><small class="field-help">Hook and cog are anchorage methods, not lap reductions &middot; AS 3600 Cls 13.1.2.6&ndash;13.1.2.7.</small></label>
+                <div id="reoTerminationRequirements" class="reo-qualification-note" hidden></div>
+                <label id="reoCastInTerminationConfirmedField" class="checkbox-field reo-termination-confirm" hidden><span><b>Standard anchorage detailing confirmed</b><small>The displayed bend, extension and transverse-restraint requirements are satisfied.</small></span><input id="reoCastInTerminationConfirmed" type="checkbox"></label>
+                <label id="reoAnchorageBasisField"><span>Stress basis</span><select id="reoAnchorageBasis"><option value="full">Full-yield stress</option><option value="actual">Project steel stress</option></select></label>
+                <label id="reoSteelStressField"><span id="reoSteelStressLabel">Design tensile stress, &sigma;<sub>st</sub></span><span class="unit"><input id="reoSteelStress" type="number" min="0" step="5" value="0"><em>MPa</em></span><small class="field-help" id="reoSteelStressHelp">Use the design tensile stress in the bar at the assessed section. Verify it against the project calculation before issue.</small></label>
+                <label id="reoExistingMethodField"><span>Development basis</span><select id="reoExistingMethod"><option value="basic">Basic</option><option value="refined">Refined</option></select></label>
+                <label id="reoReducedLengthRefinedConfirmedField" class="checkbox-field reo-reduced-length-confirm"><span><b>Reduced-length Refined basis confirmed</b><small>Confinement and pressure remain valid within L<sub>st</sub>.</small></span><input id="reoReducedLengthRefinedConfirmed" type="checkbox"></label>
+              </div>
+              <p class="result-note" id="reoAnchorageStressNote">Use full yield unless a project design steel stress is available. The 12d<sub>b</sub> minimum is retained; the slab alternative is excluded.</p>
+            </section>
+
+            <section class="input-group input-group-material">
+              <span class="input-group-heading"><b>Existing concrete</b><small>Use verified existing-condition data.</small></span>
+              <div class="input-group-fields four">
+                <label><span>Member classification</span><select id="reoExistingMemberType"><option value="wide">Wide / bars in member plane</option><option value="narrow">Narrow / beam web or column</option></select><small class="field-help">Wide: bars distributed in the member plane. Narrow: beam web or column core.</small></label>
+                <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="reoExistingConcreteStrength" type="number" min="20" max="120" step="1" value="32"><em>MPa</em></span></label>
+                <label><span id="reoExistingCastingPositionLabel">Casting position</span><select id="reoExistingCastingPosition"><option value="other">Other bars &middot; k<sub>1</sub> = 1.0</option><option value="top">Horizontal bar &middot; &gt;300 mm concrete below &middot; k<sub>1</sub> = 1.3</option></select></label>
+                <label><span id="reoExistingMaterialConditionLabel">Material condition</span><select id="reoExistingMaterialCondition"><option value="standard">Normal-weight &middot; uncoated</option><option value="epoxy">Epoxy-coated bar &middot; 1.5</option><option value="lightweight">Lightweight concrete &middot; 1.3</option><option value="both">Epoxy-coated + lightweight &middot; 1.95</option></select></label>
+              </div>
+            </section>
+
+            <section class="input-group input-group-section">
+              <span class="input-group-heading"><b>Cover and spacing</b><small id="reoExistingGeometryHelp">Straight bar: c<sub>d</sub> = min(a/2, c). Use the actual bar position.</small></span>
+              <div class="input-group-fields four" id="reoExistingGeometryFields">
+                <label><span>Clear cover, c</span><span class="unit"><input id="reoExistingCover" type="number" min="1" step="5" value="40"><em>mm</em></span></label>
+                <label><span>Clear bar spacing, a</span><span class="unit"><input id="reoExistingClearSpacing" type="number" min="1" step="5" value="100"><em>mm</em></span></label>
+                <label id="reoExistingC1Field"><span>End / side distance, c<sub>1</sub></span><span class="unit"><input id="reoExistingC1" type="number" min="1" step="5" value="100"><em>mm</em></span></label>
+                <label class="reo-derived-value"><span>Calculated c<sub>d</sub></span><span class="unit reo-derived-line"><output id="reoExistingCd">40.0</output><em>mm</em></span></label>
+              </div>
+            </section>
+
+            <details id="reoExistingRefinedDetails" class="detail-card reo-refined-card" hidden>
+              <summary><span><b>Verified development refinement</b><small>Optional k<sub>4</sub> / k<sub>5</sub> credit &middot; project-verified data only.</small></span><i>+</i></summary>
+              <div class="detail-body"><section>
+                <div class="reo-refined-layout">
+                  <div class="reo-refined-panel reo-refined-input-panel">
+                    <span class="reo-refined-panel-heading"><b>Refinement inputs</b></span>
+                    <div class="input-group-fields reo-refined-input-grid" id="reoExistingRefinedInputGrid">
+                      <label><span>Confinement basis</span><select id="reoExistingRefinedArrangement"><option value="none">No verified confinement credit</option><option value="custom">Custom verified confinement</option></select></label>
+                      <label id="reoExistingAtrMinBasisField"><span>&Sigma;A<sub>tr,min</sub> basis</span><select id="reoExistingAtrMinBasis"><option value="slab-wall">Slab / wall &middot; zero</option><option value="beam-column">Beam / column &middot; 0.25A<sub>s</sub></option></select><small class="field-help" id="reoExistingAtrMinHelp">Narrow members require the beam / column basis.</small></label>
+                      <label id="reoExistingNfField"><span>Fitment bars crossed, n<sub>f</sub></span><input id="reoExistingNf" type="number" min="0" step="1" value="0" aria-describedby="reoExistingNfError"><small class="field-help">Count bars crossed by the governing splitting crack within one spacing or pitch.</small><small class="field-error" id="reoExistingNfError" hidden>Enter a whole-number count of zero or greater.</small></label>
+                      <label id="reoExistingNbsField"><span>Bars developed on splitting plane, n<sub>bs</sub></span><input id="reoExistingNbs" type="number" min="1" step="1" value="1" aria-describedby="reoExistingNbsError"><small class="field-error" id="reoExistingNbsError" hidden>Enter a whole-number count of at least one.</small></label>
+                      <label id="reoExistingAtrTotalField"><span>Qualifying area in candidate development, &Sigma;A<sub>tr</sub></span><span class="unit"><input id="reoExistingAtrTotal" type="number" min="0" step="10" value="0" aria-describedby="reoExistingAtrTotalError"><em>mm&sup2;</em></span><small class="field-error" id="reoExistingAtrTotalError" hidden>Enter zero or a verified positive area.</small></label>
+                      <label><span>Verified transverse compressive pressure, &rho;<sub>p</sub></span><span class="unit"><input id="reoExistingPressure" type="number" min="0" step="0.5" value="0" aria-describedby="reoExistingPressureError"><em>MPa</em></span><small class="field-error" id="reoExistingPressureError" hidden>Enter zero or a verified non-negative pressure.</small></label>
+                      <label class="reo-pressure-reference" id="reoExistingPressureReferenceField" hidden><span>Pressure source / reference</span><input id="reoExistingPressureReference" type="text" value="Structural analysis · governing ULS load combination"><small class="field-help">Replace with the project calculation or model reference before issue.</small></label>
+                      <label class="checkbox-field reo-pressure-confirm" id="reoExistingPressureBasisConfirmedField" hidden><span><b>Pressure basis confirmed</b><small>ULS pressure applies throughout the candidate development and governing splitting plane.</small></span><input id="reoExistingPressureBasisConfirmed" type="checkbox"></label>
+                    </div>
+                  </div>
+                  <div class="reo-refined-panel reo-refined-review-panel">
+                    <span class="reo-refined-panel-heading"><b>Calculated factors</b></span>
+                    <div class="reo-refined-factor-grid" aria-label="Calculated existing refined factors">
+                      <div class="reo-factor-output"><span>K</span><output id="reoExistingKValue">0.000</output></div>
+                      <div class="reo-factor-output"><span>&lambda; / k<sub>4</sub> / k<sub>5</sub></span><output id="reoExistingCombinedFactor">0.000 / 1.000 / 1.000</output></div>
+                      <div class="reo-factor-output"><span>Candidate refined development</span><output><span id="reoExistingRefinedCandidateLength">-</span> mm</output></div>
+                    </div>
+                    <label id="reoExistingTransverseLocationField" class="checkbox-field reo-refined-confirm"><span><b>Effective location confirmed</b><small>Qualifying transverse reinforcement lies between the developed bars and the tensile face.</small><small class="field-error" id="reoExistingTransverseLocationError" hidden>Confirm the qualifying location.</small></span><input id="reoExistingTransverseLocationConfirmed" type="checkbox" aria-describedby="reoExistingTransverseLocationError"></label>
+                    <label id="reoExistingAtrCountConfirmedField" class="checkbox-field reo-refined-confirm"><span><b>Candidate-length reinforcement confirmed</b><small>&Sigma;A<sub>tr</sub> is counted throughout the displayed candidate development.</small><small class="field-error" id="reoExistingAtrCountConfirmedError" hidden>Confirm the candidate-length count.</small></span><input id="reoExistingAtrCountConfirmed" type="checkbox" aria-describedby="reoExistingAtrCountConfirmedError"></label>
+                  </div>
+                </div>
+                <p class="result-note" id="reoExistingRefinedNote">No confinement reduction until the refined basis and bar location are confirmed.</p>
+              </section></div>
+            </details>
+
+          </div>
+        </div>
+
+        <section class="capacity-section reo-result-section reo-anchorage-result" id="reoAnchorageResultSection" hidden>
+          <div class="section-heading"><div><span class="section-tag" id="reoAnchorageResultTag">DEVELOPMENT</span><h2 id="reoAnchorageResultTitle">Required development length</h2></div><span id="reoAnchorageResultStatus" role="status" aria-live="polite">INPUT REQUIRED</span></div>
+          <div class="capacity-grid reo-reference-results">
+            <article class="capacity-card reo-primary-result"><span class="capacity-label" id="reoRequiredEmbedmentLabel">Required development length <b>L<sub>sy.t</sub></b></span><strong aria-live="polite" aria-atomic="true"><output id="reoAnchoragePrimaryResult">-</output><small> mm</small></strong><p id="reoSaving">AS 3600 development reference.</p></article>
+          </div>
+          <div class="reo-anchorage-reference-strip" id="reoAnchorageReferenceStrip" aria-label="Development and anchorage reference lengths">
+            <div id="reoAnchorageFullReferenceCard"><span>AS 3600 full-yield reference</span><strong><output id="reoAsFullDevelopment">-</output> mm</strong><small id="reoFullReferenceContext">Reference context</small></div>
+          </div>
+          <p class="result-note" id="reoAnchorageResultNote">AS 3600 reference only. Complete all applicable detailing and product-specific checks.</p>
+        </section>
+
+      </section>
+
+      <details class="detail-card" id="reoCalculationDetails">
+        <summary><span><b>Calculation details</b><small id="reoCalculationDetailsSummary">Factors, clauses and Basic schedule.</small></span><i aria-hidden="true">+</i></summary>
+        <div class="detail-body">
+          <section><div class="reo-factor-summary" id="reoFactorSummary" aria-label="Calculated lap factors"><div class="reo-derived-strip"><div><span>k<sub>1</sub></span><strong id="reoK1">1.00</strong></div><div><span>k<sub>2</sub></span><strong id="reoK2">1.12</strong></div><div><span>k<sub>3</sub></span><strong id="reoK3">0.78</strong></div><div><span>k<sub>7</sub></span><strong id="reoK7">1.25</strong></div></div></div><div id="reoFormulaSteps" class="formula-list"></div></section>
+          <section id="reoScheduleDetails"><h3>Basic lap schedule</h3><p class="result-note">Current input conditions &middot; N10-N40 &middot; same-size bars.</p><div class="table-scroll"><table class="compact-lookup-table reo-lap-table"><thead><tr><th>Bar</th><th>Area</th><th>L<sub>sy.t</sub></th><th>Required lap</th><th>Ratio</th><th>Governing branch</th></tr></thead><tbody id="reoLapTableRows"></tbody></table></div></section>
+        </div>
+      </details>
+
+      <details class="detail-card" id="reoReferenceDetails">
+        <summary><span><b>References &amp; limitations</b><small>Bar data, supplier manuals, assumptions and exclusions.</small></span><i aria-hidden="true">+</i></summary>
+        <div class="detail-body">
+          <section><h3>500N deformed bar data</h3><div class="table-scroll"><table class="compact-lookup-table reo-product-table"><thead><tr><th>Bar</th><th>Nominal d<sub>b</sub></th><th>Nominal area</th><th>Standard mass</th><th>Supplier mass</th><th>Approx. metres / tonne</th><th>Supplier availability</th><th>Lap eligibility</th></tr></thead><tbody id="reoProductTableRows"></tbody></table></div><p class="result-note">Diameter and area are calculation data. Supplier mass and availability are ordering references only.</p></section>
+          <section class="reo-manual-grid">
+            <article><b>InfraBuild Reinforcing Product Guide &middot; 4th edition</b><span>Product information stated current April 2022; confirm current supply and certification.</span><a href="https://www.infrabuild.com/wp-content/uploads/sites/8/2021/04/InfraBuild-Reinforcing-Product-Guide_2023.pdf" target="_blank" rel="noreferrer">Open product guide</a></article>
+            <article><b>InfraBuild Construction Solutions Product Guide 2021</b><span>Construction reinforcing products and ordering context.</span><a href="https://www.infrabuild.com/wp-content/uploads/sites/8/2021/04/InfraBuild-Construction-Solutions-Product-Guide_MAR2021.pdf" target="_blank" rel="noreferrer">Open solutions guide</a></article>
+            <article><b>InfraBuild Class N reinforcing bar</b><span>Current supplier product-family page; confirm availability and certificate.</span><a href="https://www.infrabuild.com/reinforcing/products/reinforcing-bar/deformed-reinforcing-bar-rebar-class-n/" target="_blank" rel="noreferrer">Open product page</a></article>
+            <article><b>SENSE 600</b><span>Proprietary higher-strength system; excluded from this 500N calculation.</span><a href="https://www.infrabuild.com/sense-solutions/sense600/" target="_blank" rel="noreferrer">Open system page</a></article>
+            <article><b>OneSteel REODATA 4.0 &middot; historical</b><span>AS 3600:2009 straight-lap tables and hook/cog guidance; research context only.</span></article>
+            <article><b>Hilti Concrete-to-concrete Connections Handbook &middot; Jan 2024</b><span>Design concepts and detailing for post-installed reinforcement connections.</span><a href="https://productdata.hilti.com/APQ_HC_RAW/ASSET_DOC_21602632.pdf" target="_blank" rel="noreferrer">Open Hilti handbook</a></article>
+            <article><b>Hilti Post-Installed Reinforcement in End Anchorages &middot; Nov 2022</b><span>European design background only; not the Australian normative basis.</span><a href="https://productdata.hilti.com/APQ_HC_RAW/ASSET_DOC_19702362.pdf" target="_blank" rel="noreferrer">Open end-anchorage manual</a></article>
+            <article><b>Hilti PROFIS Engineering</b><span>Project-specific adhesive, embedment and failure-mode design remains in PROFIS.</span><a href="https://www.hilti.com.au/c/CLS_CUSTOMER_SOFTWARE/CLS_FASTENING_DESIGN_SOFTWARE/r6502279" target="_blank" rel="noreferrer">Open PROFIS Engineering</a></article>
+            <article><b>AS 5216:2026</b><span>Current Australian post-installed fastening design boundary; verify the edition stated in each project report.</span><a href="https://store.standards.org.au/product/as-5216-2026" target="_blank" rel="noreferrer">Open Standard record</a></article>
+          </section>
+          <section class="reo-reference-limitations"><h3>Basis and limitations</h3><div class="source-body">
+          <div class="source-notes">
+            <p><b>Primary basis</b> - AS 3600:2018 Amd 1 and 2, Cl. 13.1.2.2-13.1.2.4 and Cl. 13.2.1-13.2.2. The licensed Standard governs.</p>
+            <p><b>Scope</b> - N10-N40 500N deformed bars in tension; bar-to-bar lap, straight development and detailing-gated standard hook/cog anchorage.</p>
+            <p><b>Input sets</b> - lap and existing-concrete properties are independent unless project evidence confirms identical conditions.</p>
+            <p><b>Lap lower limit</b> - L<sub>sy.t</sub> excludes the Cl. 13.1.2.2 basic lower limit before the Cl. 13.2.2 lap comparison.</p>
+            <p><b>Rounding</b> - adopted lengths are rounded up to 10 mm; this is a presentation convention.</p>
+            <p><b>Stagger</b> - Figure 13.2.2 gives &ge;0.3L<sub>sy.t.lap</sub> for adjacent 50% staggered zones. This guide neither confirms splice proportion nor qualifies k<sub>7</sub>.</p>
+            <p><b>Product data</b> - AS/NZS 4671 diameter and area are calculation data. Supplier mass and availability are reference data only.</p>
+          </div>
+          <div class="source-notes">
+            <p><b>Not permitted</b> - bars &gt;40 mm and tension-tie laps. Tension-tie splices require welded or mechanical means under Cl. 13.2.1.</p>
+            <p><b>Partial utilisation</b> - do not scale lap length by the steel-stress ratio. Cl. 13.1.2.4 is a separate development-length provision.</p>
+            <p><b>Cog / hook</b> - Cl. 13.1.2.6-13.1.2.7 governs end anchorage. No additional Cl. 13.2.2 lap reduction applies.</p>
+            <p><b>PIR reference</b> - the displayed depth is an AS 3600 development reference using the selected stress basis. It is not an installation depth, AS 5216 result or adhesive-capacity result.</p>
+            <p><b>Product refinement</b> - establish the applicable AS 5216 / EAD / ETA design model and verify steel, concrete-cone and bond-splitting failure. A qualified report may govern at a different depth.</p>
+            <p><b>Excluded</b> - compression laps, mesh, bundled bars, complete hook/cog geometry and detailing design, headed bars, welded or mechanical splice design, proprietary high-strength systems, seismic plastic-hinge detailing and bridge-specific requirements.</p>
+            <p><b>Project checks</b> - product design, edge/spacing, splitting, breakout, installation, interface transfer, detailing, member capacity and foundation capacity.</p>
+            <p><b>Supplier status</b> - the current InfraBuild page lists N10-N40; N40 is on request. The April 2022 Product Guide also lists N50 on request. N50 remains reference-only.</p>
+            <p><b>Issue status</b> - For Review. Verify against the licensed Standard before design issue.</p>
+          </div>
+          </div></section>
+        </div>
+      </details>
+    </section>
+
     <section id="screwPanel" class="tool-panel" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Screw piles &middot; product selector</p><h2>Screw Piles Selector</h2></div>
@@ -1282,14 +1515,15 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.0</b></footer>
-  <script src="bolt-integrity.js?v=20260724beamrelease1"></script>
-  <script src="section-geometry.js?v=20260724beamrelease1"></script>
-  <script src="section-catalogue.js?v=20260724beamrelease1"></script>
-  <script src="beam-section-data.js?v=20260724beamrelease1"></script>
-  <script src="beam-hot-rolled-data.js?v=20260724beamrelease1"></script>
-  <script src="beam-section-capacity.js?v=20260724beamrelease1"></script>
-  <script src="beam-section-reconciliation.js?v=20260724beamrelease1"></script>
-  <script src="app.js?v=20260724beamrelease1"></script>
+  <script src="bolt-integrity.js?v=20260724reorelease1"></script>
+  <script src="section-geometry.js?v=20260724reorelease1"></script>
+  <script src="section-catalogue.js?v=20260724reorelease1"></script>
+  <script src="beam-section-data.js?v=20260724reorelease1"></script>
+  <script src="beam-hot-rolled-data.js?v=20260724reorelease1"></script>
+  <script src="beam-section-capacity.js?v=20260724reorelease1"></script>
+  <script src="beam-section-reconciliation.js?v=20260724reorelease1"></script>
+  <script src="reo-calculation.js?v=20260724reorelease1"></script>
+  <script src="app.js?v=20260724reorelease1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

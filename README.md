@@ -71,6 +71,26 @@ This is a section-capacity view, not a full footing or slab design check. It doe
 
 Concrete pad capacity factor `phi` is shown for the current pure-bending quick-screen assumption using AS 3600 Table 2.2.2 `k_uo` notation for N-class reinforcement. Legacy Y bars use a conservative review value until the actual bar grade and ductility equivalence are verified. One-way shear uses the AS 3600 Cl. 8.2.4 simplified method only for normal-weight, non-prestressed concrete without axial tension or torsion, with `f'c <= 65 MPa`, reinforcement `fsy <= 500 MPa` and maximum aggregate size at least 10 mm. Detectable out-of-scope inputs return `Not evaluated`. Under AS 3600 Table 2.2.2, shear uses `phi = 0.75` only with verified minimum Class N fitments and no web-crushing limit; otherwise `phi = 0.70`. This remains a one-way shear screen, not a complete concrete shear design.
 
+### Rebar Connection Check
+
+The Reinforcement Development & Lap Lengths page is a `For Review` length aid for N10 to N40 500N bars in tension. It separates `Lap splice` from `Development at termination`. Calculations use AS 3600:2018 incorporating Amendments 1 and 2, Section 13, with AS/NZS 4671:2019 nominal bar data. AS 4100, AS 5216, interface design and proprietary product-capacity design remain outside the page.
+
+The page sits under the level 1 `Foundations` category and level 2 `Reinforcement` tab. Its visible workflow is: design check and bar size; conditional bar installation; applicable inputs; primary result; optional lap reduction or refined development; and collapsed calculation basis and limitations. There is no lap schematic, project-scenario selector, extension summary, provided-length comparison, qualified-report form, product selector or site-fit assessment.
+
+For development at termination, `Bar installation` selects the cast-in or PIR evidence boundary. A cast-in bar receives the selected AS 3600 straight development or separately qualified standard hook/cog reference. A PIR route returns only an expressly labelled AS 3600 reference depth and states that it is not an installation depth. Product assessment, failure-mode design, interface transfer, installation controls and available-geometry verification remain in the current qualified manufacturer or project design.
+
+The Cl. 13.1.2.4 less-than-yield option applies only to the separate development-length reference. It requires a positive project-confirmed `sigma_st <= fsy` and conservatively retains the `12db` minimum. If `sigma_st` is missing or zero, the selected reduced reference remains unavailable rather than falling back silently to the full-yield value. The page does not derive stress from a fixed capacity factor or implement a clause-specific slab alternative. The Cl. 13.2.2 lap result is not multiplied by `sigma_st/fsy` or a utilisation ratio.
+
+Results distinguish raw, candidate and adopted rounded lengths. A Refined calculation first returns a candidate length; confinement reinforcement count and any transverse-pressure basis must then be verified through that candidate before it can become the adopted result. The `k7 = 1.00` lap reduction is available only when both AS 3600 qualifications shown on the page are confirmed. The Cl. 13.2.2 lap result is not scaled by a stress ratio.
+
+A standard hook or cog is treated as a separate cast-in end-anchorage route, not a lap reduction. The page displays the required bend diameter, straight extension and any transverse-restraint condition; these requirements must be confirmed before the hook/cog result is adopted. The supplier half-development statement applies to that qualified bar end under AS 3600 Cl. 13.1.2.6-13.1.2.7 and is never subtracted from `Llap`.
+
+A same-condition N10 to N40 schedule is available only for the Basic method with default `k7 = 1.25`; Refined confinement data and qualified `k7 = 1.00` are not propagated across sizes. The product table keeps AS/NZS 4671 design data separate from supplier information. N50 may remain only as reference-table context outside calculator scope.
+
+This is not a complete reinforced-concrete member, post-installed reinforcement, interface, pad, pedestal or foundation design. It excludes bars larger than 40 mm, tension-tie and compression laps, mesh, bundled bars, welded or mechanical splices, proprietary high-strength systems, seismic and bridge-specific requirements, complete cover/spacing/crack-control/member-capacity review, interface transfer, adhesive failure modes, installation, anchor-cage coordination and foundation capacity.
+
+The Reo calculation core is isolated in `reo-calculation.js`. Run `node tests/reo-lapping.test.js` and `node tests/reo-dom-contract.test.js`; the module remains `For Review` until the source, calculation, state-clearing and desktop/phone release gates in `research/rebar-lap/REO_LAPPING_CHECK_OUTLINE.md` are complete.
+
 ### Weld Capacity
 
 The weld tool covers a compact weld-type guide plus a throat-capacity view for common structural welds:
