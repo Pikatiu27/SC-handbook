@@ -827,7 +827,7 @@ Current tab register:
 | --- | --- | --- | --- | --- |
 | `Bolt Capacity` | `Bolt` | AS 4100 bolt / ply quick capacity and demand screen | For Review with checked core clauses | Active quick-reference tab |
 | `Axial Member` | `Axial` | AS 4100 axial member compression / tension quick screen | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
-| `Beam Section` | `Beam` | AS 4100 UB/UC and symmetric custom I-section section-capacity lookup | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
+| `Beam Section` | `Beam` | AS 4100 catalogue and ideal custom section-capacity lookup for the supported Beam families | For Review with checked core clauses, family-specific capacity paths and catalogue rows | Active quick-reference tab |
 | `Section Properties` | `Properties` | Catalogue lookup and ideal-geometry section properties | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
 | `Weld Capacity` | `Weld` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
 | `Pad Section` | `Pad` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
@@ -1534,56 +1534,400 @@ Scope boundaries:
 
 ### 15.12 Beam Section Web Tab Rules
 
-The beam tab is a lightweight AS 4100 section-capacity check. It is not a full beam or member design engine.
+The Beam tab is a lightweight AS 4100 section-capacity tool. Keep its public name as `Beam Section Capacity`. It reports cross-section resistance only and must not imply that beam-member stability, restraint or serviceability has been checked.
 
-Use this scope:
+#### 15.12.1 Purpose, Question and Acceptance Boundary
 
-- Hot-rolled Universal Beam and Universal Column catalogue sections.
-- Custom symmetric I-section input when catalogue data is not available.
-- Major-axis section moment capacity only.
-- Major-axis web shear capacity only.
-- Optional design actions `M*` and `V*`, folded below the main capacity result.
-- Section utilisation based on the governing of `M* / phi Ms` and `V* / phi Vv`, reported only inside the folded design-action review.
+The first-screen engineering question is:
 
-Use Australian product data first. For UB/UC sections, section properties and dimensions should come from OneSteel / InfraBuild hot-rolled product tables wherever possible. Catalogue data may define availability, `d`, `bf`, `tw`, `tf`, `d1`, `Ag`, mass, `Sx`, `Zx`, `Zex`, compactness and `kf`; design equations still need to trace back to AS 4100.
+`For this selected catalogue section or entered ideal section, what is the AS 4100 design section moment capacity about the selected principal bending direction, and what section shear capacity is available for the matching direction?`
 
-Required AS 4100 basis:
+The accepted calculation scope is:
 
-- Section moment capacity uses AS 4100 Cl. 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
-- Catalogue `Zex`, compactness and `kf` may be taken from the section-capacity table instead of recalculating plate slenderness in the browser.
-- The selected-section summary should automatically show catalogue or generated section-property values only: dimensions, mass, `Ag`, `Aw`, `Sx`, `Zx`, `Zex`, `fy`, `kf` and compactness. Do not repeat capacity basis or the web-slenderness screen in the selected-section strip; keep those in calculation steps and basis text.
-- Keep the UB/UC/custom section guide inside the selected-section summary as a compact visual cue. Do not keep a separate first-screen section-guide card unless a future reference guide needs more detail.
-- Keep the main result cards limited to design section moment capacity `phi Ms` and design section shear capacity `phi Vv`. Plastic-limit or elastic-yield references belong in calculation steps, not as peer result cards.
-- Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
-- Web shear yield starts from AS 4100 Cl. 5.11.4: `Vw = 0.6 fy Aw`; report the design value with `phi = 0.90`.
-- For catalogue UB/UC rows, apply a lightweight unstiffened-web shear-buckling screen from AS 4100 Cl. 5.11.5 using `lambda_w = (d1/tw) sqrt(fy/250)` and `alpha_v = 1.0` where `lambda_w <= 82`, otherwise `alpha_v = (82/lambda_w)^2`. Report `phi Vv = phi alpha_v Vw`. This is a quick screen using catalogue `d1` and `tw`, not a substitute for stiffened-web, non-uniform shear, transverse-load or detailed web-panel design.
-- Apply the AS 4100 Cl. 5.12.3 reduced-moment method when both major-axis moment and web shear are entered. Use `Vvm = Vv` where `M* <= 0.75 phi Ms`. For `0.75 phi Ms < M* <= phi Ms`, use `Vvm = Vv[2.2 - 1.6M*/(phi Ms)]`, then check `V* <= phi Vvm`. Report the governing of `M*/(phi Ms)` and `V*/(phi Vvm)`. Do not present `0.60 phi Vv` as a direct code threshold.
+- design section moment capacity `phi Ms` about one selected principal axis or one manufacturer-defined load direction;
+- design section shear capacity `phi Vv` only where a reviewed family-specific AS 4100 shear method exists;
+- optional `M*` and `V*` demand review below the capacity results;
+- AS 4100 moment-shear interaction only where the selected family, axis and shear path satisfy the reviewed clause conditions.
 
-Custom section mode must stay explicit and conservative:
+The tab must distinguish these terms:
 
-- Custom inputs should be dimensions only for the current lightweight page: `d`, `bf`, `tw`, and `tf` for a symmetric I-section, plus the shared steel-grade and design-action inputs.
-- Generate `Ag`, `Aw`, mass, `Ix`, `Zx`, `Sx`, `Zex`, web slenderness, `alpha_v`, `phi Ms` and `phi Vv` from those dimensions.
-- For custom symmetric I-sections, use `Zex = Zx` as a conservative elastic section basis unless the full AS 4100 plate compactness / effective-section calculation is implemented. Do not automatically claim compact plastic capacity from geometry alone.
-- Custom web shear-buckling screening may use `d1 = d - 2tf` and `tw` for the current ideal unstiffened-web screen, but fillets, weld access holes, asymmetric geometry, stiffeners, reduced webs, holes, copes and non-uniform shear stress distribution remain project checks.
-- Keep the custom labels tied to the selected-axis section capacity, not a whole-member design.
+- `Section moment capacity, phi Ms`: local cross-section yielding / local-buckling resistance from AS 4100 Cl. 5.2.
+- `Member moment capacity, phi Mb`: member resistance including lateral stability and restraint, excluded from this tab.
+- `Section shear capacity, phi Vv`: cross-section or web shear resistance from the applicable AS 4100 Section 5.11 path.
 
-Required exclusions:
+Do not reuse the Axial Member calculation result. Reuse only its compact catalogue/custom selection pattern, family-dependent fields, selected-item summary and folded calculation details. Axial fields such as `Ag` and `r` do not establish bending capacity.
+
+#### 15.12.2 Governing Sources and Evidence Hierarchy
+
+Use the following source roles:
+
+| Source role | Required source | Use in the Beam tab |
+| --- | --- | --- |
+| Governing design rule | `AS4100.pdf` | `phi`, principal-axis requirement, section slenderness, compact / non-compact / slender `Ze`, shear and interaction |
+| Hot-rolled product data | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | UB, UC, PFC, Equal Angle and Rod dimensions, mass, section properties, yield stresses and published `Ze` |
+| Hollow-section design data | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | CHS, RHS and SHS dimensions, properties, `kf`, compactness and `Ze` by grade |
+| Current product context | Current official InfraBuild / Austube / Orrcon product pages or e-catalogue | Confirm designation and grade availability; do not silently describe an older table as current stock |
+| Secondary explanation | `Steel Structures Design Manual to AS 4100.pdf` | Worked-example and interpretation check only; AS 4100 remains governing |
+
+Minimum checked citations for implementation:
+
+- `AS4100.pdf | Cl. 5.1 and Cl. 5.2.1 to 5.2.6 | PDF pages 66-69 | printed pages 53-56`.
+- `AS4100.pdf | Table 5.2 | PDF pages 67-68 | printed pages 54-55`.
+- `AS4100.pdf | Table 3.4, capacity factor for bending | PDF page 47 | printed page 34`.
+- `AS4100.pdf | Cl. 5.11.2 to 5.11.5 | PDF pages 86-87 | printed pages 73-74`.
+- `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf | Tables 15 and 16, PFC | PDF page 17 | printed page 15`.
+- `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf | Tables 19 to 21, Equal Angle | PDF pages 19-21 | printed pages 17-19`.
+- `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf | Table 3 and Table 38, Round Bar | PDF pages 9 and 31 | printed pages 7 and 29`.
+- `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf | Part 3, Section 3.2.2 and Tables 3.1-1 to 3.1-6 | PDF pages 24-40`.
+
+Catalogue `Ze` may be used directly only when its family, designation, grade, axis / load direction and table edition are all recorded. Product-table values do not override AS 4100. The local catalogue reconciliation layer must check each supported family / grade / direction against AS 4100:2020 Cl. 5.2 and keep `kf` traceable to Cl. 6.2. Slender Austube flat-element rows may retain the Standard's permitted effective-cross-section result. Where an asymmetric InfraBuild table publishes direction-specific `Ze` without class, infer class only from the published `Ze` position relative to `Z` and `min(S, 1.5Z)` and label that method explicitly.
+
+#### 15.12.3 Target Section Families and Supported Results
+
+Broaden the selector beyond UB / UC while keeping the page section-capacity focused:
+
+| Family | Catalogue source | Section moment directions | Shear result | Current local status |
+| --- | --- | --- | --- | --- |
+| `UB` | InfraBuild Tables 9-12 | `x-x` and `y-y` principal axes | Web shear for `x-x` | Moment enabled for both axes; reviewed major-axis shear and interaction enabled |
+| `UC` | InfraBuild Tables 9-12 | `x-x` and `y-y` principal axes | Web shear for `x-x` | Moment enabled for both axes; reviewed major-axis shear and interaction enabled |
+| `PFC` | InfraBuild Tables 15 and 16 | `x-x`; `y-y Load A`; `y-y Load B` | Web shear for `x-x` beam action | All 10 catalogue rows enabled for moment; reviewed `x-x` shear and interaction enabled |
+| `CHS` | Austube Tables 3.1-1 and 3.1-2 | Axis-independent | AS 4100 Cl. 5.11.4 CHS shear | 73 grade-specific rows enabled for moment and section shear |
+| `RHS` | Austube Tables 3.1-3 and 3.1-4 | `x-x` and `y-y` | Direction-specific two-web shear | 101 grade-specific rows enabled for moment, shear and interaction |
+| `SHS` | Austube Tables 3.1-5 and 3.1-6 | `x-x = y-y` for the symmetric section | Two-web shear | 114 grade-specific rows enabled for moment, shear and interaction |
+| `Equal Angle` | InfraBuild Tables 19 and 20 | Manufacturer load directions `A`, `B`, `C`, `D` | `Not evaluated` | 13 checked catalogue designations enabled for direction-specific moment only |
+| `Rod` | InfraBuild Table 3 plus Table 38 | Axis-independent | `Not evaluated` | 26 round-bar sizes enabled for moment only using generated solid-circle properties |
+| `Custom` | Entered dimensions plus reviewed fixed assumptions | Same direction set as the selected family | `Not evaluated` except where separately released | Dimensions-only geometry is generated for every family; design capacity is enabled only for solid Rod |
+
+Do not call an embedded Axial subset a complete catalogue. Each Beam family must use every checked designation in the adopted product table, or identify the selector visibly as a limited checked subset. PFC and Equal Angle require new Beam-specific property imports even though their Axial designations already exist.
+
+Only principal-axis or manufacturer-defined load directions are in scope. Arbitrary non-principal bending belongs to AS 4100 Cl. 5.7 and is excluded from this lightweight page.
+
+#### 15.12.4 Section Moment Capacity Calculation Contract
+
+##### 15.12.4.1 Common Design Equation
+
+For every supported family and direction:
+
+1. Resolve the selected principal axis or catalogue load direction.
+2. Resolve the design yield stress used for bending, `fy,m`.
+3. Resolve the direction-specific elastic modulus `Z`, plastic modulus `S` and effective section modulus `Ze`.
+4. Calculate nominal section moment capacity: `Ms = fy,m Ze`.
+5. Calculate design section moment capacity: `phi Ms = 0.90 fy,m Ze` using AS 4100 Table 3.4.
+6. Convert to `kN·m` only after the base calculation: `phi Ms [kN·m] = 0.90 fy,m [MPa] Ze [mm³] / 10⁶`.
+
+Use direction-specific subscripts in the UI and calculation steps: `Msx`, `Msy`, `Zex`, `Zey`, or the catalogue load-direction equivalent. PFC Load A/B and Equal Angle Load A/B/C/D must remain visible beside `phi Ms`, `Ze`, the demand basis and the calculation steps; do not collapse different manufacturer cases into the same unqualified `x` or `y` result. Do not show a generic `Ze` when an unsymmetric section has different compression-edge values.
+
+For hot-rolled UB / UC / PFC sections, use the reviewed flange / section design yield stress for the default `fy,m`. Keep the web design yield stress separate as the default `fy,w` for shear; PFC flange and web values can differ in the product table. For CHS, RHS, SHS and Rod, resolve the default grade- and thickness-dependent material value from the applicable product standard or checked product table.
+
+The resolved strength is an editable project input because existing or legacy members may have a verified material record that differs from the current selected grade default. Keep catalogue dimensions and section identity locked. Show the catalogue default, current value and an explicit `Catalogue default` or `Project / legacy override` state, with one action to restore defaults.
+
+When `fy,m` is overridden:
+
+- automatically repeat plate-element slenderness, section class, `Ze`, `kf` coordination and `phi Ms` for UB / UC, PFC `x-x`, CHS, RHS, SHS and Rod;
+- for slender RHS / SHS, use and identify the AS 4100 simplified slender-section `Ze` rule rather than silently retaining the product-table effective-cross-section value for another strength;
+- fail closed for PFC `Load A / Load B` and Equal Angle `Load A / B / C / D` until a verified direction-specific effective-section calculation is available.
+
+When `fy,w` alone is overridden, retain the valid catalogue moment path and update only web slenderness, shear capacity and moment-shear interaction. Reject blank, zero or negative strengths and do not report PASS / FAIL through an unavailable capacity path.
+
+##### 15.12.4.2 Catalogue Section Path
+
+For a catalogue section:
+
+- use the published `Ze` for the selected grade and direction where the adopted product design table supplies it;
+- keep published `Z`, `S`, compactness and `kf` as supporting properties rather than recalculating a rolled section with sharp-corner geometry;
+- reconcile the selected product row with AS 4100:2020 before enabling capacity; show an unresolved status and fail closed if the reconciliation fails;
+- treat `kf = Ae / Ag` as an AS 4100 Cl. 6.2 axial-compression property only; never multiply it into `Ms = fy,m Ze`;
+- calculate `phi Ms` from the checked `fy,m` and `Ze` so the AS 4100 equation remains transparent;
+- label the result `Catalogue Ze + AS 4100 capacity equation`;
+- fail closed if `Ze`, `fy,m`, direction mapping or source status is missing.
+
+For UB / UC / PFC, do not replace missing rolled root radii, tapered surfaces or product-table section moduli with the ideal custom geometry routine. For Equal Angle, use the published Load A / B / C / D diagram and its matching `Ze`; do not infer the governing compression edge from a generic `x` / `y` label.
+
+##### 15.12.4.3 Custom Section Path
+
+Custom mode remains dimensions-only. Family, grade and bending direction are selections; the user must not enter `Ag`, `I`, `Z`, `S`, `Ze`, compactness, `kf` or shear area.
+
+The automatic custom calculation sequence is:
+
+1. Validate dimensions and reject overlapping, negative or physically impossible geometry.
+2. Generate ideal sharp-corner geometry: `Ag`, centroid, `Ix`, `Iy`, `Ixy`, principal axes, extreme-fibre distances and direction-specific `Z`.
+3. Generate direction-specific plastic section modulus `S` from the plastic neutral axis; do not estimate `S` from a fixed shape factor.
+4. Identify every compression plate element, its supported-edge condition, clear width `b`, thickness `t` and residual-stress category.
+5. Calculate flat-element slenderness: `lambda_e = (b/t) sqrt(fy,m/250)`.
+6. Select the governing element with the largest `lambda_e / lambda_ey`; adopt its `lambda_s`, `lambda_sp` and `lambda_sy` under AS 4100 Cl. 5.2.2 and Table 5.2.
+7. For CHS, calculate `lambda_s = (do/t)(fy,m/250)` and use the applicable CHS limits from Table 5.2.
+8. Calculate `Ze` from the applicable compact, non-compact or slender rule.
+9. Calculate `Ms` and `phi Ms` only after `Ze` is valid.
+
+Required `Ze` rules:
+
+- Compact, `lambda_s <= lambda_sp`: `Ze = min(S, 1.5Z)`.
+- Non-compact, `lambda_sp < lambda_s <= lambda_sy`: `Ze = Z + [(lambda_sy - lambda_s)/(lambda_sy - lambda_sp)](Zc - Z)`, where `Zc = min(S, 1.5Z)`.
+- Slender flat element in uniform compression: `Ze = Z(lambda_sy/lambda_s)`, or use the AS 4100 effective cross-section method.
+- Slender flat element with maximum compression at an unsupported edge and zero stress or tension at the supported edge: `Ze = Z(lambda_sy/lambda_s)^2`.
+- Slender CHS: use the lesser of `Z sqrt(lambda_sy/lambda_s)` and `Z(2lambda_sy/lambda_s)^2`.
+
+The current shortcut `Zex = Zx` for an arbitrary custom I-section is not an acceptable final design-capacity rule. `Ze = Z` can be unconservative when the section is slender. Until the complete family-specific compactness and `Ze` path is implemented, custom output must be `Not evaluated - section classification incomplete`; an elastic-yield reference may appear only in calculation details and must not be labelled design capacity.
+
+Use a fixed, visible and conservative residual-stress basis where Custom mode is intentionally input-light:
+
+- ideal custom open plate sections: use the reviewed `HW` Table 5.2 basis unless a more specific fabrication category is built into the family definition;
+- ideal custom AS/NZS 1163 hollow sections: use the reviewed `CF` basis and state that product compliance remains to be confirmed;
+- Rod: no plate-element local-slenderness input, so use the compact solid-section relation after geometry and material validation.
+
+For custom open and hollow sections, omission of fillets and corner radii must be stated. Do not describe the ideal result as a reconstructed manufacturer section.
+
+##### 15.12.4.4 Holes and Net Section
+
+The default catalogue and custom calculation is an unperforated gross-section check under AS 4100 Cl. 5.2.6. Holes, copes, penetrations and flange-area deductions are excluded. Do not add hole inputs to the first-screen workflow. If future net-section bending is added, it must be a separate advanced path with the Cl. 5.2.6 threshold and Cl. 9.1.10 deductions implemented explicitly.
+
+#### 15.12.5 Shear and Moment-Shear Contract
+
+Shear remains secondary to section moment and is family-dependent:
+
+- UB / UC / PFC web shear: `Vw = 0.6 fy,w Aw`, using the checked web yield stress `fy,w` and gross web area. Apply the reviewed AS 4100 Cl. 5.11.2 to 5.11.5 web slenderness and unstiffened-web reduction.
+- Current rolled open-section quick basis: use the reviewed clear web depth and `tw`; do not silently substitute overall depth.
+- CHS: use AS 4100 Cl. 5.11.4, `Vw = 0.36 fy Ae`; use gross area for `Ae` only under the clause hole / net-area condition. For the unperforated catalogue path, state `Ae = Ag`.
+- RHS / SHS: use the reviewed Austube Section 5.2.2.4 direction-specific path. Take the two-web area as `Aw = 2t(d - 2t)` for x-axis bending or `Aw = 2t(b - 2t)` for y-axis bending, apply the AS 4100 web-slenderness reduction where required, and take the lesser of the uniform-shear and Cl. 5.11.3 non-uniform-shear capacities. For y-axis bending, interchange `b` and `d` in the maximum-to-average shear-stress ratio.
+- Equal Angle and Rod: report no numeric shear capacity in the initial expanded tab.
+
+Apply AS 4100 Cl. 5.12.3 moment-shear interaction only where the family and selected direction have both reviewed `Ms` and `Vv` paths and the clause applies. The reviewed reduced method applies to UB / UC / PFC major-axis web shear and to catalogue RHS / SHS through Austube Section 5.2.4. CHS, Equal Angle, Rod and unsupported custom paths remain `Not evaluated` for interaction.
+
+If a family has a valid moment result but no reviewed shear or interaction result:
+
+- show the moment capacity normally;
+- omit the peer shear card rather than presenting a zero capacity;
+- show one short `Shear not evaluated for this section family / direction` note;
+- do not calculate an overall PASS / FAIL or governing utilisation when entered actions require an unavailable combined check.
+
+#### 15.12.6 Beam Catalogue Data Contract
+
+Keep shared product identity separate from Beam-specific capacity data. `section-catalogue.js` may provide shared designation and geometry, but the Beam calculation requires a reviewed direction-specific record such as:
+
+```text
+section identity: family, designation, grade, sourceRef, checkedStatus
+geometry: dimensions, mass, Ag
+moment direction: axis, loadDirection, Z, S, Ze, compactness, fyMoment
+shear direction: method, Aw or Ae, clearDepth, tw, fyShear
+provenance: valueBasis, catalogueEdition, table, PDF page, checkedDate
+```
+
+Data rules:
+
+- import complete adopted product-table ranges, not only the current Axial sample rows;
+- keep each grade as a distinct reviewed capacity record where `fy`, `kf`, class or `Ze` changes;
+- store the manufacturer load-direction key for PFC and Equal Angle rather than flattening unsymmetric values into one generic modulus;
+- keep `fyMoment` and `fyShear` separate for hot-rolled sections;
+- preserve published units in the source mapping and convert once at the calculation boundary;
+- label values `Catalogue`, `Derived from catalogue data`, `Derived from entered geometry`, or `Unavailable`;
+- a missing required field produces `Not evaluated`, never a fallback to another axis, grade or ideal section.
+
+Product availability and calculation suitability are separate. A row may be retained as a checked historical design-property row while its current stock status is `Confirm with supplier`. The page must show the catalogue edition and must not claim branch stock availability.
+
+#### 15.12.7 Input Logic and State Model
+
+Use two levels of selection:
+
+1. `Section source`: segmented control with `Catalogue` and `Custom`.
+2. `Section family`: one compact select menu because the expanded family list is too long for a single segmented row.
+
+Catalogue mode inputs:
+
+- `Section family`;
+- `Catalogue section`;
+- `Steel grade`, limited to grades supported by the selected row;
+- `Bending direction`, shown only where more than one valid direction exists.
+
+Custom mode inputs:
+
+- `Section family`;
+- family-specific dimensions only;
+- `Steel grade`;
+- `Bending direction` where applicable.
+
+Family-specific direction logic:
+
+- UB / UC / RHS: `x-x` or `y-y`.
+- PFC: `x-x`, `y-y - Load A`, `y-y - Load B`. Describe A/B as catalogue bending cases; the arrows define bending sign and compression side, not the force application point.
+- CHS / SHS / Rod: hide the direction control when the supported capacity is axis-independent.
+- Equal Angle: use `Load A`, `Load B`, `Load C`, `Load D` with the principal-axis guide; describe them as catalogue bending cases and do not reduce them to an ambiguous major / minor or unqualified x/y label.
+
+State requirements:
+
+- changing family repopulates only compatible sections, grades, dimensions and directions;
+- catalogue mode hides every custom dimension input;
+- custom mode hides catalogue designation and catalogue-only metadata;
+- derived properties are read-only outputs, not disabled-looking input fields;
+- preserve the last valid choice separately for each family where practical;
+- invalid or incomplete custom typing clears capacity to `Not evaluated` without writing fallback zeroes into the input;
+- design actions remain in a folded panel below the main capacities and must never overwrite section-selection state.
+
+#### 15.12.8 Page Logic and Layout
+
+Use this workflow order inside the existing shared tab structure:
+
+```text
+Tool heading
+  Beam Section Capacity
+  AS 4100:2020 Section 5 - section resistance only
+
+Section selection
+  Catalogue / Custom | Family | Section | Grade
+
+Material strength
+  Editable fy,m default | conditional fy,w default | value source | restore default
+
+Bending direction
+  Conditional axis / load-direction control only when required
+
+Custom dimensions
+  Conditional family-specific dimension row; hidden in Catalogue mode
+
+Selected section
+  Designation + grade + source status
+  Key section properties + compact value-driven section guide
+
+RESULTS Section capacity
+  Primary: design section moment capacity, phi Ms
+  Secondary: design section shear capacity, phi Vv, only when evaluated
+
+Design actions and utilisation [collapsed]
+Calculation steps [collapsed]
+Calculation basis and limitations [collapsed]
+```
+
+Desktop layout:
+
+- keep selection controls in one engineering row where labels remain readable;
+- place a short conditional direction row below selection rather than mixing direction with material values;
+- place Custom dimensions in one family-specific row with stable control widths;
+- use a two-part selected-section summary: compact properties on the left and the section guide on the right;
+- use one full-width moment result when shear is unavailable; do not leave an empty second card.
+
+Phone layout:
+
+- stack selection, direction and dimensions in the same engineering order;
+- keep the main `phi Ms` result above any shear result and before folded details;
+- keep the section guide approximately 80 to 130 px high and hide secondary labels before reducing text size;
+- prevent family names, formal symbols and units from wrapping one word per line.
+
+#### 15.12.9 Selected Section Summary and Figure
+
+The summary confirms inputs and source properties; it is not a second calculation-basis panel.
+
+Show only properties relevant to the current family and direction:
+
+- all families: designation / custom family, grade, direction, mass, `Ag`, `fy,m`, `Z`, `S`, `Ze` and section class where available;
+- UB / UC: `d`, `bf`, `tw`, `tf`, clear web depth, and `fy,w` when shear is evaluated;
+- PFC: `d`, `bf`, `tw`, `tf`, clear web depth, catalogue centroid coordinate `xL`, catalogue shear-centre coordinate `xO`, and `fy,w` when shear is evaluated;
+- CHS: `do`, `t`, `I`, `Z`, `S`, `Ze`, `kf` and compactness;
+- RHS / SHS: `d`, `b`, `t`, direction-specific `I`, `Z`, `S`, `Ze`, `kf` and compactness;
+- Equal Angle: `b`, actual `t`, principal-axis/load-direction key, and direction-specific `I`, `Z`, `S` and `Ze` from InfraBuild Tables 19 and 20;
+- Rod: `D`, `I`, `Z`, `S`, `Ze` and diameter-dependent `fy,m`.
+
+Do not show the capacity equation, web-screen ratio or interaction result in this strip. Those belong in calculation steps.
+
+Use one deterministic value-driven SVG for the selected family. It must:
+
+- show only the active family;
+- show `x-x` / `y-y` axes or the manufacturer principal axes and load-direction arrows used by the calculation;
+- place the PFC centroid from catalogue `xL` and identify the shear centre using catalogue `xO`; do not derive either from ideal sharp-corner geometry;
+- use the Equal Angle 45-degree principal-axis convention: Load A / C about x and Load B / D about y;
+- use the selected dimensions for proportions without copying catalogue artwork;
+- avoid crossing labels and dimension lines;
+- state `Drawn from selected catalogue data` or `Drawn from entered ideal dimensions`;
+- remain a visual check, not a source of numeric properties.
+
+#### 15.12.10 Results, Utilisation and Calculation Steps
+
+Primary result hierarchy:
+
+1. `Design section moment capacity, phi Ms` with selected axis / load direction.
+2. `Design section shear capacity, phi Vv` only when evaluated.
+3. One concise status line: `Calculated`, `Review required`, or `Not evaluated`.
+
+Do not show PASS / FAIL until a compatible design action has been entered and every required interaction path is available.
+
+The folded `Design actions and utilisation` panel contains:
+
+- `M*` for the selected direction;
+- `V*` only when a compatible shear result is available;
+- `M* / phi Ms`;
+- `V* / phi Vv` or `V* / phi Vvm` where applicable;
+- one governing section ratio only when all required checks are evaluated;
+- an explicit `Combined action not evaluated` state when the interaction method is unavailable.
+
+The folded `Calculation steps` panel follows one consistent sequence:
+
+1. Product / custom geometry and source basis.
+2. Selected principal axis or load direction.
+3. Material basis: `fy,m` and, where applicable, `fy,w`.
+4. `Z`, `S`, section slenderness, class and `Ze` basis.
+5. Product-data edition and AS 4100:2020 compatibility status.
+6. `Ms = fy,m Ze` and `phi Ms`.
+7. Family-specific shear calculation where available; for the reviewed rolled-web path state `dp = d1`, `Aw = dp tw`, web slenderness and `alpha_v` explicitly.
+8. Moment-shear interaction and utilisation where actions are entered.
+
+Use formal visible notation with HTML subscripts and superscripts. Display section modulus in `10³ mm³`, second moment of area in `10⁶ mm⁴`, area in `mm²`, stress in `MPa`, moment in `kN·m` and shear in `kN`. Do not display programming notation such as `mm^3` in the page.
+
+#### 15.12.11 Validation and Release Gates
+
+Do not publish an expanded family until all applicable gates pass:
+
+- every embedded catalogue row is checked against its source table for designation order, dimensions, mass, grade, `fy`, `Z`, `S`, `Ze`, class and `kf` where published;
+- direction mapping is visually checked against the manufacturer diagram for PFC and Equal Angle;
+- published catalogue `Ze`, compactness and form-factor values are reconciled with AS 4100:2020 before changing the tab from `For Review`;
+- compact, non-compact and slender custom examples each match an independent AS 4100 calculation;
+- CHS custom and catalogue examples match the AS 4100 CHS slenderness and shear equations;
+- representative UB, UC, PFC, CHS, RHS / SHS, Equal Angle and Rod moment capacities match independent calculations;
+- missing-data and unsupported-direction tests return `Not evaluated` and never a zero or stale prior result;
+- unit conversion tests cover `mm³` to `kN·m` and catalogue `10³ mm³` values;
+- UI state tests confirm that irrelevant direction, custom and shear controls are hidden;
+- desktop and phone checks confirm no overlapping axis labels, clipped values or horizontal overflow;
+- `REFERENCE_TRACEABILITY.md` records the exact source table, PDF page, checked date and sample result before release.
+
+#### 15.12.12 Implementation Sequence
+
+Implement in auditable increments:
+
+1. Correct the common `Ze` / material / direction calculation contract and remove the custom `Ze = Z` design-capacity shortcut.
+2. Refactor the selector to `Catalogue / Custom` plus a family menu without changing current UB / UC results.
+3. Complete UB / UC direction data and add full PFC Table 15 / 16 rows.
+4. Add CHS from checked Austube design-property rows, including the AS 4100 CHS shear path.
+5. Add RHS / SHS from the checked hollow-section tables.
+6. Add Equal Angle moment by the published Load A / B / C / D directions.
+7. Add Rod moment from complete round-bar sizes, diameter-dependent strength and generated `Z`, `S`, `Ze`.
+8. Add each Custom family only after its geometry, plastic modulus, plate-element map, residual-stress basis and `Ze` method pass the custom validation gates.
+9. Add or extend shear and interaction only after the corresponding family method is separately reviewed.
+
+Current local implementation follows that order:
+
+| Step | Local state | Release boundary |
+| --- | --- | --- |
+| 1-2 Common contract and selector | Complete, including editable catalogue-default `fy,m` and conditional `fy,w` project / legacy override | Catalogue / Custom and family states fail closed on missing capacity data; PFC Load A/B and Equal Angle Load A/B/C/D fail closed when an entered `fy,m` no longer matches the published direction-specific `Ze` |
+| 3 UB / UC / PFC | Complete for the adopted InfraBuild rows; PFC selected-section data includes catalogue `xL` and `xO`; AS 4100:2020 row coordination passes | PFC `Load A` / `Load B` remains tied to the catalogue direction diagram |
+| 4 CHS | Complete for adopted catalogue moment and AS 4100 Cl. 5.11.4 shear | `Ae = Ag` is limited to unperforated catalogue sections |
+| 5 RHS / SHS | Catalogue moment, direction-specific two-web shear, reviewed Cl. 5.12.3 interaction and AS 4100:2020 row coordination complete | Custom RHS/SHS remains geometry-only |
+| 6 Equal Angle | Complete for the 13 checked designations, including Table 19 principal-axis `I`, `Z`, `S`, Table 20 Load A / B / C / D `Ze` and direction-specific AS 4100 interval coordination | Selector remains visibly a checked subset, not a complete product range |
+| 7 Rod | Complete | Section moment only; no numeric shear |
+| 8 Custom | Geometry complete; non-Rod capacity staged | User enters dimensions only; non-Rod `Ze` and design capacity remain `Not evaluated` |
+| 9 Shear / interaction expansion | UB / UC / PFC `x-x`, CHS shear and catalogue RHS / SHS direction-specific shear are complete; Cl. 5.12.3 interaction is enabled for the reviewed flat-web paths | CHS has no flat-web interaction; Equal Angle, Rod and unsupported custom shear / interaction remain excluded |
+
+#### 15.12.13 Required Exclusions
 
 - Member moment capacity `Mb`.
 - Lateral-torsional buckling.
-- Restraint spacing.
-- Minor-axis bending.
-- Biaxial bending.
-- Axial load interaction.
-- Web bearing and web buckling under concentrated forces.
-- Web stiffener design.
-- Cope cuts, penetrations, large holes or reduced web areas.
-- Torsion.
+- Restraint spacing and restraint adequacy.
+- Arbitrary non-principal-axis bending.
+- Biaxial bending and axial load interaction.
+- Net-section bending, holes, copes and penetrations.
+- Web bearing, web buckling under concentrated forces and stiffener design.
+- Non-uniform web shear caused by unequal flanges, varying web thickness or holes unless separately implemented.
+- Torsion and shear-centre effects.
 - Composite action.
 - Fire.
-- Deflection and vibration.
-
-The Beam tab may include UB/UC section guide drawings inside the selected-section summary, but they are visual guides only and must not be treated as numeric data sources.
+- Fatigue and brittle-fracture assessment.
+- Deflection, vibration and other serviceability checks.
 
 ### 15.13 Weld Capacity Web Tab Rules
 

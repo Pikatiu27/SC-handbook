@@ -149,7 +149,22 @@ main, footer { max-width: 1040px; margin: auto; }
 .input-group-fields.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .input-group-fields.six { grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
 .input-group-fields.seven { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-.input-group-fields.beam-custom-properties { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.beam-selection-inputs { grid-template-columns: 1fr; }
+.beam-material-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.beam-material-heading > span { min-width: 0; }
+.beam-material-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.beam-material-reset { width: 34px; height: 34px; flex: 0 0 34px; border: 1px solid #b8c7d2; border-radius: var(--control-radius); background: #fff; color: var(--green-dark); font-size: 21px; line-height: 1; cursor: pointer; }
+.beam-material-reset:hover { background: #edf5fa; }
+.beam-material-reset:focus-visible { outline: 3px solid rgba(59, 107, 135, .24); outline-offset: 2px; }
+.beam-material-reset:disabled { opacity: .42; cursor: default; background: #f5f7f8; }
+.beam-material-state { min-height: 58px; padding: 7px; border: 1px solid rgba(80, 112, 132, .18); border-radius: var(--control-radius); background: rgba(255,255,255,.72); }
+.beam-material-state span, .beam-material-state strong { display: block; }
+.beam-material-state span { color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
+.beam-material-state strong { margin-top: 7px; color: var(--ink); font-size: var(--fs-sm); line-height: 1.2; }
+.beam-direction-group { margin-top: 10px; }
+.beam-direction-group .input-group-fields { max-width: 360px; }
+.beam-custom-group { margin-top: 12px; }
+.beam-custom-properties[hidden] { display: none !important; }
 .member-net-section-group { display: block; }
 .member-custom-subheading { grid-column: 1 / -1; padding: 2px 0 0; }
 .member-custom-subheading b,
@@ -314,6 +329,9 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-selected-section.member-selected-custom .member-drawing-note { display: none; }
 .member-summary-visual { order: 2; width: 100%; max-width: 220px; min-width: 0; align-self: stretch; justify-self: stretch; padding-top: 0; display: grid; }
 .beam-summary-visual { order: 2; width: 100%; max-width: 220px; min-width: 0; align-self: stretch; justify-self: stretch; padding-top: 0; display: grid; }
+.beam-section-figure { order: 2; width: 220px; min-width: 220px; margin: 0; padding: 9px 10px 7px; align-self: stretch; display: grid; grid-template-rows: minmax(132px, 1fr) auto; border-left: 1px solid #dbcdec; background: #fff; }
+.beam-section-figure svg { display: block; width: 100%; height: 100%; min-height: 132px; }
+.beam-section-figure figcaption { margin-top: 3px; color: var(--muted); font-size: 10px; line-height: 1.25; text-align: center; overflow-wrap: anywhere; }
 .member-summary-visual .section-guide { height: 100%; padding: 0; display: grid; }
 .beam-summary-visual .section-guide { height: 100%; padding: 0; display: grid; }
 .member-summary-visual .section-guide article { height: 100%; padding: 12px; border-width: 0 0 0 1px; border-color: #cfe1ef; border-radius: 0; background: #fff; gap: 8px; grid-template-rows: minmax(0, 1fr) auto; align-items: stretch; }
@@ -364,6 +382,8 @@ main, footer { max-width: 1040px; margin: auto; }
 .member-summary-metrics dd { white-space: nowrap; }
 .beam-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .beam-summary-metrics dd { margin: 3px 0 0; color: var(--ink); font-size: var(--fs-xs); line-height: 1.25; font-weight: 700; white-space: nowrap; overflow-wrap: anywhere; }
+.beam-summary-metrics [data-beam-summary-cell="source"] { grid-column: span 2; }
+.beam-summary-metrics [data-beam-summary-cell="source"] dd { white-space: normal; }
 .weld-summary dd { margin: 1px 0 0; font-size: var(--fs-sm); font-weight: 700; white-space: nowrap; }
 .input-manual, .input-reference { padding: 7px; border-radius: 8px; border: 1px solid transparent; }
 .input-manual { background: var(--input-manual-bg, var(--green-soft)); border-color: rgba(104, 118, 111, .20); }
@@ -399,6 +419,10 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .capacity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .member-results { grid-template-columns: repeat(2, 1fr); }
 .beam-results { grid-template-columns: repeat(2, 1fr); }
+.beam-results.is-single { grid-template-columns: minmax(0, 1fr); }
+.beam-result-status { margin: 8px 0 0; color: var(--beam-dark); font-size: var(--fs-xs); line-height: 1.35; font-weight: 800; }
+.beam-result-status.is-review { color: #9b5b11; }
+.beam-result-status.is-unavailable { color: var(--muted); }
 .section-properties-summary { display: grid; grid-template-columns: 190px minmax(170px, .55fr) minmax(0, 1fr); align-items: center; gap: 12px; }
 .section-properties-summary > dl { margin: 0; }
 .section-properties-summary-copy { min-width: 0; }
@@ -408,9 +432,17 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .section-properties-shape { fill: #e5f2ef; stroke: #263732; stroke-width: 2; stroke-linejoin: round; }
 .section-properties-void { fill: #fbfefd; stroke: #263732; stroke-width: 1.6; }
 .section-properties-axis { fill: none; stroke: #526b64; stroke-width: 1.15; stroke-dasharray: 10 3 2 3; }
+.section-properties-axis.is-active { stroke: #6846a5; stroke-width: 1.8; }
 #sectionAxisArrow path { fill: #526b64; }
+#beamAxisArrow path { fill: #526b64; }
+#beamLoadArrow path { fill: #6846a5; }
 .section-properties-centroid { fill: #fff; stroke: #355f58; stroke-width: 1.6; }
 .section-properties-axis-label, .section-properties-centroid-label { fill: #355f58; font: 800 13px Aptos, Calibri, Arial, sans-serif; }
+.beam-load-arrow { fill: none; stroke: #6846a5; stroke-width: 1.8; }
+.beam-load-label { fill: #6846a5; font: 800 10px Aptos, Calibri, Arial, sans-serif; }
+.beam-shear-centre-guide { fill: none; stroke: #6d7773; stroke-width: 1; stroke-dasharray: 4 3; }
+.beam-shear-centre { fill: #fff; stroke: #263732; stroke-width: 1.5; }
+.beam-shear-centre-label { fill: #263732; font: 800 9px Aptos, Calibri, Arial, sans-serif; }
 .section-properties-centroid-label { font-size: 10px; }
 .section-properties-overview { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--line); }
 .section-properties-overview article { min-width: 0; padding: 11px 12px; background: #fff; }
@@ -443,6 +475,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 #memberPanel .member-results .capacity-label { min-height: auto; }
 #memberPanel .member-results .capacity-label b { display: inline; }
 .capacity-card strong { display: block; margin: 5px 0 3px; font-size: var(--fs-result); line-height: 1.08; font-weight: 900; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.capacity-card strong.is-unavailable { font-size: clamp(19px, 2.1vw, 27px); line-height: 1.15; }
 .capacity-card strong small { color: var(--muted); font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0; }
 .capacity-card p { margin: 0; color: var(--muted); font-size: var(--fs-xs); }
 .member-demand-check { margin-top: 10px; border: 1px solid var(--line); border-radius: 9px; background: #f8fbfd; overflow: hidden; }
@@ -1051,7 +1084,7 @@ footer b { white-space: nowrap; }
   .section-properties-table tbody th strong { font-size: 12px; }
   .section-properties-table td output { font-size: 14px; }
   .section-properties-table .property-basis { font-size: 9px !important; }
-  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.six, .input-group-fields.seven, .input-group-fields.beam-custom-properties, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .screw-capacity-grid, .screw-note-grid, .screw-demand-metrics, .screw-readiness-strip, .screw-selected-overview, .screw-selected-grid, .screw-driver-grid, .screw-capacity-editor-body, .screw-basis-row, .rock-capacity-strip, .rock-specification-grid, .rock-source-body, .rock-source-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .wind-actions, .wind-evidence-grid, .wind-resource-strip, .form-grid.seven, .form-grid.six, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
+  .input-cluster-two, .input-cluster-three, .input-cluster-four, .member-main-inputs, .input-group-fields.two, .input-group-fields.three, .input-group-fields.four, .input-group-fields.five, .input-group-fields.six, .input-group-fields.seven, .input-group-fields.beam-custom-properties, .beam-material-fields, .primary-inputs.three-inputs, .primary-inputs.weld-inputs, .primary-inputs.beam-inputs, .primary-inputs.concrete-inputs, .concrete-row-main, .concrete-row-material, .concrete-row-analysis, .member-inputs, .capacity-grid, .screw-capacity-grid, .screw-note-grid, .screw-demand-metrics, .screw-readiness-strip, .screw-selected-overview, .screw-selected-grid, .screw-driver-grid, .screw-capacity-editor-body, .screw-basis-row, .rock-capacity-strip, .rock-specification-grid, .rock-source-body, .rock-source-grid, .section-guide, .weld-figure-section, .weld-extra-inputs, .weld-method-grid, .weld-scenario-grid, .concrete-secondary-inputs, .concrete-visual-grid, .wind-actions, .wind-evidence-grid, .wind-resource-strip, .form-grid.seven, .form-grid.six, .form-grid.five, .form-grid.four, .form-grid.three, .form-grid.two, .source-body { grid-template-columns: 1fr; }
   .rock-specification-grid > div.wide { grid-column: auto; }
   .screw-selected-header { display: block; }
   .screw-selected-header > b { display: inline-block; margin-top: 8px; }
@@ -1084,6 +1117,9 @@ footer b { white-space: nowrap; }
   .member-summary { display: block; }
   .member-selected-section { display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 10px; }
   .beam-summary.beam-selected-section { display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 10px; }
+  .beam-section-figure { width: 118px; min-width: 118px; padding: 6px; grid-template-rows: minmax(88px, 1fr); border-left: 0; }
+  .beam-section-figure svg { min-height: 88px; }
+  .beam-section-figure figcaption { display: none; }
   .member-summary dl { margin-top: 12px; grid-template-columns: repeat(4, 1fr); }
   .member-summary dl div { text-align: left; }
   .beam-summary { display: block; }
@@ -1200,6 +1236,8 @@ footer b { white-space: nowrap; }
   .member-type-switch, .beam-type-switch, .section-properties-mode-switch { width: 100%; }
   .member-selected-section { grid-template-columns: 1fr; padding: 10px; }
   .beam-summary.beam-selected-section { grid-template-columns: 1fr; padding: 10px; }
+  .beam-section-figure { width: 100%; min-width: 0; min-height: 104px; padding: 5px; border: 0; border-top: 1px solid #dbcdec; }
+  .beam-section-figure svg { height: 104px; min-height: 104px; }
   .member-summary-visual { max-width: none; justify-self: stretch; padding-top: 0; }
   .beam-summary-visual { max-width: none; justify-self: stretch; padding-top: 0; }
   .member-summary-visual .section-guide article { grid-template-columns: 84px minmax(0, 1fr); align-items: center; padding: 7px; gap: 5px; }
@@ -1225,6 +1263,7 @@ footer b { white-space: nowrap; }
   .member-selected-section dl { gap: 8px; }
   .beam-selected-section dl { gap: 8px; }
   .beam-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .beam-summary-metrics [data-beam-summary-cell="source"] { grid-column: 1 / -1; }
   .concrete-summary dl { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .layer-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .layer-row label[data-field] { grid-column: 1 / -1; }
