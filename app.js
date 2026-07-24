@@ -1651,14 +1651,40 @@ const screwInputIds = [
 const reoBars = globalThis.reoLapping.bars;
 const reoBarByDesignation = globalThis.reoLapping.barByDesignation;
 const reoLapCalculation = globalThis.reoLapping.calculateLap;
-const reoProvidedComparison = globalThis.reoLapping.compareProvided;
-
+const reoDevelopmentCalculation = globalThis.reoLapping.calculateDevelopment;
+const reoAnchorageCalculation = globalThis.reoLapping.calculateAnchorageComparison;
 const reoInputIds = [
-  "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoConcreteStrength",
-  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap", "reoK7Basis",
+  "reoRebarPath", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoConcreteStrength",
+  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap",
   "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoNf", "reoNbs",
-  "reoAtrTotal", "reoPressure", "reoProvidedLength"
+  "reoAtrTotal", "reoPressure", "reoPressureReference", "reoPressureBasisConfirmed", "reoTransverseLocationConfirmed", "reoAtrCountConfirmed", "reoExistingBarOrigin", "reoAnchorageBasis", "reoSteelStress", "reoReducedLengthRefinedConfirmed", "reoCastInTermination", "reoCastInTerminationConfirmed",
+  "reoExistingMemberType", "reoExistingConcreteStrength", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingCover",
+  "reoExistingClearSpacing", "reoExistingC1", "reoExistingMethod", "reoExistingRefinedArrangement", "reoExistingAtrMinBasis",
+  "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference", "reoExistingPressureBasisConfirmed", "reoExistingTransverseLocationConfirmed", "reoExistingAtrCountConfirmed"
 ];
+
+const reoLapLengthChangingIds = [
+  "reoRebarPath", "reoBar", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoConcreteStrength",
+  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap", "reoDoubleArea", "reoHalfSpliced",
+  "reoRefinedArrangement", "reoAtrMinBasis", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoPressureReference", "reoTransverseLocationConfirmed"
+];
+const reoExistingLengthChangingIds = [
+  "reoRebarPath", "reoBar", "reoExistingBarOrigin", "reoAnchorageBasis", "reoSteelStress", "reoReducedLengthRefinedConfirmed", "reoCastInTermination",
+  "reoExistingMemberType", "reoExistingConcreteStrength", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingMethod",
+  "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference", "reoExistingTransverseLocationConfirmed"
+];
+const reoLapCountResetIds = new Set(reoLapLengthChangingIds);
+const reoExistingCountResetIds = new Set(reoExistingLengthChangingIds);
+const reoReducedLengthResetIds = new Set([
+  ...reoExistingLengthChangingIds.filter(id => id !== "reoReducedLengthRefinedConfirmed"), "reoExistingAtrCountConfirmed", "reoExistingPressureBasisConfirmed"
+]);
+const reoLapQualificationResetIds = new Set([
+  "reoRebarPath", "reoBar", "reoMemberRole", "reoMemberType", "reoLapType", "reoConcreteStrength",
+  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap"
+]);
+const reoPressureBasisResetIds = new Set(reoLapLengthChangingIds.filter(id => id !== "reoPressureBasisConfirmed"));
+const reoExistingPressureBasisResetIds = new Set(reoExistingLengthChangingIds.filter(id => id !== "reoExistingPressureBasisConfirmed"));
+const reoTerminationDetailingResetIds = new Set(reoExistingLengthChangingIds);
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
@@ -1667,11 +1693,13 @@ const toolNames = ["bolt", "member", "beam", "weld", "concrete", "reo", "screw"]
 let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";
+let reoPreviousRouteKey = "";
 const manualInputIds = [
   "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "edgeForceAngle", "holeDiameter", "edgeBoltCount", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
-  "reoConcreteStrength", "reoCover", "reoClearSpacing", "reoBarGap", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoProvidedLength",
+  "reoConcreteStrength", "reoCover", "reoClearSpacing", "reoBarGap", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoPressureReference", "reoSteelStress",
+  "reoExistingConcreteStrength", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
@@ -1685,7 +1713,7 @@ const referenceInputIds = [
   "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteComposite", "concreteSeparatePad", "concreteShearReo", "concreteShearBar",
-  "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoCastingPosition", "reoMaterialCondition", "reoK7Basis", "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis",
+  "reoRebarPath", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoCastingPosition", "reoMaterialCondition", "reoCd", "reoExistingCd", "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoPressureBasisConfirmed", "reoExistingBarOrigin", "reoAnchorageBasis", "reoCastInTermination", "reoCastInTerminationConfirmed", "reoExistingMemberType", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingMethod", "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingKValue", "reoExistingCombinedFactor", "reoExistingPressureBasisConfirmed",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
   "beamSection", "beamGrade",
   "screwManufacturer", "screwSeries", "screwApplication", "screwCapacitySource", "screwSoil", "screwExposure", "screwInstallEvidence", "screwLateralSensitivity", "screwDemandBasis", "screwProjectBasis", "screwProjectSource", "screwLayout",
@@ -4527,68 +4555,283 @@ function calculateScrew() {
 }
 
 function readReoOptions() {
+  const doubleArea = $("reoDoubleArea").checked;
+  const halfSpliced = $("reoHalfSpliced").checked;
+  const rebarPath = $("reoRebarPath").value;
   return {
     memberRole: $("reoMemberRole").value,
     memberType: $("reoMemberType").value,
     lapType: $("reoLapType").value,
     method: $("reoMethod").value,
+    rebarPath,
     fc: numericValue($("reoConcreteStrength").value),
     castingPosition: $("reoCastingPosition").value,
     materialCondition: $("reoMaterialCondition").value,
     cover: numericValue($("reoCover").value),
     clearSpacing: numericValue($("reoClearSpacing").value),
     barGap: numericValue($("reoBarGap").value),
-    k7Basis: $("reoK7Basis").value,
-    doubleArea: $("reoDoubleArea").checked,
-    halfSpliced: $("reoHalfSpliced").checked,
+    k7Basis: doubleArea && halfSpliced ? "qualified" : "default",
+    doubleArea,
+    halfSpliced,
+    staggeredArrangement: false,
     refinedArrangement: $("reoRefinedArrangement").value,
     atrMinBasis: $("reoAtrMinBasis").value,
     nf: numericValue($("reoNf").value),
     nbs: numericValue($("reoNbs").value),
     atrTotal: numericValue($("reoAtrTotal").value),
-    pressure: numericValue($("reoPressure").value)
+    pressure: numericValue($("reoPressure").value),
+    pressureReference: $("reoPressureReference").value,
+    pressureBasisConfirmed: $("reoPressureBasisConfirmed").checked,
+    transverseEffective: $("reoTransverseLocationConfirmed").checked,
+    atrCountConfirmed: $("reoAtrCountConfirmed").checked
+  };
+}
+
+function readReoDevelopmentOptions() {
+  return {
+    barOrigin: $("reoExistingBarOrigin").value,
+    memberType: $("reoExistingMemberType").value,
+    fc: numericValue($("reoExistingConcreteStrength").value),
+    castingPosition: $("reoExistingCastingPosition").value,
+    materialCondition: $("reoExistingMaterialCondition").value,
+    cover: numericValue($("reoExistingCover").value),
+    clearSpacing: numericValue($("reoExistingClearSpacing").value),
+    c1: numericValue($("reoExistingC1").value),
+    method: $("reoExistingMethod").value,
+    refinedArrangement: $("reoExistingRefinedArrangement").value,
+    atrMinBasis: $("reoExistingAtrMinBasis").value,
+    nf: numericValue($("reoExistingNf").value),
+    nbs: numericValue($("reoExistingNbs").value),
+    atrTotal: numericValue($("reoExistingAtrTotal").value),
+    pressure: numericValue($("reoExistingPressure").value),
+    pressureReference: $("reoExistingPressureReference").value,
+    pressureBasisConfirmed: $("reoExistingPressureBasisConfirmed").checked,
+    transverseEffective: $("reoExistingTransverseLocationConfirmed").checked,
+    atrCountConfirmed: $("reoExistingAtrCountConfirmed").checked,
+    terminationType: $("reoCastInTermination").value,
+    terminationDetailingConfirmed: $("reoCastInTerminationConfirmed").checked
+  };
+}
+
+function reoPathState(options) {
+  const rebarPath = options.rebarPath;
+  return {
+    rebarPath,
+    requiresLap: rebarPath === "starter-lap",
+    requiresDevelopment: rebarPath === "end-anchorage"
   };
 }
 
 function populateReoData() {
-  $("reoBar").innerHTML = reoBars.map(bar => `<option value="${bar.designation}">${bar.designation}${bar.diameter > 40 ? " · reference only" : ""}</option>`).join("");
+  $("reoBar").innerHTML = reoBars.filter(bar => bar.diameter <= 40).map(bar => `<option value="${bar.designation}">${bar.designation}</option>`).join("");
   $("reoBar").value = "N20";
-  $("reoProductTableRows").innerHTML = reoBars.map(bar => `<tr class="${bar.diameter > 40 ? "is-excluded" : ""}"><td>${bar.designation}</td><td>${bar.diameter} mm</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${bar.standardMass.toFixed(bar.standardMass < 1 ? 3 : 2)} kg/m</td><td>${bar.supplierMass.toFixed(2)} kg/m</td><td>${bar.metresPerTonne.toLocaleString("en-AU")} m/t</td><td>${bar.availability}</td><td>${bar.diameter > 40 ? "Not permitted for a lapped splice" : "Within calculator scope"}</td></tr>`).join("");
+  $("reoProductTableRows").innerHTML = reoBars.map(bar => `<tr class="${bar.diameter > 40 ? "is-excluded" : ""}"><td>${bar.designation}</td><td>${bar.diameter} mm</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${bar.standardMass.toFixed(bar.standardMass < 1 ? 3 : 2)} kg/m</td><td>${bar.supplierMass.toFixed(2)} kg/m</td><td>${bar.metresPerTonne.toLocaleString("en-AU")} m/t</td><td>${bar.availability}</td><td>${bar.diameter > 40 ? "Reference only · outside calculator scope" : "Within calculator scope"}</td></tr>`).join("");
 }
 
 function updateReoConditionalFields(options) {
-  const showGap = options.memberType === "narrow" && options.lapType === "noncontact";
+  const path = reoPathState(options);
+  const origin = $("reoExistingBarOrigin").value;
+  const pirOrigin = origin === "pir";
+  const routeKey = `${path.rebarPath}|${origin}`;
+  const routeChanged = routeKey !== reoPreviousRouteKey;
+
+  $("reoRebarPathField").hidden = false;
+  $("reoExistingBarOriginField").hidden = !path.requiresDevelopment;
+  document.querySelector(".reo-context-fields").classList.toggle("has-origin", path.requiresDevelopment);
+  $("reoExistingBarOriginLabel").textContent = "Bar installation";
+  $("reoLapPathInputs").hidden = !path.requiresLap;
+  $("reoAnchorageInputs").hidden = !path.requiresDevelopment;
+  const projectStressSelected = $("reoAnchorageBasis").value === "actual";
+  const originFields = document.querySelector(".reo-origin-fields");
+  originFields.classList.toggle("is-pir", pirOrigin);
+  originFields.classList.toggle("is-cast-in", !pirOrigin);
+  originFields.classList.toggle("has-stress", projectStressSelected);
+  $("reoSteelStressField").hidden = !projectStressSelected;
+  $("reoReducedLengthRefinedConfirmedField").hidden = !projectStressSelected || $("reoExistingMethod").value !== "refined";
+  $("reoCastInTerminationField").hidden = !path.requiresDevelopment || pirOrigin;
+  const standardTerminationSelected = !pirOrigin && ["hook", "cog"].includes($("reoCastInTermination").value);
+  $("reoCastInTerminationConfirmedField").hidden = !path.requiresDevelopment || !standardTerminationSelected;
+  $("reoTerminationRequirements").hidden = !path.requiresDevelopment || !standardTerminationSelected;
+  if (!standardTerminationSelected) $("reoCastInTerminationConfirmed").checked = false;
+  const stressForHook = projectStressSelected ? numericValue($("reoSteelStress").value) : 500;
+  const selectedBar = reoBarByDesignation($("reoBar").value);
+  const db = selectedBar?.diameter || 0;
+  const coatedBar = ["epoxy", "both"].includes($("reoExistingMaterialCondition").value);
+  const bendFactor = coatedBar && db >= 20 ? 8 : 5;
+  const bendDiameter = bendFactor * db;
+  const hookExtension = Math.max(4 * db, 70);
+  const restraintRequired = Number.isFinite(stressForHook) && stressForHook > 400;
+  if (standardTerminationSelected) {
+    const method = $("reoCastInTermination").value;
+    const methodRequirement = method === "cog"
+      ? `90&deg; cog; internal bend diameter ${bendDiameter.toFixed(0)} mm minimum and ${(8 * db).toFixed(0)} mm maximum; total bar length as the corresponding 180&deg; hook.`
+      : `180&deg; or 135&deg; hook; straight extension ${hookExtension.toFixed(0)} mm minimum.`;
+    const restraintRequirement = restraintRequired
+      ? `Transverse restraint required: bar diameter at least ${db.toFixed(0)} mm, in contact, extending ${(4 * db).toFixed(0)} mm each side.`
+      : "No >400 MPa transverse-restraint trigger from the selected stress basis.";
+    $("reoTerminationRequirements").innerHTML = `<b>Standard ${method} requirements</b><span>${methodRequirement} Bend diameter follows AS 3600 Cl. 17.2.3.3 (${bendFactor}d<sub>b</sub> for the selected condition). ${restraintRequirement}</span>`;
+  }
+  $("reoSteelStressLabel").innerHTML = standardTerminationSelected
+    ? "Maximum design tensile stress in anchored bar, &sigma;<sub>st</sub>"
+    : "Design tensile stress at assessed section, &sigma;<sub>st</sub>";
+  $("reoSteelStressHelp").textContent = standardTerminationSelected
+    ? "Use the maximum design tensile stress in the bar being anchored. Verify it against the project calculation before issue."
+    : "Use the design tensile stress in the bar at the assessed section. Verify it against the project calculation before issue.";
+  $("reoLapGeometryGroup").hidden = !path.requiresLap;
+  $("reoLapFactorGroup").hidden = !path.requiresLap;
+  $("reoFactorSummary").hidden = !path.requiresLap;
+  $("reoLapResultSection").hidden = !path.requiresLap;
+  $("reoScheduleDetails").hidden = !path.requiresLap || options.method !== "basic" || (options.doubleArea && options.halfSpliced);
+  $("reoAnchorageResultSection").hidden = !path.requiresDevelopment;
+  $("reoAssumptionsDetails").hidden = !path.requiresLap;
+  const lapAssumptionFields = [
+    "reoMemberRoleField", "reoMemberTypeField", "reoLapTypeField", "reoMethodField",
+    "reoCastingPositionField", "reoMaterialConditionField"
+  ];
+  lapAssumptionFields.forEach(id => { $(id).hidden = !path.requiresLap; });
+  $("reoAssumptionsTitle").textContent = "Common assumptions";
+
+  const assumptionParts = path.requiresLap
+    ? [
+      options.memberRole === "tension-tie" ? "tension-tie" : "not a tension-tie",
+      options.memberType === "narrow" ? "narrow member" : "wide member",
+      options.lapType === "noncontact" ? "non-contact lap" : "contact lap",
+      options.method === "refined" ? "Refined" : "Basic",
+      options.castingPosition === "top" ? "top-cast bar" : "other casting position",
+      options.materialCondition === "standard" ? "normal-weight, uncoated" : $("reoMaterialCondition").selectedOptions[0].textContent.trim()
+    ]
+    : [];
+  $("reoAssumptionSummary").textContent = assumptionParts.join(" · ");
+  if (pirOrigin && routeChanged) $("reoExistingMethod").value = "basic";
+  $("reoAnchorageBasisField").hidden = false;
+  $("reoExistingMethodField").hidden = pirOrigin;
+  $("reoAnchorageStressNote").hidden = false;
+  $("reoAnchorageStressNote").innerHTML = "Full yield is the default. A lower project stress retains the 12d<sub>b</sub> minimum.";
+  $("reoReferenceBasisHeading").textContent = pirOrigin ? "AS 3600 reference basis" : "Cast-in development basis";
+  $("reoReferenceBasisHelp").textContent = pirOrigin
+    ? "Select the stress basis for the AS 3600 reference."
+    : "Select the anchorage, stress and development basis.";
+  $("reoExistingCastingPositionLabel").textContent = pirOrigin ? "AS 3600 casting-position assumption" : "Casting position";
+  $("reoExistingMaterialConditionLabel").textContent = pirOrigin ? "AS 3600 material condition" : "Material condition";
+  $("reoAnchoragePathTag").textContent = "DEVELOPMENT";
+  $("reoAnchoragePathTitle").textContent = pirOrigin ? "Post-installed bar termination" : "Development at bar termination";
+  $("reoAnchoragePathNote").textContent = pirOrigin
+    ? "Reference calculation only."
+    : "Straight, hook or cog development.";
+  $("reoCalculationDetailsSummary").textContent = path.requiresLap
+    ? "Factors, clauses and Basic schedule."
+    : "Factors and clauses.";
+  $("reoAnchorageResultTag").textContent = pirOrigin
+    ? "AS 3600 REFERENCE"
+    : standardTerminationSelected
+      ? `${$("reoCastInTermination").value.toUpperCase()} ANCHORAGE`
+      : "DEVELOPMENT";
+  $("reoAnchorageResultTitle").textContent = pirOrigin
+    ? "AS 3600 reference depth"
+    : standardTerminationSelected
+      ? `Standard ${$("reoCastInTermination").value} anchorage reference`
+      : "Required development length";
+
+  const showGap = path.requiresLap && options.memberType === "narrow" && options.lapType === "noncontact";
   $("reoBarGapField").hidden = !showGap;
-  const showK7Confirmations = options.k7Basis === "qualified";
-  $("reoDoubleAreaField").hidden = !showK7Confirmations;
-  $("reoHalfSplicedField").hidden = !showK7Confirmations;
-  $("reoRefinedDetails").hidden = options.method !== "refined";
-  if (options.method === "refined") $("reoRefinedDetails").open = true;
-  const countBasedK = ["rectangular", "custom"].includes(options.refinedArrangement);
-  $("reoNfField").hidden = !countBasedK;
-  $("reoNbsField").hidden = !countBasedK;
-  $("reoNf").disabled = !countBasedK;
-  $("reoNbs").disabled = !countBasedK;
-  const beamColumnArrangement = ["circular", "rectangular", "beam"].includes(options.refinedArrangement);
-  const slabWallArrangement = ["slab-fitments", "slab-no-fitments"].includes(options.refinedArrangement);
-  if (beamColumnArrangement) $("reoAtrMinBasis").value = "beam-column";
-  if (slabWallArrangement) $("reoAtrMinBasis").value = "slab-wall";
-  $("reoAtrMinBasis").disabled = beamColumnArrangement || slabWallArrangement;
+  $("reoRefinedDetails").hidden = !path.requiresLap || options.method !== "refined";
+  const lapConfinementEntered = options.refinedArrangement !== "none";
+  $("reoRefinedInputGrid").classList.toggle("is-simple", !lapConfinementEntered);
+  const lapAtrMin = options.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
+  const lapConfinementPotential = lapConfinementEntered
+    && Number.isFinite(options.atrTotal)
+    && options.atrTotal > lapAtrMin;
+  $("reoCountingGuide").hidden = !lapConfinementEntered;
+  $("reoAtrMinBasisField").hidden = !lapConfinementEntered;
+  $("reoNfField").hidden = !lapConfinementEntered;
+  $("reoNbsField").hidden = !lapConfinementEntered;
+  $("reoAtrTotalField").hidden = !lapConfinementEntered;
+  $("reoTransverseLocationField").hidden = !lapConfinementPotential;
+  $("reoNf").disabled = !lapConfinementEntered;
+  $("reoNbs").disabled = !lapConfinementEntered;
+  $("reoAtrCountConfirmedField").hidden = !lapConfinementPotential || !options.transverseEffective;
+  $("reoAtrMinHelp").hidden = options.memberType !== "narrow";
+  const lapPressureEvidenceRequired = Number.isFinite(options.pressure) && options.pressure > 0;
+  $("reoPressureReferenceField").hidden = !lapPressureEvidenceRequired;
+  $("reoPressureBasisConfirmedField").hidden = !lapPressureEvidenceRequired;
+  const lapSlabWallOption = $("reoAtrMinBasis").querySelector('option[value="slab-wall"]');
+  lapSlabWallOption.disabled = options.memberType === "narrow";
+  if (lapConfinementEntered && options.memberType === "narrow") $("reoAtrMinBasis").value = "beam-column";
+
+  const developmentOptions = readReoDevelopmentOptions();
+  const hookedOrCoggedDevelopment = developmentOptions.barOrigin !== "pir"
+    && ["hook", "cog"].includes(developmentOptions.terminationType);
+  $("reoExistingGeometryHelp").innerHTML = hookedOrCoggedDevelopment
+    ? developmentOptions.memberType === "narrow"
+      ? "Hook / cog: c<sub>d</sub> = min(a/2, c<sub>1</sub>). Clear cover remains a detailing check."
+      : "Hook / cog: c<sub>d</sub> = a/2. Clear cover remains a detailing check."
+    : developmentOptions.memberType === "narrow"
+      ? "Straight bar: c<sub>d</sub> = min(a/2, c<sub>1</sub>, c). Use the actual bar position."
+      : "Straight bar: c<sub>d</sub> = min(a/2, c). Use the actual bar position.";
+  $("reoExistingC1Field").hidden = developmentOptions.memberType !== "narrow";
+  $("reoExistingGeometryFields").classList.toggle("is-narrow", developmentOptions.memberType === "narrow");
+  $("reoExistingRefinedDetails").hidden = !path.requiresDevelopment || developmentOptions.method !== "refined";
+  const existingConfinementEntered = developmentOptions.refinedArrangement !== "none";
+  $("reoExistingRefinedInputGrid").classList.toggle("is-simple", !existingConfinementEntered);
+  const existingAtrMin = developmentOptions.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
+  const existingConfinementPotential = existingConfinementEntered
+    && Number.isFinite(developmentOptions.atrTotal)
+    && developmentOptions.atrTotal > existingAtrMin;
+  $("reoExistingAtrMinBasisField").hidden = !existingConfinementEntered;
+  $("reoExistingNfField").hidden = !existingConfinementEntered;
+  $("reoExistingNbsField").hidden = !existingConfinementEntered;
+  $("reoExistingAtrTotalField").hidden = !existingConfinementEntered;
+  $("reoExistingTransverseLocationField").hidden = !existingConfinementPotential;
+  $("reoExistingNf").disabled = !existingConfinementEntered;
+  $("reoExistingNbs").disabled = !existingConfinementEntered;
+  $("reoExistingAtrCountConfirmedField").hidden = !existingConfinementPotential || !developmentOptions.transverseEffective;
+  $("reoExistingAtrMinHelp").hidden = developmentOptions.memberType !== "narrow";
+  const existingPressureEvidenceRequired = Number.isFinite(developmentOptions.pressure) && developmentOptions.pressure > 0;
+  $("reoExistingPressureReferenceField").hidden = !existingPressureEvidenceRequired;
+  $("reoExistingPressureBasisConfirmedField").hidden = !existingPressureEvidenceRequired;
+  const existingSlabWallOption = $("reoExistingAtrMinBasis").querySelector('option[value="slab-wall"]');
+  existingSlabWallOption.disabled = developmentOptions.memberType === "narrow";
+  if (existingConfinementEntered && developmentOptions.memberType === "narrow") $("reoExistingAtrMinBasis").value = "beam-column";
+  reoPreviousRouteKey = routeKey;
 }
 
-function updateReoSketch(options, result) {
-  const nonContact = options.lapType === "noncontact";
-  const secondLine = document.querySelector("#reoLapSketch .reo-second-bar");
-  secondLine.setAttribute("y1", nonContact ? "94" : "76");
-  secondLine.setAttribute("y2", nonContact ? "94" : "76");
-  $("reoGapDimension").style.visibility = nonContact ? "visible" : "hidden";
-  $("reoGapLabel").style.visibility = nonContact ? "visible" : "hidden";
-  const category = options.memberType === "wide" ? "Wide element / member" : "Narrow element / member";
-  const arrangement = nonContact ? "non-contact lap" : "contact lap";
-  $("reoGeometryCaption").innerHTML = `${category} &middot; ${arrangement} &middot; c<sub>d</sub> = min(a/2, c)${result?.eligible ? ` = ${result.cd.toFixed(1)} mm` : ""}.`;
-}
+function updateReoReductionAssessment(options, result, basicReference) {
+  const fallbackToBasic = !result?.eligible && basicReference?.eligible;
+  const assessmentResult = result?.eligible ? result : fallbackToBasic ? basicReference : null;
+  const assessmentOptions = fallbackToBasic ? { ...options, method: "basic" } : options;
+  if (!assessmentResult?.eligible || !assessmentResult.bar) {
+    $("reoK7SummaryValue").innerHTML = "k<sub>7</sub> not applicable";
+    $("reoK7ReductionNote").textContent = "No eligible lap case.";
+    return;
+  }
 
+  const defaultResult = reoLapCalculation(assessmentResult.bar, { ...assessmentOptions, doubleArea: false, halfSpliced: false });
+  const qualifiedResult = reoLapCalculation(assessmentResult.bar, { ...assessmentOptions, doubleArea: true, halfSpliced: true });
+  if (!defaultResult.eligible || !qualifiedResult.eligible) {
+    $("reoK7SummaryValue").innerHTML = "k<sub>7</sub> unavailable";
+    $("reoK7ReductionNote").textContent = "Check the current inputs.";
+    return;
+  }
+
+  const reduction = Math.max(0, defaultResult.adoptedLength - qualifiedResult.adoptedLength);
+  const qualificationCount = Number(options.doubleArea) + Number(options.halfSpliced);
+
+  if (qualificationCount === 2) {
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.00 &middot; adopted reduction ${reduction.toFixed(0)} mm`;
+  } else if (qualificationCount === 1) {
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; one condition pending &middot; potential ${reduction.toFixed(0)} mm`;
+  } else {
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; potential reduction ${reduction.toFixed(0)} mm`;
+  }
+
+  $("reoK7ReductionNote").textContent = "Both conditions are required for k7 = 1.00.";
+}
 function updateReoSchedule(options, selectedDesignation) {
+  const diameterSpecificBasis = options.method === "refined" || options.k7Basis === "qualified";
+  if (diameterSpecificBasis) {
+    $("reoLapTableRows").innerHTML = `<tr><td colspan="6">Schedule unavailable for Refined or reduced-k<sub>7</sub> cases. Use Basic with k<sub>7</sub> = 1.25.</td></tr>`;
+    return;
+  }
   $("reoLapTableRows").innerHTML = reoBars.filter(bar => bar.diameter <= 40).map(bar => {
     const result = reoLapCalculation(bar, options);
     if (!result.eligible) return `<tr class="${bar.designation === selectedDesignation ? "is-selected" : ""}"><td>${bar.designation}</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Not eligible for current inputs</td></tr>`;
@@ -4596,108 +4839,415 @@ function updateReoSchedule(options, selectedDesignation) {
   }).join("");
 }
 
-function updateReoProvided(result) {
-  const provided = numericValue($("reoProvidedLength").value);
-  const comparison = reoProvidedComparison(result, provided);
-  const status = $("reoProvidedStatus");
-  if (!comparison.available) {
-    $("reoProvidedRatio").textContent = "—";
-    status.textContent = "NOT AVAILABLE";
-    status.className = "check";
-    $("reoProvidedNote").textContent = "A provided-length comparison is unavailable because the selected lap is not eligible.";
-    return;
+function reoRefinedFormulaHtml(result, options, label) {
+  if (options.method !== "refined") {
+    return `<div><b>${label} development-length basis</b><code>Basic method; no transverse-reinforcement or pressure reduction is credited.</code></div>`;
   }
-  if (comparison.ratio === null) {
-    $("reoProvidedRatio").textContent = "—";
-    status.textContent = "NO LENGTH ENTERED";
-    status.className = "";
-    $("reoProvidedNote").textContent = "Enter a provided lap length to compare it with the rounded-up requirement.";
-    return;
-  }
-  $("reoProvidedRatio").textContent = `${comparison.ratio.toFixed(2)} · ${provided.toFixed(0)} / ${result.adoptedLength} mm`;
-  status.textContent = comparison.status;
-  status.className = comparison.meets ? "pass" : "fail";
-  $("reoProvidedNote").textContent = comparison.meets
-    ? "The provided length meets the rounded-up length requirement only; confirm all other detailing requirements separately."
-    : `Increase the provided lap by at least ${Math.ceil(comparison.shortfall)} mm, then confirm all other detailing requirements.`;
+  const location = !result.transverseArrangementConfirmed
+    ? "no verified confinement credit selected; K = 0"
+    : result.lambda <= 0
+      ? "Sigma Atr does not exceed Sigma Atr,min; lambda = 0"
+      : result.transverseEffective
+        ? "effective transverse-reinforcement location confirmed"
+        : "location not confirmed; K = 0";
+  const countStatus = result.confinementCreditRequested
+    ? (result.atrCountConfirmed ? "candidate-length count confirmed" : `candidate k<sub>4</sub> = ${result.k4Candidate.toFixed(3)} not adopted until the candidate-length count is confirmed`)
+    : "no k4 confinement credit requested";
+  const pressureStatus = result.pressureCreditRequested
+    ? (result.pressureCreditApplied ? `pressure reference ${safeText(result.pressureReference)} and applicability confirmed` : `candidate k<sub>5</sub> = ${result.k5Candidate.toFixed(3)} not adopted until a calculation/source reference and applicability confirmation are provided`)
+    : "no k5 pressure credit requested";
+  return `<div><b>${label} refined factors &middot; Cl. 13.1.2.3</b><code>${location}; K = ${result.K.toFixed(3)} from n<sub>f</sub> / n<sub>bs</sub>; &Sigma;A<sub>tr,min</sub> = ${result.atrMin.toFixed(1)} mm&sup2;; &lambda; = ${result.lambda.toFixed(3)}; candidate k<sub>4</sub> / k<sub>5</sub> = ${result.candidateK4.toFixed(3)} / ${result.candidateK5.toFixed(3)}; adopted k<sub>4</sub> / k<sub>5</sub> = ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}; ${countStatus}; ${pressureStatus}.</code></div><div><b>${label} candidate reconciliation</b><code>Candidate development = ${result.candidateDevelopmentLength.toFixed(1)} mm; adopted development = ${result.developmentLength.toFixed(1)} mm. Candidate factor = ${result.candidateRefinedFactor.toFixed(3)} and adopted factor = ${result.refinedFactor.toFixed(3)}; k<sub>3</sub> &times; each adopted factor remains &ge; 0.700.</code></div>`;
 }
 
-function updateReoFormulaSteps(result, options) {
-  if (!result.eligible) {
-    $("reoFormulaSteps").innerHTML = `<div><b>Eligibility</b><code>${result.issues.map(safeText).join(" ")}</code></div>`;
-    return;
+function reoLapFormulaHtml(result, options, referenceOnly) {
+  if (!result?.eligible) {
+    const issues = result?.issues?.length ? result.issues.map(safeText).join(" ") : "No lap calculation applies to this path.";
+    return `<div><b>Lap eligibility</b><code>${issues}</code></div>`;
   }
-  const refinement = options.method === "refined"
-    ? `<div><b>Refined factors &middot; Cl. 13.1.2.3</b><code>K = ${result.K.toFixed(3)}; &Sigma;A<sub>tr,min</sub> = ${result.atrMin.toFixed(1)} mm&sup2;; &lambda; = max[(${Math.max(0, options.atrTotal).toFixed(1)} - ${result.atrMin.toFixed(1)}) / ${result.bar.area.toFixed(1)}, 0] = ${result.lambda.toFixed(3)}; k<sub>4</sub> = ${result.k4.toFixed(3)}; k<sub>5</sub> = ${result.k5.toFixed(3)}.</code></div><div><b>Combined reduction limit</b><code>Requested k<sub>4</sub>k<sub>5</sub> = ${result.requestedRefinedFactor.toFixed(3)}; adopted refinement factor = ${result.refinedFactor.toFixed(3)} so k<sub>3</sub> &times; adopted factor = ${(result.k3 * result.refinedFactor).toFixed(3)} &ge; 0.700.</code></div>`
-    : `<div><b>Development method</b><code>Basic method selected; k<sub>4</sub> = k<sub>5</sub> = 1.000.</code></div>`;
   const narrow = options.memberType === "narrow"
-    ? `<div><b>Narrow-member candidate</b><code>L<sub>sy.t</sub> + 1.5s<sub>b</sub> = ${result.developmentLength.toFixed(1)} + 1.5 &times; ${result.gapUsed.toFixed(1)} = ${result.narrowCandidate.toFixed(1)} mm${result.gapEntered <= 3 * result.bar.diameter ? `; entered s<sub>b</sub> = ${result.gapEntered.toFixed(1)} mm &le; 3d<sub>b</sub>, therefore s<sub>b</sub> = 0 for this candidate` : ""}.</code></div>`
+    ? `<div><b>Narrow-member lap candidate</b><code>L<sub>sy.t</sub> + 1.5s<sub>b</sub> = ${result.developmentLength.toFixed(1)} + 1.5 &times; ${result.gapUsed.toFixed(1)} = ${result.narrowCandidate.toFixed(1)} mm${result.gapEntered <= 3 * result.bar.diameter ? `; entered s<sub>b</sub> &le; 3d<sub>b</sub>, therefore s<sub>b</sub> = 0 for this candidate` : ""}.</code></div>`
     : "";
-  const stagger = result.staggerApplicable
-    ? `<div><b>Staggered-splice guide &middot; Fig. 13.2.2</b><code>0.3L<sub>sy.t.lap</sub> = 0.3 &times; ${result.rawLength.toFixed(1)} = ${result.staggerGuideRaw.toFixed(1)} mm; displayed practical guide = ${result.staggerGuideAdopted} mm. Confirm the actual arrangement limits splices to no more than 50% at every section.</code></div>`
-    : `<div><b>Staggered-splice guide &middot; Fig. 13.2.2</b><code>Not applicable until the no-more-than-50%-spliced condition is explicitly confirmed.</code></div>`;
-  $("reoFormulaSteps").innerHTML = `
-    <div><b>Inputs and c<sub>d</sub></b><code>d<sub>b</sub> = ${result.bar.diameter} mm; A<sub>s</sub> = ${result.bar.area.toFixed(1)} mm&sup2;; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa; c<sub>d</sub> = min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)}) = ${result.cd.toFixed(1)} mm.</code></div>
-    <div><b>Basic factors &middot; Cl. 13.1.2.2</b><code>k<sub>1</sub> = ${result.k1.toFixed(2)}; k<sub>2</sub> = (132 - ${result.bar.diameter}) / 100 = ${result.k2.toFixed(3)}; k<sub>3</sub> = clamp[1 - 0.15(${result.cd.toFixed(1)} - ${result.bar.diameter})/${result.bar.diameter}, 0.7, 1.0] = ${result.k3.toFixed(3)}.</code></div>
-    <div><b>Basic development expression</b><code>L<sub>sy.tb,formula</sub> = 0.5k<sub>1</sub>k<sub>3</sub>f<sub>sy</sub>d<sub>b</sub> / [k<sub>2</sub>&radic;f'<sub>c</sub>] = ${result.basicFormula.toFixed(1)} mm; material-condition multiplier = ${result.conditionFactor.toFixed(2)}; modified value = ${result.basicModified.toFixed(1)} mm.</code></div>
-    ${refinement}
-    <div><b>Development length used</b><code>L<sub>sy.t</sub> = ${result.developmentLength.toFixed(1)} mm. The Cl. 13.1.2.2 basic lower limit is not imposed before the Cl. 13.2.2 lap calculation.</code></div>
-    <div><b>Lap candidates &middot; Cl. 13.2.2</b><code>k<sub>7</sub>L<sub>sy.t</sub> = ${result.k7.toFixed(2)} &times; ${result.developmentLength.toFixed(1)} = ${result.k7Candidate.toFixed(1)} mm; lap lower limit = 0.058 &times; 500 &times; ${result.k1.toFixed(2)} &times; ${result.bar.diameter} = ${result.lapLowerLimit.toFixed(1)} mm.</code></div>
+  const referenceWarning = referenceOnly
+    ? `<div><b>PIR applicability boundary</b><code>This is an AS 3600 straight-lap length reference only. Post-installed reinforcement design and the transfer mechanism to the existing bar require the project PIR design.</code></div>`
+    : "";
+  const documentStatus = `<div><b>Project-document condition &middot; AS 3600 Cl. 13.2.1(a)</b><code>Use this reference only where the project drawings or specification require or permit the splice.</code></div>`;
+  return `${referenceWarning}
+    ${documentStatus}
+    <div><b>New-work lap geometry</b><code>d<sub>b</sub> = ${result.bar.diameter} mm; A<sub>s</sub> = ${result.bar.area.toFixed(1)} mm&sup2;; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa; c<sub>d</sub> = min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)}) = ${result.cd.toFixed(1)} mm.</code></div>
+    <div><b>Lap development expression</b><code>L<sub>sy.tb,formula</sub> = ${result.basicFormula.toFixed(1)} mm; material multiplier = ${result.conditionFactor.toFixed(2)}; L<sub>sy.t</sub> = ${result.developmentLength.toFixed(1)} mm. The Cl. 13.1.2.2 basic lower limit is not imposed before the Cl. 13.2.2 lap equation.</code></div>
+    ${reoRefinedFormulaHtml(result, options, "Lap")}
+    <div><b>Lap candidates &middot; Cl. 13.2.2</b><code>k<sub>7</sub>L<sub>sy.t</sub> = ${result.k7.toFixed(2)} &times; ${result.developmentLength.toFixed(1)} = ${result.k7Candidate.toFixed(1)} mm; lap lower limit = ${result.lapLowerLimit.toFixed(1)} mm.</code></div>
     ${narrow}
-    <div><b>Governing result</b><code>${result.governing.label} governs at ${result.rawLength.toFixed(1)} mm; adopted length = ceil(${result.rawLength.toFixed(1)} / 10) &times; 10 = ${result.adoptedLength} mm = ${result.ratio.toFixed(1)}d<sub>b</sub>. Rounding is a presentation convention.</code></div>
-    ${stagger}`;
+    <div><b>Adopted lap reference</b><code>${safeText(result.governing.label)} governs at ${result.rawLength.toFixed(1)} mm; rounded up to ${result.adoptedLength} mm = ${result.ratio.toFixed(1)}d<sub>b</sub>.</code></div>`;
 }
 
-function calculateReo() {
-  let options = readReoOptions();
-  const selectedBar = reoBarByDesignation($("reoBar").value);
-  updateReoConditionalFields(options);
-  options = readReoOptions();
-  const result = reoLapCalculation(selectedBar, options);
-  updateReoSketch(options, result);
-  updateReoSchedule(options, selectedBar?.designation || $("reoBar").value);
-  updateReoProvided(result);
-  updateReoFormulaSteps(result, options);
+function reoDevelopmentFormulaHtml(result, options, anchorage) {
+  if (!result?.eligible) {
+    const issues = result?.issues?.length ? result.issues.map(safeText).join(" ") : "No development reference applies to this path.";
+    return `<div><b>Existing-concrete development eligibility</b><code>${issues}</code></div>`;
+  }
+  const cdExpression = result.hookedOrCogged
+    ? result.memberType === "narrow"
+      ? `min(${options.clearSpacing.toFixed(1)}/2, ${options.c1.toFixed(1)})`
+      : `${options.clearSpacing.toFixed(1)}/2`
+    : result.memberType === "narrow"
+      ? `min(${options.clearSpacing.toFixed(1)}/2, ${options.c1.toFixed(1)}, ${options.cover.toFixed(1)})`
+      : `min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)})`;
+  let stressStep = `<div><b>Selected AS reference</b><code>Full-yield adopted development reference = ${result.adoptedLength} mm.</code></div>`;
+  if (anchorage?.actualStressRequested) {
+    stressStep = anchorage.stressOverYield
+      ? `<div><b>Project steel stress &middot; Cl. 13.1.2.4</b><code>&sigma;<sub>st</sub> = ${anchorage.actualStress.toFixed(1)} MPa exceeds f<sub>sy</sub> = ${anchorage.fsy.toFixed(0)} MPa. No reduced benchmark is issued; review the bar design.</code></div>`
+      : anchorage.refinedReducedLengthConfirmationMissing
+        ? `<div><b>Combined reduction candidate</b><code>Candidate L<sub>st</sub> = ${anchorage.reducedDevelopmentCandidateRaw.toFixed(1)} mm (${anchorage.reducedDevelopmentCandidateAdopted.toFixed(0)} mm adopted if confirmed). Verify the Refined confinement and pressure evidence throughout this candidate length before adoption.</code></div>`
+      : anchorage.actualStressApplied
+        ? `<div><b>Project steel stress &middot; Cl. 13.1.2.4</b><code>L<sub>st</sub> = max(${result.rawLength.toFixed(1)} &times; ${anchorage.actualStress.toFixed(1)} / ${anchorage.fsy.toFixed(0)}, 12d<sub>b</sub>) = ${anchorage.reducedDevelopmentRaw.toFixed(1)} mm. Verify &sigma;<sub>st</sub> against the project calculation before issue.</code></div>`
+        : `<div><b>Project steel stress</b><code>Enter a positive &sigma;<sub>st</sub> not exceeding f<sub>sy</sub>; the full-yield reference remains displayed.</code></div>`;
+  }
+  const terminationStep = anchorage?.terminationDetailingConfirmationMissing
+    ? `<div><b>Cast-in ${safeText(anchorage.terminationType)} detailing required &middot; Cls 13.1.2.6&ndash;13.1.2.7</b><code>Minimum bend diameter = ${anchorage.minimumBendDiameter.toFixed(0)} mm (${anchorage.minimumBendDiameterFactor}d<sub>b</sub> for the selected condition); ${anchorage.terminationType === "hook" ? `straight extension = ${anchorage.hookStraightExtension.toFixed(0)} mm minimum` : `90-degree cog, bend diameter not exceeding ${anchorage.maximumCogBendDiameter.toFixed(0)} mm and total bar length equal to the corresponding 180-degree hook`}.${anchorage.transverseRestraintRequired ? ` Transverse bar: diameter at least ${anchorage.transverseBarMinimumDiameter.toFixed(0)} mm, in contact, extending ${anchorage.transverseBarExtensionEachSide.toFixed(0)} mm each side.` : ""} The half-development reference is withheld until these requirements are confirmed. No lap-splice reduction applies.</code></div>`
+    : anchorage?.terminationFactor === 0.5
+      ? `<div><b>Cast-in ${safeText(anchorage.terminationType)} termination &middot; Cls 13.1.2.6&ndash;13.1.2.7</b><code>Confirmed standard detailing: 0.5 &times; ${anchorage.actualStressApplied ? `L<sub>st</sub> = ${anchorage.reducedDevelopmentRaw.toFixed(1)}` : `L<sub>sy.t</sub> = ${result.rawLength.toFixed(1)}`} = ${anchorage.asBenchmarkRaw.toFixed(1)} mm; adopted = ${anchorage.asBenchmarkAdopted} mm, measured from the outside of the hook/cog. No lap-splice reduction applies.</code></div>`
+      : "";
+  return `<div><b>Existing-concrete development geometry</b><code>c<sub>d</sub> = ${cdExpression} = ${result.cd.toFixed(1)} mm; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa.</code></div>
+    <div><b>Basic development &middot; Cl. 13.1.2.2</b><code>Formula = ${result.basicFormula.toFixed(1)} mm; lower limit = ${result.basicLowerLimit.toFixed(1)} mm; adopted before material multiplier = ${result.basicBeforeMaterial.toFixed(1)} mm; multiplier = ${result.conditionFactor.toFixed(2)}; modified = ${result.basicModified.toFixed(1)} mm.</code></div>
+    ${reoRefinedFormulaHtml(result, options, "Existing-concrete")}
+    <div><b>Full-yield development reference</b><code>Raw = ${result.rawLength.toFixed(1)} mm; adopted = ${result.adoptedLength} mm. The basic lower limit is applied before the material multiplier and refined factor.</code></div>
+    ${stressStep}${terminationStep}`;
+}
 
-  if (!result.eligible) {
-    $("reoCd").value = "—";
-    ["reoK1", "reoK2", "reoK3", "reoK7"].forEach(id => $(id).textContent = "—");
-    $("reoKValue").value = "—";
-    $("reoCombinedFactor").value = "—";
-    $("reoStaggerGuide").textContent = "—";
-    $("reoRequiredLength").textContent = "—";
-    $("reoRawLength").textContent = "—";
-    $("reoLapRatio").textContent = "—";
-    $("reoGoverning").textContent = "No lap result is available for the selected case.";
-    $("reoDevelopmentLength").textContent = "Development length used: —";
-    $("reoResultStatus").textContent = "NOT ELIGIBLE";
-    $("reoResultNote").textContent = result.issues.join(" ");
-    $("reoResultNote").className = "result-note is-ineligible";
-    $("reoRefinedNote").textContent = "Refined factors are unavailable for an ineligible case.";
+function updateReoFormulaSteps(lapResult, lapOptions, developmentResult, developmentOptions, anchorage, path) {
+  const steps = [];
+  if (path.requiresLap) steps.push(reoLapFormulaHtml(lapResult, lapOptions, false));
+  if (path.requiresDevelopment) {
+    steps.push(reoDevelopmentFormulaHtml(developmentResult, developmentOptions, anchorage));
+  }
+  $("reoFormulaSteps").innerHTML = steps.join("");
+}
+
+function clearReoAnchorageOutputs(message = "A valid existing-concrete development reference is required.") {
+  ["reoAsFullDevelopment", "reoAnchoragePrimaryResult"].forEach(id => {
+    const element = $(id);
+    if (element) element.textContent = "-";
+  });
+  $("reoAnchorageResultStatus").textContent = "INPUT REQUIRED";
+  $("reoSaving").textContent = "AS 3600 reference unavailable.";
+  $("reoAnchorageResultNote").textContent = message;
+}
+
+function updateReoDevelopmentDerived(result, options, basicReference) {
+  if (!result?.eligible) {
+    if (options.method === "refined" && basicReference?.eligible) {
+      $("reoExistingCd").textContent = basicReference.cd.toFixed(1);
+      $("reoExistingKValue").textContent = "-";
+      $("reoExistingCombinedFactor").textContent = "-";
+      $("reoExistingRefinedCandidateLength").textContent = "-";
+      $("reoExistingRefinedNote").textContent = `Refined result unavailable. Basic reference retained. ${result?.issues?.join(" ") || "Complete the highlighted Refined input."}`;
+      return;
+    }
+    $("reoExistingCd").textContent = "-";
+    $("reoExistingKValue").textContent = "-";
+    $("reoExistingCombinedFactor").textContent = "-";
+    $("reoExistingRefinedCandidateLength").textContent = "-";
+    $("reoExistingRefinedNote").textContent = result?.issues?.join(" ") || "Development reference unavailable.";
     return;
   }
+  $("reoExistingCd").textContent = result.cd.toFixed(1);
+  $("reoExistingKValue").textContent = result.K.toFixed(3);
+  $("reoExistingCombinedFactor").textContent = `${result.lambda.toFixed(3)} / ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}`;
+  $("reoExistingRefinedCandidateLength").textContent = options.method === "refined"
+    ? result.refinedCandidateAdoptedLength.toFixed(0)
+    : "-";
+  $("reoExistingRefinedNote").textContent = options.method === "refined"
+    ? result.refinedReconciliationRequired
+      ? `Candidate ${result.refinedCandidateAdoptedLength.toFixed(0)} mm is not adopted. Confirm the qualifying reinforcement count and any pressure basis throughout that candidate length.`
+      : result.refinedCreditRequested
+        ? `Candidate evidence confirmed; ${result.adoptedLength.toFixed(0)} mm is adopted.`
+        : "No Refined reduction applies for the entered arrangement."
+    : "Basic development; no confinement reduction.";
+}
 
-  $("reoCd").value = result.cd.toFixed(1);
+function updateReoAnchorage(options, selectedBar, developmentResult, developmentOptions, basicReference) {
+  const path = reoPathState(options);
+  if (!path.requiresDevelopment) {
+    clearReoAnchorageOutputs("No development reference applies to the selected path.");
+    return null;
+  }
+
+  const refinedFallback = !developmentResult?.eligible && developmentOptions.method === "refined" && basicReference?.eligible;
+  const adoptedDevelopmentResult = refinedFallback ? basicReference : developmentResult;
+  updateReoDevelopmentDerived(developmentResult, developmentOptions, basicReference);
+  const pirOrigin = developmentOptions.barOrigin === "pir";
+  const anchorage = reoAnchorageCalculation(selectedBar, adoptedDevelopmentResult, {
+    barOrigin: developmentOptions.barOrigin,
+    basis: $("reoAnchorageBasis").value,
+    actualStress: numericValue($("reoSteelStress").value),
+    refinedReducedLengthConfirmed: $("reoReducedLengthRefinedConfirmed").checked,
+    terminationType: $("reoCastInTermination").value,
+    terminationDetailingConfirmed: $("reoCastInTerminationConfirmed").checked
+  });
+
+  if (!anchorage.available) {
+    const unavailableIssues = [...(developmentResult?.issues || []), ...(anchorage.issues || [])];
+    clearReoAnchorageOutputs([...new Set(unavailableIssues)].join(" "));
+    return anchorage;
+  }
+
+  const formatLength = value => Number.isFinite(value) ? Number(value).toFixed(0) : "-";
+  $("reoAsFullDevelopment").textContent = formatLength(anchorage.fullDevelopmentAdopted);
+  $("reoAnchoragePrimaryResult").textContent = anchorage.benchmarkAvailable ? formatLength(anchorage.asBenchmarkAdopted) : "-";
+
+  const fullReferenceUseful = anchorage.actualStressRequested || anchorage.terminationFactor === 0.5;
+  $("reoAnchorageFullReferenceCard").hidden = !fullReferenceUseful;
+  $("reoAnchorageReferenceStrip").hidden = !fullReferenceUseful;
+  $("reoFullReferenceContext").textContent = anchorage.terminationFactor === 0.5
+    ? "Underlying full-yield development"
+    : "Full-yield comparison";
+
+  if (refinedFallback) {
+    $("reoAnchorageResultStatus").textContent = "BASIC REFERENCE · REFINED INPUT REQUIRED";
+    $("reoRequiredEmbedmentLabel").innerHTML = pirOrigin
+      ? "Basic AS 3600 reference depth <b>L<sub>e,AS</sub></b>"
+      : "Basic development reference <b>L<sub>sy.t</sub></b>";
+  } else if (pirOrigin) {
+    $("reoAnchorageResultStatus").textContent = !anchorage.benchmarkAvailable
+      ? "INPUT REQUIRED"
+      : anchorage.actualStressApplied
+        ? "STRESS-BASED REFERENCE"
+        : "FULL-YIELD REFERENCE";
+    $("reoRequiredEmbedmentLabel").innerHTML = "AS 3600 reference depth <b>L<sub>e,AS</sub></b>";
+  } else if (anchorage.terminationDetailingConfirmationMissing) {
+    $("reoAnchorageResultStatus").textContent = `${anchorage.terminationType.toUpperCase()} DETAILING REQUIRED`;
+    $("reoRequiredEmbedmentLabel").innerHTML = "Anchorage reference <b>L<sub>e,AS</sub></b>";
+  } else if (anchorage.refinedReducedLengthConfirmationMissing) {
+    $("reoAnchorageResultStatus").textContent = "REFINED RECONCILIATION REQUIRED";
+    $("reoRequiredEmbedmentLabel").innerHTML = "Development reference <b>L<sub>st</sub></b>";
+  } else if (!anchorage.benchmarkAvailable || anchorage.stressOverYield) {
+    $("reoAnchorageResultStatus").textContent = "REVIEW REQUIRED";
+    $("reoRequiredEmbedmentLabel").innerHTML = "Development reference <b>L<sub>sy.t</sub></b>";
+  } else {
+    $("reoAnchorageResultStatus").textContent = "AS 3600 REFERENCE";
+    $("reoRequiredEmbedmentLabel").innerHTML = anchorage.terminationFactor === 0.5
+      ? `Standard ${anchorage.terminationType} anchorage <b>L<sub>e,AS</sub></b>`
+      : "Required development length <b>L<sub>sy.t</sub></b>";
+  }
+
+  const basisNotes = [];
+  if (anchorage.stressOverYield) {
+    basisNotes.push(`Entered sigma_st = ${anchorage.actualStress.toFixed(0)} MPa exceeds fsy; review the bar design.`);
+  } else if (anchorage.refinedReducedLengthConfirmationMissing) {
+    basisNotes.push(`Candidate stress-based length ${formatLength(anchorage.reducedDevelopmentCandidateAdopted)} mm. Confirm the Refined evidence throughout that candidate before adoption.`);
+  } else if (anchorage.actualStressApplied) {
+    basisNotes.push(`Project sigma_st = ${anchorage.actualStress.toFixed(0)} MPa; the 12db minimum is retained.`);
+  } else if (anchorage.actualStressRequested) {
+    basisNotes.push("Enter a positive project design tensile stress not exceeding fsy.");
+  }
+  if (anchorage.terminationDetailingConfirmationMissing) {
+    basisNotes.push(`Confirm the displayed standard ${anchorage.terminationType} requirements before the half-development reference is issued.`);
+  } else if (anchorage.terminationFactor === 0.5) {
+    basisNotes.push(`Standard ${anchorage.terminationType} anchorage confirmed; no lap-splice reduction applies.`);
+  }
+  $("reoSaving").textContent = pirOrigin
+    ? (anchorage.actualStressApplied ? "Stress-based AS 3600 reference depth." : "Full-yield AS 3600 reference depth.")
+    : anchorage.terminationFactor === 0.5
+      ? `AS 3600 standard ${anchorage.terminationType} end anchorage.`
+      : anchorage.actualStressApplied
+        ? "Project-stress AS 3600 development reference."
+        : "AS 3600 straight development reference.";
+  if (refinedFallback) basisNotes.unshift(`Refined result unavailable; Basic reference retained. ${developmentResult?.issues?.join(" ") || "Complete the highlighted Refined input."}`);
+  const notes = [...basisNotes, ...(adoptedDevelopmentResult?.notices || []), ...(anchorage.issues || [])];
+  notes.push(pirOrigin
+    ? "Not an installation depth · complete the product-specific design separately."
+    : "Verify reinforcement continuity, cover, spacing, member detailing and load path.");
+  $("reoAnchorageResultNote").textContent = [...new Set(notes)].join(" ");
+  const warning = refinedFallback || !anchorage.benchmarkAvailable || anchorage.stressOverYield || anchorage.refinedReducedLengthConfirmationMissing || anchorage.terminationDetailingConfirmationMissing;
+  $("reoAnchorageResultNote").className = warning ? "result-note is-warning" : "result-note";
+  return anchorage;
+}
+
+function clearReoLapOutputs(message = "No lap result applies to the selected path.") {
+  $("reoCd").textContent = "-";
+  ["reoK1", "reoK2", "reoK3", "reoK7"].forEach(id => $(id).textContent = "-");
+  $("reoKValue").textContent = "-";
+  $("reoCombinedFactor").textContent = "-";
+  $("reoRefinedCandidateLength").textContent = "-";
+  $("reoPrimaryResultLabel").textContent = "Adopted lap length";
+  $("reoRequiredLength").textContent = "-";
+  $("reoLapRatio").textContent = "-";
+  $("reoGoverning").textContent = "Governing expression unavailable.";
+  $("reoDevelopmentLength").textContent = "Lsy.t = -";
+  $("reoResultStatus").textContent = "NOT AVAILABLE";
+  $("reoResultNote").textContent = message;
+  $("reoResultNote").className = "result-note is-ineligible";
+  $("reoRefinedNote").textContent = "Refined lap factors are unavailable.";
+}
+
+function updateReoLapFieldValidity(options, path, developmentOptions) {
+  const setFieldValidity = (inputId, errorId, invalid) => {
+    const input = $(inputId);
+    const error = errorId ? $(errorId) : null;
+    if (invalid) input.setAttribute("aria-invalid", "true");
+    else input.removeAttribute("aria-invalid");
+    if (error) error.hidden = !invalid;
+  };
+  const lapActive = path.requiresLap;
+  setFieldValidity("reoConcreteStrength", "reoConcreteStrengthError", lapActive && (!Number.isFinite(options.fc) || options.fc < 20));
+  setFieldValidity("reoCover", "reoCoverError", lapActive && (!Number.isFinite(options.cover) || options.cover <= 0));
+  setFieldValidity("reoClearSpacing", "reoClearSpacingError", lapActive && (!Number.isFinite(options.clearSpacing) || options.clearSpacing <= 0));
+  setFieldValidity("reoBarGap", "reoBarGapError", lapActive && options.memberType === "narrow" && options.lapType === "noncontact" && (!Number.isFinite(options.barGap) || options.barGap < 0));
+
+  const customRefined = lapActive && options.method === "refined" && options.refinedArrangement === "custom";
+  const selectedBar = reoBarByDesignation($("reoBar").value);
+  const lapAtrMin = options.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
+  const lapConfinementPotential = customRefined && Number.isFinite(options.atrTotal) && options.atrTotal > lapAtrMin;
+  setFieldValidity("reoNf", "reoNfError", customRefined && (!Number.isInteger(options.nf) || options.nf < 0));
+  setFieldValidity("reoNbs", "reoNbsError", customRefined && (!Number.isInteger(options.nbs) || options.nbs < 1));
+  setFieldValidity("reoAtrTotal", "reoAtrTotalError", customRefined && (!Number.isFinite(options.atrTotal) || options.atrTotal < 0));
+  setFieldValidity("reoTransverseLocationConfirmed", "reoTransverseLocationError", lapConfinementPotential && !options.transverseEffective);
+  setFieldValidity("reoAtrCountConfirmed", "reoAtrCountConfirmedError", lapConfinementPotential && options.transverseEffective && !options.atrCountConfirmed);
+
+  const pressureInvalid = path.requiresLap && options.method === "refined" && (!Number.isFinite(options.pressure) || options.pressure < 0);
+  const pressureConfirmationMissing = path.requiresLap && options.method === "refined" && Number.isFinite(options.pressure) && options.pressure > 0 && !options.pressureBasisConfirmed;
+  const pressureReferenceMissing = path.requiresLap && options.method === "refined" && Number.isFinite(options.pressure) && options.pressure > 0 && !options.pressureReference.trim();
+  if (pressureInvalid) $("reoPressure").setAttribute("aria-invalid", "true");
+  else $("reoPressure").removeAttribute("aria-invalid");
+  if (pressureConfirmationMissing) $("reoPressureBasisConfirmed").setAttribute("aria-invalid", "true");
+  else $("reoPressureBasisConfirmed").removeAttribute("aria-invalid");
+  if (pressureReferenceMissing) $("reoPressureReference").setAttribute("aria-invalid", "true");
+  else $("reoPressureReference").removeAttribute("aria-invalid");
+  $("reoPressureError").hidden = !pressureInvalid;
+
+  const existingPressureActive = path.requiresDevelopment && developmentOptions?.method === "refined";
+  const existingCustomRefined = existingPressureActive && developmentOptions.refinedArrangement === "custom";
+  const existingAtrMin = developmentOptions?.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
+  const existingConfinementPotential = existingCustomRefined && Number.isFinite(developmentOptions.atrTotal) && developmentOptions.atrTotal > existingAtrMin;
+  setFieldValidity("reoExistingNf", "reoExistingNfError", existingCustomRefined && (!Number.isInteger(developmentOptions.nf) || developmentOptions.nf < 0));
+  setFieldValidity("reoExistingNbs", "reoExistingNbsError", existingCustomRefined && (!Number.isInteger(developmentOptions.nbs) || developmentOptions.nbs < 1));
+  setFieldValidity("reoExistingAtrTotal", "reoExistingAtrTotalError", existingCustomRefined && (!Number.isFinite(developmentOptions.atrTotal) || developmentOptions.atrTotal < 0));
+  setFieldValidity("reoExistingTransverseLocationConfirmed", "reoExistingTransverseLocationError", existingConfinementPotential && !developmentOptions.transverseEffective);
+  setFieldValidity("reoExistingAtrCountConfirmed", "reoExistingAtrCountConfirmedError", existingConfinementPotential && developmentOptions.transverseEffective && !developmentOptions.atrCountConfirmed);
+  const existingPressureInvalid = existingPressureActive && (!Number.isFinite(developmentOptions.pressure) || developmentOptions.pressure < 0);
+  const existingPressureConfirmationMissing = existingPressureActive && Number.isFinite(developmentOptions.pressure) && developmentOptions.pressure > 0 && !developmentOptions.pressureBasisConfirmed;
+  const existingPressureReferenceMissing = existingPressureActive && Number.isFinite(developmentOptions.pressure) && developmentOptions.pressure > 0 && !developmentOptions.pressureReference.trim();
+  if (existingPressureInvalid) $("reoExistingPressure").setAttribute("aria-invalid", "true");
+  else $("reoExistingPressure").removeAttribute("aria-invalid");
+  if (existingPressureConfirmationMissing) $("reoExistingPressureBasisConfirmed").setAttribute("aria-invalid", "true");
+  else $("reoExistingPressureBasisConfirmed").removeAttribute("aria-invalid");
+  if (existingPressureReferenceMissing) $("reoExistingPressureReference").setAttribute("aria-invalid", "true");
+  else $("reoExistingPressureReference").removeAttribute("aria-invalid");
+  $("reoExistingPressureError").hidden = !existingPressureInvalid;
+}
+
+function renderReoLapResult(options, result, path, basicReference) {
+  if (!path.requiresLap) {
+    clearReoLapOutputs("No bar-to-bar lap calculation applies to the selected path.");
+    return;
+  }
+  if (!result?.eligible) {
+    if (options.method === "refined" && basicReference?.eligible) {
+      $("reoCd").textContent = basicReference.cd.toFixed(1);
+      $("reoK1").textContent = basicReference.k1.toFixed(2);
+      $("reoK2").textContent = basicReference.k2.toFixed(3);
+      $("reoK3").textContent = basicReference.k3.toFixed(3);
+      $("reoK7").textContent = basicReference.k7.toFixed(2);
+      $("reoKValue").textContent = "-";
+      $("reoCombinedFactor").textContent = "-";
+      $("reoRefinedCandidateLength").textContent = "-";
+      $("reoPrimaryResultLabel").textContent = "Basic-reference tensile lap";
+      $("reoRequiredLength").textContent = basicReference.adoptedLength.toFixed(0);
+      $("reoLapRatio").textContent = basicReference.ratio.toFixed(1);
+      $("reoGoverning").textContent = `Basic reference: ${basicReference.governing.label}`;
+      $("reoDevelopmentLength").textContent = `Basic Lsy.t = ${basicReference.developmentLength.toFixed(1)} mm`;
+      $("reoResultStatus").textContent = "BASIC REFERENCE · REFINED INPUT REQUIRED";
+      $("reoResultNote").textContent = `Refined result unavailable. Basic reference retained for context. ${result.issues.join(" ")}`;
+      $("reoResultNote").className = "result-note is-warning";
+      $("reoRefinedNote").textContent = "Complete the highlighted Refined input before any confinement or pressure credit is applied.";
+      return;
+    }
+    clearReoLapOutputs(result?.issues?.join(" ") || "The selected lap case is not eligible.");
+    const prohibited = result?.issues?.some(issue => /not permitted|must be welded or mechanical/i.test(issue));
+    $("reoResultStatus").textContent = prohibited ? "LAP SPLICE NOT PERMITTED" : "INVALID INPUT";
+    return;
+  }
+  $("reoCd").textContent = result.cd.toFixed(1);
   $("reoK1").textContent = result.k1.toFixed(2);
   $("reoK2").textContent = result.k2.toFixed(3);
   $("reoK3").textContent = result.k3.toFixed(3);
   $("reoK7").textContent = result.k7.toFixed(2);
-  $("reoStaggerGuide").textContent = result.staggerApplicable ? `${result.staggerGuideAdopted} mm` : "N/A";
-  $("reoKValue").value = result.K.toFixed(3);
-  $("reoCombinedFactor").value = `${result.lambda.toFixed(3)} / ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}`;
+  $("reoKValue").textContent = result.K.toFixed(3);
+  $("reoCombinedFactor").textContent = `${result.lambda.toFixed(3)} / ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}`;
+  $("reoRefinedCandidateLength").textContent = options.method === "refined"
+    ? result.refinedCandidateAdoptedLength.toFixed(0)
+    : "-";
+  $("reoPrimaryResultLabel").textContent = "Adopted lap length";
   $("reoRequiredLength").textContent = result.adoptedLength.toFixed(0);
-  $("reoRawLength").textContent = result.rawLength.toFixed(1);
   $("reoLapRatio").textContent = result.ratio.toFixed(1);
   $("reoGoverning").textContent = result.governing.label;
-  $("reoDevelopmentLength").textContent = `Development length used: ${result.developmentLength.toFixed(1)} mm`;
-  $("reoResultStatus").textContent = result.notices.length ? "CALCULATED · REVIEW" : "CALCULATED";
-  $("reoResultNote").textContent = result.notices.length
-    ? result.notices.join(" ")
-    : "Straight 500N bars in tension only. Confirm actual geometry and complete detailing before issue.";
-  $("reoResultNote").className = result.notices.length ? "result-note is-warning" : "result-note";
+  $("reoDevelopmentLength").textContent = `Lsy.t = ${result.developmentLength.toFixed(1)} mm`;
+  const notices = result.notices.filter(note => ![
+    "No verified custom transverse-reinforcement arrangement is being used.",
+    "Sigma Atr is confirmed for the candidate lap length.",
+    "The transverse-pressure basis is confirmed for the candidate lap length."
+  ].includes(note));
+  if (options.doubleArea !== options.halfSpliced) notices.push("One k7 condition remains outstanding; k7 = 1.25.");
+  $("reoResultStatus").textContent = result.refinedReconciliationRequired
+    ? "BASIC ADOPTED · REFINED CANDIDATE"
+    : "AS 3600 REFERENCE";
+  $("reoResultNote").textContent = [
+    "Use only where the project drawings or specification permit the splice · AS 3600 Cl. 13.2.1(a). Same-size bars assumed.",
+    ...notices
+  ].join(" ");
+  $("reoResultNote").className = notices.length ? "result-note is-warning" : "result-note";
+  const refinedReduction = options.method === "refined" && basicReference?.eligible
+    ? Math.max(0, basicReference.adoptedLength - result.adoptedLength)
+    : 0;
+  const refinedEvidencePending = result.refinedReconciliationRequired;
   $("reoRefinedNote").textContent = options.method === "refined"
-    ? `K = ${result.K.toFixed(3)}; λ = ${result.lambda.toFixed(3)}; k4 = ${result.k4.toFixed(3)}; k5 = ${result.k5.toFixed(3)}${result.combinedFactorLimited ? "; combined reduction limited by k3k4k5 ≥ 0.7" : ""}.`
-    : "Select the refined method above to apply these parameters.";
+    ? (refinedEvidencePending
+      ? `Candidate ${result.refinedCandidateAdoptedLength.toFixed(0)} mm is not adopted. Confirm the qualifying reinforcement count and any pressure basis throughout that candidate length.`
+      : refinedReduction > 0
+        ? `Refined reduction applied: adopted lap is ${refinedReduction.toFixed(0)} mm below the Basic reference.`
+        : "No Refined reduction applies.")
+    : "Basic lap development; no confinement reduction.";
+}
+
+function calculateReo() {
+  let options = readReoOptions();
+  updateReoConditionalFields(options);
+  options = readReoOptions();
+  const path = reoPathState(options);
+  const selectedBar = reoBarByDesignation($("reoBar").value);
+  const developmentOptions = readReoDevelopmentOptions();
+  const lapResult = path.requiresLap ? reoLapCalculation(selectedBar, options) : null;
+  const basicLapReference = path.requiresLap && options.method === "refined"
+    ? reoLapCalculation(selectedBar, { ...options, method: "basic" })
+    : null;
+  const developmentResult = path.requiresDevelopment ? reoDevelopmentCalculation(selectedBar, developmentOptions) : null;
+  const basicDevelopmentReference = path.requiresDevelopment && developmentOptions.method === "refined"
+    ? reoDevelopmentCalculation(selectedBar, { ...developmentOptions, method: "basic" })
+    : null;
+  const anchorage = updateReoAnchorage(options, selectedBar, developmentResult, developmentOptions, basicDevelopmentReference);
+  const lapReferenceAvailable = lapResult?.eligible === true || basicLapReference?.eligible === true;
+  $("reoLapFactorGroup").hidden = !path.requiresLap || !lapReferenceAvailable;
+  $("reoRefinedDetails").hidden = !path.requiresLap || options.method !== "refined" || !lapReferenceAvailable;
+
+  updateReoLapFieldValidity(options, path, developmentOptions);
+  renderReoLapResult(options, lapResult, path, basicLapReference);
+  updateReoReductionAssessment(options, lapResult, basicLapReference);
+  if (path.requiresLap) {
+    updateReoSchedule(options, selectedBar?.designation || $("reoBar").value);
+  } else {
+    $("reoLapTableRows").innerHTML = `<tr><td colspan="6">No bar-to-bar lap schedule applies to the selected path.</td></tr>`;
+  }
+  const lapFormulaFallback = !lapResult?.eligible && basicLapReference?.eligible;
+  const developmentFormulaFallback = !developmentResult?.eligible && basicDevelopmentReference?.eligible;
+  updateReoFormulaSteps(
+    lapFormulaFallback ? basicLapReference : lapResult,
+    lapFormulaFallback ? { ...options, method: "basic" } : options,
+    developmentFormulaFallback ? basicDevelopmentReference : developmentResult,
+    developmentFormulaFallback ? { ...developmentOptions, method: "basic" } : developmentOptions,
+    anchorage,
+    path
+  );
 }
 
 function setTool(tool, updateHash = true) {
@@ -4708,6 +5258,10 @@ function setTool(tool, updateHash = true) {
     button.classList.toggle("active", active);
     button.setAttribute("aria-selected", String(active));
   });
+  const activeToolTab = document.querySelector(`.tool-tab[data-tool="${selectedTool}"]`);
+  if (activeToolTab && window.matchMedia("(max-width: 500px)").matches) {
+    window.requestAnimationFrame(() => activeToolTab.scrollIntoView({ block: "nearest", inline: "center" }));
+  }
   toolNames.forEach(name => {
     const panel = $(`${name}Panel`);
     const active = name === selectedTool;
@@ -4863,8 +5417,21 @@ function initialise() {
   });
   reoInputIds.forEach(id => {
     const element = $(id);
-    element.addEventListener("input", calculateReo);
-    if (element.tagName === "SELECT") element.addEventListener("change", calculateReo);
+    const handleReoInput = () => {
+      if (reoLapCountResetIds.has(id)) $("reoAtrCountConfirmed").checked = false;
+      if (reoExistingCountResetIds.has(id)) $("reoExistingAtrCountConfirmed").checked = false;
+      if (reoReducedLengthResetIds.has(id)) $("reoReducedLengthRefinedConfirmed").checked = false;
+      if (reoLapQualificationResetIds.has(id)) {
+        $("reoDoubleArea").checked = false;
+        $("reoHalfSpliced").checked = false;
+      }
+      if (reoPressureBasisResetIds.has(id)) $("reoPressureBasisConfirmed").checked = false;
+      if (reoExistingPressureBasisResetIds.has(id)) $("reoExistingPressureBasisConfirmed").checked = false;
+      if (reoTerminationDetailingResetIds.has(id)) $("reoCastInTerminationConfirmed").checked = false;
+      calculateReo();
+    };
+    element.addEventListener("input", handleReoInput);
+    if (element.tagName === "SELECT") element.addEventListener("change", handleReoInput);
   });
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
   $("memberSection").addEventListener("change", populateMemberGrades);
