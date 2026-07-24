@@ -4063,8 +4063,8 @@ function calculateBeam() {
       ? "Section resistance only. Member capacity, lateral restraint, web bearing, concentrated loads and serviceability remain excluded."
       : "Moment section capacity only. Shear, combined action and member checks are not evaluated for this family.";
   $("beamDrawingNote").textContent = beamSource === "custom"
-    ? "Drawn from entered ideal dimensions; not a manufacturer section."
-    : "Drawn from selected catalogue dimensions; not a source of section properties.";
+    ? "Diagram follows entered dimensions; properties are derived from ideal geometry."
+    : "Diagram follows selected catalogue dimensions; properties come from the cited table.";
   renderBeamSectionDiagram(section);
 
   const source = gradeBase?.sourceRef || section?.sourceRef || (beamSource === "custom" ? "Entered ideal dimensions" : beamFamilyDefinitions[beamFamily].source);

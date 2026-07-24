@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260724beamrelease1">
+  <link rel="stylesheet" href="styles.css?v=20260724beamrelease2">
 </head>
 <body>
   <header class="topbar">
@@ -749,10 +749,16 @@
 
         <div class="beam-summary beam-selected-section">
           <figure class="beam-section-figure"><svg id="beamSectionDiagram" viewBox="0 0 240 170" role="img" aria-labelledby="beamSectionDiagramTitle beamSectionDiagramDescription"></svg><figcaption id="beamSectionDiagramCaption">Selected dimensions · centroidal axes</figcaption></figure>
-          <div class="beam-summary-copy"><div><span>Selected section</span><strong id="beamDesignation">310UB40.4 · 300PLUS</strong><small id="beamAssumption">x-x section moment and web shear; member checks excluded.</small></div><dl class="beam-summary-metrics">
+          <div class="beam-summary-copy"><div><span>Selected section</span><strong id="beamDesignation">310UB40.4 · 300PLUS</strong><small id="beamAssumption">x-x section moment and web shear; member checks excluded.</small></div><dl class="beam-summary-metrics beam-summary-primary">
+            <div data-beam-summary-cell="axis"><dt>Bending direction</dt><dd id="beamSummaryDirection">x-x</dd></div><div data-beam-summary-cell="ze"><dt id="beamSummaryZeLabel">Z<sub>ex</sub></dt><dd id="beamZex">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="fym"><dt>f<sub>y,m</sub></dt><dd id="beamFy">320 MPa</dd></div><div data-beam-summary-cell="aw"><dt id="beamSummaryAreaLabel">A<sub>w</sub></dt><dd id="beamAw">1,730 mm&sup2;</dd></div><div data-beam-summary-cell="fyw"><dt>f<sub>y,w</sub></dt><dd id="beamFyw">320 MPa</dd></div><div data-beam-summary-cell="class"><dt>Section class</dt><dd id="beamCompactness">Compact</dd></div>
+          </dl><p class="beam-drawing-note" id="beamDrawingNote">Diagram follows selected catalogue dimensions; properties come from the cited table.</p></div>
+          <details class="beam-section-details">
+            <summary><span><b>Section details</b><small>Dimensions and supplementary catalogue properties</small></span><i>+</i></summary>
+            <dl class="beam-summary-metrics beam-summary-secondary">
             <div data-beam-summary-cell="D"><dt>d<sub>o</sub></dt><dd id="beamDimDiameter">—</dd></div><div data-beam-summary-cell="d"><dt>d</dt><dd id="beamDimDepth">304.0 mm</dd></div><div data-beam-summary-cell="b"><dt>b</dt><dd id="beamDimWidth">—</dd></div><div data-beam-summary-cell="bf"><dt>b<sub>f</sub></dt><dd id="beamDimBf">165.0 mm</dd></div><div data-beam-summary-cell="t"><dt>t</dt><dd id="beamDimThickness">—</dd></div><div data-beam-summary-cell="tw"><dt>t<sub>w</sub></dt><dd id="beamDimTw">6.1 mm</dd></div><div data-beam-summary-cell="tf"><dt>t<sub>f</sub></dt><dd id="beamDimTf">10.2 mm</dd></div><div data-beam-summary-cell="d1"><dt>d<sub>1</sub></dt><dd id="beamDimD1">283.6 mm</dd></div><div data-beam-summary-cell="xL"><dt>x<sub>L</sub></dt><dd id="beamDimXL">—</dd></div><div data-beam-summary-cell="xO"><dt>x<sub>O</sub></dt><dd id="beamDimXO">—</dd></div>
-            <div data-beam-summary-cell="mass"><dt>Mass</dt><dd id="beamMass">40.4 kg/m</dd></div><div data-beam-summary-cell="area"><dt>A<sub>g</sub></dt><dd id="beamArea">5,210 mm&sup2;</dd></div><div data-beam-summary-cell="aw"><dt id="beamSummaryAreaLabel">A<sub>w</sub></dt><dd id="beamAw">1,730 mm&sup2;</dd></div><div data-beam-summary-cell="axis"><dt>Bending direction</dt><dd id="beamSummaryDirection">x-x</dd></div><div data-beam-summary-cell="i"><dt id="beamSummaryILabel">I<sub>x</sub></dt><dd id="beamSummaryI">—</dd></div><div data-beam-summary-cell="z"><dt id="beamSummaryZLabel">Z<sub>x</sub></dt><dd id="beamSummaryZx">569 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="s"><dt id="beamSummarySLabel">S<sub>x</sub></dt><dd id="beamSummarySx">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="ze"><dt id="beamSummaryZeLabel">Z<sub>ex</sub></dt><dd id="beamZex">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="fym"><dt>f<sub>y,m</sub></dt><dd id="beamFy">320 MPa</dd></div><div data-beam-summary-cell="fyw"><dt>f<sub>y,w</sub></dt><dd id="beamFyw">320 MPa</dd></div><div data-beam-summary-cell="kf"><dt>k<sub>f</sub></dt><dd id="beamSummaryKf">0.952</dd></div><div data-beam-summary-cell="class"><dt>Section class</dt><dd id="beamCompactness">Compact</dd></div><div data-beam-summary-cell="coordination"><dt>AS 4100 coordination</dt><dd id="beamCoordination">Reconciled</dd></div><div data-beam-summary-cell="source"><dt>Source</dt><dd id="beamSummarySource">InfraBuild Table 10</dd></div>
-          </dl><p class="beam-drawing-note" id="beamDrawingNote">Drawn from selected catalogue dimensions; not a source of section properties.</p></div>
+            <div data-beam-summary-cell="mass"><dt>Mass</dt><dd id="beamMass">40.4 kg/m</dd></div><div data-beam-summary-cell="area"><dt>A<sub>g</sub></dt><dd id="beamArea">5,210 mm&sup2;</dd></div><div data-beam-summary-cell="i"><dt id="beamSummaryILabel">I<sub>x</sub></dt><dd id="beamSummaryI">—</dd></div><div data-beam-summary-cell="z"><dt id="beamSummaryZLabel">Z<sub>x</sub></dt><dd id="beamSummaryZx">569 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="s"><dt id="beamSummarySLabel">S<sub>x</sub></dt><dd id="beamSummarySx">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="kf"><dt>k<sub>f</sub></dt><dd id="beamSummaryKf">0.952</dd></div><div data-beam-summary-cell="coordination"><dt>AS 4100 coordination</dt><dd id="beamCoordination">Reconciled</dd></div><div data-beam-summary-cell="source"><dt>Source</dt><dd id="beamSummarySource">InfraBuild Table 10</dd></div>
+            </dl>
+          </details>
         </div>
 
         <section class="capacity-section" aria-live="polite">
@@ -1282,14 +1288,14 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.0</b></footer>
-  <script src="bolt-integrity.js?v=20260724beamrelease1"></script>
-  <script src="section-geometry.js?v=20260724beamrelease1"></script>
-  <script src="section-catalogue.js?v=20260724beamrelease1"></script>
-  <script src="beam-section-data.js?v=20260724beamrelease1"></script>
-  <script src="beam-hot-rolled-data.js?v=20260724beamrelease1"></script>
-  <script src="beam-section-capacity.js?v=20260724beamrelease1"></script>
-  <script src="beam-section-reconciliation.js?v=20260724beamrelease1"></script>
-  <script src="app.js?v=20260724beamrelease1"></script>
+  <script src="bolt-integrity.js?v=20260724beamrelease2"></script>
+  <script src="section-geometry.js?v=20260724beamrelease2"></script>
+  <script src="section-catalogue.js?v=20260724beamrelease2"></script>
+  <script src="beam-section-data.js?v=20260724beamrelease2"></script>
+  <script src="beam-hot-rolled-data.js?v=20260724beamrelease2"></script>
+  <script src="beam-section-capacity.js?v=20260724beamrelease2"></script>
+  <script src="beam-section-reconciliation.js?v=20260724beamrelease2"></script>
+  <script src="app.js?v=20260724beamrelease2"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
