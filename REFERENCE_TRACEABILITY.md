@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-07-03
+Last updated: 2026-07-24
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -15,6 +15,109 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 - Source-reference files remain outside this workspace in `C:\Users\silin\Documents\Codex\Reference`.
 - 2026-07-02 local text audit checked `SC_HANDBOOK.md`, `REFERENCE_TRACEABILITY.md`, `README.md`, `index.html`, `app.js` and `styles.css` for common mojibake markers; no active mojibake remains in tracked handbook files.
 - `wind-region-workpack/` is not present in the current detached audit worktree and is not part of the checked source-traceability register unless explicitly promoted later.
+
+## Calculation Contract Register
+
+`SC_HANDBOOK.md` Section 6.2 defines the canonical calculation contract. Every new or materially changed governing calculation must receive a stable `Calculation_ID` before it is described as checked. Existing evidence sections in this file remain valid; assign and consolidate stable IDs when each legacy calculation is next audited or changed rather than inventing IDs without rechecking the source and implementation.
+
+Use one record per governing capacity, interaction, utilisation, action-distribution or screening equation. Do not combine materially different limit states or branches under one record merely because they appear on the same result card.
+
+Required calculation record:
+
+| Field | Required content |
+| --- | --- |
+| `Calculation_ID` | Stable topic-result identifier, for example `BOLT-SHEAR-01` |
+| Tab / output | Visible tool and governing result label |
+| Engineering question | Exact question answered by the result |
+| Result type | Nominal, design, utilisation, distribution, published value, selector or screen |
+| Limit state / value basis | ULS, SLS, manufacturer-published basis or project-defined comparison basis |
+| Governing source | Document title, edition, amendment status, clause/table/figure and PDF page |
+| Evidence class | `Normative`, `Catalogue`, `Interpretive`, `Worked example`, `Derived`, `Project input`, or `Source_Not_Verified` |
+| Applicability | Material, grade, product form, geometry, fabrication, action and method conditions |
+| Equation / branch | Governing expression plus table selection, threshold, `min`, `max` or interaction logic |
+| Symbol / unit map | Source symbol, implementation variable, visible notation, internal unit and display unit |
+| Defaults / overrides | Source of defaults, override permission and post-override status |
+| Exclusions | Limit states, actions, detailing or project checks not evaluated |
+| Implementation owner | File and function/module responsible for the calculation |
+| Verification evidence | Test IDs, independent method, result difference, tolerance and browser/build checked |
+| Status | `Draft`, `For Review`, `Checked`, `Superseded`, `Do_Not_Use`, or `Source_Not_Verified` |
+| Checked record | Checked date, reviewer status and unresolved source or interpretation gap |
+
+Required verification-case record:
+
+| Field | Required content |
+| --- | --- |
+| `Test_ID` | Stable case identifier linked to one or more `Calculation_ID` values |
+| Case type | Common, independent, branch, boundary, invalid, out-of-scope, invariant or regression |
+| Input set | Unrounded values and units sufficient to reproduce the case |
+| Expected result | Independently calculated value or required status |
+| Browser / workbook result | Value or status produced by the implementation |
+| Difference | Absolute and/or relative difference as appropriate |
+| Tolerance | Reasoned acceptance tolerance based on lookup precision, arithmetic or iterative method |
+| Evidence method | Hand calculation, separate script, source example or independent reconstruction |
+| Build / commit | Exact implementation version checked |
+| Checked date / status | Date and `Pass`, `Fail`, `Blocked`, or `Source_Not_Verified` |
+
+Calculation-record rules:
+
+- The independent evidence method must not call or copy the production calculation function.
+- Exact catalogue lookups require exact row agreement after stated unit conversion; do not hide a wrong row behind a percentage tolerance.
+- Governing comparisons use unrounded values. Display rounding is checked separately and must not change the selected branch or result status.
+- Record every active formula branch and the relevant threshold cases, not only the default page state.
+- A source edition, formula, factor, default or branch change triggers reverification of every affected `Calculation_ID`.
+- Detailed evidence stays in this file. The visible page retains only the concise basis, critical assumption, status and limitation required for quick engineering use.
+
+### Bolt Connected-Ply Integrity Records
+
+#### `BOLT-PLY-TENSION-01`
+
+- **Tab / output:** Bolt Capacity / `Design section tension capacity, phi Nt`.
+- **Engineering question:** What is the design tension capacity of the selected critical connection component using user-entered gross and net areas?
+- **Result type / limit state:** ULS design capacity and demand ratio.
+- **Governing source:** AS 4100:2020 Cl. 9.1.9(b), Cl. 7.2 and Table 3.4; local PDF pages 128, 112 and 47.
+- **Evidence class:** Normative formula with project inputs.
+- **Applicability:** Steel connection component subject to transferred axial tension; `Vf*` must represent that force and `Ag`, `An`, `fyc`, `fuc` and `kt` must describe the same component and critical section.
+- **Equation:** `phi Nt = 0.90 min(Ag fyc, 0.85 kt An fuc)`.
+- **Units / defaults:** Areas in `mm2`, strengths in `MPa`, result in `kN`; `kt = 1.0` is an editable starting value, not an inferred entitlement.
+- **Exclusions:** Automatic net-section geometry, staggered-hole deduction, force distribution classification, plate bending, compression, buckling, welds and supporting-member effects.
+- **Implementation owner:** `bolt-integrity.js` `netSectionTension()`; `app.js` `calculateConnectedPlyIntegrity()` and `calculateBolt()`.
+- **Verification evidence:** `BOLT-INTEGRITY-TENSION-01`; unit test and browser output agree with the independent arithmetic result `558.756 kN`.
+- **Status:** For Review; source formula visually checked, project input selection remains the user's responsibility.
+
+#### `BOLT-BLOCK-SHEAR-01`
+
+- **Tab / output:** Bolt Capacity / `Design block shear capacity, phi Rbs`.
+- **Engineering question:** What is the design block-shear capacity of the governing user-identified failure path?
+- **Result type / limit state:** ULS design capacity and demand ratio.
+- **Governing source:** AS 4100:2020 Cl. 9.1.9(e), local PDF page 129; ASI TN013 `Block Shear` worked example.
+- **Evidence class:** Normative formula plus worked example and project inputs.
+- **Applicability:** One critical connection component and one reviewed failure path; `Vf*` must represent the transferred axial force, and all plausible paths must be assessed before the governing path is entered.
+- **Equation:** `phi Rbs = 0.75 min(0.6 fuc Anv + kbs fuc Ant, 0.6 fyc Agv + kbs fuc Ant)`.
+- **Units / defaults:** Areas in `mm2`, strengths in `MPa`, result in `kN`; `kbs` is restricted to 1.0 for uniform or 0.5 for non-uniform tension stress.
+- **Exclusions:** Automatic path generation, corner geometry, overlapping paths, eccentric bolt-group reactions, plate bending, compression, buckling, welds and supporting-member effects.
+- **Implementation owner:** `bolt-integrity.js` `blockShear()`; `app.js` `calculateConnectedPlyIntegrity()` and `calculateBolt()`.
+- **Verification evidence:** `BOLT-BLOCK-TN013-01`; the implemented design capacity is `538.56 kN`, matching the published rounded `539 kN`.
+- **Status:** For Review; source formula and reference example checked, governing-path selection remains manual.
+
+#### `BOLT-GOVERNING-01`
+
+- **Tab / output:** Bolt Capacity / `Strength utilisation ratio`.
+- **Engineering question:** Which included bolt or connected-ply strength check governs the entered project actions?
+- **Result type / limit state:** Derived ULS governing utilisation.
+- **Governing source:** The active AS 4100 bolt, local-bearing, section-tension and block-shear records; comparison is derived.
+- **Equation / branch:** Use the maximum unrounded active ratio. Include section tension and block shear only when the manual-area assessment is complete. Manual-area assessment selected but incomplete suppresses the total ratio and reports `INCOMPLETE`. Any passing check that includes shear transfer reports `SCOPED PASS`: a disabled assessment excludes section tension and block shear, while a complete manual assessment covers only the selected component and entered path. A tension-only bolt check may report `PASS`.
+- **Implementation owner:** `app.js` `calculateBolt()`.
+- **Verification evidence:** `BOLT-BLOCK-TN013-01`, `BOLT-INTEGRITY-INCOMPLETE-01` and `BOLT-INTEGRITY-SCOPED-01`.
+- **Status:** For Review; the result is not a complete connection compliance statement.
+
+Verification cases:
+
+| Test_ID | Calculation_ID | Case / input | Expected and checked result | Evidence | Status |
+| --- | --- | --- | --- | --- | --- |
+| `BOLT-INTEGRITY-TENSION-01` | `BOLT-PLY-TENSION-01` | `Ag = 2100 mm2`, `An = 1660 mm2`, `fyc = 320 MPa`, `fuc = 440 MPa`, `kt = 1.0` | Gross yielding `672.0 kN`; net fracture `620.84 kN`; `phi Nt = 558.756 kN`; browser `558.8 kN` | Independent arithmetic plus `tests/bolt-integrity.test.js` | Pass, 2026-07-24 |
+| `BOLT-BLOCK-TN013-01` | `BOLT-BLOCK-SHEAR-01`, `BOLT-GOVERNING-01` | ASI TN013 governing Mode B path: `Agv = 1050 mm2`, `Anv = 720 mm2`, `Ant = 1200 mm2`, `fyc = 320 MPa`, `fuc = 440 MPa`, `kbs = 1.0`; `Vf* = 400 kN`; six M20 8.8/S N-plane bolts | Limits `718.08 / 729.60 kN`; `phi Rbs = 538.56 kN`; browser `538.6 kN`, ratio `0.74`, block shear governs; status `SCOPED PASS`; bolt group `555.8 kN` | Published worked example, independent arithmetic, unit test and local browser | Pass, 2026-07-24 |
+| `BOLT-INTEGRITY-INCOMPLETE-01` | `BOLT-GOVERNING-01` | Manual critical areas selected, required areas blank, `Vf* = 400 kN` | Overall ratio suppressed; status `INCOMPLETE`; bolt and bearing results described as provisional | Local browser state check | Pass, 2026-07-24 |
+| `BOLT-INTEGRITY-SCOPED-01` | `BOLT-GOVERNING-01` | Integrity assessment `Not evaluated`, `Vf* = 400 kN` | Included bolt/bearing ratio retained; status `SCOPED PASS`; note states net-section tension and block shear are not evaluated | Local browser state check | Pass, 2026-07-24 |
 
 ## Reference Folder Snapshot
 
@@ -44,10 +147,16 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Bolt | Bolt tension capacity | `AS4100.pdf` | AS 4100 Cl. 9.2.2.2 visually checked on PDF page 132 | Visual checked |
 | Bolt | Combined shear and tension strength check | `AS4100.pdf` | AS 4100 Cl. 9.2.2.3 visually checked on PDF page 132; user screenshot also matched formula form | Visual checked |
 | Bolt | TF slip resistance | `AS4100.pdf` | AS 4100 Cl. 9.2.3.1 visually checked on PDF page 134 | Visual checked |
-| Bolt | TF combined slip interaction | `AS4100.pdf` | AS 4100 Cl. 9.2.3.3 visually checked on PDF page 135; includes `Ntf = Nti` context | Visual checked |
+| Bolt | TF combined slip interaction | `AS4100.pdf` | AS 4100 Cl. 9.2.3.3 visually checked on PDF page 135; includes `Ntf = Nti` context; the web check uses separately entered serviceability slip actions rather than reusing strength actions | Visual checked; action separation is a UI safety boundary |
 | Bolt | Minimum bolt tension `Nti` | `AS4100.pdf` | AS 4100 Table 15.2.2.2 visually checked on PDF page 192 for M16/M20/M24/M30/M36: 8.8 = 95/145/210/335/490 kN, 10.9 = 130/205/295/465/680 kN | Visual checked |
+| Bolt | Minimum pitch | `AS4100.pdf` | AS 4100 Cl. 9.5.1 visually checked on PDF page 137; centre-to-centre pitch shall be at least `2.5 d_f` | Visual checked |
+| Bolt | Maximum pitch | `AS4100.pdf` | AS 4100 Cl. 9.5.3 visually checked on PDF page 138; general centre-to-centre limit is the lesser of `15 t_p` and 200 mm, where `t_p` is the thinner connected ply; special cases (a) and (b) are not auto-applied | Visual checked |
 | Bolt | Minimum edge distance | `AS4100.pdf` | AS 4100 Table 9.5.2 visually checked on PDF page 138 | Visual checked |
 | Bolt | Equal-load connected-ply group aggregation | `AS4100.pdf` | Per-bolt bearing and edge limits are from AS 4100 Cl. 9.2.2.4; group relation uses the stated derived assumption `V_i* = V*/n`, giving `phi Vb,group = n min(phi Vb,full, phi Vb,edge)` | Derived equal-action model; eccentric and non-uniform bolt-force distributions excluded |
+| Bolt | Two-ply full-bearing and edge-tear-out selection | `AS4100.pdf` | The user explicitly adopts identical connected plies or checks each ply independently to AS 4100 Cl. 9.2.2.4; the page reports the full-bearing and `a_e` edge-distance branches of design bearing capacity separately, each using the lower active-ply group value | Derived governing selection; no load redistribution between plies; the edge tear-out label describes the `a_e` branch and does not generate or verify overlapping tear-out or block-shear paths |
+| Bolt | Optional connection-component section tension | `AS4100.pdf` | AS 4100 Cl. 9.1.9(b) visually checked on PDF page 128 and Cl. 7.2 visually checked on PDF page 112; `phi Nt = 0.90 min(Ag fyc, 0.85 kt An fuc)` | Visual checked; `Ag`, `An`, `fyc` and `kt` are manual critical-component inputs |
+| Bolt | Optional connection-component block shear | `AS4100.pdf`; [ASI TN013 Block Shear](https://www.steel.org.au/Membership/media/Australian-Steel-Institute/Tech%20Notes/TN013-BlockShear.pdf) | AS 4100 Cl. 9.1.9(e) visually checked on PDF page 129; ASI TN013 example reproduced using the governing Mode B path (`Agv = 1050 mm2`, `Anv = 720 mm2`, `Ant = 1200 mm2`, `fyc = 320 MPa`, `fuc = 440 MPa`, `kbs = 1.0`) to obtain `phi Rbs = 538.56 kN`, matching the published rounded 539 kN | Formula and reference example checked; areas are manual and all plausible paths must be reviewed outside the tool |
+| Bolt | Detailing release gate | `AS4100.pdf` | Applicable minimum pitch, general maximum pitch and active-ply minimum edge-distance statuses are evaluated from the cited detailing clauses/table | Derived UI safety rule: any FAIL reports `NON-COMPLIANT` and prevents a green strength or TF slip PASS |
 | Weld | Weld capacity factor and direct weld capacity | `AS4100.pdf` | AS 4100 Table 3.4 visually checked on PDF page 47; AS 4100 Cl. 9.6.3.10 visually checked on PDF page 147 | Visual checked |
 | Weld | CPBW, IPBW and compound-weld capacity boundaries | `AS4100.pdf` | AS 4100 Cl. 9.6.2.7 visually checked on printed page 129; AS 4100 Cl. 9.6.5.2 visually checked on printed page 136 | IPBW uses the fillet-weld method with specified design throat; CPBW follows weaker joined-part capacity; compound throat requires actual total weld cross-section. CPBW and compound therefore return Not evaluated in the quick page |
 | Weld | Welded lap reduction `k_r` | `AS4100.pdf` | AS 4100 Table 9.6.3.10(B) visually checked on PDF page 148; table length `l_w` is in metres | Visual checked |
@@ -65,7 +174,7 @@ Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md
 | Beam | Project / legacy yield-strength override | `AS4100.pdf`; `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | The checked catalogue grade supplies editable defaults. UB/UC/PFC keep separate `fy,m` and `fy,w`; InfraBuild Table 16 explicitly provides different flange/member and web strengths for some PFC sizes and grades. A `fy,m` override regenerates AS 4100 plate slenderness, class, `Ze`, compression-only `kf` coordination and moment capacity for UB/UC, PFC `x-x`, CHS, RHS, SHS and Rod. A `fy,w`-only override updates web shear without invalidating the catalogue moment row. PFC asymmetric Load A/B and Equal Angle Load A/B/C/D moment fail closed after `fy,m` override because the required direction-specific effective-section derivation is not implemented | Regression and browser checks completed 2026-07-24: 380PFC 300PLUS defaults `fy,m/fy,w = 280/320 MPa`; `fy,m = 300 MPa` changed `phi Ms` from 238.4 to 255.4 kNm without changing shear; `fy,w = 360 MPa` changed `phi Vv` from 596.2 to 670.7 kN without changing moment; Load A returned `Not evaluated`; reset restored catalogue values |
 | Beam | AS 4100:2020 catalogue compatibility | `AS4100.pdf`; `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | AS 4100:2020 Cl. 5.2, Table 5.2, Cl. 6.2.2-6.2.4 and Table 6.2.4 were visually checked. Austube Part 3 Sections 3.2.2.1-3.2.2.3 confirm the CF residual-stress basis, `Ze` method and `kf = Ae/Ag`; InfraBuild capacity tables provide the adopted hot-rolled product rows. `beam-section-reconciliation.js` checks 717 family / grade / direction rows: independent geometry for UB/UC class and `Ze`, PFC major-axis class and `Ze`, CHS and non-slender RHS/SHS; the AS 4100 permitted effective-cross-section result is retained for slender flat hollow rows; asymmetric PFC and Equal Angle classes are identified from the published direction-specific `Ze` interval; `kf` remains a Cl. 6.2 compression property and is not used in `Ms` | Catalogue compatibility gate closed locally; all 717 rows pass `tests/beam-section-reconciliation.test.js`; Beam remains `For Review` for its quick-reference scope and exclusions |
 | Beam | Rod section moment | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `AS4100.pdf` | Checked round-bar diameter / mass and diameter-dependent strength rows are combined with solid-circle geometry, `Ze = min(S, 1.5Z)` and AS 4100 Cl. 5.2 | Geometry-derived capacity from checked product identity / strength rows |
-| Section Properties | Catalogue mass plus catalogue/custom A, centroid, Ix, Iy, elastic Zx/Zy and rx/ry | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Orrcon-National-Product-Catalogue-2024.pdf`; shared `section-geometry.js` | Reuses the checked UB/UC/PFC/EA/Rod rows and visually located CHS nominal D/t rows described below. Every property is labelled as catalogue, derived from catalogue data, entered-geometry derived or unavailable; missing rolled-section values are not replaced by ideal geometry. The inline SVG is a visual axis/shape guide, not a numeric source | Mixed catalogue/derived basis; Draft combined workflow |
+| Section Properties | Catalogue/custom area and mass, centroid, second moments, directional elastic/plastic moduli, radii, principal properties, geometric shear references and available J/Iw/XO | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Orrcon-National-Product-Catalogue-2024.pdf`; shared `section-geometry.js` | Reuses the checked UB/UC/PFC/Rod rows and carries the complete 46-row InfraBuild EA directory. EA values were checked against Table 19 (principal x/y dimensions and properties) and Table 21 (horizontal n / vertical p properties). Orrcon CHS nominal D/t and linear mass rows were visually checked on catalogue pages 10-12. CHS geometry properties are derived from D/t. Entered ideal geometry supplies top/bottom and right/left elastic moduli, product-of-inertia, principal transforms and polar second moment Ix+Iy. Custom ideal equal angles and channels derive each plastic neutral axis independently from equal areas, then calculate the matching plastic modulus as the first absolute area moment about that axis. UB/UC flange ratio uses `(bf-tw)/(2tf)`. Aw is clear web area for I/channel shapes; Awx and Awy are horizontal-wall and vertical-wall areas for ideal RHS/SHS. None is effective shear area Av. The SVG shows the applicable axis convention and all values state their basis | Mixed catalogue/derived basis; Draft combined workflow |
 | Axial Member | Section compression capacity | `AS4100.pdf` | AS 4100 Cl. 6.2 visually checked on PDF page 100; `Ns = kf Ag fy` confirmed | Visual checked |
 | Axial Member | Member buckling reduction | `AS4100.pdf` | AS 4100 Cl. 6.3.3 and AS 4100 Tables 6.3.3(A/B/C) visually checked on PDF pages 103-106 | Visual checked |
 | Axial Member | Tension gross yielding / net fracture | `AS4100.pdf` | AS 4100 Cl. 7.2 visually checked on PDF page 112 | Visual checked |
@@ -132,7 +241,9 @@ Default outputs were checked on the local static page at `http://127.0.0.1:8765/
 
 | Tab | Default case | Checked output | Status |
 | --- | --- | --- | --- |
-| Bolt | M24 8.8/S, N plane, `n = 2` | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; equal-share group shear 266.8 kN; critical-hole full bearing 283.4 kN; critical-hole edge limit 151.3 kN; equal-share group ply capacity 302.6 kN; minimum edge distance 42.0 mm | DOM output matched independent calculation; identical bolts, concentric action and equal sharing assumed |
+| Bolt | M24 8.8/S, N plane, `n = 2`; both plies identical | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; equal-share group shear 266.8 kN; full-bearing limit 283.4 kN per bolt / 566.8 kN group; edge tear-out limit 151.3 kN per bolt / 302.6 kN group; edge tear-out limit governs; minimum pitch 60.0 mm; general maximum pitch 150.0 mm; minimum edge distance 42.0 mm | DOM output matched independent calculation; identical bolts, concentric action and equal sharing assumed; `a_e` edge-distance bearing limit is not a complete connected-plate resistance |
+| Bolt status gating | `Vf* = 100 kN`; then `p = 50 mm`; separate second ply `t = 6 mm`; second-ply `e = 30 mm`; M24 8.8/TF with `Vsf* = 100/110 kN` | default strength ratio 0.37 PASS; minimum-pitch FAIL gives `NON-COMPLIANT`; 6 mm second ply governs at 181.5 kN and `pmax = 90.0 mm`; second-ply edge FAIL gives `NON-COMPLIANT`; TF slip ratios 0.97 PASS and 1.07 FAIL | Representative DOM states checked locally on 2026-07-24; strength and serviceability slip actions are separate |
+| Bolt `Nti` lookup | `/S`; M16 8.8/TB and 8.8/TF; M16 10.9/TB; M20 8.8/TB | `/S`: Not required; M16 8.8/TB and 8.8/TF: 95 kN; M16 10.9/TB: 130 kN; M20 8.8/TB: 145 kN | Representative DOM outputs checked on 2026-07-23; the full M16-M36 lookup matches AS 4100 Table 15.2.2.2; lightweight display and TF-only conditional inputs checked locally |
 | Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm for Grade 250 plate, 10 mm | DOM output matched independent calculation |
 | Beam | 310UB40.4 300PLUS | `Ag` 5210 mm2; `Aw` 1730 mm2; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; `kf` 0.952; `phi Ms` 182.3 kNm; `phi Vv` 298.9 kN | DOM output matched independent calculation |
 | Beam | 200UC46.2 300PLUS | `Ag` 5900 mm2; `Aw` 1324 mm2; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; `kf` 1.000; `phi Ms` 133.4 kNm; `phi Vv` 214.5 kN | DOM output matched independent calculation |
@@ -154,7 +265,7 @@ The current Axial Member non-CHS defaults were visually checked against `InfraBu
 | App default | Source pages | Checked app values | Status |
 | --- | --- | --- | --- |
 | 150PFC, 300PLUS | OneSteel / InfraBuild Tables 15 and 16 PDF page 17 | mass 17.7 kg/m; `Ag` 2250 mm2; `rmin` 23.9 mm; `fy` 320 MPa; `kf` 1.000 | Row checked |
-| 100 x 100 x 10 EA, 300PLUS | OneSteel / InfraBuild Tables 19-21 PDF pages 19-21 | `Ag` 1810 mm2; principal-axis radius `rn = rp = 30.6 mm`; `fy` 320 MPa; `kf` 1.000 | Row checked; this is a principal-axis screen, not a weak-axis or flexural-torsional design |
+| 100 x 100 x 10 EA, 300PLUS | OneSteel / InfraBuild Tables 19-21 PDF pages 19-21 | `Ag` 1810 mm2; leg-parallel centroidal-axis radii `rn = rp = 30.6 mm`; `fy` 320 MPa; `kf` 1.000 | Row checked; `rn = rp` is not a principal or minimum radius |
 | Ø24 Rod, 300PLUS | OneSteel / InfraBuild Table 3 PDF page 9; OneSteel / InfraBuild Table 38 PDF page 31 | mass 3.55 kg/m; `Ag = pi d^2 / 4 = 452 mm2`; `r = d / 4 = 6.0 mm`; `fy` 300 MPa for d <= 50 mm; `fu` 440 MPa | Row checked |
 
 ### Calculation Compliance Check
@@ -165,7 +276,7 @@ The Axial Member formulas remain aligned with the visually checked AS 4100 basis
 - Member compression capacity: `phi Nc = alpha_c phi Ns`, using AS 4100 Cl. 6.3.3 `lambda_n`, `alpha_a`, `eta`, `xi` and `alpha_c`.
 - Tension capacity: `phi Nt = min(phi Ag fy, phi 0.85 kt An fu)`.
 - `An`, `kt`, `Le` and non-CHS `alpha_b` remain project inputs; the app warnings correctly keep these out of the checked product-table scope.
-- Equal Angle uses the catalogue principal-axis radius `rn = rp` for a quick principal-axis screen. The webpage now states that weak-axis, flexural-torsional buckling, load eccentricity and connection eccentricity are not checked.
+- Equal Angle embedded data uses catalogue `rn = rp` about the leg-parallel centroidal n/p axes. It must not be described as a minimum or principal-axis radius. The Axial Member use of that value remains a separate governing-axis correction item and must not be treated as a weak-axis screen; flexural-torsional buckling, load eccentricity and connection eccentricity are not established by this row.
 - Rod `fy` is now diameter-dependent to match AS/NZS 3679.1 round-bar Table 38: for d <= 50 mm, 300PLUS uses 300 MPa and Grade 350 uses 340 MPa; for 50 < d < 100 mm, 300PLUS uses 290 MPa and Grade 350 uses 330 MPa.
 
 ### DOM Output Check
@@ -192,7 +303,7 @@ The embedded steel catalogue rows in `app.js` were checked by a local script aga
 | Beam Equal Angle | 13 selected embedded rows | OneSteel / InfraBuild Tables 19 and 20, PDF pages 19-20 | designation, grade, `kf` and Load A/B/C/D `Ze` | No missing direction fields in the adopted subset |
 | Beam CHS / RHS / SHS | 288 grade rows | Austube Tables 3.1-1 to 3.1-6, PDF pages 28-38 | unique family/designation/grade key, dimensions, mass, area, section properties, grade, `kf`, class and direction-specific `Ze` | No duplicate keys; representative rows asserted in unit tests |
 | Axial PFC | 10 | OneSteel / InfraBuild Tables 15 and 16, PDF page 17 | designation, mass, `Ag`, `r_min`, `fy`, `tw`, `tf` | No mismatches |
-| Axial Equal Angle | 13 selected embedded rows | OneSteel / InfraBuild Tables 19-21, PDF pages 19-21 | leg size, thickness, area, principal-axis radius, 300PLUS and Grade 350 `fy` and `kf` | No mismatches |
+| Axial Equal Angle | 13 selected embedded rows | OneSteel / InfraBuild Tables 19-21, PDF pages 19-21 | leg size, thickness, area, leg-parallel `rn = rp`, 300PLUS and Grade 350 `fy` and `kf` | Numeric rows match; axis meaning corrected 2026-07-22 |
 | Axial Rod | 26 | OneSteel / InfraBuild Table 3, PDF page 9; Table 38 strength ranges, PDF page 31 | diameter, mass and diameter-dependent strength range basis | No mismatches |
 
 Axial Member CHS was deliberately not converted to an Austube / Orrcon compression-capacity lookup. That separate quick-screen strategy keeps nominal D/t plus formula-derived `Ag` and `r`. Beam Section Capacity now uses checked Austube Part 3 CHS section-property and `Ze` rows for section moment and the reviewed AS 4100 CHS shear equation; it does not import member compression capacities.

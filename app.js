@@ -433,6 +433,50 @@ const beamShearDimensions = {
   "100UC14.8": { d: 97.0, bf: 99.0, tf: 7.0, d1: 83.0, tw: 5.0 }
 };
 
+const hotRolledSectionProperties = Object.freeze({
+  "610UB125": Object.freeze({ ix: 986e6, iy: 39.3e6, zy: 343e3, sy: 536e3, rx: 249, ry: 49.6, j: 1560e3, iw: 3450e9 }),
+  "610UB113": Object.freeze({ ix: 875e6, iy: 34.3e6, zy: 300e3, sy: 469e3, rx: 246, ry: 48.7, j: 1140e3, iw: 2980e9 }),
+  "610UB101": Object.freeze({ ix: 761e6, iy: 29.3e6, zy: 257e3, sy: 402e3, rx: 242, ry: 47.5, j: 790e3, iw: 2530e9 }),
+  "530UB92.4": Object.freeze({ ix: 554e6, iy: 23.8e6, zy: 228e3, sy: 355e3, rx: 217, ry: 44.9, j: 775e3, iw: 1590e9 }),
+  "530UB82.0": Object.freeze({ ix: 477e6, iy: 20.1e6, zy: 193e3, sy: 301e3, rx: 213, ry: 43.8, j: 526e3, iw: 1330e9 }),
+  "460UB82.1": Object.freeze({ ix: 372e6, iy: 18.6e6, zy: 195e3, sy: 303e3, rx: 188, ry: 42.2, j: 701e3, iw: 919e9 }),
+  "460UB74.6": Object.freeze({ ix: 335e6, iy: 16.6e6, zy: 175e3, sy: 271e3, rx: 188, ry: 41.8, j: 530e3, iw: 815e9 }),
+  "460UB67.1": Object.freeze({ ix: 296e6, iy: 14.5e6, zy: 153e3, sy: 238e3, rx: 186, ry: 41.2, j: 378e3, iw: 708e9 }),
+  "410UB59.7": Object.freeze({ ix: 216e6, iy: 12.1e6, zy: 135e3, sy: 209e3, rx: 168, ry: 39.7, j: 337e3, iw: 467e9 }),
+  "410UB53.7": Object.freeze({ ix: 188e6, iy: 10.3e6, zy: 115e3, sy: 179e3, rx: 165, ry: 38.6, j: 234e3, iw: 394e9 }),
+  "360UB56.7": Object.freeze({ ix: 161e6, iy: 11e6, zy: 128e3, sy: 198e3, rx: 149, ry: 39, j: 338e3, iw: 330e9 }),
+  "360UB50.7": Object.freeze({ ix: 142e6, iy: 9.6e6, zy: 112e3, sy: 173e3, rx: 148, ry: 38.5, j: 241e3, iw: 284e9 }),
+  "360UB44.7": Object.freeze({ ix: 121e6, iy: 8.1e6, zy: 94.7e3, sy: 146e3, rx: 146, ry: 37.6, j: 161e3, iw: 237e9 }),
+  "310UB46.2": Object.freeze({ ix: 100e6, iy: 9.01e6, zy: 109e3, sy: 166e3, rx: 130, ry: 39, j: 233e3, iw: 197e9 }),
+  "310UB40.4": Object.freeze({ ix: 86.4e6, iy: 7.65e6, zy: 92.7e3, sy: 142e3, rx: 129, ry: 38.3, j: 157e3, iw: 165e9 }),
+  "310UB32.0": Object.freeze({ ix: 63.2e6, iy: 4.42e6, zy: 59.3e3, sy: 91.8e3, rx: 124, ry: 32.9, j: 86.5e3, iw: 92.9e9 }),
+  "250UB37.3": Object.freeze({ ix: 55.7e6, iy: 5.66e6, zy: 77.5e3, sy: 119e3, rx: 108, ry: 34.5, j: 158e3, iw: 85.2e9 }),
+  "250UB31.4": Object.freeze({ ix: 44.5e6, iy: 4.47e6, zy: 61.2e3, sy: 94.2e3, rx: 105, ry: 33.4, j: 89.3e3, iw: 65.9e9 }),
+  "250UB25.7": Object.freeze({ ix: 35.4e6, iy: 2.55e6, zy: 41.1e3, sy: 63.6e3, rx: 104, ry: 27.9, j: 67.4e3, iw: 36.7e9 }),
+  "200UB29.8": Object.freeze({ ix: 29.1e6, iy: 3.86e6, zy: 57.5e3, sy: 88.4e3, rx: 87.3, ry: 31.8, j: 105e3, iw: 37.6e9 }),
+  "200UB25.4": Object.freeze({ ix: 23.6e6, iy: 3.06e6, zy: 46.1e3, sy: 70.9e3, rx: 85.4, ry: 30.8, j: 62.7e3, iw: 29.2e9 }),
+  "200UB22.3": Object.freeze({ ix: 21e6, iy: 2.75e6, zy: 41.3e3, sy: 63.4e3, rx: 85.5, ry: 31, j: 45e3, iw: 26e9 }),
+  "200UB18.2": Object.freeze({ ix: 15.8e6, iy: 1.14e6, zy: 23e3, sy: 35.7e3, rx: 82.6, ry: 22.1, j: 38.6e3, iw: 10.4e9 }),
+  "180UB22.2": Object.freeze({ ix: 15.3e6, iy: 1.22e6, zy: 27.1e3, sy: 42.3e3, rx: 73.6, ry: 20.8, j: 81.6e3, iw: 8.71e9 }),
+  "180UB18.1": Object.freeze({ ix: 12.1e6, iy: 0.975e6, zy: 21.7e3, sy: 33.7e3, rx: 72.6, ry: 20.6, j: 44.8e3, iw: 6.8e9 }),
+  "180UB16.1": Object.freeze({ ix: 10.6e6, iy: 0.853e6, zy: 19e3, sy: 29.4e3, rx: 72, ry: 20.4, j: 31.5e3, iw: 5.88e9 }),
+  "150UB18.0": Object.freeze({ ix: 9.05e6, iy: 0.672e6, zy: 17.9e3, sy: 28.2e3, rx: 62.8, ry: 17.1, j: 60.5e3, iw: 3.56e9 }),
+  "150UB14.0": Object.freeze({ ix: 6.66e6, iy: 0.495e6, zy: 13.2e3, sy: 20.8e3, rx: 61.1, ry: 16.6, j: 28.1e3, iw: 2.53e9 }),
+  "310UC158": Object.freeze({ ix: 388e6, iy: 125e6, zy: 807e3, sy: 1230e3, rx: 139, ry: 78.9, j: 3810e3, iw: 2860e9 }),
+  "310UC137": Object.freeze({ ix: 329e6, iy: 107e6, zy: 691e3, sy: 1050e3, rx: 137, ry: 78.2, j: 2520e3, iw: 2390e9 }),
+  "310UC118": Object.freeze({ ix: 277e6, iy: 90.2e6, zy: 588e3, sy: 893e3, rx: 136, ry: 77.5, j: 1630e3, iw: 1980e9 }),
+  "310UC96.8": Object.freeze({ ix: 223e6, iy: 72.9e6, zy: 478e3, sy: 725e3, rx: 134, ry: 76.7, j: 928e3, iw: 1560e9 }),
+  "250UC89.5": Object.freeze({ ix: 143e6, iy: 48.4e6, zy: 378e3, sy: 575e3, rx: 112, ry: 65.2, j: 1040e3, iw: 713e9 }),
+  "250UC72.9": Object.freeze({ ix: 114e6, iy: 38.8e6, zy: 306e3, sy: 463e3, rx: 111, ry: 64.5, j: 586e3, iw: 557e9 }),
+  "200UC59.5": Object.freeze({ ix: 61.3e6, iy: 20.4e6, zy: 199e3, sy: 303e3, rx: 89.7, ry: 51.7, j: 477e3, iw: 195e9 }),
+  "200UC52.2": Object.freeze({ ix: 52.8e6, iy: 17.7e6, zy: 174e3, sy: 264e3, rx: 89.1, ry: 51.5, j: 325e3, iw: 166e9 }),
+  "200UC46.2": Object.freeze({ ix: 45.9e6, iy: 15.3e6, zy: 151e3, sy: 230e3, rx: 88.2, ry: 51, j: 228e3, iw: 142e9 }),
+  "150UC37.2": Object.freeze({ ix: 22.2e6, iy: 7.01e6, zy: 91e3, sy: 139e3, rx: 68.4, ry: 38.5, j: 197e3, iw: 39.6e9 }),
+  "150UC30.0": Object.freeze({ ix: 17.6e6, iy: 5.62e6, zy: 73.4e3, sy: 112e3, rx: 67.5, ry: 38.1, j: 109e3, iw: 30.8e9 }),
+  "150UC23.4": Object.freeze({ ix: 12.6e6, iy: 3.98e6, zy: 52.4e3, sy: 80.2e3, rx: 65.1, ry: 36.6, j: 50.2e3, iw: 21.1e9 }),
+  "100UC14.8": Object.freeze({ ix: 3.18e6, iy: 1.14e6, zy: 22.9e3, sy: 35.2e3, rx: 41.1, ry: 24.5, j: 34.9e3, iw: 2.3e9 })
+});
+
 function beamSectionRecord([designation, mass, area, Sx, Zx, grades]) {
   const shear = beamShearDimensions[designation] || {};
   const d = shear.d || 0;
@@ -440,7 +484,7 @@ function beamSectionRecord([designation, mass, area, Sx, Zx, grades]) {
   const d1 = shear.d1 || 0;
   const tw = shear.tw || 0;
   const tf = shear.tf || 0;
-  return { designation, mass, area, Sx, Zx, d, bf, d1, tw, tf, Aw: d1 * tw, grades };
+  return { designation, mass, area, Sx, Zx, d, bf, d1, tw, tf, Aw: d1 * tw, grades, ...(hotRolledSectionProperties[designation] || {}) };
 }
 
 const ubSections = [
@@ -491,49 +535,102 @@ const ucSections = [
 ].map(beamSectionRecord);
 
 const chsSections = [
-  [26.9,2.6],[33.7,2.0],[33.7,2.6],[33.7,3.2],[33.7,4.0],
-  [42.4,2.0],[42.4,2.6],[42.4,3.2],[42.4,4.0],
-  [48.3,2.3],[48.3,2.9],[48.3,3.2],[48.3,4.0],
-  [60.3,2.3],[60.3,2.9],[60.3,3.5],[60.3,3.6],[60.3,4.5],
-  [76.1,2.3],[76.1,3.2],[76.1,3.6],[76.1,4.5],
-  [88.9,2.6],[88.9,3.2],[88.9,4.0],[88.9,5.0],
-  [101.6,2.6],[101.6,3.2],[101.6,4.0],[101.6,5.0],
-  [114.3,3.2],[114.3,3.6],[114.3,4.5],[114.3,5.4],
-  [139.7,3.0],[139.7,3.5],[139.7,5.0],[139.7,5.4],
-  [165.1,3.0],[165.1,3.5],[165.1,5.0],[165.1,5.4]
-].map(([D,t]) => ({ designation: `${D.toFixed(1)} x ${t.toFixed(1)} CHS`, D, t }));
+  [26.9,2.6,1.56],[33.7,2.0,1.56],[33.7,2.6,1.99],[33.7,3.2,2.41],[33.7,4.0,2.93],
+  [42.4,2.0,1.99],[42.4,2.6,2.55],[42.4,3.2,3.09],[42.4,4.0,3.79],
+  [48.3,2.3,2.61],[48.3,2.9,3.25],[48.3,3.2,3.56],[48.3,4.0,4.37],
+  [60.3,2.3,3.29],[60.3,2.9,4.11],[60.3,3.5,4.90],[60.3,3.6,5.03],[60.3,4.5,6.19],
+  [76.1,2.3,4.19],[76.1,3.2,5.75],[76.1,3.6,6.44],[76.1,4.5,7.95],
+  [88.9,2.6,5.53],[88.9,3.2,6.76],[88.9,4.0,8.38],[88.9,5.0,10.35],
+  [101.6,2.6,6.35],[101.6,3.2,7.77],[101.6,4.0,9.63],[101.6,5.0,11.91],
+  [114.3,3.2,8.77],[114.3,3.6,9.83],[114.3,4.5,12.19],[114.3,5.4,14.50],
+  [139.7,3.0,10.11],[139.7,3.5,11.76],[139.7,5.0,16.61],[139.7,5.4,17.89],
+  [165.1,3.0,11.99],[165.1,3.5,13.95],[165.1,5.0,19.74],[165.1,5.4,21.27]
+].map(([D,t,mass]) => ({ designation: `${D.toFixed(1)} x ${t.toFixed(1)} CHS`, D, t, mass }));
 
-const eaSections = [
-  [150,12,3480,46.3,300,1.000,340,1.000],
-  [125,10,2300,38.6,320,1.000,360,1.000],
-  [100,10,1810,30.6,320,1.000,360,1.000],
-  [100,8,1500,30.8,320,1.000,360,1.000],
-  [100,6,1170,31.0,320,0.906,360,0.856],
-  [90,8,1350,27.6,320,1.000,360,1.000],
-  [75,8,1110,22.7,320,1.000,360,1.000],
-  [75,6,867,22.9,320,1.000,360,1.000],
-  [65,6,748,19.9,320,1.000,360,1.000],
-  [65,5,581,20.1,320,1.000,360,1.000],
-  [50,6,568,15.1,320,1.000,360,1.000],
-  [50,5,443,15.2,320,1.000,360,1.000],
-  [50,3,295,15.3,320,0.907,360,0.858]
-].map(([b,t,area,r,fy300,kf300,fy350,kf350]) => ({
-  designation: `${b} x ${b} x ${t} EA`, area, r, rx: r, ry: r, ix: area * r ** 2, iy: area * r ** 2, b, t,
-  grades: { "300PLUS": { fy: fy300, fu: 440, kf: kf300 }, "Grade 350": { fy: fy350, fu: 480, kf: kf350 } }
+// InfraBuild 2019 Tables 19 and 21. Source units: I in 10^6 mm4; Z, S and J in 10^3 mm3/mm4.
+const eaCatalogueSections = [
+  [200,26,76.8,26.0,18,5,6.69,9780,59.3,141,35.8,605,255,460,60.5,-20.9,56.8,14.9,402,202,178,643,329,76.2,39.0,2250],
+  [200,20,60.1,20.0,18,5,9.00,7660,57.0,143,28.8,505,201,363,61.3,-16.9,45.7,11.8,323,162,147,511,260,77.2,39.3,1060],
+  [200,18,54.4,18.0,18,5,10.1,6930,56.2,144,26.3,467,183,330,61.5,-15.5,41.7,10.8,295,149,136,464,236,77.6,39.4,778],
+  [200,16,48.7,16.0,18,5,11.5,6200,55.4,145,23.7,427,164,296,61.8,-14.0,37.6,9.72,266,135,124,417,212,77.9,39.6,554],
+  [200,13,40.0,13.0,18,5,14.4,5090,54.2,146,19.7,363,135,243,62.2,-11.6,31.2,8.08,221,112,105,344,176,78.3,39.8,304],
+  [150,19,42.1,19.0,13,5,6.89,5360,44.2,106,11.1,250,105,189,45.4,-6.48,17.6,4.60,166,83.8,73.5,265,135,57.2,29.3,657],
+  [150,16,35.4,15.8,13,5,8.49,4520,43.0,107,9.48,220,88.7,160,45.8,-5.58,15.1,3.91,142,71.9,64.2,225,115,57.8,29.4,386],
+  [150,12,27.3,12.0,13,5,11.5,3480,41.5,108,7.46,180,68.8,124,46.3,-4.40,11.9,3.06,112,56.9,52.1,175,89.3,58.4,29.6,174],
+  [150,10,21.9,9.5,13,5,14.8,2790,40.5,109,6.04,149,55.2,99.9,46.6,-3.56,9.61,2.48,90.6,46.4,43.3,141,72.0,58.7,29.8,88.9],
+  [125,16,29.1,15.8,10,5,6.91,3710,36.8,88.2,5.32,144,60.3,109,37.9,-3.11,8.43,2.20,95.4,48.5,42.3,153,77.8,47.7,24.4,313],
+  [125,12,22.5,12.0,10,5,9.42,2870,35.4,89.6,4.21,119,47.0,85.0,38.3,-2.48,6.69,1.73,75.7,38.6,34.5,120,60.8,48.3,24.5,141],
+  [125,10,18.0,9.5,10,5,12.2,2300,34.4,90.6,3.42,99.4,37.8,68.4,38.6,-2.02,5.44,1.40,61.6,31.5,28.8,96.5,49.0,48.7,24.7,71.9],
+  [125,8,14.9,7.8,10,5,15.0,1900,33.7,91.3,2.86,84.9,31.3,56.8,38.8,-1.69,4.55,1.17,51.5,26.5,24.5,80.2,40.8,48.9,24.8,40.6],
+  [100,12,17.7,12.0,8,5,7.33,2260,29.2,70.8,2.08,71.1,29.3,53.2,30.3,-1.22,3.29,0.857,46.6,23.9,20.8,74.5,37.9,38.2,19.5,110],
+  [100,10,14.2,9.5,8,5,9.53,1810,28.2,71.8,1.70,60.1,23.6,42.9,30.6,-1.00,2.70,0.695,38.2,19.6,17.4,60.4,30.7,38.6,19.6,56.2],
+  [100,8,11.8,7.8,8,5,11.8,1500,27.5,72.5,1.42,51.7,19.6,35.7,30.8,-0.842,2.27,0.582,32.0,16.5,14.9,50.3,25.6,38.8,19.7,31.7],
+  [100,6,9.16,6.0,8,5,15.7,1170,26.8,73.2,1.12,41.8,15.3,27.8,31.0,-0.661,1.78,0.458,25.2,13.1,12.1,39.3,20.0,39.1,19.8,14.8],
+  [90,10,12.7,9.5,8,5,8.47,1620,25.7,64.3,1.22,47.3,18.9,34.4,27.4,-0.716,1.93,0.500,30.4,15.7,13.8,48.3,24.6,34.5,17.6,50.5],
+  [90,8,10.6,7.8,8,5,10.5,1350,25.0,65.0,1.02,40.9,15.7,28.7,27.6,-0.604,1.63,0.419,25.6,13.2,11.8,40.4,20.5,34.8,17.6,28.6],
+  [90,6,8.22,6.0,8,5,14.0,1050,24.3,65.7,0.805,33.2,12.3,22.4,27.7,-0.475,1.28,0.330,20.1,10.5,9.62,31.6,16.1,35.0,17.8,13.4],
+  [75,10,10.5,9.5,8,5,6.89,1340,22.0,53.0,0.681,31.0,12.8,23.4,22.6,-0.399,1.08,0.282,20.4,10.6,9.09,32.8,16.8,28.4,14.5,41.9],
+  [75,8,8.73,7.8,8,5,8.62,1110,21.3,53.7,0.575,27.0,10.7,19.6,22.7,-0.338,0.913,0.237,17.2,8.99,7.87,27.5,14.0,28.7,14.6,23.8],
+  [75,6,6.81,6.0,8,5,11.5,867,20.5,54.5,0.455,22.1,8.35,15.3,22.9,-0.268,0.722,0.187,13.6,7.15,6.44,21.6,11.0,28.9,14.7,11.2],
+  [75,5,5.27,4.6,8,5,15.3,672,19.9,55.1,0.355,17.9,6.44,11.8,23.0,-0.208,0.563,0.147,10.6,5.62,5.22,16.7,8.61,29.0,14.8,5.28],
+  [65,10,9.02,9.5,6,3,5.84,1150,19.6,45.4,0.437,22.3,9.62,17.4,19.5,-0.254,0.691,0.183,15.0,7.71,6.60,24.3,12.5,24.5,12.6,35.1],
+  [65,8,7.51,7.8,6,3,7.33,957,19.0,46.0,0.371,19.6,8.07,14.6,19.7,-0.218,0.589,0.154,12.8,6.56,5.73,20.5,10.5,24.8,12.7,20.0],
+  [65,6,5.87,6.0,6,3,9.83,748,18.3,46.7,0.296,16.2,6.34,11.5,19.9,-0.175,0.471,0.122,10.2,5.26,4.71,16.2,8.25,25.1,12.8,9.37],
+  [65,5,4.56,4.6,6,3,13.1,581,17.7,47.3,0.234,13.2,4.94,8.97,20.1,-0.138,0.371,0.0959,8.08,4.18,3.83,12.7,6.46,25.3,12.9,4.36],
+  [55,6,4.93,6.0,6,3,8.17,628,15.8,39.2,0.175,11.1,4.46,8.11,16.7,-0.103,0.278,0.0723,7.14,3.69,3.24,11.4,5.82,21.0,10.7,7.93],
+  [55,5,3.84,4.6,6,3,11.0,489,15.2,39.8,0.139,9.12,3.48,6.34,16.8,-0.0814,0.220,0.0571,5.66,2.94,2.66,8.93,4.57,21.2,10.8,3.71],
+  [50,8,5.68,7.8,6,3,5.41,723,15.2,34.8,0.160,10.5,4.61,8.38,14.9,-0.0928,0.253,0.0675,7.16,3.73,3.14,11.7,6.00,18.7,9.66,15.2],
+  [50,6,4.46,6.0,6,3,7.33,568,14.5,35.5,0.129,8.90,3.64,6.63,15.1,-0.0756,0.205,0.0536,5.79,3.01,2.61,9.30,4.76,19.0,9.71,7.21],
+  [50,5,3.48,4.6,6,3,9.87,443,13.9,36.1,0.103,7.36,2.85,5.19,15.2,-0.0602,0.163,0.0424,4.61,2.40,2.15,7.32,3.75,19.2,9.78,3.38],
+  [50,3,2.31,3.0,6,3,15.7,295,13.2,36.8,0.0694,5.25,1.89,3.46,15.3,-0.0405,0.110,0.0289,3.11,1.65,1.55,4.90,2.53,19.3,9.90,1.01],
+  [45,6,3.97,6.0,5,3,6.50,506,13.3,31.7,0.0922,6.93,2.91,5.30,13.5,-0.0538,0.146,0.0383,4.59,2.39,2.04,7.41,3.79,17.0,8.71,6.32],
+  [45,5,3.10,4.6,5,3,8.78,394,12.7,32.3,0.0734,5.76,2.28,4.16,13.6,-0.0432,0.117,0.0303,3.66,1.91,1.68,5.84,2.99,17.2,8.76,2.96],
+  [45,3,2.06,3.0,5,3,14.0,263,12.0,33.0,0.0498,4.14,1.51,2.77,13.8,-0.0292,0.0790,0.0206,2.48,1.31,1.21,3.92,2.02,17.3,8.85,0.875],
+  [40,6,3.50,6.0,5,3,5.67,446,12.0,28.0,0.0631,5.24,2.26,4.12,11.9,-0.0366,0.0997,0.0265,3.53,1.86,1.55,5.75,2.95,15.0,7.71,5.60],
+  [40,5,2.73,4.6,5,3,7.70,348,11.5,28.5,0.0505,4.39,1.77,3.24,12.0,-0.0296,0.0801,0.0209,2.83,1.49,1.29,4.55,2.33,15.2,7.75,2.63],
+  [40,3,1.83,3.0,5,3,12.3,233,10.8,29.2,0.0344,3.19,1.18,2.17,12.2,-0.0201,0.0545,0.0142,1.93,1.02,0.933,3.06,1.58,15.3,7.82,0.785],
+  [30,6,2.56,6.0,5,3,4.00,326,9.53,20.5,0.0247,2.59,1.21,2.22,8.71,-0.0140,0.0387,0.0107,1.83,0.993,0.790,3.06,1.59,10.9,5.72,4.16],
+  [30,5,2.01,4.6,5,3,5.52,256,8.99,21.0,0.0200,2.22,0.951,1.76,8.83,-0.0116,0.0316,0.00839,1.49,0.799,0.660,2.45,1.26,11.1,5.72,1.98],
+  [30,3,1.35,3.0,5,3,9.00,173,8.30,21.7,0.0138,1.66,0.635,1.18,8.93,-0.00804,0.0218,0.00573,1.03,0.554,0.488,1.67,0.862,11.2,5.76,0.605],
+  [25,6,2.08,6.0,5,3,3.17,266,8.28,16.7,0.0135,1.63,0.807,1.49,7.13,-0.00750,0.0210,0.00600,1.19,0.669,0.513,2.03,1.07,8.89,4.75,3.44],
+  [25,5,1.65,4.6,5,3,4.43,210,7.75,17.3,0.0110,1.42,0.638,1.19,7.23,-0.00632,0.0173,0.00469,0.980,0.537,0.428,1.65,0.849,9.07,4.72,1.66],
+  [25,3,1.12,3.0,5,3,7.33,143,7.07,17.9,0.00765,1.08,0.426,0.802,7.33,-0.00446,0.0121,0.00319,0.685,0.373,0.319,1.13,0.583,9.22,4.73,0.515]
+].map(([b,t,mass,actualT,rootRadius,toeRadius,legRatio,area,centroidNear,centroidFar,inNp,zFar,zNear,sNp,rNp,inp,ixP,iyP,zxP,zy3,zy5,sxP,syP,rxP,ryP,j]) => ({
+  designation: `${b} x ${b} x ${t} EA`, b, t, mass, actualT, rootRadius, toeRadius, legRatio, area, centroidNear, centroidFar,
+  r: rNp, rx: rNp, ry: rNp, ix: inNp * 1e6, iy: inNp * 1e6, in: inNp * 1e6, ip: inNp * 1e6,
+  znB: zFar * 1e3, zpL: zFar * 1e3, znT: zNear * 1e3, zpR: zNear * 1e3, sn: sNp * 1e3, sp: sNp * 1e3,
+  rn: rNp, rp: rNp, inp: inp * 1e6, principalIx: ixP * 1e6, principalIy: iyP * 1e6,
+  principalZx: zxP * 1e3, principalZy3: zy3 * 1e3, principalZy5: zy5 * 1e3,
+  principalSx: sxP * 1e3, principalSy: syP * 1e3, principalRx: rxP, principalRy: ryP, j: j * 1e3
 }));
 
+const eaAxialGrades = Object.freeze({
+  "150 x 150 x 12 EA": [300,1.000,340,1.000], "125 x 125 x 10 EA": [320,1.000,360,1.000],
+  "100 x 100 x 10 EA": [320,1.000,360,1.000], "100 x 100 x 8 EA": [320,1.000,360,1.000],
+  "100 x 100 x 6 EA": [320,0.906,360,0.856], "90 x 90 x 8 EA": [320,1.000,360,1.000],
+  "75 x 75 x 8 EA": [320,1.000,360,1.000], "75 x 75 x 6 EA": [320,1.000,360,1.000],
+  "65 x 65 x 6 EA": [320,1.000,360,1.000], "65 x 65 x 5 EA": [320,1.000,360,1.000],
+  "50 x 50 x 6 EA": [320,1.000,360,1.000], "50 x 50 x 5 EA": [320,1.000,360,1.000],
+  "50 x 50 x 3 EA": [320,0.907,360,0.858]
+});
+
+const eaSections = eaCatalogueSections.filter(section => eaAxialGrades[section.designation]).map(section => {
+  const [fy300,kf300,fy350,kf350] = eaAxialGrades[section.designation];
+  return { ...section, grades: { "300PLUS": { fy: fy300, fu: 440, kf: kf300 }, "Grade 350": { fy: fy350, fu: 480, kf: kf350 } } };
+});
+
 const pfcSections = [
-  [380, 55.2, 7030, 147, 30.4, 152, 6.48, 280, 100, 10.0, 17.5],
-  [300, 40.1, 5110, 119, 28.1, 72.4, 4.04, 300, 90, 8.0, 16.0],
-  [250, 35.5, 4520, 99.9, 28.4, 45.1, 3.64, 300, 90, 8.0, 15.0],
-  [230, 25.1, 3200, 91.4, 23.5, 26.8, 1.76, 300, 75, 6.5, 12.0],
-  [200, 22.9, 2920, 80.9, 23.8, 19.1, 1.65, 300, 75, 6.0, 12.0],
-  [180, 20.9, 2660, 72.9, 23.8, 14.1, 1.51, 300, 75, 6.0, 11.0],
-  [150, 17.7, 2250, 60.8, 23.9, 8.34, 1.29, 320, 75, 6.0, 9.5],
-  [125, 11.9, 1520, 51.1, 20.8, 3.97, 0.658, 320, 65, 4.7, 7.5],
-  [100, 8.33, 1060, 40.4, 15.9, 1.74, 0.267, 320, 50, 4.2, 6.7],
-  [75, 5.92, 754, 30.1, 12.6, 0.683, 0.120, 320, 40, 3.8, 6.1]
-].map(([depth, mass, area, rx, ry, ix, iy, fy, bf, tw, tf]) => ({
+  [380, 55.2, 7030, 147, 30.4, 152, 6.48, 280, 100, 10.0, 17.5, 27.5, 56.7, 798, 946, 89.4, 236, 161, 491, 151],
+  [300, 40.1, 5110, 119, 28.1, 72.4, 4.04, 300, 90, 8.0, 16.0, 27.2, 56.1, 483, 564, 64.4, 148, 117, 304, 58.2],
+  [250, 35.5, 4520, 99.9, 28.4, 45.1, 3.64, 300, 90, 8.0, 15.0, 28.6, 58.5, 361, 421, 59.3, 127, 107, 248, 35.9],
+  [230, 25.1, 3200, 91.4, 23.5, 26.8, 1.76, 300, 75, 6.5, 12.0, 22.6, 46.7, 233, 271, 33.6, 77.8, 61.0, 112, 15.0],
+  [200, 22.9, 2920, 80.9, 23.8, 19.1, 1.65, 300, 75, 6.0, 12.0, 24.4, 50.5, 191, 221, 32.7, 67.8, 58.9, 105, 10.6],
+  [180, 20.9, 2660, 72.9, 23.8, 14.1, 1.51, 300, 75, 6.0, 11.0, 24.5, 50.3, 157, 182, 29.9, 61.5, 53.8, 84.5, 7.82],
+  [150, 17.7, 2250, 60.8, 23.9, 8.34, 1.29, 320, 75, 6.0, 9.5, 24.9, 51.0, 111, 129, 25.7, 51.6, 46.0, 56.6, 4.59],
+  [125, 11.9, 1520, 51.1, 20.8, 3.97, 0.658, 320, 65, 4.7, 7.5, 21.8, 45.0, 63.5, 73.0, 15.2, 30.2, 27.2, 23.8, 1.64],
+  [100, 8.33, 1060, 40.4, 15.9, 1.74, 0.267, 320, 50, 4.2, 6.7, 16.7, 33.9, 34.7, 40.3, 8.01, 16.0, 14.4, 13.6, 0.424],
+  [75, 5.92, 754, 30.1, 12.6, 0.683, 0.120, 320, 40, 3.8, 6.1, 13.7, 27.2, 18.2, 21.4, 4.56, 8.71, 8.2, 8.42, 0.106]
+].map(([depth, mass, area, rx, ry, ix, iy, fy, bf, tw, tf, xl, xo, zx, sx, zyR, zyL, sy, j, iw]) => ({
   designation: `${depth}PFC`,
   mass,
   area,
@@ -542,6 +639,15 @@ const pfcSections = [
   ry,
   ix: ix * 1e6,
   iy: iy * 1e6,
+  xl,
+  xo,
+  zx: zx * 1e3,
+  sx: sx * 1e3,
+  zyR: zyR * 1e3,
+  zyL: zyL * 1e3,
+  sy: sy * 1e3,
+  j: j * 1e3,
+  iw: iw * 1e9,
   d: depth,
   bf,
   tw,
@@ -580,7 +686,7 @@ const sectionCatalogueFamilies = SectionCatalogue.create({
   ub: ubSections,
   uc: ucSections,
   chs: chsSections,
-  ea: eaSections,
+  ea: eaCatalogueSections,
   rod: rodSections
 }, SectionGeometry);
 let sectionPropertiesMode = "catalogue";
@@ -1664,7 +1770,7 @@ const screwInputIds = [
 ];
 
 const $ = id => document.getElementById(id);
-const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "boltPitch", "edgeDistanceBasis", "effectiveEdgeInput", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
+const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "holeDiameter", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeDistanceBasis", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "edgeDistanceBasis2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = [
   "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
   "beamCustomPfcDepth", "beamCustomPfcFlangeWidth", "beamCustomPfcWebThickness", "beamCustomPfcFlangeThickness",
@@ -1673,6 +1779,11 @@ const beamCustomInputIds = [
 ];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
 const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "screw", "rock"];
+const toolCategories = {
+  "steel-connections": ["bolt", "weld"],
+  "steel-members": ["properties", "member", "beam"],
+  foundations: ["concrete", "screw", "rock"]
+};
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };
 let boltMode = "standard";
@@ -1680,7 +1791,7 @@ let beamSource = "catalogue";
 let beamFamily = "ub";
 let memberType = "chs";
 const manualInputIds = [
-  "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "holeDiameter", "boltPitch", "effectiveEdgeInput", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
+  "boltCount", "threadPlanes", "shankPlanes", "holeDiameter", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
@@ -1693,7 +1804,7 @@ const manualInputIds = [
   "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
-  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeDistanceBasis", "holeFactor",
+  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeDistanceBasis", "edgeCondition2", "edgeDistanceBasis2", "holeFactor",
   "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteReoDirection", "concreteDepthBasis", "concreteCrossingBar", "concreteShearReo", "concreteShearBar",
@@ -1796,6 +1907,157 @@ function markInputSources() {
   referenceInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-reference"));
 }
 
+function calculateConnectedPly(config, bolt, count, holeDiameter, boltPitch) {
+  const actualEdge = value(config.edgeDistanceId);
+  const basis = $(config.edgeDistanceBasisId).value;
+  const endEffectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
+  const hasAdjacentHole = count > 1;
+  const pitchEffectiveEdge = hasAdjacentHole ? Math.max(0, boltPitch - holeDiameter + bolt.d / 2) : Infinity;
+  const automaticEffectiveEdge = Math.min(endEffectiveEdge, pitchEffectiveEdge);
+  const automaticEdgeControl = pitchEffectiveEdge < endEffectiveEdge ? "adjacent hole" : "end edge";
+  const effectiveEdgeInput = $(config.effectiveEdgeInputId);
+  effectiveEdgeInput.readOnly = basis !== "manual";
+  if (basis !== "manual") effectiveEdgeInput.value = automaticEffectiveEdge.toFixed(1);
+
+  const effectiveEdge = basis === "manual" ? Math.max(0, value(config.effectiveEdgeInputId)) : automaticEffectiveEdge;
+  const minimumEdge = value(config.edgeConditionId) * bolt.d;
+  const edgeDistancePass = actualEdge >= minimumEdge;
+  const plateStrength = value(config.plateStrengthId);
+  const plateThickness = value(config.plateThicknessId);
+  const bearingFull = 0.9 * 3.2 * bolt.d * plateThickness * plateStrength / 1000;
+  const bearingEdge = 0.9 * effectiveEdge * plateThickness * plateStrength / 1000;
+  const localCapacity = Math.min(bearingFull, bearingEdge);
+  const groupCapacity = count * localCapacity;
+
+  return {
+    ...config,
+    actualEdge,
+    basis,
+    endEffectiveEdge,
+    hasAdjacentHole,
+    pitchEffectiveEdge,
+    automaticEdgeControl,
+    effectiveEdge,
+    minimumEdge,
+    edgeDistancePass,
+    plateStrength,
+    plateThickness,
+    bearingFull,
+    bearingEdge,
+    localCapacity,
+    groupCapacity,
+    controlLabel: bearingEdge <= bearingFull ? "Edge tear-out limit" : "Full-bearing limit"
+  };
+}
+
+function updateConnectedPlyOutputs(ply, suffix = "") {
+  $(`actualEdgeDistance${suffix}`).textContent = fixed(ply.actualEdge);
+  $(`minimumEdgeDistance${suffix}`).textContent = fixed(ply.minimumEdge);
+  $(`edgeDistanceStatus${suffix}`).textContent = ply.edgeDistancePass ? "PASS" : "FAIL";
+  $(`edgeDistanceStatus${suffix}`).className = ply.edgeDistancePass ? "pass" : "fail";
+  $(`edgeDistanceBasisNote${suffix}`).innerHTML = ply.basis === "manual"
+    ? `Manual drawing basis: a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm. Minimum edge-distance compliance still uses e.`
+    : ply.hasAdjacentHole
+      ? `Automatic: a<sub>e,end</sub> = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm.`
+      : `Automatic: a<sub>e,end</sub> = ${fixed(ply.effectiveEdge)} mm. Adjacent-hole pitch is not applicable to one bolt.`;
+}
+
+function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
+  const effectiveEdgeBasis = ply.basis === "manual"
+    ? `manual drawing value a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
+    : ply.hasAdjacentHole
+      ? `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(boltPitch)} - ${fixed(holeDiameter)} + ${fixed(bolt.d)}/2 = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
+      : `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.effectiveEdge)} mm`;
+  return `
+    <div><b>${ply.label} full bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>f<sub>up</sub> = ${ply.plateStrength.toFixed(0)} MPa; per bolt = 0.90 x 3.2 x ${fixed(bolt.d)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingFull)} kN</code></div>
+    <div><b>${ply.label} edge tear-out limit - AS 4100 Cl. 9.2.2.4(2)</b><code>${effectiveEdgeBasis}; per bolt = 0.90 x ${fixed(ply.effectiveEdge)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingEdge)} kN</code></div>
+    <div><b>${ply.label} minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value(ply.edgeConditionId).toFixed(2)}d<sub>f</sub> = ${fixed(ply.minimumEdge)} mm; provided e = ${fixed(ply.actualEdge)} mm - ${ply.edgeDistancePass ? "PASS" : "FAIL"}</code></div>
+    <div><b>${ply.label} local hole-bearing capacity</b><code>critical-hole capacity = min(${fixed(ply.bearingFull)}, ${fixed(ply.bearingEdge)}) = ${fixed(ply.localCapacity)} kN; equal-share group capacity = ${count} x ${fixed(ply.localCapacity)} = ${fixed(ply.groupCapacity)} kN</code></div>`;
+}
+
+function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear) {
+  const mode = $("integrityMode").value;
+  const componentSelect = $("integrityComponent");
+  componentSelect.disabled = !separatePlyCheck;
+  if (!separatePlyCheck && componentSelect.value !== "primary") componentSelect.value = "primary";
+  const checkedPly = separatePlyCheck && componentSelect.value === "second" ? secondPly : primaryPly;
+  const enabled = mode === "manual";
+  $("integrityInputs").hidden = !enabled;
+  $("integrityMaterialBasis").innerHTML = `${checkedPly.label} &middot; f<sub>uc</sub> = ${checkedPly.plateStrength.toFixed(0)} MPa`;
+
+  const empty = {
+    enabled: false,
+    complete: false,
+    checkedPly,
+    net: null,
+    block: null,
+    netRatio: NaN,
+    blockRatio: NaN,
+    error: ""
+  };
+  if (!enabled) {
+    $("integritySummaryStatus").textContent = "Not evaluated · optional manual areas";
+    return empty;
+  }
+
+  let net = null;
+  let block = null;
+  const errors = [];
+  try {
+    net = BoltIntegrity.netSectionTension({
+      Ag: value("integrityAg"),
+      An: value("integrityAn"),
+      fy: value("integrityFy"),
+      fu: checkedPly.plateStrength,
+      kt: value("integrityKt")
+    });
+    $("integrityNetCapacity").textContent = `${fixed(net.design)} kN`;
+    $("integrityNetBasis").textContent = net.control;
+  } catch (error) {
+    errors.push(error.message);
+    $("integrityNetCapacity").textContent = "Incomplete";
+    $("integrityNetBasis").textContent = "Enter valid Ag, An, fyc and kt";
+  }
+
+  try {
+    block = BoltIntegrity.blockShear({
+      Agv: value("integrityAgv"),
+      Anv: value("integrityAnv"),
+      Ant: value("integrityAnt"),
+      fy: value("integrityFy"),
+      fu: checkedPly.plateStrength,
+      kbs: value("integrityKbs")
+    });
+    $("integrityBlockCapacity").textContent = `${fixed(block.design)} kN`;
+    $("integrityBlockBasis").textContent = block.control;
+  } catch (error) {
+    errors.push(error.message);
+    $("integrityBlockCapacity").textContent = "Incomplete";
+    $("integrityBlockBasis").textContent = "Enter valid Agv, Anv, Ant, fyc and kbs";
+  }
+
+  const complete = Boolean(net && block);
+  $("integritySummaryStatus").textContent = complete
+    ? `φNt ${fixed(net.design)} kN · φRbs ${fixed(block.design)} kN`
+    : "Incomplete · enter critical areas";
+  if (complete) {
+    $("integrityCheckNote").innerHTML = "Use where V<sub>f</sub><sup>*</sup> is the axial force transferred through the checked component. Review all plausible paths and enter the governing path areas.";
+  } else {
+    $("integrityCheckNote").textContent = `Complete the manual-area check. ${[...new Set(errors)].join(" ")}`;
+  }
+
+  return {
+    enabled,
+    complete,
+    checkedPly,
+    net,
+    block,
+    netRatio: net && net.design > 0 ? designShear / net.design : NaN,
+    blockRatio: block && block.design > 0 ? designShear / block.design : NaN,
+    error: [...new Set(errors)].join(" ")
+  };
+}
+
 function calculateBolt() {
   const size = $("boltSize").value;
   const categoryKey = $("category").value;
@@ -1809,7 +2071,6 @@ function calculateBolt() {
   const threadShear = 0.8 * 0.62 * category.fuf * threadKrd * kr * bolt.Ac / 1000;
   const shankShear = 0.8 * 0.62 * category.fuf * shankKrd * kr * bolt.Ao / 1000;
   const selectedShear = plane === "N" ? threadShear : shankShear;
-  const alternateShear = plane === "N" ? shankShear : threadShear;
   const count = Math.max(1, Math.round(value("boltCount")));
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
@@ -1817,34 +2078,74 @@ function calculateBolt() {
   const totalShankPlanes = count * nShank;
   const totalShearPlanes = totalThreadPlanes + totalShankPlanes;
   const groupShear = 0.8 * 0.62 * category.fuf * kr * (totalThreadPlanes * threadKrd * bolt.Ac + totalShankPlanes * shankKrd * bolt.Ao) / 1000;
-  const actualEdge = value("edgeDistance");
   const holeDiameter = value("holeDiameter");
   const boltPitch = Math.max(0, value("boltPitch"));
-  const edgeDistanceBasis = $("edgeDistanceBasis").value;
-  const endEffectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
-  const hasAdjacentHole = count > 1 && boltPitch > 0;
-  const pitchEffectiveEdge = hasAdjacentHole ? Math.max(0, boltPitch - holeDiameter + bolt.d / 2) : Infinity;
-  const automaticEffectiveEdge = Math.min(endEffectiveEdge, pitchEffectiveEdge);
-  const automaticEdgeControl = pitchEffectiveEdge < endEffectiveEdge ? "adjacent hole" : "end edge";
-  const boltPitchInput = $("boltPitch");
-  const effectiveEdgeInput = $("effectiveEdgeInput");
-  boltPitchInput.disabled = count <= 1 || edgeDistanceBasis === "manual";
-  effectiveEdgeInput.readOnly = edgeDistanceBasis !== "manual";
-  if (edgeDistanceBasis !== "manual") effectiveEdgeInput.value = automaticEffectiveEdge.toFixed(1);
-  const effectiveEdge = edgeDistanceBasis === "manual" ? Math.max(0, value("effectiveEdgeInput")) : automaticEffectiveEdge;
-  const minimumEdge = value("edgeCondition") * bolt.d;
-  const edgeDistancePass = actualEdge >= minimumEdge;
-  const plateStrength = value("plateStrength");
-  const bearingFull = 0.9 * 3.2 * bolt.d * value("plateThickness") * plateStrength / 1000;
-  const bearingEdge = 0.9 * effectiveEdge * value("plateThickness") * plateStrength / 1000;
-  const localPlyCapacity = Math.min(bearingFull, bearingEdge);
-  const equalShareGroupPlyCapacity = count * localPlyCapacity;
+  const minimumPitch = 2.5 * bolt.d;
+  const pitchApplicable = count > 1;
+  const pitchPass = !pitchApplicable || boltPitch >= minimumPitch;
+  $("boltPitch").disabled = !pitchApplicable;
+
+  const primaryPly = calculateConnectedPly({
+    label: "Primary ply",
+    plateThicknessId: "plateThickness",
+    plateStrengthId: "plateStrength",
+    edgeConditionId: "edgeCondition",
+    edgeDistanceId: "edgeDistance",
+    edgeDistanceBasisId: "edgeDistanceBasis",
+    effectiveEdgeInputId: "effectiveEdgeInput"
+  }, bolt, count, holeDiameter, boltPitch);
+  const secondPly = calculateConnectedPly({
+    label: "Second ply",
+    plateThicknessId: "plateThickness2",
+    plateStrengthId: "plateStrength2",
+    edgeConditionId: "edgeCondition2",
+    edgeDistanceId: "edgeDistance2",
+    edgeDistanceBasisId: "edgeDistanceBasis2",
+    effectiveEdgeInputId: "effectiveEdgeInput2"
+  }, bolt, count, holeDiameter, boltPitch);
+  const separatePlyCheck = $("connectedPlyBasis").value === "separate";
+  $("secondPlyFields").hidden = !separatePlyCheck;
+  $("boltPlyGrid").classList.toggle("has-second-ply", separatePlyCheck);
+  $("plyComparison").hidden = !separatePlyCheck;
+  $("secondPlyEdgeCheck").hidden = !separatePlyCheck;
+  $("connectedPlyBasisNote").textContent = separatePlyCheck
+    ? "Each connected ply is assessed using its entered properties and edge geometry."
+    : "Primary ply properties apply to both connected plies.";
+  const thinnerPlyThickness = separatePlyCheck
+    ? Math.min(primaryPly.plateThickness, secondPly.plateThickness)
+    : primaryPly.plateThickness;
+  const maximumPitch = Math.min(15 * thinnerPlyThickness, 200);
+  const maximumPitchPass = !pitchApplicable || boltPitch <= maximumPitch;
+
+  const capacitiesEqual = separatePlyCheck && Math.abs(primaryPly.groupCapacity - secondPly.groupCapacity) < 0.05;
+  const governingPly = separatePlyCheck && secondPly.groupCapacity < primaryPly.groupCapacity ? secondPly : primaryPly;
+  const fullCapacitiesEqual = separatePlyCheck && Math.abs(primaryPly.bearingFull - secondPly.bearingFull) < 0.05;
+  const edgeCapacitiesEqual = separatePlyCheck && Math.abs(primaryPly.bearingEdge - secondPly.bearingEdge) < 0.05;
+  const governingFullPly = separatePlyCheck && secondPly.bearingFull < primaryPly.bearingFull ? secondPly : primaryPly;
+  const governingEdgePly = separatePlyCheck && secondPly.bearingEdge < primaryPly.bearingEdge ? secondPly : primaryPly;
+  const governingFullPlyLabel = !separatePlyCheck ? "Both plies identical" : fullCapacitiesEqual ? "Both plies equal" : governingFullPly.label;
+  const governingEdgePlyLabel = !separatePlyCheck ? "Both plies identical" : edgeCapacitiesEqual ? "Both plies equal" : governingEdgePly.label;
+  const fullBearingGroupCapacity = count * governingFullPly.bearingFull;
+  const edgeTearoutGroupCapacity = count * governingEdgePly.bearingEdge;
+  const governingPlyLabel = !separatePlyCheck
+    ? "Both plies identical"
+    : capacitiesEqual
+      ? "Both plies equal"
+      : governingPly.label;
+  const governingPlyDemandLabel = !separatePlyCheck || capacitiesEqual
+    ? "local hole bearing"
+    : `local hole bearing in the ${governingPly.label.toLowerCase()}`;
+  const localPlyCapacity = governingPly.localCapacity;
+  const equalShareGroupPlyCapacity = governingPly.groupCapacity;
   const preload = category.preload ? bolt[category.preload] : 0;
   const slip = category.type === "friction" ? 0.7 * value("slipFactor") * value("interfaces") * preload * value("holeFactor") : null;
   const slipGroupCapacity = slip === null ? null : count * slip;
   const slipTensionCapacity = preload > 0 ? 0.7 * count * preload : null;
   const designShear = value("shearDemand");
   const designTension = value("tensionDemand");
+  const slipShearDemand = value("slipShearDemand");
+  const slipTensionDemand = value("slipTensionDemand");
+  const integrity = calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear);
   const criticalBoltShear = designShear / count;
   const boltShearRatio = groupShear > 0 ? designShear / groupShear : Infinity;
   const plyBearingRatio = localPlyCapacity > 0 ? criticalBoltShear / localPlyCapacity : Infinity;
@@ -1853,27 +2154,68 @@ function calculateBolt() {
     ? boltShearRatio ** 2 + boltTensionRatio ** 2
     : Infinity;
   const slipRatio = slipGroupCapacity && slipTensionCapacity
-    ? designShear / slipGroupCapacity + designTension / slipTensionCapacity
+    ? slipShearDemand / slipGroupCapacity + slipTensionDemand / slipTensionCapacity
     : Infinity;
   const hasShearDemand = designShear > 0;
   const hasTensionDemand = designTension > 0;
   const hasDemand = hasShearDemand || hasTensionDemand;
+  const hasSlipDemand = slipShearDemand > 0 || slipTensionDemand > 0;
   let governingRatio = NaN;
-  let governingNote = "Enter design actions to identify whether bolt shear, bolt tension, combined bolt interaction or connected ply governs.";
+  let governingNote = "Enter V<sub>f</sub><sup>*</sup> and/or N<sub>tf</sub><sup>*</sup> to activate the strength check.";
+  const strengthCandidates = [];
   if (hasShearDemand && !hasTensionDemand) {
-    governingRatio = Math.max(boltShearRatio, plyBearingRatio);
-    governingNote = plyBearingRatio > boltShearRatio
-      ? `Shear only: connected ply governs. Check V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${plyBearingRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.4; bolt shear ratio under AS 4100 Cl. 9.2.2.1 = ${boltShearRatio.toFixed(2)}.`
-      : `Shear only: bolt shear governs. Check V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${boltShearRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.1; connected ply ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+    strengthCandidates.push(
+      { label: "bolt shear", ratio: boltShearRatio },
+      { label: governingPlyDemandLabel, ratio: plyBearingRatio }
+    );
   } else if (!hasShearDemand && hasTensionDemand) {
-    governingRatio = boltTensionRatio;
-    governingNote = `Tension only: bolt tension governs under AS 4100 Cl. 9.2.2.2. Check N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${boltTensionRatio.toFixed(2)}.`;
+    strengthCandidates.push({ label: "bolt tension", ratio: boltTensionRatio });
   } else if (hasShearDemand && hasTensionDemand) {
-    governingRatio = Math.max(strengthRatio, plyBearingRatio);
-    governingNote = plyBearingRatio > strengthRatio
-      ? `Shear and tension: connected ply governs in shear under AS 4100 Cl. 9.2.2.4 with ratio ${plyBearingRatio.toFixed(2)}. Bolt combined shear-tension ratio under AS 4100 Cl. 9.2.2.3 = ${strengthRatio.toFixed(2)}.`
-      : `Shear and tension: bolt combined shear-tension interaction governs under AS 4100 Cl. 9.2.2.3 with ratio ${strengthRatio.toFixed(2)}. Connected ply ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+    strengthCandidates.push(
+      { label: "bolt combined shear-tension interaction", ratio: strengthRatio },
+      { label: governingPlyDemandLabel, ratio: plyBearingRatio }
+    );
   }
+  if (hasShearDemand && integrity.complete) {
+    strengthCandidates.push(
+      { label: `${integrity.checkedPly.label.toLowerCase()} section tension`, ratio: integrity.netRatio },
+      { label: `${integrity.checkedPly.label.toLowerCase()} block shear`, ratio: integrity.blockRatio }
+    );
+  }
+  if (strengthCandidates.length) {
+    const orderedCandidates = [...strengthCandidates].sort((a, b) => b.ratio - a.ratio);
+    const governingCandidate = orderedCandidates[0];
+    governingRatio = governingCandidate.ratio;
+    const actionLabel = hasShearDemand && hasTensionDemand ? "Shear and tension" : hasShearDemand ? "Shear transfer" : "Bolt tension";
+    const comparison = orderedCandidates.slice(1).map(candidate => `${candidate.label} ${candidate.ratio.toFixed(2)}`).join("; ");
+    governingNote = `${actionLabel}: ${governingCandidate.label} governs at ${governingCandidate.ratio.toFixed(2)}.${comparison ? ` Other included checks: ${comparison}.` : ""}`;
+  }
+  const integrityIncomplete = hasShearDemand && integrity.enabled && !integrity.complete;
+  if (integrityIncomplete) {
+    const integrityIssue = (integrity.error || "enter all required critical areas").replace(/\.$/, "");
+    governingNote = `Connected-ply integrity is incomplete: ${integrityIssue}. Bolt and local hole-bearing results remain provisional.`;
+  } else if (hasShearDemand && !integrity.enabled) {
+    governingNote += " Net-section tension and block shear are not evaluated.";
+  } else if (hasShearDemand && integrity.complete) {
+    governingNote += " Manual connected-ply integrity covers the selected component and entered path only.";
+  }
+  const detailingFailures = [];
+  if (pitchApplicable && !pitchPass) detailingFailures.push("minimum pitch");
+  if (pitchApplicable && !maximumPitchPass) detailingFailures.push("maximum pitch");
+  if (!primaryPly.edgeDistancePass) detailingFailures.push(separatePlyCheck ? "primary-ply edge distance" : "edge distance");
+  if (separatePlyCheck && !secondPly.edgeDistancePass) detailingFailures.push("second-ply edge distance");
+  const detailingCompliant = detailingFailures.length === 0;
+  const detailingFailureNote = detailingCompliant
+    ? ""
+    : `Detailing non-compliant: ${detailingFailures.join(", ")}. Correct the connection detailing before using the calculated resistance.`;
+  const strengthDisplayNote = detailingCompliant
+    ? governingNote
+    : `${detailingFailureNote}${hasDemand ? ` ${governingNote}` : ""}`;
+  const slipDisplayNote = !detailingCompliant
+    ? detailingFailureNote
+    : !hasSlipDemand
+      ? "Enter serviceability slip actions for the AS 4100 Cl. 9.2.3.3 check."
+      : `AS 4100 Cl. 9.2.3.3: Vsf* / \u03c6Vsf + Ntf* / \u03c6Ntf = ${slipRatio.toFixed(2)}; limit \u2264 1.0.`;
 
   const drawingCallout = `${size} ${categoryKey} - ${plane} plane`;
   $("selectionTitle").textContent = drawingCallout;
@@ -1883,66 +2225,119 @@ function calculateBolt() {
   $("coreAreaValue").textContent = `${bolt.Ac} mm²`;
   $("shankAreaValue").textContent = `${bolt.Ao} mm²`;
   $("strengthValue").textContent = `${category.fuf} MPa`;
-  $("selectedShearLabel").textContent = `Shear capacity - ${plane}`;
+  const hasInstalledTension = Boolean(category.preload && Number.isFinite(preload));
+  $("installedTensionValue").textContent = hasInstalledTension ? `${preload.toFixed(0)} kN` : "Not required";
+  $("boltPreloadLookup").hidden = !hasInstalledTension;
+  if (!hasInstalledTension) $("boltPreloadLookup").open = false;
+  $("tfSlipSection").hidden = category.type !== "friction";
+  document.querySelectorAll(".bolt-preload-table tbody tr").forEach(row => {
+    const selectedSize = row.dataset.boltSize === size;
+    row.classList.toggle("is-selected", hasInstalledTension && selectedSize);
+    row.querySelectorAll("[data-grade]").forEach(cell => {
+      cell.classList.toggle("is-selected-grade", hasInstalledTension && selectedSize && cell.dataset.grade === category.grade);
+    });
+  });
+  $("selectedShearLabel").innerHTML = `Design shear capacity, &phi;V<sub>f</sub> &middot; ${plane}-plane`;
   $("selectedShearCapacity").textContent = fixed(selectedShear);
   $("selectedShearNote").innerHTML = plane === "N"
-    ? `&phi;V<sub>f</sub> - threads intercept plane - AS 4100 Cl. 9.2.2.1; includes k<sub>r</sub> = ${kr.toFixed(2)}`
-    : `&phi;V<sub>f</sub> - threads clear of plane - AS 4100 Cl. 9.2.2.1; includes k<sub>r</sub> = ${kr.toFixed(2)}`;
-  $("alternateShearLabel").textContent = `Shear capacity - ${plane === "N" ? "X" : "N"}`;
-  $("alternateShearCapacity").textContent = fixed(alternateShear);
-  $("alternateShearNote").innerHTML = plane === "N"
-    ? `threads clear of plane; includes k<sub>r</sub> = ${kr.toFixed(2)}`
-    : `threads intercept plane; includes k<sub>r</sub> = ${kr.toFixed(2)}`;
+    ? "Threads intercept shear plane &middot; AS 4100 Cl. 9.2.2.1"
+    : "Threads clear of shear plane &middot; AS 4100 Cl. 9.2.2.1";
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `One shear-plane &phi;V<sub>f</sub> includes k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} and k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring the AS 4100 Table 9.2.2.1 reduction referenced by AS 4100 Cl. 9.2.2.1.`;
+  $("boltResultNote").innerHTML = `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} &middot; k<sub>r</sub> = ${kr.toFixed(2)}.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
-  $("groupShearBasis").innerHTML = `${count} bolt${count === 1 ? "" : "s"} × (${nThread} N + ${nShank} X) plane${nThread + nShank === 1 ? "" : "s"} per bolt = ${totalThreadPlanes} N + ${totalShankPlanes} X = ${totalShearPlanes} total shear plane${totalShearPlanes === 1 ? "" : "s"}. Equal action per identical bolt is assumed. Change k<sub>r</sub> only for bolted lap connection reduction.`;
-  $("bearingGroupCapacity").textContent = `${fixed(equalShareGroupPlyCapacity)} kN`;
-  $("bearingGroupBasis").textContent = `Equal-share group · ${fixed(localPlyCapacity)} kN at critical bolt hole × ${count} · ${bearingEdge <= bearingFull ? `${edgeDistanceBasis === "manual" ? "manual a_e" : automaticEdgeControl} governs` : "full bearing governs"}`;
-  $("actualEdgeDistance").textContent = fixed(actualEdge);
-  $("minimumEdgeDistance").textContent = fixed(minimumEdge);
-  $("effectiveEdgeDistance").textContent = fixed(effectiveEdge);
-  $("edgeDistanceBasisNote").innerHTML = edgeDistanceBasis === "manual"
-    ? `Manual drawing basis: a<sub>e</sub> = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm. Minimum edge-distance compliance still uses e.`
-    : hasAdjacentHole
-      ? `Automatic: a<sub>e,end</sub> = ${fixed(endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(pitchEffectiveEdge)} mm; governing a<sub>e</sub> = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm (${automaticEdgeControl}).`
-      : `Automatic: a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm. Adjacent-hole pitch is not applicable to one bolt.`;
-  $("edgeDistanceStatus").textContent = edgeDistancePass ? "PASS" : "FAIL";
-  $("edgeDistanceStatus").className = edgeDistancePass ? "pass" : "fail";
+  $("groupShearBasis").textContent = `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal bolt sharing`;
+  $("primaryPlyCapacity").textContent = `${fixed(primaryPly.groupCapacity)} kN`;
+  $("primaryPlyControl").textContent = primaryPly.controlLabel;
+  $("secondPlyCapacity").textContent = `${fixed(secondPly.groupCapacity)} kN`;
+  $("secondPlyControl").textContent = secondPly.controlLabel;
+  $("bearingGroupCapacity").textContent = `${fixed(fullBearingGroupCapacity)} kN`;
+  $("bearingGroupBasis").textContent = `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
+  $("tearoutGroupCapacity").textContent = `${fixed(edgeTearoutGroupCapacity)} kN`;
+  $("tearoutGroupBasis").textContent = `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
+  $("connectedPlyGoverningBasis").textContent = `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`;
+  updateConnectedPlyOutputs(primaryPly);
+  updateConnectedPlyOutputs(secondPly, "2");
+  $("pitchCheckValue").innerHTML = pitchApplicable
+    ? `<output id="actualPitch">${fixed(boltPitch)}</output> / <output id="minimumPitch">${fixed(minimumPitch)}</output> mm required`
+    : "Not applicable to one bolt";
+  $("pitchStatus").textContent = pitchApplicable ? (pitchPass ? "PASS" : "FAIL") : "N/A";
+  $("pitchStatus").className = pitchApplicable ? (pitchPass ? "pass" : "fail") : "neutral";
+  $("maximumPitchCheckValue").innerHTML = pitchApplicable
+    ? `<output id="actualMaximumPitch">${fixed(boltPitch)}</output> / <output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted`
+    : "Not applicable to one bolt";
+  $("maximumPitchStatus").textContent = pitchApplicable ? (maximumPitchPass ? "PASS" : "FAIL") : "N/A";
+  $("maximumPitchStatus").className = pitchApplicable ? (maximumPitchPass ? "pass" : "fail") : "neutral";
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
-  $("strengthGoverningRatio").textContent = Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
-  $("strengthGoverningStatus").textContent = !hasDemand
+  $("slipCapacityBasis").textContent = slip === null
+    ? "TF categories only"
+    : `Per bolt · ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
+  $("strengthGoverningRatio").textContent = !integrityIncomplete && Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
+  $("strengthGoverningStatus").textContent = !detailingCompliant
+    ? "NON-COMPLIANT"
+    : integrityIncomplete
+      ? "INCOMPLETE"
+    : !hasDemand
     ? "Enter design actions"
     : governingRatio <= 1
+        ? hasShearDemand ? "SCOPED PASS" : "PASS"
+        : "FAIL";
+  $("strengthGoverningStatus").className = !detailingCompliant ? "fail" : integrityIncomplete ? "check" : !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
+  $("strengthGoverningNote").innerHTML = strengthDisplayNote;
+  $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
+  $("slipGoverningStatus").textContent = !detailingCompliant
+    ? "NON-COMPLIANT"
+    : !hasSlipDemand
+      ? "Enter slip actions"
+      : slipRatio <= 1
         ? "PASS"
         : "FAIL";
-  $("strengthGoverningStatus").className = !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
-  $("strengthGoverningNote").innerHTML = governingNote;
+  $("slipGoverningStatus").className = !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
+  $("slipGoverningNote").textContent = slipDisplayNote;
 
   const slipFormula = slip === null ? "<code>Not applicable - TF categories only</code>" : `<code>0.70 x ${value("slipFactor")} x ${value("interfaces")} x ${preload} x ${value("holeFactor")} = ${fixed(slip)} kN per bolt</code>`;
   const strengthInteractionFormula = hasShearDemand && hasTensionDemand
     ? `<code>(V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub>)<sup>2</sup> = (${fixed(designShear)} / ${fixed(groupShear)})<sup>2</sup> + (${fixed(designTension)} / ${fixed(count * tension)})<sup>2</sup> = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}; limit &le; 1.0</code>`
-    : "<code>Not applicable unless both shear and tension design actions are entered. Use the separate bolt shear, bolt tension and connected-ply ratios for single-action checks.</code>";
+    : "<code>Not applicable unless both shear and tension design actions are entered. Use the separate bolt shear, bolt tension and local hole-bearing ratios for single-action checks.</code>";
   const slipInteractionFormula = slip === null
     ? "<code>Not applicable - AS 4100 Cl. 9.2.3.3 applies to friction-type categories where serviceability slip is limited</code>"
-    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designShear)} / ${fixed(slipGroupCapacity)} + ${fixed(designTension)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check</code>`;
+    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(slipShearDemand)} / ${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check; actions are entered separately from the strength check</code>`;
+  const activePlyFormulaRows = connectedPlyFormulaRows(primaryPly, bolt, count, holeDiameter, boltPitch)
+    + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count, holeDiameter, boltPitch) : "");
+  const pitchFormula = pitchApplicable
+    ? `<code>p<sub>min</sub> = 2.5d<sub>f</sub> = 2.5 x ${fixed(bolt.d)} = ${fixed(minimumPitch)} mm; provided p = ${fixed(boltPitch)} mm - ${pitchPass ? "PASS" : "FAIL"}</code>`
+    : "<code>Not applicable to a one-bolt connection</code>";
+  const maximumPitchFormula = pitchApplicable
+    ? `<code>t<sub>p,min</sub> = ${fixed(thinnerPlyThickness)} mm; p<sub>max</sub> = min(15t<sub>p,min</sub>, 200) = ${fixed(maximumPitch)} mm; provided p = ${fixed(boltPitch)} mm - ${maximumPitchPass ? "PASS" : "FAIL"}. General limit only; Cl. 9.5.3(a) and (b) are not applied.</code>`
+    : "<code>Not applicable to a one-bolt connection</code>";
+  const installedTensionFormula = hasInstalledTension
+    ? `<code>N<sub>ti</sub> = ${preload.toFixed(0)} kN for ${size} property class ${category.grade}. This is the minimum installed bolt tension, not &phi;N<sub>tf</sub>.</code>`
+    : `<code>Not required for ${categoryKey}. Snug-tight categories have no specified minimum installed bolt tension.</code>`;
+  const integrityFormulaRows = !integrity.enabled
+    ? `<div><b>Connected-ply integrity</b><code>Not evaluated. Net-section tension and block shear require manual critical areas.</code></div>`
+    : !integrity.complete
+      ? `<div><b>Connected-ply integrity</b><code>Incomplete. ${integrity.error}</code></div>`
+      : `
+        <div><b>${integrity.checkedPly.label} section tension - AS 4100 Cl. 9.1.9(b) and Cl. 7.2</b><code>&phi;N<sub>t</sub> = 0.90 min(A<sub>g</sub>f<sub>yc</sub>, 0.85k<sub>t</sub>A<sub>n</sub>f<sub>uc</sub>) = 0.90 min(${fixed(integrity.net.grossYield)}, ${fixed(integrity.net.netFracture)}) = ${fixed(integrity.net.design)} kN; ratio = ${integrity.netRatio.toFixed(2)}</code></div>
+        <div><b>${integrity.checkedPly.label} block shear - AS 4100 Cl. 9.1.9(e)</b><code>&phi;R<sub>bs</sub> = 0.75 min(0.6f<sub>uc</sub>A<sub>nv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>, 0.6f<sub>yc</sub>A<sub>gv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>) = 0.75 min(${fixed(integrity.block.ruptureLimit)}, ${fixed(integrity.block.yieldLimit)}) = ${fixed(integrity.block.design)} kN; ratio = ${integrity.blockRatio.toFixed(2)}</code></div>`;
   $("formulaSteps").innerHTML = `
     <div><b>Tension - AS 4100 Cl. 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
+    <div><b>Minimum installed bolt tension - AS 4100 Table 15.2.2.2</b>${installedTensionFormula}</div>
     <div><b>Shear N - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x k<sub>r</sub> (${kr.toFixed(2)}) x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
     <div><b>Shear X - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x k<sub>r</sub> (${kr.toFixed(2)}) x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
     <div><b>Bolt group shear - AS 4100 Cl. 9.2.2.1</b><code>Equal action per identical bolt is assumed. n<sub>n,total</sub> = ${count} x ${nThread} = ${totalThreadPlanes}; n<sub>x,total</sub> = ${count} x ${nShank} = ${totalShankPlanes}; &phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n,total</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x,total</sub>k<sub>rd,X</sub>A<sub>o</sub>) = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
     <div><b>Bolt shear ratio - AS 4100 Cl. 9.2.2.1</b><code>V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${fixed(designShear)} / ${fixed(groupShear)} = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}</code></div>
     <div><b>Bolt tension ratio - AS 4100 Cl. 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Ply material input</b><code>f<sub>up</sub> = ${plateStrength.toFixed(0)} MPa. Default 410 MPa corresponds to AS/NZS 3678 Grade 250 plate; use 440 MPa only where the actual connected ply is AS/NZS 3679.1 Grade 300 flat bar/section or otherwise verified.</code></div>
-    <div><b>Full ply bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>per bolt = 0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
-    <div><b>Edge-limited ply bearing - AS 4100 Cl. 9.2.2.4(2)</b><code>${edgeDistanceBasis === "manual" ? `manual drawing value a<sub>e</sub> = ${fixed(effectiveEdge)} mm` : hasAdjacentHole ? `a<sub>e,end</sub> = ${fixed(actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(boltPitch)} - ${fixed(holeDiameter)} + ${fixed(bolt.d)}/2 = ${fixed(pitchEffectiveEdge)} mm; ${automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(effectiveEdge)} mm` : `a<sub>e,end</sub> = ${fixed(actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(effectiveEdge)} mm`}; per critical bolt hole = 0.90 x a<sub>e</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingEdge)} kN</code></div>
-    <div><b>Minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
-    <div><b>Connected-ply bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>equal sharing: V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n = ${fixed(designShear)}/${count} = ${fixed(criticalBoltShear)} kN; critical-hole capacity = min(${fixed(bearingFull)}, ${fixed(bearingEdge)}) = ${fixed(localPlyCapacity)} kN; equal-share group capacity = ${count} x ${fixed(localPlyCapacity)} = ${fixed(equalShareGroupPlyCapacity)} kN; ratio = ${fixed(designShear)}/${fixed(equalShareGroupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Governing capacity check</b><code>${governingNote}</code></div>
+    <div><b>Minimum pitch - AS 4100 Cl. 9.5.1</b>${pitchFormula}</div>
+    <div><b>Maximum pitch - AS 4100 Cl. 9.5.3</b>${maximumPitchFormula}</div>
+    ${activePlyFormulaRows}
+    <div><b>Governing local hole-bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>${governingPlyLabel}; equal sharing: V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n = ${fixed(designShear)}/${count} = ${fixed(criticalBoltShear)} kN; governing group capacity = ${fixed(equalShareGroupPlyCapacity)} kN; ratio = ${fixed(designShear)}/${fixed(equalShareGroupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}</code></div>
+    ${integrityFormulaRows}
+    <div><b>Detailing compliance</b><code>${detailingCompliant ? "All applicable lightweight detailing checks pass." : detailingFailureNote}</code></div>
+    <div><b>Strength governing check</b><code>${governingNote}</code></div>
     <div><b>Combined shear and tension - AS 4100 Cl. 9.2.2.3</b>${strengthInteractionFormula}</div>
     <div><b>TF slip - AS 4100 Cl. 9.2.3.1</b>${slipFormula}</div>
     <div><b>TF combined slip - AS 4100 Cl. 9.2.3.3</b>${slipInteractionFormula}</div>
-    <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8. TF categories also require the separate serviceability slip checks above.</code></div>`;
+    <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8.${slip === null ? "" : " Complete the separate serviceability slip checks above."}</code></div>`;
 }
 
 function uniqueSorted(list, key) {
@@ -2456,12 +2851,19 @@ const sectionCatalogueFamilyNames = {
 
 function sectionPowerValue(number) {
   const amount = Number(number);
-  if (!Number.isFinite(amount) || amount <= 0) return "—";
+  if (!Number.isFinite(amount) || amount < 0) return "—";
   const exponent = amount >= 1e9 ? 9 : amount >= 1e6 ? 6 : amount >= 1e3 ? 3 : 0;
   if (!exponent) return amount.toLocaleString("en-AU", { maximumFractionDigits: 1 });
   const coefficient = amount / 10 ** exponent;
   const maximumFractionDigits = coefficient >= 100 ? 1 : coefficient >= 10 ? 2 : 3;
   return `${coefficient.toLocaleString("en-AU", { maximumFractionDigits })} × 10<sup>${exponent}</sup>`;
+}
+
+function sectionSignedPowerValue(number) {
+  const amount = Number(number);
+  if (!Number.isFinite(amount)) return "—";
+  if (amount === 0) return "0";
+  return `${amount < 0 ? "−" : ""}${sectionPowerValue(Math.abs(amount))}`;
 }
 
 function currentSectionGeometry() {
@@ -2492,6 +2894,33 @@ function sectionCompositionText(shape) {
   if (shape === "i") return "Two flange rectangles plus the clear web rectangle.";
   if (shape === "angle") return "Two leg rectangles minus their overlapping corner square.";
   return "Two flange rectangles plus the clear web rectangle.";
+}
+
+function customSectionRatios(shape) {
+  if (shape === "rectangle") return [{ label: "b/h", value: value("sectionWidth") / value("sectionHeight") }];
+  if (shape === "rhs") return [
+    { label: "h/t", value: value("sectionHeight") / value("sectionThickness") },
+    { label: "b/t", value: value("sectionWidth") / value("sectionThickness") }
+  ];
+  if (shape === "chs") return [{ label: "D/t", value: value("sectionDiameter") / value("sectionThickness") }];
+  if (shape === "i") return [
+    { label: "(d−2tf)/tw", value: (value("sectionDepth") - 2 * value("sectionFlangeThickness")) / value("sectionWebThickness") },
+    { label: "(bf−tw)/2tf", value: (value("sectionFlangeWidth") - value("sectionWebThickness")) / (2 * value("sectionFlangeThickness")) }
+  ];
+  if (shape === "channel") return [
+    { label: "(d−2tf)/tw", value: (value("sectionDepth") - 2 * value("sectionFlangeThickness")) / value("sectionWebThickness") },
+    { label: "(bf−tw)/tf", value: (value("sectionFlangeWidth") - value("sectionWebThickness")) / value("sectionFlangeThickness") }
+  ];
+  if (shape === "angle") return [{ label: "b/t", value: value("sectionLeg") / value("sectionAngleThickness") }];
+  return [];
+}
+
+function renderSectionRatios(ratios) {
+  const valid = (ratios || []).filter(item => Number.isFinite(item.value) && item.value > 0);
+  const values = valid.length
+    ? valid.map(item => `${safeText(item.label)} = ${item.value.toLocaleString("en-AU", { maximumFractionDigits: 2 })}`).join("; ")
+    : "Not applicable to the selected geometry";
+  $("sectionGeometricRatios").innerHTML = `<b>Geometric ratios</b> &mdash; ${values}. No section classification is assigned.`;
 }
 
 function sectionDrawingFromInputs(shape) {
@@ -2573,35 +3002,65 @@ function renderSectionPropertiesDiagram(drawing, properties, title, catalogueMod
     const raw = property && typeof property === "object" ? property.value : property;
     return raw === null || raw === undefined || raw === "" ? NaN : Number(raw);
   };
-  let axisProperties = properties;
-  let indicative = !Number.isFinite(coordinateValue(properties?.cx)) || !Number.isFinite(coordinateValue(properties?.cy));
-  if (indicative) axisProperties = idealDrawingProperties(drawing);
-  const cx = coordinateValue(axisProperties?.cx);
-  const cy = coordinateValue(axisProperties?.cy);
+  const suppliedCx = coordinateValue(properties?.cx);
+  const suppliedCy = coordinateValue(properties?.cy);
+  const missingCx = !Number.isFinite(suppliedCx);
+  const missingCy = !Number.isFinite(suppliedCy);
+  const indicative = missingCx || missingCy;
+  const idealProperties = indicative ? idealDrawingProperties(drawing) : null;
+  const cx = missingCx ? coordinateValue(idealProperties?.cx) : suppliedCx;
+  const cy = missingCy ? coordinateValue(idealProperties?.cy) : suppliedCy;
   const axisX = x0 + cx * scale;
   const axisY = y0 + drawnHeight - cy * scale;
   const xStart = Math.max(12, x0 - 18);
   const xEnd = Math.min(226, x0 + drawnWidth + 21);
   const yStart = Math.min(154, y0 + drawnHeight + 17);
   const yEnd = Math.max(10, y0 - 18);
-  const description = `${title} schematic showing ${indicative ? "indicative x and y axis positions" : "centroidal x and y axes"}.`;
+  const angleAxes = shape === "angle";
+  const horizontalAxis = angleAxes ? "n" : "x";
+  const verticalAxis = angleAxes ? "p" : "y";
+  const axisDescription = missingCx && missingCy
+    ? "indicative x-x and y-y axis positions"
+    : missingCx
+      ? "a centroidal x-x axis and indicative y-y axis position"
+      : missingCy
+        ? "an indicative x-x axis position and centroidal y-y axis"
+        : "centroidal x-x and y-y axes";
+  const indicativeCaption = missingCx && missingCy
+    ? "x-x / y-y positions indicative"
+    : missingCx
+      ? "y-y position indicative"
+      : "x-x position indicative";
+  const description = angleAxes
+    ? `${title} schematic showing horizontal n-n and vertical p-p centroidal axes, with principal x-x and y-y axes at 45 degrees. ${indicative ? "The centroid position is indicative." : ""}`
+    : `${title} schematic showing ${axisDescription}.`;
+  const principalHalfLength = 34;
+  const anglePrincipalMarkup = angleAxes ? `
+    <line class="section-properties-principal-axis" x1="${line(axisX - principalHalfLength)}" y1="${line(axisY + principalHalfLength)}" x2="${line(axisX + principalHalfLength)}" y2="${line(axisY - principalHalfLength)}" />
+    <line class="section-properties-principal-axis" x1="${line(axisX - principalHalfLength)}" y1="${line(axisY - principalHalfLength)}" x2="${line(axisX + principalHalfLength)}" y2="${line(axisY + principalHalfLength)}" />
+    <text class="section-properties-principal-axis-label" x="${line(axisX + principalHalfLength + 3)}" y="${line(axisY - principalHalfLength + 3)}">x</text>
+    <text class="section-properties-principal-axis-label" x="${line(axisX + principalHalfLength + 3)}" y="${line(axisY + principalHalfLength + 3)}">y</text>` : "";
 
   svg.innerHTML = `
-    <title id="sectionPropertiesDiagramTitle">${safeText(title)} section and x/y axes</title>
+    <title id="sectionPropertiesDiagramTitle">${safeText(title)} section and axis convention</title>
     <desc id="sectionPropertiesDiagramDescription">${safeText(description)}</desc>
-    <defs><marker id="sectionAxisArrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z"></path></marker></defs>
     ${geometryMarkup}
-    <line class="section-properties-axis" x1="${line(xStart)}" y1="${line(axisY)}" x2="${line(xEnd)}" y2="${line(axisY)}" marker-end="url(#sectionAxisArrow)" />
-    <line class="section-properties-axis" x1="${line(axisX)}" y1="${line(yStart)}" x2="${line(axisX)}" y2="${line(yEnd)}" marker-end="url(#sectionAxisArrow)" />
+    <line class="section-properties-axis" x1="${line(xStart)}" y1="${line(axisY)}" x2="${line(xEnd)}" y2="${line(axisY)}" />
+    <line class="section-properties-axis" x1="${line(axisX)}" y1="${line(yStart)}" x2="${line(axisX)}" y2="${line(yEnd)}" />
+    ${anglePrincipalMarkup}
     <circle class="section-properties-centroid" cx="${line(axisX)}" cy="${line(axisY)}" r="3.4" />
-    <text class="section-properties-axis-label" x="${line(xEnd - 1)}" y="${line(axisY - 7)}" text-anchor="end">x</text>
-    <text class="section-properties-axis-label" x="${line(axisX + 7)}" y="${line(yEnd + 10)}">y</text>
+    <text class="section-properties-axis-label" x="${line(xStart)}" y="${line(axisY - 7)}">${horizontalAxis}</text>
+    <text class="section-properties-axis-label" x="${line(xEnd)}" y="${line(axisY - 7)}" text-anchor="end">${horizontalAxis}</text>
+    <text class="section-properties-axis-label" x="${line(axisX + 7)}" y="${line(yEnd + 10)}">${verticalAxis}</text>
+    <text class="section-properties-axis-label" x="${line(axisX + 7)}" y="${line(yStart)}">${verticalAxis}</text>
     <text class="section-properties-centroid-label" x="${line(axisX + 7)}" y="${line(axisY + 13)}">C</text>`;
-  $("sectionPropertiesDiagramCaption").textContent = indicative
-    ? "Schematic only · x/y axis position indicative"
+  $("sectionPropertiesDiagramCaption").textContent = angleAxes
+    ? `${catalogueMode ? "Selected" : "Entered"} dimensions · p/n centroidal · x/y principal${indicative ? " · C indicative" : ""}`
+    : indicative
+    ? `Schematic only · ${indicativeCaption}`
     : catalogueMode
-      ? "Selected dimensions · centroidal x/y axes"
-      : "Entered dimensions · centroidal x/y axes";
+      ? "Selected dimensions · centroidal x-x / y-y axes"
+      : "Entered dimensions · centroidal x-x / y-y axes";
 }
 
 function selectedSectionCatalogueFamily() {
@@ -2670,73 +3129,296 @@ function setSectionPropertyOutput(outputId, basisId, property, kind) {
   }
   if (kind === "area") output.textContent = property.value.toLocaleString("en-AU", { maximumFractionDigits: 1 });
   else if (kind === "decimal") output.textContent = property.value.toLocaleString("en-AU", { maximumFractionDigits: 2 });
+  else if (kind === "signed-power") output.innerHTML = sectionSignedPowerValue(property.value);
   else output.innerHTML = sectionPowerValue(property.value);
   basis.textContent = sectionBasisLabel(property);
   basis.classList.remove("unavailable");
 }
 
-function sectionPropertyStep(label, property, unit) {
+function setSectionPropertyPair(primaryId, secondaryId, basisId, primary, secondary, kind) {
+  setSectionPropertyOutput(primaryId, basisId, primary, kind);
+  const output = $(secondaryId);
+  if (!secondary || secondary.value === null || !Number.isFinite(secondary.value)) {
+    output.innerHTML = "—";
+    return;
+  }
+  output.innerHTML = kind === "decimal"
+    ? secondary.value.toLocaleString("en-AU", { maximumFractionDigits: 2 })
+    : sectionPowerValue(secondary.value);
+}
+
+function setSectionDirectionalProperty(axis, primary, alternate, primaryLabel, alternateLabel) {
+  const primaryId = axis === "x" ? "sectionZx" : "sectionZy";
+  const basisId = axis === "x" ? "sectionZxBasis" : "sectionZyBasis";
+  const directionId = axis === "x" ? "sectionZxDirection" : "sectionZyDirection";
+  const alternateWrapId = axis === "x" ? "sectionZxAltWrap" : "sectionZyAltWrap";
+  const alternateDirectionId = axis === "x" ? "sectionZxAltDirection" : "sectionZyAltDirection";
+  const alternateOutputId = axis === "x" ? "sectionZxAlt" : "sectionZyAlt";
+  setSectionPropertyOutput(primaryId, basisId, primary, "power");
+  const distinctAlternate = Number.isFinite(alternate?.value)
+    && (!Number.isFinite(primary?.value) || Math.abs(alternate.value - primary.value) > Math.max(1, Math.abs(primary.value)) * 1e-9);
+  $(directionId).textContent = primaryLabel;
+  $(alternateDirectionId).textContent = alternateLabel;
+  $(directionId).hidden = !distinctAlternate;
+  $(alternateWrapId).hidden = !distinctAlternate;
+  $(alternateOutputId).innerHTML = distinctAlternate ? sectionPowerValue(alternate.value) : "—";
+}
+
+function setSectionDirectionalZx(primary, alternate) {
+  setSectionDirectionalProperty("x", primary, alternate, "T", "B");
+}
+
+function setSectionDirectionalZy(primary, alternate) {
+  setSectionDirectionalProperty("y", primary, alternate, "R", "L");
+}
+
+function setSectionDirectionalAw(primary, alternate, directional) {
+  setSectionPropertyOutput("sectionAw", "sectionAwBasis", primary, "area");
+  const hasAlternate = directional && Number.isFinite(alternate?.value);
+  $("sectionAwDirection").hidden = !hasAlternate;
+  $("sectionAwAltWrap").hidden = !hasAlternate;
+  $("sectionAwAlt").textContent = hasAlternate
+    ? alternate.value.toLocaleString("en-AU", { maximumFractionDigits: 1 })
+    : "—";
+}
+
+function sectionPropertyStep(label, property, unit, signed = false) {
   if (!property || property.value === null) {
     return `<div><b>${label}</b><code>${SectionCatalogue.BASIS.unavailable}.</code></div>`;
   }
   const valueText = ["mm²", "mm", "kg/m"].includes(unit)
     ? property.value.toLocaleString("en-AU", { maximumFractionDigits: 1 })
-    : sectionPowerValue(property.value);
+    : signed ? sectionSignedPowerValue(property.value) : sectionPowerValue(property.value);
   return `<div><b>${label}</b><code>${sectionBasisLabel(property)}: ${valueText} ${unit}.</code></div>`;
 }
 
+function configureSectionPropertyPresentation(shape, catalogueMode) {
+  const angleAxes = shape === "angle";
+  $("sectionAreaLabel").innerHTML = catalogueMode ? "Gross area <i>A<sub>g</sub></i>" : "Gross area <i>A</i>";
+  $("sectionAxisOneHeader").textContent = angleAxes ? "n-n axis" : "x-x axis";
+  $("sectionAxisTwoHeader").textContent = angleAxes ? "p-p axis" : "y-y axis";
+  $("sectionIxyLabel").innerHTML = angleAxes ? "Product of inertia <i>I<sub>np</sub></i>" : "Product of inertia <i>I<sub>xy</sub></i>";
+  ["sectionPrincipalAxisOne", "sectionPrincipalRadiusOne"].forEach(id => { $(id).textContent = angleAxes ? "x" : "u"; });
+  ["sectionPrincipalAxisTwo", "sectionPrincipalRadiusTwo"].forEach(id => { $(id).textContent = angleAxes ? "y" : "v"; });
+  $("sectionThetaLabel").innerHTML = angleAxes ? "Principal-axis angle <i>&theta;<sub>x</sub></i>" : "Principal-axis angle <i>&theta;<sub>u</sub></i>";
+  $("sectionAwLabel").innerHTML = shape === "rhs"
+    ? "Wall reference areas <i>A<sub>wy</sub></i> / <i>A<sub>wx</sub></i>"
+    : shape === "i" || shape === "channel"
+      ? "Clear web area <i>A<sub>w</sub></i>"
+      : "Shear reference area";
+}
+
+function sectionPropertyNumber(property) {
+  const raw = property && typeof property === "object" ? property.value : property;
+  return raw === null || raw === undefined || raw === "" ? NaN : Number(raw);
+}
+
+function configureSectionPropertyHierarchy(shape, catalogueMode, familyKey = "custom") {
+  const angle = shape === "angle";
+  const isotropic = shape === "circle" || shape === "chs";
+  const openSection = shape === "channel";
+  $("sectionPropertyResults").dataset.sectionLayout = angle ? "angle" : isotropic ? "isotropic" : openSection ? "open" : "orthogonal";
+
+  $("sectionResultContext").textContent = angle
+    ? "Centroidal n-p and principal x-y · mm units"
+    : isotropic
+      ? "Rotationally symmetric · mm units"
+      : openSection
+        ? "Open section · mm units"
+        : "Centroidal x-y · mm units";
+
+  $("sectionCoreHeading").textContent = angle
+    ? catalogueMode ? "Product geometry and centroid" : "Gross angle and centroid"
+    : isotropic
+      ? "Gross circular section"
+      : familyKey === "pfc"
+        ? "Gross section and reference locations"
+        : "Gross section and centroid";
+  $("sectionCoreDescription").textContent = angle && catalogueMode
+    ? "Catalogue mass, gross area, actual product geometry and centroid distances."
+    : isotropic
+      ? "Mass, gross area and centre coordinates from the lower-left geometry datum."
+      : familyKey === "pfc"
+        ? "Catalogue mass and area, with XL locating the centroid from the back of the web."
+        : "Mass, gross area and centroid coordinates from the geometry datum.";
+
+  $("sectionAxisHeading").textContent = angle
+    ? "Centroidal n-n / p-p properties"
+    : isotropic
+      ? "Any centroidal diameter"
+      : "Centroidal x-x / y-y properties";
+  $("sectionAxisDescription").textContent = angle
+    ? "Leg-parallel centroidal axes; these are not the principal x-x / y-y axes."
+    : isotropic
+      ? "Rotational symmetry gives the same I, Z, S and r about every centroidal diameter."
+      : openSection
+        ? "Properties about the displayed centroidal axes; directional Z retains the applicable edge."
+        : "Second moments, section moduli and radii about the displayed centroidal axes.";
+  if (isotropic) {
+    $("sectionAxisOneHeader").textContent = "Any centroidal axis";
+    $("sectionAxisTwoHeader").textContent = "Equivalent axis";
+  }
+
+  $("sectionSupplementaryTitle").textContent = angle
+    ? "Torsion and geometric references"
+    : openSection
+      ? "Torsion, warping, shear centre and web reference"
+      : isotropic
+        ? "Circular-section constants"
+        : "Torsion, warping and shear references";
+  $("sectionSupplementaryDescription").textContent = "Only properties applicable to the selected section family are shown.";
+
+  $("sectionPrincipalTitle").textContent = angle ? "Principal x-x / y-y properties" : "Displayed-axis relationship";
+  $("sectionPrincipalDescription").textContent = angle
+    ? "Catalogue principal properties at 45° to the n-p axes, including the non-zero product of inertia."
+    : isotropic
+      ? "Rotational symmetry makes every centroidal diameter a principal axis."
+      : "Symmetry establishes whether the displayed centroidal axes are principal.";
+  ["sectionPrincipalInertiaCard", "sectionPrincipalRadiusCard", "sectionPrincipalAngleCard"].forEach(id => {
+    $(id).hidden = !angle;
+  });
+  $("sectionPrincipalProperties").dataset.mode = angle ? "principal" : "relationship";
+}
+
+function configureSectionSpecificProperties(properties, shape) {
+  const isotropic = shape === "circle" || shape === "chs";
+  const j = sectionPropertyNumber(properties?.j);
+  const jp = sectionPropertyNumber(properties?.jp);
+  const cardVisibility = {
+    sectionJCard: Number.isFinite(j),
+    sectionIwCard: Number.isFinite(sectionPropertyNumber(properties?.iw)),
+    sectionXoCard: Number.isFinite(sectionPropertyNumber(properties?.xo)),
+    sectionAwCard: Number.isFinite(sectionPropertyNumber(shape === "rhs" ? properties?.awy : properties?.aw))
+      || Number.isFinite(sectionPropertyNumber(properties?.awx)),
+    sectionJpCard: Number.isFinite(jp) && !(isotropic && Number.isFinite(j) && Math.abs(jp - j) <= Math.max(1, Math.abs(j)) * 1e-9)
+  };
+  Object.entries(cardVisibility).forEach(([id, visible]) => { $(id).hidden = !visible; });
+  const hasSupplementary = Object.values(cardVisibility).some(Boolean);
+  $("sectionSupplementaryHeading").hidden = !hasSupplementary;
+  $("sectionSupplementaryProperties").hidden = !hasSupplementary;
+
+  const hasIxy = Number.isFinite(sectionPropertyNumber(properties?.ixy));
+  $("sectionPrincipalHeading").hidden = !hasIxy;
+  $("sectionPrincipalProperties").hidden = !hasIxy;
+}
+
+function setSectionIxyInterpretation(property, shape) {
+  const interpretation = $("sectionIxyInterpretation");
+  if (!property || property.value === null || !Number.isFinite(property.value)) {
+    interpretation.textContent = "Not available for this catalogue row";
+    interpretation.dataset.state = "unavailable";
+    return;
+  }
+  if (Math.abs(property.value) <= 1e-9) {
+    interpretation.textContent = shape === "circle" || shape === "chs"
+      ? "Zero by rotational symmetry · every centroidal diameter is principal"
+      : "Zero by symmetry · displayed axes are principal; principal values equal the x-y table";
+    interpretation.dataset.state = "zero";
+    return;
+  }
+  interpretation.textContent = shape === "angle"
+    ? "Non-zero · n-p axes are not principal"
+    : "Non-zero · use the reported principal axes";
+  interpretation.dataset.state = "nonzero";
+}
+
 function clearSectionPropertyOutputs(message) {
-  ["sectionMass", "sectionArea", "sectionCx", "sectionCy", "sectionIx", "sectionIy", "sectionZx", "sectionZy", "sectionRx", "sectionRy"].forEach(id => {
+  ["sectionMass", "sectionArea", "sectionCx", "sectionCy", "sectionIx", "sectionIy", "sectionZx", "sectionZxAlt", "sectionZy", "sectionZyAlt", "sectionSx", "sectionSy", "sectionRx", "sectionRy", "sectionJ", "sectionIw", "sectionXo", "sectionAw", "sectionAwAlt", "sectionJp", "sectionIxy", "sectionIu", "sectionIv", "sectionRu", "sectionRv", "sectionThetaU"].forEach(id => {
     $(id).innerHTML = "—";
   });
-  ["sectionMassBasis", "sectionAreaBasis", "sectionCxBasis", "sectionCyBasis", "sectionIxBasis", "sectionIyBasis", "sectionZxBasis", "sectionZyBasis", "sectionRxBasis", "sectionRyBasis"].forEach(id => {
+  ["sectionMassBasis", "sectionAreaBasis", "sectionCxBasis", "sectionCyBasis", "sectionIxBasis", "sectionIyBasis", "sectionZxBasis", "sectionZyBasis", "sectionSxBasis", "sectionSyBasis", "sectionRxBasis", "sectionRyBasis", "sectionJBasis", "sectionIwBasis", "sectionXoBasis", "sectionAwBasis", "sectionJpBasis", "sectionIxyBasis", "sectionIuBasis", "sectionRuBasis", "sectionThetaUBasis"].forEach(id => {
     $(id).textContent = SectionCatalogue.BASIS.unavailable;
     $(id).classList.add("unavailable");
   });
-  $("sectionAuxiliaryProperty").hidden = true;
+  $("sectionZxDirection").hidden = true;
+  $("sectionZxAltWrap").hidden = true;
+  $("sectionZyDirection").hidden = true;
+  $("sectionZyAltWrap").hidden = true;
+  $("sectionAwDirection").hidden = true;
+  $("sectionAwAltWrap").hidden = true;
+  $("sectionProductGeometry").hidden = true;
+  $("sectionPrincipalModuli").hidden = true;
+  configureSectionSpecificProperties(null, "");
+  setSectionIxyInterpretation(null, "");
+  renderSectionRatios([]);
   $("sectionFormulaSteps").innerHTML = `<div><b>Invalid geometry</b><code>${safeText(message)}</code></div>`;
   $("sectionPropertiesWarning").textContent = message;
 }
 
 function calculateCustomSectionProperties() {
   const shape = $("sectionShape").value;
+  configureSectionPropertyPresentation(shape, false);
+  configureSectionPropertyHierarchy(shape, false);
   document.querySelectorAll("[data-section-shapes]").forEach(field => {
     field.hidden = !field.dataset.sectionShapes.split(" ").includes(shape);
   });
   setSectionSummary("Custom ideal geometry", sectionShapeNames[shape], sectionDimensionText(shape), [
-    { label: "Family", value: "Custom" },
-    { label: "Axes", value: "Centroidal x / y" },
-    { label: "Basis", value: "Entered geometry" },
+    { label: "Section type", value: "Custom" },
+    { label: "Reference axes", value: shape === "angle" ? "Centroidal n-n / p-p · principal x-x / y-y" : "Centroidal x-x / y-y" },
+    { label: "Geometry", value: "Entered dimensions" },
     { label: "Status", value: "Draft" }
   ]);
+  $("sectionCxLabel").innerHTML = "Centroid <i>x&#772;</i>";
+  $("sectionMassLabel").textContent = "Steel mass per metre";
 
   try {
     const properties = currentSectionGeometry();
+    const angleAxes = shape === "angle";
+    const axisOne = angleAxes ? "n" : "x";
+    const axisTwo = angleAxes ? "p" : "y";
+    const principalOne = angleAxes ? "x" : "u";
+    const principalTwo = angleAxes ? "y" : "v";
+    const shearReferenceText = shape === "rhs"
+      ? "A<sub>wy</sub> and A<sub>wx</sub> are the combined areas of the two ideal vertical and horizontal walls"
+      : shape === "i" || shape === "channel"
+        ? "A<sub>w</sub> is the ideal clear web area"
+        : "No shear reference area is reported for this shape";
     renderSectionPropertiesDiagram(sectionDrawingFromInputs(shape), properties, sectionShapeNames[shape]);
-    const customValue = value => ({ value, basis: "custom" });
-    setSectionPropertyOutput("sectionMass", "sectionMassBasis", null, "decimal");
+    const customValue = value => Number.isFinite(value) ? { value, basis: "custom" } : null;
+    setSectionPropertyOutput("sectionMass", "sectionMassBasis", customValue(properties.area * 0.00785), "decimal");
     setSectionPropertyOutput("sectionArea", "sectionAreaBasis", customValue(properties.area), "area");
     setSectionPropertyOutput("sectionCx", "sectionCxBasis", customValue(properties.cx), "decimal");
     setSectionPropertyOutput("sectionCy", "sectionCyBasis", customValue(properties.cy), "decimal");
     setSectionPropertyOutput("sectionIx", "sectionIxBasis", customValue(properties.ix), "power");
     setSectionPropertyOutput("sectionIy", "sectionIyBasis", customValue(properties.iy), "power");
-    setSectionPropertyOutput("sectionZx", "sectionZxBasis", customValue(properties.zx), "power");
-    setSectionPropertyOutput("sectionZy", "sectionZyBasis", customValue(properties.zy), "power");
+    setSectionDirectionalZx(customValue(properties.zxTop), customValue(properties.zxBottom));
+    setSectionDirectionalZy(customValue(properties.zyRight), customValue(properties.zyLeft));
+    setSectionPropertyOutput("sectionSx", "sectionSxBasis", customValue(properties.sx), "power");
+    setSectionPropertyOutput("sectionSy", "sectionSyBasis", customValue(properties.sy), "power");
     setSectionPropertyOutput("sectionRx", "sectionRxBasis", customValue(properties.rx), "decimal");
     setSectionPropertyOutput("sectionRy", "sectionRyBasis", customValue(properties.ry), "decimal");
-    $("sectionAuxiliaryProperty").hidden = true;
-    $("sectionPropertiesWarning").textContent = "Section properties only. Strength, stability, effective-section and torsional checks are excluded.";
+    setSectionPropertyOutput("sectionJ", "sectionJBasis", customValue(properties.j), "power");
+    setSectionPropertyOutput("sectionIw", "sectionIwBasis", customValue(properties.iw), "power");
+    setSectionPropertyOutput("sectionXo", "sectionXoBasis", null, "decimal");
+    setSectionDirectionalAw(customValue(shape === "rhs" ? properties.awy : properties.aw), customValue(properties.awx), shape === "rhs");
+    setSectionPropertyOutput("sectionJp", "sectionJpBasis", customValue(properties.jp), "power");
+    setSectionPropertyOutput("sectionIxy", "sectionIxyBasis", customValue(properties.ixy), "signed-power");
+    setSectionIxyInterpretation(customValue(properties.ixy), shape);
+    setSectionPropertyPair("sectionIu", "sectionIv", "sectionIuBasis", customValue(properties.iu), customValue(properties.iv), "power");
+    setSectionPropertyPair("sectionRu", "sectionRv", "sectionRuBasis", customValue(properties.ru), customValue(properties.rv), "decimal");
+    setSectionPropertyOutput("sectionThetaU", "sectionThetaUBasis", customValue(properties.thetaU), "decimal");
+    configureSectionSpecificProperties(properties, shape);
+    renderSectionRatios(customSectionRatios(shape));
+    $("sectionProductGeometry").hidden = true;
+    $("sectionPrincipalModuli").hidden = true;
+    $("sectionPropertiesWarning").textContent = "Geometric properties only. Section classification, strength, stability and effective-section checks require material and design inputs.";
     $("sectionCalculationSummary").textContent = "Standard geometric relationships for the entered dimensions";
     $("sectionSourceSummary").textContent = "Ideal geometry · no product-table values";
-    $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Basis</b> &mdash; standard area, centroid and parallel-axis relationships; Z = I/c and r = &radic;(I/A).</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry.</p>`;
+    $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Basis</b> &mdash; standard area, centroid, product-of-inertia and parallel-axis relationships; Z = I/c, r = &radic;(I/A), and steel mass = 0.00785A kg/m. For implemented plastic moduli, each plastic neutral axis divides the gross area equally and S is the first absolute area moment about that axis.</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry. ${shearReferenceText}; it is not a design-standard effective shear area.</p>`;
     $("sectionFormulaSteps").innerHTML = `
       <div><b>Geometry model</b><code>${sectionCompositionText(shape)} ${sectionDimensionText(shape)}</code></div>
       <div><b>Gross area</b><code>A = ${formatArea(properties.area)}</code></div>
       <div><b>Centroid</b><code>x&#772; = ${properties.cx.toFixed(2)} mm; y&#772; = ${properties.cy.toFixed(2)} mm</code></div>
-      <div><b>Second moments of area</b><code>I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}</code></div>
-      <div><b>Elastic section moduli</b><code>Z<sub>x</sub> = I<sub>x</sub> / c<sub>y,max</sub> = ${sectionPowerValue(properties.zx)} mm<sup>3</sup>; Z<sub>y</sub> = I<sub>y</sub> / c<sub>x,max</sub> = ${sectionPowerValue(properties.zy)} mm<sup>3</sup></code></div>
-      <div><b>Radii of gyration</b><code>r<sub>x</sub> = &radic;(I<sub>x</sub> / A) = ${properties.rx.toFixed(2)} mm; r<sub>y</sub> = &radic;(I<sub>y</sub> / A) = ${properties.ry.toFixed(2)} mm</code></div>
-      <div><b>Scope</b><code>Ideal geometric properties only. Principal-axis rotation, torsion, plastic modulus, effective properties and design capacity are excluded.</code></div>`;
+      <div><b>Second moments of area</b><code>I<sub>${axisOne}</sub> = ${formatInertia(properties.ix)}; I<sub>${axisTwo}</sub> = ${formatInertia(properties.iy)}</code></div>
+      <div><b>Elastic section moduli</b><code>Z<sub>${axisOne},T</sub> = ${sectionPowerValue(properties.zxTop)} mm<sup>3</sup>; Z<sub>${axisOne},B</sub> = ${sectionPowerValue(properties.zxBottom)} mm<sup>3</sup>; Z<sub>${axisTwo},R</sub> = ${sectionPowerValue(properties.zyRight)} mm<sup>3</sup>; Z<sub>${axisTwo},L</sub> = ${sectionPowerValue(properties.zyLeft)} mm<sup>3</sup></code></div>
+      <div><b>Plastic section moduli</b><code>S<sub>${axisOne}</sub> = ${sectionPowerValue(properties.sx)} mm<sup>3</sup>; S<sub>${axisTwo}</sub> = ${sectionPowerValue(properties.sy)} mm<sup>3</sup></code></div>
+      ${Number.isFinite(properties.plasticCx) && Number.isFinite(properties.plasticCy) ? `<div><b>Plastic neutral axes</b><code>From the lower-left geometry datum: x<sub>PNA</sub> = ${properties.plasticCx.toFixed(2)} mm; y<sub>PNA</sub> = ${properties.plasticCy.toFixed(2)} mm. Each axis divides A into equal areas.</code></div>` : ""}
+      <div><b>Radii of gyration</b><code>r<sub>${axisOne}</sub> = &radic;(I<sub>${axisOne}</sub> / A) = ${properties.rx.toFixed(2)} mm; r<sub>${axisTwo}</sub> = &radic;(I<sub>${axisTwo}</sub> / A) = ${properties.ry.toFixed(2)} mm</code></div>
+      <div><b>Principal properties</b><code>I<sub>${angleAxes ? "np" : "xy"}</sub> = ${sectionSignedPowerValue(properties.ixy)} mm<sup>4</sup>; I<sub>${principalOne}</sub> = ${sectionPowerValue(properties.iu)} mm<sup>4</sup>; I<sub>${principalTwo}</sub> = ${sectionPowerValue(properties.iv)} mm<sup>4</sup>; &theta;<sub>${principalOne}</sub> = ${Number.isFinite(properties.thetaU) ? properties.thetaU.toFixed(2) + "&deg;" : "indeterminate"}${angleAxes ? " counter-clockwise from +n" : ""}.</code></div>
+      ${shape === "rhs" ? `<div><b>Wall reference areas</b><code>A<sub>wy</sub> = ${sectionPowerValue(properties.awy)} mm<sup>2</sup> (two vertical walls); A<sub>wx</sub> = ${sectionPowerValue(properties.awx)} mm<sup>2</sup> (two horizontal walls). These are not effective shear areas.</code></div>` : ""}
+      <div><b>Polar second moment</b><code>I<sub>${axisOne}</sub> + I<sub>${axisTwo}</sub> = ${sectionPowerValue(properties.jp)} mm<sup>4</sup>. This quantity is not the St Venant torsion constant J except for circular sections.</code></div>
+      <div><b>Torsion</b><code>J and I<sub>w</sub> are reported only where the selected ideal geometry has a reviewed closed-form relationship.</code></div>
+      <div><b>Scope</b><code>Principal properties are geometric only. Effective properties, section classification, material strength and design capacity are excluded.</code></div>`;
   } catch (error) {
     clearSectionPropertyOutputs(error instanceof Error ? error.message : "Invalid section geometry.");
   }
@@ -2751,11 +3433,34 @@ function calculateCatalogueSectionProperties() {
   }
   const properties = section.properties;
   const source = section.source;
+  configureSectionPropertyPresentation(section.drawing.shape, true);
+  configureSectionPropertyHierarchy(section.drawing.shape, true, family.key);
+  const angleAxes = family.key === "ea";
+  const axisOne = angleAxes ? "n" : "x";
+  const axisTwo = angleAxes ? "p" : "y";
+  const principalOne = angleAxes ? "x" : "u";
+  const principalTwo = angleAxes ? "y" : "v";
+  const shearReferenceLabel = section.drawing.shape === "i" || section.drawing.shape === "channel"
+    ? "Clear web area Aw"
+    : "Shear reference area";
+  $("sectionCxLabel").innerHTML = family.key === "pfc" ? "Centroid <i>X<sub>L</sub></i>" : "Centroid <i>x&#772;</i>";
+  $("sectionMassLabel").textContent = "Mass per metre";
+  const hasCx = Number.isFinite(properties.cx?.value);
+  const hasCy = Number.isFinite(properties.cy?.value);
+  const axisDisplay = family.key === "ea"
+    ? `${hasCx && hasCy ? "Centroidal" : "Indicative"} n-n / p-p · principal x-x / y-y convention`
+    : hasCx && hasCy
+    ? "Centroidal x-x / y-y"
+    : hasCx
+      ? "x-x indicative · y-y centroidal"
+      : hasCy
+        ? "x-x centroidal · y-y indicative"
+        : "Indicative x-x / y-y";
   setSectionSummary("Selected catalogue section", section.designation, section.dimensions || "Dimensions not available in the current checked row", [
-    { label: "Family", value: sectionCatalogueFamilyNames[family.key] || family.label },
-    { label: "Axes", value: "Centroidal x / y" },
-    { label: "Basis", value: "Stated by value" },
-    { label: "Source", value: `${safeText(source.publisher)} ${safeText(source.document.match(/\b\d{4}\b/)?.[0] || "catalogue")}` }
+    { label: "Section family", value: sectionCatalogueFamilyNames[family.key] || family.label },
+    { label: "Reference axes", value: axisDisplay },
+    { label: "Data basis", value: "Stated by property" },
+    { label: "Catalogue", value: `${safeText(source.publisher)} ${safeText(source.document.match(/\b\d{4}\b/)?.[0] || "catalogue")}` }
   ]);
   renderSectionPropertiesDiagram(section.drawing, properties, section.designation, true);
 
@@ -2766,36 +3471,87 @@ function calculateCatalogueSectionProperties() {
   setSectionPropertyOutput("sectionCy", "sectionCyBasis", properties.cy, "decimal");
   setSectionPropertyOutput("sectionIx", "sectionIxBasis", properties.ix, "power");
   setSectionPropertyOutput("sectionIy", "sectionIyBasis", properties.iy, "power");
-  setSectionPropertyOutput("sectionZx", "sectionZxBasis", properties.zx, "power");
-  setSectionPropertyOutput("sectionZy", "sectionZyBasis", properties.zy, "power");
+  setSectionDirectionalZx(properties.zx, properties.zxAlt);
+  setSectionDirectionalZy(properties.zy, properties.zyAlt);
+  setSectionPropertyOutput("sectionSx", "sectionSxBasis", properties.sx, "power");
+  setSectionPropertyOutput("sectionSy", "sectionSyBasis", properties.sy, "power");
   setSectionPropertyOutput("sectionRx", "sectionRxBasis", properties.rx, "decimal");
   setSectionPropertyOutput("sectionRy", "sectionRyBasis", properties.ry, "decimal");
-  const auxiliary = $("sectionAuxiliaryProperty");
-  if (Number.isFinite(section.auxiliary?.rMin?.value)) {
-    auxiliary.innerHTML = `<b>Additional catalogue property</b> &mdash; minimum principal-axis radius r<sub>min</sub> = ${section.auxiliary.rMin.value.toFixed(1)} mm.`;
-    auxiliary.hidden = false;
+  setSectionPropertyOutput("sectionJ", "sectionJBasis", properties.j, "power");
+  setSectionPropertyOutput("sectionIw", "sectionIwBasis", properties.iw, "power");
+  setSectionPropertyOutput("sectionXo", "sectionXoBasis", properties.xo, "decimal");
+  setSectionDirectionalAw(section.drawing.shape === "rhs" ? properties.awy : properties.aw, properties.awx, section.drawing.shape === "rhs");
+  setSectionPropertyOutput("sectionJp", "sectionJpBasis", properties.jp, "power");
+  setSectionPropertyOutput("sectionIxy", "sectionIxyBasis", properties.ixy, "signed-power");
+  setSectionIxyInterpretation(properties.ixy, section.drawing.shape);
+  setSectionPropertyPair("sectionIu", "sectionIv", "sectionIuBasis", properties.iu, properties.iv, "power");
+  setSectionPropertyPair("sectionRu", "sectionRv", "sectionRuBasis", properties.ru, properties.rv, "decimal");
+  setSectionPropertyOutput("sectionThetaU", "sectionThetaUBasis", properties.thetaU, "decimal");
+  configureSectionSpecificProperties(properties, section.drawing.shape);
+  renderSectionRatios(section.ratios);
+  const productGeometry = $("sectionProductGeometry");
+  const principalModuli = $("sectionPrincipalModuli");
+  const aux = section.auxiliary;
+  if (family.key === "ea" && aux) {
+    productGeometry.innerHTML = `
+      <section><div class="section-angle-catalogue-heading"><h4>Rolled product geometry</h4><span>Catalogue</span></div><dl>
+        <div><dt>Actual t</dt><dd>${aux.actualT.value.toFixed(1)} <small>mm</small></dd></div>
+        <div><dt>Root radius r<sub>1</sub></dt><dd>${aux.rootRadius.value.toFixed(1)} <small>mm</small></dd></div>
+        <div><dt>Toe radius r<sub>2</sub></dt><dd>${aux.toeRadius.value.toFixed(1)} <small>mm</small></dd></div>
+        <div><dt>Far-edge distance</dt><dd>n<sub>R</sub> = p<sub>T</sub> = ${aux.centroidFar.value.toFixed(1)} <small>mm</small></dd></div>
+      </dl></section>`;
+    principalModuli.innerHTML = `
+      <section><div class="section-angle-catalogue-heading"><h4>Principal x-x / y-y moduli</h4><span>Catalogue</span></div><dl>
+        <div><dt>Z<sub>x</sub></dt><dd>${sectionPowerValue(aux.principalZx.value)} <small>mm<sup>3</sup></small></dd></div>
+        <div><dt>Z<sub>y,3</sub></dt><dd>${sectionPowerValue(aux.principalZy3.value)} <small>mm<sup>3</sup></small></dd></div>
+        <div><dt>Z<sub>y,5</sub></dt><dd>${sectionPowerValue(aux.principalZy5.value)} <small>mm<sup>3</sup></small></dd></div>
+        <div><dt>S<sub>x</sub></dt><dd>${sectionPowerValue(aux.principalSx.value)} <small>mm<sup>3</sup></small></dd></div>
+        <div><dt>S<sub>y</sub></dt><dd>${sectionPowerValue(aux.principalSy.value)} <small>mm<sup>3</sup></small></dd></div>
+      </dl></section>`;
+    productGeometry.hidden = false;
+    principalModuli.hidden = false;
   } else {
-    auxiliary.hidden = true;
+    productGeometry.hidden = true;
+    principalModuli.hidden = true;
   }
 
   $("sectionPropertiesWarning").textContent = family.key === "chs" || family.key === "rod"
-    ? "Catalogue dimensions and derived properties are identified separately. Strength, stability and torsional checks are excluded."
+    ? "Catalogue dimensions and derived geometric properties are identified separately. Section classification and design checks remain outside this lookup."
     : "The basis of each value is stated. Missing catalogue properties are not replaced by idealised rolled-section geometry.";
   $("sectionCalculationSummary").textContent = "Catalogue values and stated derivations";
   $("sectionSourceSummary").textContent = `${source.publisher} · ${source.status}`;
   $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. The combined catalogue workflow remains Draft.</p><p><b>Derivation</b> &mdash; ${safeText(section.derivation)}</p>`;
   $("sectionFormulaSteps").innerHTML = [
     sectionPropertyStep("Mass per metre", massProperty, "kg/m"),
-    sectionPropertyStep("Gross area A", properties.area, "mm²"),
+    sectionPropertyStep("Gross area Ag", properties.area, "mm²"),
     sectionPropertyStep("Centroid x̄", properties.cx, "mm"),
     sectionPropertyStep("Centroid ȳ", properties.cy, "mm"),
-    sectionPropertyStep("Second moment Ix", properties.ix, "mm⁴"),
-    sectionPropertyStep("Second moment Iy", properties.iy, "mm⁴"),
-    sectionPropertyStep("Elastic modulus Zx", properties.zx, "mm³"),
-    sectionPropertyStep("Elastic modulus Zy", properties.zy, "mm³"),
-    sectionPropertyStep("Radius rx", properties.rx, "mm"),
-    sectionPropertyStep("Radius ry", properties.ry, "mm"),
-    `<div><b>Scope</b><code>Section properties only. Strength, stability, effective-section, torsion and warping checks are excluded.</code></div>`
+    sectionPropertyStep(`Second moment I${axisOne}`, properties.ix, "mm⁴"),
+    sectionPropertyStep(`Second moment I${axisTwo}`, properties.iy, "mm⁴"),
+    properties.zxAlt?.value !== null
+      ? sectionPropertyStep(`Elastic modulus Z${axisOne},T`, properties.zx, "mm³")
+      : sectionPropertyStep(`Elastic modulus Z${axisOne}`, properties.zx, "mm³"),
+    properties.zxAlt?.value !== null ? sectionPropertyStep(`Elastic modulus Z${axisOne},B`, properties.zxAlt, "mm³") : "",
+    properties.zyAlt?.value !== null
+      ? sectionPropertyStep(`Elastic modulus Z${axisTwo},R`, properties.zy, "mm³")
+      : sectionPropertyStep(`Elastic modulus Z${axisTwo}`, properties.zy, "mm³"),
+    properties.zyAlt?.value !== null ? sectionPropertyStep(`Elastic modulus Z${axisTwo},L`, properties.zyAlt, "mm³") : "",
+    sectionPropertyStep(`Plastic modulus S${axisOne}`, properties.sx, "mm³"),
+    sectionPropertyStep(`Plastic modulus S${axisTwo}`, properties.sy, "mm³"),
+    sectionPropertyStep(`Radius r${axisOne}`, properties.rx, "mm"),
+    sectionPropertyStep(`Radius r${axisTwo}`, properties.ry, "mm"),
+    sectionPropertyStep("St Venant torsion J", properties.j, "mm⁴"),
+    sectionPropertyStep("Warping constant Iw", properties.iw, "mm⁶"),
+    sectionPropertyStep("Shear-centre offset XO", properties.xo, "mm"),
+    sectionPropertyStep(shearReferenceLabel, properties.aw, "mm²"),
+    sectionPropertyStep(`Polar second moment I${axisOne} + I${axisTwo}`, properties.jp, "mm⁴"),
+    sectionPropertyStep(`Product of inertia I${angleAxes ? "np" : "xy"}`, properties.ixy, "mm⁴", true),
+    sectionPropertyStep(`Principal second moment I${principalOne}`, properties.iu, "mm⁴"),
+    sectionPropertyStep(`Principal second moment I${principalTwo}`, properties.iv, "mm⁴"),
+    sectionPropertyStep(`Principal radius r${principalOne}`, properties.ru, "mm"),
+    sectionPropertyStep(`Principal radius r${principalTwo}`, properties.rv, "mm"),
+    sectionPropertyStep(`Principal-axis angle θ${principalOne}`, properties.thetaU, "°"),
+    `<div><b>Scope</b><code>Section properties only. Section classification is material-grade dependent; strength, stability, effective-section and capacity checks are excluded.</code></div>`
   ].join("");
 }
 
@@ -5646,9 +6402,18 @@ function setTool(tool, updateHash = true) {
   const resolvedTool = toolAliases[tool] || tool;
   const validTool = toolNames.includes(resolvedTool);
   const selectedTool = validTool ? resolvedTool : "bolt";
+  const selectedCategory = Object.keys(toolCategories).find(category => toolCategories[category].includes(selectedTool)) || "steel-connections";
   let activeButton = null;
+  let activeCategoryButton = null;
+  document.querySelectorAll(".tool-category").forEach(button => {
+    const active = button.dataset.category === selectedCategory;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+    if (active) activeCategoryButton = button;
+  });
   document.querySelectorAll(".tool-tab").forEach(button => {
     const active = button.dataset.tool === selectedTool;
+    button.hidden = button.dataset.category !== selectedCategory;
     button.classList.toggle("active", active);
     button.setAttribute("aria-selected", String(active));
     if (active) activeButton = button;
@@ -5664,10 +6429,12 @@ function setTool(tool, updateHash = true) {
     history.replaceState(null, "", `#${publicHash}`);
   }
   window.requestAnimationFrame(() => {
-    const tabs = activeButton?.parentElement;
-    if (!tabs || tabs.scrollWidth <= tabs.clientWidth) return;
-    const left = activeButton.offsetLeft - (tabs.clientWidth - activeButton.offsetWidth) / 2;
-    tabs.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+    [activeCategoryButton, activeButton].forEach(button => {
+      const strip = button?.parentElement;
+      if (!strip || strip.scrollWidth <= strip.clientWidth) return;
+      const left = button.offsetLeft - (strip.clientWidth - button.offsetWidth) / 2;
+      strip.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+    });
   });
   if (selectedTool === "concrete") calculateConcrete();
   if (selectedTool === "properties") calculateSectionProperties();
@@ -5766,6 +6533,10 @@ function initialise() {
     calculateUBolt();
   });
   $("uBoltProduct").addEventListener("change", calculateUBolt);
+  document.querySelectorAll(".tool-category").forEach(button => button.addEventListener("click", () => {
+    const firstTool = toolCategories[button.dataset.category]?.[0];
+    if (firstTool) setTool(firstTool);
+  }));
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {

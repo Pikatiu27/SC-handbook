@@ -1,41 +1,150 @@
 # SC Handbook
 
-`SC_HANDBOOK.md` is the only canonical project outline and rule file for this project. When the user refers to the project outline, total outline, handbook rules, or "总纲", use this file only.
+`SC_HANDBOOK.md` is the only canonical project outline and rule file for this project. When the project outline, master outline or handbook rules are requested, use this file only.
 
-## 1. Purpose
+## 0. Authority and Reading Order
 
-`SC Handbook` is a lightweight engineering lookup and calculation handbook. The current primary deliverable is the static web handbook. Workbook generation remains an optional output path when explicitly requested.
+This file governs product scope, engineering content, page behaviour, presentation and release checks. Chat notes, prototype files, CSS conventions and implementation comments may explain a decision, but they do not replace this file.
 
-The handbook is intended for:
+Use the outline in this order:
 
-- Quick engineering lookup
-- Basic design calculation and screening
-- Transparent formula checking
-- Clear source traceability
-- Practical engineering warnings and limitations
-- Offline-friendly sharing where practical
+1. Sections 1 and 2 decide whether a function belongs in the handbook and define the required professional assurance.
+2. Sections 4, 6, 7, 9, 10 and 11 govern sources, calculations, language, validation and acceptance.
+3. Section 15 governs the current static web handbook. Apply Sections 15.0 to 15.9 first, then the affected tab-specific rules, then the audit protocol in Section 15.18.
+4. Sections 3 and 12 apply only when an Excel workbook is explicitly requested. Workbook-specific rules do not override the current web product contract.
+5. `REFERENCE_TRACEABILITY.md` stores detailed calculation records, source evidence, verification cases and unresolved gaps. This outline stores durable policy and accepted scope, not duplicate evidence logs.
 
-The current default deliverable is:
+Global rules take precedence over tab-specific convenience. A tab-specific rule may narrow the global scope but must not weaken source, calculation, validation, accessibility or fail-closed requirements.
+
+## 1. Product Positioning
+
+### 1.1 Product Role
+
+`SC Handbook` is a lightweight, source-backed engineering quick-reference handbook. It is designed for rapid office and field lookup, transparent scoped calculations, preliminary screening and practical engineering review. The current primary deliverable is the static web handbook.
+
+The handbook may provide five clearly distinguished result types:
+
+| Module role | Permitted output |
+| --- | --- |
+| `Lookup` | A cited Standard, catalogue or project-data value |
+| `Capacity` | A narrowly scoped nominal or design capacity |
+| `Screen` | A compatible demand-capacity comparison, threshold or review warning |
+| `Selector` | A filtered product or design-option shortlist using published criteria |
+| `Derived aid` | A transparent geometry, equilibrium or action-distribution result |
+
+Do not combine different result types under one undifferentiated answer. The page must state what the result is, what basis it uses and what engineering decision it may support.
+
+### 1.2 Lightweight Scope Boundary
+
+The handbook is not a complete design engine, structural-analysis model, compliance certificate, issued design report or substitute for engineering judgement. It must not imply that unimplemented limit states, project actions, topology-dependent detailing, stability, durability, construction, geotechnical or inspection checks have been completed.
+
+Keep the primary workflow deliberately small:
+
+- show only inputs that change the governing result, applicability, selected source value or an actionable warning;
+- calculate only deterministic relationships that can be stated, sourced, verified and explained concisely;
+- use a selector, warning or `Not evaluated` state where a reliable result requires a materially larger project model;
+- keep advanced values and secondary evidence available through progressive disclosure rather than expanding the first screen;
+- prefer one checked answer and one clear boundary over many partially implemented checks.
+
+### 1.3 Professional Position
+
+Professional quality means that each displayed result is traceable and dependable within its explicitly stated scope. It does not mean that the whole component, connection, member or structure complies with every applicable requirement.
+
+- `Calculated` confirms completion of the stated method only.
+- `PASS` or `FAIL` is permitted only when compatible demand and capacity bases are compared and every check claimed by that status has been evaluated.
+- A warning must identify the unresolved engineering decision or next review action, not merely state that more checks may exist.
+- A source gap, invalid state or method-applicability failure must stop the affected result from appearing normal or verified.
+- The final engineer remains responsible for project adoption, load paths, design actions, detailing, constructability and issue approval.
+
+### 1.4 Deliverables and Language
+
+The default deliverable is the static application:
 
 `index.html` with `app.js` and `styles.css`
 
-Optional workbook deliverables, when requested, should remain consistent with the same rules and source traceability.
+Optional workbook deliverables remain available when explicitly requested and must follow the same source and calculation contracts. The application should remain offline-friendly where practical, with no server-side calculation required for normal use.
 
-All project files, worksheet names, headings, field names, notes, and formulas must be written in English.
+All project files, worksheet names, headings, field names, notes and formulas must be written in English.
 
-## 2. Core Rule
+## 2. Core Operating Rule
 
-Every new lookup or calculation module must follow this sequence:
+### 2.1 Module Admission Gate
 
-1. Define the engineering task
-2. Identify the governing standard or reference
-3. Extract source values into locked data or clearly documented constants
-4. Write formulas with visible calculation steps
-5. Build a clear user-facing lookup interface
-6. Record all references in `REFERENCE_TRACEABILITY.md` or the workbook `References` sheet
-7. Verify sample cases before adding the module to the handbook
+A new function belongs in the handbook only when all of the following are true:
 
-No formula should be added only because it is convenient. Each formula must be traceable to a standard clause, table, source document, or clearly stated derived relationship.
+1. It answers one recurring engineering question or supports one clear decision.
+2. Its required input set is compact enough for a quick-reference workflow.
+3. Its governing source, applicability conditions and exclusions can be identified.
+4. Its formula, lookup or selection logic can be independently verified.
+5. Its result and principal limitation can be understood without a long tutorial.
+6. It can fail closed when inputs, source data or method conditions are not satisfied.
+
+If one of these conditions fails, simplify the function, make it a source-aware selector or warning-only aid, move it to a separate specialist workflow, or do not add it.
+
+### 2.2 Required Build Sequence
+
+Every new or materially changed lookup or calculation module must follow this sequence:
+
+1. Define the engineering question, result type and intended decision.
+2. State the method boundary, prerequisites and excluded checks.
+3. Identify the governing Standard, catalogue or accepted reference.
+4. Classify every value as manual input, cited lookup, editable override, assumption or read-only derived value.
+5. Record the governing formulas, symbols, units, branches and result states.
+6. Build the page in the canonical task order: orient, define, confirm, evaluate, review and trace.
+7. Record detailed evidence in `REFERENCE_TRACEABILITY.md` or the workbook `References` sheet.
+8. Verify independent numerical cases, branches, boundaries and invalid states.
+9. Complete the applicable professional page and calculation audit.
+10. Release only the reviewed scope and verify local and published states separately.
+
+No formula or input should be added only because it is convenient or technically possible. Each one must have a traceable source or a clearly stated derived basis and must affect a visible engineering decision.
+
+### 2.3 Professional Assurance Gates
+
+Every released function must pass all five gates:
+
+| Gate | Required evidence |
+| --- | --- |
+| `Scope` | One defined question, result type, applicability conditions and explicit exclusions |
+| `Source` | Australian-first authority under Section 4, governing edition, clause/table/figure or catalogue row, plus source status |
+| `Calculation` | Correct transcription, symbol and unit mapping, branch logic, independent numerical verification and boundary tests |
+| `Interface` | Correct input classes, dependency updates, override states, invalid handling, concise warnings and no stale normal-looking result |
+| `Release` | Accepted findings, regression checks, traceability update and separate local/published verification where deployed |
+
+Passing one gate does not compensate for another. A numerically correct formula with an unverified source, inapplicable condition or misleading interface is not a checked handbook result.
+
+### 2.4 Engineering Design and Quick-Check Logic Chain
+
+Every capacity, screening or design-aid function must preserve the complete engineering decision chain below. The visible page may keep the chain compact, but the implementation and traceability record must not skip a step.
+
+| Step | Required engineering content | Required outcome |
+| --- | --- | --- |
+| `1. Question` | Component, connection, section or product; axis, plane or direction; result type; intended decision | One unambiguous engineering question |
+| `2. Design basis` | Governing Standard/catalogue, edition, limit state, action basis, units and source status | Adopted basis is identifiable |
+| `3. Input basis` | Geometry/section, material, factors/assumptions, detailing and optional design actions | Each value has a class, source and dependency |
+| `4. Applicability` | Clause prerequisites, geometry/material limits, fixed assumptions and detectable exclusions | Method is either applicable or stopped |
+| `5. Resistance or value` | Nominal resistance or published value, then every applicable capacity/reduction/modification factor | Design resistance or source value is reconstructable |
+| `6. Design action` | Compatible ULS/SLS action, distribution assumption, sign, axis, plane and units where a check is requested | Demand basis matches the resistance basis |
+| `7. Comparison` | Demand/capacity ratio, interaction equation, threshold or selection criterion | Comparison is mathematically and dimensionally valid |
+| `8. Governing decision` | Governing limit state, axis, case, product or threshold | The controlling result is named, not inferred |
+| `9. Result status` | `Calculated`, scoped `PASS` / `FAIL`, `Review required`, `Not evaluated`, `Invalid input` or source status | Status matches what was actually completed |
+| `10. Residual checks` | Excluded limit states, project confirmations, detailing/construction and next action | The user knows what remains outside the result |
+| `11. Traceability` | Formula steps, clause/table/figure, catalogue row, assumptions and verification evidence | Result can be independently reviewed |
+
+The chain must remain directionally correct. Inputs feed applicability and resistance; design actions feed only compatible comparisons; comparisons feed the governing decision; the decision feeds the status and warning. A display shortcut must not reverse or bypass this logic.
+
+### 2.5 Workflow-Specific Claim Rules
+
+Use the correct minimum chain and claim for the active workflow:
+
+| Workflow | Minimum calculation chain | Permitted primary claim |
+| --- | --- | --- |
+| `Capacity only` | Basis + inputs + applicability + nominal resistance + factors + design resistance | `Calculated design capacity` for the named limit state; no `PASS` / `FAIL` |
+| `Demand-capacity quick check` | Capacity-only chain + compatible design action + distribution + ratio/interaction + governing check | Scoped `PASS` / `FAIL` only for the checks explicitly evaluated |
+| `Preliminary selection or sizing` | Design requirement + accepted criteria + candidate search + complete in-scope recheck | `Preliminary candidate` or `Review required`; never issue-ready design |
+| `Published product selector` | Selection criteria + cited product data + source/adoption limitations | `Selected product data`; no design resistance unless the published basis and action comparison are compatible |
+| `Derived engineering aid` | Stated assumptions + geometry/equilibrium model + derived result + limitations | `Calculated derived result`; no Standard-compliance claim unless separately checked |
+
+Where one tab supports both capacity and quick-check use, keep the capacity result independent of optional design actions. Blank actions must suppress utilisation and `PASS` / `FAIL`, not convert demand to zero. A scoped pass must name the check, for example `Bolt shear PASS`; it must not imply `Connection PASS` when connected-ply, block shear, prying, fatigue or other relevant checks remain outside scope.
 
 ## 3. Optional Workbook Structure
 
@@ -67,18 +176,60 @@ Primary source location:
 
 - `C:\Users\silin\Documents\Codex\Reference`
 
-All source references for this project must be stored in that folder. Do not keep duplicate reference PDFs, standards, catalogues, converted Markdown references, or technical sheets in the project workspace. If a source document is found in another project folder, move it into `C:\Users\silin\Documents\Codex\Reference` before treating it as a project reference.
+All downloaded technical source files for this project must be stored in that folder. Do not keep duplicate reference PDFs, standards, catalogues, converted Markdown references or technical sheets in the project workspace. If a source document is found in another project folder, move it into `C:\Users\silin\Documents\Codex\Reference` before treating it as a project reference. A web-only authoritative source may remain a URL record when licensing, access terms or continuous data prevent local copying; record its publisher, page title, version/date, URL, checked date and any retained evidence capture in `REFERENCE_TRACEABILITY.md`.
 
-The handbook is based primarily on Australian engineering standards, Australian design handbooks, and Australian manufacturer data.
+Storage location does not establish engineering authority. Classify and apply every source under the hierarchy below.
 
-Source priority:
+### 4.1 Australian-First Engineering Authority
 
-1. Australian standards and official standard-based design requirements
-2. Local reference files stored in `C:\Users\silin\Documents\Codex\Reference`
-3. Manufacturer catalogues and design capacity tables stored in `C:\Users\silin\Documents\Codex\Reference`
-4. Credible online sources from official bodies, industry organisations, manufacturers, or recognised technical publishers
+The default engineering basis for SC Handbook is Australian. Use this order of authority:
 
-Online sources must only be used when the local reference set does not contain the required information, or when an online source is needed to verify currency, errata, or publication status.
+1. Applicable Australian legislation, jurisdictional requirements, the NCC and the project design basis determine which engineering Standards and editions are adopted. They do not replace the detailed engineering clauses unless they contain a direct requirement.
+2. The adopted Australian Standard or joint AS/NZS Standard, including applicable amendments and corrigenda, governs equations, factors, definitions, limit states, detailing limits and applicability conditions.
+3. Referenced Australian material, product, fabrication, testing and installation Standards govern the supplied product and associated properties.
+4. Australian industry design aids, commentary and handbooks from bodies such as the Australian Steel Institute, Concrete Institute of Australia, Austroads and recognised professional organisations may explain application and provide design tables or examples. Treat them as `Interpretive` unless the project basis gives them another formal role.
+5. Australian manufacturer catalogues, technical data sheets, certificates and evaluation reports govern published product geometry, availability and manufacturer-stated values. They do not create a general code design capacity unless the published basis supports that claim.
+6. Recognised worked examples may verify interpretation and arithmetic but do not override the adopted Standard.
+7. International Standards, manuals and tools are non-governing by default. Use them only for interface patterns, background interpretation, independent comparison or a project basis that explicitly adopts them.
+
+For a manufacturer-product selector, the current manufacturer document is the primary source for that product's published data, while the Australian Standard remains the primary source for any separate code calculation. Show these as distinct evidence paths.
+
+### 4.2 Australian-First Adoption Rules
+
+- Use Australian limit-state terminology, SI units, symbols and capacity-factor conventions in the default UI and calculation path.
+- Do not mix `phi` factors, partial factors, material grades, section series, action combinations or detailing rules from different national systems in one calculation.
+- A foreign source that agrees numerically with an Australian result is corroborating evidence only; it cannot repair a missing Australian clause or table.
+- If a project explicitly requires a non-Australian Standard, create a clearly labelled and isolated calculation mode or separate module. Record the adopted jurisdiction/edition and prevent its defaults, formulas and statuses from leaking into the Australian mode.
+- ASI and other Australian design aids may provide an accepted table or interpretation only when its edition, Standard basis, product range and assumptions are applicable. Preserve the governing Standard reference and the design-aid reference separately.
+- Manufacturer values must retain their published basis, such as nominal, characteristic, design, allowable, working load, WLL or test result. Do not compare unlike action and resistance bases.
+- Project certificates, drawings and specifications may override a generic catalogue default, but the page must identify the value as `Project input` or `User override` rather than continuing to display it as catalogue-derived.
+
+### 4.3 Public Reference Models for Handbook Structure
+
+The following public resources may guide handbook organisation and assurance. Only the Australian sources may contribute to the default Australian engineering basis, and only within their documented authority and licence.
+
+| Public reference model | Permitted lesson for SC Handbook | Boundary |
+| --- | --- | --- |
+| [ASI structural steel design resources](https://www.steel.org.au/what-we-do/focus-areas/steel-and-design/resources-for-structural-steelwork-design/) | Australian hierarchy of Standards, capacity tables, connection guides, worked examples, fabrication guidance and detailing references | Confirm the exact publication edition and licensed content before using technical values |
+| [ASI rigid connection tables public preview](https://www.steel.org.au/resources/elibrary/resources/design-capacity-tables-for-structural-steel%2C-vol-4/?view=download) | Engineering sequence of connection description, typical detailing, design actions, numbered design checks and capacity tables; separation of theory/guides from lookup tables | Use the workflow pattern only unless the required licensed technical content is available; do not reproduce copyrighted tables |
+| [SCI Interactive Blue Book](https://www.steelforlifebluebook.co.uk/) and [data basis](https://www.steelforlifebluebook.co.uk/about/) | Fast hierarchy of section family -> design task -> grade -> result; explicit Standard/National Annex, factors, product coverage, availability and explanatory notes | UK sections and Eurocode/BS values are not an Australian calculation source |
+| [ASCE Hazard Tool](https://www.asce.org/publications-and-news/asce-hazard-tool/about/) | Minimum controlling inputs first, including location, Standard edition, risk category, units and requested hazard; summary result followed by details and source data | Do not import US hazard values or expand SC Handbook into a report generator |
+| [AISC Shapes Database](https://www.aisc.org/aisc/publications/steel-construction-manual/aisc-shapes-database-v160/), [Manual Companion](https://www.aisc.org/aisc/publications/steel-construction-manual/manual-companion-for-16th-edition/) and [errata register](https://www.aisc.org/aisc/publications/revisions-and-errata/) | Separate versioned source data, worked examples, design tables and corrections; provide variable definitions and independent verification examples | US shapes, specifications and capacities remain non-governing for Australian modules |
+| [NASA bidirectional traceability guidance](https://swehb.nasa.gov/spaces/7150/pages/16450285/SWE-052%2B-%2BBidirectional%2BTraceability%2BBetween%2BHigher%2BLevel%2BRequirements%2Band%2BSoftware%2BRequirements) | Link requirement/source -> calculation contract -> code/data -> test -> visible result; identify missing and unjustified extra functionality; permit lightweight text/spreadsheet traceability for small projects | Adopt the traceability principle, not aerospace-scale documentation |
+| [Simpson Strong-Tie code-reference approach](https://www.strongtie.com/products/connectors/wood-construction-connectors/technical-notes/code-reference-column) | Keep product data, code/evaluation report status and installation conditions visible as separate evidence | A code report or published load does not establish Australian adoption or project suitability |
+
+These models support the current product direction: ASI-style engineering hierarchy, Blue Book/ASCE-style fast querying, AISC-style separation of data/examples/errata and NASA-style lightweight traceability. They do not expand the handbook's calculation entitlement.
+
+### 4.4 Online Evidence, Currency and Copyright
+
+Online sources may be used to locate governing material, verify currency/errata/publication status, inspect an official web-only dataset or learn a non-normative interaction/assurance pattern. Apply these rules:
+
+- Prefer the official publisher, Standards body, industry body, regulator or manufacturer page over an aggregator or copied calculator.
+- Record the checked date and edition/version. A current webpage must not silently update a calculation tied to an older adopted Standard.
+- Public accessibility does not grant permission to reproduce copyrighted tables, figures, equations compilations or paid ebooks. Store and display only material permitted by the licence and necessary for traceability.
+- A public preview may establish publication structure, scope or metadata but not unreadable technical values.
+- Do not use search-result snippets, AI summaries, forum answers or secondary calculators as the governing source.
+- When an online dataset changes, preserve the version or evidence needed to reproduce the checked result.
 
 Source gaps must be reported, not hidden:
 
@@ -94,12 +245,16 @@ Each source record should include:
 - `Document`
 - `Version`
 - `Publisher`
+- `Evidence_Class`
+- `Jurisdiction`
+- `Adoption_Basis`
 - `Clause`
 - `Table`
 - `Page`
 - `Description`
 - `File_Path`
 - `URL`
+- `Licence_or_Access_Note`
 - `Checked_By`
 - `Checked_Date`
 - `Status`
@@ -209,6 +364,179 @@ Minimum web and workbook notes should identify the applicable source family:
 
 Where strength depends on product thickness, wall thickness, grade range, supply condition or test certificate, state that the value must be verified for the actual supplied product before issue for design.
 
+### 6.2 Calculation Definition and Verification Contract
+
+Every calculation module must have one documented calculation contract before it is implemented or described as checked. The contract defines the engineering meaning, source basis, calculation branches, verification evidence and release boundary. It is the canonical technical definition; Section 15.18 defines how that definition is audited.
+
+Keep the visible page concise. Store the detailed contract and evidence in `REFERENCE_TRACEABILITY.md`, then show only the governing basis, critical assumptions, result status and practical limitations in the calculator.
+
+#### 6.2.1 Engineering Question and Result Type
+
+Define each calculation in one sentence before listing equations. State:
+
+- the engineering question being answered;
+- whether the output is a `nominal capacity`, `design capacity`, `utilisation`, `action distribution`, `published product value`, `selector output`, or `screening warning`;
+- the governing limit state or value basis, including `ULS`, `SLS`, manufacturer-published value, or project-defined comparison basis;
+- the component, axis, plane, direction, interface, strip, section or connection condition represented by the result;
+- what project decision the result may support and what it must not be used to conclude.
+
+Do not combine a selector, published product value, simplified capacity and complete design check under one undifferentiated result label.
+
+Classify the active workflow using Section 2.5 before implementation. If a tab supports both `Capacity only` and `Demand-capacity quick check`, the capacity result must remain available without a demand, while utilisation and `PASS` / `FAIL` remain a separate conditional result that appears only after a compatible design action is provided.
+
+#### 6.2.2 Applicability and Source Hierarchy
+
+Record the governing document title, edition, amendments or corrigenda where known, project adoption status, clause/table/figure and source PDF page. Confirm:
+
+- material, grade, product form, thickness range and supply condition;
+- section or connection geometry and fabrication method;
+- load case, action basis, design situation and limit state;
+- clause prerequisites, linked definitions, adjacent controlling clauses, table headings, footnotes and exceptions;
+- whether interpolation, extrapolation or a default value is permitted.
+
+Use these evidence classes:
+
+| Evidence class | Permitted use |
+| --- | --- |
+| `Adoption basis` | Australian legislation, NCC/jurisdictional requirement or project design basis used to identify the applicable engineering document and edition; not a substitute for its technical clauses |
+| `Normative` | Governing Standard requirement, equation, table, definition or limit |
+| `Catalogue` | Manufacturer geometry, availability, material or published product value |
+| `Interpretive` | Recognised handbook, commentary, textbook or industry guidance used to explain application |
+| `Worked example` | Independent interpretation and arithmetic check only |
+| `External comparison` | Non-Australian Standard, manual, database or tool used only for comparison, interface precedent or assurance method unless explicitly adopted by the project basis |
+| `Derived` | Transparent relationship derived from verified source values or equilibrium / geometry |
+| `Project input` | Value to be confirmed from project documents or engineering judgement |
+| `Source_Not_Verified` | Draft or warning-only use; not a checked calculation basis |
+
+Normative sources control code requirements. Interpretive references and worked examples may support interpretation and numerical verification but do not replace the governing Standard. Where credible sources conflict, record the conflict and stop the affected result from being described as checked until the governing interpretation is resolved.
+
+Apply the Australian-first hierarchy in Section 4. For a default Australian module, an international Standard/manual/tool remains `Interpretive`, `Worked example` or interface/assurance guidance unless the documented project basis explicitly adopts it. Do not use international agreement as a substitute for unreadable or missing Australian normative evidence.
+
+#### 6.2.3 Governing Formula Record
+
+Assign a stable `Calculation_ID` to every governing capacity, interaction, utilisation, distribution or screening equation. Use a concise pattern such as `BOLT-SHEAR-01` or `PAD-FLEXURE-01`.
+
+Each governing formula record must contain:
+
+| Field | Required record |
+| --- | --- |
+| `Calculation_ID` | Stable identifier used in the outline, traceability register and test evidence |
+| `Engineering question` | Exact question answered by the calculation |
+| `Result type` | Nominal, design, utilisation, distribution, published value, selector or screen |
+| `Limit state / basis` | ULS, SLS, source-published basis or project-defined basis |
+| `Governing source` | Document, edition, clause/table/figure and PDF page |
+| `Preconditions` | All conditions required before the equation is applicable |
+| `Equation` | Independently transcribed governing expression |
+| `Symbol mapping` | Standard symbol, implementation variable, user-facing label and unit |
+| `Branch logic` | Table selection, condition, minimum, maximum, interaction and governing rule |
+| `Factors` | Capacity, reduction, modification and project factors, including where each applies |
+| `Exclusions` | Limit states, actions, geometry or project checks not evaluated |
+| `Verification evidence` | Independent result, browser result, difference, tolerance, date and status |
+
+Implementation variable names may remain plain ASCII, but the calculation record and visible page must preserve correct engineering symbols and distinguish nominal from design quantities.
+
+#### 6.2.4 Input and Data Contract
+
+For every input, lookup value, override and derived value record:
+
+- engineering group: geometry / section, material, factor / assumption, connection / detailing, design action, or derived value;
+- data class: manual project input, cited lookup, editable override, conservative assumption, or read-only derived value;
+- source and default basis;
+- internal unit, display unit and conversion rule;
+- valid physical range and separate method-applicability range;
+- whether zero, negative, blank or not-applicable states are meaningful;
+- precision and display rounding;
+- dependencies and the fields/results that must update when it changes;
+- override behaviour and the visible status shown after a cited default is replaced.
+
+A user override must not continue to appear as a Standard-derived or catalogue-derived value. Required project inputs must not be silently replaced by convenient defaults.
+
+#### 6.2.5 Algorithm and Branch Contract
+
+Document the calculation sequence separately from the governing formula. Include:
+
+- unit normalisation before calculation;
+- lookup and table-selection logic;
+- sign convention, axis, plane, direction and action-distribution assumptions;
+- condition order and all active branches;
+- iteration method, convergence tolerance and failure state where iteration is used;
+- governing `min`, `max`, interaction or comparison logic;
+- inactive, disabled and hidden-field treatment;
+- reset, auto/manual and override state transitions.
+
+The algorithm must fail closed. Missing, incompatible or out-of-scope inputs must not produce a normal-looking capacity through a silent fallback, stale value, default zero, `NaN` or infinity.
+
+#### 6.2.6 Units, Precision and Rounding
+
+Define one internal unit convention for each calculation family. Convert at the input or source boundary and keep units explicit through intermediate quantities.
+
+- Use unrounded values for intermediate calculations, governing comparisons, utilisation and status decisions.
+- Round only for display unless the governing source explicitly requires a rounded table value.
+- Do not feed displayed values back into later calculations.
+- Record the comparison tolerance for each verification case. Use a tolerance appropriate to exact lookups, closed-form arithmetic, iterative solutions or source values published to limited precision; do not apply one arbitrary percentage to every calculation.
+- Where a displayed value is repeated in a figure, summary and formula step, use the same source value and rounding rule.
+
+#### 6.2.7 Minimum Verification Matrix
+
+One default example is not sufficient. Before a calculation is accepted, test as applicable:
+
+1. One common engineering case using normal project inputs.
+2. One independent hand calculation or separate script calculation that does not reuse the production calculation function.
+3. One case for every active conditional branch or table-selection path.
+4. One value at, immediately below and immediately above each governing threshold.
+5. Minimum and maximum valid values within the stated method.
+6. Blank, zero, negative, physically impossible and incompatible inputs.
+7. One known out-of-scope case that must stop or return a clear review status.
+8. One published worked example, recognised design example or independently reconstructed source example where available.
+
+Also test applicable engineering invariants:
+
+- design capacity does not exceed the corresponding nominal capacity when the applied capacity factor is not greater than one;
+- capacity remains non-negative and changes in the expected direction when only area, strength or another monotonic parameter changes;
+- ULS demand is not compared with an SLS capacity, or vice versa;
+- inactive components do not add capacity;
+- display precision does not change the governing branch or `PASS` / `FAIL` result.
+
+#### 6.2.8 Result Status and Fail-Closed Behaviour
+
+Use result states consistently:
+
+- `Calculated`: the stated calculation completed within its method scope;
+- `PASS` / `FAIL`: a compatible demand-capacity comparison completed and all checks claimed by that status were evaluated;
+- `Review required`: a result is available but a stated engineering decision remains unresolved;
+- `Not evaluated - outside simplified-method scope`: the selected condition is outside this handbook method;
+- `Not applicable`: the check does not apply to the selected state;
+- `Not published`: a source does not provide the requested product value;
+- `Invalid input`: required or physically valid inputs are missing;
+- `Source_Not_Verified`: source evidence is unresolved.
+
+Suppress or clearly invalidate stale numeric results when the current state is invalid, incompatible or outside scope. Do not show `PASS`, `OK`, a utilisation ratio or a normal green capacity when the comparison basis is incomplete.
+
+#### 6.2.9 Limitation and Predictable-Misuse Record
+
+For each calculation record concise limitations under these headings where applicable:
+
+- `Method limitations`;
+- `Geometry / material limitations`;
+- `Excluded limit states`;
+- `Project inputs to confirm`;
+- `Detailing / construction checks`;
+- `Source / product-data limitations`.
+
+Identify predictable misuse, not every theoretical check. The visible page should normally show only the critical warning and immediate next action; the complete limitation record remains in the calculation-basis panel and `REFERENCE_TRACEABILITY.md`.
+
+#### 6.2.10 Change and Reverification Control
+
+When a Standard edition, amendment, catalogue row, formula, factor, default, unit conversion or branch condition changes:
+
+1. Identify every affected `Calculation_ID` and tab.
+2. Update the source and applicability record.
+3. Re-run the affected verification matrix and relevant default regressions.
+4. Confirm visible formula steps, warnings, figures and references still match the implementation.
+5. Record the checked date, reviewer status and unresolved gaps.
+
+An edition-uncertain or partially reverified calculation cannot retain `Checked` status merely because its previous numerical outputs are unchanged.
+
 ## 7. Engineering Language
 
 Use precise engineering terms.
@@ -239,7 +567,9 @@ Avoid vague labels such as:
 
 Use `Pass / Fail` only for an explicit check against a defined demand.
 
-## 8. Display Standard
+## 8. Workbook Display Standard
+
+These rules apply to optional workbook deliverables. Web presentation is governed by Section 15 so workbook dimensions, cell styling and sheet structure do not leak into the responsive interface.
 
 User-facing sheets should be clear and compact.
 
@@ -365,17 +695,19 @@ Keep pastel fills light enough for black text. Avoid dark saturated colours for 
 
 ## 9. Validation Standard
 
-Each module must include validation before it is treated as usable.
+Each module must satisfy the calculation contract in Section 6.2 before it is treated as usable. Validation must cover source applicability, formula transcription, implementation branches, numerical evidence, invalid states and visible engineering meaning.
 
 Minimum validation:
 
-1. Check source references
-2. Check units
-3. Check at least one common example
-4. Check edge cases
-5. Scan for formula errors
-6. Confirm locked cells and input cells
-7. Confirm the sheet is readable without developer explanation
+1. Complete the source and applicability record for every governing formula, factor, default and lookup row.
+2. Complete the governing formula and symbol-mapping record for every `Calculation_ID`.
+3. Check internal units, conversions, precision and display rounding.
+4. Complete the applicable minimum verification matrix in Section 6.2.7, including an independent numerical calculation.
+5. Exercise every active formula branch, boundary and invalid / out-of-scope state.
+6. Confirm result status, governing logic and limitations match what the module actually evaluates.
+7. Scan for implementation and formula errors.
+8. Confirm locked, editable, overrideable and derived fields use the intended behaviour.
+9. Confirm the module is readable and reviewable without developer explanation.
 
 Formula error scan must check for:
 
@@ -389,9 +721,9 @@ Formula error scan must check for:
 
 These rules apply to every user-facing lookup or calculation module.
 
-### 10.1 Quick Start
+### 10.1 Workbook Quick Start
 
-Each user-facing tab must include a compact quick-start block near the top-left of the sheet.
+Each user-facing workbook sheet must include a compact quick-start block near the top-left. Web tabs follow the direct decision flow in Section 15.2.1 and must not add a separate explanatory quick-start block above the calculator.
 
 Use this pattern:
 
@@ -442,17 +774,21 @@ Rules:
 
 ### 10.5 Example Check
 
-Each module must include at least one example check before it is treated as usable.
+Each module must maintain the applicable verification matrix required by Section 6.2.7. A default example is useful evidence but cannot by itself establish that a conditional calculation is correct.
 
 Required fields:
 
 - `Example_ID`
+- `Calculation_ID`
+- `Case type`
 - `Input set`
 - `Expected result`
 - `Calculated result`
 - `Difference`
+- `Tolerance`
 - `Status`
 - `Reference`
+- `Checked_Date`
 
 Use `Pass / Fail` only when there is a defined comparison basis.
 
@@ -497,7 +833,7 @@ Do not allow invalid inputs to silently produce a normal-looking result.
 
 ### 10.9 Accessibility and Readability
 
-The workbook should remain readable in normal desktop Excel and mobile Excel.
+Every user-facing module must remain readable in its intended desktop and mobile environment. Workbooks must remain usable in normal desktop and mobile Excel; web tabs must also satisfy Sections 15.4, 15.5 and 15.18.13.
 
 Rules:
 
@@ -526,17 +862,19 @@ Only `Checked` modules should be treated as ready for normal engineering use.
 A module can be added to the main handbook only when all criteria are satisfied:
 
 1. Engineering task is clearly defined
-2. Australian standard or source basis is identified
-3. Source values are stored in a data sheet
-4. User-facing sheet is readable without explanation
-5. Inputs are validated where practical
-6. Units are consistent
-7. Assumptions are visible
-8. Formulas are visible and auditable
-9. Source references are recorded
-10. At least one example check is included
-11. Formula error scan is clean
-12. Module status is set correctly
+2. Result type, limit state / value basis and applicable method scope are explicit
+3. Australian Standard, catalogue or other governing source basis is identified with edition and located evidence
+4. Every governing equation has a stable `Calculation_ID` and completed Section 6.2 record
+5. Source values remain separate from formulas and are recorded in the appropriate source-data or traceability register
+6. Inputs, defaults, overrides, derived values and invalid states follow their documented contracts
+7. Units, precision and rounding are consistent and do not alter governing logic
+8. Assumptions and predictable limitations are visible
+9. Formulas, branches and governing logic are visible and auditable
+10. The applicable Section 6.2.7 verification matrix is complete, including independent numerical evidence
+11. Source references, test evidence, tolerances, checked date and unresolved gaps are recorded
+12. Formula, runtime and stale-state error scans are clean
+13. User-facing sheet or page is readable without developer explanation
+14. Module status is set correctly and no `Source_Not_Verified` item supports a result described as checked
 
 ## 12. Workbook Generation Rules
 
@@ -647,7 +985,9 @@ The project workspace should not contain active source reference files. If `refe
 
 Generated outputs, temporary extraction folders, and builder scripts may be updated as part of workbook generation.
 
-## 13. First Module: Bolt Capacity
+## 13. First Workbook Module: Bolt Capacity
+
+This section preserves the functional schema of the first workbook module. Current source status, accepted interpretation and verification evidence remain governed by Sections 6.2 and 15.10 and `REFERENCE_TRACEABILITY.md`; do not maintain a conflicting workbook-only formula basis.
 
 The first calculation module is:
 
@@ -732,19 +1072,9 @@ Edge-distance notation must be explicit:
 
 These formulas must be checked against the source references before issue-for-design use.
 
-## 14. Future Modules
+## 14. Optional Future Workbook Modules
 
-Candidate future modules:
-
-- `Unit_Conversion`
-- `Material_Properties`
-- `Section_CHS`
-- `Section_SHS_RHS`
-- `Weld_Capacity`
-- `Plate_Bearing`
-- `Member_Check`
-
-Each future module must follow this file before workbook implementation starts.
+There is no standing workbook feature backlog. Create or extend a workbook only when it is explicitly requested and the proposed function passes the Section 2.1 admission gate. Do not duplicate a web calculation in a separately maintained workbook formula path; both outputs must use the same calculation contract, source records and verification evidence.
 
 ## 15. Static Web Handbook Rules
 
@@ -762,7 +1092,7 @@ Web outline map:
 - `15.9` defines warning and limitation style.
 - `15.10` onward defines tab-specific engineering scope, formula boundaries, display rules, and exclusions.
 - `15.17` defines local update, commit, push, and GitHub Pages verification workflow.
-- `15.18` is the mandatory professional audit protocol whenever the user asks to `check`, `audit`, `review`, `verify`, or `核查` a tab, calculation, figure, source, or the full handbook.
+- `15.18` is the mandatory professional audit protocol whenever a tab, calculation, figure, source or the full handbook is requested to be checked, audited, reviewed or verified.
 
 When editing the web app, use the global web rules first, then the affected tab-specific section. If a layout, notation, drawing, warning, or input rule is intended to survive beyond one edit, record it here rather than only in CSS, JavaScript, or a chat note.
 
@@ -777,8 +1107,8 @@ For a formal page or calculation audit, this short implementation checklist is o
 3. Check the local reference folder first: `C:\Users\silin\Documents\Codex\Reference`.
 4. If the governing source cannot be found or read, tell the user and mark the item `Source_Not_Verified`; do not present it as checked.
 5. Keep the web page a quick-reference handbook, not a full design engine. Add clear limitations instead of forcing complex topology into the page.
-6. Use the standard web order: inputs, selected-item summary, main capacity result, detailed checks, calculation basis and limitations.
-7. Main capacity titles may use the `RESULTS` tag; detailed-check headings should not repeat it when it makes the hierarchy noisy.
+6. Use the standard web order: primary inputs, adopted-basis summary, workflow-specific primary answer, supporting checks/data, then calculation/source basis and limitations.
+7. Primary calculation or quick-check titles may use the `RESULTS` tag. Published product lookups use `PRODUCT DATA`. Supporting headings should not repeat the tag when it makes the hierarchy noisy.
 8. Keep phone layout readable: wrap rows, avoid horizontal overflow, and collapse secondary material where practical.
 9. Run basic checks before commit: `git status --short`, `git diff --stat`, JavaScript syntax check, and a DOM id reference check where JavaScript ids changed.
 10. Push only reviewed, accepted tab changes and accepted global framework changes.
@@ -798,6 +1128,8 @@ Core rules:
 - Calculation basis available, but not forced into the main view.
 - Top-level branding should stay compact. Do not repeat `SC Handbook` as a large hero title when the header already shows it, and do not add decorative header badges such as `LOOKUP` unless they carry operational status.
 
+Each tab must have one primary engineering question and one primary answer. Related secondary checks may support that answer, but they must not compete with it or imply a broader design scope. A tab that cannot express its question, answer and principal limitation in one concise sentence should be simplified before more controls are added.
+
 Each tab should answer:
 
 - What standard item or design option should I start with?
@@ -808,31 +1140,39 @@ Do not turn a web tab into a full textbook, long tutorial, report writer, or com
 
 ### 15.2 Web Tab Structure
 
-Use one static app with multiple short tabs.
+Use one static app with multiple engineering tools organised through a shared grouped navigation.
 
 Current core tabs:
 
 - `Bolt Capacity`
-- `Axial Member`
-- `Beam Section`
+- `Axial Member Capacity`
+- `Beam Section Capacity`
 - `Section Properties`
 - `Weld Capacity`
-- `Pad Section`
-- `Screw Piles`
-- `Rock Anchor`
+- `Concrete Pad Section`
+- `Screw Piles Selector`
+- `Rock Anchor Selector`
 
 Current tab register:
 
-| Tab | Short nav label | Role | Source status | Publish posture |
+| Tab | Navigation category | Role | Source status | Publish posture |
 | --- | --- | --- | --- | --- |
-| `Bolt Capacity` | `Bolt` | AS 4100 bolt / ply quick capacity and demand screen | For Review with checked core clauses | Active quick-reference tab |
-| `Axial Member` | `Axial` | AS 4100 axial member compression / tension quick screen | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
-| `Beam Section` | `Beam` | AS 4100 catalogue and ideal custom section-capacity lookup for the supported Beam families | For Review with checked core clauses, family-specific capacity paths and catalogue rows | Active quick-reference tab |
-| `Section Properties` | `Properties` | Catalogue lookup and ideal-geometry section properties | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
-| `Weld Capacity` | `Weld` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
-| `Pad Section` | `Pad` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
-| `Screw Piles` | `Screw` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
-| `Rock Anchor` | `Rock` | Product selector and quick rock-anchor lookup aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
+| `Bolt Capacity` | `Steel Connections` | AS 4100 bolt / ply quick capacity and demand screen | For Review with checked core clauses | Active quick-reference tab |
+| `Axial Member Capacity` | `Steel Members` | AS 4100 axial member compression / tension quick screen | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
+| `Beam Section Capacity` | `Steel Members` | AS 4100 catalogue section-capacity lookup for UB, UC, PFC, CHS, RHS, SHS, Equal Angle and Rod, with dimensions-only Custom geometry | For Review with checked core clauses, family-specific capacity paths and catalogue rows | Active quick-reference tab |
+| `Section Properties` | `Steel Members` | Catalogue lookup and ideal-geometry section properties used by member workflows | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
+| `Weld Capacity` | `Steel Connections` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
+| `Concrete Pad Section` | `Foundations` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
+| `Screw Piles Selector` | `Foundations` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
+| `Rock Anchor Selector` | `Foundations` | Product selector and quick rock-anchor lookup aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
+
+Navigation categories:
+
+- `Steel Connections`: `Bolt Capacity`, `Weld Capacity`, and future `Base Plate` when accepted and integrated.
+- `Steel Members`: `Section Properties`, `Axial Member Capacity`, and `Beam Section Capacity`.
+- `Foundations`: `Concrete Pad Section`, `Screw Piles Selector`, and `Rock Anchor Selector`.
+
+Do not create a permanent top-level category for one accepted tool. A future `Reference Tools` category may be introduced only when multiple independent material lookups or compact design tables have been accepted; until then, place each lookup with its primary engineering workflow.
 
 Future tabs may include:
 
@@ -845,45 +1185,120 @@ Tab rules:
 - One tab = one engineering topic.
 - One topic can contain closely related calculators.
 - Do not mix unrelated checks in the same visual block.
-- Keep tab names short and direct.
+- Keep tool names direct, complete and unambiguous.
 - Page title and UI labels must be English.
-- Navigation labels may be shorter than full tab names when the tab count makes the top navigation crowded. Use short labels such as `Bolt`, `Axial`, `Beam`, `Weld`, `Pad`, `Screw`, and `Rock` in the tab bar, then show the full tool name in the tool heading.
+- Visible navigation labels must use the full accepted tool names. Do not abbreviate them to `Bolt`, `Axial`, `Beam`, `Weld`, `Pad`, `Screw` or `Rock`; do not truncate them with ellipses or rely on tooltips to restore engineering meaning.
 - The active tab must be visually stronger than inactive tabs: filled pill background, tab theme colour, heavier font weight, clear border or shadow, and `aria-selected="true"`. Do not rely on font weight alone.
 - Inactive tabs should remain readable but visually quieter. Avoid making every tab bold, large, and high-contrast at the same time.
-- Desktop tab navigation should stay one compact toolbar where practical. If more than about seven or eight active tabs are added, introduce domain grouping or a tool selector rather than letting the toolbar become a dense multi-row block.
-- Phone tab navigation should use horizontal scroll with direct access to every tool. Do not force all tabs into a tall wrapped block above the calculator.
+- Use two visible levels: an engineering category row and one tool row containing only tools in the active category. Category controls and tool controls must use distinct visual treatments; tab-internal mode controls must be quieter again.
+- Keep the primary navigation taxonomy task-based. Existing tools use only `Steel Connections`, `Steel Members`, and `Foundations`; do not display empty, speculative, or single-tool top-level categories.
+- Selecting a different category activates its first accepted tool so the visible category, tool row and active panel can never disagree. A direct tool hash must activate the correct category and tool automatically.
+- Desktop category and tool rows should remain compact single rows. Phone category and tool rows use horizontal scrolling and automatically bring both active controls fully into view.
+- Keep all existing public tool hashes stable. Grouping changes navigation presentation, not calculator routes.
 
 Page-level layout order:
 
 1. Compact header with brand only.
-2. Short page intro only where useful; do not use a marketing hero.
-3. Horizontal tab navigation.
-4. Active tool panel.
+2. Grouped engineering navigation: category row, then full-name tool row.
+3. Active tool panel.
+
+Do not place a generic `Engineering quick reference` title or descriptive subtitle between the brand and navigation. The active tool heading provides the page title and scope; a visually hidden document heading may preserve semantic structure.
 
 Per-tab layout order:
 
 1. Tool heading: discipline / standard note, tab title, review status.
 2. Input area: engineering row bands grouped by purpose.
 3. Summary strip: selected item, current assumptions and key intermediate values.
-4. Main results: governing capacity, utilisation, PASS / FAIL / CHECK status.
+4. Main results: governing capacity, utilisation, `PASS` / `FAIL` or `Review required` status where applicable.
 5. Secondary aids: compact tables, symbols, figures or warnings that support quick lookup.
 6. Folded details: calculation steps, evidence notes and source limitations.
 
 Do not place decorative cards, large hero blocks or explanatory feature text above the active calculator. The engineer should reach the first meaningful input quickly on desktop and phone.
 
+#### 15.2.1 Canonical Page and Interaction Flow
+
+Every tab must follow the same engineering decision flow even when its detailed controls differ:
+
+| Stage | Page content | Interaction rule |
+| --- | --- | --- |
+| `Orient` | Full tool name, Standard/source family, short scope and review status | Confirm immediately what is being checked; do not use a hero or feature explanation |
+| `Define` | Primary inputs grouped by engineering purpose | Show only controls needed for the current method or selection; reveal conditional inputs when their branch is active |
+| `Confirm` | Selected section/product, material, axis/plane, assumptions and active overrides | Make the adopted basis visible before the result; do not duplicate every entered value |
+| `Evaluate` | Governing capacity, published value, selection or compatible utilisation/status | Use one dominant answer with unit, basis and honest result state |
+| `Review` | Secondary checks, threshold flags and the immediate next engineering action | Keep warnings short and consequence-based; do not present unevaluated checks as passed |
+| `Trace` | Formula steps, references, source status, exclusions and detailed limitations | Keep available in folded panels without dominating the primary workflow |
+
+Interaction contract:
+
+- Use immediate recalculation for valid lightweight inputs; do not add a generic `Calculate` or `Apply` button when it adds no state or validation value.
+- A controlling selection may reveal, disable or reset dependent fields. Preserve compatible user values, but do not retain hidden incompatible values in the active calculation.
+- Defaults must be useful, cited where applicable and visibly classified. A default must not disguise a required project decision.
+- Manual inputs, cited lookup/override values and read-only derived values must remain visually and semantically distinct. Colour supports the distinction but never replaces a label or state note.
+- Auto/manual and override controls must have one obvious state. Returning to auto mode must restore the current source-derived value rather than a stale historical value.
+- Do not overwrite a focused editable value during recalculation. Accept temporary typing states and validate or clamp only at the defined commit point.
+- Invalid, incomplete, incompatible or out-of-scope states must suppress or clearly invalidate dependent results. Never leave a stale capacity, utilisation or green status visible as if it were current.
+- Every visible input must change a result, source selection, applicability state, summary or actionable warning. Otherwise remove it from the primary page or move it into a justified advanced panel.
+- Preserve the same calculation state, result meaning and source basis at desktop and phone widths. Responsive layout may reorder presentation within the same engineering sequence, but it must not fork calculation logic.
+- Make the active workflow evident from the result language: `Capacity only`, `Quick check`, `Preliminary selection`, `Published product data` or `Derived aid`. Do not require the user to infer the claim from which inputs happen to be populated.
+- The summary and result areas together must expose the adopted section/product, material, axis/plane or direction, limit-state/action basis, active overrides and governing result needed to understand the Section 2.4 chain. Keep full arithmetic and evidence in the folded trace layer.
+
+Section 15.8 defines the detailed input grouping, numeric-entry and responsive-control rules. Section 6.2 defines the calculation and state contract behind this flow.
+
+#### 15.2.2 Query-Handbook Page Patterns
+
+Treat the page as an engineering query surface, not a general form or a report. The engineer should be able to identify the question, enter or select the minimum basis, read the answer and understand its boundary without opening the evidence layer.
+
+Use three information layers:
+
+| Layer | Required content | Visibility rule |
+| --- | --- | --- |
+| `Primary query` | Active question, minimum required inputs, primary answer and one critical warning where needed | Always visible and first in the workflow |
+| `Engineering review` | Selected basis, governing case, active overrides, secondary in-scope checks and one useful compact figure/table | Visible but subordinate; collapse only material not needed to interpret the answer |
+| `Evidence and limits` | Formula steps, references, source status, applicability conditions, exclusions, verification notes and detailed limitations | Available in folded panels; never omitted |
+
+Apply the page pattern that matches the active Section 2.5 workflow:
+
+| Workflow | Primary input sequence | Primary answer | Prohibited implication |
+| --- | --- | --- | --- |
+| `Capacity only` | Section/geometry -> material -> factors -> applicable detailing | Named nominal/design capacity and governing limit state | No utilisation or `PASS` / `FAIL` without a design action |
+| `Demand-capacity quick check` | Capacity basis -> design action and distribution -> comparison | Governing utilisation/interaction and scoped status; show the governing capacity as its denominator | No whole-member/connection/structure pass beyond the checks evaluated |
+| `Lookup` | Source/category -> lookup key -> selected row | Cited value, unit, edition/row and source status | No calculated resistance or compliance claim |
+| `Published product selector` | Project requirement -> compatible filters -> selected product | Published product data, availability/adoption status and principal constraint | No project suitability or design capacity unless separately verified |
+| `Preliminary selection or sizing` | Design requirement -> accepted constraints -> candidates -> in-scope recheck | Selected preliminary candidate and governing in-scope check | No issue-ready selection or silent omission of unimplemented checks |
+| `Derived engineering aid` | Model assumptions -> geometry/equilibrium inputs | Derived value and assumption basis | No clause compliance or design acceptance claim by inference |
+
+Page construction rules:
+
+- Standard/catalogue selection comes before custom entry. Put `Custom` last and request only the geometry or source values that cannot be derived reliably.
+- Collect project actions only when the active workflow performs a compatible quick check or preliminary selection. Do not make action inputs look mandatory for a capacity-only lookup.
+- Put the selected/adopted basis immediately before the result when a wrong section, grade, axis, plane, direction, limit state or override would materially change interpretation.
+- Keep one primary answer per active workflow. Supporting capacities and intermediate values must explain the answer, not compete with it.
+- Do not create empty summary cards, placeholder metrics or inputs with no downstream effect. Absence of a source value must be shown as `Not published` or `Source_Not_Verified`, not as an empty component.
+- A tab may switch between page patterns only when the mode label, input set, result heading, status semantics and limitations all change together. Hidden controls and stale results from the previous mode must not remain active.
+- Prefer a continuous single-page workflow with progressive disclosure. Use a multi-step wizard or modal only when the user must complete a real ordered decision that cannot be understood safely on one page.
+
 ### 15.3 Web Result Layout
 
-Every web calculator should use the same result structure:
+Every web tab should use the same result hierarchy while adapting the primary label to its workflow:
 
-1. `RESULTS <Main capacity>`
-2. `<Detailed checks>`
-3. `Calculation basis and limitations`
+1. `RESULTS <Primary answer>` for calculations/checks, or `PRODUCT DATA <Selected item>` for published product lookup.
+2. `<Supporting capacities / detailed checks / selected data>`.
+3. `Calculation basis and limitations` for calculations/checks, or `Source basis and limitations` for pure lookup/product data.
 
-Use title hierarchy, spacing and panel weight to show importance. Keep `RESULTS` on the main capacity title when it helps identify the output block, but do not repeat the badge in front of every detailed-check title when it makes the calculator hierarchy noisy. A detailed-check block may be collapsible, but it should still read as the same importance level as the main capacity block when it contains core connection or member checks.
+The primary answer must show, where applicable:
+
+- exact quantity or decision name and formal engineering symbol;
+- value and unit;
+- nominal, design, published or derived basis;
+- limit state, axis/plane/direction and governing case needed to interpret it;
+- honest result status from Section 6.2.8;
+- one short scope or next-action note when the answer remains partial.
+
+Use title hierarchy, spacing and panel weight to show importance. Keep `RESULTS` on the primary calculation/check title when it helps identify the output block, but do not repeat the badge in front of every detailed-check title. A detailed-check block may be collapsible, but a check needed to interpret the primary answer must remain easy to reach and must not be visually presented as optional evidence.
 
 For bolt capacity:
 
-- `RESULTS Bolt capacity`
+- `RESULTS Bolt capacities`
 - `Detailed connection checks`
 - `Calculation basis and limitations`
 
@@ -893,7 +1308,7 @@ For member capacity:
 - `Detailed member checks`
 - `Calculation basis and limitations`
 
-The first block shows the governing answer. The second block shows secondary checks and intermediate capacities. The third block gives source clauses, assumptions, exclusions, and limitations.
+For capacity-only use, the first block shows the governing design capacity. When a compatible design action activates quick-check use, the first block may instead show the governing utilisation/status while retaining the capacity and demand visibly as its basis. The second block shows supporting checks or selected data. The third block gives source clauses, assumptions, applicability conditions, exclusions and limitations.
 
 Web component standard:
 
@@ -976,7 +1391,7 @@ Build every new tab from the shared app structure and component classes. A new t
 
 Required page skeleton:
 
-1. Add one short `.tool-tab` control with `data-tool`, a stable public hash and `aria-selected` support.
+1. Add one full-name `.tool-tab` control with `data-category`, `data-tool`, a stable public hash and `aria-selected` support. Register it under the correct existing category; add a new category only when a distinct engineering domain has multiple accepted tools or an approved near-term group that cannot fit an existing workflow.
 2. Add one matching `.tool-panel` with a compact `.tool-heading`: kicker / standard family, full English tool name, and one short scope phrase.
 3. Put the main workflow in one `.lookup-card`. Inside it, stack `.input-group` row bands in engineering order and use `.input-group-fields` or the equivalent shared responsive grid for controls.
 4. Place one selected-item or checked-basis summary after the inputs when the user needs to confirm the current section, product, material, assumptions or intermediate basis.
@@ -986,9 +1401,9 @@ Required page skeleton:
 
 Shared implementation requirements:
 
-- Register the tab in the existing `toolNames` / route logic and provide a stable short public hash. Do not create a second navigation system or separate mobile page.
+- Register the tab in the existing `toolNames`, `toolCategories` and route logic and provide a stable short public hash. Do not create a second navigation system or separate mobile page.
 - Add one tab theme using the existing four-variable pattern: accent, dark, soft and panel colours. Map the panel to shared `--green`, `--green-dark`, `--green-soft`, `--panel-bg`, `--line`, `--input-manual-bg`, `--input-auto-bg` and `--input-auto-border` variables.
-- Reuse `.tool-tabs`, `.tool-tab`, `.tool-heading`, `.lookup-card`, `.input-group`, `.input-group-heading`, `.input-group-fields`, `.capacity-section`, `.capacity-card`, `.detail-card`, `.source-card`, `.result-note` and shared form-control styles wherever their engineering purpose matches.
+- Reuse `.tool-navigation`, `.tool-categories`, `.tool-category`, `.tool-tabs`, `.tool-tab`, `.tool-heading`, `.lookup-card`, `.input-group`, `.input-group-heading`, `.input-group-fields`, `.capacity-section`, `.capacity-card`, `.detail-card`, `.source-card`, `.result-note` and shared form-control styles wherever their engineering purpose matches.
 - Do not copy an existing tab's one-off selectors as the foundation for a new layout. Promote genuinely reusable behaviour to a shared class first.
 - Keep input group labels and order consistent with Section 15.8. A visual row is an engineering category, not merely a convenient number of equal-width fields.
 - Use the same DOM and calculation outputs at every viewport. Mobile adaptation is CSS-driven and may collapse secondary material, but it must not fork formulas, values, warnings or references.
@@ -1003,11 +1418,12 @@ Mobile rules:
 - If one row cannot display cleanly, wrap to two rows or one column.
 - Never force small controls, result chips, formula tags, or tab buttons into one crowded row.
 - On phone width, use single-column input grids unless two fields are clearly short and readable.
-- Tab buttons may wrap to two rows.
+- Category and tool buttons remain in separate single-row horizontal scroll controls; do not wrap either level into a tall multi-row block.
 - Result cards should stack vertically if three cards cannot fit comfortably.
 - Avoid horizontal scrolling except for unavoidable tables.
 - Keep minimum touch target height around 40-46 px for selects, inputs, and tab buttons.
-- When the phone tool navigation overflows horizontally, automatically bring the active tool tab fully into view. A direct hash link must never leave the selected tool off-screen.
+- When the phone tool navigation overflows horizontally, automatically bring the active tool tab fully into view. Reserve enough trailing scroll space for the final full-name tool button to be brought completely into view. A direct hash link must never leave the selected tool off-screen.
+- Keep complete category and tool names on phone. Use horizontal scrolling rather than abbreviations, ellipses or smaller-than-standard text.
 - Keep public hash routes stable. User-facing aliases such as `#pad` may map to an internal panel name, but existing shared links must not silently fall back to another tool.
 - The published footer must show a neutral build identifier, version, date, or commit reference. Do not label the public page as a `local` build.
 
@@ -1156,7 +1572,7 @@ Phone and responsive input behaviour:
 - Phone mode is a field quick-check view. Keep the same calculation logic, but prioritise primary inputs, governing result cards, utilisation / PASS-FAIL status and critical warnings in the first screen sequence.
 - Do not fork the calculator into separate mobile formulas or separate mobile HTML pages. Use responsive CSS and the same DOM outputs so desktop and phone cannot diverge numerically.
 - On phone, collapse or visually de-emphasise detailed formula steps, source-register notes, secondary metrics, secondary result cards and long explanatory text. Keep them available through existing `details` panels where practical.
-- Phone tabs may become a horizontal scroll control. Preserve direct access to every tool, but avoid a tall two-column tab block at the top of the page.
+- Phone category and tool rows use horizontal scroll controls. Preserve direct access to every complete tool name, but avoid a tall wrapped tab block at the top of the page.
 - Phone images and diagrams must remain small reference cues only, approximately three to four lines of body text high. Captions must use the same caption typography as desktop and may be shortened by layout, not rewritten into informal text.
 
 Reduction-factor inputs:
@@ -1207,7 +1623,7 @@ Web engineering figure and chart rules:
 - Aesthetic quality should come from clear hierarchy, spacing, alignment, restrained colour, and consistent typography. Do not use visual effects to make a figure look polished if they reduce engineering clarity.
 - Legends must not cover important geometry or data. If a legend is needed, keep it short or place it outside the main drawing area.
 - For charts, show enough tick marks to read the engineering trend or threshold, but do not overload the chart with dense minor ticks. Axis labels must include units.
-- For PASS / FAIL / CHECK or governing result graphics, show the text status visibly. Colour is secondary.
+- For `PASS`, `FAIL`, `Review required` or governing result graphics, show the text status visibly. Colour is secondary.
 - For generated bitmap assets, keep the source script or generation method traceable where practical, and export at a resolution suitable for the displayed web size. Do not use large bitmap files when a compact SVG or Canvas drawing is sufficient.
 - Figures copied or redrawn from standards, handbooks, catalogues, or online sources must follow the source hierarchy and copyright rules below. A drawing used as a visual guide must not become the source of numeric properties unless the source explicitly provides those values.
 - If a figure cannot be verified against a standard, handbook, manufacturer document, or accepted project convention, label it as a draft visual guide or leave it out.
@@ -1339,16 +1755,32 @@ Display logic:
 - If threads are clear of the shear plane and X shear capacity is used, show `M24 8.8 X/S`.
 - Under the callout, keep the explanation short: `N: threads intercept shear plane · X: threads clear of shear plane`.
 
+- Include `Nti` in the selected-bolt basis. For `/TB` and `/TF`, show the minimum installed bolt tension from AS 4100 Table 15.2.2.2. For `/S`, show `Not required`.
+- Place one collapsed `Minimum installed bolt tension, Nti` lookup directly below the selected-bolt basis. Show M16 to M36 in rows and property classes 8.8 and 10.9 in columns.
+- Do not repeat the selected `Nti` in the lookup summary. Use the summary support line for the table source and size range.
+- In the lookup, state the installation categories in one concise note: `Nti` is not applicable to `/S`; `/TB` and `/TF` are fully tensioned and use the same tabulated `Nti`.
+- Do not list M10 or M12 `Nti` values because AS 4100 Table 15.2.2.2 does not tabulate them. These sizes remain available for `/S` only.
+- State explicitly that `Nti` is an installation preload, not the design tensile capacity `phi Ntf`. Do not subtract `Nti` from `phi Ntf` and do not present it as a competing capacity result.
+- Keep the primary page sequence as `Inputs -> Selected bolt -> optional Nti lookup -> Results`. Place symbol definitions and `/S`, `/TB`, `/TF` explanations in `Calculation basis and limitations`; do not add separate legend bands before Results.
+- In `RESULTS Bolt capacities`, show the design shear capacity for the selected N/X shear-plane condition and the design tensile capacity. Keep the unselected N/X shear-plane capacity in `Calculation steps`; it must not compete as another primary result card.
+- Use formal visible labels `Design shear capacity, phi Vf` and `Design tensile capacity, phi Ntf`. Keep the selected N/X condition in the shear-capacity label.
+- Show the `TF slip check` only for `/TF` categories. Keep its slip parameters, serviceability slip actions and utilisation status together. For `/S` and `/TB`, hide the complete section.
+- Do not show a persistent `/TF` reminder in `/S` or `/TB` states. The separate serviceability slip reminder appears only with the active `/TF` workflow.
+- Label the strength-action section `Project design actions`. Either shear or tension may be entered independently; combined strength interaction applies only when both are non-zero.
+- Do not reuse the strength actions as TF slip actions. Use separate `V_sf*` and `N_tf*` inputs for the serviceability slip check so action bases are not silently mixed.
+
 Bolt result checks should include:
 
 - Bolt shear capacity.
 - Bolt tension capacity where relevant.
-- Bolt bearing on connected ply.
-- Edge tear-out / ply tearing.
+- Full-bearing branch of the design bearing capacity in each connected ply.
+- Edge tear-out branch of the design bearing capacity using the AS 4100 Cl. 9.2.2.4(2) `a_e` limit.
 - Minimum edge distance check.
-- Governing connected-ply capacity.
-- Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and connected-ply bearing / edge tear-out under AS 4100 Cl. 9.2.2.4; tension-only demand checks bolt tension under AS 4100 Cl. 9.2.2.2; combined shear and tension checks bolt interaction under AS 4100 Cl. 9.2.2.3 while still checking connected-ply bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or connected ply governs.
-- The main result should show one final `Governing capacity check` ratio only. Put supporting ratios, including the AS 4100 Cl. 9.2.2.3 combined bolt interaction ratio, in calculation steps rather than as competing primary result cards.
+- Governing full-bearing / edge-tear-out condition.
+- Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and local hole bearing under AS 4100 Cl. 9.2.2.4; tension-only demand checks bolt tension under AS 4100 Cl. 9.2.2.2; combined shear and tension checks bolt interaction under AS 4100 Cl. 9.2.2.3 while still checking local hole bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or local hole bearing governs.
+- The main strength result should show one `Strength utilisation ratio`. Put supporting strength ratios in Calculation steps rather than as competing primary result cards.
+- For `/TF`, show one additional `TF slip utilisation ratio`. Keep this serviceability result visibly separate from the strength ratio.
+- Detailing compliance is a release gate, not another utilisation ratio. If any applicable minimum pitch, general maximum pitch or active-ply minimum edge-distance check fails, show `NON-COMPLIANT` on the visible strength result and TF slip result where applicable. Do not allow a green PASS while detailing is non-compliant.
 - The default connected-ply tensile strength should not be an orphan number. Use f<sub>up</sub> = 410 MPa only as the AS/NZS 3678 Grade 250 plate default; use 440 MPa only for verified AS/NZS 3679.1 Grade 300 flat bar/section or another stated source.
 
 U-bolt product lookup branch:
@@ -1374,7 +1806,7 @@ U-bolt product lookup branch:
 - If no published capacity is available, show `No published rated capacity` or `Not published`, mark the item `Source_Not_Verified`, and do not report an action ratio.
 - Do not derive U-bolt product capacity from AS 4100 ordinary bolt shear or tension equations. Those checks belong to the connected steelwork or fastener components where applicable.
 
-Minimum edge distance and ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
+Minimum edge distance, minimum pitch and connected-ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
 
 For the web bolt tab, separate the edge-distance terms visibly:
 
@@ -1388,7 +1820,136 @@ For the web bolt tab, separate the edge-distance terms visibly:
 - Keep the lightweight connected-ply check on a critical-hole basis. Assume concentric shear and equal bolt sharing, calculate `V_b,bolt* = V*/n`, and compare it with the lesser of the full-bearing and edge-limited capacities at the critical bolt hole.
 - Under that equal-action premise, use `phi Vb,group = n * MIN(phi Vb,full, phi Vb,edge)` for the critical bolt hole. Do not add a separate `Bolts on edge line` input.
 - Present `n` times the critical-hole capacity as the equal-share connected-ply group capacity; keep the single-hole values in Calculation steps.
-- Do not calculate net-section rupture, actual tear-out paths, block shear, eccentric bolt-group reactions, overlapping failure paths or minimum bolt spacing.
+- Do not infer net-section or block-shear paths from the lightweight bolt geometry. These checks may be added only as a separate, optional manual-area assessment with explicit AS 4100 equations and limitations.
+
+#### 15.10.1 Detailed Connection Input Structure
+
+Keep the detailed connection input in this order:
+
+1. `Bolt group` - bolt count, shear-plane condition and k<sub>r</sub>.
+2. `Connected plies and detailing` - shared hole geometry and an explicit connected-ply basis.
+3. `Connected-ply integrity` - optional manual critical areas for net-section tension and block shear.
+4. `TF slip check` - TF only, including separate serviceability slip actions.
+5. `Project actions` - shear and tension demand.
+
+The connected-ply section should use one shared geometry row:
+
+- `d_h` = actual hole diameter.
+- `p` = centre-to-centre pitch of equal holes aligned with the force.
+- Disable `p` only for a one-bolt connection. Keep it available when manual `a_e` is selected because the minimum-pitch check remains applicable.
+
+Use one explicit `Connected-ply basis` control:
+
+- `Both plies identical` - default. Use the primary-ply properties for both connected parts and state this assumption in the result basis.
+- `Check plies separately` - show the second-ply fields and assess both connected parts independently.
+
+Do not use an unchecked optional-ply control that can be read as permission to omit the second connected part.
+
+Each active ply requires:
+
+- `t_p` - connected-ply thickness.
+- `f_up` - connected-ply ultimate tensile strength.
+- `Edge condition` - selected AS 4100 Table 9.5.2 edge category.
+- `e` - critical bolt centre to the selected physical edge.
+- `a_e basis` - `Automatic - end edge / pitch` or `Manual - connection drawing`.
+- `Governing a_e` - calculated and read-only for Automatic, directly entered for Manual.
+
+Do not duplicate `d_h` or `p` for the second ply. Each ply may have different thickness, material strength, edge condition, edge distance and effective edge distance.
+
+#### 15.10.2 Connected-Ply Capacity Logic
+
+For equal holes aligned with the force, calculate separately for each active ply:
+
+- `a_e,end = e - d_h/2 + d_f/2`.
+- `a_e,pitch = p - d_h + d_f/2` where more than one bolt is present.
+- `a_e = MIN(a_e,end, a_e,pitch)`.
+
+For angled edges, corners, non-collinear holes or other drawing-derived geometry, require a manual `a_e`. Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
+
+Keep the lightweight capacity check on a critical-hole basis. Assume concentric shear and equal bolt sharing, calculate `V_b,bolt* = V*/n`, and compare it with the lesser of the full-bearing and edge-limited capacities at the critical bolt hole.
+
+For each active ply use:
+
+- `phi V_b,full = phi 3.2 d_f t_p f_up`.
+- `phi V_b,edge = phi a_e t_p f_up`.
+- `phi V_b,local = MIN(phi V_b,full, phi V_b,edge)`.
+- `phi V_b,group = n phi V_b,local`.
+
+Do not add a separate `Bolts on edge line` input. Under the stated equal-action premise, every bolt is assessed using the entered critical-hole condition.
+
+For `Both plies identical`, use the primary-ply values and label the basis `Both plies identical`. For `Check plies separately`, determine the lower full-bearing group capacity and the lower edge-tear-out group capacity independently; the same ply need not govern both values. The local connected-ply demand ratio must use the lesser of the two displayed capacities.
+
+Display `Design bearing capacity - full-bearing limit` and `Design bearing capacity - edge tear-out limit` as separate rows, followed by one concise governing line. Identify `Bolt group` in each supporting basis line because the displayed value is the derived equal-share group capacity. The latter is the AS 4100 Cl. 9.2.2.4(2) edge-distance bearing limit using `a_e`; it is not an automatically generated block-shear or overlapping tear-out path. Use `kN per bolt` consistently for both branch calculations and direct the user to the optional integrity check for net-section tension and block shear.
+
+Show that concise local-bearing scope note once in the detailed-check workflow. Keep the complete assumptions and exclusions in `Calculation basis and limitations`; do not add a separate repeated `Checklists / warnings` block.
+
+#### 15.10.3 Optional Connected-Ply Integrity
+
+Keep this workflow collapsed by default and place it after local hole bearing and detailing, before project design actions. Default the assessment basis to `Not evaluated`.
+
+When `Manual critical areas` is selected:
+
+- Check one identified critical connection component at a time. Use the selected active ply value as `f_uc` and require a user-entered `f_yc`.
+- `BOLT-PLY-TENSION-01` - For section tension use AS 4100 Cl. 9.1.9(b) and Cl. 7.2: `phi Nt = 0.90 MIN(Ag fyc, 0.85 kt An fuc)`.
+- `BOLT-BLOCK-SHEAR-01` - For block shear use AS 4100 Cl. 9.1.9(e): `phi Rbs = 0.75 MIN(0.6 fuc Anv + kbs fuc Ant, 0.6 fyc Agv + kbs fuc Ant)`.
+- Allow `kbs = 1.0` for uniform tension stress or `kbs = 0.5` for non-uniform tension stress.
+- Require manual `Ag`, `An`, `Agv`, `Anv` and `Ant`. Do not derive these areas from bolt count, pitch, edge distance or a schematic.
+- Treat the entered block-shear areas as the governing path only after the user has reviewed every plausible failure path. State that the check must be repeated for any other critical component.
+- `BOLT-GOVERNING-01` - Where `Vf*` represents the axial force transferred through the checked component, compare it with `phi Nt` and `phi Rbs`. Include both ratios in the overall strength governing selection only when all required manual areas are valid.
+- If manual assessment is selected but incomplete, show `INCOMPLETE`, suppress the overall governing ratio and do not display a passing status.
+- For any passing check that includes shear transfer, show `SCOPED PASS`. If the optional assessment is disabled, state that net-section tension and block shear are not evaluated. If the manual assessment is complete, state that it covers only the selected component and entered path; the status must not imply that every connected component or plausible path has been checked.
+- A tension-only bolt check may show `PASS` because the displayed status then applies only to the explicitly named bolt-tension check.
+
+Keep plate bending, connection-component compression or buckling, welds, supporting-member local effects, eccentric reactions and geometry-derived failure paths outside this optional check.
+
+#### 15.10.4 Detailing Checks
+
+Show a compact detailing table below the local hole-bearing capacity result:
+
+- `Minimum pitch, p - AS 4100 Cl. 9.5.1`.
+- `Maximum pitch, p - AS 4100 Cl. 9.5.3 general limit`.
+- `Primary ply edge distance, e - AS 4100 Table 9.5.2`.
+- `Second ply edge distance, e - AS 4100 Table 9.5.2`, only where the second ply is active.
+
+For minimum pitch use:
+
+- `p_min = 2.5 d_f`.
+- Apply the check only where `n > 1`.
+- For one bolt, report `Not applicable`; do not display PASS or FAIL.
+
+For maximum pitch use the AS 4100 Cl. 9.5.3 general limit:
+
+- `p_max = min(15 t_p,min, 200 mm)`.
+- `t_p,min` is the thinner active connected ply.
+- Apply the check only where `n > 1`.
+- For one bolt, report `Not applicable`; do not display PASS or FAIL.
+- Do not auto-apply the special cases in Cl. 9.5.3(a) or (b); state that they require separate assessment.
+
+Pitch and edge-distance checks are detailing-compliance checks, not design capacities. Keep their individual statuses separate from the strength ratio, but treat any applicable FAIL as a visible `NON-COMPLIANT` release gate. Maximum edge distance and connection-specific detailing remain outside this lightweight check.
+
+#### 15.10.5 Result Hierarchy
+
+Keep the connected-ply result hierarchy concise:
+
+1. One compact result block with two rows: `Design bearing capacity - full-bearing limit` and `Design bearing capacity - edge tear-out limit`. Put `Bolt group` in each supporting basis line.
+2. Give each row its own controlling-ply basis. Follow the two capacities with one concise line identifying the overall governing condition and ply.
+3. One compact detailing table for minimum pitch, general maximum pitch and active-ply minimum edge distances.
+4. One collapsed `Connected-ply integrity` section with two compact result rows when the manual assessment is active.
+5. Single-hole capacities, `a_e` components and equations remain in `Calculation steps`.
+6. Show one `Strength utilisation ratio`; show a separate `TF slip utilisation ratio` only for `/TF`.
+
+The governing line should identify the governing ply and local condition, for example `Design bearing capacity governed by edge tear-out limit - second ply`. If both plies are identical or equal, state that basis. Use `kN per bolt` consistently for both branches; describe the second branch as the AS 4100 Cl. 9.2.2.4 edge-distance bearing limit so that it is not confused with block shear.
+
+#### 15.10.6 Scope Boundary
+
+This remains a lightweight straight-line bolt-group check. State these assumptions and exclusions clearly:
+
+- Included by default: concentric action, equal bolt sharing, straight aligned holes, local hole bearing, minimum pitch, general maximum pitch, minimum edge distance and two connected plies treated as identical or checked separately.
+- Optional manual-area scope: section tension and one governing block-shear path for one selected critical component.
+- Manual `a_e`: permitted for drawing-derived directional geometry, but the entered value is not geometrically verified by the tool.
+- The displayed edge tear-out value is the Cl. 9.2.2.4(2) `a_e` capacity under the stated critical-hole, equal-share model. Automatic failure-path generation, overlapping tear-out paths, section tension, block shear and eccentric bolt-group reactions remain excluded.
+- Excluded from the optional integrity check: automatic failure-path generation, plate bending, connection-component compression or buckling, welds, supporting-member local effects, eccentric bolt-group reactions, overlapping failure paths, special maximum-pitch cases under AS 4100 Cl. 9.5.3(a) and (b), maximum edge distance, prying action and coped-beam tearing.
+- Additional connected plies require a separate check; do not infer their properties from either displayed ply.
 
 ### 15.11 Member Web Tab Rules
 
@@ -1507,20 +2068,36 @@ Purpose and modes:
 
 Shared calculation contract:
 
-- gross area `A`;
+- gross area `Ag` for catalogue sections and `A` for entered ideal geometry;
 - centroid coordinates `cx`, `cy` from the geometry origin;
 - centroidal second moments `Ix`, `Iy` about axes parallel to the entered overall dimensions;
 - elastic section moduli `Zx`, `Zy` to the furthest idealised edge;
-- radii of gyration `rx`, `ry` from `sqrt(I/A)`.
+- plastic section moduli `Sx`, `Sy` where they are published by the checked catalogue or implemented by a reviewed ideal-geometry formula;
+- for unsymmetric custom geometry, locate the plastic neutral axis for each direction independently from the equal-area condition, then calculate `S` as the first absolute area moment about that axis; do not substitute the elastic centroid for the plastic neutral axis;
+- radii of gyration `rx`, `ry` from `sqrt(I/A)`;
+- product of inertia `Ixy`, polar second moment `Ix + Iy`, principal second moments `Iu` / `Iv`, principal radii `ru` / `rv`, and principal-axis angle `thetaU` for entered ideal geometry or catalogue shapes whose symmetry establishes the transformation;
+- geometric clear-web area `Aw` for I-sections and channels, and horizontal-wall `Awx` plus vertical-wall `Awy` for ideal RHS/SHS. None is a design-standard effective shear area `Av`.
 
 Page and evidence requirements:
 
-- Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx`, elastic `Zy`, `rx` and `ry`.
+- Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx` / `Zy`, plastic `Sx` / `Sy`, and `rx` / `ry`. Orrcon CHS mass is a catalogue value; its remaining properties are geometry-derived from published nominal `D` / `t`. For custom geometry, a steel mass may be derived from `0.00785A kg/m` only when the assumed density `7850 kg/m3` is stated.
+- Present common catalogue supplementary properties when the checked row publishes them: torsion constant `J`, warping constant `Iw`, PFC centroid coordinate `XL`, PFC shear-centre coordinate `XO`, directional elastic moduli, and principal-axis properties for angles. For entered ideal geometry calculate `Zx,T`, `Zx,B`, `Zy,R` and `Zy,L` from the matching extreme-fibre distances; do not collapse an unsymmetric section to a single unexplained `Z` value.
+- Label the polar second moment as `Ix + Iy`, without introducing `Jp`; state that it is equal to the St Venant torsion constant `J` only for circular sections.
+- Present dimensionless geometric ratios such as `D/t`, `b/t`, `d1/tw`, `(bf-tw)/(2tf)` for symmetric UB/UC or I-sections, and `(bf-tw)/tf` for channels without assigning a section classification.
 - Label every result as catalogue, derived from catalogue data, derived from entered geometry or unavailable.
+- Do not show a bare zero for product of inertia. State whether `Ixy = 0` follows from symmetry, whether rotational symmetry makes every centroidal axis principal, or whether a non-zero value requires the reported principal axes. Keep unavailable catalogue data visually distinct from a calculated zero.
 - Use a compact scalar summary plus an x/y property table rather than repeating a large card for each axis value.
-- Include one compact deterministic SVG for the current section only, showing the centroid and positive `x` and `y` directions. Use selected nominal dimensions in catalogue mode and entered dimensions in custom mode.
+- Organise the visible result hierarchy by section family: selected section and geometry; gross section basis; properties about the displayed reference axes; applicable section-specific constants; principal-axis relationship; then geometric ratios, calculation basis and source limitations.
+- For rotationally symmetric CHS, solid circles and round bars, show one equivalent centroidal-axis column and state that every centroidal diameter has the same properties. Do not repeat identical x/y values as separate decision information.
+- For equal angles, place actual thickness, root/toe radii and centroid distances with the gross product geometry; keep n-n / p-p centroidal properties in the main axis table; then present the principal x-x / y-y inertia, radii, angle and moduli as a separate structured group.
+- Hide family-inapplicable supplementary cards instead of filling the main result hierarchy with unavailable J, Iw, XO or shear-reference placeholders. Retain unavailable status in the detailed basis where it is useful for completeness.
+- Include one compact deterministic SVG for the current section only. Use catalogue-style chain centre lines, without positive-direction arrowheads, and mark the centroid `C`. Use selected nominal dimensions in catalogue mode and entered dimensions in custom mode.
 - Mark the axis location as indicative when a checked catalogue row lacks the centroid coordinates required to place both centroidal axes. The SVG is a convention guide, not a numeric source.
+- For PFC catalogue rows, use published `XL` to place the centroidal `y-y` axis and show published `XO` separately; do not replace either value with ideal sharp-corner geometry.
+- Use positive horizontal coordinates to the right, positive vertical coordinates upward and positive principal-axis rotation counter-clockwise.
+- For equal angles, follow the InfraBuild catalogue convention: centroidal `n-n` is horizontal, centroidal `p-p` is vertical, and `x-x` / `y-y` are principal axes at 45 degrees. Keep the complete 46-row Table 19 / Table 21 directory, including mass, actual thickness, radii, centroid distances, directional `Z`, plastic moduli, `I_np`, principal properties and `J`. Do not substitute sharp-corner ideal geometry for a published rolled-angle value. The Axial Member tool may continue using its smaller, separately verified strength-data subset.
 - Show the publisher, catalogue edition or year and checked-row status. Describe nominal dimensions combined with geometric formulas as a mixed basis, not a manufacturer table-property lookup.
+- Treat section compactness, element slenderness classification, `kf`, effective properties and design capacity as grade- and standard-dependent design outputs. Keep them in Beam or Axial Member workflows unless Section Properties gains an explicit material-grade and AS 4100 classification branch.
 
 Scope boundaries:
 
@@ -1528,11 +2105,13 @@ Scope boundaries:
 - Treat custom shapes as sharp-corner ideal geometry. Show the formulas and identify composite addition or subtraction where used.
 - Keep x/y axes explicit; do not describe unsymmetric x/y values as principal-axis properties.
 - Do not replace unavailable rolled-section properties with sharp-corner geometry. Use verified manufacturer values when available.
-- Do not report plastic modulus, principal-axis rotation, `Ixy`, torsion constants, warping constants, effective properties, local buckling, material strength or design capacity unless separately implemented and reviewed.
+- Report plastic modulus, torsion constant and warping constant only where the selected catalogue row publishes them or a reviewed ideal-geometry formula is implemented. Otherwise show `Not available`; never infer rolled-section values from simplified sharp-corner geometry.
+- Report `Ixy` and principal-axis transformation only from reviewed ideal geometry or symmetry. Do not infer them for an incomplete rolled-section catalogue row.
+- Do not report effective properties, local buckling classification, material strength or design capacity unless separately implemented and reviewed.
 - Keep root radii, corner radii, tapers, welds, holes, copes and manufacturing tolerances outside the ideal geometry model.
 - Keep catalogue availability and material capacity outside this lookup unless separately verified and implemented.
 
-### 15.12 Beam Section Web Tab Rules
+### 15.12 Beam Section Capacity Web Tab Rules
 
 The Beam tab is a lightweight AS 4100 section-capacity tool. Keep its public name as `Beam Section Capacity`. It reports cross-section resistance only and must not imply that beam-member stability, restraint or serviceability has been checked.
 
@@ -2134,7 +2713,7 @@ Required visible limitations:
 
 Implementation rule:
 
-- The tab is part of the shared `index.html` tool-panel system and uses the short nav label `Rock`.
+- The tab is part of the shared `index.html` tool-panel system, belongs to `Foundations`, and uses the full visible navigation label `Rock Anchor Selector`.
 - The current data/update logic may live in the scoped module `rock-anchor-selector/app.js`; do not treat this as a separate standalone page when editing the main handbook.
 - Keep the product-card layout consistent with other tabs: input row, selected summary, compact published values, specification grid and folded limitations/source panel.
 - Keep all visible text English-only and concise.
@@ -2201,7 +2780,27 @@ Token and browser notes:
 
 ### 15.18 Professional Web Audit Protocol
 
-This is the single mandatory audit workflow for SC Handbook. Whenever the user asks to `check`, `audit`, `review`, `verify`, `核查`, `检查`, `复核`, or asks whether a page or calculation still has problems, use this protocol unless the user explicitly narrows the scope.
+This is the single mandatory audit workflow for SC Handbook. Section 6.2 defines the required calculation contract; this section verifies that the source evidence, implementation, interface and test record satisfy that contract. Whenever a page or calculation is requested to be checked, audited, reviewed or verified, or the user asks whether problems remain, use this protocol unless the scope is explicitly narrowed.
+
+#### 15.18.0 Audit Control Flow
+
+Audit the engineering claim before judging visual polish. Use the workflow type in Section 2.5 and the matching page pattern in Section 15.2.2 to select the evidence required; do not apply calculator tests to a pure lookup or accept a quick-check `PASS` after testing capacity alone.
+
+Complete the audit in this order:
+
+| Stage | Mandatory question | Minimum evidence | Required response when failed |
+| --- | --- | --- | --- |
+| `A. Inventory` | What exact revision, tab, mode, inputs, outputs and source records are being audited? | Worktree/commit/build identity and surface inventory | Mark the audit scope unclear; do not claim local/public equivalence |
+| `B. Claim and scope` | What engineering question, workflow type and decision does the primary result claim to answer? | Section 2.4 chain, result type, limit state, applicability and exclusions | Simplify/relabel the claim or block the result before formula approval |
+| `C. Source and applicability` | Does the cited source govern the selected material, geometry, action basis and condition? | Readable governing clause/table/figure/catalogue row, edition and linked conditions | Set `Source_Not_Verified` or `Not evaluated`; do not infer missing requirements |
+| `D. Calculation` | Are transcription, units, factors, branches, numerical results and governing logic correct? | `Calculation_ID`, independent calculation, branch/boundary cases and invariants | Suppress the affected result and classify the numerical defect by severity |
+| `E. State and dependency` | Do all input, lookup, override, hidden, invalid and mode transitions update the full result chain correctly? | Transition matrix, invalid/out-of-scope tests and stale-result checks | Fail closed; keep the controlling input and next action visible |
+| `F. Page and explanation` | Does the page expose the minimum basis, primary answer, status and residual checks with the correct query pattern? | Desktop/phone review, hierarchy, terminology, accessibility and warning review | Modify, delete/simplify or mark unclear; do not hide a technical defect with styling |
+| `G. Regression and release` | Did accepted changes preserve unaffected calculations and reach the intended local/remote/public state? | Automated/manual regressions, clean diff, commit identity and deployment fetch where applicable | Keep the change local/unreleased and report the failed verification boundary |
+
+An upstream failure blocks downstream approval of the engineering claim, but it does not prevent recording independent interface or presentation findings. For example, an unreadable source blocks `Checked` status even if arithmetic appears correct; the audit may still report a mobile overflow defect separately.
+
+Every finding must identify its audit stage, affected workflow/result, `Calculation_ID` where applicable, evidence and required disposition. `Verified - no change` is permitted only when the relevant stage has positive evidence, not because no obvious defect was seen.
 
 #### 15.18.1 Audit Mode and Change Control
 
@@ -2243,7 +2842,7 @@ Confirm that the current tab register in Section 15.2 matches the actual navigat
 
 For every formula, factor, default, table value, material strength and product property:
 
-1. Identify whether it is `Standard-derived`, `Catalogue-derived`, `Geometry-derived`, `Project input`, `User override`, `Conservative assumption`, or `Source_Not_Verified`.
+1. Identify its Section 6.2.2 evidence class and input/data class, including whether it is `Normative`, `Catalogue`, `Interpretive`, `Worked example`, `Derived`, `Project input`, `User override`, `Conservative assumption`, or `Source_Not_Verified`.
 2. Locate the governing document, edition, clause/table/figure, PDF page or catalogue row.
 3. Confirm the source is applicable to the selected material, product, geometry, fabrication method, limit state and design situation.
 4. Check that the page has not copied explanatory context from one clause while calculating with another clause's equation or capacity factor.
@@ -2252,7 +2851,7 @@ For every formula, factor, default, table value, material strength and product p
 7. Record page-level or row-level evidence in `REFERENCE_TRACEABILITY.md`; do not overload visible web text with audit detail.
 8. Mark unreadable, missing or edition-uncertain evidence `Source_Not_Verified`. Do not describe it as verified because a secondary website repeats the same value.
 
-Use primary standards and manufacturer documents where available. Reference books and worked examples may confirm interpretation and arithmetic, but they do not replace the governing standard.
+For the default Australian handbook path, confirm the Section 4 authority chain explicitly: project/NCC adoption context -> adopted Australian or AS/NZS Standard -> applicable Australian product/material Standard -> Australian interpretive aid or manufacturer evidence. Record any international source and its permitted non-governing role. Use primary standards and manufacturer documents where available. Reference books and worked examples may confirm interpretation and arithmetic, but they do not replace the governing Standard.
 
 #### 15.18.4 Formula and Numerical Audit
 
@@ -2272,7 +2871,9 @@ Audit every active calculation branch, not only the default example:
 - verify a hidden or inactive branch cannot continue contributing to a result;
 - verify no `NaN`, infinity, stale result, silent zero or plausible-looking fallback is presented as calculated.
 
-For each governing formula, complete at least one independent hand calculation or separate script calculation using displayed inputs. For conditional formulas, test each branch and one value immediately either side of the branch boundary. Compare the independent result with the browser output using unrounded intermediate values and record the acceptable numerical tolerance.
+Reconstruct the complete Section 2.4 engineering chain for every governing result and classify it under Section 2.5. Confirm that a capacity-only result shows the nominal-to-design resistance path without implying a check; a quick check introduces a compatible design action and names the exact checked limit state; and preliminary selection or sizing reruns every claimed in-scope check for the selected candidate. Missing actions must suppress utilisation and `PASS` / `FAIL`, not be interpreted as zero demand.
+
+For each governing formula, confirm its `Calculation_ID` and complete the applicable Section 6.2.7 matrix. The independent hand calculation or separate script calculation must not call or copy the production calculation function. For conditional formulas, test each branch and one value immediately either side of the branch boundary. Compare the independent result with the browser output using unrounded intermediate values and record the reasoned numerical tolerance.
 
 #### 15.18.5 Input Classification and Engineering Order
 
@@ -2408,7 +3009,7 @@ Review all visible text and generated text:
 
 Review the page against Sections 15.2 to 15.6 and the canonical contract in Sections 15.4.1 and 15.4.2:
 
-- compact brand header, short navigation and immediate access to the active calculator;
+- compact brand header, grouped full-name navigation and immediate access to the active calculator;
 - one clear tool title, not a repeated hero heading;
 - engineering input row bands in dependency order;
 - one selected-basis summary where useful;
@@ -2517,6 +3118,9 @@ Keep recommendations proportional to the handbook. Prefer one clear warning or o
 
 An audit may be described as complete only when:
 
+- each audited tab/mode has a Section 2.5 workflow classification and follows the matching Section 15.2.2 page pattern;
+- the full Section 2.4 logic chain has been reconstructed for each governing result, with non-applicable steps explicitly identified;
+- every in-scope governing result has a current Section 6.2 calculation contract and stable `Calculation_ID`;
 - every in-scope formula branch has a verified source status;
 - governing formulas have independent numerical evidence;
 - input dependencies and invalid states have been exercised;
