@@ -2365,8 +2365,9 @@ Custom dimensions
   Conditional family-specific dimension row; hidden in Catalogue mode
 
 Selected section
-  Designation + grade + source status
-  Key section properties + compact value-driven section guide
+  Designation + grade + active direction
+  Capacity-basis summary + compact value-driven section guide
+  Section details [collapsed]
 
 RESULTS Section capacity
   Primary: design section moment capacity, phi Ms
@@ -2394,17 +2395,20 @@ Phone layout:
 
 #### 15.12.9 Selected Section Summary and Figure
 
-The summary confirms inputs and source properties; it is not a second calculation-basis panel.
+The summary confirms the adopted capacity basis; it is not a section-property report or a second calculation-basis panel.
 
-Show only properties relevant to the current family and direction:
+Keep the always-visible summary to the minimum needed to understand the reported capacities:
 
-- all families: designation / custom family, grade, direction, mass, `Ag`, `fy,m`, `Z`, `S`, `Ze` and section class where available;
-- UB / UC: `d`, `bf`, `tw`, `tf`, clear web depth, and `fy,w` when shear is evaluated;
-- PFC: `d`, `bf`, `tw`, `tf`, clear web depth, catalogue centroid coordinate `xL`, catalogue shear-centre coordinate `xO`, and `fy,w` when shear is evaluated;
-- CHS: `do`, `t`, `I`, `Z`, `S`, `Ze`, `kf` and compactness;
-- RHS / SHS: `d`, `b`, `t`, direction-specific `I`, `Z`, `S`, `Ze`, `kf` and compactness;
-- Equal Angle: `b`, actual `t`, principal-axis/load-direction key, and direction-specific `I`, `Z`, `S` and `Ze` from InfraBuild Tables 19 and 20;
-- Rod: `D`, `I`, `Z`, `S`, `Ze` and diameter-dependent `fy,m`.
+- all families: designation / custom family, grade, active direction, `fy,m`, `Ze` and section class where available;
+- shear-evaluated paths: active shear area (`Aw` or `Ae`) and `fy,w` where it differs from the member strength basis;
+- active overrides: identify them in the selection/material state rather than repeating long source text in the summary.
+
+Move supporting data to a collapsed `Section details` row directly below the summary:
+
+- family dimensions, mass and `Ag`;
+- direction-specific `I`, `Z` and `S`;
+- `kf`, catalogue coordination status and the full product-table source;
+- PFC catalogue centroid coordinate `xL` and shear-centre coordinate `xO`.
 
 Do not show the capacity equation, web-screen ratio or interaction result in this strip. Those belong in calculation steps.
 
