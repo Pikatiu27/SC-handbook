@@ -1770,7 +1770,7 @@ const screwInputIds = [
 ];
 
 const $ = id => document.getElementById(id);
-const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "holeDiameter", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeDistanceBasis", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "edgeDistanceBasis2", "effectiveEdgeInput2", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand", "shearDemand", "tensionDemand"];
+const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "holeDiameter", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeDistanceBasis", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "edgeDistanceBasis2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand", "shearDemand", "tensionDemand"];
 const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
 const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "screw", "rock"];
@@ -1785,7 +1785,7 @@ let boltMode = "standard";
 let beamSectionType = "ub";
 let memberType = "chs";
 const manualInputIds = [
-  "boltCount", "threadPlanes", "shankPlanes", "holeDiameter", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
+  "boltCount", "threadPlanes", "shankPlanes", "holeDiameter", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
@@ -1940,7 +1940,7 @@ function calculateConnectedPly(config, bolt, count, holeDiameter, boltPitch) {
     bearingEdge,
     localCapacity,
     groupCapacity,
-    controlLabel: bearingEdge <= bearingFull ? "Edge-limited bearing" : "Full bearing"
+    controlLabel: bearingEdge <= bearingFull ? "Edge tear-out limit" : "Full-bearing limit"
   };
 }
 
@@ -1964,9 +1964,92 @@ function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
       : `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.effectiveEdge)} mm`;
   return `
     <div><b>${ply.label} full bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>f<sub>up</sub> = ${ply.plateStrength.toFixed(0)} MPa; per bolt = 0.90 x 3.2 x ${fixed(bolt.d)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingFull)} kN</code></div>
-    <div><b>${ply.label} edge-limited bearing - AS 4100 Cl. 9.2.2.4(2)</b><code>${effectiveEdgeBasis}; per bolt = 0.90 x ${fixed(ply.effectiveEdge)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingEdge)} kN</code></div>
+    <div><b>${ply.label} edge tear-out limit - AS 4100 Cl. 9.2.2.4(2)</b><code>${effectiveEdgeBasis}; per bolt = 0.90 x ${fixed(ply.effectiveEdge)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingEdge)} kN</code></div>
     <div><b>${ply.label} minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value(ply.edgeConditionId).toFixed(2)}d<sub>f</sub> = ${fixed(ply.minimumEdge)} mm; provided e = ${fixed(ply.actualEdge)} mm - ${ply.edgeDistancePass ? "PASS" : "FAIL"}</code></div>
     <div><b>${ply.label} local hole-bearing capacity</b><code>critical-hole capacity = min(${fixed(ply.bearingFull)}, ${fixed(ply.bearingEdge)}) = ${fixed(ply.localCapacity)} kN; equal-share group capacity = ${count} x ${fixed(ply.localCapacity)} = ${fixed(ply.groupCapacity)} kN</code></div>`;
+}
+
+function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear) {
+  const mode = $("integrityMode").value;
+  const componentSelect = $("integrityComponent");
+  componentSelect.disabled = !separatePlyCheck;
+  if (!separatePlyCheck && componentSelect.value !== "primary") componentSelect.value = "primary";
+  const checkedPly = separatePlyCheck && componentSelect.value === "second" ? secondPly : primaryPly;
+  const enabled = mode === "manual";
+  $("integrityInputs").hidden = !enabled;
+  $("integrityMaterialBasis").innerHTML = `${checkedPly.label} &middot; f<sub>uc</sub> = ${checkedPly.plateStrength.toFixed(0)} MPa`;
+
+  const empty = {
+    enabled: false,
+    complete: false,
+    checkedPly,
+    net: null,
+    block: null,
+    netRatio: NaN,
+    blockRatio: NaN,
+    error: ""
+  };
+  if (!enabled) {
+    $("integritySummaryStatus").textContent = "Not evaluated · optional manual areas";
+    return empty;
+  }
+
+  let net = null;
+  let block = null;
+  const errors = [];
+  try {
+    net = BoltIntegrity.netSectionTension({
+      Ag: value("integrityAg"),
+      An: value("integrityAn"),
+      fy: value("integrityFy"),
+      fu: checkedPly.plateStrength,
+      kt: value("integrityKt")
+    });
+    $("integrityNetCapacity").textContent = `${fixed(net.design)} kN`;
+    $("integrityNetBasis").textContent = net.control;
+  } catch (error) {
+    errors.push(error.message);
+    $("integrityNetCapacity").textContent = "Incomplete";
+    $("integrityNetBasis").textContent = "Enter valid Ag, An, fyc and kt";
+  }
+
+  try {
+    block = BoltIntegrity.blockShear({
+      Agv: value("integrityAgv"),
+      Anv: value("integrityAnv"),
+      Ant: value("integrityAnt"),
+      fy: value("integrityFy"),
+      fu: checkedPly.plateStrength,
+      kbs: value("integrityKbs")
+    });
+    $("integrityBlockCapacity").textContent = `${fixed(block.design)} kN`;
+    $("integrityBlockBasis").textContent = block.control;
+  } catch (error) {
+    errors.push(error.message);
+    $("integrityBlockCapacity").textContent = "Incomplete";
+    $("integrityBlockBasis").textContent = "Enter valid Agv, Anv, Ant, fyc and kbs";
+  }
+
+  const complete = Boolean(net && block);
+  $("integritySummaryStatus").textContent = complete
+    ? `φNt ${fixed(net.design)} kN · φRbs ${fixed(block.design)} kN`
+    : "Incomplete · enter critical areas";
+  if (complete) {
+    $("integrityCheckNote").innerHTML = "Use where V<sub>f</sub><sup>*</sup> is the axial force transferred through the checked component. Review all plausible paths and enter the governing path areas.";
+  } else {
+    $("integrityCheckNote").textContent = `Complete the manual-area check. ${[...new Set(errors)].join(" ")}`;
+  }
+
+  return {
+    enabled,
+    complete,
+    checkedPly,
+    net,
+    block,
+    netRatio: net && net.design > 0 ? designShear / net.design : NaN,
+    blockRatio: block && block.design > 0 ? designShear / block.design : NaN,
+    error: [...new Set(errors)].join(" ")
+  };
 }
 
 function calculateBolt() {
@@ -1982,7 +2065,6 @@ function calculateBolt() {
   const threadShear = 0.8 * 0.62 * category.fuf * threadKrd * kr * bolt.Ac / 1000;
   const shankShear = 0.8 * 0.62 * category.fuf * shankKrd * kr * bolt.Ao / 1000;
   const selectedShear = plane === "N" ? threadShear : shankShear;
-  const alternateShear = plane === "N" ? shankShear : threadShear;
   const count = Math.max(1, Math.round(value("boltCount")));
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
@@ -2021,8 +2103,8 @@ function calculateBolt() {
   $("plyComparison").hidden = !separatePlyCheck;
   $("secondPlyEdgeCheck").hidden = !separatePlyCheck;
   $("connectedPlyBasisNote").textContent = separatePlyCheck
-    ? "Each connected part is assessed using its entered properties and edge geometry."
-    : "Primary-ply properties are adopted for both connected parts.";
+    ? "Each connected ply is assessed using its entered properties and edge geometry."
+    : "Primary ply properties apply to both connected plies.";
   const thinnerPlyThickness = separatePlyCheck
     ? Math.min(primaryPly.plateThickness, secondPly.plateThickness)
     : primaryPly.plateThickness;
@@ -2031,8 +2113,16 @@ function calculateBolt() {
 
   const capacitiesEqual = separatePlyCheck && Math.abs(primaryPly.groupCapacity - secondPly.groupCapacity) < 0.05;
   const governingPly = separatePlyCheck && secondPly.groupCapacity < primaryPly.groupCapacity ? secondPly : primaryPly;
+  const fullCapacitiesEqual = separatePlyCheck && Math.abs(primaryPly.bearingFull - secondPly.bearingFull) < 0.05;
+  const edgeCapacitiesEqual = separatePlyCheck && Math.abs(primaryPly.bearingEdge - secondPly.bearingEdge) < 0.05;
+  const governingFullPly = separatePlyCheck && secondPly.bearingFull < primaryPly.bearingFull ? secondPly : primaryPly;
+  const governingEdgePly = separatePlyCheck && secondPly.bearingEdge < primaryPly.bearingEdge ? secondPly : primaryPly;
+  const governingFullPlyLabel = !separatePlyCheck ? "Both plies identical" : fullCapacitiesEqual ? "Both plies equal" : governingFullPly.label;
+  const governingEdgePlyLabel = !separatePlyCheck ? "Both plies identical" : edgeCapacitiesEqual ? "Both plies equal" : governingEdgePly.label;
+  const fullBearingGroupCapacity = count * governingFullPly.bearingFull;
+  const edgeTearoutGroupCapacity = count * governingEdgePly.bearingEdge;
   const governingPlyLabel = !separatePlyCheck
-    ? "Both connected plies identical"
+    ? "Both plies identical"
     : capacitiesEqual
       ? "Both plies equal"
       : governingPly.label;
@@ -2049,6 +2139,7 @@ function calculateBolt() {
   const designTension = value("tensionDemand");
   const slipShearDemand = value("slipShearDemand");
   const slipTensionDemand = value("slipTensionDemand");
+  const integrity = calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear);
   const criticalBoltShear = designShear / count;
   const boltShearRatio = groupShear > 0 ? designShear / groupShear : Infinity;
   const plyBearingRatio = localPlyCapacity > 0 ? criticalBoltShear / localPlyCapacity : Infinity;
@@ -2064,20 +2155,43 @@ function calculateBolt() {
   const hasDemand = hasShearDemand || hasTensionDemand;
   const hasSlipDemand = slipShearDemand > 0 || slipTensionDemand > 0;
   let governingRatio = NaN;
-  let governingNote = "Enter design actions to identify whether bolt strength or local hole bearing governs.";
+  let governingNote = "Enter V<sub>f</sub><sup>*</sup> and/or N<sub>tf</sub><sup>*</sup> to activate the strength check.";
+  const strengthCandidates = [];
   if (hasShearDemand && !hasTensionDemand) {
-    governingRatio = Math.max(boltShearRatio, plyBearingRatio);
-    governingNote = plyBearingRatio > boltShearRatio
-      ? `Shear only: ${governingPlyDemandLabel} governs. Check V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${plyBearingRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.4; bolt shear ratio under AS 4100 Cl. 9.2.2.1 = ${boltShearRatio.toFixed(2)}.`
-      : `Shear only: bolt shear governs. Check V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${boltShearRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.1; local hole-bearing ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+    strengthCandidates.push(
+      { label: "bolt shear", ratio: boltShearRatio },
+      { label: governingPlyDemandLabel, ratio: plyBearingRatio }
+    );
   } else if (!hasShearDemand && hasTensionDemand) {
-    governingRatio = boltTensionRatio;
-    governingNote = `Tension only: bolt tension governs under AS 4100 Cl. 9.2.2.2. Check N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${boltTensionRatio.toFixed(2)}.`;
+    strengthCandidates.push({ label: "bolt tension", ratio: boltTensionRatio });
   } else if (hasShearDemand && hasTensionDemand) {
-    governingRatio = Math.max(strengthRatio, plyBearingRatio);
-    governingNote = plyBearingRatio > strengthRatio
-      ? `Shear and tension: ${governingPlyDemandLabel} governs in shear under AS 4100 Cl. 9.2.2.4 with ratio ${plyBearingRatio.toFixed(2)}. Bolt combined shear-tension ratio under AS 4100 Cl. 9.2.2.3 = ${strengthRatio.toFixed(2)}.`
-      : `Shear and tension: bolt combined shear-tension interaction governs under AS 4100 Cl. 9.2.2.3 with ratio ${strengthRatio.toFixed(2)}. Local hole-bearing ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+    strengthCandidates.push(
+      { label: "bolt combined shear-tension interaction", ratio: strengthRatio },
+      { label: governingPlyDemandLabel, ratio: plyBearingRatio }
+    );
+  }
+  if (hasShearDemand && integrity.complete) {
+    strengthCandidates.push(
+      { label: `${integrity.checkedPly.label.toLowerCase()} section tension`, ratio: integrity.netRatio },
+      { label: `${integrity.checkedPly.label.toLowerCase()} block shear`, ratio: integrity.blockRatio }
+    );
+  }
+  if (strengthCandidates.length) {
+    const orderedCandidates = [...strengthCandidates].sort((a, b) => b.ratio - a.ratio);
+    const governingCandidate = orderedCandidates[0];
+    governingRatio = governingCandidate.ratio;
+    const actionLabel = hasShearDemand && hasTensionDemand ? "Shear and tension" : hasShearDemand ? "Shear transfer" : "Bolt tension";
+    const comparison = orderedCandidates.slice(1).map(candidate => `${candidate.label} ${candidate.ratio.toFixed(2)}`).join("; ");
+    governingNote = `${actionLabel}: ${governingCandidate.label} governs at ${governingCandidate.ratio.toFixed(2)}.${comparison ? ` Other included checks: ${comparison}.` : ""}`;
+  }
+  const integrityIncomplete = hasShearDemand && integrity.enabled && !integrity.complete;
+  if (integrityIncomplete) {
+    const integrityIssue = (integrity.error || "enter all required critical areas").replace(/\.$/, "");
+    governingNote = `Connected-ply integrity is incomplete: ${integrityIssue}. Bolt and local hole-bearing results remain provisional.`;
+  } else if (hasShearDemand && !integrity.enabled) {
+    governingNote += " Net-section tension and block shear are not evaluated.";
+  } else if (hasShearDemand && integrity.complete) {
+    governingNote += " Manual connected-ply integrity covers the selected component and entered path only.";
   }
   const detailingFailures = [];
   if (pitchApplicable && !pitchPass) detailingFailures.push("minimum pitch");
@@ -2117,26 +2231,24 @@ function calculateBolt() {
       cell.classList.toggle("is-selected-grade", hasInstalledTension && selectedSize && cell.dataset.grade === category.grade);
     });
   });
-  $("selectedShearLabel").textContent = `Shear capacity - ${plane}`;
+  $("selectedShearLabel").innerHTML = `Design shear capacity, &phi;V<sub>f</sub> &middot; ${plane}-plane`;
   $("selectedShearCapacity").textContent = fixed(selectedShear);
   $("selectedShearNote").innerHTML = plane === "N"
-    ? `&phi;V<sub>f</sub> - threads intercept plane - AS 4100 Cl. 9.2.2.1; includes k<sub>r</sub> = ${kr.toFixed(2)}`
-    : `&phi;V<sub>f</sub> - threads clear of plane - AS 4100 Cl. 9.2.2.1; includes k<sub>r</sub> = ${kr.toFixed(2)}`;
-  $("alternateShearLabel").textContent = `Shear capacity - ${plane === "N" ? "X" : "N"}`;
-  $("alternateShearCapacity").textContent = fixed(alternateShear);
-  $("alternateShearNote").innerHTML = plane === "N"
-    ? `threads clear of plane; includes k<sub>r</sub> = ${kr.toFixed(2)}`
-    : `threads intercept plane; includes k<sub>r</sub> = ${kr.toFixed(2)}`;
+    ? "Threads intercept shear plane &middot; AS 4100 Cl. 9.2.2.1"
+    : "Threads clear of shear plane &middot; AS 4100 Cl. 9.2.2.1";
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `One shear-plane &phi;V<sub>f</sub> includes k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} and k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring the AS 4100 Table 9.2.2.1 reduction referenced by AS 4100 Cl. 9.2.2.1.`;
+  $("boltResultNote").innerHTML = `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} &middot; k<sub>r</sub> = ${kr.toFixed(2)}.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
-  $("groupShearBasis").innerHTML = `${count} bolt${count === 1 ? "" : "s"} × (${nThread} N + ${nShank} X) plane${nThread + nShank === 1 ? "" : "s"} per bolt = ${totalThreadPlanes} N + ${totalShankPlanes} X = ${totalShearPlanes} total shear plane${totalShearPlanes === 1 ? "" : "s"}. Equal action per identical bolt is assumed. Change k<sub>r</sub> only for bolted lap connection reduction.`;
+  $("groupShearBasis").textContent = `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal bolt sharing`;
   $("primaryPlyCapacity").textContent = `${fixed(primaryPly.groupCapacity)} kN`;
   $("primaryPlyControl").textContent = primaryPly.controlLabel;
   $("secondPlyCapacity").textContent = `${fixed(secondPly.groupCapacity)} kN`;
   $("secondPlyControl").textContent = secondPly.controlLabel;
-  $("bearingGroupCapacity").textContent = `${fixed(equalShareGroupPlyCapacity)} kN`;
-  $("bearingGroupBasis").textContent = `${governingPlyLabel} · ${governingPly.controlLabel.toLowerCase()} governs · ${fixed(localPlyCapacity)} kN per critical hole × ${count}`;
+  $("bearingGroupCapacity").textContent = `${fixed(fullBearingGroupCapacity)} kN`;
+  $("bearingGroupBasis").textContent = `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
+  $("tearoutGroupCapacity").textContent = `${fixed(edgeTearoutGroupCapacity)} kN`;
+  $("tearoutGroupBasis").textContent = `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
+  $("connectedPlyGoverningBasis").textContent = `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`;
   updateConnectedPlyOutputs(primaryPly);
   updateConnectedPlyOutputs(secondPly, "2");
   $("pitchCheckValue").innerHTML = pitchApplicable
@@ -2153,15 +2265,17 @@ function calculateBolt() {
   $("slipCapacityBasis").textContent = slip === null
     ? "TF categories only"
     : `Per bolt · ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
-  $("strengthGoverningRatio").textContent = Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
+  $("strengthGoverningRatio").textContent = !integrityIncomplete && Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
   $("strengthGoverningStatus").textContent = !detailingCompliant
     ? "NON-COMPLIANT"
+    : integrityIncomplete
+      ? "INCOMPLETE"
     : !hasDemand
     ? "Enter design actions"
     : governingRatio <= 1
-        ? "PASS"
+        ? hasShearDemand ? "SCOPED PASS" : "PASS"
         : "FAIL";
-  $("strengthGoverningStatus").className = !detailingCompliant ? "fail" : !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
+  $("strengthGoverningStatus").className = !detailingCompliant ? "fail" : integrityIncomplete ? "check" : !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
   $("strengthGoverningNote").innerHTML = strengthDisplayNote;
   $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
   $("slipGoverningStatus").textContent = !detailingCompliant
@@ -2192,6 +2306,13 @@ function calculateBolt() {
   const installedTensionFormula = hasInstalledTension
     ? `<code>N<sub>ti</sub> = ${preload.toFixed(0)} kN for ${size} property class ${category.grade}. This is the minimum installed bolt tension, not &phi;N<sub>tf</sub>.</code>`
     : `<code>Not required for ${categoryKey}. Snug-tight categories have no specified minimum installed bolt tension.</code>`;
+  const integrityFormulaRows = !integrity.enabled
+    ? `<div><b>Connected-ply integrity</b><code>Not evaluated. Net-section tension and block shear require manual critical areas.</code></div>`
+    : !integrity.complete
+      ? `<div><b>Connected-ply integrity</b><code>Incomplete. ${integrity.error}</code></div>`
+      : `
+        <div><b>${integrity.checkedPly.label} section tension - AS 4100 Cl. 9.1.9(b) and Cl. 7.2</b><code>&phi;N<sub>t</sub> = 0.90 min(A<sub>g</sub>f<sub>yc</sub>, 0.85k<sub>t</sub>A<sub>n</sub>f<sub>uc</sub>) = 0.90 min(${fixed(integrity.net.grossYield)}, ${fixed(integrity.net.netFracture)}) = ${fixed(integrity.net.design)} kN; ratio = ${integrity.netRatio.toFixed(2)}</code></div>
+        <div><b>${integrity.checkedPly.label} block shear - AS 4100 Cl. 9.1.9(e)</b><code>&phi;R<sub>bs</sub> = 0.75 min(0.6f<sub>uc</sub>A<sub>nv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>, 0.6f<sub>yc</sub>A<sub>gv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>) = 0.75 min(${fixed(integrity.block.ruptureLimit)}, ${fixed(integrity.block.yieldLimit)}) = ${fixed(integrity.block.design)} kN; ratio = ${integrity.blockRatio.toFixed(2)}</code></div>`;
   $("formulaSteps").innerHTML = `
     <div><b>Tension - AS 4100 Cl. 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
     <div><b>Minimum installed bolt tension - AS 4100 Table 15.2.2.2</b>${installedTensionFormula}</div>
@@ -2204,12 +2325,13 @@ function calculateBolt() {
     <div><b>Maximum pitch - AS 4100 Cl. 9.5.3</b>${maximumPitchFormula}</div>
     ${activePlyFormulaRows}
     <div><b>Governing local hole-bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>${governingPlyLabel}; equal sharing: V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n = ${fixed(designShear)}/${count} = ${fixed(criticalBoltShear)} kN; governing group capacity = ${fixed(equalShareGroupPlyCapacity)} kN; ratio = ${fixed(designShear)}/${fixed(equalShareGroupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}</code></div>
+    ${integrityFormulaRows}
     <div><b>Detailing compliance</b><code>${detailingCompliant ? "All applicable lightweight detailing checks pass." : detailingFailureNote}</code></div>
     <div><b>Strength governing check</b><code>${governingNote}</code></div>
     <div><b>Combined shear and tension - AS 4100 Cl. 9.2.2.3</b>${strengthInteractionFormula}</div>
     <div><b>TF slip - AS 4100 Cl. 9.2.3.1</b>${slipFormula}</div>
     <div><b>TF combined slip - AS 4100 Cl. 9.2.3.3</b>${slipInteractionFormula}</div>
-    <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8. TF categories also require the separate serviceability slip checks above.</code></div>`;
+    <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8.${slip === null ? "" : " Complete the separate serviceability slip checks above."}</code></div>`;
 }
 
 function uniqueSorted(list, key) {

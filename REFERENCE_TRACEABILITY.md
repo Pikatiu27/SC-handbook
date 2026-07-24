@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-07-20
+Last updated: 2026-07-24
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -67,6 +67,58 @@ Calculation-record rules:
 - A source edition, formula, factor, default or branch change triggers reverification of every affected `Calculation_ID`.
 - Detailed evidence stays in this file. The visible page retains only the concise basis, critical assumption, status and limitation required for quick engineering use.
 
+### Bolt Connected-Ply Integrity Records
+
+#### `BOLT-PLY-TENSION-01`
+
+- **Tab / output:** Bolt Capacity / `Design section tension capacity, phi Nt`.
+- **Engineering question:** What is the design tension capacity of the selected critical connection component using user-entered gross and net areas?
+- **Result type / limit state:** ULS design capacity and demand ratio.
+- **Governing source:** AS 4100:2020 Cl. 9.1.9(b), Cl. 7.2 and Table 3.4; local PDF pages 128, 112 and 47.
+- **Evidence class:** Normative formula with project inputs.
+- **Applicability:** Steel connection component subject to transferred axial tension; `Vf*` must represent that force and `Ag`, `An`, `fyc`, `fuc` and `kt` must describe the same component and critical section.
+- **Equation:** `phi Nt = 0.90 min(Ag fyc, 0.85 kt An fuc)`.
+- **Units / defaults:** Areas in `mm2`, strengths in `MPa`, result in `kN`; `kt = 1.0` is an editable starting value, not an inferred entitlement.
+- **Exclusions:** Automatic net-section geometry, staggered-hole deduction, force distribution classification, plate bending, compression, buckling, welds and supporting-member effects.
+- **Implementation owner:** `bolt-integrity.js` `netSectionTension()`; `app.js` `calculateConnectedPlyIntegrity()` and `calculateBolt()`.
+- **Verification evidence:** `BOLT-INTEGRITY-TENSION-01`; unit test and browser output agree with the independent arithmetic result `558.756 kN`.
+- **Status:** For Review; source formula visually checked, project input selection remains the user's responsibility.
+
+#### `BOLT-BLOCK-SHEAR-01`
+
+- **Tab / output:** Bolt Capacity / `Design block shear capacity, phi Rbs`.
+- **Engineering question:** What is the design block-shear capacity of the governing user-identified failure path?
+- **Result type / limit state:** ULS design capacity and demand ratio.
+- **Governing source:** AS 4100:2020 Cl. 9.1.9(e), local PDF page 129; ASI TN013 `Block Shear` worked example.
+- **Evidence class:** Normative formula plus worked example and project inputs.
+- **Applicability:** One critical connection component and one reviewed failure path; `Vf*` must represent the transferred axial force, and all plausible paths must be assessed before the governing path is entered.
+- **Equation:** `phi Rbs = 0.75 min(0.6 fuc Anv + kbs fuc Ant, 0.6 fyc Agv + kbs fuc Ant)`.
+- **Units / defaults:** Areas in `mm2`, strengths in `MPa`, result in `kN`; `kbs` is restricted to 1.0 for uniform or 0.5 for non-uniform tension stress.
+- **Exclusions:** Automatic path generation, corner geometry, overlapping paths, eccentric bolt-group reactions, plate bending, compression, buckling, welds and supporting-member effects.
+- **Implementation owner:** `bolt-integrity.js` `blockShear()`; `app.js` `calculateConnectedPlyIntegrity()` and `calculateBolt()`.
+- **Verification evidence:** `BOLT-BLOCK-TN013-01`; the implemented design capacity is `538.56 kN`, matching the published rounded `539 kN`.
+- **Status:** For Review; source formula and reference example checked, governing-path selection remains manual.
+
+#### `BOLT-GOVERNING-01`
+
+- **Tab / output:** Bolt Capacity / `Strength utilisation ratio`.
+- **Engineering question:** Which included bolt or connected-ply strength check governs the entered project actions?
+- **Result type / limit state:** Derived ULS governing utilisation.
+- **Governing source:** The active AS 4100 bolt, local-bearing, section-tension and block-shear records; comparison is derived.
+- **Equation / branch:** Use the maximum unrounded active ratio. Include section tension and block shear only when the manual-area assessment is complete. Manual-area assessment selected but incomplete suppresses the total ratio and reports `INCOMPLETE`. Any passing check that includes shear transfer reports `SCOPED PASS`: a disabled assessment excludes section tension and block shear, while a complete manual assessment covers only the selected component and entered path. A tension-only bolt check may report `PASS`.
+- **Implementation owner:** `app.js` `calculateBolt()`.
+- **Verification evidence:** `BOLT-BLOCK-TN013-01`, `BOLT-INTEGRITY-INCOMPLETE-01` and `BOLT-INTEGRITY-SCOPED-01`.
+- **Status:** For Review; the result is not a complete connection compliance statement.
+
+Verification cases:
+
+| Test_ID | Calculation_ID | Case / input | Expected and checked result | Evidence | Status |
+| --- | --- | --- | --- | --- | --- |
+| `BOLT-INTEGRITY-TENSION-01` | `BOLT-PLY-TENSION-01` | `Ag = 2100 mm2`, `An = 1660 mm2`, `fyc = 320 MPa`, `fuc = 440 MPa`, `kt = 1.0` | Gross yielding `672.0 kN`; net fracture `620.84 kN`; `phi Nt = 558.756 kN`; browser `558.8 kN` | Independent arithmetic plus `tests/bolt-integrity.test.js` | Pass, 2026-07-24 |
+| `BOLT-BLOCK-TN013-01` | `BOLT-BLOCK-SHEAR-01`, `BOLT-GOVERNING-01` | ASI TN013 governing Mode B path: `Agv = 1050 mm2`, `Anv = 720 mm2`, `Ant = 1200 mm2`, `fyc = 320 MPa`, `fuc = 440 MPa`, `kbs = 1.0`; `Vf* = 400 kN`; six M20 8.8/S N-plane bolts | Limits `718.08 / 729.60 kN`; `phi Rbs = 538.56 kN`; browser `538.6 kN`, ratio `0.74`, block shear governs; status `SCOPED PASS`; bolt group `555.8 kN` | Published worked example, independent arithmetic, unit test and local browser | Pass, 2026-07-24 |
+| `BOLT-INTEGRITY-INCOMPLETE-01` | `BOLT-GOVERNING-01` | Manual critical areas selected, required areas blank, `Vf* = 400 kN` | Overall ratio suppressed; status `INCOMPLETE`; bolt and bearing results described as provisional | Local browser state check | Pass, 2026-07-24 |
+| `BOLT-INTEGRITY-SCOPED-01` | `BOLT-GOVERNING-01` | Integrity assessment `Not evaluated`, `Vf* = 400 kN` | Included bolt/bearing ratio retained; status `SCOPED PASS`; note states net-section tension and block shear are not evaluated | Local browser state check | Pass, 2026-07-24 |
+
 ## Reference Folder Snapshot
 
 | Source | Local file | Pack status | Current use |
@@ -101,7 +153,9 @@ Calculation-record rules:
 | Bolt | Maximum pitch | `AS4100.pdf` | AS 4100 Cl. 9.5.3 visually checked on PDF page 138; general centre-to-centre limit is the lesser of `15 t_p` and 200 mm, where `t_p` is the thinner connected ply; special cases (a) and (b) are not auto-applied | Visual checked |
 | Bolt | Minimum edge distance | `AS4100.pdf` | AS 4100 Table 9.5.2 visually checked on PDF page 138 | Visual checked |
 | Bolt | Equal-load connected-ply group aggregation | `AS4100.pdf` | Per-bolt bearing and edge limits are from AS 4100 Cl. 9.2.2.4; group relation uses the stated derived assumption `V_i* = V*/n`, giving `phi Vb,group = n min(phi Vb,full, phi Vb,edge)` | Derived equal-action model; eccentric and non-uniform bolt-force distributions excluded |
-| Bolt | Two-ply local hole-bearing selection | `AS4100.pdf` | The user explicitly adopts identical connected plies or checks each ply independently to AS 4100 Cl. 9.2.2.4; separate mode reports the lower ply group value | Derived governing selection; no load redistribution between plies; not a complete connected-plate resistance |
+| Bolt | Two-ply full-bearing and edge-tear-out selection | `AS4100.pdf` | The user explicitly adopts identical connected plies or checks each ply independently to AS 4100 Cl. 9.2.2.4; the page reports the full-bearing and `a_e` edge-distance branches of design bearing capacity separately, each using the lower active-ply group value | Derived governing selection; no load redistribution between plies; the edge tear-out label describes the `a_e` branch and does not generate or verify overlapping tear-out or block-shear paths |
+| Bolt | Optional connection-component section tension | `AS4100.pdf` | AS 4100 Cl. 9.1.9(b) visually checked on PDF page 128 and Cl. 7.2 visually checked on PDF page 112; `phi Nt = 0.90 min(Ag fyc, 0.85 kt An fuc)` | Visual checked; `Ag`, `An`, `fyc` and `kt` are manual critical-component inputs |
+| Bolt | Optional connection-component block shear | `AS4100.pdf`; [ASI TN013 Block Shear](https://www.steel.org.au/Membership/media/Australian-Steel-Institute/Tech%20Notes/TN013-BlockShear.pdf) | AS 4100 Cl. 9.1.9(e) visually checked on PDF page 129; ASI TN013 example reproduced using the governing Mode B path (`Agv = 1050 mm2`, `Anv = 720 mm2`, `Ant = 1200 mm2`, `fyc = 320 MPa`, `fuc = 440 MPa`, `kbs = 1.0`) to obtain `phi Rbs = 538.56 kN`, matching the published rounded 539 kN | Formula and reference example checked; areas are manual and all plausible paths must be reviewed outside the tool |
 | Bolt | Detailing release gate | `AS4100.pdf` | Applicable minimum pitch, general maximum pitch and active-ply minimum edge-distance statuses are evaluated from the cited detailing clauses/table | Derived UI safety rule: any FAIL reports `NON-COMPLIANT` and prevents a green strength or TF slip PASS |
 | Weld | Weld capacity factor and direct weld capacity | `AS4100.pdf` | AS 4100 Table 3.4 visually checked on PDF page 47; AS 4100 Cl. 9.6.3.10 visually checked on PDF page 147 | Visual checked |
 | Weld | CPBW, IPBW and compound-weld capacity boundaries | `AS4100.pdf` | AS 4100 Cl. 9.6.2.7 visually checked on printed page 129; AS 4100 Cl. 9.6.5.2 visually checked on printed page 136 | IPBW uses the fillet-weld method with specified design throat; CPBW follows weaker joined-part capacity; compound throat requires actual total weld cross-section. CPBW and compound therefore return Not evaluated in the quick page |
@@ -180,7 +234,7 @@ Default outputs were checked on the local static page at `http://127.0.0.1:8765/
 
 | Tab | Default case | Checked output | Status |
 | --- | --- | --- | --- |
-| Bolt | M24 8.8/S, N plane, `n = 2`; both plies identical | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; equal-share group shear 266.8 kN; full local bearing 283.4 kN per bolt; edge-limited local bearing 151.3 kN per bolt; governing local hole-bearing group value 302.6 kN; minimum pitch 60.0 mm; general maximum pitch 150.0 mm; minimum edge distance 42.0 mm | DOM output matched independent calculation; identical bolts, concentric action and equal sharing assumed; result is not complete connected-plate resistance |
+| Bolt | M24 8.8/S, N plane, `n = 2`; both plies identical | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; equal-share group shear 266.8 kN; full-bearing limit 283.4 kN per bolt / 566.8 kN group; edge tear-out limit 151.3 kN per bolt / 302.6 kN group; edge tear-out limit governs; minimum pitch 60.0 mm; general maximum pitch 150.0 mm; minimum edge distance 42.0 mm | DOM output matched independent calculation; identical bolts, concentric action and equal sharing assumed; `a_e` edge-distance bearing limit is not a complete connected-plate resistance |
 | Bolt status gating | `Vf* = 100 kN`; then `p = 50 mm`; separate second ply `t = 6 mm`; second-ply `e = 30 mm`; M24 8.8/TF with `Vsf* = 100/110 kN` | default strength ratio 0.37 PASS; minimum-pitch FAIL gives `NON-COMPLIANT`; 6 mm second ply governs at 181.5 kN and `pmax = 90.0 mm`; second-ply edge FAIL gives `NON-COMPLIANT`; TF slip ratios 0.97 PASS and 1.07 FAIL | Representative DOM states checked locally on 2026-07-24; strength and serviceability slip actions are separate |
 | Bolt `Nti` lookup | `/S`; M16 8.8/TB and 8.8/TF; M16 10.9/TB; M20 8.8/TB | `/S`: Not required; M16 8.8/TB and 8.8/TF: 95 kN; M16 10.9/TB: 130 kN; M20 8.8/TB: 145 kN | Representative DOM outputs checked on 2026-07-23; the full M16-M36 lookup matches AS 4100 Table 15.2.2.2; lightweight display and TF-only conditional inputs checked locally |
 | Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm for Grade 250 plate, 10 mm | DOM output matched independent calculation |
