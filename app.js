@@ -1769,28 +1769,75 @@ const screwInputIds = [
   "screwLayout", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY"
 ];
 
+const reoBars = globalThis.reoLapping.bars;
+const reoBarByDesignation = globalThis.reoLapping.barByDesignation;
+const reoLapCalculation = globalThis.reoLapping.calculateLap;
+const reoDevelopmentCalculation = globalThis.reoLapping.calculateDevelopment;
+const reoAnchorageCalculation = globalThis.reoLapping.calculateAnchorageComparison;
+const reoInputIds = [
+  "reoRebarPath", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoConcreteStrength",
+  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap",
+  "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoNf", "reoNbs",
+  "reoAtrTotal", "reoPressure", "reoPressureReference", "reoPressureBasisConfirmed", "reoTransverseLocationConfirmed", "reoAtrCountConfirmed", "reoExistingBarOrigin", "reoAnchorageBasis", "reoSteelStress", "reoReducedLengthRefinedConfirmed", "reoCastInTermination", "reoCastInTerminationConfirmed",
+  "reoExistingMemberType", "reoExistingConcreteStrength", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingCover",
+  "reoExistingClearSpacing", "reoExistingC1", "reoExistingMethod", "reoExistingRefinedArrangement", "reoExistingAtrMinBasis",
+  "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference", "reoExistingPressureBasisConfirmed", "reoExistingTransverseLocationConfirmed", "reoExistingAtrCountConfirmed"
+];
+
+const reoLapLengthChangingIds = [
+  "reoRebarPath", "reoBar", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoConcreteStrength",
+  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap", "reoDoubleArea", "reoHalfSpliced",
+  "reoRefinedArrangement", "reoAtrMinBasis", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoPressureReference", "reoTransverseLocationConfirmed"
+];
+const reoExistingLengthChangingIds = [
+  "reoRebarPath", "reoBar", "reoExistingBarOrigin", "reoAnchorageBasis", "reoSteelStress", "reoReducedLengthRefinedConfirmed", "reoCastInTermination",
+  "reoExistingMemberType", "reoExistingConcreteStrength", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingMethod",
+  "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference", "reoExistingTransverseLocationConfirmed"
+];
+const reoLapCountResetIds = new Set(reoLapLengthChangingIds);
+const reoExistingCountResetIds = new Set(reoExistingLengthChangingIds);
+const reoReducedLengthResetIds = new Set([
+  ...reoExistingLengthChangingIds.filter(id => id !== "reoReducedLengthRefinedConfirmed"), "reoExistingAtrCountConfirmed", "reoExistingPressureBasisConfirmed"
+]);
+const reoLapQualificationResetIds = new Set([
+  "reoRebarPath", "reoBar", "reoMemberRole", "reoMemberType", "reoLapType", "reoConcreteStrength",
+  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap"
+]);
+const reoPressureBasisResetIds = new Set(reoLapLengthChangingIds.filter(id => id !== "reoPressureBasisConfirmed"));
+const reoExistingPressureBasisResetIds = new Set(reoExistingLengthChangingIds.filter(id => id !== "reoExistingPressureBasisConfirmed"));
+const reoTerminationDetailingResetIds = new Set(reoExistingLengthChangingIds);
+
 const $ = id => document.getElementById(id);
-const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "holeDiameter", "boltPitch", "edgeDistanceBasis", "effectiveEdgeInput", "interfaces", "slipFactor", "holeFactor", "shearDemand", "tensionDemand"];
-const beamCustomInputIds = ["beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness"];
+const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "holeDiameter", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeDistanceBasis", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "edgeDistanceBasis2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand", "shearDemand", "tensionDemand"];
+const beamCustomInputIds = [
+  "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
+  "beamCustomPfcDepth", "beamCustomPfcFlangeWidth", "beamCustomPfcWebThickness", "beamCustomPfcFlangeThickness",
+  "beamCustomChsDiameter", "beamCustomChsThickness", "beamCustomRhsDepth", "beamCustomRhsWidth", "beamCustomRhsThickness",
+  "beamCustomShsWidth", "beamCustomShsThickness", "beamCustomEaLeg", "beamCustomEaThickness", "beamCustomRodDiameter"
+];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
-const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "screw", "rock"];
+const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "reo", "screw", "rock"];
 const toolCategories = {
   "steel-connections": ["bolt", "weld"],
   "steel-members": ["properties", "member", "beam"],
-  foundations: ["concrete", "screw", "rock"]
+  foundations: ["concrete", "reo", "screw", "rock"]
 };
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };
 let boltMode = "standard";
-let beamSectionType = "ub";
+let beamSource = "catalogue";
+let beamFamily = "ub";
 let memberType = "chs";
+let reoPreviousRouteKey = "";
 const manualInputIds = [
-  "boltCount", "threadPlanes", "shankPlanes", "plateThickness", "plateStrength", "edgeDistance", "holeDiameter", "boltPitch", "effectiveEdgeInput", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
+  "boltCount", "threadPlanes", "shankPlanes", "holeDiameter", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
+  "reoConcreteStrength", "reoCover", "reoClearSpacing", "reoBarGap", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoPressureReference", "reoSteelStress",
+  "reoExistingConcreteStrength", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
-  "beamMomentDemand", "beamShearDemand", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
+  "beamMomentDemand", "beamShearDemand", "beamFyInput", "beamFywInput", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
   ...sectionPropertyInputIds,
   "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
@@ -1798,12 +1845,13 @@ const manualInputIds = [
   "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
-  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeDistanceBasis", "holeFactor",
+  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeDistanceBasis", "edgeCondition2", "edgeDistanceBasis2", "holeFactor",
   "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteReoDirection", "concreteDepthBasis", "concreteCrossingBar", "concreteShearReo", "concreteShearBar",
+  "reoRebarPath", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoCastingPosition", "reoMaterialCondition", "reoCd", "reoExistingCd", "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoPressureBasisConfirmed", "reoExistingBarOrigin", "reoAnchorageBasis", "reoCastInTermination", "reoCastInTerminationConfirmed", "reoExistingMemberType", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingMethod", "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingKValue", "reoExistingCombinedFactor", "reoExistingPressureBasisConfirmed",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
-  "beamSection", "beamGrade", "sectionCatalogueFamily", "sectionCatalogueDesignation", "sectionShape",
+  "beamFamily", "beamSection", "beamGrade", "beamDirection", "sectionCatalogueFamily", "sectionCatalogueDesignation", "sectionShape",
   "screwManufacturer", "screwSeries", "screwApplication", "screwCapacitySource", "screwSoil", "screwExposure", "screwInstallEvidence", "screwLateralSensitivity", "screwDemandBasis", "screwProjectBasis", "screwProjectSource", "screwLayout",
   "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberNetAreaMode", "memberKt", "memberDimensionOverride"
 ];
@@ -1901,6 +1949,157 @@ function markInputSources() {
   referenceInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-reference"));
 }
 
+function calculateConnectedPly(config, bolt, count, holeDiameter, boltPitch) {
+  const actualEdge = value(config.edgeDistanceId);
+  const basis = $(config.edgeDistanceBasisId).value;
+  const endEffectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
+  const hasAdjacentHole = count > 1;
+  const pitchEffectiveEdge = hasAdjacentHole ? Math.max(0, boltPitch - holeDiameter + bolt.d / 2) : Infinity;
+  const automaticEffectiveEdge = Math.min(endEffectiveEdge, pitchEffectiveEdge);
+  const automaticEdgeControl = pitchEffectiveEdge < endEffectiveEdge ? "adjacent hole" : "end edge";
+  const effectiveEdgeInput = $(config.effectiveEdgeInputId);
+  effectiveEdgeInput.readOnly = basis !== "manual";
+  if (basis !== "manual") effectiveEdgeInput.value = automaticEffectiveEdge.toFixed(1);
+
+  const effectiveEdge = basis === "manual" ? Math.max(0, value(config.effectiveEdgeInputId)) : automaticEffectiveEdge;
+  const minimumEdge = value(config.edgeConditionId) * bolt.d;
+  const edgeDistancePass = actualEdge >= minimumEdge;
+  const plateStrength = value(config.plateStrengthId);
+  const plateThickness = value(config.plateThicknessId);
+  const bearingFull = 0.9 * 3.2 * bolt.d * plateThickness * plateStrength / 1000;
+  const bearingEdge = 0.9 * effectiveEdge * plateThickness * plateStrength / 1000;
+  const localCapacity = Math.min(bearingFull, bearingEdge);
+  const groupCapacity = count * localCapacity;
+
+  return {
+    ...config,
+    actualEdge,
+    basis,
+    endEffectiveEdge,
+    hasAdjacentHole,
+    pitchEffectiveEdge,
+    automaticEdgeControl,
+    effectiveEdge,
+    minimumEdge,
+    edgeDistancePass,
+    plateStrength,
+    plateThickness,
+    bearingFull,
+    bearingEdge,
+    localCapacity,
+    groupCapacity,
+    controlLabel: bearingEdge <= bearingFull ? "Edge tear-out limit" : "Full-bearing limit"
+  };
+}
+
+function updateConnectedPlyOutputs(ply, suffix = "") {
+  $(`actualEdgeDistance${suffix}`).textContent = fixed(ply.actualEdge);
+  $(`minimumEdgeDistance${suffix}`).textContent = fixed(ply.minimumEdge);
+  $(`edgeDistanceStatus${suffix}`).textContent = ply.edgeDistancePass ? "PASS" : "FAIL";
+  $(`edgeDistanceStatus${suffix}`).className = ply.edgeDistancePass ? "pass" : "fail";
+  $(`edgeDistanceBasisNote${suffix}`).innerHTML = ply.basis === "manual"
+    ? `Manual drawing basis: a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm. Minimum edge-distance compliance still uses e.`
+    : ply.hasAdjacentHole
+      ? `Automatic: a<sub>e,end</sub> = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm.`
+      : `Automatic: a<sub>e,end</sub> = ${fixed(ply.effectiveEdge)} mm. Adjacent-hole pitch is not applicable to one bolt.`;
+}
+
+function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
+  const effectiveEdgeBasis = ply.basis === "manual"
+    ? `manual drawing value a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
+    : ply.hasAdjacentHole
+      ? `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(boltPitch)} - ${fixed(holeDiameter)} + ${fixed(bolt.d)}/2 = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
+      : `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.effectiveEdge)} mm`;
+  return `
+    <div><b>${ply.label} full bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>f<sub>up</sub> = ${ply.plateStrength.toFixed(0)} MPa; per bolt = 0.90 x 3.2 x ${fixed(bolt.d)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingFull)} kN</code></div>
+    <div><b>${ply.label} edge tear-out limit - AS 4100 Cl. 9.2.2.4(2)</b><code>${effectiveEdgeBasis}; per bolt = 0.90 x ${fixed(ply.effectiveEdge)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingEdge)} kN</code></div>
+    <div><b>${ply.label} minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value(ply.edgeConditionId).toFixed(2)}d<sub>f</sub> = ${fixed(ply.minimumEdge)} mm; provided e = ${fixed(ply.actualEdge)} mm - ${ply.edgeDistancePass ? "PASS" : "FAIL"}</code></div>
+    <div><b>${ply.label} local hole-bearing capacity</b><code>critical-hole capacity = min(${fixed(ply.bearingFull)}, ${fixed(ply.bearingEdge)}) = ${fixed(ply.localCapacity)} kN; equal-share group capacity = ${count} x ${fixed(ply.localCapacity)} = ${fixed(ply.groupCapacity)} kN</code></div>`;
+}
+
+function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear) {
+  const mode = $("integrityMode").value;
+  const componentSelect = $("integrityComponent");
+  componentSelect.disabled = !separatePlyCheck;
+  if (!separatePlyCheck && componentSelect.value !== "primary") componentSelect.value = "primary";
+  const checkedPly = separatePlyCheck && componentSelect.value === "second" ? secondPly : primaryPly;
+  const enabled = mode === "manual";
+  $("integrityInputs").hidden = !enabled;
+  $("integrityMaterialBasis").innerHTML = `${checkedPly.label} &middot; f<sub>uc</sub> = ${checkedPly.plateStrength.toFixed(0)} MPa`;
+
+  const empty = {
+    enabled: false,
+    complete: false,
+    checkedPly,
+    net: null,
+    block: null,
+    netRatio: NaN,
+    blockRatio: NaN,
+    error: ""
+  };
+  if (!enabled) {
+    $("integritySummaryStatus").textContent = "Not evaluated · optional manual areas";
+    return empty;
+  }
+
+  let net = null;
+  let block = null;
+  const errors = [];
+  try {
+    net = BoltIntegrity.netSectionTension({
+      Ag: value("integrityAg"),
+      An: value("integrityAn"),
+      fy: value("integrityFy"),
+      fu: checkedPly.plateStrength,
+      kt: value("integrityKt")
+    });
+    $("integrityNetCapacity").textContent = `${fixed(net.design)} kN`;
+    $("integrityNetBasis").textContent = net.control;
+  } catch (error) {
+    errors.push(error.message);
+    $("integrityNetCapacity").textContent = "Incomplete";
+    $("integrityNetBasis").textContent = "Enter valid Ag, An, fyc and kt";
+  }
+
+  try {
+    block = BoltIntegrity.blockShear({
+      Agv: value("integrityAgv"),
+      Anv: value("integrityAnv"),
+      Ant: value("integrityAnt"),
+      fy: value("integrityFy"),
+      fu: checkedPly.plateStrength,
+      kbs: value("integrityKbs")
+    });
+    $("integrityBlockCapacity").textContent = `${fixed(block.design)} kN`;
+    $("integrityBlockBasis").textContent = block.control;
+  } catch (error) {
+    errors.push(error.message);
+    $("integrityBlockCapacity").textContent = "Incomplete";
+    $("integrityBlockBasis").textContent = "Enter valid Agv, Anv, Ant, fyc and kbs";
+  }
+
+  const complete = Boolean(net && block);
+  $("integritySummaryStatus").textContent = complete
+    ? `φNt ${fixed(net.design)} kN · φRbs ${fixed(block.design)} kN`
+    : "Incomplete · enter critical areas";
+  if (complete) {
+    $("integrityCheckNote").innerHTML = "Use where V<sub>f</sub><sup>*</sup> is the axial force transferred through the checked component. Review all plausible paths and enter the governing path areas.";
+  } else {
+    $("integrityCheckNote").textContent = `Complete the manual-area check. ${[...new Set(errors)].join(" ")}`;
+  }
+
+  return {
+    enabled,
+    complete,
+    checkedPly,
+    net,
+    block,
+    netRatio: net && net.design > 0 ? designShear / net.design : NaN,
+    blockRatio: block && block.design > 0 ? designShear / block.design : NaN,
+    error: [...new Set(errors)].join(" ")
+  };
+}
+
 function calculateBolt() {
   const size = $("boltSize").value;
   const categoryKey = $("category").value;
@@ -1914,7 +2113,6 @@ function calculateBolt() {
   const threadShear = 0.8 * 0.62 * category.fuf * threadKrd * kr * bolt.Ac / 1000;
   const shankShear = 0.8 * 0.62 * category.fuf * shankKrd * kr * bolt.Ao / 1000;
   const selectedShear = plane === "N" ? threadShear : shankShear;
-  const alternateShear = plane === "N" ? shankShear : threadShear;
   const count = Math.max(1, Math.round(value("boltCount")));
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
@@ -1922,34 +2120,74 @@ function calculateBolt() {
   const totalShankPlanes = count * nShank;
   const totalShearPlanes = totalThreadPlanes + totalShankPlanes;
   const groupShear = 0.8 * 0.62 * category.fuf * kr * (totalThreadPlanes * threadKrd * bolt.Ac + totalShankPlanes * shankKrd * bolt.Ao) / 1000;
-  const actualEdge = value("edgeDistance");
   const holeDiameter = value("holeDiameter");
   const boltPitch = Math.max(0, value("boltPitch"));
-  const edgeDistanceBasis = $("edgeDistanceBasis").value;
-  const endEffectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
-  const hasAdjacentHole = count > 1 && boltPitch > 0;
-  const pitchEffectiveEdge = hasAdjacentHole ? Math.max(0, boltPitch - holeDiameter + bolt.d / 2) : Infinity;
-  const automaticEffectiveEdge = Math.min(endEffectiveEdge, pitchEffectiveEdge);
-  const automaticEdgeControl = pitchEffectiveEdge < endEffectiveEdge ? "adjacent hole" : "end edge";
-  const boltPitchInput = $("boltPitch");
-  const effectiveEdgeInput = $("effectiveEdgeInput");
-  boltPitchInput.disabled = count <= 1 || edgeDistanceBasis === "manual";
-  effectiveEdgeInput.readOnly = edgeDistanceBasis !== "manual";
-  if (edgeDistanceBasis !== "manual") effectiveEdgeInput.value = automaticEffectiveEdge.toFixed(1);
-  const effectiveEdge = edgeDistanceBasis === "manual" ? Math.max(0, value("effectiveEdgeInput")) : automaticEffectiveEdge;
-  const minimumEdge = value("edgeCondition") * bolt.d;
-  const edgeDistancePass = actualEdge >= minimumEdge;
-  const plateStrength = value("plateStrength");
-  const bearingFull = 0.9 * 3.2 * bolt.d * value("plateThickness") * plateStrength / 1000;
-  const bearingEdge = 0.9 * effectiveEdge * value("plateThickness") * plateStrength / 1000;
-  const localPlyCapacity = Math.min(bearingFull, bearingEdge);
-  const equalShareGroupPlyCapacity = count * localPlyCapacity;
+  const minimumPitch = 2.5 * bolt.d;
+  const pitchApplicable = count > 1;
+  const pitchPass = !pitchApplicable || boltPitch >= minimumPitch;
+  $("boltPitch").disabled = !pitchApplicable;
+
+  const primaryPly = calculateConnectedPly({
+    label: "Primary ply",
+    plateThicknessId: "plateThickness",
+    plateStrengthId: "plateStrength",
+    edgeConditionId: "edgeCondition",
+    edgeDistanceId: "edgeDistance",
+    edgeDistanceBasisId: "edgeDistanceBasis",
+    effectiveEdgeInputId: "effectiveEdgeInput"
+  }, bolt, count, holeDiameter, boltPitch);
+  const secondPly = calculateConnectedPly({
+    label: "Second ply",
+    plateThicknessId: "plateThickness2",
+    plateStrengthId: "plateStrength2",
+    edgeConditionId: "edgeCondition2",
+    edgeDistanceId: "edgeDistance2",
+    edgeDistanceBasisId: "edgeDistanceBasis2",
+    effectiveEdgeInputId: "effectiveEdgeInput2"
+  }, bolt, count, holeDiameter, boltPitch);
+  const separatePlyCheck = $("connectedPlyBasis").value === "separate";
+  $("secondPlyFields").hidden = !separatePlyCheck;
+  $("boltPlyGrid").classList.toggle("has-second-ply", separatePlyCheck);
+  $("plyComparison").hidden = !separatePlyCheck;
+  $("secondPlyEdgeCheck").hidden = !separatePlyCheck;
+  $("connectedPlyBasisNote").textContent = separatePlyCheck
+    ? "Each connected ply is assessed using its entered properties and edge geometry."
+    : "Primary ply properties apply to both connected plies.";
+  const thinnerPlyThickness = separatePlyCheck
+    ? Math.min(primaryPly.plateThickness, secondPly.plateThickness)
+    : primaryPly.plateThickness;
+  const maximumPitch = Math.min(15 * thinnerPlyThickness, 200);
+  const maximumPitchPass = !pitchApplicable || boltPitch <= maximumPitch;
+
+  const capacitiesEqual = separatePlyCheck && Math.abs(primaryPly.groupCapacity - secondPly.groupCapacity) < 0.05;
+  const governingPly = separatePlyCheck && secondPly.groupCapacity < primaryPly.groupCapacity ? secondPly : primaryPly;
+  const fullCapacitiesEqual = separatePlyCheck && Math.abs(primaryPly.bearingFull - secondPly.bearingFull) < 0.05;
+  const edgeCapacitiesEqual = separatePlyCheck && Math.abs(primaryPly.bearingEdge - secondPly.bearingEdge) < 0.05;
+  const governingFullPly = separatePlyCheck && secondPly.bearingFull < primaryPly.bearingFull ? secondPly : primaryPly;
+  const governingEdgePly = separatePlyCheck && secondPly.bearingEdge < primaryPly.bearingEdge ? secondPly : primaryPly;
+  const governingFullPlyLabel = !separatePlyCheck ? "Both plies identical" : fullCapacitiesEqual ? "Both plies equal" : governingFullPly.label;
+  const governingEdgePlyLabel = !separatePlyCheck ? "Both plies identical" : edgeCapacitiesEqual ? "Both plies equal" : governingEdgePly.label;
+  const fullBearingGroupCapacity = count * governingFullPly.bearingFull;
+  const edgeTearoutGroupCapacity = count * governingEdgePly.bearingEdge;
+  const governingPlyLabel = !separatePlyCheck
+    ? "Both plies identical"
+    : capacitiesEqual
+      ? "Both plies equal"
+      : governingPly.label;
+  const governingPlyDemandLabel = !separatePlyCheck || capacitiesEqual
+    ? "local hole bearing"
+    : `local hole bearing in the ${governingPly.label.toLowerCase()}`;
+  const localPlyCapacity = governingPly.localCapacity;
+  const equalShareGroupPlyCapacity = governingPly.groupCapacity;
   const preload = category.preload ? bolt[category.preload] : 0;
   const slip = category.type === "friction" ? 0.7 * value("slipFactor") * value("interfaces") * preload * value("holeFactor") : null;
   const slipGroupCapacity = slip === null ? null : count * slip;
   const slipTensionCapacity = preload > 0 ? 0.7 * count * preload : null;
   const designShear = value("shearDemand");
   const designTension = value("tensionDemand");
+  const slipShearDemand = value("slipShearDemand");
+  const slipTensionDemand = value("slipTensionDemand");
+  const integrity = calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear);
   const criticalBoltShear = designShear / count;
   const boltShearRatio = groupShear > 0 ? designShear / groupShear : Infinity;
   const plyBearingRatio = localPlyCapacity > 0 ? criticalBoltShear / localPlyCapacity : Infinity;
@@ -1958,27 +2196,68 @@ function calculateBolt() {
     ? boltShearRatio ** 2 + boltTensionRatio ** 2
     : Infinity;
   const slipRatio = slipGroupCapacity && slipTensionCapacity
-    ? designShear / slipGroupCapacity + designTension / slipTensionCapacity
+    ? slipShearDemand / slipGroupCapacity + slipTensionDemand / slipTensionCapacity
     : Infinity;
   const hasShearDemand = designShear > 0;
   const hasTensionDemand = designTension > 0;
   const hasDemand = hasShearDemand || hasTensionDemand;
+  const hasSlipDemand = slipShearDemand > 0 || slipTensionDemand > 0;
   let governingRatio = NaN;
-  let governingNote = "Enter design actions to identify whether bolt shear, bolt tension, combined bolt interaction or connected ply governs.";
+  let governingNote = "Enter V<sub>f</sub><sup>*</sup> and/or N<sub>tf</sub><sup>*</sup> to activate the strength check.";
+  const strengthCandidates = [];
   if (hasShearDemand && !hasTensionDemand) {
-    governingRatio = Math.max(boltShearRatio, plyBearingRatio);
-    governingNote = plyBearingRatio > boltShearRatio
-      ? `Shear only: connected ply governs. Check V<sub>b</sub><sup>*</sup> / &phi;V<sub>b</sub> = ${plyBearingRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.4; bolt shear ratio under AS 4100 Cl. 9.2.2.1 = ${boltShearRatio.toFixed(2)}.`
-      : `Shear only: bolt shear governs. Check V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${boltShearRatio.toFixed(2)} under AS 4100 Cl. 9.2.2.1; connected ply ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+    strengthCandidates.push(
+      { label: "bolt shear", ratio: boltShearRatio },
+      { label: governingPlyDemandLabel, ratio: plyBearingRatio }
+    );
   } else if (!hasShearDemand && hasTensionDemand) {
-    governingRatio = boltTensionRatio;
-    governingNote = `Tension only: bolt tension governs under AS 4100 Cl. 9.2.2.2. Check N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${boltTensionRatio.toFixed(2)}.`;
+    strengthCandidates.push({ label: "bolt tension", ratio: boltTensionRatio });
   } else if (hasShearDemand && hasTensionDemand) {
-    governingRatio = Math.max(strengthRatio, plyBearingRatio);
-    governingNote = plyBearingRatio > strengthRatio
-      ? `Shear and tension: connected ply governs in shear under AS 4100 Cl. 9.2.2.4 with ratio ${plyBearingRatio.toFixed(2)}. Bolt combined shear-tension ratio under AS 4100 Cl. 9.2.2.3 = ${strengthRatio.toFixed(2)}.`
-      : `Shear and tension: bolt combined shear-tension interaction governs under AS 4100 Cl. 9.2.2.3 with ratio ${strengthRatio.toFixed(2)}. Connected ply ratio under AS 4100 Cl. 9.2.2.4 = ${plyBearingRatio.toFixed(2)}.`;
+    strengthCandidates.push(
+      { label: "bolt combined shear-tension interaction", ratio: strengthRatio },
+      { label: governingPlyDemandLabel, ratio: plyBearingRatio }
+    );
   }
+  if (hasShearDemand && integrity.complete) {
+    strengthCandidates.push(
+      { label: `${integrity.checkedPly.label.toLowerCase()} section tension`, ratio: integrity.netRatio },
+      { label: `${integrity.checkedPly.label.toLowerCase()} block shear`, ratio: integrity.blockRatio }
+    );
+  }
+  if (strengthCandidates.length) {
+    const orderedCandidates = [...strengthCandidates].sort((a, b) => b.ratio - a.ratio);
+    const governingCandidate = orderedCandidates[0];
+    governingRatio = governingCandidate.ratio;
+    const actionLabel = hasShearDemand && hasTensionDemand ? "Shear and tension" : hasShearDemand ? "Shear transfer" : "Bolt tension";
+    const comparison = orderedCandidates.slice(1).map(candidate => `${candidate.label} ${candidate.ratio.toFixed(2)}`).join("; ");
+    governingNote = `${actionLabel}: ${governingCandidate.label} governs at ${governingCandidate.ratio.toFixed(2)}.${comparison ? ` Other included checks: ${comparison}.` : ""}`;
+  }
+  const integrityIncomplete = hasShearDemand && integrity.enabled && !integrity.complete;
+  if (integrityIncomplete) {
+    const integrityIssue = (integrity.error || "enter all required critical areas").replace(/\.$/, "");
+    governingNote = `Connected-ply integrity is incomplete: ${integrityIssue}. Bolt and local hole-bearing results remain provisional.`;
+  } else if (hasShearDemand && !integrity.enabled) {
+    governingNote += " Net-section tension and block shear are not evaluated.";
+  } else if (hasShearDemand && integrity.complete) {
+    governingNote += " Manual connected-ply integrity covers the selected component and entered path only.";
+  }
+  const detailingFailures = [];
+  if (pitchApplicable && !pitchPass) detailingFailures.push("minimum pitch");
+  if (pitchApplicable && !maximumPitchPass) detailingFailures.push("maximum pitch");
+  if (!primaryPly.edgeDistancePass) detailingFailures.push(separatePlyCheck ? "primary-ply edge distance" : "edge distance");
+  if (separatePlyCheck && !secondPly.edgeDistancePass) detailingFailures.push("second-ply edge distance");
+  const detailingCompliant = detailingFailures.length === 0;
+  const detailingFailureNote = detailingCompliant
+    ? ""
+    : `Detailing non-compliant: ${detailingFailures.join(", ")}. Correct the connection detailing before using the calculated resistance.`;
+  const strengthDisplayNote = detailingCompliant
+    ? governingNote
+    : `${detailingFailureNote}${hasDemand ? ` ${governingNote}` : ""}`;
+  const slipDisplayNote = !detailingCompliant
+    ? detailingFailureNote
+    : !hasSlipDemand
+      ? "Enter serviceability slip actions for the AS 4100 Cl. 9.2.3.3 check."
+      : `AS 4100 Cl. 9.2.3.3: Vsf* / \u03c6Vsf + Ntf* / \u03c6Ntf = ${slipRatio.toFixed(2)}; limit \u2264 1.0.`;
 
   const drawingCallout = `${size} ${categoryKey} - ${plane} plane`;
   $("selectionTitle").textContent = drawingCallout;
@@ -1988,66 +2267,119 @@ function calculateBolt() {
   $("coreAreaValue").textContent = `${bolt.Ac} mm²`;
   $("shankAreaValue").textContent = `${bolt.Ao} mm²`;
   $("strengthValue").textContent = `${category.fuf} MPa`;
-  $("selectedShearLabel").textContent = `Shear capacity - ${plane}`;
+  const hasInstalledTension = Boolean(category.preload && Number.isFinite(preload));
+  $("installedTensionValue").textContent = hasInstalledTension ? `${preload.toFixed(0)} kN` : "Not required";
+  $("boltPreloadLookup").hidden = !hasInstalledTension;
+  if (!hasInstalledTension) $("boltPreloadLookup").open = false;
+  $("tfSlipSection").hidden = category.type !== "friction";
+  document.querySelectorAll(".bolt-preload-table tbody tr").forEach(row => {
+    const selectedSize = row.dataset.boltSize === size;
+    row.classList.toggle("is-selected", hasInstalledTension && selectedSize);
+    row.querySelectorAll("[data-grade]").forEach(cell => {
+      cell.classList.toggle("is-selected-grade", hasInstalledTension && selectedSize && cell.dataset.grade === category.grade);
+    });
+  });
+  $("selectedShearLabel").innerHTML = `Design shear capacity, &phi;V<sub>f</sub> &middot; ${plane}-plane`;
   $("selectedShearCapacity").textContent = fixed(selectedShear);
   $("selectedShearNote").innerHTML = plane === "N"
-    ? `&phi;V<sub>f</sub> - threads intercept plane - AS 4100 Cl. 9.2.2.1; includes k<sub>r</sub> = ${kr.toFixed(2)}`
-    : `&phi;V<sub>f</sub> - threads clear of plane - AS 4100 Cl. 9.2.2.1; includes k<sub>r</sub> = ${kr.toFixed(2)}`;
-  $("alternateShearLabel").textContent = `Shear capacity - ${plane === "N" ? "X" : "N"}`;
-  $("alternateShearCapacity").textContent = fixed(alternateShear);
-  $("alternateShearNote").innerHTML = plane === "N"
-    ? `threads clear of plane; includes k<sub>r</sub> = ${kr.toFixed(2)}`
-    : `threads intercept plane; includes k<sub>r</sub> = ${kr.toFixed(2)}`;
+    ? "Threads intercept shear plane &middot; AS 4100 Cl. 9.2.2.1"
+    : "Threads clear of shear plane &middot; AS 4100 Cl. 9.2.2.1";
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `One shear-plane &phi;V<sub>f</sub> includes k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} and k<sub>r</sub> = ${kr.toFixed(2)}. Keep k<sub>r</sub> = 1.0 unless the actual detail is a bolted lap connection requiring the AS 4100 Table 9.2.2.1 reduction referenced by AS 4100 Cl. 9.2.2.1.`;
+  $("boltResultNote").innerHTML = `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} &middot; k<sub>r</sub> = ${kr.toFixed(2)}.`;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
-  $("groupShearBasis").innerHTML = `${count} bolt${count === 1 ? "" : "s"} × (${nThread} N + ${nShank} X) plane${nThread + nShank === 1 ? "" : "s"} per bolt = ${totalThreadPlanes} N + ${totalShankPlanes} X = ${totalShearPlanes} total shear plane${totalShearPlanes === 1 ? "" : "s"}. Equal action per identical bolt is assumed. Change k<sub>r</sub> only for bolted lap connection reduction.`;
-  $("bearingGroupCapacity").textContent = `${fixed(equalShareGroupPlyCapacity)} kN`;
-  $("bearingGroupBasis").textContent = `Equal-share group · ${fixed(localPlyCapacity)} kN at critical bolt hole × ${count} · ${bearingEdge <= bearingFull ? `${edgeDistanceBasis === "manual" ? "manual a_e" : automaticEdgeControl} governs` : "full bearing governs"}`;
-  $("actualEdgeDistance").textContent = fixed(actualEdge);
-  $("minimumEdgeDistance").textContent = fixed(minimumEdge);
-  $("effectiveEdgeDistance").textContent = fixed(effectiveEdge);
-  $("edgeDistanceBasisNote").innerHTML = edgeDistanceBasis === "manual"
-    ? `Manual drawing basis: a<sub>e</sub> = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm. Minimum edge-distance compliance still uses e.`
-    : hasAdjacentHole
-      ? `Automatic: a<sub>e,end</sub> = ${fixed(endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(pitchEffectiveEdge)} mm; governing a<sub>e</sub> = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm (${automaticEdgeControl}).`
-      : `Automatic: a<sub>e</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 = <output id="effectiveEdgeDistance">${fixed(effectiveEdge)}</output> mm. Adjacent-hole pitch is not applicable to one bolt.`;
-  $("edgeDistanceStatus").textContent = edgeDistancePass ? "PASS" : "FAIL";
-  $("edgeDistanceStatus").className = edgeDistancePass ? "pass" : "fail";
+  $("groupShearBasis").textContent = `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal bolt sharing`;
+  $("primaryPlyCapacity").textContent = `${fixed(primaryPly.groupCapacity)} kN`;
+  $("primaryPlyControl").textContent = primaryPly.controlLabel;
+  $("secondPlyCapacity").textContent = `${fixed(secondPly.groupCapacity)} kN`;
+  $("secondPlyControl").textContent = secondPly.controlLabel;
+  $("bearingGroupCapacity").textContent = `${fixed(fullBearingGroupCapacity)} kN`;
+  $("bearingGroupBasis").textContent = `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
+  $("tearoutGroupCapacity").textContent = `${fixed(edgeTearoutGroupCapacity)} kN`;
+  $("tearoutGroupBasis").textContent = `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
+  $("connectedPlyGoverningBasis").textContent = `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`;
+  updateConnectedPlyOutputs(primaryPly);
+  updateConnectedPlyOutputs(secondPly, "2");
+  $("pitchCheckValue").innerHTML = pitchApplicable
+    ? `<output id="actualPitch">${fixed(boltPitch)}</output> / <output id="minimumPitch">${fixed(minimumPitch)}</output> mm required`
+    : "Not applicable to one bolt";
+  $("pitchStatus").textContent = pitchApplicable ? (pitchPass ? "PASS" : "FAIL") : "N/A";
+  $("pitchStatus").className = pitchApplicable ? (pitchPass ? "pass" : "fail") : "neutral";
+  $("maximumPitchCheckValue").innerHTML = pitchApplicable
+    ? `<output id="actualMaximumPitch">${fixed(boltPitch)}</output> / <output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted`
+    : "Not applicable to one bolt";
+  $("maximumPitchStatus").textContent = pitchApplicable ? (maximumPitchPass ? "PASS" : "FAIL") : "N/A";
+  $("maximumPitchStatus").className = pitchApplicable ? (maximumPitchPass ? "pass" : "fail") : "neutral";
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
-  $("strengthGoverningRatio").textContent = Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
-  $("strengthGoverningStatus").textContent = !hasDemand
+  $("slipCapacityBasis").textContent = slip === null
+    ? "TF categories only"
+    : `Per bolt · ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
+  $("strengthGoverningRatio").textContent = !integrityIncomplete && Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
+  $("strengthGoverningStatus").textContent = !detailingCompliant
+    ? "NON-COMPLIANT"
+    : integrityIncomplete
+      ? "INCOMPLETE"
+    : !hasDemand
     ? "Enter design actions"
     : governingRatio <= 1
+        ? hasShearDemand ? "SCOPED PASS" : "PASS"
+        : "FAIL";
+  $("strengthGoverningStatus").className = !detailingCompliant ? "fail" : integrityIncomplete ? "check" : !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
+  $("strengthGoverningNote").innerHTML = strengthDisplayNote;
+  $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
+  $("slipGoverningStatus").textContent = !detailingCompliant
+    ? "NON-COMPLIANT"
+    : !hasSlipDemand
+      ? "Enter slip actions"
+      : slipRatio <= 1
         ? "PASS"
         : "FAIL";
-  $("strengthGoverningStatus").className = !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
-  $("strengthGoverningNote").innerHTML = governingNote;
+  $("slipGoverningStatus").className = !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
+  $("slipGoverningNote").textContent = slipDisplayNote;
 
   const slipFormula = slip === null ? "<code>Not applicable - TF categories only</code>" : `<code>0.70 x ${value("slipFactor")} x ${value("interfaces")} x ${preload} x ${value("holeFactor")} = ${fixed(slip)} kN per bolt</code>`;
   const strengthInteractionFormula = hasShearDemand && hasTensionDemand
     ? `<code>(V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub>)<sup>2</sup> = (${fixed(designShear)} / ${fixed(groupShear)})<sup>2</sup> + (${fixed(designTension)} / ${fixed(count * tension)})<sup>2</sup> = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}; limit &le; 1.0</code>`
-    : "<code>Not applicable unless both shear and tension design actions are entered. Use the separate bolt shear, bolt tension and connected-ply ratios for single-action checks.</code>";
+    : "<code>Not applicable unless both shear and tension design actions are entered. Use the separate bolt shear, bolt tension and local hole-bearing ratios for single-action checks.</code>";
   const slipInteractionFormula = slip === null
     ? "<code>Not applicable - AS 4100 Cl. 9.2.3.3 applies to friction-type categories where serviceability slip is limited</code>"
-    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designShear)} / ${fixed(slipGroupCapacity)} + ${fixed(designTension)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check</code>`;
+    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(slipShearDemand)} / ${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check; actions are entered separately from the strength check</code>`;
+  const activePlyFormulaRows = connectedPlyFormulaRows(primaryPly, bolt, count, holeDiameter, boltPitch)
+    + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count, holeDiameter, boltPitch) : "");
+  const pitchFormula = pitchApplicable
+    ? `<code>p<sub>min</sub> = 2.5d<sub>f</sub> = 2.5 x ${fixed(bolt.d)} = ${fixed(minimumPitch)} mm; provided p = ${fixed(boltPitch)} mm - ${pitchPass ? "PASS" : "FAIL"}</code>`
+    : "<code>Not applicable to a one-bolt connection</code>";
+  const maximumPitchFormula = pitchApplicable
+    ? `<code>t<sub>p,min</sub> = ${fixed(thinnerPlyThickness)} mm; p<sub>max</sub> = min(15t<sub>p,min</sub>, 200) = ${fixed(maximumPitch)} mm; provided p = ${fixed(boltPitch)} mm - ${maximumPitchPass ? "PASS" : "FAIL"}. General limit only; Cl. 9.5.3(a) and (b) are not applied.</code>`
+    : "<code>Not applicable to a one-bolt connection</code>";
+  const installedTensionFormula = hasInstalledTension
+    ? `<code>N<sub>ti</sub> = ${preload.toFixed(0)} kN for ${size} property class ${category.grade}. This is the minimum installed bolt tension, not &phi;N<sub>tf</sub>.</code>`
+    : `<code>Not required for ${categoryKey}. Snug-tight categories have no specified minimum installed bolt tension.</code>`;
+  const integrityFormulaRows = !integrity.enabled
+    ? `<div><b>Connected-ply integrity</b><code>Not evaluated. Net-section tension and block shear require manual critical areas.</code></div>`
+    : !integrity.complete
+      ? `<div><b>Connected-ply integrity</b><code>Incomplete. ${integrity.error}</code></div>`
+      : `
+        <div><b>${integrity.checkedPly.label} section tension - AS 4100 Cl. 9.1.9(b) and Cl. 7.2</b><code>&phi;N<sub>t</sub> = 0.90 min(A<sub>g</sub>f<sub>yc</sub>, 0.85k<sub>t</sub>A<sub>n</sub>f<sub>uc</sub>) = 0.90 min(${fixed(integrity.net.grossYield)}, ${fixed(integrity.net.netFracture)}) = ${fixed(integrity.net.design)} kN; ratio = ${integrity.netRatio.toFixed(2)}</code></div>
+        <div><b>${integrity.checkedPly.label} block shear - AS 4100 Cl. 9.1.9(e)</b><code>&phi;R<sub>bs</sub> = 0.75 min(0.6f<sub>uc</sub>A<sub>nv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>, 0.6f<sub>yc</sub>A<sub>gv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>) = 0.75 min(${fixed(integrity.block.ruptureLimit)}, ${fixed(integrity.block.yieldLimit)}) = ${fixed(integrity.block.design)} kN; ratio = ${integrity.blockRatio.toFixed(2)}</code></div>`;
   $("formulaSteps").innerHTML = `
     <div><b>Tension - AS 4100 Cl. 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
+    <div><b>Minimum installed bolt tension - AS 4100 Table 15.2.2.2</b>${installedTensionFormula}</div>
     <div><b>Shear N - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x k<sub>r</sub> (${kr.toFixed(2)}) x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
     <div><b>Shear X - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x k<sub>r</sub> (${kr.toFixed(2)}) x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
     <div><b>Bolt group shear - AS 4100 Cl. 9.2.2.1</b><code>Equal action per identical bolt is assumed. n<sub>n,total</sub> = ${count} x ${nThread} = ${totalThreadPlanes}; n<sub>x,total</sub> = ${count} x ${nShank} = ${totalShankPlanes}; &phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n,total</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x,total</sub>k<sub>rd,X</sub>A<sub>o</sub>) = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
     <div><b>Bolt shear ratio - AS 4100 Cl. 9.2.2.1</b><code>V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${fixed(designShear)} / ${fixed(groupShear)} = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}</code></div>
     <div><b>Bolt tension ratio - AS 4100 Cl. 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Ply material input</b><code>f<sub>up</sub> = ${plateStrength.toFixed(0)} MPa. Default 410 MPa corresponds to AS/NZS 3678 Grade 250 plate; use 440 MPa only where the actual connected ply is AS/NZS 3679.1 Grade 300 flat bar/section or otherwise verified.</code></div>
-    <div><b>Full ply bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>per bolt = 0.90 x 3.2 x d<sub>f</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingFull)} kN</code></div>
-    <div><b>Edge-limited ply bearing - AS 4100 Cl. 9.2.2.4(2)</b><code>${edgeDistanceBasis === "manual" ? `manual drawing value a<sub>e</sub> = ${fixed(effectiveEdge)} mm` : hasAdjacentHole ? `a<sub>e,end</sub> = ${fixed(actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(boltPitch)} - ${fixed(holeDiameter)} + ${fixed(bolt.d)}/2 = ${fixed(pitchEffectiveEdge)} mm; ${automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(effectiveEdge)} mm` : `a<sub>e,end</sub> = ${fixed(actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(effectiveEdge)} mm`}; per critical bolt hole = 0.90 x a<sub>e</sub> x t<sub>p</sub> x f<sub>up</sub> = ${fixed(bearingEdge)} kN</code></div>
-    <div><b>Minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value("edgeCondition").toFixed(2)}d<sub>f</sub> = ${fixed(minimumEdge)} mm; provided e = ${fixed(actualEdge)} mm - ${edgeDistancePass ? "PASS" : "FAIL"}</code></div>
-    <div><b>Connected-ply bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>equal sharing: V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n = ${fixed(designShear)}/${count} = ${fixed(criticalBoltShear)} kN; critical-hole capacity = min(${fixed(bearingFull)}, ${fixed(bearingEdge)}) = ${fixed(localPlyCapacity)} kN; equal-share group capacity = ${count} x ${fixed(localPlyCapacity)} = ${fixed(equalShareGroupPlyCapacity)} kN; ratio = ${fixed(designShear)}/${fixed(equalShareGroupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Governing capacity check</b><code>${governingNote}</code></div>
+    <div><b>Minimum pitch - AS 4100 Cl. 9.5.1</b>${pitchFormula}</div>
+    <div><b>Maximum pitch - AS 4100 Cl. 9.5.3</b>${maximumPitchFormula}</div>
+    ${activePlyFormulaRows}
+    <div><b>Governing local hole-bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>${governingPlyLabel}; equal sharing: V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n = ${fixed(designShear)}/${count} = ${fixed(criticalBoltShear)} kN; governing group capacity = ${fixed(equalShareGroupPlyCapacity)} kN; ratio = ${fixed(designShear)}/${fixed(equalShareGroupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}</code></div>
+    ${integrityFormulaRows}
+    <div><b>Detailing compliance</b><code>${detailingCompliant ? "All applicable lightweight detailing checks pass." : detailingFailureNote}</code></div>
+    <div><b>Strength governing check</b><code>${governingNote}</code></div>
     <div><b>Combined shear and tension - AS 4100 Cl. 9.2.2.3</b>${strengthInteractionFormula}</div>
     <div><b>TF slip - AS 4100 Cl. 9.2.3.1</b>${slipFormula}</div>
     <div><b>TF combined slip - AS 4100 Cl. 9.2.3.3</b>${slipInteractionFormula}</div>
-    <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8. TF categories also require the separate serviceability slip checks above.</code></div>`;
+    <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8.${slip === null ? "" : " Complete the separate serviceability slip checks above."}</code></div>`;
 }
 
 function uniqueSorted(list, key) {
@@ -2301,8 +2633,190 @@ function calculateWeld() {
   }
 }
 
+const beamFamilyDefinitions = Object.freeze({
+  ub: { label: "UB", source: "InfraBuild 2019 Tables 9-10 · checked x-x and y-y rows", defaultSection: "310UB40.4", directions: [["x", "x-x"], ["y", "y-y"]] },
+  uc: { label: "UC", source: "InfraBuild 2019 Tables 11-12 · checked x-x and y-y rows", defaultSection: "200UC46.2", directions: [["x", "x-x"], ["y", "y-y"]] },
+  pfc: { label: "PFC", source: "InfraBuild 2019 Tables 15-16 · checked x-x, Load A and Load B rows", defaultSection: "150PFC", directions: [["x", "x-x"], ["y-a", "y-y · Load A"], ["y-b", "y-y · Load B"]] },
+  chs: { label: "CHS", source: "Austube 2013 Tables 3.1-1 and 3.1-2 · checked grade rows", defaultSection: "114.3 x 4.5 CHS", directions: [["axis", "Axis-independent"]] },
+  rhs: { label: "RHS", source: "Austube 2013 Tables 3.1-3 and 3.1-4 · checked x-x and y-y rows", defaultSection: "150 x 100 x 6 RHS", directions: [["x", "x-x"], ["y", "y-y"]] },
+  shs: { label: "SHS", source: "Austube 2013 Tables 3.1-5 and 3.1-6 · checked axis-independent rows", defaultSection: "100 x 100 x 6 SHS", directions: [["xy", "x-x = y-y"]] },
+  ea: { label: "Equal Angle", source: "InfraBuild 2019 Tables 19-20 · checked Load A/B/C/D subset", defaultSection: "100 x 100 x 10 EA", directions: [["a", "Load A"], ["b", "Load B"], ["c", "Load C"], ["d", "Load D"]] },
+  rod: { label: "Rod", source: "InfraBuild round-bar diameter and mass rows", defaultSection: "Ø24 Rod", directions: [["axis", "Axis-independent"]] }
+});
+
+function beamUniversalWebYield(section, gradeName, grade) {
+  if (gradeName === "300PLUS") return grade.fy === 280 ? 300 : 320;
+  if (grade.fy === 360) return 360;
+  const grade340Web = new Set(["610UB125", "610UB113", "310UC158", "310UC137", "310UC118"]);
+  return grade340Web.has(section.designation) ? 340 : 360;
+}
+
+function beamRolledSection(section, family) {
+  const supplementary = BeamHotRolledData.universal[section.designation];
+  const table = family === "ub" ? "Tables 9-10" : "Tables 11-12";
+  const grades = Object.fromEntries(Object.entries(section.grades).map(([name, grade]) => {
+    const y = supplementary?.grades?.[name];
+    return [name, {
+      ...grade,
+      fyw: beamUniversalWebYield(section, name, grade),
+      directions: {
+        x: { Ze: grade.Ze, compactness: grade.compactness },
+        y: { Ze: y?.Ze || 0, compactness: y?.compactness || null }
+      },
+      sourceRef: `InfraBuild 2019 ${table} · PDF pp. ${family === "ub" ? "12-13" : "14-15"}`
+    }];
+  }));
+  return {
+    ...section,
+    family,
+    drawing: { shape: "i", d: section.d, bf: section.bf, tw: section.tw, tf: section.tf },
+    I: supplementary?.x?.I || 0,
+    axes: {
+      x: { I: supplementary?.x?.I || 0, Z: section.Zx, S: section.Sx },
+      y: supplementary?.y || { I: 0, Z: 0, S: 0 }
+    },
+    grades,
+    capacityStatus: "checked",
+    shearMethod: "rolled-web",
+    interactionMethod: "flat-web",
+    sourceRef: `InfraBuild 2019 ${table} · PDF pp. ${family === "ub" ? "12-13" : "14-15"}`,
+    sourceBasis: "Published catalogue section and capacity tables"
+  };
+}
+
+function beamPfcSection(section) {
+  return {
+    ...section,
+    family: "pfc",
+    drawing: { shape: "channel", d: section.d, bf: section.bf, tw: section.tw, tf: section.tf, xL: section.xL, xO: section.xO },
+    geometryProperties: { cx: section.xL, cy: section.d / 2 },
+    Aw: section.d1 * section.tw,
+    I: section.axes.x.I,
+    Zx: section.axes.x.Z,
+    Sx: section.axes.x.S,
+    capacityStatus: "checked",
+    shearMethod: "rolled-web",
+    interactionMethod: "flat-web",
+    sourceRef: "InfraBuild 2019 Tables 15-16 · PDF p. 17",
+    sourceBasis: "Published catalogue section and capacity tables"
+  };
+}
+
+function beamHollowSections(family) {
+  const grouped = new Map();
+  BeamSectionData.filter(row => row.family === family).forEach(row => {
+    if (!grouped.has(row.designation)) grouped.set(row.designation, []);
+    grouped.get(row.designation).push(row);
+  });
+  return Array.from(grouped, ([designation, rows]) => {
+    const first = rows[0];
+    const circular = family === "chs";
+    const square = family === "shs";
+    const axes = circular
+      ? { axis: { I: first.I * 1e6, Z: first.Z, S: first.S } }
+      : square
+        ? { xy: { I: first.I * 1e6, Z: first.Z, S: first.S } }
+        : { x: { I: first.Ix * 1e6, Z: first.Zx, S: first.Sx }, y: { I: first.Iy * 1e6, Z: first.Zy, S: first.Sy } };
+    const grades = Object.fromEntries(rows.map(row => {
+      const directions = circular
+        ? { axis: { Ze: row.Ze, compactness: row.compactness } }
+        : square
+          ? { xy: { Ze: row.Ze, compactness: row.compactness } }
+          : { x: { Ze: row.Zex, compactness: row.compactnessX }, y: { Ze: row.Zey, compactness: row.compactnessY } };
+      return [row.grade, {
+        fy: row.fy,
+        fyw: row.fy,
+        kf: row.kf,
+        directions,
+        sourceRef: `Austube 2013 Table ${row.sourceTable} · PDF p. ${row.pdfPage}`
+      }];
+    }));
+    return {
+      designation,
+      family,
+      D: first.D,
+      d: first.d,
+      b: first.b,
+      t: first.t,
+      mass: first.mass,
+      area: first.area,
+      Aw: circular ? first.area : 0,
+      I: circular || square ? first.I * 1e6 : first.Ix * 1e6,
+      Zx: circular || square ? first.Z : first.Zx,
+      Sx: circular || square ? first.S : first.Sx,
+      drawing: circular ? { shape: "chs", D: first.D, t: first.t } : { shape: "rhs", b: first.b, h: first.d || first.b, t: first.t },
+      axes,
+      grades,
+      capacityStatus: "checked",
+      shearMethod: circular ? "chs-section" : "rhs-web",
+      interactionMethod: circular ? null : "flat-web",
+      sourceRef: grades[Object.keys(grades)[0]].sourceRef,
+      sourceBasis: "Published design-capacity table"
+    };
+  });
+}
+
+function beamAngleSection(section) {
+  const capacityGrades = BeamHotRolledData.equalAngle[section.designation] || {};
+  const catalogue = BeamHotRolledData.equalAngleProperties[section.designation] || null;
+  const grades = Object.fromEntries(Object.entries(capacityGrades).map(([name, grade]) => [name, {
+    ...grade,
+    sourceRef: "InfraBuild 2019 Tables 19-20 · PDF pp. 19-20"
+  }]));
+  return {
+    ...section,
+    family: "ea",
+    tNominal: section.t,
+    t: catalogue?.t || section.t,
+    r1: catalogue?.r1 || 0,
+    r2: catalogue?.r2 || 0,
+    pB: catalogue?.pB || 0,
+    pT: catalogue?.pT || 0,
+    area: catalogue?.area || section.area,
+    drawing: { shape: "angle", b: section.b, t: catalogue?.t || section.t },
+    geometryProperties: catalogue ? { cx: catalogue.pB, cy: catalogue.pB } : SectionGeometry.equalAngle(section.b, section.t),
+    mass: catalogue?.mass || section.area * 0.00785,
+    I: catalogue?.axes?.a?.I || 0,
+    Zx: catalogue?.axes?.a?.Z || 0,
+    Sx: catalogue?.axes?.a?.S || 0,
+    axes: catalogue?.axes || null,
+    grades,
+    capacityStatus: Object.keys(grades).length ? "checked" : "unavailable",
+    sourceRef: "InfraBuild 2019 Tables 19-20 · PDF pp. 19-20",
+    sourceBasis: "Published catalogue load-direction capacity table"
+  };
+}
+
+function beamRodSection(section) {
+  const properties = SectionGeometry.circle(section.diameter);
+  const solid = BeamSectionCapacity.solidCircle(section.diameter);
+  const S = solid.S / 1000;
+  const Z = solid.Z / 1000;
+  const Ze = solid.Ze / 1000;
+  return {
+    ...section,
+    family: "rod",
+    D: section.diameter,
+    drawing: { shape: "circle", D: section.diameter },
+    I: properties.ix,
+    Zx: Z,
+    Sx: S,
+    Aw: 0,
+    grades: Object.fromEntries(Object.entries(section.grades).map(([name, grade]) => [name, { ...grade, directions: { axis: { Ze, compactness: "C" } }, sourceRef: "InfraBuild 2019 round bar table" }])),
+    capacityStatus: "checked",
+    sourceRef: "InfraBuild 2019 round bar table",
+    sourceBasis: "Catalogue diameter and solid-circle geometry"
+  };
+}
+
 function beamCatalogueSections() {
-  return beamSectionType === "uc" ? ucSections : ubSections;
+  if (beamFamily === "ub") return ubSections.map(section => beamRolledSection(section, "ub"));
+  if (beamFamily === "uc") return ucSections.map(section => beamRolledSection(section, "uc"));
+  if (beamFamily === "pfc") return BeamHotRolledData.pfc.map(beamPfcSection);
+  if (["chs", "rhs", "shs"].includes(beamFamily)) return beamHollowSections(beamFamily);
+  if (beamFamily === "ea") return eaSections.map(beamAngleSection);
+  if (beamFamily === "rod") return rodSections.map(beamRodSection);
+  return [];
 }
 
 function formatBeamNumber(number, digits = 1) {
@@ -2314,11 +2828,15 @@ function formatBeamOptional(number, unit, digits = 1) {
 }
 
 function formatBeamModulus(number) {
-  return number > 0 ? `${formatBeamNumber(number, 1)} × 10³ mm³` : "-";
+  return number > 0 ? `${formatBeamNumber(number, 1)} &times; 10<sup>3</sup> mm<sup>3</sup>` : "-";
+}
+
+function formatBeamInertia(number) {
+  return number > 0 ? `${formatBeamNumber(number / 1e6, 2)} &times; 10<sup>6</sup> mm<sup>4</sup>` : "-";
 }
 
 function formatBeamArea(number) {
-  return number > 0 ? `${formatBeamNumber(number, 0)} mm²` : "-";
+  return number > 0 ? `${formatBeamNumber(number, 0)} mm<sup>2</sup>` : "-";
 }
 
 function formatBeamDimension(number) {
@@ -2334,18 +2852,24 @@ function setBeamSummaryCell(id, html, hidden = false) {
 }
 
 function updateBeamSummaryDimensions(section) {
+  setBeamSummaryCell("beamDimDiameter", formatBeamDimension(section.D), !(section.D > 0));
   setBeamSummaryCell("beamDimDepth", formatBeamDimension(section.d), !(section.d > 0));
+  setBeamSummaryCell("beamDimWidth", formatBeamDimension(section.b), !(section.b > 0));
   setBeamSummaryCell("beamDimBf", formatBeamDimension(section.bf), !(section.bf > 0));
+  setBeamSummaryCell("beamDimThickness", formatBeamDimension(section.t), !(section.t > 0));
   setBeamSummaryCell("beamDimTw", formatBeamDimension(section.tw), !(section.tw > 0));
   setBeamSummaryCell("beamDimTf", formatBeamDimension(section.tf), !(section.tf > 0));
   setBeamSummaryCell("beamDimD1", formatBeamDimension(section.d1), !(section.d1 > 0));
+  setBeamSummaryCell("beamDimXL", formatBeamDimension(section.xL), !(section.xL > 0));
+  setBeamSummaryCell("beamDimXO", formatBeamDimension(section.xO), !(section.xO > 0));
 }
 
 function compactnessText(compactness) {
   if (compactness === "C") return "Compact";
   if (compactness === "N") return "Non-compact";
   if (compactness === "E") return "Elastic basis";
-  return "Slender";
+  if (compactness === "S") return "Slender";
+  return "Not published";
 }
 
 const sectionShapeNames = {
@@ -3079,7 +3603,8 @@ function calculateSectionProperties() {
 }
 
 function beamWebShearReduction(section, grade, isCustom) {
-  if (!(section.d1 > 0) || !(section.tw > 0) || !(grade.fy > 0)) {
+  const fyw = grade.fyw || grade.fy;
+  if (!(section.d1 > 0) || !(section.tw > 0) || !(fyw > 0)) {
     return {
       alphaV: 1,
       slenderness: NaN,
@@ -3087,9 +3612,8 @@ function beamWebShearReduction(section, grade, isCustom) {
       basis: "Web slenderness is not available for this quick lookup."
     };
   }
-  const slenderness = section.d1 / section.tw * Math.sqrt(grade.fy / 250);
-  const threshold = 82;
-  const alphaV = slenderness <= threshold ? 1 : Math.min(1, (threshold / slenderness) ** 2);
+  const reduction = BeamSectionCapacity.unstiffenedWebShearReduction(section.d1, section.tw, fyw);
+  const { slenderness, threshold, alphaV } = reduction;
   return {
     alphaV,
     slenderness,
@@ -3100,216 +3624,534 @@ function beamWebShearReduction(section, grade, isCustom) {
   };
 }
 
-function customBeamGeometry() {
-  const d = value("beamCustomDepth");
-  const bf = value("beamCustomFlangeWidth");
-  const tw = value("beamCustomWebThickness");
-  const tf = value("beamCustomFlangeThickness");
-  const d1 = Math.max(0, d - 2 * tf);
-  const valid = d > 0 && bf > 0 && tw > 0 && tf > 0 && d1 > 0 && bf >= tw;
+const beamDirectionMemory = Object.create(null);
 
-  if (!valid) {
-    return { d, bf, tw, tf, d1, area: 0, Aw: 0, mass: 0, Sx: 0, Zx: 0 };
+function beamCustomSection() {
+  const directions = beamDirections().reduce((records, [key]) => ({ ...records, [key]: { Ze: 0, compactness: null } }), {});
+  const gradeRecords = Object.fromEntries(Object.entries(customBeamGradeYields).map(([name, fy]) => [name, { fy, kf: 0, directions }]));
+  const base = { family: beamFamily, mass: 0, area: 0, Aw: 0, I: 0, Zx: 0, Sx: 0, grades: gradeRecords, custom: true, capacityStatus: "geometry-only", sourceRef: "Entered dimensions · ideal sharp-corner geometry", sourceBasis: "Entered ideal dimensions" };
+  try {
+    if (beamFamily === "ub" || beamFamily === "uc") {
+      const d = value("beamCustomDepth");
+      const bf = value("beamCustomFlangeWidth");
+      const tw = value("beamCustomWebThickness");
+      const tf = value("beamCustomFlangeThickness");
+      const properties = SectionGeometry.symmetricI(d, bf, tw, tf);
+      const d1 = d - 2 * tf;
+      const Sx = (bf * tf * (d - tf) + tw * d1 ** 2 / 4) / 1000;
+      return { ...base, designation: `Custom ${beamFamily.toUpperCase()}`, d, bf, tw, tf, d1, area: properties.area, mass: properties.area * 0.00785, Aw: d1 * tw, I: properties.ix, Zx: properties.zx / 1000, Sx, drawing: { shape: "i", d, bf, tw, tf }, axes: { x: { I: properties.ix, Z: properties.zx / 1000, S: Sx }, y: { I: properties.iy, Z: properties.zy / 1000, S: 0 } } };
+    }
+    if (beamFamily === "pfc") {
+      const d = value("beamCustomPfcDepth");
+      const bf = value("beamCustomPfcFlangeWidth");
+      const tw = value("beamCustomPfcWebThickness");
+      const tf = value("beamCustomPfcFlangeThickness");
+      const properties = SectionGeometry.channel(d, bf, tw, tf);
+      const d1 = d - 2 * tf;
+      return { ...base, designation: "Custom PFC", d, bf, tw, tf, d1, area: properties.area, mass: properties.area * 0.00785, Aw: d1 * tw, I: properties.ix, Zx: properties.zx / 1000, drawing: { shape: "channel", d, bf, tw, tf }, axes: { x: { I: properties.ix, Z: properties.zx / 1000, S: 0 } } };
+    }
+    if (beamFamily === "chs") {
+      const D = value("beamCustomChsDiameter");
+      const t = value("beamCustomChsThickness");
+      const properties = SectionGeometry.circularHollow(D, t);
+      const inner = D - 2 * t;
+      const S = (D ** 3 - inner ** 3) / 6 / 1000;
+      return { ...base, designation: "Custom CHS", D, t, area: properties.area, mass: properties.area * 0.00785, Aw: properties.area, I: properties.ix, Zx: properties.zx / 1000, Sx: S, drawing: { shape: "chs", D, t }, axes: { axis: { I: properties.ix, Z: properties.zx / 1000, S } } };
+    }
+    if (beamFamily === "rhs" || beamFamily === "shs") {
+      const shs = beamFamily === "shs";
+      const d = shs ? value("beamCustomShsWidth") : value("beamCustomRhsDepth");
+      const b = shs ? d : value("beamCustomRhsWidth");
+      const t = shs ? value("beamCustomShsThickness") : value("beamCustomRhsThickness");
+      const properties = SectionGeometry.rectangularHollow(b, d, t);
+      const bi = b - 2 * t;
+      const di = d - 2 * t;
+      const Sx = (b * d ** 2 - bi * di ** 2) / 4 / 1000;
+      const Sy = (d * b ** 2 - di * bi ** 2) / 4 / 1000;
+      return { ...base, designation: `Custom ${beamFamily.toUpperCase()}`, d, b, t, area: properties.area, mass: properties.area * 0.00785, I: properties.ix, Zx: properties.zx / 1000, Sx, drawing: { shape: "rhs", b, h: d, t }, axes: { x: { I: properties.ix, Z: properties.zx / 1000, S: Sx }, y: { I: properties.iy, Z: properties.zy / 1000, S: Sy }, xy: { I: properties.ix, Z: properties.zx / 1000, S: Sx } } };
+    }
+    if (beamFamily === "ea") {
+      const b = value("beamCustomEaLeg");
+      const t = value("beamCustomEaThickness");
+      const properties = SectionGeometry.equalAngle(b, t);
+      return { ...base, designation: "Custom Equal Angle", b, t, area: properties.area, mass: properties.area * 0.00785, drawing: { shape: "angle", b, t }, geometryProperties: properties };
+    }
+    const D = value("beamCustomRodDiameter");
+    const properties = SectionGeometry.circle(D);
+    const solid = BeamSectionCapacity.solidCircle(D);
+    const Z = solid.Z / 1000;
+    const S = solid.S / 1000;
+    const Ze = solid.Ze / 1000;
+    const grades = Object.fromEntries(Object.entries(customBeamGradeYields).map(([name, fy]) => [name, { fy, kf: 1, directions: { axis: { Ze, compactness: "C" } }, sourceRef: "Entered diameter · solid-circle geometry" }]));
+    return { ...base, designation: "Custom Rod", D, diameter: D, area: properties.area, mass: properties.area * 0.00785, I: properties.ix, Zx: Z, Sx: S, grades, capacityStatus: "checked", sourceRef: "Entered diameter · solid-circle geometry", drawing: { shape: "circle", D }, axes: { axis: { I: properties.ix, Z, S } } };
+  } catch (error) {
+    return { ...base, designation: `Custom ${beamFamilyDefinitions[beamFamily].label}`, invalidReason: error.message, drawing: null };
   }
-
-  const properties = SectionGeometry.symmetricI(d, bf, tw, tf);
-  const area = properties.area;
-  const mass = area * 0.00785;
-  const zx = properties.zx / 1000;
-  const sx = (bf * tf * (d - tf) + tw * d1 ** 2 / 4) / 1000;
-
-  return { d, bf, tw, tf, d1, area, Aw: d1 * tw, mass, Sx: sx, Zx: zx };
-}
-
-function customBeamSection() {
-  const geometry = customBeamGeometry();
-  const designation = geometry.d > 0 && geometry.bf > 0
-    ? `Custom I d=${formatBeamNumber(geometry.d, 0)} bf=${formatBeamNumber(geometry.bf, 0)} tw=${formatBeamNumber(geometry.tw, 1)} tf=${formatBeamNumber(geometry.tf, 1)}`
-    : "Custom I-section";
-  const grades = Object.fromEntries(Object.entries(customBeamGradeYields).map(([name, fy]) => [name, {
-    fy,
-    Ze: geometry.Zx,
-    compactness: "E",
-    kf: 0
-  }]));
-  return {
-    designation,
-    mass: geometry.mass,
-    area: geometry.area,
-    Aw: geometry.Aw,
-    d1: geometry.d1,
-    tw: geometry.tw,
-    d: geometry.d,
-    bf: geometry.bf,
-    tf: geometry.tf,
-    Sx: geometry.Sx,
-    Zx: geometry.Zx,
-    custom: true,
-    grades
-  };
 }
 
 function selectedBeamSection() {
-  if (beamSectionType === "custom") return customBeamSection();
+  if (beamSource === "custom") return beamCustomSection();
   const sections = beamCatalogueSections();
-  return sections.find(section => section.designation === $("beamSection").value) || sections[0];
+  return sections.find(section => section.designation === $("beamSection").value) || sections[0] || null;
+}
+
+function beamDirections() {
+  return beamFamilyDefinitions[beamFamily].directions;
+}
+
+function populateBeamDirections() {
+  const directions = beamDirections();
+  const previous = beamDirectionMemory[beamFamily];
+  const selected = directions.some(([key]) => key === previous) ? previous : directions[0][0];
+  const catalogueCase = beamSource === "catalogue" && (beamFamily === "pfc" || beamFamily === "ea");
+  $("beamDirection").innerHTML = directions.map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
+  $("beamDirection").value = selected;
+  $("beamDirectionGroup").hidden = directions.length === 1;
+  $("beamDirectionHeading").textContent = catalogueCase ? "Catalogue bending case" : "Bending direction";
+  $("beamDirectionFieldLabel").textContent = catalogueCase ? "Catalogue case" : "Direction";
+  $("beamDirection").setAttribute("aria-label", catalogueCase ? "Catalogue bending case" : "Bending direction");
+  $("beamDirectionHelp").textContent = beamFamily === "pfc"
+    ? "Load A is toward the web; Load B is toward the flange tips. The arrows define bending sign, not the load application point."
+    : beamFamily === "ea"
+      ? "Load A/B/C/D defines the catalogue principal-axis bending sign and compression side shown in the section figure."
+      : "Select the catalogue load direction used for the effective section modulus.";
+  beamDirectionMemory[beamFamily] = selected;
 }
 
 function populateBeamOptions() {
-  if (beamSectionType === "custom") {
-    populateBeamGrades();
-    return;
-  }
   const sections = beamCatalogueSections();
   const previous = $("beamSection").value;
-  const fallback = beamSectionType === "uc" ? "200UC46.2" : "310UB40.4";
-  const selected = sections.some(section => section.designation === previous) ? previous : fallback;
-  $("beamSection").innerHTML = sections.map(section => `<option value="${section.designation}">${section.designation}</option>`).join("");
-  $("beamSection").value = selected;
+  const fallback = beamFamilyDefinitions[beamFamily].defaultSection;
+  if (!sections.length) {
+    $("beamSection").innerHTML = `<option value="">No checked Beam rows</option>`;
+    $("beamSection").disabled = true;
+  } else {
+    $("beamSection").disabled = false;
+    $("beamSection").innerHTML = sections.map(section => `<option value="${section.designation}">${section.designation}</option>`).join("");
+    $("beamSection").value = sections.some(section => section.designation === previous) ? previous : (sections.some(section => section.designation === fallback) ? fallback : sections[0].designation);
+  }
+  populateBeamDirections();
   populateBeamGrades();
+}
+
+function beamMaterialDefaults() {
+  const section = selectedBeamSection();
+  const grade = section?.grades?.[$("beamGrade").value] || null;
+  const fy = Number(grade?.fy);
+  const fyw = Number(grade?.fyw || grade?.fy);
+  return {
+    fy: Number.isFinite(fy) && fy > 0 ? fy : 0,
+    fyw: Number.isFinite(fyw) && fyw > 0 ? fyw : 0
+  };
+}
+
+function resetBeamMaterialStrengths() {
+  const defaults = beamMaterialDefaults();
+  $("beamFyInput").value = defaults.fy || "";
+  $("beamFywInput").value = defaults.fyw || "";
+  calculateBeam();
 }
 
 function populateBeamGrades() {
   const section = selectedBeamSection();
-  const previousGrade = $("beamGrade").value || (beamSectionType === "custom" ? "Grade 300" : "300PLUS");
-  const grades = Object.keys(section.grades);
-  $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${grade}</option>`).join("");
-  const defaultGrade = beamSectionType === "custom" && grades.includes("Grade 300") ? "Grade 300" : grades[0];
-  $("beamGrade").value = grades.includes(previousGrade) ? previousGrade : defaultGrade;
-  calculateBeam();
+  const previous = $("beamGrade").value;
+  const grades = section ? Object.keys(section.grades || {}) : [];
+  if (!grades.length) {
+    $("beamGrade").innerHTML = `<option value="">Not available</option>`;
+    $("beamGrade").disabled = true;
+  } else {
+    $("beamGrade").disabled = false;
+    $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${grade}</option>`).join("");
+    const preferred = beamSource === "custom" && grades.includes("Grade 300") ? "Grade 300" : grades[0];
+    $("beamGrade").value = grades.includes(previous) ? previous : preferred;
+  }
+  resetBeamMaterialStrengths();
 }
 
-function setBeamType(type) {
-  beamSectionType = type;
+function setBeamSource(source) {
+  beamSource = source === "custom" ? "custom" : "catalogue";
   document.querySelectorAll(".beam-type").forEach(button => {
-    const active = button.dataset.beamType === type;
+    const active = button.dataset.beamSource === beamSource;
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", active ? "true" : "false");
   });
-  document.querySelectorAll("[data-beam-guide]").forEach(card => {
-    card.hidden = card.dataset.beamGuide !== type;
-  });
-  const custom = type === "custom";
+  const custom = beamSource === "custom";
   $("beamSectionField").hidden = custom;
-  $("beamCatalogueSectionFields").hidden = custom;
   $("beamCustomFields").hidden = !custom;
-  $("beamGradeField").hidden = false;
-  $("beamSectionSource").innerHTML = custom
-    ? "Symmetric I-section dimensions; properties are generated automatically."
-    : "Catalogue section properties from the selected UB/UC row.";
+  document.querySelectorAll("[data-beam-custom-family]").forEach(group => {
+    group.hidden = !custom || !group.dataset.beamCustomFamily.split(" ").includes(beamFamily);
+  });
+  $("beamSectionSource").textContent = custom
+    ? "Family dimensions only; gross section properties are generated automatically."
+    : beamFamilyDefinitions[beamFamily].source;
   populateBeamOptions();
+}
+
+function setBeamFamily(family) {
+  if (!beamFamilyDefinitions[family]) return;
+  beamFamily = family;
+  $("beamFamily").value = family;
+  setBeamSource(beamSource);
+}
+
+function beamAxisProperties(section, direction) {
+  if (!section) return { I: 0, Z: 0, S: 0 };
+  if (section.axes) return section.axes[direction] || { I: 0, Z: 0, S: 0 };
+  if ((section.family === "ub" || section.family === "uc") && direction === "x") return { I: section.I, Z: section.Zx, S: section.Sx };
+  if (section.family === "pfc" && direction === "x") return { I: section.I, Z: section.Zx, S: section.Sx };
+  if ((section.family === "chs" || section.family === "rod") && direction === "axis") return { I: section.I, Z: section.Zx, S: section.Sx };
+  return { I: 0, Z: 0, S: 0 };
+}
+
+function beamDirectionSubscript(direction) {
+  if (direction === "x") return "x";
+  if (direction === "y" || direction.startsWith("y-")) return "y";
+  if (direction === "a" || direction === "c") return "x";
+  if (direction === "b" || direction === "d") return "y";
+  return "";
+}
+
+function beamDirectionLoadCase(direction) {
+  if (direction === "y-a" || direction === "a") return "Load A";
+  if (direction === "y-b" || direction === "b") return "Load B";
+  if (direction === "c") return "Load C";
+  if (direction === "d") return "Load D";
+  return "";
+}
+
+function beamDiagramProperties(section) {
+  if (!section?.drawing) return null;
+  if (section.geometryProperties) return section.geometryProperties;
+  try { return idealDrawingProperties(section.drawing); } catch (error) { return null; }
+}
+
+function renderBeamSectionDiagram(section) {
+  const svg = $("beamSectionDiagram");
+  if (!section?.drawing) {
+    svg.innerHTML = `<title id="beamSectionDiagramTitle">No checked section row</title><desc id="beamSectionDiagramDescription">No section geometry is available for the selected catalogue family.</desc>`;
+    $("beamSectionDiagramCaption").textContent = "No checked catalogue geometry";
+    return;
+  }
+  const drawing = section.drawing;
+  const properties = beamDiagramProperties(section);
+  const shape = drawing.shape;
+  const width = shape === "rhs" ? drawing.b : shape === "circle" || shape === "chs" ? drawing.D : shape === "angle" ? drawing.b : drawing.bf;
+  const height = shape === "rhs" ? drawing.h : shape === "circle" || shape === "chs" ? drawing.D : shape === "angle" ? drawing.b : drawing.d;
+  if (!(width > 0) || !(height > 0) || !properties) return;
+  const scale = Math.min(108 / width, 112 / height);
+  const w = width * scale;
+  const h = height * scale;
+  const x0 = 120 - w / 2;
+  const y0 = 82 - h / 2;
+  const line = number => Number(number).toFixed(2);
+  const thickness = number => Math.max(3, Math.min(number * scale, Math.min(w, h) * 0.24));
+  let geometry = "";
+  if (shape === "circle" || shape === "chs") {
+    geometry = `<circle class="section-properties-shape" cx="120" cy="82" r="${line(w / 2)}" />`;
+    if (shape === "chs") geometry += `<circle class="section-properties-void" cx="120" cy="82" r="${line(Math.max(1, w / 2 - thickness(drawing.t)))}" />`;
+  } else if (shape === "rhs") {
+    const t = thickness(drawing.t);
+    geometry = `<path class="section-properties-shape" fill-rule="evenodd" d="M ${line(x0)} ${line(y0)} H ${line(x0 + w)} V ${line(y0 + h)} H ${line(x0)} Z M ${line(x0 + t)} ${line(y0 + t)} V ${line(y0 + h - t)} H ${line(x0 + w - t)} V ${line(y0 + t)} Z" />`;
+  } else if (shape === "i") {
+    const tw = thickness(drawing.tw);
+    const tf = thickness(drawing.tf);
+    const wl = x0 + (w - tw) / 2;
+    geometry = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + w)} V ${line(y0 + tf)} H ${line(wl + tw)} V ${line(y0 + h - tf)} H ${line(x0 + w)} V ${line(y0 + h)} H ${line(x0)} V ${line(y0 + h - tf)} H ${line(wl)} V ${line(y0 + tf)} H ${line(x0)} Z" />`;
+  } else if (shape === "angle") {
+    const t = thickness(drawing.t);
+    geometry = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + t)} V ${line(y0 + h - t)} H ${line(x0 + w)} V ${line(y0 + h)} H ${line(x0)} Z" />`;
+  } else {
+    const tw = thickness(drawing.tw);
+    const tf = thickness(drawing.tf);
+    geometry = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + w)} V ${line(y0 + tf)} H ${line(x0 + tw)} V ${line(y0 + h - tf)} H ${line(x0 + w)} V ${line(y0 + h)} H ${line(x0)} Z" />`;
+  }
+  const axisX = x0 + properties.cx * scale;
+  const axisY = y0 + h - properties.cy * scale;
+  const direction = $("beamDirection").value || beamDirections()[0][0];
+  const xActive = ["x", "axis", "xy", "a", "c"].includes(direction);
+  const yActive = ["y", "y-a", "y-b", "axis", "xy", "b", "d"].includes(direction);
+  const xStart = Math.max(12, x0 - 18);
+  const xEnd = Math.min(226, x0 + w + 21);
+  const yStart = Math.min(154, y0 + h + 17);
+  const yEnd = Math.max(10, y0 - 18);
+  let loadMarkup = "";
+  let axisMarkup = "";
+  let auxiliaryMarkup = "";
+  if (shape === "channel" && direction.startsWith("y-")) {
+    const fromLeft = direction === "y-a";
+    const startX = fromLeft ? 20 : 220;
+    const endX = fromLeft ? Math.max(31, x0 - 5) : Math.min(209, x0 + w + 5);
+    loadMarkup = `<line class="beam-load-arrow" x1="${line(startX)}" y1="154" x2="${line(endX)}" y2="154" marker-end="url(#beamLoadArrow)" /><text class="beam-load-label" x="${line(startX)}" y="166" text-anchor="${fromLeft ? "start" : "end"}">${direction === "y-a" ? "Load A" : "Load B"}</text>`;
+  } else if (shape === "angle") {
+    const axisLength = Math.min(54, Math.max(42, Math.min(w, h) * 0.48));
+    axisMarkup = `<line class="section-properties-axis${xActive ? " is-active" : ""}" x1="${line(axisX - axisLength)}" y1="${line(axisY + axisLength)}" x2="${line(axisX + axisLength)}" y2="${line(axisY - axisLength)}" marker-end="url(#beamAxisArrow)" /><line class="section-properties-axis${yActive ? " is-active" : ""}" x1="${line(axisX - axisLength)}" y1="${line(axisY - axisLength)}" x2="${line(axisX + axisLength)}" y2="${line(axisY + axisLength)}" marker-end="url(#beamAxisArrow)" /><text class="section-properties-axis-label" x="${line(axisX + axisLength + 4)}" y="${line(axisY - axisLength + 2)}">x</text><text class="section-properties-axis-label" x="${line(axisX - axisLength - 4)}" y="${line(axisY - axisLength + 2)}" text-anchor="end">y</text>`;
+    const loadOffset = Math.min(39, axisLength - 7);
+    const loadEnd = 7;
+    const load = {
+      a: [axisX - loadOffset, axisY - loadOffset, axisX - loadEnd, axisY - loadEnd, -7, -5, "end"],
+      b: [axisX + loadOffset, axisY - loadOffset, axisX + loadEnd, axisY - loadEnd, 7, -5, "start"],
+      c: [axisX + loadOffset, axisY + loadOffset, axisX + loadEnd, axisY + loadEnd, 7, 11, "start"],
+      d: [axisX - loadOffset, axisY + loadOffset, axisX - loadEnd, axisY + loadEnd, -7, 11, "end"]
+    }[direction];
+    if (load) loadMarkup = `<line class="beam-load-arrow" x1="${line(load[0])}" y1="${line(load[1])}" x2="${line(load[2])}" y2="${line(load[3])}" marker-end="url(#beamLoadArrow)" /><text class="beam-load-label" x="${line(load[0] + load[4])}" y="${line(load[1] + load[5])}" text-anchor="${load[6]}">Load ${direction.toUpperCase()}</text>`;
+  }
+  if (!axisMarkup) axisMarkup = `<line class="section-properties-axis${xActive ? " is-active" : ""}" x1="${line(xStart)}" y1="${line(axisY)}" x2="${line(xEnd)}" y2="${line(axisY)}" marker-end="url(#beamAxisArrow)" /><line class="section-properties-axis${yActive ? " is-active" : ""}" x1="${line(axisX)}" y1="${line(yStart)}" x2="${line(axisX)}" y2="${line(yEnd)}" marker-end="url(#beamAxisArrow)" /><text class="section-properties-axis-label" x="${line(xEnd - 1)}" y="${line(axisY - 7)}" text-anchor="end">x-x</text><text class="section-properties-axis-label" x="${line(axisX + 7)}" y="${line(yEnd + 9)}">y-y</text>`;
+  if (shape === "channel" && drawing.xO > 0) {
+    const shearCentreX = x0 - drawing.xO * scale;
+    auxiliaryMarkup = `<line class="beam-shear-centre-guide" x1="${line(shearCentreX)}" y1="${line(axisY)}" x2="${line(x0)}" y2="${line(axisY)}" /><circle class="beam-shear-centre" cx="${line(shearCentreX)}" cy="${line(axisY)}" r="3.2" /><text class="beam-shear-centre-label" x="${line(shearCentreX)}" y="${line(axisY - 8)}" text-anchor="middle">SC</text>`;
+  }
+  const title = `${section.designation} section`;
+  const description = shape === "angle"
+    ? "Catalogue equal-angle schematic showing the x and y principal axes and selected Load A, B, C or D direction."
+    : shape === "channel"
+      ? "Catalogue channel schematic showing centroidal axes, shear centre and selected bending direction."
+      : "Value-driven section schematic showing centroidal x-x and y-y axes and the selected bending direction.";
+  svg.innerHTML = `<title id="beamSectionDiagramTitle">${safeText(title)} and selected bending direction</title><desc id="beamSectionDiagramDescription">${description}</desc><defs><marker id="beamAxisArrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z"></path></marker><marker id="beamLoadArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 0 0 L 8 4 L 0 8 Z"></path></marker></defs>${geometry}${axisMarkup}${auxiliaryMarkup}<circle class="section-properties-centroid" cx="${line(axisX)}" cy="${line(axisY)}" r="3.4" />${loadMarkup}`;
+  $("beamSectionDiagramCaption").textContent = beamSource === "custom"
+    ? "Ideal entered geometry · selected direction"
+    : shape === "angle"
+      ? "Catalogue principal axes · selected load direction"
+      : shape === "channel"
+        ? "Catalogue centroid and shear centre · selected direction"
+        : "Catalogue geometry · selected direction";
+}
+
+function setBeamOutput(id, value, available) {
+  const output = $(id);
+  output.textContent = available ? fixed(value) : "Not evaluated";
+  output.parentElement.classList.toggle("is-unavailable", !available);
+  const unit = output.nextElementSibling;
+  if (unit) unit.hidden = !available;
 }
 
 function calculateBeam() {
   const section = selectedBeamSection();
-  if (!section) return;
+  const direction = $("beamDirection").value || beamDirections()[0][0];
+  beamDirectionMemory[beamFamily] = direction;
   const gradeName = $("beamGrade").value;
-  const grade = section.grades[gradeName];
-  if (!grade) return;
-  const isCustom = beamSectionType === "custom";
-  const phi = 0.9;
-  const validMoment = grade.fy > 0 && grade.Ze > 0;
-  const validShear = grade.fy > 0 && section.Aw > 0;
-  const valid = validMoment && validShear;
-  const sectionCapacity = validMoment ? phi * grade.fy * grade.Ze / 1000 : NaN;
-  const webShear = beamWebShearReduction(section, grade, isCustom);
-  const shearYieldCapacity = validShear ? phi * 0.6 * grade.fy * section.Aw / 1000 : NaN;
-  const shearCapacity = validShear ? shearYieldCapacity * webShear.alphaV : NaN;
-  const elasticYield = validMoment && section.Zx > 0 ? phi * grade.fy * section.Zx / 1000 : NaN;
-  const plasticLimit = validMoment && section.Sx > 0 ? phi * grade.fy * section.Sx / 1000 : NaN;
+  const gradeBase = section?.grades?.[gradeName] || null;
+  const defaults = beamMaterialDefaults();
+  const fyInput = value("beamFyInput");
+  const separateWebStrength = ["ub", "uc", "pfc"].includes(beamFamily);
+  const fywInput = separateWebStrength ? value("beamFywInput") : fyInput;
+  const strengthClose = (actual, expected) => actual > 0 && expected > 0 && Math.abs(actual - expected) <= 0.01;
+  const momentOverride = Boolean(gradeBase && !strengthClose(fyInput, defaults.fy));
+  const webOverride = Boolean(gradeBase && separateWebStrength && !strengthClose(fywInput, defaults.fyw));
+  const materialOverride = momentOverride || webOverride;
+  const materialValid = Boolean(fyInput > 0 && (!separateWebStrength || fywInput > 0));
+  $("beamFywField").hidden = !separateWebStrength;
+  $("beamMaterialStatus").textContent = !materialValid
+    ? "Enter positive strength"
+    : materialOverride
+      ? "Project / legacy override"
+      : beamSource === "catalogue"
+        ? "Catalogue default"
+        : "Selected grade default";
+  $("beamMaterialReset").disabled = !materialOverride;
+  const directionCapacity = gradeBase?.directions?.[direction] || null;
+  const gradeForEvaluation = gradeBase
+    ? { ...gradeBase, fy: fyInput, fyw: separateWebStrength ? fywInput : fyInput }
+    : null;
+  const coordination = momentOverride
+    ? BeamSectionReconciliation.deriveProject(section, gradeForEvaluation, direction)
+    : beamSource === "catalogue" || beamFamily === "rod"
+      ? BeamSectionReconciliation.reconcile(section, gradeForEvaluation, direction)
+    : { status: "unresolved", reason: "Custom section capacity is not classified." };
+  const grade = gradeBase && directionCapacity
+    ? {
+        ...gradeBase,
+        ...directionCapacity,
+        fy: fyInput,
+        fyw: separateWebStrength ? fywInput : fyInput,
+        Ze: coordination.status === "derived" ? coordination.expectedZe : directionCapacity.Ze,
+        kf: coordination.status === "derived" ? coordination.expectedKf : gradeBase.kf,
+        compactness: coordination.status === "derived"
+          ? coordination.expectedClass
+          : directionCapacity.compactness || coordination.expectedClass || null
+      }
+    : null;
+  const axis = beamAxisProperties(section, direction);
+  const subscript = beamDirectionSubscript(direction);
+  const loadCase = beamDirectionLoadCase(direction);
+  const loadCaseHtml = loadCase ? ` &middot; ${loadCase}` : "";
+  const directionLabel = beamDirections().find(([key]) => key === direction)?.[1] || "—";
+  const momentAvailable = Boolean(
+    section?.capacityStatus === "checked"
+    && ["reconciled", "derived"].includes(coordination.status)
+    && grade?.fy > 0
+    && grade?.Ze > 0
+  );
+  const rolledWebShear = Boolean(grade?.fyw > 0 && beamSource === "catalogue" && section?.shearMethod === "rolled-web" && direction === "x" && section.Aw > 0);
+  const chsSectionShear = Boolean(grade?.fy > 0 && beamSource === "catalogue" && section?.shearMethod === "chs-section" && direction === "axis" && section.area > 0);
+  const rhsWebShear = Boolean(grade?.fy > 0 && beamSource === "catalogue" && section?.shearMethod === "rhs-web" && ["x", "y", "xy"].includes(direction));
+  const hollowShearDirection = direction === "y" ? "y" : "x";
+  const hollowWeb = rhsWebShear
+    ? BeamSectionCapacity.rectangularHollowShear(grade.fyw || grade.fy, section.d, section.b, section.t, hollowShearDirection)
+    : null;
+  const shearAvailable = Boolean(grade && (rolledWebShear || chsSectionShear || hollowWeb));
+  const interactionAvailable = Boolean(momentAvailable && (rolledWebShear || hollowWeb) && section?.interactionMethod === "flat-web");
+  const phi = BeamSectionCapacity.PHI;
+  const momentCapacity = momentAvailable ? BeamSectionCapacity.sectionMoment(grade.fy, grade.Ze * 1000, phi) : NaN;
+  const webShear = rolledWebShear ? beamWebShearReduction(section, grade, false) : { alphaV: 1, slenderness: NaN, threshold: 82, basis: "Not applicable." };
+  const shearCapacity = rolledWebShear
+    ? BeamSectionCapacity.rolledWebShear(grade.fyw || grade.fy, section.Aw, webShear.alphaV, phi)
+    : chsSectionShear
+      ? BeamSectionCapacity.circularHollowShear(grade.fy, section.area, phi)
+      : hollowWeb?.designCapacity ?? NaN;
   const momentDemand = value("beamMomentDemand");
   const shearDemand = value("beamShearDemand");
-  const momentRatio = validMoment && sectionCapacity > 0 ? momentDemand / sectionCapacity : Infinity;
-  const cl512Factor = momentRatio <= 0.75 ? 1 : momentRatio <= 1 ? 2.2 - 1.6 * momentRatio : 1;
-  const shearWithBendingCapacity = validShear ? shearCapacity * cl512Factor : NaN;
-  const shearRatio = validShear && shearWithBendingCapacity > 0 ? shearDemand / shearWithBendingCapacity : Infinity;
-  const utilisation = valid ? Math.max(momentDemand > 0 ? momentRatio : 0, shearDemand > 0 ? shearRatio : 0) : Infinity;
-  const hasDemand = momentDemand > 0 || shearDemand > 0;
-  const interactionReductionApplied = valid && momentDemand > 0.75 * sectionCapacity && momentDemand <= sectionCapacity && shearDemand > 0;
-  const shearReductionApplied = validShear && webShear.alphaV < 0.9995;
-  const compactnessLabel = compactnessText(grade.compactness);
-  const sourceBasis = isCustom ? "Dimension-generated symmetric I-section geometry" : `OneSteel / InfraBuild ${beamSectionType.toUpperCase()} catalogue data`;
-  const shearAreaBasis = isCustom
-    ? `A<sub>w</sub> = d<sub>1</sub>t<sub>w</sub> = ${formatBeamNumber(section.d1, 1)} x ${formatBeamNumber(section.tw, 1)} = ${formatBeamArea(section.Aw)} from custom dimensions`
-    : `A<sub>w</sub> = d<sub>1</sub>t<sub>w</sub> = ${formatBeamNumber(section.d1, 1)} x ${formatBeamNumber(section.tw, 1)} = ${formatBeamArea(section.Aw)}`;
-  const webShearBasis = isCustom
-    ? `d<sub>1</sub>/t<sub>w</sub> &radic;(f<sub>y</sub>/250) = ${formatBeamNumber(webShear.slenderness, 1)}; AS 4100 Cl. 5.11.5 screen limit = ${webShear.threshold}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}. ${webShear.basis}`
-    : `d<sub>1</sub>/t<sub>w</sub> &radic;(f<sub>y</sub>/250) = ${formatBeamNumber(webShear.slenderness, 1)}; AS 4100 Cl. 5.11.5 screen limit = ${webShear.threshold}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}. ${webShear.basis}`;
+  const momentRatio = momentAvailable && momentCapacity > 0 ? momentDemand / momentCapacity : NaN;
+  const interactionDemand = interactionAvailable
+    ? BeamSectionCapacity.momentShearDemandCheck(momentDemand, momentCapacity, shearDemand, shearCapacity)
+    : null;
+  const interaction = interactionDemand?.interaction || null;
+  const interactionShearCapacity = interactionAvailable ? interaction.designShearCapacity : shearAvailable ? shearCapacity : NaN;
+  const shearRatio = interactionAvailable
+    ? interactionDemand.shearRatio
+    : shearAvailable && interactionShearCapacity > 0 ? shearDemand / interactionShearCapacity : NaN;
+  const hasDemand = momentDemand > 0 || (shearAvailable && shearDemand > 0);
+  const combinedDemand = momentDemand > 0 && shearAvailable && shearDemand > 0;
+  const allDemandPathsAvailable = momentAvailable && (!combinedDemand || interactionAvailable);
+  const utilisation = allDemandPathsAvailable
+    ? interactionAvailable
+      ? interactionDemand.utilisation
+      : Math.max(momentDemand > 0 ? momentRatio : 0, shearAvailable && shearDemand > 0 ? shearRatio : 0)
+    : NaN;
 
-  $("beamDesignation").textContent = `${section.designation} - ${gradeName}`;
-  $("beamAssumption").textContent = isCustom
-    ? "Custom symmetric I-section; derived properties for section check only."
-    : "Section moment and web shear only; member checks excluded.";
-  $("beamMass").textContent = formatBeamOptional(section.mass, "kg/m", 1);
-  $("beamArea").textContent = formatBeamArea(section.area);
-  $("beamAw").textContent = formatBeamArea(section.Aw);
-  updateBeamSummaryDimensions(section);
-  $("beamSummarySx").innerHTML = formatBeamModulus(section.Sx);
-  $("beamSummaryZx").innerHTML = formatBeamModulus(section.Zx);
-  $("beamFy").textContent = grade.fy > 0 ? `${formatBeamNumber(grade.fy, 0)} MPa` : "-";
-  $("beamZex").innerHTML = formatBeamModulus(grade.Ze);
-  $("beamSummaryKf").textContent = grade.kf > 0 ? grade.kf.toFixed(3) : "-";
-  $("beamCompactness").textContent = compactnessLabel;
-  $("beamSectionCapacity").textContent = Number.isFinite(sectionCapacity) ? fixed(sectionCapacity) : "-";
-  $("beamShearCapacity").textContent = Number.isFinite(shearCapacity) ? fixed(shearCapacity) : "-";
-  $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "-";
-  $("beamStatus").textContent = !valid
-    ? "Invalid input"
+  $("beamDesignation").textContent = section ? `${section.designation} · ${gradeName || "grade unavailable"}` : `${beamFamilyDefinitions[beamFamily].label} · no checked Beam row`;
+  $("beamAssumption").textContent = momentAvailable
+    ? `${directionLabel} section moment${rolledWebShear || hollowWeb ? " and web shear" : chsSectionShear ? " and CHS shear" : ""}${materialOverride ? "; project strength override" : ""}; member checks excluded.`
+    : beamSource === "custom"
+      ? `${directionLabel}; geometry generated, design capacity not established.`
+      : materialOverride
+        ? `${directionLabel}; project strength path not evaluated.`
+        : `${directionLabel}; reviewed capacity row unavailable.`;
+  updateBeamSummaryDimensions(section || {});
+  if (hollowWeb) setBeamSummaryCell("beamDimD1", formatBeamDimension(hollowWeb.clearWebDepth), false);
+  setBeamSummaryCell("beamMass", formatBeamOptional(section?.mass, "kg/m", 1), !(section?.mass > 0));
+  setBeamSummaryCell("beamArea", formatBeamArea(section?.area), !(section?.area > 0));
+  const displayedShearArea = hollowWeb?.webArea || section?.Aw;
+  setBeamSummaryCell("beamAw", formatBeamArea(displayedShearArea), !shearAvailable);
+  $("beamSummaryAreaLabel").innerHTML = chsSectionShear ? "A<sub>e</sub>" : "A<sub>w</sub>";
+  setBeamSummaryCell("beamSummaryDirection", directionLabel, false);
+  setBeamSummaryCell("beamSummaryI", formatBeamInertia(axis.I), !(axis.I > 0));
+  setBeamSummaryCell("beamSummaryZx", formatBeamModulus(axis.Z), !(axis.Z > 0));
+  setBeamSummaryCell("beamSummarySx", formatBeamModulus(axis.S), !(axis.S > 0));
+  setBeamSummaryCell("beamZex", formatBeamModulus(momentAvailable ? grade.Ze : 0), !momentAvailable);
+  setBeamSummaryCell("beamFy", grade?.fy > 0 ? `${formatBeamNumber(grade.fy, 0)} MPa` : "-", !(grade?.fy > 0));
+  setBeamSummaryCell("beamFyw", rolledWebShear || hollowWeb ? `${formatBeamNumber(grade.fyw || grade.fy, 0)} MPa` : "-", !(rolledWebShear || hollowWeb));
+  setBeamSummaryCell("beamSummaryKf", grade?.kf > 0 ? grade.kf.toFixed(3) : "-", !(grade?.kf > 0));
+  setBeamSummaryCell("beamCompactness", compactnessText(grade?.compactness), !grade?.compactness);
+  setBeamSummaryCell(
+    "beamCoordination",
+    coordination.status === "reconciled" ? "Reconciled" : coordination.status === "derived" ? "Derived" : "Unresolved",
+    beamSource !== "catalogue" && beamFamily !== "rod"
+  );
+  const summarySource = gradeBase?.sourceRef || section?.sourceRef || section?.sourceBasis || "-";
+  setBeamSummaryCell("beamSummarySource", `${summarySource}${materialOverride ? " · project strength override" : ""}`, !section);
+  const symbol = subscript || "";
+  $("beamSummaryILabel").innerHTML = symbol ? `I<sub>${symbol}</sub>` : "I";
+  $("beamSummaryZLabel").innerHTML = symbol ? `Z<sub>${symbol}</sub>` : "Z";
+  $("beamSummarySLabel").innerHTML = symbol ? `S<sub>${symbol}</sub>` : "S";
+  $("beamSummaryZeLabel").innerHTML = `${symbol ? `Z<sub>e${symbol}</sub>` : "Z<sub>e</sub>"}${loadCaseHtml}`;
+  $("beamMomentResultLabel").innerHTML = `Design section moment capacity &phi;M<sub>s${symbol}</sub>${loadCaseHtml}`;
+  $("beamMomentResultBasis").innerHTML = momentAvailable
+    ? `${coordination.status === "derived" || beamFamily === "rod" || beamSource === "custom" ? "Derived" : "Catalogue"} Z<sub>e${symbol}</sub>${loadCaseHtml} · AS 4100:2020 Cl. 5.2`
+    : "Required f<sub>y,m</sub> / Z<sub>e</sub> / direction record unavailable";
+  $("beamShearResultLabel").innerHTML = chsSectionShear
+    ? "Design section shear capacity &phi;V<sub>v</sub>"
+    : "Design web shear capacity &phi;V<sub>v</sub>";
+  $("beamShearResultBasis").innerHTML = chsSectionShear
+    ? "0.36 f<sub>y</sub>A<sub>e</sub> · AS 4100:2020 Cl. 5.11.4"
+    : "d<sub>p</sub> = d<sub>1</sub>; A<sub>w</sub> = d<sub>p</sub>t<sub>w</sub> · AS 4100:2020 Cl. 5.11";
+  if (hollowWeb) {
+    $("beamShearResultBasis").innerHTML = "Two webs + non-uniform shear stress &middot; AS 4100:2020 Cl. 5.11.3-5.11.5";
+  }
+  setBeamOutput("beamSectionCapacity", momentCapacity, momentAvailable);
+  setBeamOutput("beamShearCapacity", shearCapacity, shearAvailable);
+  $("beamShearCard").hidden = !shearAvailable;
+  $("beamResultsGrid").classList.toggle("is-single", !shearAvailable);
+  $("beamShearDemandField").hidden = !shearAvailable;
+  $("beamDemandBasis").innerHTML = shearAvailable
+      ? interactionAvailable
+      ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} and AS 4100:2020 Cl. 5.12.3 web-shear interaction.`
+      : `Individual M* and V* ratios; combined moment/shear interaction is not evaluated.`
+    : momentAvailable
+      ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml}; shear and combined action are not evaluated.`
+      : "No utilisation is reported until the selected moment-capacity path is available.";
+  $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "—";
+  $("beamStatus").textContent = !momentAvailable
+    ? "Not evaluated"
     : !hasDemand
       ? "Enter design actions"
-      : utilisation > 1
-        ? "FAIL"
-        : "PASS";
-  $("beamStatus").className = !valid
-    ? "fail"
-      : !hasDemand
-        ? ""
-        : utilisation > 1
-          ? "fail"
-          : "pass";
-  if (!valid) {
-    $("beamWarning").textContent = "Enter valid custom I-section dimensions and select a steel grade before using the Beam Section Capacity check.";
-  } else {
-    const beamWarnings = [];
-    if (utilisation > 1) {
-      beamWarnings.push("Design action exceeds the reported AS 4100 section design capacity.");
-    }
-    if (interactionReductionApplied) {
-      beamWarnings.push(`AS 4100 Cl. 5.12.3 shear-bending reduction applied: phi Vvm = ${fixed(shearWithBendingCapacity)} kN.`);
-    }
-    if (shearReductionApplied) {
-      beamWarnings.push(`AS 4100 Cl. 5.11.5 web shear-buckling reduction applied with alpha_v = ${webShear.alphaV.toFixed(3)}.`);
-    }
-    if (isCustom) {
-      beamWarnings.push("Custom mode uses ideal symmetric I-section geometry with Zex = Zx. Verify plate slenderness classification, fillets, weld details, holes, tolerances and member design separately.");
-    }
-    if (!beamWarnings.length) {
-      beamWarnings.push("Section capacity only. Check member moment capacity, lateral restraint, web bearing, web buckling, deflection, openings, concentrated loads and combined actions separately.");
-    }
-    $("beamWarning").textContent = beamWarnings.join(" ");
-  }
+      : !allDemandPathsAvailable
+        ? "Combined action not evaluated"
+        : utilisation > 1 ? "FAIL" : "PASS";
+  $("beamStatus").className = !momentAvailable || !allDemandPathsAvailable ? "check" : hasDemand && utilisation > 1 ? "fail" : hasDemand ? "pass" : "";
+  const resultStatus = $("beamResultStatus");
+  resultStatus.textContent = !section || section.invalidReason
+    ? "Not evaluated · enter valid family dimensions"
+    : momentAvailable
+      ? `For Review · ${directionLabel}${shearAvailable ? " moment and shear calculated" : " moment calculated"}`
+      : beamSource === "custom"
+        ? "Geometry complete · design capacity not evaluated"
+        : materialOverride
+          ? "Not evaluated · project strength path unavailable"
+          : "Not evaluated · reviewed capacity row unavailable";
+  resultStatus.className = `beam-result-status${momentAvailable ? " is-review" : " is-unavailable"}`;
+  $("beamWarning").textContent = !momentAvailable
+    ? (section?.invalidReason || coordination.reason || "The selected family, grade or direction does not have a reconciled effective section modulus. No capacity or PASS / FAIL is reported.")
+    : shearAvailable
+      ? "Section resistance only. Member capacity, lateral restraint, web bearing, concentrated loads and serviceability remain excluded."
+      : "Moment section capacity only. Shear, combined action and member checks are not evaluated for this family.";
+  $("beamDrawingNote").textContent = beamSource === "custom"
+    ? "Diagram follows entered dimensions; properties are derived from ideal geometry."
+    : "Diagram follows selected catalogue dimensions; properties come from the cited table.";
+  renderBeamSectionDiagram(section);
 
-  if (!valid) {
-    $("beamFormulaSteps").innerHTML = `
-      <div><b>Required input</b><code>Enter positive d, b<sub>f</sub>, t<sub>w</sub> and t<sub>f</sub> values with d &gt; 2t<sub>f</sub> and b<sub>f</sub> &ge; t<sub>w</sub>.</code></div>
-      <div><b>Design boundary</b><code>Section capacity only; M<sub>b</sub>, lateral restraint, web bearing, web buckling, deflection and concentrated-load checks are not included.</code></div>`;
-    return;
-  }
-
-  $("beamFormulaSteps").innerHTML = `
-    <div><b>Section data</b><code>${section.designation}; A<sub>g</sub> = ${formatBeamArea(section.area)}; mass = ${formatBeamOptional(section.mass, "kg/m", 1)}; source = ${sourceBasis}</code></div>
-    <div><b>Section moduli</b><code>S<sub>x</sub> = ${formatBeamModulus(section.Sx)}; Z<sub>x</sub> = ${formatBeamModulus(section.Zx)}; Z<sub>ex</sub> = ${formatBeamModulus(grade.Ze)}</code></div>
-    <div><b>Compactness</b><code>${isCustom ? `${compactnessLabel}; custom moment check uses elastic Z<sub>x</sub> as Z<sub>ex</sub>, so plastic compactness is not claimed` : `${compactnessLabel}; k<sub>f</sub> = ${grade.kf.toFixed(3)} from OneSteel / InfraBuild section-capacity table`}</code></div>
-    <div><b>Elastic yield reference</b><code>${Number.isFinite(elasticYield) ? `&phi;f<sub>y</sub>Z<sub>x</sub> = 0.90 × ${formatBeamNumber(grade.fy, 0)} × ${formatBeamNumber(section.Zx, 1)} × 10³ / 10⁶ = ${fixed(elasticYield)} kNm` : "Not shown - enter Zx for custom reference value"}</code></div>
-    <div><b>Plastic limit reference</b><code>${Number.isFinite(plasticLimit) ? `&phi;f<sub>y</sub>S<sub>x</sub> = 0.90 × ${formatBeamNumber(grade.fy, 0)} × ${formatBeamNumber(section.Sx, 1)} × 10³ / 10⁶ = ${fixed(plasticLimit)} kNm` : "Not shown - enter Sx for custom reference value"}</code></div>
-    <div><b>Moment capacity - AS 4100 Cl. 5.2</b><code>&phi;M<sub>s</sub> = &phi;f<sub>y</sub>Z<sub>ex</sub> = 0.90 × ${formatBeamNumber(grade.fy, 0)} × ${formatBeamNumber(grade.Ze, 1)} × 10³ / 10⁶ = ${fixed(sectionCapacity)} kNm</code></div>
-    <div><b>Web shear area</b><code>${shearAreaBasis}</code></div>
-    <div><b>Web shear yield - AS 4100 Cl. 5.11.4</b><code>&phi;V<sub>w</sub> = 0.90 × 0.6 × ${formatBeamNumber(grade.fy, 0)} × ${formatBeamArea(section.Aw)} / 1000 = ${fixed(shearYieldCapacity)} kN</code></div>
-    <div><b>Web shear buckling screen - AS 4100 Cl. 5.11.5</b><code>${webShearBasis}</code></div>
-    <div><b>Design web shear capacity - AS 4100 Cl. 5.11</b><code>&phi;V<sub>v</sub> = &alpha;<sub>v</sub>&phi;V<sub>w</sub> = ${webShear.alphaV.toFixed(3)} × ${fixed(shearYieldCapacity)} = ${fixed(shearCapacity)} kN</code></div>
-    <div><b>Shear-bending interaction - AS 4100 Cl. 5.12.3</b><code>${momentRatio <= 0.75 ? `M* = ${fixed(momentDemand)} kNm &le; 0.75&phi;M<sub>s</sub> = ${fixed(0.75 * sectionCapacity)} kNm, so V<sub>vm</sub> = V<sub>v</sub>; &phi;V<sub>vm</sub> = ${fixed(shearWithBendingCapacity)} kN` : momentRatio <= 1 ? `0.75&phi;M<sub>s</sub> &lt; M* &le; &phi;M<sub>s</sub>; V<sub>vm</sub> = V<sub>v</sub>[2.2 - 1.6M*/(&phi;M<sub>s</sub>)]; reduction factor = 2.2 - 1.6 x ${momentRatio.toFixed(3)} = ${cl512Factor.toFixed(3)}; &phi;V<sub>vm</sub> = ${fixed(shearWithBendingCapacity)} kN` : `M* &gt; &phi;M<sub>s</sub>; section moment capacity fails and the AS 4100 Cl. 5.12.3 interaction equation is not evaluated outside its stated moment range`}</code></div>
-    <div><b>Design action check</b><code>${momentRatio > 1 ? `M* / &phi;M<sub>s</sub> = ${momentRatio.toFixed(2)} &gt; 1.00; section moment capacity fails` : `M* / &phi;M<sub>s</sub> = ${fixed(momentDemand)} / ${fixed(sectionCapacity)} = ${momentRatio.toFixed(2)}; V* / &phi;V<sub>vm</sub> = ${fixed(shearDemand)} / ${fixed(shearWithBendingCapacity)} = ${shearRatio.toFixed(2)}; governing ratio = ${utilisation.toFixed(2)}`}</code></div>
-    <div><b>Design boundary</b><code>Section capacity only; member capacity M<sub>b</sub>, lateral restraint, web bearing, web buckling, stiffeners, concentrated loads, openings, torsion, serviceability and composite action are not checked.</code></div>`;
+  const source = gradeBase?.sourceRef || section?.sourceRef || (beamSource === "custom" ? "Entered ideal dimensions" : beamFamilyDefinitions[beamFamily].source);
+  const geometryStep = section
+    ? `${section.designation}; A<sub>g</sub> = ${formatBeamArea(section.area)}; source = ${source}`
+    : `${beamFamilyDefinitions[beamFamily].label}; no checked Beam catalogue row is embedded`;
+  const propertySubscript = symbol ? `<sub>${symbol}</sub>` : "";
+  const directionStep = `${directionLabel}; I${propertySubscript} = ${formatBeamInertia(axis.I)}; Z${propertySubscript} = ${formatBeamModulus(axis.Z)}; S${propertySubscript} = ${formatBeamModulus(axis.S)}`;
+  const momentStep = momentAvailable
+    ? `&phi;M<sub>s${symbol}</sub>${loadCaseHtml} = 0.90 &times; ${formatBeamNumber(grade.fy, 0)} &times; ${formatBeamNumber(grade.Ze, 1)} &times; 10<sup>3</sup> / 10<sup>6</sup> = ${fixed(momentCapacity)} kN&middot;m`
+    : "Not evaluated. A reviewed direction-specific f<sub>y,m</sub>, compactness classification and Z<sub>e</sub> record is required.";
+  const shearStep = shearAvailable
+    ? rolledWebShear
+      ? `d<sub>p</sub> = d<sub>1</sub> = ${formatBeamNumber(section.d1, 1)} mm; A<sub>w</sub> = d<sub>p</sub>t<sub>w</sub> = ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup>; (d<sub>p</sub>/t<sub>w</sub>)&radic;(f<sub>y,w</sub>/250) = ${webShear.slenderness.toFixed(2)}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}; &phi;V<sub>v</sub> = ${webShear.alphaV.toFixed(3)} &times; 0.90 &times; 0.6 &times; ${formatBeamNumber(grade.fyw || grade.fy, 0)} &times; ${formatBeamNumber(section.Aw, 0)} / 1000 = ${fixed(shearCapacity)} kN`
+      : chsSectionShear
+        ? `A<sub>e</sub> = A<sub>g</sub> = ${formatBeamNumber(section.area, 0)} mm<sup>2</sup> for this unperforated catalogue section; &phi;V<sub>v</sub> = 0.90 &times; 0.36 &times; ${formatBeamNumber(grade.fy, 0)} &times; ${formatBeamNumber(section.area, 0)} / 1000 = ${fixed(shearCapacity)} kN`
+        : `Two resisting webs; d<sub>1</sub> = ${formatBeamNumber(hollowWeb.clearWebDepth, 1)} mm; A<sub>w</sub> = 2d<sub>1</sub>t = ${formatBeamNumber(hollowWeb.webArea, 0)} mm<sup>2</sup>; (d<sub>1</sub>/t)&radic;(f<sub>y</sub>/250) = ${hollowWeb.slenderness.toFixed(2)}; &alpha;<sub>v</sub> = ${hollowWeb.alphaV.toFixed(3)}; f<sup>*</sup><sub>vm</sub>/f<sup>*</sup><sub>va</sub> = ${hollowWeb.stressRatio.toFixed(3)}; &phi;V<sub>v</sub> = 0.90 &times; min(${fixed(hollowWeb.shearYieldCapacity)}, ${fixed(hollowWeb.nonUniformCapacity)}) = ${fixed(shearCapacity)} kN`
+    : "Not evaluated for the selected family / direction.";
+  const editionStep = beamSource === "catalogue" && beamFamily !== "rod"
+    ? coordination.status === "reconciled"
+      ? `Reconciled against AS 4100:2020 Cl. 5.2 and Cl. 6.2. ${coordination.basis}.`
+      : coordination.status === "derived"
+        ? `Project strength override. Section class and Z<sub>e</sub> are independently regenerated from the catalogue geometry. ${coordination.basis}.`
+        : `Unresolved: ${coordination.reason || "the product row and AS 4100:2020 calculation basis do not agree."}`
+    : beamFamily === "rod"
+      ? `Z<sub>e</sub> is generated from the compact solid-circle relation using the checked diameter and ${materialOverride ? "project" : "selected grade"} strength.`
+      : "Custom open and hollow sections remain geometry-only until the AS 4100:2020 classification path is implemented.";
+  const classStep = ["reconciled", "derived"].includes(coordination.status)
+    ? `${compactnessText(grade?.compactness)}; ${coordination.classMethod === "published-ze-interval" ? "class inferred from the published load-case Z<sub>e</sub> position between the AS 4100 elastic and compact bounds" : `governing plate element = ${coordination.governing?.name || "solid section"}`}.`
+    : "Not reconciled.";
+  const kfStep = ["reconciled", "derived"].includes(coordination.status) && grade?.kf > 0
+    ? `k<sub>f</sub> = ${grade.kf.toFixed(3)}; AS 4100:2020 Cl. 6.2 axial-compression form factor. It is recorded for section coordination and is not multiplied into M<sub>s</sub>.`
+    : "Not established.";
+  const demandStep = !hasDemand ? "No design action entered."
+    : interactionDemand?.failureMode === "moment"
+      ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
+    : Number.isFinite(utilisation) ? `Governing section utilisation = ${utilisation.toFixed(2)}; ${utilisation > 1 ? "FAIL" : "PASS"}.`
+      : "Combined action not evaluated because one or more required capacity paths are unavailable.";
+  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${materialOverride ? `project / legacy override (catalogue defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : "catalogue / selected grade default"}.`;
+  const zeBasis = coordination.status === "derived"
+    ? "independently regenerated from the entered project strength"
+    : beamFamily === "rod"
+      ? "compact solid-circle relation"
+      : "reconciled catalogue capacity row";
+  $("beamFormulaSteps").innerHTML = `<div><b>Section and source</b><code>${geometryStep}</code></div><div><b>Material strength</b><code>${materialStep}</code></div><div><b>Bending direction and properties</b><code>${directionStep}</code></div><div><b>Section class</b><code>${classStep}</code></div><div><b>Effective section modulus</b><code>${momentAvailable ? `Z<sub>e${symbol}</sub>${loadCaseHtml} = ${formatBeamModulus(grade.Ze)}; ${zeBasis}` : "Not established for this family / grade / direction."}</code></div><div><b>Section form factor</b><code>${kfStep}</code></div><div><b>Product-data coordination</b><code>${editionStep}</code></div><div><b>Moment capacity · AS 4100:2020 Cl. 5.2</b><code>${momentStep}</code></div><div><b>Shear capacity · AS 4100:2020 Cl. 5.11</b><code>${shearStep}</code></div><div><b>Design actions</b><code>${demandStep}</code></div><div><b>Design boundary</b><code>Cross-section resistance only; M<sub>b</sub>, lateral-torsional buckling, restraint, web bearing, concentrated loads, torsion and serviceability are excluded.</code></div>`;
 }
 
 function chsProperties(section) {
@@ -5598,6 +6440,702 @@ function calculateScrew() {
   calculateScrewDemand(comparisonValues);
 }
 
+function readReoOptions() {
+  const doubleArea = $("reoDoubleArea").checked;
+  const halfSpliced = $("reoHalfSpliced").checked;
+  const rebarPath = $("reoRebarPath").value;
+  return {
+    memberRole: $("reoMemberRole").value,
+    memberType: $("reoMemberType").value,
+    lapType: $("reoLapType").value,
+    method: $("reoMethod").value,
+    rebarPath,
+    fc: numericValue($("reoConcreteStrength").value),
+    castingPosition: $("reoCastingPosition").value,
+    materialCondition: $("reoMaterialCondition").value,
+    cover: numericValue($("reoCover").value),
+    clearSpacing: numericValue($("reoClearSpacing").value),
+    barGap: numericValue($("reoBarGap").value),
+    k7Basis: doubleArea && halfSpliced ? "qualified" : "default",
+    doubleArea,
+    halfSpliced,
+    staggeredArrangement: false,
+    refinedArrangement: $("reoRefinedArrangement").value,
+    atrMinBasis: $("reoAtrMinBasis").value,
+    nf: numericValue($("reoNf").value),
+    nbs: numericValue($("reoNbs").value),
+    atrTotal: numericValue($("reoAtrTotal").value),
+    pressure: numericValue($("reoPressure").value),
+    pressureReference: $("reoPressureReference").value,
+    pressureBasisConfirmed: $("reoPressureBasisConfirmed").checked,
+    transverseEffective: $("reoTransverseLocationConfirmed").checked,
+    atrCountConfirmed: $("reoAtrCountConfirmed").checked
+  };
+}
+
+function readReoDevelopmentOptions() {
+  return {
+    barOrigin: $("reoExistingBarOrigin").value,
+    memberType: $("reoExistingMemberType").value,
+    fc: numericValue($("reoExistingConcreteStrength").value),
+    castingPosition: $("reoExistingCastingPosition").value,
+    materialCondition: $("reoExistingMaterialCondition").value,
+    cover: numericValue($("reoExistingCover").value),
+    clearSpacing: numericValue($("reoExistingClearSpacing").value),
+    c1: numericValue($("reoExistingC1").value),
+    method: $("reoExistingMethod").value,
+    refinedArrangement: $("reoExistingRefinedArrangement").value,
+    atrMinBasis: $("reoExistingAtrMinBasis").value,
+    nf: numericValue($("reoExistingNf").value),
+    nbs: numericValue($("reoExistingNbs").value),
+    atrTotal: numericValue($("reoExistingAtrTotal").value),
+    pressure: numericValue($("reoExistingPressure").value),
+    pressureReference: $("reoExistingPressureReference").value,
+    pressureBasisConfirmed: $("reoExistingPressureBasisConfirmed").checked,
+    transverseEffective: $("reoExistingTransverseLocationConfirmed").checked,
+    atrCountConfirmed: $("reoExistingAtrCountConfirmed").checked,
+    terminationType: $("reoCastInTermination").value,
+    terminationDetailingConfirmed: $("reoCastInTerminationConfirmed").checked
+  };
+}
+
+function reoPathState(options) {
+  const rebarPath = options.rebarPath;
+  return {
+    rebarPath,
+    requiresLap: rebarPath === "starter-lap",
+    requiresDevelopment: rebarPath === "end-anchorage"
+  };
+}
+
+function populateReoData() {
+  $("reoBar").innerHTML = reoBars.filter(bar => bar.diameter <= 40).map(bar => `<option value="${bar.designation}">${bar.designation}</option>`).join("");
+  $("reoBar").value = "N20";
+  $("reoProductTableRows").innerHTML = reoBars.map(bar => `<tr class="${bar.diameter > 40 ? "is-excluded" : ""}"><td>${bar.designation}</td><td>${bar.diameter} mm</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${bar.standardMass.toFixed(bar.standardMass < 1 ? 3 : 2)} kg/m</td><td>${bar.supplierMass.toFixed(2)} kg/m</td><td>${bar.metresPerTonne.toLocaleString("en-AU")} m/t</td><td>${bar.availability}</td><td>${bar.diameter > 40 ? "Reference only · outside calculator scope" : "Within calculator scope"}</td></tr>`).join("");
+}
+
+function updateReoConditionalFields(options) {
+  const path = reoPathState(options);
+  const origin = $("reoExistingBarOrigin").value;
+  const pirOrigin = origin === "pir";
+  const routeKey = `${path.rebarPath}|${origin}`;
+  const routeChanged = routeKey !== reoPreviousRouteKey;
+
+  $("reoRebarPathField").hidden = false;
+  $("reoExistingBarOriginField").hidden = !path.requiresDevelopment;
+  document.querySelector(".reo-context-fields").classList.toggle("has-origin", path.requiresDevelopment);
+  $("reoExistingBarOriginLabel").textContent = "Bar installation";
+  $("reoLapPathInputs").hidden = !path.requiresLap;
+  $("reoAnchorageInputs").hidden = !path.requiresDevelopment;
+  const projectStressSelected = $("reoAnchorageBasis").value === "actual";
+  const originFields = document.querySelector(".reo-origin-fields");
+  originFields.classList.toggle("is-pir", pirOrigin);
+  originFields.classList.toggle("is-cast-in", !pirOrigin);
+  originFields.classList.toggle("has-stress", projectStressSelected);
+  $("reoSteelStressField").hidden = !projectStressSelected;
+  $("reoReducedLengthRefinedConfirmedField").hidden = !projectStressSelected || $("reoExistingMethod").value !== "refined";
+  $("reoCastInTerminationField").hidden = !path.requiresDevelopment || pirOrigin;
+  const standardTerminationSelected = !pirOrigin && ["hook", "cog"].includes($("reoCastInTermination").value);
+  $("reoCastInTerminationConfirmedField").hidden = !path.requiresDevelopment || !standardTerminationSelected;
+  $("reoTerminationRequirements").hidden = !path.requiresDevelopment || !standardTerminationSelected;
+  if (!standardTerminationSelected) $("reoCastInTerminationConfirmed").checked = false;
+  const stressForHook = projectStressSelected ? numericValue($("reoSteelStress").value) : 500;
+  const selectedBar = reoBarByDesignation($("reoBar").value);
+  const db = selectedBar?.diameter || 0;
+  const coatedBar = ["epoxy", "both"].includes($("reoExistingMaterialCondition").value);
+  const bendFactor = coatedBar && db >= 20 ? 8 : 5;
+  const bendDiameter = bendFactor * db;
+  const hookExtension = Math.max(4 * db, 70);
+  const restraintRequired = Number.isFinite(stressForHook) && stressForHook > 400;
+  if (standardTerminationSelected) {
+    const method = $("reoCastInTermination").value;
+    const methodRequirement = method === "cog"
+      ? `90&deg; cog; internal bend diameter ${bendDiameter.toFixed(0)} mm minimum and ${(8 * db).toFixed(0)} mm maximum; total bar length as the corresponding 180&deg; hook.`
+      : `180&deg; or 135&deg; hook; straight extension ${hookExtension.toFixed(0)} mm minimum.`;
+    const restraintRequirement = restraintRequired
+      ? `Transverse restraint required: bar diameter at least ${db.toFixed(0)} mm, in contact, extending ${(4 * db).toFixed(0)} mm each side.`
+      : "No >400 MPa transverse-restraint trigger from the selected stress basis.";
+    $("reoTerminationRequirements").innerHTML = `<b>Standard ${method} requirements</b><span>${methodRequirement} Bend diameter follows AS 3600 Cl. 17.2.3.3 (${bendFactor}d<sub>b</sub> for the selected condition). ${restraintRequirement}</span>`;
+  }
+  $("reoSteelStressLabel").innerHTML = standardTerminationSelected
+    ? "Maximum design tensile stress in anchored bar, &sigma;<sub>st</sub>"
+    : "Design tensile stress at assessed section, &sigma;<sub>st</sub>";
+  $("reoSteelStressHelp").textContent = standardTerminationSelected
+    ? "Use the maximum design tensile stress in the bar being anchored. Verify it against the project calculation before issue."
+    : "Use the design tensile stress in the bar at the assessed section. Verify it against the project calculation before issue.";
+  $("reoLapGeometryGroup").hidden = !path.requiresLap;
+  $("reoLapFactorGroup").hidden = !path.requiresLap;
+  $("reoFactorSummary").hidden = !path.requiresLap;
+  $("reoLapResultSection").hidden = !path.requiresLap;
+  $("reoScheduleDetails").hidden = !path.requiresLap || options.method !== "basic" || (options.doubleArea && options.halfSpliced);
+  $("reoAnchorageResultSection").hidden = !path.requiresDevelopment;
+  $("reoAssumptionsDetails").hidden = !path.requiresLap;
+  const lapAssumptionFields = [
+    "reoMemberRoleField", "reoMemberTypeField", "reoLapTypeField", "reoMethodField",
+    "reoCastingPositionField", "reoMaterialConditionField"
+  ];
+  lapAssumptionFields.forEach(id => { $(id).hidden = !path.requiresLap; });
+  $("reoAssumptionsTitle").textContent = "Common assumptions";
+
+  const assumptionParts = path.requiresLap
+    ? [
+      options.memberRole === "tension-tie" ? "tension-tie" : "not a tension-tie",
+      options.memberType === "narrow" ? "narrow member" : "wide member",
+      options.lapType === "noncontact" ? "non-contact lap" : "contact lap",
+      options.method === "refined" ? "Refined" : "Basic",
+      options.castingPosition === "top" ? "top-cast bar" : "other casting position",
+      options.materialCondition === "standard" ? "normal-weight, uncoated" : $("reoMaterialCondition").selectedOptions[0].textContent.trim()
+    ]
+    : [];
+  $("reoAssumptionSummary").textContent = assumptionParts.join(" · ");
+  if (pirOrigin && routeChanged) $("reoExistingMethod").value = "basic";
+  $("reoAnchorageBasisField").hidden = false;
+  $("reoExistingMethodField").hidden = pirOrigin;
+  $("reoAnchorageStressNote").hidden = false;
+  $("reoAnchorageStressNote").innerHTML = "Full yield is the default. A lower project stress retains the 12d<sub>b</sub> minimum.";
+  $("reoReferenceBasisHeading").textContent = pirOrigin ? "AS 3600 reference basis" : "Cast-in development basis";
+  $("reoReferenceBasisHelp").textContent = pirOrigin
+    ? "Select the stress basis for the AS 3600 reference."
+    : "Select the anchorage, stress and development basis.";
+  $("reoExistingCastingPositionLabel").textContent = pirOrigin ? "AS 3600 casting-position assumption" : "Casting position";
+  $("reoExistingMaterialConditionLabel").textContent = pirOrigin ? "AS 3600 material condition" : "Material condition";
+  $("reoAnchoragePathTag").textContent = "DEVELOPMENT";
+  $("reoAnchoragePathTitle").textContent = pirOrigin ? "Post-installed bar termination" : "Development at bar termination";
+  $("reoAnchoragePathNote").textContent = pirOrigin
+    ? "Reference calculation only."
+    : "Straight, hook or cog development.";
+  $("reoCalculationDetailsSummary").textContent = path.requiresLap
+    ? "Factors, clauses and Basic schedule."
+    : "Factors and clauses.";
+  $("reoAnchorageResultTag").textContent = pirOrigin
+    ? "AS 3600 REFERENCE"
+    : standardTerminationSelected
+      ? `${$("reoCastInTermination").value.toUpperCase()} ANCHORAGE`
+      : "DEVELOPMENT";
+  $("reoAnchorageResultTitle").textContent = pirOrigin
+    ? "AS 3600 reference depth"
+    : standardTerminationSelected
+      ? `Standard ${$("reoCastInTermination").value} anchorage reference`
+      : "Required development length";
+
+  const showGap = path.requiresLap && options.memberType === "narrow" && options.lapType === "noncontact";
+  $("reoBarGapField").hidden = !showGap;
+  $("reoRefinedDetails").hidden = !path.requiresLap || options.method !== "refined";
+  const lapConfinementEntered = options.refinedArrangement !== "none";
+  $("reoRefinedInputGrid").classList.toggle("is-simple", !lapConfinementEntered);
+  const lapAtrMin = options.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
+  const lapConfinementPotential = lapConfinementEntered
+    && Number.isFinite(options.atrTotal)
+    && options.atrTotal > lapAtrMin;
+  $("reoCountingGuide").hidden = !lapConfinementEntered;
+  $("reoAtrMinBasisField").hidden = !lapConfinementEntered;
+  $("reoNfField").hidden = !lapConfinementEntered;
+  $("reoNbsField").hidden = !lapConfinementEntered;
+  $("reoAtrTotalField").hidden = !lapConfinementEntered;
+  $("reoTransverseLocationField").hidden = !lapConfinementPotential;
+  $("reoNf").disabled = !lapConfinementEntered;
+  $("reoNbs").disabled = !lapConfinementEntered;
+  $("reoAtrCountConfirmedField").hidden = !lapConfinementPotential || !options.transverseEffective;
+  $("reoAtrMinHelp").hidden = options.memberType !== "narrow";
+  const lapPressureEvidenceRequired = Number.isFinite(options.pressure) && options.pressure > 0;
+  $("reoPressureReferenceField").hidden = !lapPressureEvidenceRequired;
+  $("reoPressureBasisConfirmedField").hidden = !lapPressureEvidenceRequired;
+  const lapSlabWallOption = $("reoAtrMinBasis").querySelector('option[value="slab-wall"]');
+  lapSlabWallOption.disabled = options.memberType === "narrow";
+  if (lapConfinementEntered && options.memberType === "narrow") $("reoAtrMinBasis").value = "beam-column";
+
+  const developmentOptions = readReoDevelopmentOptions();
+  const hookedOrCoggedDevelopment = developmentOptions.barOrigin !== "pir"
+    && ["hook", "cog"].includes(developmentOptions.terminationType);
+  $("reoExistingGeometryHelp").innerHTML = hookedOrCoggedDevelopment
+    ? developmentOptions.memberType === "narrow"
+      ? "Hook / cog: c<sub>d</sub> = min(a/2, c<sub>1</sub>). Clear cover remains a detailing check."
+      : "Hook / cog: c<sub>d</sub> = a/2. Clear cover remains a detailing check."
+    : developmentOptions.memberType === "narrow"
+      ? "Straight bar: c<sub>d</sub> = min(a/2, c<sub>1</sub>, c). Use the actual bar position."
+      : "Straight bar: c<sub>d</sub> = min(a/2, c). Use the actual bar position.";
+  $("reoExistingC1Field").hidden = developmentOptions.memberType !== "narrow";
+  $("reoExistingGeometryFields").classList.toggle("is-narrow", developmentOptions.memberType === "narrow");
+  $("reoExistingRefinedDetails").hidden = !path.requiresDevelopment || developmentOptions.method !== "refined";
+  const existingConfinementEntered = developmentOptions.refinedArrangement !== "none";
+  $("reoExistingRefinedInputGrid").classList.toggle("is-simple", !existingConfinementEntered);
+  const existingAtrMin = developmentOptions.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
+  const existingConfinementPotential = existingConfinementEntered
+    && Number.isFinite(developmentOptions.atrTotal)
+    && developmentOptions.atrTotal > existingAtrMin;
+  $("reoExistingAtrMinBasisField").hidden = !existingConfinementEntered;
+  $("reoExistingNfField").hidden = !existingConfinementEntered;
+  $("reoExistingNbsField").hidden = !existingConfinementEntered;
+  $("reoExistingAtrTotalField").hidden = !existingConfinementEntered;
+  $("reoExistingTransverseLocationField").hidden = !existingConfinementPotential;
+  $("reoExistingNf").disabled = !existingConfinementEntered;
+  $("reoExistingNbs").disabled = !existingConfinementEntered;
+  $("reoExistingAtrCountConfirmedField").hidden = !existingConfinementPotential || !developmentOptions.transverseEffective;
+  $("reoExistingAtrMinHelp").hidden = developmentOptions.memberType !== "narrow";
+  const existingPressureEvidenceRequired = Number.isFinite(developmentOptions.pressure) && developmentOptions.pressure > 0;
+  $("reoExistingPressureReferenceField").hidden = !existingPressureEvidenceRequired;
+  $("reoExistingPressureBasisConfirmedField").hidden = !existingPressureEvidenceRequired;
+  const existingSlabWallOption = $("reoExistingAtrMinBasis").querySelector('option[value="slab-wall"]');
+  existingSlabWallOption.disabled = developmentOptions.memberType === "narrow";
+  if (existingConfinementEntered && developmentOptions.memberType === "narrow") $("reoExistingAtrMinBasis").value = "beam-column";
+  reoPreviousRouteKey = routeKey;
+}
+
+function updateReoReductionAssessment(options, result, basicReference) {
+  const fallbackToBasic = !result?.eligible && basicReference?.eligible;
+  const assessmentResult = result?.eligible ? result : fallbackToBasic ? basicReference : null;
+  const assessmentOptions = fallbackToBasic ? { ...options, method: "basic" } : options;
+  if (!assessmentResult?.eligible || !assessmentResult.bar) {
+    $("reoK7SummaryValue").innerHTML = "k<sub>7</sub> not applicable";
+    $("reoK7ReductionNote").textContent = "No eligible lap case.";
+    return;
+  }
+
+  const defaultResult = reoLapCalculation(assessmentResult.bar, { ...assessmentOptions, doubleArea: false, halfSpliced: false });
+  const qualifiedResult = reoLapCalculation(assessmentResult.bar, { ...assessmentOptions, doubleArea: true, halfSpliced: true });
+  if (!defaultResult.eligible || !qualifiedResult.eligible) {
+    $("reoK7SummaryValue").innerHTML = "k<sub>7</sub> unavailable";
+    $("reoK7ReductionNote").textContent = "Check the current inputs.";
+    return;
+  }
+
+  const reduction = Math.max(0, defaultResult.adoptedLength - qualifiedResult.adoptedLength);
+  const qualificationCount = Number(options.doubleArea) + Number(options.halfSpliced);
+
+  if (qualificationCount === 2) {
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.00 &middot; adopted reduction ${reduction.toFixed(0)} mm`;
+  } else if (qualificationCount === 1) {
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; one condition pending &middot; potential ${reduction.toFixed(0)} mm`;
+  } else {
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; potential reduction ${reduction.toFixed(0)} mm`;
+  }
+
+  $("reoK7ReductionNote").textContent = "Both conditions are required for k7 = 1.00.";
+}
+function updateReoSchedule(options, selectedDesignation) {
+  const diameterSpecificBasis = options.method === "refined" || options.k7Basis === "qualified";
+  if (diameterSpecificBasis) {
+    $("reoLapTableRows").innerHTML = `<tr><td colspan="6">Schedule unavailable for Refined or reduced-k<sub>7</sub> cases. Use Basic with k<sub>7</sub> = 1.25.</td></tr>`;
+    return;
+  }
+  $("reoLapTableRows").innerHTML = reoBars.filter(bar => bar.diameter <= 40).map(bar => {
+    const result = reoLapCalculation(bar, options);
+    if (!result.eligible) return `<tr class="${bar.designation === selectedDesignation ? "is-selected" : ""}"><td>${bar.designation}</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Not eligible for current inputs</td></tr>`;
+    return `<tr class="${bar.designation === selectedDesignation ? "is-selected" : ""}"><td>${bar.designation}</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${Math.ceil(result.developmentLength)} mm</td><td><b>${result.adoptedLength} mm</b></td><td>${result.ratio.toFixed(1)}d<sub>b</sub></td><td>${result.governing.label}</td></tr>`;
+  }).join("");
+}
+
+function reoRefinedFormulaHtml(result, options, label) {
+  if (options.method !== "refined") {
+    return `<div><b>${label} development-length basis</b><code>Basic method; no transverse-reinforcement or pressure reduction is credited.</code></div>`;
+  }
+  const location = !result.transverseArrangementConfirmed
+    ? "no verified confinement credit selected; K = 0"
+    : result.lambda <= 0
+      ? "Sigma Atr does not exceed Sigma Atr,min; lambda = 0"
+      : result.transverseEffective
+        ? "effective transverse-reinforcement location confirmed"
+        : "location not confirmed; K = 0";
+  const countStatus = result.confinementCreditRequested
+    ? (result.atrCountConfirmed ? "candidate-length count confirmed" : `candidate k<sub>4</sub> = ${result.k4Candidate.toFixed(3)} not adopted until the candidate-length count is confirmed`)
+    : "no k4 confinement credit requested";
+  const pressureStatus = result.pressureCreditRequested
+    ? (result.pressureCreditApplied ? `pressure reference ${safeText(result.pressureReference)} and applicability confirmed` : `candidate k<sub>5</sub> = ${result.k5Candidate.toFixed(3)} not adopted until a calculation/source reference and applicability confirmation are provided`)
+    : "no k5 pressure credit requested";
+  return `<div><b>${label} refined factors &middot; Cl. 13.1.2.3</b><code>${location}; K = ${result.K.toFixed(3)} from n<sub>f</sub> / n<sub>bs</sub>; &Sigma;A<sub>tr,min</sub> = ${result.atrMin.toFixed(1)} mm&sup2;; &lambda; = ${result.lambda.toFixed(3)}; candidate k<sub>4</sub> / k<sub>5</sub> = ${result.candidateK4.toFixed(3)} / ${result.candidateK5.toFixed(3)}; adopted k<sub>4</sub> / k<sub>5</sub> = ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}; ${countStatus}; ${pressureStatus}.</code></div><div><b>${label} candidate reconciliation</b><code>Candidate development = ${result.candidateDevelopmentLength.toFixed(1)} mm; adopted development = ${result.developmentLength.toFixed(1)} mm. Candidate factor = ${result.candidateRefinedFactor.toFixed(3)} and adopted factor = ${result.refinedFactor.toFixed(3)}; k<sub>3</sub> &times; each adopted factor remains &ge; 0.700.</code></div>`;
+}
+
+function reoLapFormulaHtml(result, options, referenceOnly) {
+  if (!result?.eligible) {
+    const issues = result?.issues?.length ? result.issues.map(safeText).join(" ") : "No lap calculation applies to this path.";
+    return `<div><b>Lap eligibility</b><code>${issues}</code></div>`;
+  }
+  const narrow = options.memberType === "narrow"
+    ? `<div><b>Narrow-member lap candidate</b><code>L<sub>sy.t</sub> + 1.5s<sub>b</sub> = ${result.developmentLength.toFixed(1)} + 1.5 &times; ${result.gapUsed.toFixed(1)} = ${result.narrowCandidate.toFixed(1)} mm${result.gapEntered <= 3 * result.bar.diameter ? `; entered s<sub>b</sub> &le; 3d<sub>b</sub>, therefore s<sub>b</sub> = 0 for this candidate` : ""}.</code></div>`
+    : "";
+  const referenceWarning = referenceOnly
+    ? `<div><b>PIR applicability boundary</b><code>This is an AS 3600 straight-lap length reference only. Post-installed reinforcement design and the transfer mechanism to the existing bar require the project PIR design.</code></div>`
+    : "";
+  const documentStatus = `<div><b>Project-document condition &middot; AS 3600 Cl. 13.2.1(a)</b><code>Use this reference only where the project drawings or specification require or permit the splice.</code></div>`;
+  return `${referenceWarning}
+    ${documentStatus}
+    <div><b>New-work lap geometry</b><code>d<sub>b</sub> = ${result.bar.diameter} mm; A<sub>s</sub> = ${result.bar.area.toFixed(1)} mm&sup2;; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa; c<sub>d</sub> = min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)}) = ${result.cd.toFixed(1)} mm.</code></div>
+    <div><b>Lap development expression</b><code>L<sub>sy.tb,formula</sub> = ${result.basicFormula.toFixed(1)} mm; material multiplier = ${result.conditionFactor.toFixed(2)}; L<sub>sy.t</sub> = ${result.developmentLength.toFixed(1)} mm. The Cl. 13.1.2.2 basic lower limit is not imposed before the Cl. 13.2.2 lap equation.</code></div>
+    ${reoRefinedFormulaHtml(result, options, "Lap")}
+    <div><b>Lap candidates &middot; Cl. 13.2.2</b><code>k<sub>7</sub>L<sub>sy.t</sub> = ${result.k7.toFixed(2)} &times; ${result.developmentLength.toFixed(1)} = ${result.k7Candidate.toFixed(1)} mm; lap lower limit = ${result.lapLowerLimit.toFixed(1)} mm.</code></div>
+    ${narrow}
+    <div><b>Adopted lap reference</b><code>${safeText(result.governing.label)} governs at ${result.rawLength.toFixed(1)} mm; rounded up to ${result.adoptedLength} mm = ${result.ratio.toFixed(1)}d<sub>b</sub>.</code></div>`;
+}
+
+function reoDevelopmentFormulaHtml(result, options, anchorage) {
+  if (!result?.eligible) {
+    const issues = result?.issues?.length ? result.issues.map(safeText).join(" ") : "No development reference applies to this path.";
+    return `<div><b>Existing-concrete development eligibility</b><code>${issues}</code></div>`;
+  }
+  const cdExpression = result.hookedOrCogged
+    ? result.memberType === "narrow"
+      ? `min(${options.clearSpacing.toFixed(1)}/2, ${options.c1.toFixed(1)})`
+      : `${options.clearSpacing.toFixed(1)}/2`
+    : result.memberType === "narrow"
+      ? `min(${options.clearSpacing.toFixed(1)}/2, ${options.c1.toFixed(1)}, ${options.cover.toFixed(1)})`
+      : `min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)})`;
+  let stressStep = `<div><b>Selected AS reference</b><code>Full-yield adopted development reference = ${result.adoptedLength} mm.</code></div>`;
+  if (anchorage?.actualStressRequested) {
+    stressStep = anchorage.stressOverYield
+      ? `<div><b>Project steel stress &middot; Cl. 13.1.2.4</b><code>&sigma;<sub>st</sub> = ${anchorage.actualStress.toFixed(1)} MPa exceeds f<sub>sy</sub> = ${anchorage.fsy.toFixed(0)} MPa. No reduced benchmark is issued; review the bar design.</code></div>`
+      : anchorage.refinedReducedLengthConfirmationMissing
+        ? `<div><b>Combined reduction candidate</b><code>Candidate L<sub>st</sub> = ${anchorage.reducedDevelopmentCandidateRaw.toFixed(1)} mm (${anchorage.reducedDevelopmentCandidateAdopted.toFixed(0)} mm adopted if confirmed). Verify the Refined confinement and pressure evidence throughout this candidate length before adoption.</code></div>`
+      : anchorage.actualStressApplied
+        ? `<div><b>Project steel stress &middot; Cl. 13.1.2.4</b><code>L<sub>st</sub> = max(${result.rawLength.toFixed(1)} &times; ${anchorage.actualStress.toFixed(1)} / ${anchorage.fsy.toFixed(0)}, 12d<sub>b</sub>) = ${anchorage.reducedDevelopmentRaw.toFixed(1)} mm. Verify &sigma;<sub>st</sub> against the project calculation before issue.</code></div>`
+        : `<div><b>Project steel stress</b><code>Enter a positive &sigma;<sub>st</sub> not exceeding f<sub>sy</sub>; the full-yield reference remains displayed.</code></div>`;
+  }
+  const terminationStep = anchorage?.terminationDetailingConfirmationMissing
+    ? `<div><b>Cast-in ${safeText(anchorage.terminationType)} detailing required &middot; Cls 13.1.2.6&ndash;13.1.2.7</b><code>Minimum bend diameter = ${anchorage.minimumBendDiameter.toFixed(0)} mm (${anchorage.minimumBendDiameterFactor}d<sub>b</sub> for the selected condition); ${anchorage.terminationType === "hook" ? `straight extension = ${anchorage.hookStraightExtension.toFixed(0)} mm minimum` : `90-degree cog, bend diameter not exceeding ${anchorage.maximumCogBendDiameter.toFixed(0)} mm and total bar length equal to the corresponding 180-degree hook`}.${anchorage.transverseRestraintRequired ? ` Transverse bar: diameter at least ${anchorage.transverseBarMinimumDiameter.toFixed(0)} mm, in contact, extending ${anchorage.transverseBarExtensionEachSide.toFixed(0)} mm each side.` : ""} The half-development reference is withheld until these requirements are confirmed. No lap-splice reduction applies.</code></div>`
+    : anchorage?.terminationFactor === 0.5
+      ? `<div><b>Cast-in ${safeText(anchorage.terminationType)} termination &middot; Cls 13.1.2.6&ndash;13.1.2.7</b><code>Confirmed standard detailing: 0.5 &times; ${anchorage.actualStressApplied ? `L<sub>st</sub> = ${anchorage.reducedDevelopmentRaw.toFixed(1)}` : `L<sub>sy.t</sub> = ${result.rawLength.toFixed(1)}`} = ${anchorage.asBenchmarkRaw.toFixed(1)} mm; adopted = ${anchorage.asBenchmarkAdopted} mm, measured from the outside of the hook/cog. No lap-splice reduction applies.</code></div>`
+      : "";
+  return `<div><b>Existing-concrete development geometry</b><code>c<sub>d</sub> = ${cdExpression} = ${result.cd.toFixed(1)} mm; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa.</code></div>
+    <div><b>Basic development &middot; Cl. 13.1.2.2</b><code>Formula = ${result.basicFormula.toFixed(1)} mm; lower limit = ${result.basicLowerLimit.toFixed(1)} mm; adopted before material multiplier = ${result.basicBeforeMaterial.toFixed(1)} mm; multiplier = ${result.conditionFactor.toFixed(2)}; modified = ${result.basicModified.toFixed(1)} mm.</code></div>
+    ${reoRefinedFormulaHtml(result, options, "Existing-concrete")}
+    <div><b>Full-yield development reference</b><code>Raw = ${result.rawLength.toFixed(1)} mm; adopted = ${result.adoptedLength} mm. The basic lower limit is applied before the material multiplier and refined factor.</code></div>
+    ${stressStep}${terminationStep}`;
+}
+
+function updateReoFormulaSteps(lapResult, lapOptions, developmentResult, developmentOptions, anchorage, path) {
+  const steps = [];
+  if (path.requiresLap) steps.push(reoLapFormulaHtml(lapResult, lapOptions, false));
+  if (path.requiresDevelopment) {
+    steps.push(reoDevelopmentFormulaHtml(developmentResult, developmentOptions, anchorage));
+  }
+  $("reoFormulaSteps").innerHTML = steps.join("");
+}
+
+function clearReoAnchorageOutputs(message = "A valid existing-concrete development reference is required.") {
+  ["reoAsFullDevelopment", "reoAnchoragePrimaryResult"].forEach(id => {
+    const element = $(id);
+    if (element) element.textContent = "-";
+  });
+  $("reoAnchorageResultStatus").textContent = "INPUT REQUIRED";
+  $("reoSaving").textContent = "AS 3600 reference unavailable.";
+  $("reoAnchorageResultNote").textContent = message;
+}
+
+function updateReoDevelopmentDerived(result, options, basicReference) {
+  if (!result?.eligible) {
+    if (options.method === "refined" && basicReference?.eligible) {
+      $("reoExistingCd").textContent = basicReference.cd.toFixed(1);
+      $("reoExistingKValue").textContent = "-";
+      $("reoExistingCombinedFactor").textContent = "-";
+      $("reoExistingRefinedCandidateLength").textContent = "-";
+      $("reoExistingRefinedNote").textContent = `Refined result unavailable. Basic reference retained. ${result?.issues?.join(" ") || "Complete the highlighted Refined input."}`;
+      return;
+    }
+    $("reoExistingCd").textContent = "-";
+    $("reoExistingKValue").textContent = "-";
+    $("reoExistingCombinedFactor").textContent = "-";
+    $("reoExistingRefinedCandidateLength").textContent = "-";
+    $("reoExistingRefinedNote").textContent = result?.issues?.join(" ") || "Development reference unavailable.";
+    return;
+  }
+  $("reoExistingCd").textContent = result.cd.toFixed(1);
+  $("reoExistingKValue").textContent = result.K.toFixed(3);
+  $("reoExistingCombinedFactor").textContent = `${result.lambda.toFixed(3)} / ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}`;
+  $("reoExistingRefinedCandidateLength").textContent = options.method === "refined"
+    ? result.refinedCandidateAdoptedLength.toFixed(0)
+    : "-";
+  $("reoExistingRefinedNote").textContent = options.method === "refined"
+    ? result.refinedReconciliationRequired
+      ? `Candidate ${result.refinedCandidateAdoptedLength.toFixed(0)} mm is not adopted. Confirm the qualifying reinforcement count and any pressure basis throughout that candidate length.`
+      : result.refinedCreditRequested
+        ? `Candidate evidence confirmed; ${result.adoptedLength.toFixed(0)} mm is adopted.`
+        : "No Refined reduction applies for the entered arrangement."
+    : "Basic development; no confinement reduction.";
+}
+
+function updateReoAnchorage(options, selectedBar, developmentResult, developmentOptions, basicReference) {
+  const path = reoPathState(options);
+  if (!path.requiresDevelopment) {
+    clearReoAnchorageOutputs("No development reference applies to the selected path.");
+    return null;
+  }
+
+  const refinedFallback = !developmentResult?.eligible && developmentOptions.method === "refined" && basicReference?.eligible;
+  const adoptedDevelopmentResult = refinedFallback ? basicReference : developmentResult;
+  updateReoDevelopmentDerived(developmentResult, developmentOptions, basicReference);
+  const pirOrigin = developmentOptions.barOrigin === "pir";
+  const anchorage = reoAnchorageCalculation(selectedBar, adoptedDevelopmentResult, {
+    barOrigin: developmentOptions.barOrigin,
+    basis: $("reoAnchorageBasis").value,
+    actualStress: numericValue($("reoSteelStress").value),
+    refinedReducedLengthConfirmed: $("reoReducedLengthRefinedConfirmed").checked,
+    terminationType: $("reoCastInTermination").value,
+    terminationDetailingConfirmed: $("reoCastInTerminationConfirmed").checked
+  });
+
+  if (!anchorage.available) {
+    const unavailableIssues = [...(developmentResult?.issues || []), ...(anchorage.issues || [])];
+    clearReoAnchorageOutputs([...new Set(unavailableIssues)].join(" "));
+    return anchorage;
+  }
+
+  const formatLength = value => Number.isFinite(value) ? Number(value).toFixed(0) : "-";
+  $("reoAsFullDevelopment").textContent = formatLength(anchorage.fullDevelopmentAdopted);
+  $("reoAnchoragePrimaryResult").textContent = anchorage.benchmarkAvailable ? formatLength(anchorage.asBenchmarkAdopted) : "-";
+
+  const fullReferenceUseful = anchorage.actualStressRequested || anchorage.terminationFactor === 0.5;
+  $("reoAnchorageFullReferenceCard").hidden = !fullReferenceUseful;
+  $("reoAnchorageReferenceStrip").hidden = !fullReferenceUseful;
+  $("reoFullReferenceContext").textContent = anchorage.terminationFactor === 0.5
+    ? "Underlying full-yield development"
+    : "Full-yield comparison";
+
+  if (refinedFallback) {
+    $("reoAnchorageResultStatus").textContent = "BASIC REFERENCE · REFINED INPUT REQUIRED";
+    $("reoRequiredEmbedmentLabel").innerHTML = pirOrigin
+      ? "Basic AS 3600 reference depth <b>L<sub>e,AS</sub></b>"
+      : "Basic development reference <b>L<sub>sy.t</sub></b>";
+  } else if (pirOrigin) {
+    $("reoAnchorageResultStatus").textContent = !anchorage.benchmarkAvailable
+      ? "INPUT REQUIRED"
+      : anchorage.actualStressApplied
+        ? "STRESS-BASED REFERENCE"
+        : "FULL-YIELD REFERENCE";
+    $("reoRequiredEmbedmentLabel").innerHTML = "AS 3600 reference depth <b>L<sub>e,AS</sub></b>";
+  } else if (anchorage.terminationDetailingConfirmationMissing) {
+    $("reoAnchorageResultStatus").textContent = `${anchorage.terminationType.toUpperCase()} DETAILING REQUIRED`;
+    $("reoRequiredEmbedmentLabel").innerHTML = "Anchorage reference <b>L<sub>e,AS</sub></b>";
+  } else if (anchorage.refinedReducedLengthConfirmationMissing) {
+    $("reoAnchorageResultStatus").textContent = "REFINED RECONCILIATION REQUIRED";
+    $("reoRequiredEmbedmentLabel").innerHTML = "Development reference <b>L<sub>st</sub></b>";
+  } else if (!anchorage.benchmarkAvailable || anchorage.stressOverYield) {
+    $("reoAnchorageResultStatus").textContent = "REVIEW REQUIRED";
+    $("reoRequiredEmbedmentLabel").innerHTML = "Development reference <b>L<sub>sy.t</sub></b>";
+  } else {
+    $("reoAnchorageResultStatus").textContent = "AS 3600 REFERENCE";
+    $("reoRequiredEmbedmentLabel").innerHTML = anchorage.terminationFactor === 0.5
+      ? `Standard ${anchorage.terminationType} anchorage <b>L<sub>e,AS</sub></b>`
+      : "Required development length <b>L<sub>sy.t</sub></b>";
+  }
+
+  const basisNotes = [];
+  if (anchorage.stressOverYield) {
+    basisNotes.push(`Entered sigma_st = ${anchorage.actualStress.toFixed(0)} MPa exceeds fsy; review the bar design.`);
+  } else if (anchorage.refinedReducedLengthConfirmationMissing) {
+    basisNotes.push(`Candidate stress-based length ${formatLength(anchorage.reducedDevelopmentCandidateAdopted)} mm. Confirm the Refined evidence throughout that candidate before adoption.`);
+  } else if (anchorage.actualStressApplied) {
+    basisNotes.push(`Project sigma_st = ${anchorage.actualStress.toFixed(0)} MPa; the 12db minimum is retained.`);
+  } else if (anchorage.actualStressRequested) {
+    basisNotes.push("Enter a positive project design tensile stress not exceeding fsy.");
+  }
+  if (anchorage.terminationDetailingConfirmationMissing) {
+    basisNotes.push(`Confirm the displayed standard ${anchorage.terminationType} requirements before the half-development reference is issued.`);
+  } else if (anchorage.terminationFactor === 0.5) {
+    basisNotes.push(`Standard ${anchorage.terminationType} anchorage confirmed; no lap-splice reduction applies.`);
+  }
+  $("reoSaving").textContent = pirOrigin
+    ? (anchorage.actualStressApplied ? "Stress-based AS 3600 reference depth." : "Full-yield AS 3600 reference depth.")
+    : anchorage.terminationFactor === 0.5
+      ? `AS 3600 standard ${anchorage.terminationType} end anchorage.`
+      : anchorage.actualStressApplied
+        ? "Project-stress AS 3600 development reference."
+        : "AS 3600 straight development reference.";
+  if (refinedFallback) basisNotes.unshift(`Refined result unavailable; Basic reference retained. ${developmentResult?.issues?.join(" ") || "Complete the highlighted Refined input."}`);
+  const notes = [...basisNotes, ...(adoptedDevelopmentResult?.notices || []), ...(anchorage.issues || [])];
+  notes.push(pirOrigin
+    ? "Not an installation depth · complete the product-specific design separately."
+    : "Verify reinforcement continuity, cover, spacing, member detailing and load path.");
+  $("reoAnchorageResultNote").textContent = [...new Set(notes)].join(" ");
+  const warning = refinedFallback || !anchorage.benchmarkAvailable || anchorage.stressOverYield || anchorage.refinedReducedLengthConfirmationMissing || anchorage.terminationDetailingConfirmationMissing;
+  $("reoAnchorageResultNote").className = warning ? "result-note is-warning" : "result-note";
+  return anchorage;
+}
+
+function clearReoLapOutputs(message = "No lap result applies to the selected path.") {
+  $("reoCd").textContent = "-";
+  ["reoK1", "reoK2", "reoK3", "reoK7"].forEach(id => $(id).textContent = "-");
+  $("reoKValue").textContent = "-";
+  $("reoCombinedFactor").textContent = "-";
+  $("reoRefinedCandidateLength").textContent = "-";
+  $("reoPrimaryResultLabel").textContent = "Adopted lap length";
+  $("reoRequiredLength").textContent = "-";
+  $("reoLapRatio").textContent = "-";
+  $("reoGoverning").textContent = "Governing expression unavailable.";
+  $("reoDevelopmentLength").textContent = "Lsy.t = -";
+  $("reoResultStatus").textContent = "NOT AVAILABLE";
+  $("reoResultNote").textContent = message;
+  $("reoResultNote").className = "result-note is-ineligible";
+  $("reoRefinedNote").textContent = "Refined lap factors are unavailable.";
+}
+
+function updateReoLapFieldValidity(options, path, developmentOptions) {
+  const setFieldValidity = (inputId, errorId, invalid) => {
+    const input = $(inputId);
+    const error = errorId ? $(errorId) : null;
+    if (invalid) input.setAttribute("aria-invalid", "true");
+    else input.removeAttribute("aria-invalid");
+    if (error) error.hidden = !invalid;
+  };
+  const lapActive = path.requiresLap;
+  setFieldValidity("reoConcreteStrength", "reoConcreteStrengthError", lapActive && (!Number.isFinite(options.fc) || options.fc < 20));
+  setFieldValidity("reoCover", "reoCoverError", lapActive && (!Number.isFinite(options.cover) || options.cover <= 0));
+  setFieldValidity("reoClearSpacing", "reoClearSpacingError", lapActive && (!Number.isFinite(options.clearSpacing) || options.clearSpacing <= 0));
+  setFieldValidity("reoBarGap", "reoBarGapError", lapActive && options.memberType === "narrow" && options.lapType === "noncontact" && (!Number.isFinite(options.barGap) || options.barGap < 0));
+
+  const customRefined = lapActive && options.method === "refined" && options.refinedArrangement === "custom";
+  const selectedBar = reoBarByDesignation($("reoBar").value);
+  const lapAtrMin = options.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
+  const lapConfinementPotential = customRefined && Number.isFinite(options.atrTotal) && options.atrTotal > lapAtrMin;
+  setFieldValidity("reoNf", "reoNfError", customRefined && (!Number.isInteger(options.nf) || options.nf < 0));
+  setFieldValidity("reoNbs", "reoNbsError", customRefined && (!Number.isInteger(options.nbs) || options.nbs < 1));
+  setFieldValidity("reoAtrTotal", "reoAtrTotalError", customRefined && (!Number.isFinite(options.atrTotal) || options.atrTotal < 0));
+  setFieldValidity("reoTransverseLocationConfirmed", "reoTransverseLocationError", lapConfinementPotential && !options.transverseEffective);
+  setFieldValidity("reoAtrCountConfirmed", "reoAtrCountConfirmedError", lapConfinementPotential && options.transverseEffective && !options.atrCountConfirmed);
+
+  const pressureInvalid = path.requiresLap && options.method === "refined" && (!Number.isFinite(options.pressure) || options.pressure < 0);
+  const pressureConfirmationMissing = path.requiresLap && options.method === "refined" && Number.isFinite(options.pressure) && options.pressure > 0 && !options.pressureBasisConfirmed;
+  const pressureReferenceMissing = path.requiresLap && options.method === "refined" && Number.isFinite(options.pressure) && options.pressure > 0 && !options.pressureReference.trim();
+  if (pressureInvalid) $("reoPressure").setAttribute("aria-invalid", "true");
+  else $("reoPressure").removeAttribute("aria-invalid");
+  if (pressureConfirmationMissing) $("reoPressureBasisConfirmed").setAttribute("aria-invalid", "true");
+  else $("reoPressureBasisConfirmed").removeAttribute("aria-invalid");
+  if (pressureReferenceMissing) $("reoPressureReference").setAttribute("aria-invalid", "true");
+  else $("reoPressureReference").removeAttribute("aria-invalid");
+  $("reoPressureError").hidden = !pressureInvalid;
+
+  const existingPressureActive = path.requiresDevelopment && developmentOptions?.method === "refined";
+  const existingCustomRefined = existingPressureActive && developmentOptions.refinedArrangement === "custom";
+  const existingAtrMin = developmentOptions?.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
+  const existingConfinementPotential = existingCustomRefined && Number.isFinite(developmentOptions.atrTotal) && developmentOptions.atrTotal > existingAtrMin;
+  setFieldValidity("reoExistingNf", "reoExistingNfError", existingCustomRefined && (!Number.isInteger(developmentOptions.nf) || developmentOptions.nf < 0));
+  setFieldValidity("reoExistingNbs", "reoExistingNbsError", existingCustomRefined && (!Number.isInteger(developmentOptions.nbs) || developmentOptions.nbs < 1));
+  setFieldValidity("reoExistingAtrTotal", "reoExistingAtrTotalError", existingCustomRefined && (!Number.isFinite(developmentOptions.atrTotal) || developmentOptions.atrTotal < 0));
+  setFieldValidity("reoExistingTransverseLocationConfirmed", "reoExistingTransverseLocationError", existingConfinementPotential && !developmentOptions.transverseEffective);
+  setFieldValidity("reoExistingAtrCountConfirmed", "reoExistingAtrCountConfirmedError", existingConfinementPotential && developmentOptions.transverseEffective && !developmentOptions.atrCountConfirmed);
+  const existingPressureInvalid = existingPressureActive && (!Number.isFinite(developmentOptions.pressure) || developmentOptions.pressure < 0);
+  const existingPressureConfirmationMissing = existingPressureActive && Number.isFinite(developmentOptions.pressure) && developmentOptions.pressure > 0 && !developmentOptions.pressureBasisConfirmed;
+  const existingPressureReferenceMissing = existingPressureActive && Number.isFinite(developmentOptions.pressure) && developmentOptions.pressure > 0 && !developmentOptions.pressureReference.trim();
+  if (existingPressureInvalid) $("reoExistingPressure").setAttribute("aria-invalid", "true");
+  else $("reoExistingPressure").removeAttribute("aria-invalid");
+  if (existingPressureConfirmationMissing) $("reoExistingPressureBasisConfirmed").setAttribute("aria-invalid", "true");
+  else $("reoExistingPressureBasisConfirmed").removeAttribute("aria-invalid");
+  if (existingPressureReferenceMissing) $("reoExistingPressureReference").setAttribute("aria-invalid", "true");
+  else $("reoExistingPressureReference").removeAttribute("aria-invalid");
+  $("reoExistingPressureError").hidden = !existingPressureInvalid;
+}
+
+function renderReoLapResult(options, result, path, basicReference) {
+  if (!path.requiresLap) {
+    clearReoLapOutputs("No bar-to-bar lap calculation applies to the selected path.");
+    return;
+  }
+  if (!result?.eligible) {
+    if (options.method === "refined" && basicReference?.eligible) {
+      $("reoCd").textContent = basicReference.cd.toFixed(1);
+      $("reoK1").textContent = basicReference.k1.toFixed(2);
+      $("reoK2").textContent = basicReference.k2.toFixed(3);
+      $("reoK3").textContent = basicReference.k3.toFixed(3);
+      $("reoK7").textContent = basicReference.k7.toFixed(2);
+      $("reoKValue").textContent = "-";
+      $("reoCombinedFactor").textContent = "-";
+      $("reoRefinedCandidateLength").textContent = "-";
+      $("reoPrimaryResultLabel").textContent = "Basic-reference tensile lap";
+      $("reoRequiredLength").textContent = basicReference.adoptedLength.toFixed(0);
+      $("reoLapRatio").textContent = basicReference.ratio.toFixed(1);
+      $("reoGoverning").textContent = `Basic reference: ${basicReference.governing.label}`;
+      $("reoDevelopmentLength").textContent = `Basic Lsy.t = ${basicReference.developmentLength.toFixed(1)} mm`;
+      $("reoResultStatus").textContent = "BASIC REFERENCE · REFINED INPUT REQUIRED";
+      $("reoResultNote").textContent = `Refined result unavailable. Basic reference retained for context. ${result.issues.join(" ")}`;
+      $("reoResultNote").className = "result-note is-warning";
+      $("reoRefinedNote").textContent = "Complete the highlighted Refined input before any confinement or pressure credit is applied.";
+      return;
+    }
+    clearReoLapOutputs(result?.issues?.join(" ") || "The selected lap case is not eligible.");
+    const prohibited = result?.issues?.some(issue => /not permitted|must be welded or mechanical/i.test(issue));
+    $("reoResultStatus").textContent = prohibited ? "LAP SPLICE NOT PERMITTED" : "INVALID INPUT";
+    return;
+  }
+  $("reoCd").textContent = result.cd.toFixed(1);
+  $("reoK1").textContent = result.k1.toFixed(2);
+  $("reoK2").textContent = result.k2.toFixed(3);
+  $("reoK3").textContent = result.k3.toFixed(3);
+  $("reoK7").textContent = result.k7.toFixed(2);
+  $("reoKValue").textContent = result.K.toFixed(3);
+  $("reoCombinedFactor").textContent = `${result.lambda.toFixed(3)} / ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}`;
+  $("reoRefinedCandidateLength").textContent = options.method === "refined"
+    ? result.refinedCandidateAdoptedLength.toFixed(0)
+    : "-";
+  $("reoPrimaryResultLabel").textContent = "Adopted lap length";
+  $("reoRequiredLength").textContent = result.adoptedLength.toFixed(0);
+  $("reoLapRatio").textContent = result.ratio.toFixed(1);
+  $("reoGoverning").textContent = result.governing.label;
+  $("reoDevelopmentLength").textContent = `Lsy.t = ${result.developmentLength.toFixed(1)} mm`;
+  const notices = result.notices.filter(note => ![
+    "No verified custom transverse-reinforcement arrangement is being used.",
+    "Sigma Atr is confirmed for the candidate lap length.",
+    "The transverse-pressure basis is confirmed for the candidate lap length."
+  ].includes(note));
+  if (options.doubleArea !== options.halfSpliced) notices.push("One k7 condition remains outstanding; k7 = 1.25.");
+  $("reoResultStatus").textContent = result.refinedReconciliationRequired
+    ? "BASIC ADOPTED · REFINED CANDIDATE"
+    : "AS 3600 REFERENCE";
+  $("reoResultNote").textContent = [
+    "Use only where the project drawings or specification permit the splice · AS 3600 Cl. 13.2.1(a). Same-size bars assumed.",
+    ...notices
+  ].join(" ");
+  $("reoResultNote").className = notices.length ? "result-note is-warning" : "result-note";
+  const refinedReduction = options.method === "refined" && basicReference?.eligible
+    ? Math.max(0, basicReference.adoptedLength - result.adoptedLength)
+    : 0;
+  const refinedEvidencePending = result.refinedReconciliationRequired;
+  $("reoRefinedNote").textContent = options.method === "refined"
+    ? (refinedEvidencePending
+      ? `Candidate ${result.refinedCandidateAdoptedLength.toFixed(0)} mm is not adopted. Confirm the qualifying reinforcement count and any pressure basis throughout that candidate length.`
+      : refinedReduction > 0
+        ? `Refined reduction applied: adopted lap is ${refinedReduction.toFixed(0)} mm below the Basic reference.`
+        : "No Refined reduction applies.")
+    : "Basic lap development; no confinement reduction.";
+}
+
+function calculateReo() {
+  let options = readReoOptions();
+  updateReoConditionalFields(options);
+  options = readReoOptions();
+  const path = reoPathState(options);
+  const selectedBar = reoBarByDesignation($("reoBar").value);
+  const developmentOptions = readReoDevelopmentOptions();
+  const lapResult = path.requiresLap ? reoLapCalculation(selectedBar, options) : null;
+  const basicLapReference = path.requiresLap && options.method === "refined"
+    ? reoLapCalculation(selectedBar, { ...options, method: "basic" })
+    : null;
+  const developmentResult = path.requiresDevelopment ? reoDevelopmentCalculation(selectedBar, developmentOptions) : null;
+  const basicDevelopmentReference = path.requiresDevelopment && developmentOptions.method === "refined"
+    ? reoDevelopmentCalculation(selectedBar, { ...developmentOptions, method: "basic" })
+    : null;
+  const anchorage = updateReoAnchorage(options, selectedBar, developmentResult, developmentOptions, basicDevelopmentReference);
+  const lapReferenceAvailable = lapResult?.eligible === true || basicLapReference?.eligible === true;
+  $("reoLapFactorGroup").hidden = !path.requiresLap || !lapReferenceAvailable;
+  $("reoRefinedDetails").hidden = !path.requiresLap || options.method !== "refined" || !lapReferenceAvailable;
+
+  updateReoLapFieldValidity(options, path, developmentOptions);
+  renderReoLapResult(options, lapResult, path, basicLapReference);
+  updateReoReductionAssessment(options, lapResult, basicLapReference);
+  if (path.requiresLap) {
+    updateReoSchedule(options, selectedBar?.designation || $("reoBar").value);
+  } else {
+    $("reoLapTableRows").innerHTML = `<tr><td colspan="6">No bar-to-bar lap schedule applies to the selected path.</td></tr>`;
+  }
+  const lapFormulaFallback = !lapResult?.eligible && basicLapReference?.eligible;
+  const developmentFormulaFallback = !developmentResult?.eligible && basicDevelopmentReference?.eligible;
+  updateReoFormulaSteps(
+    lapFormulaFallback ? basicLapReference : lapResult,
+    lapFormulaFallback ? { ...options, method: "basic" } : options,
+    developmentFormulaFallback ? basicDevelopmentReference : developmentResult,
+    developmentFormulaFallback ? { ...developmentOptions, method: "basic" } : developmentOptions,
+    anchorage,
+    path
+  );
+}
+
 function setTool(tool, updateHash = true) {
   const resolvedTool = toolAliases[tool] || tool;
   const validTool = toolNames.includes(resolvedTool);
@@ -5618,6 +7156,10 @@ function setTool(tool, updateHash = true) {
     button.setAttribute("aria-selected", String(active));
     if (active) activeButton = button;
   });
+  const activeToolTab = document.querySelector(`.tool-tab[data-tool="${selectedTool}"]`);
+  if (activeToolTab && window.matchMedia("(max-width: 500px)").matches) {
+    window.requestAnimationFrame(() => activeToolTab.scrollIntoView({ block: "nearest", inline: "center" }));
+  }
   toolNames.forEach(name => {
     const panel = $(`${name}Panel`);
     const active = name === selectedTool;
@@ -5638,6 +7180,7 @@ function setTool(tool, updateHash = true) {
   });
   if (selectedTool === "concrete") calculateConcrete();
   if (selectedTool === "properties") calculateSectionProperties();
+  if (selectedTool === "reo") calculateReo();
   if (selectedTool === "screw") {
     calculateScrew();
     window.requestAnimationFrame(calculateScrew);
@@ -5700,6 +7243,7 @@ function initialise() {
   $("weldParentGrade").value = "Grade 250 plate";
   $("shearPlane").value = "N";
   populateConcreteBarOptions();
+  populateReoData();
   boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
   weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));
   concreteInputIds.forEach(id => {
@@ -5741,14 +7285,20 @@ function initialise() {
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {
     if (!$("concretePanel").hidden) calculateConcrete();
+    if (!$("reoPanel").hidden) calculateReo();
     if (!$("screwPanel").hidden) calculateScrew();
   });
   document.querySelector(".concrete-layout-details").addEventListener("toggle", event => {
     if (event.target.open) calculateConcrete();
   });
-  document.querySelectorAll(".beam-type").forEach(button => button.addEventListener("click", () => setBeamType(button.dataset.beamType)));
+  document.querySelectorAll(".beam-type").forEach(button => button.addEventListener("click", () => setBeamSource(button.dataset.beamSource)));
+  $("beamFamily").addEventListener("change", () => setBeamFamily($("beamFamily").value));
   $("beamSection").addEventListener("change", populateBeamGrades);
-  $("beamGrade").addEventListener("change", calculateBeam);
+  $("beamGrade").addEventListener("change", resetBeamMaterialStrengths);
+  $("beamDirection").addEventListener("change", calculateBeam);
+  $("beamFyInput").addEventListener("input", calculateBeam);
+  $("beamFywInput").addEventListener("input", calculateBeam);
+  $("beamMaterialReset").addEventListener("click", resetBeamMaterialStrengths);
   $("beamMomentDemand").addEventListener("input", calculateBeam);
   $("beamShearDemand").addEventListener("input", calculateBeam);
   beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
@@ -5777,6 +7327,24 @@ function initialise() {
   $("screwDemandDetails").addEventListener("toggle", event => {
     if (event.target.open) calculateScrew();
   });
+  reoInputIds.forEach(id => {
+    const element = $(id);
+    const handleReoInput = () => {
+      if (reoLapCountResetIds.has(id)) $("reoAtrCountConfirmed").checked = false;
+      if (reoExistingCountResetIds.has(id)) $("reoExistingAtrCountConfirmed").checked = false;
+      if (reoReducedLengthResetIds.has(id)) $("reoReducedLengthRefinedConfirmed").checked = false;
+      if (reoLapQualificationResetIds.has(id)) {
+        $("reoDoubleArea").checked = false;
+        $("reoHalfSpliced").checked = false;
+      }
+      if (reoPressureBasisResetIds.has(id)) $("reoPressureBasisConfirmed").checked = false;
+      if (reoExistingPressureBasisResetIds.has(id)) $("reoExistingPressureBasisConfirmed").checked = false;
+      if (reoTerminationDetailingResetIds.has(id)) $("reoCastInTerminationConfirmed").checked = false;
+      calculateReo();
+    };
+    element.addEventListener("input", handleReoInput);
+    if (element.tagName === "SELECT") element.addEventListener("change", handleReoInput);
+  });
   document.querySelectorAll(".member-type").forEach(button => button.addEventListener("click", () => setMemberType(button.dataset.memberType)));
   $("memberSection").addEventListener("change", populateMemberGrades);
   $("memberGrade").addEventListener("change", () => {
@@ -5801,13 +7369,14 @@ function initialise() {
   $("memberKt").addEventListener("input", calculateMember);
   populateScrewSeries();
   populateSectionCatalogueFamilies();
-  setBeamType(beamSectionType);
+  setBeamFamily(beamFamily);
   setMemberType(memberType);
   calculateBolt();
   calculateUBolt();
   calculateWeld();
   calculateConcrete();
   setSectionPropertyMode(sectionPropertiesMode);
+  calculateReo();
   calculateScrew();
   setBoltMode(initialBoltMode());
   setTool(location.hash.slice(1) || "bolt", false);

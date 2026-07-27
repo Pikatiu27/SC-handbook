@@ -1225,6 +1225,7 @@ Current core tabs:
 - `Section Properties`
 - `Weld Capacity`
 - `Concrete Pad Section`
+- `Reinforcement`
 - `Screw Piles Selector`
 - `Rock Anchor Selector`
 
@@ -1234,10 +1235,11 @@ Current tab register:
 | --- | --- | --- | --- | --- |
 | `Bolt Capacity` | `Steel Connections` | AS 4100 bolt / ply quick capacity and demand screen | For Review with checked core clauses | Active quick-reference tab |
 | `Axial Member Capacity` | `Steel Members` | AS 4100 axial member compression / tension quick screen | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
-| `Beam Section Capacity` | `Steel Members` | AS 4100 UB/UC and symmetric custom I-section section-capacity lookup | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
+| `Beam Section Capacity` | `Steel Members` | AS 4100 catalogue section-capacity lookup for UB, UC, PFC, CHS, RHS, SHS, Equal Angle and Rod, with dimensions-only Custom geometry | For Review with checked core clauses, family-specific capacity paths and catalogue rows | Active quick-reference tab |
 | `Section Properties` | `Steel Members` | Catalogue lookup and ideal-geometry section properties used by member workflows | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
 | `Weld Capacity` | `Steel Connections` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
 | `Concrete Pad Section` | `Foundations` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
+| `Reinforcement` | `Foundations` | AS 3600 reinforcement development, anchorage and lap-length reference | For Review with checked Section 13 calculation paths and stated PIR boundary | Active quick-reference tab |
 | `Screw Piles Selector` | `Foundations` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 | `Rock Anchor Selector` | `Foundations` | Product selector and quick rock-anchor lookup aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 
@@ -1245,7 +1247,7 @@ Navigation categories:
 
 - `Steel Connections`: `Bolt Capacity`, `Weld Capacity`, and future `Base Plate` when accepted and integrated.
 - `Steel Members`: `Section Properties`, `Axial Member Capacity`, and `Beam Section Capacity`.
-- `Foundations`: `Concrete Pad Section`, `Screw Piles Selector`, and `Rock Anchor Selector`.
+- `Foundations`: `Concrete Pad Section`, `Reinforcement`, `Screw Piles Selector`, and `Rock Anchor Selector`.
 
 Do not create a permanent top-level category for one accepted tool. A future `Reference Tools` category may be introduced only when multiple independent material lookups or compact design tables have been accepted; until then, place each lookup with its primary engineering workflow.
 
@@ -1420,7 +1422,7 @@ Use title hierarchy, spacing and panel weight to show importance. Keep `RESULTS`
 
 For bolt capacity:
 
-- `RESULTS Bolt capacity`
+- `RESULTS Bolt capacities`
 - `Detailed connection checks`
 - `Calculation basis and limitations`
 
@@ -2110,16 +2112,32 @@ Display logic:
 - If threads are clear of the shear plane and X shear capacity is used, show `M24 8.8 X/S`.
 - Under the callout, keep the explanation short: `N: threads intercept shear plane · X: threads clear of shear plane`.
 
+- Include `Nti` in the selected-bolt basis. For `/TB` and `/TF`, show the minimum installed bolt tension from AS 4100 Table 15.2.2.2. For `/S`, show `Not required`.
+- Place one collapsed `Minimum installed bolt tension, Nti` lookup directly below the selected-bolt basis. Show M16 to M36 in rows and property classes 8.8 and 10.9 in columns.
+- Do not repeat the selected `Nti` in the lookup summary. Use the summary support line for the table source and size range.
+- In the lookup, state the installation categories in one concise note: `Nti` is not applicable to `/S`; `/TB` and `/TF` are fully tensioned and use the same tabulated `Nti`.
+- Do not list M10 or M12 `Nti` values because AS 4100 Table 15.2.2.2 does not tabulate them. These sizes remain available for `/S` only.
+- State explicitly that `Nti` is an installation preload, not the design tensile capacity `phi Ntf`. Do not subtract `Nti` from `phi Ntf` and do not present it as a competing capacity result.
+- Keep the primary page sequence as `Inputs -> Selected bolt -> optional Nti lookup -> Results`. Place symbol definitions and `/S`, `/TB`, `/TF` explanations in `Calculation basis and limitations`; do not add separate legend bands before Results.
+- In `RESULTS Bolt capacities`, show the design shear capacity for the selected N/X shear-plane condition and the design tensile capacity. Keep the unselected N/X shear-plane capacity in `Calculation steps`; it must not compete as another primary result card.
+- Use formal visible labels `Design shear capacity, phi Vf` and `Design tensile capacity, phi Ntf`. Keep the selected N/X condition in the shear-capacity label.
+- Show the `TF slip check` only for `/TF` categories. Keep its slip parameters, serviceability slip actions and utilisation status together. For `/S` and `/TB`, hide the complete section.
+- Do not show a persistent `/TF` reminder in `/S` or `/TB` states. The separate serviceability slip reminder appears only with the active `/TF` workflow.
+- Label the strength-action section `Project design actions`. Either shear or tension may be entered independently; combined strength interaction applies only when both are non-zero.
+- Do not reuse the strength actions as TF slip actions. Use separate `V_sf*` and `N_tf*` inputs for the serviceability slip check so action bases are not silently mixed.
+
 Bolt result checks should include:
 
 - Bolt shear capacity.
 - Bolt tension capacity where relevant.
-- Bolt bearing on connected ply.
-- Edge tear-out / ply tearing.
+- Full-bearing branch of the design bearing capacity in each connected ply.
+- Edge tear-out branch of the design bearing capacity using the AS 4100 Cl. 9.2.2.4(2) `a_e` limit.
 - Minimum edge distance check.
-- Governing connected-ply capacity.
-- Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and connected-ply bearing / edge tear-out under AS 4100 Cl. 9.2.2.4; tension-only demand checks bolt tension under AS 4100 Cl. 9.2.2.2; combined shear and tension checks bolt interaction under AS 4100 Cl. 9.2.2.3 while still checking connected-ply bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or connected ply governs.
-- The main result should show one final `Governing capacity check` ratio only. Put supporting ratios, including the AS 4100 Cl. 9.2.2.3 combined bolt interaction ratio, in calculation steps rather than as competing primary result cards.
+- Governing full-bearing / edge-tear-out condition.
+- Demand-ratio reporting must separate the limit states: shear-only demand checks bolt shear under AS 4100 Cl. 9.2.2.1 and local hole bearing under AS 4100 Cl. 9.2.2.4; tension-only demand checks bolt tension under AS 4100 Cl. 9.2.2.2; combined shear and tension checks bolt interaction under AS 4100 Cl. 9.2.2.3 while still checking local hole bearing separately. The UI must state whether bolt shear, bolt tension, bolt interaction, or local hole bearing governs.
+- The main strength result should show one `Strength utilisation ratio`. Put supporting strength ratios in Calculation steps rather than as competing primary result cards.
+- For `/TF`, show one additional `TF slip utilisation ratio`. Keep this serviceability result visibly separate from the strength ratio.
+- Detailing compliance is a release gate, not another utilisation ratio. If any applicable minimum pitch, general maximum pitch or active-ply minimum edge-distance check fails, show `NON-COMPLIANT` on the visible strength result and TF slip result where applicable. Do not allow a green PASS while detailing is non-compliant.
 - The default connected-ply tensile strength should not be an orphan number. Use f<sub>up</sub> = 410 MPa only as the AS/NZS 3678 Grade 250 plate default; use 440 MPa only for verified AS/NZS 3679.1 Grade 300 flat bar/section or another stated source.
 
 U-bolt product lookup branch:
@@ -2145,7 +2163,7 @@ U-bolt product lookup branch:
 - If no published capacity is available, show `No published rated capacity` or `Not published`, mark the item `Source_Not_Verified`, and do not report an action ratio.
 - Do not derive U-bolt product capacity from AS 4100 ordinary bolt shear or tension equations. Those checks belong to the connected steelwork or fastener components where applicable.
 
-Minimum edge distance and ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
+Minimum edge distance, minimum pitch and connected-ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
 
 For the web bolt tab, separate the edge-distance terms visibly:
 
@@ -2159,7 +2177,136 @@ For the web bolt tab, separate the edge-distance terms visibly:
 - Keep the lightweight connected-ply check on a critical-hole basis. Assume concentric shear and equal bolt sharing, calculate `V_b,bolt* = V*/n`, and compare it with the lesser of the full-bearing and edge-limited capacities at the critical bolt hole.
 - Under that equal-action premise, use `phi Vb,group = n * MIN(phi Vb,full, phi Vb,edge)` for the critical bolt hole. Do not add a separate `Bolts on edge line` input.
 - Present `n` times the critical-hole capacity as the equal-share connected-ply group capacity; keep the single-hole values in Calculation steps.
-- Do not calculate net-section rupture, actual tear-out paths, block shear, eccentric bolt-group reactions, overlapping failure paths or minimum bolt spacing.
+- Do not infer net-section or block-shear paths from the lightweight bolt geometry. These checks may be added only as a separate, optional manual-area assessment with explicit AS 4100 equations and limitations.
+
+#### 15.10.1 Detailed Connection Input Structure
+
+Keep the detailed connection input in this order:
+
+1. `Bolt group` - bolt count, shear-plane condition and k<sub>r</sub>.
+2. `Connected plies and detailing` - shared hole geometry and an explicit connected-ply basis.
+3. `Connected-ply integrity` - optional manual critical areas for net-section tension and block shear.
+4. `TF slip check` - TF only, including separate serviceability slip actions.
+5. `Project actions` - shear and tension demand.
+
+The connected-ply section should use one shared geometry row:
+
+- `d_h` = actual hole diameter.
+- `p` = centre-to-centre pitch of equal holes aligned with the force.
+- Disable `p` only for a one-bolt connection. Keep it available when manual `a_e` is selected because the minimum-pitch check remains applicable.
+
+Use one explicit `Connected-ply basis` control:
+
+- `Both plies identical` - default. Use the primary-ply properties for both connected parts and state this assumption in the result basis.
+- `Check plies separately` - show the second-ply fields and assess both connected parts independently.
+
+Do not use an unchecked optional-ply control that can be read as permission to omit the second connected part.
+
+Each active ply requires:
+
+- `t_p` - connected-ply thickness.
+- `f_up` - connected-ply ultimate tensile strength.
+- `Edge condition` - selected AS 4100 Table 9.5.2 edge category.
+- `e` - critical bolt centre to the selected physical edge.
+- `a_e basis` - `Automatic - end edge / pitch` or `Manual - connection drawing`.
+- `Governing a_e` - calculated and read-only for Automatic, directly entered for Manual.
+
+Do not duplicate `d_h` or `p` for the second ply. Each ply may have different thickness, material strength, edge condition, edge distance and effective edge distance.
+
+#### 15.10.2 Connected-Ply Capacity Logic
+
+For equal holes aligned with the force, calculate separately for each active ply:
+
+- `a_e,end = e - d_h/2 + d_f/2`.
+- `a_e,pitch = p - d_h + d_f/2` where more than one bolt is present.
+- `a_e = MIN(a_e,end, a_e,pitch)`.
+
+For angled edges, corners, non-collinear holes or other drawing-derived geometry, require a manual `a_e`. Explain that `e - d_h/2` is the clear distance from hole edge to ply edge, but it is not the same displayed symbol as `a_e` in the bearing expression.
+
+Keep the lightweight capacity check on a critical-hole basis. Assume concentric shear and equal bolt sharing, calculate `V_b,bolt* = V*/n`, and compare it with the lesser of the full-bearing and edge-limited capacities at the critical bolt hole.
+
+For each active ply use:
+
+- `phi V_b,full = phi 3.2 d_f t_p f_up`.
+- `phi V_b,edge = phi a_e t_p f_up`.
+- `phi V_b,local = MIN(phi V_b,full, phi V_b,edge)`.
+- `phi V_b,group = n phi V_b,local`.
+
+Do not add a separate `Bolts on edge line` input. Under the stated equal-action premise, every bolt is assessed using the entered critical-hole condition.
+
+For `Both plies identical`, use the primary-ply values and label the basis `Both plies identical`. For `Check plies separately`, determine the lower full-bearing group capacity and the lower edge-tear-out group capacity independently; the same ply need not govern both values. The local connected-ply demand ratio must use the lesser of the two displayed capacities.
+
+Display `Design bearing capacity - full-bearing limit` and `Design bearing capacity - edge tear-out limit` as separate rows, followed by one concise governing line. Identify `Bolt group` in each supporting basis line because the displayed value is the derived equal-share group capacity. The latter is the AS 4100 Cl. 9.2.2.4(2) edge-distance bearing limit using `a_e`; it is not an automatically generated block-shear or overlapping tear-out path. Use `kN per bolt` consistently for both branch calculations and direct the user to the optional integrity check for net-section tension and block shear.
+
+Show that concise local-bearing scope note once in the detailed-check workflow. Keep the complete assumptions and exclusions in `Calculation basis and limitations`; do not add a separate repeated `Checklists / warnings` block.
+
+#### 15.10.3 Optional Connected-Ply Integrity
+
+Keep this workflow collapsed by default and place it after local hole bearing and detailing, before project design actions. Default the assessment basis to `Not evaluated`.
+
+When `Manual critical areas` is selected:
+
+- Check one identified critical connection component at a time. Use the selected active ply value as `f_uc` and require a user-entered `f_yc`.
+- `BOLT-PLY-TENSION-01` - For section tension use AS 4100 Cl. 9.1.9(b) and Cl. 7.2: `phi Nt = 0.90 MIN(Ag fyc, 0.85 kt An fuc)`.
+- `BOLT-BLOCK-SHEAR-01` - For block shear use AS 4100 Cl. 9.1.9(e): `phi Rbs = 0.75 MIN(0.6 fuc Anv + kbs fuc Ant, 0.6 fyc Agv + kbs fuc Ant)`.
+- Allow `kbs = 1.0` for uniform tension stress or `kbs = 0.5` for non-uniform tension stress.
+- Require manual `Ag`, `An`, `Agv`, `Anv` and `Ant`. Do not derive these areas from bolt count, pitch, edge distance or a schematic.
+- Treat the entered block-shear areas as the governing path only after the user has reviewed every plausible failure path. State that the check must be repeated for any other critical component.
+- `BOLT-GOVERNING-01` - Where `Vf*` represents the axial force transferred through the checked component, compare it with `phi Nt` and `phi Rbs`. Include both ratios in the overall strength governing selection only when all required manual areas are valid.
+- If manual assessment is selected but incomplete, show `INCOMPLETE`, suppress the overall governing ratio and do not display a passing status.
+- For any passing check that includes shear transfer, show `SCOPED PASS`. If the optional assessment is disabled, state that net-section tension and block shear are not evaluated. If the manual assessment is complete, state that it covers only the selected component and entered path; the status must not imply that every connected component or plausible path has been checked.
+- A tension-only bolt check may show `PASS` because the displayed status then applies only to the explicitly named bolt-tension check.
+
+Keep plate bending, connection-component compression or buckling, welds, supporting-member local effects, eccentric reactions and geometry-derived failure paths outside this optional check.
+
+#### 15.10.4 Detailing Checks
+
+Show a compact detailing table below the local hole-bearing capacity result:
+
+- `Minimum pitch, p - AS 4100 Cl. 9.5.1`.
+- `Maximum pitch, p - AS 4100 Cl. 9.5.3 general limit`.
+- `Primary ply edge distance, e - AS 4100 Table 9.5.2`.
+- `Second ply edge distance, e - AS 4100 Table 9.5.2`, only where the second ply is active.
+
+For minimum pitch use:
+
+- `p_min = 2.5 d_f`.
+- Apply the check only where `n > 1`.
+- For one bolt, report `Not applicable`; do not display PASS or FAIL.
+
+For maximum pitch use the AS 4100 Cl. 9.5.3 general limit:
+
+- `p_max = min(15 t_p,min, 200 mm)`.
+- `t_p,min` is the thinner active connected ply.
+- Apply the check only where `n > 1`.
+- For one bolt, report `Not applicable`; do not display PASS or FAIL.
+- Do not auto-apply the special cases in Cl. 9.5.3(a) or (b); state that they require separate assessment.
+
+Pitch and edge-distance checks are detailing-compliance checks, not design capacities. Keep their individual statuses separate from the strength ratio, but treat any applicable FAIL as a visible `NON-COMPLIANT` release gate. Maximum edge distance and connection-specific detailing remain outside this lightweight check.
+
+#### 15.10.5 Result Hierarchy
+
+Keep the connected-ply result hierarchy concise:
+
+1. One compact result block with two rows: `Design bearing capacity - full-bearing limit` and `Design bearing capacity - edge tear-out limit`. Put `Bolt group` in each supporting basis line.
+2. Give each row its own controlling-ply basis. Follow the two capacities with one concise line identifying the overall governing condition and ply.
+3. One compact detailing table for minimum pitch, general maximum pitch and active-ply minimum edge distances.
+4. One collapsed `Connected-ply integrity` section with two compact result rows when the manual assessment is active.
+5. Single-hole capacities, `a_e` components and equations remain in `Calculation steps`.
+6. Show one `Strength utilisation ratio`; show a separate `TF slip utilisation ratio` only for `/TF`.
+
+The governing line should identify the governing ply and local condition, for example `Design bearing capacity governed by edge tear-out limit - second ply`. If both plies are identical or equal, state that basis. Use `kN per bolt` consistently for both branches; describe the second branch as the AS 4100 Cl. 9.2.2.4 edge-distance bearing limit so that it is not confused with block shear.
+
+#### 15.10.6 Scope Boundary
+
+This remains a lightweight straight-line bolt-group check. State these assumptions and exclusions clearly:
+
+- Included by default: concentric action, equal bolt sharing, straight aligned holes, local hole bearing, minimum pitch, general maximum pitch, minimum edge distance and two connected plies treated as identical or checked separately.
+- Optional manual-area scope: section tension and one governing block-shear path for one selected critical component.
+- Manual `a_e`: permitted for drawing-derived directional geometry, but the entered value is not geometrically verified by the tool.
+- The displayed edge tear-out value is the Cl. 9.2.2.4(2) `a_e` capacity under the stated critical-hole, equal-share model. Automatic failure-path generation, overlapping tear-out paths, section tension, block shear and eccentric bolt-group reactions remain excluded.
+- Excluded from the optional integrity check: automatic failure-path generation, plate bending, connection-component compression or buckling, welds, supporting-member local effects, eccentric bolt-group reactions, overlapping failure paths, special maximum-pitch cases under AS 4100 Cl. 9.5.3(a) and (b), maximum edge distance, prying action and coped-beam tearing.
+- Additional connected plies require a separate check; do not infer their properties from either displayed ply.
 
 ### 15.11 Member Web Tab Rules
 
@@ -2323,56 +2470,404 @@ Scope boundaries:
 
 ### 15.12 Beam Section Capacity Web Tab Rules
 
-The beam tab is a lightweight AS 4100 section-capacity check. It is not a full beam or member design engine.
+The Beam tab is a lightweight AS 4100 section-capacity tool. Keep its public name as `Beam Section Capacity`. It reports cross-section resistance only and must not imply that beam-member stability, restraint or serviceability has been checked.
 
-Use this scope:
+#### 15.12.1 Purpose, Question and Acceptance Boundary
 
-- Hot-rolled Universal Beam and Universal Column catalogue sections.
-- Custom symmetric I-section input when catalogue data is not available.
-- Major-axis section moment capacity only.
-- Major-axis web shear capacity only.
-- Optional design actions `M*` and `V*`, folded below the main capacity result.
-- Section utilisation based on the governing of `M* / phi Ms` and `V* / phi Vv`, reported only inside the folded design-action review.
+The first-screen engineering question is:
 
-Use Australian product data first. For UB/UC sections, section properties and dimensions should come from OneSteel / InfraBuild hot-rolled product tables wherever possible. Catalogue data may define availability, `d`, `bf`, `tw`, `tf`, `d1`, `Ag`, mass, `Sx`, `Zx`, `Zex`, compactness and `kf`; design equations still need to trace back to AS 4100.
+`For this selected catalogue section or entered ideal section, what is the AS 4100 design section moment capacity about the selected principal bending direction, and what section shear capacity is available for the matching direction?`
 
-Required AS 4100 basis:
+The accepted calculation scope is:
 
-- Section moment capacity uses AS 4100 Cl. 5.2: `Ms = fy Ze`; report `phi Ms` with `phi = 0.90`.
-- Catalogue `Zex`, compactness and `kf` may be taken from the section-capacity table instead of recalculating plate slenderness in the browser.
-- The selected-section summary should automatically show catalogue or generated section-property values only: dimensions, mass, `Ag`, `Aw`, `Sx`, `Zx`, `Zex`, `fy`, `kf` and compactness. Do not repeat capacity basis or the web-slenderness screen in the selected-section strip; keep those in calculation steps and basis text.
-- Keep the UB/UC/custom section guide inside the selected-section summary as a compact visual cue. Do not keep a separate first-screen section-guide card unless a future reference guide needs more detail.
-- Keep the main result cards limited to design section moment capacity `phi Ms` and design section shear capacity `phi Vv`. Plastic-limit or elastic-yield references belong in calculation steps, not as peer result cards.
-- Web shear area for catalogue UB/UC sections is `Aw = d1 tw`, using catalogue clear web depth between flanges and web thickness.
-- Web shear yield starts from AS 4100 Cl. 5.11.4: `Vw = 0.6 fy Aw`; report the design value with `phi = 0.90`.
-- For catalogue UB/UC rows, apply a lightweight unstiffened-web shear-buckling screen from AS 4100 Cl. 5.11.5 using `lambda_w = (d1/tw) sqrt(fy/250)` and `alpha_v = 1.0` where `lambda_w <= 82`, otherwise `alpha_v = (82/lambda_w)^2`. Report `phi Vv = phi alpha_v Vw`. This is a quick screen using catalogue `d1` and `tw`, not a substitute for stiffened-web, non-uniform shear, transverse-load or detailed web-panel design.
-- Apply the AS 4100 Cl. 5.12.3 reduced-moment method when both major-axis moment and web shear are entered. Use `Vvm = Vv` where `M* <= 0.75 phi Ms`. For `0.75 phi Ms < M* <= phi Ms`, use `Vvm = Vv[2.2 - 1.6M*/(phi Ms)]`, then check `V* <= phi Vvm`. Report the governing of `M*/(phi Ms)` and `V*/(phi Vvm)`. Do not present `0.60 phi Vv` as a direct code threshold.
+- design section moment capacity `phi Ms` about one selected principal axis or one manufacturer-defined load direction;
+- design section shear capacity `phi Vv` only where a reviewed family-specific AS 4100 shear method exists;
+- optional `M*` and `V*` demand review below the capacity results;
+- AS 4100 moment-shear interaction only where the selected family, axis and shear path satisfy the reviewed clause conditions.
 
-Custom section mode must stay explicit and conservative:
+The tab must distinguish these terms:
 
-- Custom inputs should be dimensions only for the current lightweight page: `d`, `bf`, `tw`, and `tf` for a symmetric I-section, plus the shared steel-grade and design-action inputs.
-- Generate `Ag`, `Aw`, mass, `Ix`, `Zx`, `Sx`, `Zex`, web slenderness, `alpha_v`, `phi Ms` and `phi Vv` from those dimensions.
-- For custom symmetric I-sections, use `Zex = Zx` as a conservative elastic section basis unless the full AS 4100 plate compactness / effective-section calculation is implemented. Do not automatically claim compact plastic capacity from geometry alone.
-- Custom web shear-buckling screening may use `d1 = d - 2tf` and `tw` for the current ideal unstiffened-web screen, but fillets, weld access holes, asymmetric geometry, stiffeners, reduced webs, holes, copes and non-uniform shear stress distribution remain project checks.
-- Keep the custom labels tied to the selected-axis section capacity, not a whole-member design.
+- `Section moment capacity, phi Ms`: local cross-section yielding / local-buckling resistance from AS 4100 Cl. 5.2.
+- `Member moment capacity, phi Mb`: member resistance including lateral stability and restraint, excluded from this tab.
+- `Section shear capacity, phi Vv`: cross-section or web shear resistance from the applicable AS 4100 Section 5.11 path.
 
-Required exclusions:
+Do not reuse the Axial Member calculation result. Reuse only its compact catalogue/custom selection pattern, family-dependent fields, selected-item summary and folded calculation details. Axial fields such as `Ag` and `r` do not establish bending capacity.
+
+#### 15.12.2 Governing Sources and Evidence Hierarchy
+
+Use the following source roles:
+
+| Source role | Required source | Use in the Beam tab |
+| --- | --- | --- |
+| Governing design rule | `AS4100.pdf` | `phi`, principal-axis requirement, section slenderness, compact / non-compact / slender `Ze`, shear and interaction |
+| Hot-rolled product data | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | UB, UC, PFC, Equal Angle and Rod dimensions, mass, section properties, yield stresses and published `Ze` |
+| Hollow-section design data | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | CHS, RHS and SHS dimensions, properties, `kf`, compactness and `Ze` by grade |
+| Current product context | Current official InfraBuild / Austube / Orrcon product pages or e-catalogue | Confirm designation and grade availability; do not silently describe an older table as current stock |
+| Secondary explanation | `Steel Structures Design Manual to AS 4100.pdf` | Worked-example and interpretation check only; AS 4100 remains governing |
+
+Minimum checked citations for implementation:
+
+- `AS4100.pdf | Cl. 5.1 and Cl. 5.2.1 to 5.2.6 | PDF pages 66-69 | printed pages 53-56`.
+- `AS4100.pdf | Table 5.2 | PDF pages 67-68 | printed pages 54-55`.
+- `AS4100.pdf | Table 3.4, capacity factor for bending | PDF page 47 | printed page 34`.
+- `AS4100.pdf | Cl. 5.11.2 to 5.11.5 | PDF pages 86-87 | printed pages 73-74`.
+- `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf | Tables 15 and 16, PFC | PDF page 17 | printed page 15`.
+- `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf | Tables 19 to 21, Equal Angle | PDF pages 19-21 | printed pages 17-19`.
+- `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf | Table 3 and Table 38, Round Bar | PDF pages 9 and 31 | printed pages 7 and 29`.
+- `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf | Part 3, Section 3.2.2 and Tables 3.1-1 to 3.1-6 | PDF pages 24-40`.
+
+Catalogue `Ze` may be used directly only when its family, designation, grade, axis / load direction and table edition are all recorded. Product-table values do not override AS 4100. The local catalogue reconciliation layer must check each supported family / grade / direction against AS 4100:2020 Cl. 5.2 and keep `kf` traceable to Cl. 6.2. Slender Austube flat-element rows may retain the Standard's permitted effective-cross-section result. Where an asymmetric InfraBuild table publishes direction-specific `Ze` without class, infer class only from the published `Ze` position relative to `Z` and `min(S, 1.5Z)` and label that method explicitly.
+
+#### 15.12.3 Target Section Families and Supported Results
+
+Broaden the selector beyond UB / UC while keeping the page section-capacity focused:
+
+| Family | Catalogue source | Section moment directions | Shear result | Current local status |
+| --- | --- | --- | --- | --- |
+| `UB` | InfraBuild Tables 9-12 | `x-x` and `y-y` principal axes | Web shear for `x-x` | Moment enabled for both axes; reviewed major-axis shear and interaction enabled |
+| `UC` | InfraBuild Tables 9-12 | `x-x` and `y-y` principal axes | Web shear for `x-x` | Moment enabled for both axes; reviewed major-axis shear and interaction enabled |
+| `PFC` | InfraBuild Tables 15 and 16 | `x-x`; `y-y Load A`; `y-y Load B` | Web shear for `x-x` beam action | All 10 catalogue rows enabled for moment; reviewed `x-x` shear and interaction enabled |
+| `CHS` | Austube Tables 3.1-1 and 3.1-2 | Axis-independent | AS 4100 Cl. 5.11.4 CHS shear | 73 grade-specific rows enabled for moment and section shear |
+| `RHS` | Austube Tables 3.1-3 and 3.1-4 | `x-x` and `y-y` | Direction-specific two-web shear | 101 grade-specific rows enabled for moment, shear and interaction |
+| `SHS` | Austube Tables 3.1-5 and 3.1-6 | `x-x = y-y` for the symmetric section | Two-web shear | 114 grade-specific rows enabled for moment, shear and interaction |
+| `Equal Angle` | InfraBuild Tables 19 and 20 | Manufacturer load directions `A`, `B`, `C`, `D` | `Not evaluated` | 13 checked catalogue designations enabled for direction-specific moment only |
+| `Rod` | InfraBuild Table 3 plus Table 38 | Axis-independent | `Not evaluated` | 26 round-bar sizes enabled for moment only using generated solid-circle properties |
+| `Custom` | Entered dimensions plus reviewed fixed assumptions | Same direction set as the selected family | `Not evaluated` except where separately released | Dimensions-only geometry is generated for every family; design capacity is enabled only for solid Rod |
+
+Do not call an embedded Axial subset a complete catalogue. Each Beam family must use every checked designation in the adopted product table, or identify the selector visibly as a limited checked subset. PFC and Equal Angle require new Beam-specific property imports even though their Axial designations already exist.
+
+Only principal-axis or manufacturer-defined load directions are in scope. Arbitrary non-principal bending belongs to AS 4100 Cl. 5.7 and is excluded from this lightweight page.
+
+#### 15.12.4 Section Moment Capacity Calculation Contract
+
+##### 15.12.4.1 Common Design Equation
+
+For every supported family and direction:
+
+1. Resolve the selected principal axis or catalogue load direction.
+2. Resolve the design yield stress used for bending, `fy,m`.
+3. Resolve the direction-specific elastic modulus `Z`, plastic modulus `S` and effective section modulus `Ze`.
+4. Calculate nominal section moment capacity: `Ms = fy,m Ze`.
+5. Calculate design section moment capacity: `phi Ms = 0.90 fy,m Ze` using AS 4100 Table 3.4.
+6. Convert to `kN·m` only after the base calculation: `phi Ms [kN·m] = 0.90 fy,m [MPa] Ze [mm³] / 10⁶`.
+
+Use direction-specific subscripts in the UI and calculation steps: `Msx`, `Msy`, `Zex`, `Zey`, or the catalogue load-direction equivalent. PFC Load A/B and Equal Angle Load A/B/C/D must remain visible beside `phi Ms`, `Ze`, the demand basis and the calculation steps; do not collapse different manufacturer cases into the same unqualified `x` or `y` result. Do not show a generic `Ze` when an unsymmetric section has different compression-edge values.
+
+For hot-rolled UB / UC / PFC sections, use the reviewed flange / section design yield stress for the default `fy,m`. Keep the web design yield stress separate as the default `fy,w` for shear; PFC flange and web values can differ in the product table. For CHS, RHS, SHS and Rod, resolve the default grade- and thickness-dependent material value from the applicable product standard or checked product table.
+
+The resolved strength is an editable project input because existing or legacy members may have a verified material record that differs from the current selected grade default. Keep catalogue dimensions and section identity locked. Show the catalogue default, current value and an explicit `Catalogue default` or `Project / legacy override` state, with one action to restore defaults.
+
+When `fy,m` is overridden:
+
+- automatically repeat plate-element slenderness, section class, `Ze`, `kf` coordination and `phi Ms` for UB / UC, PFC `x-x`, CHS, RHS, SHS and Rod;
+- for slender RHS / SHS, use and identify the AS 4100 simplified slender-section `Ze` rule rather than silently retaining the product-table effective-cross-section value for another strength;
+- fail closed for PFC `Load A / Load B` and Equal Angle `Load A / B / C / D` until a verified direction-specific effective-section calculation is available.
+
+When `fy,w` alone is overridden, retain the valid catalogue moment path and update only web slenderness, shear capacity and moment-shear interaction. Reject blank, zero or negative strengths and do not report PASS / FAIL through an unavailable capacity path.
+
+##### 15.12.4.2 Catalogue Section Path
+
+For a catalogue section:
+
+- use the published `Ze` for the selected grade and direction where the adopted product design table supplies it;
+- keep published `Z`, `S`, compactness and `kf` as supporting properties rather than recalculating a rolled section with sharp-corner geometry;
+- reconcile the selected product row with AS 4100:2020 before enabling capacity; show an unresolved status and fail closed if the reconciliation fails;
+- treat `kf = Ae / Ag` as an AS 4100 Cl. 6.2 axial-compression property only; never multiply it into `Ms = fy,m Ze`;
+- calculate `phi Ms` from the checked `fy,m` and `Ze` so the AS 4100 equation remains transparent;
+- label the result `Catalogue Ze + AS 4100 capacity equation`;
+- fail closed if `Ze`, `fy,m`, direction mapping or source status is missing.
+
+For UB / UC / PFC, do not replace missing rolled root radii, tapered surfaces or product-table section moduli with the ideal custom geometry routine. For Equal Angle, use the published Load A / B / C / D diagram and its matching `Ze`; do not infer the governing compression edge from a generic `x` / `y` label.
+
+##### 15.12.4.3 Custom Section Path
+
+Custom mode remains dimensions-only. Family, grade and bending direction are selections; the user must not enter `Ag`, `I`, `Z`, `S`, `Ze`, compactness, `kf` or shear area.
+
+The automatic custom calculation sequence is:
+
+1. Validate dimensions and reject overlapping, negative or physically impossible geometry.
+2. Generate ideal sharp-corner geometry: `Ag`, centroid, `Ix`, `Iy`, `Ixy`, principal axes, extreme-fibre distances and direction-specific `Z`.
+3. Generate direction-specific plastic section modulus `S` from the plastic neutral axis; do not estimate `S` from a fixed shape factor.
+4. Identify every compression plate element, its supported-edge condition, clear width `b`, thickness `t` and residual-stress category.
+5. Calculate flat-element slenderness: `lambda_e = (b/t) sqrt(fy,m/250)`.
+6. Select the governing element with the largest `lambda_e / lambda_ey`; adopt its `lambda_s`, `lambda_sp` and `lambda_sy` under AS 4100 Cl. 5.2.2 and Table 5.2.
+7. For CHS, calculate `lambda_s = (do/t)(fy,m/250)` and use the applicable CHS limits from Table 5.2.
+8. Calculate `Ze` from the applicable compact, non-compact or slender rule.
+9. Calculate `Ms` and `phi Ms` only after `Ze` is valid.
+
+Required `Ze` rules:
+
+- Compact, `lambda_s <= lambda_sp`: `Ze = min(S, 1.5Z)`.
+- Non-compact, `lambda_sp < lambda_s <= lambda_sy`: `Ze = Z + [(lambda_sy - lambda_s)/(lambda_sy - lambda_sp)](Zc - Z)`, where `Zc = min(S, 1.5Z)`.
+- Slender flat element in uniform compression: `Ze = Z(lambda_sy/lambda_s)`, or use the AS 4100 effective cross-section method.
+- Slender flat element with maximum compression at an unsupported edge and zero stress or tension at the supported edge: `Ze = Z(lambda_sy/lambda_s)^2`.
+- Slender CHS: use the lesser of `Z sqrt(lambda_sy/lambda_s)` and `Z(2lambda_sy/lambda_s)^2`.
+
+The current shortcut `Zex = Zx` for an arbitrary custom I-section is not an acceptable final design-capacity rule. `Ze = Z` can be unconservative when the section is slender. Until the complete family-specific compactness and `Ze` path is implemented, custom output must be `Not evaluated - section classification incomplete`; an elastic-yield reference may appear only in calculation details and must not be labelled design capacity.
+
+Use a fixed, visible and conservative residual-stress basis where Custom mode is intentionally input-light:
+
+- ideal custom open plate sections: use the reviewed `HW` Table 5.2 basis unless a more specific fabrication category is built into the family definition;
+- ideal custom AS/NZS 1163 hollow sections: use the reviewed `CF` basis and state that product compliance remains to be confirmed;
+- Rod: no plate-element local-slenderness input, so use the compact solid-section relation after geometry and material validation.
+
+For custom open and hollow sections, omission of fillets and corner radii must be stated. Do not describe the ideal result as a reconstructed manufacturer section.
+
+##### 15.12.4.4 Holes and Net Section
+
+The default catalogue and custom calculation is an unperforated gross-section check under AS 4100 Cl. 5.2.6. Holes, copes, penetrations and flange-area deductions are excluded. Do not add hole inputs to the first-screen workflow. If future net-section bending is added, it must be a separate advanced path with the Cl. 5.2.6 threshold and Cl. 9.1.10 deductions implemented explicitly.
+
+#### 15.12.5 Shear and Moment-Shear Contract
+
+Shear remains secondary to section moment and is family-dependent:
+
+- UB / UC / PFC web shear: `Vw = 0.6 fy,w Aw`, using the checked web yield stress `fy,w` and gross web area. Apply the reviewed AS 4100 Cl. 5.11.2 to 5.11.5 web slenderness and unstiffened-web reduction.
+- Current rolled open-section quick basis: use the reviewed clear web depth and `tw`; do not silently substitute overall depth.
+- CHS: use AS 4100 Cl. 5.11.4, `Vw = 0.36 fy Ae`; use gross area for `Ae` only under the clause hole / net-area condition. For the unperforated catalogue path, state `Ae = Ag`.
+- RHS / SHS: use the reviewed Austube Section 5.2.2.4 direction-specific path. Take the two-web area as `Aw = 2t(d - 2t)` for x-axis bending or `Aw = 2t(b - 2t)` for y-axis bending, apply the AS 4100 web-slenderness reduction where required, and take the lesser of the uniform-shear and Cl. 5.11.3 non-uniform-shear capacities. For y-axis bending, interchange `b` and `d` in the maximum-to-average shear-stress ratio.
+- Equal Angle and Rod: report no numeric shear capacity in the initial expanded tab.
+
+Apply AS 4100 Cl. 5.12.3 moment-shear interaction only where the family and selected direction have both reviewed `Ms` and `Vv` paths and the clause applies. The reviewed reduced method applies to UB / UC / PFC major-axis web shear and to catalogue RHS / SHS through Austube Section 5.2.4. CHS, Equal Angle, Rod and unsupported custom paths remain `Not evaluated` for interaction.
+
+If a family has a valid moment result but no reviewed shear or interaction result:
+
+- show the moment capacity normally;
+- omit the peer shear card rather than presenting a zero capacity;
+- show one short `Shear not evaluated for this section family / direction` note;
+- do not calculate an overall PASS / FAIL or governing utilisation when entered actions require an unavailable combined check.
+
+#### 15.12.6 Beam Catalogue Data Contract
+
+Keep shared product identity separate from Beam-specific capacity data. `section-catalogue.js` may provide shared designation and geometry, but the Beam calculation requires a reviewed direction-specific record such as:
+
+```text
+section identity: family, designation, grade, sourceRef, checkedStatus
+geometry: dimensions, mass, Ag
+moment direction: axis, loadDirection, Z, S, Ze, compactness, fyMoment
+shear direction: method, Aw or Ae, clearDepth, tw, fyShear
+provenance: valueBasis, catalogueEdition, table, PDF page, checkedDate
+```
+
+Data rules:
+
+- import complete adopted product-table ranges, not only the current Axial sample rows;
+- keep each grade as a distinct reviewed capacity record where `fy`, `kf`, class or `Ze` changes;
+- store the manufacturer load-direction key for PFC and Equal Angle rather than flattening unsymmetric values into one generic modulus;
+- keep `fyMoment` and `fyShear` separate for hot-rolled sections;
+- preserve published units in the source mapping and convert once at the calculation boundary;
+- label values `Catalogue`, `Derived from catalogue data`, `Derived from entered geometry`, or `Unavailable`;
+- a missing required field produces `Not evaluated`, never a fallback to another axis, grade or ideal section.
+
+Product availability and calculation suitability are separate. A row may be retained as a checked historical design-property row while its current stock status is `Confirm with supplier`. The page must show the catalogue edition and must not claim branch stock availability.
+
+#### 15.12.7 Input Logic and State Model
+
+Use two levels of selection:
+
+1. `Section source`: segmented control with `Catalogue` and `Custom`.
+2. `Section family`: one compact select menu because the expanded family list is too long for a single segmented row.
+
+Catalogue mode inputs:
+
+- `Section family`;
+- `Catalogue section`;
+- `Steel grade`, limited to grades supported by the selected row;
+- `Bending direction`, shown only where more than one valid direction exists.
+
+Custom mode inputs:
+
+- `Section family`;
+- family-specific dimensions only;
+- `Steel grade`;
+- `Bending direction` where applicable.
+
+Family-specific direction logic:
+
+- UB / UC / RHS: `x-x` or `y-y`.
+- PFC: `x-x`, `y-y - Load A`, `y-y - Load B`. Describe A/B as catalogue bending cases; the arrows define bending sign and compression side, not the force application point.
+- CHS / SHS / Rod: hide the direction control when the supported capacity is axis-independent.
+- Equal Angle: use `Load A`, `Load B`, `Load C`, `Load D` with the principal-axis guide; describe them as catalogue bending cases and do not reduce them to an ambiguous major / minor or unqualified x/y label.
+
+State requirements:
+
+- changing family repopulates only compatible sections, grades, dimensions and directions;
+- catalogue mode hides every custom dimension input;
+- custom mode hides catalogue designation and catalogue-only metadata;
+- derived properties are read-only outputs, not disabled-looking input fields;
+- preserve the last valid choice separately for each family where practical;
+- invalid or incomplete custom typing clears capacity to `Not evaluated` without writing fallback zeroes into the input;
+- design actions remain in a folded panel below the main capacities and must never overwrite section-selection state.
+
+#### 15.12.8 Page Logic and Layout
+
+Use this workflow order inside the existing shared tab structure:
+
+```text
+Tool heading
+  Beam Section Capacity
+  AS 4100:2020 Section 5 - section resistance only
+
+Section selection
+  Catalogue / Custom | Family | Section | Grade
+
+Material strength
+  Editable fy,m default | conditional fy,w default | value source | restore default
+
+Bending direction
+  Conditional axis / load-direction control only when required
+
+Custom dimensions
+  Conditional family-specific dimension row; hidden in Catalogue mode
+
+Selected section
+  Designation + grade + active direction
+  Capacity-basis summary + compact value-driven section guide
+  Section details [collapsed]
+
+RESULTS Section capacity
+  Primary: design section moment capacity, phi Ms
+  Secondary: design section shear capacity, phi Vv, only when evaluated
+
+Design actions and utilisation [collapsed]
+Calculation steps [collapsed]
+Calculation basis and limitations [collapsed]
+```
+
+Desktop layout:
+
+- keep selection controls in one engineering row where labels remain readable;
+- place a short conditional direction row below selection rather than mixing direction with material values;
+- place Custom dimensions in one family-specific row with stable control widths;
+- use a two-part selected-section summary: compact properties on the left and the section guide on the right;
+- use one full-width moment result when shear is unavailable; do not leave an empty second card.
+
+Phone layout:
+
+- stack selection, direction and dimensions in the same engineering order;
+- keep the main `phi Ms` result above any shear result and before folded details;
+- keep the section guide approximately 80 to 130 px high and hide secondary labels before reducing text size;
+- prevent family names, formal symbols and units from wrapping one word per line.
+
+#### 15.12.9 Selected Section Summary and Figure
+
+The summary confirms the adopted capacity basis; it is not a section-property report or a second calculation-basis panel.
+
+Keep the always-visible summary to the minimum needed to understand the reported capacities:
+
+- all families: designation / custom family, grade, active direction, `fy,m`, `Ze` and section class where available;
+- shear-evaluated paths: active shear area (`Aw` or `Ae`) and `fy,w` where it differs from the member strength basis;
+- active overrides: identify them in the selection/material state rather than repeating long source text in the summary.
+
+Move supporting data to a collapsed `Section details` row directly below the summary:
+
+- family dimensions, mass and `Ag`;
+- direction-specific `I`, `Z` and `S`;
+- `kf`, catalogue coordination status and the full product-table source;
+- PFC catalogue centroid coordinate `xL` and shear-centre coordinate `xO`.
+
+Do not show the capacity equation, web-screen ratio or interaction result in this strip. Those belong in calculation steps.
+
+Use one deterministic value-driven SVG for the selected family. It must:
+
+- show only the active family;
+- show `x-x` / `y-y` axes or the manufacturer principal axes and load-direction arrows used by the calculation;
+- place the PFC centroid from catalogue `xL` and identify the shear centre using catalogue `xO`; do not derive either from ideal sharp-corner geometry;
+- use the Equal Angle 45-degree principal-axis convention: Load A / C about x and Load B / D about y;
+- use the selected dimensions for proportions without copying catalogue artwork;
+- avoid crossing labels and dimension lines;
+- state `Drawn from selected catalogue data` or `Drawn from entered ideal dimensions`;
+- remain a visual check, not a source of numeric properties.
+
+#### 15.12.10 Results, Utilisation and Calculation Steps
+
+Primary result hierarchy:
+
+1. `Design section moment capacity, phi Ms` with selected axis / load direction.
+2. `Design section shear capacity, phi Vv` only when evaluated.
+3. One concise status line: `Calculated`, `Review required`, or `Not evaluated`.
+
+Do not show PASS / FAIL until a compatible design action has been entered and every required interaction path is available.
+
+The folded `Design actions and utilisation` panel contains:
+
+- `M*` for the selected direction;
+- `V*` only when a compatible shear result is available;
+- `M* / phi Ms`;
+- `V* / phi Vv` or `V* / phi Vvm` where applicable;
+- one governing section ratio only when all required checks are evaluated;
+- an explicit `Combined action not evaluated` state when the interaction method is unavailable.
+
+The folded `Calculation steps` panel follows one consistent sequence:
+
+1. Product / custom geometry and source basis.
+2. Selected principal axis or load direction.
+3. Material basis: `fy,m` and, where applicable, `fy,w`.
+4. `Z`, `S`, section slenderness, class and `Ze` basis.
+5. Product-data edition and AS 4100:2020 compatibility status.
+6. `Ms = fy,m Ze` and `phi Ms`.
+7. Family-specific shear calculation where available; for the reviewed rolled-web path state `dp = d1`, `Aw = dp tw`, web slenderness and `alpha_v` explicitly.
+8. Moment-shear interaction and utilisation where actions are entered.
+
+Use formal visible notation with HTML subscripts and superscripts. Display section modulus in `10³ mm³`, second moment of area in `10⁶ mm⁴`, area in `mm²`, stress in `MPa`, moment in `kN·m` and shear in `kN`. Do not display programming notation such as `mm^3` in the page.
+
+#### 15.12.11 Validation and Release Gates
+
+Do not publish an expanded family until all applicable gates pass:
+
+- every embedded catalogue row is checked against its source table for designation order, dimensions, mass, grade, `fy`, `Z`, `S`, `Ze`, class and `kf` where published;
+- direction mapping is visually checked against the manufacturer diagram for PFC and Equal Angle;
+- published catalogue `Ze`, compactness and form-factor values are reconciled with AS 4100:2020 before changing the tab from `For Review`;
+- compact, non-compact and slender custom examples each match an independent AS 4100 calculation;
+- CHS custom and catalogue examples match the AS 4100 CHS slenderness and shear equations;
+- representative UB, UC, PFC, CHS, RHS / SHS, Equal Angle and Rod moment capacities match independent calculations;
+- missing-data and unsupported-direction tests return `Not evaluated` and never a zero or stale prior result;
+- unit conversion tests cover `mm³` to `kN·m` and catalogue `10³ mm³` values;
+- UI state tests confirm that irrelevant direction, custom and shear controls are hidden;
+- desktop and phone checks confirm no overlapping axis labels, clipped values or horizontal overflow;
+- `REFERENCE_TRACEABILITY.md` records the exact source table, PDF page, checked date and sample result before release.
+
+#### 15.12.12 Implementation Sequence
+
+Implement in auditable increments:
+
+1. Correct the common `Ze` / material / direction calculation contract and remove the custom `Ze = Z` design-capacity shortcut.
+2. Refactor the selector to `Catalogue / Custom` plus a family menu without changing current UB / UC results.
+3. Complete UB / UC direction data and add full PFC Table 15 / 16 rows.
+4. Add CHS from checked Austube design-property rows, including the AS 4100 CHS shear path.
+5. Add RHS / SHS from the checked hollow-section tables.
+6. Add Equal Angle moment by the published Load A / B / C / D directions.
+7. Add Rod moment from complete round-bar sizes, diameter-dependent strength and generated `Z`, `S`, `Ze`.
+8. Add each Custom family only after its geometry, plastic modulus, plate-element map, residual-stress basis and `Ze` method pass the custom validation gates.
+9. Add or extend shear and interaction only after the corresponding family method is separately reviewed.
+
+Current local implementation follows that order:
+
+| Step | Local state | Release boundary |
+| --- | --- | --- |
+| 1-2 Common contract and selector | Complete, including editable catalogue-default `fy,m` and conditional `fy,w` project / legacy override | Catalogue / Custom and family states fail closed on missing capacity data; PFC Load A/B and Equal Angle Load A/B/C/D fail closed when an entered `fy,m` no longer matches the published direction-specific `Ze` |
+| 3 UB / UC / PFC | Complete for the adopted InfraBuild rows; PFC selected-section data includes catalogue `xL` and `xO`; AS 4100:2020 row coordination passes | PFC `Load A` / `Load B` remains tied to the catalogue direction diagram |
+| 4 CHS | Complete for adopted catalogue moment and AS 4100 Cl. 5.11.4 shear | `Ae = Ag` is limited to unperforated catalogue sections |
+| 5 RHS / SHS | Catalogue moment, direction-specific two-web shear, reviewed Cl. 5.12.3 interaction and AS 4100:2020 row coordination complete | Custom RHS/SHS remains geometry-only |
+| 6 Equal Angle | Complete for the 13 checked designations, including Table 19 principal-axis `I`, `Z`, `S`, Table 20 Load A / B / C / D `Ze` and direction-specific AS 4100 interval coordination | Selector remains visibly a checked subset, not a complete product range |
+| 7 Rod | Complete | Section moment only; no numeric shear |
+| 8 Custom | Geometry complete; non-Rod capacity staged | User enters dimensions only; non-Rod `Ze` and design capacity remain `Not evaluated` |
+| 9 Shear / interaction expansion | UB / UC / PFC `x-x`, CHS shear and catalogue RHS / SHS direction-specific shear are complete; Cl. 5.12.3 interaction is enabled for the reviewed flat-web paths | CHS has no flat-web interaction; Equal Angle, Rod and unsupported custom shear / interaction remain excluded |
+
+#### 15.12.13 Required Exclusions
 
 - Member moment capacity `Mb`.
 - Lateral-torsional buckling.
-- Restraint spacing.
-- Minor-axis bending.
-- Biaxial bending.
-- Axial load interaction.
-- Web bearing and web buckling under concentrated forces.
-- Web stiffener design.
-- Cope cuts, penetrations, large holes or reduced web areas.
-- Torsion.
+- Restraint spacing and restraint adequacy.
+- Arbitrary non-principal-axis bending.
+- Biaxial bending and axial load interaction.
+- Net-section bending, holes, copes and penetrations.
+- Web bearing, web buckling under concentrated forces and stiffener design.
+- Non-uniform web shear caused by unequal flanges, varying web thickness or holes unless separately implemented.
+- Torsion and shear-centre effects.
 - Composite action.
 - Fire.
-- Deflection and vibration.
-
-The Beam tab may include UB/UC section guide drawings inside the selected-section summary, but they are visual guides only and must not be treated as numeric data sources.
+- Fatigue and brittle-fracture assessment.
+- Deflection, vibration and other serviceability checks.
 
 ### 15.13 Weld Capacity Web Tab Rules
 
@@ -2586,7 +3081,72 @@ Implementation rule:
 
 Validation must include supplier/product selection, default row rendering, project-defined/custom row rendering, `Not published` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values.
 
-### 15.17 Web Local Update and Deployment Workflow
+### 15.17 Reinforcement Development & Lap Lengths Web Tab Rules
+
+The Reinforcement Development & Lap Lengths page is a lightweight task-and-length aid for N10 to N40 500N reinforcing bars in tension. State the tension scope once at page level; do not repeat `tension` in every task and result label. The two design checks are `Lap splice` and `Development at termination`. The page calculates AS 3600 lap and cast-in development/anchorage references. For PIR it returns an expressly labelled AS 3600 reference depth and hands the user off to the separate manufacturer or qualified project design. Do not show a qualified-report form, product selector, site-fit comparison, extension load-path summary or TN08 report floor on this page. The page does not calculate AS 5216 or proprietary adhesive capacity, nor does it design the concrete interface, pad, pedestal or foundation. AS 4100 bolt, weld and structural-steel provisions must not be mixed into this tab.
+
+The module issue status is `For Review` until every release gate below is complete. A calculated lap length or development reference must not be presented as complete design compliance. Product-specific PIR design and acceptance remain outside the handbook.
+
+The 2026-07-24 terminology and flow revision places the page under the level 1 `Foundations` category and level 2 `Reinforcement` tab, then separates design check, bar installation and anchorage method within the page. It changes route, evidence and display gates only; it does not change the verified AS 3600 lap/development equations or their clause sequence.
+
+The visible page order is mandatory:
+
+1. identity and concise scope;
+2. check definition: design check, bar size and, for development only, bar installation;
+3. applicable AS 3600 inputs, including stress basis where relevant;
+4. path-specific primary results;
+5. optional engineering adjustments;
+6. secondary lookup; and
+7. calculation details and references / limitations.
+
+On desktop, applicable inputs and primary results may share a two-column work area, but the DOM must preserve that engineering order. On phone, use the same order as a single-column stack. Keep optional comparisons, schedules, product data and formula trails collapsed where practical.
+
+Use `Design check` as the primary classification: `Lap splice` or `Development at termination`. Where a development check is active, show `Bar installation` as the secondary route: `Cast-in reinforcement` or `Post-installed reinforcement (PIR)`. Show `Bar size` for every length-producing check. Do not show a project-scenario selector: general members, foundation extensions and tower/monopole pedestal modifications do not change the AS 3600 expression and remain project context rather than a calculation branch. For cast-in development at termination, separately select the `Anchorage method`: `Straight development`, `Standard hook`, or `Standard cog`; a hook or cog is an anchorage method and never a lap reduction. For PIR, the selected full-yield or qualified project steel-stress basis calculates an `AS 3600 reference depth`, not a preliminary recommendation or installation depth. Product selection and the current qualified project report remain external to this quick-reference page.
+
+Apply this path contract:
+
+| Design check | Bar installation / anchorage method | Required result label |
+| --- | --- | --- |
+| Lap splice | Not applicable | `LAP` |
+| Development at termination | Cast-in / straight | `DEVELOPMENT REFERENCE` |
+| Development at termination | Cast-in / standard hook/cog | `HOOK / COG ANCHORAGE REFERENCE` |
+| Development at termination | PIR | `AS 3600 REFERENCE` |
+
+Do not show a three-line extension summary, interface-design record or global design status. A concise note may state that interface transfer and foundation design remain separate project checks.
+
+The selected case must control eligibility, visible inputs, active calculations, result blocks, formula trail and warnings. Do not merely hide fields while retaining an unrelated result. Clear every path-dependent output when an input becomes invalid or the selected case changes. Reset dependent engineering confirmations, including `k7`, final-length transverse-reinforcement count and pressure basis, whenever their case, bar, method, material or geometry basis changes. The only permitted invalid-state retention is an independently calculated, explicitly labelled `BASIC REFERENCE - REFINED INPUT REQUIRED` while a Refined-only input is incomplete; never present that fallback as the selected Refined result. A lap-specific restriction, including the tension-tie restriction, must not block an otherwise valid development-reference-only path.
+
+Keep the new-work lap basis and existing-concrete basis independent. Each needs its own concrete strength, AS 3600 casting-position basis, bar-coating / concrete-density condition, cover, clear spacing, member geometry and Refined data. Do not require a project-document checkbox. Place one concise note beneath the lap result: `Use only where the project drawings or specification permit the splice · AS 3600 Cl. 13.2.1(a).` The note does not change the calculation state. Do not describe adhesive mortar as an epoxy-coated bar. For PIR, identify the casting-position input as an AS 3600 cast-in reference assumption, not a product-design parameter. Do not silently copy new-concrete properties to existing concrete.
+
+Basic is the default. Label it as recommended and label Refined as requiring verified confinement. Keep Refined inputs collapsed until deliberately selected. A verified custom transverse-reinforcement arrangement requires a non-negative whole-number `nf`, a positive whole-number `nbs`, non-negative qualifying transverse-reinforcement area and the applicable minimum-area basis. `Sigma Atr = 0` is valid and gives `lambda = 0`, therefore no `k4` reduction; it must not invalidate the Basic lap or development reference. Require confirmation of the effective transverse-reinforcement location only where `Sigma Atr > Sigma Atr,min` could produce confinement credit. Define `nf` as the number of fitment bars within one longitudinal spacing or pitch that the governing potential splitting crack crosses; `nf = 0` is a valid AS 3600 arrangement and must not be rejected. It is not the total fitment-leg count. Define `nbs` as the number of longitudinal bars being developed or spliced at which that crack can develop, and include only qualifying area within the displayed candidate Refined length in `Sigma Atr`. Select `No verified confinement credit` to use `K = 0` without custom confinement inputs. Do not provide default confinement credit or an unexplained arrangement shortcut. Show derived factors as outputs, not disabled editable-looking controls. Use a two-stage result: calculate and display the `Candidate refined length` without adopting the reduction, then require confirmation that the transverse-reinforcement count and any pressure evidence apply throughout that candidate length. Only then may the candidate become the `Adopted length`. A narrow-member Refined case must use the beam/column `Sigma Atr,min = 0.25As` basis. Apply the Cl. 13.1.2.3 limits to `k4`, `k5` and `k3 k4 k5`. Pressure is an independent optional credit and must use the AS 3600 symbol `rho_p`: keep its source and confirmation hidden while `rho_p = 0`; when `rho_p > 0`, prefill `Pressure source / reference` with `Structural analysis · governing ULS load combination`, allow replacement with the project reference, and apply `k5 < 1.0` only after explicit applicability confirmation for the candidate length and governing splitting plane. The prefilled source is not confirmation. Clear confirmations whenever an input changes the candidate length or evidence. Identify every missing Refined value at the field and expose its invalid state programmatically while retaining the separately labelled Basic adopted reference. `k7` eligibility remains independent of Refined-input completeness. Use one full-width Refined layout: a three-column desktop input grid, a full-width calculated-factor strip, and only applicable confirmations; do not retain unequal columns or empty review-panel space.
+
+For AS 3600 Cl. 13.1.2.2, calculate `Lsy.tb,formula = 0.5 k1 k3 fsy db / (k2 sqrt(f'c))`, with `k1`, `k2`, `k3`, the concrete-strength cap, applicable lower limit and selected epoxy-coated-bar / lightweight-concrete multipliers in the correct clause sequence. For lap geometry use `cd = min(a/2, c)`. For straight development use `cd = min(a/2, c)` in wide members and `cd = min(a/2, c1, c)` in narrow members. For standard hooked or cogged bars use the separate Figure 13.1.2.2 geometry: `cd = a/2` in wide members and `cd = min(a/2, c1)` in narrow members. Do not calculate a straight-bar development result and then apply the hook/cog factor to that mismatched geometry.
+
+The standalone full-yield development reference must be calculated independently from the lap branch. Apply the Cl. 13.1.2.2 lower limit at the basic-development stage, then the selected material multiplier, then valid Cl. 13.1.2.3 Refined factors. When `Lsy.t` is used in the Cl. 13.2.2 lap calculation, do not first force it to the Cl. 13.1.2.2 lower limit; the lap equation applies its separate lower-limit candidate.
+
+For Cl. 13.2.2, use `Llap = max(k7 Lsy.t, 0.058 fsy k1 db)` for wide elements. For narrow elements also compare `Lsy.t + 1.5sb`; where `sb <= 3db`, the supported branch may take `sb = 0` in that candidate and must state that treatment. Do not use a separate editable `k7 basis` selector. Derive `k7 = 1.00` only when the user confirms both `As,provided >= 2As,required` from the member design and no more than 50% spliced at the section; otherwise use `k7 = 1.25`. Keep the `Lap reduction` panel to those two conditions and show the potential/adopted reduction once in its summary. Do not include a physical-stagger control or lap drawing. Keep the partial-utilisation and cog/hook boundaries in `References & limitations`, not in the `k7` panel. Do not scale the lap continuously by bar utilisation or `sigma_st/fsy`: Cl. 13.2.2 explicitly calls up `Lsy.t` from Cl. 13.1.2.1, while Cl. 13.1.2.4 is a separate less-than-yield development-length provision.
+
+A standard cog or hook is an independent cast-in anchorage method at bar termination, not an additional Cl. 13.2.2 lap reduction. The InfraBuild *Reinforcing Product Guide*, pp. 36-37, states that a standard cog/hook provides half the tensile development length for that end of the bar, measured from its outside, under Cl. 13.1.2.6-13.1.2.7. Before requesting one concise detailing confirmation, calculate and display the qualification requirements: straight extension `max(4db, 70 mm)`; bend diameter to Cl. 17.2.3.3; for a cog, 90-degree geometry, bend diameter not exceeding `8db`, and the same total bar length as a 180-degree hook; and, where `sigma_st > 400 MPa`, a transverse bar at least equal to the anchored-bar diameter placed in contact and extending at least `4db` each side. Show the supporting half-development reference only after these requirements are confirmed; otherwise use `HOOK / COG DETAILING REQUIRED`. Do not subtract the value from `Llap`, multiply a straight lap by 0.5, or treat the cog/hook as a `k7` qualification.
+
+For Cl. 13.1.2.4, require only a positive `sigma_st <= fsy` before showing the stress-based reference. The page does not collect a stress-source classification, calculation/drawing reference or separate applicability confirmation. For straight development, instruct the user to enter the design tensile stress in the bar at the assessed section; for a standard hook or cog, use the maximum design tensile stress in the bar being anchored. Require verification against the project calculation before issue. Calculate `Lst = Lsy.t sigma_st/fsy` and conservatively retain the `12db` minimum for every supported case, while stating that any clause-specific slab alternative is not implemented. Missing or zero `sigma_st` makes the selected stress-based reference unavailable; retain the separately labelled full-yield reference as context only. If `sigma_st > fsy`, stop the reduction and require project-action/bar-stress review. Where actual-stress and Refined reductions are combined, display the reduced-length candidate first and require separate confirmation that the Refined confinement and pressure evidence remains valid throughout that candidate `Lst` length before adoption. Do not derive stress from a fixed `phi` or use a universal `phi = 0.8`.
+
+Place primary results immediately after applicable inputs. Keep lap and development at termination as independent blocks. The lap block shows `Adopted lap length` and its governing basis. The PIR block gives primary emphasis to `AS 3600 reference depth` and states `Not an installation depth - product design required`. Use `FULL-YIELD REFERENCE`, `STRESS-BASED REFERENCE` or `INPUT REQUIRED`. Do not show available embedment, a product selector, a report form or a site-fit comparison. For a cast-in starter, show the selected straight-development or hook/cog reference as the primary result.
+
+Do not include a lap drawing or application schematic. Define `db`, `c`, `a`, `sb` and `cd` through professional field labels, calculated outputs and the folded formula trail.
+
+Do not include a provided-lap comparison. The module returns the required lap length and its qualified reduction assessment. A cast-in development path returns the applicable straight or standard hook/cog reference. A PIR path stops at the expressly labelled AS 3600 reference depth and external-design warning. Product selection, AS 5216 checks, manufacturer-software calculations, report review, available-depth verification and site-fit acceptance remain separate project workflows.
+
+Keep the Reo layout compact and check-ordered. Group headings sit above their controls so route selectors and four-field engineering rows use the full card width. Do not add extension summary cards. Place the primary reference immediately after applicable inputs; secondary schedules, formula trails and source material remain collapsed.
+
+Keep the same-condition N10 to N40 schedule, formula trail, Reo data and product manuals secondary and collapsed. The schedule is available only for the Basic method with default `k7 = 1.25`; do not propagate Refined confinement data or a qualified `k7 = 1.00` across bar sizes. N10 to N40 are the only calculator selections. N50 may appear only in the reference table as an April 2022 Product Guide on-request item that is omitted from the current product page and remains outside the calculator scope. Use AS/NZS 4671:2019 nominal diameter and area for calculation and keep supplier mass, metres per tonne and availability as product references only. Describe the local InfraBuild guide as fourth edition with information current April 2022. Historical OneSteel AS 3600:2009 lap tables remain research context only.
+
+Use this source hierarchy: AS 3600:2018 incorporating Amendments 1 and 2 for cast-in development, hook/cog anchorage and lap; AS/NZS 4671:2019 for nominal reinforcement data; and manufacturer/supplier manuals as supporting product and detailing references only. Product-specific PIR design must use the project-nominated AS 5216 edition, current product assessment and manufacturer software or qualified report outside this page. No proprietary product-capacity equation is implemented or labelled checked. Record source locations as Cl. 13.1.2.2 on PDF page 188; Figure 13.1.2.2 on PDF page 189; Cl. 13.1.2.3 on PDF pages 190 to 192; Cl. 13.1.2.4 on PDF page 192; Cl. 13.2.1 on PDF pages 195 to 196; and Cl. 13.2.2 / Figure 13.2.2 on PDF page 196.
+
+Keep these exclusions explicit: bars larger than 40 mm; tension-tie lap splices; compression laps; mesh and bundled bars; complete hook/cog geometry and detailing design; headed bars, welded and mechanical splices; mixed bar sizes; proprietary high-strength systems; seismic plastic-hinge and bridge-specific detailing; complete cover, spacing, crack-control and member-capacity review; AS 5216 PIR capacity design; adhesive resistance, edge/spacing, splitting, breakout, installation and approval calculations; interface transfer; pad and pedestal reinforcement; anchor-cage coordination; soil, bearing and foundation capacity.
+
+Release requires: source-page checks; the Cl. 13.2.1(a) project-use note; independent lap and development regression cases; correct lower-limit and material-multiplier ordering; automatic `k7` selection from the two confirmations; default-versus-qualified reduction reporting where the `k7`, lower-limit or narrow-gap candidate governs; wide/narrow and contact/non-contact cases; Refined-data eligibility, explicit candidate-to-adopt reconciliation, pressure-evidence gating, field-level invalid state and independently labelled Basic fallback; independent straight and standard hook/cog cast-in routes with displayed detailing prerequisites and no lap reduction; cast-in/PIR origin labels; missing/zero, valid and over-yield `sigma_st` cases; N40 permitted and N50 absent from calculator selection; same-condition schedule enabled only for Basic/default `k7`; invalid-input, stale-result clearing and dependent-confirmation resets; raw/candidate/adopted comparison boundaries; every design-check and installation branch; PIR stopping at the AS 3600 reference depth plus one external-design warning; no project-scenario selector, extension summary, hidden product-report or site-fit workflow; active mobile tool visibility; and desktop/phone verification of the lightweight no-drawing layout. Keep pure length logic in `reo-calculation.js`, run `node tests/reo-lapping.test.js`, and retain module status `For Review` until all gates pass.
+
+### 15.18 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
@@ -2644,7 +3204,7 @@ Token and browser notes:
 - Local browser use, clicking the page, or sharing the page link does not consume model tokens.
 - Token usage only occurs when asking Codex to inspect, edit, convert references, reason, or generate code/content.
 
-### 15.18 Professional Web Audit Protocol
+### 15.19 Professional Web Audit Protocol
 
 This is the single mandatory audit workflow for SC Handbook. Section 6.2 defines the required calculation contract; this section verifies that the source evidence, implementation, interface and test record satisfy that contract. Whenever a page or calculation is requested to be checked, audited, reviewed or verified, or the user asks whether problems remain, use this protocol unless the scope is explicitly narrowed.
 
