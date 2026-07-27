@@ -537,6 +537,81 @@ When a Standard edition, amendment, catalogue row, formula, factor, default, uni
 
 An edition-uncertain or partially reverified calculation cannot retain `Checked` status merely because its previous numerical outputs are unchanged.
 
+#### 6.2.11 Verification and Worked-Example Reproduction Workflow
+
+Verification must establish a defensible chain from governing source to independent result to implemented browser result. A worked example is supporting evidence, not proof that every branch is correct and not a substitute for the governing Standard.
+
+Use three independent evidence lines:
+
+1. `Source evidence`: governing Standard, catalogue or project basis establishes the permitted method, formula, factors, table values and applicability.
+2. `Independent numerical evidence`: hand calculation, separate script or independently reconstructed example calculates the expected result without calling or copying the production function.
+3. `Implementation evidence`: the released browser build reproduces the required inputs, active branch, intermediate values, result, status, warning and limitation.
+
+Example-source priority:
+
+1. Australian worked example published by a Standard-related body, recognised Australian industry body, university, manufacturer or authoritative design manual using the same Standard edition and method.
+2. Recognised Australian textbook or software worked example with enough inputs and intermediate values to reconstruct the calculation.
+3. Independently reconstructed example built directly from the governing Australian clauses and tables.
+4. International or commercial-software example used only for mechanics, modelling, trend, sign convention or secondary comparison. It must not validate Australian capacity factors, material strengths, code branches or detailing requirements.
+
+Do not select an example merely because its final number is convenient or close to the webpage result. The example must expose enough inputs, assumptions and intermediate values to identify whether the same engineering problem and branch are being compared.
+
+Required workflow:
+
+| Step | Action | Required evidence | Stop condition |
+| ---: | --- | --- | --- |
+| `0` | Freeze the audit target | Tab, workflow type, visible result, active branch, files, build/commit and governing `Calculation_ID` | Target or build identity is unclear |
+| `1` | Define the engineering claim | Question, result type, limit state/value basis, axis/plane/direction, permitted use and exclusions | The page claims more than the implemented method |
+| `2` | Assemble the source packet | Governing edition, clause/table/figure, PDF page, definitions, prerequisites, footnotes, adjacent clauses, catalogue row and correction/errata status | Governing source is unreadable, missing or inapplicable |
+| `3` | Capture the worked example | Source identity, page, stated inputs, units, assumptions, branch, intermediate values, published result and published precision | Inputs or assumptions are insufficient to reconstruct the example |
+| `4` | Reconstruct independently | Separate formulas, lookup decisions, unit conversions, unrounded intermediate values and expected result | Reconstruction relies on the production function or silently changes the source assumptions |
+| `5` | Reproduce in the browser | Same inputs and mode, adopted-basis summary, active overrides, visible intermediate values, final result, status, warning and references | Browser cannot represent the example without an undocumented assumption |
+| `6` | Compare and explain | Absolute/relative difference where meaningful, display difference, source rounding, adopted tolerance and branch agreement | Difference is unexplained or the governing branch differs |
+| `7` | Test branches and boundaries | Every active branch, table path, threshold below/at/above, valid extrema, invalid values and one out-of-scope case | A branch lacks source or independent expected evidence |
+| `8` | Test page state and dependency | Selector changes, auto/override/reset, hidden/disabled fields, stale-result suppression, phone/desktop parity and direct numeric entry | Invalid or inactive data still influences a normal-looking result |
+| `9` | Record disposition | `Test_ID`, result, difference, tolerance, evidence method, checked build/date, finding and status | Required evidence is absent or failed |
+| `10` | Release and preserve regression | Accepted tests rerun against the release build; unresolved items visible in status/limitations; evidence linked in `REFERENCE_TRACEABILITY.md` | Failed or blocked governing test remains represented as checked |
+
+Worked-example capture rules:
+
+- Reproduce the engineering calculation, not the source document's visual layout.
+- Preserve the source's units and stated precision in the source record, then show every conversion into the handbook's internal unit system.
+- Record assumptions that are stated, inferred or missing separately. An inferred assumption must not be presented as source fact.
+- Record all source intermediate values that control a branch, table row, factor, minimum, maximum or interaction.
+- Use the source's final rounded result only as a published comparison. The independent reconstruction must retain unrounded intermediate values.
+- If an older Standard edition or foreign code is used, list every material difference that prevents direct code-capacity comparison.
+- Do not copy copyrighted tables or long source passages into the repository. Record only the values, page locations and concise evidence needed to reproduce the case lawfully.
+
+Tolerance rules:
+
+- Exact catalogue and Standard table lookups require exact source-row agreement after explicit unit conversion.
+- Closed-form arithmetic should agree with the independent unrounded calculation within a stated numerical tolerance appropriate to the implementation precision.
+- A published example rounded at intermediate stages may be accepted only when the independent reconstruction explains the resulting difference and the webpage agrees with the unrounded method.
+- Iterative solutions require a documented convergence tolerance, iteration failure state and comparison basis.
+- Branch, applicability and status outcomes must agree exactly. A percentage tolerance cannot excuse selection of the wrong table row, formula branch, capacity factor, governing case or `PASS` / `FAIL` state.
+- Display rounding is checked separately. It must not feed back into the calculation or change the governing comparison.
+
+Minimum evidence set per governing `Calculation_ID`:
+
+- one normal engineering case;
+- one independent hand/script case;
+- one recognised or reconstructed worked example where available;
+- one case for each active branch or table path;
+- threshold cases immediately below, at and above each governing boundary;
+- minimum and maximum valid values within the stated simplified method;
+- blank, partial, zero, negative, impossible and incompatible input states;
+- one known out-of-scope case;
+- applicable monotonicity, sign, dimensional and nominal-versus-design invariants;
+- one browser regression case using the documented default.
+
+Keep the handbook lightweight:
+
+- Verification scripts, detailed arithmetic, screenshots and comparison tables are engineering QA evidence; they do not become new visible calculator controls.
+- Add a visible input only when it changes the governing result, applicability, adopted source value or actionable warning.
+- Add a visible result only when it answers the primary question or changes an engineering decision.
+- Use one concise visible warning for the controlling limitation. Keep full example evidence and residual exclusions in `REFERENCE_TRACEABILITY.md`.
+- Commercial software may provide an external comparison, but the handbook must remain understandable and verifiable without requiring that software.
+
 ## 7. Engineering Language
 
 Use precise engineering terms.
@@ -1085,8 +1160,8 @@ The web page is still part of `SC Handbook`. It must follow the same source hier
 Web outline map:
 
 - `15.0` is the working checklist for any web edit, review, commit, or push.
-- `15.1` to `15.3` define product logic, tab structure, and result hierarchy.
-- `15.4` to `15.6` define visual format: typography, responsive layout, mobile behaviour, and colour system.
+- `15.1` to `15.3` define product logic, tab structure, page states, dependency flow, disclosure rules, and result hierarchy.
+- `15.4` to `15.6` define visual format: typography, spacing, grids, responsive breakpoints, mobile behaviour, theme colours, input-state colours, semantic colours, and contrast.
 - `15.7` defines symbols, formulas, source references, and project-file responsibilities.
 - `15.8` defines input layout, editable-field behaviour, figure/chart rules, CAD-style drawing rules, and page annotation rules.
 - `15.9` defines warning and limitation style.
@@ -1277,6 +1352,53 @@ Page construction rules:
 - A tab may switch between page patterns only when the mode label, input set, result heading, status semantics and limitations all change together. Hidden controls and stale results from the previous mode must not remain active.
 - Prefer a continuous single-page workflow with progressive disclosure. Use a multi-step wizard or modal only when the user must complete a real ordered decision that cannot be understood safely on one page.
 
+#### 15.2.3 Canonical Page State, Dependency and Disclosure Contract
+
+Every tab must implement one deterministic engineering state model. Layout changes, responsive rules and folded panels may change presentation, but they must not create a second calculation path or a different engineering meaning.
+
+Use this dependency order unless the documented calculation contract requires a narrower sequence:
+
+`Source / method -> section or geometry -> material -> factors and assumptions -> connection or detailing -> optional design actions -> derived values -> governing result -> status, warning and trace`
+
+Dependency rules:
+
+- A controlling selection must update every downstream value that depends on it. Changing section family, product, grade, bolt category, weld type, checked axis, plane, direction or calculation mode must not leave an incompatible downstream value active.
+- Upstream source or applicability failure blocks the affected downstream result. A missing clause, table row, catalogue value or required project input must produce `Source_Not_Verified`, `Not evaluated` or `Invalid input` as applicable, not a plausible fallback result.
+- A derived value may be editable only through an explicit override state. Entering override mode must identify the value as `User override`; leaving override mode must restore the current source-derived value and current dependency chain.
+- Optional design actions sit after capacity construction. Adding or removing an action may activate or suppress utilisation and scoped `PASS` / `FAIL`, but it must not change the independently calculated capacity unless the governing method explicitly makes resistance action-dependent.
+- Hidden or disabled controls must not continue to influence the active calculation. If a branch becomes inactive, remove its value from the active data model or mark it inactive explicitly.
+- Required controls must remain visible whenever their branch governs. Do not hide a governing project input in a collapsed evidence panel.
+- A recalculation must update the adopted-basis summary, result, status, warning and formula/source trace as one transaction. Do not update the result while leaving a stale basis label, warning or source reference.
+- Preserve compatible user-entered values when switching branches, but never silently apply a preserved value to a branch with different units, meaning, source or applicability.
+
+Canonical visible states:
+
+| State | Trigger | Required visible behaviour | Prohibited behaviour |
+| --- | --- | --- | --- |
+| `Ready` | Required inputs and source basis are valid; no optional demand is entered | Show adopted basis and capacity / lookup / selector result | Do not show utilisation or `PASS` / `FAIL` |
+| `Quick check active` | Compatible design action is valid | Show demand, capacity, utilisation/interaction and narrowly scoped status together | Do not imply whole-member, whole-connection or project compliance |
+| `Review required` | Result is calculable but an applicability condition, project confirmation or separate check remains material | Keep the numerical result only when still technically valid; show the controlling review action beside it | Do not use green success styling or hide the review item in details |
+| `Invalid input` | Required input is blank, non-numeric, physically invalid or mutually incompatible | Identify the first controlling invalid field, retain user text where practical and suppress dependent normal-looking results | Do not coerce blank or temporary typing to zero |
+| `Not evaluated` | Method or branch is outside implemented scope | State the unevaluated item and immediate next action; suppress capacity/status for that item | Do not display zero capacity, stale capacity or a neutral-looking pass |
+| `Source_Not_Verified` | Governing source value or condition cannot be confirmed | Identify the missing source evidence and block the affected engineering claim | Do not substitute a foreign or secondary source silently |
+
+Progressive-disclosure rules:
+
+- The always-visible layer contains the active question, minimum inputs, adopted basis, primary answer and one critical warning where required.
+- The engineering-review layer contains active overrides, governing branch, secondary in-scope checks and compact visual aids needed to interpret the answer.
+- The evidence layer contains formula steps, source status, clause/table/figure references, verification notes and detailed exclusions.
+- Collapsing the evidence layer must not hide the result basis needed to distinguish nominal/design capacity, axis, plane, direction, material, selected product or active override.
+- Opening a folded panel must not resize controls, reset inputs, trigger a different calculation branch or change a result.
+- Do not repeat the same scope sentence, selected basis or warning in all three layers. Each statement belongs at the highest layer where it is needed for a safe decision.
+
+Page-logic acceptance test:
+
+1. Start from the documented default and record the visible basis and result.
+2. Change each controlling selector once and confirm every dependent input, summary, result, warning and reference updates.
+3. Enter, clear and restore each optional demand or override and confirm the state changes exactly as defined above.
+4. Enter blank, partial, zero, negative, incompatible and extreme-but-valid values and confirm fail-closed behaviour.
+5. Repeat the same transitions at desktop and phone widths and confirm the engineering state and numeric output remain identical.
+
 ### 15.3 Web Result Layout
 
 Every web tab should use the same result hierarchy while adapting the primary label to its workflow:
@@ -1409,6 +1531,58 @@ Shared implementation requirements:
 - Use the same DOM and calculation outputs at every viewport. Mobile adaptation is CSS-driven and may collapse secondary material, but it must not fork formulas, values, warnings or references.
 - Before acceptance, compare the new tab beside at least one established tab at desktop and phone widths. Check title hierarchy, field-label size, control height, focus state, manual/override/read-only fills, result hierarchy, warning density, horizontal overflow and active-tab visibility.
 
+#### 15.4.3 Canonical Web Spacing, Grid and Density Contract
+
+Use one shared spatial system. New tabs must not introduce arbitrary page widths, padding scales, card radii or dense one-off grids.
+
+Canonical layout dimensions:
+
+| Item | Desktop contract | Phone contract |
+| --- | --- | --- |
+| Main content width | `1040px` maximum, centred | Fluid width with `12px` side gutters at `500px` and below |
+| Intermediate gutters | `18px` side gutters below `1020px` | Continue until the `500px` narrow-phone rule |
+| Header | Compact `58px` bar | Compact `54px` bar |
+| Tool panel | About `18px` padding; maximum `18px` radius | `12px` padding; maximum `14px` radius |
+| Main lookup card | About `20px` padding | About `14px` padding |
+| Engineering input group | About `12px` padding and `12px` internal gap | About `10px` padding; single-column fields |
+| Main controls | `46px` minimum height | `44px` minimum touch height and `16px` editable text |
+| Result card | About `14px` padding | About `13px` padding |
+| Folded-panel summary | `13-16px` vertical/horizontal padding | At least `14px 16px` for a reliable touch target |
+
+Use the shared spacing steps `4`, `6`, `8`, `12`, `16`, `20` and `24px`. A component may use an intermediate value already established in shared CSS, but a new tab must not create a separate spacing scale. Apply the steps consistently:
+
+- `4-8px`: icon/label, badge and tightly related inline gaps;
+- `8-12px`: fields within one engineering group and compact result rows;
+- `12-16px`: separation between related cards or subsections;
+- `16-24px`: separation between major workflow stages.
+
+Grid rules:
+
+- A grid column represents one readable field or metric, not a target count. Choose the column count from label length, unit length, control type and minimum usable width.
+- Two to four equal columns are the normal desktop range for full input fields. Five or six columns are allowed only for compact, stable fields that remain at least about `128px` wide and pass the label-wrap check. A seven-column row requires explicit review at the `1040px` content width.
+- Do not place different engineering groups in adjacent columns. Horizontal packing is allowed only inside one labelled group.
+- Use `minmax(0, 1fr)` or an equivalent bounded track so long text cannot force horizontal overflow.
+- Align field controls by their control box, not by forcing all labels to one fixed height. Labels may wrap to two lines; the control row must remain visually coherent.
+- Units belong inside a stable unit area or adjacent to the value. Do not let changing units resize the field grid or shift neighbouring controls.
+- Result cards may use equal columns only when the results have equal engineering importance. The governing result must receive the first position and strongest hierarchy, not merely the widest available cell.
+- A summary strip must remain compact. Show only values needed to confirm the adopted basis; move process values and repeated inputs to the trace layer.
+
+Card and border rules:
+
+- Outer tool panels, input groups, result cards and folded evidence panels may be framed. Ordinary page sections must not be turned into decorative floating cards.
+- Do not nest cards inside cards except for a repeated result item, a compact table row or a folded panel with a distinct interaction.
+- Use one subtle border and, where needed, one restrained shared shadow. Do not combine heavy borders, strong shadows and saturated fills on the same component.
+- Keep control radius, input-group radius, result-card radius and outer-panel radius in a restrained progression. Do not use pill shapes for ordinary inputs, cards or headings.
+- Stable components must reserve enough width and height for focus, status, unit and two-line labels so interaction does not cause layout shift.
+
+Text-density rules:
+
+- One input group may have one short helper sentence. Do not place a paragraph below every field.
+- A main result note should normally be one source/basis sentence plus one limitation or next-action sentence.
+- Keep visible warnings to the controlling consequence and action. Put supporting explanation in the evidence layer.
+- Prefer deleting duplicated wording over reducing font size, line height or spacing.
+- No text may be clipped, overlapped, faded below legibility or reduced below `--fs-xs` to preserve a desktop row.
+
 ### 15.5 Mobile Layout Rules
 
 The web layout must work on phone, tablet, and desktop.
@@ -1439,34 +1613,143 @@ Keep repeated notation compact. If the selected callout already explains a symbo
 
 Do not keep a visible `Device Preview` option in the final page. Responsiveness should be built into the CSS.
 
+#### 15.5.1 Canonical Responsive Breakpoints and Content Priority
+
+Use the existing shared breakpoints as a layout contract:
+
+| Range | Intended behaviour |
+| --- | --- |
+| Above `1020px` | Full centred desktop view within the `1040px` content container |
+| `761-1020px` | Compact desktop/tablet view with `18px` outer gutters; reduce columns where labels or controls become cramped |
+| `501-760px` | Mobile/tablet single-column input groups; convert rigid result and table grids to readable stacks |
+| `500px` and below | Narrow-phone view with `12px` gutters, `54px` header, sticky horizontally scrollable navigation and compact titles/results |
+
+Responsive priority order must remain:
+
+1. Active tool identity and scope.
+2. Primary required inputs in engineering dependency order.
+3. Adopted-basis summary.
+4. Governing result, compatible utilisation/status and critical warning.
+5. Secondary in-scope checks or published values.
+6. Figures, formulas, source notes and detailed limitations.
+
+Responsive acceptance rules:
+
+- Changing viewport width may change column count, stacking, wrapping and folded default state only. It must not change defaults, active values, formulas, rounding, warnings, references or result status.
+- At `760px` and below, full input-field grids normally become one column. Preserve two columns only for genuinely short paired controls, switches or metrics that remain readable at `320px`.
+- At `500px` and below, the active category and full tool name must both be visible or automatically scrolled fully into view.
+- Do not hide required inputs, the adopted basis, the governing result, the controlling warning or the result status on phone.
+- Secondary helper text may be suppressed only when the same meaning remains available in a nearby label, summary or folded panel.
+- A compact table must either transform into labelled records or use deliberate horizontal scrolling with a visible scroll affordance and preserved row/column identity. Do not simply clip columns.
+- Phone field order must follow DOM and keyboard order. Visual CSS reordering must not create a different reading or tab sequence.
+- Sticky header/navigation must not cover a focused field, result heading or anchor target.
+- Long Standard references, formulas, product names and status labels must wrap without horizontal page overflow.
+- Test at minimum `1040px`, `768px`, `500px`, `390px` and `320px`, including browser zoom and a long-label case.
+
 ### 15.6 Web Colour System
 
-Use a macaron / pastel colour system. The page should feel light and active, but still technical and readable.
+Use a restrained pastel technical palette. Colour identifies the active tool and data responsibility; it must not decorate every surface or imply engineering acceptance.
 
-Current direction:
+#### 15.6.1 Base and Tab Theme Tokens
 
-- Bolt tab: pastel green.
-- Member tab: pastel blue.
-- Reference/source notes: pale warm yellow.
-- Background: warm off-white.
-- Text: dark neutral, not pure black.
+Base neutral tokens:
 
-Each tab should have its own colour layer:
+| Role | Canonical value | Use |
+| --- | --- | --- |
+| `--ink` | `#2f3b36` | Primary text and strong neutral controls |
+| `--muted` | `#5d6b64` | Helper, metadata and secondary text |
+| `--paper` | `#fbf7f0` | Page background |
+| `--card` | `#ffffff` | Main cards and control surfaces |
+| Base `--line` | `#dfe8e1` | Neutral separators and unthemed borders |
 
-- active tab colour;
-- tab panel background;
-- primary accent colour;
-- soft result-card background;
-- border colour.
+Each tab theme has four required roles:
 
-Input colour must communicate editing responsibility consistently across all tabs:
+- `accent`: active marker, result-card top rule, focus border and restrained highlight;
+- `dark`: readable theme text, active label and link colour;
+- `soft`: active tab, selected mode and light emphasis fill;
+- `panel`: very light page-panel wash behind the tab workflow.
 
-- Fully manual / project-required inputs use the tab's light accent fill so the user can see what normally needs project confirmation.
-- Auto-filled but editable lookup / override values use a grey-tinted version of the tab accent. The field must look available for editing, but less demanding than a manual project input. Examples include table-selected `f_y`, `f_u`, `r`, `k_f`, `alpha_b`, `k_t`, `k_r`, `k_h` and other cited defaults that can be overridden.
-- Read-only derived values use a neutral pale grey and should not look like normal required inputs. Examples include calculated stress-block factors, auto net area while locked, calculated capacity factors and disabled controls.
-- Warning, invalid and fail states keep the standard yellow/red status colours rather than adopting the tab theme.
+Current canonical themes:
 
-Do not rely only on colour to communicate engineering meaning. Status text such as `PASS`, `FAIL`, `Governing`, or `Not applicable` must be visible in words.
+| Tool | Accent | Dark | Soft | Panel |
+| --- | --- | --- | --- | --- |
+| Bolt Capacity | `#5fb98a` | `#2f7b57` | `#e7f7ed` | `#f4fbf6` |
+| Axial Member Capacity | `#76a9dc` | `#416f9e` | `#e7f2fc` | `#f4f9fe` |
+| Beam Section Capacity | `#b39ad8` | `#6f5798` | `#f0eafb` | `#faf7ff` |
+| Section Properties | `#6faea4` | `#356f68` | `#e4f5f2` | `#f4fbfa` |
+| Weld Capacity | `#e3a05f` | `#9c5d22` | `#fff0df` | `#fff8ef` |
+| Concrete Pad Section | `#6fb7b0` | `#2f746f` | `#e2f6f4` | `#f3fbfa` |
+| Screw Piles Selector | `#8fa96a` | `#587235` | `#edf5e4` | `#f8fcf1` |
+| Rock Anchor Selector | `#8299aa` | `#4d6576` | `#eaf0f4` | `#f7fafc` |
+| Wind Site Draft | `#6aa7c8` | `#31667f` | `#e5f4fb` | `#f4fbfe` |
+
+Theme rules:
+
+- A new tab must define all four roles plus a compatible border and input fills. Do not assign isolated colours directly throughout a tab.
+- Use `dark`, not the lighter `accent`, for ordinary text when contrast matters.
+- Keep major content cards white or near-white. The theme panel and soft fill should remain background layers, not a one-colour page.
+- Use one tab accent at a time. Do not mix another tab's accent into controls, results or figures.
+- Category navigation remains neutral because it groups disciplines; the tool-level active state uses the current tab theme.
+- Do not use decorative gradients, colour blobs or saturated full-card fills. A subtle existing panel wash may remain, but the hierarchy must still work with flat fills.
+
+#### 15.6.2 Input Responsibility and Interaction Colours
+
+Input colour communicates responsibility, not validity:
+
+| Data class | Fill and border | Required non-colour cue |
+| --- | --- | --- |
+| Manual project input | Light tint of the active tab theme around a white control | Clear engineering-group heading and project/manual wording where ambiguity remains |
+| Cited lookup / auto value with override | Grey-tinted theme fill and restrained theme border | `Auto`, `Catalogue`, `Table`, `Default` or equivalent source-basis text; explicit override state |
+| Read-only derived value | Neutral pale grey, normal readable text and no editable focus treatment | `Derived`, formula symbol or read-only semantic state |
+| Disabled / not applicable | Neutral muted fill and border; reduced emphasis without illegible opacity | `Not applicable`, inactive branch note or disabled semantic state |
+| Invalid editable value | Semantic error border/fill takes priority over the tab theme | Field-level error text plus overall `Invalid input` state |
+
+Interaction rules:
+
+- Hover may strengthen a border or surface slightly but must not move or resize the control.
+- Keyboard focus uses one clear outline/ring with at least `3:1` contrast against adjacent colours; focus must not rely on the field fill alone.
+- Selected, focused, overridden, invalid and disabled are separate states. Their styles must remain distinguishable when two states coexist.
+- Returning an override to auto must restore the auto/lookup style and source-basis text immediately.
+- Do not colour every field individually. Apply responsibility colour to the smallest coherent field wrapper or engineering group that preserves quick scanning.
+
+#### 15.6.3 Semantic Status Colours and Priority
+
+Semantic states override the tab theme:
+
+| State | Colour direction | Required visible text |
+| --- | --- | --- |
+| Informational / derived | Neutral or restrained blue | Quantity/source label |
+| `PASS` within stated scope | Restrained green | `PASS` plus named check |
+| Warning / `Review required` | Pale amber/yellow with dark text | Consequence and next action |
+| `FAIL` | Pale red with dark red text/border | `FAIL` plus named check |
+| `Invalid input` | Pale red with field/error association | `Invalid input` and corrective action |
+| `Not evaluated` / `Source_Not_Verified` | Neutral or amber according to consequence | Exact status phrase and missing check/source |
+
+Status priority is:
+
+`Invalid input / Source_Not_Verified -> FAIL -> Review required -> scoped PASS -> informational theme state`
+
+A higher-priority status must not be visually weakened by the active tab colour. For example, a blue member tab must still use the shared fail treatment for a failed member check.
+
+#### 15.6.4 Contrast, Accessibility and Colour Acceptance
+
+- Normal text and control labels must meet WCAG AA contrast of at least `4.5:1`; large text may use at least `3:1`.
+- Control boundaries, focus indicators, chart lines and essential non-text indicators must maintain at least `3:1` contrast against adjacent surfaces.
+- Never place white text on a pastel accent unless the tested contrast passes. Prefer dark text on soft fills.
+- `PASS`, `FAIL`, `Review required`, `Invalid input`, `Governing`, `Not applicable`, override and source states must always have words or symbols in addition to colour.
+- Figures and charts must add labels, line style, marker, hatching or pattern where colour distinguishes engineering meaning.
+- Check active/inactive tabs, manual/auto/derived fields and every semantic status in normal colour, grayscale and a colour-vision-deficiency simulation before accepting a new theme.
+- Test contrast in default, hover, focus, disabled, invalid and selected states. A compliant resting state does not excuse an unreadable interaction state.
+- Do not reduce opacity below readable contrast to make secondary content quieter. Use neutral colour, spacing and typography hierarchy instead.
+
+Colour acceptance checklist:
+
+1. The active category and active tool are distinguishable without relying on colour alone.
+2. Manual, auto/override and read-only values can be identified from both styling and text/state.
+3. Semantic warnings and failures override the tab theme consistently.
+4. Long labels and wrapped helper text remain readable on the lightest theme fills.
+5. No tab reads as a saturated one-colour surface; white, neutral and theme layers remain balanced.
+6. Desktop and phone use the same colour meaning, contrast and state priority.
 
 ### 15.7 Web Symbols, Formulas, and References
 
@@ -1582,10 +1865,62 @@ Reduction-factor inputs:
 - Do not imply that a project factor is an automatic AS 4100, AS/NZS 1554.1, or manufacturer-table value.
 - For weld checks, `k_r` must not be treated as a free project factor when it is being used for AS 4100 welded lap connections. If included, calculate and label it from AS 4100 Table 9.6.3.10(B), and only apply it when the user confirms the weld is a welded lap connection.
 
-Web engineering figure and chart rules:
+#### 15.8.1 SC Handbook Web Engineering Drawing Contract
 
-- Figures, diagrams, sketches, and charts must support fast engineering lookup. They should read like journal-quality engineering schematics, not marketing graphics, decorative illustrations, or oversized publication figures.
-- The web target is screen reading on phone, tablet, and desktop. Do not apply IEEE, Nature, Elsevier, or other print-publication sizing rules such as single-column inch widths, DPI targets, or EPS/PDF-first export unless the task is explicitly to produce a publication or report figure.
+Engineering drawings in SC Handbook are compact calculation aids. They may identify an input dimension, explain a section or connection, show the geometry used by a calculation, clarify an axis/plane/restraint/load direction, or support visual checking of entered and catalogue-derived values.
+
+They are not construction drawings, fabrication drawings, shop drawings, certified design drawings or substitutes for project details. Calculator inputs and verified source data remain authoritative; a drawing must never become an independent source of numerical values.
+
+Every figure must declare or clearly satisfy one accuracy class:
+
+| Accuracy class | Permitted use | Required description |
+| --- | --- | --- |
+| `Schematic only` | Symbol, direction or one simple calculation concept | `Schematic only, not to scale` |
+| `Proportional schematic` | Section proportions, reinforcement layers or relative geometry | `Proportional schematic` |
+| `Value-driven drawing` | Geometry generated from current inputs or a verified catalogue row | `Drawn from entered values` or `Drawn from selected catalogue data` |
+
+Do not describe a manually positioned SVG as value-driven.
+
+Use three placement levels:
+
+| Figure level | Normal location | Content limit |
+| --- | --- | --- |
+| `Level 1 - Input aid` | Beside the relevant input group | One immediate dimension, direction, symbol or selection cue |
+| `Level 2 - Calculation schematic` | Below results or inside calculation details | Formula geometry, stress/resultant relationship, load path or restraint basis |
+| `Level 3 - Reference figure` | Collapsed source/reference panel | A more complete source-based convention or visual guide |
+
+The main page should normally contain only Level 1 figures. A Level 2 figure may remain visible only when it is necessary to interpret the primary result.
+
+Project-specific figure scope:
+
+| Tab | Main figure may show | Keep out of the main figure |
+| --- | --- | --- |
+| `Bolt Capacity` | `e`, `d_h` or `d_f`, N/X plane and governing action direction | Block shear, prying and full connection topology |
+| `Axial Member Capacity` | Section family, `L_e`, checked axis and radius `r` | Full buckling theory and excluded flexural-torsional checks |
+| `Beam Section Capacity` | Section orientation, `A_w = d_1t_w`, `M*` or `V*` direction | Full compactness tables, `M_b` and complete member stability |
+| `Section Properties` | Selected section shape and dimensions used by the geometry model | Capacity, availability or properties not supplied by the selected source |
+| `Weld Capacity` | `t_t`, `l_w`, weld side, arrow and reference line | WPS, inspection scope and a full weld-symbol catalogue |
+| `Concrete Pad Section` | `d`, compression face, selected strip and active reinforcement layers | Full strain equations, anchorage and excluded footing checks |
+| `Screw Piles Selector` | Published shaft, helix and length geometry | Inferred resistance, soil profile and unverified installation detail |
+| `Rock Anchor Selector` | Published anchor geometry and selected product arrangement | Bond resistance, rock cone and unimplemented anchorage checks |
+
+Project drawing contract:
+
+1. Use only the geometry, symbols and actions needed by the current calculator state.
+2. Use the same symbol, source value, unit and rounding as the input, formula and result.
+3. Generate value-driven geometry from the same validated data used by the calculation.
+4. Use deterministic SVG with shared CAD classes wherever practical.
+5. Keep dimensions outside object geometry and point leaders to the exact referenced feature.
+6. Keep ordinary geometry neutral; use one tab accent only for the selected or governing item.
+7. Keep the main-view annotation budget to two to four labels on desktop and one to two on phone.
+8. Move equations, source discussion, detailed exclusions and secondary labels to the caption or folded evidence layer.
+9. Keep phone figures compact and simplify annotations instead of shrinking text.
+10. Confirm the figure at normal and extreme-but-valid values before release.
+
+#### 15.8.2 Detailed Figure, Symbol and CAD Requirements
+
+- Figures, diagrams, sketches and charts must support fast engineering lookup. They should read as restrained engineering schematics, not marketing graphics, decorative illustrations or publication-layout figures.
+- The target is SC Handbook screen reading on phone, tablet and desktop. Print-publication dimensions, DPI targets and EPS/PDF-first export rules do not govern these web figures.
 - Prefer static HTML, SVG, or Canvas for interactive web figures. Use Python / Matplotlib / SciencePlots only for exported reports, static publication figures, or generated assets that are committed as normal web files.
 - Every technical figure must have a clear engineering purpose: geometry identification, symbol convention, load path, stress/resultant relationship, section layout, or source-table lookup support.
 - Use three figure levels:
@@ -1604,7 +1939,7 @@ Web engineering figure and chart rules:
 - Keep figures compact. A figure should clarify the calculation faster than text; if it needs long explanation, move the explanation to `Calculation basis and limitations`.
 - Default web figures should be small inline engineering aids, not large feature images. Simple section-shape guide images should normally display at about 190 to 360 px wide on desktop, and no more than about 70% of the phone content width on mobile.
 - Ordinary calculator diagrams should usually fit within a 180 to 260 px display height. Larger figures must have a specific engineering reason, such as showing a strain/stress relationship or source-table interpretation that cannot be read at smaller size.
-- Publication-style or research-style figures may use a larger display size, but should usually be placed in a collapsed `details` panel or shown as a compact preview with an expandable view. A typical expanded web display target is about 320 to 360 px maximum height on desktop and about 220 to 260 px maximum height on phone.
+- A larger detailed figure must be placed in a collapsed `details` panel or shown as a compact preview with an expandable view. A typical expanded web display target is about 320 to 360 px maximum height on desktop and about 220 to 260 px maximum height on phone.
 - Do not let a generated image dominate the first screen or push the main inputs and results away from the engineer. Key inputs and governing results must remain easier to reach than the supporting figure.
 - Generated bitmap and SVG assets must have explicit responsive constraints such as `width`, `max-width`, `max-height`, `aspect-ratio`, or container sizing. Do not rely on raw pixel dimensions, SVG `viewBox`, or Matplotlib export size to control the web display size.
 - If an image is generated at high resolution for clarity, control the displayed size in CSS separately from the exported file size. Commit the smallest practical web asset that remains readable at the intended display size.
@@ -1629,7 +1964,7 @@ Web engineering figure and chart rules:
 - If a figure cannot be verified against a standard, handbook, manufacturer document, or accepted project convention, label it as a draft visual guide or leave it out.
 - Existing or inherited page figures are not automatically compliant with this drawing standard. Before describing any figure as CAD-style, proportional, value-driven, or source-checked, review it against the drawing-accuracy class, annotation rules, source basis, and desktop/phone layout checks in this section.
 
-Technical diagram and symbol rules:
+##### Source-Based Technical Symbols
 
 - Do not invent, freehand, or approximate engineering symbols in HTML/CSS/SVG when the symbol has a recognised standard or drawing convention.
 - For weld symbols, connection details, section diagrams, bolt callouts, and similar technical figures, first look for the governing Australian standard, Australian handbook, manufacturer manual, recognised textbook, or project drawing convention.
@@ -1645,7 +1980,7 @@ Technical diagram and symbol rules:
 - Avoid using screenshots from standards, textbooks, or paid manuals unless the user provides an approved copy and explicitly asks to use it.
 - Diagrams must be simple enough for a quick engineering handbook: show the convention or detail clearly, avoid decorative illustration, and keep the source note visible.
 
-CAD technical drawing rules:
+##### CAD Geometry and Dimensioning
 
 - Handbook diagrams are not construction drawings, but they should still follow normal CAD drafting discipline where applicable.
 - Use Australian drawing conventions first. Common reference families include `AS 1100` technical drawing, `AS 1101` graphical symbols, and project/client drafting standards. International references such as `ISO 128` for presentation, `ISO 129` for dimensioning, `ISO 5455` for scales, `ISO 5457` for sheet layout, and `ISO 7200` for title-block data may be used as background when Australian or project rules do not give enough detail.
@@ -1678,7 +2013,7 @@ CAD technical drawing rules:
   - Labels do not overlap geometry or each other on desktop or phone.
   - The caption/source note states the limitation and source basis.
 
-Page annotation rules:
+##### Main-Page Annotation
 
 - Use minimal annotation in the main calculator view. The drawing should help the user locate an input or understand one calculation assumption, not repeat the full formula, source note, and limitation text.
 - A main-view drawing should normally have no more than two to four visible annotations on desktop and one to two visible annotations on phone. If more labels are needed, move the extra information to a collapsed calculation/source panel.
@@ -1711,12 +2046,32 @@ Page annotation rules:
   - Captions and notes carry the limitation instead of crowding the drawing.
   - Desktop and phone layouts remain readable without overlapping labels.
 
-Drawing implementation tools:
+##### Drawing Implementation
 
 - No external CAD package is required for the web handbook standard. The preferred implementation stack is deterministic SVG generated by JavaScript or small repository scripts, shared CSS drawing classes, and browser viewport checks.
 - Use Python scripts only for repeatable generated SVG assets where a script is clearer than hand-editing SVG. Keep the script in the repository when the generated asset is committed.
 - Use a browser screenshot or DOM inspection check before publishing any new or revised drawing. A drawing change is not complete until desktop and phone widths have been visually checked.
 - Use full CAD software only when importing or comparing against project drawings, not for routine handbook schematic generation.
+
+##### Project Drawing Acceptance Gate
+
+Before publishing a new or revised SC Handbook figure, confirm:
+
+1. The figure supports one clear engineering purpose and uses the correct placement level.
+2. Its accuracy class is stated or unambiguous.
+3. Geometry orientation, checked axis/plane and load/action direction are correct.
+4. Every symbol matches the calculator input, formula, result and source note.
+5. Numeric labels come from current inputs or verified catalogue data.
+6. Units and rounding match the webpage and do not imply false precision.
+7. Dimensions and leaders point to the exact measured or referenced feature.
+8. Object lines, dimensions, centre/hidden lines, hatching and governing highlights use the shared hierarchy.
+9. Labels, leaders, dimensions and arrowheads do not overlap or cross incoherently.
+10. A normal case and an extreme-but-valid case remain inside the `viewBox`.
+11. Desktop and phone displays remain legible without horizontal page overflow.
+12. The figure does not imply that an excluded calculation has been completed.
+13. The caption or source note states the source basis and necessary limitation.
+14. The figure remains subordinate to primary inputs and governing results.
+15. Browser inspection shows no clipping, missing SVG elements, console errors or stale values.
 
 ### 15.9 Web Warning and Limitation Style
 
@@ -2384,7 +2739,7 @@ Audit every active calculation branch, not only the default example:
 
 Reconstruct the complete Section 2.4 engineering chain for every governing result and classify it under Section 2.5. Confirm that a capacity-only result shows the nominal-to-design resistance path without implying a check; a quick check introduces a compatible design action and names the exact checked limit state; and preliminary selection or sizing reruns every claimed in-scope check for the selected candidate. Missing actions must suppress utilisation and `PASS` / `FAIL`, not be interpreted as zero demand.
 
-For each governing formula, confirm its `Calculation_ID` and complete the applicable Section 6.2.7 matrix. The independent hand calculation or separate script calculation must not call or copy the production calculation function. For conditional formulas, test each branch and one value immediately either side of the branch boundary. Compare the independent result with the browser output using unrounded intermediate values and record the reasoned numerical tolerance.
+For each governing formula, confirm its `Calculation_ID` and complete the applicable Section 6.2.7 matrix. Follow the source selection, worked-example capture, independent reconstruction, browser reproduction, comparison and disposition sequence in Section 6.2.11 and record it using the templates in `REFERENCE_TRACEABILITY.md`. The independent hand calculation or separate script calculation must not call or copy the production calculation function. For conditional formulas, test each branch and one value immediately either side of the branch boundary. Compare the independent result with the browser output using unrounded intermediate values and record the reasoned numerical tolerance.
 
 #### 15.18.5 Input Classification and Engineering Order
 
@@ -2518,18 +2873,21 @@ Review all visible text and generated text:
 
 #### 15.18.12 Page Logic, Layout and Typography Audit
 
-Review the page against Sections 15.2 to 15.6 and the canonical contract in Sections 15.4.1 and 15.4.2:
+Review the page against Sections 15.2 to 15.6, including the state/dependency contract in Section 15.2.3, typography and layout contracts in Sections 15.4.1 to 15.4.3, responsive contract in Section 15.5.1 and colour contracts in Sections 15.6.1 to 15.6.4:
 
 - compact brand header, grouped full-name navigation and immediate access to the active calculator;
 - one clear tool title, not a repeated hero heading;
 - engineering input row bands in dependency order;
 - one selected-basis summary where useful;
 - governing result before secondary aids and folded details;
+- deterministic `Ready`, `Quick check active`, `Review required`, `Invalid input`, `Not evaluated` and `Source_Not_Verified` transitions where applicable;
 - no decorative card nesting or empty custom cards;
 - shared typography tokens and no tab-specific font scale;
+- shared content width, spacing steps, card padding/radius and grid-density rules rather than tab-specific dimensions;
 - consistent field labels, control height, radius, focus state and unit alignment;
 - manual, lookup/override and read-only fields visually distinct without relying only on colour;
-- adequate text contrast for normal, muted, warning and disabled states;
+- all theme colours map through accent/dark/soft/panel roles; semantic status colours override the tab theme;
+- adequate text and non-text contrast for default, hover, focus, selected, override, warning, fail and disabled states;
 - no clipped labels, overlapping controls, unstable card heights or excessive empty space;
 - figures remain compact, proportional and subordinate to the engineering workflow;
 - source and limitation panels remain available without dominating the first screen.
@@ -2541,10 +2899,11 @@ Judge density by engineering scanning efficiency, not by fitting the maximum num
 Test at minimum:
 
 - wide desktop around `1440 px`;
-- normal desktop around `1024 px`;
+- normal desktop around `1024-1040 px`;
 - tablet around `768 px`;
+- the narrow-layout boundary at `500 px`;
 - phone around `390 px`;
-- narrow phone around `320-360 px` where practical.
+- narrow phone around `320 px`.
 
 At each relevant width confirm:
 

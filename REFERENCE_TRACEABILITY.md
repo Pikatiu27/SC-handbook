@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-07-20
+Last updated: 2026-07-27
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -66,6 +66,206 @@ Calculation-record rules:
 - Record every active formula branch and the relevant threshold cases, not only the default page state.
 - A source edition, formula, factor, default or branch change triggers reverification of every affected `Calculation_ID`.
 - Detailed evidence stays in this file. The visible page retains only the concise basis, critical assumption, status and limitation required for quick engineering use.
+
+## Verification and Worked-Example Reproduction Procedure
+
+This section is the working implementation record for `SC_HANDBOOK.md` Section 6.2.11. It converts the calculation contract into repeatable evidence without expanding the visible handbook into a report or full design engine.
+
+### Current Migration Status
+
+The existing sections below contain useful source-page checks, catalogue-row checks, default-output checks and historical audit notes. They do not yet form a complete consolidated set of formal `Calculation_ID` and `Test_ID` records under the current contract.
+
+Therefore:
+
+- preserve the existing evidence;
+- assign stable IDs only when the affected formula and implementation are actively rechecked;
+- do not mark a legacy calculation `Checked` under the new contract merely by renaming old notes;
+- migrate one calculation family at a time and link every accepted claim to positive numerical evidence;
+- keep failed, blocked and source-unverified cases visible until resolved.
+
+### Standard Execution Sequence
+
+Use this sequence for every governing capacity, interaction, utilisation, distribution, lookup or screening calculation:
+
+1. **Freeze scope**
+   - Record tab, workflow type, visible result, active mode/branch, worktree, commit/build and implementation owner.
+   - State whether the review covers source, formula, numerical result, page state, layout or all of them.
+2. **Define the claim**
+   - Write the exact engineering question.
+   - Classify the result as nominal/design capacity, utilisation, published value, selector output, derived aid or warning-only screen.
+   - State limit state/value basis, axis, plane, direction, component and permitted decision.
+3. **Build the source packet**
+   - Locate the governing edition, clause/table/figure and PDF page.
+   - Read headings, definitions, prerequisites, footnotes, adjacent clauses, exceptions, interpolation rules and errata.
+   - Record applicable material, grade, product form, geometry, fabrication, action and method limits.
+4. **Select an example**
+   - Prefer an Australian example using the same Standard edition and method.
+   - Confirm that inputs, assumptions, intermediate values and final result are sufficient for reconstruction.
+   - Classify the example as `Worked example` or `External comparison`; never promote it to normative evidence.
+5. **Capture source values**
+   - Record unmodified source inputs, units, stated assumptions, implied/missing assumptions, formula branch, table row, intermediate values, published result and published precision.
+6. **Reconstruct independently**
+   - Use a hand calculation or separate script that does not import, call or copy the production calculation function.
+   - Record unit conversions, lookup decisions and unrounded intermediate values.
+7. **Reproduce in the browser**
+   - Enter the same values and activate the same mode/branch.
+   - Record adopted-basis summary, active overrides, intermediate values, final result, status, warning and displayed references.
+8. **Compare**
+   - Compare independent and browser results using unrounded values.
+   - Compare display rounding separately.
+   - Explain every difference; do not tune inputs or tolerance to force agreement.
+9. **Exercise branches and boundaries**
+   - Test every table path and conditional branch.
+   - Test immediately below, at and above each threshold.
+   - Test valid extrema, blank/partial/zero/negative/impossible inputs and one out-of-scope case.
+10. **Exercise page state**
+    - Test controlling selectors, auto/manual override, reset, hidden/disabled values, stale-result suppression, keyboard entry and phone/desktop parity.
+11. **Record disposition**
+    - Assign `Test_ID`, evidence method, expected/browser result, difference, tolerance, checked build/date and `Pass`, `Fail`, `Blocked` or `Source_Not_Verified`.
+12. **Release regression**
+    - Rerun every affected accepted test on the intended release build.
+    - Confirm visible wording and limitations match the verified scope.
+
+### Source and Example Selection Record
+
+Use this template before numerical work:
+
+| Field | Record |
+| --- | --- |
+| `Example_ID` | Stable identifier, for example `BEAM-EX-01` |
+| Linked `Calculation_ID` | Governing result(s) tested |
+| Source role | `Worked example` or `External comparison` |
+| Source | Title, publisher/author, edition/version and public/local reference |
+| Location | Clause/table/figure, chapter/example number and PDF/page |
+| Governing code basis | Standard and edition used by the example |
+| Problem statement | Component, geometry, material, restraints and actions |
+| Source inputs | Unrounded values and original units |
+| Stated assumptions | Assumptions explicitly given by the source |
+| Inferred/missing assumptions | Items that must be reconstructed or prevent direct comparison |
+| Active branch | Formula/table path and controlling condition |
+| Published intermediates | Values supplied by the example |
+| Published result | Value, unit and stated precision |
+| Applicability to SC Handbook | Direct reproduction, partial comparison, mechanics-only comparison or not suitable |
+| Copyright handling | Values/page references recorded; no unlicensed table or long passage reproduced |
+| Selection status | `Accepted`, `Partial`, `Rejected` or `Source_Not_Verified` with reason |
+
+Reject or downgrade an example when:
+
+- it uses a different code method, factor system, material grade or action basis without a documented mapping;
+- the result cannot be reconstructed from the published inputs;
+- a software screenshot provides a number without sufficient modelling assumptions;
+- the example omits a branch-controlling value;
+- comparison would require changing the webpage inputs away from the source problem;
+- the source is informal, unattributed, edition-uncertain or inaccessible for review.
+
+### Independent Reconstruction Record
+
+Use one record per accepted example or independently constructed case:
+
+| Field | Record |
+| --- | --- |
+| `Reproduction_ID` | Stable identifier, for example `BEAM-REP-01` |
+| Linked `Example_ID` / `Calculation_ID` | Evidence relationship |
+| Independent method | Hand calculation, standalone Python, spreadsheet or separate solver |
+| Independence statement | Confirmation that production functions/data paths were not called or copied |
+| Internal units | Adopted calculation unit system |
+| Conversion steps | Every source-to-internal conversion |
+| Formula sequence | Equations and table selections in execution order |
+| Intermediate values | Unrounded values needed to audit the result |
+| Expected result | Unrounded and displayed values with units |
+| Expected branch/status | Governing branch and required page state |
+| Tolerance basis | Exact lookup, closed-form arithmetic, iterative convergence or source precision |
+| Reviewer notes | Ambiguity, inferred assumption or unresolved difference |
+
+Independent scripts should be small and calculation-specific. They may use shared neutral utilities for units or table parsing, but must not import `app.js`, browser output or copied production formula functions.
+
+### Browser Reproduction Record
+
+| Field | Record |
+| --- | --- |
+| `Test_ID` | Stable test identifier |
+| Build / commit / URL | Exact browser implementation checked |
+| Viewport | Desktop, tablet or phone width |
+| Starting state | Default, direct hash, selected mode and reset status |
+| Input sequence | User actions and unrounded entered values |
+| Adopted basis | Section/product, material, factors, axis/plane/direction and active overrides |
+| Browser intermediates | Visible/trace values required for comparison |
+| Browser result | Unrounded value where accessible, displayed value, unit and status |
+| Warning / limitation | Visible controlling warning and residual check |
+| Expected result/state | Independent expected value and page state |
+| Difference | Absolute and relative difference where meaningful |
+| Disposition | `Pass`, `Fail`, `Blocked` or `Source_Not_Verified` |
+| Evidence | Screenshot, DOM capture, console/test output or reviewer note |
+
+### Minimum Test Matrix Template
+
+Complete the applicable rows for every `Calculation_ID`:
+
+| Test class | Minimum case | Required assertion |
+| --- | --- | --- |
+| Common | One normal project-like input set | Correct branch, intermediates, result, unit and visible basis |
+| Independent | One hand/script calculation | Browser agrees with independently calculated unrounded result |
+| Worked example | One accepted published or reconstructed example | Assumptions align and difference is explained |
+| Branch | One case for every active conditional/table path | Correct formula, row, factor and status selected |
+| Boundary | Immediately below, at and above each threshold | Branch changes at the correct value without stale output |
+| Valid extrema | Minimum and maximum values within the stated method | Finite, physically coherent result or documented boundary state |
+| Invalid | Blank, partial, zero, negative, impossible and incompatible values | Field remains editable; dependent result fails closed |
+| Out of scope | One known excluded condition | `Not evaluated` or `Review required`; no misleading normal result |
+| Invariant | Monotonicity, dimensional, sign and nominal/design relationships as applicable | Engineering relationship remains true |
+| State transition | Selector, override, auto, reset, hidden and disabled changes | Full dependency chain updates; inactive values do not govern |
+| Responsive | Same case at desktop and phone widths | Same numeric result, source, warning and status |
+| Regression | Documented default case | Accepted output and wording remain stable unless intentionally revised |
+
+### Difference and Tolerance Rules
+
+- **Exact lookup:** source row, category, factor and unit-converted value must agree exactly.
+- **Closed-form calculation:** use unrounded comparison and a reasoned numerical tolerance based on arithmetic precision; record the tolerance before seeing the production difference.
+- **Published rounded example:** reconstruct the unrounded method where possible. Record source-rounding drift separately from implementation drift.
+- **Iterative method:** record convergence criterion, maximum iterations, failure status and accepted result tolerance.
+- **Branch/status:** require exact agreement. The wrong branch, table row, factor, governing case or status is a failure regardless of numerical closeness.
+- **Display:** verify the displayed precision and unit separately and confirm display rounding cannot change utilisation or `PASS` / `FAIL`.
+- **Commercial software comparison:** compare only compatible mechanics, modelling assumptions, actions and result definitions. Do not use it to approve Australian code factors or unimplemented checks.
+
+Do not use one universal percentage tolerance for every calculation.
+
+### Disposition Rules
+
+| Outcome | Meaning | Required action |
+| --- | --- | --- |
+| `Pass` | Source, independent result, implementation, branch and page state agree within the recorded basis | Link evidence and retain as regression |
+| `Pass - explained source rounding` | Browser agrees with the unrounded reconstruction; published example differs only through demonstrated source rounding | Record both values and explanation |
+| `Fail` | Formula, lookup, unit, branch, value, state or warning is wrong | Correct implementation or source interpretation; rerun affected matrix |
+| `Blocked` | Required source, assumptions, example inputs or implementation access is missing | Do not describe affected calculation as checked |
+| `Source_Not_Verified` | Governing evidence remains unresolved | Keep out of verified release claim or show explicit draft/warning status |
+| `Not applicable` | Test class genuinely does not apply | Record why; do not leave the matrix cell silently blank |
+
+### Verification Priority Queue
+
+Work one calculation family at a time. The queue is a planning order, not evidence that any item has passed.
+
+| Priority | Tab / family | First reproduction targets | Preferred evidence |
+| ---: | --- | --- | --- |
+| `1` | Beam Section Capacity | Section moment capacity, web shear capacity, shear-bending interaction and compactness/effective-section branches | AS 4100 source pages, Steel Structures Design Manual to AS 4100, InfraBuild catalogue rows and SPACE GASS only as a secondary workflow comparison |
+| `2` | Axial Member Capacity | Section compression, member buckling reduction, tension gross yielding/net fracture and section-family factor branches | AS 4100, Steel Structures Design Manual, InfraBuild/Orrcon/Austube data and independently reconstructed cases |
+| `3` | Bolt Capacity | Shear N/X plane, tension, combined action, slip resistance, bearing/tear-out, edge distance and bolted-lap reduction | AS 4100, Australian design examples/connection guidance and independent arithmetic |
+| `4` | Weld Capacity | Fillet-weld throat capacity, weld-metal strength selection and welded-lap `k_r` branch | AS 4100, AS/NZS 1554 context, ASI connection guidance and independent arithmetic |
+| `5` | Concrete Pad Section | Strain-compatibility flexure, reinforcement table area, capacity factor branch and simplified one-way shear | AS 3600, Australian worked/reconstructed examples and independent section solver |
+| `6` | Section Properties | UB/UC and hollow-section catalogue rows; custom geometry `A`, `I`, `Z` and `r` identities | Exact manufacturer rows plus independent geometry identities |
+| `7` | Screw Piles / Rock Anchor selectors | Product-row reproduction, source-status mapping, filter compatibility and invalid/unpublished states | Manufacturer documents and exact selector-state tests; no inferred resistance |
+
+`Wind Site Draft` remains outside this verification queue unless explicitly scheduled. A future `Base Plate` or other calculation tab must complete this procedure before acceptance as a checked calculator.
+
+### Lightweight Page Rule After Verification
+
+Verification evidence remains in this register and optional independent QA scripts. The visible page should normally change only when verification identifies:
+
+- a required input or source-basis distinction;
+- a wrong formula, branch, factor, table value, unit or result;
+- a critical applicability condition;
+- an invalid/out-of-scope state that must fail closed;
+- a concise warning or limitation needed to prevent predictable misuse.
+
+Do not add every source intermediate, test case or software comparison to the user interface. The page remains a quick engineering handbook.
 
 ## Reference Folder Snapshot
 
