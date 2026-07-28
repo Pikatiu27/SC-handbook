@@ -1474,7 +1474,7 @@ Use only three main visual font levels:
 
 Practical rules:
 
-- The primary web target is a normal desktop browser. Phone and tablet layouts must adapt cleanly, but desktop web should not be compromised by mobile-only density decisions.
+- The normal desktop browser is the primary and complete presentation target. Phone and tablet layouts provide an essential quick-check view, but desktop web must not be compromised by mobile-only density decisions.
 - Use shared CSS font variables across every tab.
 - Keep member-page typography aligned with bolt-page typography.
 - Input controls such as `Bolt Size M24` and `Bolt Category` should use the same size and weight.
@@ -1532,7 +1532,7 @@ Shared implementation requirements:
 - Reuse `.tool-navigation`, `.tool-categories`, `.tool-category`, `.tool-tabs`, `.tool-tab`, `.tool-heading`, `.lookup-card`, `.input-group`, `.input-group-heading`, `.input-group-fields`, `.capacity-section`, `.capacity-card`, `.detail-card`, `.source-card`, `.result-note` and shared form-control styles wherever their engineering purpose matches.
 - Do not copy an existing tab's one-off selectors as the foundation for a new layout. Promote genuinely reusable behaviour to a shared class first.
 - Keep input group labels and order consistent with Section 15.8. A visual row is an engineering category, not merely a convenient number of equal-width fields.
-- Use the same DOM and calculation outputs at every viewport. Mobile adaptation is CSS-driven and may collapse secondary material, but it must not fork formulas, values, warnings or references.
+- Use the same DOM and calculation outputs at every viewport. The compact phone tool bar is a responsive shell for the existing category and tool controls, not a second navigation or calculator system. Mobile adaptation is CSS-driven and may collapse secondary material, but it must not fork formulas, values, warnings or references.
 - Before acceptance, compare the new tab beside at least one established tab at desktop and phone widths. Check title hierarchy, field-label size, control height, focus state, manual/override/read-only fills, result hierarchy, warning density, horizontal overflow and active-tab visibility.
 
 #### 15.4.3 Canonical Web Spacing, Grid and Density Contract
@@ -1589,19 +1589,33 @@ Text-density rules:
 
 ### 15.5 Mobile Layout Rules
 
-The web layout must work on phone, tablet, and desktop.
+Desktop web is the primary design target. Mobile is an essential quick-check view: it must let an engineer select the tool, enter the required data, confirm the adopted condition, read the governing output and see the controlling warning without reproducing the full desktop evidence layout by default.
 
-Mobile rules:
+Mobile-default content:
 
+- Show the active category, full tool name and issue / review status.
+- Show section, product or method selection and every input required to produce the current result.
+- Show units, Auto / Manual / Override state and any adopted axis, plane, grade, formula branch or other condition that materially changes the result.
+- Show the governing output, compatible status and one concise controlling warning.
+- Keep Reset, selection and calculation actions directly operable.
+
+Mobile-progressive content:
+
+- Keep advanced or optional inputs in the existing folded input groups unless they are required by the active calculation branch.
+- Keep secondary results, derived-value lists, formula traces, reference tables, source-register notes, detailed limitations and detailed drawings folded by default.
+- Keep `Calculation details`, `More inputs` and `References and limitations` available as short full-width disclosure controls where the corresponding content exists.
+- A phone layout may omit selected-section metric grids and support diagrams from the default view when the same adopted section, grade, direction and source basis remain identifiable from the selection controls, selected-basis label, result note or folded trace.
+
+Mobile interaction and layout:
+
+- Use the compact active-tool bar by default. Its `Tools` control reveals the existing full-name category and tool navigation; do not keep two horizontal navigation rows permanently open on a narrow phone.
+- Keep complete category and tool names inside the opened tool menu. Do not introduce abbreviations, ellipses or smaller-than-standard labels.
 - If one row cannot display cleanly, wrap to two rows or one column.
-- Never force small controls, result chips, formula tags, or tab buttons into one crowded row.
-- On phone width, use single-column input grids unless two fields are clearly short and readable.
-- Category and tool buttons remain in separate single-row horizontal scroll controls; do not wrap either level into a tall multi-row block.
-- Result cards should stack vertically if three cards cannot fit comfortably.
-- Avoid horizontal scrolling except for unavoidable tables.
-- Keep minimum touch target height around 40-46 px for selects, inputs, and tab buttons.
-- When the phone tool navigation overflows horizontally, automatically bring the active tool tab fully into view. Reserve enough trailing scroll space for the final full-name tool button to be brought completely into view. A direct hash link must never leave the selected tool off-screen.
-- Keep complete category and tool names on phone. Use horizontal scrolling rather than abbreviations, ellipses or smaller-than-standard text.
+- Never force small controls, result chips, formula tags or tab buttons into one crowded row.
+- Use single-column input grids unless two fields are clearly short and readable.
+- Stack result cards when they cannot retain clear labels, values and units.
+- Avoid horizontal scrolling except for unavoidable tables with preserved headers or labelled records.
+- Keep minimum touch-target height around `40-46px` for controls and disclosure buttons.
 - Keep public hash routes stable. User-facing aliases such as `#pad` may map to an internal panel name, but existing shared links must not silently fall back to another tool.
 - The published footer must show a neutral build identifier, version, date, or commit reference. Do not label the public page as a `local` build.
 
@@ -1626,23 +1640,24 @@ Use the existing shared breakpoints as a layout contract:
 | Above `1020px` | Full centred desktop view within the `1040px` content container |
 | `761-1020px` | Compact desktop/tablet view with `18px` outer gutters; reduce columns where labels or controls become cramped |
 | `501-760px` | Mobile/tablet single-column input groups; convert rigid result and table grids to readable stacks |
-| `500px` and below | Narrow-phone view with `12px` gutters, `54px` header, sticky horizontally scrollable navigation and compact titles/results |
+| `500px` and below | Narrow-phone essential view with `12px` gutters, `54px` header, compact active-tool bar, folded full-name tool menu and compact inputs/results |
 
 Responsive priority order must remain:
 
-1. Active tool identity and scope.
+1. Active tool identity and issue status.
 2. Primary required inputs in engineering dependency order.
-3. Adopted-basis summary.
-4. Governing result, compatible utilisation/status and critical warning.
-5. Secondary in-scope checks or published values.
-6. Figures, formulas, source notes and detailed limitations.
+3. Adopted condition needed to interpret the result.
+4. Governing result, compatible utilisation/status and controlling warning.
+5. Optional inputs and secondary in-scope checks.
+6. Figures, formulas, source notes, reference tables and detailed limitations.
 
 Responsive acceptance rules:
 
 - Changing viewport width may change column count, stacking, wrapping and folded default state only. It must not change defaults, active values, formulas, rounding, warnings, references or result status.
 - At `760px` and below, full input-field grids normally become one column. Preserve two columns only for genuinely short paired controls, switches or metrics that remain readable at `320px`.
-- At `500px` and below, the active category and full tool name must both be visible or automatically scrolled fully into view.
+- At `500px` and below, the compact tool bar must show the active category and full tool name. Opening `Tools` must expose the same category and tool controls used by desktop.
 - Do not hide required inputs, the adopted basis, the governing result, the controlling warning or the result status on phone.
+- Do not interpret “mobile essential” as permission to remove units, source/override state, invalid-input feedback or a condition that changes the formula branch.
 - Secondary helper text may be suppressed only when the same meaning remains available in a nearby label, summary or folded panel.
 - A compact table must either transform into labelled records or use deliberate horizontal scrolling with a visible scroll affordance and preserved row/column identity. Do not simply clip columns.
 - Phone field order must follow DOM and keyboard order. Visual CSS reordering must not create a different reading or tab sequence.

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260724reorelease1">
+  <link rel="stylesheet" href="styles.css?v=20260729mobileessential1">
 </head>
 <body>
   <header class="topbar">
@@ -16,23 +16,29 @@
     <h1 class="visually-hidden">SC Handbook engineering tools</h1>
 
     <section class="tool-navigation" aria-label="Engineering tool navigation">
-      <nav class="tool-categories" aria-label="Engineering categories">
-        <button class="tool-category active" type="button" data-category="steel-connections" aria-pressed="true">Steel Connections</button>
-        <button class="tool-category" type="button" data-category="steel-members" aria-pressed="false">Steel Members</button>
-        <button class="tool-category" type="button" data-category="foundations" aria-pressed="false">Foundations</button>
-      </nav>
+      <div class="mobile-tool-bar">
+        <span><small id="mobileToolCategory">Steel Connections</small><strong id="mobileToolName">Bolt Capacity</strong></span>
+        <button id="mobileToolsToggle" class="mobile-tools-toggle" type="button" aria-expanded="false" aria-controls="toolNavigationMenu">Tools <span aria-hidden="true">+</span></button>
+      </div>
+      <div id="toolNavigationMenu" class="tool-navigation-menu">
+        <nav class="tool-categories" aria-label="Engineering categories">
+          <button class="tool-category active" type="button" data-category="steel-connections" aria-pressed="true">Steel Connections</button>
+          <button class="tool-category" type="button" data-category="steel-members" aria-pressed="false">Steel Members</button>
+          <button class="tool-category" type="button" data-category="foundations" aria-pressed="false">Foundations</button>
+        </nav>
 
-      <nav class="tool-tabs" aria-label="SC Handbook tools">
-        <button class="tool-tab active" type="button" data-category="steel-connections" data-tool="bolt" aria-controls="boltPanel" aria-selected="true">Bolt Capacity</button>
-        <button class="tool-tab" type="button" data-category="steel-connections" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
-        <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-selected="false" hidden>Section Properties</button>
-        <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-selected="false" hidden>Axial Member Capacity</button>
-        <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-selected="false" hidden>Beam Section Capacity</button>
-        <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-selected="false" hidden>Concrete Pad Section</button>
-        <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-selected="false" hidden>Reinforcement</button>
-        <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-selected="false" hidden>Screw Piles Selector</button>
-        <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-selected="false" hidden>Rock Anchor Selector</button>
-      </nav>
+        <nav class="tool-tabs" aria-label="SC Handbook tools">
+          <button class="tool-tab active" type="button" data-category="steel-connections" data-tool="bolt" aria-controls="boltPanel" aria-selected="true">Bolt Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-connections" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-selected="false" hidden>Section Properties</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-selected="false" hidden>Axial Member Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-selected="false" hidden>Beam Section Capacity</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-selected="false" hidden>Concrete Pad Section</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-selected="false" hidden>Reinforcement</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-selected="false" hidden>Screw Piles Selector</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-selected="false" hidden>Rock Anchor Selector</button>
+        </nav>
+      </div>
     </section>
 
     <section id="boltPanel" class="tool-panel active">

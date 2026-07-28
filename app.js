@@ -1829,6 +1829,7 @@ let beamSource = "catalogue";
 let beamFamily = "ub";
 let memberType = "chs";
 let reoPreviousRouteKey = "";
+let mobileLayoutActive = window.matchMedia("(max-width: 500px)").matches;
 const manualInputIds = [
   "boltCount", "threadPlanes", "shankPlanes", "holeDiameter", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
@@ -7968,6 +7969,25 @@ function calculateReo() {
   );
 }
 
+function setMobileToolMenu(open) {
+  const navigation = document.querySelector(".tool-navigation");
+  const toggle = $("mobileToolsToggle");
+  if (!navigation || !toggle) return;
+  navigation.classList.toggle("is-open", open);
+  toggle.setAttribute("aria-expanded", String(open));
+  const icon = toggle.querySelector("[aria-hidden]");
+  if (icon) icon.textContent = open ? "\u00d7" : "+";
+}
+
+function syncResponsiveDefaults(force = false) {
+  const mobileView = window.matchMedia("(max-width: 500px)").matches;
+  if (!force && mobileView === mobileLayoutActive) return;
+  const memberActionGroup = $("memberActionGroup");
+  if (memberActionGroup) memberActionGroup.open = !mobileView;
+  if (!mobileView) setMobileToolMenu(false);
+  mobileLayoutActive = mobileView;
+}
+
 function setTool(tool, updateHash = true) {
   const resolvedTool = toolAliases[tool] || tool;
   const validTool = toolNames.includes(resolvedTool);
@@ -7989,8 +8009,11 @@ function setTool(tool, updateHash = true) {
     if (active) activeButton = button;
   });
   const activeToolTab = document.querySelector(`.tool-tab[data-tool="${selectedTool}"]`);
-  if (activeToolTab && window.matchMedia("(max-width: 500px)").matches) {
-    window.requestAnimationFrame(() => activeToolTab.scrollIntoView({ block: "nearest", inline: "center" }));
+  const mobileView = window.matchMedia("(max-width: 500px)").matches;
+  if (activeToolTab) {
+    $("mobileToolCategory").textContent = activeCategoryButton?.textContent?.trim() || "";
+    $("mobileToolName").textContent = activeToolTab.textContent.trim();
+    if (mobileView) setMobileToolMenu(false);
   }
   toolNames.forEach(name => {
     const panel = $(`${name}Panel`);
@@ -8111,11 +8134,22 @@ function initialise() {
   $("uBoltProduct").addEventListener("change", calculateUBolt);
   document.querySelectorAll(".tool-category").forEach(button => button.addEventListener("click", () => {
     const firstTool = toolCategories[button.dataset.category]?.[0];
-    if (firstTool) setTool(firstTool);
+    if (firstTool) {
+      setTool(firstTool);
+      if (window.matchMedia("(max-width: 500px)").matches) setMobileToolMenu(true);
+    }
   }));
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
+  $("mobileToolsToggle").addEventListener("click", () => {
+    const open = $("mobileToolsToggle").getAttribute("aria-expanded") !== "true";
+    setMobileToolMenu(open);
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") setMobileToolMenu(false);
+  });
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {
+    syncResponsiveDefaults();
     if (!$("concretePanel").hidden) calculateConcrete();
     if (!$("reoPanel").hidden) calculateReo();
     if (!$("screwPanel").hidden) calculateScrew();
@@ -8212,6 +8246,7 @@ function initialise() {
   calculateScrew();
   setBoltMode(initialBoltMode());
   setTool(location.hash.slice(1) || "bolt", false);
+  syncResponsiveDefaults(true);
 }
 
 initialise();
