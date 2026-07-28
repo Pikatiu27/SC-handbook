@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260729boltrelease1">
+  <link rel="stylesheet" href="styles.css?v=20260729boltspacing1">
 </head>
 <body>
   <header class="topbar">
@@ -106,7 +106,7 @@
                   <label class="detailing-input-label" for="boltPitch">Bolt pitch, p <i>centre-to-centre</i></label>
                   <div class="input-check-row"><span class="unit"><input id="boltPitch" type="number" min="0" step="1" value="60" aria-describedby="pitchCheckValue"><em>mm</em></span><b id="pitchStatus" class="input-check-status pass" aria-live="polite">PASS</b></div>
                 </div>
-                <p class="detailing-input-note" id="pitchCheckValue">Permitted range: <output id="minimumPitch">60.0</output>-<output id="maximumPitch">150.0</output> mm · AS 4100 Cl. 9.5.1 and Cl. 9.5.3 general limit</p>
+                <p class="detailing-input-note" id="pitchCheckValue"><output id="minimumPitch">60.0</output>-<output id="maximumPitch">150.0</output> mm permitted · AS 4100 Cl. 9.5.1; Cl. 9.5.3 general limit</p>
               </div>
               <label><span>Hole type</span><select id="holeFactor"><option value="1">Standard hole</option><option value="0.85">Oversize / short slot</option><option value="0.7">Long slot</option></select></label>
             </div>
@@ -1542,7 +1542,7 @@
   <script src="beam-section-capacity.js?v=20260729boltrelease1"></script>
   <script src="beam-section-reconciliation.js?v=20260729boltrelease1"></script>
   <script src="reo-calculation.js?v=20260729boltrelease1"></script>
-  <script src="app.js?v=20260729boltrelease1"></script>
+  <script src="app.js?v=20260729boltspacing1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

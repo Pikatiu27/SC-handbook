@@ -2239,6 +2239,8 @@ The connected-ply section should use one shared detailing row:
 - `p` = centre-to-centre bolt pitch.
 - Disable `p` only for a one-bolt connection.
 - Label `k_r` as `bolted-lap reduction`; do not use `default 1.0` as its visible definition.
+- On desktop, let the shared pitch / hole-type row use the full available width and align both input cards at the top. Keep the permitted pitch range and the Cl. 9.5.1 / Cl. 9.5.3 general-limit references on one concise support line where the viewport permits; allow normal wrapping on narrow screens.
+- Align paired ply input cards at the top so a support note under `e` does not stretch the adjacent edge-condition card. Between 761 px and 1100 px, stack the pitch and hole-type cards in one restrained-width column rather than compressing their notes.
 
 Use one explicit `Connected-ply basis` control:
 
