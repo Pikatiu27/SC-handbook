@@ -9,13 +9,17 @@ Static, English-language engineering lookup handbook with traceable quick-refere
 - bolt tension capacity;
 - bolt shear capacity for N (threads intercept) and X (threads clear) shear planes;
 - local hole-bearing capacity for two connected plies treated as identical or checked separately;
+- optional manual-area net-section tension and block-shear capacities;
 - minimum pitch, general maximum pitch and minimum edge distance checks;
-- detailing non-compliance gating for the visible result status;
+- visible detailing non-compliance warning where a displayed capacity must not be adopted;
 - TF-only slip resistance with separate serviceability slip actions;
-- combined shear and tension strength interaction;
 - TF slip combined shear and tension serviceability interaction.
 
-The primary basis is AS 4100 Table 3.4, AS 4100 Cl. 9.1.8, AS 4100 Cl. 9.2.2.1, AS 4100 Cl. 9.2.2.2, AS 4100 Cl. 9.2.2.3, AS 4100 Cl. 9.2.2.4, AS 4100 Cl. 9.2.3.1, AS 4100 Cl. 9.2.3.3, AS 4100 Cl. 9.5.1, AS 4100 Cl. 9.5.2 and AS 4100 Cl. 9.5.3. The edge check distinguishes hole-centre edge distance `e` from the effective edge distance `a_e` used for edge-limited local hole bearing. Bolt-group shear, tension and local hole-bearing capacities assume identical bolts in a concentric connection with equal action per bolt; for total group shear `V*`, `Vi* = V*/n` and the group local hole-bearing limit is `n` times the governing per-bolt value. The two connected plies are explicitly treated as identical or checked separately; in separate mode the lower ply value governs. This is not a complete connected-plate resistance check. Eccentric and non-uniform bolt-force distributions, net-section rupture, block shear and actual tear-out paths are excluded. Australian drawing callouts use the category and shear-plane condition, for example `M24 8.8/S - N plane`, `M24 8.8/TB - X plane` or `M24 8.8/TF - N plane`. TB is a fully tensioned bearing category, not a fixed N or X plane. For grade 10.9 bolts, `k_rd = 0.83` applies where threads intercept the shear plane and `k_rd = 1.00` applies where threads do not intercept the shear plane. The strength combined check uses AS 4100 Cl. 9.2.2.3. The TF serviceability slip combined check uses separately entered slip actions under AS 4100 Cl. 9.2.3.3. Any applicable pitch or minimum edge-distance FAIL changes the visible result status to `NON-COMPLIANT`.
+The primary basis is AS 4100 Table 3.4, Table 9.2.1, Cl. 9.2.2.1, Cl. 9.2.2.2, Cl. 9.2.2.4, Cl. 9.2.3.1, Cl. 9.2.3.3, Cl. 9.5.1, Table 9.5.2 and Cl. 9.5.3. Property class 8.8 bolts below 16 mm use `fuf = 800 MPa` in accordance with Table 9.2.1 Note 2. For property class 10.9 bolts, `k_rd = 0.83` is applied to the complete N/X shear-area bracket whenever threads intercept any shear plane; X-only shear uses `k_rd = 1.00`.
+
+For a standard hole, `e` is entered from the bolt centre to the ply edge. For an oversize or slotted hole, `e` is entered from the nearer hole edge to the ply edge plus `df/2`. The drawing-derived `a_e` remains a separate direct input for the Cl. 9.2.2.4 edge-distance bearing limit. Bolt-group capacities assume identical bolts, concentric action and equal sharing. Connected-ply bearing is limited to a single-shear, two-ply connection; multi-ply force distribution and the Cl. 9.2.2.5 filler-plate reduction are not evaluated.
+
+Standard bolt, connected-ply bearing and optional ply-rupture results are capacities only. Project strength actions, AS 4100 Cl. 9.2.2.3 strength interaction and an overall connection PASS/FAIL are not included. Any applicable pitch or minimum edge-distance FAIL produces a visible warning not to adopt the displayed capacities. The `/TF` branch retains a separate serviceability slip check using total bolt-group actions with equal shear per bolt assumed; `mu = 0.35` is limited to clean as-rolled contact surfaces unless test evidence supports another surface.
 
 For bolt shear, `k_r` is the bolted-lap reduction factor in AS 4100 Table 9.2.2.1, referenced by AS 4100 Cl. 9.2.2.1. It defaults to 1.0 unless the actual lap connection length `l_j` requires a lower value. It is separate from the welded-lap table.
 
