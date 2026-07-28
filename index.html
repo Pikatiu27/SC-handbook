@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260729mobileessential1">
+  <link rel="stylesheet" href="styles.css?v=20260729mobileessential2">
 </head>
 <body>
   <header class="topbar">
@@ -95,19 +95,26 @@
             <article class="capacity-card tension"><span>Design tensile capacity, φN<sub>tf</sub></span><strong><output id="tensionCapacity">234.4</output><small> kN</small></strong><p>AS 4100 Cl. 9.2.2.2</p></article>
           </div>
           <p class="result-note" id="boltResultNote">Selected N-plane capacity · k<sub>rd</sub> = 1.00 · k<sub>r</sub> = 1.00.</p>
+          <p class="bolt-adoption-warning" id="boltDetailingStatus" role="status" hidden></p>
         </section>
       </section>
 
       <details class="detail-card major-detail" id="connectionDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Bolt group, connected plies, integrity, detailing and project actions</small></span><i>+</i></summary>
+        <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Bolt-group shear, ply bearing and detailing</small></span><i>+</i></summary>
         <div class="detail-body">
-          <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="2"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>default 1.0</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result bolt-group-result"><span>Design shear capacity · bolt group</span><strong id="groupShearCapacity">266.8 kN</strong><small id="groupShearBasis">2 bolts × 1 N plane per bolt = 2 total shear planes.</small></div></section>
+          <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="2"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>bolted-lap reduction</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result bolt-group-result"><span>Design shear capacity, &phi;V<sub>f</sub> · bolt group</span><strong id="groupShearCapacity">266.8 kN</strong><small id="groupShearBasis">2 bolts · 1 N + 0 X shear planes per bolt · equal shear per bolt assumed</small></div></section>
           <section>
             <h3>Connected plies and detailing</h3>
-            <div class="ply-section-heading"><div><b>Shared bolt-hole geometry</b><small>Applies to each active connected ply.</small></div></div>
+            <div class="ply-section-heading"><div><b>Hole geometry and spacing</b><small>Hole type and pitch detailing.</small></div></div>
             <div class="form-grid two shared-ply-geometry">
-              <label><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="holeDiameter" type="number" min="0" step="1" value="26"><em>mm</em></span></label>
-              <label class="edge-pitch-field"><span>Bolt pitch, p <i>centre-to-centre</i></span><span class="unit"><input id="boltPitch" type="number" min="0" step="1" value="60"><em>mm</em></span></label>
+              <div class="detailing-input-field edge-pitch-field">
+                <div class="detailing-input-control">
+                  <label class="detailing-input-label" for="boltPitch">Bolt pitch, p <i>centre-to-centre</i></label>
+                  <div class="input-check-row"><span class="unit"><input id="boltPitch" type="number" min="0" step="1" value="60" aria-describedby="pitchCheckValue"><em>mm</em></span><b id="pitchStatus" class="input-check-status pass" aria-live="polite">PASS</b></div>
+                </div>
+                <p class="detailing-input-note" id="pitchCheckValue"><output id="minimumPitch">60.0</output>-<output id="maximumPitch">150.0</output> mm permitted · AS 4100 Cl. 9.5.1; Cl. 9.5.3 general limit</p>
+              </div>
+              <label><span>Hole type</span><select id="holeFactor"><option value="1">Standard hole</option><option value="0.85">Oversize / short slot</option><option value="0.7">Long slot</option></select></label>
             </div>
             <div class="ply-basis-control">
               <label><span>Connected-ply basis</span><select id="connectedPlyBasis"><option value="identical">Both plies identical</option><option value="separate">Check plies separately</option></select></label>
@@ -120,14 +127,19 @@
                   <div class="form-grid two">
                     <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="plateThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
                     <label><span>f<sub>up</sub> <i>ply tensile strength</i></span><span class="unit"><input id="plateStrength" type="number" min="1" step="1" value="410"><em>MPa</em></span></label>
-                    <label><span>Edge condition</span><select id="edgeCondition"><option value="1.75">Sheared / hand flame cut</option><option value="1.5">Machine cut / sawn / planed</option><option value="1.25">Rolled edge</option></select></label>
-                    <label><span>Edge distance, e <i>bolt centre to edge</i></span><span class="unit"><input id="edgeDistance" type="number" min="0" step="1" value="42"><em>mm</em></span></label>
+                    <label><span>Edge condition</span><select id="edgeCondition"><option value="1.75">Sheared / hand flame-cut edge</option><option value="1.5">Machine-cut, sawn or planed edge</option><option value="1.25">Rolled edge of rolled flat bar / section</option></select></label>
+                    <div class="detailing-input-field">
+                      <div class="detailing-input-control">
+                        <label class="detailing-input-label" for="edgeDistance">Edge distance, e</label>
+                        <div class="input-check-row"><span class="unit"><input id="edgeDistance" type="number" min="0" step="1" value="42" aria-describedby="edgeDistanceRequirement"><em>mm</em></span><b id="edgeDistanceStatus" class="input-check-status pass" aria-live="polite">PASS</b></div>
+                      </div>
+                      <p class="detailing-input-note" id="edgeDistanceRequirement"><output id="minimumEdgeDistance">42.0</output> mm minimum · standard hole: centre to edge</p>
+                    </div>
                   </div>
-                  <div class="form-grid two">
-                    <label><span>a<sub>e</sub> basis</span><select id="edgeDistanceBasis"><option value="auto">Automatic · aligned end edge / pitch</option><option value="manual">Manual · drawing-derived</option></select></label>
-                    <label class="edge-ae-field"><span>Effective edge distance, a<sub>e</sub></span><span class="unit"><input id="effectiveEdgeInput" type="number" min="0" step="0.1" value="41" readonly><em>mm</em></span></label>
+                  <div class="form-grid edge-ae-entry">
+                    <label class="edge-ae-field"><span>Effective edge distance, a<sub>e</sub> <i>drawing-derived</i></span><span class="unit"><input id="effectiveEdgeInput" type="number" min="0.1" step="0.1" value="41"><em>mm</em></span></label>
+                    <p class="ply-basis-note effective-edge-definition">Drawing-derived a<sub>e</sub>: minimum directional hole-edge distance to the ply or adjacent hole edge, plus d<sub>f</sub>/2 (AS 4100 Cl. 9.2.2.4).</p>
                   </div>
-                  <p class="ply-basis-note" id="edgeDistanceBasisNote">Automatic: a<sub>e,end</sub> = 41.0 mm; a<sub>e,pitch</sub> = 46.0 mm; end edge governs.</p>
                 </div>
               </div>
               <div id="secondPlyFields" class="bolt-ply-card second-ply-fields" hidden>
@@ -136,35 +148,34 @@
                   <div class="form-grid two">
                     <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="plateThickness2" type="number" min="0.1" step="0.1" value="8"><em>mm</em></span></label>
                     <label><span>f<sub>up</sub> <i>ply tensile strength</i></span><span class="unit"><input id="plateStrength2" type="number" min="1" step="1" value="410"><em>MPa</em></span></label>
-                    <label><span>Edge condition</span><select id="edgeCondition2"><option value="1.75">Sheared / hand flame cut</option><option value="1.5">Machine cut / sawn / planed</option><option value="1.25">Rolled edge</option></select></label>
-                    <label><span>Edge distance, e <i>bolt centre to edge</i></span><span class="unit"><input id="edgeDistance2" type="number" min="0" step="1" value="42"><em>mm</em></span></label>
+                    <label><span>Edge condition</span><select id="edgeCondition2"><option value="1.75">Sheared / hand flame-cut edge</option><option value="1.5">Machine-cut, sawn or planed edge</option><option value="1.25">Rolled edge of rolled flat bar / section</option></select></label>
+                    <div class="detailing-input-field">
+                      <div class="detailing-input-control">
+                        <label class="detailing-input-label" for="edgeDistance2">Edge distance, e</label>
+                        <div class="input-check-row"><span class="unit"><input id="edgeDistance2" type="number" min="0" step="1" value="42" aria-describedby="edgeDistanceRequirement2"><em>mm</em></span><b id="edgeDistanceStatus2" class="input-check-status pass" aria-live="polite">PASS</b></div>
+                      </div>
+                      <p class="detailing-input-note" id="edgeDistanceRequirement2"><output id="minimumEdgeDistance2">42.0</output> mm minimum · standard hole: centre to edge</p>
+                    </div>
                   </div>
-                  <div class="form-grid two">
-                    <label><span>a<sub>e</sub> basis</span><select id="edgeDistanceBasis2"><option value="auto">Automatic · aligned end edge / pitch</option><option value="manual">Manual · drawing-derived</option></select></label>
-                    <label class="edge-ae-field"><span>Effective edge distance, a<sub>e</sub></span><span class="unit"><input id="effectiveEdgeInput2" type="number" min="0" step="0.1" value="41" readonly><em>mm</em></span></label>
+                  <div class="form-grid edge-ae-entry">
+                    <label class="edge-ae-field"><span>Effective edge distance, a<sub>e</sub> <i>drawing-derived</i></span><span class="unit"><input id="effectiveEdgeInput2" type="number" min="0.1" step="0.1" value="41"><em>mm</em></span></label>
+                    <p class="ply-basis-note effective-edge-definition">Drawing-derived a<sub>e</sub>: minimum directional hole-edge distance to the ply or adjacent hole edge, plus d<sub>f</sub>/2 (AS 4100 Cl. 9.2.2.4).</p>
                   </div>
-                  <p class="ply-basis-note" id="edgeDistanceBasisNote2">Automatic: a<sub>e,end</sub> = 41.0 mm; a<sub>e,pitch</sub> = 46.0 mm; end edge governs.</p>
                 </div>
               </div>
             </div>
             <div class="connected-ply-results" aria-live="polite">
-              <div><span>Design bearing capacity · full-bearing limit</span><strong id="bearingGroupCapacity">566.8 kN</strong><small id="bearingGroupBasis">Bolt group · both plies identical · 283.4 kN per bolt × 2 bolts</small></div>
-              <div><span>Design bearing capacity · edge tear-out limit</span><strong id="tearoutGroupCapacity">302.6 kN</strong><small id="tearoutGroupBasis">Bolt group · both plies identical · 151.3 kN per bolt × 2 bolts</small></div>
-              <p id="connectedPlyGoverningBasis">Design bearing capacity governed by edge tear-out limit · both plies identical</p>
+              <div><span>Design bearing capacity, &phi;V<sub>b</sub> · full-bearing limit</span><strong id="bearingGroupCapacity">566.8 kN</strong><small id="bearingGroupBasis">Bolt group · both plies identical · 283.4 kN per bolt × 2 bolts</small></div>
+              <div><span>Design bearing capacity, &phi;V<sub>b</sub> · edge-distance limit</span><strong id="tearoutGroupCapacity">302.6 kN</strong><small id="tearoutGroupBasis">Bolt group · both plies identical · 151.3 kN per bolt × 2 bolts</small></div>
+              <p id="connectedPlyGoverningBasis">Design bearing capacity governed by edge-distance limit · both plies identical</p>
             </div>
-            <p class="local-bearing-scope">The edge tear-out row is the AS 4100 Cl. 9.2.2.4 edge-distance bearing limit. Net-section tension and block shear require the optional integrity check below.</p>
+            <p class="local-bearing-scope">AS 4100 Cl. 9.2.2.4 local bearing limits only; net-section tension and block shear are assessed separately below.</p>
             <div id="plyComparison" class="ply-comparison" hidden>
-              <div><span>Primary ply</span><strong id="primaryPlyCapacity">302.6 kN</strong><small id="primaryPlyControl">Edge tear-out limit</small></div>
-              <div><span>Second ply</span><strong id="secondPlyCapacity">242.1 kN</strong><small id="secondPlyControl">Edge tear-out limit</small></div>
-            </div>
-            <div class="detailing-checks" aria-label="Bolt detailing checks">
-              <div class="detailing-check"><span>Minimum pitch, p <small>AS 4100 Cl. 9.5.1</small></span><strong id="pitchCheckValue"><output id="actualPitch">60.0</output> / <output id="minimumPitch">60.0</output> mm required</strong><b id="pitchStatus" class="pass">PASS</b></div>
-              <div class="detailing-check"><span>Maximum pitch, p <small>AS 4100 Cl. 9.5.3 general limit</small></span><strong id="maximumPitchCheckValue"><output id="actualMaximumPitch">60.0</output> / <output id="maximumPitch">150.0</output> mm permitted</strong><b id="maximumPitchStatus" class="pass">PASS</b></div>
-              <div class="detailing-check"><span>Primary ply edge distance, e <small>AS 4100 Table 9.5.2</small></span><strong><output id="actualEdgeDistance">42.0</output> / <output id="minimumEdgeDistance">42.0</output> mm required</strong><b id="edgeDistanceStatus" class="pass">PASS</b></div>
-              <div id="secondPlyEdgeCheck" class="detailing-check" hidden><span>Second ply edge distance, e <small>AS 4100 Table 9.5.2</small></span><strong><output id="actualEdgeDistance2">42.0</output> / <output id="minimumEdgeDistance2">42.0</output> mm required</strong><b id="edgeDistanceStatus2" class="pass">PASS</b></div>
+              <div><span>Primary ply</span><strong id="primaryPlyCapacity">302.6 kN</strong><small id="primaryPlyControl">Edge-distance limit</small></div>
+              <div><span>Second ply</span><strong id="secondPlyCapacity">242.1 kN</strong><small id="secondPlyControl">Edge-distance limit</small></div>
             </div>
             <details class="integrity-check" id="connectedPlyIntegrity">
-              <summary><span><b>Connected-ply integrity</b><small id="integritySummaryStatus">Not evaluated · optional manual areas</small></span><i>+</i></summary>
+              <summary><span><b>Optional ply rupture checks</b><small id="integritySummaryStatus">Not evaluated · manual areas required</small></span><i>+</i></summary>
               <div class="integrity-body">
                 <div class="form-grid two">
                   <label><span>Assessment basis</span><select id="integrityMode"><option value="none">Not evaluated</option><option value="manual">Manual critical areas</option></select></label>
@@ -190,21 +201,21 @@
                     <div><span>Design section tension capacity, &phi;N<sub>t</sub></span><strong id="integrityNetCapacity">Incomplete</strong><small id="integrityNetBasis">Enter A<sub>g</sub> and A<sub>n</sub></small></div>
                     <div><span>Design block shear capacity, &phi;R<sub>bs</sub></span><strong id="integrityBlockCapacity">Incomplete</strong><small id="integrityBlockBasis">Enter the governing path areas</small></div>
                   </div>
-                  <p class="checklist-warning" id="integrityCheckNote">Use where V<sub>f</sub><sup>*</sup> is the axial force transferred through the checked component. Review all plausible paths and enter the governing path areas.</p>
+                  <p class="checklist-warning" id="integrityCheckNote">Review all plausible failure paths and enter the governing path areas for the selected component.</p>
                 </div>
               </div>
             </details>
           </section>
           <section id="tfSlipSection" hidden>
             <h3>TF slip check</h3>
-            <div class="form-grid three"><label><span>n<sub>ei</sub> <i>effective interfaces</i></span><input id="interfaces" type="number" min="1" max="10" step="1" value="1"></label><label><span>μ <i>slip factor</i></span><input id="slipFactor" type="number" min="0" max="1" step="0.01" value="0.35"></label><label><span>k<sub>h</sub> <i>hole factor</i></span><select id="holeFactor"><option value="1">1.00 · standard</option><option value="0.85">0.85 · short slot / oversize</option><option value="0.7">0.70 · long slot</option></select></label></div>
+            <div class="form-grid two"><label><span>n<sub>ei</sub> <i>effective interfaces</i></span><input id="interfaces" type="number" min="1" max="10" step="1" value="1"></label><label><span>μ <i>slip factor</i></span><input id="slipFactor" type="number" min="0" max="1" step="0.01" value="0.35"></label></div>
+            <p class="ply-basis-note">Use μ = 0.35 only for clean as-rolled contact surfaces; other surfaces require test evidence.</p>
             <div class="compact-result"><span>Design slip resistance</span><strong id="slipCapacity">Not applicable</strong><small id="slipCapacityBasis">Per bolt · AS 4100 Cl. 9.2.3.1</small></div>
-            <div class="ply-section-heading slip-action-heading"><div><b>Serviceability slip actions</b><small>Enter the actions applicable to the slip limit state.</small></div></div>
-            <div class="form-grid two"><label><span>V<sub>sf</sub><sup>*</sup> <i>design shear action for slip</i></span><span class="unit"><input id="slipShearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label><label><span>N<sub>tf</sub><sup>*</sup> <i>design tension action for slip</i></span><span class="unit"><input id="slipTensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label></div>
+            <div class="ply-section-heading slip-action-heading"><div><b>Bolt-group serviceability slip actions</b><small>Total group actions; equal action per identical bolt is assumed.</small></div></div>
+            <div class="form-grid two"><label><span>V<sub>sf</sub><sup>*</sup> <i>group shear action</i></span><span class="unit"><input id="slipShearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label><label><span>N<sub>tf</sub><sup>*</sup> <i>group tension action</i></span><span class="unit"><input id="slipTensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label></div>
             <div class="interaction-result"><span>TF slip utilisation ratio</span><strong id="slipGoverningRatio">—</strong><b id="slipGoverningStatus">Enter slip actions</b></div>
             <p class="checklist-warning" id="slipGoverningNote">Enter serviceability slip actions for the AS 4100 Cl. 9.2.3.3 check.</p>
           </section>
-          <section><h3>Project design actions</h3><div class="form-grid two"><label><span>V<sub>f</sub><sup>*</sup> <i>design shear action</i></span><span class="unit"><input id="shearDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label><label><span>N<sub>tf</sub><sup>*</sup> <i>design tension action</i></span><span class="unit"><input id="tensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label></div><p class="inline-note">For axial force transferred in shear, enter |N<sup>*</sup>| as V<sub>f</sub><sup>*</sup>, not as bolt tension.</p><div class="interaction-result"><span>Strength utilisation ratio</span><strong id="strengthGoverningRatio">—</strong><b id="strengthGoverningStatus">Enter design actions</b></div><p class="checklist-warning" id="strengthGoverningNote">Enter V<sub>f</sub><sup>*</sup> and/or N<sub>tf</sub><sup>*</sup> to activate the strength check.</p><p class="checklist-warning">Include prying force in N<sub>tf</sub><sup>*</sup> where applicable (AS 4100 Cl. 9.1.8).</p></section>
         </div>
       </details>
 
@@ -216,11 +227,12 @@
             <p><b>Issue status</b> · For Review. Clause pages for AS 4100 bolt strength, connected-ply bearing, section tension, block shear and lightweight detailing checks have been visually checked against the local reference PDF; product table values still require project-specific source-register traceability before `Checked` release.</p>
             <p><b>Primary basis</b> · AS 4100 Table 3.4, AS 4100 Table 9.2.2.1 and AS 4100 Table 15.2.2.2; AS 4100 Cl. 7.2, Cl. 9.1.8, Cl. 9.1.9, Cl. 9.2.2, Cl. 9.2.3 and Cl. 9.5.1 to Cl. 9.5.3.</p>
             <p><b>Material standards</b> · Connected ply strengths should be verified against AS/NZS 3678 or AS/NZS 3679.1 as applicable. The default f<sub>up</sub> = 410 MPa is for AS/NZS 3678 Grade 250 plate from ASI Simple Connections 2020 Table 2.15; use 440 MPa only for a verified AS/NZS 3679.1 Grade 300 flat bar/section or equivalent source. Fastener property class and structural bolt assemblies should be verified against AS 1110 and AS/NZS 1252 as applicable.</p>
-            <p><b>Symbols</b> · d<sub>f</sub> is the nominal bolt diameter; d<sub>h</sub> is the actual hole diameter; e is the hole-centre edge distance used for AS 4100 Table 9.5.2; p is the centre-to-centre pitch of equal holes aligned with the force; A<sub>o</sub> is the nominal plain-shank area; A<sub>c</sub> is the minor diameter area; A<sub>s</sub> is the tensile stress area. V<sub>sf</sub><sup>*</sup> and N<sub>tf</sub><sup>*</sup> in the TF section are the actions applicable to the serviceability slip check.</p>
+            <p><b>Symbols</b> · d<sub>f</sub> is the nominal bolt diameter. For a standard hole, e is measured from hole centre to ply edge; for a non-standard hole, e is measured from the nearer hole edge to the ply edge plus d<sub>f</sub>/2. The drawing-derived a<sub>e</sub> is used for AS 4100 Cl. 9.2.2.4. V<sub>sf</sub><sup>*</sup> and N<sub>tf</sub><sup>*</sup> are total bolt-group serviceability actions.</p>
             <p><b>N/X and category</b> · `/S`, `/TB` and `/TF` identify installation and connection category. N or X identifies the shear-plane condition and is selected separately; TB is not inherently N or X.</p>
-            <p><b>Detailing and edge notation</b> · For more than one bolt, pitch is checked against p<sub>min</sub> = 2.5d<sub>f</sub> and the general p<sub>max</sub> = min(15t<sub>p,min</sub>, 200 mm), where t<sub>p,min</sub> is the thinner active connected ply. AS 4100 Cl. 9.5.3(a) and (b) are not applied automatically. The minimum edge-distance check uses e, measured from the critical bolt centre to the selected physical ply edge. For equal holes aligned with the force, Automatic compares a<sub>e,end</sub> = e - d<sub>h</sub>/2 + d<sub>f</sub>/2 with a<sub>e,pitch</sub> = p - d<sub>h</sub> + d<sub>f</sub>/2. Use Manual for angled edges, corners, non-collinear holes or drawing-derived geometry.</p>
-            <p><b>Demand checks</b> · The local hole-bearing ratio assumes concentric shear and equal bolt sharing, with V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n. Where V<sub>f</sub><sup>*</sup> represents axial force transferred through the selected component and the optional integrity check is complete, it is also compared with &phi;N<sub>t</sub> and &phi;R<sub>bs</sub>. Bolt tension and combined bolt action remain separate checks. `/TF` uses separately entered serviceability slip actions.</p>
-            <p>Net-section and block-shear areas are user-entered values; the tool does not derive a failure path from connection geometry. Review every plausible path and repeat the check for each critical component. Plate bending, connection-component compression or buckling, drawing-derived tear-out geometry, eccentric bolt-group reactions, overlapping failure paths, prying action, coped-beam tearing, welds, supporting-member local effects and maximum edge distance are not evaluated. Special maximum-pitch cases under AS 4100 Cl. 9.5.3(a) and (b) require separate assessment.</p>
+            <p><b>Detailing and edge notation</b> · For more than one bolt, pitch is checked against p<sub>min</sub> = 2.5d<sub>f</sub> and the general p<sub>max</sub> = min(15t<sub>p,min</sub>, 200 mm). AS 4100 Cl. 9.5.3(a) and (b) are not applied automatically. Enter e on the basis stated below the input and enter a<sub>e</sub> directly from the connection drawing; the tool does not derive or geometrically verify a<sub>e</sub>.</p>
+            <p><b>Capacity-only boundary</b> · Standard bolt strength, connected-ply bearing, net-section tension and block shear are reported as design capacities without project strength actions or utilisation. `/TF` retains a separate optional serviceability slip check using its own actions.</p>
+            <p>Manual areas define one reviewed net-section or block-shear path. Connected-ply bearing assumes a single-shear, two-ply connection with concentric equal shear per bolt. Multi-ply distribution, eccentricity, plate bending, prying, welds and supporting-member effects are excluded.</p>
+            <p>AS 4100 Cl. 9.2.2.5 filler-plate reduction is not evaluated. Do not adopt the displayed bolt shear capacity where filler plates exceed 6 mm without completing that separate check.</p>
             <p>The entered k<sub>r</sub> is applied to AS 4100 Cl. 9.2.2.1 bolt shear capacity. The reduction is tabulated in AS 4100 Table 9.2.2.1, but the tool does not auto-derive it from connection length l<sub>j</sub>.</p>
             <p>AS 4100 Table 15.2.2.2 gives minimum installed bolt tension N<sub>ti</sub> only for M16 to M36. Accordingly, M10 and M12 are available only in /S categories in this tool. N<sub>ti</sub> is installation preload; it is not the design tensile capacity &phi;N<sub>tf</sub> and is not deducted from that capacity.</p>
             <p>A<sub>s</sub> and A<sub>c</sub> use metric coarse-thread data. Verify against the applicable fastener and thread Standards before issue for design.</p>
@@ -1527,15 +1539,16 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.0</b></footer>
-  <script src="bolt-integrity.js?v=20260724reorelease1"></script>
-  <script src="section-geometry.js?v=20260724reorelease1"></script>
-  <script src="section-catalogue.js?v=20260724reorelease1"></script>
-  <script src="beam-section-data.js?v=20260724reorelease1"></script>
-  <script src="beam-hot-rolled-data.js?v=20260724reorelease1"></script>
-  <script src="beam-section-capacity.js?v=20260724reorelease1"></script>
-  <script src="beam-section-reconciliation.js?v=20260724reorelease1"></script>
-  <script src="reo-calculation.js?v=20260724reorelease1"></script>
-  <script src="app.js?v=20260724reorelease1"></script>
+  <script src="bolt-capacity.js?v=20260729boltrelease1"></script>
+  <script src="bolt-integrity.js?v=20260729boltrelease1"></script>
+  <script src="section-geometry.js?v=20260729boltrelease1"></script>
+  <script src="section-catalogue.js?v=20260729boltrelease1"></script>
+  <script src="beam-section-data.js?v=20260729boltrelease1"></script>
+  <script src="beam-hot-rolled-data.js?v=20260729boltrelease1"></script>
+  <script src="beam-section-capacity.js?v=20260729boltrelease1"></script>
+  <script src="beam-section-reconciliation.js?v=20260729boltrelease1"></script>
+  <script src="reo-calculation.js?v=20260729boltrelease1"></script>
+  <script src="app.js?v=20260729boltspacing1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
