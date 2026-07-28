@@ -1908,6 +1908,47 @@ function safeText(text) {
     "'": "&#39;"
   }[char]));
 }
+
+function calculationTraceLine(label, content, className = "") {
+  if (!content) return "";
+  return `<div class="calculation-trace-line${className ? ` ${className}` : ""}"><span>${label}</span><code>${content}</code></div>`;
+}
+
+function calculationTraceRow({
+  title,
+  reference = "",
+  formula = "",
+  substitution = "",
+  result = "",
+  applicability = "",
+  lookup = "",
+  selection = "",
+  adopted = "",
+  state = ""
+}) {
+  const lookupMode = Boolean(lookup || selection || adopted);
+  const lines = lookupMode
+    ? [
+        calculationTraceLine("Lookup", lookup),
+        calculationTraceLine("Selection", selection),
+        calculationTraceLine("Adopted value", adopted, "is-result"),
+        calculationTraceLine("Applicability", applicability, "is-applicability")
+      ]
+    : [
+        calculationTraceLine("Formula", formula),
+        calculationTraceLine("Substitution", substitution),
+        calculationTraceLine("Result", result, "is-result"),
+        calculationTraceLine("Applicability", applicability, "is-applicability")
+      ];
+  return `<div class="calculation-trace-row${state ? ` is-${state}` : ""}">
+    <div class="calculation-trace-heading">
+      <b>${title}</b>
+      ${reference ? `<small>${reference}</small>` : ""}
+    </div>
+    <div class="calculation-trace-body">${lines.join("")}</div>
+  </div>`;
+}
+
 function clampNumericInput(input) {
   if (!String(input.value ?? "").trim()) return;
   const current = numericValue(input.value);
@@ -2010,11 +2051,39 @@ function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
     : ply.hasAdjacentHole
       ? `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(boltPitch)} - ${fixed(holeDiameter)} + ${fixed(bolt.d)}/2 = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
       : `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.effectiveEdge)} mm`;
-  return `
-    <div><b>${ply.label} full bearing - AS 4100 Cl. 9.2.2.4(1)</b><code>f<sub>up</sub> = ${ply.plateStrength.toFixed(0)} MPa; per bolt = 0.90 x 3.2 x ${fixed(bolt.d)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingFull)} kN</code></div>
-    <div><b>${ply.label} edge tear-out limit - AS 4100 Cl. 9.2.2.4(2)</b><code>${effectiveEdgeBasis}; per bolt = 0.90 x ${fixed(ply.effectiveEdge)} x ${fixed(ply.plateThickness)} x ${ply.plateStrength.toFixed(0)} / 1000 = ${fixed(ply.bearingEdge)} kN</code></div>
-    <div><b>${ply.label} minimum edge - AS 4100 Cl. 9.5.2</b><code>e<sub>min</sub> = ${value(ply.edgeConditionId).toFixed(2)}d<sub>f</sub> = ${fixed(ply.minimumEdge)} mm; provided e = ${fixed(ply.actualEdge)} mm - ${ply.edgeDistancePass ? "PASS" : "FAIL"}</code></div>
-    <div><b>${ply.label} local hole-bearing capacity</b><code>critical-hole capacity = min(${fixed(ply.bearingFull)}, ${fixed(ply.bearingEdge)}) = ${fixed(ply.localCapacity)} kN; equal-share group capacity = ${count} x ${fixed(ply.localCapacity)} = ${fixed(ply.groupCapacity)} kN</code></div>`;
+  return [
+    calculationTraceRow({
+      title: `${ply.label} full bearing`,
+      reference: "AS 4100 Cl. 9.2.2.4(1)",
+      formula: `&phi;V<sub>b</sub> = &phi;3.2d<sub>f</sub>t<sub>p</sub>f<sub>up</sub>`,
+      substitution: `0.90 &times; 3.2 &times; ${fixed(bolt.d)} mm &times; ${fixed(ply.plateThickness)} mm &times; ${ply.plateStrength.toFixed(0)} MPa / 1000`,
+      result: `Design capacity per bolt = ${fixed(ply.bearingFull)} kN`,
+      applicability: "Full-bearing limit at the checked hole."
+    }),
+    calculationTraceRow({
+      title: `${ply.label} edge tear-out limit`,
+      reference: "AS 4100 Cl. 9.2.2.4(2)",
+      formula: `&phi;V<sub>b,e</sub> = &phi;a<sub>e</sub>t<sub>p</sub>f<sub>up</sub>`,
+      substitution: `${effectiveEdgeBasis}; 0.90 &times; ${fixed(ply.effectiveEdge)} mm &times; ${fixed(ply.plateThickness)} mm &times; ${ply.plateStrength.toFixed(0)} MPa / 1000`,
+      result: `Design capacity per bolt = ${fixed(ply.bearingEdge)} kN`,
+      applicability: ply.basis === "manual" ? "Effective edge distance is a project drawing input." : "Effective edge distance is derived from the entered end distance and, where applicable, pitch."
+    }),
+    calculationTraceRow({
+      title: `${ply.label} minimum edge`,
+      reference: "AS 4100 Table 9.5.2",
+      lookup: "Minimum edge-distance multiplier for the selected edge condition.",
+      selection: `${value(ply.edgeConditionId).toFixed(2)}d<sub>f</sub>; d<sub>f</sub> = ${fixed(bolt.d)} mm`,
+      adopted: `e<sub>min</sub> = ${fixed(ply.minimumEdge)} mm; provided e = ${fixed(ply.actualEdge)} mm; ${ply.edgeDistancePass ? "PASS" : "FAIL"}`,
+      applicability: "Minimum physical edge distance; this is distinct from the effective edge distance used in tear-out capacity."
+    }),
+    calculationTraceRow({
+      title: `${ply.label} local hole-bearing capacity`,
+      formula: `&phi;V<sub>b,local</sub> = min(&phi;V<sub>b</sub>, &phi;V<sub>b,e</sub>); &phi;V<sub>b,group</sub> = n&phi;V<sub>b,local</sub>`,
+      substitution: `min(${fixed(ply.bearingFull)}, ${fixed(ply.bearingEdge)}) = ${fixed(ply.localCapacity)} kN; ${count} &times; ${fixed(ply.localCapacity)} kN`,
+      result: `Equal-share group capacity = ${fixed(ply.groupCapacity)} kN`,
+      applicability: "Identical bolts and equal shear sharing are assumed."
+    })
+  ].join("");
 }
 
 function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear) {
@@ -2336,50 +2405,164 @@ function calculateBolt() {
   $("slipGoverningStatus").className = !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
   $("slipGoverningNote").textContent = slipDisplayNote;
 
-  const slipFormula = slip === null ? "<code>Not applicable - TF categories only</code>" : `<code>0.70 x ${value("slipFactor")} x ${value("interfaces")} x ${preload} x ${value("holeFactor")} = ${fixed(slip)} kN per bolt</code>`;
-  const strengthInteractionFormula = hasShearDemand && hasTensionDemand
-    ? `<code>(V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub>)<sup>2</sup> = (${fixed(designShear)} / ${fixed(groupShear)})<sup>2</sup> + (${fixed(designTension)} / ${fixed(count * tension)})<sup>2</sup> = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}; limit &le; 1.0</code>`
-    : "<code>Not applicable unless both shear and tension design actions are entered. Use the separate bolt shear, bolt tension and local hole-bearing ratios for single-action checks.</code>";
-  const slipInteractionFormula = slip === null
-    ? "<code>Not applicable - AS 4100 Cl. 9.2.3.3 applies to friction-type categories where serviceability slip is limited</code>"
-    : `<code>V<sub>sf</sub><sup>*</sup> / &phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(slipShearDemand)} / ${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)} / ${fixed(slipTensionCapacity)} = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check; actions are entered separately from the strength check</code>`;
   const activePlyFormulaRows = connectedPlyFormulaRows(primaryPly, bolt, count, holeDiameter, boltPitch)
     + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count, holeDiameter, boltPitch) : "");
-  const pitchFormula = pitchApplicable
-    ? `<code>p<sub>min</sub> = 2.5d<sub>f</sub> = 2.5 x ${fixed(bolt.d)} = ${fixed(minimumPitch)} mm; provided p = ${fixed(boltPitch)} mm - ${pitchPass ? "PASS" : "FAIL"}</code>`
-    : "<code>Not applicable to a one-bolt connection</code>";
-  const maximumPitchFormula = pitchApplicable
-    ? `<code>t<sub>p,min</sub> = ${fixed(thinnerPlyThickness)} mm; p<sub>max</sub> = min(15t<sub>p,min</sub>, 200) = ${fixed(maximumPitch)} mm; provided p = ${fixed(boltPitch)} mm - ${maximumPitchPass ? "PASS" : "FAIL"}. General limit only; Cl. 9.5.3(a) and (b) are not applied.</code>`
-    : "<code>Not applicable to a one-bolt connection</code>";
-  const installedTensionFormula = hasInstalledTension
-    ? `<code>N<sub>ti</sub> = ${preload.toFixed(0)} kN for ${size} property class ${category.grade}. This is the minimum installed bolt tension, not &phi;N<sub>tf</sub>.</code>`
-    : `<code>Not required for ${categoryKey}. Snug-tight categories have no specified minimum installed bolt tension.</code>`;
   const integrityFormulaRows = !integrity.enabled
-    ? `<div><b>Connected-ply integrity</b><code>Not evaluated. Net-section tension and block shear require manual critical areas.</code></div>`
+    ? calculationTraceRow({
+        title: "Connected-ply integrity",
+        result: "Not evaluated",
+        applicability: "Net-section tension and block shear require manual critical areas."
+      })
     : !integrity.complete
-      ? `<div><b>Connected-ply integrity</b><code>Incomplete. ${integrity.error}</code></div>`
-      : `
-        <div><b>${integrity.checkedPly.label} section tension - AS 4100 Cl. 9.1.9(b) and Cl. 7.2</b><code>&phi;N<sub>t</sub> = 0.90 min(A<sub>g</sub>f<sub>yc</sub>, 0.85k<sub>t</sub>A<sub>n</sub>f<sub>uc</sub>) = 0.90 min(${fixed(integrity.net.grossYield)}, ${fixed(integrity.net.netFracture)}) = ${fixed(integrity.net.design)} kN; ratio = ${integrity.netRatio.toFixed(2)}</code></div>
-        <div><b>${integrity.checkedPly.label} block shear - AS 4100 Cl. 9.1.9(e)</b><code>&phi;R<sub>bs</sub> = 0.75 min(0.6f<sub>uc</sub>A<sub>nv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>, 0.6f<sub>yc</sub>A<sub>gv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>) = 0.75 min(${fixed(integrity.block.ruptureLimit)}, ${fixed(integrity.block.yieldLimit)}) = ${fixed(integrity.block.design)} kN; ratio = ${integrity.blockRatio.toFixed(2)}</code></div>`;
-  $("formulaSteps").innerHTML = `
-    <div><b>Tension - AS 4100 Cl. 9.2.2.2</b><code>0.80 x A<sub>s</sub> x f<sub>uf</sub> = ${fixed(tension)} kN</code></div>
-    <div><b>Minimum installed bolt tension - AS 4100 Table 15.2.2.2</b>${installedTensionFormula}</div>
-    <div><b>Shear N - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${threadKrd.toFixed(2)} x k<sub>r</sub> (${kr.toFixed(2)}) x ${bolt.Ac} / 1000 = ${fixed(threadShear)} kN; k<sub>rd</sub> applies where threads intercept the shear plane</code></div>
-    <div><b>Shear X - AS 4100 Cl. 9.2.2.1</b><code>0.80 x 0.62 x ${category.fuf} x ${shankKrd.toFixed(2)} x k<sub>r</sub> (${kr.toFixed(2)}) x ${bolt.Ao} / 1000 = ${fixed(shankShear)} kN; k<sub>rd</sub> = 1.00 where threads do not intercept the shear plane</code></div>
-    <div><b>Bolt group shear - AS 4100 Cl. 9.2.2.1</b><code>Equal action per identical bolt is assumed. n<sub>n,total</sub> = ${count} x ${nThread} = ${totalThreadPlanes}; n<sub>x,total</sub> = ${count} x ${nShank} = ${totalShankPlanes}; &phi;V<sub>f</sub> = 0.80 x 0.62 x f<sub>uf</sub> x k<sub>r</sub> x (n<sub>n,total</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>x,total</sub>k<sub>rd,X</sub>A<sub>o</sub>) = ${fixed(groupShear)} kN; k<sub>rd,N</sub> = ${threadKrd.toFixed(2)}, k<sub>rd,X</sub> = ${shankKrd.toFixed(2)}; default k<sub>r</sub> = 1.0 unless a bolted lap connection reduction applies</code></div>
-    <div><b>Bolt shear ratio - AS 4100 Cl. 9.2.2.1</b><code>V<sub>f</sub><sup>*</sup> / &phi;V<sub>f</sub> = ${fixed(designShear)} / ${fixed(groupShear)} = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Bolt tension ratio - AS 4100 Cl. 9.2.2.2</b><code>N<sub>tf</sub><sup>*</sup> / &phi;N<sub>tf</sub> = ${fixed(designTension)} / ${fixed(count * tension)} = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}</code></div>
-    <div><b>Minimum pitch - AS 4100 Cl. 9.5.1</b>${pitchFormula}</div>
-    <div><b>Maximum pitch - AS 4100 Cl. 9.5.3</b>${maximumPitchFormula}</div>
-    ${activePlyFormulaRows}
-    <div><b>Governing local hole-bearing ratio - AS 4100 Cl. 9.2.2.4</b><code>${governingPlyLabel}; equal sharing: V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n = ${fixed(designShear)}/${count} = ${fixed(criticalBoltShear)} kN; governing group capacity = ${fixed(equalShareGroupPlyCapacity)} kN; ratio = ${fixed(designShear)}/${fixed(equalShareGroupPlyCapacity)} = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}</code></div>
-    ${integrityFormulaRows}
-    <div><b>Detailing compliance</b><code>${detailingCompliant ? "All applicable lightweight detailing checks pass." : detailingFailureNote}</code></div>
-    <div><b>Strength governing check</b><code>${governingNote}</code></div>
-    <div><b>Combined shear and tension - AS 4100 Cl. 9.2.2.3</b>${strengthInteractionFormula}</div>
-    <div><b>TF slip - AS 4100 Cl. 9.2.3.1</b>${slipFormula}</div>
-    <div><b>TF combined slip - AS 4100 Cl. 9.2.3.3</b>${slipInteractionFormula}</div>
-    <div><b>Strength boundary</b><code>Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8.${slip === null ? "" : " Complete the separate serviceability slip checks above."}</code></div>`;
+      ? calculationTraceRow({
+          title: "Connected-ply integrity",
+          result: "Input required",
+          applicability: integrity.error,
+          state: "warning"
+        })
+      : [
+          calculationTraceRow({
+            title: `${integrity.checkedPly.label} section tension`,
+            reference: "AS 4100 Cl. 9.1.9(b) and AS 4100 Cl. 7.2",
+            formula: `&phi;N<sub>t</sub> = 0.90min(A<sub>g</sub>f<sub>yc</sub>, 0.85k<sub>t</sub>A<sub>n</sub>f<sub>uc</sub>)`,
+            substitution: `0.90min(${fixed(integrity.net.grossYield)}, ${fixed(integrity.net.netFracture)}) kN`,
+            result: `Design capacity = ${fixed(integrity.net.design)} kN; ratio = ${integrity.netRatio.toFixed(2)}`,
+            applicability: "Manual gross and net critical areas; checked connected ply only."
+          }),
+          calculationTraceRow({
+            title: `${integrity.checkedPly.label} block shear`,
+            reference: "AS 4100 Cl. 9.1.9(e)",
+            formula: `&phi;R<sub>bs</sub> = 0.75min(0.6f<sub>uc</sub>A<sub>nv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>, 0.6f<sub>yc</sub>A<sub>gv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>)`,
+            substitution: `0.75min(${fixed(integrity.block.ruptureLimit)}, ${fixed(integrity.block.yieldLimit)}) kN`,
+            result: `Design capacity = ${fixed(integrity.block.design)} kN; ratio = ${integrity.blockRatio.toFixed(2)}`,
+            applicability: "Manual critical block-shear areas; all plausible paths remain a project review."
+          })
+        ].join("");
+  const boltTraceRows = [
+    calculationTraceRow({
+      title: "Bolt tension capacity",
+      reference: "AS 4100 Cl. 9.2.2.2",
+      formula: `&phi;N<sub>tf</sub> = &phi;A<sub>s</sub>f<sub>uf</sub>`,
+      substitution: `0.80 &times; ${bolt.As} mm<sup>2</sup> &times; ${category.fuf} MPa / 1000`,
+      result: `Design capacity per bolt = ${fixed(tension)} kN`,
+      applicability: `${size} property class ${category.grade}; tensile stress area A<sub>s</sub>.`
+    }),
+    calculationTraceRow({
+      title: "Minimum installed bolt tension",
+      reference: "AS 4100 Table 15.2.2.2",
+      lookup: "Minimum installed bolt tension by bolt size and property class.",
+      selection: `${size}; property class ${category.grade}; category ${categoryKey}`,
+      adopted: hasInstalledTension ? `N<sub>ti</sub> = ${preload.toFixed(0)} kN` : "Not required",
+      applicability: hasInstalledTension ? "Installed preload; this is not the bolt tensile design capacity." : "Snug-tight category; no specified minimum installed bolt tension."
+    }),
+    calculationTraceRow({
+      title: "Bolt shear capacity, N-plane",
+      reference: "AS 4100 Cl. 9.2.2.1",
+      formula: `&phi;V<sub>f,N</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,N</sub>k<sub>r</sub>A<sub>c</sub>`,
+      substitution: `0.80 &times; 0.62 &times; ${category.fuf} MPa &times; ${threadKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ac} mm<sup>2</sup> / 1000`,
+      result: `Design capacity per shear plane = ${fixed(threadShear)} kN`,
+      applicability: "Threads intercept the shear plane."
+    }),
+    calculationTraceRow({
+      title: "Bolt shear capacity, X-plane",
+      reference: "AS 4100 Cl. 9.2.2.1",
+      formula: `&phi;V<sub>f,X</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,X</sub>k<sub>r</sub>A<sub>o</sub>`,
+      substitution: `0.80 &times; 0.62 &times; ${category.fuf} MPa &times; ${shankKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ao} mm<sup>2</sup> / 1000`,
+      result: `Design capacity per shear plane = ${fixed(shankShear)} kN`,
+      applicability: "Threads do not intercept the shear plane; k<sub>rd,X</sub> = 1.00."
+    }),
+    calculationTraceRow({
+      title: "Bolt group shear capacity",
+      reference: "AS 4100 Cl. 9.2.2.1",
+      formula: `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>r</sub>(n<sub>N</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>X</sub>k<sub>rd,X</sub>A<sub>o</sub>)`,
+      substitution: `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>r</sub> = ${kr.toFixed(2)}`,
+      result: `Design group capacity = ${fixed(groupShear)} kN`,
+      applicability: "Identical bolts with equal action sharing; apply the bolted-lap reduction only where its stated conditions apply."
+    }),
+    calculationTraceRow({
+      title: "Bolt shear utilisation",
+      reference: "AS 4100 Cl. 9.2.2.1",
+      formula: `&eta;<sub>V</sub> = V<sub>f</sub><sup>*</sup>/&phi;V<sub>f</sub>`,
+      substitution: `${fixed(designShear)} kN / ${fixed(groupShear)} kN`,
+      result: `Utilisation = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}`,
+      applicability: "Strength-level shear action and compatible group shear capacity."
+    }),
+    calculationTraceRow({
+      title: "Bolt tension utilisation",
+      reference: "AS 4100 Cl. 9.2.2.2",
+      formula: `&eta;<sub>N</sub> = N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf,group</sub>`,
+      substitution: `${fixed(designTension)} kN / ${fixed(count * tension)} kN`,
+      result: `Utilisation = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}`,
+      applicability: "Strength-level tensile action; include prying action where applicable."
+    }),
+    calculationTraceRow({
+      title: "Minimum pitch",
+      reference: "AS 4100 Cl. 9.5.1",
+      formula: pitchApplicable ? `p<sub>min</sub> = 2.5d<sub>f</sub>` : "",
+      substitution: pitchApplicable ? `2.5 &times; ${fixed(bolt.d)} mm = ${fixed(minimumPitch)} mm; provided p = ${fixed(boltPitch)} mm` : "",
+      result: pitchApplicable ? `${pitchPass ? "PASS" : "FAIL"}; required ${fixed(minimumPitch)} mm` : "Not applicable",
+      applicability: pitchApplicable ? "Applies where more than one bolt is present along the checked line." : "One-bolt connection."
+    }),
+    calculationTraceRow({
+      title: "Maximum pitch",
+      reference: "AS 4100 Cl. 9.5.3",
+      formula: pitchApplicable ? `p<sub>max</sub> = min(15t<sub>p,min</sub>, 200 mm)` : "",
+      substitution: pitchApplicable ? `min(15 &times; ${fixed(thinnerPlyThickness)} mm, 200 mm) = ${fixed(maximumPitch)} mm; provided p = ${fixed(boltPitch)} mm` : "",
+      result: pitchApplicable ? `${maximumPitchPass ? "PASS" : "FAIL"}; permitted ${fixed(maximumPitch)} mm` : "Not applicable",
+      applicability: pitchApplicable ? "General limit only; AS 4100 Cl. 9.5.3(a) and AS 4100 Cl. 9.5.3(b) are not applied." : "One-bolt connection."
+    }),
+    activePlyFormulaRows,
+    calculationTraceRow({
+      title: "Governing local hole-bearing utilisation",
+      reference: "AS 4100 Cl. 9.2.2.4",
+      formula: `V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n; &eta;<sub>b</sub> = V<sup>*</sup>/&phi;V<sub>b,group</sub>`,
+      substitution: `${fixed(designShear)} kN / ${count} = ${fixed(criticalBoltShear)} kN per bolt; ${fixed(designShear)} kN / ${fixed(equalShareGroupPlyCapacity)} kN`,
+      result: `Utilisation = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}`,
+      applicability: `${governingPlyLabel}; equal bolt sharing.`
+    }),
+    integrityFormulaRows,
+    calculationTraceRow({
+      title: "Detailing compliance",
+      result: detailingCompliant ? "PASS for the displayed lightweight checks" : "NON-COMPLIANT",
+      applicability: detailingCompliant ? "All applicable displayed detailing checks pass." : detailingFailureNote,
+      state: detailingCompliant ? "" : "warning"
+    }),
+    calculationTraceRow({
+      title: "Strength governing check",
+      result: governingNote,
+      applicability: "The displayed governing result covers only the implemented bolt and connected-ply paths."
+    }),
+    calculationTraceRow({
+      title: "Combined shear and tension",
+      reference: "AS 4100 Cl. 9.2.2.3",
+      formula: `(V<sub>f</sub><sup>*</sup>/&phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf</sub>)<sup>2</sup> &le; 1.0`,
+      substitution: hasShearDemand && hasTensionDemand ? `(${fixed(designShear)}/${fixed(groupShear)})<sup>2</sup> + (${fixed(designTension)}/${fixed(count * tension)})<sup>2</sup>` : "",
+      result: hasShearDemand && hasTensionDemand ? `Interaction = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}` : "Not applicable",
+      applicability: hasShearDemand && hasTensionDemand ? "Both strength-level shear and tension actions are entered." : "Enter both shear and tension actions; use the separate single-action checks otherwise."
+    }),
+    calculationTraceRow({
+      title: "TF slip resistance",
+      reference: "AS 4100 Cl. 9.2.3.1",
+      formula: slip === null ? "" : `&phi;V<sub>sf</sub> = 0.70&mu;n<sub>ei</sub>N<sub>ti</sub>k<sub>h</sub>`,
+      substitution: slip === null ? "" : `0.70 &times; ${value("slipFactor")} &times; ${value("interfaces")} &times; ${preload} kN &times; ${value("holeFactor")}`,
+      result: slip === null ? "Not applicable" : `Design slip resistance per bolt = ${fixed(slip)} kN`,
+      applicability: slip === null ? "TF categories only." : "Serviceability slip resistance; use the compatible TF action basis."
+    }),
+    calculationTraceRow({
+      title: "TF combined slip",
+      reference: "AS 4100 Cl. 9.2.3.3",
+      formula: slip === null ? "" : `V<sub>sf</sub><sup>*</sup>/&phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf</sub> &le; 1.0`,
+      substitution: slip === null ? "" : `${fixed(slipShearDemand)}/${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)}/${fixed(slipTensionCapacity)}`,
+      result: slip === null ? "Not applicable" : `Interaction = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}`,
+      applicability: slip === null ? "Friction-type categories where serviceability slip is limited." : "N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check; actions are separate from the strength check."
+    }),
+    calculationTraceRow({
+      title: "Strength boundary",
+      result: "Scoped bolt and connected-ply quick check",
+      applicability: `Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8.${slip === null ? "" : " Complete the separate serviceability slip checks shown above."}`
+    })
+  ];
+  $("formulaSteps").innerHTML = boltTraceRows.join("");
 }
 
 function uniqueSorted(list, key) {
@@ -2612,24 +2795,69 @@ function calculateWeld() {
   $("weldStatus").className = !calculationAvailable || !hasDemand ? "check" : utilisation <= 1 ? "pass" : "fail";
 
   if (calculationAvailable) {
-    $("weldFormulaSteps").innerHTML = `
-      <div><b>Selected weld</b><code>${typeData.label}: ${typeData.scope}</code></div>
-      <div><b>Design throat thickness</b><code>t<sub>t</sub> = ${type === "fillet" ? `0.707 x ${size.toFixed(0)}` : effectiveThroat.toFixed(1)} = ${fixed2(throat)} mm</code></div>
-      <div><b>Per-mm design capacity</b><code>&phi;R / l<sub>w</sub> = ${phi.toFixed(2)} x 0.6 x ${fuw.toFixed(0)} x ${fixed2(throat)} x k<sub>r</sub> (${kr.toFixed(2)}) / 1000 = ${capacityPerMm.toFixed(2)} kN/mm per weld line</code></div>
-      <div><b>Welded-lap reduction</b><code>${lapReductionActive ? `AS 4100 Table 9.6.3.10(B); l<sub>w</sub> = ${fixed(length)} mm = ${(length / 1000).toFixed(2)} m, k<sub>r</sub> = ${kr.toFixed(2)}` : "Not applied. The welded-lap option is No or the weld type is not a fillet weld."}</code></div>
-      <div><b>Total weld capacity</b><code>${capacityPerMm.toFixed(2)} kN/mm x ${fixed(length)} mm x ${runs} effective weld line${runs === 1 ? "" : "s"} = ${fixed(capacity)} kN. Effective weld lines are not welding passes.</code></div>
-      <div><b>Parent metal screen</b><code>${parentCheckActive ? `0.90 x 0.6 x f<sub>up</sub> (${parentGrade.fup} MPa, ${parentGrade.standard}) x ${fixed2(parentThickness)} / 1000 = ${fixed2(parentPerMm)} kN/mm. Warning only.` : "Not checked. Enter ply thickness if required."}</code></div>
-      <div><b>Design boundary</b><code>${callouts[type] || callouts.fillet}. Capacity view only; not a full welded-joint design check. Excludes weld groups, connected-part rupture, HAZ, joint preparation, WPS, inspection, fatigue and effective-length rules beyond the entered l<sub>w</sub>.</code></div>`;
+    $("weldFormulaSteps").innerHTML = [
+      calculationTraceRow({
+        title: "Selected weld",
+        lookup: "Weld type and category selected from the page options.",
+        selection: `${typeData.label}; category ${category}`,
+        adopted: typeData.scope,
+        applicability: callouts[type] || callouts.fillet
+      }),
+      calculationTraceRow({
+        title: "Design throat thickness",
+        reference: type === "fillet" ? "AS 4100 Cl. 9.6.3" : "AS 4100 Cl. 9.6.2.7",
+        formula: type === "fillet" ? `t<sub>t</sub> = 0.707s` : `t<sub>t</sub> = a<sub>w</sub>`,
+        substitution: type === "fillet" ? `0.707 &times; ${size.toFixed(0)} mm` : `${effectiveThroat.toFixed(1)} mm`,
+        result: `Design throat thickness = ${fixed2(throat)} mm`,
+        applicability: type === "fillet" ? "Equal-leg fillet weld." : "Incomplete-penetration butt weld with project-specified design throat."
+      }),
+      calculationTraceRow({
+        title: "Capacity per unit length",
+        reference: "AS 4100 Cl. 9.6.3.10 and AS 4100 Table 3.4",
+        formula: `&phi;R/l<sub>w</sub> = &phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub>`,
+        substitution: `${phi.toFixed(2)} &times; 0.6 &times; ${fuw.toFixed(0)} MPa &times; ${fixed2(throat)} mm &times; ${kr.toFixed(2)} / 1000`,
+        result: `Design capacity = ${capacityPerMm.toFixed(2)} kN/mm per weld line`,
+        applicability: "Direct throat resistance for the selected fillet weld or IPBW path."
+      }),
+      calculationTraceRow({
+        title: "Welded-lap reduction",
+        reference: "AS 4100 Table 9.6.3.10(B)",
+        lookup: "Reduction factor by welded-lap connection status and weld length.",
+        selection: lapReductionActive ? `l<sub>w</sub> = ${fixed(length)} mm = ${(length / 1000).toFixed(2)} m` : "Welded-lap reduction not selected",
+        adopted: `k<sub>r</sub> = ${kr.toFixed(2)}`,
+        applicability: lapReductionActive ? "Applied to the selected fillet welded-lap connection." : "Not applied because the welded-lap option is No or the weld type is not a fillet weld."
+      }),
+      calculationTraceRow({
+        title: "Total weld capacity",
+        formula: `&phi;R<sub>total</sub> = (&phi;R/l<sub>w</sub>)l<sub>w</sub>n<sub>w</sub>`,
+        substitution: `${capacityPerMm.toFixed(2)} kN/mm &times; ${fixed(length)} mm &times; ${runs}`,
+        result: `Design capacity = ${fixed(capacity)} kN`,
+        applicability: `${runs} identical effective weld line${runs === 1 ? "" : "s"}; effective weld lines are not welding passes.`
+      }),
+      calculationTraceRow({
+        title: "Parent metal screen",
+        formula: parentCheckActive ? `&phi;R<sub>p</sub>/l = 0.90(0.6f<sub>up</sub>t)` : "",
+        substitution: parentCheckActive ? `0.90 &times; 0.6 &times; ${parentGrade.fup} MPa &times; ${fixed2(parentThickness)} mm / 1000` : "",
+        result: parentCheckActive ? `Indicative resistance = ${fixed2(parentPerMm)} kN/mm` : "Not evaluated",
+        applicability: parentCheckActive ? `Warning-only screen; ${parentGrade.standard}. It is not the weaker-part CPBW capacity.` : "Enter ply thickness only where the warning screen is useful."
+      }),
+      calculationTraceRow({
+        title: "Design boundary",
+        result: "Scoped weld throat-capacity quick check",
+        applicability: "Not a full welded-joint design. Weld groups, connected-part rupture, HAZ, joint preparation, WPS, inspection, fatigue and effective-length rules beyond the entered length are excluded."
+      })
+    ].join("");
   } else {
     const capacityRule = type === "cpbw"
       ? `AS 4100 Cl. 9.6.2.7 takes CPBW design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. The weaker-part resistance is not defined by weld-metal strength and throat alone.`
       : `AS 4100 Cl. 9.6.5.2 defines compound-weld throat from the actual total weld cross-section. It is not a<sub>w</sub> + 0.707s; the present inputs cannot establish that geometry.`;
-    $("weldFormulaSteps").innerHTML = `
-      <div><b>Selected weld</b><code>${typeData.label}: ${typeData.scope}</code></div>
-      <div><b>Normative capacity basis</b><code>${capacityRule}</code></div>
-      <div><b>Result</b><code>Not evaluated. No capacity or PASS/FAIL is reported for this weld type.</code></div>
-      <div><b>Required project information</b><code>${type === "cpbw" ? "Define the weaker joined part, applicable limit state, material strength, net/gross section and appropriate AS 4100 capacity factor." : "Define the prepared joint and total weld cross-section, then determine the design throat in accordance with AS 4100 Cl. 9.6.5.2."}</code></div>
-      <div><b>Design boundary</b><code>WPS, preparation, backing or gouging, inspection, acceptance criteria, fatigue, HAZ and connected-part limit states remain project-specific.</code></div>`;
+    $("weldFormulaSteps").innerHTML = calculationTraceRow({
+      title: typeData.label,
+      reference: type === "cpbw" ? "AS 4100 Cl. 9.6.2.7" : "AS 4100 Cl. 9.6.5.2",
+      result: "Not evaluated",
+      applicability: `${capacityRule} ${type === "cpbw" ? "Define the weaker joined part, applicable limit state, material strength, net/gross section and capacity factor." : "Define the prepared joint and total weld cross-section before determining the design throat."} WPS, preparation, inspection, fatigue, HAZ and connected-part limit states remain project-specific.`,
+      state: "warning"
+    });
   }
 }
 
@@ -3226,12 +3454,31 @@ function setSectionDirectionalAw(primary, alternate, directional) {
 
 function sectionPropertyStep(label, property, unit, signed = false) {
   if (!property || property.value === null) {
-    return `<div><b>${label}</b><code>${SectionCatalogue.BASIS.unavailable}.</code></div>`;
+    return calculationTraceRow({
+      title: label,
+      result: "Not available",
+      applicability: `${SectionCatalogue.BASIS.unavailable}.`
+    });
   }
   const valueText = ["mm²", "mm", "kg/m"].includes(unit)
     ? property.value.toLocaleString("en-AU", { maximumFractionDigits: 1 })
     : signed ? sectionSignedPowerValue(property.value) : sectionPowerValue(property.value);
-  return `<div><b>${label}</b><code>${sectionBasisLabel(property)}: ${valueText} ${unit}.</code></div>`;
+  const basis = sectionBasisLabel(property);
+  const catalogueValue = String(basis).toLowerCase().includes("catalogue");
+  return calculationTraceRow(catalogueValue
+    ? {
+        title: label,
+        lookup: basis,
+        selection: "Selected catalogue section and property row.",
+        adopted: `${valueText} ${unit}`,
+        applicability: "Use with the stated catalogue edition and selected section designation."
+      }
+    : {
+        title: label,
+        formula: basis,
+        result: `${valueText} ${unit}`,
+        applicability: "Derived from the selected catalogue geometry or stated source property."
+      });
 }
 
 function configureSectionPropertyPresentation(shape, catalogueMode) {
@@ -3383,7 +3630,12 @@ function clearSectionPropertyOutputs(message) {
   configureSectionSpecificProperties(null, "");
   setSectionIxyInterpretation(null, "");
   renderSectionRatios([]);
-  $("sectionFormulaSteps").innerHTML = `<div><b>Invalid geometry</b><code>${safeText(message)}</code></div>`;
+  $("sectionFormulaSteps").innerHTML = calculationTraceRow({
+    title: "Section properties",
+    result: "Not evaluated",
+    applicability: safeText(message),
+    state: "warning"
+  });
   $("sectionPropertiesWarning").textContent = message;
 }
 
@@ -3447,20 +3699,78 @@ function calculateCustomSectionProperties() {
     $("sectionCalculationSummary").textContent = "Standard geometric relationships for the entered dimensions";
     $("sectionSourceSummary").textContent = "Ideal geometry · no product-table values";
     $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Basis</b> &mdash; standard area, centroid, product-of-inertia and parallel-axis relationships; Z = I/c, r = &radic;(I/A), and steel mass = 0.00785A kg/m. For implemented plastic moduli, each plastic neutral axis divides the gross area equally and S is the first absolute area moment about that axis.</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry. ${shearReferenceText}; it is not a design-standard effective shear area.</p>`;
-    $("sectionFormulaSteps").innerHTML = `
-      <div><b>Geometry model</b><code>${sectionCompositionText(shape)} ${sectionDimensionText(shape)}</code></div>
-      <div><b>Gross area</b><code>A = ${formatArea(properties.area)}</code></div>
-      <div><b>Centroid</b><code>x&#772; = ${properties.cx.toFixed(2)} mm; y&#772; = ${properties.cy.toFixed(2)} mm</code></div>
-      <div><b>Second moments of area</b><code>I<sub>${axisOne}</sub> = ${formatInertia(properties.ix)}; I<sub>${axisTwo}</sub> = ${formatInertia(properties.iy)}</code></div>
-      <div><b>Elastic section moduli</b><code>Z<sub>${axisOne},T</sub> = ${sectionPowerValue(properties.zxTop)} mm<sup>3</sup>; Z<sub>${axisOne},B</sub> = ${sectionPowerValue(properties.zxBottom)} mm<sup>3</sup>; Z<sub>${axisTwo},R</sub> = ${sectionPowerValue(properties.zyRight)} mm<sup>3</sup>; Z<sub>${axisTwo},L</sub> = ${sectionPowerValue(properties.zyLeft)} mm<sup>3</sup></code></div>
-      <div><b>Plastic section moduli</b><code>S<sub>${axisOne}</sub> = ${sectionPowerValue(properties.sx)} mm<sup>3</sup>; S<sub>${axisTwo}</sub> = ${sectionPowerValue(properties.sy)} mm<sup>3</sup></code></div>
-      ${Number.isFinite(properties.plasticCx) && Number.isFinite(properties.plasticCy) ? `<div><b>Plastic neutral axes</b><code>From the lower-left geometry datum: x<sub>PNA</sub> = ${properties.plasticCx.toFixed(2)} mm; y<sub>PNA</sub> = ${properties.plasticCy.toFixed(2)} mm. Each axis divides A into equal areas.</code></div>` : ""}
-      <div><b>Radii of gyration</b><code>r<sub>${axisOne}</sub> = &radic;(I<sub>${axisOne}</sub> / A) = ${properties.rx.toFixed(2)} mm; r<sub>${axisTwo}</sub> = &radic;(I<sub>${axisTwo}</sub> / A) = ${properties.ry.toFixed(2)} mm</code></div>
-      <div><b>Principal properties</b><code>I<sub>${angleAxes ? "np" : "xy"}</sub> = ${sectionSignedPowerValue(properties.ixy)} mm<sup>4</sup>; I<sub>${principalOne}</sub> = ${sectionPowerValue(properties.iu)} mm<sup>4</sup>; I<sub>${principalTwo}</sub> = ${sectionPowerValue(properties.iv)} mm<sup>4</sup>; &theta;<sub>${principalOne}</sub> = ${Number.isFinite(properties.thetaU) ? properties.thetaU.toFixed(2) + "&deg;" : "indeterminate"}${angleAxes ? " counter-clockwise from +n" : ""}.</code></div>
-      ${shape === "rhs" ? `<div><b>Wall reference areas</b><code>A<sub>wy</sub> = ${sectionPowerValue(properties.awy)} mm<sup>2</sup> (two vertical walls); A<sub>wx</sub> = ${sectionPowerValue(properties.awx)} mm<sup>2</sup> (two horizontal walls). These are not effective shear areas.</code></div>` : ""}
-      <div><b>Polar second moment</b><code>I<sub>${axisOne}</sub> + I<sub>${axisTwo}</sub> = ${sectionPowerValue(properties.jp)} mm<sup>4</sup>. This quantity is not the St Venant torsion constant J except for circular sections.</code></div>
-      <div><b>Torsion</b><code>J and I<sub>w</sub> are reported only where the selected ideal geometry has a reviewed closed-form relationship.</code></div>
-      <div><b>Scope</b><code>Principal properties are geometric only. Effective properties, section classification, material strength and design capacity are excluded.</code></div>`;
+    $("sectionFormulaSteps").innerHTML = [
+      calculationTraceRow({
+        title: "Gross area and geometry model",
+        formula: `A = &Sigma;s<sub>i</sub>A<sub>i</sub>`,
+        substitution: `${sectionCompositionText(shape)} ${sectionDimensionText(shape)}`,
+        result: `Gross area A = ${formatArea(properties.area)}`,
+        applicability: "Ideal sharp-corner rectangular components or ideal circular geometry; subtract void components where applicable."
+      }),
+      calculationTraceRow({
+        title: "Centroid",
+        formula: `x&#772; = &Sigma;s<sub>i</sub>A<sub>i</sub>x<sub>i</sub>/A; y&#772; = &Sigma;s<sub>i</sub>A<sub>i</sub>y<sub>i</sub>/A`,
+        substitution: `Entered component geometry; A = ${properties.area.toFixed(1)} mm<sup>2</sup>`,
+        result: `x&#772; = ${properties.cx.toFixed(2)} mm; y&#772; = ${properties.cy.toFixed(2)} mm`,
+        applicability: "Coordinates are measured from the displayed lower-left geometry datum."
+      }),
+      calculationTraceRow({
+        title: "Second moments of area",
+        formula: `I = &Sigma;s<sub>i</sub>(I<sub>c,i</sub> + A<sub>i</sub>d<sub>i</sub><sup>2</sup>)`,
+        substitution: "Entered component dimensions and calculated centroid.",
+        result: `I<sub>${axisOne}</sub> = ${formatInertia(properties.ix)}; I<sub>${axisTwo}</sub> = ${formatInertia(properties.iy)}`,
+        applicability: "Centroidal axes shown in the section diagram."
+      }),
+      calculationTraceRow({
+        title: "Elastic section moduli",
+        formula: `Z = I/c`,
+        substitution: `I<sub>${axisOne}</sub> and I<sub>${axisTwo}</sub> divided by each extreme-fibre distance`,
+        result: `Z<sub>${axisOne},T</sub> = ${sectionPowerValue(properties.zxTop)} mm<sup>3</sup>; Z<sub>${axisOne},B</sub> = ${sectionPowerValue(properties.zxBottom)} mm<sup>3</sup>; Z<sub>${axisTwo},R</sub> = ${sectionPowerValue(properties.zyRight)} mm<sup>3</sup>; Z<sub>${axisTwo},L</sub> = ${sectionPowerValue(properties.zyLeft)} mm<sup>3</sup>`,
+        applicability: "Geometric elastic moduli; no effective-section reduction is applied."
+      }),
+      calculationTraceRow({
+        title: "Plastic section moduli",
+        formula: `S = &Sigma;A<sub>i</sub>|d<sub>i,PNA</sub>|`,
+        substitution: "Plastic neutral axis selected to divide the gross area equally.",
+        result: `S<sub>${axisOne}</sub> = ${sectionPowerValue(properties.sx)} mm<sup>3</sup>; S<sub>${axisTwo}</sub> = ${sectionPowerValue(properties.sy)} mm<sup>3</sup>`,
+        applicability: Number.isFinite(properties.plasticCx) && Number.isFinite(properties.plasticCy)
+          ? `x<sub>PNA</sub> = ${properties.plasticCx.toFixed(2)} mm; y<sub>PNA</sub> = ${properties.plasticCy.toFixed(2)} mm from the lower-left datum.`
+          : "Closed-form plastic modulus for the selected ideal symmetric geometry."
+      }),
+      calculationTraceRow({
+        title: "Radii of gyration",
+        formula: `r = &radic;(I/A)`,
+        substitution: `r<sub>${axisOne}</sub> = &radic;(${sectionPowerValue(properties.ix)} / ${properties.area.toFixed(1)}); r<sub>${axisTwo}</sub> = &radic;(${sectionPowerValue(properties.iy)} / ${properties.area.toFixed(1)})`,
+        result: `r<sub>${axisOne}</sub> = ${properties.rx.toFixed(2)} mm; r<sub>${axisTwo}</sub> = ${properties.ry.toFixed(2)} mm`,
+        applicability: "Gross-section geometric radii."
+      }),
+      calculationTraceRow({
+        title: "Principal properties",
+        formula: `I<sub>u,v</sub> = (I<sub>x</sub> + I<sub>y</sub>)/2 &plusmn; &radic;[((I<sub>x</sub> - I<sub>y</sub>)/2)<sup>2</sup> + I<sub>xy</sub><sup>2</sup>]`,
+        substitution: `I<sub>${angleAxes ? "np" : "xy"}</sub> = ${sectionSignedPowerValue(properties.ixy)} mm<sup>4</sup>`,
+        result: `I<sub>${principalOne}</sub> = ${sectionPowerValue(properties.iu)} mm<sup>4</sup>; I<sub>${principalTwo}</sub> = ${sectionPowerValue(properties.iv)} mm<sup>4</sup>; &theta;<sub>${principalOne}</sub> = ${Number.isFinite(properties.thetaU) ? properties.thetaU.toFixed(2) + "&deg;" : "indeterminate"}`,
+        applicability: `${angleAxes ? "Angle measured counter-clockwise from +n. " : ""}Principal properties are geometric only.`
+      }),
+      shape === "rhs" ? calculationTraceRow({
+        title: "Wall reference areas",
+        formula: `A<sub>wy</sub> = 2t(h - 2t); A<sub>wx</sub> = 2t(b - 2t)`,
+        substitution: sectionDimensionText(shape),
+        result: `A<sub>wy</sub> = ${sectionPowerValue(properties.awy)} mm<sup>2</sup>; A<sub>wx</sub> = ${sectionPowerValue(properties.awx)} mm<sup>2</sup>`,
+        applicability: "Geometric wall reference areas; not design-standard effective shear areas."
+      }) : "",
+      calculationTraceRow({
+        title: "Polar second moment",
+        formula: `J<sub>p</sub> = I<sub>${axisOne}</sub> + I<sub>${axisTwo}</sub>`,
+        substitution: `${sectionPowerValue(properties.ix)} + ${sectionPowerValue(properties.iy)} mm<sup>4</sup>`,
+        result: `J<sub>p</sub> = ${sectionPowerValue(properties.jp)} mm<sup>4</sup>`,
+        applicability: "This is not the St Venant torsion constant J except for circular sections."
+      }),
+      calculationTraceRow({
+        title: "Torsion and scope",
+        result: "J and Iw shown only where a reviewed closed-form relationship is implemented",
+        applicability: "Effective properties, section classification, material strength and design capacity are excluded."
+      })
+    ].join("");
   } catch (error) {
     clearSectionPropertyOutputs(error instanceof Error ? error.message : "Invalid section geometry.");
   }
@@ -3593,7 +3903,11 @@ function calculateCatalogueSectionProperties() {
     sectionPropertyStep(`Principal radius r${principalOne}`, properties.ru, "mm"),
     sectionPropertyStep(`Principal radius r${principalTwo}`, properties.rv, "mm"),
     sectionPropertyStep(`Principal-axis angle θ${principalOne}`, properties.thetaU, "°"),
-    `<div><b>Scope</b><code>Section properties only. Section classification is material-grade dependent; strength, stability, effective-section and capacity checks are excluded.</code></div>`
+    calculationTraceRow({
+      title: "Scope",
+      result: "Section properties only",
+      applicability: "Section classification is material-grade dependent; strength, stability, effective-section and capacity checks are excluded."
+    })
   ].join("");
 }
 
@@ -4115,16 +4429,6 @@ function calculateBeam() {
     : `${beamFamilyDefinitions[beamFamily].label}; no checked Beam catalogue row is embedded`;
   const propertySubscript = symbol ? `<sub>${symbol}</sub>` : "";
   const directionStep = `${directionLabel}; I${propertySubscript} = ${formatBeamInertia(axis.I)}; Z${propertySubscript} = ${formatBeamModulus(axis.Z)}; S${propertySubscript} = ${formatBeamModulus(axis.S)}`;
-  const momentStep = momentAvailable
-    ? `&phi;M<sub>s${symbol}</sub>${loadCaseHtml} = 0.90 &times; ${formatBeamNumber(grade.fy, 0)} &times; ${formatBeamNumber(grade.Ze, 1)} &times; 10<sup>3</sup> / 10<sup>6</sup> = ${fixed(momentCapacity)} kN&middot;m`
-    : "Not evaluated. A reviewed direction-specific f<sub>y,m</sub>, compactness classification and Z<sub>e</sub> record is required.";
-  const shearStep = shearAvailable
-    ? rolledWebShear
-      ? `d<sub>p</sub> = d<sub>1</sub> = ${formatBeamNumber(section.d1, 1)} mm; A<sub>w</sub> = d<sub>p</sub>t<sub>w</sub> = ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup>; (d<sub>p</sub>/t<sub>w</sub>)&radic;(f<sub>y,w</sub>/250) = ${webShear.slenderness.toFixed(2)}; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}; &phi;V<sub>v</sub> = ${webShear.alphaV.toFixed(3)} &times; 0.90 &times; 0.6 &times; ${formatBeamNumber(grade.fyw || grade.fy, 0)} &times; ${formatBeamNumber(section.Aw, 0)} / 1000 = ${fixed(shearCapacity)} kN`
-      : chsSectionShear
-        ? `A<sub>e</sub> = A<sub>g</sub> = ${formatBeamNumber(section.area, 0)} mm<sup>2</sup> for this unperforated catalogue section; &phi;V<sub>v</sub> = 0.90 &times; 0.36 &times; ${formatBeamNumber(grade.fy, 0)} &times; ${formatBeamNumber(section.area, 0)} / 1000 = ${fixed(shearCapacity)} kN`
-        : `Two resisting webs; d<sub>1</sub> = ${formatBeamNumber(hollowWeb.clearWebDepth, 1)} mm; A<sub>w</sub> = 2d<sub>1</sub>t = ${formatBeamNumber(hollowWeb.webArea, 0)} mm<sup>2</sup>; (d<sub>1</sub>/t)&radic;(f<sub>y</sub>/250) = ${hollowWeb.slenderness.toFixed(2)}; &alpha;<sub>v</sub> = ${hollowWeb.alphaV.toFixed(3)}; f<sup>*</sup><sub>vm</sub>/f<sup>*</sup><sub>va</sub> = ${hollowWeb.stressRatio.toFixed(3)}; &phi;V<sub>v</sub> = 0.90 &times; min(${fixed(hollowWeb.shearYieldCapacity)}, ${fixed(hollowWeb.nonUniformCapacity)}) = ${fixed(shearCapacity)} kN`
-    : "Not evaluated for the selected family / direction.";
   const editionStep = beamSource === "catalogue" && beamFamily !== "rod"
     ? coordination.status === "reconciled"
       ? `Reconciled against AS 4100:2020 Cl. 5.2 and Cl. 6.2. ${coordination.basis}.`
@@ -4137,9 +4441,6 @@ function calculateBeam() {
   const classStep = ["reconciled", "derived"].includes(coordination.status)
     ? `${compactnessText(grade?.compactness)}; ${coordination.classMethod === "published-ze-interval" ? "class inferred from the published load-case Z<sub>e</sub> position between the AS 4100 elastic and compact bounds" : `governing plate element = ${coordination.governing?.name || "solid section"}`}.`
     : "Not reconciled.";
-  const kfStep = ["reconciled", "derived"].includes(coordination.status) && grade?.kf > 0
-    ? `k<sub>f</sub> = ${grade.kf.toFixed(3)}; AS 4100:2020 Cl. 6.2 axial-compression form factor. It is recorded for section coordination and is not multiplied into M<sub>s</sub>.`
-    : "Not established.";
   const demandStep = !hasDemand ? "No design action entered."
     : interactionDemand?.failureMode === "moment"
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
@@ -4151,7 +4452,112 @@ function calculateBeam() {
     : beamFamily === "rod"
       ? "compact solid-circle relation"
       : "reconciled catalogue capacity row";
-  $("beamFormulaSteps").innerHTML = `<div><b>Section and source</b><code>${geometryStep}</code></div><div><b>Material strength</b><code>${materialStep}</code></div><div><b>Bending direction and properties</b><code>${directionStep}</code></div><div><b>Section class</b><code>${classStep}</code></div><div><b>Effective section modulus</b><code>${momentAvailable ? `Z<sub>e${symbol}</sub>${loadCaseHtml} = ${formatBeamModulus(grade.Ze)}; ${zeBasis}` : "Not established for this family / grade / direction."}</code></div><div><b>Section form factor</b><code>${kfStep}</code></div><div><b>Product-data coordination</b><code>${editionStep}</code></div><div><b>Moment capacity · AS 4100:2020 Cl. 5.2</b><code>${momentStep}</code></div><div><b>Shear capacity · AS 4100:2020 Cl. 5.11</b><code>${shearStep}</code></div><div><b>Design actions</b><code>${demandStep}</code></div><div><b>Design boundary</b><code>Cross-section resistance only; M<sub>b</sub>, lateral-torsional buckling, restraint, web bearing, concentrated loads, torsion and serviceability are excluded.</code></div>`;
+  const shearFormula = rolledWebShear
+    ? `&phi;V<sub>v</sub> = &alpha;<sub>v</sub>&phi;0.6f<sub>y,w</sub>A<sub>w</sub>`
+    : chsSectionShear
+      ? `&phi;V<sub>v</sub> = &phi;0.36f<sub>y</sub>A<sub>e</sub>`
+      : hollowWeb
+        ? `&phi;V<sub>v</sub> = &phi;min(V<sub>y</sub>, V<sub>non-uniform</sub>)`
+        : "";
+  const shearSubstitution = !shearAvailable
+    ? ""
+    : rolledWebShear
+      ? `A<sub>w</sub> = ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup>; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}; ${webShear.alphaV.toFixed(3)} &times; 0.90 &times; 0.6 &times; ${formatBeamNumber(grade.fyw || grade.fy, 0)} MPa &times; ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup> / 1000`
+      : chsSectionShear
+        ? `0.90 &times; 0.36 &times; ${formatBeamNumber(grade.fy, 0)} MPa &times; ${formatBeamNumber(section.area, 0)} mm<sup>2</sup> / 1000`
+        : `0.90 &times; min(${fixed(hollowWeb.shearYieldCapacity)}, ${fixed(hollowWeb.nonUniformCapacity)}) kN`;
+  const utilisationFormula = interactionAvailable
+    ? `m = M<sup>*</sup>/&phi;M<sub>s</sub>; &beta;<sub>v</sub> = 1.0 for m &le; 0.75, otherwise 2.2 - 1.6m; &eta; = max(m, V<sup>*</sup>/(&beta;<sub>v</sub>&phi;V<sub>v</sub>))`
+    : `&eta; = max(M<sup>*</sup>/&phi;M<sub>s</sub>, V<sup>*</sup>/&phi;V<sub>v</sub>)`;
+  const utilisationSubstitution = !hasDemand
+    ? ""
+    : interactionAvailable && interactionDemand?.failureMode !== "moment"
+      ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${momentRatio.toFixed(2)}; &beta;<sub>v</sub> = ${interaction.factor.toFixed(3)}; V<sup>*</sup>/(&beta;<sub>v</sub>&phi;V<sub>v</sub>) = ${fixed(shearDemand)}/${fixed(interactionShearCapacity)} = ${shearRatio.toFixed(2)}`
+      : interactionDemand?.failureMode === "moment"
+        ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${momentRatio.toFixed(2)}`
+        : `M<sup>*</sup> = ${fixed(momentDemand)} kN&middot;m${shearAvailable ? `; V<sup>*</sup> = ${fixed(shearDemand)} kN` : ""}`;
+  $("beamFormulaSteps").innerHTML = [
+    calculationTraceRow({
+      title: "Section and source",
+      lookup: source,
+      selection: section ? `${section.designation}; ${directionLabel}` : beamFamilyDefinitions[beamFamily].label,
+      adopted: section ? `A<sub>g</sub> = ${formatBeamArea(section.area)}` : "No checked Beam row",
+      applicability: geometryStep
+    }),
+    calculationTraceRow({
+      title: "Material strength",
+      lookup: materialOverride ? "Project / legacy override" : "Catalogue / selected grade default",
+      selection: gradeName || "Grade unavailable",
+      adopted: `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}`,
+      applicability: materialStep
+    }),
+    calculationTraceRow({
+      title: "Bending direction and properties",
+      lookup: "Selected catalogue or derived section-property record.",
+      selection: directionLabel,
+      adopted: directionStep,
+      applicability: "Properties correspond to the selected bending direction and load case."
+    }),
+    calculationTraceRow({
+      title: "Section class",
+      reference: "AS 4100 Cl. 5.2",
+      lookup: "Section classification and effective-modulus branch.",
+      selection: classStep,
+      adopted: momentAvailable ? compactnessText(grade?.compactness) : "Not established",
+      applicability: editionStep
+    }),
+    calculationTraceRow({
+      title: "Effective section modulus",
+      reference: "AS 4100 Cl. 5.2",
+      lookup: zeBasis,
+      selection: `${directionLabel}${loadCaseHtml}`,
+      adopted: momentAvailable ? `Z<sub>e${symbol}</sub>${loadCaseHtml} = ${formatBeamModulus(grade.Ze)}` : "Not established",
+      applicability: momentAvailable ? "Direction-specific value used in section moment capacity." : "A reviewed direction-specific classification and effective modulus are required."
+    }),
+    calculationTraceRow({
+      title: "Section form factor",
+      reference: "AS 4100 Cl. 6.2",
+      lookup: "Axial-compression section form factor.",
+      selection: grade?.kf > 0 ? `k<sub>f</sub> = ${grade.kf.toFixed(3)}` : "Not established",
+      adopted: grade?.kf > 0 ? grade.kf.toFixed(3) : "Not established",
+      applicability: "Recorded for section coordination only; k<sub>f</sub> is not multiplied into M<sub>s</sub>."
+    }),
+    calculationTraceRow({
+      title: "Section moment capacity",
+      reference: "AS 4100 Cl. 5.2",
+      formula: momentAvailable ? `&phi;M<sub>s${symbol}</sub>${loadCaseHtml} = &phi;f<sub>y,m</sub>Z<sub>e${symbol}</sub>${loadCaseHtml}` : "",
+      substitution: momentAvailable ? `0.90 &times; ${formatBeamNumber(grade.fy, 0)} MPa &times; ${formatBeamNumber(grade.Ze, 1)} &times; 10<sup>3</sup> mm<sup>3</sup> / 10<sup>6</sup>` : "",
+      result: momentAvailable ? `Design section moment capacity = ${fixed(momentCapacity)} kN&middot;m` : "Not evaluated",
+      applicability: momentAvailable ? "Cross-section resistance in the selected direction." : "A reviewed f<sub>y,m</sub>, section class and Z<sub>e</sub> record are required."
+    }),
+    calculationTraceRow({
+      title: "Section shear capacity",
+      reference: shearAvailable ? (chsSectionShear ? "AS 4100 Cl. 5.11.4" : "AS 4100 Cl. 5.11") : "",
+      formula: shearFormula,
+      substitution: shearSubstitution,
+      result: shearAvailable ? `Design section shear capacity = ${fixed(shearCapacity)} kN` : "Not evaluated",
+      applicability: shearAvailable
+        ? rolledWebShear
+          ? `d<sub>p</sub> = d<sub>1</sub> = ${formatBeamNumber(section.d1, 1)} mm; web slenderness = ${webShear.slenderness.toFixed(2)}.`
+          : chsSectionShear
+            ? "Unperforated catalogue CHS with A<sub>e</sub> = A<sub>g</sub> for this quick check."
+            : `Two resisting webs; non-uniform shear-stress ratio = ${hollowWeb.stressRatio.toFixed(3)}.`
+        : "No reviewed shear-capacity path for the selected family / direction."
+    }),
+    calculationTraceRow({
+      title: "Design-action utilisation",
+      reference: interactionAvailable ? "AS 4100 Cl. 5.12.3" : "",
+      formula: hasDemand ? utilisationFormula : "",
+      substitution: utilisationSubstitution,
+      result: !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${utilisation.toFixed(2)}; ${utilisation > 1 ? "FAIL" : "PASS"}` : "Not evaluated",
+      applicability: demandStep
+    }),
+    calculationTraceRow({
+      title: "Design boundary",
+      result: "Cross-section resistance only",
+      applicability: "Member capacity M<sub>b</sub>, lateral-torsional buckling, restraint, web bearing, concentrated loads, torsion and serviceability are excluded."
+    })
+  ].join("");
 }
 
 function chsProperties(section) {
@@ -4656,22 +5062,121 @@ function calculateMember() {
   const sectionDataText = memberType === "custom"
     ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
     : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${memberDimensionLabel(properties)}; A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; r = ${designR.toFixed(1)} mm${radiusOverridden ? `; default r = ${properties.r.toFixed(1)} mm` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
-  const compressionSteps = memberType === "custom"
-    ? `<div><b>Compression axes - AS 4100 Cl. 6.3</b><code>${axisResults.map(axis => `${axis.label}: L<sub>e</sub>/r = ${axis.leOverR.toFixed(1)}; &lambda;<sub>n</sub> = ${axis.lambdaN.toFixed(1)}; &alpha;<sub>b</sub> = ${axis.alphaB.toFixed(1)}; &alpha;<sub>c</sub> = ${axis.alphaC.toFixed(3)}; &phi;N<sub>c,${axis.label}</sub> = ${fixed(axis.memberCompression)} kN`).join("; ")}; governing axis = ${governingAxis.title}</code></div>`
-    : `<div><b>Slenderness - AS 4100 Cl. 6.3.3</b><code>L<sub>e</sub>/r = ${fixed(axisResults[0].effectiveLength / 1000)} m / ${axisResults[0].r.toFixed(1)} mm = ${axisResults[0].leOverR.toFixed(1)}; &lambda;<sub>n</sub> = (L<sub>e</sub>/r)&radic;k<sub>f</sub>&radic;(f<sub>y</sub>/250) = ${axisResults[0].lambdaN.toFixed(1)}</code></div>
-    <div><b>Modified slenderness - AS 4100 Cl. 6.3.3</b><code>&lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub> = ${axisResults[0].modifiedLambda.toFixed(1)}; &alpha;<sub>a</sub> = ${axisResults[0].alphaA.toFixed(2)}</code></div>
-    <div><b>Compression reduction factor - AS 4100 Cl. 6.3.3</b><code>&eta; = 0.00326(&lambda; - 13.5) = ${axisResults[0].eta.toFixed(3)}; &xi; = ${axisResults[0].xi.toFixed(3)}; &alpha;<sub>c</sub> = ${axisResults[0].alphaC.toFixed(3)}</code></div>`;
-  $("memberFormulaSteps").innerHTML = `
-    <div><b>Design basis</b><code>${strengthBasis}; ${radiusBasis}; k<sub>f</sub> = ${kf.toFixed(3)} (${kfBasis}); &alpha;<sub>b</sub> = ${memberType === "custom" ? `${axisResults.map(axis => `${axis.label} ${axis.alphaB.toFixed(1)}`).join(" / ")}` : alphaB.toFixed(1)} (${alphaBBasis}); k<sub>t</sub> = ${kt.toFixed(2)} (${ktGuidance})</code></div>
-    <div><b>Section properties</b><code>${sectionDataText}</code></div>
-    <div><b>Net area - AS 4100 Cl. 6.2 and AS 4100 Cl. 7.2</b><code>${netInput.mode === "auto" ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t = ${properties.area.toFixed(0)} - ${netInput.holeCount} &times; ${fixed(netInput.holeDiameter)} &times; ${fixed(netInput.deductionThickness)} = ${netArea.toFixed(0)} mm²` : memberType === "chs" || memberType === "rod" ? `A<sub>n</sub> = A<sub>g</sub> = ${netArea.toFixed(0)} mm²` : `A<sub>n</sub> = ${netArea.toFixed(0)} mm²`}</code></div>
-    <div><b>Gross-section yielding - AS 4100 Cl. 7.2</b><code>&phi;A<sub>g</sub>f<sub>y</sub> = 0.90 &times; ${properties.area.toFixed(0)} &times; ${fy} / 1000 = ${fixed(grossYield)} kN</code></div>
-    <div><b>Net-section fracture - AS 4100 Cl. 7.2</b><code>&phi;(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>) = 0.90 &times; 0.85 &times; ${kt.toFixed(2)} &times; ${netArea.toFixed(0)} &times; ${fu} / 1000 = ${fixed(netFracture)} kN</code></div>
-    <div><b>Design tension capacity - AS 4100 Cl. 7.1</b><code>&phi;N<sub>t</sub> = min(${fixed(grossYield)}, ${fixed(netFracture)}) = ${fixed(tensionCapacity)} kN</code></div>
-    ${compressionSteps}
-    <div><b>Design section compression capacity - AS 4100 Cl. 6.2</b><code>&phi;N<sub>s</sub> = 0.90k<sub>f</sub>A<sub>n</sub>f<sub>y</sub> = 0.90 &times; ${kf.toFixed(3)} &times; ${compressionArea.toFixed(0)} &times; ${fy} / 1000 = ${fixed(sectionCompression)} kN</code></div>
-    <div><b>Design member compression capacity - AS 4100 Cl. 6.3</b><code>&phi;N<sub>c</sub> = ${memberType === "custom" ? `min(&phi;N<sub>c,x</sub>, &phi;N<sub>c,y</sub>) = ${fixed(memberCompression)} kN` : `&alpha;<sub>c</sub>&phi;N<sub>s</sub> = ${governingAxis.alphaC.toFixed(3)} &times; ${fixed(sectionCompression)} = ${fixed(memberCompression)} kN`}</code></div>
-    <div><b>Design action utilisation</b><code>${demandStep}</code></div>`;
+  const compressionTraceRows = memberType === "custom"
+    ? axisResults.map(axis => calculationTraceRow({
+        title: `Compression about ${axis.title}`,
+        reference: "AS 4100 Cl. 6.3",
+        formula: `&lambda;<sub>n</sub> = (L<sub>e</sub>/r)&radic;k<sub>f</sub>&radic;(f<sub>y</sub>/250); &phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub>`,
+        substitution: `L<sub>e</sub>/r = ${axis.leOverR.toFixed(1)}; &lambda;<sub>n</sub> = ${axis.lambdaN.toFixed(1)}; &alpha;<sub>b</sub> = ${axis.alphaB.toFixed(1)}; &alpha;<sub>c</sub> = ${axis.alphaC.toFixed(3)}`,
+        result: `Design member capacity &phi;N<sub>c,${axis.label}</sub> = ${fixed(axis.memberCompression)} kN`,
+        applicability: axis === governingAxis ? "Governing custom axis." : "Non-governing custom axis."
+      })).join("")
+    : [
+        calculationTraceRow({
+          title: "Member slenderness",
+          reference: "AS 4100 Cl. 6.3.3",
+          formula: `&lambda;<sub>n</sub> = (L<sub>e</sub>/r)&radic;k<sub>f</sub>&radic;(f<sub>y</sub>/250)`,
+          substitution: `L<sub>e</sub>/r = ${(axisResults[0].effectiveLength / 1000).toFixed(3)} m / ${axisResults[0].r.toFixed(1)} mm = ${axisResults[0].leOverR.toFixed(1)}; k<sub>f</sub> = ${kf.toFixed(3)}; f<sub>y</sub> = ${fy} MPa`,
+          result: `Modified section slenderness &lambda;<sub>n</sub> = ${axisResults[0].lambdaN.toFixed(1)}`,
+          applicability: radiusBasis
+        }),
+        calculationTraceRow({
+          title: "Modified slenderness",
+          reference: "AS 4100 Cl. 6.3.3",
+          formula: `&lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub>`,
+          substitution: `${axisResults[0].lambdaN.toFixed(1)} + ${axisResults[0].alphaA.toFixed(2)} &times; ${axisResults[0].alphaB.toFixed(1)}`,
+          result: `&lambda; = ${axisResults[0].modifiedLambda.toFixed(1)}`,
+          applicability: `${alphaBBasis}; &alpha;<sub>a</sub> is calculated from &lambda;<sub>n</sub>.`
+        }),
+        calculationTraceRow({
+          title: "Compression reduction factor",
+          reference: "AS 4100 Cl. 6.3.3",
+          formula: `&eta; = 0.00326(&lambda; - 13.5); &xi; = [(&lambda;/90)<sup>2</sup> + 1 + &eta;]/[2(&lambda;/90)<sup>2</sup>]`,
+          substitution: `&lambda; = ${axisResults[0].modifiedLambda.toFixed(1)}; &eta; = ${axisResults[0].eta.toFixed(3)}; &xi; = ${axisResults[0].xi.toFixed(3)}`,
+          result: `&alpha;<sub>c</sub> = ${axisResults[0].alphaC.toFixed(3)}`,
+          applicability: "Active AS 4100 compression-member branch."
+        })
+      ].join("");
+  const netAreaFormula = netInput.mode === "auto"
+    ? `A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t`
+    : memberType === "chs" || memberType === "rod"
+      ? `A<sub>n</sub> = A<sub>g</sub>`
+      : `A<sub>n</sub> = A<sub>n,project</sub>`;
+  const netAreaSubstitution = netInput.mode === "auto"
+    ? `${properties.area.toFixed(0)} - ${netInput.holeCount} &times; ${fixed(netInput.holeDiameter)} &times; ${fixed(netInput.deductionThickness)} mm<sup>2</sup>`
+    : `${netArea.toFixed(0)} mm<sup>2</sup>`;
+  $("memberFormulaSteps").innerHTML = [
+    calculationTraceRow({
+      title: "Design basis",
+      lookup: memberType === "custom" ? "Project-entered effective properties" : properties.customGeometry ? "Geometry override" : "Catalogue section and selected grade",
+      selection: strengthBasis,
+      adopted: `k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${memberType === "custom" ? axisResults.map(axis => `${axis.label}: ${axis.alphaB.toFixed(1)}`).join(" / ") : alphaB.toFixed(1)}; k<sub>t</sub> = ${kt.toFixed(2)}`,
+      applicability: `${kfBasis}; ${alphaBBasis}; ${ktGuidance}.`
+    }),
+    calculationTraceRow({
+      title: "Section properties",
+      lookup: memberType === "custom" ? "Verified project section-property calculation required." : properties.customGeometry ? "Entered ideal geometry override." : "Selected catalogue row.",
+      selection: memberType === "custom" ? $("memberCustomName").value || section.designation : section.designation,
+      adopted: sectionDataText,
+      applicability: radiusBasis
+    }),
+    calculationTraceRow({
+      title: "Net area",
+      reference: "AS 4100 Cl. 6.2 and AS 4100 Cl. 7.2",
+      formula: netAreaFormula,
+      substitution: netAreaSubstitution,
+      result: `A<sub>n</sub> = ${netArea.toFixed(0)} mm<sup>2</sup>`,
+      applicability: netInput.mode === "auto" ? "Straight-line quick deduction only; use manual A<sub>n</sub> for staggered or non-straight critical paths." : "Project-entered or unperforated gross-area basis."
+    }),
+    calculationTraceRow({
+      title: "Gross-section yielding",
+      reference: "AS 4100 Cl. 7.2",
+      formula: `&phi;N<sub>ty</sub> = &phi;A<sub>g</sub>f<sub>y</sub>`,
+      substitution: `0.90 &times; ${properties.area.toFixed(0)} mm<sup>2</sup> &times; ${fy} MPa / 1000`,
+      result: `Design capacity = ${fixed(grossYield)} kN`,
+      applicability: "Gross-section yielding tension limit state."
+    }),
+    calculationTraceRow({
+      title: "Net-section fracture",
+      reference: "AS 4100 Cl. 7.2",
+      formula: `&phi;N<sub>tf</sub> = &phi;0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>`,
+      substitution: `0.90 &times; 0.85 &times; ${kt.toFixed(2)} &times; ${netArea.toFixed(0)} mm<sup>2</sup> &times; ${fu} MPa / 1000`,
+      result: `Design capacity = ${fixed(netFracture)} kN`,
+      applicability: `${ktGuidance}; critical net area must match the connection geometry.`
+    }),
+    calculationTraceRow({
+      title: "Design tension capacity",
+      reference: "AS 4100 Cl. 7.1",
+      formula: `&phi;N<sub>t</sub> = min(&phi;N<sub>ty</sub>, &phi;N<sub>tf</sub>)`,
+      substitution: `min(${fixed(grossYield)}, ${fixed(netFracture)}) kN`,
+      result: `Design tension capacity = ${fixed(tensionCapacity)} kN`,
+      applicability: `${tensionGoverning} governs.`
+    }),
+    compressionTraceRows,
+    calculationTraceRow({
+      title: "Design section compression capacity",
+      reference: "AS 4100 Cl. 6.2",
+      formula: `&phi;N<sub>s</sub> = &phi;k<sub>f</sub>A<sub>n</sub>f<sub>y</sub>`,
+      substitution: `0.90 &times; ${kf.toFixed(3)} &times; ${compressionArea.toFixed(0)} mm<sup>2</sup> &times; ${fy} MPa / 1000`,
+      result: `Design section capacity = ${fixed(sectionCompression)} kN`,
+      applicability: "Section compression capacity before member buckling reduction."
+    }),
+    calculationTraceRow({
+      title: "Design member compression capacity",
+      reference: "AS 4100 Cl. 6.3",
+      formula: memberType === "custom" ? `&phi;N<sub>c</sub> = min(&phi;N<sub>c,x</sub>, &phi;N<sub>c,y</sub>)` : `&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub>`,
+      substitution: memberType === "custom" ? axisResults.map(axis => `${axis.label}: ${fixed(axis.memberCompression)} kN`).join("; ") : `${governingAxis.alphaC.toFixed(3)} &times; ${fixed(sectionCompression)} kN`,
+      result: `Design member capacity = ${fixed(memberCompression)} kN`,
+      applicability: memberType === "custom" ? `${governingAxis.title} governs.` : $("memberGoverning").textContent
+    }),
+    calculationTraceRow({
+      title: "Design action utilisation",
+      formula: hasMemberDemand ? `&eta; = max(N<sub>c</sub><sup>*</sup>/&phi;N<sub>c</sub>, N<sub>t</sub><sup>*</sup>/&phi;N<sub>t</sub>)` : "",
+      substitution: hasMemberDemand ? demandChecks.join("; ") : "",
+      result: hasMemberDemand ? `Governing utilisation = ${Number.isFinite(governingDemandRatio) ? governingDemandRatio.toFixed(2) : "not applicable"}; ${governingDemandRatio <= 1 ? "PASS" : "FAIL"}` : "No design action specified",
+      applicability: "Centroidal axial compression and axial tension only; no combined bending or flexural-torsional buckling check."
+    })
+  ].join("");
 }
 
 function concreteLayer(index, depth, direction, width) {
@@ -5070,8 +5575,26 @@ function calculateConcrete() {
     $("concreteSectionState").innerHTML = "";
     $("concreteLayerResults").innerHTML = "";
     $("concreteFormulaSteps").innerHTML = depth <= 0
-      ? `<div><b>Section definition</b><code>${result.message}. Enter D<sub>top</sub> or D<sub>bot</sub> greater than zero.</code></div>`
-      : `<div><b>Section state</b><code>${result.message}</code></div><div><b>Plain concrete note</b><code>For an unreinforced pad footing, use a separate AS 3600 Section 20 plain-concrete footing check. Do not report this as ductile reinforced-concrete &phi;M<sub>uo</sub>; AS 3600 Section 20 uses a linear stress-strain bending model and takes footing strength depth as nominal depth minus 50 mm.</code></div>`;
+      ? calculationTraceRow({
+          title: "Section definition",
+          result: "Not evaluated",
+          applicability: `${result.message}. Enter D<sub>top</sub> or D<sub>bot</sub> greater than zero.`,
+          state: "warning"
+        })
+      : [
+          calculationTraceRow({
+            title: "Reinforced-concrete section state",
+            result: "Not evaluated",
+            applicability: result.message,
+            state: "warning"
+          }),
+          calculationTraceRow({
+            title: "Plain concrete boundary",
+            reference: "AS 3600 Section 20",
+            result: "Use a separate plain-concrete footing check",
+            applicability: "Do not report ductile reinforced-concrete &phi;M<sub>uo</sub>. The separate method uses a linear stress-strain bending model and a footing strength depth based on nominal depth minus 50 mm."
+          })
+        ].join("");
     return;
   }
 
@@ -5118,31 +5641,164 @@ function calculateConcrete() {
     return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${checkedDirectionLabel} bars: ${layer.designation} @ ${fixed(layer.spacing)} mm; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2 per strip (${fixed(layer.areaPerMetre)} mm2/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
   }).join("");
 
-  const shearFormulaSteps = shear.withinSimplifiedScope ? `
-    <div><b>Longitudinal effective depth, d - AS 3600 Cl. 8.2.1.9</b><code>d is measured from the compression face to the centroid of the checked-direction longitudinal tension reinforcement in the tensile half-depth. ${shear.dBasis}; ${shear.centroidArea > 0 ? `d = &Sigma;(A<sub>s</sub>d<sub>i</sub>) / &Sigma;A<sub>s</sub> = ${fixed(shear.dNumerator)} / ${fixed(shear.centroidArea)} = ${fixed(shear.d)} mm` : `d = ${fixed(shear.d)} mm`}</code></div>
-    <div><b>Effective web width and shear depth, b<sub>v</sub> and d<sub>v</sub> - AS 3600 Cl. 8.2.1.5 and Cl. 8.2.1.9</b><code>b<sub>v</sub> = b = ${fixed(shear.bv)} mm for this rectangular strip without ducts or voids; 0.72D = 0.72 x ${fixed(data.depth)} = ${fixed(0.72 * data.depth)} mm; 0.9d = 0.9 x ${fixed(shear.d)} = ${fixed(0.9 * shear.d)} mm; d<sub>v</sub> = max(0.72D, 0.9d) = ${fixed(shear.dv)} mm</code></div>
-    <div><b>Simplified-method scope - AS 3600 Cl. 8.2.4.1</b><code>Normal-weight, non-prestressed concrete; no axial tension or torsion; f'<sub>c</sub> &le; 65 MPa; reinforcement f<sub>sy</sub> &le; 500 MPa; maximum aggregate size &ge; 10 mm. These fixed quick-check assumptions must match the project.</code></div>
-    <div><b>Shear reinforcement area</b><code>${shear.hasShearReo ? `A<sub>sv</sub> = n<sub>sv</sub>A<sub>bar,table</sub> = ${shear.nsv.toFixed(0)} x ${fixed(shear.shearBarArea)} = ${fixed(shear.asv)} mm2 per spacing using ${shear.shearDesignation}; A<sub>sv</sub>/s = ${fixed(shear.asv)} / ${fixed(shear.sv)} = ${shear.asvPerS.toFixed(3)} mm2/mm` : `No vertical shear reinforcement selected; A<sub>sv</sub>/s = 0 mm2/mm`}</code></div>
-    <div><b>Simplified shear factor - AS 3600 Cl. 8.2.4.3</b><code>&theta;<sub>v</sub> = ${shear.theta.toFixed(0)} deg; A<sub>sv,min</sub>/s = 0.08&radic;f'<sub>c</sub>b<sub>v</sub>/f<sub>sy.f</sub> = ${shear.asvMinPerS.toFixed(3)} mm2/mm; ${shear.minShearReoProvided ? `provided A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm >= minimum, so k<sub>v</sub> = 0.15` : `provided A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm2/mm < minimum, so k<sub>v</sub> = min(200/(1000 + 1.3d<sub>v</sub>), 0.15) = ${shear.kv.toFixed(3)}`}</code></div>
-    <div><b>Concrete shear contribution - AS 3600 Cl. 8.2.4.1</b><code>V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub> = ${shear.kv.toFixed(3)} x ${fixed(shear.bv)} x ${fixed(shear.dv)} x ${shear.rootFc.toFixed(2)} / 1000 = ${fixed(shear.vuc)} kN; &radic;f'<sub>c</sub> is limited to 8.0 MPa</code></div>
-    <div><b>Shear reinforcement contribution - AS 3600 Cl. 8.2.5.2</b><code>${shear.hasShearReo ? `V<sub>us</sub> = (A<sub>sv</sub>f<sub>sy.f</sub>d<sub>v</sub>/s)cot&theta;<sub>v</sub> = (${fixed(shear.asv)} x ${fixed(shear.fsyf)} x ${fixed(shear.dv)} / ${fixed(shear.sv)}) x ${shear.cotTheta.toFixed(3)} / 1000 = ${fixed(shear.vus)} kN` : `No vertical shear reinforcement selected; V<sub>us</sub> = 0 kN`}${shear.hasShearReo && !shear.minShearReoProvided ? `; CHECK: provided A<sub>sv</sub>/s is below the AS 3600 Cl. 8.2.1.7 minimum` : ``}</code></div>
-    <div><b>One-way shear design capacity - AS 3600 Cl. 8.2.3.1 and AS 3600 Table 2.2.2</b><code>V<sub>u,raw</sub> = V<sub>uc</sub> + V<sub>us</sub> = ${fixed(shear.vuc)} + ${fixed(shear.vus)} = ${fixed(shear.vuRaw)} kN; V<sub>u,max</sub> = ${fixed(shear.vuMax)} kN; V<sub>u</sub> = ${fixed(shear.vu)} kN; &phi; = ${shear.phi.toFixed(2)} ${shear.webCrushingLimited ? `because web crushing limits the strength` : shear.minShearReoProvided ? `with verified minimum Class N fitments and no web-crushing limit` : `without verified minimum Class N fitments`}; &phi;V<sub>u</sub> = ${fixed(shear.phiVu)} kN</code></div>`
-    : `<div><b>One-way shear scope - AS 3600 Cl. 8.2.4.1</b><code>Not evaluated - outside simplified-method scope: ${shear.scopeFailures.join("; ")}. Use the applicable general shear method. This page does not expand into a complete shear-design engine.</code></div>`;
+  const shearFormulaSteps = shear.withinSimplifiedScope ? [
+    calculationTraceRow({
+      title: "Longitudinal effective depth",
+      reference: "AS 3600 Cl. 8.2.1.9",
+      formula: `d = &Sigma;(A<sub>s</sub>d<sub>i</sub>)/&Sigma;A<sub>s</sub>`,
+      substitution: shear.centroidArea > 0 ? `${fixed(shear.dNumerator)} mm<sup>3</sup> / ${fixed(shear.centroidArea)} mm<sup>2</sup>` : `d = ${fixed(shear.d)} mm`,
+      result: `d = ${fixed(shear.d)} mm`,
+      applicability: `Centroid of checked-direction longitudinal tension reinforcement in the tensile half-depth; ${shear.dBasis}.`
+    }),
+    calculationTraceRow({
+      title: "Effective shear depth",
+      reference: "AS 3600 Cl. 8.2.1.5 and AS 3600 Cl. 8.2.1.9",
+      formula: `d<sub>v</sub> = max(0.72D, 0.9d)`,
+      substitution: `max(0.72 &times; ${fixed(data.depth)}, 0.9 &times; ${fixed(shear.d)}) = max(${fixed(0.72 * data.depth)}, ${fixed(0.9 * shear.d)}) mm`,
+      result: `b<sub>v</sub> = ${fixed(shear.bv)} mm; d<sub>v</sub> = ${fixed(shear.dv)} mm`,
+      applicability: "Rectangular strip without ducts or voids."
+    }),
+    calculationTraceRow({
+      title: "Simplified-method scope",
+      reference: "AS 3600 Cl. 8.2.4.1",
+      lookup: "Fixed quick-check applicability conditions.",
+      selection: "Normal-weight, non-prestressed concrete; no axial tension or torsion; f'<sub>c</sub> &le; 65 MPa; f<sub>sy</sub> &le; 500 MPa; aggregate size &ge; 10 mm.",
+      adopted: "Simplified one-way shear method",
+      applicability: "Every fixed condition must match the project."
+    }),
+    calculationTraceRow({
+      title: "Shear reinforcement area",
+      formula: shear.hasShearReo ? `A<sub>sv</sub> = n<sub>sv</sub>A<sub>bar</sub>; A<sub>sv</sub>/s = A<sub>sv</sub>/s` : `A<sub>sv</sub>/s = 0`,
+      substitution: shear.hasShearReo ? `${shear.nsv.toFixed(0)} &times; ${fixed(shear.shearBarArea)} mm<sup>2</sup> = ${fixed(shear.asv)} mm<sup>2</sup>; ${fixed(shear.asv)}/${fixed(shear.sv)}` : "",
+      result: `A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm<sup>2</sup>/mm`,
+      applicability: shear.hasShearReo ? `${shear.shearDesignation}; area from the reinforcement table.` : "No vertical shear reinforcement selected."
+    }),
+    calculationTraceRow({
+      title: "Simplified shear factor",
+      reference: "AS 3600 Cl. 8.2.4.3",
+      formula: shear.minShearReoProvided ? `k<sub>v</sub> = 0.15` : `k<sub>v</sub> = min[200/(1000 + 1.3d<sub>v</sub>), 0.15]`,
+      substitution: shear.minShearReoProvided ? `A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} &ge; ${shear.asvMinPerS.toFixed(3)} mm<sup>2</sup>/mm` : `min[200/(1000 + 1.3 &times; ${fixed(shear.dv)}), 0.15]`,
+      result: `k<sub>v</sub> = ${shear.kv.toFixed(3)}; &theta;<sub>v</sub> = ${shear.theta.toFixed(0)}&deg;`,
+      applicability: `Minimum A<sub>sv</sub>/s = ${shear.asvMinPerS.toFixed(3)} mm<sup>2</sup>/mm.`
+    }),
+    calculationTraceRow({
+      title: "Concrete shear contribution",
+      reference: "AS 3600 Cl. 8.2.4.1",
+      formula: `V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub>`,
+      substitution: `${shear.kv.toFixed(3)} &times; ${fixed(shear.bv)} mm &times; ${fixed(shear.dv)} mm &times; ${shear.rootFc.toFixed(2)} MPa<sup>0.5</sup> / 1000`,
+      result: `V<sub>uc</sub> = ${fixed(shear.vuc)} kN`,
+      applicability: "&radic;f'<sub>c</sub> is limited to 8.0 MPa."
+    }),
+    calculationTraceRow({
+      title: "Shear reinforcement contribution",
+      reference: "AS 3600 Cl. 8.2.5.2",
+      formula: shear.hasShearReo ? `V<sub>us</sub> = (A<sub>sv</sub>f<sub>sy.f</sub>d<sub>v</sub>/s)cot&theta;<sub>v</sub>` : `V<sub>us</sub> = 0`,
+      substitution: shear.hasShearReo ? `(${fixed(shear.asv)} &times; ${fixed(shear.fsyf)} &times; ${fixed(shear.dv)} / ${fixed(shear.sv)}) &times; ${shear.cotTheta.toFixed(3)} / 1000` : "",
+      result: `V<sub>us</sub> = ${fixed(shear.vus)} kN`,
+      applicability: shear.hasShearReo && !shear.minShearReoProvided ? "Provided A<sub>sv</sub>/s is below the AS 3600 Cl. 8.2.1.7 minimum; review required." : "Selected shear-reinforcement state."
+    }),
+    calculationTraceRow({
+      title: "One-way shear design capacity",
+      reference: "AS 3600 Cl. 8.2.3.1 and AS 3600 Table 2.2.2",
+      formula: `V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u,max</sub>); &phi;V<sub>u</sub> = &phi;V<sub>u</sub>`,
+      substitution: `min(${fixed(shear.vuc)} + ${fixed(shear.vus)}, ${fixed(shear.vuMax)}) kN; &phi; = ${shear.phi.toFixed(2)}`,
+      result: `Design one-way shear capacity = ${fixed(shear.phiVu)} kN`,
+      applicability: shear.webCrushingLimited ? "Web crushing governs." : shear.minShearReoProvided ? "Verified minimum Class N fitments; no web-crushing limit governs." : "No verified minimum Class N fitments."
+    })
+  ].join("") : calculationTraceRow({
+    title: "One-way shear scope",
+    reference: "AS 3600 Cl. 8.2.4.1",
+    result: "Not evaluated",
+    applicability: `Outside simplified-method scope: ${shear.scopeFailures.join("; ")}. Use the applicable general shear method; this page is not a complete shear-design engine.`,
+    state: "warning"
+  });
 
-  $("concreteFormulaSteps").innerHTML = `
-    <div><b>Analysis basis</b><code>${checkedDirectionLabel} strip; only reinforcement parallel to this checked direction is entered. ${direction === "top" ? "Top face" : "Bottom face"} is the compression face and each reinforcement mat is transformed to d<sub>i</sub> from that face. ${compositeSection ? `Composite pad-on-pad section: D = D<sub>top</sub> + D<sub>bot</sub> = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm; all active mats may participate. Interface shear transfer, anchorage and composite action are outside this section solution.` : `${sectionKind === "bottom" ? "Single bottom-pad" : "Single top-pad"} section: D = ${fixed(data.depth)} mm; only that pad's active mats participate.`}</code></div>
-    <div><b>Automatic reinforcement depth</b><code>${depthBasis === "inside" ? `Checked-direction bars are placed immediately inside contacting ${crossingBar.designation} orthogonal bars: face offset = c<sub>nom</sub> + d<sub>b,&perp;</sub> + d<sub>b</sub>/2. Crossing-bar diameter d<sub>b,&perp;</sub> = ${fixed(crossingBar.diameter)} mm; clear layer gap = 0 mm. Use manual y<sub>i</sub> for drawing-derived gaps or different stacking.` : `Checked-direction bars are closest to the concrete face: face offset = c<sub>nom</sub> + d<sub>b</sub>/2. Crossing-bar size is not used.`}</code></div>
-    <div><b>Reinforcement area</b><code>A<sub>si</sub> = A<sub>bar,table</sub> x b / spacing. Current N-bar values use the InfraBuild Reinforcing 500PLUS nominal table: N10/N12/N16/N20/N24/N28/N32/N36/N40 = 79/113/201/314/452/616/804/1018/1257 mm2 per bar. N bars default to f<sub>sy</sub> = 500 MPa. Legacy Y bars use the matching nominal diameter area and default f<sub>sy</sub> = 410 MPa pending project verification; design-model f<sub>sy</sub> is capped at 600 MPa.</code></div>
-    <div><b>Stress block</b><code>&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) = ${data.alpha2.toFixed(3)}; &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67) = ${data.gamma.toFixed(3)}</code></div>
-    <div><b>Equivalent concrete stress block</b><code>a = min(D, &gamma;x) = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} x ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm; C<sub>c</sub> = &alpha;<sub>2</sub> f'<sub>c</sub>ba = ${fixed(result.cc / 1000)} kN</code></div>
-    <div><b>Steel strain</b><code>&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>) / x; compression positive, tension negative</code></div>
-    <div><b>Steel stress</b><code>f<sub>si</sub> = E<sub>s</sub>&epsilon;<sub>si</sub>, capped at +/- f<sub>sy</sub>; for a bar inside the rectangular concrete block, F<sub>si</sub> = A<sub>si</sub>(f<sub>si</sub> - &alpha;<sub>2</sub>f'<sub>c</sub>) to avoid double-counting displaced concrete</code></div>
-    <div><b>Neutral-axis equilibrium</b><code>C<sub>c</sub> + &Sigma;F<sub>s</sub> = ${residual.toFixed(3)} kN residual for N<sup>*</sup> = 0</code></div>
-    <div><b>Nominal flexural capacity</b><code>M<sub>uo</sub> = internal force couple = ${fixed(result.muo)} kNm for the selected strip width b</code></div>
-    <div><b>Capacity factor - AS 3600 Table 2.2.2</b><code>${legacyLayers.length ? `Legacy Y bar selected: conservative quick-screen &phi; = 0.65 unless actual bar grade and N-class equivalence are verified` : `Pure-bending N-class reinforcement assumption: k<sub>uo</sub> = x / d<sub>o</sub> = ${fixed(result.x)} / ${fixed(result.d0)} = ${result.kuo.toFixed(3)}; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`} = ${result.phi.toFixed(2)}</code></div>
-    <div><b>Ductility limit</b><code>${result.kuo > 0.36 ? `k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section` : `k<sub>uo</sub> = ${result.kuo.toFixed(3)} <= 0.36`}</code></div>
-    <div><b>Design flexural capacity</b><code>&phi;M<sub>uo</sub> = ${result.phi.toFixed(2)} x ${fixed(result.muo)} = ${fixed(result.phiMuo)} kNm; verify AS 3600 Table 2.2.2 and ductility class before issue for design</code></div>
-    ${shearFormulaSteps}`;
+  const layerAreaSubstitution = data.layers.map(layer => `${layer.designation}: ${fixed(layer.barArea)} &times; ${fixed(data.width)}/${fixed(layer.spacing)} = ${fixed(layer.area)} mm<sup>2</sup>`).join("; ");
+  const layerDepthSubstitution = data.layers.map(layer => `d<sub>${layer.index}</sub> = ${fixed(direction === "top" ? layer.yTop : data.depth - layer.yTop)} mm`).join("; ");
+  $("concreteFormulaSteps").innerHTML = [
+    calculationTraceRow({
+      title: "Analysis basis",
+      lookup: `${checkedDirectionLabel} reinforced-concrete strip`,
+      selection: `${direction === "top" ? "Top" : "Bottom"} compression face; ${sectionKind}`,
+      adopted: compositeSection ? `D = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm` : `D = ${fixed(data.depth)} mm`,
+      applicability: compositeSection ? "All active mats may participate; interface transfer, anchorage and composite action require separate verification." : "Only the active mats in the selected pad section participate."
+    }),
+    calculationTraceRow({
+      title: "Reinforcement depth",
+      formula: depthBasis === "inside" ? `d<sub>i,face</sub> = c<sub>nom</sub> + d<sub>b,&perp;</sub> + d<sub>b</sub>/2` : `d<sub>i,face</sub> = c<sub>nom</sub> + d<sub>b</sub>/2`,
+      substitution: layerDepthSubstitution,
+      result: `${data.layers.length} active checked-direction mat${data.layers.length === 1 ? "" : "s"}`,
+      applicability: depthBasis === "inside" ? `Contacting ${crossingBar.designation} orthogonal bars; clear layer gap = 0 mm. Use manual y<sub>i</sub> for drawing-derived gaps.` : "Checked-direction bars are closest to the concrete face."
+    }),
+    calculationTraceRow({
+      title: "Reinforcement area",
+      formula: `A<sub>si</sub> = A<sub>bar,table</sub>b/s<sub>i</sub>`,
+      substitution: layerAreaSubstitution,
+      result: data.layers.map(layer => `Mat ${layer.index}: A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm<sup>2</sup>`).join("; "),
+      applicability: "N-bar areas use the checked nominal reinforcement table. Legacy Y-bar strength remains a project-verification item; design-model f<sub>sy</sub> is capped at 600 MPa."
+    }),
+    calculationTraceRow({
+      title: "Concrete stress-block factors",
+      reference: "AS 3600 Cl. 8.1",
+      formula: `&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67); &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67)`,
+      substitution: `f'<sub>c</sub> = ${fixed(data.fc)} MPa`,
+      result: `&alpha;<sub>2</sub> = ${data.alpha2.toFixed(3)}; &gamma; = ${data.gamma.toFixed(3)}`,
+      applicability: "Rectangular equivalent concrete compression block."
+    }),
+    calculationTraceRow({
+      title: "Equivalent concrete compression force",
+      formula: `a = min(D, &gamma;x); C<sub>c</sub> = &alpha;<sub>2</sub>f'<sub>c</sub>ba`,
+      substitution: `a = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} &times; ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm`,
+      result: `C<sub>c</sub> = ${fixed(result.cc / 1000)} kN`,
+      applicability: "Compression force for the selected strip width."
+    }),
+    calculationTraceRow({
+      title: "Reinforcement strain and stress",
+      formula: `&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>)/x; f<sub>si</sub> = clamp(E<sub>s</sub>&epsilon;<sub>si</sub>, &plusmn;f<sub>sy</sub>)`,
+      substitution: `x = ${fixed(result.x)} mm; ${layerDepthSubstitution}`,
+      result: "Layer strains, stresses and forces are shown in Reinforcement force state.",
+      applicability: "Compression is positive and tension is negative. Displaced concrete stress is removed for bars inside the compression block."
+    }),
+    calculationTraceRow({
+      title: "Neutral-axis equilibrium",
+      formula: `C<sub>c</sub> + &Sigma;F<sub>s</sub> = N<sup>*</sup>`,
+      substitution: `N<sup>*</sup> = 0; solved x = ${fixed(result.x)} mm`,
+      result: `Equilibrium residual = ${residual.toFixed(3)} kN`,
+      applicability: "Pure-bending section solution; no applied axial force."
+    }),
+    calculationTraceRow({
+      title: "Nominal flexural capacity",
+      formula: `M<sub>uo</sub> = &Sigma;F<sub>i</sub>z<sub>i</sub>`,
+      substitution: "Equilibrated concrete and reinforcement forces about the selected section datum.",
+      result: `Nominal section moment capacity M<sub>uo</sub> = ${fixed(result.muo)} kN&middot;m`,
+      applicability: `Selected strip width b = ${fixed(data.width)} mm.`
+    }),
+    calculationTraceRow({
+      title: "Flexural capacity factor",
+      reference: "AS 3600 Table 2.2.2",
+      formula: legacyLayers.length ? `&phi; = 0.65` : `k<sub>uo</sub> = x/d<sub>o</sub>; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`,
+      substitution: legacyLayers.length ? "Legacy Y bar quick-screen basis." : `${fixed(result.x)}/${fixed(result.d0)} = ${result.kuo.toFixed(3)}`,
+      result: `&phi; = ${result.phi.toFixed(2)}`,
+      applicability: legacyLayers.length ? "Conservative pending actual bar grade and N-class equivalence." : "Pure bending with N-class reinforcement assumption."
+    }),
+    calculationTraceRow({
+      title: "Ductility limit",
+      reference: "AS 3600 Cl. 8.1.5",
+      formula: `k<sub>uo</sub> = x/d<sub>o</sub> &le; 0.36`,
+      substitution: `${fixed(result.x)}/${fixed(result.d0)} = ${result.kuo.toFixed(3)}`,
+      result: result.kuo <= 0.36 ? "Within displayed limit" : "Review required",
+      applicability: result.kuo > 0.36 ? "AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section." : "Displayed ductility boundary satisfied."
+    }),
+    calculationTraceRow({
+      title: "Design flexural capacity",
+      reference: "AS 3600 Table 2.2.2",
+      formula: `&phi;M<sub>uo</sub> = &phi;M<sub>uo</sub>`,
+      substitution: `${result.phi.toFixed(2)} &times; ${fixed(result.muo)} kN&middot;m`,
+      result: `Design section moment capacity = ${fixed(result.phiMuo)} kN&middot;m`,
+      applicability: "Verify capacity-factor and ductility assumptions before issue for design."
+    }),
+    shearFormulaSteps
+  ].join("");
 }
 
 function setPrimaryPlane() {
@@ -6354,21 +7010,59 @@ function calculateScrewDemand(comparison) {
 
   let comparisonFormula;
   if (comparisonBasis === "project") {
-    comparisonFormula = `<div><b>Project directional comparison</b><code>&eta;<sub>proj</sub> is the maximum applicable non-zero action-to-project-value term. Current terms: ${capacityComparisons}. Entered source: ${safeText(comparison.source)}. Action and value basis: ${actionBasisLabel}. Combined axial-horizontal interaction is not assessed.</code></div>`;
+    comparisonFormula = calculationTraceRow({
+      title: "Project directional comparison",
+      formula: `&eta;<sub>proj</sub> = max(N<sub>c,max</sub><sup>*</sup>/R<sub>c,proj</sub>, N<sub>t,max</sub><sup>*</sup>/R<sub>t,proj</sub>, V<sub>h,max</sub><sup>*</sup>/R<sub>h,proj</sub>)`,
+      substitution: capacityComparisons,
+      result: missingCapacity ? "Incomplete project comparison" : `Maximum directional ratio = ${utilisation.toFixed(2)}`,
+      applicability: `Entered source: ${safeText(comparison.source)}. Action and value basis: ${actionBasisLabel}. Combined axial-horizontal interaction is not assessed.`
+    });
   } else if (comparisonBasis === "project-source-missing") {
-    comparisonFormula = `<div><b>Project comparison unavailable</b><code>Enter a source reference for the project design values. No ratio is reported.</code></div>`;
+    comparisonFormula = calculationTraceRow({
+      title: "Project directional comparison",
+      result: "Not evaluated",
+      applicability: "Enter a source reference for the project design values. No ratio is reported.",
+      state: "warning"
+    });
   } else if (comparisonBasis === "project-basis-mismatch") {
-    comparisonFormula = `<div><b>Project comparison unavailable</b><code>The project value basis does not match ${actionBasisLabel}. No ratio is reported.</code></div>`;
+    comparisonFormula = calculationTraceRow({
+      title: "Project directional comparison",
+      result: "Not evaluated",
+      applicability: `The project value basis does not match ${actionBasisLabel}. No ratio is reported.`,
+      state: "warning"
+    });
   } else {
-    comparisonFormula = `<div><b>Action distribution only</b><code>No project design values are entered. Manufacturer values are not compared automatically. The page reports pile action effects only.</code></div>`;
+    comparisonFormula = calculationTraceRow({
+      title: "Action distribution only",
+      result: "Pile action effects calculated",
+      applicability: "No project design values are entered. Manufacturer values are not compared automatically."
+    });
   }
 
-  $("screwDemandFormulaSteps").innerHTML = `
-    <div><b>Action-distribution model</b><code>Symmetric rectangular layout; rigid pad; vertical identical piles; equal axial stiffness in compression and tension; equal horizontal stiffness; no pad-soil resistance. Coordinates are measured from the group centroid. n = ${n}; &Sigma;x<sub>j</sub>y<sub>j</sub> = ${fixed2(sumXY)} m<sup>2</sup>; &Sigma;x<sub>j</sub><sup>2</sup> = ${fixed2(sumX2)} m<sup>2</sup>; &Sigma;y<sub>j</sub><sup>2</sup> = ${fixed2(sumY2)} m<sup>2</sup>; &Sigma;r<sub>j</sub><sup>2</sup> = ${fixed2(sumR2)} m<sup>2</sup>. Action set: ${actionBasisLabel}.</code></div>
-    <div><b>Axial pile action</b><code>N<sub>i</sub><sup>*</sup> = N<sup>*</sup>/n + M<sub>x</sub><sup>*</sup>y<sub>i</sub>/&Sigma;y<sub>j</sub><sup>2</sup> + M<sub>y</sub><sup>*</sup>x<sub>i</sub>/&Sigma;x<sub>j</sub><sup>2</sup>. Positive N<sub>i</sub><sup>*</sup> denotes compression. N<sub>c,max</sub><sup>*</sup> = max<sub>i</sub>[max(N<sub>i</sub><sup>*</sup>, 0)]; N<sub>t,max</sub><sup>*</sup> = max<sub>i</sub>[max(-N<sub>i</sub><sup>*</sup>, 0)].</code></div>
-    <div><b>Horizontal pile action</b><code>V<sub>x,i</sub><sup>*</sup> = V<sub>x</sub><sup>*</sup>/n - T<sub>z</sub><sup>*</sup>y<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>y,i</sub><sup>*</sup> = V<sub>y</sub><sup>*</sup>/n + T<sub>z</sub><sup>*</sup>x<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>i</sub><sup>*</sup> = &radic;[(V<sub>x,i</sub><sup>*</sup>)<sup>2</sup> + (V<sub>y,i</sub><sup>*</sup>)<sup>2</sup>]. This equal-stiffness model excludes pile-head fixity, soil-pile interaction and horizontal displacement.</code></div>
-    ${comparisonFormula}
-  `;
+  $("screwDemandFormulaSteps").innerHTML = [
+    calculationTraceRow({
+      title: "Action-distribution model",
+      formula: `&Sigma;x<sub>j</sub>y<sub>j</sub> = 0 for the symmetric layout; actions are distributed by rigid-cap equilibrium`,
+      substitution: `n = ${n}; &Sigma;x<sub>j</sub>y<sub>j</sub> = ${fixed2(sumXY)} m<sup>2</sup>; &Sigma;x<sub>j</sub><sup>2</sup> = ${fixed2(sumX2)} m<sup>2</sup>; &Sigma;y<sub>j</sub><sup>2</sup> = ${fixed2(sumY2)} m<sup>2</sup>; &Sigma;r<sub>j</sub><sup>2</sup> = ${fixed2(sumR2)} m<sup>2</sup>`,
+      result: `${n}-pile symmetric rectangular group`,
+      applicability: `Rigid pad; vertical identical piles; equal axial stiffness in compression and tension; equal horizontal stiffness; no pad-soil resistance. ${actionBasisLabel}.`
+    }),
+    calculationTraceRow({
+      title: "Axial pile action",
+      formula: `N<sub>i</sub><sup>*</sup> = N<sup>*</sup>/n + M<sub>x</sub><sup>*</sup>y<sub>i</sub>/&Sigma;y<sub>j</sub><sup>2</sup> + M<sub>y</sub><sup>*</sup>x<sub>i</sub>/&Sigma;x<sub>j</sub><sup>2</sup>`,
+      substitution: `N<sup>*</sup> = ${fixed(baseN)} kN; M<sub>x</sub><sup>*</sup> = ${fixed(mx)} kN&middot;m; M<sub>y</sub><sup>*</sup> = ${fixed(my)} kN&middot;m; n = ${n}`,
+      result: `Maximum compression = ${fixed(maxCompression)} kN; maximum tension = ${fixed(maxUplift)} kN`,
+      applicability: "Positive N<sub>i</sub><sup>*</sup> denotes compression; pile coordinates are measured from the group centroid."
+    }),
+    calculationTraceRow({
+      title: "Horizontal pile action",
+      formula: `V<sub>x,i</sub><sup>*</sup> = V<sub>x</sub><sup>*</sup>/n - T<sub>z</sub><sup>*</sup>y<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>y,i</sub><sup>*</sup> = V<sub>y</sub><sup>*</sup>/n + T<sub>z</sub><sup>*</sup>x<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>i</sub><sup>*</sup> = &radic;[(V<sub>x,i</sub><sup>*</sup>)<sup>2</sup> + (V<sub>y,i</sub><sup>*</sup>)<sup>2</sup>]`,
+      substitution: `V<sub>x</sub><sup>*</sup> = ${fixed(vx)} kN; V<sub>y</sub><sup>*</sup> = ${fixed(vy)} kN; T<sub>z</sub><sup>*</sup> = ${fixed(tz)} kN&middot;m; n = ${n}`,
+      result: `Maximum horizontal pile action = ${fixed(maxLateral)} kN`,
+      applicability: "Equal-stiffness distribution; pile-head fixity, soil-pile interaction and horizontal displacement are excluded."
+    }),
+    comparisonFormula
+  ].join("");
 }
 
 function calculateScrew() {
@@ -6727,7 +7421,11 @@ function updateReoSchedule(options, selectedDesignation) {
 
 function reoRefinedFormulaHtml(result, options, label) {
   if (options.method !== "refined") {
-    return `<div><b>${label} development-length basis</b><code>Basic method; no transverse-reinforcement or pressure reduction is credited.</code></div>`;
+    return calculationTraceRow({
+      title: `${label} development-length basis`,
+      result: "Basic method",
+      applicability: "No transverse-reinforcement or pressure reduction is credited."
+    });
   }
   const location = !result.transverseArrangementConfirmed
     ? "no verified confinement credit selected; K = 0"
@@ -6742,35 +7440,105 @@ function reoRefinedFormulaHtml(result, options, label) {
   const pressureStatus = result.pressureCreditRequested
     ? (result.pressureCreditApplied ? `pressure reference ${safeText(result.pressureReference)} and applicability confirmed` : `candidate k<sub>5</sub> = ${result.k5Candidate.toFixed(3)} not adopted until a calculation/source reference and applicability confirmation are provided`)
     : "no k5 pressure credit requested";
-  return `<div><b>${label} refined factors &middot; Cl. 13.1.2.3</b><code>${location}; K = ${result.K.toFixed(3)} from n<sub>f</sub> / n<sub>bs</sub>; &Sigma;A<sub>tr,min</sub> = ${result.atrMin.toFixed(1)} mm&sup2;; &lambda; = ${result.lambda.toFixed(3)}; candidate k<sub>4</sub> / k<sub>5</sub> = ${result.candidateK4.toFixed(3)} / ${result.candidateK5.toFixed(3)}; adopted k<sub>4</sub> / k<sub>5</sub> = ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}; ${countStatus}; ${pressureStatus}.</code></div><div><b>${label} candidate reconciliation</b><code>Candidate development = ${result.candidateDevelopmentLength.toFixed(1)} mm; adopted development = ${result.developmentLength.toFixed(1)} mm. Candidate factor = ${result.candidateRefinedFactor.toFixed(3)} and adopted factor = ${result.refinedFactor.toFixed(3)}; k<sub>3</sub> &times; each adopted factor remains &ge; 0.700.</code></div>`;
+  return [
+    calculationTraceRow({
+      title: `${label} refined factors`,
+      reference: "AS 3600 Cl. 13.1.2.3",
+      formula: `K = min[0.05(1 + n<sub>f</sub>/n<sub>bs</sub>), 0.10]; &lambda; = max[(&Sigma;A<sub>tr</sub> - &Sigma;A<sub>tr,min</sub>)/A<sub>s</sub>, 0]; k<sub>4</sub> = clamp(1 - K&lambda;, 0.7, 1.0); k<sub>5</sub> = clamp(1 - 0.04p, 0.7, 1.0)`,
+      substitution: `K = ${result.K.toFixed(3)}; &Sigma;A<sub>tr,min</sub> = ${result.atrMin.toFixed(1)} mm<sup>2</sup>; &lambda; = ${result.lambda.toFixed(3)}; candidate k<sub>4</sub>/k<sub>5</sub> = ${result.candidateK4.toFixed(3)}/${result.candidateK5.toFixed(3)}`,
+      result: `Adopted k<sub>4</sub>/k<sub>5</sub> = ${result.k4.toFixed(3)}/${result.k5.toFixed(3)}`,
+      applicability: `${location}; ${countStatus}; ${pressureStatus}.`
+    }),
+    calculationTraceRow({
+      title: `${label} refined-factor reconciliation`,
+      reference: "AS 3600 Cl. 13.1.2.3",
+      formula: `k<sub>ref</sub> = max(k<sub>4</sub>k<sub>5</sub>, 0.7/k<sub>3</sub>); L = L<sub>basic,modified</sub>k<sub>ref</sub>`,
+      substitution: `Candidate factor = ${result.candidateRefinedFactor.toFixed(3)}; adopted factor = ${result.refinedFactor.toFixed(3)}`,
+      result: `Candidate development = ${result.candidateDevelopmentLength.toFixed(1)} mm; adopted development = ${result.developmentLength.toFixed(1)} mm`,
+      applicability: "k<sub>3</sub> multiplied by each adopted refined factor remains at least 0.700."
+    })
+  ].join("");
 }
 
 function reoLapFormulaHtml(result, options, referenceOnly) {
   if (!result?.eligible) {
     const issues = result?.issues?.length ? result.issues.map(safeText).join(" ") : "No lap calculation applies to this path.";
-    return `<div><b>Lap eligibility</b><code>${issues}</code></div>`;
+    return calculationTraceRow({
+      title: "Lap eligibility",
+      result: "Not evaluated",
+      applicability: issues,
+      state: "warning"
+    });
   }
   const narrow = options.memberType === "narrow"
-    ? `<div><b>Narrow-member lap candidate</b><code>L<sub>sy.t</sub> + 1.5s<sub>b</sub> = ${result.developmentLength.toFixed(1)} + 1.5 &times; ${result.gapUsed.toFixed(1)} = ${result.narrowCandidate.toFixed(1)} mm${result.gapEntered <= 3 * result.bar.diameter ? `; entered s<sub>b</sub> &le; 3d<sub>b</sub>, therefore s<sub>b</sub> = 0 for this candidate` : ""}.</code></div>`
+    ? calculationTraceRow({
+        title: "Narrow-member lap candidate",
+        reference: "AS 3600 Cl. 13.2.2",
+        formula: `L<sub>lap,narrow</sub> = L<sub>sy.t</sub> + 1.5s<sub>b</sub>`,
+        substitution: `${result.developmentLength.toFixed(1)} + 1.5 &times; ${result.gapUsed.toFixed(1)} mm`,
+        result: `Candidate = ${result.narrowCandidate.toFixed(1)} mm`,
+        applicability: result.gapEntered <= 3 * result.bar.diameter ? "Entered s<sub>b</sub> &le; 3d<sub>b</sub>; s<sub>b</sub> = 0 for this candidate." : "Entered non-contact bar gap used."
+      })
     : "";
   const referenceWarning = referenceOnly
-    ? `<div><b>PIR applicability boundary</b><code>This is an AS 3600 straight-lap length reference only. Post-installed reinforcement design and the transfer mechanism to the existing bar require the project PIR design.</code></div>`
+    ? calculationTraceRow({
+        title: "PIR applicability boundary",
+        result: "AS 3600 straight-lap length reference only",
+        applicability: "Post-installed reinforcement design and transfer to the existing bar require the project PIR design."
+      })
     : "";
-  const documentStatus = `<div><b>Project-document condition &middot; AS 3600 Cl. 13.2.1(a)</b><code>Use this reference only where the project drawings or specification require or permit the splice.</code></div>`;
-  return `${referenceWarning}
-    ${documentStatus}
-    <div><b>New-work lap geometry</b><code>d<sub>b</sub> = ${result.bar.diameter} mm; A<sub>s</sub> = ${result.bar.area.toFixed(1)} mm&sup2;; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa; c<sub>d</sub> = min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)}) = ${result.cd.toFixed(1)} mm.</code></div>
-    <div><b>Lap development expression</b><code>L<sub>sy.tb,formula</sub> = ${result.basicFormula.toFixed(1)} mm; material multiplier = ${result.conditionFactor.toFixed(2)}; L<sub>sy.t</sub> = ${result.developmentLength.toFixed(1)} mm. The Cl. 13.1.2.2 basic lower limit is not imposed before the Cl. 13.2.2 lap equation.</code></div>
-    ${reoRefinedFormulaHtml(result, options, "Lap")}
-    <div><b>Lap candidates &middot; Cl. 13.2.2</b><code>k<sub>7</sub>L<sub>sy.t</sub> = ${result.k7.toFixed(2)} &times; ${result.developmentLength.toFixed(1)} = ${result.k7Candidate.toFixed(1)} mm; lap lower limit = ${result.lapLowerLimit.toFixed(1)} mm.</code></div>
-    ${narrow}
-    <div><b>Adopted lap reference</b><code>${safeText(result.governing.label)} governs at ${result.rawLength.toFixed(1)} mm; rounded up to ${result.adoptedLength} mm = ${result.ratio.toFixed(1)}d<sub>b</sub>.</code></div>`;
+  return [
+    referenceWarning,
+    calculationTraceRow({
+      title: "Project-document condition",
+      reference: "AS 3600 Cl. 13.2.1(a)",
+      result: "Project confirmation required",
+      applicability: "Use this reference only where the project drawings or specification require or permit the splice."
+    }),
+    calculationTraceRow({
+      title: "New-work lap geometry",
+      formula: `c<sub>d</sub> = min(a/2, c)`,
+      substitution: `min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)}) mm`,
+      result: `c<sub>d</sub> = ${result.cd.toFixed(1)} mm`,
+      applicability: `d<sub>b</sub> = ${result.bar.diameter} mm; A<sub>s</sub> = ${result.bar.area.toFixed(1)} mm<sup>2</sup>; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa.`
+    }),
+    calculationTraceRow({
+      title: "Lap development expression",
+      reference: "AS 3600 Cl. 13.1.2.2 and AS 3600 Cl. 13.2.2",
+      formula: `L<sub>sy.tb</sub> = 0.5k<sub>1</sub>k<sub>3</sub>f<sub>sy</sub>d<sub>b</sub>/(k<sub>2</sub>&radic;f'<sub>c</sub>); L<sub>sy.t</sub> = L<sub>sy.tb</sub>k<sub>material</sub>k<sub>ref</sub>`,
+      substitution: `L<sub>sy.tb,formula</sub> = ${result.basicFormula.toFixed(1)} mm; k<sub>material</sub> = ${result.conditionFactor.toFixed(2)}; k<sub>ref</sub> = ${result.refinedFactor.toFixed(3)}`,
+      result: `L<sub>sy.t</sub> = ${result.developmentLength.toFixed(1)} mm`,
+      applicability: "The AS 3600 Cl. 13.1.2.2 basic lower limit is not imposed before the AS 3600 Cl. 13.2.2 lap equation."
+    }),
+    reoRefinedFormulaHtml(result, options, "Lap"),
+    calculationTraceRow({
+      title: "Lap candidates",
+      reference: "AS 3600 Cl. 13.2.2",
+      formula: `L<sub>lap</sub> = max(k<sub>7</sub>L<sub>sy.t</sub>, L<sub>lap,min</sub>${options.memberType === "narrow" ? ", L<sub>sy.t</sub> + 1.5s<sub>b</sub>" : ""})`,
+      substitution: `k<sub>7</sub>L<sub>sy.t</sub> = ${result.k7.toFixed(2)} &times; ${result.developmentLength.toFixed(1)} = ${result.k7Candidate.toFixed(1)} mm; lower limit = ${result.lapLowerLimit.toFixed(1)} mm`,
+      result: `${safeText(result.governing.label)} governs at ${result.rawLength.toFixed(1)} mm`,
+      applicability: "Candidate comparison uses unrounded values."
+    }),
+    narrow,
+    calculationTraceRow({
+      title: "Adopted lap reference",
+      formula: `L<sub>lap,adopted</sub> = ceil(L<sub>lap</sub>/10)&times;10`,
+      substitution: `ceil(${result.rawLength.toFixed(1)}/10)&times;10`,
+      result: `${result.adoptedLength} mm = ${result.ratio.toFixed(1)}d<sub>b</sub>`,
+      applicability: "Rounded upward to the next 10 mm."
+    })
+  ].join("");
 }
 
 function reoDevelopmentFormulaHtml(result, options, anchorage) {
   if (!result?.eligible) {
     const issues = result?.issues?.length ? result.issues.map(safeText).join(" ") : "No development reference applies to this path.";
-    return `<div><b>Existing-concrete development eligibility</b><code>${issues}</code></div>`;
+    return calculationTraceRow({
+      title: "Existing-concrete development eligibility",
+      result: "Not evaluated",
+      applicability: issues,
+      state: "warning"
+    });
   }
   const cdExpression = result.hookedOrCogged
     ? result.memberType === "narrow"
@@ -6779,26 +7547,90 @@ function reoDevelopmentFormulaHtml(result, options, anchorage) {
     : result.memberType === "narrow"
       ? `min(${options.clearSpacing.toFixed(1)}/2, ${options.c1.toFixed(1)}, ${options.cover.toFixed(1)})`
       : `min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)})`;
-  let stressStep = `<div><b>Selected AS reference</b><code>Full-yield adopted development reference = ${result.adoptedLength} mm.</code></div>`;
+  let stressStep = calculationTraceRow({
+    title: "Selected development reference",
+    result: `Full-yield adopted development reference = ${result.adoptedLength} mm`,
+    applicability: "No reduced project-steel-stress benchmark is requested."
+  });
   if (anchorage?.actualStressRequested) {
     stressStep = anchorage.stressOverYield
-      ? `<div><b>Project steel stress &middot; Cl. 13.1.2.4</b><code>&sigma;<sub>st</sub> = ${anchorage.actualStress.toFixed(1)} MPa exceeds f<sub>sy</sub> = ${anchorage.fsy.toFixed(0)} MPa. No reduced benchmark is issued; review the bar design.</code></div>`
+      ? calculationTraceRow({
+          title: "Project steel stress",
+          reference: "AS 3600 Cl. 13.1.2.4",
+          result: "Reduced benchmark not evaluated",
+          applicability: `&sigma;<sub>st</sub> = ${anchorage.actualStress.toFixed(1)} MPa exceeds f<sub>sy</sub> = ${anchorage.fsy.toFixed(0)} MPa; review the bar design.`,
+          state: "warning"
+        })
       : anchorage.refinedReducedLengthConfirmationMissing
-        ? `<div><b>Combined reduction candidate</b><code>Candidate L<sub>st</sub> = ${anchorage.reducedDevelopmentCandidateRaw.toFixed(1)} mm (${anchorage.reducedDevelopmentCandidateAdopted.toFixed(0)} mm adopted if confirmed). Verify the Refined confinement and pressure evidence throughout this candidate length before adoption.</code></div>`
+        ? calculationTraceRow({
+            title: "Combined reduction candidate",
+            formula: `L<sub>st</sub> = max(L<sub>development</sub>&sigma;<sub>st</sub>/f<sub>sy</sub>, 12d<sub>b</sub>)`,
+            substitution: `${anchorage.reducedDevelopmentCandidateRaw.toFixed(1)} mm raw`,
+            result: `${anchorage.reducedDevelopmentCandidateAdopted.toFixed(0)} mm if confirmed`,
+            applicability: "Verify Refined confinement and pressure evidence throughout this candidate length before adoption.",
+            state: "warning"
+          })
       : anchorage.actualStressApplied
-        ? `<div><b>Project steel stress &middot; Cl. 13.1.2.4</b><code>L<sub>st</sub> = max(${result.rawLength.toFixed(1)} &times; ${anchorage.actualStress.toFixed(1)} / ${anchorage.fsy.toFixed(0)}, 12d<sub>b</sub>) = ${anchorage.reducedDevelopmentRaw.toFixed(1)} mm. Verify &sigma;<sub>st</sub> against the project calculation before issue.</code></div>`
-        : `<div><b>Project steel stress</b><code>Enter a positive &sigma;<sub>st</sub> not exceeding f<sub>sy</sub>; the full-yield reference remains displayed.</code></div>`;
+        ? calculationTraceRow({
+            title: "Project steel stress",
+            reference: "AS 3600 Cl. 13.1.2.4",
+            formula: `L<sub>st</sub> = max(L<sub>development</sub>&sigma;<sub>st</sub>/f<sub>sy</sub>, 12d<sub>b</sub>)`,
+            substitution: `max(${result.rawLength.toFixed(1)} &times; ${anchorage.actualStress.toFixed(1)}/${anchorage.fsy.toFixed(0)}, 12 &times; ${result.bar.diameter}) mm`,
+            result: `Reduced development benchmark = ${anchorage.reducedDevelopmentRaw.toFixed(1)} mm`,
+            applicability: "Verify &sigma;<sub>st</sub> against the project calculation before issue."
+          })
+        : calculationTraceRow({
+            title: "Project steel stress",
+            result: "Input required",
+            applicability: "Enter a positive &sigma;<sub>st</sub> not exceeding f<sub>sy</sub>; the full-yield reference remains displayed.",
+            state: "warning"
+          });
   }
   const terminationStep = anchorage?.terminationDetailingConfirmationMissing
-    ? `<div><b>Cast-in ${safeText(anchorage.terminationType)} detailing required &middot; Cls 13.1.2.6&ndash;13.1.2.7</b><code>Minimum bend diameter = ${anchorage.minimumBendDiameter.toFixed(0)} mm (${anchorage.minimumBendDiameterFactor}d<sub>b</sub> for the selected condition); ${anchorage.terminationType === "hook" ? `straight extension = ${anchorage.hookStraightExtension.toFixed(0)} mm minimum` : `90-degree cog, bend diameter not exceeding ${anchorage.maximumCogBendDiameter.toFixed(0)} mm and total bar length equal to the corresponding 180-degree hook`}.${anchorage.transverseRestraintRequired ? ` Transverse bar: diameter at least ${anchorage.transverseBarMinimumDiameter.toFixed(0)} mm, in contact, extending ${anchorage.transverseBarExtensionEachSide.toFixed(0)} mm each side.` : ""} The half-development reference is withheld until these requirements are confirmed. No lap-splice reduction applies.</code></div>`
+    ? calculationTraceRow({
+        title: `Cast-in ${safeText(anchorage.terminationType)} detailing`,
+        reference: "AS 3600 Cl. 13.1.2.6 and AS 3600 Cl. 13.1.2.7",
+        result: "Half-development reference withheld",
+        applicability: `Minimum bend diameter = ${anchorage.minimumBendDiameter.toFixed(0)} mm (${anchorage.minimumBendDiameterFactor}d<sub>b</sub>); ${anchorage.terminationType === "hook" ? `straight extension = ${anchorage.hookStraightExtension.toFixed(0)} mm minimum` : `90-degree cog, bend diameter not exceeding ${anchorage.maximumCogBendDiameter.toFixed(0)} mm and total bar length equal to the corresponding 180-degree hook`}.${anchorage.transverseRestraintRequired ? ` Transverse bar diameter at least ${anchorage.transverseBarMinimumDiameter.toFixed(0)} mm, in contact and extending ${anchorage.transverseBarExtensionEachSide.toFixed(0)} mm each side.` : ""} Confirm detailing before adoption; no lap-splice reduction applies.`,
+        state: "warning"
+      })
     : anchorage?.terminationFactor === 0.5
-      ? `<div><b>Cast-in ${safeText(anchorage.terminationType)} termination &middot; Cls 13.1.2.6&ndash;13.1.2.7</b><code>Confirmed standard detailing: 0.5 &times; ${anchorage.actualStressApplied ? `L<sub>st</sub> = ${anchorage.reducedDevelopmentRaw.toFixed(1)}` : `L<sub>sy.t</sub> = ${result.rawLength.toFixed(1)}`} = ${anchorage.asBenchmarkRaw.toFixed(1)} mm; adopted = ${anchorage.asBenchmarkAdopted} mm, measured from the outside of the hook/cog. No lap-splice reduction applies.</code></div>`
+      ? calculationTraceRow({
+          title: `Cast-in ${safeText(anchorage.terminationType)} termination`,
+          reference: "AS 3600 Cl. 13.1.2.6 and AS 3600 Cl. 13.1.2.7",
+          formula: `L<sub>termination</sub> = 0.5L<sub>straight</sub>`,
+          substitution: `0.5 &times; ${anchorage.actualStressApplied ? anchorage.reducedDevelopmentRaw.toFixed(1) : result.rawLength.toFixed(1)} mm`,
+          result: `Raw = ${anchorage.asBenchmarkRaw.toFixed(1)} mm; adopted = ${anchorage.asBenchmarkAdopted} mm`,
+          applicability: "Confirmed standard detailing; measured from the outside of the hook/cog. No lap-splice reduction applies."
+        })
       : "";
-  return `<div><b>Existing-concrete development geometry</b><code>c<sub>d</sub> = ${cdExpression} = ${result.cd.toFixed(1)} mm; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa.</code></div>
-    <div><b>Basic development &middot; Cl. 13.1.2.2</b><code>Formula = ${result.basicFormula.toFixed(1)} mm; lower limit = ${result.basicLowerLimit.toFixed(1)} mm; adopted before material multiplier = ${result.basicBeforeMaterial.toFixed(1)} mm; multiplier = ${result.conditionFactor.toFixed(2)}; modified = ${result.basicModified.toFixed(1)} mm.</code></div>
-    ${reoRefinedFormulaHtml(result, options, "Existing-concrete")}
-    <div><b>Full-yield development reference</b><code>Raw = ${result.rawLength.toFixed(1)} mm; adopted = ${result.adoptedLength} mm. The basic lower limit is applied before the material multiplier and refined factor.</code></div>
-    ${stressStep}${terminationStep}`;
+  return [
+    calculationTraceRow({
+      title: "Existing-concrete development geometry",
+      formula: `c<sub>d</sub> = ${cdExpression}`,
+      substitution: `${cdExpression} = ${result.cd.toFixed(1)} mm`,
+      result: `c<sub>d</sub> = ${result.cd.toFixed(1)} mm`,
+      applicability: `f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa; selected ${result.terminationType} termination.`
+    }),
+    calculationTraceRow({
+      title: "Basic development length",
+      reference: "AS 3600 Cl. 13.1.2.2",
+      formula: `L<sub>sy.tb</sub> = 0.5k<sub>1</sub>k<sub>3</sub>f<sub>sy</sub>d<sub>b</sub>/(k<sub>2</sub>&radic;f'<sub>c</sub>); L<sub>min</sub> = 0.058f<sub>sy</sub>k<sub>1</sub>d<sub>b</sub>`,
+      substitution: `Formula = ${result.basicFormula.toFixed(1)} mm; lower limit = ${result.basicLowerLimit.toFixed(1)} mm; material multiplier = ${result.conditionFactor.toFixed(2)}`,
+      result: `Modified basic development = ${result.basicModified.toFixed(1)} mm`,
+      applicability: `Adopted before material multiplier = ${result.basicBeforeMaterial.toFixed(1)} mm; the lower limit is applied before the material and refined factors.`
+    }),
+    reoRefinedFormulaHtml(result, options, "Existing-concrete"),
+    calculationTraceRow({
+      title: "Full-yield development reference",
+      formula: `L<sub>adopted</sub> = ceil(L<sub>raw</sub>/10)&times;10`,
+      substitution: `ceil(${result.rawLength.toFixed(1)}/10)&times;10`,
+      result: `Raw = ${result.rawLength.toFixed(1)} mm; adopted = ${result.adoptedLength} mm`,
+      applicability: "Full-yield straight development reference before any qualified hook/cog or project-stress adjustment."
+    }),
+    stressStep,
+    terminationStep
+  ].join("");
 }
 
 function updateReoFormulaSteps(lapResult, lapOptions, developmentResult, developmentOptions, anchorage, path) {

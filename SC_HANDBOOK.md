@@ -337,6 +337,8 @@ Preferred pattern:
 6. Design value
 7. Governing value
 
+For the web handbook, do not compress a governing equation, substituted values, final result and limitation into one continuous sentence. Apply the calculation presentation contract in Section 15.7.1. The calculation engine must continue to use unrounded values even when the visible substitution and result use controlled display precision.
+
 Use standard engineering symbols where applicable, for example:
 
 - `phi`
@@ -1770,6 +1772,51 @@ Examples:
 - `&phi;(a_e t_p f_up)`
 - `&phi;(0.85k_t A_n f_u)`
 - `0.90 &times; 3.2 &times; d_f &times; t_p &times; f_up`
+
+#### 15.7.1 Web Calculation Presentation Contract
+
+Every visible engineering calculation trace must separate the governing relationship from the current numerical evaluation. Use the same four-part order in every calculation tab:
+
+1. `Formula` - the symbolic governing equation or deterministic relationship.
+2. `Substitution` - the current values inserted into that equation, with compatible units.
+3. `Result` - the evaluated nominal value, design value, utilisation, threshold or action effect, including its unit and result type.
+4. `Applicability` - the active formula branch, prerequisite, assumption, warning or principal excluded check needed to interpret that result.
+
+The calculation title and source reference sit above these four lines. Use the complete project citation pattern, for example `AS 4100 Cl. 9.2.2.2`. Do not bury the reference inside the numerical substitution.
+
+Required behaviour:
+
+- Keep the governing result card concise. Put formula traces in the existing folded `Calculation details`, `Calculation steps` or equivalent `.detail-card`.
+- Show one trace block per engineering relationship. Do not combine unrelated capacities, lookups, checks or warnings in one paragraph.
+- Keep `Formula` symbolic. Do not place current project numbers in the formula line.
+- Keep `Substitution` numerical. Show the values that materially determine the displayed result and retain units where they establish dimensional consistency.
+- Calculate from unrounded internal values. Round only the displayed substitution and final result under the tab's precision rule.
+- Label the result basis explicitly where ambiguity is possible, such as `Nominal capacity`, `Design capacity`, `Utilisation`, `Required value`, `Selected lookup value` or `Action effect`.
+- For a piecewise or conditional method, show only the active formula branch in the primary trace and state the branch condition under `Applicability`. Keep the other branches in the source/limitations panel or a secondary reference table.
+- For a governing minimum or maximum, show the candidate values in `Substitution`, identify the selected candidate in `Result`, and state the governing reason in `Applicability`.
+- If a value comes from a Standard table, catalogue row or project document, do not invent a formula. Use `Lookup` in place of `Formula`, then show `Selection`, `Adopted value` and `Applicability`.
+- For pure geometry or equilibrium derivations, show the compact governing relationship and current substitution. Do not expose implementation-only coordinates, loops, solver state or every arithmetic intermediate.
+- For iterative calculations, show the governing method, converged key values and convergence/result status. Do not print every iteration.
+- When a calculation is unavailable, retain the trace block with `Result: Not evaluated` or `Input required`, and state the missing prerequisite. Do not show zero as a substitute for an unavailable result.
+- `PASS` or `FAIL` belongs in `Result` only where compatible demand and capacity bases are compared. Formula visibility does not imply complete compliance.
+- Keep detailed exclusions and source discussion in `Calculation basis and limitations`; repeat only the principal interpretation boundary in the trace.
+
+Lookup and selector tools use an equivalent four-part structure:
+
+1. `Lookup` - source table, catalogue or project-data field.
+2. `Selection` - selected row, category, grade, product or condition.
+3. `Adopted value` - the value used by the page.
+4. `Applicability` - source status, edition, condition and principal limitation.
+
+Presentation rules:
+
+- Use a shared semantic trace component and shared typography across tabs.
+- Use short fixed labels (`Formula`, `Substitution`, `Result`, `Applicability`, or the lookup equivalents), not tab-specific synonyms.
+- Formula and substitution lines may wrap but must never require horizontal page scrolling.
+- On desktop, the trace heading and trace content may use two columns. On phone, stack them into one column while preserving the same DOM, values and order.
+- Mobile may keep the containing detail panel closed by default, but opening it must reveal the same formula, substitution, result, applicability and source reference as desktop.
+- Do not use colour as the only distinction between formula, substitution and result.
+- Mathematical symbols use the notation rules below; explanatory prose remains normal interface text rather than code-styled text.
 
 Subscript and superscript rules:
 

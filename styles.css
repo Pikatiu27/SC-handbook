@@ -1211,6 +1211,31 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .formula-list > div:last-child { border: 0; }
 .formula-list b { color: var(--green); }
 .formula-list code { color: #4d5852; white-space: normal; overflow-wrap: anywhere; }
+.formula-list > .calculation-trace-row {
+  grid-template-columns: minmax(150px, 190px) minmax(0, 1fr);
+  gap: 12px 18px;
+  padding: 12px 0;
+}
+.calculation-trace-heading { min-width: 0; }
+.calculation-trace-heading b,
+.calculation-trace-heading small { display: block; }
+.calculation-trace-heading b { color: var(--ink); font-size: var(--fs-sm); line-height: 1.25; font-weight: 800; }
+.calculation-trace-heading small { margin-top: 3px; color: var(--muted); font-size: 11px; line-height: 1.3; font-weight: 700; }
+.calculation-trace-body { min-width: 0; display: grid; gap: 5px; }
+.formula-list .calculation-trace-line {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 8px;
+  align-items: baseline;
+  padding: 0;
+  border: 0;
+}
+.calculation-trace-line > span { color: var(--muted); font-size: 11px; line-height: 1.35; font-weight: 800; }
+.calculation-trace-line > code { color: #3f4944; font-family: inherit; font-size: var(--fs-xs); line-height: 1.45; }
+.calculation-trace-line.is-result > code { color: var(--ink); font-weight: 800; }
+.calculation-trace-line.is-applicability > code { color: var(--muted); }
+.calculation-trace-row.is-warning .calculation-trace-line.is-result > code,
+.calculation-trace-row.is-warning .calculation-trace-heading b { color: var(--warning-ink, #72520a); }
 .source-notes { padding: 12px; border-radius: 8px; background: #fff3df; color: #755f4d; font-size: var(--fs-xs); }
 .source-notes p { margin: 0 0 9px; }
 .source-notes p:last-child { margin-bottom: 0; }
@@ -1567,7 +1592,9 @@ footer b { white-space: nowrap; }
   .detailing-check > span { grid-column: 1 / -1; }
   .detailing-check > strong { align-self: center; }
   .detailing-check > b { align-self: center; }
-  .formula-list > div, .concrete-detail-card .formula-list > div { grid-template-columns: 1fr; gap: 3px; }
+  .formula-list > div, .concrete-detail-card .formula-list > div,
+  .formula-list > .calculation-trace-row { grid-template-columns: 1fr; gap: 5px; }
+  .formula-list .calculation-trace-line { grid-template-columns: 78px minmax(0, 1fr); gap: 7px; }
   .section-properties-summary { display: grid; grid-template-columns: 116px minmax(0, 1fr); align-items: center; gap: 10px 12px; }
   .section-properties-summary-copy { align-self: center; }
   .section-properties-summary > dl { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
