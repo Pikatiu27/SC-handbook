@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260724reorelease1">
+  <link rel="stylesheet" href="styles.css?v=20260729sectionmaterial5">
 </head>
 <body>
   <header class="topbar">
@@ -590,7 +590,7 @@
     </section>
 
     <section id="propertiesPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Catalogue and geometric section properties</p><h2>Section Properties</h2></div><span class="tool-status">Draft &middot; catalogue and derived data</span></div>
+      <div class="tool-heading"><div><p class="kicker">Section and material properties</p><h2>Section Properties</h2></div><span class="tool-status">Draft &middot; value basis shown</span></div>
 
       <section class="lookup-card">
         <div class="section-properties-mode-switch" role="group" aria-label="Section property source">
@@ -621,6 +621,20 @@
               <label data-section-shapes="angle" hidden><span>t <i>thickness</i></span><span class="unit"><input id="sectionAngleThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
             </div>
           </section>
+          <section class="input-group input-group-material section-material-input-group">
+            <span class="input-group-heading"><b>Material definition</b><small id="sectionMaterialInputNote">Product form and governing thickness follow the selected section.</small></span>
+            <div class="input-group-fields four section-material-inputs">
+              <label><span>Product form</span><select id="sectionMaterialForm"><option value="hot-rolled-section">Hot-rolled section</option><option value="round-bar">Round bar</option><option value="hollow-section">Cold-formed hollow section</option><option value="project">Project-defined steel</option></select></label>
+              <label><span>Steel grade</span><select id="sectionMaterialGrade"></select></label>
+              <div class="section-material-thickness-control">
+                <label><span id="sectionMaterialThicknessLabel">Governing thickness</span><span class="unit"><input id="sectionMaterialThickness" type="number" min="0.1" step="0.1" value="10" aria-describedby="sectionMaterialThicknessState sectionMaterialValidation"><em>mm</em></span></label>
+                <div class="section-material-thickness-mode"><span id="sectionMaterialThicknessState">Catalogue</span><button id="sectionMaterialThicknessOverride" type="button" aria-pressed="false" hidden>Override</button></div>
+              </div>
+              <label class="section-material-project-field" hidden><span>f<sub>y</sub> <i>project input</i></span><span class="unit"><input id="sectionMaterialFyInput" type="number" min="0" step="1" value="350" aria-describedby="sectionMaterialValidation"><em>MPa</em></span></label>
+              <label class="section-material-project-field" hidden><span>f<sub>u</sub> <i>project input</i></span><span class="unit"><input id="sectionMaterialFuInput" type="number" min="0" step="1" value="450" aria-describedby="sectionMaterialValidation"><em>MPa</em></span></label>
+            </div>
+            <small class="field-error section-material-validation" id="sectionMaterialValidation" role="status" hidden></small>
+          </section>
         </div>
 
         <div class="member-summary section-properties-summary" aria-live="polite">
@@ -636,7 +650,7 @@
         </div>
 
         <section class="capacity-section section-properties-results" id="sectionPropertyResults" aria-live="polite" data-section-layout="orthogonal">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section properties</h2></div><span id="sectionResultContext">Selected section &middot; mm units</span></div>
+          <div class="section-heading"><div><span class="section-tag">SECTION</span><h2>Section properties</h2></div><span id="sectionResultContext">Selected section &middot; mm units</span></div>
           <div class="section-properties-group-heading">
             <div><span>Section basis</span><h3 id="sectionCoreHeading">Gross section and centroid</h3></div>
             <p id="sectionCoreDescription">Identity, mass, gross area and centroid coordinates.</p>
@@ -684,15 +698,36 @@
             <article id="sectionPrincipalRadiusCard"><span>Principal radii</span><div class="section-property-pair"><span id="sectionPrincipalRadiusOne">u</span><output id="sectionRu">147.0</output><small> mm</small></div><div class="section-property-pair"><span id="sectionPrincipalRadiusTwo">v</span><output id="sectionRv">30.4</output><small> mm</small></div><p class="property-basis" id="sectionRuBasis">Derived &middot; catalogue data</p></article>
             <article id="sectionPrincipalAngleCard"><span id="sectionThetaLabel">Principal-axis angle <i>&theta;<sub>u</sub></i></span><strong><output id="sectionThetaU">0.0</output><small>&deg;</small></strong><p class="property-basis" id="sectionThetaUBasis">Derived &middot; catalogue data</p></article>
           </div>
-          <p class="section-property-ratios" id="sectionGeometricRatios"><b>Geometric ratios</b> &mdash; (d−2t<sub>f</sub>)/t<sub>w</sub> = 34.5; (b<sub>f</sub>−t<sub>w</sub>)/t<sub>f</sub> = 5.14. No section classification is assigned.</p>
           <div class="section-property-auxiliary section-angle-principal-moduli" id="sectionPrincipalModuli" hidden></div>
-          <p class="result-note" id="sectionPropertiesWarning">The basis of each value is stated. Missing catalogue properties are not replaced by idealised rolled-section geometry.</p>
+          <div class="section-properties-group-heading section-design-attribute-heading">
+            <div><span>Material-dependent</span><h3>Section design values</h3></div>
+            <p>Reference attributes only; capacities and utilisation remain in Beam and Axial Member.</p>
+          </div>
+          <div class="section-properties-design-attributes" id="sectionDesignAttributes">
+            <article><span>Form factor <i>k<sub>f</sub></i></span><strong><output id="sectionDesignKf">&mdash;</output></strong><p class="property-basis" id="sectionDesignKfBasis">Not available</p></article>
+            <article><span>Section classification</span><strong id="sectionDesignCompactness">&mdash;</strong><p class="property-basis" id="sectionDesignCompactnessBasis">Not available</p></article>
+            <article><span>Effective section modulus <i>Z<sub>e</sub></i></span><strong id="sectionDesignZe">&mdash;</strong><p class="property-basis" id="sectionDesignZeBasis">Not available</p></article>
+          </div>
+          <p class="section-property-ratios" id="sectionGeometricRatios"><b>Geometric ratios</b> &mdash; (d−2t<sub>f</sub>)/t<sub>w</sub> = 34.5; (b<sub>f</sub>−t<sub>w</sub>)/t<sub>f</sub> = 5.14. No section classification is assigned.</p>
+          <div class="section-heading section-material-category-heading">
+            <div><span class="section-tag">MATERIAL</span><h2>Material properties</h2></div>
+            <span id="sectionMaterialDescription">Strength and common steel constants for the selected material basis.</span>
+          </div>
+          <div class="section-properties-material" id="sectionMaterialProperties">
+            <article><span>Standard and grade</span><strong id="sectionMaterialStandard">AS/NZS 3679.1</strong><p class="property-basis" id="sectionMaterialStandardBasis">Standard lookup</p></article>
+            <article><span>Yield stress <i>f<sub>y</sub></i></span><strong><output id="sectionMaterialFy">320</output><small> MPa</small></strong><small class="section-material-secondary" id="sectionMaterialFyDetail" hidden></small><p class="property-basis" id="sectionMaterialFyBasis">Standard</p></article>
+            <article><span>Tensile strength <i>f<sub>u</sub></i></span><strong><output id="sectionMaterialFu">440</output><small> MPa</small></strong><p class="property-basis" id="sectionMaterialFuBasis">Standard</p></article>
+            <article><span>Elastic / shear modulus</span><div class="section-property-pair"><span>E</span><output id="sectionMaterialE">200,000 MPa</output></div><div class="section-property-pair"><span>G</span><output id="sectionMaterialG">80,000 MPa</output></div><p class="property-basis">AS 4100 Cl. 2.2.4</p></article>
+            <article><span>Poisson&rsquo;s ratio / thermal expansion</span><div class="section-property-pair"><span>&nu;</span><output id="sectionMaterialNu">0.25</output></div><div class="section-property-pair"><span>&alpha;<sub>T</sub></span><output id="sectionMaterialAlpha">11.7 &times; 10<sup>&minus;6</sup> /&deg;C</output></div><p class="property-basis">AS 4100 Cl. 2.2.4</p></article>
+            <article><span>Density <i>&rho;</i></span><strong><output id="sectionMaterialDensity">7,850</output><small> kg/m<sup>3</sup></small></strong><p class="property-basis">Handbook steel-mass basis</p></article>
+          </div>
+          <p class="result-note" id="sectionPropertiesWarning">Each value retains its catalogue, standard or derived basis. Missing catalogue properties are not inferred.</p>
         </section>
       </section>
 
       <details class="detail-card"><summary><span><b>Basis of values</b><small id="sectionCalculationSummary">Catalogue values and stated derivations</small></span><i>+</i></summary><div class="detail-body"><section><h3>Basis of values</h3><div id="sectionFormulaSteps" class="formula-list"></div></section></div></details>
 
-      <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue source, verification status and exclusions</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Axes</b> &mdash; positive horizontal and vertical directions are right and up. Positive rotation is counter-clockwise. For equal angles, n-n is horizontal, p-p is vertical, and the catalogue x-x / y-y axes are principal axes at 45&deg;; other shapes use centroidal x-x / y-y axes parallel to the overall dimensions. Directional Z values retain the catalogue edge labels.</p><p><b>Shear reference</b> &mdash; A<sub>w</sub> is clear web area for I-sections and channels. A<sub>wx</sub> and A<sub>wy</sub> are the two-horizontal-wall and two-vertical-wall areas for ideal RHS/SHS. These are geometric reference areas, not design-standard effective shear area A<sub>v</sub>, and are not used for capacity.</p><p><b>Geometry boundary</b> &mdash; published EA radii and actual thickness are retained as catalogue data; ideal custom geometry does not reconstruct root/corner radii, tapers, welds, holes, copes or manufacturing tolerances. Effective properties and design capacity are excluded. Geometric width/thickness ratios are reported without Compact, Non-compact or Slender classification; classification remains material-grade and standard dependent.</p><p><b>Application</b> &mdash; confirm the current product, actual geometry and governing design standard before use. Product availability is not established by this lookup.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue, material-standard and derivation status</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Material</b> &mdash; hot-rolled section strengths follow AS/NZS 3679.1:2016 Table 14 using controlling part thickness; round-bar strengths follow Table 15 using diameter. Hollow-section values require the selected checked AS/NZS 1163:2016 grade. Custom standard-material thickness is linked to the entered geometry unless the visible manual override is active. E, G, &nu; and &alpha;<sub>T</sub> follow AS 4100:2020 Cl. 2.2.4. Confirm applicable amendments, supplied grade, thickness range, supply condition and test certificate before design issue.</p><p><b>Axes</b> &mdash; positive horizontal and vertical directions are right and up. Positive rotation is counter-clockwise. For equal angles, n-n is horizontal, p-p is vertical, and the catalogue x-x / y-y axes are principal axes at 45&deg;; other shapes use centroidal x-x / y-y axes parallel to the overall dimensions. Directional Z values retain the catalogue edge labels.</p><p><b>Shear reference</b> &mdash; A<sub>w</sub> is clear web area for I-sections and channels. A<sub>wx</sub> and A<sub>wy</sub> are the two-horizontal-wall and two-vertical-wall areas for ideal RHS/SHS. These are geometric reference areas, not design-standard effective shear area A<sub>v</sub>, and are not used for capacity.</p><p><b>Boundary</b> &mdash; checked k<sub>f</sub>, compactness and Z<sub>e</sub> are reference attributes reused only for exact section, grade and direction matches. Product availability, design capacity, member stability, actions and utilisation are excluded.</p></div></div></details>
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
@@ -1520,16 +1555,17 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.0</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.1</b></footer>
   <script src="bolt-integrity.js?v=20260724reorelease1"></script>
   <script src="section-geometry.js?v=20260724reorelease1"></script>
-  <script src="section-catalogue.js?v=20260724reorelease1"></script>
+  <script src="section-catalogue.js?v=20260729sectionmaterial5"></script>
+  <script src="steel-materials.js?v=20260729sectionmaterial5"></script>
   <script src="beam-section-data.js?v=20260724reorelease1"></script>
   <script src="beam-hot-rolled-data.js?v=20260724reorelease1"></script>
   <script src="beam-section-capacity.js?v=20260724reorelease1"></script>
   <script src="beam-section-reconciliation.js?v=20260724reorelease1"></script>
   <script src="reo-calculation.js?v=20260724reorelease1"></script>
-  <script src="app.js?v=20260724reorelease1"></script>
+  <script src="app.js?v=20260729sectionmaterial5"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
