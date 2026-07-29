@@ -16,7 +16,27 @@
     hotRolled: Object.freeze({
       publisher: "InfraBuild",
       document: "Hot Rolled Steel Products Catalogue 2019",
+      status: "Published section-property rows used by the family-specific directory"
+    }),
+    universal: Object.freeze({
+      publisher: "InfraBuild",
+      document: "Hot Rolled Steel Products Catalogue 2019",
+      status: "UB and UC Tables 9 to 12 checked against the selected catalogue rows"
+    }),
+    pfc: Object.freeze({
+      publisher: "InfraBuild",
+      document: "Hot Rolled Steel Products Catalogue 2019",
+      status: "PFC Tables 15 and 16 checked against the selected catalogue rows"
+    }),
+    ea: Object.freeze({
+      publisher: "InfraBuild",
+      document: "Hot Rolled Steel Products Catalogue 2019",
       status: "EA Tables 19 and 21 checked 2026-07-22; complete 46-row directory"
+    }),
+    roundBar: Object.freeze({
+      publisher: "InfraBuild",
+      document: "Hot Rolled Steel Products Catalogue 2019",
+      status: "Round-bar diameter and linear-mass rows used by the selected directory"
     }),
     chs: Object.freeze({
       publisher: "Orrcon Steel",
@@ -98,7 +118,7 @@
         dimension("d", section.d), dimension("bf", section.bf), dimension("tw", section.tw),
         dimension("tf", section.tf), dimension("d1", section.d1)
       ]),
-      source: SOURCES.hotRolled,
+      source: SOURCES.universal,
       ratios: ratioSet([
         ratio("d₁/tw", section.d1 / section.tw),
         ratio("(bf−tw)/2tf", (section.bf - section.tw) / (2 * section.tf))
@@ -135,7 +155,7 @@
       dimensions: joinDimensions([
         dimension("d", section.d), dimension("bf", section.bf), dimension("tw", section.tw), dimension("tf", section.tf)
       ]),
-      source: SOURCES.hotRolled,
+      source: SOURCES.pfc,
       ratios: ratioSet([
         ratio("(d−2tf)/tw", (section.d - 2 * section.tf) / section.tw),
         ratio("(bf−tw)/tf", (section.bf - section.tw) / section.tf)
@@ -208,7 +228,7 @@
       mass: section.mass,
       drawing: Object.freeze({ shape: "angle", b: section.b, t: section.t }),
       dimensions: `b1 = ${Number(section.b).toLocaleString("en-AU")} mm; nominal t = ${Number(section.t).toLocaleString("en-AU")} mm; actual t = ${Number(section.actualT).toLocaleString("en-AU", { maximumFractionDigits: 1 })} mm`,
-      source: SOURCES.hotRolled,
+      source: SOURCES.ea,
       ratios: ratioSet([ratio("(b1-t)/t", section.legRatio)]),
       properties: propertySet({
         area: available(section.area, "catalogue"),
@@ -257,7 +277,7 @@
       mass: section.mass,
       drawing: Object.freeze({ shape: "circle", D: section.diameter }),
       dimensions: dimension("D", section.diameter),
-      source: SOURCES.hotRolled,
+      source: SOURCES.roundBar,
       ratios: ratioSet([]),
       properties: propertySet({
         area: available(section.area, "derived"),

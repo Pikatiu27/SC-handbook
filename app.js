@@ -811,7 +811,9 @@ const eaAxialGrades = Object.freeze({
 
 const eaSections = eaCatalogueSections.filter(section => eaAxialGrades[section.designation]).map(section => {
   const [fy300,kf300,fy350,kf350] = eaAxialGrades[section.designation];
-  return { ...section, grades: { "300PLUS": { fy: fy300, fu: 440, kf: kf300 }, "Grade 350": { fy: fy350, fu: 480, kf: kf350 } } };
+  const grade300 = SteelMaterials.hotRolledStrength("300PLUS", section.actualT);
+  const grade350 = SteelMaterials.hotRolledStrength("Grade 350", section.actualT);
+  return { ...section, grades: { "300PLUS": { fy: fy300, fu: grade300.fu, kf: kf300 }, "Grade 350": { fy: fy350, fu: grade350.fu, kf: kf350 } } };
 });
 
 const pfcSections = [
@@ -847,13 +849,15 @@ const pfcSections = [
   bf,
   tw,
   tf,
-  grades: { "300PLUS": { fy, fu: 440, kf: 1 } }
+  grades: { "300PLUS": { fy, fu: SteelMaterials.hotRolledStrength("300PLUS", Math.max(tw, tf)).fu, kf: 1 } }
 }));
 
 function rodGrades(diameter) {
+  const grade300 = SteelMaterials.roundBarStrength("300PLUS", diameter);
+  const grade350 = SteelMaterials.roundBarStrength("Grade 350", diameter);
   return {
-    "300PLUS": { fy: diameter <= 50 ? 300 : diameter < 100 ? 290 : 280, fu: 440, kf: 1 },
-    "Grade 350": { fy: diameter <= 50 ? 340 : diameter < 100 ? 330 : 320, fu: 480, kf: 1 }
+    "300PLUS": { ...grade300, kf: 1 },
+    "Grade 350": { ...grade350, kf: 1 }
   };
 }
 
@@ -885,16 +889,17 @@ const sectionCatalogueFamilies = SectionCatalogue.create({
   rod: rodSections
 }, SectionGeometry);
 let sectionPropertiesMode = "catalogue";
+let sectionMaterialThicknessManual = false;
 
 const customSections = [{
   designation: "Custom / Built-up properties",
   grades: { "User input": { fy: 350, fu: 450, kf: 1 } }
 }];
 
-const chsGrades = {
-  C250L0: { fy: 250, fu: 320, kf: 1 },
-  C350L0: { fy: 350, fu: 430, kf: 1 }
-};
+const chsGrades = Object.fromEntries(["C250L0", "C350L0"].map(grade => [grade, {
+  ...SteelMaterials.hollowStrength(grade),
+  kf: 1
+}]));
 
 const screwPileCatalogues = {
   katana: {
@@ -2034,7 +2039,7 @@ const manualInputIds = [
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
   "beamMomentDemand", "beamShearDemand", "beamFyInput", "beamFywInput", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
-  ...sectionPropertyInputIds,
+  ...sectionPropertyInputIds, "sectionMaterialThickness", "sectionMaterialFyInput", "sectionMaterialFuInput",
   "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
   "memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD",
@@ -2048,7 +2053,7 @@ const referenceInputIds = [
   "concreteDirection", "concreteReoDirection", "concreteDepthBasis", "concreteCrossingBar", "concreteShearReo", "concreteShearBar",
   "reoRebarPath", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoCastingPosition", "reoMaterialCondition", "reoCd", "reoExistingCd", "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoPressureBasisConfirmed", "reoExistingBarOrigin", "reoAnchorageBasis", "reoCastInTermination", "reoCastInTerminationConfirmed", "reoExistingMemberType", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingMethod", "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingKValue", "reoExistingCombinedFactor", "reoExistingPressureBasisConfirmed",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
-  "beamFamily", "beamSection", "beamGrade", "beamDirection", "sectionCatalogueFamily", "sectionCatalogueDesignation", "sectionShape",
+  "beamFamily", "beamSection", "beamGrade", "beamDirection", "sectionCatalogueFamily", "sectionCatalogueDesignation", "sectionShape", "sectionMaterialForm", "sectionMaterialGrade",
   "screwManufacturer", "screwSeries", "screwApplication", "screwCapacitySource", "screwSoil", "screwExposure", "screwInstallEvidence", "screwLateralSensitivity", "screwDemandBasis", "screwProjectBasis", "screwProjectSource", "screwLayout",
   "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberNetAreaMode", "memberKt", "memberDimensionOverride"
 ];
@@ -3641,12 +3646,211 @@ function selectedSectionCatalogueRecord() {
   return family.sections.find(section => section.id === $("sectionCatalogueDesignation").value) || family.sections[0];
 }
 
+function sectionMaterialDefaultForm() {
+  if (sectionPropertiesMode === "catalogue") {
+    const family = selectedSectionCatalogueFamily()?.key;
+    if (family === "chs") return "hollow-section";
+    if (family === "rod") return "round-bar";
+    return "hot-rolled-section";
+  }
+  const shape = $("sectionShape").value;
+  if (shape === "rhs" || shape === "chs") return "hollow-section";
+  if (shape === "circle") return "round-bar";
+  return "hot-rolled-section";
+}
+
+function sectionMaterialDefaultThickness() {
+  if (sectionPropertiesMode === "catalogue") {
+    const family = selectedSectionCatalogueFamily()?.key;
+    const section = selectedSectionCatalogueRecord();
+    if (!section) return null;
+    if (family === "ea") return section.auxiliary?.actualT?.value || section.drawing?.t || null;
+    if (family === "rod") return section.drawing?.D || section.diameter || null;
+    if (family === "chs") return section.drawing?.t || null;
+    return Math.max(Number(section.drawing?.tf) || 0, Number(section.drawing?.tw) || 0) || null;
+  }
+  const shape = $("sectionShape").value;
+  if (shape === "rectangle") return Math.min(value("sectionWidth"), value("sectionHeight"));
+  if (shape === "rhs" || shape === "chs") return value("sectionThickness");
+  if (shape === "circle") return value("sectionDiameter");
+  if (shape === "i" || shape === "channel") return Math.max(value("sectionWebThickness"), value("sectionFlangeThickness"));
+  if (shape === "angle") return value("sectionAngleThickness");
+  return null;
+}
+
+function populateSectionMaterialGrades(preferredGrade) {
+  const form = $("sectionMaterialForm").value;
+  const grades = SteelMaterials.gradeOptions(form);
+  $("sectionMaterialGrade").innerHTML = grades.map(grade => `<option value="${safeText(grade)}">${safeText(grade)}</option>`).join("");
+  const defaultGrade = form === "hollow-section" ? "C350L0" : grades[0];
+  $("sectionMaterialGrade").value = grades.includes(preferredGrade) ? preferredGrade : defaultGrade;
+  const project = form === "project";
+  document.querySelectorAll(".section-material-project-field").forEach(field => { field.hidden = !project; });
+  const definition = SteelMaterials.PRODUCT_FORMS[form];
+  $("sectionMaterialThicknessLabel").textContent = definition.thicknessLabel;
+}
+
+function sectionMaterialThicknessBasis() {
+  if (sectionPropertiesMode === "catalogue") return "catalogue";
+  if ($("sectionMaterialForm").value === "project") return "project";
+  return sectionMaterialThicknessManual ? "manual" : "geometry";
+}
+
+function syncSectionMaterialControls(reset = false, preserveForm = false) {
+  const previousForm = $("sectionMaterialForm").value;
+  const previousGrade = $("sectionMaterialGrade").value;
+  const defaultForm = sectionMaterialDefaultForm();
+  const catalogue = sectionPropertiesMode === "catalogue";
+  if (reset) sectionMaterialThicknessManual = false;
+  if (catalogue || (reset && !preserveForm) || !SteelMaterials.PRODUCT_FORMS[previousForm]) $("sectionMaterialForm").value = defaultForm;
+  $("sectionMaterialForm").disabled = catalogue;
+  populateSectionMaterialGrades(previousGrade);
+  const project = $("sectionMaterialForm").value === "project";
+  const geometryLinked = !catalogue && !project && !sectionMaterialThicknessManual;
+  const thickness = sectionMaterialDefaultThickness();
+  if (catalogue || geometryLinked) $("sectionMaterialThickness").value = Number.isFinite(thickness) && thickness > 0 ? thickness : "";
+  $("sectionMaterialThickness").disabled = catalogue || geometryLinked;
+  $("sectionMaterialThickness").dataset.basis = sectionMaterialThicknessBasis();
+  $("sectionMaterialThicknessState").textContent = catalogue
+    ? "Catalogue"
+    : project
+      ? "Project input"
+      : sectionMaterialThicknessManual
+        ? "Manual override"
+        : "Geometry linked";
+  $("sectionMaterialThicknessState").classList.toggle("is-manual", project || sectionMaterialThicknessManual);
+  $("sectionMaterialThicknessOverride").hidden = catalogue || project;
+  $("sectionMaterialThicknessOverride").textContent = sectionMaterialThicknessManual ? "Use geometry" : "Override";
+  $("sectionMaterialThicknessOverride").setAttribute("aria-pressed", String(sectionMaterialThicknessManual));
+  $("sectionMaterialInputNote").textContent = catalogue
+    ? "Product form and governing thickness follow the selected section."
+    : project
+      ? "Project-defined fy, fu and governing thickness are explicit user inputs."
+      : sectionMaterialThicknessManual
+        ? "Standard strength uses the manual governing thickness shown below."
+        : "Standard material follows the governing thickness or diameter of the entered geometry.";
+}
+
+function selectedSectionMaterial() {
+  return SteelMaterials.resolve({
+    productForm: $("sectionMaterialForm").value,
+    grade: $("sectionMaterialGrade").value,
+    thickness: value("sectionMaterialThickness"),
+    thicknessBasis: sectionMaterialThicknessBasis(),
+    fy: value("sectionMaterialFyInput"),
+    fu: value("sectionMaterialFuInput")
+  });
+}
+
+function sectionCheckedDesignRecord() {
+  if (sectionPropertiesMode !== "catalogue") return null;
+  const family = selectedSectionCatalogueFamily()?.key;
+  const designation = selectedSectionCatalogueRecord()?.designation;
+  if (!designation) return null;
+  if (family === "ub") {
+    const section = ubSections.find(item => item.designation === designation);
+    return section ? beamRolledSection(section, "ub") : null;
+  }
+  if (family === "uc") {
+    const section = ucSections.find(item => item.designation === designation);
+    return section ? beamRolledSection(section, "uc") : null;
+  }
+  if (family === "pfc") {
+    const section = BeamHotRolledData.pfc.find(item => item.designation === designation);
+    return section ? beamPfcSection(section) : null;
+  }
+  if (family === "chs") return beamHollowSections("chs").find(item => item.designation === designation) || null;
+  if (family === "ea") {
+    const section = eaSections.find(item => item.designation === designation);
+    return section ? beamAngleSection(section) : null;
+  }
+  if (family === "rod") {
+    const section = rodSections.find(item => item.designation === designation);
+    return section ? beamRodSection(section) : null;
+  }
+  return null;
+}
+
+function setSectionMaterialValue(outputId, basisId, value, basis) {
+  const output = $(outputId);
+  const basisElement = $(basisId);
+  const available = Number.isFinite(value);
+  output.textContent = available ? Number(value).toLocaleString("en-AU", { maximumFractionDigits: 0 }) : "—";
+  basisElement.textContent = available ? basis : "Not verified";
+  basisElement.classList.toggle("unavailable", !available);
+}
+
+function renderSectionMaterial(material, designRecord) {
+  const common = material.common;
+  const exactGrade = designRecord?.grades?.[material.grade];
+  const webYieldStrength = exactGrade?.fyw;
+  const thicknessBasisLabel = {
+    catalogue: "Catalogue",
+    geometry: "Geometry linked",
+    manual: "Manual override",
+    project: "Project input"
+  }[material.thicknessBasis] || "Entered";
+  const thicknessText = Number.isFinite(material.thickness)
+    ? `${material.thicknessLabel} = ${material.thickness.toLocaleString("en-AU", { maximumFractionDigits: 1 })} mm`
+    : `${material.thicknessLabel} not resolved`;
+  $("sectionMaterialStandard").textContent = `${material.standard} · ${material.grade}`;
+  $("sectionMaterialStandardBasis").textContent = `${material.table} · ${thicknessText} · ${thicknessBasisLabel}`;
+  setSectionMaterialValue("sectionMaterialFy", "sectionMaterialFyBasis", material.fy, material.strengthBasis === "project" ? "Project input" : "Standard");
+  $("sectionMaterialFyDetail").hidden = !Number.isFinite(webYieldStrength) || webYieldStrength === material.fy;
+  $("sectionMaterialFyDetail").innerHTML = Number.isFinite(webYieldStrength) && webYieldStrength !== material.fy
+    ? `Web yield stress f<sub>y,w</sub> = ${webYieldStrength.toLocaleString("en-AU")} MPa · Catalogue · exact row`
+    : "";
+  setSectionMaterialValue("sectionMaterialFu", "sectionMaterialFuBasis", material.fu, material.strengthBasis === "project" ? "Project input" : "Standard");
+  $("sectionMaterialE").textContent = `${common.E.value.toLocaleString("en-AU")} MPa`;
+  $("sectionMaterialG").textContent = `${common.G.value.toLocaleString("en-AU")} MPa`;
+  $("sectionMaterialNu").textContent = common.nu.value.toFixed(2);
+  $("sectionMaterialAlpha").innerHTML = `${(common.alphaT.value * 1e6).toFixed(1)} &times; 10<sup>&minus;6</sup> /&deg;C`;
+  $("sectionMaterialDensity").textContent = common.density.value.toLocaleString("en-AU");
+  $("sectionMaterialValidation").textContent = material.validation;
+  $("sectionMaterialValidation").hidden = material.status === "resolved";
+  const invalidProjectStrength = material.productForm === "project" && material.status !== "resolved";
+  $("sectionMaterialFyInput").setAttribute("aria-invalid", String(invalidProjectStrength));
+  $("sectionMaterialFuInput").setAttribute("aria-invalid", String(invalidProjectStrength));
+  $("sectionMaterialDescription").textContent = material.status === "resolved"
+    ? "Strength and common steel constants for the selected material basis."
+    : "Complete the material inputs to resolve strength values.";
+}
+
+function sectionDirectionLabel(record, key) {
+  return beamFamilyDefinitions[record?.family]?.directions?.find(direction => direction[0] === key)?.[1] || key;
+}
+
+function renderSectionDesignAttributes(record, gradeName) {
+  const grade = record?.grades?.[gradeName];
+  const unavailable = !grade;
+  $("sectionDesignKf").textContent = Number.isFinite(grade?.kf) ? grade.kf.toFixed(3) : "—";
+  $("sectionDesignKfBasis").textContent = Number.isFinite(grade?.kf) ? "Catalogue · exact row" : "Not available";
+  $("sectionDesignKfBasis").classList.toggle("unavailable", !Number.isFinite(grade?.kf));
+
+  const directions = Object.entries(grade?.directions || {});
+  const compactnessValues = directions
+    .filter(([, data]) => data.compactness)
+    .map(([key, data]) => `${sectionDirectionLabel(record, key)}: ${compactnessText(data.compactness)}`);
+  const zeValues = directions
+    .filter(([, data]) => Number.isFinite(data.Ze) && data.Ze > 0)
+    .map(([key, data]) => `${sectionDirectionLabel(record, key)}: ${formatBeamNumber(data.Ze, 1)} × 10³ mm³`);
+
+  $("sectionDesignCompactness").textContent = compactnessValues.length ? compactnessValues.join(" · ") : "—";
+  $("sectionDesignCompactnessBasis").textContent = compactnessValues.length ? "Catalogue · exact row" : "Not available";
+  $("sectionDesignCompactnessBasis").classList.toggle("unavailable", !compactnessValues.length);
+  $("sectionDesignZe").textContent = zeValues.length ? zeValues.join(" · ") : "—";
+  $("sectionDesignZeBasis").textContent = zeValues.length ? "Catalogue · exact row" : "Not available";
+  $("sectionDesignZeBasis").classList.toggle("unavailable", !zeValues.length);
+  $("sectionDesignAttributes").dataset.state = unavailable ? "unavailable" : "checked";
+}
+
 function populateSectionCatalogueFamilies() {
   $("sectionCatalogueFamily").innerHTML = sectionCatalogueFamilies
     .map(family => `<option value="${family.key}">${safeText(family.label)}</option>`)
     .join("");
   $("sectionCatalogueFamily").value = "pfc";
   populateSectionCatalogueDesignations(false);
+  syncSectionMaterialControls(true);
 }
 
 function populateSectionCatalogueDesignations(recalculate = true) {
@@ -3655,6 +3859,7 @@ function populateSectionCatalogueDesignations(recalculate = true) {
     .map(section => `<option value="${safeText(section.id)}">${safeText(section.designation)}</option>`)
     .join("");
   if (family.sections.length) $("sectionCatalogueDesignation").value = family.sections[0].id;
+  syncSectionMaterialControls(true);
   if (recalculate) calculateSectionProperties();
 }
 
@@ -3667,6 +3872,7 @@ function setSectionPropertyMode(mode) {
   });
   $("sectionCatalogueGroup").hidden = sectionPropertiesMode !== "catalogue";
   $("sectionCustomGroup").hidden = sectionPropertiesMode !== "custom";
+  syncSectionMaterialControls(true);
   calculateSectionProperties();
 }
 
@@ -3994,7 +4200,7 @@ function calculateCustomSectionProperties() {
     renderSectionRatios(customSectionRatios(shape));
     $("sectionProductGeometry").hidden = true;
     $("sectionPrincipalModuli").hidden = true;
-    $("sectionPropertiesWarning").textContent = "Geometric properties only. Section classification, strength, stability and effective-section checks require material and design inputs.";
+    $("sectionPropertiesWarning").textContent = "Geometry and material bases are shown together. Material-dependent section values remain unavailable for ideal custom geometry; capacity and stability are excluded.";
     $("sectionCalculationSummary").textContent = "Standard geometric relationships for the entered dimensions";
     $("sectionSourceSummary").textContent = "Ideal geometry · no product-table values";
     $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Basis</b> &mdash; standard area, centroid, product-of-inertia and parallel-axis relationships; Z = I/c, r = &radic;(I/A), and steel mass = 0.00785A kg/m. For implemented plastic moduli, each plastic neutral axis divides the gross area equally and S is the first absolute area moment about that axis.</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry. ${shearReferenceText}; it is not a design-standard effective shear area.</p>`;
@@ -4067,7 +4273,7 @@ function calculateCustomSectionProperties() {
       calculationTraceRow({
         title: "Torsion and scope",
         result: "J and Iw shown only where a reviewed closed-form relationship is implemented",
-        applicability: "Effective properties, section classification, material strength and design capacity are excluded."
+        applicability: "Material properties are resolved separately. Effective properties and classification require an exact checked section / grade / direction row; design capacity is excluded."
       })
     ].join("");
   } catch (error) {
@@ -4167,11 +4373,11 @@ function calculateCatalogueSectionProperties() {
   }
 
   $("sectionPropertiesWarning").textContent = family.key === "chs" || family.key === "rod"
-    ? "Catalogue dimensions and derived geometric properties are identified separately. Section classification and design checks remain outside this lookup."
-    : "The basis of each value is stated. Missing catalogue properties are not replaced by idealised rolled-section geometry.";
+    ? "Catalogue dimensions, derived geometry and standard material values retain separate basis labels. Capacity and member checks are excluded."
+    : "Each value retains its catalogue, standard or derived basis. Missing catalogue properties are not inferred.";
   $("sectionCalculationSummary").textContent = "Catalogue values and stated derivations";
   $("sectionSourceSummary").textContent = `${source.publisher} · ${source.status}`;
-  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. The combined catalogue workflow remains Draft.</p><p><b>Derivation</b> &mdash; ${safeText(section.derivation)}</p>`;
+  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. This lookup remains Draft.</p><p><b>Derivation</b> &mdash; ${safeText(section.derivation)}</p>`;
   $("sectionFormulaSteps").innerHTML = [
     sectionPropertyStep("Mass per metre", massProperty, "kg/m"),
     sectionPropertyStep("Gross area Ag", properties.area, "mm²"),
@@ -4204,8 +4410,8 @@ function calculateCatalogueSectionProperties() {
     sectionPropertyStep(`Principal-axis angle θ${principalOne}`, properties.thetaU, "°"),
     calculationTraceRow({
       title: "Scope",
-      result: "Section properties only",
-      applicability: "Section classification is material-grade dependent; strength, stability, effective-section and capacity checks are excluded."
+      result: "Section, material and checked design attributes",
+      applicability: "Material and exact-row design attributes are reference outputs. Capacity, stability, actions and utilisation are excluded."
     })
   ].join("");
 }
@@ -4213,6 +4419,27 @@ function calculateCatalogueSectionProperties() {
 function calculateSectionProperties() {
   if (sectionPropertiesMode === "custom") calculateCustomSectionProperties();
   else calculateCatalogueSectionProperties();
+
+  const material = selectedSectionMaterial();
+  const designRecord = sectionCheckedDesignRecord();
+  renderSectionMaterial(material, designRecord);
+  renderSectionDesignAttributes(designRecord, material.grade);
+  const thicknessBasisLabel = {
+    catalogue: "catalogue-linked",
+    geometry: "linked to entered geometry",
+    manual: "manual override",
+    project: "project input"
+  }[material.thicknessBasis] || "entered";
+  $("sectionSourceDetails").insertAdjacentHTML("beforeend", `<p><b>Material basis</b> &mdash; ${safeText(material.source)}; ${safeText(material.thicknessLabel)} ${Number.isFinite(material.thickness) ? `= ${material.thickness.toLocaleString("en-AU", { maximumFractionDigits: 1 })} mm` : "not resolved"} (${safeText(thicknessBasisLabel)}). f<sub>y</sub> / f<sub>u</sub> are ${material.strengthBasis === "project" ? "project inputs" : "standard lookup values"}; confirm the supplied product test certificate before design issue.</p>`);
+  $("sectionFormulaSteps").insertAdjacentHTML("afterbegin", calculationTraceRow({
+    title: "Material properties",
+    reference: material.productForm === "project" ? "Project documents" : material.source,
+    formula: "Resolve product form, grade and controlling thickness before selecting fy and fu",
+    substitution: `${material.productFormLabel}; ${material.grade}; ${material.thicknessLabel} ${Number.isFinite(material.thickness) ? `= ${material.thickness.toFixed(1)} mm` : "not resolved"}; ${thicknessBasisLabel}`,
+    result: Number.isFinite(material.fy) && Number.isFinite(material.fu) ? `f<sub>y</sub> = ${material.fy} MPa; f<sub>u</sub> = ${material.fu} MPa` : "Material strengths not verified",
+    applicability: "Reference properties only. No design capacity, member stability, action or utilisation is calculated in this tab.",
+    state: material.status === "resolved" ? "checked" : "warning"
+  }));
 }
 
 function beamWebShearReduction(section, grade, isCustom) {
@@ -8477,9 +8704,29 @@ function initialise() {
   beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
   document.querySelectorAll(".section-properties-mode").forEach(button => button.addEventListener("click", () => setSectionPropertyMode(button.dataset.sectionPropertiesMode)));
   $("sectionCatalogueFamily").addEventListener("change", populateSectionCatalogueDesignations);
-  $("sectionCatalogueDesignation").addEventListener("change", calculateSectionProperties);
-  $("sectionShape").addEventListener("change", calculateSectionProperties);
-  sectionPropertyInputIds.forEach(id => $(id).addEventListener("input", calculateSectionProperties));
+  $("sectionCatalogueDesignation").addEventListener("change", () => {
+    syncSectionMaterialControls(true);
+    calculateSectionProperties();
+  });
+  $("sectionShape").addEventListener("change", () => {
+    syncSectionMaterialControls(true);
+    calculateSectionProperties();
+  });
+  $("sectionMaterialForm").addEventListener("change", () => {
+    syncSectionMaterialControls(true, true);
+    calculateSectionProperties();
+  });
+  $("sectionMaterialGrade").addEventListener("change", calculateSectionProperties);
+  $("sectionMaterialThicknessOverride").addEventListener("click", () => {
+    sectionMaterialThicknessManual = !sectionMaterialThicknessManual;
+    syncSectionMaterialControls(false, true);
+    calculateSectionProperties();
+  });
+  ["sectionMaterialThickness", "sectionMaterialFyInput", "sectionMaterialFuInput"].forEach(id => $(id).addEventListener("input", calculateSectionProperties));
+  sectionPropertyInputIds.forEach(id => $(id).addEventListener("input", () => {
+    syncSectionMaterialControls(false, true);
+    calculateSectionProperties();
+  }));
   $("screwManufacturer").addEventListener("change", populateScrewSeries);
   $("screwSeries").addEventListener("change", setScrewCapacityDefaults);
   if ($("screwCatalogueRows")) {
