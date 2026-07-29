@@ -2212,10 +2212,10 @@ Manufacturer product lookup branches:
 - Keep three peer branches inside the Bolt tab: `Standard bolt capacity`, `U-bolt product lookup` and `Structural blind-bolt lookup`.
 - Treat U-bolts and structural blind bolts as manufacturer product lookups, not as AS 4100 ordinary bolt-capacity calculation paths.
 - State that each branch is a curated manufacturer reference set, not an exhaustive product catalogue.
-- Use the same lightweight sequence for both product branches: `Project requirement`, `Product source`, `Selected product`, manufacturer-published data, collapsed dimensions/installation and collapsed basis-and-limitations.
+- Use the same lightweight sequence for both product branches: `Project requirement`, `Product source`, `Selected product`, manufacturer-published data and collapsed basis-and-limitations. Keep a separate dimensions/installation disclosure only where the product record is too detailed for the selected-product card.
 - Keep only selectors that materially assist product browsing. Optional geometry, head, finish and manufacturer fields must remain unrestricted by default.
-- `Catalogue entry` is the selection control. The `Selected product` strip confirms manufacturer, family, product code, nominal size and supplier only; do not repeat published dimensions or installation data there.
-- Show fit or grip range, hole geometry, material/finish and installation requirements once, within the collapsed manufacturer-data row.
+- `Catalogue entry` is the selection control. The `Selected product` strip confirms product identity and concise ordering information; do not repeat the same values in a second descriptive panel.
+- Show fit or grip range, hole geometry, material/finish and installation requirements once within the selected-product card. Do not repeat them in another descriptive panel.
 - Use `PRODUCT DATA`, not `RESULTS`, for manufacturer values. Do not label a value as `Design capacity` unless the source itself publishes that basis and the governing jurisdiction is stated.
 - Keep catalogue brands separate from supply channels. Filter by `Brand / manufacturer` and show `Supplier` independently. Where no supported supply channel is recorded, display `Not specified`; do not substitute the manufacturer name.
 - Retain manufacturer, supplier, product family, product code, nominal size, fit or grip range, material/finish, published value and basis, source document, revision/date, URL and source status in the underlying record.
@@ -2226,7 +2226,7 @@ Manufacturer product lookup branches:
 - Do not show generic N*, V* or M* inputs, action ratios, governing structural checks or connection PASS/FAIL in a product-lookup branch.
 - If a published value is absent, use one compact `Published load | Not published` row rather than a visually dominant capacity card.
 - Before a catalogue entry is selected, show one compact selection prompt only. Hide the empty selected-product fields, published-data cards and source-status badge until a product is confirmed.
-- Keep catalogue-option labels short enough for mobile selection. Use product family, nominal size and fit or grip range in the option; show manufacturer, product code and supplier in the selected-product strip.
+- Keep catalogue-option labels short enough for mobile selection. Use product family, nominal size and fit or grip range in the option; show manufacturer, product code, supplier and concise ordering information in the selected-product card.
 - Where tension and shear values share one published basis, show that basis once below the two value cards rather than repeating it in each card.
 - State the shared boundary as `Manufacturer-published data; not an AS 4100 design capacity.` Connected steelwork, local section effects and project suitability remain separate engineering checks.
 
@@ -2237,7 +2237,7 @@ U-bolt product lookup branch:
 - Derive `Member geometry` from catalogue geometry: `Round / pipe`, `Square / rectangular`, `Beam / channel assembly` and `Custom / drawing-defined`. Keep `Any member geometry` as the default.
 - Default rod size to M12. Do not require an exact catalogue diameter, and do not represent discrete manufacturer diameters as a continuous fit range.
 - Keep the selected-product strip to product code, rod size and supplier; place manufacturer, family and series in the title/supporting line.
-- Put fit geometry, inside diameter or width, leg length, thread length, rod diameter, supplied nuts/washers and material/coating in one collapsed `Published dimensions and material` row.
+- Merge concise U-bolt ordering information into `Selected product`: product code, rod size, supplier, member geometry and material / finish. Do not add a separate `Published dimensions and material` disclosure for the same record.
 - Where one published product load is reported, use one full-width horizontal result. Label it using the exact manufacturer basis. Where no value is published, use the compact missing-value row.
 - In U-bolt mode, use `U-bolt Product Lookup`, `U-bolt products · manufacturer data` and `Manufacturer data · no design capacity`.
 - Keep mounting-pipe / round-member products separate from beam or channel clamp assemblies. Main headframe-to-monopole clamps are OEM or project-engineered assemblies and are outside the standard-product lookup.
@@ -2250,13 +2250,19 @@ Structural blind-bolt product lookup branch:
 - Use `Structural blind-bolt lookup` as the generic branch name. Retain proprietary family names such as `Hollo-Bolt`, `HBS-Bolt`, `UNI-BOLT`, `Blind Bolt` and `BoxBolt` only for their verified manufacturer records.
 - Split the selectors into `Project requirement` for bolt size, total clamping thickness W and head type; and `Product source` for finish, manufacturer and catalogue entry.
 - Use nominal size as the primary blind-bolt filter. Leave head type, finish and manufacturer unrestricted by default.
-- Use total clamping thickness W to rank entries as `Compatible grip range` or `Other grip ranges`; do not remove the latter from the catalogue list. Where W is blank, show all entries for the selected primary filters without a compatibility claim.
+- Define total grip `W` as the total thickness of all connected plies. Keep it optional and blank by default. Use an entered positive value only to rank entries as `Compatible grip range` or `Other grip ranges`; do not remove the latter from the catalogue list. Where `W` is blank, show all entries for the selected primary filters without a compatibility claim.
 - Do not auto-present the first product as a recommendation. Require the user to confirm a catalogue entry before showing its published values.
 - Keep the selected-product strip to product code, nominal size and supplier; place manufacturer and product family in the title/supporting line.
-- Put grip range, hole diameter, head type, finish, minimum hole centres, minimum edge or internal clearance, minimum outer-ply thickness, installation torque and tool size in one collapsed `Dimensions and installation` row.
+- Merge blind-bolt ordering and installation information into `Selected product`: product code, nominal size, supplier, grip range, hole diameter, head type, finish, minimum centres, edge or internal-clearance requirement, outer-ply condition or thickness basis, installation torque and tools. Do not repeat these values in a separate dimensions disclosure.
 - Show published tension and shear values only where the same manufacturer source states their basis. Use separate cards when both values are published; otherwise use a compact missing-value row.
 - Do not rank products from different manufacturers by load where their published bases differ. Display the basis adjacent to every value.
 - Treat ICC-ES / AISC, ETA / Eurocode and manufacturer safe-working-load data as jurisdiction-specific product evidence. Do not relabel any of them as an Australian Standard design capacity.
+- For Hollo-Bolt, use the current ICC-ES ESR-3330 static/wind LRFD available strength and state that the LRFD resistance factor is already included. Do not multiply the published value by another factor.
+- For UNI-BOLT, identify the TDS 1053.1 AS 4100 design capacity and state that `phi = 0.8` is already included.
+- For HBS-Bolt, retain the manufacturer's working load rather than presenting the separate characteristic resistance as a design capacity.
+- For BoxBolt, report ETA 20/1174 `Ft,Rk` and `Fv,Rk` as characteristic resistance with no design partial factor applied.
+- For Blind Bolt Company products, use the current March 2026 BS EN 1993-1-8 design resistance, identify `gamma M2 = 1.25` as already applied and state whether the shear plane crosses the thread or slot.
+- Keep NexGen2 as an M20 tower-oriented ICC-ES / TIA product record. Identify the displayed TIA-222-G strength and shear-plane condition; do not relabel it as AS 4100 capacity.
 - State that the displayed fastener value does not evaluate connected plate or HSS wall bearing, tear-out, net section, block shear, local deformation, punching/pull-through, prying or combined actions.
 - Thin-wall or curved monopole-shell applications remain project-specific and are not qualified by a generic structural blind-bolt product match.
 
@@ -2591,6 +2597,7 @@ Purpose and modes:
 - Use one shared geometry layer for dimension-derived section properties. Beam, Axial Member and future tabs must call this layer rather than reimplementing ideal-shape formulas.
 - Open the Section Properties tab in `Catalogue sections` mode and provide a separate `Custom geometry` mode.
 - Reuse only checked manufacturer rows already accepted elsewhere in the handbook. Custom geometry may cover ideal rectangles, RHS/SHS, solid circles, CHS, symmetric I-sections, equal angles and simplified channels.
+- Treat Section Properties as the shared section, product and material attribute lookup for downstream steel-member workflows. It may report verified geometry, product identity, material strengths, common steel constants and checked standard-dependent attributes, but it must not calculate design capacity, member stability, actions or utilisation.
 
 Shared calculation contract:
 
@@ -2604,16 +2611,37 @@ Shared calculation contract:
 - product of inertia `Ixy`, polar second moment `Ix + Iy`, principal second moments `Iu` / `Iv`, principal radii `ru` / `rv`, and principal-axis angle `thetaU` for entered ideal geometry or catalogue shapes whose symmetry establishes the transformation;
 - geometric clear-web area `Aw` for I-sections and channels, and horizontal-wall `Awx` plus vertical-wall `Awy` for ideal RHS/SHS. None is a design-standard effective shear area `Av`.
 
+Shared material contract:
+
+- identify product form, material/product standard, steel grade, controlling thickness or diameter and supply-condition basis before reporting `fy` or `fu`;
+- resolve hot-rolled section `fy` / `fu` from AS/NZS 3679.1 Table 14 using the nominal thickness of the governing part, and resolve round-bar values from Table 15 using nominal diameter;
+- resolve hollow-section `fy` / `fu` only from a checked AS/NZS 1163 grade or product-table row applicable to the selected product;
+- report the AS 4100:2020 Cl. 2.2.4 design constants `E`, `G`, Poisson's ratio and coefficient of thermal expansion as standard values common to all steel grades;
+- report density only with its stated engineering mass basis; the current steel mass conversion uses `7850 kg/m3`;
+- keep material data in one shared lookup layer used by Section Properties, Beam and Axial Member rather than maintaining conflicting grade constants in separate UI functions;
+- label each material value as `Standard`, `Catalogue`, `Derived`, `Project input` or `Not verified`;
+- when the selected catalogue geometry has no checked material/capacity row, continue showing verified geometric properties but show standard-dependent attributes as unavailable rather than copying values from a different section.
+
 Page and evidence requirements:
 
+- Keep the visible query classification to two primary result groups only: `Section properties` and `Material properties`. Section basis, axis properties, section-specific values, principal-axis relationships, material-dependent section values and geometric ratios are subsections within `Section properties`, not peer page categories.
+- Use this visible page sequence: section selection; material definition; selected-section summary and axis figure; `Section properties`; `Material properties`; folded calculation basis; folded source and limitations.
+- Within `Section properties`, use the engineering sequence: gross section basis; displayed-axis properties; applicable family-specific properties; principal-axis relationship where relevant; material-dependent section values; geometric ratios.
+- Within `Material properties`, show the selected standard and grade, governing thickness or diameter, `fy`, applicable exact-row `fy,w`, `fu`, `E`, `G`, Poisson's ratio, thermal expansion coefficient and density. Do not repeat the same material identity or thickness statement in both the group description and value cards.
 - Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx` / `Zy`, plastic `Sx` / `Sy`, and `rx` / `ry`. Orrcon CHS mass is a catalogue value; its remaining properties are geometry-derived from published nominal `D` / `t`. For custom geometry, a steel mass may be derived from `0.00785A kg/m` only when the assumed density `7850 kg/m3` is stated.
+- Place a compact material-definition row after section selection. In catalogue mode, infer product form and controlling thickness from the selected product and allow only applicable grade choices. In custom mode, require an explicit product-form / material basis and allow project-entered `fy` / `fu` where no standard lookup applies.
+- For custom standard materials, keep controlling thickness or diameter linked to the governing entered geometry by default. A manual override must be an explicit reversible state, visually labelled beside the input and carried into the result basis and calculation trace.
+- Fail closed on incomplete or internally inconsistent project material inputs. Do not report project strengths unless controlling thickness, `fy` and `fu` are positive and `fu >= fy`.
+- Present one compact `Material properties` result group after the complete `Section properties` group. Show material/product standard, grade, controlling thickness or diameter, `fy`, `fu`, `E`, `G`, Poisson's ratio, thermal expansion coefficient and density with visible basis labels.
+- Present checked standard-dependent section attributes such as `kf`, compactness and `Ze` only when the selected section, grade and direction exist in the accepted Beam/Axial source data. Show all applicable directions compactly; do not silently choose one direction for an unsymmetric section.
 - Present common catalogue supplementary properties when the checked row publishes them: torsion constant `J`, warping constant `Iw`, PFC centroid coordinate `XL`, PFC shear-centre coordinate `XO`, directional elastic moduli, and principal-axis properties for angles. For entered ideal geometry calculate `Zx,T`, `Zx,B`, `Zy,R` and `Zy,L` from the matching extreme-fibre distances; do not collapse an unsymmetric section to a single unexplained `Z` value.
 - Label the polar second moment as `Ix + Iy`, without introducing `Jp`; state that it is equal to the St Venant torsion constant `J` only for circular sections.
 - Present dimensionless geometric ratios such as `D/t`, `b/t`, `d1/tw`, `(bf-tw)/(2tf)` for symmetric UB/UC or I-sections, and `(bf-tw)/tf` for channels without assigning a section classification.
 - Label every result as catalogue, derived from catalogue data, derived from entered geometry or unavailable.
+- Label a separate web yield strength `fy,w` as an exact catalogue-row value when it is reused from a checked UB, UC or PFC section/grade record; do not present it as the generic controlling-thickness lookup.
 - Do not show a bare zero for product of inertia. State whether `Ixy = 0` follows from symmetry, whether rotational symmetry makes every centroidal axis principal, or whether a non-zero value requires the reported principal axes. Keep unavailable catalogue data visually distinct from a calculated zero.
 - Use a compact scalar summary plus an x/y property table rather than repeating a large card for each axis value.
-- Organise the visible result hierarchy by section family: selected section and geometry; gross section basis; properties about the displayed reference axes; applicable section-specific constants; principal-axis relationship; then geometric ratios, calculation basis and source limitations.
+- Keep the two primary result groups visually stronger than their internal subsection headings. Do not present axis properties, torsion, principal axes, checked design references or geometric ratios as additional page-level categories.
 - For rotationally symmetric CHS, solid circles and round bars, show one equivalent centroidal-axis column and state that every centroidal diameter has the same properties. Do not repeat identical x/y values as separate decision information.
 - For equal angles, place actual thickness, root/toe radii and centroid distances with the gross product geometry; keep n-n / p-p centroidal properties in the main axis table; then present the principal x-x / y-y inertia, radii, angle and moduli as a separate structured group.
 - Hide family-inapplicable supplementary cards instead of filling the main result hierarchy with unavailable J, Iw, XO or shear-reference placeholders. Retain unavailable status in the detailed basis where it is useful for completeness.
@@ -2623,7 +2651,7 @@ Page and evidence requirements:
 - Use positive horizontal coordinates to the right, positive vertical coordinates upward and positive principal-axis rotation counter-clockwise.
 - For equal angles, follow the InfraBuild catalogue convention: centroidal `n-n` is horizontal, centroidal `p-p` is vertical, and `x-x` / `y-y` are principal axes at 45 degrees. Keep the complete 46-row Table 19 / Table 21 directory, including mass, actual thickness, radii, centroid distances, directional `Z`, plastic moduli, `I_np`, principal properties and `J`. Do not substitute sharp-corner ideal geometry for a published rolled-angle value. The Axial Member tool may continue using its smaller, separately verified strength-data subset.
 - Show the publisher, catalogue edition or year and checked-row status. Describe nominal dimensions combined with geometric formulas as a mixed basis, not a manufacturer table-property lookup.
-- Treat section compactness, element slenderness classification, `kf`, effective properties and design capacity as grade- and standard-dependent design outputs. Keep them in Beam or Axial Member workflows unless Section Properties gains an explicit material-grade and AS 4100 classification branch.
+- Treat section compactness, element slenderness classification, `kf` and effective properties as grade-, direction- and standard-dependent attributes. Section Properties may display them only through its explicit material-grade branch and only for checked section/grade/direction rows already accepted by Beam or Axial Member. Design capacity remains in those downstream workflows.
 
 Scope boundaries:
 
@@ -2633,9 +2661,9 @@ Scope boundaries:
 - Do not replace unavailable rolled-section properties with sharp-corner geometry. Use verified manufacturer values when available.
 - Report plastic modulus, torsion constant and warping constant only where the selected catalogue row publishes them or a reviewed ideal-geometry formula is implemented. Otherwise show `Not available`; never infer rolled-section values from simplified sharp-corner geometry.
 - Report `Ixy` and principal-axis transformation only from reviewed ideal geometry or symmetry. Do not infer them for an incomplete rolled-section catalogue row.
-- Do not report effective properties, local buckling classification, material strength or design capacity unless separately implemented and reviewed.
+- Do not report effective properties, local buckling classification or material strength unless the selected product form, grade, thickness and source row are explicitly resolved and reviewed.
 - Keep root radii, corner radii, tapers, welds, holes, copes and manufacturing tolerances outside the ideal geometry model.
-- Keep catalogue availability and material capacity outside this lookup unless separately verified and implemented.
+- Keep product availability, design capacity, member stability, actions and utilisation outside this lookup. Material strength and checked design attributes are reference outputs only and must pass to Beam/Axial without becoming a second capacity calculation path.
 
 ### 15.12 Beam Section Capacity Web Tab Rules
 
