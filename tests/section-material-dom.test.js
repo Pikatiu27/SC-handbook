@@ -42,7 +42,7 @@ assert.ok(app.includes("sectionMaterialThicknessManual"), "Custom material thick
 assert.ok(app.includes("syncSectionMaterialControls(false, true)"), "Custom geometry edits must refresh linked material thickness");
 assert.ok(html.includes('<option value="">Select material basis</option>'), "Custom material selection must expose an unresolved initial basis");
 assert.ok(app.includes('"Select material basis"'), "Custom material controls must explain the unresolved basis");
-assert.ok(app.includes('sectionShape").addEventListener("change", () => {\n    syncSectionMaterialControls(true);'), "Changing custom shape must reset the material basis");
+assert.ok(/sectionShape"\)\.addEventListener\("change", \(\) => \{\s+syncSectionMaterialControls\(true\);/.test(app), "Changing custom shape must reset the material basis");
 assert.ok(app.includes('closest(".section-properties-figure").hidden = true'), "Invalid geometry must hide the stale section figure");
 assert.ok(app.includes("zero by rotational symmetry"), "Circular zero warping must be interpreted");
 assert.ok(app.includes("n-n / p-p centroidal · x-x / y-y principal"), "Equal Angle captions must use full axis notation");
