@@ -2006,7 +2006,8 @@ const manualInputIds = [
 ];
 const referenceInputIds = [
   "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeCondition2", "holeFactor",
-  "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
+  "uBoltRodSize", "uBoltMemberGeometry", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
+  "blindBoltSize", "blindBoltGrip", "blindBoltHead", "blindBoltFinish", "blindBoltManufacturer", "blindBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteReoDirection", "concreteDepthBasis", "concreteCrossingBar", "concreteShearReo", "concreteShearBar",
   "reoRebarPath", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoCastingPosition", "reoMaterialCondition", "reoCd", "reoExistingCd", "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoPressureBasisConfirmed", "reoExistingBarOrigin", "reoAnchorageBasis", "reoCastInTermination", "reoCastInTerminationConfirmed", "reoExistingMemberType", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingMethod", "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingKValue", "reoExistingCombinedFactor", "reoExistingPressureBasisConfirmed",
@@ -2646,6 +2647,17 @@ function uniqueSorted(list, key) {
   return [...new Set(list.map(item => item[key]))].sort((a, b) => String(a).localeCompare(String(b)));
 }
 
+function sortMetricSizes(values) {
+  return [...values].sort((a, b) => {
+    const aNumber = Number(String(a).match(/\d+(?:\.\d+)?/)?.[0]);
+    const bNumber = Number(String(b).match(/\d+(?:\.\d+)?/)?.[0]);
+    if (Number.isFinite(aNumber) && Number.isFinite(bNumber)) return aNumber - bNumber;
+    if (Number.isFinite(aNumber)) return -1;
+    if (Number.isFinite(bNumber)) return 1;
+    return String(a).localeCompare(String(b));
+  });
+}
+
 function setUBoltOptions(selectId, values, options = {}) {
   const select = $(selectId);
   const previous = select.value;
@@ -2670,15 +2682,13 @@ function uBoltFitClass(product) {
 }
 
 function filteredUBoltProducts(includeManufacturer = true) {
-  const application = $("uBoltApplication")?.value;
   const rodSize = $("uBoltRodSize")?.value;
-  const fit = $("uBoltFitFilter")?.value;
+  const geometry = $("uBoltMemberGeometry")?.value;
   const finish = $("uBoltFinish")?.value;
   const manufacturer = $("uBoltManufacturer")?.value;
   return uBoltProducts.filter(product =>
-    (!application || product.application === application) &&
     (!rodSize || product.thread === rodSize || product.thread === "Project-specific") &&
-    (!fit || uBoltFitClass(product) === fit) &&
+    (!geometry || uBoltFitClass(product) === geometry) &&
     (!finish || product.finish === finish) &&
     (!includeManufacturer || !manufacturer || product.manufacturer === manufacturer)
   );
@@ -2691,23 +2701,18 @@ function selectedUBoltProduct() {
 }
 
 function populateUBoltFilters(initial = false) {
-  setUBoltOptions("uBoltApplication", uniqueSorted(uBoltProducts, "application"), {
-    allLabel: "All applications"
-  });
-  const application = $("uBoltApplication").value;
-  const applicationProducts = uBoltProducts.filter(product => !application || product.application === application);
-  setUBoltOptions("uBoltRodSize", uniqueSorted(applicationProducts, "thread"), {
+  setUBoltOptions("uBoltRodSize", sortMetricSizes(uniqueSorted(uBoltProducts, "thread")), {
     allLabel: "Any rod size",
     preferred: initial ? "M12" : ""
   });
   const rodSize = $("uBoltRodSize").value;
-  const rodProducts = applicationProducts.filter(product => !rodSize || product.thread === rodSize || product.thread === "Project-specific");
-  setUBoltOptions("uBoltFitFilter", uniqueSorted(rodProducts.map(product => ({ fitClass: uBoltFitClass(product) })), "fitClass"), {
-    allLabel: "Any member fit"
+  const rodProducts = uBoltProducts.filter(product => !rodSize || product.thread === rodSize || product.thread === "Project-specific");
+  setUBoltOptions("uBoltMemberGeometry", uniqueSorted(rodProducts.map(product => ({ fitClass: uBoltFitClass(product) })), "fitClass"), {
+    allLabel: "Any member geometry"
   });
-  const fitClass = $("uBoltFitFilter").value;
-  const fitProducts = rodProducts.filter(product => !fitClass || uBoltFitClass(product) === fitClass);
-  setUBoltOptions("uBoltFinish", uniqueSorted(fitProducts, "finish"), { allLabel: "Any finish" });
+  const geometry = $("uBoltMemberGeometry").value;
+  const geometryProducts = rodProducts.filter(product => !geometry || uBoltFitClass(product) === geometry);
+  setUBoltOptions("uBoltFinish", uniqueSorted(geometryProducts, "finish"), { allLabel: "Any finish" });
   const manufacturerProducts = filteredUBoltProducts(false);
   setUBoltOptions("uBoltManufacturer", uniqueSorted(manufacturerProducts, "manufacturer"), {
     allLabel: "All brands / manufacturers"
@@ -2755,8 +2760,8 @@ function calculateUBolt() {
       : `${filteredUBoltProducts().length} entries available; published product data appears after selection.`;
     $("uBoltSelectionTypeLabel").textContent = "Product selection";
     $("uBoltSelectionTitle").textContent = $("uBoltProduct").disabled ? "No catalogue entry" : "Select catalogue entry";
-    $("uBoltSelectionNote").textContent = "Member fit, finish and manufacturer remain optional browse filters.";
-    ["uBoltCode", "uBoltThread", "uBoltFit", "uBoltMaterial", "uBoltSupplier", "uBoltPublishedGeometry", "uBoltPublishedMaterial"].forEach(id => {
+    $("uBoltSelectionNote").textContent = "Member geometry, finish and manufacturer remain optional browse filters.";
+    ["uBoltCode", "uBoltThread", "uBoltSupplier", "uBoltPublishedGeometry", "uBoltPublishedMaterial"].forEach(id => {
       $(id).textContent = "-";
     });
     $("uBoltPublishedLoadLabel").textContent = "Manufacturer-published value";
@@ -2776,27 +2781,19 @@ function calculateUBolt() {
   $("uBoltPublishedSection").hidden = false;
   const sourceLink = $("uBoltSourceLink");
   const customEntry = product.application === "Custom / project-manufactured";
-  const assemblyEntry = product.application === "Beam / channel clamp assembly";
-  const familyEntry = /family/i.test(`${product.product} ${product.code}`);
 
   $("uBoltProductGroupTitle").textContent = customEntry ? "Manufacturing source" : "Product source";
   $("uBoltProductGroupNote").textContent = customEntry
     ? "Select the proposed manufacturer and project-specific entry."
-    : "Select the finish, brand or manufacturer, and catalogue entry.";
+    : "Select the brand or manufacturer, finish and catalogue entry.";
   $("uBoltProductFieldLabel").textContent = customEntry ? "Manufacturing entry" : "Catalogue entry";
   $("uBoltSelectionTypeLabel").textContent = customEntry
     ? "Selected manufacturing entry"
-    : assemblyEntry
-      ? "Selected assembly"
-      : familyEntry
-        ? "Selected product family"
-        : "Selected catalogue entry";
+    : "Selected product";
   $("uBoltSelectionTitle").textContent = product.product;
   $("uBoltSelectionNote").textContent = `${product.manufacturer} · ${product.series}`;
   $("uBoltCode").textContent = product.code;
   $("uBoltThread").textContent = product.thread;
-  $("uBoltFit").textContent = product.fitKey || product.fit;
-  $("uBoltMaterial").textContent = product.finish;
   $("uBoltSupplier").textContent = product.supplier || "Not specified";
   $("uBoltPublishedGeometry").textContent = product.fit || product.fitKey || "Not stated";
   $("uBoltPublishedMaterial").textContent = product.material || "Not stated";
@@ -2849,7 +2846,7 @@ function selectedBlindBoltProduct() {
 }
 
 function populateBlindBoltFilters(initial = false) {
-  const sizes = uniqueSorted(blindBoltProducts, "size").sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+  const sizes = sortMetricSizes(uniqueSorted(blindBoltProducts, "size"));
   setUBoltOptions("blindBoltSize", sizes, { preferred: initial ? "M12" : "" });
   const sizeProducts = blindBoltProducts.filter(product => product.size === $("blindBoltSize").value);
   setUBoltOptions("blindBoltHead", uniqueSorted(sizeProducts, "head"), { allLabel: "Any head type" });
@@ -2927,12 +2924,12 @@ function calculateBlindBolt() {
   $("blindBoltSpecification").hidden = false;
   $("blindBoltPublishedSection").hidden = false;
 
-  $("blindBoltSelectionTitle").textContent = `${product.family} ${product.size}`;
+  $("blindBoltSelectionTitle").textContent = product.family;
   const gripStatus = Number($("blindBoltGrip").value) > 0
     ? blindBoltGripCompatible(product) ? "Compatible grip range" : "Outside selected grip range"
     : "Grip compatibility not assessed";
   const sourceStatus = product.legacySource ? "Legacy source" : gripStatus;
-  $("blindBoltSelectionNote").textContent = `${product.manufacturer} \u00b7 ${product.code} \u00b7 ${sourceStatus}${product.legacySource ? ` \u00b7 ${gripStatus}` : ""}`;
+  $("blindBoltSelectionNote").textContent = `${product.manufacturer} \u00b7 ${sourceStatus}${product.legacySource ? ` \u00b7 ${gripStatus}` : ""}`;
   $("blindBoltCode").textContent = product.code;
   $("blindBoltSelectedSize").textContent = product.size;
   $("blindBoltGripRange").textContent = `${product.gripMin}-${product.gripMax} mm`;
@@ -8389,7 +8386,7 @@ function initialise() {
   $("boltModeStandard").addEventListener("click", () => setBoltMode("standard"));
   $("boltModeUBolt").addEventListener("click", () => setBoltMode("ubolt"));
   $("boltModeBlindBolt").addEventListener("click", () => setBoltMode("blind"));
-  ["uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish"].forEach(id => $(id).addEventListener("change", () => {
+  ["uBoltRodSize", "uBoltMemberGeometry", "uBoltFinish"].forEach(id => $(id).addEventListener("change", () => {
     populateUBoltFilters();
     calculateUBolt();
   }));

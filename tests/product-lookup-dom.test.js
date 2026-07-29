@@ -12,9 +12,10 @@ const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 [
   "boltModeUBolt",
   "boltModeBlindBolt",
-  "uBoltFitFilter",
+  "uBoltMemberGeometry",
   "uBoltSelectionPrompt",
   "uBoltSelectedSummary",
+  "uBoltPublishedGeometry",
   "uBoltPublishedSection",
   "blindBoltSize",
   "blindBoltGrip",
@@ -31,11 +32,15 @@ const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 assert.match(script, /const blindBoltProducts = \[/);
 assert.match(script, /Source_Checked/);
 assert.match(script, /Source_Online_Checked/);
+assert.match(script, /function sortMetricSizes\(values\)/);
 assert.match(script, /AS 4100:1998; no current design value is adopted/);
 assert.match(script, /if \(params\.get\("boltmode"\) === "blind"/);
+assert.doesNotMatch(html, /id="uBoltApplication"/);
+assert.doesNotMatch(html, /Selected catalogue entry/);
 assert.doesNotMatch(html, /id="blindBoltTensionBasis"/);
 assert.doesNotMatch(html, /id="blindBoltShearBasis"/);
 assert.match(outline, /Manufacturer product lookup branches:/);
 assert.match(outline, /Structural blind-bolt product lookup branch:/);
+assert.match(outline, /Catalogue entry` is the selection control/);
 
 console.log("Product lookup DOM contract tests passed.");
