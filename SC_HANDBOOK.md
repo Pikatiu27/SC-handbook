@@ -2186,28 +2186,55 @@ Bolt result checks should include:
 - Detailing compliance is not a utilisation ratio. Keep each pitch or edge-distance status with its input; any applicable FAIL means the displayed capacity must not be adopted until the detailing is corrected. For `/TF`, also gate the visible slip result as `NON-COMPLIANT`.
 - The default connected-ply tensile strength should not be an orphan number. Use f<sub>up</sub> = 410 MPa only as the AS/NZS 3678 Grade 250 plate default; use 440 MPa only for verified AS/NZS 3679.1 Grade 300 flat bar/section or another stated source.
 
+Manufacturer product lookup branches:
+
+- Keep three peer branches inside the Bolt tab: `Standard bolt capacity`, `U-bolt product lookup` and `Structural blind-bolt lookup`.
+- Treat U-bolts and structural blind bolts as manufacturer product lookups, not as AS 4100 ordinary bolt-capacity calculation paths.
+- State that each branch is a curated manufacturer reference set, not an exhaustive product catalogue.
+- Use the same lightweight sequence for both product branches: grouped `Project requirement` selectors, grouped `Product source` selectors, one selected-product confirmation strip, one `Manufacturer-published data` section, one collapsed dimensions/installation row and one collapsed basis-and-limitations panel.
+- Use `PRODUCT DATA`, not `RESULTS`, for manufacturer values. Do not label a value as `Design capacity` unless the source itself publishes that basis and the governing jurisdiction is stated.
+- Keep catalogue brands separate from supply channels. Filter by `Brand / manufacturer` and show `Supplier` independently. Where no supported supply channel is recorded, display `Not specified`; do not substitute the manufacturer name.
+- Required shared row fields are manufacturer, supplier, product family, product code, product size, fit or clamping range, material/finish, published load or resistance, published basis, source document, source revision/date, source URL and source status.
+- Preserve the manufacturer's published terminology and basis, including `Working load`, `Safe working load`, `Characteristic resistance`, `ASD allowable load` or `LRFD design strength`. Do not silently convert or compare unlike bases.
+- Use three source states only: `Local reference checked`, `Manufacturer source checked online` and `Source not verified`. `Not published` describes a missing manufacturer value and does not make an otherwise checked source unverified.
+- Show source status once in the manufacturer-data heading. Put the source document, revision/date and direct link in the collapsed basis panel.
+- A matching catalogue product may be reported as `Matching product found`; an unresolved filter combination may be reported as `No matching product`. These are selection states, not structural PASS/FAIL.
+- Do not show generic N*, V* or M* inputs, action ratios, governing structural checks or connection PASS/FAIL in a product-lookup branch.
+- If a published value is absent, use one compact `Published load | Not published` row rather than a visually dominant capacity card.
+- Before a catalogue entry is selected, show one compact selection prompt only. Hide the empty selected-product fields, published-data cards and source-status badge until a product is confirmed.
+- Keep catalogue-option labels short enough for mobile selection. Use product family, nominal size and fit or grip range in the option; show manufacturer, product code and supplier in the selected-product strip.
+- Where tension and shear values share one published basis, show that basis once below the two value cards rather than repeating it in each card.
+- State the shared boundary as `Manufacturer-published data; not an AS 4100 design capacity.` Connected steelwork, local section effects and project suitability remain separate engineering checks.
+
 U-bolt product lookup branch:
 
-- Treat U-bolt lookup as a manufacturer product branch inside the Bolt tab, not as an AS 4100 ordinary bolt-capacity calculation path.
-- For telecom headframe use, filter in this order: application, rod size, fit diameter or member range, finish/environment, brand or manufacturer, then product. Default the common screen to M12 and outdoor HDG products.
-- Follow the Standard bolt branch layout: grouped inputs, one selected-product confirmation strip, one primary published-product result, then one collapsed basis-and-limitations panel.
-- Split the six U-bolt selectors into two three-field groups: `Project requirement` for application, rod size and fit; `Product source` for finish, brand or manufacturer, and catalogue entry. For custom manufacture, change the latter labels to `Manufacturing source` and `Manufacturing entry`.
-- Keep the selected-entry strip compact. Show `Product reference`, `Rod size`, `Member fit`, `Finish` and `Supplier`; place brand or manufacturer and series in the supporting line. Put additional manufacturer-stated geometry and material/coating in one collapsed `Published dimensions and material` row without repeating the confirmation values.
-- Where only one published product load is reported, use one full-width horizontal result rather than a single narrow card in a three-column result grid.
-- Show source status once in the result heading. Do not repeat lookup/status tags below the primary result.
-- In U-bolt mode, replace the AS 4100 bolt-capacity page identity with `U-bolt Product Lookup`, `U-bolt products · manufacturer data` and `Manufacturer data · no design capacity`. Use `PRODUCT DATA`, not `RESULTS`, for the primary manufacturer-data section.
+- For telecom headframe use, filter in this order: application, rod size, member-fit class, finish/environment, brand or manufacturer, then product. Default the common screen to M12, but leave member fit, finish and manufacturer unrestricted.
+- Derive the broad member-fit classes from catalogue geometry rather than individual SKUs: `Round / pipe`, `Square / rectangular`, `Beam / channel assembly` and `Custom / drawing-defined`. Keep `Any member fit` as the default.
+- Treat member fit as an optional browse filter. Do not require an exact catalogue diameter before the user can view product entries, and do not represent discrete manufacturer diameters as a continuous fit range.
+- Split the six U-bolt selectors into two three-field groups: `Project requirement` for application, rod size and member fit; `Product source` for finish, brand or manufacturer, and catalogue entry. For custom manufacture, change the latter labels to `Manufacturing source` and `Manufacturing entry`.
+- Keep the selected-entry strip compact. Show `Product reference`, `Rod size`, `Member fit`, `Finish` and `Supplier`; place brand or manufacturer and series in the supporting line.
+- Put manufacturer-stated inside diameter or width, leg length, thread length, rod diameter, supplied nuts/washers and material/coating in one collapsed `Published dimensions and material` row without repeating confirmation values.
+- Where one published product load is reported, use one full-width horizontal result. Label it using the exact manufacturer basis. Where no value is published, use the compact missing-value row.
+- In U-bolt mode, use `U-bolt Product Lookup`, `U-bolt products · manufacturer data` and `Manufacturer data · no design capacity`.
 - Keep mounting-pipe / round-member products separate from beam or channel clamp assemblies. Main headframe-to-monopole clamps are OEM or project-engineered assemblies and are outside the standard-product lookup.
-- Required row fields are brand or manufacturer, supplier, product family, product code, thread or rod size, pipe/tube fit, material/finish, published capacity, capacity direction and source status.
-- Keep catalogue brands separate from supply channels. Use `Brand / manufacturer` for the filter and show `Supplier` independently in the selected-entry confirmation strip. Where no supply channel is explicitly supported by the source record, display `Not specified`; do not substitute the manufacturer name.
 - Use a separate `Custom / project-manufactured` application for traceable made-to-order U-bolts. Do not present custom manufacturing capability as a stocked product or published capacity.
-- Show published capacity only where the manufacturer source states a rated load, working load, WLL, SWL, recommended load or equivalent basis.
-- Label each value using its published basis, such as `Manufacturer working load` or `Manufacturer-rated load`. Where no value is published, show `No rated load published`; do not use a generic capacity label that implies design resistance.
-- Where a manufacturer publishes a working load but its direction or assembly applicability has not been verified, display the published value and basis but do not calculate an action ratio.
-- Do not show generic N*, V* or M* inputs, or a utilisation ratio, in the product-lookup branch. Project actions cannot be compared until the manufacturer load condition and action basis are both verified.
-- If a future manufacturer record provides a directional allowable load, any comparison must use a compatible project action basis and the matching published load condition. Do not compare ultimate design actions directly with Working Load or ASD Allowable Load.
-- Keep the priority project checks concise within the collapsed basis-and-limitations panel: U-bolt and thread strength, leg-force distribution and bend effects; clamp slip, contact and local bearing/crushing; attachment details and prying; fatigue, corrosion, installation and inspection.
-- If no published capacity is available, show `No published rated capacity` or `Not published`, mark the item `Source_Not_Verified`, and do not report an action ratio.
-- Do not derive U-bolt product capacity from AS 4100 ordinary bolt shear or tension equations. Those checks belong to the connected steelwork or fastener components where applicable.
+- Keep the priority project checks concise within the collapsed basis panel: U-bolt and thread strength, leg-force distribution and bend effects; clamp slip, contact and local bearing/crushing; attachment details and prying; fatigue, corrosion, installation and inspection.
+- Do not derive U-bolt product capacity from AS 4100 ordinary bolt shear or tension equations.
+
+Structural blind-bolt product lookup branch:
+
+- Use `Structural blind-bolt lookup` as the generic branch name. Retain proprietary family names such as `Hollo-Bolt`, `HBS-Bolt`, `UNI-BOLT`, `Blind Bolt` and `BoxBolt` only for their verified manufacturer records.
+- Split the selectors into `Project requirement` for bolt size, total clamping thickness W and head type; and `Product source` for finish, manufacturer and catalogue entry.
+- Use nominal size as the primary blind-bolt filter. Leave head type, finish and manufacturer unrestricted by default.
+- Use total clamping thickness W to rank entries as `Compatible grip range` or `Other grip ranges`; do not remove the latter from the catalogue list. Where W is blank, show all entries for the selected primary filters without a compatibility claim.
+- Do not auto-present the first product as a recommendation. Require the user to confirm a catalogue entry before showing its published values.
+- Keep the selected-product strip compact. Show `Product reference`, `Bolt size`, `Clamping range`, `Head type`, `Finish` and `Supplier`; place manufacturer and product family in the supporting line.
+- Put hole diameter, minimum hole centres, minimum edge or internal clearance, minimum outer-ply thickness, installation torque and tool size in one collapsed `Dimensions and installation` row.
+- Show published tension and shear values only where the same manufacturer source states their basis. Use separate cards when both values are published; otherwise use a compact missing-value row.
+- Do not rank products from different manufacturers by load where their published bases differ. Display the basis adjacent to every value.
+- Treat ICC-ES / AISC, ETA / Eurocode and manufacturer safe-working-load data as jurisdiction-specific product evidence. Do not relabel any of them as an Australian Standard design capacity.
+- State that the displayed fastener value does not evaluate connected plate or HSS wall bearing, tear-out, net section, block shear, local deformation, punching/pull-through, prying or combined actions.
+- Thin-wall or curved monopole-shell applications remain project-specific and are not qualified by a generic structural blind-bolt product match.
 
 Minimum edge distance, minimum pitch and connected-ply checks should reference AS 4100 terminology and clause/table language, not generic web-calculator labels.
 
