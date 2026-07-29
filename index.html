@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260729auditpublish1">
+  <link rel="stylesheet" href="styles.css?v=20260729beamdimensions2">
 </head>
 <body>
   <header class="topbar">
@@ -835,7 +835,7 @@
       <div class="tool-heading"><div><p class="kicker">Beam sections · AS 4100 Section 5</p><h2>Beam Section Capacity</h2></div><span class="tool-status">For Review · section resistance only</span></div>
 
       <section class="lookup-card beam-card">
-        <div class="beam-family-switch beam-mode-switch" role="group" aria-label="Beam section family or custom geometry">
+        <div class="beam-family-switch beam-mode-switch" role="group" aria-label="Beam section family">
           <button class="beam-family active" type="button" data-beam-family="ub" aria-pressed="true">UB</button>
           <button class="beam-family" type="button" data-beam-family="uc" aria-pressed="false">UC</button>
           <button class="beam-family" type="button" data-beam-family="pfc" aria-pressed="false">PFC</button>
@@ -844,7 +844,6 @@
           <button class="beam-family" type="button" data-beam-family="shs" aria-pressed="false">SHS</button>
           <button class="beam-family" type="button" data-beam-family="ea" aria-pressed="false">Equal Angle</button>
           <button class="beam-family" type="button" data-beam-family="rod" aria-pressed="false">Rod</button>
-          <button class="beam-custom-mode" type="button" data-beam-source="custom" aria-pressed="false">Custom Rod</button>
           <select id="beamFamily" aria-label="Beam section family" hidden tabindex="-1"><option value="ub">UB</option><option value="uc">UC</option><option value="pfc">PFC</option><option value="chs">CHS</option><option value="rhs">RHS</option><option value="shs">SHS</option><option value="ea">Equal Angle</option><option value="rod">Rod</option></select>
         </div>
 
@@ -854,6 +853,32 @@
             <div class="input-group-fields two beam-selection-fields">
               <label id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam section"></select></label>
               <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
+            </div>
+            <div class="member-dimension-panel beam-dimension-panel" id="beamDimensionCard">
+              <div class="input-group-fields member-dimension-toggle">
+                <label class="checkbox-field"><span>Custom dimensions</span><input id="beamDimensionOverride" type="checkbox"></label>
+              </div>
+              <div class="input-group-fields four member-dimension-fields beam-dimension-fields" id="beamDimensionFields" hidden>
+                <label data-beam-dim="ub uc"><span>d <i>overall depth</i></span><span class="unit"><input id="beamDimID" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ub uc"><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="beamDimIBf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ub uc"><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="beamDimITw" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ub uc"><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="beamDimITf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="pfc" hidden><span>d <i>overall depth</i></span><span class="unit"><input id="beamDimPfcD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="pfc" hidden><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="beamDimPfcBf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="pfc" hidden><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="beamDimPfcTw" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="pfc" hidden><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="beamDimPfcTf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="chs" hidden><span>D <i>outside diameter</i></span><span class="unit"><input id="beamDimChsD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="chs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="beamDimChsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="rhs" hidden><span>d <i>outside depth</i></span><span class="unit"><input id="beamDimRhsD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="rhs" hidden><span>b <i>outside width</i></span><span class="unit"><input id="beamDimRhsB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="rhs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="beamDimRhsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="shs" hidden><span>b = d <i>outside size</i></span><span class="unit"><input id="beamDimShsB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="shs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="beamDimShsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ea" hidden><span>b <i>equal leg length</i></span><span class="unit"><input id="beamDimEaB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ea" hidden><span>t <i>leg thickness</i></span><span class="unit"><input id="beamDimEaT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="rod" hidden><span>d <i>diameter</i></span><span class="unit"><input id="beamDimRodD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+              </div>
+              <p class="result-note user-input-note" id="beamDimensionStatus" hidden></p>
             </div>
           </section>
           <section class="input-group input-group-material beam-material-group" id="beamMaterialGroup">
@@ -871,11 +896,6 @@
             <div class="input-group-fields"><label id="beamDirectionField"><span id="beamDirectionFieldLabel">Catalogue direction</span><select id="beamDirection" aria-label="Bending direction"></select></label></div>
           </section>
         </div>
-
-        <section class="input-group beam-custom-group" id="beamCustomFields" hidden>
-          <span class="input-group-heading"><b>Custom Rod</b><small>Enter the diameter; solid-circle properties and section moment capacity are generated automatically.</small></span>
-          <div class="input-group-fields beam-custom-properties"><label><span>D <i>diameter</i></span><span class="unit"><input id="beamCustomRodDiameter" type="number" min="0" step="1" value="24"><em>mm</em></span></label></div>
-        </section>
 
         <div class="beam-summary beam-selected-section">
           <figure class="beam-section-figure"><svg id="beamSectionDiagram" viewBox="0 0 240 170" role="img" aria-labelledby="beamSectionDiagramTitle beamSectionDiagramDescription"></svg><figcaption id="beamSectionDiagramCaption">Selected dimensions · centroidal axes</figcaption></figure>
@@ -922,13 +942,13 @@
         <div class="source-body">
           <div class="source-notes">
             <p><b>Scope</b> - cross-section resistance under AS 4100 Section 5. Member moment capacity M<sub>b</sub>, lateral-torsional buckling, restraint, deflection, vibration, torsion, web bearing, concentrated loads, holes and composite action are excluded.</p>
-            <p><b>Catalogue rule</b> - a numeric capacity is reported only when the selected family, designation, grade and bending direction or catalogue bending case have reviewed f<sub>y,m</sub> and Z<sub>e</sub> product-table data. Missing direction data returns <i>Not evaluated</i>; it is not replaced by ideal geometry.</p>
+            <p><b>Capacity rule</b> - catalogue mode uses reviewed product-table data. Custom dimensions use ideal sharp-corner geometry and report capacity only where the family-specific AS 4100 section-classification and effective-modulus path is implemented. Missing direction data returns <i>Not evaluated</i>.</p>
             <p><b>Checked moment rows</b> - InfraBuild 2019 Tables 9-20 cover UB, UC, PFC and the listed Equal Angle subset. Austube 2013 Tables 3.1-1 to 3.1-6 cover CHS, RHS and SHS. Rod moment uses checked diameter and grade with solid-circle geometry.</p>
             <p><b>Catalogue coordination</b> - 717 family, grade and direction rows are programmatically reconciled against AS 4100 Cl. 5.2 and AS 4100 Cl. 6.2. Slender hollow rows retain the permitted effective-cross-section Z<sub>e</sub>; asymmetric PFC and Equal Angle classes are identified from the published load-case Z<sub>e</sub> interval. k<sub>f</sub> is an axial-compression form factor and is not applied to beam moment capacity. The tab remains <i>For Review</i> as a section-resistance quick reference.</p>
           </div>
           <div class="source-notes">
-            <p><b>Custom rule</b> - Custom Rod accepts diameter only. Solid-circle properties and section moment capacity are generated automatically. Other custom geometry belongs in Section Properties and is not presented as a Beam capacity path.</p>
-            <p><b>Shear</b> - reviewed numeric shear is provided for UB, UC and PFC x-x web shear, CHS section shear, and catalogue RHS/SHS direction-specific two-web shear. AS 4100 Cl. 5.12.3 interaction is evaluated for UB, UC and PFC x-x and catalogue RHS/SHS; CHS, Equal Angle, Rod and unsupported custom interaction paths remain <i>Not evaluated</i>.</p>
+            <p><b>Custom dimensions</b> - dimensions are entered within the selected family. Gross geometry is generated automatically; users do not enter A<sub>g</sub>, I, Z, S, Z<sub>e</sub>, section class or shear area. Ideal geometry omits product fillets, root radii and hollow-section corner radii.</p>
+            <p><b>Shear</b> - reviewed numeric shear is provided for UB, UC and PFC x-x web shear, CHS section shear, and catalogue RHS/SHS direction-specific two-web shear. AS 4100 Cl. 5.12.3 interaction is evaluated for UB, UC and PFC x-x and catalogue RHS/SHS; CHS, Equal Angle and Rod interaction paths remain <i>Not evaluated</i>.</p>
             <p><b>Catalogue cases</b> - PFC Load A/B and Equal Angle Load A/B/C/D identify the manufacturer bending sign and compression side, not the external load application point. Arbitrary non-principal and biaxial bending remain excluded.</p>
             <p><b>Product status</b> - embedded catalogue rows are design-reference data, not a statement of current stock availability. Confirm the current product, grade and supplier documentation before design issue.</p>
           </div>
@@ -1676,17 +1696,17 @@
   </main>
 
   <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.2</b></footer>
-  <script src="bolt-capacity.js?v=20260729auditpublish1"></script>
-  <script src="bolt-integrity.js?v=20260729auditpublish1"></script>
-  <script src="section-geometry.js?v=20260729auditpublish1"></script>
-  <script src="section-catalogue.js?v=20260729auditpublish1"></script>
-  <script src="steel-materials.js?v=20260729auditpublish1"></script>
-  <script src="beam-section-data.js?v=20260729auditpublish1"></script>
-  <script src="beam-hot-rolled-data.js?v=20260729auditpublish1"></script>
-  <script src="beam-section-capacity.js?v=20260729auditpublish1"></script>
-  <script src="beam-section-reconciliation.js?v=20260729auditpublish1"></script>
-  <script src="reo-calculation.js?v=20260729auditpublish1"></script>
-  <script src="app.js?v=20260729auditpublish1"></script>
+  <script src="bolt-capacity.js?v=20260729beamdimensions2"></script>
+  <script src="bolt-integrity.js?v=20260729beamdimensions2"></script>
+  <script src="section-geometry.js?v=20260729beamdimensions2"></script>
+  <script src="section-catalogue.js?v=20260729beamdimensions2"></script>
+  <script src="steel-materials.js?v=20260729beamdimensions2"></script>
+  <script src="beam-section-data.js?v=20260729beamdimensions2"></script>
+  <script src="beam-hot-rolled-data.js?v=20260729beamdimensions2"></script>
+  <script src="beam-section-capacity.js?v=20260729beamdimensions2"></script>
+  <script src="beam-section-reconciliation.js?v=20260729beamdimensions2"></script>
+  <script src="reo-calculation.js?v=20260729beamdimensions2"></script>
+  <script src="app.js?v=20260729beamdimensions2"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

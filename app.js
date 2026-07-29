@@ -578,12 +578,6 @@ const concreteBarProducts = Object.fromEntries(
   }))
 );
 
-const customBeamGradeYields = {
-  "Grade 250": 250,
-  "Grade 300": 300,
-  "Grade 350": 350
-};
-
 const beamShearDimensions = {
   "610UB125": { d: 611.6, bf: 229.0, tf: 19.6, d1: 572.4, tw: 11.9 },
   "610UB113": { d: 607.0, bf: 228.0, tf: 17.3, d1: 572.4, tw: 11.2 },
@@ -2009,7 +2003,12 @@ const reoTerminationDetailingResetIds = new Set(reoExistingLengthChangingIds);
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand"];
-const beamCustomInputIds = ["beamCustomRodDiameter"];
+const beamDimensionInputIds = [
+  "beamDimID", "beamDimIBf", "beamDimITw", "beamDimITf",
+  "beamDimPfcD", "beamDimPfcBf", "beamDimPfcTw", "beamDimPfcTf",
+  "beamDimChsD", "beamDimChsT", "beamDimRhsD", "beamDimRhsB", "beamDimRhsT",
+  "beamDimShsB", "beamDimShsT", "beamDimEaB", "beamDimEaT", "beamDimRodD"
+];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
 const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "reo", "screw", "rock"];
 const toolCategories = {
@@ -2020,7 +2019,6 @@ const toolCategories = {
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };
 let boltMode = "standard";
-let beamSource = "catalogue";
 let beamFamily = "ub";
 let memberType = "chs";
 let reoPreviousRouteKey = "";
@@ -2033,7 +2031,7 @@ const manualInputIds = [
   "reoExistingConcreteStrength", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
-  "beamMomentDemand", "beamShearDemand", "beamFyInput", "beamFywInput", "beamCustomRodDiameter",
+  "beamMomentDemand", "beamShearDemand", "beamFyInput", "beamFywInput", ...beamDimensionInputIds,
   ...sectionPropertyInputIds, "sectionMaterialThickness", "sectionMaterialFyInput", "sectionMaterialFuInput",
   "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
@@ -4437,7 +4435,7 @@ function calculateSectionProperties() {
   }));
 }
 
-function beamWebShearReduction(section, grade, isCustom) {
+function beamWebShearReduction(section, grade) {
   const fyw = grade.fyw || grade.fy;
   if (!(section.d1 > 0) || !(section.tw > 0) || !(fyw > 0)) {
     return {
@@ -4454,33 +4452,199 @@ function beamWebShearReduction(section, grade, isCustom) {
     slenderness,
     threshold,
     basis: slenderness <= threshold
-      ? `${isCustom ? "Ideal custom" : "Catalogue"} web shear yield governs for this quick screen.`
-      : `Unstiffened web shear-buckling reduction applied for this ${isCustom ? "ideal custom" : "catalogue"} quick screen.`
+      ? `${section.customGeometry ? "Ideal custom" : "Catalogue"} web shear yield governs for this quick screen.`
+      : `Unstiffened web shear-buckling reduction applied for this ${section.customGeometry ? "ideal custom" : "catalogue"} quick screen.`
   };
 }
 
 const beamDirectionMemory = Object.create(null);
 
+function beamDimensionOverrideActive() {
+  return Boolean($("beamDimensionOverride")?.checked);
+}
+
+function selectedBeamCatalogueSection() {
+  const sections = beamCatalogueSections();
+  return sections.find(section => section.designation === $("beamSection").value) || sections[0] || null;
+}
+
+function beamCustomGradeRecords(catalogueSection) {
+  const directionRecords = Object.fromEntries(beamDirections().map(([key]) => [key, { Ze: 0, compactness: null }]));
+  return Object.fromEntries(Object.entries(catalogueSection?.grades || {}).map(([name, grade]) => [name, {
+    ...grade,
+    directions: directionRecords,
+    sourceRef: `Selected ${name} strength basis from ${catalogueSection.designation}`
+  }]));
+}
+
 function beamCustomSection() {
-  const base = { family: "rod", mass: 0, area: 0, Aw: 0, I: 0, Zx: 0, Sx: 0, grades: {}, custom: true, capacityStatus: "checked", sourceRef: "Entered diameter · solid-circle geometry", sourceBasis: "Entered diameter" };
+  const catalogueSection = selectedBeamCatalogueSection();
+  const grades = beamCustomGradeRecords(catalogueSection);
+  const common = {
+    family: beamFamily,
+    designation: `${beamFamilyDefinitions[beamFamily].label} · entered dimensions`,
+    customGeometry: true,
+    capacityStatus: "checked",
+    grades,
+    sourceRef: `Entered ideal ${beamFamilyDefinitions[beamFamily].label} dimensions`,
+    sourceBasis: "Entered dimensions; ideal sharp-corner geometry"
+  };
+
   try {
-    const D = value("beamCustomRodDiameter");
+    if (beamFamily === "ub" || beamFamily === "uc") {
+      const d = value("beamDimID");
+      const bf = value("beamDimIBf");
+      const tw = value("beamDimITw");
+      const tf = value("beamDimITf");
+      const properties = SectionGeometry.symmetricI(d, bf, tw, tf);
+      const d1 = d - 2 * tf;
+      return {
+        ...common,
+        d, bf, tw, tf, d1,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        Aw: properties.aw,
+        I: properties.ix,
+        Zx: properties.zx / 1000,
+        Sx: properties.sx / 1000,
+        drawing: { shape: "i", d, bf, tw, tf },
+        geometryProperties: properties,
+        axes: {
+          x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
+          y: { I: properties.iy, Z: properties.zy / 1000, S: properties.sy / 1000 }
+        },
+        shearMethod: "rolled-web",
+        interactionMethod: "flat-web"
+      };
+    }
+
+    if (beamFamily === "pfc") {
+      const d = value("beamDimPfcD");
+      const bf = value("beamDimPfcBf");
+      const tw = value("beamDimPfcTw");
+      const tf = value("beamDimPfcTf");
+      const properties = SectionGeometry.channel(d, bf, tw, tf);
+      const d1 = d - 2 * tf;
+      return {
+        ...common,
+        d, bf, tw, tf, d1,
+        xL: properties.cx,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        Aw: properties.aw,
+        I: properties.ix,
+        Zx: properties.zx / 1000,
+        Sx: properties.sx / 1000,
+        drawing: { shape: "channel", d, bf, tw, tf, xL: properties.cx },
+        geometryProperties: properties,
+        axes: {
+          x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
+          "y-a": { I: properties.iy, Z: properties.zyLeft / 1000, S: properties.sy / 1000 },
+          "y-b": { I: properties.iy, Z: properties.zyRight / 1000, S: properties.sy / 1000 }
+        },
+        shearMethod: "rolled-web",
+        interactionMethod: "flat-web"
+      };
+    }
+
+    if (beamFamily === "chs") {
+      const D = value("beamDimChsD");
+      const t = value("beamDimChsT");
+      const properties = SectionGeometry.circularHollow(D, t);
+      return {
+        ...common,
+        D, t,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        Aw: properties.area,
+        I: properties.ix,
+        Zx: properties.zx / 1000,
+        Sx: properties.sx / 1000,
+        drawing: { shape: "chs", D, t },
+        geometryProperties: properties,
+        axes: { axis: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } },
+        shearMethod: "chs-section",
+        interactionMethod: null
+      };
+    }
+
+    if (beamFamily === "rhs" || beamFamily === "shs") {
+      const square = beamFamily === "shs";
+      const b = value(square ? "beamDimShsB" : "beamDimRhsB");
+      const d = square ? b : value("beamDimRhsD");
+      const t = value(square ? "beamDimShsT" : "beamDimRhsT");
+      const properties = SectionGeometry.rectangularHollow(b, d, t);
+      const axes = square
+        ? { xy: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } }
+        : {
+            x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
+            y: { I: properties.iy, Z: properties.zy / 1000, S: properties.sy / 1000 }
+          };
+      return {
+        ...common,
+        d, b, t,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        I: properties.ix,
+        Zx: properties.zx / 1000,
+        Sx: properties.sx / 1000,
+        drawing: { shape: "rhs", b, h: d, t },
+        geometryProperties: properties,
+        axes,
+        shearMethod: "rhs-web",
+        interactionMethod: "flat-web"
+      };
+    }
+
+    if (beamFamily === "ea") {
+      const b = value("beamDimEaB");
+      const t = value("beamDimEaT");
+      const properties = SectionGeometry.equalAngle(b, t);
+      return {
+        ...common,
+        b, t,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        I: properties.iu,
+        drawing: { shape: "angle", b, t },
+        geometryProperties: properties,
+        axes: {
+          a: { I: properties.iu, Z: 0, S: 0 },
+          b: { I: properties.iv, Z: 0, S: 0 },
+          c: { I: properties.iu, Z: 0, S: 0 },
+          d: { I: properties.iv, Z: 0, S: 0 }
+        }
+      };
+    }
+
+    const D = value("beamDimRodD");
     const properties = SectionGeometry.circle(D);
-    const solid = BeamSectionCapacity.solidCircle(D);
-    const Z = solid.Z / 1000;
-    const S = solid.S / 1000;
-    const Ze = solid.Ze / 1000;
-    const grades = Object.fromEntries(Object.entries(customBeamGradeYields).map(([name, fy]) => [name, { fy, kf: 1, directions: { axis: { Ze, compactness: "C" } }, sourceRef: "Entered diameter · solid-circle geometry" }]));
-    return { ...base, designation: "Custom Rod", D, diameter: D, area: properties.area, mass: properties.area * 0.00785, I: properties.ix, Zx: Z, Sx: S, grades, capacityStatus: "checked", sourceRef: "Entered diameter · solid-circle geometry", drawing: { shape: "circle", D }, axes: { axis: { I: properties.ix, Z, S } } };
+    return {
+      ...common,
+      D,
+      diameter: D,
+      area: properties.area,
+      mass: properties.area * 0.00785,
+      I: properties.ix,
+      Zx: properties.zx / 1000,
+      Sx: properties.sx / 1000,
+      drawing: { shape: "circle", D },
+      geometryProperties: properties,
+      axes: { axis: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } }
+    };
   } catch (error) {
-    return { ...base, designation: "Custom Rod", invalidReason: error.message, drawing: null };
+    return {
+      ...common,
+      capacityStatus: "unavailable",
+      invalidReason: error.message,
+      drawing: null,
+      axes: {}
+    };
   }
 }
 
 function selectedBeamSection() {
-  if (beamSource === "custom") return beamCustomSection();
-  const sections = beamCatalogueSections();
-  return sections.find(section => section.designation === $("beamSection").value) || sections[0] || null;
+  return beamDimensionOverrideActive() ? beamCustomSection() : selectedBeamCatalogueSection();
 }
 
 function beamDirections() {
@@ -4491,19 +4655,79 @@ function populateBeamDirections() {
   const directions = beamDirections();
   const previous = beamDirectionMemory[beamFamily];
   const selected = directions.some(([key]) => key === previous) ? previous : directions[0][0];
-  const catalogueCase = beamSource === "catalogue" && (beamFamily === "pfc" || beamFamily === "ea");
+  const catalogueCase = beamFamily === "pfc" || beamFamily === "ea";
   $("beamDirection").innerHTML = directions.map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
   $("beamDirection").value = selected;
   $("beamDirectionGroup").hidden = directions.length === 1;
   $("beamDirectionHeading").textContent = catalogueCase ? "Catalogue bending case" : "Bending direction";
   $("beamDirectionFieldLabel").textContent = catalogueCase ? "Catalogue case" : "Direction";
   $("beamDirection").setAttribute("aria-label", catalogueCase ? "Catalogue bending case" : "Bending direction");
-  $("beamDirectionHelp").textContent = beamFamily === "pfc"
-    ? "Load A is toward the web; Load B is toward the flange tips. The arrows define bending sign, not the load application point."
-    : beamFamily === "ea"
-      ? "Load A/B/C/D defines the catalogue principal-axis bending sign and compression side shown in the section figure."
-      : "Select the catalogue load direction used for the effective section modulus.";
+  $("beamDirectionHelp").textContent = beamDimensionOverrideActive()
+    ? beamFamily === "pfc"
+      ? "Custom x-x capacity is derived. Load A/B remains Not evaluated without a reviewed asymmetric effective-modulus path."
+      : beamFamily === "ea"
+        ? "Custom angle geometry is generated, but Load A/B/C/D capacity remains Not evaluated without a reviewed direction-specific effective modulus."
+        : "Select the bending direction used for the derived ideal-section properties."
+    : beamFamily === "pfc"
+      ? "Load A is toward the web; Load B is toward the flange tips. The arrows define bending sign, not the load application point."
+      : beamFamily === "ea"
+        ? "Load A/B/C/D defines the catalogue principal-axis bending sign and compression side shown in the section figure."
+        : "Select the catalogue load direction used for the effective section modulus.";
   beamDirectionMemory[beamFamily] = selected;
+}
+
+function setBeamDimensionDefaults(section) {
+  if (!section) return;
+  const set = (id, number) => {
+    if ($(id) && Number(number) > 0) $(id).value = Number(number).toFixed(1);
+  };
+  if (beamFamily === "ub" || beamFamily === "uc") {
+    set("beamDimID", section.d);
+    set("beamDimIBf", section.bf);
+    set("beamDimITw", section.tw);
+    set("beamDimITf", section.tf);
+  } else if (beamFamily === "pfc") {
+    set("beamDimPfcD", section.d);
+    set("beamDimPfcBf", section.bf);
+    set("beamDimPfcTw", section.tw);
+    set("beamDimPfcTf", section.tf);
+  } else if (beamFamily === "chs") {
+    set("beamDimChsD", section.D);
+    set("beamDimChsT", section.t);
+  } else if (beamFamily === "rhs") {
+    set("beamDimRhsD", section.d);
+    set("beamDimRhsB", section.b);
+    set("beamDimRhsT", section.t);
+  } else if (beamFamily === "shs") {
+    set("beamDimShsB", section.b || section.d);
+    set("beamDimShsT", section.t);
+  } else if (beamFamily === "ea") {
+    set("beamDimEaB", section.b);
+    set("beamDimEaT", section.t);
+  } else if (beamFamily === "rod") {
+    set("beamDimRodD", section.diameter || section.D);
+  }
+}
+
+function updateBeamDimensionUi() {
+  const active = beamDimensionOverrideActive();
+  $("beamDimensionFields").hidden = !active;
+  document.querySelectorAll("[data-beam-dim]").forEach(field => {
+    field.hidden = !field.dataset.beamDim.split(/\s+/).includes(beamFamily);
+  });
+  beamDimensionInputIds.forEach(id => {
+    const input = $(id);
+    if (!input) return;
+    const applicable = input.closest("[data-beam-dim]")?.dataset.beamDim.split(/\s+/).includes(beamFamily);
+    input.disabled = !active || !applicable;
+  });
+  const sectionLabel = $("beamSectionField")?.querySelector(":scope > span");
+  if (sectionLabel) sectionLabel.textContent = active ? "Reference catalogue section" : "Catalogue section";
+  $("beamSection").setAttribute("aria-label", active ? "Reference catalogue beam section" : "Catalogue beam section");
+  $("beamSectionSource").textContent = active
+    ? `Entered ${beamFamilyDefinitions[beamFamily].label} dimensions; gross ideal geometry is generated automatically.`
+    : beamFamilyDefinitions[beamFamily].source;
+  $("beamDimensionStatus").hidden = !active;
 }
 
 function populateBeamOptions() {
@@ -4541,7 +4765,7 @@ function resetBeamMaterialStrengths() {
 }
 
 function populateBeamGrades() {
-  const section = selectedBeamSection();
+  const section = selectedBeamCatalogueSection();
   const previous = $("beamGrade").value;
   const grades = section ? Object.keys(section.grades || {}) : [];
   if (!grades.length) {
@@ -4550,41 +4774,23 @@ function populateBeamGrades() {
   } else {
     $("beamGrade").disabled = false;
     $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${grade}</option>`).join("");
-    const preferred = beamSource === "custom" && grades.includes("Grade 300") ? "Grade 300" : grades[0];
-    $("beamGrade").value = grades.includes(previous) ? previous : preferred;
+    $("beamGrade").value = grades.includes(previous) ? previous : grades[0];
   }
+  setBeamDimensionDefaults(section);
+  updateBeamDimensionUi();
   resetBeamMaterialStrengths();
-}
-
-function setBeamSource(source) {
-  beamSource = source === "custom" ? "custom" : "catalogue";
-  const custom = beamSource === "custom";
-  if (custom) {
-    beamFamily = "rod";
-    $("beamFamily").value = "rod";
-  }
-  document.querySelectorAll(".beam-family").forEach(button => {
-    const active = !custom && button.dataset.beamFamily === beamFamily;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
-  document.querySelectorAll(".beam-custom-mode").forEach(button => {
-    button.classList.toggle("active", custom);
-    button.setAttribute("aria-pressed", String(custom));
-  });
-  $("beamSectionField").hidden = custom;
-  $("beamCustomFields").hidden = !custom;
-  $("beamSectionSource").textContent = custom
-    ? "Entered Rod diameter; solid-circle properties and section capacity are generated automatically."
-    : beamFamilyDefinitions[beamFamily].source;
-  populateBeamOptions();
 }
 
 function setBeamFamily(family) {
   if (!beamFamilyDefinitions[family]) return;
   beamFamily = family;
   $("beamFamily").value = family;
-  setBeamSource(beamSource);
+  document.querySelectorAll(".beam-family").forEach(button => {
+    const active = button.dataset.beamFamily === beamFamily;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  populateBeamOptions();
 }
 
 function beamAxisProperties(section, direction) {
@@ -4621,8 +4827,9 @@ function beamDiagramProperties(section) {
 function renderBeamSectionDiagram(section) {
   const svg = $("beamSectionDiagram");
   if (!section?.drawing) {
-    svg.innerHTML = `<title id="beamSectionDiagramTitle">No checked section row</title><desc id="beamSectionDiagramDescription">No section geometry is available for the selected catalogue family.</desc>`;
-    $("beamSectionDiagramCaption").textContent = "No checked catalogue geometry";
+    const custom = Boolean(section?.customGeometry);
+    svg.innerHTML = `<title id="beamSectionDiagramTitle">No valid section geometry</title><desc id="beamSectionDiagramDescription">${custom ? "Entered dimensions do not define a valid ideal section." : "No section geometry is available for the selected catalogue family."}</desc>`;
+    $("beamSectionDiagramCaption").textContent = custom ? "Enter valid family dimensions" : "No checked catalogue geometry";
     return;
   }
   const drawing = section.drawing;
@@ -4694,14 +4901,15 @@ function renderBeamSectionDiagram(section) {
     auxiliaryMarkup = `<line class="beam-shear-centre-guide" x1="${line(shearCentreX)}" y1="${line(axisY)}" x2="${line(x0)}" y2="${line(axisY)}" /><circle class="beam-shear-centre" cx="${line(shearCentreX)}" cy="${line(axisY)}" r="3.2" /><text class="beam-shear-centre-label" x="${line(shearCentreX)}" y="${line(axisY - 8)}" text-anchor="middle">SC</text>`;
   }
   const title = `${section.designation} section`;
+  const custom = Boolean(section.customGeometry);
   const description = shape === "angle"
-    ? "Catalogue equal-angle schematic showing the x and y principal axes and selected Load A, B, C or D direction."
+    ? `${custom ? "Ideal custom" : "Catalogue"} equal-angle schematic showing the x and y principal axes and selected Load A, B, C or D direction.`
     : shape === "channel"
-      ? "Catalogue channel schematic showing centroidal axes, shear centre and selected bending direction."
+      ? `${custom ? "Ideal custom" : "Catalogue"} channel schematic showing centroidal axes${custom ? "" : ", shear centre"} and selected bending direction.`
       : "Value-driven section schematic showing centroidal x-x and y-y axes and the selected bending direction.";
   svg.innerHTML = `<title id="beamSectionDiagramTitle">${safeText(title)} and selected bending direction</title><desc id="beamSectionDiagramDescription">${description}</desc><defs><marker id="beamAxisArrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z"></path></marker><marker id="beamLoadArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 0 0 L 8 4 L 0 8 Z"></path></marker></defs>${geometry}${axisMarkup}${auxiliaryMarkup}<circle class="section-properties-centroid" cx="${line(axisX)}" cy="${line(axisY)}" r="3.4" />${loadMarkup}`;
-  $("beamSectionDiagramCaption").textContent = beamSource === "custom"
-    ? "Ideal entered geometry · selected direction"
+  $("beamSectionDiagramCaption").textContent = custom
+    ? "Entered ideal dimensions · selected direction"
     : shape === "angle"
       ? "Catalogue principal axes · selected load direction"
       : shape === "channel"
@@ -4719,6 +4927,7 @@ function setBeamOutput(id, value, available) {
 
 function calculateBeam() {
   const section = selectedBeamSection();
+  const customDimensions = beamDimensionOverrideActive();
   const direction = $("beamDirection").value || beamDirections()[0][0];
   beamDirectionMemory[beamFamily] = direction;
   const gradeName = $("beamGrade").value;
@@ -4737,19 +4946,17 @@ function calculateBeam() {
     ? "Enter positive strength"
     : materialOverride
       ? "Project / legacy override"
-      : beamSource === "catalogue"
-        ? "Catalogue default"
-        : "Selected grade default";
+      : customDimensions
+        ? "Selected grade default"
+        : "Catalogue default";
   $("beamMaterialReset").disabled = !materialOverride;
   const directionCapacity = gradeBase?.directions?.[direction] || null;
   const gradeForEvaluation = gradeBase
     ? { ...gradeBase, fy: fyInput, fyw: separateWebStrength ? fywInput : fyInput }
     : null;
-  const coordination = momentOverride
+  const coordination = customDimensions || momentOverride
     ? BeamSectionReconciliation.deriveProject(section, gradeForEvaluation, direction)
-    : beamSource === "catalogue" || beamFamily === "rod"
-      ? BeamSectionReconciliation.reconcile(section, gradeForEvaluation, direction)
-    : { status: "unresolved", reason: "Custom section capacity is not classified." };
+    : BeamSectionReconciliation.reconcile(section, gradeForEvaluation, direction);
   const grade = gradeBase && directionCapacity
     ? {
         ...gradeBase,
@@ -4774,9 +4981,9 @@ function calculateBeam() {
     && grade?.fy > 0
     && grade?.Ze > 0
   );
-  const rolledWebShear = Boolean(grade?.fyw > 0 && beamSource === "catalogue" && section?.shearMethod === "rolled-web" && direction === "x" && section.Aw > 0);
-  const chsSectionShear = Boolean(grade?.fy > 0 && beamSource === "catalogue" && section?.shearMethod === "chs-section" && direction === "axis" && section.area > 0);
-  const rhsWebShear = Boolean(grade?.fy > 0 && beamSource === "catalogue" && section?.shearMethod === "rhs-web" && ["x", "y", "xy"].includes(direction));
+  const rolledWebShear = Boolean(grade?.fyw > 0 && section?.shearMethod === "rolled-web" && direction === "x" && section.Aw > 0);
+  const chsSectionShear = Boolean(grade?.fy > 0 && section?.shearMethod === "chs-section" && direction === "axis" && section.area > 0);
+  const rhsWebShear = Boolean(grade?.fy > 0 && section?.shearMethod === "rhs-web" && ["x", "y", "xy"].includes(direction));
   const hollowShearDirection = direction === "y" ? "y" : "x";
   const hollowWeb = rhsWebShear
     ? BeamSectionCapacity.rectangularHollowShear(grade.fyw || grade.fy, section.d, section.b, section.t, hollowShearDirection)
@@ -4785,7 +4992,7 @@ function calculateBeam() {
   const interactionAvailable = Boolean(momentAvailable && (rolledWebShear || hollowWeb) && section?.interactionMethod === "flat-web");
   const phi = BeamSectionCapacity.PHI;
   const momentCapacity = momentAvailable ? BeamSectionCapacity.sectionMoment(grade.fy, grade.Ze * 1000, phi) : NaN;
-  const webShear = rolledWebShear ? beamWebShearReduction(section, grade, false) : { alphaV: 1, slenderness: NaN, threshold: 82, basis: "Not applicable." };
+  const webShear = rolledWebShear ? beamWebShearReduction(section, grade) : { alphaV: 1, slenderness: NaN, threshold: 82, basis: "Not applicable." };
   const shearCapacity = rolledWebShear
     ? BeamSectionCapacity.rolledWebShear(grade.fyw || grade.fy, section.Aw, webShear.alphaV, phi)
     : chsSectionShear
@@ -4813,12 +5020,12 @@ function calculateBeam() {
 
   $("beamDesignation").textContent = section ? `${section.designation} · ${gradeName || "grade unavailable"}` : `${beamFamilyDefinitions[beamFamily].label} · no checked Beam row`;
   $("beamAssumption").textContent = momentAvailable
-    ? `${directionLabel} section moment${rolledWebShear || hollowWeb ? " and web shear" : chsSectionShear ? " and CHS shear" : ""}${materialOverride ? "; project strength override" : ""}; member checks excluded.`
-    : beamSource === "custom"
-      ? `${directionLabel}; geometry generated, design capacity not established.`
+    ? `${directionLabel} section moment${rolledWebShear || hollowWeb ? " and web shear" : chsSectionShear ? " and CHS shear" : ""}${customDimensions ? "; ideal custom geometry" : materialOverride ? "; project strength override" : ""}; member checks excluded.`
+    : customDimensions
+      ? `${directionLabel}; custom geometry generated, capacity path not established.`
       : materialOverride
-        ? `${directionLabel}; project strength path not evaluated.`
-        : `${directionLabel}; reviewed capacity row unavailable.`;
+      ? `${directionLabel}; project strength path not evaluated.`
+      : `${directionLabel}; reviewed capacity row unavailable.`;
   updateBeamSummaryDimensions(section || {});
   if (hollowWeb) setBeamSummaryCell("beamDimD1", formatBeamDimension(hollowWeb.clearWebDepth), false);
   setBeamSummaryCell("beamMass", formatBeamOptional(section?.mass, "kg/m", 1), !(section?.mass > 0));
@@ -4838,9 +5045,9 @@ function calculateBeam() {
   setBeamSummaryCell(
     "beamCoordination",
     coordination.status === "reconciled" ? "Reconciled" : coordination.status === "derived" ? "Derived" : "Unresolved",
-    beamSource !== "catalogue" && beamFamily !== "rod"
+    false
   );
-  const summarySource = gradeBase?.sourceRef || section?.sourceRef || section?.sourceBasis || "-";
+  const summarySource = customDimensions ? section?.sourceRef : gradeBase?.sourceRef || section?.sourceRef || section?.sourceBasis || "-";
   setBeamSummaryCell("beamSummarySource", `${summarySource}${materialOverride ? " · project strength override" : ""}`, !section);
   const symbol = subscript || "";
   $("beamSummaryILabel").innerHTML = symbol ? `I<sub>${symbol}</sub>` : "I";
@@ -4849,7 +5056,7 @@ function calculateBeam() {
   $("beamSummaryZeLabel").innerHTML = `${symbol ? `Z<sub>e${symbol}</sub>` : "Z<sub>e</sub>"}${loadCaseHtml}`;
   $("beamMomentResultLabel").innerHTML = `Design section moment capacity &phi;M<sub>s${symbol}</sub>${loadCaseHtml}`;
   $("beamMomentResultBasis").innerHTML = momentAvailable
-    ? `${coordination.status === "derived" || beamFamily === "rod" || beamSource === "custom" ? "Derived" : "Catalogue"} Z<sub>e${symbol}</sub>${loadCaseHtml} · AS 4100 Cl. 5.2`
+    ? `${coordination.status === "derived" || beamFamily === "rod" ? "Derived" : "Catalogue"} Z<sub>e${symbol}</sub>${loadCaseHtml} · AS 4100 Cl. 5.2`
     : "Required f<sub>y,m</sub> / Z<sub>e</sub> / direction record unavailable";
   $("beamShearResultLabel").innerHTML = chsSectionShear
     ? "Design section shear capacity &phi;V<sub>v</sub>"
@@ -4883,40 +5090,50 @@ function calculateBeam() {
   $("beamStatus").className = !momentAvailable || !allDemandPathsAvailable || !hasDemand ? "check" : utilisation > 1 ? "fail" : "pass";
   const resultStatus = $("beamResultStatus");
   resultStatus.textContent = !section || section.invalidReason
-    ? "Not evaluated · enter valid family dimensions"
+    ? customDimensions ? "Not evaluated · enter valid family dimensions" : "Not evaluated · checked catalogue row unavailable"
     : momentAvailable
       ? `For Review · ${directionLabel}${shearAvailable ? " moment and shear calculated" : " moment calculated"}`
-      : beamSource === "custom"
-        ? "Geometry complete · design capacity not evaluated"
+      : customDimensions
+        ? "Geometry complete · design capacity not evaluated for this direction"
         : materialOverride
-          ? "Not evaluated · project strength path unavailable"
-          : "Not evaluated · reviewed capacity row unavailable";
+        ? "Not evaluated · project strength path unavailable"
+        : "Not evaluated · reviewed capacity row unavailable";
   resultStatus.className = `beam-result-status${momentAvailable ? " is-review" : " is-unavailable"}`;
   $("beamWarning").textContent = !momentAvailable
     ? (section?.invalidReason || coordination.reason || "The selected family, grade or direction does not have a reconciled effective section modulus. No capacity or PASS / FAIL is reported.")
     : shearAvailable
       ? "Section resistance only. Member capacity, lateral restraint, web bearing, concentrated loads and serviceability remain excluded."
       : "Moment section capacity only. Shear, combined action and member checks are not evaluated for this family.";
-  $("beamDrawingNote").textContent = beamSource === "custom"
-    ? "Diagram follows entered dimensions; properties are derived from ideal geometry."
+  $("beamDrawingNote").textContent = customDimensions
+    ? "Diagram and gross properties follow entered ideal dimensions; product radii are omitted."
     : "Diagram follows selected catalogue dimensions; properties come from the cited table.";
+  $("beamDimensionStatus").hidden = !customDimensions;
+  if (customDimensions) {
+    $("beamDimensionStatus").innerHTML = section?.invalidReason
+      ? safeText(section.invalidReason)
+      : `Derived ideal geometry: A<sub>g</sub> = ${formatBeamArea(section.area)}; mass = ${formatBeamOptional(section.mass, "kg/m", 1)}.`;
+  }
   renderBeamSectionDiagram(section);
 
-  const source = gradeBase?.sourceRef || section?.sourceRef || (beamSource === "custom" ? "Entered ideal dimensions" : beamFamilyDefinitions[beamFamily].source);
+  const source = customDimensions ? section?.sourceRef : gradeBase?.sourceRef || section?.sourceRef || beamFamilyDefinitions[beamFamily].source;
   const geometryStep = section
     ? `${section.designation}; A<sub>g</sub> = ${formatBeamArea(section.area)}; source = ${source}`
-    : `${beamFamilyDefinitions[beamFamily].label}; no checked Beam catalogue row is embedded`;
+    : `${beamFamilyDefinitions[beamFamily].label}; no valid section geometry is available`;
   const propertySubscript = symbol ? `<sub>${symbol}</sub>` : "";
   const directionStep = `${directionLabel}; I${propertySubscript} = ${formatBeamInertia(axis.I)}; Z${propertySubscript} = ${formatBeamModulus(axis.Z)}; S${propertySubscript} = ${formatBeamModulus(axis.S)}`;
-  const editionStep = beamSource === "catalogue" && beamFamily !== "rod"
+  const editionStep = customDimensions
+    ? coordination.status === "derived"
+      ? `Ideal sharp-corner section. Section class and Z<sub>e</sub> are independently generated from entered dimensions and the adopted strength. ${coordination.basis}.`
+      : `Custom geometry only. ${coordination.reason || "A reviewed family-specific effective-modulus path is not available for this direction."}`
+    : beamFamily !== "rod"
     ? coordination.status === "reconciled"
       ? `Reconciled against AS 4100 Cl. 5.2 and AS 4100 Cl. 6.2. ${coordination.basis}.`
       : coordination.status === "derived"
         ? `Project strength override. Section class and Z<sub>e</sub> are independently regenerated from the catalogue geometry. ${coordination.basis}.`
         : `Unresolved: ${coordination.reason || "the product row and AS 4100 calculation basis do not agree."}`
     : beamFamily === "rod"
-      ? `Z<sub>e</sub> is generated from the compact solid-circle relation using the checked diameter and ${materialOverride ? "project" : "selected grade"} strength.`
-      : "Custom open and hollow sections remain geometry-only until the AS 4100 classification path is implemented.";
+      ? `Z<sub>e</sub> is generated from the compact solid-circle relation using the checked catalogue diameter and ${materialOverride ? "project" : "selected grade"} strength.`
+      : "The selected catalogue row is not reconciled.";
   const classStep = ["reconciled", "derived"].includes(coordination.status)
     ? `${compactnessText(grade?.compactness)}; ${coordination.classMethod === "published-ze-interval" ? "class inferred from the published load-case Z<sub>e</sub> position between the AS 4100 elastic and compact bounds" : `governing plate element = ${coordination.governing?.name || "solid section"}`}.`
     : "Not reconciled.";
@@ -4925,9 +5142,9 @@ function calculateBeam() {
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
     : Number.isFinite(utilisation) ? `Governing section utilisation = ${utilisation.toFixed(2)}; ${utilisation > 1 ? "FAIL" : "PASS"}.`
       : "Combined action not evaluated because one or more required capacity paths are unavailable.";
-  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${materialOverride ? `project / legacy override (catalogue defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : "catalogue / selected grade default"}.`;
+  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${materialOverride ? `project / legacy override (catalogue defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : customDimensions ? "selected grade default applied to entered geometry" : "catalogue default"}.`;
   const zeBasis = coordination.status === "derived"
-    ? "independently regenerated from the entered project strength"
+    ? customDimensions ? "derived from entered geometry and adopted strength" : "independently regenerated from the entered project strength"
     : beamFamily === "rod"
       ? "compact solid-circle relation"
       : "reconciled catalogue capacity row";
@@ -4965,14 +5182,14 @@ function calculateBeam() {
     }),
     calculationTraceRow({
       title: "Material strength",
-      lookup: materialOverride ? "Project / legacy override" : "Catalogue / selected grade default",
+      lookup: materialOverride ? "Project / legacy override" : customDimensions ? "Selected grade default" : "Catalogue default",
       selection: gradeName || "Grade unavailable",
       adopted: `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}`,
       applicability: materialStep
     }),
     calculationTraceRow({
       title: "Bending direction and properties",
-      lookup: "Selected catalogue or derived section-property record.",
+      lookup: customDimensions ? "Derived ideal section-property record." : "Selected catalogue section-property record.",
       selection: directionLabel,
       adopted: directionStep,
       applicability: "Properties correspond to the selected bending direction and load case."
@@ -8648,20 +8865,23 @@ function initialise() {
     if (event.target.open) calculateConcrete();
   });
   document.querySelectorAll(".beam-family").forEach(button => button.addEventListener("click", () => {
-    beamSource = "catalogue";
     setBeamFamily(button.dataset.beamFamily);
   }));
-  document.querySelectorAll(".beam-custom-mode").forEach(button => button.addEventListener("click", () => setBeamSource("custom")));
   $("beamFamily").addEventListener("change", () => setBeamFamily($("beamFamily").value));
   $("beamSection").addEventListener("change", populateBeamGrades);
   $("beamGrade").addEventListener("change", resetBeamMaterialStrengths);
   $("beamDirection").addEventListener("change", calculateBeam);
+  $("beamDimensionOverride").addEventListener("change", () => {
+    updateBeamDimensionUi();
+    populateBeamDirections();
+    calculateBeam();
+  });
+  beamDimensionInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
   $("beamFyInput").addEventListener("input", calculateBeam);
   $("beamFywInput").addEventListener("input", calculateBeam);
   $("beamMaterialReset").addEventListener("click", resetBeamMaterialStrengths);
   $("beamMomentDemand").addEventListener("input", calculateBeam);
   $("beamShearDemand").addEventListener("input", calculateBeam);
-  beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
   document.querySelectorAll(".section-properties-mode").forEach(button => button.addEventListener("click", () => setSectionPropertyMode(button.dataset.sectionPropertiesMode)));
   $("sectionCatalogueFamily").addEventListener("change", populateSectionCatalogueDesignations);
   $("sectionCatalogueDesignation").addEventListener("change", () => {
