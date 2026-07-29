@@ -29,8 +29,8 @@ const uBoltProducts = [
     product: "MP-UB OC M10 family",
     code: "r12293804 family",
     thread: "M10",
-    fitKey: "D 60-89 mm",
-    fit: "MP-UB 60-89 range",
+    fitKey: "Configured round / pipe diameter",
+    fit: "Discrete catalogue diameters; verify the configured item",
     finish: "Outdoor HDG",
     material: "Q235 or better steel - outdoor HDG - C3/C4-low",
     publishedCapacity: "Not published",
@@ -48,8 +48,8 @@ const uBoltProducts = [
     product: "MP-UB OC M12 family",
     code: "r12293804 family",
     thread: "M12",
-    fitKey: "D 102-324 mm",
-    fit: "MP-UB 102-324 range",
+    fitKey: "Configured round / pipe diameter",
+    fit: "Discrete catalogue diameters; verify the configured item",
     finish: "Outdoor HDG",
     material: "Q235 or better steel - outdoor HDG - C3/C4-low",
     publishedCapacity: "Not published",
@@ -67,8 +67,8 @@ const uBoltProducts = [
     product: "MP-UB OC M20 option",
     code: "r12293804 family",
     thread: "M20",
-    fitKey: "350 mm nominal",
-    fit: "350 mm nominal - verify configured item",
+    fitKey: "Configured round / pipe diameter",
+    fit: "350 mm nominal pipe option; verify the configured diameter",
     finish: "Outdoor HDG",
     material: "Q235 or better steel - outdoor HDG - C3/C4-low",
     publishedCapacity: "Not published",
@@ -310,6 +310,165 @@ const uBoltProducts = [
     sourceName: "Anzor Shouldered U Bolts product listing",
     sourceUrl: "https://www.anzor.com.au/marine-deck-hardware/u-bolts/shouldered-u-bolts"
   }
+];
+
+const blindBoltProducts = [
+  ...[
+    { size: "M8", hole: 14, centres: 35, edge: "B + C >= 17.5 mm", outer: "Not stated", torque: 23, loads: [4, 5], grips: [[3, 22, "HB-M08-1"], [22, 41, "HB-M08-2"], [41, 60, "HB-M08-3"]] },
+    { size: "M10", hole: 18, centres: 40, edge: "B + C >= 22.5 mm", outer: "Not stated", torque: 45, loads: [8.5, 10], grips: [[3, 22, "HB-M10-1"], [22, 41, "HB-M10-2"], [41, 60, "HB-M10-3"]] },
+    { size: "M12", hole: 20, centres: 50, edge: "B + C >= 25 mm", outer: "Not stated", torque: 80, loads: [10.5, 15], grips: [[3, 25, "HB-M12-1"], [25, 47, "HB-M12-2"], [47, 69, "HB-M12-3"]] },
+    { size: "M16", hole: 26, centres: 55, edge: "B + C >= 32.5 mm", outer: "8 mm", torque: 190, loads: [21, 30], grips: [[12, 29, "HB-M16-1"], [29, 50, "HB-M16-2"], [50, 71, "HB-M16-3"]] },
+    { size: "M20", hole: 33, centres: 70, edge: "B + C >= 33 mm", outer: "8 mm", torque: 300, loads: [35, 40], grips: [[12, 34, "HB-M20-1"], [34, 60, "HB-M20-2"], [60, 86, "HB-M20-3"]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    id: `lindapter-${code.toLowerCase()}`,
+    manufacturer: "Lindapter",
+    supplier: "Not specified",
+    family: "Hollo-Bolt",
+    code: code.replace("HB-", "").replace(/-(\d)$/, " #$1"),
+    size: row.size,
+    gripMin,
+    gripMax,
+    head: "Hexagonal",
+    finish: "Outdoor HDG",
+    hole: row.hole,
+    centres: `${row.centres} mm`,
+    edge: row.edge,
+    outerPly: row.outer,
+    torque: `${row.torque} Nm`,
+    tools: "Spanner and torque wrench",
+    tension: row.loads[0],
+    shear: row.loads[1],
+    valueLabel: "Manufacturer safe working load",
+    valueBasis: "Hollo-Bolt safe working load for S275 hollow section; connected steelwork is not evaluated.",
+    sourceStatus: "Source_Online_Checked",
+    sourceName: "Lindapter Hollo-Bolt selector and Installation Guide, March 2024",
+    sourceUrl: "https://www.lindapter.com/product/hollo-bolt/"
+  }))),
+  ...[
+    { size: "M8", hole: 14, centres: 35, edge: "C > 17.5 mm", outer: "1 mm fixture", torque: 25, loads: [6, 7], grips: [[3, 22, "KBB88GHM080050"], [22, 41, "KBB88GHM080070"], [41, 60, "KBB88GHM080090"]] },
+    { size: "M10", hole: 18, centres: 40, edge: "C > 22.5 mm", outer: "1 mm fixture", torque: 45, loads: [10, 12], grips: [[3, 22, "KBB88GHM100055"], [22, 41, "KBB88GHM100070"], [41, 60, "KBB88GHM100090"]] },
+    { size: "M12", hole: 20, centres: 50, edge: "C > 25 mm", outer: "1 mm fixture", torque: 80, loads: [13, 15], grips: [[3, 25, "KBB88GHM120060"], [25, 47, "KBB88GHM120080"], [47, 69, "KBB88GHM120110"]] },
+    { size: "M16", hole: 26, centres: 55, edge: "C > 32.5 mm", outer: "8 mm fixture", torque: 190, loads: [23, 28], grips: [[12, 29, "KBB88GHM160080"], [29, 50, "KBB88GHM160100"], [50, 71, "KBB88GHM160120"]] },
+    { size: "M20", hole: 33, centres: 70, edge: "C > 33 mm", outer: "8 mm fixture", torque: 300, loads: [34, 43], grips: [[12, 34, "KBB88GHM200090"], [34, 60, "KBB88GHM200120"], [60, 86, "KBB88GHM200140"]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    id: `hobson-${code.toLowerCase()}`,
+    manufacturer: "Hobson Engineering",
+    supplier: "Hobson Engineering",
+    family: "HBS-Bolt",
+    code,
+    size: row.size,
+    gripMin,
+    gripMax,
+    head: "Hexagonal",
+    finish: "Outdoor HDG",
+    hole: row.hole,
+    centres: `${row.centres} mm`,
+    edge: row.edge,
+    outerPly: row.outer,
+    torque: `${row.torque} Nm`,
+    tools: "Spanner and torque wrench",
+    tension: row.loads[0],
+    shear: row.loads[1],
+    valueLabel: "Manufacturer working load",
+    valueBasis: "Working load per HBS-Bolt; characteristic loads are not presented as working loads.",
+    sourceStatus: "Source_Checked",
+    sourceName: "Hobson HBS Bolt Product Data, 200806DS",
+    sourceUrl: "https://www.hobson.com.au/"
+  }))),
+  ...[
+    { size: "M8", hole: 14, centres: 35, edge: "B + wall thickness", outer: "Not stated", torque: 23, loads: [23.1, 29.1], grips: [[5, 26, "UNIBH-M08050G"], [26, 46, "UNIBH-M08070G"], [46, 66, "UNIBH-M08090G"]] },
+    { size: "M10", hole: 18, centres: 40, edge: "B + wall thickness", outer: "Not stated", torque: 45, loads: [35.8, 47.4], grips: [[5, 22, "UNIBH-M10050G"], [22, 42, "UNIBH-M10070G"], [42, 62, "UNIBH-M10090G"]] },
+    { size: "M12", hole: 20, centres: 50, edge: "B + wall thickness", outer: "Not stated", torque: 80, loads: [41.1, 64.2], grips: [[5, 25, "UNIBH-M12055G"], [23, 50, "UNIBH-M12080G"], [48, 70, "UNIBH-M12100G"]] },
+    { size: "M16", hole: 26, centres: 55, edge: "B + wall thickness", outer: "Not stated", torque: 190, loads: [81.2, 116.5], grips: [[8, 35, "UNIBH-M16075G"], [35, 60, "UNIBH-M16100G"], [60, 80, "UNIBH-M16120G"]] },
+    { size: "M20", hole: 33, centres: 70, edge: "B + wall thickness", outer: "Not stated", torque: 300, loads: [106.2, 183.3], grips: [[12, 43, "UNIBH-M20100G"], [43, 63, "UNIBH-M20120G"], [63, 93, "UNIBH-M20150G"]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    id: `iccons-${code.toLowerCase()}`,
+    manufacturer: "ICCONS",
+    supplier: "ICCONS",
+    family: "UNI-BOLT",
+    code,
+    size: row.size,
+    gripMin,
+    gripMax,
+    head: "Hexagonal",
+    finish: "Outdoor HDG",
+    hole: row.hole,
+    centres: `${row.centres} mm`,
+    edge: row.edge,
+    outerPly: row.outer,
+    torque: `${row.torque} Nm`,
+    tools: "Spanner and torque wrench",
+    tension: row.loads[0],
+    shear: row.loads[1],
+    valueLabel: "Manufacturer design capacity",
+    valueBasis: "Design capacity published for AS 4100 using phi = 0.8; verify TDS 1053.1 and ETA 25/0374 applicability.",
+    sourceStatus: "Source_Checked",
+    sourceName: "ICCONS UNI-BOLT TDS 1053.1, 2025",
+    sourceUrl: "https://www.iccons.com.au/"
+  }))),
+  ...[
+    { size: "M8", hole: 14, centres: 35, torque: 25, loads: [12.26, 21.62], grips: [[5, 26, "BQ1G08"], [18, 46, "BQ2G08"], [30, 66, "BQ3G08"]] },
+    { size: "M10", hole: 18, centres: 40, torque: 45, loads: [21.71, 37.99], grips: [[5, 23, "BQ1G10"], [18, 43, "BQ2G10"], [35, 63, "BQ3G10"]] },
+    { size: "M12", hole: 20, centres: 50, torque: 80, loads: [27.90, 49.55], grips: [[5, 25, "BQ1G12"], [20, 50, "BQ2G12"], [40, 70, "BQ3G12"]] },
+    { size: "M16", hole: 26, centres: 55, torque: 190, loads: [49.87, 90.45], grips: [[5, 35, "BQ1G16"], [30, 60, "BQ2G16"], [55, 80, "BQ3G16"]] },
+    { size: "M20", hole: 33, centres: 70, torque: 320, loads: [87.27, 149.29], grips: [[8, 42, "BQ1G20"], [35, 72, "BQ2G20"], [65, 102, "BQ3G20"]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    id: `keesafety-${code.toLowerCase()}`,
+    manufacturer: "Kee Safety",
+    supplier: "ICCONS",
+    family: "BoxBolt",
+    code,
+    size: row.size,
+    gripMin,
+    gripMax,
+    head: "Hexagonal",
+    finish: "Outdoor HDG",
+    hole: row.hole,
+    centres: `${row.centres} mm`,
+    edge: "B + wall thickness",
+    outerPly: "Not stated",
+    torque: `${row.torque} Nm`,
+    tools: "BoxSok installation tool and torque wrench",
+    tension: row.loads[0],
+    shear: row.loads[1],
+    valueLabel: "Manufacturer working load",
+    valueBasis: "Working load based on ETA 15/0768 rated loads; connected material must be checked separately.",
+    sourceStatus: "Source_Checked",
+    sourceName: "Kee Safety BoxBolt Technical Data, 2020",
+    sourceUrl: "https://www.iccons.com.au/products/boxbolt"
+  }))),
+  ...[
+    { size: "M8", hole: 9, centres: 20, clearance: 19, depth: 25, grips: [[9, 24, "BB0850DTASM"]] },
+    { size: "M10", hole: 11, centres: 20, clearance: 23, depth: 30, grips: [[10, 30, "BB1060DTASM"], [25, 65, "BB1095DTASM"], [55, 100, "BB10130DTASM"]] },
+    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, grips: [[12, 35, "BB1270DTASM"], [30, 85, "BB12120DTASM"], [80, 140, "BB12180DTASM"]] },
+    { size: "M16", hole: 17, centres: 35, clearance: 36, depth: 43, grips: [[13, 43, "GBB1690DTASM"], [40, 75, "GBB16130DTASM"], [55, 125, "GBB16180DTASM"]] },
+    { size: "M20", hole: 22, centres: 48, clearance: 44, depth: 56, grips: [[21, 56, "GBB20110DTASM"], [21, 86, "GBB20140DTASM"], [80, 120, "GBB20180DTASM"], [130, 185, "GBB20250DTASM"]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    id: `blindbolt-${code.toLowerCase()}`,
+    manufacturer: "Blind Bolt Company",
+    supplier: "Blind Bolt Australia",
+    family: "Blind Bolt",
+    code,
+    size: row.size,
+    gripMin,
+    gripMax,
+    head: "Drive-nut",
+    finish: "Geomet 500B",
+    hole: row.hole,
+    centres: `${row.centres} mm`,
+    edge: "Confirm from connected-steel design",
+    outerPly: "Not stated",
+    torque: "Manufacturer installation method",
+    tools: `${row.clearance} mm anchor clearance; ${row.depth} mm insertion depth`,
+    tension: null,
+    shear: null,
+    valueLabel: "Published design value",
+    valueBasis: "The archived Australian table references AS 4100:1998; no current design value is adopted in this lookup.",
+    legacySource: true,
+    sourceStatus: "Source_Checked",
+    sourceName: "Blind Bolt Australia Metric Technical Data, July 2018",
+    sourceUrl: "https://www.blindbolt.com.au/"
+  })))
 ];
 
 const weldSizes = [3, 4, 5, 6, 8, 10, 12, 16];
@@ -1813,7 +1972,7 @@ const reoExistingPressureBasisResetIds = new Set(reoExistingLengthChangingIds.fi
 const reoTerminationDetailingResetIds = new Set(reoExistingLengthChangingIds);
 
 const $ = id => document.getElementById(id);
-const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "holeDiameter", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "edgeDistanceBasis", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "edgeDistanceBasis2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand", "shearDemand", "tensionDemand"];
+const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand"];
 const beamCustomInputIds = [
   "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
   "beamCustomPfcDepth", "beamCustomPfcFlangeWidth", "beamCustomPfcWebThickness", "beamCustomPfcFlangeThickness",
@@ -1834,8 +1993,9 @@ let beamSource = "catalogue";
 let beamFamily = "ub";
 let memberType = "chs";
 let reoPreviousRouteKey = "";
+let mobileLayoutActive = window.matchMedia("(max-width: 500px)").matches;
 const manualInputIds = [
-  "boltCount", "threadPlanes", "shankPlanes", "holeDiameter", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "interfaces", "slipFactor", "shearDemand", "tensionDemand",
+  "boltCount", "threadPlanes", "shankPlanes", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "interfaces", "slipFactor",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
   "reoConcreteStrength", "reoCover", "reoClearSpacing", "reoBarGap", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoPressureReference", "reoSteelStress",
@@ -1850,8 +2010,9 @@ const manualInputIds = [
   "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
-  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeDistanceBasis", "edgeCondition2", "edgeDistanceBasis2", "holeFactor",
-  "uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
+  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeCondition2", "holeFactor",
+  "uBoltRodSize", "uBoltMemberGeometry", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
+  "blindBoltSize", "blindBoltGrip", "blindBoltHead", "blindBoltFinish", "blindBoltManufacturer", "blindBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
   "concreteDirection", "concreteReoDirection", "concreteDepthBasis", "concreteCrossingBar", "concreteShearReo", "concreteShearBar",
   "reoRebarPath", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoCastingPosition", "reoMaterialCondition", "reoCd", "reoExistingCd", "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoPressureBasisConfirmed", "reoExistingBarOrigin", "reoAnchorageBasis", "reoCastInTermination", "reoCastInTerminationConfirmed", "reoExistingMemberType", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingMethod", "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingKValue", "reoExistingCombinedFactor", "reoExistingPressureBasisConfirmed",
@@ -1902,7 +2063,6 @@ function formatInertia(number) {
   if (value >= 1e3) return `${(value / 1e3).toFixed(2)} × 10<sup>3</sup> mm<sup>4</sup>`;
   return `${value.toFixed(0)} mm<sup>4</sup>`;
 }
-function standardHoleDiameter(diameter) { return diameter <= 24 ? diameter + 2 : diameter + 3; }
 function signedFixed(number, digits = 1) { return `${number >= 0 ? "+" : ""}${Number(number).toFixed(digits)}`; }
 function safeText(text) {
   return String(text ?? "").replace(/[&<>"']/g, char => ({
@@ -1991,23 +2151,13 @@ function enhanceNumberInputs() {
 }
 
 function markInputSources() {
-  manualInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-manual"));
-  referenceInputIds.forEach(id => $(id)?.closest("label")?.classList.add("input-reference"));
+  manualInputIds.forEach(id => $(id)?.closest("label, .detailing-input-control")?.classList.add("input-manual"));
+  referenceInputIds.forEach(id => $(id)?.closest("label, .detailing-input-control")?.classList.add("input-reference"));
 }
 
-function calculateConnectedPly(config, bolt, count, holeDiameter, boltPitch) {
+function calculateConnectedPly(config, bolt, count) {
   const actualEdge = value(config.edgeDistanceId);
-  const basis = $(config.edgeDistanceBasisId).value;
-  const endEffectiveEdge = Math.max(0, actualEdge - holeDiameter / 2 + bolt.d / 2);
-  const hasAdjacentHole = count > 1;
-  const pitchEffectiveEdge = hasAdjacentHole ? Math.max(0, boltPitch - holeDiameter + bolt.d / 2) : Infinity;
-  const automaticEffectiveEdge = Math.min(endEffectiveEdge, pitchEffectiveEdge);
-  const automaticEdgeControl = pitchEffectiveEdge < endEffectiveEdge ? "adjacent hole" : "end edge";
-  const effectiveEdgeInput = $(config.effectiveEdgeInputId);
-  effectiveEdgeInput.readOnly = basis !== "manual";
-  if (basis !== "manual") effectiveEdgeInput.value = automaticEffectiveEdge.toFixed(1);
-
-  const effectiveEdge = basis === "manual" ? Math.max(0, value(config.effectiveEdgeInputId)) : automaticEffectiveEdge;
+  const effectiveEdge = Math.max(0, value(config.effectiveEdgeInputId));
   const minimumEdge = value(config.edgeConditionId) * bolt.d;
   const edgeDistancePass = actualEdge >= minimumEdge;
   const plateStrength = value(config.plateStrengthId);
@@ -2020,11 +2170,6 @@ function calculateConnectedPly(config, bolt, count, holeDiameter, boltPitch) {
   return {
     ...config,
     actualEdge,
-    basis,
-    endEffectiveEdge,
-    hasAdjacentHole,
-    pitchEffectiveEdge,
-    automaticEdgeControl,
     effectiveEdge,
     minimumEdge,
     edgeDistancePass,
@@ -2034,28 +2179,22 @@ function calculateConnectedPly(config, bolt, count, holeDiameter, boltPitch) {
     bearingEdge,
     localCapacity,
     groupCapacity,
-    controlLabel: bearingEdge <= bearingFull ? "Edge tear-out limit" : "Full-bearing limit"
+    controlLabel: bearingEdge <= bearingFull ? "Edge-distance limit" : "Full-bearing limit"
   };
 }
 
 function updateConnectedPlyOutputs(ply, suffix = "") {
-  $(`actualEdgeDistance${suffix}`).textContent = fixed(ply.actualEdge);
   $(`minimumEdgeDistance${suffix}`).textContent = fixed(ply.minimumEdge);
   $(`edgeDistanceStatus${suffix}`).textContent = ply.edgeDistancePass ? "PASS" : "FAIL";
-  $(`edgeDistanceStatus${suffix}`).className = ply.edgeDistancePass ? "pass" : "fail";
-  $(`edgeDistanceBasisNote${suffix}`).innerHTML = ply.basis === "manual"
-    ? `Manual drawing basis: a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm. Minimum edge-distance compliance still uses e.`
-    : ply.hasAdjacentHole
-      ? `Automatic: a<sub>e,end</sub> = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm.`
-      : `Automatic: a<sub>e,end</sub> = ${fixed(ply.effectiveEdge)} mm. Adjacent-hole pitch is not applicable to one bolt.`;
+  $(`edgeDistanceStatus${suffix}`).className = `input-check-status ${ply.edgeDistancePass ? "pass" : "fail"}`;
+  const standardHole = value("holeFactor") === 1;
+  $(`edgeDistanceRequirement${suffix}`).innerHTML = standardHole
+    ? `<output id="minimumEdgeDistance${suffix}">${fixed(ply.minimumEdge)}</output> mm minimum &middot; standard hole: centre to edge`
+    : `<output id="minimumEdgeDistance${suffix}">${fixed(ply.minimumEdge)}</output> mm minimum &middot; enter e from nearer hole edge to ply edge + d<sub>f</sub>/2`;
 }
 
-function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
-  const effectiveEdgeBasis = ply.basis === "manual"
-    ? `manual drawing value a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
-    : ply.hasAdjacentHole
-      ? `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.endEffectiveEdge)} mm; a<sub>e,pitch</sub> = ${fixed(boltPitch)} - ${fixed(holeDiameter)} + ${fixed(bolt.d)}/2 = ${fixed(ply.pitchEffectiveEdge)} mm; ${ply.automaticEdgeControl} governs with a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`
-      : `a<sub>e,end</sub> = ${fixed(ply.actualEdge)} - ${fixed(holeDiameter)}/2 + ${fixed(bolt.d)}/2 = ${fixed(ply.effectiveEdge)} mm`;
+function connectedPlyFormulaRows(ply, bolt, count) {
+  const effectiveEdgeBasis = `drawing value a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`;
   return [
     calculationTraceRow({
       title: `${ply.label} full bearing`,
@@ -2066,12 +2205,12 @@ function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
       applicability: "Full-bearing limit at the checked hole."
     }),
     calculationTraceRow({
-      title: `${ply.label} edge tear-out limit`,
+      title: `${ply.label} edge-distance limit`,
       reference: "AS 4100 Cl. 9.2.2.4(2)",
       formula: `&phi;V<sub>b,e</sub> = &phi;a<sub>e</sub>t<sub>p</sub>f<sub>up</sub>`,
       substitution: `${effectiveEdgeBasis}; 0.90 &times; ${fixed(ply.effectiveEdge)} mm &times; ${fixed(ply.plateThickness)} mm &times; ${ply.plateStrength.toFixed(0)} MPa / 1000`,
       result: `Design capacity per bolt = ${fixed(ply.bearingEdge)} kN`,
-      applicability: ply.basis === "manual" ? "Effective edge distance is a project drawing input." : "Effective edge distance is derived from the entered end distance and, where applicable, pitch."
+      applicability: "Effective edge distance is a project drawing input."
     }),
     calculationTraceRow({
       title: `${ply.label} minimum edge`,
@@ -2079,7 +2218,9 @@ function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
       lookup: "Minimum edge-distance multiplier for the selected edge condition.",
       selection: `${value(ply.edgeConditionId).toFixed(2)}d<sub>f</sub>; d<sub>f</sub> = ${fixed(bolt.d)} mm`,
       adopted: `e<sub>min</sub> = ${fixed(ply.minimumEdge)} mm; provided e = ${fixed(ply.actualEdge)} mm; ${ply.edgeDistancePass ? "PASS" : "FAIL"}`,
-      applicability: "Minimum physical edge distance; this is distinct from the effective edge distance used in tear-out capacity."
+      applicability: value("holeFactor") === 1
+        ? "Standard hole: e is measured from hole centre to ply edge."
+        : "Non-standard hole: e is measured from the nearer hole edge to the ply edge plus half the bolt diameter."
     }),
     calculationTraceRow({
       title: `${ply.label} local hole-bearing capacity`,
@@ -2091,7 +2232,7 @@ function connectedPlyFormulaRows(ply, bolt, count, holeDiameter, boltPitch) {
   ].join("");
 }
 
-function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear) {
+function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck) {
   const mode = $("integrityMode").value;
   const componentSelect = $("integrityComponent");
   componentSelect.disabled = !separatePlyCheck;
@@ -2107,12 +2248,10 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck,
     checkedPly,
     net: null,
     block: null,
-    netRatio: NaN,
-    blockRatio: NaN,
     error: ""
   };
   if (!enabled) {
-    $("integritySummaryStatus").textContent = "Not evaluated · optional manual areas";
+    $("integritySummaryStatus").textContent = "Not evaluated · manual areas required";
     return empty;
   }
 
@@ -2157,7 +2296,7 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck,
     ? `φNt ${fixed(net.design)} kN · φRbs ${fixed(block.design)} kN`
     : "Incomplete · enter critical areas";
   if (complete) {
-    $("integrityCheckNote").innerHTML = "Use where V<sub>f</sub><sup>*</sup> is the axial force transferred through the checked component. Review all plausible paths and enter the governing path areas.";
+    $("integrityCheckNote").textContent = "Review all plausible failure paths and enter the governing path areas for the selected component.";
   } else {
     $("integrityCheckNote").textContent = `Complete the manual-area check. ${[...new Set(errors)].join(" ")}`;
   }
@@ -2168,8 +2307,6 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck,
     checkedPly,
     net,
     block,
-    netRatio: net && net.design > 0 ? designShear / net.design : NaN,
-    blockRatio: block && block.design > 0 ? designShear / block.design : NaN,
     error: [...new Set(errors)].join(" ")
   };
 }
@@ -2180,21 +2317,55 @@ function calculateBolt() {
   const plane = $("shearPlane").value;
   const bolt = boltData[size];
   const category = categories[categoryKey];
-  const threadKrd = category.grade === "10.9" ? 0.83 : 1;
-  const shankKrd = 1;
+  const fuf = BoltCapacity.ultimateStrength({
+    grade: category.grade,
+    diameter: bolt.d,
+    tableStrength: category.fuf
+  });
+  const strengthSourceNote = category.grade === "8.8" && bolt.d < 16
+    ? "AS 4100 Table 9.2.1 Note 2: fuf = 800 MPa for property class 8.8 bolts below 16 mm."
+    : `Selected property class ${category.grade}: fuf = ${fuf} MPa.`;
   const kr = Math.min(1, Math.max(0.75, value("kr")));
-  const tension = 0.8 * bolt.As * category.fuf / 1000;
-  const threadShear = 0.8 * 0.62 * category.fuf * threadKrd * kr * bolt.Ac / 1000;
-  const shankShear = 0.8 * 0.62 * category.fuf * shankKrd * kr * bolt.Ao / 1000;
+  const tension = BoltCapacity.designTension({ As: bolt.As, fuf });
+  const threadShearResult = BoltCapacity.designShear({
+    grade: category.grade,
+    fuf,
+    kr,
+    threadPlanes: 1,
+    shankPlanes: 0,
+    Ac: bolt.Ac,
+    Ao: bolt.Ao
+  });
+  const shankShearResult = BoltCapacity.designShear({
+    grade: category.grade,
+    fuf,
+    kr,
+    threadPlanes: 0,
+    shankPlanes: 1,
+    Ac: bolt.Ac,
+    Ao: bolt.Ao
+  });
+  const threadKrd = threadShearResult.krd;
+  const shankKrd = shankShearResult.krd;
+  const threadShear = threadShearResult.design;
+  const shankShear = shankShearResult.design;
   const selectedShear = plane === "N" ? threadShear : shankShear;
   const count = Math.max(1, Math.round(value("boltCount")));
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
   const totalThreadPlanes = count * nThread;
   const totalShankPlanes = count * nShank;
-  const totalShearPlanes = totalThreadPlanes + totalShankPlanes;
-  const groupShear = 0.8 * 0.62 * category.fuf * kr * (totalThreadPlanes * threadKrd * bolt.Ac + totalShankPlanes * shankKrd * bolt.Ao) / 1000;
-  const holeDiameter = value("holeDiameter");
+  const groupShearResult = BoltCapacity.designShear({
+    grade: category.grade,
+    fuf,
+    kr,
+    threadPlanes: totalThreadPlanes,
+    shankPlanes: totalShankPlanes,
+    Ac: bolt.Ac,
+    Ao: bolt.Ao
+  });
+  const groupKrd = groupShearResult.krd;
+  const groupShear = groupShearResult.design;
   const boltPitch = Math.max(0, value("boltPitch"));
   const minimumPitch = 2.5 * bolt.d;
   const pitchApplicable = count > 1;
@@ -2207,23 +2378,20 @@ function calculateBolt() {
     plateStrengthId: "plateStrength",
     edgeConditionId: "edgeCondition",
     edgeDistanceId: "edgeDistance",
-    edgeDistanceBasisId: "edgeDistanceBasis",
     effectiveEdgeInputId: "effectiveEdgeInput"
-  }, bolt, count, holeDiameter, boltPitch);
+  }, bolt, count);
   const secondPly = calculateConnectedPly({
     label: "Second ply",
     plateThicknessId: "plateThickness2",
     plateStrengthId: "plateStrength2",
     edgeConditionId: "edgeCondition2",
     edgeDistanceId: "edgeDistance2",
-    edgeDistanceBasisId: "edgeDistanceBasis2",
     effectiveEdgeInputId: "effectiveEdgeInput2"
-  }, bolt, count, holeDiameter, boltPitch);
+  }, bolt, count);
   const separatePlyCheck = $("connectedPlyBasis").value === "separate";
   $("secondPlyFields").hidden = !separatePlyCheck;
   $("boltPlyGrid").classList.toggle("has-second-ply", separatePlyCheck);
   $("plyComparison").hidden = !separatePlyCheck;
-  $("secondPlyEdgeCheck").hidden = !separatePlyCheck;
   $("connectedPlyBasisNote").textContent = separatePlyCheck
     ? "Each connected ply is assessed using its entered properties and edge geometry."
     : "Primary ply properties apply to both connected plies.";
@@ -2248,73 +2416,31 @@ function calculateBolt() {
     : capacitiesEqual
       ? "Both plies equal"
       : governingPly.label;
-  const governingPlyDemandLabel = !separatePlyCheck || capacitiesEqual
-    ? "local hole bearing"
-    : `local hole bearing in the ${governingPly.label.toLowerCase()}`;
-  const localPlyCapacity = governingPly.localCapacity;
-  const equalShareGroupPlyCapacity = governingPly.groupCapacity;
   const preload = category.preload ? bolt[category.preload] : 0;
-  const slip = category.type === "friction" ? 0.7 * value("slipFactor") * value("interfaces") * preload * value("holeFactor") : null;
+  const slipInterfaces = Math.max(1, Math.round(value("interfaces")));
+  const holeFactor = value("holeFactor");
+  const slip = category.type === "friction"
+    ? BoltCapacity.designSlipResistance({
+        slipFactor: value("slipFactor"),
+        interfaces: slipInterfaces,
+        preload,
+        holeFactor
+      })
+    : null;
   const slipGroupCapacity = slip === null ? null : count * slip;
   const slipTensionCapacity = preload > 0 ? 0.7 * count * preload : null;
-  const designShear = value("shearDemand");
-  const designTension = value("tensionDemand");
   const slipShearDemand = value("slipShearDemand");
   const slipTensionDemand = value("slipTensionDemand");
-  const integrity = calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck, designShear);
-  const criticalBoltShear = designShear / count;
-  const boltShearRatio = groupShear > 0 ? designShear / groupShear : Infinity;
-  const plyBearingRatio = localPlyCapacity > 0 ? criticalBoltShear / localPlyCapacity : Infinity;
-  const boltTensionRatio = count * tension > 0 ? designTension / (count * tension) : Infinity;
-  const strengthRatio = groupShear > 0 && count * tension > 0
-    ? boltShearRatio ** 2 + boltTensionRatio ** 2
-    : Infinity;
+  const integrity = calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck);
   const slipRatio = slipGroupCapacity && slipTensionCapacity
-    ? slipShearDemand / slipGroupCapacity + slipTensionDemand / slipTensionCapacity
+    ? BoltCapacity.slipInteraction({
+        shearAction: slipShearDemand,
+        shearCapacity: slipGroupCapacity,
+        tensionAction: slipTensionDemand,
+        tensionCapacity: slipTensionCapacity
+      })
     : Infinity;
-  const hasShearDemand = designShear > 0;
-  const hasTensionDemand = designTension > 0;
-  const hasDemand = hasShearDemand || hasTensionDemand;
   const hasSlipDemand = slipShearDemand > 0 || slipTensionDemand > 0;
-  let governingRatio = NaN;
-  let governingNote = "Enter V<sub>f</sub><sup>*</sup> and/or N<sub>tf</sub><sup>*</sup> to activate the strength check.";
-  const strengthCandidates = [];
-  if (hasShearDemand && !hasTensionDemand) {
-    strengthCandidates.push(
-      { label: "bolt shear", ratio: boltShearRatio },
-      { label: governingPlyDemandLabel, ratio: plyBearingRatio }
-    );
-  } else if (!hasShearDemand && hasTensionDemand) {
-    strengthCandidates.push({ label: "bolt tension", ratio: boltTensionRatio });
-  } else if (hasShearDemand && hasTensionDemand) {
-    strengthCandidates.push(
-      { label: "bolt combined shear-tension interaction", ratio: strengthRatio },
-      { label: governingPlyDemandLabel, ratio: plyBearingRatio }
-    );
-  }
-  if (hasShearDemand && integrity.complete) {
-    strengthCandidates.push(
-      { label: `${integrity.checkedPly.label.toLowerCase()} section tension`, ratio: integrity.netRatio },
-      { label: `${integrity.checkedPly.label.toLowerCase()} block shear`, ratio: integrity.blockRatio }
-    );
-  }
-  if (strengthCandidates.length) {
-    const orderedCandidates = [...strengthCandidates].sort((a, b) => b.ratio - a.ratio);
-    const governingCandidate = orderedCandidates[0];
-    governingRatio = governingCandidate.ratio;
-    const actionLabel = hasShearDemand && hasTensionDemand ? "Shear and tension" : hasShearDemand ? "Shear transfer" : "Bolt tension";
-    const comparison = orderedCandidates.slice(1).map(candidate => `${candidate.label} ${candidate.ratio.toFixed(2)}`).join("; ");
-    governingNote = `${actionLabel}: ${governingCandidate.label} governs at ${governingCandidate.ratio.toFixed(2)}.${comparison ? ` Other included checks: ${comparison}.` : ""}`;
-  }
-  const integrityIncomplete = hasShearDemand && integrity.enabled && !integrity.complete;
-  if (integrityIncomplete) {
-    const integrityIssue = (integrity.error || "enter all required critical areas").replace(/\.$/, "");
-    governingNote = `Connected-ply integrity is incomplete: ${integrityIssue}. Bolt and local hole-bearing results remain provisional.`;
-  } else if (hasShearDemand && !integrity.enabled) {
-    governingNote += " Net-section tension and block shear are not evaluated.";
-  } else if (hasShearDemand && integrity.complete) {
-    governingNote += " Manual connected-ply integrity covers the selected component and entered path only.";
-  }
   const detailingFailures = [];
   if (pitchApplicable && !pitchPass) detailingFailures.push("minimum pitch");
   if (pitchApplicable && !maximumPitchPass) detailingFailures.push("maximum pitch");
@@ -2323,24 +2449,27 @@ function calculateBolt() {
   const detailingCompliant = detailingFailures.length === 0;
   const detailingFailureNote = detailingCompliant
     ? ""
-    : `Detailing non-compliant: ${detailingFailures.join(", ")}. Correct the connection detailing before using the calculated resistance.`;
-  const strengthDisplayNote = detailingCompliant
-    ? governingNote
-    : `${detailingFailureNote}${hasDemand ? ` ${governingNote}` : ""}`;
+    : `Detailing non-compliant: ${detailingFailures.join(", ")}. Do not adopt the displayed capacities.`;
   const slipDisplayNote = !detailingCompliant
     ? detailingFailureNote
     : !hasSlipDemand
       ? "Enter serviceability slip actions for the AS 4100 Cl. 9.2.3.3 check."
       : `AS 4100 Cl. 9.2.3.3: Vsf* / \u03c6Vsf + Ntf* / \u03c6Ntf = ${slipRatio.toFixed(2)}; limit \u2264 1.0.`;
 
-  const drawingCallout = `${size} ${categoryKey} - ${plane} plane`;
+  const connectionCategory = categoryKey.split("/")[1];
+  const drawingCallout = BoltCapacity.formatDrawingCallout({
+    size,
+    grade: category.grade,
+    connectionCategory,
+    plane
+  });
   $("selectionTitle").textContent = drawingCallout;
   $("drawingNote").textContent = "N: threads intercept shear plane · X: threads clear of shear plane";
   $("diameterValue").textContent = `${bolt.d} mm`;
   $("stressAreaValue").textContent = `${bolt.As} mm²`;
   $("coreAreaValue").textContent = `${bolt.Ac} mm²`;
   $("shankAreaValue").textContent = `${bolt.Ao} mm²`;
-  $("strengthValue").textContent = `${category.fuf} MPa`;
+  $("strengthValue").textContent = `${fuf} MPa`;
   const hasInstalledTension = Boolean(category.preload && Number.isFinite(preload));
   $("installedTensionValue").textContent = hasInstalledTension ? `${preload.toFixed(0)} kN` : "Not required";
   $("boltPreloadLookup").hidden = !hasInstalledTension;
@@ -2360,8 +2489,10 @@ function calculateBolt() {
     : "Threads clear of shear plane &middot; AS 4100 Cl. 9.2.2.1";
   $("tensionCapacity").textContent = fixed(tension);
   $("boltResultNote").innerHTML = `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} &middot; k<sub>r</sub> = ${kr.toFixed(2)}.`;
+  $("boltDetailingStatus").hidden = detailingCompliant;
+  $("boltDetailingStatus").textContent = detailingFailureNote;
   $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
-  $("groupShearBasis").textContent = `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal bolt sharing`;
+  $("groupShearBasis").textContent = `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal shear per bolt assumed`;
   $("primaryPlyCapacity").textContent = `${fixed(primaryPly.groupCapacity)} kN`;
   $("primaryPlyControl").textContent = primaryPly.controlLabel;
   $("secondPlyCapacity").textContent = `${fixed(secondPly.groupCapacity)} kN`;
@@ -2373,32 +2504,16 @@ function calculateBolt() {
   $("connectedPlyGoverningBasis").textContent = `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`;
   updateConnectedPlyOutputs(primaryPly);
   updateConnectedPlyOutputs(secondPly, "2");
+  const pitchCompliant = pitchPass && maximumPitchPass;
   $("pitchCheckValue").innerHTML = pitchApplicable
-    ? `<output id="actualPitch">${fixed(boltPitch)}</output> / <output id="minimumPitch">${fixed(minimumPitch)}</output> mm required`
-    : "Not applicable to one bolt";
-  $("pitchStatus").textContent = pitchApplicable ? (pitchPass ? "PASS" : "FAIL") : "N/A";
-  $("pitchStatus").className = pitchApplicable ? (pitchPass ? "pass" : "fail") : "neutral";
-  $("maximumPitchCheckValue").innerHTML = pitchApplicable
-    ? `<output id="actualMaximumPitch">${fixed(boltPitch)}</output> / <output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted`
-    : "Not applicable to one bolt";
-  $("maximumPitchStatus").textContent = pitchApplicable ? (maximumPitchPass ? "PASS" : "FAIL") : "N/A";
-  $("maximumPitchStatus").className = pitchApplicable ? (maximumPitchPass ? "pass" : "fail") : "neutral";
+    ? `<output id="minimumPitch">${fixed(minimumPitch)}</output>-<output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted &middot; AS 4100 Cl. 9.5.1; Cl. 9.5.3 general limit`
+    : "Not applicable to a single-bolt connection";
+  $("pitchStatus").textContent = pitchApplicable ? (pitchCompliant ? "PASS" : "FAIL") : "N/A";
+  $("pitchStatus").className = `input-check-status ${pitchApplicable ? (pitchCompliant ? "pass" : "fail") : "neutral"}`;
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
-  $("slipCapacityBasis").textContent = slip === null
+  $("slipCapacityBasis").innerHTML = slip === null
     ? "TF categories only"
-    : `Per bolt · ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
-  $("strengthGoverningRatio").textContent = !integrityIncomplete && Number.isFinite(governingRatio) ? governingRatio.toFixed(2) : "—";
-  $("strengthGoverningStatus").textContent = !detailingCompliant
-    ? "NON-COMPLIANT"
-    : integrityIncomplete
-      ? "INCOMPLETE"
-    : !hasDemand
-    ? "Enter design actions"
-    : governingRatio <= 1
-        ? hasShearDemand ? "SCOPED PASS" : "PASS"
-        : "FAIL";
-  $("strengthGoverningStatus").className = !detailingCompliant ? "fail" : integrityIncomplete ? "check" : !hasDemand ? "" : governingRatio <= 1 ? "pass" : "fail";
-  $("strengthGoverningNote").innerHTML = strengthDisplayNote;
+    : `Per bolt &middot; k<sub>h</sub> = ${holeFactor.toFixed(2)} &middot; ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
   $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
   $("slipGoverningStatus").textContent = !detailingCompliant
     ? "NON-COMPLIANT"
@@ -2410,17 +2525,17 @@ function calculateBolt() {
   $("slipGoverningStatus").className = !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
   $("slipGoverningNote").textContent = slipDisplayNote;
 
-  const activePlyFormulaRows = connectedPlyFormulaRows(primaryPly, bolt, count, holeDiameter, boltPitch)
-    + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count, holeDiameter, boltPitch) : "");
+  const activePlyFormulaRows = connectedPlyFormulaRows(primaryPly, bolt, count)
+    + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count) : "");
   const integrityFormulaRows = !integrity.enabled
     ? calculationTraceRow({
-        title: "Connected-ply integrity",
+        title: "Optional ply rupture checks",
         result: "Not evaluated",
         applicability: "Net-section tension and block shear require manual critical areas."
       })
     : !integrity.complete
       ? calculationTraceRow({
-          title: "Connected-ply integrity",
+          title: "Optional ply rupture checks",
           result: "Input required",
           applicability: integrity.error,
           state: "warning"
@@ -2431,7 +2546,7 @@ function calculateBolt() {
             reference: "AS 4100 Cl. 9.1.9(b) and AS 4100 Cl. 7.2",
             formula: `&phi;N<sub>t</sub> = 0.90min(A<sub>g</sub>f<sub>yc</sub>, 0.85k<sub>t</sub>A<sub>n</sub>f<sub>uc</sub>)`,
             substitution: `0.90min(${fixed(integrity.net.grossYield)}, ${fixed(integrity.net.netFracture)}) kN`,
-            result: `Design capacity = ${fixed(integrity.net.design)} kN; ratio = ${integrity.netRatio.toFixed(2)}`,
+            result: `Design capacity = ${fixed(integrity.net.design)} kN`,
             applicability: "Manual gross and net critical areas; checked connected ply only."
           }),
           calculationTraceRow({
@@ -2439,7 +2554,7 @@ function calculateBolt() {
             reference: "AS 4100 Cl. 9.1.9(e)",
             formula: `&phi;R<sub>bs</sub> = 0.75min(0.6f<sub>uc</sub>A<sub>nv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>, 0.6f<sub>yc</sub>A<sub>gv</sub> + k<sub>bs</sub>f<sub>uc</sub>A<sub>nt</sub>)`,
             substitution: `0.75min(${fixed(integrity.block.ruptureLimit)}, ${fixed(integrity.block.yieldLimit)}) kN`,
-            result: `Design capacity = ${fixed(integrity.block.design)} kN; ratio = ${integrity.blockRatio.toFixed(2)}`,
+            result: `Design capacity = ${fixed(integrity.block.design)} kN`,
             applicability: "Manual critical block-shear areas; all plausible paths remain a project review."
           })
         ].join("");
@@ -2448,9 +2563,9 @@ function calculateBolt() {
       title: "Bolt tension capacity",
       reference: "AS 4100 Cl. 9.2.2.2",
       formula: `&phi;N<sub>tf</sub> = &phi;A<sub>s</sub>f<sub>uf</sub>`,
-      substitution: `0.80 &times; ${bolt.As} mm<sup>2</sup> &times; ${category.fuf} MPa / 1000`,
+      substitution: `0.80 &times; ${bolt.As} mm<sup>2</sup> &times; ${fuf} MPa / 1000`,
       result: `Design capacity per bolt = ${fixed(tension)} kN`,
-      applicability: `${size} property class ${category.grade}; tensile stress area A<sub>s</sub>.`
+      applicability: `${size}; tensile stress area A<sub>s</sub>. ${strengthSourceNote}`
     }),
     calculationTraceRow({
       title: "Minimum installed bolt tension",
@@ -2464,7 +2579,7 @@ function calculateBolt() {
       title: "Bolt shear capacity, N-plane",
       reference: "AS 4100 Cl. 9.2.2.1",
       formula: `&phi;V<sub>f,N</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,N</sub>k<sub>r</sub>A<sub>c</sub>`,
-      substitution: `0.80 &times; 0.62 &times; ${category.fuf} MPa &times; ${threadKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ac} mm<sup>2</sup> / 1000`,
+      substitution: `0.80 &times; 0.62 &times; ${fuf} MPa &times; ${threadKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ac} mm<sup>2</sup> / 1000`,
       result: `Design capacity per shear plane = ${fixed(threadShear)} kN`,
       applicability: "Threads intercept the shear plane."
     }),
@@ -2472,33 +2587,17 @@ function calculateBolt() {
       title: "Bolt shear capacity, X-plane",
       reference: "AS 4100 Cl. 9.2.2.1",
       formula: `&phi;V<sub>f,X</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,X</sub>k<sub>r</sub>A<sub>o</sub>`,
-      substitution: `0.80 &times; 0.62 &times; ${category.fuf} MPa &times; ${shankKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ao} mm<sup>2</sup> / 1000`,
+      substitution: `0.80 &times; 0.62 &times; ${fuf} MPa &times; ${shankKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ao} mm<sup>2</sup> / 1000`,
       result: `Design capacity per shear plane = ${fixed(shankShear)} kN`,
       applicability: "Threads do not intercept the shear plane; k<sub>rd,X</sub> = 1.00."
     }),
     calculationTraceRow({
       title: "Bolt group shear capacity",
       reference: "AS 4100 Cl. 9.2.2.1",
-      formula: `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>r</sub>(n<sub>N</sub>k<sub>rd,N</sub>A<sub>c</sub> + n<sub>X</sub>k<sub>rd,X</sub>A<sub>o</sub>)`,
-      substitution: `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>r</sub> = ${kr.toFixed(2)}`,
+      formula: `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd</sub>k<sub>r</sub>(n<sub>N</sub>A<sub>c</sub> + n<sub>X</sub>A<sub>o</sub>)`,
+      substitution: `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>rd</sub> = ${groupKrd.toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}`,
       result: `Design group capacity = ${fixed(groupShear)} kN`,
-      applicability: "Identical bolts with equal action sharing; apply the bolted-lap reduction only where its stated conditions apply."
-    }),
-    calculationTraceRow({
-      title: "Bolt shear utilisation",
-      reference: "AS 4100 Cl. 9.2.2.1",
-      formula: `&eta;<sub>V</sub> = V<sub>f</sub><sup>*</sup>/&phi;V<sub>f</sub>`,
-      substitution: `${fixed(designShear)} kN / ${fixed(groupShear)} kN`,
-      result: `Utilisation = ${Number.isFinite(boltShearRatio) ? boltShearRatio.toFixed(2) : "-"}`,
-      applicability: "Strength-level shear action and compatible group shear capacity."
-    }),
-    calculationTraceRow({
-      title: "Bolt tension utilisation",
-      reference: "AS 4100 Cl. 9.2.2.2",
-      formula: `&eta;<sub>N</sub> = N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf,group</sub>`,
-      substitution: `${fixed(designTension)} kN / ${fixed(count * tension)} kN`,
-      result: `Utilisation = ${Number.isFinite(boltTensionRatio) ? boltTensionRatio.toFixed(2) : "-"}`,
-      applicability: "Strength-level tensile action; include prying action where applicable."
+      applicability: "Identical bolts with equal shear per bolt assumed; apply the bolted-lap reduction only where its stated conditions apply."
     }),
     calculationTraceRow({
       title: "Minimum pitch",
@@ -2517,41 +2616,20 @@ function calculateBolt() {
       applicability: pitchApplicable ? "General limit only; AS 4100 Cl. 9.5.3(a) and AS 4100 Cl. 9.5.3(b) are not applied." : "One-bolt connection."
     }),
     activePlyFormulaRows,
-    calculationTraceRow({
-      title: "Governing local hole-bearing utilisation",
-      reference: "AS 4100 Cl. 9.2.2.4",
-      formula: `V<sub>b,bolt</sub><sup>*</sup> = V<sup>*</sup>/n; &eta;<sub>b</sub> = V<sup>*</sup>/&phi;V<sub>b,group</sub>`,
-      substitution: `${fixed(designShear)} kN / ${count} = ${fixed(criticalBoltShear)} kN per bolt; ${fixed(designShear)} kN / ${fixed(equalShareGroupPlyCapacity)} kN`,
-      result: `Utilisation = ${Number.isFinite(plyBearingRatio) ? plyBearingRatio.toFixed(2) : "-"}`,
-      applicability: `${governingPlyLabel}; equal bolt sharing.`
-    }),
     integrityFormulaRows,
     calculationTraceRow({
       title: "Detailing compliance",
-      result: detailingCompliant ? "PASS for the displayed lightweight checks" : "NON-COMPLIANT",
+      result: detailingCompliant ? "Compliant for the displayed lightweight checks" : "NON-COMPLIANT",
       applicability: detailingCompliant ? "All applicable displayed detailing checks pass." : detailingFailureNote,
       state: detailingCompliant ? "" : "warning"
-    }),
-    calculationTraceRow({
-      title: "Strength governing check",
-      result: governingNote,
-      applicability: "The displayed governing result covers only the implemented bolt and connected-ply paths."
-    }),
-    calculationTraceRow({
-      title: "Combined shear and tension",
-      reference: "AS 4100 Cl. 9.2.2.3",
-      formula: `(V<sub>f</sub><sup>*</sup>/&phi;V<sub>f</sub>)<sup>2</sup> + (N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf</sub>)<sup>2</sup> &le; 1.0`,
-      substitution: hasShearDemand && hasTensionDemand ? `(${fixed(designShear)}/${fixed(groupShear)})<sup>2</sup> + (${fixed(designTension)}/${fixed(count * tension)})<sup>2</sup>` : "",
-      result: hasShearDemand && hasTensionDemand ? `Interaction = ${Number.isFinite(strengthRatio) ? strengthRatio.toFixed(2) : "-"}` : "Not applicable",
-      applicability: hasShearDemand && hasTensionDemand ? "Both strength-level shear and tension actions are entered." : "Enter both shear and tension actions; use the separate single-action checks otherwise."
     }),
     calculationTraceRow({
       title: "TF slip resistance",
       reference: "AS 4100 Cl. 9.2.3.1",
       formula: slip === null ? "" : `&phi;V<sub>sf</sub> = 0.70&mu;n<sub>ei</sub>N<sub>ti</sub>k<sub>h</sub>`,
-      substitution: slip === null ? "" : `0.70 &times; ${value("slipFactor")} &times; ${value("interfaces")} &times; ${preload} kN &times; ${value("holeFactor")}`,
+      substitution: slip === null ? "" : `0.70 &times; ${value("slipFactor")} &times; ${slipInterfaces} &times; ${preload} kN &times; ${holeFactor}`,
       result: slip === null ? "Not applicable" : `Design slip resistance per bolt = ${fixed(slip)} kN`,
-      applicability: slip === null ? "TF categories only." : "Serviceability slip resistance; use the compatible TF action basis."
+      applicability: slip === null ? "TF categories only." : "Use mu = 0.35 only for clean as-rolled contact surfaces; other surfaces require test evidence."
     }),
     calculationTraceRow({
       title: "TF combined slip",
@@ -2559,12 +2637,12 @@ function calculateBolt() {
       formula: slip === null ? "" : `V<sub>sf</sub><sup>*</sup>/&phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf</sub> &le; 1.0`,
       substitution: slip === null ? "" : `${fixed(slipShearDemand)}/${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)}/${fixed(slipTensionCapacity)}`,
       result: slip === null ? "Not applicable" : `Interaction = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}`,
-      applicability: slip === null ? "Friction-type categories where serviceability slip is limited." : "N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70 for this serviceability slip check; actions are separate from the strength check."
+      applicability: slip === null ? "Friction-type categories where serviceability slip is limited." : "Entered actions are total bolt-group serviceability actions with equal action per identical bolt; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70."
     }),
     calculationTraceRow({
-      title: "Strength boundary",
-      result: "Scoped bolt and connected-ply quick check",
-      applicability: `Include prying action in bolt tension where applicable under AS 4100 Cl. 9.1.8.${slip === null ? "" : " Complete the separate serviceability slip checks shown above."}`
+      title: "Capacity-only boundary",
+      result: "Project strength actions and utilisation are not evaluated",
+      applicability: `Bolt, connected-ply bearing and optional integrity results are design capacities only.${slip === null ? "" : " Complete the separate TF serviceability slip check shown above."}`
     })
   ];
   $("formulaSteps").innerHTML = boltTraceRows.join("");
@@ -2574,12 +2652,24 @@ function uniqueSorted(list, key) {
   return [...new Set(list.map(item => item[key]))].sort((a, b) => String(a).localeCompare(String(b)));
 }
 
+function sortMetricSizes(values) {
+  return [...values].sort((a, b) => {
+    const aNumber = Number(String(a).match(/\d+(?:\.\d+)?/)?.[0]);
+    const bNumber = Number(String(b).match(/\d+(?:\.\d+)?/)?.[0]);
+    if (Number.isFinite(aNumber) && Number.isFinite(bNumber)) return aNumber - bNumber;
+    if (Number.isFinite(aNumber)) return -1;
+    if (Number.isFinite(bNumber)) return 1;
+    return String(a).localeCompare(String(b));
+  });
+}
+
 function setUBoltOptions(selectId, values, options = {}) {
   const select = $(selectId);
   const previous = select.value;
   const hadOptions = select.options.length > 0;
-  const entries = options.allLabel
-    ? [{ value: "", label: options.allLabel }, ...values.map(value => ({ value, label: value }))]
+  const emptyLabel = options.placeholder || options.allLabel;
+  const entries = emptyLabel
+    ? [{ value: "", label: emptyLabel }, ...values.map(value => ({ value, label: value }))]
     : values.map(value => ({ value, label: value }));
   select.innerHTML = entries.map(entry => `<option value="${safeText(entry.value)}">${safeText(entry.label)}</option>`).join("");
   if (hadOptions && entries.some(entry => entry.value === previous)) select.value = previous;
@@ -2587,16 +2677,23 @@ function setUBoltOptions(selectId, values, options = {}) {
   else if (entries.length) select.value = entries[0].value;
 }
 
+function uBoltFitClass(product) {
+  if (product.application === "Custom / project-manufactured") return "Custom / drawing-defined";
+  if (/square|rectangular/i.test(`${product.fitKey} ${product.fit}`)) return "Square / rectangular";
+  if (product.application === "Beam / channel clamp assembly" || /beam|channel/i.test(`${product.fitKey} ${product.fit}`)) {
+    return "Beam / channel assembly";
+  }
+  return "Round / pipe";
+}
+
 function filteredUBoltProducts(includeManufacturer = true) {
-  const application = $("uBoltApplication")?.value;
   const rodSize = $("uBoltRodSize")?.value;
-  const fit = $("uBoltFitFilter")?.value;
+  const geometry = $("uBoltMemberGeometry")?.value;
   const finish = $("uBoltFinish")?.value;
   const manufacturer = $("uBoltManufacturer")?.value;
   return uBoltProducts.filter(product =>
-    (!application || product.application === application) &&
-    (!rodSize || product.thread === rodSize) &&
-    (!fit || product.fitKey === fit) &&
+    (!rodSize || product.thread === rodSize || product.thread === "Project-specific") &&
+    (!geometry || uBoltFitClass(product) === geometry) &&
     (!finish || product.finish === finish) &&
     (!includeManufacturer || !manufacturer || product.manufacturer === manufacturer)
   );
@@ -2605,32 +2702,25 @@ function filteredUBoltProducts(includeManufacturer = true) {
 function selectedUBoltProduct() {
   const selectedId = $("uBoltProduct")?.value;
   const products = filteredUBoltProducts();
-  return products.find(product => product.id === selectedId) || products[0] || null;
+  return products.find(product => product.id === selectedId) || null;
 }
 
 function populateUBoltFilters(initial = false) {
-  setUBoltOptions("uBoltApplication", uniqueSorted(uBoltProducts, "application"), {
-    preferred: initial ? "Mounting pipe / round member" : ""
-  });
-  const application = $("uBoltApplication").value;
-  const applicationProducts = uBoltProducts.filter(product => product.application === application);
-  setUBoltOptions("uBoltRodSize", uniqueSorted(applicationProducts, "thread"), {
+  setUBoltOptions("uBoltRodSize", sortMetricSizes(uniqueSorted(uBoltProducts, "thread")), {
     allLabel: "Any rod size",
     preferred: initial ? "M12" : ""
   });
   const rodSize = $("uBoltRodSize").value;
-  const rodProducts = applicationProducts.filter(product => !rodSize || product.thread === rodSize);
-  setUBoltOptions("uBoltFinish", uniqueSorted(rodProducts, "finish"), {
-    allLabel: "Any finish",
-    preferred: initial ? "Outdoor HDG" : ""
+  const rodProducts = uBoltProducts.filter(product => !rodSize || product.thread === rodSize || product.thread === "Project-specific");
+  setUBoltOptions("uBoltMemberGeometry", uniqueSorted(rodProducts.map(product => ({ fitClass: uBoltFitClass(product) })), "fitClass"), {
+    allLabel: "Any member geometry"
   });
-  const finish = $("uBoltFinish").value;
-  const finishProducts = rodProducts.filter(product => !finish || product.finish === finish);
-  setUBoltOptions("uBoltFitFilter", uniqueSorted(finishProducts, "fitKey"), { allLabel: "Any fit" });
+  const geometry = $("uBoltMemberGeometry").value;
+  const geometryProducts = rodProducts.filter(product => !geometry || uBoltFitClass(product) === geometry);
+  setUBoltOptions("uBoltFinish", uniqueSorted(geometryProducts, "finish"), { allLabel: "Any finish" });
   const manufacturerProducts = filteredUBoltProducts(false);
   setUBoltOptions("uBoltManufacturer", uniqueSorted(manufacturerProducts, "manufacturer"), {
-    allLabel: "All brands / manufacturers",
-    preferred: initial ? "Hilti" : ""
+    allLabel: "All brands / manufacturers"
   });
   populateUBoltProducts();
 }
@@ -2639,12 +2729,16 @@ function populateUBoltProducts() {
   const products = filteredUBoltProducts();
   const select = $("uBoltProduct");
   const previous = select.value;
-  const showManufacturer = !$("uBoltManufacturer").value;
-  select.innerHTML = products.map(product => {
-    const label = showManufacturer ? `${product.manufacturer} - ${product.product}` : product.product;
+  select.innerHTML = '<option value="">Select catalogue entry</option>' + products.map(product => {
+    const label = `${product.series} - ${product.thread} - ${product.fitKey}`;
     return `<option value="${safeText(product.id)}">${safeText(label)}</option>`;
   }).join("");
+  select.disabled = !products.length;
   if (products.some(product => product.id === previous)) select.value = previous;
+  else select.value = "";
+  $("uBoltProductGroupNote").textContent = products.length
+    ? `${products.length} catalogue ${products.length === 1 ? "entry" : "entries"} available; select one to review.`
+    : "No catalogue entry for the current filters.";
 }
 
 function publishedCapacityText(product) {
@@ -2660,55 +2754,227 @@ function publishedLoadLabel(product) {
 
 function calculateUBolt() {
   const product = selectedUBoltProduct();
-  if (!product) return;
+  if (!product) {
+    $("uBoltSelectionPrompt").hidden = false;
+    $("uBoltSelectedSummary").hidden = true;
+    $("uBoltSpecification").hidden = true;
+    $("uBoltPublishedSection").hidden = true;
+    $("uBoltSelectionPromptTitle").textContent = $("uBoltProduct").disabled ? "No catalogue entry" : "Select a catalogue entry";
+    $("uBoltSelectionPromptNote").textContent = $("uBoltProduct").disabled
+      ? "Revise the browse filters."
+      : `${filteredUBoltProducts().length} entries available; published product data appears after selection.`;
+    $("uBoltSelectionTypeLabel").textContent = "Product selection";
+    $("uBoltSelectionTitle").textContent = $("uBoltProduct").disabled ? "No catalogue entry" : "Select catalogue entry";
+    $("uBoltSelectionNote").textContent = "Member geometry, finish and manufacturer remain optional browse filters.";
+    ["uBoltCode", "uBoltThread", "uBoltSupplier", "uBoltPublishedGeometry", "uBoltPublishedMaterial"].forEach(id => {
+      $(id).textContent = "-";
+    });
+    $("uBoltPublishedLoadLabel").textContent = "Manufacturer-published value";
+    $("uBoltPublishedCapacity").textContent = "Not selected";
+    $("uBoltCapacityBasis").textContent = "Select a catalogue entry to review its published data.";
+    $("uBoltPublishedCard").classList.add("is-unpublished");
+    $("uBoltSourceStatus").textContent = "Source not selected";
+    $("uBoltSourceStatus").classList.remove("is-checked", "is-online");
+    $("uBoltSourceStatus").removeAttribute("href");
+    $("uBoltSourceLink").textContent = "Manufacturer product listing";
+    $("uBoltSourceLink").removeAttribute("href");
+    return;
+  }
+  $("uBoltSelectionPrompt").hidden = true;
+  $("uBoltSelectedSummary").hidden = false;
+  $("uBoltSpecification").hidden = false;
+  $("uBoltPublishedSection").hidden = false;
   const sourceLink = $("uBoltSourceLink");
   const customEntry = product.application === "Custom / project-manufactured";
-  const assemblyEntry = product.application === "Beam / channel clamp assembly";
-  const familyEntry = /family/i.test(`${product.product} ${product.code}`);
 
   $("uBoltProductGroupTitle").textContent = customEntry ? "Manufacturing source" : "Product source";
   $("uBoltProductGroupNote").textContent = customEntry
     ? "Select the proposed manufacturer and project-specific entry."
-    : "Select the finish, brand or manufacturer, and catalogue entry.";
+    : "Select the brand or manufacturer, finish and catalogue entry.";
   $("uBoltProductFieldLabel").textContent = customEntry ? "Manufacturing entry" : "Catalogue entry";
   $("uBoltSelectionTypeLabel").textContent = customEntry
     ? "Selected manufacturing entry"
-    : assemblyEntry
-      ? "Selected assembly"
-      : familyEntry
-        ? "Selected product family"
-        : "Selected catalogue entry";
+    : "Selected product";
   $("uBoltSelectionTitle").textContent = product.product;
   $("uBoltSelectionNote").textContent = `${product.manufacturer} · ${product.series}`;
   $("uBoltCode").textContent = product.code;
   $("uBoltThread").textContent = product.thread;
-  $("uBoltFit").textContent = product.fitKey || product.fit;
-  $("uBoltMaterial").textContent = product.finish;
   $("uBoltSupplier").textContent = product.supplier || "Not specified";
   $("uBoltPublishedGeometry").textContent = product.fit || product.fitKey || "Not stated";
   $("uBoltPublishedMaterial").textContent = product.material || "Not stated";
   $("uBoltPublishedLoadLabel").textContent = publishedLoadLabel(product);
   $("uBoltPublishedCapacity").textContent = publishedCapacityText(product);
+  $("uBoltPublishedCard").classList.toggle("is-unpublished", !product.publishedCapacity || product.publishedCapacity === "Not published");
   const directionNote = product.capacityDirection && product.capacityDirection !== "Not published"
     ? `${product.capacityDirection}. `
     : "";
   $("uBoltCapacityBasis").textContent = `${directionNote}${product.capacityBasis}`;
   const sourceStatus = $("uBoltSourceStatus");
   const sourceChecked = product.sourceStatus === "Source_Checked";
-  sourceStatus.textContent = sourceChecked ? "Local reference checked" : "Online source only";
+  const sourceOnline = product.sourceStatus === "Source_Online_Checked";
+  sourceStatus.textContent = sourceChecked ? "Local reference checked" : sourceOnline ? "Manufacturer source checked online" : "Source not verified";
   sourceStatus.classList.toggle("is-checked", sourceChecked);
+  sourceStatus.classList.toggle("is-online", sourceOnline);
   sourceStatus.href = product.sourceUrl || "#";
   sourceStatus.title = product.sourceName;
   sourceLink.textContent = product.sourceName;
   sourceLink.href = product.sourceUrl || "#";
 }
 
+function blindBoltRequirementProducts() {
+  const size = $("blindBoltSize")?.value;
+  const head = $("blindBoltHead")?.value;
+  return blindBoltProducts.filter(product =>
+    (!size || product.size === size) &&
+    (!head || product.head === head)
+  );
+}
+
+function blindBoltGripCompatible(product) {
+  const grip = Number($("blindBoltGrip")?.value);
+  return Number.isFinite(grip) && grip > 0 && grip >= product.gripMin && grip <= product.gripMax;
+}
+
+function filteredBlindBoltProducts(includeManufacturer = true) {
+  const finish = $("blindBoltFinish")?.value;
+  const manufacturer = $("blindBoltManufacturer")?.value;
+  return blindBoltRequirementProducts().filter(product =>
+    (!finish || product.finish === finish) &&
+    (!includeManufacturer || !manufacturer || product.manufacturer === manufacturer)
+  );
+}
+
+function selectedBlindBoltProduct() {
+  const products = filteredBlindBoltProducts();
+  const selectedId = $("blindBoltProduct")?.value;
+  return products.find(product => product.id === selectedId) || null;
+}
+
+function populateBlindBoltFilters(initial = false) {
+  const sizes = sortMetricSizes(uniqueSorted(blindBoltProducts, "size"));
+  setUBoltOptions("blindBoltSize", sizes, { preferred: initial ? "M12" : "" });
+  const sizeProducts = blindBoltProducts.filter(product => product.size === $("blindBoltSize").value);
+  setUBoltOptions("blindBoltHead", uniqueSorted(sizeProducts, "head"), { allLabel: "Any head type" });
+  const requirementProducts = blindBoltRequirementProducts();
+  setUBoltOptions("blindBoltFinish", uniqueSorted(requirementProducts, "finish"), { allLabel: "Any finish" });
+  const sourceProducts = filteredBlindBoltProducts(false);
+  setUBoltOptions("blindBoltManufacturer", uniqueSorted(sourceProducts, "manufacturer"), {
+    allLabel: "All manufacturers"
+  });
+  populateBlindBoltProducts();
+}
+
+function populateBlindBoltProducts() {
+  const products = filteredBlindBoltProducts();
+  const select = $("blindBoltProduct");
+  const previous = select.value;
+  const grip = Number($("blindBoltGrip").value);
+  const hasGrip = Number.isFinite(grip) && grip > 0;
+  const compatible = hasGrip ? products.filter(blindBoltGripCompatible) : products;
+  const otherRanges = hasGrip ? products.filter(product => !blindBoltGripCompatible(product)) : [];
+  const optionLabel = product => `${product.family} ${product.size} - W ${product.gripMin}-${product.gripMax} mm${product.legacySource ? " - legacy source" : ""}`;
+  const compatibleLabel = hasGrip ? "Compatible grip range" : "Catalogue entries";
+  const compatibleOptions = compatible.map(product => `<option value="${safeText(product.id)}">${safeText(optionLabel(product))}</option>`).join("");
+  const otherOptions = otherRanges.map(product => `<option value="${safeText(product.id)}">${safeText(optionLabel(product))}</option>`).join("");
+  select.innerHTML = '<option value="">Select catalogue entry</option>' +
+    (compatibleOptions ? `<optgroup label="${compatibleLabel}">${compatibleOptions}</optgroup>` : "") +
+    (otherOptions ? `<optgroup label="Other grip ranges">${otherOptions}</optgroup>` : "");
+  select.disabled = !products.length;
+  if (products.some(product => product.id === previous)) select.value = previous;
+  else select.value = "";
+  $("blindBoltProductGroupNote").textContent = products.length
+    ? hasGrip
+      ? `${compatible.length} compatible of ${products.length} entries; other grip ranges remain available.`
+      : `${products.length} catalogue ${products.length === 1 ? "entry" : "entries"} available.`
+    : "No catalogue entry for the current filters.";
+}
+
+function setBlindBoltSourceStatus(product) {
+  const status = $("blindBoltSourceStatus");
+  const localChecked = product?.sourceStatus === "Source_Checked";
+  const onlineChecked = product?.sourceStatus === "Source_Online_Checked";
+  status.textContent = localChecked ? "Local reference checked" : onlineChecked ? "Manufacturer source checked online" : "Source not verified";
+  status.classList.toggle("is-checked", localChecked);
+  status.classList.toggle("is-online", onlineChecked);
+  if (product?.sourceUrl) status.href = product.sourceUrl;
+  else status.removeAttribute("href");
+}
+
+function calculateBlindBolt() {
+  const product = selectedBlindBoltProduct();
+  if (!product) {
+    $("blindBoltSelectionPrompt").hidden = false;
+    $("blindBoltSelectedSummary").hidden = true;
+    $("blindBoltSpecification").hidden = true;
+    $("blindBoltPublishedSection").hidden = true;
+    $("blindBoltSelectionPromptTitle").textContent = $("blindBoltProduct").disabled ? "No catalogue entry" : "Select a catalogue entry";
+    $("blindBoltSelectionPromptNote").textContent = $("blindBoltProduct").disabled
+      ? "Revise the browse filters."
+      : `${filteredBlindBoltProducts().length} entries available; published product data appears after selection.`;
+    $("blindBoltSelectionTitle").textContent = $("blindBoltProduct").disabled ? "No catalogue entry" : "Select catalogue entry";
+    $("blindBoltSelectionNote").textContent = "Clamping thickness ranks compatible entries without hiding other grip ranges.";
+    ["blindBoltCode", "blindBoltSelectedSize", "blindBoltGripRange", "blindBoltHole", "blindBoltSelectedFinish", "blindBoltSupplier", "blindBoltCentres", "blindBoltEdge", "blindBoltOuterPly", "blindBoltTorque", "blindBoltTools", "blindBoltSelectedHead"].forEach(id => {
+      $(id).textContent = "-";
+    });
+    $("blindBoltPublishedValues").hidden = true;
+    $("blindBoltNoPublishedValues").hidden = false;
+    $("blindBoltUnavailableBasis").textContent = "No product is selected.";
+    setBlindBoltSourceStatus(null);
+    $("blindBoltSourceLink").textContent = "Manufacturer technical data";
+    $("blindBoltSourceLink").removeAttribute("href");
+    return;
+  }
+  $("blindBoltSelectionPrompt").hidden = true;
+  $("blindBoltSelectedSummary").hidden = false;
+  $("blindBoltSpecification").hidden = false;
+  $("blindBoltPublishedSection").hidden = false;
+
+  $("blindBoltSelectionTitle").textContent = product.family;
+  const gripStatus = Number($("blindBoltGrip").value) > 0
+    ? blindBoltGripCompatible(product) ? "Compatible grip range" : "Outside selected grip range"
+    : "Grip compatibility not assessed";
+  const sourceStatus = product.legacySource ? "Legacy source" : gripStatus;
+  $("blindBoltSelectionNote").textContent = `${product.manufacturer} \u00b7 ${sourceStatus}${product.legacySource ? ` \u00b7 ${gripStatus}` : ""}`;
+  $("blindBoltCode").textContent = product.code;
+  $("blindBoltSelectedSize").textContent = product.size;
+  $("blindBoltGripRange").textContent = `${product.gripMin}-${product.gripMax} mm`;
+  $("blindBoltHole").textContent = `${product.hole} mm`;
+  $("blindBoltSelectedFinish").textContent = product.finish;
+  $("blindBoltSupplier").textContent = product.supplier;
+  $("blindBoltCentres").textContent = product.centres;
+  $("blindBoltEdge").textContent = product.edge;
+  $("blindBoltOuterPly").textContent = product.outerPly;
+  $("blindBoltTorque").textContent = product.torque;
+  $("blindBoltTools").textContent = product.tools;
+  $("blindBoltSelectedHead").textContent = product.head;
+
+  const hasValues = Number.isFinite(product.tension) && Number.isFinite(product.shear);
+  $("blindBoltPublishedValues").hidden = !hasValues;
+  $("blindBoltNoPublishedValues").hidden = hasValues;
+  $("blindBoltTensionLabel").textContent = `${product.valueLabel} - tension`;
+  $("blindBoltShearLabel").textContent = `${product.valueLabel} - shear`;
+  $("blindBoltTension").textContent = hasValues ? String(product.tension) : "-";
+  $("blindBoltShear").textContent = hasValues ? String(product.shear) : "-";
+  $("blindBoltValueBasis").hidden = !hasValues;
+  $("blindBoltValueBasis").textContent = product.valueBasis;
+  $("blindBoltUnavailableBasis").textContent = product.valueBasis;
+  setBlindBoltSourceStatus(product);
+  $("blindBoltSourceStatus").title = product.sourceName;
+  $("blindBoltSourceLink").textContent = product.sourceName;
+  $("blindBoltSourceLink").href = product.sourceUrl;
+}
+
 function setBoltMode(mode) {
-  boltMode = mode === "ubolt" ? "ubolt" : "standard";
+  boltMode = ["standard", "ubolt", "blind"].includes(mode) ? mode : "standard";
   const uBoltActive = boltMode === "ubolt";
-  $("boltToolKicker").textContent = uBoltActive ? "U-bolt products · manufacturer data" : "Bolted connections · AS 4100 Cl. 9.2";
-  $("boltToolTitle").textContent = uBoltActive ? "U-bolt Product Lookup" : "Bolt Capacity";
-  $("boltToolStatus").textContent = uBoltActive ? "Manufacturer data · no design capacity" : "For Review · AS 4100:2020";
+  const blindBoltActive = boltMode === "blind";
+  $("boltToolKicker").textContent = uBoltActive
+    ? "U-bolt products \u00b7 manufacturer data"
+    : blindBoltActive
+      ? "Structural blind bolts \u00b7 manufacturer data"
+      : "Bolted connections \u00b7 AS 4100 Cl. 9.2";
+  $("boltToolTitle").textContent = uBoltActive ? "U-bolt Product Lookup" : blindBoltActive ? "Structural Blind-bolt Lookup" : "Bolt Capacity";
+  $("boltToolStatus").textContent = uBoltActive || blindBoltActive ? "Product lookup \u00b7 no project check" : "For Review \u00b7 AS 4100:2020";
   document.querySelectorAll("[data-bolt-mode]").forEach(button => {
     const active = button.dataset.boltMode === boltMode;
     button.classList.toggle("active", active);
@@ -2722,11 +2988,13 @@ function setBoltMode(mode) {
   if (standardDetails) standardDetails.hidden = boltMode !== "standard";
   if (standardSource) standardSource.hidden = boltMode !== "standard";
   if (boltMode === "ubolt") calculateUBolt();
+  if (boltMode === "blind") calculateBlindBolt();
   if (boltMode === "standard") calculateBolt();
 }
 
 function initialBoltMode() {
   const params = new URLSearchParams(location.search);
+  if (params.get("boltmode") === "blind" || params.has("blindbolt")) return "blind";
   return params.get("boltmode") === "ubolt" || params.has("ubolt") ? "ubolt" : "standard";
 }
 
@@ -6035,11 +6303,6 @@ function setPrimaryPlane() {
   calculateBolt();
 }
 
-function setStandardHole() {
-  $("holeDiameter").value = standardHoleDiameter(boltData[$("boltSize").value].d);
-  calculateBolt();
-}
-
 function populateBoltCategories() {
   const size = $("boltSize").value;
   const previous = $("category").value;
@@ -6050,7 +6313,7 @@ function populateBoltCategories() {
 
 function setBoltSize() {
   populateBoltCategories();
-  setStandardHole();
+  calculateBolt();
 }
 
 function selectedScrewCatalogue() {
@@ -8195,6 +8458,25 @@ function calculateReo() {
   );
 }
 
+function setMobileToolMenu(open) {
+  const navigation = document.querySelector(".tool-navigation");
+  const toggle = $("mobileToolsToggle");
+  if (!navigation || !toggle) return;
+  navigation.classList.toggle("is-open", open);
+  toggle.setAttribute("aria-expanded", String(open));
+  const icon = toggle.querySelector("[aria-hidden]");
+  if (icon) icon.textContent = open ? "\u00d7" : "+";
+}
+
+function syncResponsiveDefaults(force = false) {
+  const mobileView = window.matchMedia("(max-width: 500px)").matches;
+  if (!force && mobileView === mobileLayoutActive) return;
+  const memberActionGroup = $("memberActionGroup");
+  if (memberActionGroup) memberActionGroup.open = !mobileView;
+  if (!mobileView) setMobileToolMenu(false);
+  mobileLayoutActive = mobileView;
+}
+
 function setTool(tool, updateHash = true) {
   const resolvedTool = toolAliases[tool] || tool;
   const validTool = toolNames.includes(resolvedTool);
@@ -8216,8 +8498,11 @@ function setTool(tool, updateHash = true) {
     if (active) activeButton = button;
   });
   const activeToolTab = document.querySelector(`.tool-tab[data-tool="${selectedTool}"]`);
-  if (activeToolTab && window.matchMedia("(max-width: 500px)").matches) {
-    window.requestAnimationFrame(() => activeToolTab.scrollIntoView({ block: "nearest", inline: "center" }));
+  const mobileView = window.matchMedia("(max-width: 500px)").matches;
+  if (activeToolTab) {
+    $("mobileToolCategory").textContent = activeCategoryButton?.textContent?.trim() || "";
+    $("mobileToolName").textContent = activeToolTab.textContent.trim();
+    if (mobileView) setMobileToolMenu(false);
   }
   toolNames.forEach(name => {
     const panel = $(`${name}Panel`);
@@ -8327,7 +8612,8 @@ function initialise() {
   $("shearPlane").addEventListener("input", setPrimaryPlane);
   $("boltModeStandard").addEventListener("click", () => setBoltMode("standard"));
   $("boltModeUBolt").addEventListener("click", () => setBoltMode("ubolt"));
-  ["uBoltApplication", "uBoltRodSize", "uBoltFitFilter", "uBoltFinish"].forEach(id => $(id).addEventListener("change", () => {
+  $("boltModeBlindBolt").addEventListener("click", () => setBoltMode("blind"));
+  ["uBoltRodSize", "uBoltMemberGeometry", "uBoltFinish"].forEach(id => $(id).addEventListener("change", () => {
     populateUBoltFilters();
     calculateUBolt();
   }));
@@ -8336,13 +8622,37 @@ function initialise() {
     calculateUBolt();
   });
   $("uBoltProduct").addEventListener("change", calculateUBolt);
+  ["blindBoltSize", "blindBoltHead", "blindBoltFinish"].forEach(id => $(id).addEventListener("change", () => {
+    populateBlindBoltFilters();
+    calculateBlindBolt();
+  }));
+  $("blindBoltGrip").addEventListener("input", () => {
+    populateBlindBoltFilters();
+    calculateBlindBolt();
+  });
+  $("blindBoltManufacturer").addEventListener("change", () => {
+    populateBlindBoltProducts();
+    calculateBlindBolt();
+  });
+  $("blindBoltProduct").addEventListener("change", calculateBlindBolt);
   document.querySelectorAll(".tool-category").forEach(button => button.addEventListener("click", () => {
     const firstTool = toolCategories[button.dataset.category]?.[0];
-    if (firstTool) setTool(firstTool);
+    if (firstTool) {
+      setTool(firstTool);
+      if (window.matchMedia("(max-width: 500px)").matches) setMobileToolMenu(true);
+    }
   }));
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => setTool(button.dataset.tool)));
+  $("mobileToolsToggle").addEventListener("click", () => {
+    const open = $("mobileToolsToggle").getAttribute("aria-expanded") !== "true";
+    setMobileToolMenu(open);
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") setMobileToolMenu(false);
+  });
   window.addEventListener("hashchange", () => setTool(location.hash.slice(1), false));
   window.addEventListener("resize", () => {
+    syncResponsiveDefaults();
     if (!$("concretePanel").hidden) calculateConcrete();
     if (!$("reoPanel").hidden) calculateReo();
     if (!$("screwPanel").hidden) calculateScrew();
@@ -8452,6 +8762,8 @@ function initialise() {
   setMemberType(memberType);
   calculateBolt();
   calculateUBolt();
+  populateBlindBoltFilters(true);
+  calculateBlindBolt();
   calculateWeld();
   calculateConcrete();
   setSectionPropertyMode(sectionPropertiesMode);
@@ -8459,6 +8771,7 @@ function initialise() {
   calculateScrew();
   setBoltMode(initialBoltMode());
   setTool(location.hash.slice(1) || "bolt", false);
+  syncResponsiveDefaults(true);
 }
 
 initialise();
