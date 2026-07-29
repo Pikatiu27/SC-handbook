@@ -51,19 +51,20 @@
   }
 
   function resistanceBasisHtml() {
-    return polygonActive()
+    const method = polygonActive()
       ? "ASCE/SEI 48-19 &middot; P = 0 &middot; M = F<sub>a</sub>I/c &middot; no AS 4100 &phi;"
-      : "AS 4100:2020 &middot; &phi; = 0.90";
+      : "AS 4100:2020 &middot; &phi;M<sub>s</sub> &middot; &phi; = 0.90";
+    return separateDesignThickness() ? `${method} &middot; User override: t<sub>d</sub>` : method;
   }
 
   function syncMethodPresentation() {
     const polygon = polygonActive();
     $("monopoleMethodLabel").textContent = polygon
       ? "ASCE/SEI 48-19 Cl. 5.2.5"
-      : "AS 4100:2020 Cl. 5.2";
+      : "AS 4100 Cl. 5.2";
     $("monopoleResistanceLabel").innerHTML = polygon
-      ? "Minimum permitted bending moment, M"
-      : "Minimum design moment capacity, &phi;M<sub>s</sub>";
+      ? "Minimum evaluated station resistance"
+      : "Minimum evaluated station capacity";
     $("monopoleResistanceBasis").innerHTML = resistanceBasisHtml();
     $("monopoleStationResistanceHeading").innerHTML = polygon ? "M" : "&phi;M<sub>s</sub>";
   }
@@ -141,7 +142,7 @@
         <td data-label="Bottom outside dimension"><input data-field="bottomDimension" type="number" min="1" step="10" value="${section.bottomDimension}" aria-label="${escapeHtml(section.id)} bottom outside dimension"></td>
         <td data-label="Top outside dimension"><input data-field="topDimension" type="number" min="1" step="10" value="${section.topDimension}" aria-label="${escapeHtml(section.id)} top outside dimension"></td>
         <td data-label="Nominal wall thickness"><input data-field="nominalThickness" type="number" min="0.1" step="0.1" value="${section.nominalThickness}" aria-label="${escapeHtml(section.id)} nominal wall thickness"></td>
-        <td class="monopole-design-thickness-column" data-label="Design wall thickness"${separate ? "" : " hidden"}><input data-field="designThickness" type="number" min="0.1" step="0.1" value="${section.designThickness}" aria-label="${escapeHtml(section.id)} design wall thickness"></td>
+        <td class="monopole-design-thickness-column" data-label="Design thickness override"${separate ? "" : " hidden"}><input data-field="designThickness" type="number" min="0.1" step="0.1" value="${section.designThickness}" aria-label="${escapeHtml(section.id)} design thickness override"></td>
         <td data-label="Yield stress"><input data-field="yieldStress" type="number" min="1" step="1" value="${section.yieldStress}" aria-label="${escapeHtml(section.id)} yield stress"${lookup ? " readonly aria-readonly=\"true\"" : ""}></td>
         <td data-label="Overlap with section below">${index === 0
           ? '<span class="monopole-not-applicable">N/A</span>'
@@ -208,6 +209,9 @@
     document.querySelectorAll(".monopole-design-thickness-column").forEach(cell => {
       cell.hidden = !separate;
     });
+    $("monopoleDesignThicknessState").innerHTML = separate
+      ? "User override &middot; Resistance uses t<sub>d</sub>; material and mass use t<sub>nom</sub>."
+      : "Optional project input.";
     calculate();
   }
 
@@ -455,7 +459,7 @@
       : "D<sub>i</sub> = D - 2t<sub>d</sub>; A = &pi;(D<sup>2</sup> - D<sub>i</sub><sup>2</sup>)/4; I = &pi;(D<sup>4</sup> - D<sub>i</sub><sup>4</sup>)/64.";
     const resistanceExpression = polygon
       ? `P = 0; r<sub>i</sub>/t<sub>nom</sub> = ${fixed(number($("monopoleBendRadiusRatio").value), 2)}; BR = min(r<sub>i</sub>, 4t<sub>d</sub>); w = tan(&pi;/${selection.sideCount})(D<sub>o</sub> - t<sub>d</sub> - 2BR); &lambda; = (w/t<sub>d</sub>)&radic;(f<sub>y</sub>/E); M = F<sub>a</sub>I/c<sub>max</sub> = F<sub>a</sub>Z<sub>min</sub>; AS 4100 &phi; is not applied. ASCE/SEI 48-19 Cl. 5.2.3.2.1 and 5.2.5.`
-      : "&lambda;<sub>s</sub> = (D/t<sub>d</sub>)(f<sub>y</sub>/250); &phi;M<sub>s</sub> = 0.90f<sub>y</sub>Z<sub>e</sub>; AS 4100:2020 Cl. 5.2 and Table 5.2.";
+      : "&lambda;<sub>s</sub> = (D/t<sub>d</sub>)(f<sub>y</sub>/250); &phi;M<sub>s</sub> = 0.90f<sub>y</sub>Z<sub>e</sub>; AS 4100 Cl. 5.2 and Table 5.2.";
     $("monopoleFormulaSteps").innerHTML = `
       <div><b>Assembly geometry</b><code>${assemblyExpression}; each taper uses its local section coordinate.</code></div>
       <div><b>Stations</b><code>0.5 m spacing plus exact base, top and section boundaries; the primary result is the minimum evaluated value.</code></div>

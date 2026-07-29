@@ -4,6 +4,12 @@ const assert = require("node:assert/strict");
 const monopole = require("../monopole-capacity.js");
 
 const relativeError = (actual, expected) => Math.abs(actual - expected) / Math.abs(expected);
+const closeTo = (actual, expected, tolerance, label) => {
+  assert.ok(
+    Math.abs(actual - expected) <= tolerance,
+    `${label}: ${actual} differs from ${expected}`
+  );
+};
 
 // Austube Mills, Design Capacity Tables for Structural Steel Hollow Sections
 // (August 2013), Table 8-2: published C350L0 CHS design section capacities.
@@ -106,3 +112,91 @@ const outsideRange = monopole.polygonMomentCapacity({
 assert.equal(outsideRange.stress.checked, false);
 assert.equal(outsideRange.permittedMomentCapacity, null);
 assert.ok(outsideRange.slenderness > 2.20);
+
+// Independent exact regular-polygon reconstruction. This uses the closed-form
+// centroidal inertia of a solid regular polygon, not the production vertex
+// integration functions.
+const independentPolygonExample = ({ sideCount, outsideAcrossFlats, thickness, yieldStress, insideBendRadius }) => {
+  const halfAngle = Math.PI / sideCount;
+  const outsideCircumradius = outsideAcrossFlats / (2 * Math.cos(halfAngle));
+  const insideCircumradius = (outsideAcrossFlats / 2 - thickness) / Math.cos(halfAngle);
+  const centralAngle = 2 * Math.PI / sideCount;
+  const solidInertiaFactor = sideCount / 24
+    * Math.sin(centralAngle)
+    * (2 + Math.cos(centralAngle));
+  const inertia = solidInertiaFactor
+    * (outsideCircumradius ** 4 - insideCircumradius ** 4);
+  const elasticModulus = inertia / outsideCircumradius;
+  const effectiveBendRadius = Math.min(insideBendRadius, 4 * thickness);
+  const clearFlatWidth = Math.tan(halfAngle)
+    * (outsideAcrossFlats - thickness - 2 * effectiveBendRadius);
+  const slenderness = clearFlatWidth / thickness * Math.sqrt(yieldStress / 200000);
+  const beta = 360 / sideCount;
+  const branch = beta >= 45
+    ? { compactLimit: 1.53, coefficient: 1.42, slope: 0.194 }
+    : beta >= 30
+      ? { compactLimit: 1.41, coefficient: 1.45, slope: 0.220 }
+      : { compactLimit: 1.26, coefficient: 1.42, slope: 0.233 };
+  const permittedStress = slenderness <= branch.compactLimit
+    ? yieldStress
+    : branch.coefficient * yieldStress * (1 - branch.slope * slenderness);
+  return {
+    clearFlatWidth,
+    inertia,
+    elasticModulus,
+    slenderness,
+    permittedStress,
+    moment: permittedStress * elasticModulus / 1e6
+  };
+};
+
+[
+  {
+    label: "8-sided reduced-stress example",
+    input: { sideCount: 8, outsideAcrossFlats: 900, thickness: 8, yieldStress: 350, insideBendRadius: 24 },
+    expected: {
+      clearFlatWidth: 349.596246643,
+      elasticModulus: 5105050.806228,
+      slenderness: 1.828082531,
+      permittedStress: 320.739938506,
+      moment: 1637.393681662
+    },
+    state: "Reduced stress"
+  },
+  {
+    label: "16-sided full-yield example",
+    input: { sideCount: 16, outsideAcrossFlats: 1200, thickness: 10, yieldStress: 350, insideBendRadius: 30 },
+    expected: {
+      clearFlatWidth: 224.770975139,
+      elasticModulus: 11103921.019959,
+      slenderness: 0.940284450,
+      permittedStress: 350,
+      moment: 3886.372356986
+    },
+    state: "Full yield stress"
+  }
+].forEach(example => {
+  const independent = independentPolygonExample(example.input);
+  const result = monopole.polygonMomentCapacity({
+    sideCount: example.input.sideCount,
+    outsideDimension: example.input.outsideAcrossFlats,
+    thickness: example.input.thickness,
+    yieldStress: example.input.yieldStress,
+    insideBendRadius: example.input.insideBendRadius
+  });
+
+  closeTo(independent.clearFlatWidth, example.expected.clearFlatWidth, 1e-9, `${example.label} independent w`);
+  closeTo(independent.elasticModulus, example.expected.elasticModulus, 1e-6, `${example.label} independent Zmin`);
+  closeTo(independent.slenderness, example.expected.slenderness, 1e-9, `${example.label} independent lambda`);
+  closeTo(independent.permittedStress, example.expected.permittedStress, 1e-9, `${example.label} independent Fa`);
+  closeTo(independent.moment, example.expected.moment, 1e-9, `${example.label} independent M`);
+
+  assert.equal(result.stress.localBucklingState, example.state, example.label);
+  closeTo(result.clearFlatWidth, independent.clearFlatWidth, 1e-9, `${example.label} production w`);
+  closeTo(result.properties.elasticModulus, independent.elasticModulus, 1e-6, `${example.label} production Zmin`);
+  closeTo(result.slenderness, independent.slenderness, 1e-12, `${example.label} production lambda`);
+  closeTo(result.stress.permittedStress, independent.permittedStress, 1e-9, `${example.label} production Fa`);
+  closeTo(result.permittedMomentCapacity, independent.moment, 1e-9, `${example.label} production M`);
+});
+
+console.log("monopole worked-example tests passed");
