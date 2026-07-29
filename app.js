@@ -314,11 +314,11 @@ const uBoltProducts = [
 
 const blindBoltProducts = [
   ...[
-    { size: "M8", hole: 14, centres: 35, edge: "B + C >= 17.5 mm", outer: "Not stated", torque: 23, loads: [4, 5], grips: [[3, 22, "HB-M08-1"], [22, 41, "HB-M08-2"], [41, 60, "HB-M08-3"]] },
-    { size: "M10", hole: 18, centres: 40, edge: "B + C >= 22.5 mm", outer: "Not stated", torque: 45, loads: [8.5, 10], grips: [[3, 22, "HB-M10-1"], [22, 41, "HB-M10-2"], [41, 60, "HB-M10-3"]] },
-    { size: "M12", hole: 20, centres: 50, edge: "B + C >= 25 mm", outer: "Not stated", torque: 80, loads: [10.5, 15], grips: [[3, 25, "HB-M12-1"], [25, 47, "HB-M12-2"], [47, 69, "HB-M12-3"]] },
-    { size: "M16", hole: 26, centres: 55, edge: "B + C >= 32.5 mm", outer: "8 mm", torque: 190, loads: [21, 30], grips: [[12, 29, "HB-M16-1"], [29, 50, "HB-M16-2"], [50, 71, "HB-M16-3"]] },
-    { size: "M20", hole: 33, centres: 70, edge: "B + C >= 33 mm", outer: "8 mm", torque: 300, loads: [35, 40], grips: [[12, 34, "HB-M20-1"], [34, 60, "HB-M20-2"], [60, 86, "HB-M20-3"]] }
+    { size: "M8", hole: 14, centres: 35, edge: "B + C >= 17.5 mm", outer: "6.0 mm for tabulated shear", torque: 23, loads: [16.8, 14.3], grips: [[3, 22, "HB-M08-1"], [22, 41, "HB-M08-2"], [41, 60, "HB-M08-3"]] },
+    { size: "M10", hole: 18, centres: 40, edge: "B + C >= 22.5 mm", outer: "8.0 mm for tabulated shear", torque: 45, loads: [27.4, 24.4], grips: [[3, 22, "HB-M10-1"], [22, 41, "HB-M10-2"], [41, 60, "HB-M10-3"]] },
+    { size: "M12", hole: 20, centres: 50, edge: "B + C >= 25 mm", outer: "8.0 mm for tabulated shear", torque: 80, loads: [38.0, 33.3], grips: [[3, 25, "HB-M12-1"], [25, 47, "HB-M12-2"], [47, 69, "HB-M12-3"]] },
+    { size: "M16", hole: 26, centres: 55, edge: "B + C >= 32.5 mm", outer: "10.0 mm for tabulated shear", torque: 190, loads: [61.8, 51.6], grips: [[12, 29, "HB-M16-1"], [29, 50, "HB-M16-2"], [50, 71, "HB-M16-3"]] },
+    { size: "M20", hole: 33, centres: 70, edge: "B + C >= 33 mm", outer: "12.0 mm for tabulated shear", torque: 300, loads: [89.0, 81.8], grips: [[12, 34, "HB-M20-1"], [34, 60, "HB-M20-2"], [60, 86, "HB-M20-3"]] }
   ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
     id: `lindapter-${code.toLowerCase()}`,
     manufacturer: "Lindapter",
@@ -338,11 +338,11 @@ const blindBoltProducts = [
     tools: "Spanner and torque wrench",
     tension: row.loads[0],
     shear: row.loads[1],
-    valueLabel: "Manufacturer safe working load",
-    valueBasis: "Hollo-Bolt safe working load for S275 hollow section; connected steelwork is not evaluated.",
+    valueLabel: "LRFD design strength (static / wind)",
+    valueBasis: "ICC-ES ESR-3330 available strength; the LRFD resistance factor is already included. Do not apply a further factor. Connected steel is outside the report scope.",
     sourceStatus: "Source_Online_Checked",
-    sourceName: "Lindapter Hollo-Bolt selector and Installation Guide, March 2024",
-    sourceUrl: "https://www.lindapter.com/product/hollo-bolt/"
+    sourceName: "Lindapter Hollo-Bolt ICC-ES ESR-3330, reissued March 2026",
+    sourceUrl: "https://www.lindapter.com/assets/media/lindapter-esr-3330-and-sid-combined.pdf"
   }))),
   ...[
     { size: "M8", hole: 14, centres: 35, edge: "C > 17.5 mm", outer: "1 mm fixture", torque: 25, loads: [6, 7], grips: [[3, 22, "KBB88GHM080050"], [22, 41, "KBB88GHM080070"], [41, 60, "KBB88GHM080090"]] },
@@ -370,10 +370,10 @@ const blindBoltProducts = [
     tension: row.loads[0],
     shear: row.loads[1],
     valueLabel: "Manufacturer working load",
-    valueBasis: "Working load per HBS-Bolt; characteristic loads are not presented as working loads.",
-    sourceStatus: "Source_Checked",
+    valueBasis: "Manufacturer working load. Characteristic resistance is a separate published value and is not used here.",
+    sourceStatus: "Source_Online_Checked",
     sourceName: "Hobson HBS Bolt Product Data, 200806DS",
-    sourceUrl: "https://www.hobson.com.au/"
+    sourceUrl: "https://content.hobson.com.au/category/high-tensile/hsd-hbs-bolt-data-sheet.pdf"
   }))),
   ...[
     { size: "M8", hole: 14, centres: 35, edge: "B + wall thickness", outer: "Not stated", torque: 23, loads: [23.1, 29.1], grips: [[5, 26, "UNIBH-M08050G"], [26, 46, "UNIBH-M08070G"], [46, 66, "UNIBH-M08090G"]] },
@@ -401,17 +401,17 @@ const blindBoltProducts = [
     tension: row.loads[0],
     shear: row.loads[1],
     valueLabel: "Manufacturer design capacity",
-    valueBasis: "Design capacity published for AS 4100 using phi = 0.8; verify TDS 1053.1 and ETA 25/0374 applicability.",
-    sourceStatus: "Source_Checked",
+    valueBasis: "AS 4100 design capacity; phi = 0.8 is already included. Verify TDS 1053.1 and ETA 25/0374 applicability.",
+    sourceStatus: "Source_Online_Checked",
     sourceName: "ICCONS UNI-BOLT TDS 1053.1, 2025",
-    sourceUrl: "https://www.iccons.com.au/"
+    sourceUrl: "https://www.iccons.com.au/storage/products/1057200020001/ICCONS_TDS_Uni-Bolt_1053.1.pdf"
   }))),
   ...[
-    { size: "M8", hole: 14, centres: 35, torque: 25, loads: [12.26, 21.62], grips: [[5, 26, "BQ1G08"], [18, 46, "BQ2G08"], [30, 66, "BQ3G08"]] },
-    { size: "M10", hole: 18, centres: 40, torque: 45, loads: [21.71, 37.99], grips: [[5, 23, "BQ1G10"], [18, 43, "BQ2G10"], [35, 63, "BQ3G10"]] },
-    { size: "M12", hole: 20, centres: 50, torque: 80, loads: [27.90, 49.55], grips: [[5, 25, "BQ1G12"], [20, 50, "BQ2G12"], [40, 70, "BQ3G12"]] },
-    { size: "M16", hole: 26, centres: 55, torque: 190, loads: [49.87, 90.45], grips: [[5, 35, "BQ1G16"], [30, 60, "BQ2G16"], [55, 80, "BQ3G16"]] },
-    { size: "M20", hole: 33, centres: 70, torque: 320, loads: [87.27, 149.29], grips: [[8, 42, "BQ1G20"], [35, 72, "BQ2G20"], [65, 102, "BQ3G20"]] }
+    { size: "M8", hole: 14, centres: 35, torque: 25, loads: [23.6, 33.3], grips: [[5, 26, "BQ1G08"], [18, 46, "BQ2G08"], [30, 66, "BQ3G08"]] },
+    { size: "M10", hole: 18, centres: 40, torque: 45, loads: [41.8, 58.5], grips: [[5, 23, "BQ1G10"], [18, 43, "BQ2G10"], [35, 63, "BQ3G10"]] },
+    { size: "M12", hole: 20, centres: 50, torque: 80, loads: [53.7, 76.3], grips: [[5, 25, "BQ1G12"], [20, 50, "BQ2G12"], [40, 70, "BQ3G12"]] },
+    { size: "M16", hole: 26, centres: 55, torque: 190, loads: [96.0, 139.3], grips: [[5, 35, "BQ1G16"], [30, 60, "BQ2G16"], [55, 80, "BQ3G16"]] },
+    { size: "M20", hole: 33, centres: 70, torque: 300, loads: [168.0, 229.9], grips: [[8, 42, "BQ1G20"], [35, 72, "BQ2G20"], [65, 102, "BQ3G20"]] }
   ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
     id: `keesafety-${code.toLowerCase()}`,
     manufacturer: "Kee Safety",
@@ -431,44 +431,80 @@ const blindBoltProducts = [
     tools: "BoxSok installation tool and torque wrench",
     tension: row.loads[0],
     shear: row.loads[1],
-    valueLabel: "Manufacturer working load",
-    valueBasis: "Working load based on ETA 15/0768 rated loads; connected material must be checked separately.",
-    sourceStatus: "Source_Checked",
-    sourceName: "Kee Safety BoxBolt Technical Data, 2020",
-    sourceUrl: "https://www.iccons.com.au/products/boxbolt"
+    valueLabel: "ETA characteristic resistance",
+    valueBasis: "ETA 20/1174 characteristic resistance, Ft,Rk / Fv,Rk; no design partial factor is applied. Connected material must be checked separately.",
+    sourceStatus: "Source_Online_Checked",
+    sourceName: "Kee Safety BoxBolt ETA 20/1174, December 2020",
+    sourceUrl: "https://www.keesafety.com/media/w0tnpucl/boxbolt-eta-20-1174-v1-151220-1.pdf"
   }))),
   ...[
-    { size: "M8", hole: 9, centres: 20, clearance: 19, depth: 25, grips: [[9, 24, "BB0850DTASM"]] },
-    { size: "M10", hole: 11, centres: 20, clearance: 23, depth: 30, grips: [[10, 30, "BB1060DTASM"], [25, 65, "BB1095DTASM"], [55, 100, "BB10130DTASM"]] },
-    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, grips: [[12, 35, "BB1270DTASM"], [30, 85, "BB12120DTASM"], [80, 140, "BB12180DTASM"]] },
-    { size: "M16", hole: 17, centres: 35, clearance: 36, depth: 43, grips: [[13, 43, "GBB1690DTASM"], [40, 75, "GBB16130DTASM"], [55, 125, "GBB16180DTASM"]] },
-    { size: "M20", hole: 22, centres: 48, clearance: 44, depth: 56, grips: [[21, 56, "GBB20110DTASM"], [21, 86, "GBB20140DTASM"], [80, 120, "GBB20180DTASM"], [130, 185, "GBB20250DTASM"]] }
+    { size: "M8", hole: 9, centres: 20, clearance: 19, depth: 25, torque: 15, loads: [14.6, 9.1], finish: "Zinc flake 1000 hr SSP", grips: [[9, 24, "BB0850ZF"]] },
+    { size: "M10", hole: 11, centres: 20, clearance: 23, depth: 30, torque: 24, loads: [23.2, 19.0], finish: "Zinc flake 1000 hr SSP", grips: [[10, 29, "BB1060ZF"], [25, 64, "BB1095ZF"], [55, 100, "BB10130ZF"]] },
+    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [33.7, 26.4], finish: "Zinc flake 1000 hr SSP", grips: [[12, 35, "BB1270ZF"]] },
+    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [33.7, 26.4], finish: "Hot-dip galvanised", grips: [[12, 33, "BB1270HDG"], [30, 84, "BB12120HDG"], [80, 143, "BB12180HDG"]] },
+    { size: "M14", hole: 15, centres: 32, clearance: 32, depth: 38, torque: 34, loads: [46.7, 34.8], finish: "Hot-dip galvanised", grips: [[14, 35, "GBB1475HDG"], [28, 82, "GBB14125HDG"], [75, 142, "GBB14185HDG"]] },
+    { size: "M16", hole: 17, centres: 35, clearance: 36, depth: 43, torque: 50, loads: [62.7, 49.1], finish: "Hot-dip galvanised", grips: [[13, 43, "GBB1690HDG"], [40, 75, "GBB16130HDG"], [55, 132, "GBB16180HDG"]] },
+    { size: "M20", hole: 22, centres: 48, clearance: 44, depth: 56, torque: 65, loads: [97.9, 76.1], finish: "Hot-dip galvanised", grips: [[21, 52, "GBB20110HDG"], [21, 82, "GBB20140HDG"], [80, 120, "GBB20180HDG"], [130, 190, "GBB20250HDG"]] },
+    { size: "M24", hole: 26, centres: 60, clearance: 53, depth: 64, torque: 75, loads: [141.0, 105.4], finish: "Hot-dip galvanised", grips: [[21, 62, "GBB24130HDG"], [21, 92, "GBB24160HDG"]] },
+    { size: "M30", hole: 32, centres: 75, clearance: 65, depth: 72, torque: 85, loads: [224.0, 164.6], finish: "Hot-dip galvanised", grips: [[27, 56, "GBB30140HDG"]] }
   ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
     id: `blindbolt-${code.toLowerCase()}`,
     manufacturer: "Blind Bolt Company",
-    supplier: "Blind Bolt Australia",
+    supplier: "Not specified",
     family: "Blind Bolt",
     code,
     size: row.size,
     gripMin,
     gripMax,
     head: "Drive-nut",
-    finish: "Geomet 500B",
+    finish: row.finish,
     hole: row.hole,
     centres: `${row.centres} mm`,
     edge: "Confirm from connected-steel design",
     outerPly: "Not stated",
-    torque: "Manufacturer installation method",
+    torque: `${row.torque} Nm`,
     tools: `${row.clearance} mm anchor clearance; ${row.depth} mm insertion depth`,
-    tension: null,
-    shear: null,
-    valueLabel: "Published design value",
-    valueBasis: "The archived Australian table references AS 4100:1998; no current design value is adopted in this lookup.",
-    legacySource: true,
-    sourceStatus: "Source_Checked",
-    sourceName: "Blind Bolt Australia Metric Technical Data, July 2018",
-    sourceUrl: "https://www.blindbolt.com.au/"
-  })))
+    tension: row.loads[0],
+    shear: row.loads[1],
+    tensionLabel: "BS EN 1993-1-8 design resistance - tension",
+    shearLabel: "BS EN 1993-1-8 design resistance - shear over thread",
+    valueLabel: "BS EN 1993-1-8 design resistance",
+    valueBasis: "Eurocode design resistance; gamma M2 = 1.25 is already applied. Shear is for the shear plane crossing the thread.",
+    sourceStatus: "Source_Online_Checked",
+    sourceName: "Blind Bolt Company Metric Technical Data, March 2026",
+    sourceUrl: "https://www.blindbolt.co.uk/wp-content/uploads/2023/01/Blind-Bolt-Tech-Data-Metric.pdf"
+  }))),
+  ...[
+    [15.9, 22.2, "2NG2060"], [15.9, 34.9, "2NG2032"], [23.8, 36.5, "2NG2036"],
+    [36.5, 47.6, "2NG2048"], [47.6, 54.0, "2NG2057"], [54.0, 68.3, "2NG2068"],
+    [68.3, 95.3, "2NG2096"], [95.3, 131.8, "2NG2127"], [127.0, 211.1, "2NG2212"]
+  ].map(([gripMin, gripMax, code]) => ({
+    id: `allfasteners-${code.toLowerCase()}`,
+    manufacturer: "Allfasteners",
+    supplier: "Allfasteners",
+    family: "NexGen2",
+    code,
+    size: "M20",
+    gripMin,
+    gripMax,
+    head: "Tension-control",
+    finish: "Magni 554 duplex",
+    hole: 30,
+    centres: "Per ESR-3975 and connection design",
+    edge: "Per ESR-3975 and connected-steel design",
+    outerPly: "Connected steel governs separately",
+    torque: "Tension-control spline",
+    tools: "Manufacturer installation equipment",
+    tension: 189.5,
+    shear: 224.6,
+    tensionLabel: "TIA-222-G design strength - tension",
+    shearLabel: "TIA-222-G design strength - shear, threads included",
+    valueLabel: "TIA-222-G design strength",
+    valueBasis: "M20 TIA-222-G design strength; resistance factors are already included. ICC-ES / AISC basis, not an AS 4100 design capacity.",
+    sourceStatus: "Source_Online_Checked",
+    sourceName: "Allfasteners NexGen2 Blind Bolt TDS, July 2019",
+    sourceUrl: "https://www.allfasteners.com.au/pub/media/ResourceGallery/n/e/nexgen2_tds_allfasteners_.pdf"
+  }))
 ];
 
 const weldSizes = [3, 4, 5, 6, 8, 10, 12, 16];
@@ -2752,7 +2788,6 @@ function calculateUBolt() {
   if (!product) {
     $("uBoltSelectionPrompt").hidden = false;
     $("uBoltSelectedSummary").hidden = true;
-    $("uBoltSpecification").hidden = true;
     $("uBoltPublishedSection").hidden = true;
     $("uBoltSelectionPromptTitle").textContent = $("uBoltProduct").disabled ? "No catalogue entry" : "Select a catalogue entry";
     $("uBoltSelectionPromptNote").textContent = $("uBoltProduct").disabled
@@ -2777,7 +2812,6 @@ function calculateUBolt() {
   }
   $("uBoltSelectionPrompt").hidden = true;
   $("uBoltSelectedSummary").hidden = false;
-  $("uBoltSpecification").hidden = false;
   $("uBoltPublishedSection").hidden = false;
   const sourceLink = $("uBoltSourceLink");
   const customEntry = product.application === "Custom / project-manufactured";
@@ -2900,7 +2934,6 @@ function calculateBlindBolt() {
   if (!product) {
     $("blindBoltSelectionPrompt").hidden = false;
     $("blindBoltSelectedSummary").hidden = true;
-    $("blindBoltSpecification").hidden = true;
     $("blindBoltPublishedSection").hidden = true;
     $("blindBoltSelectionPromptTitle").textContent = $("blindBoltProduct").disabled ? "No catalogue entry" : "Select a catalogue entry";
     $("blindBoltSelectionPromptNote").textContent = $("blindBoltProduct").disabled
@@ -2921,15 +2954,13 @@ function calculateBlindBolt() {
   }
   $("blindBoltSelectionPrompt").hidden = true;
   $("blindBoltSelectedSummary").hidden = false;
-  $("blindBoltSpecification").hidden = false;
   $("blindBoltPublishedSection").hidden = false;
 
   $("blindBoltSelectionTitle").textContent = product.family;
   const gripStatus = Number($("blindBoltGrip").value) > 0
     ? blindBoltGripCompatible(product) ? "Compatible grip range" : "Outside selected grip range"
     : "Grip compatibility not assessed";
-  const sourceStatus = product.legacySource ? "Legacy source" : gripStatus;
-  $("blindBoltSelectionNote").textContent = `${product.manufacturer} \u00b7 ${sourceStatus}${product.legacySource ? ` \u00b7 ${gripStatus}` : ""}`;
+  $("blindBoltSelectionNote").textContent = `${product.manufacturer} \u00b7 ${gripStatus}`;
   $("blindBoltCode").textContent = product.code;
   $("blindBoltSelectedSize").textContent = product.size;
   $("blindBoltGripRange").textContent = `${product.gripMin}-${product.gripMax} mm`;
@@ -2946,10 +2977,10 @@ function calculateBlindBolt() {
   const hasValues = Number.isFinite(product.tension) && Number.isFinite(product.shear);
   $("blindBoltPublishedValues").hidden = !hasValues;
   $("blindBoltNoPublishedValues").hidden = hasValues;
-  $("blindBoltTensionLabel").textContent = `${product.valueLabel} - tension`;
-  $("blindBoltShearLabel").textContent = `${product.valueLabel} - shear`;
-  $("blindBoltTension").textContent = hasValues ? String(product.tension) : "-";
-  $("blindBoltShear").textContent = hasValues ? String(product.shear) : "-";
+  $("blindBoltTensionLabel").textContent = product.tensionLabel || `${product.valueLabel} - tension`;
+  $("blindBoltShearLabel").textContent = product.shearLabel || `${product.valueLabel} - shear`;
+  $("blindBoltTension").textContent = hasValues ? Number(product.tension).toFixed(1) : "-";
+  $("blindBoltShear").textContent = hasValues ? Number(product.shear).toFixed(1) : "-";
   $("blindBoltValueBasis").hidden = !hasValues;
   $("blindBoltValueBasis").textContent = product.valueBasis;
   $("blindBoltUnavailableBasis").textContent = product.valueBasis;

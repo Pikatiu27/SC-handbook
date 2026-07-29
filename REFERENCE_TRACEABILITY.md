@@ -558,3 +558,18 @@ The `Rock Anchor` tab is a product selector only. It does not calculate anchor a
 | Austroads ATS 5140-26, Edition 2.0 | Execution, corrosion protection, stressing, testing and monitoring boundary | Scope reference only; no numeric design criteria embedded in the selector |
 
 Published tendon values are reference product data and must not be described as complete anchor design resistance.
+
+## 2026-07-29 Structural Blind-bolt Lookup Source Status
+
+The `Structural blind-bolt lookup` branch reports manufacturer-published product values without converting unlike safety formats. It does not calculate complete connection resistance or compare project actions.
+
+| Product family | Governing source | Displayed value basis | Lookup status |
+| --- | --- | --- | --- |
+| Lindapter Hollo-Bolt | ICC-ES ESR-3330, reissued March 2026 | Static / wind LRFD available tension and shear strength; LRFD resistance factor already included | Manufacturer source checked online |
+| ICCONS UNI-BOLT | TDS 1053.1, 2025; ETA 25/0374 | AS 4100 design capacity; `phi = 0.8` already included | Manufacturer source checked online |
+| Hobson HBS-Bolt | HBS-Bolt Product Data 200806DS | Manufacturer working load; characteristic resistance not substituted | Manufacturer source checked online |
+| Kee Safety BoxBolt | ETA 20/1174, December 2020 | Characteristic resistance `Ft,Rk` and `Fv,Rk`; no design partial factor applied | Manufacturer source checked online |
+| Blind Bolt Company Blind Bolt | Metric Technical Data, March 2026 | BS EN 1993-1-8 design resistance; `gamma M2 = 1.25` already applied; displayed shear crosses the thread | Manufacturer source checked online |
+| Allfasteners NexGen2 | NexGen2 Blind Bolt TDS, July 2019 | M20 TIA-222-G design strength; displayed shear has threads included | Manufacturer source checked online; confirm current ICC-ES report and Australian adoption before specification |
+
+Connected steel, local HSS or shell effects, bearing, tear-out, net section, block shear, punching or pull-through, prying, combined actions, fatigue and installation acceptance remain outside the lookup.
