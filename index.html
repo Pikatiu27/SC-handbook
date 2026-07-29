@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260724reorelease1">
+  <link rel="stylesheet" href="styles.css?v=20260729monopolerelease9">
 </head>
 <body>
   <header class="topbar">
@@ -28,6 +28,7 @@
         <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-selected="false" hidden>Section Properties</button>
         <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-selected="false" hidden>Axial Member Capacity</button>
         <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-selected="false" hidden>Beam Section Capacity</button>
+        <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-selected="false" hidden>Monopole Section Capacity</button>
         <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-selected="false" hidden>Concrete Pad Section</button>
         <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-selected="false" hidden>Reinforcement</button>
         <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-selected="false" hidden>Screw Piles Selector</button>
@@ -807,6 +808,138 @@
       </details>
     </section>
 
+    <section id="monopolePanel" class="tool-panel" hidden>
+      <div class="tool-heading">
+        <div><p class="kicker">Steel monopole</p><h2>Steel Monopole Section Capacity</h2></div>
+        <span class="tool-status">For Review &middot; capacity only</span>
+      </div>
+
+      <section class="lookup-card monopole-card">
+        <div class="monopole-mode-switch" role="group" aria-label="Monopole geometry mode">
+          <button class="monopole-mode" type="button" data-monopole-mode="overall" aria-pressed="false">Overall profile</button>
+          <button class="monopole-mode active" type="button" data-monopole-mode="schedule" aria-pressed="true">Section schedule</button>
+        </div>
+
+        <div class="input-cluster">
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Section form</b><small>Applies to all sections.</small></span>
+            <div class="input-group-fields six monopole-form-fields">
+              <label><span>Cross-section</span><select id="monopoleSectionForm"><option value="circular">Circular tubular</option><option value="polygon-4">4-sided regular polygon</option><option value="polygon-6">6-sided regular polygon</option><option value="polygon-8">8-sided regular polygon</option><option value="polygon-12">12-sided regular polygon</option><option value="polygon-16">16-sided regular polygon</option></select></label>
+              <label id="monopoleBendRadiusField" hidden><span>Inside bend-radius ratio, r<sub>i</sub>/t<sub>nom</sub></span><span class="unit"><input id="monopoleBendRadiusRatio" type="number" min="0.1" step="0.1" value="3.0" aria-describedby="monopoleBendRadiusHelp"><em>ratio</em></span><small class="field-help" id="monopoleBendRadiusHelp">Default 3.0; use project or product data. BR = min(r<sub>i</sub>, 4t<sub>d</sub>).</small></label>
+            </div>
+          </section>
+        </div>
+
+        <section id="monopoleOverallInputs" class="monopole-input-panel" hidden>
+          <div class="input-group input-group-section">
+            <span class="input-group-heading"><b>Overall profile</b><small>Continuous taper; no fabricated sections or slip joints.</small></span>
+            <div class="input-group-fields six">
+              <label><span>Overall height, H</span><span class="unit"><input id="monopoleHeight" type="number" min="0.5" step="0.5" value="30"><em>m</em></span></label>
+              <label><span class="monopole-dimension-bottom">Bottom outside diameter, D<sub>b</sub></span><span class="unit"><input id="monopoleBottomDimension" type="number" min="1" step="10" value="1200"><em>mm</em></span></label>
+              <label><span class="monopole-dimension-top">Top outside diameter, D<sub>t</sub></span><span class="unit"><input id="monopoleTopDimension" type="number" min="1" step="10" value="350"><em>mm</em></span></label>
+              <label><span>Nominal wall thickness, t<sub>nom</sub></span><span class="unit"><input id="monopoleThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
+              <label id="monopoleOverallDesignThicknessField" hidden><span>Design wall thickness, t<sub>d</sub></span><span class="unit"><input id="monopoleDesignThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
+              <label><span>Yield stress, f<sub>y</sub></span><span class="unit"><input id="monopoleYieldStress" type="number" min="1" step="1" value="350"><em>MPa</em></span></label>
+            </div>
+          </div>
+        </section>
+
+        <section id="monopoleScheduleInputs" class="monopole-input-panel">
+          <div class="monopole-schedule-heading">
+            <div><b>Section schedule</b><small>Enter fabricated sections from base to top.</small></div>
+            <button id="monopoleAddSection" class="monopole-add-section" type="button">Add section</button>
+          </div>
+          <div class="table-scroll monopole-schedule-scroll">
+            <table class="monopole-schedule-table">
+              <thead>
+                <tr>
+                  <th scope="col">Section</th>
+                  <th scope="col">L<sub>i</sub> (m)</th>
+                  <th scope="col" class="monopole-bottom-dimension-heading">D<sub>b</sub> (mm)</th>
+                  <th scope="col" class="monopole-top-dimension-heading">D<sub>t</sub> (mm)</th>
+                  <th scope="col">t<sub>nom</sub> (mm)</th>
+                  <th scope="col" class="monopole-design-thickness-column" hidden>t<sub>d</sub> (mm)</th>
+                  <th scope="col">f<sub>y</sub> (MPa)</th>
+                  <th scope="col">Overlap, L<sub>o</sub> (m)</th>
+                  <th scope="col"><span class="visually-hidden">Remove</span></th>
+                </tr>
+              </thead>
+              <tbody id="monopoleScheduleBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="input-cluster">
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Material</b><small>Common basis; f<sub>y</sub> is resolved by section.</small></span>
+            <div class="input-group-fields monopole-material-fields">
+              <label><span>Material basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual">Manual yield stress</option></select></label>
+              <label id="monopolePlateGradeField"><span>Plate grade</span><select id="monopolePlateGrade"><option value="200">200</option><option value="250">250</option><option value="300">300</option><option value="350" selected>350</option><option value="400">400</option><option value="450">450</option><option value="WR350">WR350</option></select></label>
+              <label id="monopoleFabricationField"><span>Fabrication category</span><select id="monopoleFabrication"><option value="LW">Lightly welded longitudinally (LW)</option><option value="HW">Heavily welded longitudinally (HW)</option><option value="CF">Cold-formed (CF)</option><option value="HR">Hot-rolled (HR)</option><option value="SR">Stress-relieved (SR)</option></select></label>
+              <label class="checkbox-field monopole-design-thickness-toggle"><span>Separate design thickness, t<sub>d</sub><small>Project-specified deduction.</small></span><input id="monopoleSeparateDesignThickness" type="checkbox"></label>
+            </div>
+            <p id="monopoleMaterialNote" class="monopole-input-note">Grade 350 f<sub>y</sub> from AS/NZS 3678:2016 Table 8, based on t<sub>nom</sub>.</p>
+          </section>
+        </div>
+
+        <p id="monopoleInputStatus" class="result-note" aria-live="polite" hidden></p>
+
+        <section class="capacity-section monopole-results" aria-live="polite">
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section resistance and shaft mass</h2></div><span id="monopoleMethodLabel">AS 4100:2020 Cl. 5.2</span></div>
+          <div class="capacity-grid monopole-capacity-grid">
+            <article class="capacity-card monopole-primary-result"><span id="monopoleResistanceLabel">Minimum design moment capacity, &phi;M<sub>s</sub></span><strong><output id="monopoleMinimumResistance">-</output><small> kN&middot;m</small></strong><p class="monopole-result-meta"><span id="monopoleMinimumLocation">Enter valid geometry.</span><small id="monopoleResistanceBasis">AS 4100:2020 &middot; &phi; = 0.90</small></p></article>
+            <article class="capacity-card"><span>Shaft steel mass</span><strong><output id="monopoleMass">-</output><small> kg</small></strong><p>Self-weight <output id="monopoleSelfWeight">-</output> kN &middot; includes overlap shells</p></article>
+            <article class="capacity-card"><span>Assembled centre of gravity, z<sub>cg</sub></span><strong><output id="monopoleCentreOfGravity">-</output><small> m</small></strong><p>H = <output id="monopoleAssembledHeight">-</output> &middot; <output id="monopoleSectionCount">-</output> sections</p></article>
+          </div>
+        </section>
+
+        <section class="monopole-chart-section">
+          <div class="section-heading"><div><span class="section-tag">PROFILE</span><h2>Bending resistance by elevation</h2></div><span>5 m guides</span></div>
+          <div id="monopoleChart" class="monopole-chart" role="img" aria-label="Bending resistance plotted against pole elevation"></div>
+          <div id="monopoleChartLegend" class="monopole-chart-legend"></div>
+        </section>
+
+        <section id="monopoleOverlapSection" class="monopole-overlap-section">
+          <div class="section-heading"><div><span class="section-tag">SLIP JOINTS</span><h2>Prescribed overlap screen</h2></div><span>Geometry only &middot; joint resistance not evaluated</span></div>
+          <div class="table-scroll">
+            <table class="monopole-result-table monopole-overlap-table">
+              <thead><tr><th scope="col">Joint</th><th scope="col">Entered overlap, L<sub>o</sub></th><th scope="col">Required overlap, 1.5D<sub>ins,max</sub></th><th scope="col">Status</th></tr></thead>
+              <tbody id="monopoleOverlapBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <details class="monopole-stations-section monopole-station-details">
+          <summary><span><b>Station results</b><small>0.5 m stations &middot; top to base</small></span><strong id="monopoleStationCount">0 rows</strong><i>+</i></summary>
+          <div class="table-scroll monopole-station-scroll">
+            <table class="monopole-result-table monopole-station-table">
+              <thead><tr><th scope="col">Elevation, z</th><th scope="col">Physical section</th><th scope="col" id="monopoleStationDimensionHeading">D</th><th scope="col">t<sub>d</sub></th><th scope="col">f<sub>y</sub></th><th scope="col">Section state</th><th scope="col" id="monopoleStationResistanceHeading">&phi;M<sub>s</sub></th></tr></thead>
+              <tbody id="monopoleStationBody"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <details class="detail-card">
+        <summary><span><b>Calculation details</b><small>Assembly, resistance and mass</small></span><i>+</i></summary>
+        <div class="detail-body"><section><h3>Calculation basis</h3><div id="monopoleFormulaSteps" class="formula-list"></div></section></div>
+      </details>
+
+      <details class="source-card">
+        <summary><span><b>Sources and limitations</b><small>Methods, applicability and exclusions</small></span><i>+</i></summary>
+        <div class="source-body">
+          <div class="source-notes">
+            <p><b>Circular</b> &middot; AS 4100:2020 Cl. 5.2 and Table 5.2; design section moment capacity.</p>
+            <p><b>Regular polygon</b> &middot; ASCE/SEI 48-19 Cls 5.2.3.2.1 and 5.2.5; P = 0 and M = F<sub>a</sub>I/c. BR = min(r<sub>i</sub>, 4t<sub>d</sub>); no AS 4100 &phi;. <a href="https://sp360.asce.org/personifyebusiness/Merchandise/Product-Details/productId/266165183" target="_blank" rel="noreferrer">Publication record</a>.</p>
+            <p><b>Material</b> &middot; AS/NZS 3678:2016 Table 8 f<sub>y</sub> uses t<sub>nom</sub>. Resistance uses t<sub>d</sub>; mass uses t<sub>nom</sub>. Confirm material equivalence and project acceptance for the ASCE method.</p>
+            <p><b>Slip joints</b> &middot; AS/NZS 7000:2016 Appendix K9: L<sub>o</sub> &ge; 1.5D<sub>ins,max</sub>, where D<sub>ins,max</sub> is the largest circle inscribed within the outside profiles being joined. Joint resistance, fit-up, tolerances, jacking and installed overlap are not evaluated.</p>
+            <p><b>Stations</b> &middot; 0.5 m spacing plus exact section boundaries. The reported minimum is not a continuous numerical optimisation.</p>
+            <p><b>Excluded</b> &middot; Actions and utilisation; axial, biaxial or combined action; global stability and second-order analysis; shear and torsion; slip-joint strength; openings, reinforcement and seams; fatigue, fracture and vortex shedding; durability and serviceability; base plates, foundations, appurtenances, erection, fire and seismic design.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
     <section id="memberPanel" class="tool-panel" hidden>
       <div class="tool-heading"><div><p class="kicker">Axial members · AS 4100 Sections 6 and 7</p><h2>Axial Member Capacity</h2></div><span class="tool-status">For Review · user-confirmed inputs</span></div>
 
@@ -1529,7 +1662,9 @@
   <script src="beam-section-capacity.js?v=20260724reorelease1"></script>
   <script src="beam-section-reconciliation.js?v=20260724reorelease1"></script>
   <script src="reo-calculation.js?v=20260724reorelease1"></script>
-  <script src="app.js?v=20260724reorelease1"></script>
+  <script src="monopole-capacity.js?v=20260729monopolerelease9"></script>
+  <script src="app.js?v=20260729monopolerelease9"></script>
+  <script src="monopole-app.js?v=20260729monopolerelease9"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

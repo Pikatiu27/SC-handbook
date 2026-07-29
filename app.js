@@ -1816,10 +1816,10 @@ const beamCustomInputIds = [
   "beamCustomShsWidth", "beamCustomShsThickness", "beamCustomEaLeg", "beamCustomEaThickness", "beamCustomRodDiameter"
 ];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
-const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "reo", "screw", "rock"];
+const toolNames = ["bolt", "member", "beam", "monopole", "properties", "weld", "concrete", "reo", "screw", "rock"];
 const toolCategories = {
   "steel-connections": ["bolt", "weld"],
-  "steel-members": ["properties", "member", "beam"],
+  "steel-members": ["properties", "member", "beam", "monopole"],
   foundations: ["concrete", "reo", "screw", "rock"]
 };
 const toolAliases = { pad: "concrete", axial: "member" };

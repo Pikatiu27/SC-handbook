@@ -10,7 +10,7 @@ Use the outline in this order:
 
 1. Sections 1 and 2 decide whether a function belongs in the handbook and define the required professional assurance.
 2. Sections 4, 6, 7, 9, 10 and 11 govern sources, calculations, language, validation and acceptance.
-3. Section 15 governs the current static web handbook. Apply Sections 15.0 to 15.9 first, then the affected tab-specific rules, then the audit protocol in Section 15.18.
+3. Section 15 governs the current static web handbook. Apply Sections 15.0 to 15.9 first, then the affected tab-specific rules, then the audit protocol in Section 15.20.
 4. Sections 3 and 12 apply only when an Excel workbook is explicitly requested. Workbook-specific rules do not override the current web product contract.
 5. `REFERENCE_TRACEABILITY.md` stores detailed calculation records, source evidence, verification cases and unresolved gaps. This outline stores durable policy and accepted scope, not duplicate evidence logs.
 
@@ -368,7 +368,7 @@ Where strength depends on product thickness, wall thickness, grade range, supply
 
 ### 6.2 Calculation Definition and Verification Contract
 
-Every calculation module must have one documented calculation contract before it is implemented or described as checked. The contract defines the engineering meaning, source basis, calculation branches, verification evidence and release boundary. It is the canonical technical definition; Section 15.18 defines how that definition is audited.
+Every calculation module must have one documented calculation contract before it is implemented or described as checked. The contract defines the engineering meaning, source basis, calculation branches, verification evidence and release boundary. It is the canonical technical definition; Section 15.20 defines how that definition is audited.
 
 Keep the visible page concise. Store the detailed contract and evidence in `REFERENCE_TRACEABILITY.md`, then show only the governing basis, critical assumptions, result status and practical limitations in the calculator.
 
@@ -1177,7 +1177,7 @@ When editing the web app, use the global web rules first, then the affected tab-
 
 Use this checklist before editing, reviewing, committing, or pushing any web-tab work:
 
-For a formal page or calculation audit, this short implementation checklist is only the entry check. Complete the full protocol in Section 15.18.
+For a formal page or calculation audit, this short implementation checklist is only the entry check. Complete the full protocol in Section 15.20.
 
 1. Confirm the active app root is the current `SC Handbook` checkout and the affected files are `index.html`, `app.js`, `styles.css`, any scoped tab module such as `rock-anchor-selector/app.js`, and, where durable rules changed, `SC_HANDBOOK.md`.
 2. Keep the UI English-only and use Australian engineering language.
@@ -1245,10 +1245,16 @@ Current tab register:
 | `Screw Piles Selector` | `Foundations` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 | `Rock Anchor Selector` | `Foundations` | Product selector and quick rock-anchor lookup aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 
+Accepted next tab:
+
+| Tab | Navigation category | Role | Source status | Publish posture |
+| --- | --- | --- | --- | --- |
+| `Steel Monopole Section Capacity` | `Steel Members` | Capacity-only profile for tapered circular and regular polygonal steel pole sections, including segmented geometry, mass and prescribed slip-joint overlap screening | AS 4100 circular path checked; ASCE/SEI 48-19 polygon formula excerpts visually checked and retained as a foreign-standard `For Review` path | Develop and verify on an isolated branch before integration |
+
 Navigation categories:
 
 - `Steel Connections`: `Bolt Capacity`, `Weld Capacity`, and future `Base Plate` when accepted and integrated.
-- `Steel Members`: `Section Properties`, `Axial Member Capacity`, and `Beam Section Capacity`.
+- `Steel Members`: `Section Properties`, `Axial Member Capacity`, `Beam Section Capacity`, and accepted future `Steel Monopole Section Capacity`.
 - `Foundations`: `Concrete Pad Section`, `Reinforcement`, `Screw Piles Selector`, and `Rock Anchor Selector`.
 
 Do not create a permanent top-level category for one accepted tool. A future `Reference Tools` category may be introduced only when multiple independent material lookups or compact design tables have been accepted; until then, place each lookup with its primary engineering workflow.
@@ -3193,7 +3199,288 @@ Keep these exclusions explicit: bars larger than 40 mm; tension-tie lap splices;
 
 Release requires: source-page checks; the Cl. 13.2.1(a) project-use note; independent lap and development regression cases; correct lower-limit and material-multiplier ordering; automatic `k7` selection from the two confirmations; default-versus-qualified reduction reporting where the `k7`, lower-limit or narrow-gap candidate governs; wide/narrow and contact/non-contact cases; Refined-data eligibility, explicit candidate-to-adopt reconciliation, pressure-evidence gating, field-level invalid state and independently labelled Basic fallback; independent straight and standard hook/cog cast-in routes with displayed detailing prerequisites and no lap reduction; cast-in/PIR origin labels; missing/zero, valid and over-yield `sigma_st` cases; N40 permitted and N50 absent from calculator selection; same-condition schedule enabled only for Basic/default `k7`; invalid-input, stale-result clearing and dependent-confirmation resets; raw/candidate/adopted comparison boundaries; every design-check and installation branch; PIR stopping at the AS 3600 reference depth plus one external-design warning; no project-scenario selector, extension summary, hidden product-report or site-fit workflow; active mobile tool visibility; and desktop/phone verification of the lightweight no-drawing layout. Keep pure length logic in `reo-calculation.js`, run `node tests/reo-lapping.test.js`, and retain module status `For Review` until all gates pass.
 
-### 15.18 Web Local Update and Deployment Workflow
+### 15.18 Steel Monopole Section Capacity Web Tab Rules
+
+The public module name is `Steel Monopole Section Capacity`. It is a capacity-only tool for a tapered steel pole shaft. It reports the supported design bending resistance of each parent section along the assembled height, together with physical mass, self-weight and centre of gravity. It is not a general member-capacity, pole-design, connection-design or demand-checking tool.
+
+The module answers one engineering question:
+
+> What is the minimum supported design bending resistance of the entered steel pole section at each elevation?
+
+Do not show utilisation, `PASS`, `FAIL`, a design action, a governing load case or a whole-pole compliance statement. Use `minimum section resistance location`, not `governing design station`, because no demand profile is evaluated.
+
+The ASCE/SEI 48-19 polygon path is a separate foreign-standard `For Review` method. User-provided readable excerpts cover Chapter 5 pp. 9-11, Appendix A p. 59, Appendix B pp. 61-62 and Commentary C5 pp. 33-37. These excerpts support the displayed pure-bending formula path, but they do not establish complete ASCE 48 compliance, Australian adoption, load basis, fabrication acceptance or whole-member design.
+
+#### 15.18.1 Supported Geometry and Input Modes
+
+Support two explicit geometry modes:
+
+| Mode | Intended use | Required geometry | Connection scope |
+| --- | --- | --- | --- |
+| `Overall Profile` | Preliminary continuous-shaft capacity and weight profile | Overall height, bottom outside dimension, top outside dimension, uniform nominal wall thickness, optional design wall thickness, section form and material | No slip joint; do not infer fabricated section lengths or overlaps |
+| `Section Schedule` | Manufacturer or project product geometry | Physical sections entered from bottom to top with fabricated length, bottom and top outside dimensions, nominal wall thickness, optional design wall thickness, material and overlap with the section below | Prescribed overlap screening and separate parent-section capacities only |
+
+Open `Section Schedule` by default once the segmented workflow is implemented. Keep `Overall Profile` for the original quick estimate using overall height, bottom dimension and top dimension. Do not silently generate fabricated section lengths, overlaps or joint capacities from the overall profile.
+
+The release surface supports `Circular tubular`, plus the explicitly displayed ASCE regular polygon forms with 4, 6, 8, 12 or 16 sides. Circular sections use `Outside diameter, D`. Polygonal sections use:
+
+- `Outside across-flats, D_o`;
+- actual inside bend-radius ratio `r_i/t_nom`; and
+- `BR = min(r_i, 4t_d)` for the ASCE flat-width calculation.
+
+Do not use an undifferentiated `Diameter` label for a polygon. Irregular polygons, unequal flats, non-concentric walls and locally varying thickness remain outside the method.
+
+Use `Nominal wall thickness, t_nom` as the primary thickness input. By default, `t_d = t_nom`. The optional separate-thickness workflow permits a smaller positive `Design wall thickness, t_d`, with `0 < t_d <= t_nom`. The AS/NZS 3678 Table 8 lookup and theoretical mass use `t_nom`; section properties and bending resistance use `t_d`. A separate `t_d` does not require manual `f_y`. Corrosion allowance and measured remaining thickness are not otherwise calculated by the page.
+
+#### 15.18.2 Physical Section Schedule and Assembly Geometry
+
+Each physical section row, ordered bottom to top, contains:
+
+| Field | Symbol / status | Rule |
+| --- | --- | --- |
+| Section identifier | `Section ID` | Stable user-visible identifier |
+| Fabricated length | `L_i` | Positive physical steel length |
+| Bottom outside dimension | `D_b`, `D_AF,b` or `D_AC,b` | Label follows section form and dimension basis |
+| Top outside dimension | `D_t`, `D_AF,t` or `D_AC,t` | Label follows section form and dimension basis |
+| Nominal wall thickness | `t_nom,i` | Positive manual input used for the AS/NZS 3678 Table 8 lookup and theoretical mass |
+| Design wall thickness | `t_d,i` | Optional positive input used for section properties and bending resistance; default `t_d,i = t_nom,i` and require `t_d,i <= t_nom,i` |
+| Material basis and grade | source selection | `AS/NZS 3678:2016 plate` or `Manual f_y`; Grade 350 is the default plate lookup |
+| Yield stress | `f_y` | Auto by AS/NZS 3678 Table 8 grade and thickness, or editable per section in Manual mode |
+| Overlap with section below | `L_o,i` | Starts at Section 2; enter the prescribed product or drawing overlap |
+
+Derive installed elevations from the physical schedule:
+
+```text
+z_start,1 = 0
+z_start,i = z_end,i-1 - L_o,i
+z_end,i = z_start,i + L_i
+H = sum(L_i) - sum(L_o,i)
+```
+
+Within each physical section, interpolate its outside dimension using that section's own fabricated local coordinate. Do not interpolate one global pole taper through an overlap. At a slip joint, the upper and lower shells retain their own dimensions, thicknesses, materials, section properties and capacities.
+
+Reject non-positive lengths or thicknesses, negative overlaps, overlaps not shorter than both connected sections, non-taper-compatible dimensions and schedules that cannot form a continuous installed height. Clear stale capacity and mass results after an invalid edit.
+
+#### 15.18.3 Calculation Stations and Elevation Convention
+
+Use installed elevation `z` measured upward from the pole base, with `z = 0` at the base and `z = H` at the top.
+
+Generate regular stations at `0.5 m` intervals and always add exact stations at the base, top, every physical section start and end, every overlap start and end, and every material or thickness transition. Merge coincident stations within a documented numerical tolerance. Calculate with unrounded values and round only for display.
+
+The station table is ordered from pole top to pole base so `z = 0` is the final row. The chart uses normal engineering elevation with the base at the bottom. Show labelled horizontal guides at every `5 m` and at the top where the height is not a multiple of `5 m`.
+
+Label the primary result `Minimum evaluated station capacity` for the AS 4100 path and `Minimum evaluated station resistance` for the ASCE path. It is the minimum of the regular and exact boundary stations, not a claim of continuous numerical optimisation.
+
+#### 15.18.4 Source and Method Isolation
+
+Apply this source hierarchy:
+
+| Path | Governing calculation basis | Permitted role |
+| --- | --- | --- |
+| Circular section | AS 4100:2020 Section 5, including Table 5.2 and Cl. 5.2.3 effective section modulus | Australian default design section moment capacity |
+| Regular polygonal section | ASCE/SEI 48-19 Cl. 5.2.3.2.1, Table 5-1, Cl. 5.2.5 and Appendix B | Foreign-standard pure-bending section-capacity path; `For Review`, not a complete ASCE 48 or Australian compliance check |
+| Steel material | Normally AS/NZS 3678 for fabricated plate shells or AS/NZS 1163 for a supplied structural CHS product | Default `f_y` and material provenance |
+| Pole and slip-joint guidance | AS/NZS 7000:2016 Appendix K | Australian context, accepted steel-pole reference routes and prescribed overlap guidance |
+
+AS/NZS 7000 Appendix K does not provide a complete polygonal section-resistance equation. It refers steel-pole design to accepted steel and pole Standards, including ASCE 48. Keep the AS 4100 and ASCE paths isolated:
+
+- do not apply the AS 4100 capacity factor to an ASCE design stress;
+- do not apply ASCE local-buckling limits to an AS 4100 CHS result;
+- do not combine notation, compactness limits or material defaults from the two systems;
+- show the active method and edition beside the primary result and in the calculation details.
+
+#### 15.18.5 Circular Section Calculation Contract
+
+For an unperforated circular section with outside diameter `D` and design wall thickness `t_d`:
+
+```text
+D_i = D - 2t_d
+A = pi / 4 (D^2 - D_i^2)
+I = pi / 64 (D^4 - D_i^4)
+Z = I / (D / 2)
+S = (D^3 - D_i^3) / 6
+M_y = f_y Z
+M_p = f_y S
+M_s = f_y Z_e
+phi M_s = 0.90 f_y Z_e
+lambda_s = (D / t_d)(f_y / 250)
+```
+
+Use these checked AS 4100 Table 5.2 CHS limits:
+
+| Fabrication category | `lambda_sp` | `lambda_sy` |
+| --- | ---: | ---: |
+| `SR / HR / CF` | 50 | 120 |
+| `LW / HW` | 42 | 120 |
+
+Here `LW` means lightly welded longitudinally and `HW` means heavily welded longitudinally. Do not describe `HW` as helically welded.
+
+Use `Z_e = min(S, 1.5Z)` for compact sections, the AS 4100 interpolation for non-compact sections, and the lesser applicable AS 4100 CHS expression for slender sections.
+
+Distinguish nominal wall thickness `t_nom` from design wall thickness `t_d`. Default `t_d = t_nom`; when a project deduction applies, allow a separate `t_d` and require `0 < t_d <= t_nom`. Use `t_nom` for the AS/NZS 3678 thickness-dependent `f_y` lookup and theoretical steel mass. Use `t_d` for section properties, slenderness and resistance.
+
+Distinguish an AS/NZS 1163 structural CHS product from a fabricated plate shell. The current tapered-shell page defaults to AS/NZS 3678:2016 Grade 350 plate and derives `f_y` separately for each physical section from Table 8 using `t_nom`. Table 8 ranges without a specified yield stress must fail closed. Manual `f_y` remains available for certified values or alternate materials. AS/NZS 1163 Table 7 has no thickness-dependent minimum yield-strength branches, but that product lookup is not applied to a tapered fabricated shell.
+
+A welded fabrication category may be preselected for a preliminary fabricated longitudinally welded shell only as a visible editable assumption. Do not infer `SR`, `HR`, `CF`, `LW` or `HW` solely from material grade.
+
+Report `Design section moment capacity, phi M_s`, `First-yield reference, M_y`, `Ideal plastic reference, M_p`, the section class / `Z_e` basis, and active material and fabrication provenance.
+
+#### 15.18.6 Regular Polygonal Section Calculation Contract
+
+Require one supported side count `n`, outside across-flats `D_o`, design wall thickness `t_d`, yield stress `f_y`, and actual inside bend radius `r_i`. The page may collect a common project ratio `r_i/t_nom` and derive the actual radius for each physical section from nominal thickness. Do not calculate a polygon result while this project input is missing. Use `E = 200 GPa`.
+
+Calculate gross area, centroidal second moment of area and elastic section modulus from a deterministic closed-section geometry routine. Because no load direction is entered, use:
+
+```text
+Z_min = I / c_max
+```
+
+where `c_max` is the maximum outside vertex distance. Validate the geometry routine against independent polygon calculations and the applicable ASCE section-property reference.
+
+For local buckling define:
+
+```text
+lambda = (w / t_d) sqrt(f_y / E)
+beta = 360 degrees / n
+BR = min(r_i, 4t_d)
+w = tan(pi / n) (D_o - t_d - 2BR)
+```
+
+For pure bending with no axial action, use these ASCE/SEI 48-19 branches:
+
+| Bend-angle class | Prescriptive range | Permitted compressive stress `F_a` |
+| --- | --- | --- |
+| `beta >= 45 degrees` | `lambda <= 1.53` | `F_a = f_y` |
+| typically 4-, 6- and 8-sided | `1.53 < lambda <= 2.06` | `F_a = 1.42 f_y (1 - 0.194 lambda)` |
+| `30 degrees <= beta < 45 degrees` | `lambda <= 1.41` | `F_a = f_y` |
+| typically 9- to 12-sided | `1.41 < lambda <= 2.20` | `F_a = 1.45 f_y (1 - 0.220 lambda)` |
+| `22.5 degrees <= beta < 30 degrees` | `lambda <= 1.26` | `F_a = f_y` |
+| typically 13- to 16-sided | `1.26 < lambda <= 2.42` | `F_a = 1.42 f_y (1 - 0.233 lambda)` |
+
+Do not extend these equations beyond their upper slenderness limits. Return `Not checked - outside the prescribed method`. For `n > 16`, use the ASCE round-member treatment only after its current-edition equations, limits and `D_o` definition pass the same source and numerical gates; until then return `Not checked`.
+
+The derived permitted bending moment is:
+
+```text
+M = F_a I / c_max = F_a Z_min
+```
+
+Use `Permitted bending moment, M`. Do not label the ASCE result `phi M_s` and do not apply an additional `phi = 0.90`.
+
+Use the actual inside bend radius derived from the entered `r_i/t_nom` and cap its contribution to the flat-width equation at `4t_d`, as required by Cl. 5.2.3.2.1 and Appendix B Fig. B-7. Do not substitute the full nominal side length when bend information is unavailable.
+
+AS/NZS 3678 plate strength may be used as a project material input, but the page does not establish material equivalence with the steel specifications referenced by ASCE/SEI 48-19. State this limitation and require project acceptance before using the polygon result for design.
+
+#### 15.18.7 Slip-Joint Screening Contract
+
+Slip joints belong in the segmented data model, but the module does not calculate a slip-joint moment capacity.
+
+For each overlap calculate `Upper parent section resistance` and `Lower parent section resistance` independently. An optional `Parent-section screening resistance` is the lesser value. Never add shell areas, section moduli or bending resistances to create a combined overlap capacity. Always display `Slip-joint local capacity: Not evaluated`.
+
+Use the AS/NZS 7000 Appendix K prescribed geometric screen:
+
+```text
+L_o,design >= 1.5 D_ins,max
+L_o,constructed >= 1.35 D_ins,max
+```
+
+`D_ins,max` is the maximum diameter of the largest circle inscribed within the outside profiles of the components being joined over the overlap region. For a circular section use the outside diameter. For a regular polygon use the outside across-flats dimension. Do not subtract wall thickness.
+
+The quick page shows `Entered overlap`, `Required design overlap`, the prescribed-overlap screen and a visible statement that joint resistance is not calculated. Actual installed overlap and the `1.35 D_ins,max` construction-tolerance check remain available to the calculation layer and project verification record but are not first-page inputs. This screen is not evidence of fit-up, dimensional tolerance, jacking force, local contact, friction, ovalisation, seam, fatigue or joint moment capacity.
+
+#### 15.18.8 Mass, Self-Weight and Centre of Gravity
+
+Calculate physical steel volume and mass from `t_nom` for every fabricated section, including both shells in an overlap. Do not subtract overlap length from either physical section's steel mass.
+
+```text
+rho_steel = 7850 kg/m^3
+g = 9.80665 m/s^2
+mass = integral(rho_steel A(s) ds)
+self-weight = mass g
+z_cg = sum(m_i z_cg,i) / sum(m_i)
+```
+
+Report `Total steel mass`, `Self-weight`, `Assembled centre of gravity`, and optional per-section mass in calculation details. Shaft steel only is included. Base plates, flange plates, anchor bolts, ladders, doors, stiffeners, brackets, platforms, weld metal, coatings, internal cables and attachments remain excluded.
+
+#### 15.18.9 Page Structure and Figure Rules
+
+Use the shared static-app tab system, not a standalone page or framework rewrite. Use this visible order:
+
+1. title, method and concise capacity-only scope;
+2. geometry mode and section form;
+3. overall profile or physical section schedule;
+4. material and method-specific inputs;
+5. three-item result summary: minimum resistance, theoretical shaft mass / self-weight, and centre of gravity / assembled height;
+6. resistance-versus-height chart;
+7. collapsed station results;
+8. calculation details, sources and limitations.
+
+Do not include a decorative geometry sketch. The primary figure is a deterministic chart of design bending resistance against installed elevation. It must show section boundaries, overlap zones, separate upper and lower parent-section lines through an overlap, labelled `5 m` guides, stable axes and no fictitious summed overlap line.
+
+The station table is collapsed by default and shows its row count in the summary. When opened, it shows top elevation first and `z = 0` last. Identify the active physical section or overlapping parent sections and show outside dimension, thickness, `f_y`, concise section class or local-buckling state, and design resistance.
+
+Keep the chart wider than it is tall so the profile remains an engineering plot rather than a dominant page illustration. On phone layouts, place the method or scope note below the section heading, keep the physical-section identifier visible while the schedule scrolls horizontally, and retain a readable chart scale within its own horizontal scroll container. Do not allow these technical scroll regions to create page-level horizontal overflow.
+
+Limit common material and overall-profile input groups to three columns on wide desktop, two columns on narrow desktop and one column on phone layouts. Keep both groups inside the same bordered input-group treatment. Do not use automatic column expansion that compresses long engineering labels or selected material and fabrication values.
+
+#### 15.18.10 Result States and Exclusions
+
+Permitted states are `Calculated`, `Assumption`, `Source_Not_Verified`, `Not checked` and `Invalid input`. Do not use `PASS` or `FAIL`. A prescribed overlap comparison may state `Meets prescribed design overlap` or `Below prescribed design overlap`, but this is not a connection-capacity result.
+
+Keep these exclusions explicit:
+
+- design actions, demand profiles and utilisation;
+- axial-force and bending interaction;
+- biaxial bending and arbitrary bending direction;
+- global member buckling, second-order effects and nonlinear pole analysis;
+- base plates, flange plates, anchor bolts and foundations;
+- slip-joint local strength, contact, friction, ovalisation, fit-up and installation force;
+- openings, doors, penetrations, local reinforcement and attachments;
+- longitudinal and circumferential seam design;
+- shear, torsion and combined stress;
+- fatigue, vortex shedding, fracture and brittle-fracture assessment;
+- corrosion-loss prediction and durability design;
+- serviceability, deflection and vibration;
+- erection, transport and temporary conditions;
+- fire and seismic system design.
+
+#### 15.18.11 Validation and Release Gates
+
+Before a checked release, complete:
+
+1. Licensed-source checks for every implemented AS 4100 and ASCE clause, limit, symbol and branch.
+2. Checked AS/NZS 3678 Table 8 plate `f_y` lookup with exact thickness boundaries and fail-closed unsupported ranges. AS/NZS 1163 Table 7 remains reference-only because the tapered-shell page does not claim a supplied CHS product.
+3. Independent circular-section `A`, `I`, `Z`, `S`, `Z_e` and `phi M_s` cases.
+4. Independent 4-, 6-, 8-, 12- and 16-sided polygon geometry plus 8-, 12- and 16-sided `w`, `Z_min`, `lambda`, `F_a` and `M` cases.
+5. Exact transition and upper-bound tests for every polygon branch, plus fail-closed tests immediately outside each range.
+6. Across-flats/across-corners geometry conversion, actual-radius input, `4t_d` bend-radius cap and fail-closed missing-radius tests.
+7. One-section and multi-section assembly-height tests.
+8. Local-coordinate taper tests through an overlap.
+9. Design and actual overlap tests using `1.5D_ins,max` and `1.35D_ins,max`.
+10. Mass, self-weight and centre-of-gravity tests, including double steel in an overlap.
+11. Station tests for `0.5 m`, section ends, overlap boundaries, transitions and non-multiple top heights.
+12. Invalid-input and stale-result clearing tests.
+13. Desktop and phone chart/table checks for order, labels, `5 m` guides, overlap lines, clipping and horizontal overflow.
+14. Confirmation that no demand, utilisation, `PASS` / `FAIL`, combined overlap capacity or excluded design claim appears.
+15. Traceability linking source -> calculation contract -> implementation -> tests -> visible result.
+
+#### 15.18.12 Implementation Sequence
+
+Implement in this order:
+
+1. Physical-section, assembly-elevation and station-generation functions.
+2. Shared circular and regular-polygon section-property functions.
+3. Material provenance and thickness-dependent yield-stress lookup.
+4. AS 4100 circular section resistance with boundary tests.
+5. ASCE regular-polygon resistance as a separate foreign-standard `For Review` path, using the visually checked excerpts and explicit applicability limits.
+6. Slip-joint prescribed overlap screening and separate parent-section results.
+7. Mass, self-weight and centre-of-gravity calculations.
+8. Shared-tab UI, capacity chart and station table.
+9. Browser, responsive, regression and traceability audit.
+
+Do not port the old monopole prototype wholesale. Start from the current main application and selectively reuse only calculations or presentation code that satisfies this contract.
+
+### 15.19 Web Local Update and Deployment Workflow
 
 Preferred workflow:
 
@@ -3251,11 +3538,11 @@ Token and browser notes:
 - Local browser use, clicking the page, or sharing the page link does not consume model tokens.
 - Token usage only occurs when asking Codex to inspect, edit, convert references, reason, or generate code/content.
 
-### 15.19 Professional Web Audit Protocol
+### 15.20 Professional Web Audit Protocol
 
 This is the single mandatory audit workflow for SC Handbook. Section 6.2 defines the required calculation contract; this section verifies that the source evidence, implementation, interface and test record satisfy that contract. Whenever a page or calculation is requested to be checked, audited, reviewed or verified, or the user asks whether problems remain, use this protocol unless the scope is explicitly narrowed.
 
-#### 15.18.0 Audit Control Flow
+#### 15.20.0 Audit Control Flow
 
 Audit the engineering claim before judging visual polish. Use the workflow type in Section 2.5 and the matching page pattern in Section 15.2.2 to select the evidence required; do not apply calculator tests to a pure lookup or accept a quick-check `PASS` after testing capacity alone.
 
@@ -3275,7 +3562,7 @@ An upstream failure blocks downstream approval of the engineering claim, but it 
 
 Every finding must identify its audit stage, affected workflow/result, `Calculation_ID` where applicable, evidence and required disposition. `Verified - no change` is permitted only when the relevant stage has positive evidence, not because no obvious defect was seen.
 
-#### 15.18.1 Audit Mode and Change Control
+#### 15.20.1 Audit Mode and Change Control
 
 Default audit behaviour:
 
@@ -3284,7 +3571,7 @@ Default audit behaviour:
 3. Identify the exact local checkout, branch, commit, build identifier and files reviewed. Do not assume the open browser is showing the same revision as the worktree.
 4. Read this handbook first, then the tab-specific rules, then the implementation and traceability record.
 5. Use `C:\Users\silin\Documents\Codex\Reference` as the only default reference library. Follow its routing and source-register files before opening individual source documents.
-6. Report findings before editing using the standard audit report in Section 15.18.16.
+6. Report findings before editing using the standard audit report in Section 15.20.16.
 7. After the user accepts a finding, modify only the accepted scope, run the applicable regression matrix, and show the resulting local state.
 8. Commit, merge, push or deploy only when the user requests it. Verify local, remote and published states separately.
 
@@ -3296,7 +3583,7 @@ Do not silently combine these phases:
 - visual redesign;
 - git merge or deployment.
 
-#### 15.18.2 Audit Scope Inventory
+#### 15.20.2 Audit Scope Inventory
 
 Before checking individual formulas, inventory the audited surface:
 
@@ -3311,7 +3598,7 @@ Before checking individual formulas, inventory the audited surface:
 
 Confirm that the current tab register in Section 15.2 matches the actual navigation and route logic. Record missing, orphaned or duplicated panels before deeper review.
 
-#### 15.18.3 Source and Evidence Audit
+#### 15.20.3 Source and Evidence Audit
 
 For every formula, factor, default, table value, material strength and product property:
 
@@ -3326,7 +3613,7 @@ For every formula, factor, default, table value, material strength and product p
 
 For the default Australian handbook path, confirm the Section 4 authority chain explicitly: project/NCC adoption context -> adopted Australian or AS/NZS Standard -> applicable Australian product/material Standard -> Australian interpretive aid or manufacturer evidence. Record any international source and its permitted non-governing role. Use primary standards and manufacturer documents where available. Reference books and worked examples may confirm interpretation and arithmetic, but they do not replace the governing Standard.
 
-#### 15.18.4 Formula and Numerical Audit
+#### 15.20.4 Formula and Numerical Audit
 
 Audit every active calculation branch, not only the default example:
 
@@ -3348,7 +3635,7 @@ Reconstruct the complete Section 2.4 engineering chain for every governing resul
 
 For each governing formula, confirm its `Calculation_ID` and complete the applicable Section 6.2.7 matrix. Follow the source selection, worked-example capture, independent reconstruction, browser reproduction, comparison and disposition sequence in Section 6.2.11 and record it using the templates in `REFERENCE_TRACEABILITY.md`. The independent hand calculation or separate script calculation must not call or copy the production calculation function. For conditional formulas, test each branch and one value immediately either side of the branch boundary. Compare the independent result with the browser output using unrounded intermediate values and record the reasoned numerical tolerance.
 
-#### 15.18.5 Input Classification and Engineering Order
+#### 15.20.5 Input Classification and Engineering Order
 
 Check every field against the engineering grouping rules in Section 15.8:
 
@@ -3371,7 +3658,7 @@ Confirm:
 - no input is collected if it does not affect a visible result, warning, summary or calculation step;
 - no required input is hidden inside a details panel after its branch becomes governing.
 
-#### 15.18.6 Dependency and State-Transition Audit
+#### 15.20.6 Dependency and State-Transition Audit
 
 Treat the page as an engineering state machine. For every selector, checkbox, auto/manual toggle and optional mode, verify:
 
@@ -3388,7 +3675,7 @@ Treat the page as an engineering state machine. For every selector, checkbox, au
 
 Use a transition matrix for non-trivial tabs: `start state -> user action -> expected input state -> expected result state -> expected warning/state text`.
 
-#### 15.18.7 Editable Numeric Input Audit
+#### 15.20.7 Editable Numeric Input Audit
 
 Check every editable numeric field with keyboard entry, not only increment/decrement controls:
 
@@ -3407,7 +3694,7 @@ Check every editable numeric field with keyboard entry, not only increment/decre
 
 An incomplete editing state must not be written back as `0`. Clamp only a valid completed value on blur. Invalid, missing and out-of-range values must produce an explicit state and must not leave the previous capacity looking current.
 
-#### 15.18.8 Boundary, Invalid and Out-of-Scope Matrix
+#### 15.20.8 Boundary, Invalid and Out-of-Scope Matrix
 
 For each calculation branch, test:
 
@@ -3436,7 +3723,7 @@ Expected statuses must distinguish:
 
 Do not show `OK`, `PASS`, a utilisation ratio, or a numeric capacity when the required comparison basis or applicable method is incomplete.
 
-#### 15.18.9 Result Hierarchy and Explanation Audit
+#### 15.20.9 Result Hierarchy and Explanation Audit
 
 Check the result sequence against Section 15.3:
 
@@ -3450,7 +3737,7 @@ Check the result sequence against Section 15.3:
 8. Visible result notes remain short. Detailed derivation, evidence and exclusions stay in folded panels.
 9. Warnings tell the engineer what remains to be checked rather than merely saying the result may be inaccurate.
 
-#### 15.18.10 Scope, Limitation and Safety Audit
+#### 15.20.10 Scope, Limitation and Safety Audit
 
 Confirm the visible page and source panel state:
 
@@ -3464,7 +3751,7 @@ Confirm the visible page and source panel state:
 
 Limitations must be specific enough to prevent predictable misuse but concise enough to preserve the handbook workflow. Do not compensate for an unclear scope by adding every possible design check.
 
-#### 15.18.11 English, Terminology, Symbols and Reference Audit
+#### 15.20.11 English, Terminology, Symbols and Reference Audit
 
 Review all visible text and generated text:
 
@@ -3478,7 +3765,7 @@ Review all visible text and generated text:
 - headings, labels, warnings and captions use sentence case except deliberate tags such as `RESULTS`;
 - helper text is reduced where it repeats the heading, selected summary or result note.
 
-#### 15.18.12 Page Logic, Layout and Typography Audit
+#### 15.20.12 Page Logic, Layout and Typography Audit
 
 Review the page against Sections 15.2 to 15.6, including the state/dependency contract in Section 15.2.3, typography and layout contracts in Sections 15.4.1 to 15.4.3, responsive contract in Section 15.5.1 and colour contracts in Sections 15.6.1 to 15.6.4:
 
@@ -3501,7 +3788,7 @@ Review the page against Sections 15.2 to 15.6, including the state/dependency co
 
 Judge density by engineering scanning efficiency, not by fitting the maximum number of controls in one row.
 
-#### 15.18.13 Responsive and Accessibility Audit
+#### 15.20.13 Responsive and Accessibility Audit
 
 Test at minimum:
 
@@ -3526,7 +3813,7 @@ At each relevant width confirm:
 - focus indication, keyboard navigation, labels, `aria-selected`, `aria-live`, disabled states and contrast remain meaningful;
 - phone mode hides or folds only secondary content and never changes calculation logic.
 
-#### 15.18.14 Figure and Engineering Drawing Audit
+#### 15.20.14 Figure and Engineering Drawing Audit
 
 Apply the figure rules and CAD-style acceptance checklist in Section 15.8. For each displayed asset confirm:
 
@@ -3541,7 +3828,7 @@ Apply the figure rules and CAD-style acceptance checklist in Section 15.8. For e
 - separate mobile asset only where responsive scaling cannot preserve legibility;
 - deterministic regeneration when a generator script owns the asset.
 
-#### 15.18.15 Technical, Regression and Deployment Audit
+#### 15.20.15 Technical, Regression and Deployment Audit
 
 Run the checks appropriate to the change:
 
@@ -3559,7 +3846,7 @@ Run the checks appropriate to the change:
 
 No audit is complete because `git status` is clean, a formula looks familiar, or the default page renders. Evidence must cover the changed engineering branch and the changed interface state.
 
-#### 15.18.16 Standard Audit Report Format
+#### 15.20.16 Standard Audit Report Format
 
 Report findings first, ordered by severity and tied to the affected tab, field, formula, source or file location.
 
@@ -3591,7 +3878,7 @@ Each actionable finding should state:
 
 Keep recommendations proportional to the handbook. Prefer one clear warning or one verified lookup over expanding a tab into a full design engine.
 
-#### 15.18.17 Audit Completion Gate
+#### 15.20.17 Audit Completion Gate
 
 An audit may be described as complete only when:
 
