@@ -3210,7 +3210,7 @@ function beamRolledSection(section, family) {
 }
 
 function beamPfcSection(section) {
-  return {
+  const record = {
     ...section,
     family: "pfc",
     drawing: { shape: "channel", d: section.d, bf: section.bf, tw: section.tw, tf: section.tf, xL: section.xL, xO: section.xO },
@@ -3225,6 +3225,20 @@ function beamPfcSection(section) {
     sourceRef: "InfraBuild 2019 Tables 15-16 · PDF p. 17",
     sourceBasis: "Published catalogue section and capacity tables"
   };
+  const grades = Object.fromEntries(Object.entries(section.grades || {}).map(([name, grade]) => {
+    const directions = Object.fromEntries(Object.entries(grade.directions || {}).map(([key, data]) => {
+      const reconciliation = BeamSectionReconciliation.reconcile(record, grade, key);
+      return [key, {
+        ...data,
+        compactness: reconciliation.status === "reconciled" ? reconciliation.publishedClass : data.compactness,
+        compactnessBasis: reconciliation.status === "reconciled"
+          ? reconciliation.classMethod === "published-ze-interval" ? "derived-ze-interval" : "derived-geometry"
+          : null
+      }];
+    }));
+    return [name, { ...grade, directions }];
+  }));
+  return { ...record, grades };
 }
 
 function beamHollowSections(family) {
@@ -3284,11 +3298,7 @@ function beamHollowSections(family) {
 function beamAngleSection(section) {
   const capacityGrades = BeamHotRolledData.equalAngle[section.designation] || {};
   const catalogue = BeamHotRolledData.equalAngleProperties[section.designation] || null;
-  const grades = Object.fromEntries(Object.entries(capacityGrades).map(([name, grade]) => [name, {
-    ...grade,
-    sourceRef: "InfraBuild 2019 Tables 19-20 · PDF pp. 19-20"
-  }]));
-  return {
+  const record = {
     ...section,
     family: "ea",
     tNominal: section.t,
@@ -3305,10 +3315,28 @@ function beamAngleSection(section) {
     Zx: catalogue?.axes?.a?.Z || 0,
     Sx: catalogue?.axes?.a?.S || 0,
     axes: catalogue?.axes || null,
-    grades,
-    capacityStatus: Object.keys(grades).length ? "checked" : "unavailable",
     sourceRef: "InfraBuild 2019 Tables 19-20 · PDF pp. 19-20",
     sourceBasis: "Published catalogue load-direction capacity table"
+  };
+  const grades = Object.fromEntries(Object.entries(capacityGrades).map(([name, grade]) => {
+    const directions = Object.fromEntries(Object.entries(grade.directions || {}).map(([key, data]) => {
+      const reconciliation = BeamSectionReconciliation.reconcile(record, grade, key);
+      return [key, {
+        ...data,
+        compactness: reconciliation.status === "reconciled" ? reconciliation.publishedClass : null,
+        compactnessBasis: reconciliation.status === "reconciled" ? "derived-ze-interval" : null
+      }];
+    }));
+    return [name, {
+      ...grade,
+      directions,
+      sourceRef: "InfraBuild 2019 Tables 19-20 · PDF pp. 19-20"
+    }];
+  }));
+  return {
+    ...record,
+    grades,
+    capacityStatus: Object.keys(grades).length ? "checked" : "unavailable"
   };
 }
 
@@ -3487,7 +3515,7 @@ function renderSectionRatios(ratios) {
   const values = valid.length
     ? valid.map(item => `${safeText(item.label)} = ${item.value.toLocaleString("en-AU", { maximumFractionDigits: 2 })}`).join("; ")
     : "Not applicable to the selected geometry";
-  $("sectionGeometricRatios").innerHTML = `<b>Geometric ratios</b> &mdash; ${values}. No section classification is assigned.`;
+  $("sectionGeometricRatios").innerHTML = `<b>Geometric ratios</b> &mdash; ${values}. Geometric only; any section classification is reported separately from checked design-property data.`;
 }
 
 function sectionDrawingFromInputs(shape) {
@@ -3525,6 +3553,7 @@ function renderSectionPropertiesDiagram(drawing, properties, title, catalogueMod
     : shape === "circle" || shape === "chs" ? drawing.D
       : shape === "angle" ? drawing.b : drawing.d;
   if (!(width > 0) || !(height > 0)) return;
+  svg.closest(".section-properties-figure").hidden = false;
 
   const scale = Math.min(108 / width, 112 / height);
   const drawnWidth = width * scale;
@@ -3622,7 +3651,7 @@ function renderSectionPropertiesDiagram(drawing, properties, title, catalogueMod
     <text class="section-properties-axis-label" x="${line(axisX + 7)}" y="${line(yStart)}">${verticalAxis}</text>
     <text class="section-properties-centroid-label" x="${line(axisX + 7)}" y="${line(axisY + 13)}">C</text>`;
   $("sectionPropertiesDiagramCaption").textContent = angleAxes
-    ? `${catalogueMode ? "Selected" : "Entered"} dimensions · p/n centroidal · x/y principal${indicative ? " · C indicative" : ""}`
+    ? `${catalogueMode ? "Selected" : "Entered"} dimensions · n-n / p-p centroidal · x-x / y-y principal${indicative ? " · C indicative" : ""}`
     : indicative
     ? `Schematic only · ${indicativeCaption}`
     : catalogueMode
@@ -3673,13 +3702,21 @@ function sectionMaterialDefaultThickness() {
 
 function populateSectionMaterialGrades(preferredGrade) {
   const form = $("sectionMaterialForm").value;
+  const definition = SteelMaterials.PRODUCT_FORMS[form];
+  if (!definition) {
+    $("sectionMaterialGrade").innerHTML = `<option value="">Select material basis first</option>`;
+    $("sectionMaterialGrade").disabled = true;
+    document.querySelectorAll(".section-material-project-field").forEach(field => { field.hidden = true; });
+    $("sectionMaterialThicknessLabel").textContent = "Governing thickness";
+    return;
+  }
   const grades = SteelMaterials.gradeOptions(form);
   $("sectionMaterialGrade").innerHTML = grades.map(grade => `<option value="${safeText(grade)}">${safeText(grade)}</option>`).join("");
   const defaultGrade = form === "hollow-section" ? "C350L0" : grades[0];
   $("sectionMaterialGrade").value = grades.includes(preferredGrade) ? preferredGrade : defaultGrade;
   const project = form === "project";
   document.querySelectorAll(".section-material-project-field").forEach(field => { field.hidden = !project; });
-  const definition = SteelMaterials.PRODUCT_FORMS[form];
+  $("sectionMaterialGrade").disabled = false;
   $("sectionMaterialThicknessLabel").textContent = definition.thicknessLabel;
 }
 
@@ -3695,28 +3732,49 @@ function syncSectionMaterialControls(reset = false, preserveForm = false) {
   const defaultForm = sectionMaterialDefaultForm();
   const catalogue = sectionPropertiesMode === "catalogue";
   if (reset) sectionMaterialThicknessManual = false;
-  if (catalogue || (reset && !preserveForm) || !SteelMaterials.PRODUCT_FORMS[previousForm]) $("sectionMaterialForm").value = defaultForm;
+  if (catalogue) {
+    $("sectionMaterialForm").value = defaultForm;
+  } else if (reset && !preserveForm) {
+    $("sectionMaterialForm").value = "";
+  } else if (previousForm && SteelMaterials.PRODUCT_FORMS[previousForm]) {
+    $("sectionMaterialForm").value = previousForm;
+  } else {
+    $("sectionMaterialForm").value = "";
+  }
   $("sectionMaterialForm").disabled = catalogue;
   populateSectionMaterialGrades(previousGrade);
-  const project = $("sectionMaterialForm").value === "project";
-  const geometryLinked = !catalogue && !project && !sectionMaterialThicknessManual;
+  if (catalogue && reset) {
+    const listedGrades = Object.keys(sectionCheckedDesignRecord()?.grades || {});
+    if (listedGrades.length && !listedGrades.includes($("sectionMaterialGrade").value)) {
+      $("sectionMaterialGrade").value = listedGrades[0];
+    }
+  }
+  const selectedForm = $("sectionMaterialForm").value;
+  const hasMaterialBasis = Boolean(SteelMaterials.PRODUCT_FORMS[selectedForm]);
+  const project = selectedForm === "project";
+  const geometryLinked = !catalogue && hasMaterialBasis && !project && !sectionMaterialThicknessManual;
   const thickness = sectionMaterialDefaultThickness();
-  if (catalogue || geometryLinked) $("sectionMaterialThickness").value = Number.isFinite(thickness) && thickness > 0 ? thickness : "";
-  $("sectionMaterialThickness").disabled = catalogue || geometryLinked;
+  if (!hasMaterialBasis) $("sectionMaterialThickness").value = "";
+  else if (catalogue || geometryLinked) $("sectionMaterialThickness").value = Number.isFinite(thickness) && thickness > 0 ? thickness : "";
+  $("sectionMaterialThickness").disabled = !hasMaterialBasis || catalogue || geometryLinked;
   $("sectionMaterialThickness").dataset.basis = sectionMaterialThicknessBasis();
   $("sectionMaterialThicknessState").textContent = catalogue
     ? "Catalogue"
+    : !hasMaterialBasis
+      ? "Select material basis"
     : project
       ? "Project input"
       : sectionMaterialThicknessManual
         ? "Manual override"
         : "Geometry linked";
   $("sectionMaterialThicknessState").classList.toggle("is-manual", project || sectionMaterialThicknessManual);
-  $("sectionMaterialThicknessOverride").hidden = catalogue || project;
+  $("sectionMaterialThicknessOverride").hidden = !hasMaterialBasis || catalogue || project;
   $("sectionMaterialThicknessOverride").textContent = sectionMaterialThicknessManual ? "Use geometry" : "Override";
   $("sectionMaterialThicknessOverride").setAttribute("aria-pressed", String(sectionMaterialThicknessManual));
   $("sectionMaterialInputNote").textContent = catalogue
     ? "Product form and governing thickness follow the selected section."
+    : !hasMaterialBasis
+      ? "Select the product form or project-defined basis before using material strengths."
     : project
       ? "Project-defined fy, fu and governing thickness are explicit user inputs."
       : sectionMaterialThicknessManual
@@ -3735,10 +3793,16 @@ function selectedSectionMaterial() {
   });
 }
 
+function sameSectionDimension(a, b) {
+  return Number.isFinite(Number(a)) && Number.isFinite(Number(b))
+    && Math.abs(Number(a) - Number(b)) < 1e-6;
+}
+
 function sectionCheckedDesignRecord() {
   if (sectionPropertiesMode !== "catalogue") return null;
   const family = selectedSectionCatalogueFamily()?.key;
-  const designation = selectedSectionCatalogueRecord()?.designation;
+  const selected = selectedSectionCatalogueRecord();
+  const designation = selected?.designation;
   if (!designation) return null;
   if (family === "ub") {
     const section = ubSections.find(item => item.designation === designation);
@@ -3752,9 +3816,11 @@ function sectionCheckedDesignRecord() {
     const section = BeamHotRolledData.pfc.find(item => item.designation === designation);
     return section ? beamPfcSection(section) : null;
   }
-  if (family === "chs") return beamHollowSections("chs").find(item => item.designation === designation) || null;
+  if (family === "chs") return beamHollowSections("chs").find(item =>
+    sameSectionDimension(item.D, selected.drawing?.D) && sameSectionDimension(item.t, selected.drawing?.t)
+  ) || null;
   if (family === "ea") {
-    const section = eaSections.find(item => item.designation === designation);
+    const section = eaCatalogueSections.find(item => item.designation === designation);
     return section ? beamAngleSection(section) : null;
   }
   if (family === "rod") {
@@ -3787,7 +3853,9 @@ function renderSectionMaterial(material, designRecord) {
     ? `${material.thicknessLabel} = ${material.thickness.toLocaleString("en-AU", { maximumFractionDigits: 1 })} mm`
     : `${material.thicknessLabel} not resolved`;
   $("sectionMaterialStandard").textContent = `${material.standard} · ${material.grade}`;
-  $("sectionMaterialStandardBasis").textContent = `${material.table} · ${thicknessText} · ${thicknessBasisLabel}`;
+  $("sectionMaterialStandardBasis").textContent = material.productForm
+    ? `${material.table} · ${thicknessText} · ${thicknessBasisLabel}`
+    : "Select product form";
   setSectionMaterialValue("sectionMaterialFy", "sectionMaterialFyBasis", material.fy, material.strengthBasis === "project" ? "Project input" : "Standard");
   $("sectionMaterialFyDetail").hidden = !Number.isFinite(webYieldStrength) || webYieldStrength === material.fy;
   $("sectionMaterialFyDetail").innerHTML = Number.isFinite(webYieldStrength) && webYieldStrength !== material.fy
@@ -3813,27 +3881,58 @@ function sectionDirectionLabel(record, key) {
   return beamFamilyDefinitions[record?.family]?.directions?.find(direction => direction[0] === key)?.[1] || key;
 }
 
+function sectionDesignUnavailableReason(record, grade) {
+  if (sectionPropertiesMode !== "catalogue") return "Not evaluated · custom geometry";
+  if (!record) return "No checked design row";
+  if (!grade) return "Selected grade not listed for this section";
+  return "Not published in checked row";
+}
+
+function formatSectionDesignValue(value) {
+  return Number(value).toLocaleString("en-AU", { maximumSignificantDigits: 3 });
+}
+
+function sectionDesignDirectionRows(record, directions, valueForDirection) {
+  return directions.map(([key, data]) => {
+    const value = valueForDirection(data);
+    return value ? `<span class="section-design-direction"><span>${safeText(sectionDirectionLabel(record, key))}</span><b>${safeText(value)}</b></span>` : "";
+  }).filter(Boolean).join("");
+}
+
 function renderSectionDesignAttributes(record, gradeName) {
+  const showDesignValues = sectionPropertiesMode === "catalogue";
+  $("sectionDesignAttributeHeading").hidden = !showDesignValues;
+  $("sectionDesignAttributes").hidden = !showDesignValues;
+  if (!showDesignValues) return;
+
   const grade = record?.grades?.[gradeName];
   const unavailable = !grade;
+  const unavailableReason = sectionDesignUnavailableReason(record, grade);
   $("sectionDesignKf").textContent = Number.isFinite(grade?.kf) ? grade.kf.toFixed(3) : "—";
-  $("sectionDesignKfBasis").textContent = Number.isFinite(grade?.kf) ? "Catalogue · exact row" : "Not available";
+  $("sectionDesignKfBasis").textContent = Number.isFinite(grade?.kf) ? "Catalogue · exact row" : unavailableReason;
   $("sectionDesignKfBasis").classList.toggle("unavailable", !Number.isFinite(grade?.kf));
 
   const directions = Object.entries(grade?.directions || {});
-  const compactnessValues = directions
-    .filter(([, data]) => data.compactness)
-    .map(([key, data]) => `${sectionDirectionLabel(record, key)}: ${compactnessText(data.compactness)}`);
-  const zeValues = directions
-    .filter(([, data]) => Number.isFinite(data.Ze) && data.Ze > 0)
-    .map(([key, data]) => `${sectionDirectionLabel(record, key)}: ${formatBeamNumber(data.Ze, 1)} × 10³ mm³`);
+  const compactnessRows = sectionDesignDirectionRows(record, directions, data =>
+    data.compactness ? compactnessText(data.compactness) : ""
+  );
+  const compactnessBases = new Set(directions.map(([, data]) => data.compactnessBasis).filter(Boolean));
+  const zeRows = sectionDesignDirectionRows(record, directions, data =>
+    Number.isFinite(data.Ze) && data.Ze > 0 ? `${formatSectionDesignValue(data.Ze)} × 10³ mm³` : ""
+  );
 
-  $("sectionDesignCompactness").textContent = compactnessValues.length ? compactnessValues.join(" · ") : "—";
-  $("sectionDesignCompactnessBasis").textContent = compactnessValues.length ? "Catalogue · exact row" : "Not available";
-  $("sectionDesignCompactnessBasis").classList.toggle("unavailable", !compactnessValues.length);
-  $("sectionDesignZe").textContent = zeValues.length ? zeValues.join(" · ") : "—";
-  $("sectionDesignZeBasis").textContent = zeValues.length ? "Catalogue · exact row" : "Not available";
-  $("sectionDesignZeBasis").classList.toggle("unavailable", !zeValues.length);
+  $("sectionDesignCompactness").innerHTML = compactnessRows || "&mdash;";
+  $("sectionDesignCompactnessBasis").textContent = compactnessRows
+    ? compactnessBases.size === 1 && compactnessBases.has("derived-ze-interval")
+      ? "Derived · catalogue Ze interval"
+      : compactnessBases.size
+        ? "Derived · checked AS 4100 reconciliation"
+        : "Catalogue · exact row"
+    : unavailableReason;
+  $("sectionDesignCompactnessBasis").classList.toggle("unavailable", !compactnessRows);
+  $("sectionDesignZe").innerHTML = zeRows || "&mdash;";
+  $("sectionDesignZeBasis").textContent = zeRows ? "Catalogue · exact row" : unavailableReason;
+  $("sectionDesignZeBasis").classList.toggle("unavailable", !zeRows);
   $("sectionDesignAttributes").dataset.state = unavailable ? "unavailable" : "checked";
 }
 
@@ -3841,13 +3940,28 @@ function populateSectionCatalogueFamilies() {
   $("sectionCatalogueFamily").innerHTML = sectionCatalogueFamilies
     .map(family => `<option value="${family.key}">${safeText(family.label)}</option>`)
     .join("");
+  $("sectionCatalogueFamilyTabs").innerHTML = sectionCatalogueFamilies
+    .map(family => `<button class="section-catalogue-family-tab" type="button" data-section-catalogue-family="${family.key}" aria-pressed="false">${safeText(sectionCatalogueFamilyNames[family.key] || family.label)}</button>`)
+    .join("") + '<button class="section-catalogue-family-tab" type="button" data-section-category-custom aria-pressed="false">Custom geometry</button>';
   $("sectionCatalogueFamily").value = "pfc";
   populateSectionCatalogueDesignations(false);
   syncSectionMaterialControls(true);
 }
 
+function syncSectionCatalogueFamilyTabs() {
+  const selectedFamily = $("sectionCatalogueFamily").value;
+  document.querySelectorAll(".section-catalogue-family-tab").forEach(button => {
+    const active = sectionPropertiesMode === "custom"
+      ? button.hasAttribute("data-section-category-custom")
+      : button.dataset.sectionCatalogueFamily === selectedFamily;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
 function populateSectionCatalogueDesignations(recalculate = true) {
   const family = selectedSectionCatalogueFamily();
+  syncSectionCatalogueFamilyTabs();
   $("sectionCatalogueDesignation").innerHTML = family.sections
     .map(section => `<option value="${safeText(section.id)}">${safeText(section.designation)}</option>`)
     .join("");
@@ -3865,6 +3979,7 @@ function setSectionPropertyMode(mode) {
   });
   $("sectionCatalogueGroup").hidden = sectionPropertiesMode !== "catalogue";
   $("sectionCustomGroup").hidden = sectionPropertiesMode !== "custom";
+  syncSectionCatalogueFamilyTabs();
   syncSectionMaterialControls(true);
   calculateSectionProperties();
 }
@@ -3950,35 +4065,6 @@ function setSectionDirectionalAw(primary, alternate, directional) {
     : "—";
 }
 
-function sectionPropertyStep(label, property, unit, signed = false) {
-  if (!property || property.value === null) {
-    return calculationTraceRow({
-      title: label,
-      result: "Not available",
-      applicability: `${SectionCatalogue.BASIS.unavailable}.`
-    });
-  }
-  const valueText = ["mm²", "mm", "kg/m"].includes(unit)
-    ? property.value.toLocaleString("en-AU", { maximumFractionDigits: 1 })
-    : signed ? sectionSignedPowerValue(property.value) : sectionPowerValue(property.value);
-  const basis = sectionBasisLabel(property);
-  const catalogueValue = String(basis).toLowerCase().includes("catalogue");
-  return calculationTraceRow(catalogueValue
-    ? {
-        title: label,
-        lookup: basis,
-        selection: "Selected catalogue section and property row.",
-        adopted: `${valueText} ${unit}`,
-        applicability: "Use with the stated catalogue edition and selected section designation."
-      }
-    : {
-        title: label,
-        formula: basis,
-        result: `${valueText} ${unit}`,
-        applicability: "Derived from the selected catalogue geometry or stated source property."
-      });
-}
-
 function configureSectionPropertyPresentation(shape, catalogueMode) {
   const angleAxes = shape === "angle";
   $("sectionAreaLabel").innerHTML = catalogueMode ? "Gross area <i>A<sub>g</sub></i>" : "Gross area <i>A</i>";
@@ -3993,6 +4079,51 @@ function configureSectionPropertyPresentation(shape, catalogueMode) {
     : shape === "i" || shape === "channel"
       ? "Clear web area <i>A<sub>w</sub></i>"
       : "Shear reference area";
+}
+
+function applySectionCircularZeroInterpretation(property, shape) {
+  const raw = property && typeof property === "object" ? property.value : property;
+  if ((shape === "circle" || shape === "chs") && Number.isFinite(Number(raw)) && Math.abs(Number(raw)) <= 1e-9) {
+    $("sectionIwBasis").textContent = `${sectionBasisLabel(property)} · zero by rotational symmetry`;
+  }
+}
+
+function setSectionDerivations(content, summary) {
+  const card = $("sectionDerivationsCard");
+  const hasContent = Boolean(String(content || "").trim());
+  $("sectionFormulaSteps").innerHTML = hasContent ? content : "";
+  $("sectionCalculationSummary").textContent = summary || "Calculated values only";
+  card.hidden = !hasContent;
+  if (!hasContent) card.open = false;
+}
+
+function catalogueDerivedPropertyLabels(properties, angleAxes) {
+  const axisOne = angleAxes ? "n" : "x";
+  const axisTwo = angleAxes ? "p" : "y";
+  return [
+    ["Centroid x̄", properties.cx],
+    ["Centroid ȳ", properties.cy],
+    ["Gross area Ag", properties.area],
+    [`Second moment I${axisOne}`, properties.ix],
+    [`Second moment I${axisTwo}`, properties.iy],
+    [`Elastic modulus Z${axisOne}`, properties.zx],
+    [`Elastic modulus Z${axisTwo}`, properties.zy],
+    [`Plastic modulus S${axisOne}`, properties.sx],
+    [`Plastic modulus S${axisTwo}`, properties.sy],
+    [`Radius r${axisOne}`, properties.rx],
+    [`Radius r${axisTwo}`, properties.ry],
+    ["St Venant torsion J", properties.j],
+    ["Warping constant Iw", properties.iw],
+    ["Shear-centre offset XO", properties.xo],
+    ["Shear reference area", properties.aw],
+    [`Polar second moment I${axisOne} + I${axisTwo}`, properties.jp],
+    [`Product of inertia I${angleAxes ? "np" : "xy"}`, properties.ixy],
+    ["Principal second moments", properties.iu],
+    ["Principal radii", properties.ru],
+    ["Principal-axis angle", properties.thetaU]
+  ]
+    .filter(([, property]) => property?.value !== null && String(sectionBasisLabel(property)).startsWith("Derived"))
+    .map(([label]) => label);
 }
 
 function sectionPropertyNumber(property) {
@@ -4083,6 +4214,10 @@ function configureSectionSpecificProperties(properties, shape) {
   const hasSupplementary = Object.values(cardVisibility).some(Boolean);
   $("sectionSupplementaryHeading").hidden = !hasSupplementary;
   $("sectionSupplementaryProperties").hidden = !hasSupplementary;
+  if (hasSupplementary && cardVisibility.sectionJpCard && Object.entries(cardVisibility).every(([id, visible]) => id === "sectionJpCard" || !visible)) {
+    $("sectionSupplementaryTitle").textContent = "Supplementary geometric reference";
+    $("sectionSupplementaryDescription").textContent = "Polar second moment about the displayed centroidal axes.";
+  }
 
   const hasIxy = Number.isFinite(sectionPropertyNumber(properties?.ixy));
   $("sectionPrincipalHeading").hidden = !hasIxy;
@@ -4128,12 +4263,8 @@ function clearSectionPropertyOutputs(message) {
   configureSectionSpecificProperties(null, "");
   setSectionIxyInterpretation(null, "");
   renderSectionRatios([]);
-  $("sectionFormulaSteps").innerHTML = calculationTraceRow({
-    title: "Section properties",
-    result: "Not evaluated",
-    applicability: safeText(message),
-    state: "warning"
-  });
+  setSectionDerivations("", "Unavailable for invalid geometry");
+  $("sectionPropertiesDiagram").closest(".section-properties-figure").hidden = true;
   $("sectionPropertiesWarning").textContent = message;
 }
 
@@ -4181,6 +4312,7 @@ function calculateCustomSectionProperties() {
     setSectionPropertyOutput("sectionRy", "sectionRyBasis", customValue(properties.ry), "decimal");
     setSectionPropertyOutput("sectionJ", "sectionJBasis", customValue(properties.j), "power");
     setSectionPropertyOutput("sectionIw", "sectionIwBasis", customValue(properties.iw), "power");
+    applySectionCircularZeroInterpretation(customValue(properties.iw), shape);
     setSectionPropertyOutput("sectionXo", "sectionXoBasis", null, "decimal");
     setSectionDirectionalAw(customValue(shape === "rhs" ? properties.awy : properties.aw), customValue(properties.awx), shape === "rhs");
     setSectionPropertyOutput("sectionJp", "sectionJpBasis", customValue(properties.jp), "power");
@@ -4193,11 +4325,10 @@ function calculateCustomSectionProperties() {
     renderSectionRatios(customSectionRatios(shape));
     $("sectionProductGeometry").hidden = true;
     $("sectionPrincipalModuli").hidden = true;
-    $("sectionPropertiesWarning").textContent = "Geometry and material bases are shown together. Material-dependent section values remain unavailable for ideal custom geometry; capacity and stability are excluded.";
-    $("sectionCalculationSummary").textContent = "Standard geometric relationships for the entered dimensions";
+    $("sectionPropertiesWarning").textContent = "Ideal geometry only. Material-dependent design values, capacity and stability are not evaluated.";
     $("sectionSourceSummary").textContent = "Ideal geometry · no product-table values";
-    $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Basis</b> &mdash; standard area, centroid, product-of-inertia and parallel-axis relationships; Z = I/c, r = &radic;(I/A), and steel mass = 0.00785A kg/m. For implemented plastic moduli, each plastic neutral axis divides the gross area equally and S is the first absolute area moment about that axis.</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry. ${shearReferenceText}; it is not a design-standard effective shear area.</p>`;
-    $("sectionFormulaSteps").innerHTML = [
+    $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry. ${shearReferenceText}; it is not a design-standard effective shear area.</p>`;
+    setSectionDerivations([
       calculationTraceRow({
         title: "Gross area and geometry model",
         formula: `A = &Sigma;s<sub>i</sub>A<sub>i</sub>`,
@@ -4264,11 +4395,11 @@ function calculateCustomSectionProperties() {
         applicability: "This is not the St Venant torsion constant J except for circular sections."
       }),
       calculationTraceRow({
-        title: "Torsion and scope",
+        title: "Torsion boundary",
         result: "J and Iw shown only where a reviewed closed-form relationship is implemented",
-        applicability: "Material properties are resolved separately. Effective properties and classification require an exact checked section / grade / direction row; design capacity is excluded."
+        applicability: "Effective properties, classification, design capacity, stability, actions and utilisation are excluded."
       })
-    ].join("");
+    ].join(""), "Entered-geometry calculations");
   } catch (error) {
     clearSectionPropertyOutputs(error instanceof Error ? error.message : "Invalid section geometry.");
   }
@@ -4286,13 +4417,6 @@ function calculateCatalogueSectionProperties() {
   configureSectionPropertyPresentation(section.drawing.shape, true);
   configureSectionPropertyHierarchy(section.drawing.shape, true, family.key);
   const angleAxes = family.key === "ea";
-  const axisOne = angleAxes ? "n" : "x";
-  const axisTwo = angleAxes ? "p" : "y";
-  const principalOne = angleAxes ? "x" : "u";
-  const principalTwo = angleAxes ? "y" : "v";
-  const shearReferenceLabel = section.drawing.shape === "i" || section.drawing.shape === "channel"
-    ? "Clear web area Aw"
-    : "Shear reference area";
   $("sectionCxLabel").innerHTML = family.key === "pfc" ? "Centroid <i>X<sub>L</sub></i>" : "Centroid <i>x&#772;</i>";
   $("sectionMassLabel").textContent = "Mass per metre";
   const hasCx = Number.isFinite(properties.cx?.value);
@@ -4329,6 +4453,7 @@ function calculateCatalogueSectionProperties() {
   setSectionPropertyOutput("sectionRy", "sectionRyBasis", properties.ry, "decimal");
   setSectionPropertyOutput("sectionJ", "sectionJBasis", properties.j, "power");
   setSectionPropertyOutput("sectionIw", "sectionIwBasis", properties.iw, "power");
+  applySectionCircularZeroInterpretation(properties.iw, section.drawing.shape);
   setSectionPropertyOutput("sectionXo", "sectionXoBasis", properties.xo, "decimal");
   setSectionDirectionalAw(section.drawing.shape === "rhs" ? properties.awy : properties.aw, properties.awx, section.drawing.shape === "rhs");
   setSectionPropertyOutput("sectionJp", "sectionJpBasis", properties.jp, "power");
@@ -4365,48 +4490,21 @@ function calculateCatalogueSectionProperties() {
     principalModuli.hidden = true;
   }
 
-  $("sectionPropertiesWarning").textContent = family.key === "chs" || family.key === "rod"
-    ? "Catalogue dimensions, derived geometry and standard material values retain separate basis labels. Capacity and member checks are excluded."
-    : "Each value retains its catalogue, standard or derived basis. Missing catalogue properties are not inferred.";
-  $("sectionCalculationSummary").textContent = "Catalogue values and stated derivations";
+  $("sectionPropertiesWarning").textContent = "Catalogue gaps remain unavailable. Capacity and member checks are excluded.";
   $("sectionSourceSummary").textContent = `${source.publisher} · ${source.status}`;
-  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. This lookup remains Draft.</p><p><b>Derivation</b> &mdash; ${safeText(section.derivation)}</p>`;
-  $("sectionFormulaSteps").innerHTML = [
-    sectionPropertyStep("Mass per metre", massProperty, "kg/m"),
-    sectionPropertyStep("Gross area Ag", properties.area, "mm²"),
-    sectionPropertyStep("Centroid x̄", properties.cx, "mm"),
-    sectionPropertyStep("Centroid ȳ", properties.cy, "mm"),
-    sectionPropertyStep(`Second moment I${axisOne}`, properties.ix, "mm⁴"),
-    sectionPropertyStep(`Second moment I${axisTwo}`, properties.iy, "mm⁴"),
-    properties.zxAlt?.value !== null
-      ? sectionPropertyStep(`Elastic modulus Z${axisOne},T`, properties.zx, "mm³")
-      : sectionPropertyStep(`Elastic modulus Z${axisOne}`, properties.zx, "mm³"),
-    properties.zxAlt?.value !== null ? sectionPropertyStep(`Elastic modulus Z${axisOne},B`, properties.zxAlt, "mm³") : "",
-    properties.zyAlt?.value !== null
-      ? sectionPropertyStep(`Elastic modulus Z${axisTwo},R`, properties.zy, "mm³")
-      : sectionPropertyStep(`Elastic modulus Z${axisTwo}`, properties.zy, "mm³"),
-    properties.zyAlt?.value !== null ? sectionPropertyStep(`Elastic modulus Z${axisTwo},L`, properties.zyAlt, "mm³") : "",
-    sectionPropertyStep(`Plastic modulus S${axisOne}`, properties.sx, "mm³"),
-    sectionPropertyStep(`Plastic modulus S${axisTwo}`, properties.sy, "mm³"),
-    sectionPropertyStep(`Radius r${axisOne}`, properties.rx, "mm"),
-    sectionPropertyStep(`Radius r${axisTwo}`, properties.ry, "mm"),
-    sectionPropertyStep("St Venant torsion J", properties.j, "mm⁴"),
-    sectionPropertyStep("Warping constant Iw", properties.iw, "mm⁶"),
-    sectionPropertyStep("Shear-centre offset XO", properties.xo, "mm"),
-    sectionPropertyStep(shearReferenceLabel, properties.aw, "mm²"),
-    sectionPropertyStep(`Polar second moment I${axisOne} + I${axisTwo}`, properties.jp, "mm⁴"),
-    sectionPropertyStep(`Product of inertia I${angleAxes ? "np" : "xy"}`, properties.ixy, "mm⁴", true),
-    sectionPropertyStep(`Principal second moment I${principalOne}`, properties.iu, "mm⁴"),
-    sectionPropertyStep(`Principal second moment I${principalTwo}`, properties.iv, "mm⁴"),
-    sectionPropertyStep(`Principal radius r${principalOne}`, properties.ru, "mm"),
-    sectionPropertyStep(`Principal radius r${principalTwo}`, properties.rv, "mm"),
-    sectionPropertyStep(`Principal-axis angle θ${principalOne}`, properties.thetaU, "°"),
-    calculationTraceRow({
-      title: "Scope",
-      result: "Section, material and checked design attributes",
-      applicability: "Material and exact-row design attributes are reference outputs. Capacity, stability, actions and utilisation are excluded."
-    })
-  ].join("");
+  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. This lookup remains Draft.</p>`;
+  const derivedLabels = catalogueDerivedPropertyLabels(properties, angleAxes);
+  const derivationSentences = String(section.derivation || "").split(". ");
+  const calculatedBasis = derivationSentences.length > 1
+    ? derivationSentences.slice(1).join(". ")
+    : section.derivation;
+  setSectionDerivations(derivedLabels.length
+    ? calculationTraceRow({
+        title: "Catalogue-derived properties",
+        formula: safeText(calculatedBasis),
+        applicability: "Only result cards marked Derived are covered here; published catalogue values are not repeated."
+      })
+    : "", derivedLabels.length ? "Calculated from selected catalogue data" : "No calculated values");
 }
 
 function calculateSectionProperties() {
@@ -4424,15 +4522,6 @@ function calculateSectionProperties() {
     project: "project input"
   }[material.thicknessBasis] || "entered";
   $("sectionSourceDetails").insertAdjacentHTML("beforeend", `<p><b>Material basis</b> &mdash; ${safeText(material.source)}; ${safeText(material.thicknessLabel)} ${Number.isFinite(material.thickness) ? `= ${material.thickness.toLocaleString("en-AU", { maximumFractionDigits: 1 })} mm` : "not resolved"} (${safeText(thicknessBasisLabel)}). f<sub>y</sub> / f<sub>u</sub> are ${material.strengthBasis === "project" ? "project inputs" : "standard lookup values"}; confirm the supplied product test certificate before design issue.</p>`);
-  $("sectionFormulaSteps").insertAdjacentHTML("afterbegin", calculationTraceRow({
-    title: "Material properties",
-    reference: material.productForm === "project" ? "Project documents" : material.source,
-    formula: "Resolve product form, grade and controlling thickness before selecting fy and fu",
-    substitution: `${material.productFormLabel}; ${material.grade}; ${material.thicknessLabel} ${Number.isFinite(material.thickness) ? `= ${material.thickness.toFixed(1)} mm` : "not resolved"}; ${thicknessBasisLabel}`,
-    result: Number.isFinite(material.fy) && Number.isFinite(material.fu) ? `f<sub>y</sub> = ${material.fy} MPa; f<sub>u</sub> = ${material.fu} MPa` : "Material strengths not verified",
-    applicability: "Reference properties only. No design capacity, member stability, action or utilisation is calculated in this tab.",
-    state: material.status === "resolved" ? "checked" : "warning"
-  }));
 }
 
 function beamWebShearReduction(section, grade) {
@@ -8694,7 +8783,7 @@ function setTool(tool, updateHash = true) {
     const active = button.dataset.tool === selectedTool;
     button.hidden = button.dataset.category !== selectedCategory;
     button.classList.toggle("active", active);
-    button.setAttribute("aria-selected", String(active));
+    button.setAttribute("aria-pressed", String(active));
     if (active) activeButton = button;
   });
   const activeToolTab = document.querySelector(`.tool-tab[data-tool="${selectedTool}"]`);
@@ -8883,6 +8972,17 @@ function initialise() {
   $("beamMomentDemand").addEventListener("input", calculateBeam);
   $("beamShearDemand").addEventListener("input", calculateBeam);
   document.querySelectorAll(".section-properties-mode").forEach(button => button.addEventListener("click", () => setSectionPropertyMode(button.dataset.sectionPropertiesMode)));
+  $("sectionCatalogueFamilyTabs").addEventListener("click", event => {
+    const button = event.target.closest(".section-catalogue-family-tab");
+    if (!button) return;
+    if (button.hasAttribute("data-section-category-custom")) {
+      setSectionPropertyMode("custom");
+      return;
+    }
+    if (sectionPropertiesMode !== "catalogue") setSectionPropertyMode("catalogue");
+    $("sectionCatalogueFamily").value = button.dataset.sectionCatalogueFamily;
+    populateSectionCatalogueDesignations();
+  });
   $("sectionCatalogueFamily").addEventListener("change", populateSectionCatalogueDesignations);
   $("sectionCatalogueDesignation").addEventListener("change", () => {
     syncSectionMaterialControls(true);

@@ -22,7 +22,7 @@ assert.deepEqual({ Zex: rhs.Zex, Zey: rhs.Zey }, { Zex: 10.1, Zey: 4.33 });
 
 assert.equal(Object.keys(hotRolled.universal).length, 41);
 assert.equal(hotRolled.pfc.length, 10);
-assert.equal(Object.keys(hotRolled.equalAngle).length, 13);
+assert.equal(Object.keys(hotRolled.equalAngle).length, 46);
 assert.ok(hollowRows.every(row => row.sourceTable && row.pdfPage > 0 && row.area > 0));
 assert.ok(hollowRows.filter(row => row.family === "chs").every(row => row.I > 0 && row.Z > 0 && row.S > 0 && row.Ze > 0));
 assert.ok(hollowRows.filter(row => row.family === "rhs").every(row =>
@@ -50,7 +50,9 @@ assert.equal(hotRolled.universal["310UB40.4"].grades["300PLUS"].Ze, 139);
 assert.equal(hotRolled.universal["310UB40.4"].x.I, 86.4e6);
 assert.equal(hotRolled.universal["200UC46.2"].x.I, 45.9e6);
 assert.equal(hotRolled.pfc.find(section => section.designation === "150PFC").grades["300PLUS"].directions["y-a"].Ze, 38.5);
+assert.equal(hotRolled.equalAngle["200 x 200 x 26 EA"]["300PLUS"].directions.a.Ze, 602);
 assert.equal(hotRolled.equalAngle["100 x 100 x 10 EA"]["300PLUS"].directions.b.Ze, 25.2);
+assert.equal(hotRolled.equalAngle["25 x 25 x 3 EA"]["Grade 350"].directions.d.Ze, 0.479);
 
 const pfc = hotRolled.pfc.find(section => section.designation === "150PFC");
 assert.deepEqual({ xL: pfc.xL, xO: pfc.xO, Ix: pfc.axes.x.I, Iy: pfc.axes["y-a"].I }, {
@@ -76,6 +78,8 @@ assert.deepEqual(angle.axes, {
 });
 
 assert.deepEqual(Object.keys(hotRolled.equalAngleProperties).sort(), Object.keys(hotRolled.equalAngle).sort());
+assert.equal(hotRolled.equalAngleProperties["200 x 200 x 26 EA"].axes.a.I, 56.8e6);
+assert.equal(hotRolled.equalAngleProperties["25 x 25 x 3 EA"].axes.d.Z, 0.319);
 assert.ok(hotRolled.pfc.every(section => section.xL > 0 && section.xO > section.xL));
 
 console.log("beam-section-data tests passed");

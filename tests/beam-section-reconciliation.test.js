@@ -121,7 +121,7 @@ function universalChecks() {
 }
 
 const checks = [...universalChecks(), ...pfcAndAngleChecks(), ...hollowChecks()];
-assert.equal(checks.length, 717);
+assert.equal(checks.length, 981);
 assert.deepEqual(
   checks.filter(check => check.result.status !== "reconciled").map(check => check.key),
   []
