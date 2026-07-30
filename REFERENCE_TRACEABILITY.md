@@ -907,3 +907,7 @@ Build 0.7.12 clarifies inputs without changing calculation logic:
 - the polygon bend-radius ratio identifies 3.0 as an editable example, not a Standard value.
 
 The Monopole DOM contract asserts these labels and rejects the superseded ambiguous wording. Circular category branches, polygon calculations, material lookup, mass and overlap logic are unchanged.
+
+## 2026-07-30 Steel Monopole Material Layout Correction
+
+Build 0.7.13 aligns the three primary material controls at their top edge and presents the optional design-thickness override as an intentional secondary row. Supporting text is shortened without changing calculation logic. The local update workflow now requires matched before-and-after layout checks at representative wide and narrow widths.

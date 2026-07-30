@@ -3659,14 +3659,15 @@ Do not port the old monopole prototype wholesale. Start from the current main ap
 
 Preferred workflow:
 
-1. Modify files locally.
-2. Test the static page locally.
-3. Check layout at narrow and wide widths.
-4. Check one or two representative calculations.
-5. Check the exact git diff.
-6. Commit only the intended files.
-7. Push to GitHub only when deployment is requested.
-8. Verify GitHub Pages after deployment.
+1. Capture the affected layout before editing at representative wide and narrow widths.
+2. Modify files locally.
+3. Test the static page locally.
+4. Recheck the same wide and narrow layouts, including relevant control states.
+5. Check one or two representative calculations.
+6. Check the exact git diff.
+7. Commit only the intended files.
+8. Push to GitHub only when deployment is requested.
+9. Verify GitHub Pages after deployment.
 
 Current GitHub Pages repo:
 

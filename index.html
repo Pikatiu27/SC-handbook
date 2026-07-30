@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260730monopolelabels1">
+  <link rel="stylesheet" href="styles.css?v=20260730monopolelayout1">
 </head>
 <body>
   <header class="topbar">
@@ -1021,12 +1021,12 @@
 
         <div class="input-cluster">
           <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Material</b><small>Common basis; f<sub>y</sub> is resolved by section.</small></span>
+            <span class="input-group-heading"><b>Material</b><small>Common basis; f<sub>y</sub> varies with section thickness.</small></span>
             <div class="input-group-fields monopole-material-fields">
               <label><span>Yield-strength basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual">Manual yield stress</option></select></label>
               <label id="monopolePlateGradeField"><span>Plate grade</span><select id="monopolePlateGrade"><option value="200">200</option><option value="250">250</option><option value="300">300</option><option value="350" selected>350</option><option value="400">400</option><option value="450">450</option><option value="WR350">WR350</option></select></label>
-              <label id="monopoleFabricationField"><span>AS 4100 fabrication category</span><select id="monopoleFabrication" aria-describedby="monopoleFabricationHelp"><option value="LW">Lightly welded longitudinally (LW)</option><option value="HW">Heavily welded longitudinally (HW)</option><option value="CF">Cold-formed (CF)</option><option value="HR">Hot-rolled (HR)</option><option value="SR">Stress-relieved (SR)</option></select><small class="field-help" id="monopoleFabricationHelp">Circular section only; sets Table 5.2 compactness limits.</small></label>
-              <label class="checkbox-field monopole-design-thickness-toggle"><span>Design thickness override, t<sub>d</sub><small id="monopoleDesignThicknessState" aria-live="polite">Default t<sub>d</sub> = t<sub>nom</sub>; enable for a project design thickness.</small></span><input id="monopoleSeparateDesignThickness" type="checkbox"></label>
+              <label id="monopoleFabricationField"><span>AS 4100 fabrication category</span><select id="monopoleFabrication" aria-describedby="monopoleFabricationHelp"><option value="LW">Lightly welded longitudinally (LW)</option><option value="HW">Heavily welded longitudinally (HW)</option><option value="CF">Cold-formed (CF)</option><option value="HR">Hot-rolled (HR)</option><option value="SR">Stress-relieved (SR)</option></select><small class="field-help" id="monopoleFabricationHelp">Circular only; selects AS 4100 Table 5.2 limits.</small></label>
+              <label class="checkbox-field monopole-design-thickness-toggle"><span>Design thickness override, t<sub>d</sub><small id="monopoleDesignThicknessState" aria-live="polite">Default t<sub>d</sub> = t<sub>nom</sub>.</small></span><input id="monopoleSeparateDesignThickness" type="checkbox"></label>
             </div>
             <p id="monopoleMaterialNote" class="monopole-input-note">Grade 350 f<sub>y</sub> from AS/NZS 3678:2016 Table 8, based on t<sub>nom</sub>.</p>
           </section>
@@ -1829,7 +1829,7 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.12</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.13</b></footer>
   <script src="bolt-capacity.js?v=20260730monopolelabels1"></script>
   <script src="bolt-integrity.js?v=20260730monopolelabels1"></script>
   <script src="weld-capacity.js?v=20260730monopolelabels1"></script>
@@ -1844,7 +1844,7 @@
   <script src="reo-calculation.js?v=20260730monopolelabels1"></script>
   <script src="monopole-capacity.js?v=20260730monopolelabels1"></script>
   <script src="app.js?v=20260730monopolelabels1"></script>
-  <script src="monopole-app.js?v=20260730monopolelabels1"></script>
+  <script src="monopole-app.js?v=20260730monopolelayout1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
