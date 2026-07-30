@@ -974,7 +974,7 @@
           <section class="input-group input-group-section">
             <span class="input-group-heading"><b>Section form</b><small>Applies to all sections.</small></span>
             <div class="input-group-fields six monopole-form-fields">
-              <label><span>Cross-section</span><select id="monopoleSectionForm"><option value="circular">Circular tubular</option><option value="polygon-4">4-sided regular polygon</option><option value="polygon-6">6-sided regular polygon</option><option value="polygon-8">8-sided regular polygon</option><option value="polygon-12">12-sided regular polygon</option><option value="polygon-16">16-sided regular polygon</option></select></label>
+              <label><span>Cross-section</span><select id="monopoleSectionForm"><option value="circular">Circular tubular</option><option value="polygon-4">4-sided regular polygon</option><option value="polygon-6">6-sided regular polygon</option><option value="polygon-8" selected>8-sided regular polygon</option><option value="polygon-12">12-sided regular polygon</option><option value="polygon-16">16-sided regular polygon</option></select></label>
               <label id="monopoleBendRadiusField" hidden><span>Inside bend-radius ratio, r<sub>i</sub>/t<sub>nom</sub></span><span class="unit"><input id="monopoleBendRadiusRatio" type="number" min="0.1" step="0.1" value="3.0" aria-describedby="monopoleBendRadiusHelp"><em>ratio</em></span><small class="field-help" id="monopoleBendRadiusHelp">Example 3.0, not a Standard value; use project or product data. BR = min(r<sub>i</sub>, 4t<sub>d</sub>).</small></label>
             </div>
           </section>
@@ -984,19 +984,19 @@
           <div class="input-group input-group-section">
             <span class="input-group-heading"><b>Overall profile</b><small>Continuous taper; no fabricated sections or slip joints.</small></span>
             <div class="input-group-fields six">
-              <label><span>Overall height, H</span><span class="unit"><input id="monopoleHeight" type="number" min="0.5" step="0.5" value="30"><em>m</em></span></label>
-              <label><span class="monopole-dimension-bottom">Bottom outside diameter, D<sub>b</sub></span><span class="unit"><input id="monopoleBottomDimension" type="number" min="1" step="10" value="1200"><em>mm</em></span></label>
-              <label><span class="monopole-dimension-top">Top outside diameter, D<sub>t</sub></span><span class="unit"><input id="monopoleTopDimension" type="number" min="1" step="10" value="350"><em>mm</em></span></label>
-              <label><span>Nominal wall thickness, t<sub>nom</sub></span><span class="unit"><input id="monopoleThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
-              <label id="monopoleOverallDesignThicknessField" hidden><span>Design thickness override, t<sub>d</sub></span><span class="unit"><input id="monopoleDesignThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
-              <label><span>Yield stress, f<sub>y</sub></span><span class="unit"><input id="monopoleYieldStress" type="number" min="1" step="1" value="350"><em>MPa</em></span></label>
+              <label><span>Overall height, H</span><span class="unit"><input id="monopoleHeight" type="number" min="0.5" step="0.5" value="12"><em>m</em></span></label>
+              <label><span class="monopole-dimension-bottom">Bottom outside diameter, D<sub>b</sub></span><span class="unit"><input id="monopoleBottomDimension" type="number" min="1" step="10" value="240"><em>mm</em></span></label>
+              <label><span class="monopole-dimension-top">Top outside diameter, D<sub>t</sub></span><span class="unit"><input id="monopoleTopDimension" type="number" min="1" step="10" value="90"><em>mm</em></span></label>
+              <label><span>Nominal wall thickness, t<sub>nom</sub></span><span class="unit"><input id="monopoleThickness" type="number" min="0.1" step="0.1" value="3"><em>mm</em></span></label>
+              <label id="monopoleOverallDesignThicknessField" hidden><span>Design thickness override, t<sub>d</sub></span><span class="unit"><input id="monopoleDesignThickness" type="number" min="0.1" step="0.1" value="3"><em>mm</em></span></label>
+              <label><span>Yield stress, f<sub>y</sub></span><span class="unit"><input id="monopoleYieldStress" type="number" min="1" step="1" value="355"><em>MPa</em></span></label>
             </div>
           </div>
         </section>
 
         <section id="monopoleScheduleInputs" class="monopole-input-panel">
           <div class="monopole-schedule-heading">
-            <div><b>Section schedule</b><small>Enter fabricated sections from base to top.</small></div>
+            <div><b>Section schedule</b><small>Base to top · initial values: KISMAT KOP-1230 product table.</small></div>
             <button id="monopoleAddSection" class="monopole-add-section" type="button">Add section</button>
           </div>
           <div class="table-scroll monopole-schedule-scroll">
@@ -1023,12 +1023,12 @@
           <section class="input-group input-group-section">
             <span class="input-group-heading"><b>Material</b><small>Common basis; f<sub>y</sub> varies with section thickness.</small></span>
             <div class="input-group-fields monopole-material-fields">
-              <label><span>Yield-strength basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual">Manual yield stress</option></select></label>
+              <label><span>Yield-strength basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual" selected>Manual yield stress</option></select></label>
               <label id="monopolePlateGradeField"><span>Plate grade</span><select id="monopolePlateGrade"><option value="200">200</option><option value="250">250</option><option value="300">300</option><option value="350" selected>350</option><option value="400">400</option><option value="450">450</option><option value="WR350">WR350</option></select></label>
               <label id="monopoleFabricationField"><span>AS 4100 fabrication category</span><select id="monopoleFabrication" aria-describedby="monopoleFabricationHelp"><option value="LW">Lightly welded longitudinally (LW)</option><option value="HW">Heavily welded longitudinally (HW)</option><option value="CF">Cold-formed (CF)</option><option value="HR">Hot-rolled (HR)</option><option value="SR">Stress-relieved (SR)</option></select><small class="field-help" id="monopoleFabricationHelp">Circular only; selects AS 4100 Table 5.2 limits.</small></label>
               <label class="checkbox-field monopole-design-thickness-toggle"><span>Design thickness override, t<sub>d</sub><small id="monopoleDesignThicknessState" aria-live="polite">Default t<sub>d</sub> = t<sub>nom</sub>.</small></span><input id="monopoleSeparateDesignThickness" type="checkbox"></label>
             </div>
-            <p id="monopoleMaterialNote" class="monopole-input-note">Grade 350 f<sub>y</sub> from AS/NZS 3678:2016 Table 8, based on t<sub>nom</sub>.</p>
+            <p id="monopoleMaterialNote" class="monopole-input-note">E355BR product designation; adopted f<sub>y</sub> = 355 MPa. Verify project data.</p>
           </section>
         </div>
 
@@ -1081,6 +1081,7 @@
           <div class="source-notes">
             <p><b>Circular</b> &middot; AS 4100 Cl. 5.2 and Table 5.2; design section moment capacity.</p>
             <p><b>Regular polygon</b> &middot; ASCE/SEI 48-19 Cls 5.2.3.2.1 and 5.2.5; P = 0 and M = F<sub>a</sub>I/c. BR = min(r<sub>i</sub>, 4t<sub>d</sub>); no AS 4100 &phi;. <a href="https://sp360.asce.org/personifyebusiness/Merchandise/Product-Details/productId/266165183" target="_blank" rel="noreferrer">Publication record</a>.</p>
+            <p><b>Initial product example</b> &middot; KISMAT KOP-1230: one 12 m, 8-sided section; D<sub>o,b</sub> = 240 mm A/F, D<sub>o,t</sub> = 90 mm A/F, t<sub>nom</sub> = 3 mm and E355BR. Adopted editable inputs: f<sub>y</sub> = 355 MPa and r<sub>i</sub>/t<sub>nom</sub> = 3.0; neither value is separately published. Product geometry is not a manufacturer-rated capacity. <a href="https://www.kismatengitech.com/octagonal-poles.html" target="_blank" rel="noreferrer">Manufacturer product table</a>.</p>
             <p><b>Material</b> &middot; AS/NZS 3678:2016 Table 8 f<sub>y</sub> uses t<sub>nom</sub>. Resistance uses t<sub>d</sub>; mass uses t<sub>nom</sub>. Confirm material equivalence and project acceptance for the ASCE method.</p>
             <p><b>Slip joints</b> &middot; AS/NZS 7000:2016 Appendix K9: L<sub>o</sub> &ge; 1.5D<sub>ins,max</sub>, where D<sub>ins,max</sub> is the largest circle inscribed within the outside profiles being joined. Joint resistance, fit-up, tolerances, jacking and installed overlap are not evaluated.</p>
             <p><b>Stations</b> &middot; 0.5 m spacing plus exact section boundaries. The reported minimum is not a continuous numerical optimisation.</p>
@@ -1829,7 +1830,7 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.13</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.14</b></footer>
   <script src="bolt-capacity.js?v=20260730monopolelabels1"></script>
   <script src="bolt-integrity.js?v=20260730monopolelabels1"></script>
   <script src="weld-capacity.js?v=20260730monopolelabels1"></script>
@@ -1844,7 +1845,7 @@
   <script src="reo-calculation.js?v=20260730monopolelabels1"></script>
   <script src="monopole-capacity.js?v=20260730monopolelabels1"></script>
   <script src="app.js?v=20260730monopolelabels1"></script>
-  <script src="monopole-app.js?v=20260730monopolelayout1"></script>
+  <script src="monopole-app.js?v=20260730monopoleproduct1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

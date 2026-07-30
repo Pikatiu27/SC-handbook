@@ -58,6 +58,14 @@ assert.match(monopoleApp, /Inside bend-radius ratio, r_i\/t_nom, must be greater
 assert.match(panel, />Manual yield stress</);
 assert.match(panel, /id="monopolePlateGrade"/);
 assert.match(panel, /id="monopoleSectionForm"/);
+assert.match(panel, /option value="polygon-8" selected>8-sided regular polygon/);
+assert.match(panel, /option value="manual" selected>Manual yield stress/);
+assert.match(panel, /KISMAT KOP-1230 product table/);
+assert.match(panel, /D<sub>o,b<\/sub> = 240 mm A\/F/);
+assert.match(panel, /Adopted editable inputs: f<sub>y<\/sub> = 355 MPa and r<sub>i<\/sub>\/t<sub>nom<\/sub> = 3\.0/);
+assert.match(panel, /neither value is separately published/);
+assert.match(monopoleApp, /\{ id: "KOP-1230", length: 12, bottomDimension: 240, topDimension: 90, nominalThickness: 3, designThickness: 3, yieldStress: 355, overlap: 0 \}/);
+assert.doesNotMatch(monopoleApp, /\{ id: "S2", length: 10\.5/);
 assert.match(panel, /id="monopoleBendRadiusRatio"[^>]*value="3\.0"/);
 assert.match(panel, /Example 3\.0, not a Standard value; use project or product data\./);
 assert.match(panel, /BR = min\(r<sub>i<\/sub>, 4t<sub>d<\/sub>\)/);

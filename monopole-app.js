@@ -8,9 +8,7 @@
   const sectionColours = ["#2f7b57", "#a95344", "#356f9f", "#8063a6", "#8a6a2c", "#4f7771"];
   let mode = "schedule";
   let schedule = [
-    { id: "S1", length: 12, bottomDimension: 1200, topDimension: 900, nominalThickness: 12, designThickness: 12, yieldStress: 350, overlap: 0 },
-    { id: "S2", length: 10.5, bottomDimension: 950, topDimension: 650, nominalThickness: 10, designThickness: 10, yieldStress: 350, overlap: 1.5 },
-    { id: "S3", length: 10.5, bottomDimension: 700, topDimension: 350, nominalThickness: 8, designThickness: 8, yieldStress: 350, overlap: 1.5 }
+    { id: "KOP-1230", length: 12, bottomDimension: 240, topDimension: 90, nominalThickness: 3, designThickness: 3, yieldStress: 355, overlap: 0 }
   ];
 
   function number(value) {
@@ -171,7 +169,7 @@
     const grade = $("monopolePlateGrade").value;
     const materialNote = lookup
       ? `Grade ${escapeHtml(grade)} f<sub>y</sub> from AS/NZS 3678:2016 Table 8, based on t<sub>nom</sub>.`
-      : "Enter project f<sub>y</sub> for each section.";
+      : "Enter specified f<sub>y</sub> for each section; the initial E355BR product example adopts f<sub>y</sub> = 355 MPa.";
     const sectionNote = selection.form === "polygon"
       ? ` ASCE/SEI 48-19 regular ${selection.sideCount}-sided method; r<sub>i</sub>/t<sub>nom</sub> applies to all sections.`
       : "";

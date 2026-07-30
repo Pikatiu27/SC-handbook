@@ -911,3 +911,23 @@ The Monopole DOM contract asserts these labels and rejects the superseded ambigu
 ## 2026-07-30 Steel Monopole Material Layout Correction
 
 Build 0.7.13 aligns the three primary material controls at their top edge and presents the optional design-thickness override as an intentional secondary row. Supporting text is shortened without changing calculation logic. The local update workflow now requires matched before-and-after layout checks at representative wide and narrow widths.
+
+## 2026-07-30 Steel Monopole Sourced Default and Independent Product Example
+
+Build 0.7.14 replaces the illustrative 30 m schedule with one traceable manufacturer product-table row:
+
+| Field | Adopted initial value | Source status |
+| --- | ---: | --- |
+| Product | KISMAT `KOP-1230` | Manufacturer product table, checked 2026-07-30 |
+| Form | Regular 8-sided polygon | Published |
+| Fabricated length | 12.0 m | Published |
+| Bottom outside across-flats | 240 mm | Published |
+| Top outside across-flats | 90 mm | Published |
+| Nominal thickness | 3 mm | Published |
+| Material designation | E355BR | Published |
+| Yield stress | 355 MPa | Adopted editable calculation input; not separately published |
+| Inside bend-radius ratio | `r_i/t_nom = 3.0` | Calculation assumption; not published |
+
+Source: `KISMAT ENGITECH LLP | Octagonal / Polygonal Poles | KOP-1230 manufacturing specifications | https://www.kismatengitech.com/octagonal-poles.html`.
+
+The product source supplies geometry and material only. It does not publish ASCE/SEI 48-19 resistance, theoretical shaft mass, self-weight or centre of gravity. Those values are independently reconstructed in `tests/monopole-worked-examples.test.js` and compared with the production calculation.

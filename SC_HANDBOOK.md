@@ -3405,6 +3405,8 @@ The release surface supports `Circular tubular`, plus the explicitly displayed A
 
 Do not use an undifferentiated `Diameter` label for a polygon. Irregular polygons, unequal flats, non-concentric walls and locally varying thickness remain outside the method.
 
+The initial schedule is the KISMAT KOP-1230 manufacturer product-table example: one 12 m, 8-sided E355BR section with 240 mm bottom and 90 mm top outside across-flats dimensions and 3 mm nominal thickness. The source does not separately publish numerical yield stress or inside bend radius. Use manual `f_y = 355 MPa` and `r_i/t_nom = 3.0` as explicit editable calculation inputs pending project or product verification. Do not describe these inputs, the derived ASCE resistance or the theoretical shaft mass as manufacturer-published values.
+
 Use `Nominal wall thickness, t_nom` as the primary thickness input. By default, `t_d = t_nom`. The optional `Design thickness override, t_d` workflow permits a smaller positive project input, with `0 < t_d <= t_nom`. When active, identify it as `User override`. The AS/NZS 3678 Table 8 lookup and theoretical mass use `t_nom`; section properties and bending resistance use `t_d`. A `t_d` override does not require manual `f_y`. Corrosion allowance and measured remaining thickness are not otherwise calculated by the page.
 
 #### 15.17A.2 Physical Section Schedule and Assembly Geometry
@@ -3419,7 +3421,7 @@ Each physical section row, ordered bottom to top, contains:
 | Top outside dimension | `D_t`, `D_AF,t` or `D_AC,t` | Label follows section form and dimension basis |
 | Nominal wall thickness | `t_nom,i` | Positive manual input used for the AS/NZS 3678 Table 8 lookup and theoretical mass |
 | Design thickness override | `t_d,i` | Optional positive `User override` used for section properties and bending resistance; default `t_d,i = t_nom,i` and require `t_d,i <= t_nom,i` |
-| Material basis and grade | source selection | `AS/NZS 3678:2016 plate` or `Manual f_y`; Grade 350 is the default plate lookup |
+| Material basis and grade | source selection | `AS/NZS 3678:2016 plate` or `Manual f_y`; the initial KOP-1230 example publishes E355BR and adopts editable `f_y = 355 MPa` |
 | Yield stress | `f_y` | Auto by AS/NZS 3678 Table 8 grade and thickness, or editable per section in Manual mode |
 | Overlap with section below | `L_o,i` | Starts at Section 2; enter the prescribed product or drawing overlap |
 
@@ -3452,9 +3454,9 @@ Apply this source hierarchy:
 
 | Path | Governing calculation basis | Permitted role |
 | --- | --- | --- |
-| Circular section | AS 4100:2020 Section 5, including Table 5.2 and Cl. 5.2.3 effective section modulus | Australian default design section moment capacity |
+| Circular section | AS 4100:2020 Section 5, including Table 5.2 and Cl. 5.2.3 effective section modulus | Australian design section moment-capacity path |
 | Regular polygonal section | ASCE/SEI 48-19 Cl. 5.2.3.2.1, Table 5-1, Cl. 5.2.5 and Appendix B | Foreign-standard pure-bending section-capacity path; `For Review`, not a complete ASCE 48 or Australian compliance check |
-| Steel material | Normally AS/NZS 3678 for fabricated plate shells or AS/NZS 1163 for a supplied structural CHS product | Default `f_y` and material provenance |
+| Steel material | Normally AS/NZS 3678 for fabricated plate shells, AS/NZS 1163 for a supplied structural CHS product, or a verified product specification for a sourced example | `f_y` and material provenance |
 | Pole and slip-joint guidance | AS/NZS 7000:2016 Appendix K | Australian context, accepted steel-pole reference routes and prescribed overlap guidance |
 
 AS/NZS 7000 Appendix K does not provide a complete polygonal section-resistance equation. It refers steel-pole design to accepted steel and pole Standards, including ASCE 48. Keep the AS 4100 and ASCE paths isolated:
@@ -3494,7 +3496,7 @@ Use `Z_e = min(S, 1.5Z)` for compact sections, the AS 4100 interpolation for non
 
 Distinguish nominal wall thickness `t_nom` from design wall thickness `t_d`. Default `t_d = t_nom`; when a project deduction applies, allow a separate `t_d` and require `0 < t_d <= t_nom`. Use `t_nom` for the AS/NZS 3678 thickness-dependent `f_y` lookup and theoretical steel mass. Use `t_d` for section properties, slenderness and resistance.
 
-Distinguish an AS/NZS 1163 structural CHS product from a fabricated plate shell. The current tapered-shell page defaults to AS/NZS 3678:2016 Grade 350 plate and derives `f_y` separately for each physical section from Table 8 using `t_nom`. Table 8 ranges without a specified yield stress must fail closed. Manual `f_y` remains available for certified values or alternate materials. AS/NZS 1163 Table 7 has no thickness-dependent minimum yield-strength branches, but that product lookup is not applied to a tapered fabricated shell.
+Distinguish an AS/NZS 1163 structural CHS product from a fabricated plate shell. The circular path can use AS/NZS 3678:2016 plate and derives `f_y` separately for each physical section from Table 8 using `t_nom`. Table 8 ranges without a specified yield stress must fail closed. Manual `f_y` is used for the sourced KOP-1230 initial example and remains available for certified values or alternate materials. AS/NZS 1163 Table 7 has no thickness-dependent minimum yield-strength branches, but that product lookup is not applied to a tapered fabricated shell.
 
 A welded fabrication category may be preselected for a preliminary fabricated longitudinally welded shell only as a visible editable assumption. Do not infer `SR`, `HR`, `CF`, `LW` or `HW` solely from material grade.
 
