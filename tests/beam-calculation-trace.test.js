@@ -54,6 +54,15 @@ assert.match(script, /V<sub>v<\/sub> = min\(\$\{fixed\(hollowWeb\.shearYieldCapa
 assert.match(script, /reference: "AS 4100 Cl\. 5\.2\.1"/);
 assert.match(script, /reference: "AS 4100 Cl\. 5\.2\.2 to AS 4100 Cl\. 5\.2\.5"/);
 assert.match(script, /reference: interactionAvailable \? "AS 4100 Cl\. 5\.12\.3" : ""/);
+assert.match(script, /function formatBeamUtilisation\(value\)/);
+assert.match(script, /Math\.abs\(value - 1\) < 1e-9\) return "1\.00"/);
+assert.match(script, /value > 1 && value < 1\.005\) return ">1\.00"/);
+assert.match(script, /value < 1 && value > 0\.995\) return "<1\.00"/);
+assert.match(script, /function formatBeamInteractionRatio\(value\)/);
+assert.match(script, /function formatBeamInteractionFactor\(value\)/);
+assert.match(script, /formatBeamInteractionRatio\(momentRatio\)/);
+assert.match(script, /formatBeamInteractionFactor\(interaction\.factor\)/);
+assert.match(script, /formatBeamUtilisation\(shearRatio\)/);
 assert.match(html, /id="beamUtilisation">&mdash;<\/strong><small id="beamStatus" class="check">No design action/);
 assert.match(script, /\$\("beamUtilisation"\)\.textContent = !hasDemand \? "—"/);
 assert.match(script, /!momentAvailable \|\| !allDemandPathsAvailable \|\| !hasDemand \? "check"/);

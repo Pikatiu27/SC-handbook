@@ -46,6 +46,9 @@ assert.doesNotMatch(script, /mm2\/mm/);
 
 assert.match(traceability, /\| `6` \| Reinforcement \|/);
 assert.match(traceability, /tests\/independent-reproductions\.test\.js/);
+assert.match(traceability, /`BEAM-EX-INT-01`/);
+assert.match(traceability, /`BEAM-REP-INT-01`/);
+assert.match(traceability, /`AUD-BEAM-INTERACTION-01`/);
 assert.match(outline, /independent hand calculation or separate script calculation must not call or copy the production calculation function/);
 
 console.log("Professional audit contract tests passed.");

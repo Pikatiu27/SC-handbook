@@ -5105,6 +5105,25 @@ function setBeamOutput(id, value, available) {
   if (unit) unit.hidden = !available;
 }
 
+function formatBeamUtilisation(value) {
+  if (!Number.isFinite(value)) return "—";
+  if (Math.abs(value - 1) < 1e-9) return "1.00";
+  if (value > 1 && value < 1.005) return ">1.00";
+  if (value < 1 && value > 0.995) return "<1.00";
+  return value.toFixed(2);
+}
+
+function formatBeamInteractionRatio(value) {
+  if (!Number.isFinite(value)) return "—";
+  const nearBranch = Math.abs(value - 0.75) < 0.001 || Math.abs(value - 1) < 0.001;
+  return value.toFixed(nearBranch ? 6 : 2);
+}
+
+function formatBeamInteractionFactor(value) {
+  if (!Number.isFinite(value)) return "—";
+  return value < 1 && value > 0.995 ? value.toFixed(6) : value.toFixed(3);
+}
+
 function calculateBeam() {
   const section = selectedBeamSection();
   const customDimensions = beamDimensionOverrideActive();
@@ -5259,7 +5278,7 @@ function calculateBeam() {
     : momentAvailable
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml}; shear and combined action are not evaluated.`
       : "No utilisation is reported until the selected moment-capacity path is available.";
-  $("beamUtilisation").textContent = !hasDemand ? "—" : Number.isFinite(utilisation) ? utilisation.toFixed(2) : "—";
+  $("beamUtilisation").textContent = !hasDemand ? "—" : formatBeamUtilisation(utilisation);
   $("beamStatus").textContent = !momentAvailable
     ? "Not evaluated"
     : !hasDemand
@@ -5320,7 +5339,7 @@ function calculateBeam() {
   const demandStep = !hasDemand ? "No design action entered."
     : interactionDemand?.failureMode === "moment"
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
-    : Number.isFinite(utilisation) ? `Governing section utilisation = ${utilisation.toFixed(2)}; ${utilisation > 1 ? "FAIL" : "PASS"}.`
+    : Number.isFinite(utilisation) ? `Governing section utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "FAIL" : "PASS"}.`
       : "Combined action not evaluated because one or more required capacity paths are unavailable.";
   const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${materialOverride ? `project / legacy override (catalogue defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : customDimensions ? "selected grade default applied to entered geometry" : "catalogue default"}.`;
   const zeBasis = coordination.status === "derived"
@@ -5348,9 +5367,9 @@ function calculateBeam() {
   const utilisationSubstitution = !hasDemand
     ? ""
     : interactionAvailable && interactionDemand?.failureMode !== "moment"
-      ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${momentRatio.toFixed(2)}; &beta;<sub>v</sub> = ${interaction.factor.toFixed(3)}; V<sup>*</sup>/(&beta;<sub>v</sub>&phi;V<sub>v</sub>) = ${fixed(shearDemand)}/${fixed(interactionShearCapacity)} = ${shearRatio.toFixed(2)}`
+      ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${formatBeamInteractionRatio(momentRatio)}; &beta;<sub>v</sub> = ${formatBeamInteractionFactor(interaction.factor)}; V<sup>*</sup>/(&beta;<sub>v</sub>&phi;V<sub>v</sub>) = ${fixed(shearDemand)}/${fixed(interactionShearCapacity)} = ${formatBeamUtilisation(shearRatio)}`
       : interactionDemand?.failureMode === "moment"
-        ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${momentRatio.toFixed(2)}`
+        ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${formatBeamInteractionRatio(momentRatio)}`
         : `M<sup>*</sup> = ${fixed(momentDemand)} kN&middot;m${shearAvailable ? `; V<sup>*</sup> = ${fixed(shearDemand)} kN` : ""}`;
   $("beamFormulaSteps").innerHTML = [
     calculationTraceRow({
@@ -5431,7 +5450,7 @@ function calculateBeam() {
       reference: interactionAvailable ? "AS 4100 Cl. 5.12.3" : "",
       formula: hasDemand ? utilisationFormula : "",
       substitution: utilisationSubstitution,
-      result: !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${utilisation.toFixed(2)}; ${utilisation > 1 ? "FAIL" : "PASS"}` : "Not evaluated",
+      result: !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "FAIL" : "PASS"}` : "Not evaluated",
       applicability: demandStep
     }),
     calculationTraceRow({

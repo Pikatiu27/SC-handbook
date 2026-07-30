@@ -294,7 +294,7 @@ Work one calculation family at a time. The queue is a planning order, not eviden
 
 ### Independent Audit Reproductions - 2026-07-30
 
-The cases below are implemented in `tests/independent-reproductions.test.js`. That file imports no production calculation module and uses only independently stated source inputs and equations. Browser results were checked on local Build 0.7.5; display comparisons use the page precision, while the standalone script retains unrounded arithmetic.
+The cases below are implemented in `tests/independent-reproductions.test.js`. That file imports no production calculation module and uses only independently stated source inputs and equations. Browser results were checked on local Build 0.7.6; display comparisons use the page precision, while the standalone script retains unrounded arithmetic.
 
 | Test_ID | Linked Calculation_ID | Independent case | Expected / browser result | Branch or invariant | Status |
 | --- | --- | --- | --- | --- | --- |
@@ -304,9 +304,48 @@ The cases below are implemented in `tests/independent-reproductions.test.js`. Th
 | `AUD-AXIAL-CHS-01` | `AXIAL-MEMBER-COMP-01` | Visible CHS default `Ag = 1117 mm2`, `r = 39.3 mm`, `Le = 3000 mm`, `fy = 350 MPa`, `kf = 1`, `alpha_b = -0.5` | Design member compression `236.6 kN` | Full lambda / alpha_a / eta / xi / alpha_c sequence | Pass |
 | `AUD-AXIAL-TENSION-BRANCH-01` | `AXIAL-TENSION-01` | Equal Angle `Ag = An = 1810 mm2`, `fy = 320 MPa`, `fu = 440 MPa`; compare `kt = 1.00` and `0.85` | Gross yielding governs at `521.3 kN`; net fracture governs at `517.9 kN` | Both governing tension branches | Pass |
 | `AUD-BEAM-DEFAULT-01` | `BEAM-MOMENT-01`; `BEAM-SHEAR-01` | 310UB40.4 visible default source values | `phi Ms = 182.3 kN.m`; `phi Vv = 298.9 kN` | Independent moment and web-shear arithmetic | Pass |
+| `AUD-BEAM-INTERACTION-01` | `BEAM-SHEAR-MOMENT-01` | Design-manual case: `M* = 232 kN.m`, `phi Ms = 242 kN.m`, nominal `Vv = 498.97 kN`, `V* = 72 kN` | `beta_v = 0.666116`; `phi Vvm = 299.135 kN`; published/displayed `299.1 kN`; PASS | AS 4100 Cl. 5.12.3 reduced branch plus `0.75` and `1.00` boundaries | Pass |
+| `AUD-BEAM-INTERACTION-DISPLAY-01` | `BEAM-SHEAR-MOMENT-01` | Browser default 310UB40.4, `M*/phi Ms` immediately above `0.75`, `V* = phi Vv` | Exact utilisation above `1.0` displays `>1.00`; trace retains sufficient branch precision; FAIL remains based on unrounded values | Display rounding must not contradict the governing status | Pass after local correction |
 | `AUD-CONCRETE-DEFAULT-01` | `CONCRETE-FLEXURE-01`; `CONCRETE-SHEAR-SIMPLIFIED-01` | 1000 mm strip, 500 mm depth, 32 MPa concrete, two N20@200 mats at 105/395 mm, no shear reinforcement | `x = 62.5 mm`; `phi Muo = 287.1 kN.m`; `phi Vu = 194.2 kN`; axial residual below `0.001 kN` | Independent strain compatibility, bisection equilibrium and simplified-shear reconstruction | Pass |
 | `AUD-REO-LAP-01` | `REO-LAP-01` | Basic N20 contact lap, `fc = 32 MPa`, cover 40 mm, clear spacing 100 mm, default `k7 = 1.25` | Raw `838.5 mm`; adopted `840 mm` | Independent lower-limit and `k7 Lsy.t` comparison | Pass |
 | `AUD-SCREW-GROUP-01` | `SCREW-GROUP-ACTIONS-01` | Eight-pile 3 m x 3 m perimeter group; `N* = 800 kN`, `Mx* = 90 kN.m`, `My* = -45 kN.m`, `Vx* = 80 kN`, `Vy* = 40 kN`, `Tz* = 30 kN.m` | Maximum compression `115.0 kN`; tension `0.0 kN`; horizontal `13.4 kN` | Sum of axial and horizontal reactions and recovered moments equal entered actions | Pass |
+
+### Beam Shear-Bending Interaction Evidence
+
+#### `BEAM-EX-INT-01`
+
+| Field | Record |
+| --- | --- |
+| Linked `Calculation_ID` | `BEAM-SHEAR-MOMENT-01` |
+| Source role | Worked example |
+| Governing source | `AS4100.pdf` \| AS 4100 Cl. 5.12.3 \| PDF pages 89-90 \| printed pages 76-77 |
+| Worked-example source | `Steel Structures Design Manual to AS 4100.pdf` \| Check capacity to resist combined moment and shear \| PDF page 149 \| printed page 135 |
+| Problem statement | Whole-section shear-bending interaction method for a flat-web section |
+| Source inputs | `M* = 232 kN.m`; `phi Ms = 242 kN.m`; nominal `Vv = 498.97 kN`; `phi = 0.90`; `V* = 72 kN` |
+| Active branch | `0.75 phi Ms < M* <= phi Ms`; `Vvm = Vv[2.2 - 1.6M*/(phi Ms)]` |
+| Published result | Nominal `Vvm = 332.4 kN`; design `phi Vvm = 299.1 kN`; `V* = 72 kN` passes |
+| Applicability to SC Handbook | Direct formula and branch reproduction; the browser reproduction uses the page's checked 310UB40.4 default capacities because the worked example does not define a matching selectable catalogue row |
+| Selection status | Accepted for the AS 4100 Cl. 5.12.3 interaction equation and branch logic; not used as product-row evidence |
+
+#### `BEAM-REP-INT-01`
+
+| Field | Record |
+| --- | --- |
+| Linked evidence | `BEAM-EX-INT-01`; `BEAM-SHEAR-MOMENT-01` |
+| Independent method | Standalone arithmetic in `tests/independent-reproductions.test.js`; no production module or browser function imported |
+| Formula sequence | `m = M*/(phi Ms)`; `beta_v = 1` for `m <= 0.75`, otherwise `2.2 - 1.6m` for `m <= 1`; `phi Vvm = phi Vv beta_v` |
+| Unrounded result | `m = 0.95867768595`; `beta_v = 0.66611570248`; `phi Vvm = 299.1345768595 kN` |
+| Display comparison | Independent `299.1 kN`; published `299.1 kN` |
+| Boundary cases | Immediately below, at and above `m = 0.75`; at and above `m = 1.00` |
+| Tolerance basis | `1e-12` for dimensionless closed-form factors; `0.1 kN` for comparison with the published one-decimal result |
+| Status | Pass |
+
+#### `AUD-BEAM-INTERACTION-DISPLAY-01`
+
+- **Browser case:** Build 0.7.6 default 310UB40.4 values with `M* = 136.7282 kN.m` and `V* = 298.937088 kN`, placing `M*/phi Ms` immediately above `0.75`.
+- **Finding:** The unrounded calculation correctly failed, but the former two-decimal display showed `1.00` and the three-decimal interaction factor showed `1.000`, contradicting the displayed `FAIL`.
+- **Disposition:** Preserve unrounded branch and status logic. Display numerical equality within `1e-9` as `1.00`, a near-boundary failed utilisation as `>1.00`, a near-boundary passing utilisation as `<1.00`, and retain six decimals for `M*/phi Ms` or `beta_v` only when required to distinguish the `0.75` or `1.00` branch.
+- **Scope:** Presentation precision only; no governing equation, capacity, factor or PASS/FAIL threshold changed.
 
 ### Lightweight Page Rule After Verification
 

@@ -69,6 +69,37 @@ const beamPhiVv = 0.9 * 0.6 * 320 * (283.6 * 6.1) / 1000;
 assert.equal(displayed(beamPhiMs), "182.3");
 assert.equal(displayed(beamPhiVv), "298.9");
 
+// BEAM-SHEAR-MOMENT-01: AS 4100 Cl. 5.12.3 and the design-manual example.
+function independentBeamInteraction(momentDemand, designMomentCapacity, nominalShearCapacity, phi = 0.9) {
+  const momentRatio = momentDemand / designMomentCapacity;
+  if (momentRatio > 1) return { momentRatio, factor: 0, designShearCapacity: 0, status: "moment exceeds capacity" };
+  const factor = momentRatio <= 0.75 ? 1 : 2.2 - 1.6 * momentRatio;
+  return {
+    momentRatio,
+    factor,
+    designShearCapacity: phi * nominalShearCapacity * factor,
+    status: "evaluated"
+  };
+}
+
+const beamManualInteraction = independentBeamInteraction(232, 242, 498.97);
+approximately(beamManualInteraction.factor, 0.6661157024793389, 1e-12, "beam manual interaction factor");
+assert.equal(displayed(beamManualInteraction.designShearCapacity), "299.1");
+assert.equal(72 <= beamManualInteraction.designShearCapacity, true);
+
+const beamInteractionBelow075 = independentBeamInteraction(0.749999 * 200, 200, 300);
+const beamInteractionAt075 = independentBeamInteraction(0.75 * 200, 200, 300);
+const beamInteractionAbove075 = independentBeamInteraction(0.750001 * 200, 200, 300);
+assert.equal(beamInteractionBelow075.factor, 1);
+assert.equal(beamInteractionAt075.factor, 1);
+approximately(beamInteractionAbove075.factor, 0.9999984, 1e-12, "beam interaction immediately above 0.75");
+
+const beamInteractionAt100 = independentBeamInteraction(200, 200, 300);
+const beamInteractionAbove100 = independentBeamInteraction(200.0002, 200, 300);
+approximately(beamInteractionAt100.factor, 0.6, 1e-12, "beam interaction at moment-capacity boundary");
+assert.equal(beamInteractionAbove100.status, "moment exceeds capacity");
+assert.equal(beamInteractionAbove100.designShearCapacity, 0);
+
 // SECTION-GEOMETRY-01: independent CHS identities.
 const sectionD = 114.3;
 const sectionT = 4.5;
