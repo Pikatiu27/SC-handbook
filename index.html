@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260730beamaudit1">
+  <link rel="stylesheet" href="styles.css?v=20260730axialaudit1">
 </head>
 <body>
   <header class="topbar">
@@ -969,7 +969,7 @@
             <div id="memberCatalogueSectionFields">
               <div class="input-group-fields two">
                 <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
-                <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
+                <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0.1" max="20" step="0.1" value="3"><em>m</em></span></label>
               </div>
               <details class="input-override-details" id="memberRadiusOverrideDetails">
                 <summary><span><b>Override catalogue radius</b><small>Use a verified governing radius only.</small></span><i>+</i></summary>
@@ -982,8 +982,8 @@
               <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
               <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
               <div class="member-custom-subheading"><b>Effective lengths</b><small>Use the same value for L<sub>ex</sub> and L<sub>ey</sub> when restraint conditions are the same about both axes.</small></div>
-              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
-              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0.1" max="50" step="0.1" value="3"><em>m</em></span></label>
+              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0.1" max="50" step="0.1" value="3"><em>m</em></span></label>
             </div>
             <div class="member-dimension-panel" id="memberDimensionCard">
               <div class="input-group-fields member-dimension-toggle">
@@ -1009,8 +1009,8 @@
             <details class="input-override-details" id="memberMaterialOverrideDetails">
               <summary><span><b id="memberMaterialOverrideTitle">Override grade values</b><small id="memberMaterialOverrideHelp">Use verified project material strengths only.</small></span><i>+</i></summary>
               <div class="input-group-fields two">
-                <label><span>f<sub>y</sub></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
-                <label><span>f<sub>u</sub></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
+                <label><span>f<sub>y</sub></span><span class="unit"><input id="memberFyInput" type="number" min="1" step="1" value="350"><em>MPa</em></span></label>
+                <label><span>f<sub>u</sub></span><span class="unit"><input id="memberFuInput" type="number" min="1" step="1" value="430"><em>MPa</em></span></label>
               </div>
             </details>
           </section>
@@ -1035,8 +1035,8 @@
               <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
               <label class="member-hole-field"><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
               <label class="member-thickness-field" hidden><span>t <i>net-path thickness</i></span><span class="unit"><input id="memberHoleThickness" type="number" min="0" step="0.1" value="0"><em>mm</em></span></label>
-              <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="0"><em>mm²</em></span></label>
-              <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0" max="1" step="0.05" value="1"></label>
+              <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0.1" step="0.001" value="0"><em>mm²</em></span></label>
+              <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0.75" max="1" step="0.05" value="1"></label>
             </div>
           </section>
         </div>
@@ -1055,7 +1055,7 @@
             <div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div>
             <dl class="member-summary-metrics member-summary-primary">
               <div><dt>Checked axis / r</dt><dd id="memberSummaryAxis">—</dd></div>
-              <div><dt>L<sub>e</sub> / L<sub>e</sub>/r</dt><dd id="memberSummarySlenderness">—</dd></div>
+              <div><dt>L<sub>e</sub>; L<sub>e</sub>/r</dt><dd id="memberSummarySlenderness">—</dd></div>
               <div><dt>A<sub>n</sub></dt><dd id="memberSummaryNetArea">—</dd></div>
               <div><dt>f<sub>y</sub> / f<sub>u</sub></dt><dd id="memberSummaryStrength">—</dd></div>
               <div><dt>k<sub>f</sub> / &alpha;<sub>b</sub></dt><dd id="memberSummaryCompressionFactors">—</dd></div>
@@ -1696,18 +1696,18 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.6</b></footer>
-  <script src="bolt-capacity.js?v=20260730beamaudit1"></script>
-  <script src="bolt-integrity.js?v=20260730beamaudit1"></script>
-  <script src="section-geometry.js?v=20260730beamaudit1"></script>
-  <script src="section-catalogue.js?v=20260730beamaudit1"></script>
-  <script src="steel-materials.js?v=20260730beamaudit1"></script>
-  <script src="beam-section-data.js?v=20260730beamaudit1"></script>
-  <script src="beam-hot-rolled-data.js?v=20260730beamaudit1"></script>
-  <script src="beam-section-capacity.js?v=20260730beamaudit1"></script>
-  <script src="beam-section-reconciliation.js?v=20260730beamaudit1"></script>
-  <script src="reo-calculation.js?v=20260730beamaudit1"></script>
-  <script src="app.js?v=20260730beamaudit1"></script>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.7</b></footer>
+  <script src="bolt-capacity.js?v=20260730axialaudit1"></script>
+  <script src="bolt-integrity.js?v=20260730axialaudit1"></script>
+  <script src="section-geometry.js?v=20260730axialaudit1"></script>
+  <script src="section-catalogue.js?v=20260730axialaudit1"></script>
+  <script src="steel-materials.js?v=20260730axialaudit1"></script>
+  <script src="beam-section-data.js?v=20260730axialaudit1"></script>
+  <script src="beam-hot-rolled-data.js?v=20260730axialaudit1"></script>
+  <script src="beam-section-capacity.js?v=20260730axialaudit1"></script>
+  <script src="beam-section-reconciliation.js?v=20260730axialaudit1"></script>
+  <script src="reo-calculation.js?v=20260730axialaudit1"></script>
+  <script src="app.js?v=20260730axialaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

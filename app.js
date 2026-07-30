@@ -2067,7 +2067,7 @@ function signedValue(id, fallback = 0) {
   const number = numericValue($(id).value);
   return Number.isFinite(number) ? number : fallback;
 }
-function alphaBInput(id) { return Math.max(-1, Math.min(1, signedValue(id))); }
+function alphaBInput(id) { return signedValue(id, NaN); }
 function fixed(number) { return Number(number).toFixed(1); }
 function fixed2(number) { return Number(number).toFixed(2); }
 function weldLapReduction(lengthMm) {
@@ -5539,9 +5539,9 @@ function memberSections() {
 
 function memberProperties(section) {
   if (memberType === "custom") {
-    const area = value("memberCustomArea") || 1;
-    const rx = value("memberCustomRx") || 0.1;
-    const ry = value("memberCustomRy") || 0.1;
+    const area = signedValue("memberCustomArea", NaN);
+    const rx = signedValue("memberCustomRx", NaN);
+    const ry = signedValue("memberCustomRy", NaN);
     return { area, r: Math.min(rx, ry), rx, ry, ix: area * rx ** 2, iy: area * ry ** 2 };
   }
   const override = memberDimensionProperties(section);
@@ -5607,7 +5607,7 @@ function memberAlphaBBasis(kf) {
 }
 
 function memberKfValue(grade) {
-  return memberType === "custom" ? Math.max(0.001, value("memberCustomKf") || grade.kf) : grade.kf;
+  return memberType === "custom" ? signedValue("memberCustomKf", NaN) : grade.kf;
 }
 
 function memberKfBasisText(kf) {
@@ -5683,7 +5683,7 @@ function setMemberRadiusDefault(properties = null) {
 function memberDesignRadius(defaultR) {
   if (memberType === "custom") return defaultR;
   if (memberDimensionOverrideActive()) return defaultR;
-  return Math.max(0.1, value("memberRadiusInput") || defaultR);
+  return signedValue("memberRadiusInput", NaN);
 }
 
 function compressionReduction(lambdaN, alphaB) {
@@ -5704,6 +5704,40 @@ function compressionReduction(lambdaN, alphaB) {
   return { alphaC, alphaA, modifiedLambda, eta, xi };
 }
 
+function formatMemberUtilisation(ratio) {
+  if (!Number.isFinite(ratio)) return "\u2014";
+  if (ratio === 1) return "1.00";
+  if (ratio > 1 && ratio < 1.005) return ">1.00";
+  if (ratio < 1 && ratio > 0.995) return "<1.00";
+  return ratio.toFixed(2);
+}
+
+function setMemberInvalidState(message, designation) {
+  $("memberDesignation").textContent = designation;
+  $("memberAssumption").textContent = "Inputs are incomplete or outside the supported axial-member scope.";
+  [
+    "memberSummaryAxis", "memberSummarySlenderness", "memberSummaryNetArea",
+    "memberSummaryStrength", "memberSummaryCompressionFactors", "memberSummaryKt",
+    "memberGeometrySummary", "memberAreaSummary", "memberMaterialSummary",
+    "memberCompressionSummary", "memberTensionSummary"
+  ].forEach(id => { $(id).textContent = "\u2014"; });
+  ["memberCompression", "sectionCompression", "memberTension", "memberSlenderness", "memberLambdaN", "memberAlphaC", "memberUtilisation"]
+    .forEach(id => { $(id).textContent = "\u2014"; });
+  ["grossYieldCapacity", "netFractureCapacity"].forEach(id => { $(id).textContent = "\u2014 kN"; });
+  $("tensionGoverning").textContent = "Not evaluated";
+  $("memberTensionBasis").textContent = "Input required before AS 4100 capacity checks";
+  $("memberGoverning").textContent = "Not evaluated";
+  $("memberUtilisationStatus").textContent = "INPUT REQUIRED";
+  $("memberUtilisationStatus").className = "check";
+  $("memberWarning").innerHTML = `Input required: ${message}. No axial capacity has been evaluated.`;
+  $("memberFormulaSteps").innerHTML = calculationTraceRow({
+    title: "Input validation",
+    selection: message,
+    result: "Not evaluated",
+    applicability: "Enter valid project inputs before using the AS 4100 axial-member checks."
+  });
+}
+
 function memberNetAreaInput(properties) {
   const autoAvailable = memberType === "ea" || memberType === "pfc";
   const mode = autoAvailable ? $("memberNetAreaMode").value : "manual";
@@ -5717,7 +5751,7 @@ function memberNetAreaInput(properties) {
       : 0;
   const holeDeduction = holeCount * holeDiameter * deductionThickness;
   const automaticNetArea = Math.max(0, Math.min(grossArea, grossArea - holeDeduction));
-  const manualNetArea = Math.max(0, Math.min(grossArea, value("memberNetArea")));
+  const manualNetArea = signedValue("memberNetArea", NaN);
   if (mode === "auto") {
     $("memberNetArea").value = automaticNetArea.toFixed(0);
   }
@@ -5771,8 +5805,8 @@ function populateMemberGrades() {
   $("memberHoleCount").value = "0";
   $("memberHoleDiameter").value = "0";
   $("memberHoleThickness").value = memberType === "pfc" ? (properties.tw || section.tw || 0).toFixed(1) : "0";
-  $("memberNetArea").value = properties.area.toFixed(0);
-  $("memberNetArea").max = properties.area.toFixed(0);
+  $("memberNetArea").value = String(Math.floor(properties.area * 1000) / 1000);
+  $("memberNetArea").max = String(properties.area);
   $("memberKt").value = memberType === "ea" || memberType === "pfc" ? "0.85" : "1";
   calculateMember();
 }
@@ -5806,6 +5840,23 @@ function calculateMember() {
     $("memberAlphaB").value = String(alphaB);
   }
   const designR = memberDesignRadius(properties.r);
+  const fy = signedValue("memberFyInput", NaN);
+  const fu = signedValue("memberFuInput", NaN);
+  const designation = memberType === "custom"
+    ? section.designation
+    : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeName}`;
+  const preliminaryErrors = [];
+  if (!Number.isFinite(properties.area) || properties.area <= 0) preliminaryErrors.push("A_g must be greater than zero");
+  if (!Number.isFinite(properties.rx) || properties.rx <= 0 || !Number.isFinite(properties.ry) || properties.ry <= 0) preliminaryErrors.push("r_x and r_y must be greater than zero");
+  if (!Number.isFinite(designR) || designR <= 0) preliminaryErrors.push("the governing radius r must be greater than zero");
+  if (!Number.isFinite(kf) || kf <= 0 || kf > 1) preliminaryErrors.push("k_f must satisfy 0 < k_f <= 1");
+  if (!Number.isFinite(fy) || fy <= 0) preliminaryErrors.push("f_y must be greater than zero");
+  if (!Number.isFinite(fu) || fu <= 0) preliminaryErrors.push("f_u must be greater than zero");
+  if (Number.isFinite(fy) && Number.isFinite(fu) && fu < fy) preliminaryErrors.push("f_u must not be less than f_y");
+  if (preliminaryErrors.length) {
+    setMemberInvalidState(preliminaryErrors.join("; "), designation);
+    return;
+  }
   const radiusOverridden = memberType !== "custom" && Math.abs(designR - properties.r) > 0.05;
   const radiusBasis = memberType === "custom"
     ? "r entered by axis"
@@ -5819,12 +5870,10 @@ function calculateMember() {
   } else {
     $("memberRadiusSource").innerHTML = `User-defined effective section properties from a verified section-property calculation.`;
   }
-  $("memberNetArea").max = properties.area.toFixed(0);
+  $("memberNetArea").max = String(properties.area);
   const netInput = memberNetAreaInput(properties);
   const netArea = netInput.netArea;
-  const kt = Math.max(0, Math.min(1, value("memberKt")));
-  const fy = value("memberFyInput") || grade.fy;
-  const fu = value("memberFuInput") || grade.fu;
+  const kt = signedValue("memberKt", NaN);
   const strengthBasis = fy === grade.fy && fu === grade.fu
     ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; grade ${gradeName}`
     : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeName} default ${grade.fy}/${grade.fu} MPa`;
@@ -5839,6 +5888,17 @@ function calculateMember() {
         { label: "y", title: "y-axis", r: properties.ry, effectiveLength: value("memberCustomLey") * 1000, alphaB: alphaBInput("memberCustomAlphaBy") }
       ]
     : [{ label: "", title: "selected axis", r: designR, effectiveLength: value("memberLength") * 1000, alphaB }];
+  const calculationErrors = [];
+  if (!Number.isFinite(netArea) || netArea <= 0 || netArea > properties.area) calculationErrors.push("A_n must satisfy 0 < A_n <= A_g");
+  if (!Number.isFinite(kt) || kt < 0.75 || kt > 1) calculationErrors.push("k_t must be within the AS 4100 Cl. 7.3 range 0.75 to 1.00");
+  axes.forEach(axis => {
+    if (!Number.isFinite(axis.effectiveLength) || axis.effectiveLength <= 0) calculationErrors.push(`${axis.title} effective length L_e must be greater than zero`);
+    if (!Number.isFinite(axis.alphaB) || axis.alphaB < -1 || axis.alphaB > 1) calculationErrors.push(`${axis.title} alpha_b must be between -1.0 and 1.0`);
+  });
+  if (calculationErrors.length) {
+    setMemberInvalidState(calculationErrors.join("; "), designation);
+    return;
+  }
   const axisResults = axes.map(axis => {
     const leOverR = axis.r > 0 ? axis.effectiveLength / axis.r : 0;
     const lambdaN = leOverR * Math.sqrt(kf) * Math.sqrt(fy / 250);
@@ -5868,16 +5928,16 @@ function calculateMember() {
   const demandChecks = [];
   if (hasCompressionDemand) {
     demandChecks.push(Number.isFinite(compressionDemandRatio)
-      ? `Compression action check: N<sub>c</sub><sup>*</sup> / &phi;N<sub>c</sub> = ${fixed(compressionDemand)} / ${fixed(memberCompression)} = ${compressionDemandRatio.toFixed(2)}`
+      ? `Compression action check: N<sub>c</sub><sup>*</sup> / &phi;N<sub>c</sub> = ${fixed(compressionDemand)} / ${fixed(memberCompression)} = ${formatMemberUtilisation(compressionDemandRatio)}`
       : "Compression design capacity is not positive");
   }
   if (hasTensionDemand) {
     demandChecks.push(Number.isFinite(tensionDemandRatio)
-      ? `Tension action check: N<sub>t</sub><sup>*</sup> / &phi;N<sub>t</sub> = ${fixed(tensionDemand)} / ${fixed(tensionCapacity)} = ${tensionDemandRatio.toFixed(2)}`
+      ? `Tension action check: N<sub>t</sub><sup>*</sup> / &phi;N<sub>t</sub> = ${fixed(tensionDemand)} / ${fixed(tensionCapacity)} = ${formatMemberUtilisation(tensionDemandRatio)}`
       : "Tension design capacity is not positive");
   }
   const demandStep = hasMemberDemand
-    ? `${demandChecks.join("; ")}; governing utilisation ratio = ${Number.isFinite(governingDemandRatio) ? governingDemandRatio.toFixed(2) : "not applicable"}`
+    ? `${demandChecks.join("; ")}; governing utilisation ratio = ${formatMemberUtilisation(governingDemandRatio)}`
     : "No compression or tension design action specified.";
   const netAreaBasisLabel = netInput.mode === "auto"
     ? netInput.holeCount > 0 && netInput.holeDiameter > 0
@@ -5887,9 +5947,7 @@ function calculateMember() {
       ? "gross area / no deduction"
       : "manual net area";
 
-  $("memberDesignation").textContent = memberType === "custom"
-    ? section.designation
-    : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeName}`;
+  $("memberDesignation").textContent = designation;
   $("memberAssumption").innerHTML = memberType === "custom"
     ? "User-entered effective section properties; both axes checked."
     : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${radiusOverridden ? "user-entered governing radius" : radiusBasis}${memberType === "chs" ? "; assumed cold-formed non-stress-relieved" : memberType === "pfc" ? "; hot-rolled channel basis" : ""}.`;
@@ -5925,11 +5983,10 @@ function calculateMember() {
   $("memberLambdaN").textContent = memberType === "custom" ? axisResults.map(axis => `${axis.label} ${axis.lambdaN.toFixed(1)}`).join(" / ") : axisResults[0].lambdaN.toFixed(1);
   $("memberAlphaC").textContent = memberType === "custom" ? axisResults.map(axis => `${axis.label} ${axis.alphaC.toFixed(3)}`).join(" / ") : axisResults[0].alphaC.toFixed(3);
   $("memberGoverning").textContent = governingAxis.alphaC < 0.999 ? (memberType === "custom" ? `${governingAxis.title} buckling controls` : "Member buckling controls") : "Section capacity controls";
-  $("memberUtilisation").textContent = hasMemberDemand && Number.isFinite(governingDemandRatio) ? governingDemandRatio.toFixed(2) : "\u2014";
+  $("memberUtilisation").textContent = hasMemberDemand ? formatMemberUtilisation(governingDemandRatio) : "\u2014";
   const memberUtilisationStatus = $("memberUtilisationStatus");
   memberUtilisationStatus.textContent = hasMemberDemand ? (governingDemandRatio <= 1 ? "PASS" : "FAIL") : "No design action";
   memberUtilisationStatus.className = hasMemberDemand ? (governingDemandRatio <= 1 ? "pass" : "fail") : "check";
-  const netAreaWarning = value("memberNetArea") > properties.area + 0.5 ? " Net area has been limited to gross area." : "";
   const customGeometryKfWarning = properties.customGeometry && memberType === "ea"
     ? " Verify k<sub>f</sub> for slender custom angle geometry."
     : "";
@@ -5943,14 +6000,14 @@ function calculateMember() {
     : "";
   $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for non-straight net paths.`;
   $("memberWarning").innerHTML = memberType === "chs"
-    ? `Scope: centroidal axial compression and axial tension only. CHS basis: assumed cold-formed non-stress-relieved; k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = -0.5.${netAreaWarning}`
+    ? `Scope: centroidal axial compression and axial tension only. CHS basis: assumed cold-formed non-stress-relieved; k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = -0.5.`
     : memberType === "ea"
-      ? `Scope: centroidal axial compression and axial tension only. Angle basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${netAreaWarning}${customGeometryKfWarning}`
+      ? `Scope: centroidal axial compression and axial tension only. Angle basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${customGeometryKfWarning}`
       : memberType === "pfc"
-        ? `Scope: centroidal axial compression and axial tension only. PFC basis: hot-rolled channel, r = r<sub>min</sub>, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${netAreaWarning}`
+        ? `Scope: centroidal axial compression and axial tension only. PFC basis: hot-rolled channel, r = r<sub>min</sub>, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`
         : memberType === "custom"
-          ? `Scope: centroidal axial compression and axial tension using entered effective properties.${netAreaWarning}`
-          : `Scope: centroidal axial compression and axial tension only. Rod basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${netAreaWarning}`;
+          ? `Scope: centroidal axial compression and axial tension using entered effective properties.`
+          : `Scope: centroidal axial compression and axial tension only. Rod basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`;
   const sectionDataText = memberType === "custom"
     ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
     : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${memberDimensionLabel(properties)}; A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; r = ${designR.toFixed(1)} mm${radiusOverridden ? `; default r = ${properties.r.toFixed(1)} mm` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
@@ -6067,8 +6124,8 @@ function calculateMember() {
       title: "Design action utilisation",
       formula: hasMemberDemand ? `&eta; = max(N<sub>c</sub><sup>*</sup>/&phi;N<sub>c</sub>, N<sub>t</sub><sup>*</sup>/&phi;N<sub>t</sub>)` : "",
       substitution: hasMemberDemand ? demandChecks.join("; ") : "",
-      result: hasMemberDemand ? `Governing utilisation = ${Number.isFinite(governingDemandRatio) ? governingDemandRatio.toFixed(2) : "not applicable"}; ${governingDemandRatio <= 1 ? "PASS" : "FAIL"}` : "No design action specified",
-      applicability: "Centroidal axial compression and axial tension only; no combined bending or flexural-torsional buckling check."
+      result: hasMemberDemand ? `Governing utilisation = ${formatMemberUtilisation(governingDemandRatio)}; ${governingDemandRatio <= 1 ? "PASS" : "FAIL"}` : "No design action specified",
+      applicability: "Compression and tension entries represent separate governing axial load cases, not simultaneous combined actions. No combined bending or flexural-torsional buckling check."
     })
   ].join("");
 }

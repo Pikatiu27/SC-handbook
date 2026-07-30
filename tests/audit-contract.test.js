@@ -37,6 +37,10 @@ assert.doesNotMatch(script, /mm2\/mm/);
   "WELD-FILLET-01",
   "SECTION-GEOMETRY-01",
   "AXIAL-MEMBER-COMP-01",
+  "AUD-AXIAL-COMP-02",
+  "AUD-AXIAL-TENSION-02",
+  "AUD-AXIAL-INPUT-01",
+  "AUD-AXIAL-DISPLAY-01",
   "BEAM-MOMENT-01",
   "CONCRETE-FLEXURE-01",
   "REO-LAP-01",
@@ -49,6 +53,10 @@ assert.match(traceability, /tests\/independent-reproductions\.test\.js/);
 assert.match(traceability, /`BEAM-EX-INT-01`/);
 assert.match(traceability, /`BEAM-REP-INT-01`/);
 assert.match(traceability, /`AUD-BEAM-INTERACTION-01`/);
+assert.match(traceability, /`AXIAL-EX-COMP-01`/);
+assert.match(traceability, /`AXIAL-REP-COMP-01`/);
+assert.match(traceability, /`AXIAL-EX-TENSION-01`/);
+assert.match(traceability, /`AXIAL-REP-TENSION-01`/);
 assert.match(outline, /independent hand calculation or separate script calculation must not call or copy the production calculation function/);
 
 console.log("Professional audit contract tests passed.");

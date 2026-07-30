@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-07-29
+Last updated: 2026-07-30
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -294,7 +294,7 @@ Work one calculation family at a time. The queue is a planning order, not eviden
 
 ### Independent Audit Reproductions - 2026-07-30
 
-The cases below are implemented in `tests/independent-reproductions.test.js`. That file imports no production calculation module and uses only independently stated source inputs and equations. Browser results were checked on local Build 0.7.6; display comparisons use the page precision, while the standalone script retains unrounded arithmetic.
+The cases below are implemented in `tests/independent-reproductions.test.js`. That file imports no production calculation module and uses only independently stated source inputs and equations. Browser results were checked on local Build 0.7.7; display comparisons use the page precision, while the standalone script retains unrounded arithmetic.
 
 | Test_ID | Linked Calculation_ID | Independent case | Expected / browser result | Branch or invariant | Status |
 | --- | --- | --- | --- | --- | --- |
@@ -303,12 +303,69 @@ The cases below are implemented in `tests/independent-reproductions.test.js`. Th
 | `AUD-SECTION-CHS-01` | `SECTION-GEOMETRY-01` | Ideal CHS `D = 114.3 mm`, `t = 4.5 mm` | `Ag = 1552.26 mm2`; `I = 2.343194E6 mm4`; `Z = 4.100077E4 mm3`; `r = 38.853 mm` | Closed-form area, second moment, modulus and radius identities | Pass |
 | `AUD-AXIAL-CHS-01` | `AXIAL-MEMBER-COMP-01` | Visible CHS default `Ag = 1117 mm2`, `r = 39.3 mm`, `Le = 3000 mm`, `fy = 350 MPa`, `kf = 1`, `alpha_b = -0.5` | Design member compression `236.6 kN` | Full lambda / alpha_a / eta / xi / alpha_c sequence | Pass |
 | `AUD-AXIAL-TENSION-BRANCH-01` | `AXIAL-TENSION-01` | Equal Angle `Ag = An = 1810 mm2`, `fy = 320 MPa`, `fu = 440 MPa`; compare `kt = 1.00` and `0.85` | Gross yielding governs at `521.3 kN`; net fracture governs at `517.9 kN` | Both governing tension branches | Pass |
+| `AUD-AXIAL-COMP-02` | `AXIAL-MEMBER-COMP-01` | AS 4100 Table 6.3.3(C) point `lambda_n = 150`, `alpha_b = -0.5`; Design Manual Example 6.4.2 rounded inputs | `alpha_c = 0.316`; independent `phi Nc = 159.9 kN` versus published `160.7 kN` | Table point and published CHS compression example | Pass; published difference is within `1.0 kN` and attributable to rounded printed properties / table interpolation |
+| `AUD-AXIAL-TENSION-02` | `AXIAL-TENSION-01` | Design Manual Example 5.3.1, 50 x 50 x 5 EA: `Ag = An = 443 mm2`, `fy = 260 MPa`, `fu = 410 MPa`, `kt = 0.85` | Gross yielding `103.7 kN`; net fracture `118.1 kN`; gross yielding governs | Published tension-member example | Pass |
+| `AUD-AXIAL-INPUT-01` | `AXIAL-SECTION-COMP-01`; `AXIAL-MEMBER-COMP-01`; `AXIAL-TENSION-01` | Browser entries `fy = 0` and `Le = 0`, plus invalid range cases | `INPUT REQUIRED`; capacities and utilisation cleared; no catalogue fallback | Invalid-input and stale-result suppression | Pass after local correction |
+| `AUD-AXIAL-DISPLAY-01` | `AXIAL-MEMBER-COMP-01`; `AXIAL-TENSION-01` | Enter an axial action giving an unrounded utilisation immediately above `1.00` | `>1.00`; `FAIL` remains based on the unrounded ratio | Display rounding must not contradict status | Pass after local correction |
 | `AUD-BEAM-DEFAULT-01` | `BEAM-MOMENT-01`; `BEAM-SHEAR-01` | 310UB40.4 visible default source values | `phi Ms = 182.3 kN.m`; `phi Vv = 298.9 kN` | Independent moment and web-shear arithmetic | Pass |
 | `AUD-BEAM-INTERACTION-01` | `BEAM-SHEAR-MOMENT-01` | Design-manual case: `M* = 232 kN.m`, `phi Ms = 242 kN.m`, nominal `Vv = 498.97 kN`, `V* = 72 kN` | `beta_v = 0.666116`; `phi Vvm = 299.135 kN`; published/displayed `299.1 kN`; PASS | AS 4100 Cl. 5.12.3 reduced branch plus `0.75` and `1.00` boundaries | Pass |
 | `AUD-BEAM-INTERACTION-DISPLAY-01` | `BEAM-SHEAR-MOMENT-01` | Browser default 310UB40.4, `M*/phi Ms` immediately above `0.75`, `V* = phi Vv` | Exact utilisation above `1.0` displays `>1.00`; trace retains sufficient branch precision; FAIL remains based on unrounded values | Display rounding must not contradict the governing status | Pass after local correction |
 | `AUD-CONCRETE-DEFAULT-01` | `CONCRETE-FLEXURE-01`; `CONCRETE-SHEAR-SIMPLIFIED-01` | 1000 mm strip, 500 mm depth, 32 MPa concrete, two N20@200 mats at 105/395 mm, no shear reinforcement | `x = 62.5 mm`; `phi Muo = 287.1 kN.m`; `phi Vu = 194.2 kN`; axial residual below `0.001 kN` | Independent strain compatibility, bisection equilibrium and simplified-shear reconstruction | Pass |
 | `AUD-REO-LAP-01` | `REO-LAP-01` | Basic N20 contact lap, `fc = 32 MPa`, cover 40 mm, clear spacing 100 mm, default `k7 = 1.25` | Raw `838.5 mm`; adopted `840 mm` | Independent lower-limit and `k7 Lsy.t` comparison | Pass |
 | `AUD-SCREW-GROUP-01` | `SCREW-GROUP-ACTIONS-01` | Eight-pile 3 m x 3 m perimeter group; `N* = 800 kN`, `Mx* = 90 kN.m`, `My* = -45 kN.m`, `Vx* = 80 kN`, `Vy* = 40 kN`, `Tz* = 30 kN.m` | Maximum compression `115.0 kN`; tension `0.0 kN`; horizontal `13.4 kN` | Sum of axial and horizontal reactions and recovered moments equal entered actions | Pass |
+
+### Axial Member Evidence
+
+#### `AXIAL-EX-COMP-01`
+
+| Field | Record |
+| --- | --- |
+| Linked `Calculation_ID` | `AXIAL-MEMBER-COMP-01` |
+| Source role | Worked example |
+| Governing source | `AS4100.pdf` \| AS 4100 Cl. 6.2.1, Cl. 6.3.2 and Cl. 6.3.3; AS 4100 Table 6.3.3(A) and Table 6.3.3(C) \| PDF pages 100, 103-105 \| printed pages 87, 90-92 |
+| Worked-example source | `Steel Structures Design Manual to AS 4100.pdf` \| Example 6.4.2 \| PDF page 113 \| printed page 99 |
+| Problem statement | 139.7 x 5.4 CHS compression member, Grade 250, effective length `7.2 m` |
+| Source inputs | `Ag = 2283 mm2`; `r = 47.6 mm`; `fy = 250 MPa`; `kf = 1.0`; `alpha_b = -0.5`; `phi = 0.90` |
+| Published result | `lambda_n` approximately `151`; tabulated/interpolated `alpha_c = 0.313`; design `phi Nc = 160.7 kN` |
+| Applicability to SC Handbook | Direct AS 4100 Cl. 6.3.3 sequence and cold-formed non-stress-relieved CHS `alpha_b` branch |
+| Selection status | Accepted; printed geometry and table interpolation are rounded, so the reconstruction tolerance is `1.0 kN` |
+
+#### `AXIAL-REP-COMP-01`
+
+| Field | Record |
+| --- | --- |
+| Linked evidence | `AXIAL-EX-COMP-01`; `AXIAL-MEMBER-COMP-01` |
+| Independent method | Standalone arithmetic in `tests/independent-reproductions.test.js`; no production module or browser function imported |
+| Formula sequence | AS 4100 Cl. 6.3.3 `lambda_n`, `alpha_a`, modified `lambda`, non-negative `eta`, `xi`, `alpha_c`; then `phi Nc = alpha_c phi kf An fy` |
+| Table check | At `lambda_n = 150` and `alpha_b = -0.5`, closed-form `alpha_c` rounds to `0.316`, matching AS 4100 Table 6.3.3(C) |
+| Reconstructed result | Using the example's rounded printed values, `phi Nc = 159.9 kN`; published result `160.7 kN` |
+| Tolerance basis | Exact three-decimal table-point agreement; `1.0 kN` for the worked example because its printed geometry and tabulated factor are rounded |
+| Status | Pass |
+
+#### `AXIAL-EX-TENSION-01`
+
+| Field | Record |
+| --- | --- |
+| Linked `Calculation_ID` | `AXIAL-TENSION-01` |
+| Source role | Worked example |
+| Governing source | `AS4100.pdf` \| AS 4100 Cl. 7.2, Cl. 7.3.1 and AS 4100 Table 7.3.2 \| PDF pages 112-113 \| printed pages 99-100 |
+| Worked-example source | `Steel Structures Design Manual to AS 4100.pdf` \| Example 5.3.1 \| PDF page 96 \| printed page 82 |
+| Problem statement | 50 x 50 x 5 EA tension member connected through one leg |
+| Source inputs | `Ag = An = 443 mm2`; `fy = 260 MPa`; `fu = 410 MPa`; `kt = 0.85`; `phi = 0.90` |
+| Published result | Gross yielding approximately `103.6 kN`; net fracture approximately `118 kN`; gross yielding governs |
+| Applicability to SC Handbook | Direct reproduction of both AS 4100 Cl. 7.2 tension limits and the eccentric angle `kt` branch |
+| Selection status | Accepted |
+
+#### `AXIAL-REP-TENSION-01`
+
+| Field | Record |
+| --- | --- |
+| Linked evidence | `AXIAL-EX-TENSION-01`; `AXIAL-TENSION-01` |
+| Independent method | Standalone arithmetic in `tests/independent-reproductions.test.js`; no production module or browser function imported |
+| Formula sequence | `phi Nty = phi Ag fy`; `phi Ntf = phi 0.85 kt An fu`; `phi Nt = min(phi Nty, phi Ntf)` |
+| Reconstructed result | Gross yielding `103.7 kN`; net fracture `118.1 kN`; gross yielding governs |
+| Difference / tolerance | Agreement to the source's stated one-decimal / whole-kN precision |
+| Status | Pass |
 
 ### Beam Shear-Bending Interaction Evidence
 

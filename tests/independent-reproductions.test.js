@@ -29,6 +29,16 @@ approximately(independentWeldLapKr(8000), 0.62, 1e-12, "welded-lap 8.0 m boundar
 assert.equal(independentWeldLapKr(8001), 0.62);
 
 // AXIAL-MEMBER-COMP-01 using the visible default CHS source values.
+function independentCompressionReduction(lambdaN, alphaB) {
+  const alphaA = 2100 * (lambdaN - 13.5) / (lambdaN ** 2 - 15.3 * lambdaN + 2050);
+  const modifiedLambda = lambdaN + alphaA * alphaB;
+  const eta = Math.max(0, 0.00326 * (modifiedLambda - 13.5));
+  const ratio = modifiedLambda / 90;
+  const xi = (ratio ** 2 + 1 + eta) / (2 * ratio ** 2);
+  const alphaC = xi * (1 - Math.sqrt(1 - (90 / (xi * modifiedLambda)) ** 2));
+  return { alphaA, modifiedLambda, eta, xi, alphaC };
+}
+
 const axialAg = 1117;
 const axialR = 39.3;
 const axialFy = 350;
@@ -47,6 +57,27 @@ assert.equal(Math.max(0, 0.00326 * (13.49 - 13.5)), 0);
 assert.equal(Math.max(0, 0.00326 * (13.5 - 13.5)), 0);
 approximately(Math.max(0, 0.00326 * (13.51 - 13.5)), 0.0000326, 1e-12, "axial eta boundary above lambda 13.5");
 
+// AS 4100 Table 6.3.3(C) check point and Design Manual Example 6.4.2.
+const axialTablePoint = independentCompressionReduction(150, -0.5);
+assert.equal(axialTablePoint.alphaC.toFixed(3), "0.316");
+[-1, -0.5, 0, 0.5, 1].forEach(alphaB => {
+  const result = independentCompressionReduction(150, alphaB);
+  assert.ok(Number.isFinite(result.alphaC) && result.alphaC > 0 && result.alphaC <= 1, `Invalid alpha_c for alpha_b = ${alphaB}`);
+});
+
+const manualChs = {
+  ag: 2283,
+  r: 47.6,
+  le: 7200,
+  fy: 250,
+  kf: 1,
+  alphaB: -0.5
+};
+const manualChsLambdaN = manualChs.le / manualChs.r * Math.sqrt(manualChs.kf) * Math.sqrt(manualChs.fy / 250);
+const manualChsReduction = independentCompressionReduction(manualChsLambdaN, manualChs.alphaB);
+const manualChsPhiNc = 0.9 * manualChsReduction.alphaC * manualChs.kf * manualChs.ag * manualChs.fy / 1000;
+approximately(manualChsPhiNc, 160.7, 1.0, "Design Manual Example 6.4.2 rounded-input reproduction");
+
 // AXIAL-TENSION-01: exercise gross-yielding and net-fracture governing branches.
 function independentAxialTension(ag, an, fy, fu, kt) {
   const grossYielding = ag * fy;
@@ -62,6 +93,12 @@ assert.equal(displayed(tensionGrossGoverns.phiNt), "521.3");
 const tensionFractureGoverns = independentAxialTension(1810, 1810, 320, 440, 0.85);
 assert.equal(tensionFractureGoverns.governing, "net fracture");
 assert.equal(displayed(tensionFractureGoverns.phiNt), "517.9");
+
+// Design Manual Example 5.3.1: 50 x 50 x 5 EA.
+const manualAngleTension = independentAxialTension(443, 443, 260, 410, 0.85);
+assert.equal(manualAngleTension.governing, "gross yielding");
+assert.equal(displayed(manualAngleTension.phiNt), "103.7");
+assert.equal(displayed(0.9 * 0.85 * 0.85 * 443 * 410 / 1000), "118.1");
 
 // BEAM-MOMENT-01 and BEAM-SHEAR-01 using the visible default 310UB40.4 values.
 const beamPhiMs = 0.9 * 320 * 633000 / 1e6;

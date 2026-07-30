@@ -2542,6 +2542,8 @@ Keep the optional `Design action check` folded by default on desktop and phone. 
 - Use `k_t = 1.00` only where the end connection satisfies AS 4100 Cl. 7.3.1 uniform force distribution.
 - For eccentric tension connections, use AS 4100 Table 7.3.2. Current quick defaults: Equal Angle one-leg connection `k_t = 0.85`; PFC/channel eccentric quick default `k_t = 0.85` unless the actual Table 7.3.2 case supports `0.90` or `1.00`; unequal angle connected by the short leg `k_t = 0.75` when that case applies. Keep `k_t` editable and project-confirmed.
 - Where the member tab reports utilisation, keep compression and tension design actions as separate optional project inputs (`N_c*` and `N_t*`). Do not use a single action-type selector; report `N_c* / phi N_c`, `N_t* / phi N_t` and the governing utilisation ratio without implying the actions act simultaneously.
+- Axial inputs must fail closed. Require positive `A_g`, `A_n`, governing radii, effective lengths, `f_y` and `f_u`; require `A_n <= A_g`, `f_u >= f_y`, `0 < k_f <= 1`, `-1 <= alpha_b <= 1`, and `0.75 <= k_t <= 1.00`. A blank, zero or out-of-range editable value must show `INPUT REQUIRED`, clear every capacity and utilisation result, and must not silently restore a catalogue default.
+- Use unrounded values for governing comparisons and PASS / FAIL. When a ratio immediately above or below `1.00` would otherwise round to a contradictory `1.00`, display `>1.00` or `<1.00` while retaining the unrounded decision.
 
 #### 15.11.4 Custom Member Geometry
 
@@ -2587,6 +2589,8 @@ The folded calculation trace must follow the engineering dependency order:
 5. governing member compression capacity `phi N_c`;
 6. gross-section yielding, net-section fracture and governing tension capacity `phi N_t`;
 7. optional design-action utilisation.
+
+For axial-member verification, reproduce at least one AS 4100 Table 6.3.3 `alpha_c` point, one published compression-member worked example, and one published tension-member worked example. Exercise the supported `alpha_b` range, positive/zero effective length, positive/zero material strength, `A_n` limits, `k_t` limits and a utilisation immediately above and below `1.00`. Published examples support verification but do not replace the governing AS 4100 clause.
 
 For custom properties, repeat the Cl. 6.3.3 reduction calculation for both entered axes before selecting the lower `phi N_c`. The formula and substitution rows must expose every intermediate variable used by a later expression, including `alpha_a` and `xi`. Do not hide `eta >= 0`; display it as `eta = max[0, 0.00326(lambda - 13.5)]`.
 
