@@ -79,6 +79,23 @@ const highMoment = capacity.momentShearInteraction(90, 100, 200);
 close(highMoment.factor, 0.76);
 close(highMoment.designShearCapacity, 152);
 
+const manualExampleInteraction = capacity.momentShearInteraction(232, 242, 0.9 * 498.97);
+close(manualExampleInteraction.factor, 2.2 - 1.6 * 232 / 242);
+close(manualExampleInteraction.designShearCapacity, 299.1345768595042);
+assert.equal(manualExampleInteraction.withinMomentRange, true);
+
+const interactionBelowBoundary = capacity.momentShearInteraction(149.9998, 200, 300);
+const interactionAtBoundary = capacity.momentShearInteraction(150, 200, 300);
+const interactionAboveBoundary = capacity.momentShearInteraction(150.0002, 200, 300);
+close(interactionBelowBoundary.factor, 1);
+close(interactionAtBoundary.factor, 1);
+close(interactionAboveBoundary.factor, 0.9999984);
+
+const interactionAtMomentCapacity = capacity.momentShearInteraction(200, 200, 300);
+close(interactionAtMomentCapacity.factor, 0.6);
+close(interactionAtMomentCapacity.designShearCapacity, 180);
+assert.equal(interactionAtMomentCapacity.withinMomentRange, true);
+
 const exceededMoment = capacity.momentShearInteraction(101, 100, 200);
 assert.equal(exceededMoment.withinMomentRange, false);
 close(exceededMoment.factor, 0);

@@ -32,6 +32,13 @@ const unresolved = materials.resolve({ productForm: "project", grade: "User inpu
 assert.strictEqual(unresolved.status, "not-verified");
 assert.strictEqual(unresolved.fy, null);
 
+const noMaterialBasis = materials.resolve({ productForm: "", thickness: 20 });
+assert.strictEqual(noMaterialBasis.productForm, "");
+assert.strictEqual(noMaterialBasis.status, "not-verified");
+assert.strictEqual(noMaterialBasis.fy, null);
+assert.strictEqual(noMaterialBasis.fu, null);
+assert.ok(noMaterialBasis.validation.includes("Select a product form"));
+
 const invertedProjectStrengths = materials.resolve({
   productForm: "project",
   grade: "User input",

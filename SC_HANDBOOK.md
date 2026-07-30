@@ -466,7 +466,7 @@ Document the calculation sequence separately from the governing formula. Include
 - inactive, disabled and hidden-field treatment;
 - reset, auto/manual and override state transitions.
 
-The algorithm must fail closed. Missing, incompatible or out-of-scope inputs must not produce a normal-looking capacity through a silent fallback, stale value, default zero, `NaN` or infinity.
+The algorithm must fail closed. Missing, incompatible or out-of-scope inputs must not produce a normal-looking capacity through a silent fallback, stale value, default zero, `NaN` or infinity. Do not clamp an invalid engineering input to the nearest valid code limit before reporting a result; validate the stated range first, then calculate only from an accepted value.
 
 #### 6.2.6 Units, Precision and Rounding
 
@@ -605,6 +605,10 @@ Minimum evidence set per governing `Calculation_ID`:
 - one known out-of-scope case;
 - applicable monotonicity, sign, dimensional and nominal-versus-design invariants;
 - one browser regression case using the documented default.
+
+Published worked-example evidence is currently required and regression-locked for the principal Bolt shear/tension, Weld fillet, Concrete Pad flexure and Reinforcement straight-development paths. Keep these cases in `tests/published-worked-examples.test.js` and their source locations, assumptions, expected values and limitations in `REFERENCE_TRACEABILITY.md`. A clause-derived hook/cog comparison may supplement the Reinforcement evidence, but must be labelled as a reconstruction unless a complete published terminal example has been independently verified.
+
+Where a governing browser calculation is still embedded in the page controller, extract a small pure calculation module before claiming independent production-path reproduction. The test may call that production module only for the implementation comparison; its expected result must come from separately stated arithmetic or a captured published result. Current examples are `bolt-capacity.js`, `weld-capacity.js`, `concrete-section-calculation.js` and `reo-calculation.js`.
 
 Keep the handbook lightweight:
 
@@ -1223,6 +1227,7 @@ Current core tabs:
 - `Bolt Capacity`
 - `Axial Member Capacity`
 - `Beam Section Capacity`
+- `Steel Monopole Section Capacity`
 - `Section Properties`
 - `Weld Capacity`
 - `Concrete Pad Section`
@@ -1236,7 +1241,8 @@ Current tab register:
 | --- | --- | --- | --- | --- |
 | `Bolt Capacity` | `Steel Connections` | AS 4100 bolt / ply quick capacity and demand screen | For Review with checked core clauses | Active quick-reference tab |
 | `Axial Member Capacity` | `Steel Members` | AS 4100 axial member compression / tension quick screen | For Review with checked core clauses and catalogue rows | Active quick-reference tab |
-| `Beam Section Capacity` | `Steel Members` | AS 4100 catalogue section-capacity lookup for UB, UC, PFC, CHS, RHS, SHS, Equal Angle and Rod, plus checked Custom Rod | For Review with checked core clauses, family-specific capacity paths and catalogue rows | Active quick-reference tab |
+| `Beam Section Capacity` | `Steel Members` | AS 4100 section-capacity lookup for catalogue and entered ideal UB, UC, PFC, CHS, RHS, SHS, Equal Angle and Rod geometry | For Review with checked core clauses, family-specific capacity paths and stated custom-direction exclusions | Active quick-reference tab |
+| `Steel Monopole Section Capacity` | `Steel Members` | Capacity-only profile for tapered circular and regular polygonal steel pole sections, including segmented geometry, mass and prescribed slip-joint overlap screening | AS 4100 circular path checked; ASCE/SEI 48-19 polygon formula excerpts visually checked and retained as a foreign-standard `For Review` path | Active quick-reference tab |
 | `Section Properties` | `Steel Members` | Catalogue lookup and ideal-geometry section properties used by member workflows | Draft; catalogue, derived and unavailable values identified separately | Active quick-reference tab |
 | `Weld Capacity` | `Steel Connections` | AS 4100 weld throat-capacity lookup and drafting aid | For Review with checked core clauses | Active quick-reference tab |
 | `Concrete Pad Section` | `Foundations` | AS 3600 rectangular strip flexure and one-way shear quick screen | For Review with checked core clauses | Active quick-reference tab |
@@ -1244,16 +1250,10 @@ Current tab register:
 | `Screw Piles Selector` | `Foundations` | Product selector and quick pile action-distribution aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 | `Rock Anchor Selector` | `Foundations` | Product selector and quick rock-anchor lookup aid | For Review with product-source basis and stated exclusions | Active quick-reference tab |
 
-Accepted next tab:
-
-| Tab | Navigation category | Role | Source status | Publish posture |
-| --- | --- | --- | --- | --- |
-| `Steel Monopole Section Capacity` | `Steel Members` | Capacity-only profile for tapered circular and regular polygonal steel pole sections, including segmented geometry, mass and prescribed slip-joint overlap screening | AS 4100 circular path checked; ASCE/SEI 48-19 polygon formula excerpts visually checked and retained as a foreign-standard `For Review` path | Develop and verify on an isolated branch before integration |
-
 Navigation categories:
 
 - `Steel Connections`: `Bolt Capacity`, `Weld Capacity`, and future `Base Plate` when accepted and integrated.
-- `Steel Members`: `Section Properties`, `Axial Member Capacity`, `Beam Section Capacity`, and accepted future `Steel Monopole Section Capacity`.
+- `Steel Members`: `Section Properties`, `Axial Member Capacity`, `Beam Section Capacity`, and `Steel Monopole Section Capacity`.
 - `Foundations`: `Concrete Pad Section`, `Reinforcement`, `Screw Piles Selector`, and `Rock Anchor Selector`.
 
 Do not create a permanent top-level category for one accepted tool. A future `Reference Tools` category may be introduced only when multiple independent material lookups or compact design tables have been accepted; until then, place each lookup with its primary engineering workflow.
@@ -1272,7 +1272,7 @@ Tab rules:
 - Keep tool names direct, complete and unambiguous.
 - Page title and UI labels must be English.
 - Visible navigation labels must use the full accepted tool names. Do not abbreviate them to `Bolt`, `Axial`, `Beam`, `Weld`, `Pad`, `Screw` or `Rock`; do not truncate them with ellipses or rely on tooltips to restore engineering meaning.
-- The active tab must be visually stronger than inactive tabs: filled pill background, tab theme colour, heavier font weight, clear border or shadow, and `aria-selected="true"`. Do not rely on font weight alone.
+- The active tool button must be visually stronger than inactive buttons: filled background, tab theme colour, heavier font weight, clear border or shadow, and `aria-pressed="true"`. Do not rely on font weight alone.
 - Inactive tabs should remain readable but visually quieter. Avoid making every tab bold, large, and high-contrast at the same time.
 - Use two visible levels: an engineering category row and one tool row containing only tools in the active category. Category controls and tool controls must use distinct visual treatments; tab-internal mode controls must be quieter again.
 - Keep the primary navigation taxonomy task-based. Existing tools use only `Steel Connections`, `Steel Members`, and `Foundations`; do not display empty, speculative, or single-tool top-level categories.
@@ -1523,7 +1523,7 @@ Build every new tab from the shared app structure and component classes. A new t
 
 Required page skeleton:
 
-1. Add one full-name `.tool-tab` control with `data-category`, `data-tool`, a stable public hash and `aria-selected` support. Register it under the correct existing category; add a new category only when a distinct engineering domain has multiple accepted tools or an approved near-term group that cannot fit an existing workflow.
+1. Add one full-name `.tool-tab` control with `data-category`, `data-tool`, a stable public hash and `aria-pressed` support. Register it under the correct existing category; add a new category only when a distinct engineering domain has multiple accepted tools or an approved near-term group that cannot fit an existing workflow.
 2. Add one matching `.tool-panel` with a compact `.tool-heading`: kicker / standard family, full English tool name, and one short scope phrase.
 3. Put the main workflow in one `.lookup-card`. Inside it, stack `.input-group` row bands in engineering order and use `.input-group-fields` or the equivalent shared responsive grid for controls.
 4. Place one selected-item or checked-basis summary after the inputs when the user needs to confirm the current section, product, material, assumptions or intermediate basis.
@@ -1908,7 +1908,7 @@ Input grouping:
 - Keep the primary selector and required project values visible. Put infrequently used catalogue or grade overrides in a compact folded row inside the same engineering group. The selected-item summary must still show the adopted value so a closed override row cannot hide the calculation basis.
 - Source state such as `Catalogue default`, `Selected grade default` or `User override` is metadata, not an engineering input. Show it inline in the group heading or selected summary; do not give it a standalone input-sized card.
 - A free-text display name is not a calculation parameter. Do not include it in a capacity input group unless the page exports or stores a named project record.
-- A capacity tab must expose only custom geometry paths that have a checked capacity method. Geometry-only custom shapes belong in `Section Properties` and must not appear beside checked capacity modes. The current Beam tab therefore exposes `Custom Rod` only.
+- Beam custom dimensions must remain inside the selected section family, following the Axial Member dimension-override pattern. Users enter family dimensions only; the page derives gross geometry and enables capacity only where a checked family-specific AS 4100 section-class and effective-modulus path exists. Unsupported custom directions fail closed.
 - Read-only calculated design factors must not be presented as editable project inputs. Put them in a `Derived values` row only when they are genuinely useful in the main workflow; otherwise show them in calculation steps or a folded details panel.
 - Connection-specific net-section inputs should use their own `Connection / net-section inputs` or `Connection / detailing inputs` row. Do not mix `A_n`, `k_t`, bolt-hole counts, hole diameter or net-path thickness into section, material or compression-factor rows.
 - Optional design-action inputs are allowed when they only report utilisation against an already displayed capacity. They must not expand the tab into a full design workflow or imply that excluded checks have been completed.
@@ -2549,6 +2549,8 @@ Keep the optional `Design action check` folded by default on desktop and phone. 
 - Use `k_t = 1.00` only where the end connection satisfies AS 4100 Cl. 7.3.1 uniform force distribution.
 - For eccentric tension connections, use AS 4100 Table 7.3.2. Current quick defaults: Equal Angle one-leg connection `k_t = 0.85`; PFC/channel eccentric quick default `k_t = 0.85` unless the actual Table 7.3.2 case supports `0.90` or `1.00`; unequal angle connected by the short leg `k_t = 0.75` when that case applies. Keep `k_t` editable and project-confirmed.
 - Where the member tab reports utilisation, keep compression and tension design actions as separate optional project inputs (`N_c*` and `N_t*`). Do not use a single action-type selector; report `N_c* / phi N_c`, `N_t* / phi N_t` and the governing utilisation ratio without implying the actions act simultaneously.
+- Axial inputs must fail closed. Require positive `A_g`, `A_n`, governing radii, effective lengths, `f_y` and `f_u`; require `A_n <= A_g`, `f_u >= f_y`, `0 < k_f <= 1`, `-1 <= alpha_b <= 1`, and `0.75 <= k_t <= 1.00`. A blank, zero or out-of-range editable value must show `INPUT REQUIRED`, clear every capacity and utilisation result, and must not silently restore a catalogue default.
+- Use unrounded values for governing comparisons and PASS / FAIL. When a ratio immediately above or below `1.00` would otherwise round to a contradictory `1.00`, display `>1.00` or `<1.00` while retaining the unrounded decision.
 
 #### 15.11.4 Custom Member Geometry
 
@@ -2595,6 +2597,8 @@ The folded calculation trace must follow the engineering dependency order:
 6. gross-section yielding, net-section fracture and governing tension capacity `phi N_t`;
 7. optional design-action utilisation.
 
+For axial-member verification, reproduce at least one AS 4100 Table 6.3.3 `alpha_c` point, one published compression-member worked example, and one published tension-member worked example. Exercise the supported `alpha_b` range, positive/zero effective length, positive/zero material strength, `A_n` limits, `k_t` limits and a utilisation immediately above and below `1.00`. Published examples support verification but do not replace the governing AS 4100 clause.
+
 For custom properties, repeat the Cl. 6.3.3 reduction calculation for both entered axes before selecting the lower `phi N_c`. The formula and substitution rows must expose every intermediate variable used by a later expression, including `alpha_a` and `xi`. Do not hide `eta >= 0`; display it as `eta = max[0, 0.00326(lambda - 13.5)]`.
 
 #### 15.11.7 Shared Section Geometry and Section Properties Tab
@@ -2632,33 +2636,47 @@ Shared material contract:
 Page and evidence requirements:
 
 - Keep the visible query classification to two primary result groups only: `Section properties` and `Material properties`. Section basis, axis properties, section-specific values, principal-axis relationships, material-dependent section values and geometric ratios are subsections within `Section properties`, not peer page categories.
-- Use this visible page sequence: section selection; material definition; selected-section summary and axis figure; `Section properties`; `Material properties`; folded calculation basis; folded source and limitations.
+- Use this visible page sequence: section selection; material definition; selected-section summary and axis figure; `Section properties`; `Material properties`; conditional folded `Derivations`; folded `Source and limitations`.
 - Within `Section properties`, use the engineering sequence: gross section basis; displayed-axis properties; applicable family-specific properties; principal-axis relationship where relevant; material-dependent section values; geometric ratios.
 - Within `Material properties`, show the selected standard and grade, governing thickness or diameter, `fy`, applicable exact-row `fy,w`, `fu`, `E`, `G`, Poisson's ratio, thermal expansion coefficient and density. Do not repeat the same material identity or thickness statement in both the group description and value cards.
 - Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx` / `Zy`, plastic `Sx` / `Sy`, and `rx` / `ry`. Orrcon CHS mass is a catalogue value; its remaining properties are geometry-derived from published nominal `D` / `t`. For custom geometry, a steel mass may be derived from `0.00785A kg/m` only when the assumed density `7850 kg/m3` is stated.
-- Place a compact material-definition row after section selection. In catalogue mode, infer product form and controlling thickness from the selected product and allow only applicable grade choices. In custom mode, require an explicit product-form / material basis and allow project-entered `fy` / `fu` where no standard lookup applies.
+- Place a compact material-definition row after section selection. In catalogue mode, infer product form and controlling thickness from the selected product and default to a grade listed for that exact design-property row where one exists. A different standard grade may remain selectable for material lookup, but grade-dependent section attributes must then state `Selected grade not listed for this section`. In custom mode, require an explicit product-form / material basis and allow project-entered `fy` / `fu` where no standard lookup applies.
+- Present the accepted catalogue product families and `Custom geometry` in one compact horizontal category switch, consistent with the Axial Member family control. Do not add a second visible catalogue/custom mode row. Keep only `Section designation` in the catalogue selection row; retain the underlying family and source-mode values as application state without repeating visible dropdowns. Wrap catalogue families into two balanced columns on narrow screens and allow the longer custom label to span the final row.
+- Custom mode must start with the material basis unresolved. Do not infer a hot-rolled, round-bar or hollow-section product standard solely from the selected ideal shape. Resolve `fy` / `fu` only after the user explicitly selects a product form or project-defined steel basis.
+- Changing the custom shape must reset the material basis to unresolved so that a product form selected for one ideal shape is not carried into an incompatible shape.
 - For custom standard materials, keep controlling thickness or diameter linked to the governing entered geometry by default. A manual override must be an explicit reversible state, visually labelled beside the input and carried into the result basis and calculation trace.
 - Fail closed on incomplete or internally inconsistent project material inputs. Do not report project strengths unless controlling thickness, `fy` and `fu` are positive and `fu >= fy`.
 - Present one compact `Material properties` result group after the complete `Section properties` group. Show material/product standard, grade, controlling thickness or diameter, `fy`, `fu`, `E`, `G`, Poisson's ratio, thermal expansion coefficient and density with visible basis labels.
-- Present checked standard-dependent section attributes such as `kf`, compactness and `Ze` only when the selected section, grade and direction exist in the accepted Beam/Axial source data. Show all applicable directions compactly; do not silently choose one direction for an unsymmetric section.
+- Present checked standard-dependent section attributes such as `kf`, compactness and `Ze` only when the selected section, grade and direction exist in accepted shared design-property data. Show all applicable directions compactly; do not silently choose one direction for an unsymmetric section. Reuse the accepted AS 4100 reconciliation result for PFC directions rather than leaving a supported classification blank. For Equal Angle, use every checked Table 20 row and preserve Load A / B / C / D; where compactness is identified from the published `Ze` interval rather than printed as a class, label it `Derived · catalogue Ze interval`.
+- Render direction-dependent classification and `Ze` as short labelled rows rather than one long sentence. Hide the complete material-dependent `Section design values` subsection for custom geometry because no checked catalogue design row applies.
 - Present common catalogue supplementary properties when the checked row publishes them: torsion constant `J`, warping constant `Iw`, PFC centroid coordinate `XL`, PFC shear-centre coordinate `XO`, directional elastic moduli, and principal-axis properties for angles. For entered ideal geometry calculate `Zx,T`, `Zx,B`, `Zy,R` and `Zy,L` from the matching extreme-fibre distances; do not collapse an unsymmetric section to a single unexplained `Z` value.
 - Label the polar second moment as `Ix + Iy`, without introducing `Jp`; state that it is equal to the St Venant torsion constant `J` only for circular sections.
 - Present dimensionless geometric ratios such as `D/t`, `b/t`, `d1/tw`, `(bf-tw)/(2tf)` for symmetric UB/UC or I-sections, and `(bf-tw)/tf` for channels without assigning a section classification.
 - Label every result as catalogue, derived from catalogue data, derived from entered geometry or unavailable.
+- Keep published catalogue values out of `Derivations`; their result-level `Catalogue` label is sufficient. Show `Derivations` only when the active state contains calculated values. Catalogue mode should summarise the calculated-property basis without repeating every displayed value, while custom geometry should retain the governing formulas and substitutions.
+- Keep provenance roles distinct: result labels identify the value class, `Derivations` explains calculations only, and `Source and limitations` records documents, verification status, applicability and exclusions. Do not repeat the same material lookup, catalogue row or derivation narrative across these layers.
 - Label a separate web yield strength `fy,w` as an exact catalogue-row value when it is reused from a checked UB, UC or PFC section/grade record; do not present it as the generic controlling-thickness lookup.
 - Do not show a bare zero for product of inertia. State whether `Ixy = 0` follows from symmetry, whether rotational symmetry makes every centroidal axis principal, or whether a non-zero value requires the reported principal axes. Keep unavailable catalogue data visually distinct from a calculated zero.
+- For circular sections, retain a mathematically valid zero warping constant only with the visible interpretation `Zero by rotational symmetry`; do not present an unexplained `Iw = 0`.
 - Use a compact scalar summary plus an x/y property table rather than repeating a large card for each axis value.
 - Keep the two primary result groups visually stronger than their internal subsection headings. Do not present axis properties, torsion, principal axes, checked design references or geometric ratios as additional page-level categories.
 - For rotationally symmetric CHS, solid circles and round bars, show one equivalent centroidal-axis column and state that every centroidal diameter has the same properties. Do not repeat identical x/y values as separate decision information.
+- Coordinate Orrcon CHS geometry rows with Austube design-property rows by numeric outside diameter `D` and thickness `t`, not by designation-string formatting. Preserve the Austube grade-specific product range: do not copy a C250L0 row into C350L0 or vice versa, and state `No checked design row` for a geometry not present in the adopted design tables.
 - For equal angles, place actual thickness, root/toe radii and centroid distances with the gross product geometry; keep n-n / p-p centroidal properties in the main axis table; then present the principal x-x / y-y inertia, radii, angle and moduli as a separate structured group.
 - Hide family-inapplicable supplementary cards instead of filling the main result hierarchy with unavailable J, Iw, XO or shear-reference placeholders. Retain unavailable status in the detailed basis where it is useful for completeness.
+- Title the section-specific subsection from the values actually shown. Where the polar second moment is the only applicable item, use `Supplementary geometric reference` rather than implying that torsion, warping or shear properties are present.
 - Include one compact deterministic SVG for the current section only. Use catalogue-style chain centre lines, without positive-direction arrowheads, and mark the centroid `C`. Use selected nominal dimensions in catalogue mode and entered dimensions in custom mode.
+- Keep the axis figure available as a compact phone aid because the axis convention determines how the directional properties are read. At narrow widths, reduce the figure and hide secondary summary metrics rather than removing the x/y or n/p convention.
 - Mark the axis location as indicative when a checked catalogue row lacks the centroid coordinates required to place both centroidal axes. The SVG is a convention guide, not a numeric source.
 - For PFC catalogue rows, use published `XL` to place the centroidal `y-y` axis and show published `XO` separately; do not replace either value with ideal sharp-corner geometry.
 - Use positive horizontal coordinates to the right, positive vertical coordinates upward and positive principal-axis rotation counter-clockwise.
-- For equal angles, follow the InfraBuild catalogue convention: centroidal `n-n` is horizontal, centroidal `p-p` is vertical, and `x-x` / `y-y` are principal axes at 45 degrees. Keep the complete 46-row Table 19 / Table 21 directory, including mass, actual thickness, radii, centroid distances, directional `Z`, plastic moduli, `I_np`, principal properties and `J`. Do not substitute sharp-corner ideal geometry for a published rolled-angle value. The Axial Member tool may continue using its smaller, separately verified strength-data subset.
+- For equal angles, follow the InfraBuild catalogue convention: centroidal `n-n` is horizontal, centroidal `p-p` is vertical, and `x-x` / `y-y` are principal axes at 45 degrees. Keep the complete 46-row Table 19 / Table 21 geometry directory and the matching 46-row Table 20 design-property directory, including mass, actual thickness, radii, centroid distances, directional `Z`, plastic moduli, `I_np`, principal properties, `J`, grade-specific `fy`, `kf` and Load A / B / C / D `Ze`. Do not substitute sharp-corner ideal geometry for a published rolled-angle value. The Axial Member tool may continue using its smaller, separately verified strength-data subset.
+- Use the full axis notation consistently in headings, captions and descriptions: `n-n / p-p centroidal` and `x-x / y-y principal`. Do not shorten these to `p/n` or unqualified `x/y`.
 - Show the publisher, catalogue edition or year and checked-row status. Describe nominal dimensions combined with geometric formulas as a mixed basis, not a manufacturer table-property lookup.
 - Treat section compactness, element slenderness classification, `kf` and effective properties as grade-, direction- and standard-dependent attributes. Section Properties may display them only through its explicit material-grade branch and only for checked section/grade/direction rows already accepted by Beam or Axial Member. Design capacity remains in those downstream workflows.
+- Before accepting a Section Properties release, reproduce production rows for at least one UB, UC, PFC, CHS, Equal Angle and rod directly against the cited catalogue pages. The regression must compare the live production data path, not only a fixture, and must independently recalculate geometry-derived CHS/rod properties and material-table boundary cases.
+- Keep `Source and limitations` content in a compact single reading column; do not force unequal notes into balanced columns that create large empty areas.
+- Keep section-family category controls at least 44 px high on narrow screens. Use button-state semantics (`aria-pressed`) for the top tool navigation so the active tool is exposed without implying a keyboard-managed tablist.
 
 Scope boundaries:
 
@@ -2680,7 +2698,7 @@ The Beam tab is a lightweight AS 4100 section-capacity tool. Keep its public nam
 
 The first-screen engineering question is:
 
-`For this selected catalogue section or entered ideal section, what is the AS 4100 design section moment capacity about the selected principal bending direction, and what section shear capacity is available for the matching direction?`
+`For this selected catalogue section or entered ideal family geometry, what is the AS 4100 design section moment capacity about the selected principal bending direction, and what section shear capacity is available for the matching direction?`
 
 The accepted calculation scope is:
 
@@ -2695,7 +2713,7 @@ The tab must distinguish these terms:
 - `Member moment capacity, phi Mb`: member resistance including lateral stability and restraint, excluded from this tab.
 - `Section shear capacity, phi Vv`: cross-section or web shear resistance from the applicable AS 4100 Section 5.11 path.
 
-Do not reuse the Axial Member calculation result. Reuse only its compact catalogue/custom selection pattern, family-dependent fields, selected-item summary and folded calculation details. Axial fields such as `Ag` and `r` do not establish bending capacity.
+Do not reuse the Axial Member calculation result. Reuse its compact family-selection pattern, the family-local `Custom dimensions` override, family-dependent fields, selected-item summary and folded calculation details. Axial fields such as `Ag` and `r` do not establish bending capacity.
 
 #### 15.12.2 Governing Sources and Evidence Hierarchy
 
@@ -2785,43 +2803,36 @@ For a catalogue section:
 
 For UB / UC / PFC, do not replace missing rolled root radii, tapered surfaces or product-table section moduli with the ideal custom geometry routine. For Equal Angle, use the published Load A / B / C / D diagram and its matching `Ze`; do not infer the governing compression edge from a generic `x` / `y` label.
 
-##### 15.12.4.3 Custom Section Path
+##### 15.12.4.3 Family-Local Custom Dimensions
 
-Custom mode remains dimensions-only. Family, grade and bending direction are selections; the user must not enter `Ag`, `I`, `Z`, `S`, `Ze`, compactness, `kf` or shear area.
+Keep `Custom dimensions` inside each selected family, matching the Axial Member override pattern. Do not add a separate Custom family or a standalone Custom Rod tab state.
 
-The automatic custom calculation sequence is:
+The user enters dimensions only:
 
-1. Validate dimensions and reject overlapping, negative or physically impossible geometry.
-2. Generate ideal sharp-corner geometry: `Ag`, centroid, `Ix`, `Iy`, `Ixy`, principal axes, extreme-fibre distances and direction-specific `Z`.
-3. Generate direction-specific plastic section modulus `S` from the plastic neutral axis; do not estimate `S` from a fixed shape factor.
-4. Identify every compression plate element, its supported-edge condition, clear width `b`, thickness `t` and residual-stress category.
-5. Calculate flat-element slenderness: `lambda_e = (b/t) sqrt(fy,m/250)`.
-6. Select the governing element with the largest `lambda_e / lambda_ey`; adopt its `lambda_s`, `lambda_sp` and `lambda_sy` under AS 4100 Cl. 5.2.2 and AS 4100 Table 5.2.
-7. For CHS, calculate `lambda_s = (do/t)(fy,m/250)` and use the applicable CHS limits from AS 4100 Table 5.2.
-8. Calculate `Ze` from the applicable compact, non-compact or slender rule.
-9. Calculate `Ms` and `phi Ms` only after `Ze` is valid.
+- UB / UC: `d`, `bf`, `tw`, `tf`;
+- PFC: `d`, `bf`, `tw`, `tf`;
+- CHS: `D`, `t`;
+- RHS: `d`, `b`, `t`;
+- SHS: `b = d`, `t`;
+- Equal Angle: `b`, `t`;
+- Rod: `d`.
 
-Required `Ze` rules:
+Generate `Ag`, mass, centroid, `I`, `Z`, `S`, clear web depth, shear reference area, section class and `Ze` automatically where the family method supports them. Never ask the user to enter a calculated section property.
 
-- Compact, `lambda_s <= lambda_sp`: `Ze = min(S, 1.5Z)`.
-- Non-compact, `lambda_sp < lambda_s <= lambda_sy`: `Ze = Z + [(lambda_sy - lambda_s)/(lambda_sy - lambda_sp)](Zc - Z)`, where `Zc = min(S, 1.5Z)`.
-- Slender flat element in uniform compression: `Ze = Z(lambda_sy/lambda_s)`, or use the AS 4100 effective cross-section method.
-- Slender flat element with maximum compression at an unsupported edge and zero stress or tension at the supported edge: `Ze = Z(lambda_sy/lambda_s)^2`.
-- Slender CHS: use the lesser of `Z sqrt(lambda_sy/lambda_s)` and `Z(2lambda_sy/lambda_s)^2`.
+Use ideal sharp-corner geometry and state that rolled fillets, root radii and hollow-section corner radii are omitted. The current reviewed capacity boundary is:
 
-The current shortcut `Zex = Zx` for an arbitrary custom I-section is not an acceptable final design-capacity rule. `Ze = Z` can be unconservative when the section is slender. Until the complete family-specific compactness and `Ze` path is implemented, custom output must be `Not evaluated - section classification incomplete`; an elastic-yield reference may appear only in calculation details and must not be labelled design capacity.
+- UB / UC: x-x and y-y moment; x-x web shear and reviewed moment-shear interaction;
+- PFC: x-x moment, web shear and reviewed interaction; custom Load A / B remains `Not evaluated`;
+- CHS: axis-independent moment and section shear;
+- RHS / SHS: supported direction moment, two-web shear and reviewed interaction;
+- Rod: axis-independent moment only;
+- Equal Angle: geometry and figure only; custom Load A / B / C / D remains `Not evaluated`.
 
-Use a fixed, visible and conservative residual-stress basis where Custom mode is intentionally input-light:
-
-- ideal custom open plate sections: use the reviewed `HW` Table 5.2 basis unless a more specific fabrication category is built into the family definition;
-- ideal custom AS/NZS 1163 hollow sections: use the reviewed `CF` basis and state that product compliance remains to be confirmed;
-- Rod: no plate-element local-slenderness input, so use the compact solid-section relation after geometry and material validation.
-
-For custom open and hollow sections, omission of fillets and corner radii must be stated. Do not describe the ideal result as a reconstructed manufacturer section.
+Invalid or physically impossible dimensions must clear the result. Unsupported custom directions must not fall back to catalogue `Ze`, another direction, or `Ze = Z`.
 
 ##### 15.12.4.4 Holes and Net Section
 
-The default catalogue and custom calculation is an unperforated gross-section check under AS 4100 Cl. 5.2.6. Holes, copes, penetrations and flange-area deductions are excluded. Do not add hole inputs to the first-screen workflow. If future net-section bending is added, it must be a separate advanced path with the Cl. 5.2.6 threshold and Cl. 9.1.10 deductions implemented explicitly.
+The default catalogue and entered-geometry calculation is an unperforated gross-section check under AS 4100 Cl. 5.2.6. Holes, copes, penetrations and flange-area deductions are excluded. Do not add hole inputs to the first-screen workflow. If future net-section bending is added, it must be a separate advanced path with the Cl. 5.2.6 threshold and Cl. 9.1.10 deductions implemented explicitly.
 
 #### 15.12.5 Shear and Moment-Shear Contract
 
@@ -2833,7 +2844,7 @@ Shear remains secondary to section moment and is family-dependent:
 - RHS / SHS: use the reviewed Austube Section 5.2.2.4 direction-specific path. Take the two-web area as `Aw = 2t(d - 2t)` for x-axis bending or `Aw = 2t(b - 2t)` for y-axis bending, apply the AS 4100 web-slenderness reduction where required, and take the lesser of the uniform-shear and Cl. 5.11.3 non-uniform-shear capacities. For y-axis bending, interchange `b` and `d` in the maximum-to-average shear-stress ratio.
 - Equal Angle and Rod: report no numeric shear capacity in the initial expanded tab.
 
-Apply AS 4100 Cl. 5.12.3 moment-shear interaction only where the family and selected direction have both reviewed `Ms` and `Vv` paths and the clause applies. The reviewed reduced method applies to UB / UC / PFC major-axis web shear and to catalogue RHS / SHS through Austube Section 5.2.4. CHS, Equal Angle, Rod and unsupported custom paths remain `Not evaluated` for interaction.
+Apply AS 4100 Cl. 5.12.3 moment-shear interaction only where the family and selected direction have both reviewed `Ms` and `Vv` paths and the clause applies. The reviewed reduced method applies to UB / UC / PFC major-axis web shear and to catalogue RHS / SHS through Austube Section 5.2.4. CHS, Equal Angle and Rod remain `Not evaluated` for interaction.
 
 If a family has a valid moment result but no reviewed shear or interaction result:
 
@@ -2868,24 +2879,15 @@ Product availability and calculation suitability are separate. A row may be reta
 
 #### 15.12.7 Input Logic and State Model
 
-Use two levels of selection:
+Use one family-selection row on the desktop Beam page. The section families are the primary segmented control; do not add a separate Custom family or source mode.
 
-1. `Section source`: segmented control with `Catalogue` and `Custom`.
-2. `Section family`: one compact select menu because the expanded family list is too long for a single segmented row.
+Catalogue inputs:
 
-Catalogue mode inputs:
-
-- `Section family`;
 - `Catalogue section`;
 - `Steel grade`, limited to grades supported by the selected row;
 - `Bending direction`, shown only where more than one valid direction exists.
-
-Custom mode inputs:
-
-- `Section family`;
-- family-specific dimensions only;
-- `Steel grade`;
-- `Bending direction` where applicable.
+- `Custom dimensions`, a family-local checkbox below Section and Grade;
+- family dimensions only when the checkbox is active.
 
 Family-specific direction logic:
 
@@ -2896,12 +2898,13 @@ Family-specific direction logic:
 
 State requirements:
 
-- changing family repopulates only compatible sections, grades, dimensions and directions;
-- catalogue mode hides every custom dimension input;
-- Custom Rod mode hides the catalogue designation and catalogue-only metadata;
+- changing family repopulates only compatible sections, grades and directions;
+- Custom dimensions stays inside the selected family and shows only that family's dimensions;
+- the selected catalogue section remains visible as the reference geometry and grade-default source;
 - derived properties are read-only outputs, not disabled-looking input fields;
 - preserve the last valid choice separately for each family where practical;
-- invalid or incomplete custom typing clears capacity to `Not evaluated` without writing fallback zeroes into the input;
+- invalid dimensions or an unsupported custom direction clears capacity to `Not evaluated` without reusing a stale result;
+- invalid or incomplete custom geometry hides the previous valid section figure so that stale geometry cannot remain beside unavailable results;
 - design actions remain in a folded panel below the main capacities and must never overwrite section-selection state.
 
 #### 15.12.8 Page Logic and Layout
@@ -2914,9 +2917,10 @@ Tool heading
   AS 4100:2020 Section 5 - section resistance only
 
 Section selection
-  UB | UC | PFC | CHS | RHS | SHS | Equal Angle | Rod | Custom Rod
-  Catalogue family: Section | Grade
-  Custom Rod: Grade
+  UB | UC | PFC | CHS | RHS | SHS | Equal Angle | Rod
+  Selected family: Section | Grade
+  Custom dimensions [optional family-local override]
+  Applicable family dimensions only
 
 Material strength
   Adopted source state | restore default
@@ -2924,9 +2928,6 @@ Material strength
 
 Bending direction
   Conditional axis / load-direction control only when required
-
-Custom dimensions
-  Rod diameter only; hidden in Catalogue mode
 
 Selected section
   Designation + grade + active direction
@@ -2944,18 +2945,18 @@ Calculation basis and limitations [collapsed]
 
 Desktop layout:
 
-- use one top-level mode row matching Axial Member: catalogue families and `Custom Rod` are peers; do not place family tabs under a separate `Catalogue` mode;
-- selecting a catalogue family directly loads that family and shows Section plus Grade; selecting `Custom Rod` fixes the family as Rod and shows Grade plus diameter without a redundant family selector;
+- use one top-level section-family row matching the compact Axial Member selection pattern; do not add a separate `Catalogue` or `Custom` source mode;
+- selecting a family directly loads that family and shows Section plus Grade;
+- place the `Custom dimensions` checkbox and conditional family fields inside the Section selection group, matching Axial Member;
 - keep Section selection in one engineering row with the explanation in the left label column and the applicable two controls in the right content column;
 - do not allow the two controls to fall below the left explanation column or leave an unused blank field row; collapse the whole group in engineering order only at the responsive breakpoint;
 - place a short conditional direction row below selection rather than mixing direction with material values;
-- place the Custom Rod diameter in one compact row with a stable control width;
 - use a two-part selected-section summary: compact properties on the left and the section guide on the right;
 - use one full-width moment result when shear is unavailable; do not leave an empty second card.
 
 Phone layout:
 
-- stack selection, direction and dimensions in the same engineering order;
+- stack selection, custom dimensions and direction in the same engineering order;
 - keep the main `phi Ms` result above any shear result and before folded details;
 - keep the section guide approximately 80 to 130 px high and hide secondary labels before reducing text size;
 - prevent family names, formal symbols and units from wrapping one word per line.
@@ -2966,15 +2967,15 @@ The summary confirms the adopted capacity basis; it is not a section-property re
 
 Keep the always-visible summary to the minimum needed to understand the reported capacities:
 
-- all families: designation / custom family, grade, active direction, `fy,m`, `Ze` and section class where available;
+- all families: designation, grade, active direction, `fy,m`, `Ze` and section class where available;
 - shear-evaluated paths: active shear area (`Aw` or `Ae`) and `fy,w` where it differs from the member strength basis;
-- active overrides: identify them in the selection/material state rather than repeating long source text in the summary.
+- active dimension or material overrides: identify them in the selection/material state rather than repeating long source text in the summary.
 
 Move supporting data to a collapsed `Section details` row directly below the summary:
 
 - family dimensions, mass and `Ag`;
 - direction-specific `I`, `Z` and `S`;
-- `kf`, catalogue coordination status and the full product-table source;
+- `kf`, catalogue/derived coordination status and the full source basis;
 - PFC catalogue centroid coordinate `xL` and shear-centre coordinate `xO`.
 
 Do not show the capacity equation, web-screen ratio or interaction result in this strip. Those belong in calculation steps.
@@ -2983,7 +2984,7 @@ Use one deterministic value-driven SVG for the selected family. It must:
 
 - show only the active family;
 - show `x-x` / `y-y` axes or the manufacturer principal axes and load-direction arrows used by the calculation;
-- place the PFC centroid from catalogue `xL` and identify the shear centre using catalogue `xO`; do not derive either from ideal sharp-corner geometry;
+- place the PFC centroid from catalogue `xL` and identify the shear centre using catalogue `xO`; for custom geometry, show the ideal centroid and omit the uncalculated shear centre;
 - use the Equal Angle 45-degree principal-axis convention: Load A / C about x and Load B / D about y;
 - use the selected dimensions for proportions without copying catalogue artwork;
 - avoid crossing labels and dimension lines;
@@ -3011,7 +3012,7 @@ The folded `Design actions and utilisation` panel contains:
 
 The folded `Calculation steps` panel follows one consistent sequence:
 
-1. Product / custom geometry and source basis.
+1. Product geometry and source basis.
 2. Selected principal axis or load direction.
 3. Material basis: `fy,m` and, where applicable, `fy,w`.
 4. `Z`, `S`, section slenderness, class and `Ze` basis.
@@ -3038,12 +3039,13 @@ Do not publish an expanded family until all applicable gates pass:
 - every embedded catalogue row is checked against its source table for designation order, dimensions, mass, grade, `fy`, `Z`, `S`, `Ze`, class and `kf` where published;
 - direction mapping is visually checked against the manufacturer diagram for PFC and Equal Angle;
 - published catalogue `Ze`, compactness and form-factor values are reconciled with AS 4100:2020 before changing the tab from `For Review`;
-- compact, non-compact and slender custom examples each match an independent AS 4100 calculation;
-- CHS custom and catalogue examples match the AS 4100 CHS slenderness and shear equations;
+- CHS catalogue examples match the AS 4100 CHS slenderness and shear equations;
 - representative UB, UC, PFC, CHS, RHS / SHS, Equal Angle and Rod moment capacities match independent calculations;
+- representative custom UB/UC, PFC x-x, CHS, RHS/SHS and Rod cases match independent ideal-geometry and AS 4100 calculations;
+- custom PFC Load A/B and Equal Angle Load A/B/C/D return `Not evaluated`;
 - missing-data and unsupported-direction tests return `Not evaluated` and never a zero or stale prior result;
 - unit conversion tests cover `mm³` to `kN·m` and catalogue `10³ mm³` values;
-- UI state tests confirm that irrelevant direction, custom and shear controls are hidden;
+- UI state tests confirm that Custom dimensions shows only the active family's fields and that irrelevant direction and shear controls are hidden;
 - desktop and phone checks confirm no overlapping axis labels, clipped values or horizontal overflow;
 - `REFERENCE_TRACEABILITY.md` records the exact source table, PDF page, checked date and sample result before release.
 
@@ -3051,28 +3053,28 @@ Do not publish an expanded family until all applicable gates pass:
 
 Implement in auditable increments:
 
-1. Correct the common `Ze` / material / direction calculation contract and remove the custom `Ze = Z` design-capacity shortcut.
-2. Refactor the selector to `Catalogue / Custom` plus a family menu without changing current UB / UC results.
+1. Correct the common `Ze` / material / direction calculation contract.
+2. Refactor the selector to one section-family row with an Axial-style family-local dimensions override without changing current UB / UC catalogue results.
 3. Complete UB / UC direction data and add full PFC Table 15 / 16 rows.
 4. Add CHS from checked Austube design-property rows, including the AS 4100 CHS shear path.
 5. Add RHS / SHS from the checked hollow-section tables.
 6. Add Equal Angle moment by the published Load A / B / C / D directions.
 7. Add Rod moment from complete round-bar sizes, diameter-dependent strength and generated `Z`, `S`, `Ze`.
-8. Add each Custom family only after its geometry, plastic modulus, plate-element map, residual-stress basis and `Ze` method pass the custom validation gates.
+8. Add family-local custom dimensions, enabling only reviewed direction-specific capacity paths.
 9. Add or extend shear and interaction only after the corresponding family method is separately reviewed.
 
 Current local implementation follows that order:
 
 | Step | Local state | Release boundary |
 | --- | --- | --- |
-| 1-2 Common contract and selector | Complete, including editable catalogue-default `fy,m` and conditional `fy,w` project / legacy override | Catalogue / Custom and family states fail closed on missing capacity data; PFC Load A/B and Equal Angle Load A/B/C/D fail closed when an entered `fy,m` no longer matches the published direction-specific `Ze` |
+| 1-2 Common contract and selector | Complete, including editable catalogue-default `fy,m`, conditional `fy,w` project / legacy override and family-local Custom dimensions | Catalogue and custom states fail closed on missing capacity data; PFC Load A/B and Equal Angle Load A/B/C/D fail closed when no reviewed direction-specific `Ze` path exists |
 | 3 UB / UC / PFC | Complete for the adopted InfraBuild rows; PFC selected-section data includes catalogue `xL` and `xO`; AS 4100:2020 row coordination passes | PFC `Load A` / `Load B` remains tied to the catalogue direction diagram |
-| 4 CHS | Complete for adopted catalogue moment and AS 4100 Cl. 5.11.4 shear | `Ae = Ag` is limited to unperforated catalogue sections |
-| 5 RHS / SHS | Catalogue moment, direction-specific two-web shear, reviewed Cl. 5.12.3 interaction and AS 4100:2020 row coordination complete | Custom RHS/SHS remains geometry-only |
+| 4 CHS | Complete for adopted catalogue and entered ideal moment plus AS 4100 Cl. 5.11.4 shear | `Ae = Ag` is limited to unperforated sections |
+| 5 RHS / SHS | Catalogue and entered ideal moment, direction-specific two-web shear and reviewed Cl. 5.12.3 interaction complete; catalogue rows also pass AS 4100:2020 coordination | Ideal geometry omits corner radii |
 | 6 Equal Angle | Complete for the 13 checked designations, including Table 19 principal-axis `I`, `Z`, `S`, Table 20 Load A / B / C / D `Ze` and direction-specific AS 4100 interval coordination | Selector remains visibly a checked subset, not a complete product range |
 | 7 Rod | Complete | Section moment only; no numeric shear |
-| 8 Custom | Geometry complete; non-Rod capacity staged | User enters dimensions only; non-Rod `Ze` and design capacity remain `Not evaluated` |
-| 9 Shear / interaction expansion | UB / UC / PFC `x-x`, CHS shear and catalogue RHS / SHS direction-specific shear are complete; Cl. 5.12.3 interaction is enabled for the reviewed flat-web paths | CHS has no flat-web interaction; Equal Angle, Rod and unsupported custom shear / interaction remain excluded |
+| 8 Custom dimensions | UB / UC, PFC x-x, CHS, RHS / SHS and Rod reviewed paths are enabled from entered ideal geometry | PFC Load A/B and Equal Angle Load A/B/C/D remain `Not evaluated` |
+| 9 Shear / interaction expansion | UB / UC / PFC `x-x`, CHS shear and RHS / SHS direction-specific shear are complete; Cl. 5.12.3 interaction is enabled for the reviewed flat-web paths | CHS has no flat-web interaction; Equal Angle and Rod shear / interaction remain excluded |
 
 #### 15.12.13 Required Exclusions
 
@@ -3080,6 +3082,7 @@ Current local implementation follows that order:
 - Lateral-torsional buckling.
 - Restraint spacing and restraint adequacy.
 - Arbitrary non-principal-axis bending.
+- Custom PFC Load A/B and Equal Angle Load A/B/C/D capacity.
 - Biaxial bending and axial load interaction.
 - Net-section bending, holes, copes and penetrations.
 - Web bearing, web buckling under concentrated forces and stiffener design.
@@ -3982,7 +3985,7 @@ At each relevant width confirm:
 - tables have a deliberate scroll or mobile-field treatment;
 - captions, symbols and dimensions remain readable and do not overlap geometry;
 - collapsed details can be opened, read and closed;
-- focus indication, keyboard navigation, labels, `aria-selected`, `aria-live`, disabled states and contrast remain meaningful;
+- focus indication, keyboard navigation, labels, `aria-pressed` or valid tab-specific `aria-selected` states, `aria-live`, disabled states and contrast remain meaningful;
 - phone mode hides or folds only secondary content and never changes calculation logic.
 
 #### 15.19.14 Figure and Engineering Drawing Audit

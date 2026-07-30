@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260729monopolemain1">
+  <link rel="stylesheet" href="styles.css?v=20260730monopolemerge1">
 </head>
 <body>
   <header class="topbar">
@@ -28,16 +28,16 @@
         </nav>
 
         <nav class="tool-tabs" aria-label="SC Handbook tools">
-          <button class="tool-tab active" type="button" data-category="steel-connections" data-tool="bolt" aria-controls="boltPanel" aria-selected="true">Bolt Capacity</button>
-          <button class="tool-tab" type="button" data-category="steel-connections" data-tool="weld" aria-controls="weldPanel" aria-selected="false">Weld Capacity</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-selected="false" hidden>Section Properties</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-selected="false" hidden>Axial Member Capacity</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-selected="false" hidden>Beam Section Capacity</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-selected="false" hidden>Monopole Section Capacity</button>
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-selected="false" hidden>Concrete Pad Section</button>
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-selected="false" hidden>Reinforcement</button>
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-selected="false" hidden>Screw Piles Selector</button>
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-selected="false" hidden>Rock Anchor Selector</button>
+          <button class="tool-tab active" type="button" data-category="steel-connections" data-tool="bolt" aria-controls="boltPanel" aria-pressed="true">Bolt Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-connections" data-tool="weld" aria-controls="weldPanel" aria-pressed="false">Weld Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-pressed="false" hidden>Monopole Section Capacity</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-pressed="false" hidden>Concrete Pad Section</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-pressed="false" hidden>Reinforcement</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-pressed="false" hidden>Screw Piles Selector</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-pressed="false" hidden>Rock Anchor Selector</button>
         </nav>
       </div>
     </section>
@@ -584,7 +584,7 @@
     </section>
 
     <section id="concretePanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Concrete pads · AS 3600:2018 section theory</p><h2>Concrete Pad Section</h2></div><span>RC moment and one-way shear capacity</span></div>
+      <div class="tool-heading"><div><p class="kicker">Concrete pads · AS 3600:2018 section theory</p><h2>Concrete Pad Section</h2></div><span class="tool-status">For Review · section resistance only</span></div>
 
       <section class="lookup-card concrete-card">
         <div class="concrete-input-stack input-cluster">
@@ -692,18 +692,19 @@
     </section>
 
     <section id="propertiesPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Section and material properties</p><h2>Section Properties</h2></div><span class="tool-status">Draft &middot; value basis shown</span></div>
+      <div class="tool-heading"><div><p class="kicker">Section and material properties</p><h2>Section Properties</h2></div><span class="tool-status">Draft &middot; source status shown</span></div>
 
       <section class="lookup-card">
-        <div class="section-properties-mode-switch" role="group" aria-label="Section property source">
+        <div class="section-properties-mode-switch" role="group" aria-label="Section property source" hidden>
           <button class="section-properties-mode active" type="button" data-section-properties-mode="catalogue" aria-pressed="true">Catalogue</button>
           <button class="section-properties-mode" type="button" data-section-properties-mode="custom" aria-pressed="false">Custom geometry</button>
         </div>
         <div class="input-cluster">
+          <div class="section-catalogue-family-switch" id="sectionCatalogueFamilyTabs" role="group" aria-label="Section category"></div>
           <section class="input-group input-group-section" id="sectionCatalogueGroup">
-            <span class="input-group-heading"><b>Catalogue section</b><small>Checked Australian product rows. The basis of each value is stated below.</small></span>
-            <div class="input-group-fields two section-properties-catalogue-inputs">
-              <label class="size-field"><span>Product family</span><select id="sectionCatalogueFamily"></select></label>
+            <span class="input-group-heading"><b>Catalogue section</b><small>Checked Australian product rows. Each result states its source class.</small></span>
+            <div class="input-group-fields section-properties-catalogue-inputs">
+              <label class="size-field" hidden><span>Product family</span><select id="sectionCatalogueFamily"></select></label>
               <label class="size-field"><span>Section designation</span><select id="sectionCatalogueDesignation"></select></label>
             </div>
           </section>
@@ -726,7 +727,7 @@
           <section class="input-group input-group-material section-material-input-group">
             <span class="input-group-heading"><b>Material definition</b><small id="sectionMaterialInputNote">Product form and governing thickness follow the selected section.</small></span>
             <div class="input-group-fields four section-material-inputs">
-              <label><span>Product form</span><select id="sectionMaterialForm"><option value="hot-rolled-section">Hot-rolled section</option><option value="round-bar">Round bar</option><option value="hollow-section">Cold-formed hollow section</option><option value="project">Project-defined steel</option></select></label>
+              <label><span>Product form</span><select id="sectionMaterialForm"><option value="">Select material basis</option><option value="hot-rolled-section">Hot-rolled section</option><option value="round-bar">Round bar</option><option value="hollow-section">Cold-formed hollow section</option><option value="project">Project-defined steel</option></select></label>
               <label><span>Steel grade</span><select id="sectionMaterialGrade"></select></label>
               <div class="section-material-thickness-control">
                 <label><span id="sectionMaterialThicknessLabel">Governing thickness</span><span class="unit"><input id="sectionMaterialThickness" type="number" min="0.1" step="0.1" value="10" aria-describedby="sectionMaterialThicknessState sectionMaterialValidation"><em>mm</em></span></label>
@@ -801,7 +802,7 @@
             <article id="sectionPrincipalAngleCard"><span id="sectionThetaLabel">Principal-axis angle <i>&theta;<sub>u</sub></i></span><strong><output id="sectionThetaU">0.0</output><small>&deg;</small></strong><p class="property-basis" id="sectionThetaUBasis">Derived &middot; catalogue data</p></article>
           </div>
           <div class="section-property-auxiliary section-angle-principal-moduli" id="sectionPrincipalModuli" hidden></div>
-          <div class="section-properties-group-heading section-design-attribute-heading">
+          <div class="section-properties-group-heading section-design-attribute-heading" id="sectionDesignAttributeHeading">
             <div><span>Material-dependent</span><h3>Section design values</h3></div>
             <p>Reference attributes only; capacities and utilisation remain in Beam and Axial Member.</p>
           </div>
@@ -823,20 +824,20 @@
             <article><span>Poisson&rsquo;s ratio / thermal expansion</span><div class="section-property-pair"><span>&nu;</span><output id="sectionMaterialNu">0.25</output></div><div class="section-property-pair"><span>&alpha;<sub>T</sub></span><output id="sectionMaterialAlpha">11.7 &times; 10<sup>&minus;6</sup> /&deg;C</output></div><p class="property-basis">AS 4100 Cl. 2.2.4</p></article>
             <article><span>Density <i>&rho;</i></span><strong><output id="sectionMaterialDensity">7,850</output><small> kg/m<sup>3</sup></small></strong><p class="property-basis">Handbook steel-mass basis</p></article>
           </div>
-          <p class="result-note" id="sectionPropertiesWarning">Each value retains its catalogue, standard or derived basis. Missing catalogue properties are not inferred.</p>
+          <p class="result-note" id="sectionPropertiesWarning">Catalogue gaps remain unavailable. Capacity and member checks are excluded.</p>
         </section>
       </section>
 
-      <details class="detail-card"><summary><span><b>Basis of values</b><small id="sectionCalculationSummary">Catalogue values and stated derivations</small></span><i>+</i></summary><div class="detail-body"><section><h3>Basis of values</h3><div id="sectionFormulaSteps" class="formula-list"></div></section></div></details>
+      <details class="detail-card" id="sectionDerivationsCard"><summary><span><b>Derivations</b><small id="sectionCalculationSummary">Calculated values only</small></span><i>+</i></summary><div class="detail-body"><section><h3>Calculated relationships</h3><div id="sectionFormulaSteps" class="formula-list"></div></section></div></details>
 
-      <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue, material-standard and derivation status</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Material</b> &mdash; hot-rolled section strengths follow AS/NZS 3679.1:2016 Table 14 using controlling part thickness; round-bar strengths follow Table 15 using diameter. Hollow-section values require the selected checked AS/NZS 1163:2016 grade. Custom standard-material thickness is linked to the entered geometry unless the visible manual override is active. E, G, &nu; and &alpha;<sub>T</sub> follow AS 4100 Cl. 2.2.4 (2020 edition). Confirm applicable amendments, supplied grade, thickness range, supply condition and test certificate before design issue.</p><p><b>Axes</b> &mdash; positive horizontal and vertical directions are right and up. Positive rotation is counter-clockwise. For equal angles, n-n is horizontal, p-p is vertical, and the catalogue x-x / y-y axes are principal axes at 45&deg;; other shapes use centroidal x-x / y-y axes parallel to the overall dimensions. Directional Z values retain the catalogue edge labels.</p><p><b>Shear reference</b> &mdash; A<sub>w</sub> is clear web area for I-sections and channels. A<sub>wx</sub> and A<sub>wy</sub> are the two-horizontal-wall and two-vertical-wall areas for ideal RHS/SHS. These are geometric reference areas, not design-standard effective shear area A<sub>v</sub>, and are not used for capacity.</p><p><b>Boundary</b> &mdash; checked k<sub>f</sub>, compactness and Z<sub>e</sub> are reference attributes reused only for exact section, grade and direction matches. Product availability, design capacity, member stability, actions and utilisation are excluded.</p></div></div></details>
+      <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue, material-standard and derivation status</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Material</b> &mdash; hot-rolled section strengths follow AS/NZS 3679.1 Table 14 using controlling part thickness; round-bar strengths follow AS/NZS 3679.1 Table 15 using diameter. The adopted edition is AS/NZS 3679.1:2016. Hollow-section values require the selected checked AS/NZS 1163:2016 grade. Custom standard-material thickness is linked to the entered geometry unless the visible manual override is active. E, G, &nu; and &alpha;<sub>T</sub> follow AS 4100 Cl. 2.2.4; the adopted edition is AS 4100:2020. Confirm applicable amendments, supplied grade, thickness range, supply condition and test certificate before design issue.</p><p><b>Axes</b> &mdash; positive horizontal and vertical directions are right and up. Positive rotation is counter-clockwise. For equal angles, n-n is horizontal, p-p is vertical, and the catalogue x-x / y-y axes are principal axes at 45&deg;; other shapes use centroidal x-x / y-y axes parallel to the overall dimensions. Directional Z values retain the catalogue edge labels.</p><p><b>Shear reference</b> &mdash; A<sub>w</sub> is clear web area for I-sections and channels. A<sub>wx</sub> and A<sub>wy</sub> are the two-horizontal-wall and two-vertical-wall areas for ideal RHS/SHS. These are geometric reference areas, not design-standard effective shear area A<sub>v</sub>, and are not used for capacity.</p><p><b>Boundary</b> &mdash; checked k<sub>f</sub>, compactness and Z<sub>e</sub> are reference attributes reused only for exact section, grade and direction matches. Product availability, design capacity, member stability, actions and utilisation are excluded.</p></div></div></details>
     </section>
 
     <section id="beamPanel" class="tool-panel" hidden>
       <div class="tool-heading"><div><p class="kicker">Beam sections · AS 4100 Section 5</p><h2>Beam Section Capacity</h2></div><span class="tool-status">For Review · section resistance only</span></div>
 
       <section class="lookup-card beam-card">
-        <div class="beam-family-switch beam-mode-switch" role="group" aria-label="Beam section family or custom geometry">
+        <div class="beam-family-switch beam-mode-switch" role="group" aria-label="Beam section family">
           <button class="beam-family active" type="button" data-beam-family="ub" aria-pressed="true">UB</button>
           <button class="beam-family" type="button" data-beam-family="uc" aria-pressed="false">UC</button>
           <button class="beam-family" type="button" data-beam-family="pfc" aria-pressed="false">PFC</button>
@@ -845,7 +846,6 @@
           <button class="beam-family" type="button" data-beam-family="shs" aria-pressed="false">SHS</button>
           <button class="beam-family" type="button" data-beam-family="ea" aria-pressed="false">Equal Angle</button>
           <button class="beam-family" type="button" data-beam-family="rod" aria-pressed="false">Rod</button>
-          <button class="beam-custom-mode" type="button" data-beam-source="custom" aria-pressed="false">Custom Rod</button>
           <select id="beamFamily" aria-label="Beam section family" hidden tabindex="-1"><option value="ub">UB</option><option value="uc">UC</option><option value="pfc">PFC</option><option value="chs">CHS</option><option value="rhs">RHS</option><option value="shs">SHS</option><option value="ea">Equal Angle</option><option value="rod">Rod</option></select>
         </div>
 
@@ -855,6 +855,32 @@
             <div class="input-group-fields two beam-selection-fields">
               <label id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam section"></select></label>
               <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
+            </div>
+            <div class="member-dimension-panel beam-dimension-panel" id="beamDimensionCard">
+              <div class="input-group-fields member-dimension-toggle">
+                <label class="checkbox-field"><span>Custom dimensions</span><input id="beamDimensionOverride" type="checkbox"></label>
+              </div>
+              <div class="input-group-fields four member-dimension-fields beam-dimension-fields" id="beamDimensionFields" hidden>
+                <label data-beam-dim="ub uc"><span>d <i>overall depth</i></span><span class="unit"><input id="beamDimID" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ub uc"><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="beamDimIBf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ub uc"><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="beamDimITw" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ub uc"><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="beamDimITf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="pfc" hidden><span>d <i>overall depth</i></span><span class="unit"><input id="beamDimPfcD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="pfc" hidden><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="beamDimPfcBf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="pfc" hidden><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="beamDimPfcTw" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="pfc" hidden><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="beamDimPfcTf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="chs" hidden><span>D <i>outside diameter</i></span><span class="unit"><input id="beamDimChsD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="chs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="beamDimChsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="rhs" hidden><span>d <i>outside depth</i></span><span class="unit"><input id="beamDimRhsD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="rhs" hidden><span>b <i>outside width</i></span><span class="unit"><input id="beamDimRhsB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="rhs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="beamDimRhsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="shs" hidden><span>b = d <i>outside size</i></span><span class="unit"><input id="beamDimShsB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="shs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="beamDimShsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ea" hidden><span>b <i>equal leg length</i></span><span class="unit"><input id="beamDimEaB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="ea" hidden><span>t <i>leg thickness</i></span><span class="unit"><input id="beamDimEaT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-beam-dim="rod" hidden><span>d <i>diameter</i></span><span class="unit"><input id="beamDimRodD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+              </div>
+              <p class="result-note user-input-note" id="beamDimensionStatus" hidden></p>
             </div>
           </section>
           <section class="input-group input-group-material beam-material-group" id="beamMaterialGroup">
@@ -872,11 +898,6 @@
             <div class="input-group-fields"><label id="beamDirectionField"><span id="beamDirectionFieldLabel">Catalogue direction</span><select id="beamDirection" aria-label="Bending direction"></select></label></div>
           </section>
         </div>
-
-        <section class="input-group beam-custom-group" id="beamCustomFields" hidden>
-          <span class="input-group-heading"><b>Custom Rod</b><small>Enter the diameter; solid-circle properties and section moment capacity are generated automatically.</small></span>
-          <div class="input-group-fields beam-custom-properties"><label><span>D <i>diameter</i></span><span class="unit"><input id="beamCustomRodDiameter" type="number" min="0" step="1" value="24"><em>mm</em></span></label></div>
-        </section>
 
         <div class="beam-summary beam-selected-section">
           <figure class="beam-section-figure"><svg id="beamSectionDiagram" viewBox="0 0 240 170" role="img" aria-labelledby="beamSectionDiagramTitle beamSectionDiagramDescription"></svg><figcaption id="beamSectionDiagramCaption">Selected dimensions · centroidal axes</figcaption></figure>
@@ -923,13 +944,13 @@
         <div class="source-body">
           <div class="source-notes">
             <p><b>Scope</b> - cross-section resistance under AS 4100 Section 5. Member moment capacity M<sub>b</sub>, lateral-torsional buckling, restraint, deflection, vibration, torsion, web bearing, concentrated loads, holes and composite action are excluded.</p>
-            <p><b>Catalogue rule</b> - a numeric capacity is reported only when the selected family, designation, grade and bending direction or catalogue bending case have reviewed f<sub>y,m</sub> and Z<sub>e</sub> product-table data. Missing direction data returns <i>Not evaluated</i>; it is not replaced by ideal geometry.</p>
+            <p><b>Capacity rule</b> - catalogue mode uses reviewed product-table data. Custom dimensions use ideal sharp-corner geometry and report capacity only where the family-specific AS 4100 section-classification and effective-modulus path is implemented. Missing direction data returns <i>Not evaluated</i>.</p>
             <p><b>Checked moment rows</b> - InfraBuild 2019 Tables 9-20 cover UB, UC, PFC and the listed Equal Angle subset. Austube 2013 Tables 3.1-1 to 3.1-6 cover CHS, RHS and SHS. Rod moment uses checked diameter and grade with solid-circle geometry.</p>
             <p><b>Catalogue coordination</b> - 717 family, grade and direction rows are programmatically reconciled against AS 4100 Cl. 5.2 and AS 4100 Cl. 6.2. Slender hollow rows retain the permitted effective-cross-section Z<sub>e</sub>; asymmetric PFC and Equal Angle classes are identified from the published load-case Z<sub>e</sub> interval. k<sub>f</sub> is an axial-compression form factor and is not applied to beam moment capacity. The tab remains <i>For Review</i> as a section-resistance quick reference.</p>
           </div>
           <div class="source-notes">
-            <p><b>Custom rule</b> - Custom Rod accepts diameter only. Solid-circle properties and section moment capacity are generated automatically. Other custom geometry belongs in Section Properties and is not presented as a Beam capacity path.</p>
-            <p><b>Shear</b> - reviewed numeric shear is provided for UB, UC and PFC x-x web shear, CHS section shear, and catalogue RHS/SHS direction-specific two-web shear. AS 4100 Cl. 5.12.3 interaction is evaluated for UB, UC and PFC x-x and catalogue RHS/SHS; CHS, Equal Angle, Rod and unsupported custom interaction paths remain <i>Not evaluated</i>.</p>
+            <p><b>Custom dimensions</b> - dimensions are entered within the selected family. Gross geometry is generated automatically; users do not enter A<sub>g</sub>, I, Z, S, Z<sub>e</sub>, section class or shear area. Ideal geometry omits product fillets, root radii and hollow-section corner radii.</p>
+            <p><b>Shear</b> - reviewed numeric shear is provided for UB, UC and PFC x-x web shear, CHS section shear, and catalogue RHS/SHS direction-specific two-web shear. AS 4100 Cl. 5.12.3 interaction is evaluated for UB, UC and PFC x-x and catalogue RHS/SHS; CHS, Equal Angle and Rod interaction paths remain <i>Not evaluated</i>.</p>
             <p><b>Catalogue cases</b> - PFC Load A/B and Equal Angle Load A/B/C/D identify the manufacturer bending sign and compression side, not the external load application point. Arbitrary non-principal and biaxial bending remain excluded.</p>
             <p><b>Product status</b> - embedded catalogue rows are design-reference data, not a statement of current stock availability. Confirm the current product, grade and supplier documentation before design issue.</p>
           </div>
@@ -1081,7 +1102,7 @@
             <div id="memberCatalogueSectionFields">
               <div class="input-group-fields two">
                 <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
-                <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0" max="20" step="0.1" value="3"><em>m</em></span></label>
+                <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0.1" max="20" step="0.1" value="3"><em>m</em></span></label>
               </div>
               <details class="input-override-details" id="memberRadiusOverrideDetails">
                 <summary><span><b>Override catalogue radius</b><small>Use a verified governing radius only.</small></span><i>+</i></summary>
@@ -1094,8 +1115,8 @@
               <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
               <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
               <div class="member-custom-subheading"><b>Effective lengths</b><small>Use the same value for L<sub>ex</sub> and L<sub>ey</sub> when restraint conditions are the same about both axes.</small></div>
-              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
-              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0" max="50" step="0.1" value="3"><em>m</em></span></label>
+              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0.1" max="50" step="0.1" value="3"><em>m</em></span></label>
+              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0.1" max="50" step="0.1" value="3"><em>m</em></span></label>
             </div>
             <div class="member-dimension-panel" id="memberDimensionCard">
               <div class="input-group-fields member-dimension-toggle">
@@ -1121,8 +1142,8 @@
             <details class="input-override-details" id="memberMaterialOverrideDetails">
               <summary><span><b id="memberMaterialOverrideTitle">Override grade values</b><small id="memberMaterialOverrideHelp">Use verified project material strengths only.</small></span><i>+</i></summary>
               <div class="input-group-fields two">
-                <label><span>f<sub>y</sub></span><span class="unit"><input id="memberFyInput" type="number" min="0" step="1" value="350"><em>MPa</em></span></label>
-                <label><span>f<sub>u</sub></span><span class="unit"><input id="memberFuInput" type="number" min="0" step="1" value="430"><em>MPa</em></span></label>
+                <label><span>f<sub>y</sub></span><span class="unit"><input id="memberFyInput" type="number" min="1" step="1" value="350"><em>MPa</em></span></label>
+                <label><span>f<sub>u</sub></span><span class="unit"><input id="memberFuInput" type="number" min="1" step="1" value="430"><em>MPa</em></span></label>
               </div>
             </details>
           </section>
@@ -1147,8 +1168,8 @@
               <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
               <label class="member-hole-field"><span>d<sub>h</sub> <i>hole diameter</i></span><span class="unit"><input id="memberHoleDiameter" type="number" min="0" step="1" value="0"><em>mm</em></span></label>
               <label class="member-thickness-field" hidden><span>t <i>net-path thickness</i></span><span class="unit"><input id="memberHoleThickness" type="number" min="0" step="0.1" value="0"><em>mm</em></span></label>
-              <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0" step="1" value="0"><em>mm²</em></span></label>
-              <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0" max="1" step="0.05" value="1"></label>
+              <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0.1" step="0.001" value="0"><em>mm²</em></span></label>
+              <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0.75" max="1" step="0.05" value="1"></label>
             </div>
           </section>
         </div>
@@ -1167,7 +1188,7 @@
             <div><span>Selected member</span><strong id="memberDesignation">—</strong><small id="memberAssumption">Calculated after selection</small></div>
             <dl class="member-summary-metrics member-summary-primary">
               <div><dt>Checked axis / r</dt><dd id="memberSummaryAxis">—</dd></div>
-              <div><dt>L<sub>e</sub> / L<sub>e</sub>/r</dt><dd id="memberSummarySlenderness">—</dd></div>
+              <div><dt>L<sub>e</sub>; L<sub>e</sub>/r</dt><dd id="memberSummarySlenderness">—</dd></div>
               <div><dt>A<sub>n</sub></dt><dd id="memberSummaryNetArea">—</dd></div>
               <div><dt>f<sub>y</sub> / f<sub>u</sub></dt><dd id="memberSummaryStrength">—</dd></div>
               <div><dt>k<sub>f</sub> / &alpha;<sub>b</sub></dt><dd id="memberSummaryCompressionFactors">—</dd></div>
@@ -1300,10 +1321,10 @@
             <p><b>Material standards</b> &middot; Steel hollow sections are based on AS/NZS 1163. Hot-rolled plates, angles, rods and open sections are based on AS/NZS 3678 / AS/NZS 3679.1 where applicable. Verify grade, thickness range and test certificate before issue for design.</p>
             <p><b>CHS product source</b> &middot; Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0. Browser properties are geometric from D/t unless a table value is explicitly shown.</p>
             <p><b>Equal Angle / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. Equal Angle properties use Tables 19&ndash;21; PFC properties use Tables 15&ndash;16.</p>
-            <p><b>Rod properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size availability and mass; Table 38 for diameter-dependent AS/NZS 3679.1 round-bar yield stress. Circular solid-bar geometry is used for A<sub>g</sub> and r.</p>
+            <p><b>Rod properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size availability and mass; OneSteel / InfraBuild Table 38 for diameter-dependent AS/NZS 3679.1 round-bar yield stress. Circular solid-bar geometry is used for A<sub>g</sub> and r.</p>
             <p><b>Custom / Built-up properties</b> &middot; Uses user-entered effective section properties. The page does not verify the source section-property calculation, local slenderness, built-up connectors, torsional buckling or connection eccentricity.</p>
             <p><b>Family custom dimensions</b> &middot; CHS, Equal Angle, PFC and Rod may use the custom-dimension override in Section properties. CHS and Rod derive A<sub>g</sub>, r and I from circular geometry. Equal Angle derives A<sub>g</sub> and principal radii from simplified rectangular geometry; PFC derives A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub>. Fillets and root radii are not reconstructed.</p>
-            <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
+            <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and AS 4100 Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
             <p><b>Axial tension</b> &middot; AS 4100 Cl. 7.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3.</p>
           </div>
           <div class="source-notes">
@@ -1808,20 +1829,22 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.3</b></footer>
-  <script src="bolt-capacity.js?v=20260729monopolemain1"></script>
-  <script src="bolt-integrity.js?v=20260729monopolemain1"></script>
-  <script src="section-geometry.js?v=20260729monopolemain1"></script>
-  <script src="section-catalogue.js?v=20260729monopolemain1"></script>
-  <script src="steel-materials.js?v=20260729monopolemain1"></script>
-  <script src="beam-section-data.js?v=20260729monopolemain1"></script>
-  <script src="beam-hot-rolled-data.js?v=20260729monopolemain1"></script>
-  <script src="beam-section-capacity.js?v=20260729monopolemain1"></script>
-  <script src="beam-section-reconciliation.js?v=20260729monopolemain1"></script>
-  <script src="reo-calculation.js?v=20260729monopolemain1"></script>
-  <script src="monopole-capacity.js?v=20260729monopolemain1"></script>
-  <script src="app.js?v=20260729monopolemain1"></script>
-  <script src="monopole-app.js?v=20260729monopolemain1"></script>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.11</b></footer>
+  <script src="bolt-capacity.js?v=20260730monopolemerge1"></script>
+  <script src="bolt-integrity.js?v=20260730monopolemerge1"></script>
+  <script src="weld-capacity.js?v=20260730monopolemerge1"></script>
+  <script src="concrete-section-calculation.js?v=20260730monopolemerge1"></script>
+  <script src="section-geometry.js?v=20260730monopolemerge1"></script>
+  <script src="section-catalogue.js?v=20260730monopolemerge1"></script>
+  <script src="steel-materials.js?v=20260730monopolemerge1"></script>
+  <script src="beam-section-data.js?v=20260730monopolemerge1"></script>
+  <script src="beam-hot-rolled-data.js?v=20260730monopolemerge1"></script>
+  <script src="beam-section-capacity.js?v=20260730monopolemerge1"></script>
+  <script src="beam-section-reconciliation.js?v=20260730monopolemerge1"></script>
+  <script src="reo-calculation.js?v=20260730monopolemerge1"></script>
+  <script src="monopole-capacity.js?v=20260730monopolemerge1"></script>
+  <script src="app.js?v=20260730monopolemerge1"></script>
+  <script src="monopole-app.js?v=20260730monopolemerge1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
