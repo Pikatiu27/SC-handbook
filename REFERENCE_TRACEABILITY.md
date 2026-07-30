@@ -73,7 +73,7 @@ This section is the working implementation record for `SC_HANDBOOK.md` Section 6
 
 ### Current Migration Status
 
-The existing sections below contain useful source-page checks, catalogue-row checks, default-output checks and historical audit notes. They do not yet form a complete consolidated set of formal `Calculation_ID` and `Test_ID` records under the current contract.
+The active calculation register below now assigns stable IDs to every governing calculation or selector result. Existing sections retain useful source-page checks, catalogue-row checks, default-output checks and historical audit notes. A result remains `For Review` or `Draft` until its linked records complete the applicable source, independent, branch, boundary, state and browser evidence matrix.
 
 Therefore:
 
@@ -82,6 +82,42 @@ Therefore:
 - do not mark a legacy calculation `Checked` under the new contract merely by renaming old notes;
 - migrate one calculation family at a time and link every accepted claim to positive numerical evidence;
 - keep failed, blocked and source-unverified cases visible until resolved.
+
+### Active Calculation Contract Register
+
+This register is the authoritative ID map. It identifies the claim and evidence owner without expanding the visible page. `For Review` means the source/formula has useful evidence but the complete Section 6.2.11 matrix is not yet closed. `Draft` means product or project-source verification remains incomplete.
+
+| Calculation_ID / Selector_ID | Tab / governing result | Governing basis | Implementation owner | Current evidence / status |
+| --- | --- | --- | --- | --- |
+| `BOLT-SHEAR-01` | Bolt / N-plane, X-plane and group design shear capacity | AS 4100 Cl. 9.2.2.1; AS 4100 Table 9.2.2.1; AS 4100 Table 3.4 | `bolt-capacity.js`; `app.js` `calculateBolt()` | Independent regression and source-page checks; For Review |
+| `BOLT-TENSION-01` | Bolt / design tensile capacity | AS 4100 Cl. 9.2.2.2; AS 4100 Table 3.4 | `bolt-capacity.js`; `app.js` `calculateBolt()` | Independent regression and source-page checks; For Review |
+| `BOLT-SLIP-01` | Bolt / TF serviceability slip resistance | AS 4100 Cl. 9.2.3.1; AS 4100 Table 15.2.2.2 | `bolt-capacity.js`; `app.js` `calculateBolt()` | Branch regression and source-page checks; For Review |
+| `BOLT-SLIP-INTERACTION-01` | Bolt / TF serviceability shear-tension interaction | AS 4100 Cl. 9.2.3.3 | `app.js` `calculateBolt()` | Formula trace and browser default; For Review |
+| `BOLT-BEARING-01` | Bolt / connected-ply full-bearing and entered-edge-distance limits | AS 4100 Cl. 9.2.2.4 | `app.js` `calculateConnectedPlyIntegrity()` | Two-ply branch checks; governing geometry remains user-confirmed; For Review |
+| `BOLT-DETAILING-01` | Bolt / pitch and edge-distance warning state | AS 4100 Cl. 9.5.1 to Cl. 9.5.3; AS 4100 Table 9.5.2 | `app.js` `calculateBolt()` | Warning-state regression; For Review |
+| `BOLT-PLY-TENSION-01` | Bolt / connected-ply design section tension capacity | AS 4100 Cl. 9.1.9(b); AS 4100 Cl. 7.2 | `bolt-integrity.js`; `app.js` | Formal record below; For Review |
+| `BOLT-BLOCK-SHEAR-01` | Bolt / connected-ply block shear capacity | AS 4100 Cl. 9.1.9(e) | `bolt-integrity.js`; `app.js` | Formal record and worked example below; For Review |
+| `WELD-FILLET-01` | Weld / fillet and IPBW throat capacity | AS 4100 Cl. 9.6.2.7; AS 4100 Cl. 9.6.3.10; AS 4100 Table 3.4 | `app.js` `calculateWeld()` | `AUD-WELD-DEFAULT-01`; For Review |
+| `WELD-LAP-KR-01` | Weld / welded-lap reduction | AS 4100 Table 9.6.3.10(B) | `app.js` `weldLapReduction()` | `AUD-WELD-KR-BOUNDARY-01`; For Review |
+| `WELD-PARENT-SCREEN-01` | Weld / warning-only parent-metal per-mm screen | Derived warning aid from AS 4100 member resistance context | `app.js` `calculateWeld()` | Explicitly non-governing; For Review |
+| `SECTION-CATALOGUE-01` | Section Properties / published catalogue lookup | Exact cited manufacturer row | `section-catalogue.js`; source data modules | Row and DOM regression; Draft where a row is not traced |
+| `SECTION-GEOMETRY-01` | Section Properties / entered or catalogue-linked ideal geometry | Closed-form geometric identities | `section-geometry.js`; `app.js` | `AUD-SECTION-CHS-01`; For Review |
+| `SECTION-MATERIAL-01` | Section Properties / material strength and constants lookup | AS/NZS 3679.1 Tables 14 and 15; AS/NZS 1163; AS 4100 Cl. 2.2.4 | `steel-materials.js`; `app.js` | Material and DOM regression; For Review |
+| `AXIAL-SECTION-COMP-01` | Axial / design section compression capacity | AS 4100 Cl. 6.2 | `app.js` `calculateMember()` | Formula trace and regression; For Review |
+| `AXIAL-MEMBER-COMP-01` | Axial / design member compression capacity | AS 4100 Cl. 6.3.3; AS 4100 Table 6.3.3 | `app.js` `calculateMember()` | `AUD-AXIAL-CHS-01` plus EA regression; For Review |
+| `AXIAL-TENSION-01` | Axial / gross yielding and net fracture | AS 4100 Cl. 7.2 and Cl. 7.3 | `app.js` `calculateMember()` | Formula trace and governing-state regression; For Review |
+| `BEAM-MOMENT-01` | Beam / design section moment capacity | AS 4100 Cl. 5.2; AS 4100 Table 3.4 | `beam-section-capacity.js`; `app.js` | `AUD-BEAM-DEFAULT-01` plus 717-row reconciliation; For Review |
+| `BEAM-SHEAR-01` | Beam / design section shear capacity | AS 4100 Cl. 5.11 | `beam-section-capacity.js`; `app.js` | `AUD-BEAM-DEFAULT-01` plus family regression; For Review |
+| `BEAM-SHEAR-MOMENT-01` | Beam / section shear-bending interaction | AS 4100 Cl. 5.12 | `beam-section-capacity.js`; `app.js` | Branch and trace regression; For Review |
+| `CONCRETE-FLEXURE-01` | Concrete Pad / pure-bending strip design moment capacity | AS 3600 Cl. 8.1; AS 3600 Table 2.2.2 | `app.js` `solveConcreteSection()` | `AUD-CONCRETE-DEFAULT-01`; For Review |
+| `CONCRETE-SHEAR-SIMPLIFIED-01` | Concrete Pad / simplified one-way shear section capacity | AS 3600 Cl. 8.2.4 and related Cl. 8.2 provisions | `app.js` `concreteOneWayShear()` | `AUD-CONCRETE-DEFAULT-01`; out-of-scope states fail closed; For Review |
+| `REO-LAP-01` | Reinforcement / tension lap length | AS 3600 Cl. 13.2.1 and Cl. 13.2.2 | `reo-calculation.js` `calculateLap()` | `AUD-REO-LAP-01` plus branch suite; For Review |
+| `REO-DEVELOPMENT-01` | Reinforcement / straight tension development | AS 3600 Cl. 13.1.2 | `reo-calculation.js` `calculateDevelopment()` | Branch and ordering regression; For Review |
+| `REO-ANCHORAGE-01` | Reinforcement / qualified hook, cog and reduced-stress reference | AS 3600 Cl. 13.1.2.4, Cl. 13.1.2.6 and Cl. 13.1.2.7 | `reo-calculation.js` `calculateAnchorageComparison()` | Qualification and fail-closed regression; For Review |
+| `SCREW-GROUP-ACTIONS-01` | Screw Piles / symmetric rigid-cap pile action distribution | Derived rigid-cap equilibrium model | `app.js` `calculateScrewDemand()` | `AUD-SCREW-GROUP-01`; not an AS 2159 resistance calculation; For Review |
+| `SCREW-PROJECT-COMPARE-01` | Screw Piles / directional comparison with entered project values | Derived ratio using user-sourced project design values | `app.js` `calculateScrewDemand()` | Source/basis gating regression required; For Review |
+| `SCREW-PRODUCT-LOOKUP-01` | Screw Piles / published product selection | Exact manufacturer document row | `app.js` product data | Selector only; Draft where source is pending |
+| `ROCK-PRODUCT-LOOKUP-01` | Rock Anchor / published product selection | Exact manufacturer document row | `rock-anchor-selector/app.js` | Selector only; Draft and no inferred resistance |
 
 ### Standard Execution Sequence
 
@@ -250,10 +286,27 @@ Work one calculation family at a time. The queue is a planning order, not eviden
 | `3` | Bolt Capacity | Shear N/X plane, tension, slip resistance, full-bearing and edge-distance limits, optional ply rupture, detailing and bolted-lap reduction | AS 4100, Australian design examples/connection guidance and independent arithmetic |
 | `4` | Weld Capacity | Fillet-weld throat capacity, weld-metal strength selection and welded-lap `k_r` branch | AS 4100, AS/NZS 1554 context, ASI connection guidance and independent arithmetic |
 | `5` | Concrete Pad Section | Strain-compatibility flexure, reinforcement table area, capacity factor branch and simplified one-way shear | AS 3600, Australian worked/reconstructed examples and independent section solver |
-| `6` | Section Properties | UB/UC and hollow-section catalogue rows; custom geometry `A`, `I`, `Z` and `r` identities | Exact manufacturer rows plus independent geometry identities |
-| `7` | Screw Piles / Rock Anchor selectors | Product-row reproduction, source-status mapping, filter compatibility and invalid/unpublished states | Manufacturer documents and exact selector-state tests; no inferred resistance |
+| `6` | Reinforcement | Basic and Refined tension development, lap `k7`, lower-limit ordering, hook/cog qualification and fail-closed evidence states | AS 3600, AS/NZS 4671 bar data, independently reconstructed default and threshold cases |
+| `7` | Section Properties | UB/UC and hollow-section catalogue rows; custom geometry `A`, `I`, `Z` and `r` identities | Exact manufacturer rows plus independent geometry identities |
+| `8` | Screw Piles / Rock Anchor selectors | Product-row reproduction, source-status mapping, filter compatibility and invalid/unpublished states | Manufacturer documents and exact selector-state tests; no inferred resistance |
 
 `Wind Site Draft` remains outside this verification queue unless explicitly scheduled. A future `Base Plate` or other calculation tab must complete this procedure before acceptance as a checked calculator.
+
+### Independent Audit Reproductions - 2026-07-30
+
+The cases below are implemented in `tests/independent-reproductions.test.js`. That file imports no production calculation module and uses only independently stated source inputs and equations. Browser results were checked on local Build 0.7.5; display comparisons use the page precision, while the standalone script retains unrounded arithmetic.
+
+| Test_ID | Linked Calculation_ID | Independent case | Expected / browser result | Branch or invariant | Status |
+| --- | --- | --- | --- | --- | --- |
+| `AUD-WELD-DEFAULT-01` | `WELD-FILLET-01` | 6 mm equal-leg fillet, `fuw = 490 MPa`, `phi = 0.80`, `lw = 200 mm`, one weld line | `199.489 kN`; displayed `199.5 kN` | Direct fillet-throat path | Pass |
+| `AUD-WELD-KR-BOUNDARY-01` | `WELD-LAP-KR-01` | `lw = 1.699 / 1.700 / 1.701 / 8.000 / 8.001 m` | `kr = 1.000 / 1.000 / 0.99794 / 0.620 / 0.620` | Below, at and above both table branch thresholds | Pass |
+| `AUD-SECTION-CHS-01` | `SECTION-GEOMETRY-01` | Ideal CHS `D = 114.3 mm`, `t = 4.5 mm` | `Ag = 1552.26 mm2`; `I = 2.343194E6 mm4`; `Z = 4.100077E4 mm3`; `r = 38.853 mm` | Closed-form area, second moment, modulus and radius identities | Pass |
+| `AUD-AXIAL-CHS-01` | `AXIAL-MEMBER-COMP-01` | Visible CHS default `Ag = 1117 mm2`, `r = 39.3 mm`, `Le = 3000 mm`, `fy = 350 MPa`, `kf = 1`, `alpha_b = -0.5` | Design member compression `236.6 kN` | Full lambda / alpha_a / eta / xi / alpha_c sequence | Pass |
+| `AUD-AXIAL-TENSION-BRANCH-01` | `AXIAL-TENSION-01` | Equal Angle `Ag = An = 1810 mm2`, `fy = 320 MPa`, `fu = 440 MPa`; compare `kt = 1.00` and `0.85` | Gross yielding governs at `521.3 kN`; net fracture governs at `517.9 kN` | Both governing tension branches | Pass |
+| `AUD-BEAM-DEFAULT-01` | `BEAM-MOMENT-01`; `BEAM-SHEAR-01` | 310UB40.4 visible default source values | `phi Ms = 182.3 kN.m`; `phi Vv = 298.9 kN` | Independent moment and web-shear arithmetic | Pass |
+| `AUD-CONCRETE-DEFAULT-01` | `CONCRETE-FLEXURE-01`; `CONCRETE-SHEAR-SIMPLIFIED-01` | 1000 mm strip, 500 mm depth, 32 MPa concrete, two N20@200 mats at 105/395 mm, no shear reinforcement | `x = 62.5 mm`; `phi Muo = 287.1 kN.m`; `phi Vu = 194.2 kN`; axial residual below `0.001 kN` | Independent strain compatibility, bisection equilibrium and simplified-shear reconstruction | Pass |
+| `AUD-REO-LAP-01` | `REO-LAP-01` | Basic N20 contact lap, `fc = 32 MPa`, cover 40 mm, clear spacing 100 mm, default `k7 = 1.25` | Raw `838.5 mm`; adopted `840 mm` | Independent lower-limit and `k7 Lsy.t` comparison | Pass |
+| `AUD-SCREW-GROUP-01` | `SCREW-GROUP-ACTIONS-01` | Eight-pile 3 m x 3 m perimeter group; `N* = 800 kN`, `Mx* = 90 kN.m`, `My* = -45 kN.m`, `Vx* = 80 kN`, `Vy* = 40 kN`, `Tz* = 30 kN.m` | Maximum compression `115.0 kN`; tension `0.0 kN`; horizontal `13.4 kN` | Sum of axial and horizontal reactions and recovered moments equal entered actions | Pass |
 
 ### Lightweight Page Rule After Verification
 

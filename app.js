@@ -4131,6 +4131,103 @@ function sectionPropertyNumber(property) {
   return raw === null || raw === undefined || raw === "" ? NaN : Number(raw);
 }
 
+function catalogueDerivedTraceRows(section, properties, familyKey) {
+  const drawing = section.drawing || {};
+  const derived = property => String(sectionBasisLabel(property)).startsWith("Derived");
+  const number = property => sectionPropertyNumber(property);
+  const rows = [];
+
+  if (familyKey === "chs") {
+    const D = Number(drawing.D);
+    const t = Number(drawing.t);
+    const inner = D - 2 * t;
+    rows.push(
+      calculationTraceRow({
+        title: "Circular hollow-section area",
+        formula: `A<sub>g</sub> = &pi;[D<sup>2</sup> - (D - 2t)<sup>2</sup>]/4`,
+        substitution: `&pi;[${D.toFixed(1)}<sup>2</sup> - ${inner.toFixed(1)}<sup>2</sup>]/4`,
+        result: `A<sub>g</sub> = ${formatArea(number(properties.area))}`,
+        applicability: "Ideal concentric circular geometry from catalogue nominal D and t."
+      }),
+      calculationTraceRow({
+        title: "Circular hollow-section second moment",
+        formula: `I = &pi;[D<sup>4</sup> - (D - 2t)<sup>4</sup>]/64`,
+        substitution: `&pi;[${D.toFixed(1)}<sup>4</sup> - ${inner.toFixed(1)}<sup>4</sup>]/64`,
+        result: `I<sub>x</sub> = I<sub>y</sub> = ${sectionPowerValue(number(properties.ix))} mm<sup>4</sup>`,
+        applicability: "Any centroidal diameter is an equivalent principal axis."
+      }),
+      calculationTraceRow({
+        title: "Circular hollow-section moduli and radius",
+        formula: `Z = 2I/D; r = &radic;(I/A<sub>g</sub>); J = 2I`,
+        substitution: `I = ${sectionPowerValue(number(properties.ix))} mm<sup>4</sup>; D = ${D.toFixed(1)} mm; A<sub>g</sub> = ${number(properties.area).toFixed(1)} mm<sup>2</sup>`,
+        result: `Z = ${sectionPowerValue(number(properties.zx))} mm<sup>3</sup>; r = ${number(properties.rx).toFixed(2)} mm; J = ${sectionPowerValue(number(properties.j))} mm<sup>4</sup>`,
+        applicability: "Geometric properties only; capacity and local slenderness are excluded."
+      })
+    );
+  } else if (familyKey === "rod") {
+    const D = Number(drawing.D);
+    rows.push(
+      calculationTraceRow({
+        title: "Solid round geometry",
+        formula: `A<sub>g</sub> = &pi;D<sup>2</sup>/4; I = &pi;D<sup>4</sup>/64`,
+        substitution: `D = ${D.toFixed(1)} mm`,
+        result: `A<sub>g</sub> = ${formatArea(number(properties.area))}; I<sub>x</sub> = I<sub>y</sub> = ${sectionPowerValue(number(properties.ix))} mm<sup>4</sup>`,
+        applicability: "Ideal solid circular geometry from the selected catalogue diameter."
+      }),
+      calculationTraceRow({
+        title: "Solid round moduli and radius",
+        formula: `Z = 2I/D; S = D<sup>3</sup>/6; r = D/4; J = 2I`,
+        substitution: `D = ${D.toFixed(1)} mm; I = ${sectionPowerValue(number(properties.ix))} mm<sup>4</sup>`,
+        result: `Z = ${sectionPowerValue(number(properties.zx))} mm<sup>3</sup>; S = ${sectionPowerValue(number(properties.sx))} mm<sup>3</sup>; r = ${number(properties.rx).toFixed(2)} mm; J = ${sectionPowerValue(number(properties.j))} mm<sup>4</sup>`,
+        applicability: "Geometric properties only; catalogue mass remains a published value."
+      })
+    );
+  } else {
+    if (derived(properties.cx) || derived(properties.cy)) {
+      const centroidFormula = familyKey === "pfc" ? `y&#772; = d/2` : `x&#772; = b<sub>f</sub>/2; y&#772; = d/2`;
+      const centroidResult = familyKey === "pfc"
+        ? `y&#772; = ${number(properties.cy).toFixed(2)} mm`
+        : `x&#772; = ${number(properties.cx).toFixed(2)} mm; y&#772; = ${number(properties.cy).toFixed(2)} mm`;
+      rows.push(calculationTraceRow({
+        title: "Symmetry-derived centroid",
+        formula: centroidFormula,
+        substitution: section.dimensions,
+        result: centroidResult,
+        applicability: familyKey === "pfc" ? "Horizontal symmetry only; catalogue X<sub>L</sub> controls the other coordinate." : "Doubly symmetric nominal section."
+      }));
+    }
+    if (derived(properties.aw)) {
+      rows.push(calculationTraceRow({
+        title: "Clear web reference area",
+        formula: `A<sub>w</sub> = t<sub>w</sub>(d - 2t<sub>f</sub>)`,
+        substitution: `t<sub>w</sub> = ${Number(drawing.tw).toFixed(1)} mm; d = ${Number(drawing.d).toFixed(1)} mm; t<sub>f</sub> = ${Number(drawing.tf).toFixed(1)} mm`,
+        result: `A<sub>w</sub> = ${formatArea(number(properties.aw))}`,
+        applicability: "Geometric clear web area; not a design-standard effective shear area."
+      }));
+    }
+    if (derived(properties.jp)) {
+      rows.push(calculationTraceRow({
+        title: "Polar second moment",
+        formula: `J<sub>p</sub> = I<sub>x</sub> + I<sub>y</sub>`,
+        substitution: `${sectionPowerValue(number(properties.ix))} + ${sectionPowerValue(number(properties.iy))} mm<sup>4</sup>`,
+        result: `J<sub>p</sub> = ${sectionPowerValue(number(properties.jp))} mm<sup>4</sup>`,
+        applicability: "Geometric polar second moment; not the St Venant torsion constant J."
+      }));
+    }
+    if (derived(properties.iu) && derived(properties.iv)) {
+      rows.push(calculationTraceRow({
+        title: "Principal second moments",
+        formula: `I<sub>u,v</sub> = (I<sub>x</sub> + I<sub>y</sub>)/2 &plusmn; &radic;[((I<sub>x</sub> - I<sub>y</sub>)/2)<sup>2</sup> + I<sub>xy</sub><sup>2</sup>]`,
+        substitution: `I<sub>xy</sub> = ${sectionSignedPowerValue(number(properties.ixy))} mm<sup>4</sup>`,
+        result: `I<sub>u</sub> = ${sectionPowerValue(number(properties.iu))} mm<sup>4</sup>; I<sub>v</sub> = ${sectionPowerValue(number(properties.iv))} mm<sup>4</sup>`,
+        applicability: "Derived geometric principal values; symmetric sections retain their centroidal directions."
+      }));
+    }
+  }
+
+  return rows.join("");
+}
+
 function configureSectionPropertyHierarchy(shape, catalogueMode, familyKey = "custom") {
   const angle = shape === "angle";
   const isotropic = shape === "circle" || shape === "chs";
@@ -4494,17 +4591,11 @@ function calculateCatalogueSectionProperties() {
   $("sectionSourceSummary").textContent = `${source.publisher} · ${source.status}`;
   $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. This lookup remains Draft.</p>`;
   const derivedLabels = catalogueDerivedPropertyLabels(properties, angleAxes);
-  const derivationSentences = String(section.derivation || "").split(". ");
-  const calculatedBasis = derivationSentences.length > 1
-    ? derivationSentences.slice(1).join(". ")
-    : section.derivation;
-  setSectionDerivations(derivedLabels.length
-    ? calculationTraceRow({
-        title: "Catalogue-derived properties",
-        formula: safeText(calculatedBasis),
-        applicability: "Only result cards marked Derived are covered here; published catalogue values are not repeated."
-      })
-    : "", derivedLabels.length ? "Calculated from selected catalogue data" : "No calculated values");
+  const derivedTrace = catalogueDerivedTraceRows(section, properties, family.key);
+  setSectionDerivations(
+    derivedTrace,
+    derivedLabels.length ? "Formula, substitution and result for derived values" : "No calculated values"
+  );
 }
 
 function calculateSectionProperties() {
@@ -6195,7 +6286,7 @@ function concreteOneWayShear(data, result) {
     ? tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0) / centroidArea
     : result.d0;
   const dBasis = centroidArea > 0
-    ? tensionLayers.map(layer => `Mat ${layer.index}: A_s = ${fixed(layer.area)} mm2, d = ${fixed(layer.d)} mm`).join("; ")
+    ? tensionLayers.map(layer => `Mat ${layer.index}: A<sub>s</sub> = ${fixed(layer.area)} mm<sup>2</sup>, d = ${fixed(layer.d)} mm`).join("; ")
     : `No reinforcement mat in the tensile half-depth; fallback d = d_o = ${fixed(result.d0)} mm`;
   const dNumerator = tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0);
   const dv = Math.max(0.72 * data.depth, 0.9 * d);
@@ -6389,7 +6480,7 @@ function calculateConcrete() {
   const reviewFlags = [];
   if (!shear.withinSimplifiedScope) reviewFlags.push(`one-way shear not evaluated outside AS 3600 Cl. 8.2.4 simplified-method scope (${shear.scopeFailures.join("; ")})`);
   if (shear.shearReoMode === "vertical" && !shear.hasShearReo) reviewFlags.push("selected shear reinforcement requires at least one fitment leg and positive spacing");
-  if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A<sub>sv</sub>/s below the AS 3600 Cl. 8.2.1.7 minimum (${shear.asvPerS.toFixed(3)} < ${shear.asvMinPerS.toFixed(3)} mm2/mm)`);
+  if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A<sub>sv</sub>/s below the AS 3600 Cl. 8.2.1.7 minimum (${shear.asvPerS.toFixed(3)} < ${shear.asvMinPerS.toFixed(3)} mm<sup>2</sup>/mm)`);
   if (shear.webCrushingLimited) reviewFlags.push(`V<sub>u</sub> limited by AS 3600 Cl. 8.2.3.3 web crushing`);
   if (coverWarnings.length) reviewFlags.push(`${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} cover check`);
   if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
@@ -6422,7 +6513,7 @@ function calculateConcrete() {
     const status = Math.abs(layer.strain) < 0.00005 ? "near neutral axis" : layer.force > 0 ? "compression" : "tension";
     const coverStatus = layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2 ? "nominal cover review required" : "within nominal cover reference";
     const displacementNote = layer.displacedConcreteStress > 0 ? `; net stress = ${signedFixed(layer.netStress, 1)} MPa after displaced concrete` : "";
-    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${checkedDirectionLabel} bars: ${layer.designation} @ ${fixed(layer.spacing)} mm; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2 per strip (${fixed(layer.areaPerMetre)} mm2/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
+    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${checkedDirectionLabel} bars: ${layer.designation} @ ${fixed(layer.spacing)} mm; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm<sup>2</sup> per strip (${fixed(layer.areaPerMetre)} mm<sup>2</sup>/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
   }).join("");
 
   const shearFormulaSteps = shear.withinSimplifiedScope ? [
@@ -6484,7 +6575,7 @@ function calculateConcrete() {
     calculationTraceRow({
       title: "One-way shear design capacity",
       reference: "AS 3600 Cl. 8.2.3.1 and AS 3600 Table 2.2.2",
-      formula: `V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u,max</sub>); &phi;V<sub>u</sub> = &phi;V<sub>u</sub>`,
+      formula: `V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u,max</sub>); design capacity = &phi; &times; V<sub>u</sub>`,
       substitution: `min(${fixed(shear.vuc)} + ${fixed(shear.vus)}, ${fixed(shear.vuMax)}) kN; &phi; = ${shear.phi.toFixed(2)}`,
       result: `Design one-way shear capacity = ${fixed(shear.phiVu)} kN`,
       applicability: shear.webCrushingLimited ? "Web crushing governs." : shear.minShearReoProvided ? "Verified minimum Class N fitments; no web-crushing limit governs." : "No verified minimum Class N fitments."
@@ -6576,7 +6667,7 @@ function calculateConcrete() {
     calculationTraceRow({
       title: "Design flexural capacity",
       reference: "AS 3600 Table 2.2.2",
-      formula: `&phi;M<sub>uo</sub> = &phi;M<sub>uo</sub>`,
+      formula: `Design &phi;M<sub>uo</sub> = &phi; &times; M<sub>uo</sub>`,
       substitution: `${result.phi.toFixed(2)} &times; ${fixed(result.muo)} kN&middot;m`,
       result: `Design section moment capacity = ${fixed(result.phiMuo)} kN&middot;m`,
       applicability: "Verify capacity-factor and ductility assumptions before issue for design."
@@ -7821,6 +7912,7 @@ function calculateScrewDemand(comparison) {
   $("screwDemandFormulaSteps").innerHTML = [
     calculationTraceRow({
       title: "Action-distribution model",
+      reference: "Derived rigid-cap equilibrium model",
       formula: `&Sigma;x<sub>j</sub>y<sub>j</sub> = 0 for the symmetric layout; actions are distributed by rigid-cap equilibrium`,
       substitution: `n = ${n}; &Sigma;x<sub>j</sub>y<sub>j</sub> = ${fixed2(sumXY)} m<sup>2</sup>; &Sigma;x<sub>j</sub><sup>2</sup> = ${fixed2(sumX2)} m<sup>2</sup>; &Sigma;y<sub>j</sub><sup>2</sup> = ${fixed2(sumY2)} m<sup>2</sup>; &Sigma;r<sub>j</sub><sup>2</sup> = ${fixed2(sumR2)} m<sup>2</sup>`,
       result: `${n}-pile symmetric rectangular group`,
@@ -7828,6 +7920,7 @@ function calculateScrewDemand(comparison) {
     }),
     calculationTraceRow({
       title: "Axial pile action",
+      reference: "Derived rigid-cap equilibrium model",
       formula: `N<sub>i</sub><sup>*</sup> = N<sup>*</sup>/n + M<sub>x</sub><sup>*</sup>y<sub>i</sub>/&Sigma;y<sub>j</sub><sup>2</sup> + M<sub>y</sub><sup>*</sup>x<sub>i</sub>/&Sigma;x<sub>j</sub><sup>2</sup>`,
       substitution: `N<sup>*</sup> = ${fixed(baseN)} kN; M<sub>x</sub><sup>*</sup> = ${fixed(mx)} kN&middot;m; M<sub>y</sub><sup>*</sup> = ${fixed(my)} kN&middot;m; n = ${n}`,
       result: `Maximum compression = ${fixed(maxCompression)} kN; maximum tension = ${fixed(maxUplift)} kN`,
@@ -7835,6 +7928,7 @@ function calculateScrewDemand(comparison) {
     }),
     calculationTraceRow({
       title: "Horizontal pile action",
+      reference: "Derived rigid-cap equilibrium model",
       formula: `V<sub>x,i</sub><sup>*</sup> = V<sub>x</sub><sup>*</sup>/n - T<sub>z</sub><sup>*</sup>y<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>y,i</sub><sup>*</sup> = V<sub>y</sub><sup>*</sup>/n + T<sub>z</sub><sup>*</sup>x<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>i</sub><sup>*</sup> = &radic;[(V<sub>x,i</sub><sup>*</sup>)<sup>2</sup> + (V<sub>y,i</sub><sup>*</sup>)<sup>2</sup>]`,
       substitution: `V<sub>x</sub><sup>*</sup> = ${fixed(vx)} kN; V<sub>y</sub><sup>*</sup> = ${fixed(vy)} kN; T<sub>z</sub><sup>*</sup> = ${fixed(tz)} kN&middot;m; n = ${n}`,
       result: `Maximum horizontal pile action = ${fixed(maxLateral)} kN`,
