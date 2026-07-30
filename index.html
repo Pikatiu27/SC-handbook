@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260730monopolemerge1">
+  <link rel="stylesheet" href="styles.css?v=20260730monopolelabels1">
 </head>
 <body>
   <header class="topbar">
@@ -975,7 +975,7 @@
             <span class="input-group-heading"><b>Section form</b><small>Applies to all sections.</small></span>
             <div class="input-group-fields six monopole-form-fields">
               <label><span>Cross-section</span><select id="monopoleSectionForm"><option value="circular">Circular tubular</option><option value="polygon-4">4-sided regular polygon</option><option value="polygon-6">6-sided regular polygon</option><option value="polygon-8">8-sided regular polygon</option><option value="polygon-12">12-sided regular polygon</option><option value="polygon-16">16-sided regular polygon</option></select></label>
-              <label id="monopoleBendRadiusField" hidden><span>Inside bend-radius ratio, r<sub>i</sub>/t<sub>nom</sub></span><span class="unit"><input id="monopoleBendRadiusRatio" type="number" min="0.1" step="0.1" value="3.0" aria-describedby="monopoleBendRadiusHelp"><em>ratio</em></span><small class="field-help" id="monopoleBendRadiusHelp">Default 3.0; use project or product data. BR = min(r<sub>i</sub>, 4t<sub>d</sub>).</small></label>
+              <label id="monopoleBendRadiusField" hidden><span>Inside bend-radius ratio, r<sub>i</sub>/t<sub>nom</sub></span><span class="unit"><input id="monopoleBendRadiusRatio" type="number" min="0.1" step="0.1" value="3.0" aria-describedby="monopoleBendRadiusHelp"><em>ratio</em></span><small class="field-help" id="monopoleBendRadiusHelp">Example 3.0, not a Standard value; use project or product data. BR = min(r<sub>i</sub>, 4t<sub>d</sub>).</small></label>
             </div>
           </section>
         </div>
@@ -1023,10 +1023,10 @@
           <section class="input-group input-group-section">
             <span class="input-group-heading"><b>Material</b><small>Common basis; f<sub>y</sub> is resolved by section.</small></span>
             <div class="input-group-fields monopole-material-fields">
-              <label><span>Material basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual">Manual yield stress</option></select></label>
+              <label><span>Yield-strength basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual">Manual yield stress</option></select></label>
               <label id="monopolePlateGradeField"><span>Plate grade</span><select id="monopolePlateGrade"><option value="200">200</option><option value="250">250</option><option value="300">300</option><option value="350" selected>350</option><option value="400">400</option><option value="450">450</option><option value="WR350">WR350</option></select></label>
-              <label id="monopoleFabricationField"><span>Fabrication category</span><select id="monopoleFabrication"><option value="LW">Lightly welded longitudinally (LW)</option><option value="HW">Heavily welded longitudinally (HW)</option><option value="CF">Cold-formed (CF)</option><option value="HR">Hot-rolled (HR)</option><option value="SR">Stress-relieved (SR)</option></select></label>
-              <label class="checkbox-field monopole-design-thickness-toggle"><span>Design thickness override, t<sub>d</sub><small id="monopoleDesignThicknessState" aria-live="polite">Optional project input.</small></span><input id="monopoleSeparateDesignThickness" type="checkbox"></label>
+              <label id="monopoleFabricationField"><span>AS 4100 fabrication category</span><select id="monopoleFabrication" aria-describedby="monopoleFabricationHelp"><option value="LW">Lightly welded longitudinally (LW)</option><option value="HW">Heavily welded longitudinally (HW)</option><option value="CF">Cold-formed (CF)</option><option value="HR">Hot-rolled (HR)</option><option value="SR">Stress-relieved (SR)</option></select><small class="field-help" id="monopoleFabricationHelp">Circular section only; sets Table 5.2 compactness limits.</small></label>
+              <label class="checkbox-field monopole-design-thickness-toggle"><span>Design thickness override, t<sub>d</sub><small id="monopoleDesignThicknessState" aria-live="polite">Default t<sub>d</sub> = t<sub>nom</sub>; enable for a project design thickness.</small></span><input id="monopoleSeparateDesignThickness" type="checkbox"></label>
             </div>
             <p id="monopoleMaterialNote" class="monopole-input-note">Grade 350 f<sub>y</sub> from AS/NZS 3678:2016 Table 8, based on t<sub>nom</sub>.</p>
           </section>
@@ -1829,22 +1829,22 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.11</b></footer>
-  <script src="bolt-capacity.js?v=20260730monopolemerge1"></script>
-  <script src="bolt-integrity.js?v=20260730monopolemerge1"></script>
-  <script src="weld-capacity.js?v=20260730monopolemerge1"></script>
-  <script src="concrete-section-calculation.js?v=20260730monopolemerge1"></script>
-  <script src="section-geometry.js?v=20260730monopolemerge1"></script>
-  <script src="section-catalogue.js?v=20260730monopolemerge1"></script>
-  <script src="steel-materials.js?v=20260730monopolemerge1"></script>
-  <script src="beam-section-data.js?v=20260730monopolemerge1"></script>
-  <script src="beam-hot-rolled-data.js?v=20260730monopolemerge1"></script>
-  <script src="beam-section-capacity.js?v=20260730monopolemerge1"></script>
-  <script src="beam-section-reconciliation.js?v=20260730monopolemerge1"></script>
-  <script src="reo-calculation.js?v=20260730monopolemerge1"></script>
-  <script src="monopole-capacity.js?v=20260730monopolemerge1"></script>
-  <script src="app.js?v=20260730monopolemerge1"></script>
-  <script src="monopole-app.js?v=20260730monopolemerge1"></script>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.12</b></footer>
+  <script src="bolt-capacity.js?v=20260730monopolelabels1"></script>
+  <script src="bolt-integrity.js?v=20260730monopolelabels1"></script>
+  <script src="weld-capacity.js?v=20260730monopolelabels1"></script>
+  <script src="concrete-section-calculation.js?v=20260730monopolelabels1"></script>
+  <script src="section-geometry.js?v=20260730monopolelabels1"></script>
+  <script src="section-catalogue.js?v=20260730monopolelabels1"></script>
+  <script src="steel-materials.js?v=20260730monopolelabels1"></script>
+  <script src="beam-section-data.js?v=20260730monopolelabels1"></script>
+  <script src="beam-hot-rolled-data.js?v=20260730monopolelabels1"></script>
+  <script src="beam-section-capacity.js?v=20260730monopolelabels1"></script>
+  <script src="beam-section-reconciliation.js?v=20260730monopolelabels1"></script>
+  <script src="reo-calculation.js?v=20260730monopolelabels1"></script>
+  <script src="monopole-capacity.js?v=20260730monopolelabels1"></script>
+  <script src="app.js?v=20260730monopolelabels1"></script>
+  <script src="monopole-app.js?v=20260730monopolelabels1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

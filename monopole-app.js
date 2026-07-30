@@ -211,7 +211,7 @@
     });
     $("monopoleDesignThicknessState").innerHTML = separate
       ? "User override &middot; Resistance uses t<sub>d</sub>; material and mass use t<sub>nom</sub>."
-      : "Optional project input.";
+      : "Default t<sub>d</sub> = t<sub>nom</sub>; enable for a project design thickness.";
     calculate();
   }
 

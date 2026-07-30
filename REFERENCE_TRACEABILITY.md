@@ -896,3 +896,14 @@ Build 0.7.11 integrates Steel Monopole Section Capacity with the Build 0.7.10 sh
 | `AUD-MONO-A11Y-01` | Monopole active at phone width | Inspect the active accessibility snapshot with all other tool panels hidden | Inactive Concrete Pad mobile pseudo-labels are suppressed; only active Monopole content is exposed |
 
 The complete integrated regression suite passed 22 test files, including professional audit contracts, independent reproductions, published worked examples, catalogue reconciliation, Monopole calculation/DOM/worked-example tests and shared page contracts. All production JavaScript passed syntax checks; the browser console reported no warnings or errors. No source or scope status was promoted to `Checked`.
+
+## 2026-07-30 Steel Monopole Input Terminology Audit
+
+Build 0.7.12 clarifies inputs without changing calculation logic:
+
+- `AS 4100 fabrication category` states that it applies only to circular sections and selects the Table 5.2 compactness limits;
+- `Yield-strength basis` replaces the broader `Material basis` label because the control selects the source of `f_y`;
+- the inactive design-thickness note states `t_d = t_nom` by default and identifies the project-input purpose;
+- the polygon bend-radius ratio identifies 3.0 as an editable example, not a Standard value.
+
+The Monopole DOM contract asserts these labels and rejects the superseded ambiguous wording. Circular category branches, polygon calculations, material lookup, mass and overlap logic are unchanged.
