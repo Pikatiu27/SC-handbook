@@ -606,6 +606,10 @@ Minimum evidence set per governing `Calculation_ID`:
 - applicable monotonicity, sign, dimensional and nominal-versus-design invariants;
 - one browser regression case using the documented default.
 
+Published worked-example evidence is currently required and regression-locked for the principal Bolt shear/tension, Weld fillet, Concrete Pad flexure and Reinforcement straight-development paths. Keep these cases in `tests/published-worked-examples.test.js` and their source locations, assumptions, expected values and limitations in `REFERENCE_TRACEABILITY.md`. A clause-derived hook/cog comparison may supplement the Reinforcement evidence, but must be labelled as a reconstruction unless a complete published terminal example has been independently verified.
+
+Where a governing browser calculation is still embedded in the page controller, extract a small pure calculation module before claiming independent production-path reproduction. The test may call that production module only for the implementation comparison; its expected result must come from separately stated arithmetic or a captured published result. Current examples are `bolt-capacity.js`, `weld-capacity.js`, `concrete-section-calculation.js` and `reo-calculation.js`.
+
 Keep the handbook lightweight:
 
 - Verification scripts, detailed arithmetic, screenshots and comparison tables are engineering QA evidence; they do not become new visible calculator controls.
