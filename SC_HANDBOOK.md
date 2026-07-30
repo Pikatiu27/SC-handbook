@@ -2667,6 +2667,7 @@ Page and evidence requirements:
 - Use the full axis notation consistently in headings, captions and descriptions: `n-n / p-p centroidal` and `x-x / y-y principal`. Do not shorten these to `p/n` or unqualified `x/y`.
 - Show the publisher, catalogue edition or year and checked-row status. Describe nominal dimensions combined with geometric formulas as a mixed basis, not a manufacturer table-property lookup.
 - Treat section compactness, element slenderness classification, `kf` and effective properties as grade-, direction- and standard-dependent attributes. Section Properties may display them only through its explicit material-grade branch and only for checked section/grade/direction rows already accepted by Beam or Axial Member. Design capacity remains in those downstream workflows.
+- Before accepting a Section Properties release, reproduce production rows for at least one UB, UC, PFC, CHS, Equal Angle and rod directly against the cited catalogue pages. The regression must compare the live production data path, not only a fixture, and must independently recalculate geometry-derived CHS/rod properties and material-table boundary cases.
 - Keep `Source and limitations` content in a compact single reading column; do not force unequal notes into balanced columns that create large empty areas.
 - Keep section-family category controls at least 44 px high on narrow screens. Use button-state semantics (`aria-pressed`) for the top tool navigation so the active tool is exposed without implying a keyboard-managed tablist.
 
