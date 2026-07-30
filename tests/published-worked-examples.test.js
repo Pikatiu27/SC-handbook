@@ -36,9 +36,33 @@ const publishedWeld = WeldCapacity.calculate({
 });
 closeTo(publishedWeld.capacityPerMm, 1.3, 0.01, "8 mm E48XX SP fillet weld capacity");
 assert.ok(publishedWeld.capacityPerMm > 0.84, "published weld demand must pass");
+assert.throws(() => WeldCapacity.calculate({
+  type: "fillet",
+  category: "SP",
+  size: 8,
+  fuw: 480,
+  length: 0,
+  runs: 1
+}), /length must be positive/);
+assert.throws(() => WeldCapacity.calculate({
+  type: "fillet",
+  category: "SP",
+  size: 8,
+  fuw: 480,
+  length: 280,
+  runs: 0
+}), /runs must be positive/);
 
 // Loo and Chowdhury AS 3600:2018 reworked Example 3.4.6, case (a).
 const concreteStressBlock = ConcreteSectionCalculation.stressBlockFactors(50);
+assert.throws(
+  () => ConcreteSectionCalculation.stressBlockFactors(0),
+  /between 20 MPa and 120 MPa/
+);
+assert.throws(
+  () => ConcreteSectionCalculation.stressBlockFactors(121),
+  /between 20 MPa and 120 MPa/
+);
 const publishedConcrete = ConcreteSectionCalculation.solveSection({
   width: 250,
   depth: 550,

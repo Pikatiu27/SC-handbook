@@ -737,3 +737,21 @@ The `Structural blind-bolt lookup` branch reports manufacturer-published product
 | Allfasteners NexGen2 | NexGen2 Blind Bolt TDS, July 2019 | M20 TIA-222-G design strength; displayed shear has threads included | Manufacturer source checked online; confirm current ICC-ES report and Australian adoption before specification |
 
 Connected steel, local HSS or shell effects, bearing, tear-out, net section, block shear, punching or pull-through, prying, combined actions, fatigue and installation acceptance remain outside the lookup.
+
+## 2026-07-30 Full-page Regression Audit
+
+Build 0.7.10 was checked against the current `SC_HANDBOOK.md` calculation, validation, traceability and responsive-layout contract. This pass did not expand any tab into a complete design engine.
+
+| Audit ID | Page / state | Reproducible check | Result |
+| --- | --- | --- | --- |
+| `AUD-WELD-INPUT-01` | Weld Capacity invalid geometry | Enter `l_w = 0`, zero effective weld lines, or zero IPBW design throat | Capacity and utilisation are cleared; the trace reports `Not evaluated` and the invalid prerequisite |
+| `AUD-CONCRETE-INPUT-01` | Concrete Pad invalid material input | Enter `f'c = 0` or a value outside 20-120 MPa | Flexural and shear capacities are cleared; status is `Invalid input`; no value is clamped to a code limit |
+| `AUD-BOLT-GROUP-INPUT-01` | Bolt group invalid count | Enter bolt count `0`, a non-integer, or a value outside 1-100 | Bolt-group shear, bearing and tear-out are `Not evaluated`; per-bolt capacity remains available |
+| `AUD-AXIAL-INPUT-02` | Axial Member invalid effective length | Enter selected-axis `Le = 0` | Compression, tension and utilisation outputs are cleared; status is `INPUT REQUIRED` |
+| `AUD-BEAM-DEMAND-02` | Beam Section over-demand | Enter `M* = 9999 kN.m` for default 310UB40.4 / 300PLUS | Utilisation `54.85`; status `FAIL`; member stability and other exclusions remain visible |
+| `AUD-REO-INPUT-01` | Reinforcement invalid concrete input | Enter `f'c = 0` | Required length is cleared; status is `INVALID INPUT` |
+| `AUD-SCREW-BOUNDARY-01` | Screw Piles demand without project resistance | Enter `N* = 100 kN` with no project design-value source | Pile actions are distributed, but utilisation remains `Not assessed`; no manufacturer lookup is treated as project resistance |
+| `AUD-SELECTOR-BOUNDARY-01` | U-bolt, blind-bolt and Rock Anchor selectors | Open each selector branch | Status remains product lookup / Draft; no project `PASS` or calculated anchor resistance is reported |
+| `AUD-RESPONSIVE-02` | All nine public pages | Default desktop at 1440 px and phone at 390 x 844 px | No document or checked-control horizontal overflow |
+
+The complete local regression suite passed 19 test files after these checks, including published worked examples, independent reproductions, catalogue reconciliation and DOM contracts. A fresh browser session reported no console warnings or errors. Remaining `For Review`, `Draft`, `Not evaluated` and selector-only states are intentional scope boundaries, not completed design checks.

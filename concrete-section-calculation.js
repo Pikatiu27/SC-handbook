@@ -6,10 +6,13 @@
   root.ConcreteSectionCalculation = api;
 })(typeof globalThis !== "undefined" ? globalThis : this, function createConcreteSectionCalculation() {
   function stressBlockFactors(fc) {
-    const fcLimited = Math.min(120, Math.max(20, Number(fc)));
+    const fcValue = Number(fc);
+    if (!Number.isFinite(fcValue) || fcValue < 20 || fcValue > 120) {
+      throw new RangeError("Concrete strength must be between 20 MPa and 120 MPa");
+    }
     return Object.freeze({
-      alpha2: Math.max(0.67, 0.85 - 0.0015 * fcLimited),
-      gamma: Math.max(0.67, 0.97 - 0.0025 * fcLimited)
+      alpha2: Math.max(0.67, 0.85 - 0.0015 * fcValue),
+      gamma: Math.max(0.67, 0.97 - 0.0025 * fcValue)
     });
   }
 

@@ -2375,7 +2375,10 @@ function calculateBolt() {
   const threadShear = threadShearResult.design;
   const shankShear = shankShearResult.design;
   const selectedShear = plane === "N" ? threadShear : shankShear;
-  const count = Math.max(1, Math.round(value("boltCount")));
+  const countInput = numericValue($("boltCount").value);
+  const countValid = Number.isInteger(countInput) && countInput >= 1 && countInput <= 100;
+  $("boltCount").setAttribute("aria-invalid", String(!countValid));
+  const count = countValid ? countInput : 1;
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
   const totalThreadPlanes = count * nThread;
@@ -2514,44 +2517,69 @@ function calculateBolt() {
     : "Threads clear of shear plane &middot; AS 4100 Cl. 9.2.2.1";
   $("tensionCapacity").textContent = fixed(tension);
   $("boltResultNote").innerHTML = `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} &middot; k<sub>r</sub> = ${kr.toFixed(2)}.`;
-  $("boltDetailingStatus").hidden = detailingCompliant;
-  $("boltDetailingStatus").textContent = detailingFailureNote;
-  $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
-  $("groupShearBasis").textContent = `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal shear per bolt assumed`;
-  $("primaryPlyCapacity").textContent = `${fixed(primaryPly.groupCapacity)} kN`;
+  $("boltDetailingStatus").hidden = countValid && detailingCompliant;
+  $("boltDetailingStatus").textContent = countValid
+    ? detailingFailureNote
+    : "Invalid bolt-group input: enter a whole-number bolt count from 1 to 100.";
+  $("groupShearCapacity").textContent = countValid ? `${fixed(groupShear)} kN` : "Not evaluated";
+  $("groupShearBasis").textContent = countValid
+    ? `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal shear per bolt assumed`
+    : "Enter a whole-number bolt count from 1 to 100.";
+  $("primaryPlyCapacity").textContent = countValid ? `${fixed(primaryPly.groupCapacity)} kN` : "Not evaluated";
   $("primaryPlyControl").textContent = primaryPly.controlLabel;
-  $("secondPlyCapacity").textContent = `${fixed(secondPly.groupCapacity)} kN`;
+  $("secondPlyCapacity").textContent = countValid ? `${fixed(secondPly.groupCapacity)} kN` : "Not evaluated";
   $("secondPlyControl").textContent = secondPly.controlLabel;
-  $("bearingGroupCapacity").textContent = `${fixed(fullBearingGroupCapacity)} kN`;
-  $("bearingGroupBasis").textContent = `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
-  $("tearoutGroupCapacity").textContent = `${fixed(edgeTearoutGroupCapacity)} kN`;
-  $("tearoutGroupBasis").textContent = `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
-  $("connectedPlyGoverningBasis").textContent = `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`;
+  $("bearingGroupCapacity").textContent = countValid ? `${fixed(fullBearingGroupCapacity)} kN` : "Not evaluated";
+  $("bearingGroupBasis").textContent = countValid
+    ? `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`
+    : "Enter a valid bolt count.";
+  $("tearoutGroupCapacity").textContent = countValid ? `${fixed(edgeTearoutGroupCapacity)} kN` : "Not evaluated";
+  $("tearoutGroupBasis").textContent = countValid
+    ? `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`
+    : "Enter a valid bolt count.";
+  $("connectedPlyGoverningBasis").textContent = countValid
+    ? `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`
+    : "Connected-ply group capacity not evaluated.";
   updateConnectedPlyOutputs(primaryPly);
   updateConnectedPlyOutputs(secondPly, "2");
   const pitchCompliant = pitchPass && maximumPitchPass;
-  $("pitchCheckValue").innerHTML = pitchApplicable
+  $("pitchCheckValue").innerHTML = !countValid
+    ? "Enter a whole-number bolt count from 1 to 100"
+    : pitchApplicable
     ? `<output id="minimumPitch">${fixed(minimumPitch)}</output>-<output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted &middot; AS 4100 Cl. 9.5.1; AS 4100 Cl. 9.5.3 general limit`
     : "Not applicable to a single-bolt connection";
-  $("pitchStatus").textContent = pitchApplicable ? (pitchCompliant ? "PASS" : "FAIL") : "N/A";
-  $("pitchStatus").className = `input-check-status ${pitchApplicable ? (pitchCompliant ? "pass" : "fail") : "neutral"}`;
+  $("pitchStatus").textContent = !countValid ? "INVALID" : pitchApplicable ? (pitchCompliant ? "PASS" : "FAIL") : "N/A";
+  $("pitchStatus").className = `input-check-status ${!countValid ? "fail" : pitchApplicable ? (pitchCompliant ? "pass" : "fail") : "neutral"}`;
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
-  $("slipCapacityBasis").innerHTML = slip === null
+  $("slipCapacityBasis").innerHTML = !countValid
+    ? "Per-bolt resistance shown; group resistance not evaluated until bolt count is valid"
+    : slip === null
     ? "TF categories only"
     : `Per bolt &middot; k<sub>h</sub> = ${holeFactor.toFixed(2)} &middot; ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
   $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
-  $("slipGoverningStatus").textContent = !detailingCompliant
+  $("slipGoverningStatus").textContent = !countValid
+    ? "Invalid bolt count"
+    : !detailingCompliant
     ? "NON-COMPLIANT"
     : !hasSlipDemand
       ? "Enter slip actions"
       : slipRatio <= 1
         ? "PASS"
         : "FAIL";
-  $("slipGoverningStatus").className = !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
-  $("slipGoverningNote").textContent = slipDisplayNote;
+  $("slipGoverningStatus").className = !countValid || !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
+  $("slipGoverningNote").textContent = countValid
+    ? slipDisplayNote
+    : "Bolt-group slip interaction is not evaluated until a valid bolt count is entered.";
 
-  const activePlyFormulaRows = connectedPlyFormulaRows(primaryPly, bolt, count)
-    + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count) : "");
+  const activePlyFormulaRows = countValid
+    ? connectedPlyFormulaRows(primaryPly, bolt, count)
+      + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count) : "")
+    : calculationTraceRow({
+        title: "Bolt-group and connected-ply checks",
+        result: "Not evaluated",
+        applicability: "Enter a whole-number bolt count from 1 to 100.",
+        state: "warning"
+      });
   const integrityFormulaRows = !integrity.enabled
     ? calculationTraceRow({
         title: "Optional ply rupture checks",
@@ -2619,10 +2647,13 @@ function calculateBolt() {
     calculationTraceRow({
       title: "Bolt group shear capacity",
       reference: "AS 4100 Cl. 9.2.2.1",
-      formula: `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd</sub>k<sub>r</sub>(n<sub>N</sub>A<sub>c</sub> + n<sub>X</sub>A<sub>o</sub>)`,
-      substitution: `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>rd</sub> = ${groupKrd.toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}`,
-      result: `Design group capacity = ${fixed(groupShear)} kN`,
-      applicability: "Identical bolts with equal shear per bolt assumed; apply the bolted-lap reduction only where its stated conditions apply."
+      formula: countValid ? `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd</sub>k<sub>r</sub>(n<sub>N</sub>A<sub>c</sub> + n<sub>X</sub>A<sub>o</sub>)` : "",
+      substitution: countValid ? `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>rd</sub> = ${groupKrd.toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}` : "",
+      result: countValid ? `Design group capacity = ${fixed(groupShear)} kN` : "Not evaluated",
+      applicability: countValid
+        ? "Identical bolts with equal shear per bolt assumed; apply the bolted-lap reduction only where its stated conditions apply."
+        : "Enter a whole-number bolt count from 1 to 100.",
+      state: countValid ? "" : "warning"
     }),
     calculationTraceRow({
       title: "Minimum pitch",
@@ -2644,9 +2675,13 @@ function calculateBolt() {
     integrityFormulaRows,
     calculationTraceRow({
       title: "Detailing compliance",
-      result: detailingCompliant ? "Compliant for the displayed lightweight checks" : "NON-COMPLIANT",
-      applicability: detailingCompliant ? "All applicable displayed detailing checks pass." : detailingFailureNote,
-      state: detailingCompliant ? "" : "warning"
+      result: !countValid ? "Invalid input" : detailingCompliant ? "Compliant for the displayed lightweight checks" : "NON-COMPLIANT",
+      applicability: !countValid
+        ? "Enter a whole-number bolt count from 1 to 100."
+        : detailingCompliant
+          ? "All applicable displayed detailing checks pass."
+          : detailingFailureNote,
+      state: countValid && detailingCompliant ? "" : "warning"
     }),
     calculationTraceRow({
       title: "TF slip resistance",
@@ -3024,23 +3059,46 @@ function calculateWeld() {
   const size = value("weldSize");
   const category = $("weldCategory").value;
   const fuw = value("weldStrength");
-  const length = value("weldLength");
-  const runs = Math.max(1, Math.round(value("weldRuns")));
-  const effectiveThroat = value("weldEffectiveThroat");
+  const length = numericValue($("weldLength").value);
+  const runsValue = numericValue($("weldRuns").value);
+  const runs = Number.isFinite(runsValue) ? Math.round(runsValue) : NaN;
+  const effectiveThroat = numericValue($("weldEffectiveThroat").value);
   const lapReductionActive = $("weldLapConnection").value === "yes" && type === "fillet";
   const parentThickness = value("weldParentThickness");
   const parentGrade = parentMetalGrades[$("weldParentGrade").value] || parentMetalGrades["Grade 250 plate"];
   const parentPhi = 0.9;
-  const weldResult = WeldCapacity.calculate({
-    type,
-    category,
-    size,
-    effectiveThroat,
-    fuw,
-    length,
-    runs,
-    weldedLap: lapReductionActive
+  const weldMethodAvailable = type === "fillet" || type === "ipbw";
+  const inputErrors = [];
+  if (weldMethodAvailable && !(length > 0)) inputErrors.push("effective weld length l_w must be greater than zero");
+  if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("effective weld lines must be a positive whole number");
+  if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW design throat a_w must be greater than zero");
+  [
+    ["weldLength", length > 0],
+    ["weldRuns", runsValue >= 1 && Number.isInteger(runsValue)],
+    ["weldEffectiveThroat", type !== "ipbw" || effectiveThroat > 0]
+  ].forEach(([id, valid]) => {
+    if (valid || !weldMethodAvailable) $(id).removeAttribute("aria-invalid");
+    else $(id).setAttribute("aria-invalid", "true");
   });
+  const weldResult = inputErrors.length === 0
+    ? WeldCapacity.calculate({
+      type,
+      category,
+      size,
+      effectiveThroat,
+      fuw,
+      length,
+      runs,
+      weldedLap: lapReductionActive
+    })
+    : {
+      calculationAvailable: false,
+      throat: NaN,
+      phi: weldCapacityFactor(type, category),
+      kr: 1,
+      capacityPerMm: NaN,
+      capacity: NaN
+    };
   const { calculationAvailable, throat, phi, kr, capacityPerMm, capacity } = weldResult;
   const parentPerMm = parentPhi * 0.6 * parentGrade.fup * parentThickness / 1000;
   const parentCheckActive = parentThickness > 0;
@@ -3060,9 +3118,9 @@ function calculateWeld() {
 
   $("weldCallout").textContent = callouts[type] || callouts.fillet;
   $("weldTypeValue").textContent = typeData.label;
-  $("weldThroatValue").textContent = calculationAvailable ? `${fixed2(throat)} mm` : "Project-defined";
-  $("weldLengthValue").textContent = `${fixed(length)} mm`;
-  $("weldRunsValue").textContent = String(runs);
+  $("weldThroatValue").textContent = calculationAvailable ? `${fixed2(throat)} mm` : inputErrors.length ? "\u2014" : "Project-defined";
+  $("weldLengthValue").textContent = length > 0 ? `${fixed(length)} mm` : "\u2014";
+  $("weldRunsValue").textContent = runsValue >= 1 && Number.isInteger(runsValue) ? String(runs) : "\u2014";
   $("weldPhiValue").textContent = type === "compound" ? "-" : phi.toFixed(2);
   $("weldCapacityLabel").textContent = calculationAvailable
     ? "Capacity per mm per weld line"
@@ -3071,6 +3129,8 @@ function calculateWeld() {
       : "Project-specific capacity required";
   $("weldCapacityBasis").innerHTML = calculationAvailable
     ? `${typeData.scope}; ${category}; &phi; = ${phi.toFixed(2)} from AS 4100 Table 3.4`
+    : inputErrors.length
+      ? "Not evaluated; enter valid weld geometry"
     : type === "cpbw"
       ? "AS 4100 Cl. 9.6.2.7; joined-part capacity is not defined by this weld-metal input set"
       : "AS 4100 Cl. 9.6.5.2; total design throat requires the actual compound-weld geometry";
@@ -3144,6 +3204,14 @@ function calculateWeld() {
         applicability: "Not a full welded-joint design. Weld groups, connected-part rupture, HAZ, joint preparation, WPS, inspection, fatigue and effective-length rules beyond the entered length are excluded."
       })
     ].join("");
+  } else if (inputErrors.length) {
+    $("weldFormulaSteps").innerHTML = calculationTraceRow({
+      title: "Input validation",
+      selection: inputErrors.join("; "),
+      result: "Not evaluated",
+      applicability: "Enter valid weld geometry before using the AS 4100 throat-capacity check.",
+      state: "warning"
+    });
   } else {
     const capacityRule = type === "cpbw"
       ? `AS 4100 Cl. 9.6.2.7 takes CPBW design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. The weaker-part resistance is not defined by weld-metal strength and throat alone.`
@@ -6399,8 +6467,10 @@ function calculateConcrete() {
   const cover = value("concreteCover");
   const width = value("concreteWidth");
   const fcInput = value("concreteFc");
-  const fc = Math.min(120, Math.max(20, fcInput));
-  const stressBlock = concreteStressBlockFactors(fc);
+  const fcValid = Number.isFinite(fcInput) && fcInput >= 20 && fcInput <= 120;
+  $("concreteFc").setAttribute("aria-invalid", String(!fcValid));
+  const fc = fcValid ? fcInput : NaN;
+  const stressBlock = fcValid ? concreteStressBlockFactors(fc) : { alpha2: NaN, gamma: NaN };
   const ecu = 0.003;
   updateConcreteMatAvailability(topDepth, bottomDepth);
   updateConcreteMatDepths(topDepth, bottomDepth, cover);
@@ -6426,11 +6496,13 @@ function calculateConcrete() {
 
   let result = {
     ok: false,
-    message: depth <= 0
-      ? "No concrete pad depth is defined"
-      : "Plain concrete section: no RC ultimate flexural capacity is calculated without active reinforcement mats"
+    message: !fcValid
+      ? "Concrete strength must be between 20 MPa and 120 MPa"
+      : depth <= 0
+        ? "No concrete pad depth is defined"
+        : "Plain concrete section: no RC ultimate flexural capacity is calculated without active reinforcement mats"
   };
-  if (data.width > 0 && data.depth > 0 && data.fc > 0 && data.ecu > 0 && data.layers.length) {
+  if (fcValid && data.width > 0 && data.depth > 0 && data.ecu > 0 && data.layers.length) {
     result = solveConcreteSection(data);
   }
 
@@ -6461,15 +6533,26 @@ function calculateConcrete() {
   if (!result.ok) {
     ["concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
     $("concreteResultScope").textContent = `${checkedDirection.toUpperCase()}-direction strip`;
-    $("concreteShearNote").innerHTML = depth <= 0
-      ? "RC one-way shear not calculated without a defined section depth"
-      : "RC one-way shear not calculated without active reinforcement";
-    $("concreteStatusValue").textContent = "Review required";
-    $("concreteWarningText").textContent = "Section capacity is unavailable for the current depth and active reinforcement.";
+    $("concreteShearNote").innerHTML = !fcValid
+      ? "Not evaluated - enter f'<sub>c</sub> between 20 MPa and 120 MPa"
+      : depth <= 0
+        ? "RC one-way shear not calculated without a defined section depth"
+        : "RC one-way shear not calculated without active reinforcement";
+    $("concreteStatusValue").textContent = fcValid ? "Review required" : "Invalid input";
+    $("concreteWarningText").textContent = fcValid
+      ? "Section capacity is unavailable for the current depth and active reinforcement."
+      : result.message;
     $("concreteSectionState").innerHTML = "";
     $("concreteLayerResults").innerHTML = "";
-    $("concreteFormulaSteps").innerHTML = depth <= 0
+    $("concreteFormulaSteps").innerHTML = !fcValid
       ? calculationTraceRow({
+          title: "Concrete strength input",
+          result: "Not evaluated",
+          applicability: `${result.message}. No flexural or shear capacity is reported.`,
+          state: "warning"
+        })
+      : depth <= 0
+        ? calculationTraceRow({
           title: "Section definition",
           result: "Not evaluated",
           applicability: `${result.message}. Enter D<sub>top</sub> or D<sub>bot</sub> greater than zero.`,

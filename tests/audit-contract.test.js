@@ -9,6 +9,18 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const script = fs.readFileSync(path.join(root, "app.js"), "utf8");
 const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"), "utf8");
+const calculateWeldSource = script.slice(
+  script.indexOf("function calculateWeld()"),
+  script.indexOf("const beamFamilyDefinitions")
+);
+const calculateBoltSource = script.slice(
+  script.indexOf("function calculateBolt()"),
+  script.indexOf("function updateBoltMode()")
+);
+const calculateConcreteSource = script.slice(
+  script.indexOf("function calculateConcrete()"),
+  script.indexOf("const screwPileData")
+);
 
 assert.match(html, /Concrete Pad Section<\/h2><\/div><span class="tool-status">For Review · section resistance only<\/span>/);
 assert.match(html, /round-bar strengths follow AS\/NZS 3679\.1 Table 15 using diameter/);
@@ -26,6 +38,15 @@ assert.match(script, /comparisonBasis === "project-source-missing"/);
 assert.match(script, /comparisonBasis === "project-basis-mismatch"/);
 assert.match(script, /Manufacturer values are not compared automatically/);
 assert.match(script, /type === "cpbw"[\s\S]*?"Not evaluated"/);
+assert.match(calculateWeldSource, /effective weld length l_w must be greater than zero/);
+assert.match(calculateWeldSource, /effective weld lines must be a positive whole number/);
+assert.match(calculateWeldSource, /IPBW design throat a_w must be greater than zero/);
+assert.match(calculateWeldSource, /title: "Input validation"[\s\S]*?result: "Not evaluated"/);
+assert.match(calculateBoltSource, /Number\.isInteger\(countInput\) && countInput >= 1 && countInput <= 100/);
+assert.match(calculateBoltSource, /groupShearCapacity"\)\.textContent = countValid \?[\s\S]*?"Not evaluated"/);
+assert.match(calculateBoltSource, /title: "Bolt group shear capacity"[\s\S]*?result: countValid \?[\s\S]*?"Not evaluated"/);
+assert.match(calculateConcreteSource, /fcInput >= 20 && fcInput <= 120/);
+assert.match(calculateConcreteSource, /concreteStatusValue"\)\.textContent = fcValid \? "Review required" : "Invalid input"/);
 assert.match(script, /function catalogueDerivedTraceRows\(/);
 assert.match(script, /title: "Circular hollow-section area"/);
 assert.match(script, /title: "Clear web reference area"/);

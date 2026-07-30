@@ -466,7 +466,7 @@ Document the calculation sequence separately from the governing formula. Include
 - inactive, disabled and hidden-field treatment;
 - reset, auto/manual and override state transitions.
 
-The algorithm must fail closed. Missing, incompatible or out-of-scope inputs must not produce a normal-looking capacity through a silent fallback, stale value, default zero, `NaN` or infinity.
+The algorithm must fail closed. Missing, incompatible or out-of-scope inputs must not produce a normal-looking capacity through a silent fallback, stale value, default zero, `NaN` or infinity. Do not clamp an invalid engineering input to the nearest valid code limit before reporting a result; validate the stated range first, then calculate only from an accepted value.
 
 #### 6.2.6 Units, Precision and Rounding
 
