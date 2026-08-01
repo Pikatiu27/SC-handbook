@@ -168,12 +168,13 @@
     $("monopolePlateGradeField").hidden = !lookup;
     const grade = $("monopolePlateGrade").value;
     const materialNote = lookup
-      ? `Grade ${escapeHtml(grade)} f<sub>y</sub> from AS/NZS 3678:2016 Table 8, based on t<sub>nom</sub>.`
-      : "Enter specified f<sub>y</sub> for each section; the initial E355BR product example adopts f<sub>y</sub> = 355 MPa.";
+      ? `AS/NZS 3678:2016 Grade ${escapeHtml(grade)}; f<sub>y</sub> uses t<sub>nom</sub>.`
+      : "E355BR designation; adopted f<sub>y</sub> = 355 MPa. Verify project data.";
     const sectionNote = selection.form === "polygon"
-      ? ` ASCE/SEI 48-19 regular ${selection.sideCount}-sided method; r<sub>i</sub>/t<sub>nom</sub> applies to all sections.`
-      : "";
-    $("monopoleMaterialNote").innerHTML = materialNote + sectionNote;
+      ? `ASCE/SEI 48-19 regular ${selection.sideCount}-sided method. Verify r<sub>i</sub>/t<sub>nom</sub> for all sections; 3.0 is an example.`
+      : "AS 4100 circular-section method; bend-radius input is not required.";
+    $("monopoleMaterialNote").innerHTML = materialNote;
+    $("monopoleSectionNote").innerHTML = sectionNote;
     const inputs = mode === "schedule"
       ? [...$("monopoleScheduleBody").querySelectorAll('[data-field="yieldStress"]')]
       : [$("monopoleYieldStress")];

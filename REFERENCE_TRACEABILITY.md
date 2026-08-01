@@ -931,3 +931,7 @@ Build 0.7.14 replaces the illustrative 30 m schedule with one traceable manufact
 Source: `KISMAT ENGITECH LLP | Octagonal / Polygonal Poles | KOP-1230 manufacturing specifications | https://www.kismatengitech.com/octagonal-poles.html`.
 
 The product source supplies geometry and material only. It does not publish ASCE/SEI 48-19 resistance, theoretical shaft mass, self-weight or centre of gravity. Those values are independently reconstructed in `tests/monopole-worked-examples.test.js` and compared with the production calculation.
+
+## 2026-08-01 Steel Monopole Layout Logic Consolidation
+
+Build 0.7.15 applies the Section 15 layout contract to the complete monopole workflow. It removes duplicate stage spacing, bounds desktop control widths, gives the physical schedule the same engineering-band treatment as section and material inputs, keeps the polygon method note with section form, and keeps material provenance with material inputs. The design-thickness override remains in the active material grid. Tablet and phone layouts preserve the same order, with horizontal scrolling confined to technical tables and the profile chart.

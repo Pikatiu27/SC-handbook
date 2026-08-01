@@ -1561,15 +1561,18 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .member-formulas { padding-top: 12px; }
 
 .monopole-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.monopole-card > .input-cluster { margin: 0; }
 .monopole-mode-switch { display: flex; width: fit-content; padding: 4px; border: 1px solid var(--line); border-radius: 9px; background: #edf2ef; }
 .monopole-mode { min-height: 38px; padding: 8px 13px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; font-weight: 800; }
 .monopole-mode.active { border-color: rgba(40, 79, 67, .20); background: #fff; color: var(--monopole-dark); box-shadow: 0 1px 5px rgba(47, 59, 54, .10); }
 .monopole-mode:focus-visible, .monopole-add-section:focus-visible, .monopole-remove-section:focus-visible { outline: 3px solid rgba(40,79,67,.22); outline-offset: 2px; }
-.monopole-input-panel { padding: 4px 0; border: 0; background: transparent; }
+.monopole-input-panel { padding: 0; border: 0; background: transparent; }
 .monopole-input-panel .input-group { margin: 0; border: 0; padding: 0; background: transparent; }
 #monopoleOverallInputs { padding: 0; }
 #monopoleOverallInputs .input-group { padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.78); }
-.monopole-schedule-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 12px; }
+.monopole-schedule-panel { padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.78); }
+.monopole-schedule-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
+.monopole-card .table-scroll { width: 100%; min-width: 0; max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; contain: inline-size paint; }
 .monopole-schedule-heading b, .monopole-schedule-heading small { display: block; }
 .monopole-schedule-heading b { color: var(--monopole-dark); font-size: var(--fs-sm); }
 .monopole-schedule-heading small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); }
@@ -1587,16 +1590,17 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .monopole-remove-section { width: 30px; height: 30px; border: 1px solid #c8d1cd; border-radius: 5px; background: #fff; color: #7d3e36; cursor: pointer; font-size: 20px; line-height: 1; }
 .monopole-remove-section:disabled { opacity: .35; cursor: default; }
 .monopole-not-applicable { color: var(--muted); font-weight: 800; }
-.monopole-input-note { grid-column: 2; margin: 2px 0 0; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
-.monopole-design-thickness-toggle { grid-column: 1 / -1; width: min(100%, 480px); }
+.monopole-input-note { margin: 0; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
+.monopole-form-fields > .monopole-input-note,
+.monopole-material-fields > .monopole-input-note { grid-column: 1 / -1; }
+.monopole-design-thickness-toggle { width: 100%; }
 .monopole-design-thickness-toggle > span { min-width: 0; }
 .monopole-design-thickness-toggle small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; font-weight: 500; line-height: 1.25; }
 .monopole-card .input-group-fields.six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.monopole-card .monopole-form-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.monopole-card .monopole-form-fields { grid-template-columns: repeat(2, minmax(220px, 320px)); justify-content: start; align-items: start; }
 .monopole-card .monopole-form-fields:has(#monopoleBendRadiusField[hidden]) { grid-template-columns: minmax(220px, 360px); }
-.monopole-material-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+.monopole-material-fields { grid-template-columns: repeat(auto-fit, minmax(220px, 320px)); justify-content: start; align-items: start; }
 .monopole-material-fields .field-help { font-weight: 500; }
-.monopole-material-fields + .monopole-input-note { grid-column: 2; align-self: center; margin: 0; }
 .monopole-capacity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .monopole-primary-result { border-top-color: var(--monopole-dark); background: linear-gradient(180deg, #fff, var(--monopole-soft)); }
 .monopole-primary-result strong { color: var(--monopole-dark); }
@@ -1662,8 +1666,6 @@ footer b { white-space: nowrap; }
 @media (min-width: 761px) and (max-width: 900px) {
   .monopole-card .input-group-fields.six { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .monopole-material-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .monopole-design-thickness-toggle { grid-column: auto; width: 100%; }
-  .monopole-material-fields + .monopole-input-note { grid-column: 2; }
 }
 
 @media (min-width: 761px) {
@@ -1683,7 +1685,7 @@ footer b { white-space: nowrap; }
   .monopole-card .input-group-fields.six { grid-template-columns: minmax(0, 1fr); }
   .monopole-card .monopole-form-fields { grid-template-columns: minmax(0, 1fr); }
   .monopole-material-fields, .monopole-capacity-grid { grid-template-columns: minmax(0, 1fr); }
-  .monopole-material-fields + .monopole-input-note { grid-column: 1; }
+  .monopole-schedule-panel { padding: 10px; }
   #monopolePanel .section-heading { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 4px; }
   #monopolePanel .section-heading > div { min-width: 0; }
   #monopolePanel .section-heading > span { padding-left: 0; }

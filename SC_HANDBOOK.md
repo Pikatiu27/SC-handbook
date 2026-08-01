@@ -3600,6 +3600,8 @@ Keep the chart wider than it is tall so the profile remains an engineering plot 
 
 Limit common material and overall-profile input groups to three columns on wide desktop, two columns on narrow desktop and one column on phone layouts. Keep both groups inside the same bordered input-group treatment. Do not use automatic column expansion that compresses long engineering labels or selected material and fabrication values.
 
+Use one spacing layer between monopole workflow stages; do not combine lookup-card grid gaps with child margins. Keep `Section form`, `Section schedule` and `Material` as three visually equivalent engineering input bands. On desktop, use bounded control tracks that stop expanding once labels and selected values are comfortably readable. Place the polygon method note with `Section form`, the material provenance note with `Material`, and keep the design-thickness override in the active material-control grid instead of forcing an otherwise empty row. At every viewport, constrain schedule, station and overlap tables to their own paint-contained horizontal-scroll regions so a table cannot create page-level overflow. On phone, stack the same controls and notes in the same engineering order.
+
 #### 15.17A.10 Result States and Exclusions
 
 Permitted states are `Calculated`, `Assumption`, `Source_Not_Verified`, `Not checked` and `Invalid input`. Do not use `PASS` or `FAIL`. A prescribed overlap comparison may state `Meets prescribed design overlap` or `Below prescribed design overlap`, but this is not a connection-capacity result.
