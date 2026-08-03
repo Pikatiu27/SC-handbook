@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-07-29
+Last updated: 2026-07-30
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -73,7 +73,7 @@ This section is the working implementation record for `SC_HANDBOOK.md` Section 6
 
 ### Current Migration Status
 
-The existing sections below contain useful source-page checks, catalogue-row checks, default-output checks and historical audit notes. They do not yet form a complete consolidated set of formal `Calculation_ID` and `Test_ID` records under the current contract.
+The active calculation register below now assigns stable IDs to every governing calculation or selector result. Existing sections retain useful source-page checks, catalogue-row checks, default-output checks and historical audit notes. A result remains `For Review` or `Draft` until its linked records complete the applicable source, independent, branch, boundary, state and browser evidence matrix.
 
 Therefore:
 
@@ -82,6 +82,42 @@ Therefore:
 - do not mark a legacy calculation `Checked` under the new contract merely by renaming old notes;
 - migrate one calculation family at a time and link every accepted claim to positive numerical evidence;
 - keep failed, blocked and source-unverified cases visible until resolved.
+
+### Active Calculation Contract Register
+
+This register is the authoritative ID map. It identifies the claim and evidence owner without expanding the visible page. `For Review` means the source/formula has useful evidence but the complete Section 6.2.11 matrix is not yet closed. `Draft` means product or project-source verification remains incomplete.
+
+| Calculation_ID / Selector_ID | Tab / governing result | Governing basis | Implementation owner | Current evidence / status |
+| --- | --- | --- | --- | --- |
+| `BOLT-SHEAR-01` | Bolt / N-plane, X-plane and group design shear capacity | AS 4100 Cl. 9.2.2.1; AS 4100 Table 9.2.2.1; AS 4100 Table 3.4 | `bolt-capacity.js`; `app.js` `calculateBolt()` | Independent regression and source-page checks; For Review |
+| `BOLT-TENSION-01` | Bolt / design tensile capacity | AS 4100 Cl. 9.2.2.2; AS 4100 Table 3.4 | `bolt-capacity.js`; `app.js` `calculateBolt()` | Independent regression and source-page checks; For Review |
+| `BOLT-SLIP-01` | Bolt / TF serviceability slip resistance | AS 4100 Cl. 9.2.3.1; AS 4100 Table 15.2.2.2 | `bolt-capacity.js`; `app.js` `calculateBolt()` | Branch regression and source-page checks; For Review |
+| `BOLT-SLIP-INTERACTION-01` | Bolt / TF serviceability shear-tension interaction | AS 4100 Cl. 9.2.3.3 | `app.js` `calculateBolt()` | Formula trace and browser default; For Review |
+| `BOLT-BEARING-01` | Bolt / connected-ply full-bearing and entered-edge-distance limits | AS 4100 Cl. 9.2.2.4 | `app.js` `calculateConnectedPlyIntegrity()` | Two-ply branch checks; governing geometry remains user-confirmed; For Review |
+| `BOLT-DETAILING-01` | Bolt / pitch and edge-distance warning state | AS 4100 Cl. 9.5.1 to Cl. 9.5.3; AS 4100 Table 9.5.2 | `app.js` `calculateBolt()` | Warning-state regression; For Review |
+| `BOLT-PLY-TENSION-01` | Bolt / connected-ply design section tension capacity | AS 4100 Cl. 9.1.9(b); AS 4100 Cl. 7.2 | `bolt-integrity.js`; `app.js` | Formal record below; For Review |
+| `BOLT-BLOCK-SHEAR-01` | Bolt / connected-ply block shear capacity | AS 4100 Cl. 9.1.9(e) | `bolt-integrity.js`; `app.js` | Formal record and worked example below; For Review |
+| `WELD-FILLET-01` | Weld / fillet and IPBW throat capacity | AS 4100 Cl. 9.6.2.7; AS 4100 Cl. 9.6.3.10; AS 4100 Table 3.4 | `weld-capacity.js`; `app.js` `calculateWeld()` | `AUD-WELD-DEFAULT-01`; `PUB-WELD-9413-01`; For Review |
+| `WELD-LAP-KR-01` | Weld / welded-lap reduction | AS 4100 Table 9.6.3.10(B) | `weld-capacity.js` `lapReduction()`; `app.js` | `AUD-WELD-KR-BOUNDARY-01`; For Review |
+| `WELD-PARENT-SCREEN-01` | Weld / warning-only parent-metal per-mm screen | Derived warning aid from AS 4100 member resistance context | `app.js` `calculateWeld()` | Explicitly non-governing; For Review |
+| `SECTION-CATALOGUE-01` | Section Properties / published catalogue lookup | Exact cited manufacturer row | `section-catalogue.js`; source data modules | `AUD-SECTION-SOURCE-01`, row and DOM regression; Draft only where a row is not traced |
+| `SECTION-GEOMETRY-01` | Section Properties / entered or catalogue-linked ideal geometry | Closed-form geometric identities | `section-geometry.js`; `app.js` | `AUD-SECTION-CHS-01`; source and geometry regression; For Review |
+| `SECTION-MATERIAL-01` | Section Properties / material strength and constants lookup | AS/NZS 3679.1 Tables 14 and 15; AS/NZS 1163; AS 4100 Cl. 2.2.4 | `steel-materials.js`; `app.js` | Boundary, material and DOM regression; For Review |
+| `AXIAL-SECTION-COMP-01` | Axial / design section compression capacity | AS 4100 Cl. 6.2 | `app.js` `calculateMember()` | Formula trace and regression; For Review |
+| `AXIAL-MEMBER-COMP-01` | Axial / design member compression capacity | AS 4100 Cl. 6.3.3; AS 4100 Table 6.3.3 | `app.js` `calculateMember()` | `AUD-AXIAL-CHS-01` plus EA regression; For Review |
+| `AXIAL-TENSION-01` | Axial / gross yielding and net fracture | AS 4100 Cl. 7.2 and Cl. 7.3 | `app.js` `calculateMember()` | Formula trace and governing-state regression; For Review |
+| `BEAM-MOMENT-01` | Beam / design section moment capacity | AS 4100 Cl. 5.2; AS 4100 Table 3.4 | `beam-section-capacity.js`; `app.js` | `AUD-BEAM-DEFAULT-01` plus 717-row reconciliation; For Review |
+| `BEAM-SHEAR-01` | Beam / design section shear capacity | AS 4100 Cl. 5.11 | `beam-section-capacity.js`; `app.js` | `AUD-BEAM-DEFAULT-01` plus family regression; For Review |
+| `BEAM-SHEAR-MOMENT-01` | Beam / section shear-bending interaction | AS 4100 Cl. 5.12 | `beam-section-capacity.js`; `app.js` | Branch and trace regression; For Review |
+| `CONCRETE-FLEXURE-01` | Concrete Pad / pure-bending strip design moment capacity | AS 3600 Cl. 8.1; AS 3600 Table 2.2.2 | `concrete-section-calculation.js`; `app.js` `solveConcreteSection()` | `AUD-CONCRETE-DEFAULT-01`; `PUB-CONCRETE-LOO-01`; For Review |
+| `CONCRETE-SHEAR-SIMPLIFIED-01` | Concrete Pad / simplified one-way shear section capacity | AS 3600 Cl. 8.2.4 and related Cl. 8.2 provisions | `app.js` `concreteOneWayShear()` | `AUD-CONCRETE-DEFAULT-01`; out-of-scope states fail closed; For Review |
+| `REO-LAP-01` | Reinforcement / tension lap length | AS 3600 Cl. 13.2.1 and Cl. 13.2.2 | `reo-calculation.js` `calculateLap()` | `AUD-REO-LAP-01` plus branch suite; For Review |
+| `REO-DEVELOPMENT-01` | Reinforcement / straight tension development | AS 3600 Cl. 13.1.2 | `reo-calculation.js` `calculateDevelopment()` | `PUB-REO-N28-01` plus branch and ordering regression; For Review |
+| `REO-ANCHORAGE-01` | Reinforcement / qualified hook, cog and reduced-stress reference | AS 3600 Cl. 13.1.2.4, Cl. 13.1.2.6 and Cl. 13.1.2.7 | `reo-calculation.js` `calculateAnchorageComparison()` | `REC-REO-HOOK-N28-01` plus qualification and fail-closed regression; For Review |
+| `SCREW-GROUP-ACTIONS-01` | Screw Piles / symmetric rigid-cap pile action distribution | Derived rigid-cap equilibrium model | `app.js` `calculateScrewDemand()` | `AUD-SCREW-GROUP-01`; not an AS 2159 resistance calculation; For Review |
+| `SCREW-PROJECT-COMPARE-01` | Screw Piles / directional comparison with entered project values | Derived ratio using user-sourced project design values | `app.js` `calculateScrewDemand()` | Source/basis gating regression required; For Review |
+| `SCREW-PRODUCT-LOOKUP-01` | Screw Piles / published product selection | Exact manufacturer document row | `app.js` product data | Selector only; Draft where source is pending |
+| `ROCK-PRODUCT-LOOKUP-01` | Rock Anchor / published product selection | Exact manufacturer document row | `rock-anchor-selector/app.js` | Selector only; Draft and no inferred resistance |
 
 ### Standard Execution Sequence
 
@@ -250,10 +286,124 @@ Work one calculation family at a time. The queue is a planning order, not eviden
 | `3` | Bolt Capacity | Shear N/X plane, tension, slip resistance, full-bearing and edge-distance limits, optional ply rupture, detailing and bolted-lap reduction | AS 4100, Australian design examples/connection guidance and independent arithmetic |
 | `4` | Weld Capacity | Fillet-weld throat capacity, weld-metal strength selection and welded-lap `k_r` branch | AS 4100, AS/NZS 1554 context, ASI connection guidance and independent arithmetic |
 | `5` | Concrete Pad Section | Strain-compatibility flexure, reinforcement table area, capacity factor branch and simplified one-way shear | AS 3600, Australian worked/reconstructed examples and independent section solver |
-| `6` | Section Properties | UB/UC and hollow-section catalogue rows; custom geometry `A`, `I`, `Z` and `r` identities | Exact manufacturer rows plus independent geometry identities |
-| `7` | Screw Piles / Rock Anchor selectors | Product-row reproduction, source-status mapping, filter compatibility and invalid/unpublished states | Manufacturer documents and exact selector-state tests; no inferred resistance |
+| `6` | Reinforcement | Basic and Refined tension development, lap `k7`, lower-limit ordering, hook/cog qualification and fail-closed evidence states | AS 3600, AS/NZS 4671 bar data, independently reconstructed default and threshold cases |
+| `7` | Section Properties | UB/UC and hollow-section catalogue rows; custom geometry `A`, `I`, `Z` and `r` identities | Exact manufacturer rows plus independent geometry identities |
+| `8` | Screw Piles / Rock Anchor selectors | Product-row reproduction, source-status mapping, filter compatibility and invalid/unpublished states | Manufacturer documents and exact selector-state tests; no inferred resistance |
 
 `Wind Site Draft` remains outside this verification queue unless explicitly scheduled. A future `Base Plate` or other calculation tab must complete this procedure before acceptance as a checked calculator.
+
+### Independent Audit Reproductions - 2026-07-30
+
+Formula cases below are implemented in `tests/independent-reproductions.test.js`, which imports no production calculation module and uses only independently stated source inputs and equations. `AUD-SECTION-SOURCE-01` separately compares the live production data path with literal catalogue values in `tests/section-source-reproduction.test.js`. Browser results were checked on local Build 0.7.7 or the later build stated in the relevant record; display comparisons use the page precision, while standalone arithmetic retains unrounded values.
+
+| Test_ID | Linked Calculation_ID | Independent case | Expected / browser result | Branch or invariant | Status |
+| --- | --- | --- | --- | --- | --- |
+| `AUD-WELD-DEFAULT-01` | `WELD-FILLET-01` | 6 mm equal-leg fillet, `fuw = 490 MPa`, `phi = 0.80`, `lw = 200 mm`, one weld line | `199.489 kN`; displayed `199.5 kN` | Direct fillet-throat path | Pass |
+| `AUD-WELD-KR-BOUNDARY-01` | `WELD-LAP-KR-01` | `lw = 1.699 / 1.700 / 1.701 / 8.000 / 8.001 m` | `kr = 1.000 / 1.000 / 0.99794 / 0.620 / 0.620` | Below, at and above both table branch thresholds | Pass |
+| `AUD-SECTION-CHS-01` | `SECTION-GEOMETRY-01` | Ideal CHS `D = 114.3 mm`, `t = 4.5 mm` | `Ag = 1552.26 mm2`; `I = 2.343194E6 mm4`; `Z = 4.100077E4 mm3`; `r = 38.853 mm` | Closed-form area, second moment, modulus and radius identities | Pass |
+| `AUD-SECTION-SOURCE-01` | `SECTION-CATALOGUE-01`; `SECTION-GEOMETRY-01` | Production rows: 310UB40.4, 200UC46.2, 150PFC, 114.3 x 4.5 CHS, 100 x 100 x 10 EA and 24 mm rod; plus 530UB92.4 dimensional correction | Exact source values for mass, area, dimensions and directional properties; CHS and rod geometry independently reproduced | InfraBuild 2019 Tables 9, 11, 15, 19 and 21; Orrcon 2024 CHS table; implemented in `tests/section-source-reproduction.test.js` | Pass after correcting 530UB92.4 `tf` from 16.5 mm to 15.6 mm |
+| `AUD-AXIAL-CHS-01` | `AXIAL-MEMBER-COMP-01` | Visible CHS default `Ag = 1117 mm2`, `r = 39.3 mm`, `Le = 3000 mm`, `fy = 350 MPa`, `kf = 1`, `alpha_b = -0.5` | Design member compression `236.6 kN` | Full lambda / alpha_a / eta / xi / alpha_c sequence | Pass |
+| `AUD-AXIAL-TENSION-BRANCH-01` | `AXIAL-TENSION-01` | Equal Angle `Ag = An = 1810 mm2`, `fy = 320 MPa`, `fu = 440 MPa`; compare `kt = 1.00` and `0.85` | Gross yielding governs at `521.3 kN`; net fracture governs at `517.9 kN` | Both governing tension branches | Pass |
+| `AUD-AXIAL-COMP-02` | `AXIAL-MEMBER-COMP-01` | AS 4100 Table 6.3.3(C) point `lambda_n = 150`, `alpha_b = -0.5`; Design Manual Example 6.4.2 rounded inputs | `alpha_c = 0.316`; independent `phi Nc = 159.9 kN` versus published `160.7 kN` | Table point and published CHS compression example | Pass; published difference is within `1.0 kN` and attributable to rounded printed properties / table interpolation |
+| `AUD-AXIAL-TENSION-02` | `AXIAL-TENSION-01` | Design Manual Example 5.3.1, 50 x 50 x 5 EA: `Ag = An = 443 mm2`, `fy = 260 MPa`, `fu = 410 MPa`, `kt = 0.85` | Gross yielding `103.7 kN`; net fracture `118.1 kN`; gross yielding governs | Published tension-member example | Pass |
+| `AUD-AXIAL-INPUT-01` | `AXIAL-SECTION-COMP-01`; `AXIAL-MEMBER-COMP-01`; `AXIAL-TENSION-01` | Browser entries `fy = 0` and `Le = 0`, plus invalid range cases | `INPUT REQUIRED`; capacities and utilisation cleared; no catalogue fallback | Invalid-input and stale-result suppression | Pass after local correction |
+| `AUD-AXIAL-DISPLAY-01` | `AXIAL-MEMBER-COMP-01`; `AXIAL-TENSION-01` | Enter an axial action giving an unrounded utilisation immediately above `1.00` | `>1.00`; `FAIL` remains based on the unrounded ratio | Display rounding must not contradict status | Pass after local correction |
+| `AUD-BEAM-DEFAULT-01` | `BEAM-MOMENT-01`; `BEAM-SHEAR-01` | 310UB40.4 visible default source values | `phi Ms = 182.3 kN.m`; `phi Vv = 298.9 kN` | Independent moment and web-shear arithmetic | Pass |
+| `AUD-BEAM-INTERACTION-01` | `BEAM-SHEAR-MOMENT-01` | Design-manual case: `M* = 232 kN.m`, `phi Ms = 242 kN.m`, nominal `Vv = 498.97 kN`, `V* = 72 kN` | `beta_v = 0.666116`; `phi Vvm = 299.135 kN`; published/displayed `299.1 kN`; PASS | AS 4100 Cl. 5.12.3 reduced branch plus `0.75` and `1.00` boundaries | Pass |
+| `AUD-BEAM-INTERACTION-DISPLAY-01` | `BEAM-SHEAR-MOMENT-01` | Browser default 310UB40.4, `M*/phi Ms` immediately above `0.75`, `V* = phi Vv` | Exact utilisation above `1.0` displays `>1.00`; trace retains sufficient branch precision; FAIL remains based on unrounded values | Display rounding must not contradict the governing status | Pass after local correction |
+| `AUD-CONCRETE-DEFAULT-01` | `CONCRETE-FLEXURE-01`; `CONCRETE-SHEAR-SIMPLIFIED-01` | 1000 mm strip, 500 mm depth, 32 MPa concrete, two N20@200 mats at 105/395 mm, no shear reinforcement | `x = 62.5 mm`; `phi Muo = 287.1 kN.m`; `phi Vu = 194.2 kN`; axial residual below `0.001 kN` | Independent strain compatibility, bisection equilibrium and simplified-shear reconstruction | Pass |
+| `AUD-REO-LAP-01` | `REO-LAP-01` | Basic N20 contact lap, `fc = 32 MPa`, cover 40 mm, clear spacing 100 mm, default `k7 = 1.25` | Raw `838.5 mm`; adopted `840 mm` | Independent lower-limit and `k7 Lsy.t` comparison | Pass |
+| `AUD-SCREW-GROUP-01` | `SCREW-GROUP-ACTIONS-01` | Eight-pile 3 m x 3 m perimeter group; `N* = 800 kN`, `Mx* = 90 kN.m`, `My* = -45 kN.m`, `Vx* = 80 kN`, `Vy* = 40 kN`, `Tz* = 30 kN.m` | Maximum compression `115.0 kN`; tension `0.0 kN`; horizontal `13.4 kN` | Sum of axial and horizontal reactions and recovered moments equal entered actions | Pass |
+
+### Axial Member Evidence
+
+#### `AXIAL-EX-COMP-01`
+
+| Field | Record |
+| --- | --- |
+| Linked `Calculation_ID` | `AXIAL-MEMBER-COMP-01` |
+| Source role | Worked example |
+| Governing source | `AS4100.pdf` \| AS 4100 Cl. 6.2.1, Cl. 6.3.2 and Cl. 6.3.3; AS 4100 Table 6.3.3(A) and Table 6.3.3(C) \| PDF pages 100, 103-105 \| printed pages 87, 90-92 |
+| Worked-example source | `Steel Structures Design Manual to AS 4100.pdf` \| Example 6.4.2 \| PDF page 113 \| printed page 99 |
+| Problem statement | 139.7 x 5.4 CHS compression member, Grade 250, effective length `7.2 m` |
+| Source inputs | `Ag = 2283 mm2`; `r = 47.6 mm`; `fy = 250 MPa`; `kf = 1.0`; `alpha_b = -0.5`; `phi = 0.90` |
+| Published result | `lambda_n` approximately `151`; tabulated/interpolated `alpha_c = 0.313`; design `phi Nc = 160.7 kN` |
+| Applicability to SC Handbook | Direct AS 4100 Cl. 6.3.3 sequence and cold-formed non-stress-relieved CHS `alpha_b` branch |
+| Selection status | Accepted; printed geometry and table interpolation are rounded, so the reconstruction tolerance is `1.0 kN` |
+
+#### `AXIAL-REP-COMP-01`
+
+| Field | Record |
+| --- | --- |
+| Linked evidence | `AXIAL-EX-COMP-01`; `AXIAL-MEMBER-COMP-01` |
+| Independent method | Standalone arithmetic in `tests/independent-reproductions.test.js`; no production module or browser function imported |
+| Formula sequence | AS 4100 Cl. 6.3.3 `lambda_n`, `alpha_a`, modified `lambda`, non-negative `eta`, `xi`, `alpha_c`; then `phi Nc = alpha_c phi kf An fy` |
+| Table check | At `lambda_n = 150` and `alpha_b = -0.5`, closed-form `alpha_c` rounds to `0.316`, matching AS 4100 Table 6.3.3(C) |
+| Reconstructed result | Using the example's rounded printed values, `phi Nc = 159.9 kN`; published result `160.7 kN` |
+| Tolerance basis | Exact three-decimal table-point agreement; `1.0 kN` for the worked example because its printed geometry and tabulated factor are rounded |
+| Status | Pass |
+
+#### `AXIAL-EX-TENSION-01`
+
+| Field | Record |
+| --- | --- |
+| Linked `Calculation_ID` | `AXIAL-TENSION-01` |
+| Source role | Worked example |
+| Governing source | `AS4100.pdf` \| AS 4100 Cl. 7.2, Cl. 7.3.1 and AS 4100 Table 7.3.2 \| PDF pages 112-113 \| printed pages 99-100 |
+| Worked-example source | `Steel Structures Design Manual to AS 4100.pdf` \| Example 5.3.1 \| PDF page 96 \| printed page 82 |
+| Problem statement | 50 x 50 x 5 EA tension member connected through one leg |
+| Source inputs | `Ag = An = 443 mm2`; `fy = 260 MPa`; `fu = 410 MPa`; `kt = 0.85`; `phi = 0.90` |
+| Published result | Gross yielding approximately `103.6 kN`; net fracture approximately `118 kN`; gross yielding governs |
+| Applicability to SC Handbook | Direct reproduction of both AS 4100 Cl. 7.2 tension limits and the eccentric angle `kt` branch |
+| Selection status | Accepted |
+
+#### `AXIAL-REP-TENSION-01`
+
+| Field | Record |
+| --- | --- |
+| Linked evidence | `AXIAL-EX-TENSION-01`; `AXIAL-TENSION-01` |
+| Independent method | Standalone arithmetic in `tests/independent-reproductions.test.js`; no production module or browser function imported |
+| Formula sequence | `phi Nty = phi Ag fy`; `phi Ntf = phi 0.85 kt An fu`; `phi Nt = min(phi Nty, phi Ntf)` |
+| Reconstructed result | Gross yielding `103.7 kN`; net fracture `118.1 kN`; gross yielding governs |
+| Difference / tolerance | Agreement to the source's stated one-decimal / whole-kN precision |
+| Status | Pass |
+
+### Beam Shear-Bending Interaction Evidence
+
+#### `BEAM-EX-INT-01`
+
+| Field | Record |
+| --- | --- |
+| Linked `Calculation_ID` | `BEAM-SHEAR-MOMENT-01` |
+| Source role | Worked example |
+| Governing source | `AS4100.pdf` \| AS 4100 Cl. 5.12.3 \| PDF pages 89-90 \| printed pages 76-77 |
+| Worked-example source | `Steel Structures Design Manual to AS 4100.pdf` \| Check capacity to resist combined moment and shear \| PDF page 149 \| printed page 135 |
+| Problem statement | Whole-section shear-bending interaction method for a flat-web section |
+| Source inputs | `M* = 232 kN.m`; `phi Ms = 242 kN.m`; nominal `Vv = 498.97 kN`; `phi = 0.90`; `V* = 72 kN` |
+| Active branch | `0.75 phi Ms < M* <= phi Ms`; `Vvm = Vv[2.2 - 1.6M*/(phi Ms)]` |
+| Published result | Nominal `Vvm = 332.4 kN`; design `phi Vvm = 299.1 kN`; `V* = 72 kN` passes |
+| Applicability to SC Handbook | Direct formula and branch reproduction; the browser reproduction uses the page's checked 310UB40.4 default capacities because the worked example does not define a matching selectable catalogue row |
+| Selection status | Accepted for the AS 4100 Cl. 5.12.3 interaction equation and branch logic; not used as product-row evidence |
+
+#### `BEAM-REP-INT-01`
+
+| Field | Record |
+| --- | --- |
+| Linked evidence | `BEAM-EX-INT-01`; `BEAM-SHEAR-MOMENT-01` |
+| Independent method | Standalone arithmetic in `tests/independent-reproductions.test.js`; no production module or browser function imported |
+| Formula sequence | `m = M*/(phi Ms)`; `beta_v = 1` for `m <= 0.75`, otherwise `2.2 - 1.6m` for `m <= 1`; `phi Vvm = phi Vv beta_v` |
+| Unrounded result | `m = 0.95867768595`; `beta_v = 0.66611570248`; `phi Vvm = 299.1345768595 kN` |
+| Display comparison | Independent `299.1 kN`; published `299.1 kN` |
+| Boundary cases | Immediately below, at and above `m = 0.75`; at and above `m = 1.00` |
+| Tolerance basis | `1e-12` for dimensionless closed-form factors; `0.1 kN` for comparison with the published one-decimal result |
+| Status | Pass |
+
+#### `AUD-BEAM-INTERACTION-DISPLAY-01`
+
+- **Browser case:** Build 0.7.6 default 310UB40.4 values with `M* = 136.7282 kN.m` and `V* = 298.937088 kN`, placing `M*/phi Ms` immediately above `0.75`.
+- **Finding:** The unrounded calculation correctly failed, but the former two-decimal display showed `1.00` and the three-decimal interaction factor showed `1.000`, contradicting the displayed `FAIL`.
+- **Disposition:** Preserve unrounded branch and status logic. Display numerical equality within `1e-9` as `1.00`, a near-boundary failed utilisation as `>1.00`, a near-boundary passing utilisation as `<1.00`, and retain six decimals for `M*/phi Ms` or `beta_v` only when required to distinguish the `0.75` or `1.00` branch.
+- **Scope:** Presentation precision only; no governing equation, capacity, factor or PASS/FAIL threshold changed.
 
 ### Lightweight Page Rule After Verification
 
@@ -274,7 +424,7 @@ Do not add every source intermediate, test case or software comparison to the us
 - **Tab / output:** Bolt Capacity / `Design section tension capacity, phi Nt`.
 - **Engineering question:** What is the design tension capacity of the selected critical connection component using user-entered gross and net areas?
 - **Result type / limit state:** ULS design capacity.
-- **Governing source:** AS 4100:2020 Cl. 9.1.9(b), Cl. 7.2 and Table 3.4; local PDF pages 128, 112 and 47.
+- **Governing source:** AS 4100 Cl. 9.1.9(b), AS 4100 Cl. 7.2 and AS 4100 Table 3.4; governing edition AS 4100:2020; local PDF pages 128, 112 and 47.
 - **Evidence class:** Normative formula with project inputs.
 - **Applicability:** Steel connection component subject to transferred axial tension; `Ag`, `An`, `fyc`, `fuc` and `kt` must describe the same component and critical section.
 - **Equation:** `phi Nt = 0.90 min(Ag fyc, 0.85 kt An fuc)`.
@@ -289,7 +439,7 @@ Do not add every source intermediate, test case or software comparison to the us
 - **Tab / output:** Bolt Capacity / `Design block shear capacity, phi Rbs`.
 - **Engineering question:** What is the design block-shear capacity of the governing user-identified failure path?
 - **Result type / limit state:** ULS design capacity.
-- **Governing source:** AS 4100:2020 Cl. 9.1.9(e), local PDF page 129; ASI TN013 `Block Shear` worked example.
+- **Governing source:** AS 4100 Cl. 9.1.9(e), governing edition AS 4100:2020, local PDF page 129; ASI TN013 `Block Shear` worked example.
 - **Evidence class:** Normative formula plus worked example and project inputs.
 - **Applicability:** One critical connection component and one reviewed failure path; all plausible paths must be assessed before the governing path is entered.
 - **Equation:** `phi Rbs = 0.75 min(0.6 fuc Anv + kbs fuc Ant, 0.6 fyc Agv + kbs fuc Ant)`.
@@ -359,19 +509,19 @@ Verification cases:
 | Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | AS 4100 Table 9.6.3.10(A) visually checked on PDF pages 147-148; ASI Simple Connections 2020 Table 2.14 visually checked on PDF page 19 | Visual checked |
 | Weld | Parent metal screen values | `5+SSC 2020.pdf` | ASI Simple Connections 2020 Tables 2.15 and 2.16 visually checked on PDF pages 20-21; Grade 300 flat bar / sections use `f_up = 440 MPa` | Visual checked |
 | Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | AS 1101.3 Fig. 2.1 visually checked on PDF page 9; AS 1101.3 Cl. 2.3.2.1 to AS 1101.3 Cl. 2.3.2.3 and AS 1101.3 Figs. 2.8 to 2.10 visually checked on PDF pages 14-15 | Visual checked |
-| Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | AS 4100 Section 5 / AS 4100 Cl. 5.2 visually checked on PDF page 66 | Visual checked |
+| Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | AS 4100 Cl. 5.2.1 and AS 4100 Cl. 5.2.2 to Cl. 5.2.6 visually checked on PDF pages 67-69 | Visual checked |
 | Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | AS 4100 Cl. 5.11.4 and AS 4100 Cl. 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
 | Beam | Shear-bending interaction | `AS4100.pdf` | AS 4100 Cl. 5.12.3 visually checked on printed pages 76-77: `Vvm = Vv` for `M* <= 0.75 phi Ms`; otherwise `Vvm = Vv[2.2 - 1.6M*/(phi Ms)]` for `M* <= phi Ms`, with `V* <= phi Vvm`. The demand check fails immediately when `M* > phi Ms`; it does not pass through an unavailable reduced shear capacity | Visual checked; exact reduced-method equation and over-moment regression test implemented |
 | Beam | UB/UC catalogue values | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Universal Beams and Universal Columns visually located on PDF pages 12-15; embedded UB/UC rows checked against OneSteel / InfraBuild Tables 9-12. The Beam dataset includes direction-specific minor-axis `I`, `Z`, `S`, `Ze` and class values for 28 UB and 13 UC designations | Embedded UB/UC major- and minor-axis rows checked |
-| Beam | Expanded family workflow | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | Catalogue / Custom, family and direction states are implemented for UB, UC, PFC, CHS, RHS, SHS, Equal Angle and Rod. Checked moment data is enabled for every listed family and direction. Catalogue RHS/SHS now include direction-specific shear and interaction; missing custom effective properties and unsupported paths fail closed as `Not evaluated` | Local expanded workflow implemented; publication remains subject to the Beam release gates |
+| Beam | Expanded family workflow with family-local custom dimensions | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf`; `AS4100.pdf` Section 5 | Catalogue family and direction states are implemented for UB, UC, PFC, CHS, RHS, SHS, Equal Angle and Rod. An Axial-style dimensions override remains inside each family and automatically derives ideal gross geometry. Custom UB/UC, PFC x-x, CHS, RHS/SHS and Rod use reviewed family-specific section-class and effective-modulus paths. Custom PFC Load A/B and Equal Angle Load A/B/C/D fail closed as `Not evaluated` | Local expanded workflow implemented; publication remains subject to the Beam release gates |
 | Beam | PFC and Equal Angle direction capacity | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | Tables 15-16, PDF page 17, provide all 10 PFC property, centroid `xL`, shear-centre `xO`, strength, `Zex`, Load A `Zey` and Load B `Zey` rows. Tables 19-20, PDF pages 19-20, provide the adopted 13 Equal Angle rows, 45-degree principal-axis `I`, `Z`, `S`, and Load A/B/C/D `Ze` values. Load A/C is mapped to x; Load B/D is mapped to y. The UI preserves the manufacturer Load key beside `Ze`, `phi Ms`, demand basis and calculation steps | Checked product-table direction rows and diagrams; Equal Angle remains a 13-row checked subset |
 | Beam | CHS/RHS/SHS section moment data | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | Tables 3.1-1 to 3.1-6, PDF pages 28-38, were extracted into 288 unique family/designation/grade rows: CHS 73, RHS 101 and SHS 114. Representative CHS, RHS and SHS property/capacity rows are asserted in `tests/beam-section-data.test.js` | Checked grade-specific design-property rows; product availability requires supplier confirmation |
 | Beam | Section shear | `AS4100.pdf`; `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | UB/UC/PFC `x-x` uses separate `fy,w`, explicitly adopts `dp = d1`, calculates `Aw = dp tw`, reports web slenderness and `alpha_v`, and applies AS 4100 Cl. 5.12.3. CHS uses AS 4100 Cl. 5.11.4 with `Ae = Ag` for the unperforated catalogue path. Catalogue RHS/SHS follows Austube Section 5.2.2.4 on PDF page 63: two-web `Aw`, direction-specific clear depth, web-slenderness reduction and the lesser of uniform and Cl. 5.11.3 non-uniform shear; Austube Section 5.2.4 on PDF page 66 supports Cl. 5.12.3 interaction | Reviewed family-specific shear scope; unsupported paths fail closed |
 | Beam | Project / legacy yield-strength override | `AS4100.pdf`; `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | The checked catalogue grade supplies editable defaults. UB/UC/PFC keep separate `fy,m` and `fy,w`; InfraBuild Table 16 explicitly provides different flange/member and web strengths for some PFC sizes and grades. A `fy,m` override regenerates AS 4100 plate slenderness, class, `Ze`, compression-only `kf` coordination and moment capacity for UB/UC, PFC `x-x`, CHS, RHS, SHS and Rod. A `fy,w`-only override updates web shear without invalidating the catalogue moment row. PFC asymmetric Load A/B and Equal Angle Load A/B/C/D moment fail closed after `fy,m` override because the required direction-specific effective-section derivation is not implemented | Regression and browser checks completed 2026-07-24: 380PFC 300PLUS defaults `fy,m/fy,w = 280/320 MPa`; `fy,m = 300 MPa` changed `phi Ms` from 238.4 to 255.4 kNm without changing shear; `fy,w = 360 MPa` changed `phi Vv` from 596.2 to 670.7 kN without changing moment; Load A returned `Not evaluated`; reset restored catalogue values |
-| Beam | AS 4100:2020 catalogue compatibility | `AS4100.pdf`; `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | AS 4100:2020 Cl. 5.2, Table 5.2, Cl. 6.2.2-6.2.4 and Table 6.2.4 were visually checked. Austube Part 3 Sections 3.2.2.1-3.2.2.3 confirm the CF residual-stress basis, `Ze` method and `kf = Ae/Ag`; InfraBuild capacity tables provide the adopted hot-rolled product rows. `beam-section-reconciliation.js` checks 717 family / grade / direction rows: independent geometry for UB/UC class and `Ze`, PFC major-axis class and `Ze`, CHS and non-slender RHS/SHS; the AS 4100 permitted effective-cross-section result is retained for slender flat hollow rows; asymmetric PFC and Equal Angle classes are identified from the published direction-specific `Ze` interval; `kf` remains a Cl. 6.2 compression property and is not used in `Ms` | Catalogue compatibility gate closed locally; all 717 rows pass `tests/beam-section-reconciliation.test.js`; Beam remains `For Review` for its quick-reference scope and exclusions |
+| Beam | AS 4100:2020 catalogue compatibility | `AS4100.pdf`; `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | AS 4100:2020 Cl. 5.2, Table 5.2, Cl. 6.2.2-6.2.4 and Table 6.2.4 were visually checked. Austube Part 3 Sections 3.2.2.1-3.2.2.3 confirm the CF residual-stress basis, `Ze` method and `kf = Ae/Ag`; InfraBuild capacity tables provide the adopted hot-rolled product rows. `beam-section-reconciliation.js` checks 981 family / grade / direction rows: independent geometry for UB/UC class and `Ze`, PFC major-axis class and `Ze`, CHS and non-slender RHS/SHS; the AS 4100 permitted effective-cross-section result is retained for slender flat hollow rows; asymmetric PFC and all 46 Equal Angle rows are identified from the published direction-specific `Ze` interval; `kf` remains a Cl. 6.2 compression property and is not used in `Ms` | Catalogue compatibility gate closed locally; all 981 rows pass `tests/beam-section-reconciliation.test.js`; Beam remains `For Review` for its quick-reference scope and exclusions |
 | Beam | Rod section moment | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `AS4100.pdf` | Checked round-bar diameter / mass and diameter-dependent strength rows are combined with solid-circle geometry, `Ze = min(S, 1.5Z)` and AS 4100 Cl. 5.2 | Geometry-derived capacity from checked product identity / strength rows |
-| Section Properties | Catalogue/custom geometry plus product, material and checked standard-dependent attributes | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Orrcon-National-Product-Catalogue-2024.pdf`; `AS4100.pdf` Cl. 2.2.4; `AS36791.pdf` Tables 14-15; AS/NZS 1163:2016 checked product-grade data; shared `section-geometry.js` and `steel-materials.js` | Reuses the checked UB/UC/PFC/Rod rows and carries the complete 46-row InfraBuild EA directory. EA values were checked against Table 19 (principal x/y dimensions and properties) and Table 21 (horizontal n / vertical p properties). Orrcon CHS nominal D/t and linear mass rows were visually checked on catalogue pages 10-12. CHS geometry properties are derived from D/t. Entered ideal geometry supplies directional elastic moduli, product-of-inertia, principal transforms and plastic moduli from equal-area plastic neutral axes. Material references were rechecked 2026-07-28: AS 4100:2020 Cl. 2.2.4 supplies E = 200 x 10^3 MPa, G = 80 x 10^3 MPa, Poisson's ratio = 0.25 and thermal expansion coefficient = 11.7 x 10^-6 /deg C; AS/NZS 3679.1:2016 Table 14 supplies thickness-dependent fy and fu for hot-rolled sections and Table 15 supplies diameter-dependent values for rounds. Custom standard-material thickness remains geometry-linked unless a visible manual override is active; project values fail closed unless thickness and strengths are positive and fu >= fy. Separate fy,w values retain exact catalogue-row provenance. Checked `kf`, compactness and `Ze` are reused only for exact section/grade/direction matches from Beam/Axial data. Aw is a geometric clear-web reference and Awx/Awy are ideal RHS/SHS wall areas; none is effective shear area Av. The SVG shows the applicable axis convention and all values state their basis | Mixed catalogue/standard/derived/project-input basis; Draft combined workflow |
-| Axial Member | Section compression capacity | `AS4100.pdf` | AS 4100 Cl. 6.2 visually checked on PDF page 100; `Ns = kf Ag fy` confirmed | Visual checked |
+| Section Properties | Catalogue/custom geometry plus product, material and checked standard-dependent attributes | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf`; `Orrcon-National-Product-Catalogue-2024.pdf`; `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf`; `AS4100.pdf` Cl. 2.2.4; `AS36791.pdf` Tables 14-15; AS/NZS 1163:2016 checked product-grade data; shared `section-geometry.js` and `steel-materials.js` | Reuses the checked UB/UC/PFC/Rod rows and carries the complete 46-row InfraBuild EA directory. EA geometry values were checked against Table 19 (principal x/y dimensions and properties) and Table 21 (horizontal n / vertical p properties); Table 20, PDF page 20 / printed page 18, supplies all 46 rows of grade-specific `fy`, `kf` and Load A/B/C/D `Ze`. Equal Angle compactness is explicitly labelled as derived from the published `Ze` interval, and PFC classification reuses the checked direction-specific AS 4100 reconciliation. Orrcon CHS nominal D/t and linear mass rows were visually checked on catalogue pages 10-12. CHS geometry rows now coordinate with Austube Tables 3.1-1 and 3.1-2 by numeric `D` and `t`, so decimal formatting does not suppress an exact design row; grade-specific table availability is preserved and the unmatched 60.3 x 3.5 CHS geometry states that no checked design row exists. Entered ideal geometry supplies directional elastic moduli, product-of-inertia, principal transforms and plastic moduli from equal-area plastic neutral axes. Material references were rechecked 2026-07-28: AS 4100:2020 Cl. 2.2.4 supplies E = 200 x 10^3 MPa, G = 80 x 10^3 MPa, Poisson's ratio = 0.25 and thermal expansion coefficient = 11.7 x 10^-6 /deg C; AS/NZS 3679.1:2016 Table 14 supplies thickness-dependent fy and fu for hot-rolled sections and Table 15 supplies diameter-dependent values for rounds. Custom mode starts with material strength unresolved and resets that basis when the shape changes; only an explicit product form or project-defined basis resolves fy/fu. Custom standard-material thickness then remains geometry-linked unless a visible manual override is active; project values fail closed unless thickness and strengths are positive and fu >= fy. Separate fy,w values retain exact catalogue-row provenance. Aw is a geometric clear-web reference and Awx/Awy are ideal RHS/SHS wall areas; none is effective shear area Av. Invalid geometry hides the stale figure; circular Iw = 0 is identified as zero by rotational symmetry. The compact SVG remains available on phone and all values state their basis | Mixed catalogue/standard/derived/project-input basis; Draft combined workflow |
+| Axial Member | Section compression capacity | `AS4100.pdf` | AS 4100 Cl. 6.2.1 visually checked on PDF page 100; `Ns = kf An fy` confirmed. `Ag` is numerically equivalent only where the clause permits gross area or the section is unperforated so `An = Ag` | Visual checked and corrected 2026-07-29 |
 | Axial Member | Member buckling reduction | `AS4100.pdf` | AS 4100 Cl. 6.3.3 and AS 4100 Tables 6.3.3(A/B/C) visually checked on PDF pages 103-106 | Visual checked |
 | Axial Member | Tension gross yielding / net fracture | `AS4100.pdf` | AS 4100 Cl. 7.2 visually checked on PDF page 112 | Visual checked |
 | Axial Member | `k_t` values | `AS4100.pdf` | AS 4100 Table 7.3.2 visually checked on PDF page 113 | Visual checked |
@@ -454,8 +604,10 @@ Default outputs were checked on the local static page at `http://127.0.0.1:8765/
 | Bolt | M24 8.8/S, N plane, `n = 2`; both plies identical; entered `a_e = 41.0 mm` | shear N 133.4 kN; shear X 186.1 kN; tension 234.4 kN; equal-share group shear 266.8 kN; full-bearing limit 283.4 kN per bolt / 566.8 kN group; edge-distance limit 151.3 kN per bolt / 302.6 kN group; edge-distance limit governs; minimum pitch 60.0 mm; general maximum pitch 150.0 mm; minimum edge distance 42.0 mm | DOM output matched independent calculation; identical bolts, concentric action and equal shear per bolt assumed; entered `a_e` is a drawing-derived project input and the edge-distance bearing limit is not a complete connected-plate resistance |
 | Bolt detailing warning and TF slip | `p = 50 mm`; separate second ply `t = 6 mm`; second-ply `e = 30 mm`; M24 8.8/TF with `Vsf* = 100/110 kN` | minimum-pitch FAIL gives an inline FAIL and visible do-not-adopt warning; 6 mm second ply governs at 181.5 kN and `pmax = 90.0 mm`; second-ply edge FAIL gives the same warning; TF slip ratios 0.97 PASS and 1.07 FAIL | Representative DOM states checked locally on 2026-07-29; standard strength results remain capacity-only and TF uses separate bolt-group serviceability actions |
 | Bolt strength regression | M10 and M12 8.8/S; one M24 10.9/S bolt with one N and one X shear plane; M24 8.8/S default two-bolt N-plane group | M10/M12 use `fuf = 800 MPa` and give `phi Ntf = 37.12/53.952 kN`; mixed 10.9 bolt gives `332.242 kN` with global `k_rd = 0.83`; default group gives `266.769 kN` | Independent arithmetic, `tests/bolt-capacity.test.js` and local DOM checks on 2026-07-29 |
+| Bolt published example `PUB-BOLT-M20-01` | M20 8.8/S; one shear plane through threads; `A_c = 225 mm2`, `A_o = 314 mm2`, `A_s = 245 mm2`, `f_uf = 830 MPa` | `phi V_f = 92.6 kN`; `phi N_tf = 163 kN` | Steel Structures Design Manual to AS 4100, Table 9.2.3, source PDF page 182 / printed page 168; independently reproduced by `tests/published-worked-examples.test.js` |
 | Bolt `Nti` lookup | `/S`; M16 8.8/TB and 8.8/TF; M16 10.9/TB; M20 8.8/TB | `/S`: Not required; M16 8.8/TB and 8.8/TF: 95 kN; M16 10.9/TB: 130 kN; M20 8.8/TB: 145 kN | Representative DOM outputs checked on 2026-07-23; the full M16-M36 lookup matches AS 4100 Table 15.2.2.2; lightweight display and TF-only conditional inputs checked locally |
 | Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm for Grade 250 plate, 10 mm | DOM output matched independent calculation |
+| Weld published example `PUB-WELD-9413-01` | 8 mm E48XX SP fillet weld; `f_uw = 480 MPa`; `l_w = 280 mm`; applied resultant `0.84 kN/mm` | throat `5.66 mm`; design capacity `1.30 kN/mm`; applied resultant is below capacity | Steel Structures Design Manual to AS 4100, Example 9.4.1.3, source PDF page 198 / printed page 184; independently reproduced by `tests/published-worked-examples.test.js` |
 | Beam | 310UB40.4 300PLUS | `Ag` 5210 mm2; `Aw` 1730 mm2; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; `kf` 0.952; `phi Ms` 182.3 kNm; `phi Vv` 298.9 kN | DOM output matched independent calculation |
 | Beam | 200UC46.2 300PLUS | `Ag` 5900 mm2; `Aw` 1324 mm2; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; `kf` 1.000; `phi Ms` 133.4 kNm; `phi Vv` 214.5 kN | DOM output matched independent calculation |
 | Beam | 150PFC 300PLUS, x-x | `fy,m` 320 MPa; `fy,w` 320 MPa; `Zex` 129 x 10^3 mm3; `phi Ms` 37.2 kNm; `phi Vv` 135.8 kN | Independent equation and automated regression matched the app data path |
@@ -466,6 +618,9 @@ Default outputs were checked on the local static page at `http://127.0.0.1:8765/
 | Beam | 24 mm Rod 300PLUS | `fy` 300 MPa; generated `Ze` 2.036 x 10^3 mm3; `phi Ms` 0.55 kNm | Independent solid-circle equation and automated regression matched the app data path |
 | Axial Member | 114.3 x 3.2 CHS, C350L0, `Le` 3.0 m | computed `Ag` 1117 mm2; `r` 39.3 mm; `Le/r` 76.3; `lambda_n` 90.3; `alpha_c` 0.672; section compression 351.8 kN; member compression 236.5 kN; tension 351.8 kN | DOM output matched independent calculation; CHS geometry is formula-derived from `D` and `t`, not a catalogue row value |
 | Concrete | 1000 mm strip, 500 mm top pad, 75 mm cover, top face compression, X direction, inside N20 orthogonal bars, two active N20@200 mats, no shear reinforcement | `x` 62.5 mm; `Cc` 1426.6 kN; `Muo` 337.8 kNm; `phi Muo` 287.1 kNm; `phi` 0.85; `Vuc` 277.4 kN; `dv` 360.0 mm; `phi Vu` 194.2 kN; equilibrium residual below 0.01 kN | Independent calculation matched app formula; one-way shear remains limited to the stated simplified-method assumptions |
+| Concrete published example `PUB-CONCRETE-LOO-01` | Rectangular section case (a): `b = 250 mm`, `d = 500 mm`, overall depth `550 mm`, `f'c = 50 MPa`, `A_st = 1500 mm2`, `f_sy = 500 MPa` | `M_u = 346.0 kNm`; `phi = 0.85`; `phi M_u = 294.1 kNm`; force-equilibrium residual below `0.001 kN` | Loo and Chowdhury, reworked AS 3600:2018 Example 3.4.6, Table 1 on PDF page 7 / printed page 168; independently reproduced by `tests/published-worked-examples.test.js` |
+| Reo development example `PUB-REO-N28-01` | N28, `f_sy = 500 MPa`, `f'c = 32 MPa`, cover `40 mm`, clear spacing `60 mm`, refined confinement `K = 0.05` | basic length about `1178 mm`; `k4` about `0.95`; adopted straight development length `1120 mm` | Current public AS 3600 hand example at `https://calcs.com/blog/concrete-development-length-as-3600`, accessed 2026-07-30; independently reproduced by `tests/published-worked-examples.test.js`. Commercial worked example is supporting evidence only; AS 3600:2018 remains governing |
+| Reo hook reconstruction `REC-REO-HOOK-N28-01` | Same verified N28 straight-development inputs with qualified standard hook selected | benchmark raw length equals `0.5` times verified straight development; adopted comparison length `560 mm` | Direct clause reconstruction from AS 3600 Cl. 13.1.2.6 and the verified straight-development path. This is not represented as a separately published terminal worked-example value |
 
 ## 2026-06-30 Axial Member PFC / EA / Rod Audit
 
@@ -476,18 +631,18 @@ The current Axial Member non-CHS defaults were visually checked against `InfraBu
 | App default | Source pages | Checked app values | Status |
 | --- | --- | --- | --- |
 | 150PFC, 300PLUS | OneSteel / InfraBuild Tables 15 and 16 PDF page 17 | mass 17.7 kg/m; `Ag` 2250 mm2; `rmin` 23.9 mm; `fy` 320 MPa; `kf` 1.000 | Row checked |
-| 100 x 100 x 10 EA, 300PLUS | OneSteel / InfraBuild Tables 19-21 PDF pages 19-21 | `Ag` 1810 mm2; leg-parallel centroidal-axis radii `rn = rp = 30.6 mm`; `fy` 320 MPa; `kf` 1.000 | Row checked; `rn = rp` is not a principal or minimum radius |
+| 100 x 100 x 10 EA, 300PLUS | OneSteel / InfraBuild Tables 19-21 PDF pages 19-21 | `Ag` 1810 mm2; leg-parallel centroidal-axis radii `rn = rp = 30.6 mm`; principal radii `rx = 38.6 mm`, `ry = 19.6 mm`; `fy` 320 MPa; `kf` 1.000 | Row checked; the Axial Member flexural-buckling quick check adopts the minor principal radius `ry = 19.6 mm` |
 | Ø24 Rod, 300PLUS | OneSteel / InfraBuild Table 3 PDF page 9; OneSteel / InfraBuild Table 38 PDF page 31 | mass 3.55 kg/m; `Ag = pi d^2 / 4 = 452 mm2`; `r = d / 4 = 6.0 mm`; `fy` 300 MPa for d <= 50 mm; `fu` 440 MPa | Row checked |
 
 ### Calculation Compliance Check
 
 The Axial Member formulas remain aligned with the visually checked AS 4100 basis:
 
-- Compression section capacity: `phi Ns = 0.90 kf Ag fy`.
+- Compression section capacity: `phi Ns = 0.90 kf An fy`. For an unperforated section, `An = Ag`.
 - Member compression capacity: `phi Nc = alpha_c phi Ns`, using AS 4100 Cl. 6.3.3 `lambda_n`, `alpha_a`, `eta`, `xi` and `alpha_c`.
 - Tension capacity: `phi Nt = min(phi Ag fy, phi 0.85 kt An fu)`.
-- `An`, `kt`, `Le` and non-CHS `alpha_b` remain project inputs; the app warnings correctly keep these out of the checked product-table scope.
-- Equal Angle embedded data uses catalogue `rn = rp` about the leg-parallel centroidal n/p axes. It must not be described as a minimum or principal-axis radius. The Axial Member use of that value remains a separate governing-axis correction item and must not be treated as a weak-axis screen; flexural-torsional buckling, load eccentricity and connection eccentricity are not established by this row.
+- `An`, `kt` and `Le` remain project inputs. The default `alpha_b` is selected from AS 4100 Table 6.3.3(A/B) using the current family and `kf` branch; Custom retains project-entered values by axis.
+- Equal Angle catalogue compression uses the checked minor principal radius, not `rn = rp` about the leg-parallel centroidal axes. This is a flexural-buckling quick check only; flexural-torsional buckling, load eccentricity and connection eccentricity remain excluded.
 - Rod `fy` is now diameter-dependent to match AS/NZS 3679.1 round-bar Table 38: for d <= 50 mm, 300PLUS uses 300 MPa and Grade 350 uses 340 MPa; for 50 < d < 100 mm, 300PLUS uses 290 MPa and Grade 350 uses 330 MPa.
 
 ### DOM Output Check
@@ -497,9 +652,18 @@ Outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=2
 | Tab case | Checked output | Status |
 | --- | --- | --- |
 | 150PFC, 300PLUS, `Le` 3.0 m, `alpha_b` 0.5 | `Le/r` 125.5; `lambda_n` 142.0; `alpha_c` 0.298; section compression 648.0 kN; member compression 192.9 kN; tension 648.0 kN | DOM output matched independent calculation |
-| 100 x 100 x 10 EA, 300PLUS, `Le` 3.0 m, `alpha_b` 0.5, `kt` 0.85 | `Le/r` 98.0; `lambda_n` 110.9; `alpha_c` 0.426; section compression 521.3 kN; member compression 222.1 kN; tension 517.9 kN | DOM output matched independent calculation |
-| Ø24 Rod, 300PLUS, `Le` 3.0 m, `alpha_b` 0.0 | `Le/r` 500.0; `lambda_n` 547.7; `alpha_c` 0.026; section compression 122.1 kN; member compression 3.1 kN; tension 122.1 kN | DOM output matched independent calculation |
-| Ø24 Rod, Grade 350, `Le` 3.0 m, `alpha_b` 0.0 | `fy` 340 MPa; `Le/r` 500.0; `lambda_n` 583.1; `alpha_c` 0.023; section compression 138.4 kN; member compression 3.2 kN; tension 138.4 kN | DOM output matched independent calculation after diameter-dependent `fy` correction |
+| 100 x 100 x 10 EA, 300PLUS, `Le` 3.0 m, `alpha_b` 0.5, `kt` 0.85 | minor principal `r = 19.6 mm`; `Le/r` 153.1; `lambda_n` 173.2; `alpha_c` 0.216; section compression 521.3 kN; member compression 112.4 kN; tension 517.9 kN | Independent calculation and local regression updated 2026-07-29; replaces the earlier leg-parallel-radius result |
+| Ø24 Rod, 300PLUS, `Le` 3.0 m, `alpha_b` 0.5 | `Le/r` 500.0; `lambda_n` 547.7; `alpha_c` 0.026; section compression 122.1 kN; member compression 3.1 kN; tension 122.1 kN | Independent calculation checked using AS 4100 Table 6.3.3(A), other sections not listed |
+| Ø24 Rod, Grade 350, `Le` 3.0 m, `alpha_b` 0.5 | `fy` 340 MPa; `Le/r` 500.0; `lambda_n` 583.1; `alpha_c` 0.023; section compression 138.4 kN; member compression 3.2 kN; tension 138.4 kN | Diameter-dependent `fy` and current AS 4100 Table 6.3.3(A) default checked |
+
+### 2026-07-29 Beam and Axial Formula-Trace Audit
+
+- AS 4100 Table 3.4, AS 4100 Cl. 5.2.1 to Cl. 5.2.6, AS 4100 Cl. 5.11.1 to Cl. 5.11.5, AS 4100 Cl. 5.12.3, AS 4100 Cl. 6.2.1, AS 4100 Cl. 6.3.3, AS 4100 Table 6.3.3, AS 4100 Cl. 7.2 and AS 4100 Table 7.3.2 were visually rechecked against the local licensed PDF.
+- Beam desktop DOM checks matched independent calculations: 310UB40.4 / 300PLUS x-x gave `phi Ms = 182.3 kN.m` and `phi Vv = 298.9 kN`; 150 x 100 x 6 RHS / C450L0 x-x gave `phi Ms = 54.3 kN.m` and `phi Vv = 389.4 kN`.
+- The Beam trace now shows the governing formula before substitution and separately resolves `lambda_v`, `alpha_v`, nominal `Vv` and design `phi Vv`; the RHS / SHS non-uniform shear branch no longer uses the ambiguous visual expression `phi Vv = phi Vv`.
+- Axial desktop DOM checks matched the independent values above for the default Equal Angle and PFC. The Custom default checks both axes and reports `phi Nc,x = 245.8 kN`, `phi Nc,y = 130.3 kN`, with the y-axis governing.
+- Axial formula traces now expose `alpha_a`, adopted `alpha_b`, modified `lambda`, `eta`, `xi` and `alpha_c` before `phi Nc`. The 100 x 100 x 10 EA source row was rechecked as principal radii `38.6 mm` and `19.6 mm`; `19.6 mm` remains the adopted flexural-buckling radius.
+- Desktop and 390 x 844 responsive checks showed no horizontal overflow. The complete local regression suite passed, including the 717-row Beam catalogue reconciliation and dedicated Beam / Axial trace-contract tests.
 
 ## 2026-07-02 Embedded Catalogue Row Audit
 
@@ -514,7 +678,7 @@ The embedded steel catalogue rows in `app.js` were checked by a local script aga
 | Beam Equal Angle | 13 selected embedded rows | OneSteel / InfraBuild Tables 19 and 20, PDF pages 19-20 | designation, grade, `kf` and Load A/B/C/D `Ze` | No missing direction fields in the adopted subset |
 | Beam CHS / RHS / SHS | 288 grade rows | Austube Tables 3.1-1 to 3.1-6, PDF pages 28-38 | unique family/designation/grade key, dimensions, mass, area, section properties, grade, `kf`, class and direction-specific `Ze` | No duplicate keys; representative rows asserted in unit tests |
 | Axial PFC | 10 | OneSteel / InfraBuild Tables 15 and 16, PDF page 17 | designation, mass, `Ag`, `r_min`, `fy`, `tw`, `tf` | No mismatches |
-| Axial Equal Angle | 13 selected embedded rows | OneSteel / InfraBuild Tables 19-21, PDF pages 19-21 | leg size, thickness, area, leg-parallel `rn = rp`, 300PLUS and Grade 350 `fy` and `kf` | Numeric rows match; axis meaning corrected 2026-07-22 |
+| Axial Equal Angle | 13 selected embedded rows | OneSteel / InfraBuild Tables 19-21, PDF pages 19-21 | leg size, thickness, area, leg-parallel `rn = rp`, principal `rx` / `ry`, 300PLUS and Grade 350 `fy` and `kf` | Numeric rows match; Axial flexural-buckling radius corrected to the minor principal `ry` on 2026-07-29 |
 | Axial Rod | 26 | OneSteel / InfraBuild Table 3, PDF page 9; Table 38 strength ranges, PDF page 31 | diameter, mass and diameter-dependent strength range basis | No mismatches |
 
 Axial Member CHS was deliberately not converted to an Austube / Orrcon compression-capacity lookup. That separate quick-screen strategy keeps nominal D/t plus formula-derived `Ag` and `r`. Beam Section Capacity now uses checked Austube Part 3 CHS section-property and `Ze` rows for section moment and the reviewed AS 4100 CHS shear equation; it does not import member compression capacities.
@@ -576,4 +740,33 @@ Connected steel, local HSS or shell effects, bearing, tear-out, net section, blo
 
 The lightweight U-bolt and structural blind-bolt lookups do not redraw or embed manufacturer product figures. `Selected product` retains only the parameters required for preliminary selection and links directly to the current record's manufacturer product page or technical data sheet. Product appearance, component details and dimension diagrams remain controlled by that primary source; the handbook does not establish fabrication geometry or complete connection capacity.
 
-Drawing governance is recorded by approved adoption `SC-HANDBOOK-UWEDS-001` in `engineering/drawing-standard-adoption.json`, pinned to UWEDS V1.10.0 and its package-manifest hash. Product-reference SVGs cite pre-drawing review `SC-HANDBOOK-PRODUCT-FIGURES-001`, carry the `FOR_REVIEW` web boundary and remain explicitly `Not for fabrication`. Each SVG declares its view ID, purpose, orthographic source-view projection, NTS status, millimetre unit policy, web-native production mode, source/access record and derivative revision. Compact labels resolve through approved project register `SC-HANDBOOK-PRODUCT-SYMBOLS-001` revision R2: `MAX/MIN` fixing thickness, `AC` anchor clearance, `DC` depth clearance and `P` pivot axis. The accessible SVG description retains the complete terms and identifies the pivot pin as non-load-bearing.
+## 2026-07-30 Full-page Regression Audit
+
+Build 0.7.10 was checked against the current `SC_HANDBOOK.md` calculation, validation, traceability and responsive-layout contract. This pass did not expand any tab into a complete design engine.
+
+| Audit ID | Page / state | Reproducible check | Result |
+| --- | --- | --- | --- |
+| `AUD-WELD-INPUT-01` | Weld Capacity invalid geometry | Enter `l_w = 0`, zero effective weld lines, or zero IPBW design throat | Capacity and utilisation are cleared; the trace reports `Not evaluated` and the invalid prerequisite |
+| `AUD-CONCRETE-INPUT-01` | Concrete Pad invalid material input | Enter `f'c = 0` or a value outside 20-120 MPa | Flexural and shear capacities are cleared; status is `Invalid input`; no value is clamped to a code limit |
+| `AUD-BOLT-GROUP-INPUT-01` | Bolt group invalid count | Enter bolt count `0`, a non-integer, or a value outside 1-100 | Bolt-group shear, bearing and tear-out are `Not evaluated`; per-bolt capacity remains available |
+| `AUD-AXIAL-INPUT-02` | Axial Member invalid effective length | Enter selected-axis `Le = 0` | Compression, tension and utilisation outputs are cleared; status is `INPUT REQUIRED` |
+| `AUD-BEAM-DEMAND-02` | Beam Section over-demand | Enter `M* = 9999 kN.m` for default 310UB40.4 / 300PLUS | Utilisation `54.85`; status `FAIL`; member stability and other exclusions remain visible |
+| `AUD-REO-INPUT-01` | Reinforcement invalid concrete input | Enter `f'c = 0` | Required length is cleared; status is `INVALID INPUT` |
+| `AUD-SCREW-BOUNDARY-01` | Screw Piles demand without project resistance | Enter `N* = 100 kN` with no project design-value source | Pile actions are distributed, but utilisation remains `Not assessed`; no manufacturer lookup is treated as project resistance |
+| `AUD-SELECTOR-BOUNDARY-01` | U-bolt, blind-bolt and Rock Anchor selectors | Open each selector branch | Status remains product lookup / Draft; no project `PASS` or calculated anchor resistance is reported |
+| `AUD-RESPONSIVE-02` | All nine public pages | Default desktop at 1440 px and phone at 390 x 844 px | No document or checked-control horizontal overflow |
+
+The complete local regression suite passed 19 test files after these checks, including published worked examples, independent reproductions, catalogue reconciliation and DOM contracts. A fresh browser session reported no console warnings or errors. Remaining `For Review`, `Draft`, `Not evaluated` and selector-only states are intentional scope boundaries, not completed design checks.
+
+## 2026-08-03 Drawing-standard Adoption
+
+SC Handbook now references the shared Unified Web Engineering Drawing Standard through the project-owned `engineering/drawing-standard-adoption.json` record rather than copying a second drafting standard into this repository.
+
+- Adopted package: UWEDS 1.10.0, governed subset, manifest generated 2026-08-03.
+- Pin: controlled revision plus `PACKAGE_MANIFEST.md` SHA-256 `7d71cfa493defd5504966d6e20cc271f34485a5fc8e6b80f7a1340bf8611c7f1`.
+- Shared package location: `C:/Users/silin/Documents/Codex/Drawing`.
+- Local project rules: `SC_HANDBOOK.md` Section 15.8, including lightweight placement, annotation budgets, mobile simplification and calculator-scope boundaries.
+- Future case records: `engineering/pre-drawing-case-reviews/` before a new drawing family or material physical-representation change.
+- Validation: UWEDS package validator passed with 25 JSON files, 261 rule IDs, 203 test IDs and 114 manifest entries; the adoption record passed its current JSON schema; all 19 SC Handbook regression test files passed.
+
+The adoption remains `DRAFT`. It does not retrospectively certify inherited figures and does not convert web schematics into construction, fabrication, shop or certified design drawings. The product-reference links added to the U-bolt and structural blind-bolt lookups do not claim drawing adoption or geometry authority.

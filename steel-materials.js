@@ -34,7 +34,7 @@
     "hollow-section": Object.freeze({
       label: "Cold-formed hollow section",
       standard: "AS/NZS 1163:2016",
-      table: "Checked grade basis",
+      table: "AS/NZS 1163 grade basis",
       thicknessLabel: "Nominal wall thickness",
       grades: Object.freeze(["C250L0", "C350L0"])
     }),
@@ -84,7 +84,26 @@
   }
 
   function resolve(input = {}) {
-    const productForm = PRODUCT_FORMS[input.productForm] ? input.productForm : "project";
+    const productForm = PRODUCT_FORMS[input.productForm] ? input.productForm : "";
+    if (!productForm) {
+      return Object.freeze({
+        productForm: "",
+        productFormLabel: "Material basis not selected",
+        standard: "Material basis not selected",
+        table: "Select product form",
+        source: "Material basis not selected",
+        grade: "",
+        thickness: null,
+        thicknessLabel: "Governing thickness",
+        thicknessBasis: "unresolved",
+        fy: null,
+        fu: null,
+        strengthBasis: "not-verified",
+        common: COMMON,
+        status: "not-verified",
+        validation: "Select a product form or project-defined steel basis."
+      });
+    }
     const definition = PRODUCT_FORMS[productForm];
     const grade = gradeOptions(productForm).includes(input.grade) ? input.grade : gradeOptions(productForm)[0];
     const thickness = positive(input.thickness) ? Number(input.thickness) : null;

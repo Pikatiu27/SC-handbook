@@ -354,7 +354,7 @@
     if (direction !== "x") {
       return Object.freeze({
         status: "unresolved",
-        reason: "Project yield-strength overrides are not evaluated for asymmetric PFC Load A / Load B bending; use a verified direction-specific effective section modulus."
+        reason: "Derived PFC Load A / Load B bending is not evaluated; use a verified direction-specific effective section modulus."
       });
     }
     const axis = section.axes?.x;
@@ -445,7 +445,7 @@
     if (section.family === "ea") {
       return Object.freeze({
         status: "unresolved",
-        reason: "Project yield-strength overrides are not evaluated for equal-angle Load A / B / C / D bending; use a verified direction-specific effective section modulus."
+        reason: "Derived equal-angle Load A / B / C / D bending is not evaluated; use a verified direction-specific effective section modulus."
       });
     }
     if (section.family === "rod") {

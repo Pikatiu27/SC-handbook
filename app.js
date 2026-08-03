@@ -634,17 +634,11 @@ const concreteBarProducts = Object.fromEntries(
   }))
 );
 
-const customBeamGradeYields = {
-  "Grade 250": 250,
-  "Grade 300": 300,
-  "Grade 350": 350
-};
-
 const beamShearDimensions = {
   "610UB125": { d: 611.6, bf: 229.0, tf: 19.6, d1: 572.4, tw: 11.9 },
   "610UB113": { d: 607.0, bf: 228.0, tf: 17.3, d1: 572.4, tw: 11.2 },
   "610UB101": { d: 602.6, bf: 227.6, tf: 14.8, d1: 572.4, tw: 10.6 },
-  "530UB92.4": { d: 533.0, bf: 209.0, tf: 16.5, d1: 501.8, tw: 10.2 },
+  "530UB92.4": { d: 533.0, bf: 209.0, tf: 15.6, d1: 501.8, tw: 10.2 },
   "530UB82.0": { d: 528.2, bf: 209.0, tf: 13.2, d1: 501.8, tw: 9.6 },
   "460UB82.1": { d: 460.4, bf: 191.0, tf: 16.0, d1: 422.4, tw: 9.9 },
   "460UB74.6": { d: 457.4, bf: 190.0, tf: 14.5, d1: 428.4, tw: 9.1 },
@@ -2065,11 +2059,11 @@ const reoTerminationDetailingResetIds = new Set(reoExistingLengthChangingIds);
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand"];
-const beamCustomInputIds = [
-  "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
-  "beamCustomPfcDepth", "beamCustomPfcFlangeWidth", "beamCustomPfcWebThickness", "beamCustomPfcFlangeThickness",
-  "beamCustomChsDiameter", "beamCustomChsThickness", "beamCustomRhsDepth", "beamCustomRhsWidth", "beamCustomRhsThickness",
-  "beamCustomShsWidth", "beamCustomShsThickness", "beamCustomEaLeg", "beamCustomEaThickness", "beamCustomRodDiameter"
+const beamDimensionInputIds = [
+  "beamDimID", "beamDimIBf", "beamDimITw", "beamDimITf",
+  "beamDimPfcD", "beamDimPfcBf", "beamDimPfcTw", "beamDimPfcTf",
+  "beamDimChsD", "beamDimChsT", "beamDimRhsD", "beamDimRhsB", "beamDimRhsT",
+  "beamDimShsB", "beamDimShsT", "beamDimEaB", "beamDimEaT", "beamDimRodD"
 ];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
 const toolNames = ["bolt", "member", "beam", "properties", "weld", "concrete", "reo", "screw", "rock"];
@@ -2081,7 +2075,6 @@ const toolCategories = {
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };
 let boltMode = "standard";
-let beamSource = "catalogue";
 let beamFamily = "ub";
 let memberType = "chs";
 let reoPreviousRouteKey = "";
@@ -2094,12 +2087,12 @@ const manualInputIds = [
   "reoExistingConcreteStrength", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
-  "beamMomentDemand", "beamShearDemand", "beamFyInput", "beamFywInput", "beamCustomDepth", "beamCustomFlangeWidth", "beamCustomWebThickness", "beamCustomFlangeThickness",
+  "beamMomentDemand", "beamShearDemand", "beamFyInput", "beamFywInput", ...beamDimensionInputIds,
   ...sectionPropertyInputIds, "sectionMaterialThickness", "sectionMaterialFyInput", "sectionMaterialFuInput",
   "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
   "memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD",
-  "memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
+  "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
   "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeCondition2", "holeFactor",
@@ -2130,18 +2123,14 @@ function signedValue(id, fallback = 0) {
   const number = numericValue($(id).value);
   return Number.isFinite(number) ? number : fallback;
 }
-function alphaBInput(id) { return Math.max(-1, Math.min(1, signedValue(id))); }
+function alphaBInput(id) { return signedValue(id, NaN); }
 function fixed(number) { return Number(number).toFixed(1); }
 function fixed2(number) { return Number(number).toFixed(2); }
 function weldLapReduction(lengthMm) {
-  const lengthM = lengthMm / 1000;
-  if (lengthM <= 1.7) return 1;
-  if (lengthM <= 8) return 1.10 - 0.06 * lengthM;
-  return 0.62;
+  return WeldCapacity.lapReduction(lengthMm);
 }
 function weldCapacityFactor(type, category) {
-  if (category === "GP") return 0.6;
-  return type === "cpbw" ? 0.9 : 0.8;
+  return WeldCapacity.capacityFactor(type, category);
 }
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
 function formatDimension(number, digits = 1) {
@@ -2442,7 +2431,10 @@ function calculateBolt() {
   const threadShear = threadShearResult.design;
   const shankShear = shankShearResult.design;
   const selectedShear = plane === "N" ? threadShear : shankShear;
-  const count = Math.max(1, Math.round(value("boltCount")));
+  const countInput = numericValue($("boltCount").value);
+  const countValid = Number.isInteger(countInput) && countInput >= 1 && countInput <= 100;
+  $("boltCount").setAttribute("aria-invalid", String(!countValid));
+  const count = countValid ? countInput : 1;
   const nThread = Math.round(value("threadPlanes"));
   const nShank = Math.round(value("shankPlanes"));
   const totalThreadPlanes = count * nThread;
@@ -2581,44 +2573,69 @@ function calculateBolt() {
     : "Threads clear of shear plane &middot; AS 4100 Cl. 9.2.2.1";
   $("tensionCapacity").textContent = fixed(tension);
   $("boltResultNote").innerHTML = `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} &middot; k<sub>r</sub> = ${kr.toFixed(2)}.`;
-  $("boltDetailingStatus").hidden = detailingCompliant;
-  $("boltDetailingStatus").textContent = detailingFailureNote;
-  $("groupShearCapacity").textContent = `${fixed(groupShear)} kN`;
-  $("groupShearBasis").textContent = `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal shear per bolt assumed`;
-  $("primaryPlyCapacity").textContent = `${fixed(primaryPly.groupCapacity)} kN`;
+  $("boltDetailingStatus").hidden = countValid && detailingCompliant;
+  $("boltDetailingStatus").textContent = countValid
+    ? detailingFailureNote
+    : "Invalid bolt-group input: enter a whole-number bolt count from 1 to 100.";
+  $("groupShearCapacity").textContent = countValid ? `${fixed(groupShear)} kN` : "Not evaluated";
+  $("groupShearBasis").textContent = countValid
+    ? `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal shear per bolt assumed`
+    : "Enter a whole-number bolt count from 1 to 100.";
+  $("primaryPlyCapacity").textContent = countValid ? `${fixed(primaryPly.groupCapacity)} kN` : "Not evaluated";
   $("primaryPlyControl").textContent = primaryPly.controlLabel;
-  $("secondPlyCapacity").textContent = `${fixed(secondPly.groupCapacity)} kN`;
+  $("secondPlyCapacity").textContent = countValid ? `${fixed(secondPly.groupCapacity)} kN` : "Not evaluated";
   $("secondPlyControl").textContent = secondPly.controlLabel;
-  $("bearingGroupCapacity").textContent = `${fixed(fullBearingGroupCapacity)} kN`;
-  $("bearingGroupBasis").textContent = `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
-  $("tearoutGroupCapacity").textContent = `${fixed(edgeTearoutGroupCapacity)} kN`;
-  $("tearoutGroupBasis").textContent = `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`;
-  $("connectedPlyGoverningBasis").textContent = `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`;
+  $("bearingGroupCapacity").textContent = countValid ? `${fixed(fullBearingGroupCapacity)} kN` : "Not evaluated";
+  $("bearingGroupBasis").textContent = countValid
+    ? `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`
+    : "Enter a valid bolt count.";
+  $("tearoutGroupCapacity").textContent = countValid ? `${fixed(edgeTearoutGroupCapacity)} kN` : "Not evaluated";
+  $("tearoutGroupBasis").textContent = countValid
+    ? `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`
+    : "Enter a valid bolt count.";
+  $("connectedPlyGoverningBasis").textContent = countValid
+    ? `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`
+    : "Connected-ply group capacity not evaluated.";
   updateConnectedPlyOutputs(primaryPly);
   updateConnectedPlyOutputs(secondPly, "2");
   const pitchCompliant = pitchPass && maximumPitchPass;
-  $("pitchCheckValue").innerHTML = pitchApplicable
-    ? `<output id="minimumPitch">${fixed(minimumPitch)}</output>-<output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted &middot; AS 4100 Cl. 9.5.1; Cl. 9.5.3 general limit`
+  $("pitchCheckValue").innerHTML = !countValid
+    ? "Enter a whole-number bolt count from 1 to 100"
+    : pitchApplicable
+    ? `<output id="minimumPitch">${fixed(minimumPitch)}</output>-<output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted &middot; AS 4100 Cl. 9.5.1; AS 4100 Cl. 9.5.3 general limit`
     : "Not applicable to a single-bolt connection";
-  $("pitchStatus").textContent = pitchApplicable ? (pitchCompliant ? "PASS" : "FAIL") : "N/A";
-  $("pitchStatus").className = `input-check-status ${pitchApplicable ? (pitchCompliant ? "pass" : "fail") : "neutral"}`;
+  $("pitchStatus").textContent = !countValid ? "INVALID" : pitchApplicable ? (pitchCompliant ? "PASS" : "FAIL") : "N/A";
+  $("pitchStatus").className = `input-check-status ${!countValid ? "fail" : pitchApplicable ? (pitchCompliant ? "pass" : "fail") : "neutral"}`;
   $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
-  $("slipCapacityBasis").innerHTML = slip === null
+  $("slipCapacityBasis").innerHTML = !countValid
+    ? "Per-bolt resistance shown; group resistance not evaluated until bolt count is valid"
+    : slip === null
     ? "TF categories only"
     : `Per bolt &middot; k<sub>h</sub> = ${holeFactor.toFixed(2)} &middot; ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
   $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
-  $("slipGoverningStatus").textContent = !detailingCompliant
+  $("slipGoverningStatus").textContent = !countValid
+    ? "Invalid bolt count"
+    : !detailingCompliant
     ? "NON-COMPLIANT"
     : !hasSlipDemand
       ? "Enter slip actions"
       : slipRatio <= 1
         ? "PASS"
         : "FAIL";
-  $("slipGoverningStatus").className = !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
-  $("slipGoverningNote").textContent = slipDisplayNote;
+  $("slipGoverningStatus").className = !countValid || !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
+  $("slipGoverningNote").textContent = countValid
+    ? slipDisplayNote
+    : "Bolt-group slip interaction is not evaluated until a valid bolt count is entered.";
 
-  const activePlyFormulaRows = connectedPlyFormulaRows(primaryPly, bolt, count)
-    + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count) : "");
+  const activePlyFormulaRows = countValid
+    ? connectedPlyFormulaRows(primaryPly, bolt, count)
+      + (separatePlyCheck ? connectedPlyFormulaRows(secondPly, bolt, count) : "")
+    : calculationTraceRow({
+        title: "Bolt-group and connected-ply checks",
+        result: "Not evaluated",
+        applicability: "Enter a whole-number bolt count from 1 to 100.",
+        state: "warning"
+      });
   const integrityFormulaRows = !integrity.enabled
     ? calculationTraceRow({
         title: "Optional ply rupture checks",
@@ -2686,10 +2703,13 @@ function calculateBolt() {
     calculationTraceRow({
       title: "Bolt group shear capacity",
       reference: "AS 4100 Cl. 9.2.2.1",
-      formula: `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd</sub>k<sub>r</sub>(n<sub>N</sub>A<sub>c</sub> + n<sub>X</sub>A<sub>o</sub>)`,
-      substitution: `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>rd</sub> = ${groupKrd.toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}`,
-      result: `Design group capacity = ${fixed(groupShear)} kN`,
-      applicability: "Identical bolts with equal shear per bolt assumed; apply the bolted-lap reduction only where its stated conditions apply."
+      formula: countValid ? `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd</sub>k<sub>r</sub>(n<sub>N</sub>A<sub>c</sub> + n<sub>X</sub>A<sub>o</sub>)` : "",
+      substitution: countValid ? `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>rd</sub> = ${groupKrd.toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}` : "",
+      result: countValid ? `Design group capacity = ${fixed(groupShear)} kN` : "Not evaluated",
+      applicability: countValid
+        ? "Identical bolts with equal shear per bolt assumed; apply the bolted-lap reduction only where its stated conditions apply."
+        : "Enter a whole-number bolt count from 1 to 100.",
+      state: countValid ? "" : "warning"
     }),
     calculationTraceRow({
       title: "Minimum pitch",
@@ -2711,9 +2731,13 @@ function calculateBolt() {
     integrityFormulaRows,
     calculationTraceRow({
       title: "Detailing compliance",
-      result: detailingCompliant ? "Compliant for the displayed lightweight checks" : "NON-COMPLIANT",
-      applicability: detailingCompliant ? "All applicable displayed detailing checks pass." : detailingFailureNote,
-      state: detailingCompliant ? "" : "warning"
+      result: !countValid ? "Invalid input" : detailingCompliant ? "Compliant for the displayed lightweight checks" : "NON-COMPLIANT",
+      applicability: !countValid
+        ? "Enter a whole-number bolt count from 1 to 100."
+        : detailingCompliant
+          ? "All applicable displayed detailing checks pass."
+          : detailingFailureNote,
+      state: countValid && detailingCompliant ? "" : "warning"
     }),
     calculationTraceRow({
       title: "TF slip resistance",
@@ -3515,20 +3539,47 @@ function calculateWeld() {
   const size = value("weldSize");
   const category = $("weldCategory").value;
   const fuw = value("weldStrength");
-  const length = value("weldLength");
-  const runs = Math.max(1, Math.round(value("weldRuns")));
-  const effectiveThroat = value("weldEffectiveThroat");
+  const length = numericValue($("weldLength").value);
+  const runsValue = numericValue($("weldRuns").value);
+  const runs = Number.isFinite(runsValue) ? Math.round(runsValue) : NaN;
+  const effectiveThroat = numericValue($("weldEffectiveThroat").value);
   const lapReductionActive = $("weldLapConnection").value === "yes" && type === "fillet";
-  const kr = lapReductionActive ? weldLapReduction(length) : 1;
   const parentThickness = value("weldParentThickness");
   const parentGrade = parentMetalGrades[$("weldParentGrade").value] || parentMetalGrades["Grade 250 plate"];
-  const phi = weldCapacityFactor(type, category);
   const parentPhi = 0.9;
-  const filletThroat = 0.707 * size;
-  const calculationAvailable = type === "fillet" || type === "ipbw";
-  const throat = type === "fillet" ? filletThroat : type === "ipbw" ? effectiveThroat : NaN;
-  const capacityPerMm = calculationAvailable ? phi * 0.6 * fuw * throat * kr / 1000 : NaN;
-  const capacity = calculationAvailable ? capacityPerMm * length * runs : NaN;
+  const weldMethodAvailable = type === "fillet" || type === "ipbw";
+  const inputErrors = [];
+  if (weldMethodAvailable && !(length > 0)) inputErrors.push("effective weld length l_w must be greater than zero");
+  if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("effective weld lines must be a positive whole number");
+  if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW design throat a_w must be greater than zero");
+  [
+    ["weldLength", length > 0],
+    ["weldRuns", runsValue >= 1 && Number.isInteger(runsValue)],
+    ["weldEffectiveThroat", type !== "ipbw" || effectiveThroat > 0]
+  ].forEach(([id, valid]) => {
+    if (valid || !weldMethodAvailable) $(id).removeAttribute("aria-invalid");
+    else $(id).setAttribute("aria-invalid", "true");
+  });
+  const weldResult = inputErrors.length === 0
+    ? WeldCapacity.calculate({
+      type,
+      category,
+      size,
+      effectiveThroat,
+      fuw,
+      length,
+      runs,
+      weldedLap: lapReductionActive
+    })
+    : {
+      calculationAvailable: false,
+      throat: NaN,
+      phi: weldCapacityFactor(type, category),
+      kr: 1,
+      capacityPerMm: NaN,
+      capacity: NaN
+    };
+  const { calculationAvailable, throat, phi, kr, capacityPerMm, capacity } = weldResult;
   const parentPerMm = parentPhi * 0.6 * parentGrade.fup * parentThickness / 1000;
   const parentCheckActive = parentThickness > 0;
   const parentGoverns = calculationAvailable && parentCheckActive && parentPerMm < capacityPerMm;
@@ -3547,9 +3598,9 @@ function calculateWeld() {
 
   $("weldCallout").textContent = callouts[type] || callouts.fillet;
   $("weldTypeValue").textContent = typeData.label;
-  $("weldThroatValue").textContent = calculationAvailable ? `${fixed2(throat)} mm` : "Project-defined";
-  $("weldLengthValue").textContent = `${fixed(length)} mm`;
-  $("weldRunsValue").textContent = String(runs);
+  $("weldThroatValue").textContent = calculationAvailable ? `${fixed2(throat)} mm` : inputErrors.length ? "\u2014" : "Project-defined";
+  $("weldLengthValue").textContent = length > 0 ? `${fixed(length)} mm` : "\u2014";
+  $("weldRunsValue").textContent = runsValue >= 1 && Number.isInteger(runsValue) ? String(runs) : "\u2014";
   $("weldPhiValue").textContent = type === "compound" ? "-" : phi.toFixed(2);
   $("weldCapacityLabel").textContent = calculationAvailable
     ? "Capacity per mm per weld line"
@@ -3558,6 +3609,8 @@ function calculateWeld() {
       : "Project-specific capacity required";
   $("weldCapacityBasis").innerHTML = calculationAvailable
     ? `${typeData.scope}; ${category}; &phi; = ${phi.toFixed(2)} from AS 4100 Table 3.4`
+    : inputErrors.length
+      ? "Not evaluated; enter valid weld geometry"
     : type === "cpbw"
       ? "AS 4100 Cl. 9.6.2.7; joined-part capacity is not defined by this weld-metal input set"
       : "AS 4100 Cl. 9.6.5.2; total design throat requires the actual compound-weld geometry";
@@ -3631,6 +3684,14 @@ function calculateWeld() {
         applicability: "Not a full welded-joint design. Weld groups, connected-part rupture, HAZ, joint preparation, WPS, inspection, fatigue and effective-length rules beyond the entered length are excluded."
       })
     ].join("");
+  } else if (inputErrors.length) {
+    $("weldFormulaSteps").innerHTML = calculationTraceRow({
+      title: "Input validation",
+      selection: inputErrors.join("; "),
+      result: "Not evaluated",
+      applicability: "Enter valid weld geometry before using the AS 4100 throat-capacity check.",
+      state: "warning"
+    });
   } else {
     const capacityRule = type === "cpbw"
       ? `AS 4100 Cl. 9.6.2.7 takes CPBW design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. The weaker-part resistance is not defined by weld-metal strength and throat alone.`
@@ -3697,7 +3758,7 @@ function beamRolledSection(section, family) {
 }
 
 function beamPfcSection(section) {
-  return {
+  const record = {
     ...section,
     family: "pfc",
     drawing: { shape: "channel", d: section.d, bf: section.bf, tw: section.tw, tf: section.tf, xL: section.xL, xO: section.xO },
@@ -3712,6 +3773,20 @@ function beamPfcSection(section) {
     sourceRef: "InfraBuild 2019 Tables 15-16 · PDF p. 17",
     sourceBasis: "Published catalogue section and capacity tables"
   };
+  const grades = Object.fromEntries(Object.entries(section.grades || {}).map(([name, grade]) => {
+    const directions = Object.fromEntries(Object.entries(grade.directions || {}).map(([key, data]) => {
+      const reconciliation = BeamSectionReconciliation.reconcile(record, grade, key);
+      return [key, {
+        ...data,
+        compactness: reconciliation.status === "reconciled" ? reconciliation.publishedClass : data.compactness,
+        compactnessBasis: reconciliation.status === "reconciled"
+          ? reconciliation.classMethod === "published-ze-interval" ? "derived-ze-interval" : "derived-geometry"
+          : null
+      }];
+    }));
+    return [name, { ...grade, directions }];
+  }));
+  return { ...record, grades };
 }
 
 function beamHollowSections(family) {
@@ -3771,11 +3846,7 @@ function beamHollowSections(family) {
 function beamAngleSection(section) {
   const capacityGrades = BeamHotRolledData.equalAngle[section.designation] || {};
   const catalogue = BeamHotRolledData.equalAngleProperties[section.designation] || null;
-  const grades = Object.fromEntries(Object.entries(capacityGrades).map(([name, grade]) => [name, {
-    ...grade,
-    sourceRef: "InfraBuild 2019 Tables 19-20 · PDF pp. 19-20"
-  }]));
-  return {
+  const record = {
     ...section,
     family: "ea",
     tNominal: section.t,
@@ -3792,10 +3863,28 @@ function beamAngleSection(section) {
     Zx: catalogue?.axes?.a?.Z || 0,
     Sx: catalogue?.axes?.a?.S || 0,
     axes: catalogue?.axes || null,
-    grades,
-    capacityStatus: Object.keys(grades).length ? "checked" : "unavailable",
     sourceRef: "InfraBuild 2019 Tables 19-20 · PDF pp. 19-20",
     sourceBasis: "Published catalogue load-direction capacity table"
+  };
+  const grades = Object.fromEntries(Object.entries(capacityGrades).map(([name, grade]) => {
+    const directions = Object.fromEntries(Object.entries(grade.directions || {}).map(([key, data]) => {
+      const reconciliation = BeamSectionReconciliation.reconcile(record, grade, key);
+      return [key, {
+        ...data,
+        compactness: reconciliation.status === "reconciled" ? reconciliation.publishedClass : null,
+        compactnessBasis: reconciliation.status === "reconciled" ? "derived-ze-interval" : null
+      }];
+    }));
+    return [name, {
+      ...grade,
+      directions,
+      sourceRef: "InfraBuild 2019 Tables 19-20 · PDF pp. 19-20"
+    }];
+  }));
+  return {
+    ...record,
+    grades,
+    capacityStatus: Object.keys(grades).length ? "checked" : "unavailable"
   };
 }
 
@@ -3974,7 +4063,7 @@ function renderSectionRatios(ratios) {
   const values = valid.length
     ? valid.map(item => `${safeText(item.label)} = ${item.value.toLocaleString("en-AU", { maximumFractionDigits: 2 })}`).join("; ")
     : "Not applicable to the selected geometry";
-  $("sectionGeometricRatios").innerHTML = `<b>Geometric ratios</b> &mdash; ${values}. No section classification is assigned.`;
+  $("sectionGeometricRatios").innerHTML = `<b>Geometric ratios</b> &mdash; ${values}. Geometric only; any section classification is reported separately from checked design-property data.`;
 }
 
 function sectionDrawingFromInputs(shape) {
@@ -4012,6 +4101,7 @@ function renderSectionPropertiesDiagram(drawing, properties, title, catalogueMod
     : shape === "circle" || shape === "chs" ? drawing.D
       : shape === "angle" ? drawing.b : drawing.d;
   if (!(width > 0) || !(height > 0)) return;
+  svg.closest(".section-properties-figure").hidden = false;
 
   const scale = Math.min(108 / width, 112 / height);
   const drawnWidth = width * scale;
@@ -4109,7 +4199,7 @@ function renderSectionPropertiesDiagram(drawing, properties, title, catalogueMod
     <text class="section-properties-axis-label" x="${line(axisX + 7)}" y="${line(yStart)}">${verticalAxis}</text>
     <text class="section-properties-centroid-label" x="${line(axisX + 7)}" y="${line(axisY + 13)}">C</text>`;
   $("sectionPropertiesDiagramCaption").textContent = angleAxes
-    ? `${catalogueMode ? "Selected" : "Entered"} dimensions · p/n centroidal · x/y principal${indicative ? " · C indicative" : ""}`
+    ? `${catalogueMode ? "Selected" : "Entered"} dimensions · n-n / p-p centroidal · x-x / y-y principal${indicative ? " · C indicative" : ""}`
     : indicative
     ? `Schematic only · ${indicativeCaption}`
     : catalogueMode
@@ -4160,13 +4250,21 @@ function sectionMaterialDefaultThickness() {
 
 function populateSectionMaterialGrades(preferredGrade) {
   const form = $("sectionMaterialForm").value;
+  const definition = SteelMaterials.PRODUCT_FORMS[form];
+  if (!definition) {
+    $("sectionMaterialGrade").innerHTML = `<option value="">Select material basis first</option>`;
+    $("sectionMaterialGrade").disabled = true;
+    document.querySelectorAll(".section-material-project-field").forEach(field => { field.hidden = true; });
+    $("sectionMaterialThicknessLabel").textContent = "Governing thickness";
+    return;
+  }
   const grades = SteelMaterials.gradeOptions(form);
   $("sectionMaterialGrade").innerHTML = grades.map(grade => `<option value="${safeText(grade)}">${safeText(grade)}</option>`).join("");
   const defaultGrade = form === "hollow-section" ? "C350L0" : grades[0];
   $("sectionMaterialGrade").value = grades.includes(preferredGrade) ? preferredGrade : defaultGrade;
   const project = form === "project";
   document.querySelectorAll(".section-material-project-field").forEach(field => { field.hidden = !project; });
-  const definition = SteelMaterials.PRODUCT_FORMS[form];
+  $("sectionMaterialGrade").disabled = false;
   $("sectionMaterialThicknessLabel").textContent = definition.thicknessLabel;
 }
 
@@ -4182,28 +4280,49 @@ function syncSectionMaterialControls(reset = false, preserveForm = false) {
   const defaultForm = sectionMaterialDefaultForm();
   const catalogue = sectionPropertiesMode === "catalogue";
   if (reset) sectionMaterialThicknessManual = false;
-  if (catalogue || (reset && !preserveForm) || !SteelMaterials.PRODUCT_FORMS[previousForm]) $("sectionMaterialForm").value = defaultForm;
+  if (catalogue) {
+    $("sectionMaterialForm").value = defaultForm;
+  } else if (reset && !preserveForm) {
+    $("sectionMaterialForm").value = "";
+  } else if (previousForm && SteelMaterials.PRODUCT_FORMS[previousForm]) {
+    $("sectionMaterialForm").value = previousForm;
+  } else {
+    $("sectionMaterialForm").value = "";
+  }
   $("sectionMaterialForm").disabled = catalogue;
   populateSectionMaterialGrades(previousGrade);
-  const project = $("sectionMaterialForm").value === "project";
-  const geometryLinked = !catalogue && !project && !sectionMaterialThicknessManual;
+  if (catalogue && reset) {
+    const listedGrades = Object.keys(sectionCheckedDesignRecord()?.grades || {});
+    if (listedGrades.length && !listedGrades.includes($("sectionMaterialGrade").value)) {
+      $("sectionMaterialGrade").value = listedGrades[0];
+    }
+  }
+  const selectedForm = $("sectionMaterialForm").value;
+  const hasMaterialBasis = Boolean(SteelMaterials.PRODUCT_FORMS[selectedForm]);
+  const project = selectedForm === "project";
+  const geometryLinked = !catalogue && hasMaterialBasis && !project && !sectionMaterialThicknessManual;
   const thickness = sectionMaterialDefaultThickness();
-  if (catalogue || geometryLinked) $("sectionMaterialThickness").value = Number.isFinite(thickness) && thickness > 0 ? thickness : "";
-  $("sectionMaterialThickness").disabled = catalogue || geometryLinked;
+  if (!hasMaterialBasis) $("sectionMaterialThickness").value = "";
+  else if (catalogue || geometryLinked) $("sectionMaterialThickness").value = Number.isFinite(thickness) && thickness > 0 ? thickness : "";
+  $("sectionMaterialThickness").disabled = !hasMaterialBasis || catalogue || geometryLinked;
   $("sectionMaterialThickness").dataset.basis = sectionMaterialThicknessBasis();
   $("sectionMaterialThicknessState").textContent = catalogue
     ? "Catalogue"
+    : !hasMaterialBasis
+      ? "Select material basis"
     : project
       ? "Project input"
       : sectionMaterialThicknessManual
         ? "Manual override"
         : "Geometry linked";
   $("sectionMaterialThicknessState").classList.toggle("is-manual", project || sectionMaterialThicknessManual);
-  $("sectionMaterialThicknessOverride").hidden = catalogue || project;
+  $("sectionMaterialThicknessOverride").hidden = !hasMaterialBasis || catalogue || project;
   $("sectionMaterialThicknessOverride").textContent = sectionMaterialThicknessManual ? "Use geometry" : "Override";
   $("sectionMaterialThicknessOverride").setAttribute("aria-pressed", String(sectionMaterialThicknessManual));
   $("sectionMaterialInputNote").textContent = catalogue
     ? "Product form and governing thickness follow the selected section."
+    : !hasMaterialBasis
+      ? "Select the product form or project-defined basis before using material strengths."
     : project
       ? "Project-defined fy, fu and governing thickness are explicit user inputs."
       : sectionMaterialThicknessManual
@@ -4222,10 +4341,16 @@ function selectedSectionMaterial() {
   });
 }
 
+function sameSectionDimension(a, b) {
+  return Number.isFinite(Number(a)) && Number.isFinite(Number(b))
+    && Math.abs(Number(a) - Number(b)) < 1e-6;
+}
+
 function sectionCheckedDesignRecord() {
   if (sectionPropertiesMode !== "catalogue") return null;
   const family = selectedSectionCatalogueFamily()?.key;
-  const designation = selectedSectionCatalogueRecord()?.designation;
+  const selected = selectedSectionCatalogueRecord();
+  const designation = selected?.designation;
   if (!designation) return null;
   if (family === "ub") {
     const section = ubSections.find(item => item.designation === designation);
@@ -4239,9 +4364,11 @@ function sectionCheckedDesignRecord() {
     const section = BeamHotRolledData.pfc.find(item => item.designation === designation);
     return section ? beamPfcSection(section) : null;
   }
-  if (family === "chs") return beamHollowSections("chs").find(item => item.designation === designation) || null;
+  if (family === "chs") return beamHollowSections("chs").find(item =>
+    sameSectionDimension(item.D, selected.drawing?.D) && sameSectionDimension(item.t, selected.drawing?.t)
+  ) || null;
   if (family === "ea") {
-    const section = eaSections.find(item => item.designation === designation);
+    const section = eaCatalogueSections.find(item => item.designation === designation);
     return section ? beamAngleSection(section) : null;
   }
   if (family === "rod") {
@@ -4274,7 +4401,9 @@ function renderSectionMaterial(material, designRecord) {
     ? `${material.thicknessLabel} = ${material.thickness.toLocaleString("en-AU", { maximumFractionDigits: 1 })} mm`
     : `${material.thicknessLabel} not resolved`;
   $("sectionMaterialStandard").textContent = `${material.standard} · ${material.grade}`;
-  $("sectionMaterialStandardBasis").textContent = `${material.table} · ${thicknessText} · ${thicknessBasisLabel}`;
+  $("sectionMaterialStandardBasis").textContent = material.productForm
+    ? `${material.table} · ${thicknessText} · ${thicknessBasisLabel}`
+    : "Select product form";
   setSectionMaterialValue("sectionMaterialFy", "sectionMaterialFyBasis", material.fy, material.strengthBasis === "project" ? "Project input" : "Standard");
   $("sectionMaterialFyDetail").hidden = !Number.isFinite(webYieldStrength) || webYieldStrength === material.fy;
   $("sectionMaterialFyDetail").innerHTML = Number.isFinite(webYieldStrength) && webYieldStrength !== material.fy
@@ -4300,27 +4429,58 @@ function sectionDirectionLabel(record, key) {
   return beamFamilyDefinitions[record?.family]?.directions?.find(direction => direction[0] === key)?.[1] || key;
 }
 
+function sectionDesignUnavailableReason(record, grade) {
+  if (sectionPropertiesMode !== "catalogue") return "Not evaluated · custom geometry";
+  if (!record) return "No checked design row";
+  if (!grade) return "Selected grade not listed for this section";
+  return "Not published in checked row";
+}
+
+function formatSectionDesignValue(value) {
+  return Number(value).toLocaleString("en-AU", { maximumSignificantDigits: 3 });
+}
+
+function sectionDesignDirectionRows(record, directions, valueForDirection) {
+  return directions.map(([key, data]) => {
+    const value = valueForDirection(data);
+    return value ? `<span class="section-design-direction"><span>${safeText(sectionDirectionLabel(record, key))}</span><b>${safeText(value)}</b></span>` : "";
+  }).filter(Boolean).join("");
+}
+
 function renderSectionDesignAttributes(record, gradeName) {
+  const showDesignValues = sectionPropertiesMode === "catalogue";
+  $("sectionDesignAttributeHeading").hidden = !showDesignValues;
+  $("sectionDesignAttributes").hidden = !showDesignValues;
+  if (!showDesignValues) return;
+
   const grade = record?.grades?.[gradeName];
   const unavailable = !grade;
+  const unavailableReason = sectionDesignUnavailableReason(record, grade);
   $("sectionDesignKf").textContent = Number.isFinite(grade?.kf) ? grade.kf.toFixed(3) : "—";
-  $("sectionDesignKfBasis").textContent = Number.isFinite(grade?.kf) ? "Catalogue · exact row" : "Not available";
+  $("sectionDesignKfBasis").textContent = Number.isFinite(grade?.kf) ? "Catalogue · exact row" : unavailableReason;
   $("sectionDesignKfBasis").classList.toggle("unavailable", !Number.isFinite(grade?.kf));
 
   const directions = Object.entries(grade?.directions || {});
-  const compactnessValues = directions
-    .filter(([, data]) => data.compactness)
-    .map(([key, data]) => `${sectionDirectionLabel(record, key)}: ${compactnessText(data.compactness)}`);
-  const zeValues = directions
-    .filter(([, data]) => Number.isFinite(data.Ze) && data.Ze > 0)
-    .map(([key, data]) => `${sectionDirectionLabel(record, key)}: ${formatBeamNumber(data.Ze, 1)} × 10³ mm³`);
+  const compactnessRows = sectionDesignDirectionRows(record, directions, data =>
+    data.compactness ? compactnessText(data.compactness) : ""
+  );
+  const compactnessBases = new Set(directions.map(([, data]) => data.compactnessBasis).filter(Boolean));
+  const zeRows = sectionDesignDirectionRows(record, directions, data =>
+    Number.isFinite(data.Ze) && data.Ze > 0 ? `${formatSectionDesignValue(data.Ze)} × 10³ mm³` : ""
+  );
 
-  $("sectionDesignCompactness").textContent = compactnessValues.length ? compactnessValues.join(" · ") : "—";
-  $("sectionDesignCompactnessBasis").textContent = compactnessValues.length ? "Catalogue · exact row" : "Not available";
-  $("sectionDesignCompactnessBasis").classList.toggle("unavailable", !compactnessValues.length);
-  $("sectionDesignZe").textContent = zeValues.length ? zeValues.join(" · ") : "—";
-  $("sectionDesignZeBasis").textContent = zeValues.length ? "Catalogue · exact row" : "Not available";
-  $("sectionDesignZeBasis").classList.toggle("unavailable", !zeValues.length);
+  $("sectionDesignCompactness").innerHTML = compactnessRows || "&mdash;";
+  $("sectionDesignCompactnessBasis").textContent = compactnessRows
+    ? compactnessBases.size === 1 && compactnessBases.has("derived-ze-interval")
+      ? "Derived · catalogue Ze interval"
+      : compactnessBases.size
+        ? "Derived · checked AS 4100 reconciliation"
+        : "Catalogue · exact row"
+    : unavailableReason;
+  $("sectionDesignCompactnessBasis").classList.toggle("unavailable", !compactnessRows);
+  $("sectionDesignZe").innerHTML = zeRows || "&mdash;";
+  $("sectionDesignZeBasis").textContent = zeRows ? "Catalogue · exact row" : unavailableReason;
+  $("sectionDesignZeBasis").classList.toggle("unavailable", !zeRows);
   $("sectionDesignAttributes").dataset.state = unavailable ? "unavailable" : "checked";
 }
 
@@ -4328,13 +4488,28 @@ function populateSectionCatalogueFamilies() {
   $("sectionCatalogueFamily").innerHTML = sectionCatalogueFamilies
     .map(family => `<option value="${family.key}">${safeText(family.label)}</option>`)
     .join("");
+  $("sectionCatalogueFamilyTabs").innerHTML = sectionCatalogueFamilies
+    .map(family => `<button class="section-catalogue-family-tab" type="button" data-section-catalogue-family="${family.key}" aria-pressed="false">${safeText(sectionCatalogueFamilyNames[family.key] || family.label)}</button>`)
+    .join("") + '<button class="section-catalogue-family-tab" type="button" data-section-category-custom aria-pressed="false">Custom geometry</button>';
   $("sectionCatalogueFamily").value = "pfc";
   populateSectionCatalogueDesignations(false);
   syncSectionMaterialControls(true);
 }
 
+function syncSectionCatalogueFamilyTabs() {
+  const selectedFamily = $("sectionCatalogueFamily").value;
+  document.querySelectorAll(".section-catalogue-family-tab").forEach(button => {
+    const active = sectionPropertiesMode === "custom"
+      ? button.hasAttribute("data-section-category-custom")
+      : button.dataset.sectionCatalogueFamily === selectedFamily;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
 function populateSectionCatalogueDesignations(recalculate = true) {
   const family = selectedSectionCatalogueFamily();
+  syncSectionCatalogueFamilyTabs();
   $("sectionCatalogueDesignation").innerHTML = family.sections
     .map(section => `<option value="${safeText(section.id)}">${safeText(section.designation)}</option>`)
     .join("");
@@ -4352,6 +4527,7 @@ function setSectionPropertyMode(mode) {
   });
   $("sectionCatalogueGroup").hidden = sectionPropertiesMode !== "catalogue";
   $("sectionCustomGroup").hidden = sectionPropertiesMode !== "custom";
+  syncSectionCatalogueFamilyTabs();
   syncSectionMaterialControls(true);
   calculateSectionProperties();
 }
@@ -4437,35 +4613,6 @@ function setSectionDirectionalAw(primary, alternate, directional) {
     : "—";
 }
 
-function sectionPropertyStep(label, property, unit, signed = false) {
-  if (!property || property.value === null) {
-    return calculationTraceRow({
-      title: label,
-      result: "Not available",
-      applicability: `${SectionCatalogue.BASIS.unavailable}.`
-    });
-  }
-  const valueText = ["mm²", "mm", "kg/m"].includes(unit)
-    ? property.value.toLocaleString("en-AU", { maximumFractionDigits: 1 })
-    : signed ? sectionSignedPowerValue(property.value) : sectionPowerValue(property.value);
-  const basis = sectionBasisLabel(property);
-  const catalogueValue = String(basis).toLowerCase().includes("catalogue");
-  return calculationTraceRow(catalogueValue
-    ? {
-        title: label,
-        lookup: basis,
-        selection: "Selected catalogue section and property row.",
-        adopted: `${valueText} ${unit}`,
-        applicability: "Use with the stated catalogue edition and selected section designation."
-      }
-    : {
-        title: label,
-        formula: basis,
-        result: `${valueText} ${unit}`,
-        applicability: "Derived from the selected catalogue geometry or stated source property."
-      });
-}
-
 function configureSectionPropertyPresentation(shape, catalogueMode) {
   const angleAxes = shape === "angle";
   $("sectionAreaLabel").innerHTML = catalogueMode ? "Gross area <i>A<sub>g</sub></i>" : "Gross area <i>A</i>";
@@ -4482,9 +4629,151 @@ function configureSectionPropertyPresentation(shape, catalogueMode) {
       : "Shear reference area";
 }
 
+function applySectionCircularZeroInterpretation(property, shape) {
+  const raw = property && typeof property === "object" ? property.value : property;
+  if ((shape === "circle" || shape === "chs") && Number.isFinite(Number(raw)) && Math.abs(Number(raw)) <= 1e-9) {
+    $("sectionIwBasis").textContent = `${sectionBasisLabel(property)} · zero by rotational symmetry`;
+  }
+}
+
+function setSectionDerivations(content, summary) {
+  const card = $("sectionDerivationsCard");
+  const hasContent = Boolean(String(content || "").trim());
+  $("sectionFormulaSteps").innerHTML = hasContent ? content : "";
+  $("sectionCalculationSummary").textContent = summary || "Calculated values only";
+  card.hidden = !hasContent;
+  if (!hasContent) card.open = false;
+}
+
+function catalogueDerivedPropertyLabels(properties, angleAxes) {
+  const axisOne = angleAxes ? "n" : "x";
+  const axisTwo = angleAxes ? "p" : "y";
+  return [
+    ["Centroid x̄", properties.cx],
+    ["Centroid ȳ", properties.cy],
+    ["Gross area Ag", properties.area],
+    [`Second moment I${axisOne}`, properties.ix],
+    [`Second moment I${axisTwo}`, properties.iy],
+    [`Elastic modulus Z${axisOne}`, properties.zx],
+    [`Elastic modulus Z${axisTwo}`, properties.zy],
+    [`Plastic modulus S${axisOne}`, properties.sx],
+    [`Plastic modulus S${axisTwo}`, properties.sy],
+    [`Radius r${axisOne}`, properties.rx],
+    [`Radius r${axisTwo}`, properties.ry],
+    ["St Venant torsion J", properties.j],
+    ["Warping constant Iw", properties.iw],
+    ["Shear-centre offset XO", properties.xo],
+    ["Shear reference area", properties.aw],
+    [`Polar second moment I${axisOne} + I${axisTwo}`, properties.jp],
+    [`Product of inertia I${angleAxes ? "np" : "xy"}`, properties.ixy],
+    ["Principal second moments", properties.iu],
+    ["Principal radii", properties.ru],
+    ["Principal-axis angle", properties.thetaU]
+  ]
+    .filter(([, property]) => property?.value !== null && String(sectionBasisLabel(property)).startsWith("Derived"))
+    .map(([label]) => label);
+}
+
 function sectionPropertyNumber(property) {
   const raw = property && typeof property === "object" ? property.value : property;
   return raw === null || raw === undefined || raw === "" ? NaN : Number(raw);
+}
+
+function catalogueDerivedTraceRows(section, properties, familyKey) {
+  const drawing = section.drawing || {};
+  const derived = property => String(sectionBasisLabel(property)).startsWith("Derived");
+  const number = property => sectionPropertyNumber(property);
+  const rows = [];
+
+  if (familyKey === "chs") {
+    const D = Number(drawing.D);
+    const t = Number(drawing.t);
+    const inner = D - 2 * t;
+    rows.push(
+      calculationTraceRow({
+        title: "Circular hollow-section area",
+        formula: `A<sub>g</sub> = &pi;[D<sup>2</sup> - (D - 2t)<sup>2</sup>]/4`,
+        substitution: `&pi;[${D.toFixed(1)}<sup>2</sup> - ${inner.toFixed(1)}<sup>2</sup>]/4`,
+        result: `A<sub>g</sub> = ${formatArea(number(properties.area))}`,
+        applicability: "Ideal concentric circular geometry from catalogue nominal D and t."
+      }),
+      calculationTraceRow({
+        title: "Circular hollow-section second moment",
+        formula: `I = &pi;[D<sup>4</sup> - (D - 2t)<sup>4</sup>]/64`,
+        substitution: `&pi;[${D.toFixed(1)}<sup>4</sup> - ${inner.toFixed(1)}<sup>4</sup>]/64`,
+        result: `I<sub>x</sub> = I<sub>y</sub> = ${sectionPowerValue(number(properties.ix))} mm<sup>4</sup>`,
+        applicability: "Any centroidal diameter is an equivalent principal axis."
+      }),
+      calculationTraceRow({
+        title: "Circular hollow-section moduli and radius",
+        formula: `Z = 2I/D; r = &radic;(I/A<sub>g</sub>); J = 2I`,
+        substitution: `I = ${sectionPowerValue(number(properties.ix))} mm<sup>4</sup>; D = ${D.toFixed(1)} mm; A<sub>g</sub> = ${number(properties.area).toFixed(1)} mm<sup>2</sup>`,
+        result: `Z = ${sectionPowerValue(number(properties.zx))} mm<sup>3</sup>; r = ${number(properties.rx).toFixed(2)} mm; J = ${sectionPowerValue(number(properties.j))} mm<sup>4</sup>`,
+        applicability: "Geometric properties only; capacity and local slenderness are excluded."
+      })
+    );
+  } else if (familyKey === "rod") {
+    const D = Number(drawing.D);
+    rows.push(
+      calculationTraceRow({
+        title: "Solid round geometry",
+        formula: `A<sub>g</sub> = &pi;D<sup>2</sup>/4; I = &pi;D<sup>4</sup>/64`,
+        substitution: `D = ${D.toFixed(1)} mm`,
+        result: `A<sub>g</sub> = ${formatArea(number(properties.area))}; I<sub>x</sub> = I<sub>y</sub> = ${sectionPowerValue(number(properties.ix))} mm<sup>4</sup>`,
+        applicability: "Ideal solid circular geometry from the selected catalogue diameter."
+      }),
+      calculationTraceRow({
+        title: "Solid round moduli and radius",
+        formula: `Z = 2I/D; S = D<sup>3</sup>/6; r = D/4; J = 2I`,
+        substitution: `D = ${D.toFixed(1)} mm; I = ${sectionPowerValue(number(properties.ix))} mm<sup>4</sup>`,
+        result: `Z = ${sectionPowerValue(number(properties.zx))} mm<sup>3</sup>; S = ${sectionPowerValue(number(properties.sx))} mm<sup>3</sup>; r = ${number(properties.rx).toFixed(2)} mm; J = ${sectionPowerValue(number(properties.j))} mm<sup>4</sup>`,
+        applicability: "Geometric properties only; catalogue mass remains a published value."
+      })
+    );
+  } else {
+    if (derived(properties.cx) || derived(properties.cy)) {
+      const centroidFormula = familyKey === "pfc" ? `y&#772; = d/2` : `x&#772; = b<sub>f</sub>/2; y&#772; = d/2`;
+      const centroidResult = familyKey === "pfc"
+        ? `y&#772; = ${number(properties.cy).toFixed(2)} mm`
+        : `x&#772; = ${number(properties.cx).toFixed(2)} mm; y&#772; = ${number(properties.cy).toFixed(2)} mm`;
+      rows.push(calculationTraceRow({
+        title: "Symmetry-derived centroid",
+        formula: centroidFormula,
+        substitution: section.dimensions,
+        result: centroidResult,
+        applicability: familyKey === "pfc" ? "Horizontal symmetry only; catalogue X<sub>L</sub> controls the other coordinate." : "Doubly symmetric nominal section."
+      }));
+    }
+    if (derived(properties.aw)) {
+      rows.push(calculationTraceRow({
+        title: "Clear web reference area",
+        formula: `A<sub>w</sub> = t<sub>w</sub>(d - 2t<sub>f</sub>)`,
+        substitution: `t<sub>w</sub> = ${Number(drawing.tw).toFixed(1)} mm; d = ${Number(drawing.d).toFixed(1)} mm; t<sub>f</sub> = ${Number(drawing.tf).toFixed(1)} mm`,
+        result: `A<sub>w</sub> = ${formatArea(number(properties.aw))}`,
+        applicability: "Geometric clear web area; not a design-standard effective shear area."
+      }));
+    }
+    if (derived(properties.jp)) {
+      rows.push(calculationTraceRow({
+        title: "Polar second moment",
+        formula: `J<sub>p</sub> = I<sub>x</sub> + I<sub>y</sub>`,
+        substitution: `${sectionPowerValue(number(properties.ix))} + ${sectionPowerValue(number(properties.iy))} mm<sup>4</sup>`,
+        result: `J<sub>p</sub> = ${sectionPowerValue(number(properties.jp))} mm<sup>4</sup>`,
+        applicability: "Geometric polar second moment; not the St Venant torsion constant J."
+      }));
+    }
+    if (derived(properties.iu) && derived(properties.iv)) {
+      rows.push(calculationTraceRow({
+        title: "Principal second moments",
+        formula: `I<sub>u,v</sub> = (I<sub>x</sub> + I<sub>y</sub>)/2 &plusmn; &radic;[((I<sub>x</sub> - I<sub>y</sub>)/2)<sup>2</sup> + I<sub>xy</sub><sup>2</sup>]`,
+        substitution: `I<sub>xy</sub> = ${sectionSignedPowerValue(number(properties.ixy))} mm<sup>4</sup>`,
+        result: `I<sub>u</sub> = ${sectionPowerValue(number(properties.iu))} mm<sup>4</sup>; I<sub>v</sub> = ${sectionPowerValue(number(properties.iv))} mm<sup>4</sup>`,
+        applicability: "Derived geometric principal values; symmetric sections retain their centroidal directions."
+      }));
+    }
+  }
+
+  return rows.join("");
 }
 
 function configureSectionPropertyHierarchy(shape, catalogueMode, familyKey = "custom") {
@@ -4570,6 +4859,10 @@ function configureSectionSpecificProperties(properties, shape) {
   const hasSupplementary = Object.values(cardVisibility).some(Boolean);
   $("sectionSupplementaryHeading").hidden = !hasSupplementary;
   $("sectionSupplementaryProperties").hidden = !hasSupplementary;
+  if (hasSupplementary && cardVisibility.sectionJpCard && Object.entries(cardVisibility).every(([id, visible]) => id === "sectionJpCard" || !visible)) {
+    $("sectionSupplementaryTitle").textContent = "Supplementary geometric reference";
+    $("sectionSupplementaryDescription").textContent = "Polar second moment about the displayed centroidal axes.";
+  }
 
   const hasIxy = Number.isFinite(sectionPropertyNumber(properties?.ixy));
   $("sectionPrincipalHeading").hidden = !hasIxy;
@@ -4615,12 +4908,8 @@ function clearSectionPropertyOutputs(message) {
   configureSectionSpecificProperties(null, "");
   setSectionIxyInterpretation(null, "");
   renderSectionRatios([]);
-  $("sectionFormulaSteps").innerHTML = calculationTraceRow({
-    title: "Section properties",
-    result: "Not evaluated",
-    applicability: safeText(message),
-    state: "warning"
-  });
+  setSectionDerivations("", "Unavailable for invalid geometry");
+  $("sectionPropertiesDiagram").closest(".section-properties-figure").hidden = true;
   $("sectionPropertiesWarning").textContent = message;
 }
 
@@ -4668,6 +4957,7 @@ function calculateCustomSectionProperties() {
     setSectionPropertyOutput("sectionRy", "sectionRyBasis", customValue(properties.ry), "decimal");
     setSectionPropertyOutput("sectionJ", "sectionJBasis", customValue(properties.j), "power");
     setSectionPropertyOutput("sectionIw", "sectionIwBasis", customValue(properties.iw), "power");
+    applySectionCircularZeroInterpretation(customValue(properties.iw), shape);
     setSectionPropertyOutput("sectionXo", "sectionXoBasis", null, "decimal");
     setSectionDirectionalAw(customValue(shape === "rhs" ? properties.awy : properties.aw), customValue(properties.awx), shape === "rhs");
     setSectionPropertyOutput("sectionJp", "sectionJpBasis", customValue(properties.jp), "power");
@@ -4680,11 +4970,10 @@ function calculateCustomSectionProperties() {
     renderSectionRatios(customSectionRatios(shape));
     $("sectionProductGeometry").hidden = true;
     $("sectionPrincipalModuli").hidden = true;
-    $("sectionPropertiesWarning").textContent = "Geometry and material bases are shown together. Material-dependent section values remain unavailable for ideal custom geometry; capacity and stability are excluded.";
-    $("sectionCalculationSummary").textContent = "Standard geometric relationships for the entered dimensions";
+    $("sectionPropertiesWarning").textContent = "Ideal geometry only. Material-dependent design values, capacity and stability are not evaluated.";
     $("sectionSourceSummary").textContent = "Ideal geometry · no product-table values";
-    $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Basis</b> &mdash; standard area, centroid, product-of-inertia and parallel-axis relationships; Z = I/c, r = &radic;(I/A), and steel mass = 0.00785A kg/m. For implemented plastic moduli, each plastic neutral axis divides the gross area equally and S is the first absolute area moment about that axis.</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry. ${shearReferenceText}; it is not a design-standard effective shear area.</p>`;
-    $("sectionFormulaSteps").innerHTML = [
+    $("sectionSourceDetails").innerHTML = `<p><b>Status</b> &mdash; Draft. Values are derived from the entered dimensions and do not represent a verified manufacturer section.</p><p><b>Geometry</b> &mdash; ideal sharp-corner rectangular components or ideal circular geometry. ${shearReferenceText}; it is not a design-standard effective shear area.</p>`;
+    setSectionDerivations([
       calculationTraceRow({
         title: "Gross area and geometry model",
         formula: `A = &Sigma;s<sub>i</sub>A<sub>i</sub>`,
@@ -4751,11 +5040,11 @@ function calculateCustomSectionProperties() {
         applicability: "This is not the St Venant torsion constant J except for circular sections."
       }),
       calculationTraceRow({
-        title: "Torsion and scope",
+        title: "Torsion boundary",
         result: "J and Iw shown only where a reviewed closed-form relationship is implemented",
-        applicability: "Material properties are resolved separately. Effective properties and classification require an exact checked section / grade / direction row; design capacity is excluded."
+        applicability: "Effective properties, classification, design capacity, stability, actions and utilisation are excluded."
       })
-    ].join("");
+    ].join(""), "Entered-geometry calculations");
   } catch (error) {
     clearSectionPropertyOutputs(error instanceof Error ? error.message : "Invalid section geometry.");
   }
@@ -4773,13 +5062,6 @@ function calculateCatalogueSectionProperties() {
   configureSectionPropertyPresentation(section.drawing.shape, true);
   configureSectionPropertyHierarchy(section.drawing.shape, true, family.key);
   const angleAxes = family.key === "ea";
-  const axisOne = angleAxes ? "n" : "x";
-  const axisTwo = angleAxes ? "p" : "y";
-  const principalOne = angleAxes ? "x" : "u";
-  const principalTwo = angleAxes ? "y" : "v";
-  const shearReferenceLabel = section.drawing.shape === "i" || section.drawing.shape === "channel"
-    ? "Clear web area Aw"
-    : "Shear reference area";
   $("sectionCxLabel").innerHTML = family.key === "pfc" ? "Centroid <i>X<sub>L</sub></i>" : "Centroid <i>x&#772;</i>";
   $("sectionMassLabel").textContent = "Mass per metre";
   const hasCx = Number.isFinite(properties.cx?.value);
@@ -4816,6 +5098,7 @@ function calculateCatalogueSectionProperties() {
   setSectionPropertyOutput("sectionRy", "sectionRyBasis", properties.ry, "decimal");
   setSectionPropertyOutput("sectionJ", "sectionJBasis", properties.j, "power");
   setSectionPropertyOutput("sectionIw", "sectionIwBasis", properties.iw, "power");
+  applySectionCircularZeroInterpretation(properties.iw, section.drawing.shape);
   setSectionPropertyOutput("sectionXo", "sectionXoBasis", properties.xo, "decimal");
   setSectionDirectionalAw(section.drawing.shape === "rhs" ? properties.awy : properties.aw, properties.awx, section.drawing.shape === "rhs");
   setSectionPropertyOutput("sectionJp", "sectionJpBasis", properties.jp, "power");
@@ -4852,48 +5135,15 @@ function calculateCatalogueSectionProperties() {
     principalModuli.hidden = true;
   }
 
-  $("sectionPropertiesWarning").textContent = family.key === "chs" || family.key === "rod"
-    ? "Catalogue dimensions, derived geometry and standard material values retain separate basis labels. Capacity and member checks are excluded."
-    : "Each value retains its catalogue, standard or derived basis. Missing catalogue properties are not inferred.";
-  $("sectionCalculationSummary").textContent = "Catalogue values and stated derivations";
+  $("sectionPropertiesWarning").textContent = "Catalogue gaps remain unavailable. Capacity and member checks are excluded.";
   $("sectionSourceSummary").textContent = `${source.publisher} · ${source.status}`;
-  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. This lookup remains Draft.</p><p><b>Derivation</b> &mdash; ${safeText(section.derivation)}</p>`;
-  $("sectionFormulaSteps").innerHTML = [
-    sectionPropertyStep("Mass per metre", massProperty, "kg/m"),
-    sectionPropertyStep("Gross area Ag", properties.area, "mm²"),
-    sectionPropertyStep("Centroid x̄", properties.cx, "mm"),
-    sectionPropertyStep("Centroid ȳ", properties.cy, "mm"),
-    sectionPropertyStep(`Second moment I${axisOne}`, properties.ix, "mm⁴"),
-    sectionPropertyStep(`Second moment I${axisTwo}`, properties.iy, "mm⁴"),
-    properties.zxAlt?.value !== null
-      ? sectionPropertyStep(`Elastic modulus Z${axisOne},T`, properties.zx, "mm³")
-      : sectionPropertyStep(`Elastic modulus Z${axisOne}`, properties.zx, "mm³"),
-    properties.zxAlt?.value !== null ? sectionPropertyStep(`Elastic modulus Z${axisOne},B`, properties.zxAlt, "mm³") : "",
-    properties.zyAlt?.value !== null
-      ? sectionPropertyStep(`Elastic modulus Z${axisTwo},R`, properties.zy, "mm³")
-      : sectionPropertyStep(`Elastic modulus Z${axisTwo}`, properties.zy, "mm³"),
-    properties.zyAlt?.value !== null ? sectionPropertyStep(`Elastic modulus Z${axisTwo},L`, properties.zyAlt, "mm³") : "",
-    sectionPropertyStep(`Plastic modulus S${axisOne}`, properties.sx, "mm³"),
-    sectionPropertyStep(`Plastic modulus S${axisTwo}`, properties.sy, "mm³"),
-    sectionPropertyStep(`Radius r${axisOne}`, properties.rx, "mm"),
-    sectionPropertyStep(`Radius r${axisTwo}`, properties.ry, "mm"),
-    sectionPropertyStep("St Venant torsion J", properties.j, "mm⁴"),
-    sectionPropertyStep("Warping constant Iw", properties.iw, "mm⁶"),
-    sectionPropertyStep("Shear-centre offset XO", properties.xo, "mm"),
-    sectionPropertyStep(shearReferenceLabel, properties.aw, "mm²"),
-    sectionPropertyStep(`Polar second moment I${axisOne} + I${axisTwo}`, properties.jp, "mm⁴"),
-    sectionPropertyStep(`Product of inertia I${angleAxes ? "np" : "xy"}`, properties.ixy, "mm⁴", true),
-    sectionPropertyStep(`Principal second moment I${principalOne}`, properties.iu, "mm⁴"),
-    sectionPropertyStep(`Principal second moment I${principalTwo}`, properties.iv, "mm⁴"),
-    sectionPropertyStep(`Principal radius r${principalOne}`, properties.ru, "mm"),
-    sectionPropertyStep(`Principal radius r${principalTwo}`, properties.rv, "mm"),
-    sectionPropertyStep(`Principal-axis angle θ${principalOne}`, properties.thetaU, "°"),
-    calculationTraceRow({
-      title: "Scope",
-      result: "Section, material and checked design attributes",
-      applicability: "Material and exact-row design attributes are reference outputs. Capacity, stability, actions and utilisation are excluded."
-    })
-  ].join("");
+  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. This lookup remains Draft.</p>`;
+  const derivedLabels = catalogueDerivedPropertyLabels(properties, angleAxes);
+  const derivedTrace = catalogueDerivedTraceRows(section, properties, family.key);
+  setSectionDerivations(
+    derivedTrace,
+    derivedLabels.length ? "Formula, substitution and result for derived values" : "No calculated values"
+  );
 }
 
 function calculateSectionProperties() {
@@ -4911,18 +5161,9 @@ function calculateSectionProperties() {
     project: "project input"
   }[material.thicknessBasis] || "entered";
   $("sectionSourceDetails").insertAdjacentHTML("beforeend", `<p><b>Material basis</b> &mdash; ${safeText(material.source)}; ${safeText(material.thicknessLabel)} ${Number.isFinite(material.thickness) ? `= ${material.thickness.toLocaleString("en-AU", { maximumFractionDigits: 1 })} mm` : "not resolved"} (${safeText(thicknessBasisLabel)}). f<sub>y</sub> / f<sub>u</sub> are ${material.strengthBasis === "project" ? "project inputs" : "standard lookup values"}; confirm the supplied product test certificate before design issue.</p>`);
-  $("sectionFormulaSteps").insertAdjacentHTML("afterbegin", calculationTraceRow({
-    title: "Material properties",
-    reference: material.productForm === "project" ? "Project documents" : material.source,
-    formula: "Resolve product form, grade and controlling thickness before selecting fy and fu",
-    substitution: `${material.productFormLabel}; ${material.grade}; ${material.thicknessLabel} ${Number.isFinite(material.thickness) ? `= ${material.thickness.toFixed(1)} mm` : "not resolved"}; ${thicknessBasisLabel}`,
-    result: Number.isFinite(material.fy) && Number.isFinite(material.fu) ? `f<sub>y</sub> = ${material.fy} MPa; f<sub>u</sub> = ${material.fu} MPa` : "Material strengths not verified",
-    applicability: "Reference properties only. No design capacity, member stability, action or utilisation is calculated in this tab.",
-    state: material.status === "resolved" ? "checked" : "warning"
-  }));
 }
 
-function beamWebShearReduction(section, grade, isCustom) {
+function beamWebShearReduction(section, grade) {
   const fyw = grade.fyw || grade.fy;
   if (!(section.d1 > 0) || !(section.tw > 0) || !(fyw > 0)) {
     return {
@@ -4939,80 +5180,199 @@ function beamWebShearReduction(section, grade, isCustom) {
     slenderness,
     threshold,
     basis: slenderness <= threshold
-      ? `${isCustom ? "Ideal custom" : "Catalogue"} web shear yield governs for this quick screen.`
-      : `Unstiffened web shear-buckling reduction applied for this ${isCustom ? "ideal custom" : "catalogue"} quick screen.`
+      ? `${section.customGeometry ? "Ideal custom" : "Catalogue"} web shear yield governs for this quick screen.`
+      : `Unstiffened web shear-buckling reduction applied for this ${section.customGeometry ? "ideal custom" : "catalogue"} quick screen.`
   };
 }
 
 const beamDirectionMemory = Object.create(null);
 
+function beamDimensionOverrideActive() {
+  return Boolean($("beamDimensionOverride")?.checked);
+}
+
+function selectedBeamCatalogueSection() {
+  const sections = beamCatalogueSections();
+  return sections.find(section => section.designation === $("beamSection").value) || sections[0] || null;
+}
+
+function beamCustomGradeRecords(catalogueSection) {
+  const directionRecords = Object.fromEntries(beamDirections().map(([key]) => [key, { Ze: 0, compactness: null }]));
+  return Object.fromEntries(Object.entries(catalogueSection?.grades || {}).map(([name, grade]) => [name, {
+    ...grade,
+    directions: directionRecords,
+    sourceRef: `Selected ${name} strength basis from ${catalogueSection.designation}`
+  }]));
+}
+
 function beamCustomSection() {
-  const directions = beamDirections().reduce((records, [key]) => ({ ...records, [key]: { Ze: 0, compactness: null } }), {});
-  const gradeRecords = Object.fromEntries(Object.entries(customBeamGradeYields).map(([name, fy]) => [name, { fy, kf: 0, directions }]));
-  const base = { family: beamFamily, mass: 0, area: 0, Aw: 0, I: 0, Zx: 0, Sx: 0, grades: gradeRecords, custom: true, capacityStatus: "geometry-only", sourceRef: "Entered dimensions · ideal sharp-corner geometry", sourceBasis: "Entered ideal dimensions" };
+  const catalogueSection = selectedBeamCatalogueSection();
+  const grades = beamCustomGradeRecords(catalogueSection);
+  const common = {
+    family: beamFamily,
+    designation: `${beamFamilyDefinitions[beamFamily].label} · entered dimensions`,
+    customGeometry: true,
+    capacityStatus: "checked",
+    grades,
+    sourceRef: `Entered ideal ${beamFamilyDefinitions[beamFamily].label} dimensions`,
+    sourceBasis: "Entered dimensions; ideal sharp-corner geometry"
+  };
+
   try {
     if (beamFamily === "ub" || beamFamily === "uc") {
-      const d = value("beamCustomDepth");
-      const bf = value("beamCustomFlangeWidth");
-      const tw = value("beamCustomWebThickness");
-      const tf = value("beamCustomFlangeThickness");
+      const d = value("beamDimID");
+      const bf = value("beamDimIBf");
+      const tw = value("beamDimITw");
+      const tf = value("beamDimITf");
       const properties = SectionGeometry.symmetricI(d, bf, tw, tf);
       const d1 = d - 2 * tf;
-      const Sx = (bf * tf * (d - tf) + tw * d1 ** 2 / 4) / 1000;
-      return { ...base, designation: `Custom ${beamFamily.toUpperCase()}`, d, bf, tw, tf, d1, area: properties.area, mass: properties.area * 0.00785, Aw: d1 * tw, I: properties.ix, Zx: properties.zx / 1000, Sx, drawing: { shape: "i", d, bf, tw, tf }, axes: { x: { I: properties.ix, Z: properties.zx / 1000, S: Sx }, y: { I: properties.iy, Z: properties.zy / 1000, S: 0 } } };
+      return {
+        ...common,
+        d, bf, tw, tf, d1,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        Aw: properties.aw,
+        I: properties.ix,
+        Zx: properties.zx / 1000,
+        Sx: properties.sx / 1000,
+        drawing: { shape: "i", d, bf, tw, tf },
+        geometryProperties: properties,
+        axes: {
+          x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
+          y: { I: properties.iy, Z: properties.zy / 1000, S: properties.sy / 1000 }
+        },
+        shearMethod: "rolled-web",
+        interactionMethod: "flat-web"
+      };
     }
+
     if (beamFamily === "pfc") {
-      const d = value("beamCustomPfcDepth");
-      const bf = value("beamCustomPfcFlangeWidth");
-      const tw = value("beamCustomPfcWebThickness");
-      const tf = value("beamCustomPfcFlangeThickness");
+      const d = value("beamDimPfcD");
+      const bf = value("beamDimPfcBf");
+      const tw = value("beamDimPfcTw");
+      const tf = value("beamDimPfcTf");
       const properties = SectionGeometry.channel(d, bf, tw, tf);
       const d1 = d - 2 * tf;
-      return { ...base, designation: "Custom PFC", d, bf, tw, tf, d1, area: properties.area, mass: properties.area * 0.00785, Aw: d1 * tw, I: properties.ix, Zx: properties.zx / 1000, drawing: { shape: "channel", d, bf, tw, tf }, axes: { x: { I: properties.ix, Z: properties.zx / 1000, S: 0 } } };
+      return {
+        ...common,
+        d, bf, tw, tf, d1,
+        xL: properties.cx,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        Aw: properties.aw,
+        I: properties.ix,
+        Zx: properties.zx / 1000,
+        Sx: properties.sx / 1000,
+        drawing: { shape: "channel", d, bf, tw, tf, xL: properties.cx },
+        geometryProperties: properties,
+        axes: {
+          x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
+          "y-a": { I: properties.iy, Z: properties.zyLeft / 1000, S: properties.sy / 1000 },
+          "y-b": { I: properties.iy, Z: properties.zyRight / 1000, S: properties.sy / 1000 }
+        },
+        shearMethod: "rolled-web",
+        interactionMethod: "flat-web"
+      };
     }
+
     if (beamFamily === "chs") {
-      const D = value("beamCustomChsDiameter");
-      const t = value("beamCustomChsThickness");
+      const D = value("beamDimChsD");
+      const t = value("beamDimChsT");
       const properties = SectionGeometry.circularHollow(D, t);
-      const inner = D - 2 * t;
-      const S = (D ** 3 - inner ** 3) / 6 / 1000;
-      return { ...base, designation: "Custom CHS", D, t, area: properties.area, mass: properties.area * 0.00785, Aw: properties.area, I: properties.ix, Zx: properties.zx / 1000, Sx: S, drawing: { shape: "chs", D, t }, axes: { axis: { I: properties.ix, Z: properties.zx / 1000, S } } };
+      return {
+        ...common,
+        D, t,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        Aw: properties.area,
+        I: properties.ix,
+        Zx: properties.zx / 1000,
+        Sx: properties.sx / 1000,
+        drawing: { shape: "chs", D, t },
+        geometryProperties: properties,
+        axes: { axis: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } },
+        shearMethod: "chs-section",
+        interactionMethod: null
+      };
     }
+
     if (beamFamily === "rhs" || beamFamily === "shs") {
-      const shs = beamFamily === "shs";
-      const d = shs ? value("beamCustomShsWidth") : value("beamCustomRhsDepth");
-      const b = shs ? d : value("beamCustomRhsWidth");
-      const t = shs ? value("beamCustomShsThickness") : value("beamCustomRhsThickness");
+      const square = beamFamily === "shs";
+      const b = value(square ? "beamDimShsB" : "beamDimRhsB");
+      const d = square ? b : value("beamDimRhsD");
+      const t = value(square ? "beamDimShsT" : "beamDimRhsT");
       const properties = SectionGeometry.rectangularHollow(b, d, t);
-      const bi = b - 2 * t;
-      const di = d - 2 * t;
-      const Sx = (b * d ** 2 - bi * di ** 2) / 4 / 1000;
-      const Sy = (d * b ** 2 - di * bi ** 2) / 4 / 1000;
-      return { ...base, designation: `Custom ${beamFamily.toUpperCase()}`, d, b, t, area: properties.area, mass: properties.area * 0.00785, I: properties.ix, Zx: properties.zx / 1000, Sx, drawing: { shape: "rhs", b, h: d, t }, axes: { x: { I: properties.ix, Z: properties.zx / 1000, S: Sx }, y: { I: properties.iy, Z: properties.zy / 1000, S: Sy }, xy: { I: properties.ix, Z: properties.zx / 1000, S: Sx } } };
+      const axes = square
+        ? { xy: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } }
+        : {
+            x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
+            y: { I: properties.iy, Z: properties.zy / 1000, S: properties.sy / 1000 }
+          };
+      return {
+        ...common,
+        d, b, t,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        I: properties.ix,
+        Zx: properties.zx / 1000,
+        Sx: properties.sx / 1000,
+        drawing: { shape: "rhs", b, h: d, t },
+        geometryProperties: properties,
+        axes,
+        shearMethod: "rhs-web",
+        interactionMethod: "flat-web"
+      };
     }
+
     if (beamFamily === "ea") {
-      const b = value("beamCustomEaLeg");
-      const t = value("beamCustomEaThickness");
+      const b = value("beamDimEaB");
+      const t = value("beamDimEaT");
       const properties = SectionGeometry.equalAngle(b, t);
-      return { ...base, designation: "Custom Equal Angle", b, t, area: properties.area, mass: properties.area * 0.00785, drawing: { shape: "angle", b, t }, geometryProperties: properties };
+      return {
+        ...common,
+        b, t,
+        area: properties.area,
+        mass: properties.area * 0.00785,
+        I: properties.iu,
+        drawing: { shape: "angle", b, t },
+        geometryProperties: properties,
+        axes: {
+          a: { I: properties.iu, Z: 0, S: 0 },
+          b: { I: properties.iv, Z: 0, S: 0 },
+          c: { I: properties.iu, Z: 0, S: 0 },
+          d: { I: properties.iv, Z: 0, S: 0 }
+        }
+      };
     }
-    const D = value("beamCustomRodDiameter");
+
+    const D = value("beamDimRodD");
     const properties = SectionGeometry.circle(D);
-    const solid = BeamSectionCapacity.solidCircle(D);
-    const Z = solid.Z / 1000;
-    const S = solid.S / 1000;
-    const Ze = solid.Ze / 1000;
-    const grades = Object.fromEntries(Object.entries(customBeamGradeYields).map(([name, fy]) => [name, { fy, kf: 1, directions: { axis: { Ze, compactness: "C" } }, sourceRef: "Entered diameter · solid-circle geometry" }]));
-    return { ...base, designation: "Custom Rod", D, diameter: D, area: properties.area, mass: properties.area * 0.00785, I: properties.ix, Zx: Z, Sx: S, grades, capacityStatus: "checked", sourceRef: "Entered diameter · solid-circle geometry", drawing: { shape: "circle", D }, axes: { axis: { I: properties.ix, Z, S } } };
+    return {
+      ...common,
+      D,
+      diameter: D,
+      area: properties.area,
+      mass: properties.area * 0.00785,
+      I: properties.ix,
+      Zx: properties.zx / 1000,
+      Sx: properties.sx / 1000,
+      drawing: { shape: "circle", D },
+      geometryProperties: properties,
+      axes: { axis: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } }
+    };
   } catch (error) {
-    return { ...base, designation: `Custom ${beamFamilyDefinitions[beamFamily].label}`, invalidReason: error.message, drawing: null };
+    return {
+      ...common,
+      capacityStatus: "unavailable",
+      invalidReason: error.message,
+      drawing: null,
+      axes: {}
+    };
   }
 }
 
 function selectedBeamSection() {
-  if (beamSource === "custom") return beamCustomSection();
-  const sections = beamCatalogueSections();
-  return sections.find(section => section.designation === $("beamSection").value) || sections[0] || null;
+  return beamDimensionOverrideActive() ? beamCustomSection() : selectedBeamCatalogueSection();
 }
 
 function beamDirections() {
@@ -5023,19 +5383,79 @@ function populateBeamDirections() {
   const directions = beamDirections();
   const previous = beamDirectionMemory[beamFamily];
   const selected = directions.some(([key]) => key === previous) ? previous : directions[0][0];
-  const catalogueCase = beamSource === "catalogue" && (beamFamily === "pfc" || beamFamily === "ea");
+  const catalogueCase = beamFamily === "pfc" || beamFamily === "ea";
   $("beamDirection").innerHTML = directions.map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
   $("beamDirection").value = selected;
   $("beamDirectionGroup").hidden = directions.length === 1;
   $("beamDirectionHeading").textContent = catalogueCase ? "Catalogue bending case" : "Bending direction";
   $("beamDirectionFieldLabel").textContent = catalogueCase ? "Catalogue case" : "Direction";
   $("beamDirection").setAttribute("aria-label", catalogueCase ? "Catalogue bending case" : "Bending direction");
-  $("beamDirectionHelp").textContent = beamFamily === "pfc"
-    ? "Load A is toward the web; Load B is toward the flange tips. The arrows define bending sign, not the load application point."
-    : beamFamily === "ea"
-      ? "Load A/B/C/D defines the catalogue principal-axis bending sign and compression side shown in the section figure."
-      : "Select the catalogue load direction used for the effective section modulus.";
+  $("beamDirectionHelp").textContent = beamDimensionOverrideActive()
+    ? beamFamily === "pfc"
+      ? "Custom x-x capacity is derived. Load A/B remains Not evaluated without a reviewed asymmetric effective-modulus path."
+      : beamFamily === "ea"
+        ? "Custom angle geometry is generated, but Load A/B/C/D capacity remains Not evaluated without a reviewed direction-specific effective modulus."
+        : "Select the bending direction used for the derived ideal-section properties."
+    : beamFamily === "pfc"
+      ? "Load A is toward the web; Load B is toward the flange tips. The arrows define bending sign, not the load application point."
+      : beamFamily === "ea"
+        ? "Load A/B/C/D defines the catalogue principal-axis bending sign and compression side shown in the section figure."
+        : "Select the catalogue load direction used for the effective section modulus.";
   beamDirectionMemory[beamFamily] = selected;
+}
+
+function setBeamDimensionDefaults(section) {
+  if (!section) return;
+  const set = (id, number) => {
+    if ($(id) && Number(number) > 0) $(id).value = Number(number).toFixed(1);
+  };
+  if (beamFamily === "ub" || beamFamily === "uc") {
+    set("beamDimID", section.d);
+    set("beamDimIBf", section.bf);
+    set("beamDimITw", section.tw);
+    set("beamDimITf", section.tf);
+  } else if (beamFamily === "pfc") {
+    set("beamDimPfcD", section.d);
+    set("beamDimPfcBf", section.bf);
+    set("beamDimPfcTw", section.tw);
+    set("beamDimPfcTf", section.tf);
+  } else if (beamFamily === "chs") {
+    set("beamDimChsD", section.D);
+    set("beamDimChsT", section.t);
+  } else if (beamFamily === "rhs") {
+    set("beamDimRhsD", section.d);
+    set("beamDimRhsB", section.b);
+    set("beamDimRhsT", section.t);
+  } else if (beamFamily === "shs") {
+    set("beamDimShsB", section.b || section.d);
+    set("beamDimShsT", section.t);
+  } else if (beamFamily === "ea") {
+    set("beamDimEaB", section.b);
+    set("beamDimEaT", section.t);
+  } else if (beamFamily === "rod") {
+    set("beamDimRodD", section.diameter || section.D);
+  }
+}
+
+function updateBeamDimensionUi() {
+  const active = beamDimensionOverrideActive();
+  $("beamDimensionFields").hidden = !active;
+  document.querySelectorAll("[data-beam-dim]").forEach(field => {
+    field.hidden = !field.dataset.beamDim.split(/\s+/).includes(beamFamily);
+  });
+  beamDimensionInputIds.forEach(id => {
+    const input = $(id);
+    if (!input) return;
+    const applicable = input.closest("[data-beam-dim]")?.dataset.beamDim.split(/\s+/).includes(beamFamily);
+    input.disabled = !active || !applicable;
+  });
+  const sectionLabel = $("beamSectionField")?.querySelector(":scope > span");
+  if (sectionLabel) sectionLabel.textContent = active ? "Reference catalogue section" : "Catalogue section";
+  $("beamSection").setAttribute("aria-label", active ? "Reference catalogue beam section" : "Catalogue beam section");
+  $("beamSectionSource").textContent = active
+    ? `Entered ${beamFamilyDefinitions[beamFamily].label} dimensions; gross ideal geometry is generated automatically.`
+    : beamFamilyDefinitions[beamFamily].source;
+  $("beamDimensionStatus").hidden = !active;
 }
 
 function populateBeamOptions() {
@@ -5073,7 +5493,7 @@ function resetBeamMaterialStrengths() {
 }
 
 function populateBeamGrades() {
-  const section = selectedBeamSection();
+  const section = selectedBeamCatalogueSection();
   const previous = $("beamGrade").value;
   const grades = section ? Object.keys(section.grades || {}) : [];
   if (!grades.length) {
@@ -5082,36 +5502,23 @@ function populateBeamGrades() {
   } else {
     $("beamGrade").disabled = false;
     $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${grade}</option>`).join("");
-    const preferred = beamSource === "custom" && grades.includes("Grade 300") ? "Grade 300" : grades[0];
-    $("beamGrade").value = grades.includes(previous) ? previous : preferred;
+    $("beamGrade").value = grades.includes(previous) ? previous : grades[0];
   }
+  setBeamDimensionDefaults(section);
+  updateBeamDimensionUi();
   resetBeamMaterialStrengths();
-}
-
-function setBeamSource(source) {
-  beamSource = source === "custom" ? "custom" : "catalogue";
-  document.querySelectorAll(".beam-type").forEach(button => {
-    const active = button.dataset.beamSource === beamSource;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", active ? "true" : "false");
-  });
-  const custom = beamSource === "custom";
-  $("beamSectionField").hidden = custom;
-  $("beamCustomFields").hidden = !custom;
-  document.querySelectorAll("[data-beam-custom-family]").forEach(group => {
-    group.hidden = !custom || !group.dataset.beamCustomFamily.split(" ").includes(beamFamily);
-  });
-  $("beamSectionSource").textContent = custom
-    ? "Family dimensions only; gross section properties are generated automatically."
-    : beamFamilyDefinitions[beamFamily].source;
-  populateBeamOptions();
 }
 
 function setBeamFamily(family) {
   if (!beamFamilyDefinitions[family]) return;
   beamFamily = family;
   $("beamFamily").value = family;
-  setBeamSource(beamSource);
+  document.querySelectorAll(".beam-family").forEach(button => {
+    const active = button.dataset.beamFamily === beamFamily;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  populateBeamOptions();
 }
 
 function beamAxisProperties(section, direction) {
@@ -5148,8 +5555,9 @@ function beamDiagramProperties(section) {
 function renderBeamSectionDiagram(section) {
   const svg = $("beamSectionDiagram");
   if (!section?.drawing) {
-    svg.innerHTML = `<title id="beamSectionDiagramTitle">No checked section row</title><desc id="beamSectionDiagramDescription">No section geometry is available for the selected catalogue family.</desc>`;
-    $("beamSectionDiagramCaption").textContent = "No checked catalogue geometry";
+    const custom = Boolean(section?.customGeometry);
+    svg.innerHTML = `<title id="beamSectionDiagramTitle">No valid section geometry</title><desc id="beamSectionDiagramDescription">${custom ? "Entered dimensions do not define a valid ideal section." : "No section geometry is available for the selected catalogue family."}</desc>`;
+    $("beamSectionDiagramCaption").textContent = custom ? "Enter valid family dimensions" : "No checked catalogue geometry";
     return;
   }
   const drawing = section.drawing;
@@ -5221,14 +5629,15 @@ function renderBeamSectionDiagram(section) {
     auxiliaryMarkup = `<line class="beam-shear-centre-guide" x1="${line(shearCentreX)}" y1="${line(axisY)}" x2="${line(x0)}" y2="${line(axisY)}" /><circle class="beam-shear-centre" cx="${line(shearCentreX)}" cy="${line(axisY)}" r="3.2" /><text class="beam-shear-centre-label" x="${line(shearCentreX)}" y="${line(axisY - 8)}" text-anchor="middle">SC</text>`;
   }
   const title = `${section.designation} section`;
+  const custom = Boolean(section.customGeometry);
   const description = shape === "angle"
-    ? "Catalogue equal-angle schematic showing the x and y principal axes and selected Load A, B, C or D direction."
+    ? `${custom ? "Ideal custom" : "Catalogue"} equal-angle schematic showing the x and y principal axes and selected Load A, B, C or D direction.`
     : shape === "channel"
-      ? "Catalogue channel schematic showing centroidal axes, shear centre and selected bending direction."
+      ? `${custom ? "Ideal custom" : "Catalogue"} channel schematic showing centroidal axes${custom ? "" : ", shear centre"} and selected bending direction.`
       : "Value-driven section schematic showing centroidal x-x and y-y axes and the selected bending direction.";
   svg.innerHTML = `<title id="beamSectionDiagramTitle">${safeText(title)} and selected bending direction</title><desc id="beamSectionDiagramDescription">${description}</desc><defs><marker id="beamAxisArrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z"></path></marker><marker id="beamLoadArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 0 0 L 8 4 L 0 8 Z"></path></marker></defs>${geometry}${axisMarkup}${auxiliaryMarkup}<circle class="section-properties-centroid" cx="${line(axisX)}" cy="${line(axisY)}" r="3.4" />${loadMarkup}`;
-  $("beamSectionDiagramCaption").textContent = beamSource === "custom"
-    ? "Ideal entered geometry · selected direction"
+  $("beamSectionDiagramCaption").textContent = custom
+    ? "Entered ideal dimensions · selected direction"
     : shape === "angle"
       ? "Catalogue principal axes · selected load direction"
       : shape === "channel"
@@ -5244,8 +5653,28 @@ function setBeamOutput(id, value, available) {
   if (unit) unit.hidden = !available;
 }
 
+function formatBeamUtilisation(value) {
+  if (!Number.isFinite(value)) return "—";
+  if (Math.abs(value - 1) < 1e-9) return "1.00";
+  if (value > 1 && value < 1.005) return ">1.00";
+  if (value < 1 && value > 0.995) return "<1.00";
+  return value.toFixed(2);
+}
+
+function formatBeamInteractionRatio(value) {
+  if (!Number.isFinite(value)) return "—";
+  const nearBranch = Math.abs(value - 0.75) < 0.001 || Math.abs(value - 1) < 0.001;
+  return value.toFixed(nearBranch ? 6 : 2);
+}
+
+function formatBeamInteractionFactor(value) {
+  if (!Number.isFinite(value)) return "—";
+  return value < 1 && value > 0.995 ? value.toFixed(6) : value.toFixed(3);
+}
+
 function calculateBeam() {
   const section = selectedBeamSection();
+  const customDimensions = beamDimensionOverrideActive();
   const direction = $("beamDirection").value || beamDirections()[0][0];
   beamDirectionMemory[beamFamily] = direction;
   const gradeName = $("beamGrade").value;
@@ -5264,19 +5693,17 @@ function calculateBeam() {
     ? "Enter positive strength"
     : materialOverride
       ? "Project / legacy override"
-      : beamSource === "catalogue"
-        ? "Catalogue default"
-        : "Selected grade default";
+      : customDimensions
+        ? "Selected grade default"
+        : "Catalogue default";
   $("beamMaterialReset").disabled = !materialOverride;
   const directionCapacity = gradeBase?.directions?.[direction] || null;
   const gradeForEvaluation = gradeBase
     ? { ...gradeBase, fy: fyInput, fyw: separateWebStrength ? fywInput : fyInput }
     : null;
-  const coordination = momentOverride
+  const coordination = customDimensions || momentOverride
     ? BeamSectionReconciliation.deriveProject(section, gradeForEvaluation, direction)
-    : beamSource === "catalogue" || beamFamily === "rod"
-      ? BeamSectionReconciliation.reconcile(section, gradeForEvaluation, direction)
-    : { status: "unresolved", reason: "Custom section capacity is not classified." };
+    : BeamSectionReconciliation.reconcile(section, gradeForEvaluation, direction);
   const grade = gradeBase && directionCapacity
     ? {
         ...gradeBase,
@@ -5301,9 +5728,9 @@ function calculateBeam() {
     && grade?.fy > 0
     && grade?.Ze > 0
   );
-  const rolledWebShear = Boolean(grade?.fyw > 0 && beamSource === "catalogue" && section?.shearMethod === "rolled-web" && direction === "x" && section.Aw > 0);
-  const chsSectionShear = Boolean(grade?.fy > 0 && beamSource === "catalogue" && section?.shearMethod === "chs-section" && direction === "axis" && section.area > 0);
-  const rhsWebShear = Boolean(grade?.fy > 0 && beamSource === "catalogue" && section?.shearMethod === "rhs-web" && ["x", "y", "xy"].includes(direction));
+  const rolledWebShear = Boolean(grade?.fyw > 0 && section?.shearMethod === "rolled-web" && direction === "x" && section.Aw > 0);
+  const chsSectionShear = Boolean(grade?.fy > 0 && section?.shearMethod === "chs-section" && direction === "axis" && section.area > 0);
+  const rhsWebShear = Boolean(grade?.fy > 0 && section?.shearMethod === "rhs-web" && ["x", "y", "xy"].includes(direction));
   const hollowShearDirection = direction === "y" ? "y" : "x";
   const hollowWeb = rhsWebShear
     ? BeamSectionCapacity.rectangularHollowShear(grade.fyw || grade.fy, section.d, section.b, section.t, hollowShearDirection)
@@ -5312,7 +5739,7 @@ function calculateBeam() {
   const interactionAvailable = Boolean(momentAvailable && (rolledWebShear || hollowWeb) && section?.interactionMethod === "flat-web");
   const phi = BeamSectionCapacity.PHI;
   const momentCapacity = momentAvailable ? BeamSectionCapacity.sectionMoment(grade.fy, grade.Ze * 1000, phi) : NaN;
-  const webShear = rolledWebShear ? beamWebShearReduction(section, grade, false) : { alphaV: 1, slenderness: NaN, threshold: 82, basis: "Not applicable." };
+  const webShear = rolledWebShear ? beamWebShearReduction(section, grade) : { alphaV: 1, slenderness: NaN, threshold: 82, basis: "Not applicable." };
   const shearCapacity = rolledWebShear
     ? BeamSectionCapacity.rolledWebShear(grade.fyw || grade.fy, section.Aw, webShear.alphaV, phi)
     : chsSectionShear
@@ -5340,12 +5767,12 @@ function calculateBeam() {
 
   $("beamDesignation").textContent = section ? `${section.designation} · ${gradeName || "grade unavailable"}` : `${beamFamilyDefinitions[beamFamily].label} · no checked Beam row`;
   $("beamAssumption").textContent = momentAvailable
-    ? `${directionLabel} section moment${rolledWebShear || hollowWeb ? " and web shear" : chsSectionShear ? " and CHS shear" : ""}${materialOverride ? "; project strength override" : ""}; member checks excluded.`
-    : beamSource === "custom"
-      ? `${directionLabel}; geometry generated, design capacity not established.`
+    ? `${directionLabel} section moment${rolledWebShear || hollowWeb ? " and web shear" : chsSectionShear ? " and CHS shear" : ""}${customDimensions ? "; ideal custom geometry" : materialOverride ? "; project strength override" : ""}; member checks excluded.`
+    : customDimensions
+      ? `${directionLabel}; custom geometry generated, capacity path not established.`
       : materialOverride
-        ? `${directionLabel}; project strength path not evaluated.`
-        : `${directionLabel}; reviewed capacity row unavailable.`;
+      ? `${directionLabel}; project strength path not evaluated.`
+      : `${directionLabel}; reviewed capacity row unavailable.`;
   updateBeamSummaryDimensions(section || {});
   if (hollowWeb) setBeamSummaryCell("beamDimD1", formatBeamDimension(hollowWeb.clearWebDepth), false);
   setBeamSummaryCell("beamMass", formatBeamOptional(section?.mass, "kg/m", 1), !(section?.mass > 0));
@@ -5365,9 +5792,9 @@ function calculateBeam() {
   setBeamSummaryCell(
     "beamCoordination",
     coordination.status === "reconciled" ? "Reconciled" : coordination.status === "derived" ? "Derived" : "Unresolved",
-    beamSource !== "catalogue" && beamFamily !== "rod"
+    false
   );
-  const summarySource = gradeBase?.sourceRef || section?.sourceRef || section?.sourceBasis || "-";
+  const summarySource = customDimensions ? section?.sourceRef : gradeBase?.sourceRef || section?.sourceRef || section?.sourceBasis || "-";
   setBeamSummaryCell("beamSummarySource", `${summarySource}${materialOverride ? " · project strength override" : ""}`, !section);
   const symbol = subscript || "";
   $("beamSummaryILabel").innerHTML = symbol ? `I<sub>${symbol}</sub>` : "I";
@@ -5376,16 +5803,16 @@ function calculateBeam() {
   $("beamSummaryZeLabel").innerHTML = `${symbol ? `Z<sub>e${symbol}</sub>` : "Z<sub>e</sub>"}${loadCaseHtml}`;
   $("beamMomentResultLabel").innerHTML = `Design section moment capacity &phi;M<sub>s${symbol}</sub>${loadCaseHtml}`;
   $("beamMomentResultBasis").innerHTML = momentAvailable
-    ? `${coordination.status === "derived" || beamFamily === "rod" || beamSource === "custom" ? "Derived" : "Catalogue"} Z<sub>e${symbol}</sub>${loadCaseHtml} · AS 4100:2020 Cl. 5.2`
+    ? `${coordination.status === "derived" || beamFamily === "rod" ? "Derived" : "Catalogue"} Z<sub>e${symbol}</sub>${loadCaseHtml} · AS 4100 Cl. 5.2`
     : "Required f<sub>y,m</sub> / Z<sub>e</sub> / direction record unavailable";
   $("beamShearResultLabel").innerHTML = chsSectionShear
     ? "Design section shear capacity &phi;V<sub>v</sub>"
     : "Design web shear capacity &phi;V<sub>v</sub>";
   $("beamShearResultBasis").innerHTML = chsSectionShear
-    ? "0.36 f<sub>y</sub>A<sub>e</sub> · AS 4100:2020 Cl. 5.11.4"
-    : "d<sub>p</sub> = d<sub>1</sub>; A<sub>w</sub> = d<sub>p</sub>t<sub>w</sub> · AS 4100:2020 Cl. 5.11";
+    ? "0.36 f<sub>y</sub>A<sub>e</sub> · AS 4100 Cl. 5.11.4"
+    : "d<sub>p</sub> = d<sub>1</sub>; A<sub>w</sub> = d<sub>p</sub>t<sub>w</sub> · AS 4100 Cl. 5.11";
   if (hollowWeb) {
-    $("beamShearResultBasis").innerHTML = "Two webs + non-uniform shear stress &middot; AS 4100:2020 Cl. 5.11.3-5.11.5";
+    $("beamShearResultBasis").innerHTML = "Two webs + non-uniform shear stress &middot; AS 4100 Cl. 5.11.3 to AS 4100 Cl. 5.11.5";
   }
   setBeamOutput("beamSectionCapacity", momentCapacity, momentAvailable);
   setBeamOutput("beamShearCapacity", shearCapacity, shearAvailable);
@@ -5394,93 +5821,103 @@ function calculateBeam() {
   $("beamShearDemandField").hidden = !shearAvailable;
   $("beamDemandBasis").innerHTML = shearAvailable
       ? interactionAvailable
-      ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} and AS 4100:2020 Cl. 5.12.3 web-shear interaction.`
+      ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} and AS 4100 Cl. 5.12.3 web-shear interaction.`
       : `Individual M* and V* ratios; combined moment/shear interaction is not evaluated.`
     : momentAvailable
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml}; shear and combined action are not evaluated.`
       : "No utilisation is reported until the selected moment-capacity path is available.";
-  $("beamUtilisation").textContent = Number.isFinite(utilisation) ? utilisation.toFixed(2) : "—";
+  $("beamUtilisation").textContent = !hasDemand ? "—" : formatBeamUtilisation(utilisation);
   $("beamStatus").textContent = !momentAvailable
     ? "Not evaluated"
     : !hasDemand
-      ? "Enter design actions"
+      ? "No design action"
       : !allDemandPathsAvailable
         ? "Combined action not evaluated"
         : utilisation > 1 ? "FAIL" : "PASS";
-  $("beamStatus").className = !momentAvailable || !allDemandPathsAvailable ? "check" : hasDemand && utilisation > 1 ? "fail" : hasDemand ? "pass" : "";
+  $("beamStatus").className = !momentAvailable || !allDemandPathsAvailable || !hasDemand ? "check" : utilisation > 1 ? "fail" : "pass";
   const resultStatus = $("beamResultStatus");
   resultStatus.textContent = !section || section.invalidReason
-    ? "Not evaluated · enter valid family dimensions"
+    ? customDimensions ? "Not evaluated · enter valid family dimensions" : "Not evaluated · checked catalogue row unavailable"
     : momentAvailable
       ? `For Review · ${directionLabel}${shearAvailable ? " moment and shear calculated" : " moment calculated"}`
-      : beamSource === "custom"
-        ? "Geometry complete · design capacity not evaluated"
+      : customDimensions
+        ? "Geometry complete · design capacity not evaluated for this direction"
         : materialOverride
-          ? "Not evaluated · project strength path unavailable"
-          : "Not evaluated · reviewed capacity row unavailable";
+        ? "Not evaluated · project strength path unavailable"
+        : "Not evaluated · reviewed capacity row unavailable";
   resultStatus.className = `beam-result-status${momentAvailable ? " is-review" : " is-unavailable"}`;
   $("beamWarning").textContent = !momentAvailable
     ? (section?.invalidReason || coordination.reason || "The selected family, grade or direction does not have a reconciled effective section modulus. No capacity or PASS / FAIL is reported.")
     : shearAvailable
       ? "Section resistance only. Member capacity, lateral restraint, web bearing, concentrated loads and serviceability remain excluded."
       : "Moment section capacity only. Shear, combined action and member checks are not evaluated for this family.";
-  $("beamDrawingNote").textContent = beamSource === "custom"
-    ? "Diagram follows entered dimensions; properties are derived from ideal geometry."
+  $("beamDrawingNote").textContent = customDimensions
+    ? "Diagram and gross properties follow entered ideal dimensions; product radii are omitted."
     : "Diagram follows selected catalogue dimensions; properties come from the cited table.";
+  $("beamDimensionStatus").hidden = !customDimensions;
+  if (customDimensions) {
+    $("beamDimensionStatus").innerHTML = section?.invalidReason
+      ? safeText(section.invalidReason)
+      : `Derived ideal geometry: A<sub>g</sub> = ${formatBeamArea(section.area)}; mass = ${formatBeamOptional(section.mass, "kg/m", 1)}.`;
+  }
   renderBeamSectionDiagram(section);
 
-  const source = gradeBase?.sourceRef || section?.sourceRef || (beamSource === "custom" ? "Entered ideal dimensions" : beamFamilyDefinitions[beamFamily].source);
+  const source = customDimensions ? section?.sourceRef : gradeBase?.sourceRef || section?.sourceRef || beamFamilyDefinitions[beamFamily].source;
   const geometryStep = section
     ? `${section.designation}; A<sub>g</sub> = ${formatBeamArea(section.area)}; source = ${source}`
-    : `${beamFamilyDefinitions[beamFamily].label}; no checked Beam catalogue row is embedded`;
+    : `${beamFamilyDefinitions[beamFamily].label}; no valid section geometry is available`;
   const propertySubscript = symbol ? `<sub>${symbol}</sub>` : "";
   const directionStep = `${directionLabel}; I${propertySubscript} = ${formatBeamInertia(axis.I)}; Z${propertySubscript} = ${formatBeamModulus(axis.Z)}; S${propertySubscript} = ${formatBeamModulus(axis.S)}`;
-  const editionStep = beamSource === "catalogue" && beamFamily !== "rod"
+  const editionStep = customDimensions
+    ? coordination.status === "derived"
+      ? `Ideal sharp-corner section. Section class and Z<sub>e</sub> are independently generated from entered dimensions and the adopted strength. ${coordination.basis}.`
+      : `Custom geometry only. ${coordination.reason || "A reviewed family-specific effective-modulus path is not available for this direction."}`
+    : beamFamily !== "rod"
     ? coordination.status === "reconciled"
-      ? `Reconciled against AS 4100:2020 Cl. 5.2 and Cl. 6.2. ${coordination.basis}.`
+      ? `Reconciled against AS 4100 Cl. 5.2 and AS 4100 Cl. 6.2. ${coordination.basis}.`
       : coordination.status === "derived"
         ? `Project strength override. Section class and Z<sub>e</sub> are independently regenerated from the catalogue geometry. ${coordination.basis}.`
-        : `Unresolved: ${coordination.reason || "the product row and AS 4100:2020 calculation basis do not agree."}`
+        : `Unresolved: ${coordination.reason || "the product row and AS 4100 calculation basis do not agree."}`
     : beamFamily === "rod"
-      ? `Z<sub>e</sub> is generated from the compact solid-circle relation using the checked diameter and ${materialOverride ? "project" : "selected grade"} strength.`
-      : "Custom open and hollow sections remain geometry-only until the AS 4100:2020 classification path is implemented.";
+      ? `Z<sub>e</sub> is generated from the compact solid-circle relation using the checked catalogue diameter and ${materialOverride ? "project" : "selected grade"} strength.`
+      : "The selected catalogue row is not reconciled.";
   const classStep = ["reconciled", "derived"].includes(coordination.status)
     ? `${compactnessText(grade?.compactness)}; ${coordination.classMethod === "published-ze-interval" ? "class inferred from the published load-case Z<sub>e</sub> position between the AS 4100 elastic and compact bounds" : `governing plate element = ${coordination.governing?.name || "solid section"}`}.`
     : "Not reconciled.";
   const demandStep = !hasDemand ? "No design action entered."
     : interactionDemand?.failureMode === "moment"
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
-    : Number.isFinite(utilisation) ? `Governing section utilisation = ${utilisation.toFixed(2)}; ${utilisation > 1 ? "FAIL" : "PASS"}.`
+    : Number.isFinite(utilisation) ? `Governing section utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "FAIL" : "PASS"}.`
       : "Combined action not evaluated because one or more required capacity paths are unavailable.";
-  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${materialOverride ? `project / legacy override (catalogue defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : "catalogue / selected grade default"}.`;
+  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${materialOverride ? `project / legacy override (catalogue defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : customDimensions ? "selected grade default applied to entered geometry" : "catalogue default"}.`;
   const zeBasis = coordination.status === "derived"
-    ? "independently regenerated from the entered project strength"
+    ? customDimensions ? "derived from entered geometry and adopted strength" : "independently regenerated from the entered project strength"
     : beamFamily === "rod"
       ? "compact solid-circle relation"
       : "reconciled catalogue capacity row";
   const shearFormula = rolledWebShear
-    ? `&phi;V<sub>v</sub> = &alpha;<sub>v</sub>&phi;0.6f<sub>y,w</sub>A<sub>w</sub>`
+    ? `&lambda;<sub>v</sub> = (d<sub>p</sub>/t<sub>w</sub>)&radic;(f<sub>y,w</sub>/250); &alpha;<sub>v</sub> = min[1, (82/&lambda;<sub>v</sub>)<sup>2</sup>]; &phi;V<sub>v</sub> = &phi;&alpha;<sub>v</sub>0.6f<sub>y,w</sub>A<sub>w</sub>`
     : chsSectionShear
       ? `&phi;V<sub>v</sub> = &phi;0.36f<sub>y</sub>A<sub>e</sub>`
       : hollowWeb
-        ? `&phi;V<sub>v</sub> = &phi;min(V<sub>y</sub>, V<sub>non-uniform</sub>)`
+        ? `A<sub>w</sub> = 2td<sub>p</sub>; V<sub>u</sub> = &alpha;<sub>v</sub>0.6f<sub>y</sub>A<sub>w</sub>; &rho; = f<sub>vm</sub><sup>*</sup>/f<sub>va</sub><sup>*</sup>; V<sub>v</sub> = min[V<sub>u</sub>, 2V<sub>u</sub>/(0.9 + &rho;)]; &phi;V<sub>v</sub> = 0.90V<sub>v</sub>`
         : "";
   const shearSubstitution = !shearAvailable
     ? ""
     : rolledWebShear
-      ? `A<sub>w</sub> = ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup>; &alpha;<sub>v</sub> = ${webShear.alphaV.toFixed(3)}; ${webShear.alphaV.toFixed(3)} &times; 0.90 &times; 0.6 &times; ${formatBeamNumber(grade.fyw || grade.fy, 0)} MPa &times; ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup> / 1000`
+      ? `&lambda;<sub>v</sub> = (${formatBeamNumber(section.d1, 1)}/${formatBeamNumber(section.tw, 1)})&radic;(${formatBeamNumber(grade.fyw || grade.fy, 0)}/250) = ${webShear.slenderness.toFixed(2)}; &alpha;<sub>v</sub> = min[1, (82/${webShear.slenderness.toFixed(2)})<sup>2</sup>] = ${webShear.alphaV.toFixed(3)}; A<sub>w</sub> = ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup>; 0.90 &times; ${webShear.alphaV.toFixed(3)} &times; 0.6 &times; ${formatBeamNumber(grade.fyw || grade.fy, 0)} MPa &times; ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup> / 1000`
       : chsSectionShear
         ? `0.90 &times; 0.36 &times; ${formatBeamNumber(grade.fy, 0)} MPa &times; ${formatBeamNumber(section.area, 0)} mm<sup>2</sup> / 1000`
-        : `0.90 &times; min(${fixed(hollowWeb.shearYieldCapacity)}, ${fixed(hollowWeb.nonUniformCapacity)}) kN`;
+      : `d<sub>p</sub> = ${formatBeamNumber(hollowWeb.clearWebDepth, 1)} mm; A<sub>w</sub> = 2 &times; ${formatBeamNumber(section.t, 1)} &times; ${formatBeamNumber(hollowWeb.clearWebDepth, 1)} = ${formatBeamNumber(hollowWeb.webArea, 0)} mm<sup>2</sup>; &lambda;<sub>v</sub> = (${formatBeamNumber(hollowWeb.clearWebDepth, 1)}/${formatBeamNumber(section.t, 1)})&radic;(${formatBeamNumber(grade.fyw || grade.fy, 0)}/250) = ${hollowWeb.slenderness.toFixed(2)}; &alpha;<sub>v</sub> = min[1, (82/${hollowWeb.slenderness.toFixed(2)})<sup>2</sup>] = ${hollowWeb.alphaV.toFixed(3)}; &rho; = ${hollowWeb.stressRatio.toFixed(3)}; V<sub>v</sub> = min(${fixed(hollowWeb.shearYieldCapacity)}, ${fixed(hollowWeb.nonUniformCapacity)}) = ${fixed(hollowWeb.nominalCapacity)} kN; &phi;V<sub>v</sub> = 0.90 &times; ${fixed(hollowWeb.nominalCapacity)} = ${fixed(hollowWeb.designCapacity)} kN`;
   const utilisationFormula = interactionAvailable
     ? `m = M<sup>*</sup>/&phi;M<sub>s</sub>; &beta;<sub>v</sub> = 1.0 for m &le; 0.75, otherwise 2.2 - 1.6m; &eta; = max(m, V<sup>*</sup>/(&beta;<sub>v</sub>&phi;V<sub>v</sub>))`
     : `&eta; = max(M<sup>*</sup>/&phi;M<sub>s</sub>, V<sup>*</sup>/&phi;V<sub>v</sub>)`;
   const utilisationSubstitution = !hasDemand
     ? ""
     : interactionAvailable && interactionDemand?.failureMode !== "moment"
-      ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${momentRatio.toFixed(2)}; &beta;<sub>v</sub> = ${interaction.factor.toFixed(3)}; V<sup>*</sup>/(&beta;<sub>v</sub>&phi;V<sub>v</sub>) = ${fixed(shearDemand)}/${fixed(interactionShearCapacity)} = ${shearRatio.toFixed(2)}`
+      ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${formatBeamInteractionRatio(momentRatio)}; &beta;<sub>v</sub> = ${formatBeamInteractionFactor(interaction.factor)}; V<sup>*</sup>/(&beta;<sub>v</sub>&phi;V<sub>v</sub>) = ${fixed(shearDemand)}/${fixed(interactionShearCapacity)} = ${formatBeamUtilisation(shearRatio)}`
       : interactionDemand?.failureMode === "moment"
-        ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${momentRatio.toFixed(2)}`
+        ? `m = ${fixed(momentDemand)}/${fixed(momentCapacity)} = ${formatBeamInteractionRatio(momentRatio)}`
         : `M<sup>*</sup> = ${fixed(momentDemand)} kN&middot;m${shearAvailable ? `; V<sup>*</sup> = ${fixed(shearDemand)} kN` : ""}`;
   $("beamFormulaSteps").innerHTML = [
     calculationTraceRow({
@@ -5492,21 +5929,21 @@ function calculateBeam() {
     }),
     calculationTraceRow({
       title: "Material strength",
-      lookup: materialOverride ? "Project / legacy override" : "Catalogue / selected grade default",
+      lookup: materialOverride ? "Project / legacy override" : customDimensions ? "Selected grade default" : "Catalogue default",
       selection: gradeName || "Grade unavailable",
       adopted: `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}`,
       applicability: materialStep
     }),
     calculationTraceRow({
       title: "Bending direction and properties",
-      lookup: "Selected catalogue or derived section-property record.",
+      lookup: customDimensions ? "Derived ideal section-property record." : "Selected catalogue section-property record.",
       selection: directionLabel,
       adopted: directionStep,
       applicability: "Properties correspond to the selected bending direction and load case."
     }),
     calculationTraceRow({
       title: "Section class",
-      reference: "AS 4100 Cl. 5.2",
+      reference: "AS 4100 Cl. 5.2.2 to AS 4100 Cl. 5.2.5",
       lookup: "Section classification and effective-modulus branch.",
       selection: classStep,
       adopted: momentAvailable ? compactnessText(grade?.compactness) : "Not established",
@@ -5514,7 +5951,7 @@ function calculateBeam() {
     }),
     calculationTraceRow({
       title: "Effective section modulus",
-      reference: "AS 4100 Cl. 5.2",
+      reference: "AS 4100 Cl. 5.2.1",
       lookup: zeBasis,
       selection: `${directionLabel}${loadCaseHtml}`,
       adopted: momentAvailable ? `Z<sub>e${symbol}</sub>${loadCaseHtml} = ${formatBeamModulus(grade.Ze)}` : "Not established",
@@ -5530,7 +5967,7 @@ function calculateBeam() {
     }),
     calculationTraceRow({
       title: "Section moment capacity",
-      reference: "AS 4100 Cl. 5.2",
+      reference: "AS 4100 Cl. 5.2.1",
       formula: momentAvailable ? `&phi;M<sub>s${symbol}</sub>${loadCaseHtml} = &phi;f<sub>y,m</sub>Z<sub>e${symbol}</sub>${loadCaseHtml}` : "",
       substitution: momentAvailable ? `0.90 &times; ${formatBeamNumber(grade.fy, 0)} MPa &times; ${formatBeamNumber(grade.Ze, 1)} &times; 10<sup>3</sup> mm<sup>3</sup> / 10<sup>6</sup>` : "",
       result: momentAvailable ? `Design section moment capacity = ${fixed(momentCapacity)} kN&middot;m` : "Not evaluated",
@@ -5538,7 +5975,13 @@ function calculateBeam() {
     }),
     calculationTraceRow({
       title: "Section shear capacity",
-      reference: shearAvailable ? (chsSectionShear ? "AS 4100 Cl. 5.11.4" : "AS 4100 Cl. 5.11") : "",
+      reference: shearAvailable
+        ? chsSectionShear
+          ? "AS 4100 Cl. 5.11.4"
+          : hollowWeb
+            ? "AS 4100 Cl. 5.11.2 to AS 4100 Cl. 5.11.5"
+            : "AS 4100 Cl. 5.11.2, AS 4100 Cl. 5.11.4 and AS 4100 Cl. 5.11.5.1"
+        : "",
       formula: shearFormula,
       substitution: shearSubstitution,
       result: shearAvailable ? `Design section shear capacity = ${fixed(shearCapacity)} kN` : "Not evaluated",
@@ -5555,7 +5998,7 @@ function calculateBeam() {
       reference: interactionAvailable ? "AS 4100 Cl. 5.12.3" : "",
       formula: hasDemand ? utilisationFormula : "",
       substitution: utilisationSubstitution,
-      result: !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${utilisation.toFixed(2)}; ${utilisation > 1 ? "FAIL" : "PASS"}` : "Not evaluated",
+      result: !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "FAIL" : "PASS"}` : "Not evaluated",
       applicability: demandStep
     }),
     calculationTraceRow({
@@ -5583,41 +6026,6 @@ function memberDimensionLabel(properties) {
   return "User-entered effective properties";
 }
 
-function setMemberSummaryCell(id, html, hidden = false) {
-  const element = $(id);
-  if (!element) return;
-  element.innerHTML = html;
-  const cell = element.closest("[data-member-summary-cell]");
-  if (cell) cell.hidden = hidden;
-}
-
-function hideMemberSummaryDimensions() {
-  ["memberDimD", "memberDimDepth", "memberDimB", "memberDimBf", "memberDimT", "memberDimTw", "memberDimTf"].forEach(id => {
-    setMemberSummaryCell(id, "—", true);
-  });
-}
-
-function updateMemberSummaryDimensions(properties) {
-  hideMemberSummaryDimensions();
-  if (memberType === "chs") {
-    setMemberSummaryCell("memberDimD", formatDimension(properties.D));
-    setMemberSummaryCell("memberDimT", formatDimension(properties.t));
-  }
-  if (memberType === "rod") {
-    setMemberSummaryCell("memberDimDepth", formatDimension(properties.diameter));
-  }
-  if (memberType === "ea") {
-    setMemberSummaryCell("memberDimB", formatDimension(properties.b, 0));
-    setMemberSummaryCell("memberDimT", formatDimension(properties.t));
-  }
-  if (memberType === "pfc") {
-    setMemberSummaryCell("memberDimDepth", formatDimension(properties.d, 0));
-    setMemberSummaryCell("memberDimBf", formatDimension(properties.bf, 0));
-    setMemberSummaryCell("memberDimTw", formatDimension(properties.tw));
-    setMemberSummaryCell("memberDimTf", formatDimension(properties.tf));
-  }
-}
-
 function chsGeometry(D, t) {
   const outsideDiameter = Math.max(0.2, D);
   const wallThickness = Math.max(0.05, Math.min(t, outsideDiameter / 2 - 0.05));
@@ -5635,7 +6043,7 @@ function eaGeometry(b, t) {
   const leg = Math.max(0.1, b);
   const thickness = Math.max(0.05, Math.min(t, leg - 0.05));
   const section = SectionGeometry.equalAngle(leg, thickness);
-  return { designation: `${leg.toFixed(0)} x ${leg.toFixed(0)} x ${thickness.toFixed(1)} EA`, area: section.area, r: Math.min(section.rx, section.ry), rx: section.rx, ry: section.ry, ix: section.ix, iy: section.iy, b: leg, t: thickness, customGeometry: true };
+  return { designation: `${leg.toFixed(0)} x ${leg.toFixed(0)} x ${thickness.toFixed(1)} EA`, area: section.area, r: section.rv, rx: section.ru, ry: section.rv, ix: section.iu, iy: section.iv, b: leg, t: thickness, customGeometry: true, principalAxisBasis: true };
 }
 
 function pfcGeometry(d, bf, tw, tf) {
@@ -5679,9 +6087,9 @@ function memberSections() {
 
 function memberProperties(section) {
   if (memberType === "custom") {
-    const area = value("memberCustomArea") || 1;
-    const rx = value("memberCustomRx") || 0.1;
-    const ry = value("memberCustomRy") || 0.1;
+    const area = signedValue("memberCustomArea", NaN);
+    const rx = signedValue("memberCustomRx", NaN);
+    const ry = signedValue("memberCustomRy", NaN);
     return { area, r: Math.min(rx, ry), rx, ry, ix: area * rx ** 2, iy: area * ry ** 2 };
   }
   const override = memberDimensionProperties(section);
@@ -5689,6 +6097,19 @@ function memberProperties(section) {
   if (memberType === "chs") {
     const chs = chsProperties(section);
     return { ...chs, rx: chs.r, ry: chs.r, D: section.D, t: section.t };
+  }
+  if (memberType === "ea" && section.principalRx > 0 && section.principalRy > 0) {
+    return {
+      area: section.area,
+      r: Math.min(section.principalRx, section.principalRy),
+      rx: section.principalRx,
+      ry: section.principalRy,
+      ix: section.principalIx,
+      iy: section.principalIy,
+      b: section.b,
+      t: section.t,
+      principalAxisBasis: true
+    };
   }
   return {
     area: section.area,
@@ -5734,7 +6155,7 @@ function memberAlphaBBasis(kf) {
 }
 
 function memberKfValue(grade) {
-  return memberType === "custom" ? Math.max(0.001, value("memberCustomKf") || grade.kf) : grade.kf;
+  return memberType === "custom" ? signedValue("memberCustomKf", NaN) : grade.kf;
 }
 
 function memberKfBasisText(kf) {
@@ -5754,7 +6175,7 @@ function memberRadiusBasis(defaultR) {
   if (memberType === "chs") return `r = ${defaultR.toFixed(1)} mm from CHS geometry`;
   if (memberType === "rod") return `r = d/4 = ${defaultR.toFixed(1)} mm`;
   if (memberType === "pfc") return `r = r<sub>min</sub> = ${defaultR.toFixed(1)} mm`;
-  if (memberType === "ea") return `r = ${defaultR.toFixed(1)} mm from the Equal Angle table`;
+  if (memberType === "ea") return `r = r<sub>v</sub> = ${defaultR.toFixed(1)} mm about the minor principal axis`;
   return `r = ${defaultR.toFixed(1)} mm`;
 }
 
@@ -5790,7 +6211,7 @@ function updateMemberDimensionUi(properties = null) {
     input.disabled = !active || memberType === "custom";
   });
   if ($("memberDimensionOverride")) $("memberDimensionOverride").disabled = memberType === "custom";
-  if ($("memberRadiusField")) $("memberRadiusField").hidden = memberType === "custom" || active;
+  if ($("memberRadiusOverrideDetails")) $("memberRadiusOverrideDetails").hidden = memberType === "custom" || active;
   const props = properties || (selectedMemberGrade() ? memberProperties(selectedMemberGrade().section) : null);
   if ($("memberDimensionStatus")) {
     $("memberDimensionStatus").hidden = !active || memberType === "custom";
@@ -5810,7 +6231,7 @@ function setMemberRadiusDefault(properties = null) {
 function memberDesignRadius(defaultR) {
   if (memberType === "custom") return defaultR;
   if (memberDimensionOverrideActive()) return defaultR;
-  return Math.max(0.1, value("memberRadiusInput") || defaultR);
+  return signedValue("memberRadiusInput", NaN);
 }
 
 function compressionReduction(lambdaN, alphaB) {
@@ -5831,6 +6252,40 @@ function compressionReduction(lambdaN, alphaB) {
   return { alphaC, alphaA, modifiedLambda, eta, xi };
 }
 
+function formatMemberUtilisation(ratio) {
+  if (!Number.isFinite(ratio)) return "\u2014";
+  if (ratio === 1) return "1.00";
+  if (ratio > 1 && ratio < 1.005) return ">1.00";
+  if (ratio < 1 && ratio > 0.995) return "<1.00";
+  return ratio.toFixed(2);
+}
+
+function setMemberInvalidState(message, designation) {
+  $("memberDesignation").textContent = designation;
+  $("memberAssumption").textContent = "Inputs are incomplete or outside the supported axial-member scope.";
+  [
+    "memberSummaryAxis", "memberSummarySlenderness", "memberSummaryNetArea",
+    "memberSummaryStrength", "memberSummaryCompressionFactors", "memberSummaryKt",
+    "memberGeometrySummary", "memberAreaSummary", "memberMaterialSummary",
+    "memberCompressionSummary", "memberTensionSummary"
+  ].forEach(id => { $(id).textContent = "\u2014"; });
+  ["memberCompression", "sectionCompression", "memberTension", "memberSlenderness", "memberLambdaN", "memberAlphaC", "memberUtilisation"]
+    .forEach(id => { $(id).textContent = "\u2014"; });
+  ["grossYieldCapacity", "netFractureCapacity"].forEach(id => { $(id).textContent = "\u2014 kN"; });
+  $("tensionGoverning").textContent = "Not evaluated";
+  $("memberTensionBasis").textContent = "Input required before AS 4100 capacity checks";
+  $("memberGoverning").textContent = "Not evaluated";
+  $("memberUtilisationStatus").textContent = "INPUT REQUIRED";
+  $("memberUtilisationStatus").className = "check";
+  $("memberWarning").innerHTML = `Input required: ${message}. No axial capacity has been evaluated.`;
+  $("memberFormulaSteps").innerHTML = calculationTraceRow({
+    title: "Input validation",
+    selection: message,
+    result: "Not evaluated",
+    applicability: "Enter valid project inputs before using the AS 4100 axial-member checks."
+  });
+}
+
 function memberNetAreaInput(properties) {
   const autoAvailable = memberType === "ea" || memberType === "pfc";
   const mode = autoAvailable ? $("memberNetAreaMode").value : "manual";
@@ -5844,7 +6299,7 @@ function memberNetAreaInput(properties) {
       : 0;
   const holeDeduction = holeCount * holeDiameter * deductionThickness;
   const automaticNetArea = Math.max(0, Math.min(grossArea, grossArea - holeDeduction));
-  const manualNetArea = Math.min(grossArea, value("memberNetArea"));
+  const manualNetArea = signedValue("memberNetArea", NaN);
   if (mode === "auto") {
     $("memberNetArea").value = automaticNetArea.toFixed(0);
   }
@@ -5898,8 +6353,8 @@ function populateMemberGrades() {
   $("memberHoleCount").value = "0";
   $("memberHoleDiameter").value = "0";
   $("memberHoleThickness").value = memberType === "pfc" ? (properties.tw || section.tw || 0).toFixed(1) : "0";
-  $("memberNetArea").value = properties.area.toFixed(0);
-  $("memberNetArea").max = properties.area.toFixed(0);
+  $("memberNetArea").value = String(Math.floor(properties.area * 1000) / 1000);
+  $("memberNetArea").max = String(properties.area);
   $("memberKt").value = memberType === "ea" || memberType === "pfc" ? "0.85" : "1";
   calculateMember();
 }
@@ -5933,6 +6388,23 @@ function calculateMember() {
     $("memberAlphaB").value = String(alphaB);
   }
   const designR = memberDesignRadius(properties.r);
+  const fy = signedValue("memberFyInput", NaN);
+  const fu = signedValue("memberFuInput", NaN);
+  const designation = memberType === "custom"
+    ? section.designation
+    : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeName}`;
+  const preliminaryErrors = [];
+  if (!Number.isFinite(properties.area) || properties.area <= 0) preliminaryErrors.push("A_g must be greater than zero");
+  if (!Number.isFinite(properties.rx) || properties.rx <= 0 || !Number.isFinite(properties.ry) || properties.ry <= 0) preliminaryErrors.push("r_x and r_y must be greater than zero");
+  if (!Number.isFinite(designR) || designR <= 0) preliminaryErrors.push("the governing radius r must be greater than zero");
+  if (!Number.isFinite(kf) || kf <= 0 || kf > 1) preliminaryErrors.push("k_f must satisfy 0 < k_f <= 1");
+  if (!Number.isFinite(fy) || fy <= 0) preliminaryErrors.push("f_y must be greater than zero");
+  if (!Number.isFinite(fu) || fu <= 0) preliminaryErrors.push("f_u must be greater than zero");
+  if (Number.isFinite(fy) && Number.isFinite(fu) && fu < fy) preliminaryErrors.push("f_u must not be less than f_y");
+  if (preliminaryErrors.length) {
+    setMemberInvalidState(preliminaryErrors.join("; "), designation);
+    return;
+  }
   const radiusOverridden = memberType !== "custom" && Math.abs(designR - properties.r) > 0.05;
   const radiusBasis = memberType === "custom"
     ? "r entered by axis"
@@ -5946,12 +6418,10 @@ function calculateMember() {
   } else {
     $("memberRadiusSource").innerHTML = `User-defined effective section properties from a verified section-property calculation.`;
   }
-  $("memberNetArea").max = properties.area.toFixed(0);
+  $("memberNetArea").max = String(properties.area);
   const netInput = memberNetAreaInput(properties);
   const netArea = netInput.netArea;
-  const kt = Math.min(1, value("memberKt"));
-  const fy = value("memberFyInput") || grade.fy;
-  const fu = value("memberFuInput") || grade.fu;
+  const kt = signedValue("memberKt", NaN);
   const strengthBasis = fy === grade.fy && fu === grade.fu
     ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; grade ${gradeName}`
     : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeName} default ${grade.fy}/${grade.fu} MPa`;
@@ -5966,6 +6436,17 @@ function calculateMember() {
         { label: "y", title: "y-axis", r: properties.ry, effectiveLength: value("memberCustomLey") * 1000, alphaB: alphaBInput("memberCustomAlphaBy") }
       ]
     : [{ label: "", title: "selected axis", r: designR, effectiveLength: value("memberLength") * 1000, alphaB }];
+  const calculationErrors = [];
+  if (!Number.isFinite(netArea) || netArea <= 0 || netArea > properties.area) calculationErrors.push("A_n must satisfy 0 < A_n <= A_g");
+  if (!Number.isFinite(kt) || kt < 0.75 || kt > 1) calculationErrors.push("k_t must be within the AS 4100 Cl. 7.3 range 0.75 to 1.00");
+  axes.forEach(axis => {
+    if (!Number.isFinite(axis.effectiveLength) || axis.effectiveLength <= 0) calculationErrors.push(`${axis.title} effective length L_e must be greater than zero`);
+    if (!Number.isFinite(axis.alphaB) || axis.alphaB < -1 || axis.alphaB > 1) calculationErrors.push(`${axis.title} alpha_b must be between -1.0 and 1.0`);
+  });
+  if (calculationErrors.length) {
+    setMemberInvalidState(calculationErrors.join("; "), designation);
+    return;
+  }
   const axisResults = axes.map(axis => {
     const leOverR = axis.r > 0 ? axis.effectiveLength / axis.r : 0;
     const lambdaN = leOverR * Math.sqrt(kf) * Math.sqrt(fy / 250);
@@ -5995,43 +6476,54 @@ function calculateMember() {
   const demandChecks = [];
   if (hasCompressionDemand) {
     demandChecks.push(Number.isFinite(compressionDemandRatio)
-      ? `Compression action check: N<sub>c</sub><sup>*</sup> / &phi;N<sub>c</sub> = ${fixed(compressionDemand)} / ${fixed(memberCompression)} = ${compressionDemandRatio.toFixed(2)}`
+      ? `Compression action check: N<sub>c</sub><sup>*</sup> / &phi;N<sub>c</sub> = ${fixed(compressionDemand)} / ${fixed(memberCompression)} = ${formatMemberUtilisation(compressionDemandRatio)}`
       : "Compression design capacity is not positive");
   }
   if (hasTensionDemand) {
     demandChecks.push(Number.isFinite(tensionDemandRatio)
-      ? `Tension action check: N<sub>t</sub><sup>*</sup> / &phi;N<sub>t</sub> = ${fixed(tensionDemand)} / ${fixed(tensionCapacity)} = ${tensionDemandRatio.toFixed(2)}`
+      ? `Tension action check: N<sub>t</sub><sup>*</sup> / &phi;N<sub>t</sub> = ${fixed(tensionDemand)} / ${fixed(tensionCapacity)} = ${formatMemberUtilisation(tensionDemandRatio)}`
       : "Tension design capacity is not positive");
   }
   const demandStep = hasMemberDemand
-    ? `${demandChecks.join("; ")}; governing utilisation ratio = ${Number.isFinite(governingDemandRatio) ? governingDemandRatio.toFixed(2) : "not applicable"}`
+    ? `${demandChecks.join("; ")}; governing utilisation ratio = ${formatMemberUtilisation(governingDemandRatio)}`
     : "No compression or tension design action specified.";
+  const netAreaBasisLabel = netInput.mode === "auto"
+    ? netInput.holeCount > 0 && netInput.holeDiameter > 0
+      ? "straight-line bolt-hole deduction"
+      : "auto / no holes"
+    : Math.abs(netArea - properties.area) <= 0.5
+      ? "gross area / no deduction"
+      : "manual net area";
 
-  $("memberDesignation").textContent = memberType === "custom"
-    ? $("memberCustomName").value || section.designation
-    : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeName}`;
-  $("memberAssumption").innerHTML = memberType === "chs"
-    ? `&alpha;<sub>b</sub> = -0.5; ${radiusBasis}`
-    : memberType === "ea"
-      ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)}; ${radiusBasis}`
-      : memberType === "pfc"
-        ? `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)}; ${radiusBasis}`
-        : memberType === "custom"
-          ? `A<sub>g</sub>, r<sub>x</sub>, r<sub>y</sub>, k<sub>f</sub>, &alpha;<sub>b</sub> and L<sub>e</sub> entered by axis.`
-          : `&alpha;<sub>b</sub> = ${alphaB.toFixed(1)}; ${radiusBasis}`;
-  $("memberArea").textContent = formatArea(properties.area);
-  updateMemberSummaryDimensions(properties);
-  $("memberRx").textContent = `${properties.rx.toFixed(1)} mm`;
-  $("memberRy").textContent = `${properties.ry.toFixed(1)} mm`;
-  $("memberIx").innerHTML = formatInertia(properties.ix);
-  $("memberIy").innerHTML = formatInertia(properties.iy);
-  $("memberRadius").textContent = memberType === "custom" ? `${properties.r.toFixed(1)} mm` : `${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)})` : ""}`;
-  $("memberFy").textContent = `${fy} MPa`;
-  $("memberFu").textContent = `${fu} MPa`;
-  $("memberKf").textContent = kf.toFixed(3);
+  $("memberDesignation").textContent = designation;
+  $("memberAssumption").innerHTML = memberType === "custom"
+    ? "User-entered effective section properties; both axes checked."
+    : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${radiusOverridden ? "user-entered governing radius" : radiusBasis}${memberType === "chs" ? "; assumed cold-formed non-stress-relieved" : memberType === "pfc" ? "; hot-rolled channel basis" : ""}.`;
+  $("memberSummaryAxis").innerHTML = memberType === "custom"
+    ? `${governingAxis.label}-axis / ${governingAxis.r.toFixed(1)} mm`
+    : `${memberType === "chs" || memberType === "rod" ? "symmetric" : memberType === "ea" ? "minor principal" : "minor y-y"} / ${designR.toFixed(1)} mm`;
+  $("memberSummarySlenderness").innerHTML = memberType === "custom"
+    ? `${(governingAxis.effectiveLength / 1000).toFixed(2)} m / ${governingAxis.leOverR.toFixed(1)}`
+    : `${(axisResults[0].effectiveLength / 1000).toFixed(2)} m / ${axisResults[0].leOverR.toFixed(1)}`;
+  $("memberSummaryNetArea").innerHTML = `${formatArea(netArea)}`;
+  $("memberSummaryStrength").innerHTML = `${fy} / ${fu} MPa`;
+  $("memberSummaryCompressionFactors").innerHTML = memberType === "custom"
+    ? `${kf.toFixed(3)} / ${governingAxis.alphaB.toFixed(1)}`
+    : `${kf.toFixed(3)} / ${alphaB.toFixed(1)}`;
+  $("memberSummaryKt").textContent = kt.toFixed(2);
+  $("memberGeometrySummary").innerHTML = memberType === "custom"
+    ? "User-entered effective properties; no catalogue geometry adopted."
+    : memberDimensionLabel(properties);
+  $("memberAreaSummary").innerHTML = `A<sub>g</sub> = ${formatArea(properties.area)}; A<sub>n</sub> = ${formatArea(netArea)} (${netAreaBasisLabel})`;
+  $("memberMaterialSummary").innerHTML = `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
+  $("memberCompressionSummary").innerHTML = memberType === "custom"
+    ? `${axisResults.map(axis => `${axis.label}: L<sub>e${axis.label}</sub> = ${(axis.effectiveLength / 1000).toFixed(2)} m; r<sub>${axis.label}</sub> = ${axis.r.toFixed(1)} mm; L<sub>e${axis.label}</sub>/r<sub>${axis.label}</sub> = ${axis.leOverR.toFixed(1)}; &alpha;<sub>b,${axis.label}</sub> = ${axis.alphaB.toFixed(1)}`).join("; ")}; k<sub>f</sub> = ${kf.toFixed(3)}; ${governingAxis.label}-axis governs`
+    : `L<sub>e</sub> = ${(axisResults[0].effectiveLength / 1000).toFixed(2)} m; r used = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; ${memberType === "chs" || memberType === "rod" ? "symmetric axes" : memberType === "ea" ? "minor principal axis" : "minor y-y axis"}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}`;
+  $("memberTensionSummary").innerHTML = `k<sub>t</sub> = ${kt.toFixed(2)}; A<sub>n</sub> basis = ${netAreaBasisLabel}`;
   $("memberCompression").textContent = fixed(memberCompression);
   $("sectionCompression").textContent = fixed(sectionCompression);
   $("memberTension").textContent = fixed(tensionCapacity);
+  $("memberTensionBasis").textContent = `${tensionGoverning} governs · AS 4100 Cl. 7.2`;
   $("grossYieldCapacity").textContent = `${fixed(grossYield)} kN`;
   $("netFractureCapacity").textContent = `${fixed(netFracture)} kN`;
   $("tensionGoverning").textContent = tensionGoverning;
@@ -6039,11 +6531,10 @@ function calculateMember() {
   $("memberLambdaN").textContent = memberType === "custom" ? axisResults.map(axis => `${axis.label} ${axis.lambdaN.toFixed(1)}`).join(" / ") : axisResults[0].lambdaN.toFixed(1);
   $("memberAlphaC").textContent = memberType === "custom" ? axisResults.map(axis => `${axis.label} ${axis.alphaC.toFixed(3)}`).join(" / ") : axisResults[0].alphaC.toFixed(3);
   $("memberGoverning").textContent = governingAxis.alphaC < 0.999 ? (memberType === "custom" ? `${governingAxis.title} buckling controls` : "Member buckling controls") : "Section capacity controls";
-  $("memberUtilisation").textContent = hasMemberDemand && Number.isFinite(governingDemandRatio) ? governingDemandRatio.toFixed(2) : "\u2014";
+  $("memberUtilisation").textContent = hasMemberDemand ? formatMemberUtilisation(governingDemandRatio) : "\u2014";
   const memberUtilisationStatus = $("memberUtilisationStatus");
   memberUtilisationStatus.textContent = hasMemberDemand ? (governingDemandRatio <= 1 ? "PASS" : "FAIL") : "No design action";
   memberUtilisationStatus.className = hasMemberDemand ? (governingDemandRatio <= 1 ? "pass" : "fail") : "check";
-  const netAreaWarning = value("memberNetArea") > properties.area + 0.5 ? " Net area has been limited to gross area." : "";
   const customGeometryKfWarning = properties.customGeometry && memberType === "ea"
     ? " Verify k<sub>f</sub> for slender custom angle geometry."
     : "";
@@ -6057,23 +6548,23 @@ function calculateMember() {
     : "";
   $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for non-straight net paths.`;
   $("memberWarning").innerHTML = memberType === "chs"
-    ? `Scope: centroidal axial compression and axial tension only. CHS basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = -0.5.${netAreaWarning}`
+    ? `Scope: centroidal axial compression and axial tension only. CHS basis: assumed cold-formed non-stress-relieved; k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = -0.5.`
     : memberType === "ea"
-      ? `Scope: centroidal axial compression and axial tension only. Angle basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${netAreaWarning}${customGeometryKfWarning}`
+      ? `Scope: centroidal axial compression and axial tension only. Angle basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${customGeometryKfWarning}`
       : memberType === "pfc"
-        ? `Scope: centroidal axial compression and axial tension only. PFC basis: r = r<sub>min</sub>, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${netAreaWarning}`
+        ? `Scope: centroidal axial compression and axial tension only. PFC basis: hot-rolled channel, r = r<sub>min</sub>, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`
         : memberType === "custom"
-          ? `Scope: centroidal axial compression and axial tension using entered effective properties.${netAreaWarning}`
-          : `Scope: centroidal axial compression and axial tension only. Rod basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${netAreaWarning}`;
+          ? `Scope: centroidal axial compression and axial tension using entered effective properties.`
+          : `Scope: centroidal axial compression and axial tension only. Rod basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`;
   const sectionDataText = memberType === "custom"
     ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
     : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${memberDimensionLabel(properties)}; A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; r = ${designR.toFixed(1)} mm${radiusOverridden ? `; default r = ${properties.r.toFixed(1)} mm` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
   const compressionTraceRows = memberType === "custom"
     ? axisResults.map(axis => calculationTraceRow({
         title: `Compression about ${axis.title}`,
-        reference: "AS 4100 Cl. 6.3",
-        formula: `&lambda;<sub>n</sub> = (L<sub>e</sub>/r)&radic;k<sub>f</sub>&radic;(f<sub>y</sub>/250); &phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub>`,
-        substitution: `L<sub>e</sub>/r = ${axis.leOverR.toFixed(1)}; &lambda;<sub>n</sub> = ${axis.lambdaN.toFixed(1)}; &alpha;<sub>b</sub> = ${axis.alphaB.toFixed(1)}; &alpha;<sub>c</sub> = ${axis.alphaC.toFixed(3)}`,
+        reference: "AS 4100 Cl. 6.3.3",
+        formula: `&lambda;<sub>n</sub> = (L<sub>e</sub>/r)&radic;k<sub>f</sub>&radic;(f<sub>y</sub>/250); &alpha;<sub>a</sub> = 2100(&lambda;<sub>n</sub> - 13.5)/(&lambda;<sub>n</sub><sup>2</sup> - 15.3&lambda;<sub>n</sub> + 2050); &lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub>; &eta; = max[0, 0.00326(&lambda; - 13.5)]; &xi; = [(&lambda;/90)<sup>2</sup> + 1 + &eta;]/[2(&lambda;/90)<sup>2</sup>]; &alpha;<sub>c</sub> = &xi;[1 - &radic;(1 - (90/(&xi;&lambda;))<sup>2</sup>)]; &phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub>`,
+        substitution: `L<sub>e</sub>/r = ${axis.leOverR.toFixed(1)}; &lambda;<sub>n</sub> = ${axis.lambdaN.toFixed(1)}; &alpha;<sub>a</sub> = ${axis.alphaA.toFixed(2)}; &alpha;<sub>b</sub> = ${axis.alphaB.toFixed(1)}; &lambda; = ${axis.modifiedLambda.toFixed(1)}; &eta; = ${axis.eta.toFixed(3)}; &xi; = ${axis.xi.toFixed(3)}; &alpha;<sub>c</sub> = ${axis.alphaC.toFixed(3)}`,
         result: `Design member capacity &phi;N<sub>c,${axis.label}</sub> = ${fixed(axis.memberCompression)} kN`,
         applicability: axis === governingAxis ? "Governing custom axis." : "Non-governing custom axis."
       })).join("")
@@ -6089,15 +6580,15 @@ function calculateMember() {
         calculationTraceRow({
           title: "Modified slenderness",
           reference: "AS 4100 Cl. 6.3.3",
-          formula: `&lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub>`,
-          substitution: `${axisResults[0].lambdaN.toFixed(1)} + ${axisResults[0].alphaA.toFixed(2)} &times; ${axisResults[0].alphaB.toFixed(1)}`,
+          formula: `&alpha;<sub>a</sub> = 2100(&lambda;<sub>n</sub> - 13.5)/(&lambda;<sub>n</sub><sup>2</sup> - 15.3&lambda;<sub>n</sub> + 2050); &lambda; = &lambda;<sub>n</sub> + &alpha;<sub>a</sub>&alpha;<sub>b</sub>`,
+          substitution: `&alpha;<sub>a</sub> = 2100(${axisResults[0].lambdaN.toFixed(1)} - 13.5)/(${axisResults[0].lambdaN.toFixed(1)}<sup>2</sup> - 15.3 &times; ${axisResults[0].lambdaN.toFixed(1)} + 2050) = ${axisResults[0].alphaA.toFixed(2)}; &lambda; = ${axisResults[0].lambdaN.toFixed(1)} + ${axisResults[0].alphaA.toFixed(2)} &times; ${axisResults[0].alphaB.toFixed(1)} = ${axisResults[0].modifiedLambda.toFixed(1)}`,
           result: `&lambda; = ${axisResults[0].modifiedLambda.toFixed(1)}`,
           applicability: `${alphaBBasis}; &alpha;<sub>a</sub> is calculated from &lambda;<sub>n</sub>.`
         }),
         calculationTraceRow({
           title: "Compression reduction factor",
           reference: "AS 4100 Cl. 6.3.3",
-          formula: `&eta; = 0.00326(&lambda; - 13.5); &xi; = [(&lambda;/90)<sup>2</sup> + 1 + &eta;]/[2(&lambda;/90)<sup>2</sup>]`,
+          formula: `&eta; = max[0, 0.00326(&lambda; - 13.5)]; &xi; = [(&lambda;/90)<sup>2</sup> + 1 + &eta;]/[2(&lambda;/90)<sup>2</sup>]; &alpha;<sub>c</sub> = &xi;[1 - &radic;(1 - (90/(&xi;&lambda;))<sup>2</sup>)]`,
           substitution: `&lambda; = ${axisResults[0].modifiedLambda.toFixed(1)}; &eta; = ${axisResults[0].eta.toFixed(3)}; &xi; = ${axisResults[0].xi.toFixed(3)}`,
           result: `&alpha;<sub>c</sub> = ${axisResults[0].alphaC.toFixed(3)}`,
           applicability: "Active AS 4100 compression-member branch."
@@ -6111,6 +6602,22 @@ function calculateMember() {
   const netAreaSubstitution = netInput.mode === "auto"
     ? `${properties.area.toFixed(0)} - ${netInput.holeCount} &times; ${fixed(netInput.holeDiameter)} &times; ${fixed(netInput.deductionThickness)} mm<sup>2</sup>`
     : `${netArea.toFixed(0)} mm<sup>2</sup>`;
+  const sectionCompressionTrace = calculationTraceRow({
+    title: "Design section compression capacity",
+    reference: "AS 4100 Cl. 6.2.1",
+    formula: `&phi;N<sub>s</sub> = &phi;k<sub>f</sub>A<sub>n</sub>f<sub>y</sub>`,
+    substitution: `0.90 &times; ${kf.toFixed(3)} &times; ${compressionArea.toFixed(0)} mm<sup>2</sup> &times; ${fy} MPa / 1000`,
+    result: `Design section capacity = ${fixed(sectionCompression)} kN`,
+    applicability: "Section compression capacity before member buckling reduction."
+  });
+  const memberCompressionTrace = calculationTraceRow({
+    title: "Design member compression capacity",
+    reference: "AS 4100 Cl. 6.3.3",
+    formula: memberType === "custom" ? `&phi;N<sub>c</sub> = min(&phi;N<sub>c,x</sub>, &phi;N<sub>c,y</sub>)` : `&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub>`,
+    substitution: memberType === "custom" ? axisResults.map(axis => `${axis.label}: ${fixed(axis.memberCompression)} kN`).join("; ") : `${governingAxis.alphaC.toFixed(3)} &times; ${fixed(sectionCompression)} kN`,
+    result: `Design member capacity = ${fixed(memberCompression)} kN`,
+    applicability: memberType === "custom" ? `${governingAxis.title} governs.` : $("memberGoverning").textContent
+  });
   $("memberFormulaSteps").innerHTML = [
     calculationTraceRow({
       title: "Design basis",
@@ -6122,18 +6629,21 @@ function calculateMember() {
     calculationTraceRow({
       title: "Section properties",
       lookup: memberType === "custom" ? "Verified project section-property calculation required." : properties.customGeometry ? "Entered ideal geometry override." : "Selected catalogue row.",
-      selection: memberType === "custom" ? $("memberCustomName").value || section.designation : section.designation,
+      selection: section.designation,
       adopted: sectionDataText,
       applicability: radiusBasis
     }),
     calculationTraceRow({
       title: "Net area",
-      reference: "AS 4100 Cl. 6.2 and AS 4100 Cl. 7.2",
+      reference: "AS 4100 Cl. 6.2.1 and AS 4100 Cl. 7.2",
       formula: netAreaFormula,
       substitution: netAreaSubstitution,
       result: `A<sub>n</sub> = ${netArea.toFixed(0)} mm<sup>2</sup>`,
       applicability: netInput.mode === "auto" ? "Straight-line quick deduction only; use manual A<sub>n</sub> for staggered or non-straight critical paths." : "Project-entered or unperforated gross-area basis."
     }),
+    sectionCompressionTrace,
+    compressionTraceRows,
+    memberCompressionTrace,
     calculationTraceRow({
       title: "Gross-section yielding",
       reference: "AS 4100 Cl. 7.2",
@@ -6158,29 +6668,12 @@ function calculateMember() {
       result: `Design tension capacity = ${fixed(tensionCapacity)} kN`,
       applicability: `${tensionGoverning} governs.`
     }),
-    compressionTraceRows,
-    calculationTraceRow({
-      title: "Design section compression capacity",
-      reference: "AS 4100 Cl. 6.2",
-      formula: `&phi;N<sub>s</sub> = &phi;k<sub>f</sub>A<sub>n</sub>f<sub>y</sub>`,
-      substitution: `0.90 &times; ${kf.toFixed(3)} &times; ${compressionArea.toFixed(0)} mm<sup>2</sup> &times; ${fy} MPa / 1000`,
-      result: `Design section capacity = ${fixed(sectionCompression)} kN`,
-      applicability: "Section compression capacity before member buckling reduction."
-    }),
-    calculationTraceRow({
-      title: "Design member compression capacity",
-      reference: "AS 4100 Cl. 6.3",
-      formula: memberType === "custom" ? `&phi;N<sub>c</sub> = min(&phi;N<sub>c,x</sub>, &phi;N<sub>c,y</sub>)` : `&phi;N<sub>c</sub> = &alpha;<sub>c</sub>&phi;N<sub>s</sub>`,
-      substitution: memberType === "custom" ? axisResults.map(axis => `${axis.label}: ${fixed(axis.memberCompression)} kN`).join("; ") : `${governingAxis.alphaC.toFixed(3)} &times; ${fixed(sectionCompression)} kN`,
-      result: `Design member capacity = ${fixed(memberCompression)} kN`,
-      applicability: memberType === "custom" ? `${governingAxis.title} governs.` : $("memberGoverning").textContent
-    }),
     calculationTraceRow({
       title: "Design action utilisation",
       formula: hasMemberDemand ? `&eta; = max(N<sub>c</sub><sup>*</sup>/&phi;N<sub>c</sub>, N<sub>t</sub><sup>*</sup>/&phi;N<sub>t</sub>)` : "",
       substitution: hasMemberDemand ? demandChecks.join("; ") : "",
-      result: hasMemberDemand ? `Governing utilisation = ${Number.isFinite(governingDemandRatio) ? governingDemandRatio.toFixed(2) : "not applicable"}; ${governingDemandRatio <= 1 ? "PASS" : "FAIL"}` : "No design action specified",
-      applicability: "Centroidal axial compression and axial tension only; no combined bending or flexural-torsional buckling check."
+      result: hasMemberDemand ? `Governing utilisation = ${formatMemberUtilisation(governingDemandRatio)}; ${governingDemandRatio <= 1 ? "PASS" : "FAIL"}` : "No design action specified",
+      applicability: "Compression and tension entries represent separate governing axial load cases, not simultaneous combined actions. No combined bending or flexural-torsional buckling check."
     })
   ].join("");
 }
@@ -6342,72 +6835,15 @@ function setConcreteLayerDepthManual(index) {
 }
 
 function concreteStressBlockFactors(fc) {
-  const fcLimited = Math.min(120, Math.max(20, fc));
-  return {
-    alpha2: Math.max(0.67, 0.85 - 0.0015 * fcLimited),
-    gamma: Math.max(0.67, 0.97 - 0.0025 * fcLimited)
-  };
+  return ConcreteSectionCalculation.stressBlockFactors(fc);
 }
 
 function concreteForcesAtX(x, data) {
-  const blockDepth = Math.min(data.depth, data.gamma * x);
-  const cc = data.alpha2 * data.fc * data.width * blockDepth;
-  const yCc = data.direction === "top" ? blockDepth / 2 : data.depth - blockDepth / 2;
-  const layers = data.layers.map(layer => {
-    const strain = data.ecu * (x - layer.d) / x;
-    const stress = Math.max(-layer.fsy, Math.min(layer.fsy, layer.es * strain));
-    const displacedConcreteStress = layer.d <= blockDepth ? data.alpha2 * data.fc : 0;
-    const netStress = stress - displacedConcreteStress;
-    const force = layer.area * netStress;
-    return { ...layer, strain, stress, netStress, displacedConcreteStress, force };
-  });
-  const axial = cc + layers.reduce((sum, layer) => sum + layer.force, 0);
-  return { cc, yCc, blockDepth, layers, axial };
+  return ConcreteSectionCalculation.forcesAtNeutralAxis(x, data);
 }
 
 function solveConcreteSection(data) {
-  const forceAt = x => concreteForcesAtX(x, data).axial;
-  let low = 0.5;
-  let high = data.depth * 4;
-  let fLow = forceAt(low);
-  let fHigh = forceAt(high);
-  let expanded = 0;
-  while (fLow * fHigh > 0 && expanded < 10) {
-    high *= 1.8;
-    fHigh = forceAt(high);
-    expanded += 1;
-  }
-  if (fLow * fHigh > 0) {
-    return { ok: false, message: "No neutral axis solution found for active layers" };
-  }
-  for (let i = 0; i < 90; i += 1) {
-    const mid = (low + high) / 2;
-    const fMid = forceAt(mid);
-    if (Math.abs(fMid) < 0.5) {
-      low = mid;
-      high = mid;
-      break;
-    }
-    if (fLow * fMid <= 0) {
-      high = mid;
-      fHigh = fMid;
-    } else {
-      low = mid;
-      fLow = fMid;
-    }
-  }
-  const x = (low + high) / 2;
-  const state = concreteForcesAtX(x, data);
-  const momentNmm = state.cc * state.yCc + state.layers.reduce((sum, layer) => sum + layer.force * layer.yTop, 0);
-  const muo = Math.abs(momentNmm) / 1e6;
-  const extremeTensionLayer = state.layers
-    .filter(layer => layer.strain < -0.00005)
-    .reduce((current, layer) => !current || layer.d > current.d ? layer : current, null);
-  const d0 = extremeTensionLayer ? extremeTensionLayer.d : Math.max(...state.layers.map(layer => layer.d));
-  const kuo = d0 > 0 ? x / d0 : 0;
-  const hasLegacyReinforcement = state.layers.some(layer => layer.legacy);
-  const phi = hasLegacyReinforcement ? 0.65 : Math.max(0.65, Math.min(0.85, 1.24 - 13 * kuo / 12));
-  return { ok: true, x, d0, kuo, phi, muo, phiMuo: phi * muo, ...state };
+  return ConcreteSectionCalculation.solveSection(data);
 }
 
 function concreteOneWayShear(data, result) {
@@ -6417,7 +6853,7 @@ function concreteOneWayShear(data, result) {
     ? tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0) / centroidArea
     : result.d0;
   const dBasis = centroidArea > 0
-    ? tensionLayers.map(layer => `Mat ${layer.index}: A_s = ${fixed(layer.area)} mm2, d = ${fixed(layer.d)} mm`).join("; ")
+    ? tensionLayers.map(layer => `Mat ${layer.index}: A<sub>s</sub> = ${fixed(layer.area)} mm<sup>2</sup>, d = ${fixed(layer.d)} mm`).join("; ")
     : `No reinforcement mat in the tensile half-depth; fallback d = d_o = ${fixed(result.d0)} mm`;
   const dNumerator = tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0);
   const dv = Math.max(0.72 * data.depth, 0.9 * d);
@@ -6511,8 +6947,10 @@ function calculateConcrete() {
   const cover = value("concreteCover");
   const width = value("concreteWidth");
   const fcInput = value("concreteFc");
-  const fc = Math.min(120, Math.max(20, fcInput));
-  const stressBlock = concreteStressBlockFactors(fc);
+  const fcValid = Number.isFinite(fcInput) && fcInput >= 20 && fcInput <= 120;
+  $("concreteFc").setAttribute("aria-invalid", String(!fcValid));
+  const fc = fcValid ? fcInput : NaN;
+  const stressBlock = fcValid ? concreteStressBlockFactors(fc) : { alpha2: NaN, gamma: NaN };
   const ecu = 0.003;
   updateConcreteMatAvailability(topDepth, bottomDepth);
   updateConcreteMatDepths(topDepth, bottomDepth, cover);
@@ -6538,11 +6976,13 @@ function calculateConcrete() {
 
   let result = {
     ok: false,
-    message: depth <= 0
-      ? "No concrete pad depth is defined"
-      : "Plain concrete section: no RC ultimate flexural capacity is calculated without active reinforcement mats"
+    message: !fcValid
+      ? "Concrete strength must be between 20 MPa and 120 MPa"
+      : depth <= 0
+        ? "No concrete pad depth is defined"
+        : "Plain concrete section: no RC ultimate flexural capacity is calculated without active reinforcement mats"
   };
-  if (data.width > 0 && data.depth > 0 && data.fc > 0 && data.ecu > 0 && data.layers.length) {
+  if (fcValid && data.width > 0 && data.depth > 0 && data.ecu > 0 && data.layers.length) {
     result = solveConcreteSection(data);
   }
 
@@ -6573,15 +7013,26 @@ function calculateConcrete() {
   if (!result.ok) {
     ["concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
     $("concreteResultScope").textContent = `${checkedDirection.toUpperCase()}-direction strip`;
-    $("concreteShearNote").innerHTML = depth <= 0
-      ? "RC one-way shear not calculated without a defined section depth"
-      : "RC one-way shear not calculated without active reinforcement";
-    $("concreteStatusValue").textContent = "Review required";
-    $("concreteWarningText").textContent = "Section capacity is unavailable for the current depth and active reinforcement.";
+    $("concreteShearNote").innerHTML = !fcValid
+      ? "Not evaluated - enter f'<sub>c</sub> between 20 MPa and 120 MPa"
+      : depth <= 0
+        ? "RC one-way shear not calculated without a defined section depth"
+        : "RC one-way shear not calculated without active reinforcement";
+    $("concreteStatusValue").textContent = fcValid ? "Review required" : "Invalid input";
+    $("concreteWarningText").textContent = fcValid
+      ? "Section capacity is unavailable for the current depth and active reinforcement."
+      : result.message;
     $("concreteSectionState").innerHTML = "";
     $("concreteLayerResults").innerHTML = "";
-    $("concreteFormulaSteps").innerHTML = depth <= 0
+    $("concreteFormulaSteps").innerHTML = !fcValid
       ? calculationTraceRow({
+          title: "Concrete strength input",
+          result: "Not evaluated",
+          applicability: `${result.message}. No flexural or shear capacity is reported.`,
+          state: "warning"
+        })
+      : depth <= 0
+        ? calculationTraceRow({
           title: "Section definition",
           result: "Not evaluated",
           applicability: `${result.message}. Enter D<sub>top</sub> or D<sub>bot</sub> greater than zero.`,
@@ -6611,7 +7062,7 @@ function calculateConcrete() {
   const reviewFlags = [];
   if (!shear.withinSimplifiedScope) reviewFlags.push(`one-way shear not evaluated outside AS 3600 Cl. 8.2.4 simplified-method scope (${shear.scopeFailures.join("; ")})`);
   if (shear.shearReoMode === "vertical" && !shear.hasShearReo) reviewFlags.push("selected shear reinforcement requires at least one fitment leg and positive spacing");
-  if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A<sub>sv</sub>/s below the AS 3600 Cl. 8.2.1.7 minimum (${shear.asvPerS.toFixed(3)} < ${shear.asvMinPerS.toFixed(3)} mm2/mm)`);
+  if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A<sub>sv</sub>/s below the AS 3600 Cl. 8.2.1.7 minimum (${shear.asvPerS.toFixed(3)} < ${shear.asvMinPerS.toFixed(3)} mm<sup>2</sup>/mm)`);
   if (shear.webCrushingLimited) reviewFlags.push(`V<sub>u</sub> limited by AS 3600 Cl. 8.2.3.3 web crushing`);
   if (coverWarnings.length) reviewFlags.push(`${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} cover check`);
   if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
@@ -6644,7 +7095,7 @@ function calculateConcrete() {
     const status = Math.abs(layer.strain) < 0.00005 ? "near neutral axis" : layer.force > 0 ? "compression" : "tension";
     const coverStatus = layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2 ? "nominal cover review required" : "within nominal cover reference";
     const displacementNote = layer.displacedConcreteStress > 0 ? `; net stress = ${signedFixed(layer.netStress, 1)} MPa after displaced concrete` : "";
-    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${checkedDirectionLabel} bars: ${layer.designation} @ ${fixed(layer.spacing)} mm; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm2 per strip (${fixed(layer.areaPerMetre)} mm2/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
+    return `<article><b>Mat ${layer.index} - ${layer.name}</b><span>${checkedDirectionLabel} bars: ${layer.designation} @ ${fixed(layer.spacing)} mm; ${status}; y<sub>${layer.index}</sub> = ${fixed(layer.yTop)} mm; A<sub>s${layer.index}</sub> = ${fixed(layer.area)} mm<sup>2</sup> per strip (${fixed(layer.areaPerMetre)} mm<sup>2</sup>/m); ${coverStatus}</span><small>&epsilon;<sub>s${layer.index}</sub> = ${signedFixed(layer.strain, 5)}; f<sub>s${layer.index}</sub> = ${signedFixed(layer.stress, 1)} MPa${displacementNote}; F<sub>s${layer.index}</sub> = ${signedFixed(layer.force / 1000, 1)} kN</small></article>`;
   }).join("");
 
   const shearFormulaSteps = shear.withinSimplifiedScope ? [
@@ -6706,7 +7157,7 @@ function calculateConcrete() {
     calculationTraceRow({
       title: "One-way shear design capacity",
       reference: "AS 3600 Cl. 8.2.3.1 and AS 3600 Table 2.2.2",
-      formula: `V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u,max</sub>); &phi;V<sub>u</sub> = &phi;V<sub>u</sub>`,
+      formula: `V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u,max</sub>); design capacity = &phi; &times; V<sub>u</sub>`,
       substitution: `min(${fixed(shear.vuc)} + ${fixed(shear.vus)}, ${fixed(shear.vuMax)}) kN; &phi; = ${shear.phi.toFixed(2)}`,
       result: `Design one-way shear capacity = ${fixed(shear.phiVu)} kN`,
       applicability: shear.webCrushingLimited ? "Web crushing governs." : shear.minShearReoProvided ? "Verified minimum Class N fitments; no web-crushing limit governs." : "No verified minimum Class N fitments."
@@ -6798,7 +7249,7 @@ function calculateConcrete() {
     calculationTraceRow({
       title: "Design flexural capacity",
       reference: "AS 3600 Table 2.2.2",
-      formula: `&phi;M<sub>uo</sub> = &phi;M<sub>uo</sub>`,
+      formula: `Design &phi;M<sub>uo</sub> = &phi; &times; M<sub>uo</sub>`,
       substitution: `${result.phi.toFixed(2)} &times; ${fixed(result.muo)} kN&middot;m`,
       result: `Design section moment capacity = ${fixed(result.phiMuo)} kN&middot;m`,
       applicability: "Verify capacity-factor and ductility assumptions before issue for design."
@@ -8043,6 +8494,7 @@ function calculateScrewDemand(comparison) {
   $("screwDemandFormulaSteps").innerHTML = [
     calculationTraceRow({
       title: "Action-distribution model",
+      reference: "Derived rigid-cap equilibrium model",
       formula: `&Sigma;x<sub>j</sub>y<sub>j</sub> = 0 for the symmetric layout; actions are distributed by rigid-cap equilibrium`,
       substitution: `n = ${n}; &Sigma;x<sub>j</sub>y<sub>j</sub> = ${fixed2(sumXY)} m<sup>2</sup>; &Sigma;x<sub>j</sub><sup>2</sup> = ${fixed2(sumX2)} m<sup>2</sup>; &Sigma;y<sub>j</sub><sup>2</sup> = ${fixed2(sumY2)} m<sup>2</sup>; &Sigma;r<sub>j</sub><sup>2</sup> = ${fixed2(sumR2)} m<sup>2</sup>`,
       result: `${n}-pile symmetric rectangular group`,
@@ -8050,6 +8502,7 @@ function calculateScrewDemand(comparison) {
     }),
     calculationTraceRow({
       title: "Axial pile action",
+      reference: "Derived rigid-cap equilibrium model",
       formula: `N<sub>i</sub><sup>*</sup> = N<sup>*</sup>/n + M<sub>x</sub><sup>*</sup>y<sub>i</sub>/&Sigma;y<sub>j</sub><sup>2</sup> + M<sub>y</sub><sup>*</sup>x<sub>i</sub>/&Sigma;x<sub>j</sub><sup>2</sup>`,
       substitution: `N<sup>*</sup> = ${fixed(baseN)} kN; M<sub>x</sub><sup>*</sup> = ${fixed(mx)} kN&middot;m; M<sub>y</sub><sup>*</sup> = ${fixed(my)} kN&middot;m; n = ${n}`,
       result: `Maximum compression = ${fixed(maxCompression)} kN; maximum tension = ${fixed(maxUplift)} kN`,
@@ -8057,6 +8510,7 @@ function calculateScrewDemand(comparison) {
     }),
     calculationTraceRow({
       title: "Horizontal pile action",
+      reference: "Derived rigid-cap equilibrium model",
       formula: `V<sub>x,i</sub><sup>*</sup> = V<sub>x</sub><sup>*</sup>/n - T<sub>z</sub><sup>*</sup>y<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>y,i</sub><sup>*</sup> = V<sub>y</sub><sup>*</sup>/n + T<sub>z</sub><sup>*</sup>x<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>i</sub><sup>*</sup> = &radic;[(V<sub>x,i</sub><sup>*</sup>)<sup>2</sup> + (V<sub>y,i</sub><sup>*</sup>)<sup>2</sup>]`,
       substitution: `V<sub>x</sub><sup>*</sup> = ${fixed(vx)} kN; V<sub>y</sub><sup>*</sup> = ${fixed(vy)} kN; T<sub>z</sub><sup>*</sup> = ${fixed(tz)} kN&middot;m; n = ${n}`,
       result: `Maximum horizontal pile action = ${fixed(maxLateral)} kN`,
@@ -8983,7 +9437,7 @@ function syncResponsiveDefaults(force = false) {
   const mobileView = window.matchMedia("(max-width: 500px)").matches;
   if (!force && mobileView === mobileLayoutActive) return;
   const memberActionGroup = $("memberActionGroup");
-  if (memberActionGroup) memberActionGroup.open = !mobileView;
+  if (memberActionGroup && mobileView) memberActionGroup.open = false;
   if (!mobileView) setMobileToolMenu(false);
   mobileLayoutActive = mobileView;
 }
@@ -9005,7 +9459,7 @@ function setTool(tool, updateHash = true) {
     const active = button.dataset.tool === selectedTool;
     button.hidden = button.dataset.category !== selectedCategory;
     button.classList.toggle("active", active);
-    button.setAttribute("aria-selected", String(active));
+    button.setAttribute("aria-pressed", String(active));
     if (active) activeButton = button;
   });
   const activeToolTab = document.querySelector(`.tool-tab[data-tool="${selectedTool}"]`);
@@ -9057,15 +9511,14 @@ function setMemberType(type) {
   $("memberActionGroup").hidden = false;
   $("memberCatalogueSectionFields").hidden = isCustom;
   $("memberCustomSectionFields").hidden = !isCustom;
-  $("memberCatalogueFactorFields").hidden = isCustom;
+  $("memberCatalogueFactorFields").hidden = true;
   $("memberCustomFactorFields").hidden = !isCustom;
   $("alphaBField").hidden = isCustom;
   $("memberSectionField").hidden = isCustom;
   $("memberGradeField").hidden = isCustom;
   $("memberLengthField").hidden = isCustom;
-  $("memberRadiusField").hidden = isCustom;
-  $("memberAlphaBAssumption").hidden = !isCustom;
-  $("memberAlphaBAssumption").innerHTML = type === "chs"
+  $("memberRadiusOverrideDetails").hidden = isCustom;
+  $("memberFactorHelp").innerHTML = type === "chs"
     ? "CHS basis: k<sub>f</sub> = 1.000; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
     : type === "ea"
       ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
@@ -9074,6 +9527,11 @@ function setMemberType(type) {
       : type === "custom"
         ? "Custom / Built-up properties: entered effective section properties; k<sub>f</sub> and &alpha;<sub>b</sub> are adopted AS 4100 compression factors."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";
+  $("memberMaterialOverrideDetails").open = isCustom;
+  $("memberMaterialOverrideTitle").textContent = isCustom ? "Material strengths" : "Override grade values";
+  $("memberMaterialOverrideHelp").textContent = isCustom
+    ? "Enter verified project material strengths."
+    : "Use verified project material strengths only.";
   $("memberAlphaB").disabled = type !== "custom";
   if (type === "chs") $("memberAlphaB").value = "-0.5";
   if (type === "ea") $("memberAlphaB").value = "0.5";
@@ -9171,18 +9629,36 @@ function initialise() {
   document.querySelector(".concrete-layout-details").addEventListener("toggle", event => {
     if (event.target.open) calculateConcrete();
   });
-  document.querySelectorAll(".beam-type").forEach(button => button.addEventListener("click", () => setBeamSource(button.dataset.beamSource)));
+  document.querySelectorAll(".beam-family").forEach(button => button.addEventListener("click", () => {
+    setBeamFamily(button.dataset.beamFamily);
+  }));
   $("beamFamily").addEventListener("change", () => setBeamFamily($("beamFamily").value));
   $("beamSection").addEventListener("change", populateBeamGrades);
   $("beamGrade").addEventListener("change", resetBeamMaterialStrengths);
   $("beamDirection").addEventListener("change", calculateBeam);
+  $("beamDimensionOverride").addEventListener("change", () => {
+    updateBeamDimensionUi();
+    populateBeamDirections();
+    calculateBeam();
+  });
+  beamDimensionInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
   $("beamFyInput").addEventListener("input", calculateBeam);
   $("beamFywInput").addEventListener("input", calculateBeam);
   $("beamMaterialReset").addEventListener("click", resetBeamMaterialStrengths);
   $("beamMomentDemand").addEventListener("input", calculateBeam);
   $("beamShearDemand").addEventListener("input", calculateBeam);
-  beamCustomInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
   document.querySelectorAll(".section-properties-mode").forEach(button => button.addEventListener("click", () => setSectionPropertyMode(button.dataset.sectionPropertiesMode)));
+  $("sectionCatalogueFamilyTabs").addEventListener("click", event => {
+    const button = event.target.closest(".section-catalogue-family-tab");
+    if (!button) return;
+    if (button.hasAttribute("data-section-category-custom")) {
+      setSectionPropertyMode("custom");
+      return;
+    }
+    if (sectionPropertiesMode !== "catalogue") setSectionPropertyMode("catalogue");
+    $("sectionCatalogueFamily").value = button.dataset.sectionCatalogueFamily;
+    populateSectionCatalogueDesignations();
+  });
   $("sectionCatalogueFamily").addEventListener("change", populateSectionCatalogueDesignations);
   $("sectionCatalogueDesignation").addEventListener("change", () => {
     syncSectionMaterialControls(true);
@@ -9256,7 +9732,7 @@ function initialise() {
   $("memberRadiusInput").addEventListener("input", calculateMember);
   $("memberDimensionOverride").addEventListener("change", calculateMember);
   ["memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD"].forEach(id => $(id).addEventListener("input", calculateMember));
-  ["memberCustomName", "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"].forEach(id => $(id).addEventListener("input", calculateMember));
+  ["memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"].forEach(id => $(id).addEventListener("input", calculateMember));
   $("memberLength").addEventListener("input", calculateMember);
   $("memberAlphaB").addEventListener("change", calculateMember);
   $("memberCompressionDemand").addEventListener("input", calculateMember);

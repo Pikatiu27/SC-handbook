@@ -1,122 +1,92 @@
 {
   "adoption_id": "SC-HANDBOOK-UWEDS-001",
   "project_id": "SC-HANDBOOK",
-  "project_name": "SC Handbook Engineering Lookup",
-  "adoption_status": "APPROVED",
+  "project_name": "SC Handbook",
+  "adoption_status": "DRAFT",
   "package": {
     "document_id": "UWEDS-001",
     "version": "1.10.0",
     "adoption_mode": "GOVERNED_SUBSET",
     "resolved_location": "C:/Users/silin/Documents/Codex/Drawing",
-    "manifest_ref": "C:/Users/silin/Documents/Codex/Drawing/PACKAGE_MANIFEST.md",
+    "manifest_ref": "PACKAGE_MANIFEST.md",
     "pin_type": "CONTROLLED_DOCUMENT_REVISION",
-    "pin_value": "UWEDS-001:1.10.0:manifest-sha256:7D71CFA493DEFD5504966D6E20CC271F34485A5FC8E6B80F7A1340BF8611C7F1"
+    "pin_value": "UWEDS-1.10.0-PACKAGE_MANIFEST-2026-08-03-SHA256-7d71cfa493defd5504966d6e20cc271f34485a5fc8e6b80f7a1340bf8611c7f1"
   },
   "governing_project_source_refs": [
-    "SC_HANDBOOK.md",
+    "SC_HANDBOOK.md Sections 4, 6, 7, 9, 10, 11 and 15.8",
     "REFERENCE_TRACEABILITY.md",
-    "CURRENT_MANUFACTURER_PRODUCT_SOURCE_PER_SELECTED_CATALOGUE_ROW",
-    "engineering/product-figure-symbol-register.json"
+    "Applicable Australian Standards and current certified manufacturer documents cited by each tab"
   ],
-  "project_profile_ref": "C:/Users/silin/Documents/Codex/Drawing/profiles/AU_STRUCTURAL_WEB_DEFAULT.yaml",
+  "project_profile_ref": "UWEDS profiles/AU_STRUCTURAL_WEB_DEFAULT.yaml plus SC_HANDBOOK.md Section 15.8",
   "adopted_modules": [
     "00_UNIFIED_WEB_ENGINEERING_DRAWING_STANDARD_V1.md",
     "DRAWING_STANDARD_MASTER_OUTLINE.md",
-    "02_ANNOTATION_AND_DIMENSION_LAYOUT_ENGINE_SPEC_V1.md",
-    "03_DIMENSION_AND_ANNOTATION_RULES_EXTENSION_V1.md",
-    "05_INTERACTIVE_ENGINEERING_DRAWING_NOTATION_STANDARD_V1.md",
-    "06_ENGINEERING_WRITTEN_NOTATION_AND_SCRIPT_STANDARD_V1.md",
-    "07_GRAPHICAL_ANNOTATION_AND_CALLOUT_STANDARD_V1.md",
-    "09_ENGINEERING_VIEW_AND_SECTION_GENERATION_STANDARD_V1.md",
-    "11_CAD_GEOMETRY_QA_AND_PREFLIGHT_STANDARD_V1.md",
-    "12_MODEL_DRAWING_WEB_REVISION_SYNCHRONISATION_STANDARD_V1.md",
     "PROJECT_ADOPTION_GUIDE.md",
     "IMPLEMENTATION_HANDOFF.md",
     "PACKAGE_MANIFEST.md",
+    "02_ANNOTATION_AND_DIMENSION_LAYOUT_ENGINE_SPEC_V1.md",
+    "03_DIMENSION_AND_ANNOTATION_RULES_EXTENSION_V1.md",
+    "04_CAD_TO_WEB_INTEGRATION_STANDARD_V1.md",
+    "05_INTERACTIVE_ENGINEERING_DRAWING_NOTATION_STANDARD_V1.md",
+    "06_ENGINEERING_WRITTEN_NOTATION_AND_SCRIPT_STANDARD_V1.md",
+    "07_GRAPHICAL_ANNOTATION_AND_CALLOUT_STANDARD_V1.md",
     "profiles/AU_STRUCTURAL_WEB_DEFAULT.yaml",
     "profiles/SCREEN_DISPLAY_DEFAULT.yaml",
-    "profiles/GRAPHICAL_ANNOTATION_DEFAULT.yaml",
     "profiles/ENGINEERING_SYMBOL_DICTIONARY.yaml",
-    "schemas/project_adoption_record.schema.json",
-    "schemas/pre_drawing_case_review.schema.json",
-    "schemas/drawing_document.schema.json",
-    "schemas/interactive_annotation.schema.json",
-    "schemas/technical_text_token.schema.json",
-    "schemas/graphical_annotation_style.schema.json",
-    "schemas/dimension_requirement.schema.json",
-    "schemas/annotation_requirement.schema.json",
-    "schemas/resolved_annotation.schema.json",
+    "profiles/ENGINEERING_WRITTEN_NOTATION.yaml",
+    "profiles/GRAPHICAL_ANNOTATION_DEFAULT.yaml",
     "atlas/PRODUCT_TECHNICAL_DRAWING_AND_PHYSICAL_EXPRESSION_REFERENCE_OUTLINE_V1.md",
+    "atlas/PHYSICAL_CONNECTION_REPRESENTATION_ATLAS_OUTLINE.md",
     "atlas/COMMON_ENGINEERING_COMPONENT_AND_CONNECTION_DRAWING_OUTLINE.md",
-    "recipes/ubolt_product_and_installation.yaml",
-    "rules/ubolt_rules.yaml",
-    "rules/product_rules.yaml",
-    "rules/common_component_drawing_rules.yaml",
+    "atlas/STRUCTURAL_DIMENSION_AND_ANNOTATION_ATLAS.md",
+    "recipes/structural_dimension_annotation.yaml",
+    "rules/drawing_rules.yaml",
     "rules/annotation_layout_rules.yaml",
     "rules/dimension_annotation_rules.yaml",
-    "rules/graphical_annotation_rules.yaml",
+    "rules/cad_web_rules.yaml",
+    "rules/web_release_rules.yaml",
     "rules/interactive_notation_rules.yaml",
     "rules/written_notation_rules.yaml",
-    "rules/project_adoption_rules.yaml",
+    "rules/graphical_annotation_rules.yaml",
     "rules/reference_case_rules.yaml",
-    "rules/web_release_rules.yaml",
+    "rules/project_adoption_rules.yaml",
+    "schemas/drawing_document.schema.json",
+    "schemas/pre_drawing_case_review.schema.json",
+    "schemas/project_adoption_record.schema.json",
     "tests/PROJECT_ADOPTION_CHECKLIST.md",
     "tests/PRE_DRAWING_CASE_REVIEW_CHECKLIST.md",
-    "tests/DIMENSION_AND_ANNOTATION_CHECKLIST.md",
-    "tests/GRAPHICAL_ANNOTATION_AND_CALLOUT_CHECKLIST.md",
-    "tests/COMMON_COMPONENT_AND_CONNECTION_DRAWING_CHECKLIST.md",
-    "sources/SOURCE_TO_RULE_TRACEABILITY.md"
+    "tests/GOLDEN_CASE_REGISTER.md",
+    "tests/NEGATIVE_CASE_REGISTER.md"
   ],
   "object_classes": [
+    "SECTION",
+    "MEMBER",
+    "CONNECTION",
+    "FOUNDATION",
     "PRODUCT",
-    "FASTENER",
-    "PRODUCT_REFERENCE_LINK"
+    "REINFORCEMENT"
   ],
   "output_types": [
-    "RESPONSIVE_WEB_SCREEN"
+    "WEB_SVG",
+    "WEB_HTML"
   ],
-  "overrides": [
-    {
-      "requirement_id": "UBOLT_PRODUCT_AND_INSTALLATION_V1.mandatory_installation_views",
-      "original_value": "Product-reference and installation views are both mandatory in the full U-bolt view pack.",
-      "replacement_value": "The lightweight catalogue lookup omits embedded product and installation views. Selected product links directly to the current manufacturer product page or technical data sheet.",
-      "authority_source": "SC_HANDBOOK.md manufacturer product lookup boundary and product-owner direction dated 2026-08-03",
-      "approved_by": "SC Handbook product owner",
-      "approval_date": "2026-08-03",
-      "affected_outputs": [
-        "U-bolt product lookup",
-        "Structural blind-bolt lookup"
-      ]
-    },
-    {
-      "requirement_id": "UBOLT_PRODUCT_AND_INSTALLATION_V1.mandatory_product_dimensions",
-      "original_value": "A, B, C and D are mandatory catalogue dimensions for the U-bolt product view.",
-      "replacement_value": "Do not reproduce catalogue dimensions in the lookup. Retain key selection values as structured data and link to the current manufacturer source for controlled product dimensions.",
-      "authority_source": "SC_HANDBOOK.md product-reference-link rule and product-owner direction dated 2026-08-03",
-      "approved_by": "SC Handbook product owner",
-      "approval_date": "2026-08-03",
-      "affected_outputs": [
-        "U-bolt product lookup"
-      ]
-    }
-  ],
+  "overrides": [],
   "pre_drawing_case_review": {
     "required": true,
     "record_location": "engineering/pre-drawing-case-reviews/"
   },
   "validation": {
-    "package_command": "python -B C:/Users/silin/Documents/Codex/Drawing/tools/validate_drawing_package.py",
-    "project_command": "node --check app.js and run all tests/*.test.js"
+    "package_command": "python C:/Users/silin/Documents/Codex/Drawing/tools/validate_drawing_package.py",
+    "project_command": "run all tests/*.test.js and complete the SC_HANDBOOK.md Section 15.8 acceptance gate"
   },
-  "release_boundary": "FOR_REVIEW",
+  "release_boundary": "PRIVATE_REVIEW_ONLY",
   "known_exclusions": [
-    "No fabrication drawing or for-construction output.",
-    "No embedded product, installed, expanded or locked product figure in the selected-product card.",
-    "No connection engineering, load path, product suitability or project capacity assessment.",
-    "No authoritative PDF, CAD or print-scale issue output.",
-    "No CAD-authoritative model, generated CAD view, BOM or fabrication assembly is claimed by the product-reference link."
+    "This adoption does not make handbook figures construction, fabrication, shop or certified design drawings.",
+    "The release-boundary enum records drawing authority, not website access; the public handbook remains engineering quick-reference only.",
+    "Existing inherited figures require case-by-case review before they may be described as UWEDS checked.",
+    "Full CAD production lifecycle modules are loaded only when exact CAD geometry or CAD-derived assets enter scope."
   ],
-  "adoption_owner": "SC Handbook product owner",
-  "approved_by": "SC Handbook product owner",
-  "approved_at": "2026-08-01T23:55:00+10:00"
+  "adoption_owner": "SC Handbook project owner",
+  "approved_by": null,
+  "approved_at": null
 }
