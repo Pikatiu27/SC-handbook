@@ -220,6 +220,22 @@ The following public resources may guide handbook organisation and assurance. On
 
 These models support the current product direction: ASI-style engineering hierarchy, Blue Book/ASCE-style fast querying, AISC-style separation of data/examples/errata and NASA-style lightweight traceability. They do not expand the handbook's calculation entitlement.
 
+#### 4.3.1 Open-source Calculation and Verification Patterns
+
+Open-source projects may inform calculation structure, verification practice and reporting clarity. They are implementation references only: they do not establish Australian engineering authority, replace the adopted Standard or justify a formula that has not been checked against the project Reference library.
+
+| Project | Permitted lesson for SC Handbook | Do not adopt by default |
+| --- | --- | --- |
+| [efficalc](https://github.com/youandvern/efficalc) | Typed input/calculation objects, reusable calculation templates, testable calculation functions and selectable report detail | Python report runtime, server dependency or a report-first interface |
+| [handcalcs](https://github.com/connorferster/handcalcs) | Human-checkable `Formula -> Substitution -> Result` presentation and consistent numerical precision | Jupyter or LaTeX as a browser runtime dependency |
+| [StructuralCodes](https://github.com/fib-international/structuralcodes) | Separate calculation modules by Standard, material and edition; explicit versioning and tests | Foreign-code formulas, factors or defaults in an Australian calculation mode |
+| [section-properties](https://github.com/robbievanleeuwen/section-properties) | Independent section-property verification, documented theory, geometry test cases and explicit user-responsibility boundaries | General finite-element section analysis in the quick-reference interface |
+| [forallpeople](https://github.com/connorferster/forallpeople) | SI-normalised internal values, dimensional consistency and separation of stored values from display units | A new units framework where the existing static implementation can enforce the same contract simply |
+| [PyNite](https://github.com/JWock82/Pynite) | Continuous regression against textbook problems with known solutions, small learning examples and visible capability limits | Frame, plate, nonlinear or other structural-analysis solver functions |
+| [anaStruct](https://github.com/anastruct/anaStruct) | Compact structural diagrams, result-plot hierarchy and small deterministic examples | Expansion of the handbook into a general two-dimensional analysis application |
+
+Use the smallest applicable lesson. A reference project must not trigger a framework migration, wholesale page redesign or new user input unless the change independently passes the module admission gate. Record a new external dependency only when it removes material verified complexity that cannot be handled reliably by the current static architecture.
+
 ### 4.4 Online Evidence, Currency and Copyright
 
 Online sources may be used to locate governing material, verify currency/errata/publication status, inspect an official web-only dataset or learn a non-normative interaction/assurance pattern. Apply these rules:
@@ -617,6 +633,23 @@ Keep the handbook lightweight:
 - Add a visible result only when it answers the primary question or changes an engineering decision.
 - Use one concise visible warning for the controlling limitation. Keep full example evidence and residual exclusions in `REFERENCE_TRACEABILITY.md`.
 - Commercial software may provide an external comparison, but the handbook must remain understandable and verifiable without requiring that software.
+
+#### 6.2.12 Lightweight Calculation Implementation Boundary
+
+The released handbook remains a static, offline-friendly browser application. Open-source calculation projects are design and QA references, not required runtime dependencies.
+
+- Preserve the existing `index.html` + JavaScript + CSS architecture unless a separately approved product requirement proves that it is insufficient.
+- Keep normal calculations deterministic and local to the browser. Do not require Python, Jupyter, a database, a server-side calculation service or a finite-element solver for the public quick-reference workflow.
+- Use small pure calculation modules where logic is shared, branch-dependent or independently tested. Do not restructure a stable tab solely to imitate an external project.
+- Model each governing result internally with the minimum traceable fields needed to produce `Formula`, `Substitution`, `Result`, `Applicability`, source reference, warning and status. This internal consistency does not require visible new panels or controls.
+- Keep internal values in one declared unit basis and convert only at explicit input/output boundaries. Add dimensional and unit-conversion assertions to tests where a unit error is credible; do not add a user-facing unit system without a stated recurring need.
+- Python and specialist open-source tools may be used offline to reconstruct published examples, generate golden expected values, check section properties or produce committed static assets. Their output must be pinned, independently reviewable and regression-tested against the browser production path.
+- New framework or library adoption requires a documented problem, licence review, version pin, dependency risk, comparison with the current implementation and proof that the addition preserves load time, offline use, mobile essentials and fail-closed behaviour.
+- Prefer incremental changes: first improve calculation records and tests, then extract only the affected pure function, and change the visible page only where the engineering decision or clarity materially improves.
+
+The target is not to reproduce the feature set of the reference projects. The target is to retain the handbook's compact interface while adopting their strongest assurance practices: structured calculations, readable arithmetic, code separation, dimensional discipline and reproducible known-answer tests.
+
+Current production application of this rule includes dedicated pure modules for axial-member capacity (`member-capacity.js`) and symmetric rigid-cap screw-pile action distribution (`screw-demand.js`), alongside the existing bolt, weld, concrete, reinforcement and section modules. Their extraction does not add visible inputs, expand design scope or change the governing formula; it makes the released calculation path directly testable. Each extracted module must retain a separate independent arithmetic reproduction or equilibrium check so that a test cannot pass merely by repeating the production implementation.
 
 ## 7. Engineering Language
 

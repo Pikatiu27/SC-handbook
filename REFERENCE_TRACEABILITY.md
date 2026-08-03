@@ -770,3 +770,16 @@ SC Handbook now references the shared Unified Web Engineering Drawing Standard t
 - Validation: UWEDS package validator passed with 25 JSON files, 261 rule IDs, 203 test IDs and 114 manifest entries; the adoption record passed its current JSON schema; all 19 SC Handbook regression test files passed.
 
 The adoption remains `DRAFT`. It does not retrospectively certify inherited figures and does not convert web schematics into construction, fabrication, shop or certified design drawings. The product-reference links added to the U-bolt and structural blind-bolt lookups do not claim drawing adoption or geometry authority.
+
+## 2026-08-03 Lightweight Calculation-core Extraction
+
+Build 0.7.11 extracts two existing calculation paths into small browser-native modules without changing their formulas, visible inputs, displayed precision or engineering scope.
+
+| Verification ID | Production path | Independent evidence | Acceptance result |
+| --- | --- | --- | --- |
+| `AUD-AXIAL-MODULE-01` | `member-capacity.js` called by the Axial Member tab | Default CHS known-answer arithmetic, explicit m-to-mm and MPa-mm2-to-kN assertions, area scaling, two-axis governing selection and invalid-input rejection in `tests/member-capacity.test.js` | Production result reproduces the existing AS 4100 compression and tension paths within stated numerical tolerances |
+| `AUD-SCREW-MODULE-01` | `screw-demand.js` called by the Screw Piles tab | Independent symmetric eight-pile example plus axial force, two moments, two shears and torsional equilibrium checks in `tests/screw-demand.test.js` | Production result reproduces the existing rigid-cap distribution and closes all six group-equilibrium checks to `1e-9` |
+
+The Axial Member module remains limited to the displayed AS 4100 section/member compression and tension checks; it does not add connection, combined-action, flexural-torsional or complete member-design checks. The Screw Piles module distributes entered actions only for centroid-referenced, symmetric uncoupled layouts under the existing rigid-cap and equal-stiffness assumptions. It does not calculate geotechnical resistance, structural pile resistance, pad-soil interaction or project utilisation without a compatible project design-value source.
+
+The calculation modules remain plain JavaScript loaded before `app.js`; no package, framework, server, Python runtime or network calculation service was introduced. The page continues to expose the existing `Formula -> Substitution -> Result -> Applicability` record, while the production arithmetic can now be exercised directly by regression tests.

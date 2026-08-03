@@ -6234,24 +6234,6 @@ function memberDesignRadius(defaultR) {
   return signedValue("memberRadiusInput", NaN);
 }
 
-function compressionReduction(lambdaN, alphaB) {
-  let alphaC = 1;
-  let alphaA = 0;
-  let modifiedLambda = 0;
-  let eta = 0;
-  let xi = 1;
-  if (lambdaN > 0) {
-    alphaA = 2100 * (lambdaN - 13.5) / (lambdaN ** 2 - 15.3 * lambdaN + 2050);
-    modifiedLambda = Math.max(0.001, lambdaN + alphaA * alphaB);
-    eta = Math.max(0, 0.00326 * (modifiedLambda - 13.5));
-    const ratio = modifiedLambda / 90;
-    xi = (ratio ** 2 + 1 + eta) / (2 * ratio ** 2);
-    const rootTerm = Math.max(0, 1 - (90 / (xi * modifiedLambda)) ** 2);
-    alphaC = Math.min(1, Math.max(0, xi * (1 - Math.sqrt(rootTerm))));
-  }
-  return { alphaC, alphaA, modifiedLambda, eta, xi };
-}
-
 function formatMemberUtilisation(ratio) {
   if (!Number.isFinite(ratio)) return "\u2014";
   if (ratio === 1) return "1.00";
@@ -6429,16 +6411,19 @@ function calculateMember() {
     ? "AS 4100 Cl. 7.3.1"
     : "AS 4100 Table 7.3.2";
   const compressionArea = netArea;
-  const sectionCompression = 0.9 * kf * compressionArea * fy / 1000;
   const axes = memberType === "custom"
     ? [
         { label: "x", title: "x-axis", r: properties.rx, effectiveLength: value("memberCustomLex") * 1000, alphaB: alphaBInput("memberCustomAlphaBx") },
         { label: "y", title: "y-axis", r: properties.ry, effectiveLength: value("memberCustomLey") * 1000, alphaB: alphaBInput("memberCustomAlphaBy") }
       ]
     : [{ label: "", title: "selected axis", r: designR, effectiveLength: value("memberLength") * 1000, alphaB }];
+  const compressionDemand = signedValue("memberCompressionDemand", NaN);
+  const tensionDemand = signedValue("memberTensionDemand", NaN);
   const calculationErrors = [];
   if (!Number.isFinite(netArea) || netArea <= 0 || netArea > properties.area) calculationErrors.push("A_n must satisfy 0 < A_n <= A_g");
   if (!Number.isFinite(kt) || kt < 0.75 || kt > 1) calculationErrors.push("k_t must be within the AS 4100 Cl. 7.3 range 0.75 to 1.00");
+  if (!Number.isFinite(compressionDemand) || compressionDemand < 0) calculationErrors.push("compression design action must be zero or greater");
+  if (!Number.isFinite(tensionDemand) || tensionDemand < 0) calculationErrors.push("tension design action must be zero or greater");
   axes.forEach(axis => {
     if (!Number.isFinite(axis.effectiveLength) || axis.effectiveLength <= 0) calculationErrors.push(`${axis.title} effective length L_e must be greater than zero`);
     if (!Number.isFinite(axis.alphaB) || axis.alphaB < -1 || axis.alphaB > 1) calculationErrors.push(`${axis.title} alpha_b must be between -1.0 and 1.0`);
@@ -6447,32 +6432,35 @@ function calculateMember() {
     setMemberInvalidState(calculationErrors.join("; "), designation);
     return;
   }
-  const axisResults = axes.map(axis => {
-    const leOverR = axis.r > 0 ? axis.effectiveLength / axis.r : 0;
-    const lambdaN = leOverR * Math.sqrt(kf) * Math.sqrt(fy / 250);
-    const reduction = compressionReduction(lambdaN, axis.alphaB);
-    return {
-      ...axis,
-      leOverR,
-      lambdaN,
-      ...reduction,
-      memberCompression: reduction.alphaC * sectionCompression
-    };
+  const memberResult = MemberCapacity.calculate({
+    grossArea: properties.area,
+    netArea,
+    fy,
+    fu,
+    kf,
+    kt,
+    axes,
+    compressionDemand,
+    tensionDemand
   });
-  const governingAxis = axisResults.reduce((lowest, axis) => axis.memberCompression < lowest.memberCompression ? axis : lowest, axisResults[0]);
-  const memberCompression = governingAxis.memberCompression;
-  const grossYield = 0.9 * properties.area * fy / 1000;
-  const netFracture = 0.9 * 0.85 * kt * netArea * fu / 1000;
-  const tensionCapacity = Math.min(grossYield, netFracture);
-  const tensionGoverning = grossYield <= netFracture ? "Gross-section yielding" : "Net-section fracture";
-  const compressionDemand = value("memberCompressionDemand");
-  const tensionDemand = value("memberTensionDemand");
-  const hasCompressionDemand = compressionDemand > 0;
-  const hasTensionDemand = tensionDemand > 0;
-  const hasMemberDemand = hasCompressionDemand || hasTensionDemand;
-  const compressionDemandRatio = memberCompression > 0 ? compressionDemand / memberCompression : Infinity;
-  const tensionDemandRatio = tensionCapacity > 0 ? tensionDemand / tensionCapacity : Infinity;
-  const governingDemandRatio = Math.max(hasCompressionDemand ? compressionDemandRatio : 0, hasTensionDemand ? tensionDemandRatio : 0);
+  const {
+    sectionCompression,
+    axisResults,
+    governingAxis,
+    memberCompression,
+    grossYield,
+    netFracture,
+    tensionCapacity,
+    tensionGoverning
+  } = memberResult;
+  const {
+    hasCompression: hasCompressionDemand,
+    hasTension: hasTensionDemand,
+    hasAny: hasMemberDemand,
+    compressionRatio: compressionDemandRatio,
+    tensionRatio: tensionDemandRatio,
+    governingRatio: governingDemandRatio
+  } = memberResult.demand;
   const demandChecks = [];
   if (hasCompressionDemand) {
     demandChecks.push(Number.isFinite(compressionDemandRatio)
@@ -8357,42 +8345,32 @@ function calculateScrewDemand(comparison) {
   };
   const actionBasisLabel = actionBasisLabels[actionBasis] || "action basis not stated";
   const coords = screwLayoutCoordinates();
-  const n = coords.length;
   const baseN = signedValue("screwDemandN");
   const vx = signedValue("screwDemandVx");
   const vy = signedValue("screwDemandVy");
   const mx = signedValue("screwDemandMx");
   const my = signedValue("screwDemandMy");
   const tz = signedValue("screwDemandTz");
-  const directShearX = n > 0 ? vx / n : 0;
-  const directShearY = n > 0 ? vy / n : 0;
-  const sumX2 = coords.reduce((sum, point) => sum + point.x ** 2, 0);
-  const sumY2 = coords.reduce((sum, point) => sum + point.y ** 2, 0);
-  const sumXY = coords.reduce((sum, point) => sum + point.x * point.y, 0);
-  const sumR2 = coords.reduce((sum, point) => sum + point.x ** 2 + point.y ** 2, 0);
-  const reactions = coords.map(point => {
-    const axial = baseN / n
-      + (sumY2 > 0 ? mx * point.y / sumY2 : 0)
-      + (sumX2 > 0 ? my * point.x / sumX2 : 0);
-    const torsionShearX = sumR2 > 0 ? -tz * point.y / sumR2 : 0;
-    const torsionShearY = sumR2 > 0 ? tz * point.x / sumR2 : 0;
-    const lateralX = directShearX + torsionShearX;
-    const lateralY = directShearY + torsionShearY;
-    const lateral = Math.hypot(lateralX, lateralY);
-    return { ...point, axial, lateral, lateralX, lateralY };
+  const distribution = ScrewDemand.distribute({
+    coordinates: coords,
+    axial: baseN,
+    shearX: vx,
+    shearY: vy,
+    momentX: mx,
+    momentY: my,
+    torsion: tz
   });
-  const maxCompression = Math.max(0, ...reactions.map(item => item.axial));
-  const maxUplift = Math.max(0, ...reactions.map(item => -item.axial));
-  const maxLateral = Math.max(0, ...reactions.map(item => item.lateral));
-  const maxCompressionPile = maxCompression > 0
-    ? reactions.reduce((current, item) => item.axial > current.axial ? item : current)
-    : null;
-  const maxUpliftPile = maxUplift > 0
-    ? reactions.reduce((current, item) => -item.axial > -current.axial ? item : current)
-    : null;
-  const maxLateralPile = maxLateral > 0
-    ? reactions.reduce((current, item) => item.lateral > current.lateral ? item : current)
-    : null;
+  const {
+    count: n,
+    reactions,
+    maxCompression,
+    maxUplift,
+    maxLateral,
+    maxCompressionPile,
+    maxUpliftPile,
+    maxLateralPile
+  } = distribution;
+  const { sumX2, sumY2, sumXY, sumR2 } = distribution.sums;
   $("screwDemandPileCount").textContent = String(n);
   $("screwDemandCompression").textContent = `${fixed(maxCompression)} kN`;
   $("screwDemandUplift").textContent = `${fixed(maxUplift)} kN`;

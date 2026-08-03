@@ -7,6 +7,7 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const script = fs.readFileSync(path.join(root, "app.js"), "utf8");
+const memberCapacityScript = fs.readFileSync(path.join(root, "member-capacity.js"), "utf8");
 const styles = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"), "utf8");
@@ -66,7 +67,7 @@ assert.match(script, /L<sub>e\$\{axis\.label\}<\/sub>\/r<sub>\$\{axis\.label\}<\
 assert.doesNotMatch(script, /memberSummarySlenderness"\)\.innerHTML = memberType === "custom"\s*\?\s*axisResults\.map/);
 assert.match(script, /\$\("memberTensionBasis"\)\.textContent = `\$\{tensionGoverning\} governs · AS 4100 Cl\. 7\.2`/);
 assert.match(script, /if \(memberActionGroup && mobileView\) memberActionGroup\.open = false/);
-assert.match(script, /eta = Math\.max\(0, 0\.00326 \* \(modifiedLambda - 13\.5\)\)/);
+assert.match(memberCapacityScript, /eta = Math\.max\(0, 0\.00326 \* \(modifiedLambda - 13\.5\)\)/);
 assert.match(script, /function setMemberInvalidState\(message, designation\)/);
 assert.match(script, /function formatMemberUtilisation\(ratio\)/);
 assert.match(script, /f_y must be greater than zero/);
