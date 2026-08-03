@@ -565,7 +565,7 @@ The `Structural blind-bolt lookup` branch reports manufacturer-published product
 
 | Product family | Governing source | Displayed value basis | Lookup status |
 | --- | --- | --- | --- |
-| Lindapter Hollo-Bolt | ICC-ES ESR-3330, reissued March 2026 | Static / wind LRFD available tension and shear strength; LRFD resistance factor already included | Manufacturer source checked online |
+| Lindapter Hollo-Bolt | ICC-ES ESR-3330, reissued March 2026; Lindapter Type HB current product table and installation guide | Static / wind LRFD available tension and shear strength; LRFD resistance factor already included. Official `HBxx-1/2/3` code, grip range and assembled `B max` retained separately from retailer bolt-length descriptions | Manufacturer sources checked online |
 | ICCONS UNI-BOLT | TDS 1053.1, 2025; ETA 25/0374 | AS 4100 design capacity; `phi = 0.8` already included | Manufacturer source checked online |
 | Hobson HBS-Bolt | HBS-Bolt Product Data 200806DS | Manufacturer working load; characteristic resistance not substituted | Manufacturer source checked online |
 | Kee Safety BoxBolt | ETA 20/1174, December 2020 | Characteristic resistance `Ft,Rk` and `Fv,Rk`; no design partial factor applied | Manufacturer source checked online |
@@ -573,3 +573,7 @@ The `Structural blind-bolt lookup` branch reports manufacturer-published product
 | Allfasteners NexGen2 | NexGen2 Blind Bolt TDS, July 2019 | M20 TIA-222-G design strength; displayed shear has threads included | Manufacturer source checked online; confirm current ICC-ES report and Australian adoption before specification |
 
 Connected steel, local HSS or shell effects, bearing, tear-out, net section, block shear, punching or pull-through, prying, combined actions, fatigue and installation acceptance remain outside the lookup.
+
+The lightweight U-bolt and structural blind-bolt lookups do not redraw or embed manufacturer product figures. `Selected product` retains only the parameters required for preliminary selection and links directly to the current record's manufacturer product page or technical data sheet. Product appearance, component details and dimension diagrams remain controlled by that primary source; the handbook does not establish fabrication geometry or complete connection capacity.
+
+Drawing governance is recorded by approved adoption `SC-HANDBOOK-UWEDS-001` in `engineering/drawing-standard-adoption.json`, pinned to UWEDS V1.10.0 and its package-manifest hash. Product-reference SVGs cite pre-drawing review `SC-HANDBOOK-PRODUCT-FIGURES-001`, carry the `FOR_REVIEW` web boundary and remain explicitly `Not for fabrication`. Each SVG declares its view ID, purpose, orthographic source-view projection, NTS status, millimetre unit policy, web-native production mode, source/access record and derivative revision. Compact labels resolve through approved project register `SC-HANDBOOK-PRODUCT-SYMBOLS-001` revision R2: `MAX/MIN` fixing thickness, `AC` anchor clearance, `DC` depth clearance and `P` pivot axis. The accessible SVG description retains the complete terms and identifies the pivot pin as non-load-bearing.

@@ -1,0 +1,51 @@
+{
+  "register_id": "SC-HANDBOOK-PRODUCT-SYMBOLS-001",
+  "revision": "R2",
+  "status": "APPROVED",
+  "approved_by": "SC Handbook product owner",
+  "approved_at": "2026-08-01T23:55:00+10:00",
+  "parent_dictionary": "C:/Users/silin/Documents/Codex/Drawing/profiles/ENGINEERING_SYMBOL_DICTIONARY.yaml",
+  "scope": "Compact manufacturer product-reference figures only",
+  "entries": [
+    {
+      "symbol_id": "PRODUCT_MAX_FIXING_THICKNESS",
+      "display": "MAX",
+      "accessible_name": "maximum fixing thickness",
+      "ascii_fallback": "MAX",
+      "meaning": "Maximum total fixing thickness for the selected product variant",
+      "source_type": "HANDBOOK_ABBREVIATION"
+    },
+    {
+      "symbol_id": "PRODUCT_MIN_FIXING_THICKNESS",
+      "display": "MIN",
+      "accessible_name": "minimum fixing thickness",
+      "ascii_fallback": "MIN",
+      "meaning": "Minimum total fixing thickness for the selected product variant",
+      "source_type": "HANDBOOK_ABBREVIATION"
+    },
+    {
+      "symbol_id": "PRODUCT_ANCHOR_CLEARANCE",
+      "display": "AC",
+      "accessible_name": "anchor clearance",
+      "ascii_fallback": "AC",
+      "meaning": "Minimum internal clearance required for the pivoting anchor",
+      "source_type": "HANDBOOK_ABBREVIATION"
+    },
+    {
+      "symbol_id": "PRODUCT_DEPTH_CLEARANCE",
+      "display": "DC",
+      "accessible_name": "depth clearance",
+      "ascii_fallback": "DC",
+      "meaning": "Minimum insertion depth clearance for the selected product variant",
+      "source_type": "HANDBOOK_ABBREVIATION"
+    },
+    {
+      "symbol_id": "PRODUCT_NON_LOAD_BEARING_PIVOT",
+      "display": "P",
+      "accessible_name": "pivot axis",
+      "ascii_fallback": "P",
+      "meaning": "Axis of the non-load-bearing pivot pin",
+      "source_type": "HANDBOOK_ABBREVIATION"
+    }
+  ]
+}

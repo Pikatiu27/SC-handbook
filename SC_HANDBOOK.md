@@ -1968,6 +1968,14 @@ Project-specific figure scope:
 
 Project drawing contract:
 
+- SC Handbook adopts the approved governed UWEDS V1.10.0 subset recorded in `engineering/drawing-standard-adoption.json`. Product figures remain `PRODUCT_REFERENCE_DRAWING` output within the `FOR_REVIEW` boundary and are explicitly marked `Not for fabrication`.
+- Every controlled product SVG must carry the applicable `data-standard-adoption-id`, `data-pre-drawing-case-review-id`, `data-representation-class` and `data-drawing-status`. View ID, purpose, projection, NTS status, unit policy, production mode, source reference/access date, derivative revision, rendered variant and source status must also remain machine-readable.
+- The current product-figure case review is `engineering/pre-drawing-case-reviews/product-reference-figures.json`. A materially different drawing family, representation class or installation-state view requires a new review record.
+- The lightweight product lookup intentionally excludes installation, expanded/locked and connection-engineering views. This project boundary does not relax manufacturer-source traceability or annotation clarity.
+- The visible view contract is `Orthographic product view · NTS · mm`. Supplier aliases may remain only where the caption or selected-product data defines their controlled engineering meaning.
+- A thread designation such as `M12` must not be displayed as a rod-diameter dimension or prefixed by an undefined supplier variable. Unverified physical rod diameter must not be inferred from the thread designation.
+- Source product views must not contain decorative section hatching. Hatching requires a declared section/cut plane and verified cut-part ownership.
+
 1. Use only the geometry, symbols and actions needed by the current calculator state.
 2. Use the same symbol, source value, unit and rounding as the input, formula and result.
 3. Generate value-driven geometry from the same validated data used by the calculation.
@@ -2054,6 +2062,7 @@ Project drawing contract:
 - Use a small, consistent line-weight hierarchy: heavier for visible object outlines and governing load paths, lighter for dimensions, leaders, centre lines, construction lines, and hatching. Hidden or secondary geometry should never compete with the governing result.
 - Use standard CAD line types consistently: continuous visible lines, dashed hidden lines, chain centre lines, thin dimension and leader lines, and consistent hatch patterns for cut material. Do not encode engineering meaning with colour alone.
 - Dimensions must be unambiguous. Show units where the context is not obvious, keep arrowheads/ticks consistent, avoid duplicate dimensions, and avoid dimensions that cross through important geometry. Prefer one clear labelled dimension over several crowded labels.
+- Dimension-arrow tips must terminate on the measured extension line, feature or reference envelope. For a two-ended dimension, the start and end arrowheads must face opposite outward directions with their tips fixed at the two measured endpoints; do not centre the marker reference point within the arrowhead or allow both arrows to face the same direction.
 - Dimension text must describe exactly what is being measured. Use formula symbols where the calculator uses formula symbols, for example `d_f`, `d_h`, `e`, `A_w`, `d_1`, `t_w`, `L_e`, `r`, `M*`, and `V*`; use plain engineering names only where the formula does not have a symbol.
 - Show numeric values only when they come from the current input or selected catalogue row. Otherwise show symbol-only labels to avoid false precision.
 - Use the same rounding and unit convention in the figure label, input group, result card, and formula step. A drawing must not show a different rounded value from the calculator output unless the label states it is approximate.
@@ -2065,6 +2074,8 @@ Project drawing contract:
 - Title blocks, revision blocks, north points, grid bubbles, material callouts, weld symbols, section marks, detail bubbles, and other formal drawing elements should only be included when they serve the quick-reference purpose. Do not add full drawing-sheet decoration to calculator figures.
 - Before publishing a CAD-style figure, check it at desktop and phone width for clipping, overlapping labels, unreadable text, incorrect line hierarchy, and horizontal overflow.
 - Before publishing a value-driven figure, test at least one normal case and one extreme-but-valid input case. The geometry must stay inside the viewBox, labels must remain readable, and the displayed dimensions must still match the calculator values.
+- After every product-figure edit, capture and visually inspect the rendered figure at desktop and mobile widths before release. Automated bounds checks do not replace the screenshot review.
+- The screenshot review must check text against object lines, dimension lines, extension lines, leaders and arrowheads, not only text-to-text overlap. Reposition or remove an annotation whenever any line passes through its text.
 - CAD-style drawings should be reviewed against this acceptance checklist:
   - The figure purpose is clear and limited to one calculation idea.
   - The accuracy class is stated or obvious from context.
@@ -2206,32 +2217,40 @@ Manufacturer product lookup branches:
 - Keep three peer branches inside the Bolt tab: `Standard bolt capacity`, `U-bolt product lookup` and `Structural blind-bolt lookup`.
 - Treat U-bolts and structural blind bolts as manufacturer product lookups, not as AS 4100 ordinary bolt-capacity calculation paths.
 - State that each branch is a curated manufacturer reference set, not an exhaustive product catalogue.
-- Use the same lightweight sequence for both product branches: `Project requirement`, `Product source`, `Selected product`, manufacturer-published data and collapsed basis-and-limitations. Keep a separate dimensions/installation disclosure only where the product record is too detailed for the selected-product card.
+- Use the same lightweight sequence for both product branches: `Project requirement`, `Catalogue filters`, `Product selection`, `Selected product`, manufacturer-published data and collapsed basis-and-limitations.
 - Keep only selectors that materially assist product browsing. Optional geometry, head, finish and manufacturer fields must remain unrestricted by default.
-- `Catalogue entry` is the selection control. The `Selected product` strip confirms product identity and concise ordering information; do not repeat the same values in a second descriptive panel.
-- Show fit or grip range, hole geometry, material/finish and installation requirements once within the selected-product card. Do not repeat them in another descriptive panel.
+- `Catalogue filters` contains only optional manufacturer or brand and finish filters. Keep all options unrestricted by default.
+- `Catalogue product / family` or `Catalogue entry` belongs to a separate `Product selection` group and is the final confirmation control. Matching-entry counts belong to this group, not to `Catalogue filters`.
+- The `Selected product` strip confirms product identity and concise ordering information; do not repeat the same values in a second descriptive panel.
+- Show the minimum selection parameters once within `Selected product`. Put secondary installation, spacing, edge and ply requirements in one collapsed disclosure where required; do not repeat them elsewhere.
 - Use `PRODUCT DATA`, not `RESULTS`, for manufacturer values. Do not label a value as `Design capacity` unless the source itself publishes that basis and the governing jurisdiction is stated.
-- Keep catalogue brands separate from supply channels. Filter by `Brand / manufacturer` and show `Supplier` independently. Where no supported supply channel is recorded, display `Not specified`; do not substitute the manufacturer name.
+- Keep catalogue brands separate from supply channels in the underlying data. Do not show an unverified supplier as a primary selection parameter.
 - Retain manufacturer, supplier, product family, product code, nominal size, fit or grip range, material/finish, published value and basis, source document, revision/date, URL and source status in the underlying record.
 - Preserve the manufacturer's published terminology and basis, including `Working load`, `Safe working load`, `Characteristic resistance`, `ASD allowable load` or `LRFD design strength`. Do not silently convert or compare unlike bases.
 - Use three source states only: `Local reference checked`, `Manufacturer source checked online` and `Source not verified`. `Not published` describes a missing manufacturer value and does not make an otherwise checked source unverified.
-- Show source status once in the manufacturer-data heading. Put the source document, revision/date and direct link in the collapsed basis panel.
+  - Show source status once in the manufacturer-data heading.
+  - Put a direct `Manufacturer reference` link in `Selected product`. Use `Open technical data` for a manufacturer PDF and `Open product page` for a web catalogue page. The link must follow the currently selected record.
+  - Identify the source document by its concise manufacturer title beside the link. Retain checked date, revision and source state in the underlying record and reference register.
 - A matching catalogue product may be reported as `Matching product found`; an unresolved filter combination may be reported as `No matching product`. These are selection states, not structural PASS/FAIL.
 - Do not show generic N*, V* or M* inputs, action ratios, governing structural checks or connection PASS/FAIL in a product-lookup branch.
 - If a published value is absent, use one compact `Published load | Not published` row rather than a visually dominant capacity card.
-- Before a catalogue entry is selected, show one compact selection prompt only. Hide the empty selected-product fields, published-data cards and source-status badge until a product is confirmed.
-- Keep catalogue-option labels short enough for mobile selection. Use product family, nominal size and fit or grip range in the option; show manufacturer, product code, supplier and concise ordering information in the selected-product card.
+- Before a catalogue entry is selected, use the `Product selection` heading and matching-entry count as the only prompt. Hide the empty selected-product fields, published-data cards, source-status badge and any duplicate prompt row until a product is confirmed.
+- Keep catalogue-option labels short enough for mobile selection. Use the market-recognisable product name for U-bolts. For structural blind bolts, use product family, nominal size, official product code and grip range because the code distinguishes otherwise similar length variants.
+- Do not redraw or embed manufacturer product figures in the lightweight lookup. Product appearance, component details and manufacturer dimension diagrams belong to the linked current product page or technical data sheet.
+- Do not show generic installation or post-expansion diagrams in `Selected product`. The handbook reports structured selection data and links to the primary manufacturer source; it is not a substitute catalogue drawing.
 - Where tension and shear values share one published basis, show that basis once below the two value cards rather than repeating it in each card.
 - State the shared boundary as `Manufacturer-published data; not an AS 4100 design capacity.` Connected steelwork, local section effects and project suitability remain separate engineering checks.
 
 U-bolt product lookup branch:
 
 - Do not use `Application` as a filter; it overlaps member geometry and can exclude otherwise relevant products.
-- Use `Project requirement` for rod size and broad `Member geometry`; use `Product source` for brand or manufacturer, finish and catalogue entry.
+- Use `Project requirement` for thread designation and broad `Member geometry`; use `Catalogue filters` for optional brand or manufacturer and finish; use `Product selection` for the catalogue product or family.
 - Derive `Member geometry` from catalogue geometry: `Round / pipe`, `Square / rectangular`, `Beam / channel assembly` and `Custom / drawing-defined`. Keep `Any member geometry` as the default.
-- Default rod size to M12. Do not require an exact catalogue diameter, and do not represent discrete manufacturer diameters as a continuous fit range.
-- Keep the selected-product strip to product code, rod size and supplier; place manufacturer, family and series in the title/supporting line.
-- Merge concise U-bolt ordering information into `Selected product`: product code, rod size, supplier, member geometry and material / finish. Do not add a separate `Published dimensions and material` disclosure for the same record.
+- Default thread designation to M12. Do not require an exact catalogue diameter, and do not represent discrete manufacturer diameters as a continuous fit range.
+- Place manufacturer, family and series in the title/supporting line.
+- Keep U-bolt `Selected product` to product code, thread designation, member fit and material / finish. Do not add a separate dimensions or supplier panel for the same record.
+- Lead each U-bolt option with the market-recognisable product description and applicable member size. Do not lead with an internal series name where the product description is more useful for purchasing.
+- Preserve manufacturer dimension meanings in the structured member-fit text. Do not reinterpret supplier symbols or infer continuous fit from discrete catalogue sizes.
 - Where one published product load is reported, use one full-width horizontal result. Label it using the exact manufacturer basis. Where no value is published, use the compact missing-value row.
 - In U-bolt mode, use `U-bolt Product Lookup`, `U-bolt products · manufacturer data` and `Manufacturer data · no design capacity`.
 - Keep mounting-pipe / round-member products separate from beam or channel clamp assemblies. Main headframe-to-monopole clamps are OEM or project-engineered assemblies and are outside the standard-product lookup.
@@ -2242,12 +2261,16 @@ U-bolt product lookup branch:
 Structural blind-bolt product lookup branch:
 
 - Use `Structural blind-bolt lookup` as the generic branch name. Retain proprietary family names such as `Hollo-Bolt`, `HBS-Bolt`, `UNI-BOLT`, `Blind Bolt` and `BoxBolt` only for their verified manufacturer records.
-- Split the selectors into `Project requirement` for bolt size, total clamping thickness W and head type; and `Product source` for finish, manufacturer and catalogue entry.
+- Split the selectors into `Project requirement` for bolt size, total clamping thickness W and head type; `Catalogue filters` for optional manufacturer and finish; and `Product selection` for the catalogue entry.
 - Use nominal size as the primary blind-bolt filter. Leave head type, finish and manufacturer unrestricted by default.
 - Define total grip `W` as the total thickness of all connected plies. Keep it optional and blank by default. Use an entered positive value only to rank entries as `Compatible grip range` or `Other grip ranges`; do not remove the latter from the catalogue list. Where `W` is blank, show all entries for the selected primary filters without a compatibility claim.
 - Do not auto-present the first product as a recommendation. Require the user to confirm a catalogue entry before showing its published values.
-- Keep the selected-product strip to product code, nominal size and supplier; place manufacturer and product family in the title/supporting line.
-- Merge blind-bolt ordering and installation information into `Selected product`: product code, nominal size, supplier, grip range, hole diameter, head type, finish, minimum centres, edge or internal-clearance requirement, outer-ply condition or thickness basis, installation torque and tools. Do not repeat these values in a separate dimensions disclosure.
+- Place manufacturer and product family in the title/supporting line.
+- Keep primary blind-bolt selection data visible: product code, nominal size or length variant, grip range, hole diameter, head type and finish.
+- Put minimum centres, edge or internal-clearance requirement, outer-ply condition or thickness basis, installation torque and tools in one collapsed `Installation requirements` disclosure.
+- Keep manufacturer product code, size/length variant and grip range distinct. Do not replace an official code such as `HB20-1` with an inferred label such as `M20 #1`.
+- For Hollo-Bolt, display the manufacturer's assembled product length `B max` separately from nominal size and grip range. Retail descriptions such as `M20 x 90` may refer to bolt length rather than the manufacturer's assembled `B max`; do not treat the dimensions as interchangeable without a cited product mapping.
+- Keep product mechanism and proprietary component descriptions in the underlying record only where they assist identification or establish a limitation. Direct users to the linked manufacturer technical data for product views and detailed dimension diagrams.
 - Show published tension and shear values only where the same manufacturer source states their basis. Use separate cards when both values are published; otherwise use a compact missing-value row.
 - Do not rank products from different manufacturers by load where their published bases differ. Display the basis adjacent to every value.
 - Treat ICC-ES / AISC, ETA / Eurocode and manufacturer safe-working-load data as jurisdiction-specific product evidence. Do not relabel any of them as an Australian Standard design capacity.

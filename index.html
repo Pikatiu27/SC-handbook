@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260729boltproducts1">
+  <link rel="stylesheet" href="styles.css?v=20260803productflow36">
 </head>
 <body>
   <header class="topbar">
@@ -243,40 +243,48 @@
       <section class="lookup-card ubolt-card" data-bolt-mode-panel="ubolt" hidden>
         <div class="input-cluster">
           <section class="input-group input-group-section" aria-label="U-bolt project requirement">
-            <span class="input-group-heading"><b>Project requirement</b><small>Use rod size to browse; member geometry remains a broad optional filter.</small></span>
+            <span class="input-group-heading"><b>Project requirement</b><small>Use thread designation to browse; member geometry remains a broad optional filter.</small></span>
             <div class="input-group-fields two">
-              <label><span>Rod size</span><select id="uBoltRodSize" aria-label="U-bolt rod size"></select></label>
+              <label><span>Thread designation</span><select id="uBoltRodSize" aria-label="U-bolt thread designation"></select></label>
               <label><span>Member geometry</span><select id="uBoltMemberGeometry" aria-label="U-bolt member geometry"></select></label>
             </div>
           </section>
-          <section class="input-group input-group-section" aria-label="U-bolt product source">
-            <span class="input-group-heading"><b id="uBoltProductGroupTitle">Product source</b><small id="uBoltProductGroupNote">Select the brand or manufacturer, finish and catalogue entry.</small></span>
-            <div class="input-group-fields three">
+          <section class="input-group input-group-section" aria-label="U-bolt catalogue filters">
+            <span class="input-group-heading"><b id="uBoltProductGroupTitle">Catalogue filters</b><small id="uBoltProductGroupNote">Brand or manufacturer and finish remain optional.</small></span>
+            <div class="input-group-fields two">
               <label><span>Brand / manufacturer</span><select id="uBoltManufacturer" aria-label="U-bolt brand or manufacturer"></select></label>
               <label><span>Finish</span><select id="uBoltFinish" aria-label="U-bolt finish"></select></label>
-              <label class="size-field"><span id="uBoltProductFieldLabel">Catalogue entry</span><select id="uBoltProduct" aria-label="U-bolt catalogue entry"></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-section product-selection-group" aria-label="U-bolt product selection">
+            <span class="input-group-heading"><b id="uBoltProductSelectionTitle">Product selection</b><small id="uBoltProductSelectionNote">Select one matching catalogue entry.</small></span>
+            <div class="input-group-fields one">
+              <label class="size-field"><span id="uBoltProductFieldLabel">Catalogue product / family</span><select id="uBoltProduct" aria-label="U-bolt catalogue product or family"></select></label>
             </div>
           </section>
         </div>
 
-        <div id="uBoltSelectionPrompt" class="product-selection-prompt">
+        <div id="uBoltSelectionPrompt" class="product-selection-prompt" hidden>
           <b id="uBoltSelectionPromptTitle">Select a catalogue entry</b>
           <span id="uBoltSelectionPromptNote">Published product data appears after selection.</span>
         </div>
 
-        <div id="uBoltSelectedSummary" class="bolt-summary ubolt-summary" hidden>
+        <div id="uBoltSelectedSummary" class="bolt-summary ubolt-summary product-selection-summary" hidden>
           <div><span id="uBoltSelectionTypeLabel">Selected product</span><strong id="uBoltSelectionTitle">U-bolt product lookup</strong><small id="uBoltSelectionNote">Select an entry to review its published data.</small></div>
           <dl>
             <div><dt>Product code</dt><dd id="uBoltCode">-</dd></div>
-            <div><dt>Rod size</dt><dd id="uBoltThread">-</dd></div>
-            <div><dt>Supplier</dt><dd id="uBoltSupplier">-</dd></div>
-            <div><dt>Member geometry</dt><dd id="uBoltPublishedGeometry">-</dd></div>
-            <div class="ubolt-summary-wide"><dt>Material / finish</dt><dd id="uBoltPublishedMaterial">-</dd></div>
+            <div><dt>Thread designation</dt><dd id="uBoltThread">-</dd></div>
+            <div><dt>Member fit</dt><dd id="uBoltPublishedGeometry">-</dd></div>
+            <div><dt>Material / finish</dt><dd id="uBoltPublishedMaterial">-</dd></div>
           </dl>
+          <div class="product-reference-row">
+            <span><small>Manufacturer reference</small><strong id="uBoltReferenceName">Manufacturer product data</strong></span>
+            <a id="uBoltSourceLink" class="product-reference-link" href="#" target="_blank" rel="noreferrer">Open product data <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
 
         <section id="uBoltPublishedSection" class="capacity-section" aria-live="polite" hidden>
-          <div class="section-heading"><div><span class="section-tag">PRODUCT DATA</span><h2>Manufacturer-published data</h2></div><a id="uBoltSourceStatus" class="ubolt-source-state" href="#" target="_blank" rel="noreferrer">Online source only</a></div>
+          <div class="section-heading"><div><span class="section-tag">PRODUCT DATA</span><h2>Manufacturer-published data</h2></div><span id="uBoltSourceStatus" class="ubolt-source-state">Source not selected</span></div>
           <div class="capacity-grid ubolt-results ubolt-results-single">
             <article id="uBoltPublishedCard" class="capacity-card selected-shear"><span id="uBoltPublishedLoadLabel">Rated load</span><strong><output id="uBoltPublishedCapacity">No rated load published</output></strong><p id="uBoltCapacityBasis">No manufacturer-rated load is published for the selected entry.</p></article>
           </div>
@@ -295,7 +303,7 @@
           <div class="source-notes">
             <p><b>Project design</b> - Check U-bolt and thread strength, leg-force distribution, bend effects, clamp slip and contact, pipe or member local bearing, attachment details, fatigue, corrosion and installation.</p>
             <p><b>Headframe boundary</b> - Mounting-pipe products may be screened. Main headframe-to-monopole clamps remain project-engineered assemblies.</p>
-            <p><b>Source</b> - <a id="uBoltSourceLink" href="#" target="_blank" rel="noreferrer">Manufacturer product listing</a>. The displayed status confirms source traceability only, not project suitability.</p>
+            <p><b>Source</b> - Open the manufacturer reference from the selected-product card and verify the current issue before specification.</p>
           </div>
         </div>
       </details>
@@ -310,41 +318,54 @@
               <label><span>Head type</span><select id="blindBoltHead" aria-label="Structural blind-bolt head type"></select></label>
             </div>
           </section>
-          <section class="input-group input-group-section" aria-label="Structural blind-bolt product source">
-            <span class="input-group-heading"><b>Product source</b><small id="blindBoltProductGroupNote">Select the manufacturer, finish and catalogue entry.</small></span>
-            <div class="input-group-fields three">
+          <section class="input-group input-group-section" aria-label="Structural blind-bolt catalogue filters">
+            <span class="input-group-heading"><b>Catalogue filters</b><small>Manufacturer and finish remain optional.</small></span>
+            <div class="input-group-fields two">
               <label><span>Manufacturer</span><select id="blindBoltManufacturer" aria-label="Structural blind-bolt manufacturer"></select></label>
               <label><span>Finish</span><select id="blindBoltFinish" aria-label="Structural blind-bolt finish"></select></label>
+            </div>
+          </section>
+          <section class="input-group input-group-section product-selection-group" aria-label="Structural blind-bolt product selection">
+            <span class="input-group-heading"><b id="blindBoltProductSelectionTitle">Product selection</b><small id="blindBoltProductSelectionNote">Select one matching catalogue entry.</small></span>
+            <div class="input-group-fields one">
               <label class="size-field"><span>Catalogue entry</span><select id="blindBoltProduct" aria-label="Structural blind-bolt catalogue entry"></select></label>
             </div>
           </section>
         </div>
 
-        <div id="blindBoltSelectionPrompt" class="product-selection-prompt">
+        <div id="blindBoltSelectionPrompt" class="product-selection-prompt" hidden>
           <b id="blindBoltSelectionPromptTitle">Select a catalogue entry</b>
           <span id="blindBoltSelectionPromptNote">Published product data appears after selection.</span>
         </div>
 
-        <div id="blindBoltSelectedSummary" class="bolt-summary ubolt-summary blind-bolt-summary" hidden>
+        <div id="blindBoltSelectedSummary" class="bolt-summary ubolt-summary blind-bolt-summary product-selection-summary" hidden>
           <div><span>Selected product</span><strong id="blindBoltSelectionTitle">Structural blind-bolt lookup</strong><small id="blindBoltSelectionNote">Select a matching entry to review its published data.</small></div>
           <dl>
             <div><dt>Product code</dt><dd id="blindBoltCode">-</dd></div>
-            <div><dt>Nominal size</dt><dd id="blindBoltSelectedSize">-</dd></div>
-            <div><dt>Supplier</dt><dd id="blindBoltSupplier">-</dd></div>
+            <div><dt>Catalogue size</dt><dd id="blindBoltSelectedSize">-</dd></div>
             <div><dt>Grip range, W</dt><dd id="blindBoltGripRange">-</dd></div>
             <div><dt>Hole diameter</dt><dd id="blindBoltHole">-</dd></div>
             <div><dt>Head type</dt><dd id="blindBoltSelectedHead">-</dd></div>
             <div><dt>Finish</dt><dd id="blindBoltSelectedFinish">-</dd></div>
-            <div><dt>Minimum centres</dt><dd id="blindBoltCentres">-</dd></div>
-            <div><dt>Outer-ply basis</dt><dd id="blindBoltOuterPly">-</dd></div>
-            <div class="ubolt-summary-wide"><dt>Edge requirement</dt><dd id="blindBoltEdge">-</dd></div>
-            <div><dt>Installation torque</dt><dd id="blindBoltTorque">-</dd></div>
-            <div><dt>Installation tools</dt><dd id="blindBoltTools">-</dd></div>
           </dl>
+          <details class="product-detail-disclosure">
+            <summary><span><b>Installation requirements</b><small>Spacing, edge, ply and installation data</small></span><i>+</i></summary>
+            <dl>
+              <div><dt>Minimum centres</dt><dd id="blindBoltCentres">-</dd></div>
+              <div><dt>Edge / clearance</dt><dd id="blindBoltEdge">-</dd></div>
+              <div><dt>Outer-ply basis</dt><dd id="blindBoltOuterPly">-</dd></div>
+              <div><dt>Installation torque</dt><dd id="blindBoltTorque">-</dd></div>
+              <div class="ubolt-summary-wide"><dt>Installation tools</dt><dd id="blindBoltTools">-</dd></div>
+            </dl>
+          </details>
+          <div class="product-reference-row">
+            <span><small>Manufacturer reference</small><strong id="blindBoltReferenceName">Manufacturer technical data</strong></span>
+            <a id="blindBoltSourceLink" class="product-reference-link" href="#" target="_blank" rel="noreferrer">Open technical data <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
 
         <section id="blindBoltPublishedSection" class="capacity-section" aria-live="polite" hidden>
-          <div class="section-heading"><div><span class="section-tag">PRODUCT DATA</span><h2>Manufacturer-published values</h2></div><a id="blindBoltSourceStatus" class="ubolt-source-state" href="#" target="_blank" rel="noreferrer">Source not verified</a></div>
+          <div class="section-heading"><div><span class="section-tag">PRODUCT DATA</span><h2>Manufacturer-published values</h2></div><span id="blindBoltSourceStatus" class="ubolt-source-state">Source not verified</span></div>
           <div id="blindBoltPublishedValues" class="capacity-grid blind-bolt-results">
             <article class="capacity-card selected-shear"><span id="blindBoltTensionLabel">Published tension value</span><strong><output id="blindBoltTension">-</output><small> kN</small></strong></article>
             <article class="capacity-card tension"><span id="blindBoltShearLabel">Published shear value</span><strong><output id="blindBoltShear">-</output><small> kN</small></strong></article>
@@ -366,7 +387,7 @@
           <div class="source-notes">
             <p><b>Design boundary</b> - Check the hollow section, attachment plate, holes, local wall effects, load distribution, fatigue, corrosion and installation separately.</p>
             <p><b>Selection boundary</b> - Grip compatibility controls list order only. This lookup does not rank manufacturers or confirm project suitability.</p>
-            <p><b>Source</b> - <a id="blindBoltSourceLink" href="#" target="_blank" rel="noreferrer">Manufacturer technical data</a>. Verify the current source before specification.</p>
+            <p><b>Source</b> - Open the manufacturer reference from the selected-product card and verify the current issue before specification.</p>
           </div>
         </div>
       </details>
@@ -1661,7 +1682,7 @@
   <script src="beam-section-capacity.js?v=20260729boltproducts1"></script>
   <script src="beam-section-reconciliation.js?v=20260729boltproducts1"></script>
   <script src="reo-calculation.js?v=20260729boltproducts1"></script>
-  <script src="app.js?v=20260729boltproducts1"></script>
+  <script src="app.js?v=20260803productflow36"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>
