@@ -1167,7 +1167,7 @@ Web outline map:
 - `15.1` to `15.3` define product logic, tab structure, page states, dependency flow, disclosure rules, and result hierarchy.
 - `15.4` to `15.6` define visual format: typography, spacing, grids, responsive breakpoints, mobile behaviour, theme colours, input-state colours, semantic colours, and contrast.
 - `15.7` defines symbols, formulas, source references, and project-file responsibilities.
-- `15.8` defines input layout, editable-field behaviour, figure/chart rules, CAD-style drawing rules, and page annotation rules.
+- `15.8` defines input layout and the project drawing contract. Section `15.8.1` governs the pinned UWEDS adoption and future drawing workflow; the remaining subsections retain SC Handbook-specific figure, annotation and responsive rules.
 - `15.9` defines warning and limitation style.
 - `15.10` onward defines tab-specific engineering scope, formula boundaries, display rules, and exclusions.
 - `15.18` defines local update, commit, push, and GitHub Pages verification workflow.
@@ -1937,7 +1937,51 @@ Reduction-factor inputs:
 - Do not imply that a project factor is an automatic AS 4100, AS/NZS 1554.1, or manufacturer-table value.
 - For weld checks, `k_r` must not be treated as a free project factor when it is being used for AS 4100 welded lap connections. If included, calculate and label it from AS 4100 Table 9.6.3.10(B), and only apply it when the user confirms the weld is a welded lap connection.
 
-#### 15.8.1 SC Handbook Web Engineering Drawing Contract
+#### 15.8.1 Drawing Package Adoption and Reference Rule
+
+SC Handbook adopts the shared `Unified Web Engineering Drawing Standard` (`UWEDS`) package in `C:/Users/silin/Documents/Codex/Drawing` as the common implementation baseline for engineering figures, annotations, CAD-to-web assets and drawing QA. The project-owned adoption record is `engineering/drawing-standard-adoption.json`. Read that record before starting or materially revising a figure; it fixes the package version, selected modules, project profile, validation route and release boundary.
+
+The authority order is:
+
+```text
+law and regulation
+-> approved client, asset-owner and project requirements
+-> applicable Australian design and drawing Standards
+-> current certified manufacturer documentation
+-> pinned UWEDS package
+-> SC Handbook Section 15.8 project rules and approved overrides
+-> examples and visual references
+```
+
+UWEDS controls reusable drawing mechanics. This handbook controls the narrower product boundary: lightweight engineering lookup, compact web placement, English terminology, current calculator state, mobile simplification and explicit calculation exclusions. A handbook rule may narrow UWEDS for this interface but must not weaken geometry authority, semantic identity, notation, dimension meaning, collision avoidance, accessibility, traceability or release QA. Record a genuine conflict as an approved project override; do not silently choose whichever rule is easier.
+
+Do not copy the Drawing package Markdown into this repository or restate it clause by clause. Reference the pinned package and retain only SC Handbook-specific decisions here. A moving folder path alone is not an issue-time pin. When the shared package changes, compare `PACKAGE_MANIFEST.md`, assess affected figures, update the adoption record and rerun the applicable checks before accepting the new version.
+
+Use this minimum loading matrix for future work:
+
+| SC Handbook drawing task | UWEDS modules to load in addition to the master outline, adoption guide, package manifest and AU web profiles |
+| --- | --- |
+| New or revised deterministic web SVG | Annotation layout, dimension/annotation, written notation, graphical annotation, structural annotation recipe and applicable golden/negative cases |
+| Interactive SVG or linked values | Interactive notation module, symbol dictionary, interactive annotation schema/rules and interaction checklist |
+| CAD-derived vector, screenshot or model view | CAD-to-web module, CAD web asset schema, conversion recipe/rules, web release rules and integration checklist |
+| Bolt, weld, anchor, clamp or other physical connection | Physical connection atlas, common-component atlas, physical-interface schema, connection rules and the object-specific recipe |
+| Manufacturer product drawing | Product technical drawing atlas, product evidence/rules and current certified manufacturer source |
+| Historical drawing reproduction | Historical-source reproduction module, profile, recipe, schema, rules and checklist |
+
+For every new controlled drawing family or materially changed physical representation:
+
+1. Define the engineering question, audience, figure level and accuracy class before choosing a view.
+2. Confirm geometry authority and source revision; do not infer dimensions from image scale.
+3. Create or update a pre-drawing case review under `engineering/pre-drawing-case-reviews/`.
+4. Select only the UWEDS modules, recipes and rule registries needed for that figure.
+5. Generate geometry from the same validated data used by the calculator, with stable semantic SVG groups and source identifiers where applicable.
+6. Apply the local annotation budget, responsive sizing and calculation-boundary rules below.
+7. Run the Drawing package validator and the SC Handbook project tests, then inspect desktop and phone rendering.
+8. Record the adopted package version, case-review ID, source basis and validation result in `REFERENCE_TRACEABILITY.md` before publication.
+
+Existing figures are inherited assets, not automatically UWEDS-compliant. A figure may remain in service when its current scope is clear, but any material geometry, annotation, interaction or source change triggers the adoption workflow above. Do not label a figure `Checked`, `value-driven`, `CAD-derived` or manufacturer-verified until the corresponding evidence and checks are complete.
+
+#### 15.8.2 SC Handbook Web Engineering Drawing Contract
 
 Engineering drawings in SC Handbook are compact calculation aids. They may identify an input dimension, explain a section or connection, show the geometry used by a calculation, clarify an axis/plane/restraint/load direction, or support visual checking of entered and catalogue-derived values.
 
@@ -1989,7 +2033,7 @@ Project drawing contract:
 9. Keep phone figures compact and simplify annotations instead of shrinking text.
 10. Confirm the figure at normal and extreme-but-valid values before release.
 
-#### 15.8.2 Detailed Figure, Symbol and CAD Requirements
+#### 15.8.3 Detailed Figure, Symbol and CAD Requirements
 
 - Figures, diagrams, sketches and charts must support fast engineering lookup. They should read as restrained engineering schematics, not marketing graphics, decorative illustrations or publication-layout figures.
 - The target is SC Handbook screen reading on phone, tablet and desktop. Print-publication dimensions, DPI targets and EPS/PDF-first export rules do not govern these web figures.

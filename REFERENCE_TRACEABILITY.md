@@ -755,3 +755,16 @@ Build 0.7.10 was checked against the current `SC_HANDBOOK.md` calculation, valid
 | `AUD-RESPONSIVE-02` | All nine public pages | Default desktop at 1440 px and phone at 390 x 844 px | No document or checked-control horizontal overflow |
 
 The complete local regression suite passed 19 test files after these checks, including published worked examples, independent reproductions, catalogue reconciliation and DOM contracts. A fresh browser session reported no console warnings or errors. Remaining `For Review`, `Draft`, `Not evaluated` and selector-only states are intentional scope boundaries, not completed design checks.
+
+## 2026-08-03 Drawing-standard Adoption
+
+SC Handbook now references the shared Unified Web Engineering Drawing Standard through the project-owned `engineering/drawing-standard-adoption.json` record rather than copying a second drafting standard into this repository.
+
+- Adopted package: UWEDS 1.10.0, governed subset, manifest generated 2026-08-03.
+- Pin: controlled revision plus `PACKAGE_MANIFEST.md` SHA-256 `7d71cfa493defd5504966d6e20cc271f34485a5fc8e6b80f7a1340bf8611c7f1`.
+- Shared package location: `C:/Users/silin/Documents/Codex/Drawing`.
+- Local project rules: `SC_HANDBOOK.md` Section 15.8, including lightweight placement, annotation budgets, mobile simplification and calculator-scope boundaries.
+- Future case records: `engineering/pre-drawing-case-reviews/` before a new drawing family or material physical-representation change.
+- Validation: UWEDS package validator passed with 25 JSON files, 261 rule IDs, 203 test IDs and 114 manifest entries; the adoption record passed its current JSON schema; all 19 SC Handbook regression test files passed.
+
+The adoption remains `DRAFT`. It does not retrospectively certify inherited figures and does not convert web schematics into construction, fabrication, shop or certified design drawings.
