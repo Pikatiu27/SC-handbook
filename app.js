@@ -928,11 +928,70 @@ const rodSections = [
   grades: rodGrades(diameter)
 }));
 
+function sectionHollowCatalogueSections(family) {
+  const grouped = new Map();
+  BeamSectionData.filter(row => row.family === family).forEach(row => {
+    if (!grouped.has(row.designation)) grouped.set(row.designation, []);
+    grouped.get(row.designation).push(row);
+  });
+  return Array.from(grouped, ([designation, rows]) => {
+    const first = rows[0];
+    const circular = family === "chs";
+    const square = family === "shs";
+    const axes = circular
+      ? { axis: { I: first.I * 1e6, Z: first.Z, S: first.S } }
+      : square
+        ? { xy: { I: first.I * 1e6, Z: first.Z, S: first.S } }
+        : { x: { I: first.Ix * 1e6, Z: first.Zx, S: first.Sx }, y: { I: first.Iy * 1e6, Z: first.Zy, S: first.Sy } };
+    const grades = Object.fromEntries(rows.map(row => {
+      const directions = circular
+        ? { axis: { Ze: row.Ze, compactness: row.compactness } }
+        : square
+          ? { xy: { Ze: row.Ze, compactness: row.compactness } }
+          : { x: { Ze: row.Zex, compactness: row.compactnessX }, y: { Ze: row.Zey, compactness: row.compactnessY } };
+      return [row.grade, {
+        fy: row.fy,
+        fyw: row.fy,
+        kf: row.kf,
+        directions,
+        sourceRef: `Austube 2013 Table ${row.sourceTable} · PDF p. ${row.pdfPage}`
+      }];
+    }));
+    return {
+      designation,
+      family,
+      D: first.D,
+      d: first.d,
+      b: first.b,
+      t: first.t,
+      mass: first.mass,
+      area: first.area,
+      r: first.r,
+      rx: first.rx || first.r,
+      ry: first.ry || first.r,
+      Aw: circular ? first.area : 0,
+      I: circular || square ? first.I * 1e6 : first.Ix * 1e6,
+      Zx: circular || square ? first.Z : first.Zx,
+      Sx: circular || square ? first.S : first.Sx,
+      drawing: circular ? { shape: "chs", D: first.D, t: first.t } : { shape: "rhs", b: first.b, h: first.d || first.b, t: first.t },
+      axes,
+      grades,
+      capacityStatus: "checked",
+      shearMethod: circular ? "chs-section" : "rhs-web",
+      interactionMethod: circular ? null : "flat-web",
+      sourceRef: grades[Object.keys(grades)[0]].sourceRef,
+      sourceBasis: "Published design-capacity table"
+    };
+  });
+}
+
 const sectionCatalogueFamilies = SectionCatalogue.create({
   pfc: pfcSections,
   ub: ubSections,
   uc: ucSections,
   chs: chsSections,
+  rhs: sectionHollowCatalogueSections("rhs"),
+  shs: sectionHollowCatalogueSections("shs"),
   ea: eaCatalogueSections,
   rod: rodSections
 }, SectionGeometry);
@@ -3783,60 +3842,7 @@ function beamPfcSection(section) {
 }
 
 function beamHollowSections(family) {
-  const grouped = new Map();
-  BeamSectionData.filter(row => row.family === family).forEach(row => {
-    if (!grouped.has(row.designation)) grouped.set(row.designation, []);
-    grouped.get(row.designation).push(row);
-  });
-  return Array.from(grouped, ([designation, rows]) => {
-    const first = rows[0];
-    const circular = family === "chs";
-    const square = family === "shs";
-    const axes = circular
-      ? { axis: { I: first.I * 1e6, Z: first.Z, S: first.S } }
-      : square
-        ? { xy: { I: first.I * 1e6, Z: first.Z, S: first.S } }
-        : { x: { I: first.Ix * 1e6, Z: first.Zx, S: first.Sx }, y: { I: first.Iy * 1e6, Z: first.Zy, S: first.Sy } };
-    const grades = Object.fromEntries(rows.map(row => {
-      const directions = circular
-        ? { axis: { Ze: row.Ze, compactness: row.compactness } }
-        : square
-          ? { xy: { Ze: row.Ze, compactness: row.compactness } }
-          : { x: { Ze: row.Zex, compactness: row.compactnessX }, y: { Ze: row.Zey, compactness: row.compactnessY } };
-      return [row.grade, {
-        fy: row.fy,
-        fyw: row.fy,
-        kf: row.kf,
-        directions,
-        sourceRef: `Austube 2013 Table ${row.sourceTable} · PDF p. ${row.pdfPage}`
-      }];
-    }));
-    return {
-      designation,
-      family,
-      D: first.D,
-      d: first.d,
-      b: first.b,
-      t: first.t,
-      mass: first.mass,
-      area: first.area,
-      r: first.r,
-      rx: first.rx || first.r,
-      ry: first.ry || first.r,
-      Aw: circular ? first.area : 0,
-      I: circular || square ? first.I * 1e6 : first.Ix * 1e6,
-      Zx: circular || square ? first.Z : first.Zx,
-      Sx: circular || square ? first.S : first.Sx,
-      drawing: circular ? { shape: "chs", D: first.D, t: first.t } : { shape: "rhs", b: first.b, h: first.d || first.b, t: first.t },
-      axes,
-      grades,
-      capacityStatus: "checked",
-      shearMethod: circular ? "chs-section" : "rhs-web",
-      interactionMethod: circular ? null : "flat-web",
-      sourceRef: grades[Object.keys(grades)[0]].sourceRef,
-      sourceBasis: "Published design-capacity table"
-    };
-  });
+  return sectionHollowCatalogueSections(family);
 }
 
 function beamAngleSection(section) {
@@ -3976,14 +3982,17 @@ const sectionShapeNames = {
   chs: "CHS",
   i: "Symmetric I-section",
   angle: "Equal angle",
-  channel: "Channel"
+  channel: "Channel",
+  tee: "T-section"
 };
 
 const sectionCatalogueFamilyNames = {
-  pfc: "PFC",
   ub: "UB",
   uc: "UC",
+  pfc: "PFC",
   chs: "CHS",
+  rhs: "RHS",
+  shs: "SHS",
   ea: "Equal angle",
   rod: "Round bar"
 };
@@ -4013,6 +4022,7 @@ function currentSectionGeometry() {
   if (shape === "chs") return SectionGeometry.circularHollow(value("sectionDiameter"), value("sectionThickness"));
   if (shape === "i") return SectionGeometry.symmetricI(value("sectionDepth"), value("sectionFlangeWidth"), value("sectionWebThickness"), value("sectionFlangeThickness"));
   if (shape === "angle") return SectionGeometry.equalAngle(value("sectionLeg"), value("sectionAngleThickness"));
+  if (shape === "tee") return SectionGeometry.tee(value("sectionDepth"), value("sectionFlangeWidth"), value("sectionWebThickness"), value("sectionFlangeThickness"));
   return SectionGeometry.channel(value("sectionDepth"), value("sectionFlangeWidth"), value("sectionWebThickness"), value("sectionFlangeThickness"));
 }
 
@@ -4032,6 +4042,7 @@ function sectionCompositionText(shape) {
   if (shape === "chs") return "Outside circle minus the concentric inside circle.";
   if (shape === "i") return "Two flange rectangles plus the clear web rectangle.";
   if (shape === "angle") return "Two leg rectangles minus their overlapping corner square.";
+  if (shape === "tee") return "One flange rectangle plus the centred clear web rectangle.";
   return "Two flange rectangles plus the clear web rectangle.";
 }
 
@@ -4049,6 +4060,10 @@ function customSectionRatios(shape) {
   if (shape === "channel") return [
     { label: "(d−2tf)/tw", value: (value("sectionDepth") - 2 * value("sectionFlangeThickness")) / value("sectionWebThickness") },
     { label: "(bf−tw)/tf", value: (value("sectionFlangeWidth") - value("sectionWebThickness")) / value("sectionFlangeThickness") }
+  ];
+  if (shape === "tee") return [
+    { label: "(d−tf)/tw", value: (value("sectionDepth") - value("sectionFlangeThickness")) / value("sectionWebThickness") },
+    { label: "(bf−tw)/2tf", value: (value("sectionFlangeWidth") - value("sectionWebThickness")) / (2 * value("sectionFlangeThickness")) }
   ];
   if (shape === "angle") return [{ label: "b/t", value: value("sectionLeg") / value("sectionAngleThickness") }];
   return [];
@@ -4084,6 +4099,7 @@ function idealDrawingProperties(drawing) {
   if (drawing.shape === "chs") return SectionGeometry.circularHollow(drawing.D, drawing.t);
   if (drawing.shape === "i") return SectionGeometry.symmetricI(drawing.d, drawing.bf, drawing.tw, drawing.tf);
   if (drawing.shape === "angle") return SectionGeometry.equalAngle(drawing.b, drawing.t);
+  if (drawing.shape === "tee") return SectionGeometry.tee(drawing.d, drawing.bf, drawing.tw, drawing.tf);
   return SectionGeometry.channel(drawing.d, drawing.bf, drawing.tw, drawing.tf);
 }
 
@@ -4132,6 +4148,12 @@ function renderSectionPropertiesDiagram(drawing, properties, title, catalogueMod
   } else if (shape === "angle") {
     const t = limitThickness(drawing.t);
     geometryMarkup = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + drawnWidth)} V ${line(y0 + t)} H ${line(x0 + t)} V ${line(y0 + drawnHeight)} H ${line(x0)} Z" />`;
+  } else if (shape === "tee") {
+    const tw = limitThickness(drawing.tw);
+    const tf = limitThickness(drawing.tf);
+    const webLeft = x0 + (drawnWidth - tw) / 2;
+    const webRight = webLeft + tw;
+    geometryMarkup = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + drawnWidth)} V ${line(y0 + tf)} H ${line(webRight)} V ${line(y0 + drawnHeight)} H ${line(webLeft)} V ${line(y0 + tf)} H ${line(x0)} Z" />`;
   } else {
     const tw = limitThickness(drawing.tw);
     const tf = limitThickness(drawing.tf);
@@ -4215,7 +4237,7 @@ function selectedSectionCatalogueRecord() {
 function sectionMaterialDefaultForm() {
   if (sectionPropertiesMode === "catalogue") {
     const family = selectedSectionCatalogueFamily()?.key;
-    if (family === "chs") return "hollow-section";
+    if (family === "chs" || family === "rhs" || family === "shs") return "hollow-section";
     if (family === "rod") return "round-bar";
     return "hot-rolled-section";
   }
@@ -4232,14 +4254,14 @@ function sectionMaterialDefaultThickness() {
     if (!section) return null;
     if (family === "ea") return section.auxiliary?.actualT?.value || section.drawing?.t || null;
     if (family === "rod") return section.drawing?.D || section.diameter || null;
-    if (family === "chs") return section.drawing?.t || null;
+    if (family === "chs" || family === "rhs" || family === "shs") return section.drawing?.t || null;
     return Math.max(Number(section.drawing?.tf) || 0, Number(section.drawing?.tw) || 0) || null;
   }
   const shape = $("sectionShape").value;
   if (shape === "rectangle") return Math.min(value("sectionWidth"), value("sectionHeight"));
   if (shape === "rhs" || shape === "chs") return value("sectionThickness");
   if (shape === "circle") return value("sectionDiameter");
-  if (shape === "i" || shape === "channel") return Math.max(value("sectionWebThickness"), value("sectionFlangeThickness"));
+  if (shape === "i" || shape === "channel" || shape === "tee") return Math.max(value("sectionWebThickness"), value("sectionFlangeThickness"));
   if (shape === "angle") return value("sectionAngleThickness");
   return null;
 }
@@ -4362,6 +4384,9 @@ function sectionCheckedDesignRecord() {
   }
   if (family === "chs") return beamHollowSections("chs").find(item =>
     sameSectionDimension(item.D, selected.drawing?.D) && sameSectionDimension(item.t, selected.drawing?.t)
+  ) || null;
+  if (family === "rhs" || family === "shs") return beamHollowSections(family).find(item =>
+    item.designation === designation
   ) || null;
   if (family === "ea") {
     const section = eaCatalogueSections.find(item => item.designation === designation);
@@ -4855,9 +4880,12 @@ function configureSectionSpecificProperties(properties, shape) {
   const hasSupplementary = Object.values(cardVisibility).some(Boolean);
   $("sectionSupplementaryHeading").hidden = !hasSupplementary;
   $("sectionSupplementaryProperties").hidden = !hasSupplementary;
-  if (hasSupplementary && cardVisibility.sectionJpCard && Object.entries(cardVisibility).every(([id, visible]) => id === "sectionJpCard" || !visible)) {
-    $("sectionSupplementaryTitle").textContent = "Supplementary geometric reference";
-    $("sectionSupplementaryDescription").textContent = "Polar second moment about the displayed centroidal axes.";
+  if (hasSupplementary && !cardVisibility.sectionJCard && !cardVisibility.sectionIwCard && !cardVisibility.sectionXoCard) {
+    const polarOnly = cardVisibility.sectionJpCard && !cardVisibility.sectionAwCard;
+    $("sectionSupplementaryTitle").textContent = polarOnly ? "Supplementary geometric reference" : "Supplementary geometric references";
+    $("sectionSupplementaryDescription").textContent = polarOnly
+      ? "Polar second moment about the displayed centroidal axes."
+      : "Applicable clear-wall or clear-web area and polar second-moment references.";
   }
 
   const hasIxy = Number.isFinite(sectionPropertyNumber(properties?.ixy));
@@ -4934,7 +4962,7 @@ function calculateCustomSectionProperties() {
     const principalTwo = angleAxes ? "y" : "v";
     const shearReferenceText = shape === "rhs"
       ? "A<sub>wy</sub> and A<sub>wx</sub> are the combined areas of the two ideal vertical and horizontal walls"
-      : shape === "i" || shape === "channel"
+      : shape === "i" || shape === "channel" || shape === "tee"
         ? "A<sub>w</sub> is the ideal clear web area"
         : "No shear reference area is reported for this shape";
     renderSectionPropertiesDiagram(sectionDrawingFromInputs(shape), properties, sectionShapeNames[shape]);

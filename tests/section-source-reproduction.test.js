@@ -8,13 +8,14 @@ const SectionCatalogue = require("../section-catalogue.js");
 const SectionGeometry = require("../section-geometry.js");
 const SteelMaterials = require("../steel-materials.js");
 const BeamHotRolledData = require("../beam-hot-rolled-data.js");
+const BeamSectionData = require("../beam-section-data.js");
 
 const source = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
 const start = source.indexOf("const beamShearDimensions =");
 const end = source.indexOf("let sectionPropertiesMode =");
 assert.ok(start >= 0 && end > start, "Section source-data block must remain discoverable.");
 
-const context = { SectionCatalogue, SectionGeometry, SteelMaterials, BeamHotRolledData };
+const context = { SectionCatalogue, SectionGeometry, SteelMaterials, BeamHotRolledData, BeamSectionData };
 vm.runInNewContext(
   `${source.slice(start, end)}
    this.auditData = { beamShearDimensions, sectionCatalogueFamilies };`,
@@ -65,6 +66,28 @@ assert.equal(chs.mass, 12.19);
 close(chs.properties.area.value, Math.PI * (114.3 ** 2 - 105.3 ** 2) / 4);
 close(chs.properties.ix.value, Math.PI * (114.3 ** 4 - 105.3 ** 4) / 64);
 assert.equal(chs.properties.area.basis, "derived");
+
+// Austube 2013, Table 3.1-3, PDF page 31.
+const rhs = section("rhs", "75 x 25 x 2.5 RHS");
+assert.equal(rhs.mass, 3.6);
+assert.equal(rhs.properties.area.value, 459);
+assert.equal(rhs.properties.ix.value, 0.285e6);
+assert.equal(rhs.properties.iy.value, 0.0487e6);
+assert.equal(rhs.properties.zx.value, 7.6e3);
+assert.equal(rhs.properties.zy.value, 3.89e3);
+assert.equal(rhs.properties.rx.value, 24.9);
+assert.equal(rhs.properties.ry.value, 10.3);
+
+// Austube 2013, Table 3.1-6, PDF page 36.
+const shs = section("shs", "200 x 200 x 6 SHS");
+assert.equal(shs.mass, 35.6);
+assert.equal(shs.properties.area.value, 4530);
+assert.equal(shs.properties.ix.value, 28e6);
+assert.equal(shs.properties.iy.value, 28e6);
+assert.equal(shs.properties.zx.value, 280e3);
+assert.equal(shs.properties.sy.value, 327e3);
+assert.equal(shs.properties.rx.value, 78.6);
+assert.equal(shs.properties.ry.value, 78.6);
 
 // InfraBuild 2019, Tables 19 and 21, PDF pages 19 and 21.
 const angle = section("ea", "100 x 100 x 10 EA");

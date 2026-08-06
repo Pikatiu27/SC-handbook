@@ -303,6 +303,29 @@
     });
   }
 
+  function tee(depth, flangeWidth, webThickness, flangeThickness) {
+    const d = positive(depth, "Overall depth");
+    const bf = positive(flangeWidth, "Flange width");
+    const tw = positive(webThickness, "Web thickness");
+    const tf = positive(flangeThickness, "Flange thickness");
+    if (tf >= d) throw new RangeError("Flange thickness must be less than the overall depth.");
+    if (tw > bf) throw new RangeError("Web thickness must not exceed flange width.");
+    const rectangles = [
+      { x: (bf - tw) / 2, y: 0, width: tw, height: d - tf },
+      { x: 0, y: d - tf, width: bf, height: tf }
+    ];
+    const properties = compositeRectangles(rectangles.map(rectangle => ({
+      width: rectangle.width,
+      height: rectangle.height,
+      cx: rectangle.x + rectangle.width / 2,
+      cy: rectangle.y + rectangle.height / 2
+    })));
+    return supplement(properties, {
+      ...plasticProperties(rectangles),
+      aw: tw * (d - tf)
+    });
+  }
+
   return Object.freeze({
     rectangle,
     rectangularHollow,
@@ -311,6 +334,7 @@
     symmetricI,
     equalAngle,
     channel,
+    tee,
     compositeRectangles
   });
 });
