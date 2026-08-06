@@ -58,6 +58,25 @@ const closeTo = (actual, expected, tolerance, label) => {
   );
 });
 
+// Austube Table 3.1-2(1) and Table 8-2(1), 508.0 x 6.4 CHS C350L0:
+// Ag = 10100 mm2, kf = 0.857 and phi Ms = 408 kN.m.
+const publishedCapacityBasis = {
+  area: 10100,
+  formFactor: 0.857,
+  yieldStress: 350,
+  designMomentCapacity: 408
+};
+const publishedDesignCompression = 0.9
+  * publishedCapacityBasis.formFactor
+  * publishedCapacityBasis.area
+  * publishedCapacityBasis.yieldStress
+  / 1000;
+const publishedCompressionRow = monopole.circularCompressionSectionCapacity(508, 6.4, 350);
+const publishedMomentRow = monopole.circularMomentCapacity(508, 6.4, 350, "CF");
+assert.ok(relativeError(publishedCompressionRow.formFactor, publishedCapacityBasis.formFactor) <= 0.002);
+assert.ok(relativeError(publishedCompressionRow.designSectionCapacity, publishedDesignCompression) <= 0.005);
+assert.ok(relativeError(publishedMomentRow.designMomentCapacity, publishedCapacityBasis.designMomentCapacity) <= 0.005);
+
 // ASCE/SEI 48-19 Appendix B approximate equations provide an independent
 // check on the exact sharp-corner geometry used by the calculator.
 const asce12AppendixExample = outsideDimension => {
@@ -199,11 +218,37 @@ const independentPolygonExample = ({ sideCount, outsideAcrossFlats, thickness, y
   closeTo(result.permittedMomentCapacity, independent.moment, 1e-9, `${example.label} production M`);
 });
 
+// Current browser evidence: switch the editable 508 x 6.4 mm circular example
+// to an 8-sided regular polygon while retaining geometry and fy.
+const currentPolygonPageInput = {
+  sideCount: 8,
+  outsideAcrossFlats: 508,
+  thickness: 6.4,
+  yieldStress: 350,
+  insideBendRadius: 1.5 * 6.4
+};
+const currentPolygonPageIndependent = independentPolygonExample(currentPolygonPageInput);
+const currentPolygonPageResult = monopole.polygonMomentCapacity({
+  sideCount: currentPolygonPageInput.sideCount,
+  outsideDimension: currentPolygonPageInput.outsideAcrossFlats,
+  thickness: currentPolygonPageInput.thickness,
+  yieldStress: currentPolygonPageInput.yieldStress,
+  insideBendRadius: currentPolygonPageInput.insideBendRadius
+});
+closeTo(
+  currentPolygonPageResult.permittedMomentCapacity,
+  currentPolygonPageIndependent.moment,
+  1e-9,
+  "current polygon browser evidence"
+);
+assert.equal(currentPolygonPageResult.permittedMomentCapacity.toFixed(1), "450.4");
+
 // KISMAT ENGITECH KOP-1230 manufacturer product table:
 // 12 m, 8-sided, 240/90 mm outside A/F, 3 mm, E355BR designation.
 // The source does not separately publish numerical yield stress, bend radius
-// or capacity. fy = 355 MPa and ri/tnom = 3.0 are explicit editable calculation
-// inputs, and every derived value below is independently reconstructed before
+// or capacity. fy = 355 MPa is adopted from the designation and ri/tnom = 1.5
+// is a fabrication estimate. Both are calculation inputs rather than published
+// product values, and every derived value below is independently reconstructed before
 // comparison with the production code.
 const productExample = {
   id: "KOP-1230",
@@ -213,7 +258,7 @@ const productExample = {
   topAcrossFlats: 90,
   thickness: 3,
   yieldStress: 355,
-  insideBendRadius: 9
+  insideBendRadius: 4.5
 };
 
 const independentProductStation = outsideAcrossFlats => {
@@ -265,12 +310,12 @@ const independentCentreOfGravity = productExample.length
 closeTo(productBottom.area, 2356.0467427781814, 1e-9, "KOP-1230 independent base A");
 closeTo(productBottom.inertia, 17490959.305263974, 1e-6, "KOP-1230 independent base I");
 closeTo(productBottom.elasticModulus, 134662.82755101015, 1e-9, "KOP-1230 independent base Zmin");
-closeTo(productBottom.slenderness, 1.2739323128423685, 1e-12, "KOP-1230 independent base lambda");
+closeTo(productBottom.slenderness, 1.326285695561918, 1e-12, "KOP-1230 independent base lambda");
 closeTo(productBottom.moment, 47.805303780608604, 1e-12, "KOP-1230 independent base M");
 closeTo(productTop.area, 864.8779182350222, 1e-9, "KOP-1230 independent top A");
 closeTo(productTop.inertia, 866109.6214616665, 1e-6, "KOP-1230 independent top I");
 closeTo(productTop.elasticModulus, 17781.798937322936, 1e-9, "KOP-1230 independent top Zmin");
-closeTo(productTop.slenderness, 0.401375934183212, 1e-12, "KOP-1230 independent top lambda");
+closeTo(productTop.slenderness, 0.45372931690276136, 1e-12, "KOP-1230 independent top lambda");
 closeTo(productTop.moment, 6.312538622749642, 1e-12, "KOP-1230 independent top M");
 closeTo(independentMass, 151.7055515337219, 1e-9, "KOP-1230 independent mass");
 closeTo(independentSelfWeight, 1.4877232469481738, 1e-12, "KOP-1230 independent self-weight");

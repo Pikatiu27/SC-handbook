@@ -7,8 +7,12 @@
   const $ = id => document.getElementById(id);
   const sectionColours = ["#2f7b57", "#a95344", "#356f9f", "#8063a6", "#8a6a2c", "#4f7771"];
   let mode = "schedule";
+  let previousSectionForm = "circular";
   let schedule = [
-    { id: "KOP-1230", length: 12, bottomDimension: 240, topDimension: 90, nominalThickness: 3, designThickness: 3, yieldStress: 355, overlap: 0 }
+    { id: "508 CHS", length: 12, bottomDimension: 508, topDimension: 508, nominalThickness: 6.4, designThickness: 6.4, yieldStress: 350, overlap: 0 }
+  ];
+  let overallThicknessBands = [
+    { id: "T1", topElevation: 12, nominalThickness: 6.4, designThickness: 6.4, yieldStress: 350 }
   ];
 
   function number(value) {
@@ -48,23 +52,41 @@
     return sectionSelection().form === "polygon";
   }
 
+  function isInitialCircularExample(section) {
+    return section.id === "S1"
+      && section.length === 12
+      && section.bottomDimension === 508
+      && section.topDimension === 508
+      && section.nominalThickness === 6.4
+      && section.designThickness === 6.4
+      && section.yieldStress === 350
+      && section.overlap === 0;
+  }
+
   function resistanceBasisHtml() {
     const method = polygonActive()
-      ? "ASCE/SEI 48-19 &middot; P = 0 &middot; M = F<sub>a</sub>I/c &middot; no AS 4100 &phi;"
+      ? `ASCE/SEI 48-19 &middot; P = 0 &middot; M = F<sub>a</sub>I/c &middot; r<sub>i</sub>/t<sub>nom</sub> = ${fixed(number($("monopoleBendRadiusRatio").value), 2)} estimate &middot; no AS 4100 &phi;`
       : "AS 4100:2020 &middot; &phi;M<sub>s</sub> &middot; &phi; = 0.90";
     return separateDesignThickness() ? `${method} &middot; User override: t<sub>d</sub>` : method;
   }
 
   function syncMethodPresentation() {
     const polygon = polygonActive();
-    $("monopoleMethodLabel").textContent = polygon
-      ? "ASCE/SEI 48-19 Cl. 5.2.5"
-      : "AS 4100 Cl. 5.2";
-    $("monopoleResistanceLabel").innerHTML = polygon
-      ? "Minimum evaluated station resistance"
-      : "Minimum evaluated station capacity";
-    $("monopoleResistanceBasis").innerHTML = resistanceBasisHtml();
+    $("monopoleCombinedCapacityContent").hidden = polygon;
+    $("monopoleCombinedUnavailable").hidden = !polygon;
+    $("monopoleMomentBasis").innerHTML = `0.5 m stations &middot; ${resistanceBasisHtml()}`;
+    $("monopoleCombinedCapacityTitle").textContent = polygon ? "Combined polygon stress" : "Section capacity intercepts";
+    $("monopoleCombinedCapacityBasis").innerHTML = polygon
+      ? "ASCE/SEI 48-19 &middot; combined polygon stress not evaluated"
+      : "Compression and bending &middot; 0.5 m stations &middot; AS 4100 Cls 5.2, 6.2 and 8.3.2";
+    if (polygon) $("monopoleCombinedCapacitySummary").textContent = "Not evaluated";
     $("monopoleStationResistanceHeading").innerHTML = polygon ? "M" : "&phi;M<sub>s</sub>";
+    $("monopoleChart").setAttribute(
+      "aria-label",
+      polygon
+        ? "Permitted bending moment plotted against pole elevation"
+        : "Design section moment capacity plotted against pole elevation"
+    );
   }
 
   function resolvedYieldStress(section) {
@@ -112,22 +134,77 @@
     return schedule.map(sectionFormOptions);
   }
 
-  function overallSection() {
-    const nominalThickness = number($("monopoleThickness").value);
-    const designThickness = separateDesignThickness()
-      ? number($("monopoleDesignThickness").value)
-      : nominalThickness;
-    if (!separateDesignThickness()) $("monopoleDesignThickness").value = String(nominalThickness);
-    return [sectionFormOptions({
-      id: "Overall",
-      length: number($("monopoleHeight").value),
+  function readOverallThicknessBands() {
+    const separate = separateDesignThickness();
+    overallThicknessBands = [...$("monopoleOverallThicknessBody").querySelectorAll("tr")].map((row, index) => {
+      const nominalThickness = number(row.querySelector('[data-field="nominalThickness"]').value);
+      return {
+        id: `T${index + 1}`,
+        topElevation: number(row.querySelector('[data-field="topElevation"]').value),
+        nominalThickness,
+        designThickness: separate
+          ? number(row.querySelector('[data-field="designThickness"]').value)
+          : nominalThickness,
+        yieldStress: number(row.querySelector('[data-field="yieldStress"]').value)
+      };
+    });
+    return overallThicknessBands;
+  }
+
+  function polygonBendRadiusRows(sections) {
+    return sections.map(section => ({
+      id: section.id,
+      nominalThickness: section.nominalThickness,
+      designThickness: section.thickness,
+      insideBendRadius: section.insideBendRadius,
+      effectiveBendRadius: Math.min(section.insideBendRadius, 4 * section.thickness)
+    }));
+  }
+
+  function polygonBendRadiusSummary(sections) {
+    const rows = polygonBendRadiusRows(sections);
+    if (rows.length === 1) {
+      return `Derived for ${escapeHtml(rows[0].id)}: r<sub>i</sub> = ${fixed(rows[0].insideBendRadius, 1)} mm; BR = ${fixed(rows[0].effectiveBendRadius, 1)} mm.`;
+    }
+    const radii = rows.map(row => row.insideBendRadius);
+    const effectiveRadii = rows.map(row => row.effectiveBendRadius);
+    return `Derived by section: r<sub>i</sub> = ${fixed(Math.min(...radii), 1)}&ndash;${fixed(Math.max(...radii), 1)} mm; BR = ${fixed(Math.min(...effectiveRadii), 1)}&ndash;${fixed(Math.max(...effectiveRadii), 1)} mm.`;
+  }
+
+  function overallSections() {
+    const bands = capacity.overallProfileSections({
+      height: number($("monopoleHeight").value),
       bottomDimension: number($("monopoleBottomDimension").value),
-      topDimension: number($("monopoleTopDimension").value),
-      nominalThickness,
-      designThickness,
-      yieldStress: number($("monopoleYieldStress").value),
-      overlap: 0
-    })];
+      topDimension: number($("monopoleTopDimension").value)
+    }, readOverallThicknessBands());
+    return bands.map(sectionFormOptions);
+  }
+
+  function renderOverallThicknessSchedule() {
+    const lookup = plateLookupActive();
+    const separate = separateDesignThickness();
+    const finalIndex = overallThicknessBands.length - 1;
+    $("monopoleOverallThicknessBody").innerHTML = overallThicknessBands.map((band, index) => `
+      <tr>
+        <td data-label="Band"><b>T${index + 1}</b></td>
+        <td data-label="Top elevation"><input data-field="topElevation" type="number" min="0.1" step="0.1" value="${band.topElevation}" aria-label="Thickness band ${index + 1} top elevation"${index === finalIndex ? " readonly aria-readonly=\"true\"" : ""}></td>
+        <td data-label="Nominal wall thickness"><input data-field="nominalThickness" type="number" min="0.1" step="0.1" value="${band.nominalThickness}" aria-label="Thickness band ${index + 1} nominal wall thickness"></td>
+        <td class="monopole-design-thickness-column" data-label="Design thickness override"${separate ? "" : " hidden"}><input data-field="designThickness" type="number" min="0.1" step="0.1" value="${band.designThickness}" aria-label="Thickness band ${index + 1} design thickness override"></td>
+        <td data-label="Yield stress"><input data-field="yieldStress" type="number" min="1" step="1" value="${band.yieldStress}" aria-label="Thickness band ${index + 1} yield stress"${lookup ? " readonly aria-readonly=\"true\"" : ""}></td>
+        <td data-label="Remove"><button class="monopole-remove-section" type="button" data-index="${index}" title="Remove thickness band T${index + 1}" aria-label="Remove thickness band T${index + 1}">&times;</button></td>
+      </tr>`).join("");
+
+    $("monopoleOverallThicknessBody").querySelectorAll("input").forEach(input => input.addEventListener("input", calculate));
+    $("monopoleOverallThicknessBody").querySelectorAll(".monopole-remove-section").forEach(button => {
+      button.disabled = overallThicknessBands.length === 1;
+      button.addEventListener("click", () => {
+        readOverallThicknessBands();
+        overallThicknessBands.splice(Number(button.dataset.index), 1);
+        overallThicknessBands.at(-1).topElevation = number($("monopoleHeight").value);
+        renderOverallThicknessSchedule();
+        calculate();
+      });
+    });
   }
 
   function renderSchedule() {
@@ -169,15 +246,17 @@
     const grade = $("monopolePlateGrade").value;
     const materialNote = lookup
       ? `AS/NZS 3678:2016 Grade ${escapeHtml(grade)}; f<sub>y</sub> uses t<sub>nom</sub>.`
-      : "E355BR designation; adopted f<sub>y</sub> = 355 MPa. Verify project data.";
+      : selection.form === "circular"
+        ? "Initial circular-section example: Austube C350L0; adopted f<sub>y</sub> = 350 MPa. Verify current inputs and project data."
+        : "Enter the verified product or project f<sub>y</sub>.";
     const sectionNote = selection.form === "polygon"
-      ? `ASCE/SEI 48-19 regular ${selection.sideCount}-sided method. Verify r<sub>i</sub>/t<sub>nom</sub> for all sections; 3.0 is an example.`
+      ? `ASCE/SEI 48-19 regular ${selection.sideCount}-sided method. Fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5; replace with verified project or manufacturer data. ${polygonBendRadiusSummary(sections)}`
       : "AS 4100 circular-section method; bend-radius input is not required.";
     $("monopoleMaterialNote").innerHTML = materialNote;
     $("monopoleSectionNote").innerHTML = sectionNote;
     const inputs = mode === "schedule"
       ? [...$("monopoleScheduleBody").querySelectorAll('[data-field="yieldStress"]')]
-      : [$("monopoleYieldStress")];
+      : [...$("monopoleOverallThicknessBody").querySelectorAll('[data-field="yieldStress"]')];
     inputs.forEach((input, index) => {
       input.readOnly = lookup;
       input.setAttribute("aria-readonly", String(lookup));
@@ -188,7 +267,7 @@
   function updateMaterialState() {
     const lookup = plateLookupActive();
     $("monopolePlateGradeField").hidden = !lookup;
-    document.querySelectorAll('#monopolePanel [data-field="yieldStress"], #monopoleYieldStress').forEach(input => {
+    document.querySelectorAll('#monopolePanel [data-field="yieldStress"]').forEach(input => {
       input.readOnly = lookup;
       input.setAttribute("aria-readonly", String(lookup));
     });
@@ -197,17 +276,14 @@
 
   function updateDesignThicknessState() {
     const separate = separateDesignThickness();
+    readOverallThicknessBands();
+    readSchedule();
     if (!separate) {
-      readSchedule();
-      $("monopoleDesignThickness").value = $("monopoleThickness").value;
-      renderSchedule();
-    } else if (mode === "schedule") {
-      renderSchedule();
+      overallThicknessBands = overallThicknessBands.map(band => ({ ...band, designThickness: band.nominalThickness }));
+      schedule = schedule.map(section => ({ ...section, designThickness: section.nominalThickness }));
     }
-    $("monopoleOverallDesignThicknessField").hidden = !separate;
-    document.querySelectorAll(".monopole-design-thickness-column").forEach(cell => {
-      cell.hidden = !separate;
-    });
+    renderOverallThicknessSchedule();
+    renderSchedule();
     $("monopoleDesignThicknessState").innerHTML = separate
       ? "User override &middot; Resistance uses t<sub>d</sub>; material and mass use t<sub>nom</sub>."
       : "Default t<sub>d</sub> = t<sub>nom</sub>.";
@@ -217,8 +293,27 @@
   function updateSectionFormState() {
     const selection = sectionSelection();
     const polygon = selection.form === "polygon";
+    if (polygon && previousSectionForm !== "polygon") {
+      readSchedule();
+      schedule = schedule.map((section, index) => ({
+        ...section,
+        id: section.id === "508 CHS" ? `S${index + 1}` : section.id
+      }));
+      renderSchedule();
+    } else if (!polygon && previousSectionForm === "polygon") {
+      readSchedule();
+      schedule = schedule.map(section => ({
+        ...section,
+        id: isInitialCircularExample(section) ? "508 CHS" : section.id
+      }));
+      renderSchedule();
+    }
+    previousSectionForm = selection.form;
     $("monopoleBendRadiusField").hidden = !polygon;
     $("monopoleFabricationField").hidden = polygon;
+    $("monopoleScheduleBasis").textContent = polygon
+      ? "Physical sections, base to top. Enter project or manufacturer geometry."
+      : "Physical sections, base to top. Default: Austube 508.0 × 6.4 CHS C350L0.";
     document.querySelector(".monopole-dimension-bottom").innerHTML = polygon
       ? "Bottom outside across-flats, D<sub>o,b</sub>"
       : "Bottom outside diameter, D<sub>b</sub>";
@@ -253,6 +348,35 @@
     calculate();
   }
 
+  function addThicknessBand() {
+    readOverallThicknessBands();
+    const height = number($("monopoleHeight").value);
+    if (!Number.isFinite(height) || height <= 0) return calculate();
+    const finalBand = overallThicknessBands.at(-1);
+    const previousTop = overallThicknessBands.length > 1
+      ? overallThicknessBands.at(-2).topElevation
+      : 0;
+    if (height - previousTop <= 0.2) return calculate();
+    finalBand.topElevation = Math.round((previousTop + height) * 5) / 10;
+    overallThicknessBands.push({
+      ...finalBand,
+      id: `T${overallThicknessBands.length + 1}`,
+      topElevation: height
+    });
+    renderOverallThicknessSchedule();
+    calculate();
+  }
+
+  function updateOverallHeight() {
+    readOverallThicknessBands();
+    const height = number($("monopoleHeight").value);
+    if (Number.isFinite(height) && height > 0) {
+      overallThicknessBands.at(-1).topElevation = height;
+      renderOverallThicknessSchedule();
+    }
+    calculate();
+  }
+
   function setMode(nextMode) {
     mode = nextMode;
     document.querySelectorAll(".monopole-mode").forEach(button => {
@@ -262,7 +386,9 @@
     });
     $("monopoleOverallInputs").hidden = mode !== "overall";
     $("monopoleScheduleInputs").hidden = mode !== "schedule";
-    $("monopoleOverlapSection").hidden = mode !== "schedule";
+    $("monopoleOverlapSection").hidden = true;
+    $("monopoleMassBasis").textContent = mode === "schedule" ? "physical shell geometry" : "continuous taper";
+    $("monopoleCountLabel").textContent = mode === "schedule" ? "sections" : "thickness bands";
     calculate();
   }
 
@@ -270,11 +396,10 @@
     $("monopoleInputStatus").textContent = message;
     $("monopoleInputStatus").className = "result-note is-warning";
     $("monopoleInputStatus").hidden = false;
-    ["monopoleMinimumResistance", "monopoleMass", "monopoleSelfWeight", "monopoleCentreOfGravity"].forEach(id => {
+    ["monopoleMass", "monopoleSelfWeight", "monopoleCentreOfGravity"].forEach(id => {
       $(id).textContent = "-";
     });
-    $("monopoleMinimumLocation").textContent = "Invalid input.";
-    $("monopoleMinimumResistance").nextElementSibling.hidden = true;
+    $("monopoleMomentSummary").textContent = "Not checked";
     $("monopoleAssembledHeight").textContent = "-";
     $("monopoleSectionCount").textContent = "-";
     $("monopoleChart").classList.add("is-unavailable");
@@ -282,7 +407,14 @@
     $("monopoleChartLegend").innerHTML = "";
     $("monopoleStationBody").innerHTML = "";
     $("monopoleStationCount").textContent = "0 rows";
+    $("monopoleCombinedCapacityBody").innerHTML = "";
+    $("monopoleCombinedCapacityCount").textContent = "0 rows · top to base";
+    $("monopoleCombinedCapacitySummary").textContent = "Not checked";
+    $("monopoleCombinedCapacityStatus").textContent = message;
+    $("monopoleCombinedCapacityStatus").className = "result-note is-warning";
+    $("monopoleCombinedCapacityStatus").hidden = false;
     $("monopoleOverlapBody").innerHTML = "";
+    $("monopoleOverlapSection").hidden = true;
     $("monopoleFormulaSteps").innerHTML = "";
   }
 
@@ -356,9 +488,8 @@
           <td><span class="monopole-overlap-state ${stateClass}">${escapeHtml(result.designState)}</span><small>D<sub>ins,max</sub> = ${fixed(result.inscribedDiameter, 0)} mm &middot; outside profile</small></td>
         </tr>`;
       });
-    $("monopoleOverlapBody").innerHTML = rows.length
-      ? rows.join("")
-      : '<tr><td colspan="4">No prescribed overlap is entered.</td></tr>';
+    $("monopoleOverlapBody").innerHTML = rows.join("");
+    $("monopoleOverlapSection").hidden = mode !== "schedule" || rows.length === 0;
   }
 
   function pathForPoints(points, xScale, yScale) {
@@ -366,9 +497,12 @@
   }
 
   function renderChart(assembly, stations) {
-    const width = 840;
-    const height = 440;
-    const margin = { top: 24, right: 112, bottom: 46, left: 62 };
+    const compact = window.matchMedia("(max-width: 760px)").matches;
+    const width = compact ? 360 : 840;
+    const height = compact ? 270 : 440;
+    const margin = compact
+      ? { top: 18, right: 24, bottom: 45, left: 50 }
+      : { top: 24, right: 112, bottom: 46, left: 62 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
     const series = assembly.sections.map((item, sectionIndex) => ({
@@ -392,7 +526,12 @@
     const maximum = Math.max(...finiteValues) * 1.12;
     const xScale = value => margin.left + value / maximum * plotWidth;
     const yScale = elevation => margin.top + (assembly.height - elevation) / assembly.height * plotHeight;
-    const xTicks = Array.from({ length: 5 }, (_, index) => maximum * index / 4);
+    const xTickCount = compact ? 3 : 5;
+    const xTicks = Array.from({ length: xTickCount }, (_, index) => maximum * index / (xTickCount - 1));
+    const hasOverlap = mode === "schedule" && assembly.sections.slice(1).some(item => item.section.overlap > 0);
+    const horizontalAxisTitle = polygonActive()
+      ? compact ? "M (kN&middot;m)" : "Permitted bending moment, M (kN&middot;m)"
+      : compact ? "&phi;M&#x209B; (kN&middot;m)" : "Design section moment capacity, &phi;M&#x209B; (kN&middot;m)";
     const guideElevations = [];
     for (let elevation = 0; elevation <= assembly.height + 1e-9; elevation += 5) guideElevations.push(elevation);
     if (Math.abs(guideElevations.at(-1) - assembly.height) > 1e-9) guideElevations.push(assembly.height);
@@ -412,6 +551,18 @@
     const paths = series.map(item => item.points.length
       ? `<path d="${pathForPoints(item.points, xScale, yScale)}" class="monopole-chart-line" style="--section-colour:${sectionColours[item.sectionIndex % sectionColours.length]}"><title>${escapeHtml(item.item.section.id)}</title></path>`
       : "").join("");
+    const boundarySteps = mode === "overall" ? assembly.sections.slice(1).map((upper, index) => {
+      const elevation = upper.start;
+      const lowerPoint = series[index].points.find(point => Math.abs(point.elevation - elevation) < 1e-7);
+      const upperPoint = series[index + 1].points.find(point => Math.abs(point.elevation - elevation) < 1e-7);
+      if (!lowerPoint || !upperPoint) return "";
+      const lowerColour = sectionColours[index % sectionColours.length];
+      const upperColour = sectionColours[(index + 1) % sectionColours.length];
+      return `
+        <line x1="${xScale(lowerPoint.resistance)}" y1="${yScale(elevation)}" x2="${xScale(upperPoint.resistance)}" y2="${yScale(elevation)}" class="monopole-chart-boundary"><title>Band boundary at z = ${fixed(elevation, 1)} m: ${escapeHtml(series[index].item.section.id)} to ${escapeHtml(series[index + 1].item.section.id)}</title></line>
+        <circle cx="${xScale(lowerPoint.resistance)}" cy="${yScale(elevation)}" r="3.5" class="monopole-chart-boundary-point" style="--section-colour:${lowerColour}"/>
+        <circle cx="${xScale(upperPoint.resistance)}" cy="${yScale(elevation)}" r="3.5" class="monopole-chart-boundary-point" style="--section-colour:${upperColour}"/>`;
+    }).join("") : "";
     const stationLabels = series.flatMap(item => item.points
       .filter(point => Math.abs(point.elevation / 5 - Math.round(point.elevation / 5)) < 1e-7)
       .map(point => {
@@ -432,22 +583,75 @@
         <line x1="${margin.left}" y1="${margin.top + plotHeight}" x2="${margin.left + plotWidth}" y2="${margin.top + plotHeight}" class="monopole-chart-axis"/>
         <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + plotHeight}" class="monopole-chart-axis"/>
         ${paths}
+        ${boundarySteps}
         ${stationLabels}
-        <text x="${margin.left + plotWidth / 2}" y="${height - 8}" class="monopole-chart-axis-title">Bending resistance (kN&middot;m)</text>
+        <text x="${margin.left + plotWidth / 2}" y="${height - 8}" class="monopole-chart-axis-title">${horizontalAxisTitle}</text>
         <text x="17" y="${margin.top + plotHeight / 2}" transform="rotate(-90 17 ${margin.top + plotHeight / 2})" class="monopole-chart-axis-title">Elevation, z (m)</text>
       </svg>`;
     $("monopoleChartLegend").innerHTML = series.map(item => `
       <span><i style="--section-colour:${sectionColours[item.sectionIndex % sectionColours.length]}"></i>${escapeHtml(item.item.section.id)}</span>`).join("")
-      + '<span><i class="overlap"></i>Overlap zone</span>';
+      + (hasOverlap
+        ? '<span><i class="overlap"></i>Overlap zone</span>'
+        : assembly.sections.length > 1
+          ? '<span><i class="boundary"></i>Band boundary</span>'
+          : "");
+  }
+
+  function renderCombinedCapacityStations(stations) {
+    if (polygonActive()) return;
+    try {
+      const rows = [];
+      stations.forEach(station => {
+        const isOverlap = station.active.length > 1 && station.active.some(active =>
+          active.localElevation > 1e-7 && active.localElevation < active.sectionLength - 1e-7
+        );
+        station.active.forEach((active, activeIndex) => {
+          const compression = capacity.circularCompressionSectionCapacity(
+            active.outsideDimension,
+            active.thickness,
+            active.yieldStress
+          );
+          rows.push({ station, active, activeIndex, isOverlap, compression });
+        });
+      });
+      const baseRows = rows.filter(row => Math.abs(row.station.elevation) < 1e-7);
+      const baseCompression = baseRows.map(row => row.compression.designSectionCapacity).sort((a, b) => a - b)[0];
+      const baseMoment = baseRows.map(row => row.active.designResistance).filter(Number.isFinite).sort((a, b) => a - b)[0];
+      if (!Number.isFinite(baseCompression) || !Number.isFinite(baseMoment)) {
+        throw new RangeError("Base compression and bending section capacities are unavailable.");
+      }
+      $("monopoleCombinedCapacitySummary").innerHTML = `Base &phi;N<sub>s</sub> = ${fixed(baseCompression, 1)} kN &middot; &phi;M<sub>s</sub> = ${fixed(baseMoment, 1)} kN&middot;m`;
+      $("monopoleCombinedCapacityBody").innerHTML = rows.map(row => `
+        <tr>
+          <td>${row.activeIndex === 0 ? `${fixed(row.station.elevation, 1)} m` : '<span class="monopole-repeat-elevation">same station</span>'}</td>
+          <td><span class="monopole-section-key" style="--section-colour:${sectionColours[row.active.sectionIndex % sectionColours.length]}"></span>${escapeHtml(row.active.id)}${row.isOverlap ? " &middot; overlap" : row.station.active.length > 1 ? " &middot; boundary" : ""}</td>
+          <td>${fixed(row.active.outsideDimension, 1)} mm</td>
+          <td>${fixed(row.active.thickness, 1)} mm</td>
+          <td>${fixed(row.compression.formFactor, 3)}</td>
+          <td>${fixed(row.compression.designSectionCapacity, 1)} kN</td>
+          <td>${fixed(row.active.designResistance, 1)} kN&middot;m</td>
+        </tr>`).join("");
+      $("monopoleCombinedCapacityCount").textContent = `${rows.length} rows · top to base`;
+      $("monopoleCombinedCapacityStatus").hidden = true;
+    } catch (error) {
+      $("monopoleCombinedCapacitySummary").textContent = "Not checked";
+      $("monopoleCombinedCapacityBody").innerHTML = "";
+      $("monopoleCombinedCapacityCount").textContent = "0 rows · top to base";
+      $("monopoleCombinedCapacityStatus").textContent = error instanceof Error ? error.message : "Compression and bending section capacities are unavailable.";
+      $("monopoleCombinedCapacityStatus").className = "result-note is-warning";
+      $("monopoleCombinedCapacityStatus").hidden = false;
+    }
   }
 
   function renderFormulaSteps(assembly, mass) {
-    const assemblyExpression = assembly.sections.length === 1
-      ? `H = L<sub>1</sub> = ${fixed(assembly.height, 2)} m`
-      : `H = &Sigma;L<sub>i</sub> - &Sigma;L<sub>o,i</sub> = ${fixed(assembly.height, 2)} m`;
+    const assemblyExpression = mode === "overall"
+      ? `H = ${fixed(assembly.height, 2)} m; D(z) = D<sub>b</sub> + (D<sub>t</sub> - D<sub>b</sub>)z/H; wall thickness is piecewise constant by elevation.`
+      : assembly.sections.length === 1
+        ? `H = L<sub>1</sub> = ${fixed(assembly.height, 2)} m`
+        : `H = &Sigma;L<sub>i</sub> - &Sigma;L<sub>o,i</sub> = ${fixed(assembly.height, 2)} m`;
     const materialExpression = plateLookupActive()
       ? `AS/NZS 3678:2016 Table 8, Grade ${escapeHtml($("monopolePlateGrade").value)}; f<sub>y</sub> selected from each t<sub>nom</sub>.`
-      : "Manual project f<sub>y</sub> for each physical section.";
+      : `Manual project f<sub>y</sub> for each ${mode === "overall" ? "wall-thickness band" : "physical section"}.`;
     const thicknessExpression = separateDesignThickness()
       ? "Capacity uses t<sub>d</sub>; material lookup and theoretical mass use t<sub>nom</sub>."
       : "t<sub>d</sub> = t<sub>nom</sub>; one entered thickness is used for capacity, material lookup and theoretical mass.";
@@ -456,23 +660,29 @@
     const propertyExpression = polygon
       ? `Exact concentric sharp-corner ${selection.sideCount}-sided polygon; Z<sub>min</sub> = I/c<sub>max</sub>.`
       : "D<sub>i</sub> = D - 2t<sub>d</sub>; A = &pi;(D<sup>2</sup> - D<sub>i</sub><sup>2</sup>)/4; I = &pi;(D<sup>4</sup> - D<sub>i</sub><sup>4</sup>)/64.";
+    const bendRadiusExpression = polygon
+      ? polygonBendRadiusRows(assembly.sections.map(item => item.section)).map(row =>
+          `${escapeHtml(row.id)}: r<sub>i</sub> = ${fixed(number($("monopoleBendRadiusRatio").value), 2)} &times; ${fixed(row.nominalThickness, 2)} = ${fixed(row.insideBendRadius, 2)} mm; BR = min(${fixed(row.insideBendRadius, 2)}, 4 &times; ${fixed(row.designThickness, 2)}) = ${fixed(row.effectiveBendRadius, 2)} mm.`
+        ).join(" ")
+      : "";
     const resistanceExpression = polygon
-      ? `P = 0; r<sub>i</sub>/t<sub>nom</sub> = ${fixed(number($("monopoleBendRadiusRatio").value), 2)}; BR = min(r<sub>i</sub>, 4t<sub>d</sub>); w = tan(&pi;/${selection.sideCount})(D<sub>o</sub> - t<sub>d</sub> - 2BR); &lambda; = (w/t<sub>d</sub>)&radic;(f<sub>y</sub>/E); M = F<sub>a</sub>I/c<sub>max</sub> = F<sub>a</sub>Z<sub>min</sub>; AS 4100 &phi; is not applied. ASCE/SEI 48-19 Cl. 5.2.3.2.1 and 5.2.5.`
+      ? `P = 0; w = tan(&pi;/${selection.sideCount})(D<sub>o</sub> - t<sub>d</sub> - 2BR); &lambda; = (w/t<sub>d</sub>)&radic;(f<sub>y</sub>/E); M = F<sub>a</sub>I/c<sub>max</sub> = F<sub>a</sub>Z<sub>min</sub>; AS 4100 &phi; is not applied. ASCE/SEI 48-19 Cl. 5.2.3.2.1 and 5.2.5.`
       : "&lambda;<sub>s</sub> = (D/t<sub>d</sub>)(f<sub>y</sub>/250); &phi;M<sub>s</sub> = 0.90f<sub>y</sub>Z<sub>e</sub>; AS 4100 Cl. 5.2 and Table 5.2.";
     $("monopoleFormulaSteps").innerHTML = `
-      <div><b>Assembly geometry</b><code>${assemblyExpression}; each taper uses its local section coordinate.</code></div>
-      <div><b>Stations</b><code>0.5 m spacing plus exact base, top and section boundaries; the primary result is the minimum evaluated value.</code></div>
+      <div><b>Assembly geometry</b><code>${assemblyExpression}${mode === "schedule" ? "; each taper uses its local section coordinate." : ""}</code></div>
+      <div><b>Stations</b><code>0.5 m spacing plus exact base, top and ${mode === "overall" ? "thickness-band" : "section"} boundaries; the summary reports the governing base-station value and the table retains all evaluated states.</code></div>
       <div><b>Material</b><code>${materialExpression}</code></div>
       <div><b>Thickness basis</b><code>${thicknessExpression}</code></div>
+      ${polygon ? `<div><b>Bend radius</b><code>${bendRadiusExpression}</code></div>` : ""}
       <div><b>Section properties</b><code>${propertyExpression}</code></div>
       <div><b>Section resistance</b><code>${resistanceExpression}</code></div>
-      <div><b>Mass</b><code>m = &rho;&int;A(t<sub>nom</sub>, s)ds = ${fixed(mass.mass, 1)} kg; both shells are included in each overlap.</code></div>`;
+      <div><b>Mass</b><code>m = &rho;&int;A(t<sub>nom</sub>, s)ds = ${fixed(mass.mass, 1)} kg${mode === "schedule" ? "; both shells are included in each overlap." : "; no joint or overlap mass is added."}</code></div>`;
   }
 
   function calculate() {
     syncMethodPresentation();
     try {
-      const sections = mode === "schedule" ? readSchedule() : overallSection();
+      const sections = mode === "schedule" ? readSchedule() : overallSections();
       syncYieldStressInputs(sections);
       const assembly = capacity.assembleSections(sections);
       const stations = capacity.buildStations(assembly, 0.5);
@@ -484,25 +694,31 @@
       })));
       const unavailable = activeResults.some(result => !Number.isFinite(result.value));
       const available = activeResults.filter(result => Number.isFinite(result.value));
-      const minimum = available.sort((a, b) => a.value - b.value)[0];
+      const base = available
+        .filter(result => Math.abs(result.elevation) < 1e-7)
+        .sort((a, b) => a.value - b.value)[0];
       const polygon = polygonActive();
       const rangeFailure = polygon ? polygonRangeFailure(stations) : null;
       const rangeMessage = polygonRangeMessage(rangeFailure);
 
-      $("monopoleMinimumResistance").textContent = unavailable || !minimum ? "Not checked" : fixed(minimum.value, 1);
-      $("monopoleMinimumResistance").nextElementSibling.hidden = unavailable || !minimum;
-      $("monopoleMinimumLocation").textContent = unavailable
-        ? polygon
-          ? rangeMessage
-          : "No resistance result is available."
-        : minimum
-          ? `z = ${fixed(minimum.elevation, 1)} m \u00b7 ${minimum.id}`
-          : "No resistance result.";
+      $("monopoleMomentSummary").innerHTML = unavailable || !base
+        ? "Moment profile not checked"
+        : polygon
+          ? `Base M = ${fixed(base.value, 1)} kN&middot;m`
+          : `Base &phi;M<sub>s</sub> = ${fixed(base.value, 1)} kN&middot;m`;
       $("monopoleMass").textContent = fixed(mass.mass, 0);
       $("monopoleSelfWeight").textContent = fixed(mass.selfWeight, 1);
       $("monopoleCentreOfGravity").textContent = fixed(mass.centreOfGravity, 2);
       $("monopoleAssembledHeight").textContent = `${fixed(assembly.height, 2)} m`;
       $("monopoleSectionCount").textContent = String(assembly.sections.length);
+      $("monopoleCountLabel").textContent = mode === "schedule"
+        ? assembly.sections.length === 1 ? "section" : "sections"
+        : assembly.sections.length === 1 ? "thickness band" : "thickness bands";
+      $("monopoleMassBasis").textContent = mode === "schedule"
+        ? assembly.sections.slice(1).some(item => item.section.overlap > 0)
+          ? "includes overlap shells"
+          : "physical shell geometry"
+        : "continuous taper";
       $("monopoleInputStatus").textContent = unavailable && polygon
         ? `${rangeMessage}. Outside ASCE/SEI 48-19 Eqs. (5.2-6) to (5.2-11); M is not reported.`
         : "";
@@ -512,6 +728,7 @@
       $("monopoleInputStatus").hidden = !(unavailable && polygon);
 
       renderStations(stations);
+      renderCombinedCapacityStations(stations);
       if (mode === "schedule") renderOverlaps(assembly);
       if (unavailable && polygon) {
         $("monopoleChart").classList.add("is-unavailable");
@@ -530,19 +747,22 @@
     button.addEventListener("click", () => setMode(button.dataset.monopoleMode));
   });
   $("monopoleAddSection").addEventListener("click", addSection);
+  $("monopoleAddThicknessBand").addEventListener("click", addThicknessBand);
   $("monopoleSectionForm").addEventListener("change", updateSectionFormState);
   $("monopoleBendRadiusRatio").addEventListener("input", calculate);
   $("monopoleMaterialMode").addEventListener("change", updateMaterialState);
   $("monopoleSeparateDesignThickness").addEventListener("change", updateDesignThicknessState);
   $("monopolePlateGrade").addEventListener("change", calculate);
   $("monopoleFabrication").addEventListener("change", calculate);
-  ["monopoleHeight", "monopoleBottomDimension", "monopoleTopDimension", "monopoleThickness", "monopoleDesignThickness", "monopoleYieldStress"]
+  $("monopoleHeight").addEventListener("input", updateOverallHeight);
+  ["monopoleBottomDimension", "monopoleTopDimension"]
     .forEach(id => $(id).addEventListener("input", calculate));
   window.addEventListener("resize", () => {
     if (!$("monopolePanel").hidden) calculate();
   });
 
   renderSchedule();
+  renderOverallThicknessSchedule();
   updateDesignThicknessState();
   updateSectionFormState();
   setMode("schedule");

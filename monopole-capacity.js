@@ -212,6 +212,40 @@
     });
   }
 
+  function circularCompressionSectionCapacity(diameter, thickness, yieldStress) {
+    const properties = circularProperties(diameter, thickness);
+    const D = properties.outsideDimension;
+    const t = positive(thickness, "Design wall thickness");
+    const fy = positive(yieldStress, "Yield stress");
+    const yieldSlendernessLimit = 82;
+    const slenderness = D / t * fy / 250;
+    const effectiveDiameter = slenderness <= yieldSlendernessLimit
+      ? D
+      : Math.min(
+        D,
+        D * Math.sqrt(yieldSlendernessLimit / slenderness),
+        D * (3 * yieldSlendernessLimit / slenderness) ** 2
+      );
+    const effectiveArea = properties.area - Math.PI * (D - effectiveDiameter) * t;
+    if (!Number.isFinite(effectiveArea) || effectiveArea <= 0) {
+      throw new RangeError("Circular effective area is outside the AS 4100 section method.");
+    }
+    const formFactor = Math.min(1, effectiveArea / properties.area);
+    const nominalSectionCapacity = formFactor * properties.area * fy / 1000;
+    return Object.freeze({
+      method: "AS 4100:2020 Cl. 6.2",
+      sourceStatus: "For Review",
+      yieldSlendernessLimit,
+      slenderness,
+      effectiveDiameter,
+      effectiveArea,
+      formFactor,
+      nominalSectionCapacity,
+      designSectionCapacity: PHI * nominalSectionCapacity,
+      properties
+    });
+  }
+
   function polygonStressLimit(sideCount, slenderness, yieldStress) {
     const n = integer(sideCount, "Side count", 4, 16);
     const lambda = positive(slenderness, "Polygon slenderness");
@@ -384,6 +418,45 @@
     });
   }
 
+  function overallProfileSections(profile, thicknessBands) {
+    const height = positive(profile && profile.height, "Overall height");
+    const bottomDimension = positive(profile && profile.bottomDimension, "Bottom outside dimension");
+    const topDimension = positive(profile && profile.topDimension, "Top outside dimension");
+    if (topDimension > bottomDimension + EPSILON) {
+      throw new RangeError("Top outside dimension must not exceed bottom outside dimension.");
+    }
+    if (!Array.isArray(thicknessBands) || thicknessBands.length === 0) {
+      throw new RangeError("At least one wall-thickness band is required.");
+    }
+
+    const dimensionAt = elevation => bottomDimension
+      + (topDimension - bottomDimension) * elevation / height;
+    let previousTop = 0;
+    const sections = thicknessBands.map((band, index) => {
+      const topElevation = positive(band.topElevation, `Thickness band ${index + 1} top elevation`);
+      if (topElevation <= previousTop + EPSILON) {
+        throw new RangeError("Wall-thickness band top elevations must increase from base to top.");
+      }
+      if (topElevation > height + EPSILON) {
+        throw new RangeError("A wall-thickness band top elevation must not exceed the overall height.");
+      }
+      const section = Object.freeze({
+        ...band,
+        id: String(band.id || `T${index + 1}`),
+        length: topElevation - previousTop,
+        bottomDimension: dimensionAt(previousTop),
+        topDimension: dimensionAt(topElevation),
+        overlap: 0
+      });
+      previousTop = topElevation;
+      return section;
+    });
+    if (Math.abs(previousTop - height) > EPSILON) {
+      throw new RangeError("The final wall-thickness band must terminate at the overall height.");
+    }
+    return Object.freeze(sections);
+  }
+
   function localDimension(section, localElevation) {
     const local = Number(localElevation);
     if (!Number.isFinite(local) || local < -EPSILON || local > section.length + EPSILON) {
@@ -423,6 +496,33 @@
       );
   }
 
+  function sectionStatesAtElevation(assembly, elevation) {
+    if (!assembly || !Array.isArray(assembly.sections)) throw new RangeError("Assembled sections are required.");
+    const z = nonNegative(elevation, "Check elevation");
+    if (z > assembly.height + EPSILON) throw new RangeError("Check elevation must not exceed the assembled height.");
+    return Object.freeze(assembly.sections
+      .filter(item => z >= item.start - EPSILON && z <= item.end + EPSILON)
+      .map(item => {
+        const localElevation = Math.max(0, Math.min(item.section.length, z - item.start));
+        const sectionCapacity = sectionCapacityAt(item.section, localElevation);
+        return Object.freeze({
+          id: item.section.id,
+          sectionIndex: item.index,
+          sectionLength: item.section.length,
+          localElevation,
+          outsideDimension: localDimension(item.section, localElevation),
+          nominalThickness: item.section.nominalThickness,
+          thickness: item.section.thickness,
+          yieldStress: item.section.yieldStress,
+          designResistance: item.section.form === "polygon"
+            ? sectionCapacity.permittedMomentCapacity
+            : sectionCapacity.designMomentCapacity,
+          capacity: sectionCapacity,
+          section: item.section
+        });
+      }));
+  }
+
   function buildStations(assembly, interval = 0.5) {
     const step = positive(interval, "Station interval");
     const elevations = new Set();
@@ -440,27 +540,7 @@
       .filter(elevation => elevation >= -EPSILON && elevation <= assembly.height + EPSILON)
       .sort((a, b) => b - a)
       .map(elevation => {
-        const active = assembly.sections
-          .filter(item => elevation >= item.start - EPSILON && elevation <= item.end + EPSILON)
-          .map(item => {
-            const localElevation = Math.max(0, Math.min(item.section.length, elevation - item.start));
-            const capacity = sectionCapacityAt(item.section, localElevation);
-            const designResistance = item.section.form === "polygon"
-              ? capacity.permittedMomentCapacity
-              : capacity.designMomentCapacity;
-            return Object.freeze({
-              id: item.section.id,
-              sectionIndex: item.index,
-              sectionLength: item.section.length,
-              localElevation,
-              outsideDimension: localDimension(item.section, localElevation),
-              nominalThickness: item.section.nominalThickness,
-              thickness: item.section.thickness,
-              yieldStress: item.section.yieldStress,
-              designResistance,
-              capacity
-            });
-          });
+        const active = sectionStatesAtElevation(assembly, elevation);
         return Object.freeze({ elevation, active: Object.freeze(active) });
       }));
   }
@@ -554,12 +634,15 @@
     polygonProperties,
     polygonFlatWidth,
     circularMomentCapacity,
+    circularCompressionSectionCapacity,
     polygonStressLimit,
     polygonMomentCapacity,
+    overallProfileSections,
     assembleSections,
     localDimension,
     sectionPropertiesAt,
     sectionCapacityAt,
+    sectionStatesAtElevation,
     buildStations,
     sectionMassProperties,
     assemblyMassProperties,

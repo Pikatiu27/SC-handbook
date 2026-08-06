@@ -109,12 +109,13 @@ This register is the authoritative ID map. It identifies the claim and evidence 
 | `BEAM-MOMENT-01` | Beam / design section moment capacity | AS 4100 Cl. 5.2; AS 4100 Table 3.4 | `beam-section-capacity.js`; `app.js` | `AUD-BEAM-DEFAULT-01` plus 717-row reconciliation; For Review |
 | `BEAM-SHEAR-01` | Beam / design section shear capacity | AS 4100 Cl. 5.11 | `beam-section-capacity.js`; `app.js` | `AUD-BEAM-DEFAULT-01` plus family regression; For Review |
 | `BEAM-SHEAR-MOMENT-01` | Beam / section shear-bending interaction | AS 4100 Cl. 5.12 | `beam-section-capacity.js`; `app.js` | Branch and trace regression; For Review |
-| `MONO-ASSEMBLY-01` | Steel Monopole / assembled section profile and calculation stations | Entered fabricated lengths, tapers and overlaps | `monopole-capacity.js` `assembleSections()` and `buildStations()` | `MONO-ASSEMBLY-STATIONS-01`; For Review |
+| `MONO-ASSEMBLY-01` | Steel Monopole / profile regions and calculation stations | Overall global taper with entered thickness bands, or entered fabricated lengths, local tapers and overlaps | `monopole-capacity.js` `overallProfileSections()`, `assembleSections()` and `buildStations()` | `MONO-OVERALL-BANDS-01`; `MONO-ASSEMBLY-STATIONS-01`; For Review |
 | `MONO-CHS-MOMENT-01` | Steel Monopole / circular section design moment capacity | AS 4100 Cl. 5.2; AS 4100 Table 5.2 | `monopole-capacity.js` `circularMomentCapacity()` | Exact branches plus three Austube reproductions; For Review |
-| `MONO-PLATE-FY-01` | Steel Monopole / fabricated-plate minimum yield stress | AS/NZS 3678:2016 Table 8 | `monopole-capacity.js` `plateYieldStrength()` | Exact table boundaries and unsupported states; For Review |
+| `MONO-CHS-NM-01` | Steel Monopole / circular compression and bending section-capacity profile | AS 4100 Cl. 5.2, Cl. 6.2 and Cl. 8.3.2 | `monopole-capacity.js` `circularCompressionSectionCapacity()`, `buildStations()` and `sectionStatesAtElevation()`; `monopole-app.js` | Austube capacity-intercept reproduction, 0.5 m profile and boundary-state tests; For Review |
+| `MONO-PLATE-FY-01` | Steel Monopole / fabricated-plate minimum yield stress | AS/NZS 3678:2016 Table 8 | `monopole-capacity.js` `plateYieldStress()` | Exact table boundaries and unsupported states; For Review |
 | `MONO-POLYGON-MOMENT-01` | Steel Monopole / regular-polygon permitted pure-bending moment | ASCE/SEI 48-19 Cl. 5.2.3.2.1, Table 5-1, Cl. 5.2.5 and Appendix B excerpts | `monopole-capacity.js` `polygonMomentCapacity()` | Geometry, branch, range and independent reconstruction tests; foreign-standard For Review path |
-| `MONO-SLIP-OVERLAP-01` | Steel Monopole / prescribed geometric slip-joint overlap screen | AS/NZS 7000 Appendix K, Cl. K9 | `monopole-capacity.js` `slipJointCheck()` | Design and constructed overlap boundaries; joint resistance not evaluated; For Review |
-| `MONO-MASS-01` | Steel Monopole / theoretical mass, self-weight and centre of gravity | Entered physical shell geometry and steel density | `monopole-capacity.js` `shellMassProperties()` | Constant, tapered and overlap-shell reproductions; For Review |
+| `MONO-SLIP-OVERLAP-01` | Steel Monopole / prescribed geometric slip-joint overlap screen | AS/NZS 7000 Appendix K, Cl. K9 | `monopole-capacity.js` `slipOverlapScreen()` | Design and constructed overlap boundaries; joint resistance not evaluated; For Review |
+| `MONO-MASS-01` | Steel Monopole / theoretical mass, self-weight and centre of gravity | Entered physical shell geometry and steel density | `monopole-capacity.js` `sectionMassProperties()` and `assemblyMassProperties()` | Constant, tapered, thickness-band and overlap-shell reproductions; For Review |
 | `CONCRETE-FLEXURE-01` | Concrete Pad / pure-bending strip design moment capacity | AS 3600 Cl. 8.1; AS 3600 Table 2.2.2 | `concrete-section-calculation.js`; `app.js` `solveConcreteSection()` | `AUD-CONCRETE-DEFAULT-01`; `PUB-CONCRETE-LOO-01`; For Review |
 | `CONCRETE-SHEAR-SIMPLIFIED-01` | Concrete Pad / simplified one-way shear section capacity | AS 3600 Cl. 8.2.4 and related Cl. 8.2 provisions | `app.js` `concreteOneWayShear()` | `AUD-CONCRETE-DEFAULT-01`; out-of-scope states fail closed; For Review |
 | `REO-LAP-01` | Reinforcement / tension lap length | AS 3600 Cl. 13.2.1 and Cl. 13.2.2 | `reo-calculation.js` `calculateLap()` | `AUD-REO-LAP-01` plus branch suite; For Review |
@@ -292,7 +293,7 @@ Work one calculation family at a time. The queue is a planning order, not eviden
 | `3` | Bolt Capacity | Shear N/X plane, tension, slip resistance, full-bearing and edge-distance limits, optional ply rupture, detailing and bolted-lap reduction | AS 4100, Australian design examples/connection guidance and independent arithmetic |
 | `4` | Weld Capacity | Fillet-weld throat capacity, weld-metal strength selection and welded-lap `k_r` branch | AS 4100, AS/NZS 1554 context, ASI connection guidance and independent arithmetic |
 | `5` | Concrete Pad Section | Strain-compatibility flexure, reinforcement table area, capacity factor branch and simplified one-way shear | AS 3600, Australian worked/reconstructed examples and independent section solver |
-| `6` | Steel Monopole Section Capacity | Circular AS 4100 section resistance, ASCE regular-polygon pure bending, station assembly, mass and geometric slip-joint overlap screen | AS 4100, AS/NZS 3678, AS/NZS 7000 Appendix K, supplied ASCE/SEI 48-19 excerpts, Austube data and independent geometry |
+| `6` | Steel Monopole Section Capacity | Circular AS 4100 moment and compression/bending section-capacity intercepts, ASCE regular-polygon pure bending, station assembly, mass and geometric slip-joint overlap screen | AS 4100, AS/NZS 3678, AS/NZS 7000 Appendix K, supplied ASCE/SEI 48-19 excerpts, Austube data and independent geometry |
 | `7` | Reinforcement | Basic and Refined tension development, lap `k7`, lower-limit ordering, hook/cog qualification and fail-closed evidence states | AS 3600, AS/NZS 4671 bar data, independently reconstructed default and threshold cases |
 | `8` | Section Properties | UB/UC and hollow-section catalogue rows; custom geometry `A`, `I`, `Z` and `r` identities | Exact manufacturer rows plus independent geometry identities |
 | `9` | Screw Piles / Rock Anchor selectors | Product-row reproduction, source-status mapping, filter compatibility and invalid/unpublished states | Manufacturer documents and exact selector-state tests; no inferred resistance |
@@ -472,15 +473,15 @@ Verification cases:
 
 #### `MONO-ASSEMBLY-01`
 
-- **Tab / output:** Steel Monopole Section Capacity / installed height, physical section extents, calculation stations and overlap zones.
-- **Engineering question:** Where is each fabricated pole section located after the prescribed slip overlaps are assembled?
+- **Tab / output:** Steel Monopole Section Capacity / continuous overall-profile regions or installed physical-section extents, calculation stations and overlap zones.
+- **Engineering question:** How are wall-thickness regions located on a continuous global taper, or physical pole sections located after prescribed slip overlaps are assembled?
 - **Result type / basis:** Derived geometry; no resistance or compliance result.
-- **Governing source:** User-entered fabricated lengths and overlaps. AS/NZS 7000:2016 Appendix K provides the separate overlap-length screen.
-- **Equation:** `z_start,1 = 0`; `z_start,i = z_end,i-1 - L_o,i`; `z_end,i = z_start,i + L_i`; `H = sum(L_i) - sum(L_o,i)`.
-- **Applicability:** Physical sections are entered bottom-to-top. Each section has a linear local taper between its own bottom and top dimensions.
-- **Exclusions:** Erection sequence, fit-up force, ovalisation, manufacturing tolerances other than the separate overlap screen, and any inference of section geometry from overall height alone.
-- **Implementation owner:** `monopole-capacity.js` `assembleSections()` and `buildStations()`.
-- **Verification evidence:** `MONO-ASSEMBLY-STATIONS-01`; automated one- and three-section cases check assembled height, local taper, overlap-active sections, top-down 0.5 m stations and invalid overlap.
+- **Governing source:** User-entered continuous-taper geometry and thickness-band elevations, or user-entered fabricated lengths and overlaps. AS/NZS 7000:2016 Appendix K provides the separate overlap-length screen.
+- **Equation:** Overall mode: `D(z) = D_b + (D_t - D_b)z/H`, with strictly increasing band `z_top` and final `z_top = H`. Schedule mode: `z_start,1 = 0`; `z_start,i = z_end,i-1 - L_o,i`; `z_end,i = z_start,i + L_i`; `H = sum(L_i) - sum(L_o,i)`.
+- **Applicability:** Overall-mode thickness bands are calculation regions on one continuous linear taper and have no joint or overlap. Physical sections are entered bottom-to-top and retain their own local tapers.
+- **Exclusions:** Inference of physical joints or overlaps from thickness changes, erection sequence, fit-up force, ovalisation and manufacturing tolerances other than the separate overlap screen.
+- **Implementation owner:** `monopole-capacity.js` `overallProfileSections()`, `assembleSections()` and `buildStations()`.
+- **Verification evidence:** `MONO-OVERALL-BANDS-01` and `MONO-ASSEMBLY-STATIONS-01`; automated cases check global-taper interpolation, thickness boundaries, assembled height, local section taper, overlap-active sections, top-down 0.5 m stations and invalid geometry.
 - **Status:** For Review; local implementation and verification cases are complete, independent technical review remains pending.
 
 #### `MONO-CHS-MOMENT-01`
@@ -488,15 +489,29 @@ Verification cases:
 - **Tab / output:** Steel Monopole Section Capacity / circular section design moment capacity, `phi Ms`.
 - **Engineering question:** What is the AS 4100 design section moment capacity of the unperforated circular hollow section at a stated elevation?
 - **Result type / limit state:** ULS design section capacity; capacity only.
-- **Governing source:** AS 4100:2020 Cl. 5.2 and Table 5.2; local `AS4100.pdf`, Section 5 visually checked on PDF page 66.
+- **Governing source:** AS 4100:2020 Cl. 5.2 and Table 5.2; local `AS4100.pdf`, Section 5 visually checked on PDF pages 67-69.
 - **Evidence class:** Normative formula with user-entered geometry and yield strength.
 - **Applicability:** Circular steel tube, design wall thickness `t_d`, linear taper between entered end diameters, and stated section fabrication category. `LW` means lightly welded longitudinally and `HW` means heavily welded longitudinally.
 - **Equation / branch:** `Di = D - 2t_d`; exact hollow-circle `A`, `I`, `Z` and `S`; `Ms = fy Ze`; `phi Ms = 0.90 fy Ze`; circular slenderness `lambda_s = (D/t_d)(fy/250)` with AS 4100 Table 5.2 limits selected by fabrication category.
 - **Defaults / overrides:** The default fabricated-shell material is AS/NZS 3678:2016 Grade 350 plate, with `fy` derived for each entered nominal thickness `t_nom` from Table 8. Capacity uses `t_d`; default `t_d = t_nom`, with an optional separate project design thickness.
-- **Exclusions:** Member buckling, second-order effects, axial-force interaction, openings, attachments, welds, corrosion beyond entered design thickness, fatigue and local slip-joint resistance.
+- **Exclusions:** Member buckling, second-order effects, openings, attachments, welds, corrosion beyond entered design thickness, fatigue and local slip-joint resistance. Axial-force interaction is excluded from this pure-bending result and is handled only by the separate `MONO-CHS-NM-01` section check.
 - **Implementation owner:** `monopole-capacity.js` `circularProperties()` and `circularMomentCapacity()`.
 - **Verification evidence:** `MONO-CHS-BRANCHES-01`; independent exact hollow-circle equations and compact/non-compact/slender branch values match `tests/monopole-capacity.test.js`; default browser result and invalid-input clearing checked 2026-07-27.
 - **Status:** For Review; governing AS 4100 source and local implementation are checked, independent technical review remains pending.
+
+#### `MONO-CHS-NM-01`
+
+- **Tab / output:** Steel Monopole Section Capacity / circular compression and bending section-capacity profile.
+- **Engineering question:** What `phi Ns` and `phi Ms` intercepts define the AS 4100 uniaxial section-capacity boundary at each evaluated station?
+- **Result type / limit state:** ULS section capacity at 0.5 m and exact-boundary stations; no design-action or member-capacity result.
+- **Source audit:** AS 4100:2020 Cl. 6.1, Cl. 6.2.1 to Cl. 6.2.4 and Cl. 8.1 to Cl. 8.3.2 were visually checked on local `AS4100.pdf` PDF pages 100-102 and 116-117 / printed pages 87-89 and 103-104.
+- **Equation / branch:** `Ns = kf An fy`; `phi Ns = 0.90 Ns`; `phi Ms = 0.90 fy Ze`. The reported values are the two intercepts of `N/(phi Ns) + M/(phi Ms) = 1`; no action point is evaluated. For a slender CHS, `kf = Ae/Ag` follows Cl. 6.2.2 to Cl. 6.2.4 using the prescribed effective-diameter limits; `An = Ag` for the supported unperforated shell.
+- **Elevation rule:** Use the common top-to-base 0.5 m station set and retain every physical shell or adjacent thickness-band state active at an exact boundary.
+- **Defaults / provenance:** Geometry, `t_d`, `fy` and `phi Ms` are inherited from each active circular section state. No action defaults are present.
+- **Exclusions:** No member compression capacity `Nc`, effective length, member buckling, global stability, second-order analysis, openings, penetrations, action derivation, load combinations, shear, torsion or whole-member compliance result. Polygon combined stress is unavailable.
+- **Implementation owner:** `monopole-capacity.js` `circularCompressionSectionCapacity()`, `buildStations()` and `sectionStatesAtElevation()`; `monopole-app.js` `renderCombinedCapacityStations()`.
+- **Verification evidence:** `MONO-CHS-NM-AUSTUBE-01` and automated 0.5 m profile, top-to-base order and exact-boundary-state cases in `tests/monopole-capacity.test.js` and `tests/monopole-worked-examples.test.js`.
+- **Status:** For Review; source, implementation and local verification are complete, independent technical review remains pending.
 
 #### `MONO-PLATE-FY-01`
 
@@ -520,12 +535,19 @@ Verification cases:
 - **Result type / basis:** Permitted bending moment derived from the ultimate-strength design-stress format; capacity only; no AS 4100 capacity factor.
 - **Governing source:** ASCE/SEI 48-19 Cl. 5.2.3.2.1, Eqs. (5.2-6) to (5.2-11), Table 5-1, Cl. 5.2.5 Eq. (5.2-19a), Appendix B Figs. B-1 to B-7; user-provided screenshots of printed pp. 9-11, 59, 61-62 and Commentary pp. 33-37.
 - **Evidence class:** Normative formula excerpts plus derived exact geometry; foreign-standard comparison path.
-- **Applicability:** Formed regular 4-, 6-, 8-, 12- or 16-sided polygon, outside across-flats `D_o`, design thickness `t_d`, actual inside bend radius derived from `r_i/t_nom`, and pure bending with zero axial stress. The page starts with `r_i/t_nom = 3.0` only as an editable example default; it is not a Standard or manufacturer value and must be replaced by project or product geometry.
+- **Applicability:** Formed regular 4-, 6-, 8-, 12- or 16-sided polygon, outside across-flats `D_o`, design thickness `t_d`, actual inside bend radius derived for each thickness band or physical section as `r_i = (r_i/t_nom)t_nom`, and pure bending with zero axial stress. The ratio is a project or fabricator input and cannot be inferred uniquely from the other section dimensions. The page starts with `r_i/t_nom = 1.5` as an editable fabrication estimate; it is not a Standard or manufacturer value and must be replaced by verified project or product geometry.
 - **Equation / branch:** Exact concentric sharp-corner regular-polygon `A`, `I` and `Z_min = I/c_max`; `BR = min(r_i, 4t_d)`; `w = tan(pi/n)(D_o - t_d - 2BR)`; `lambda = (w/t_d)sqrt(f_y/E)`; ASCE piecewise `F_a`; `M = F_a I/c_max = F_a Z_min`; no AS 4100 capacity factor.
 - **Exclusions:** Irregular polygons, non-uniform flats, unstiffened openings, `n > 16` round-member provisions, bend-property enhancement, member stability, local slip-joint resistance, and confirmation that AS/NZS 3678 material is accepted as equivalent for the ASCE method.
 - **Implementation owner:** `monopole-capacity.js` `polygonProperties()` and `polygonMomentCapacity()`.
 - **Verification evidence:** `MONO-POLYGON-GEOMETRY-01`, `MONO-POLYGON-FLAT-WIDTH-01`, `MONO-POLYGON-BOUNDARIES-01`, `MONO-POLYGON-EXACT-08` and `MONO-POLYGON-EXACT-16`; independent square-annulus inertia, AF/AC invariance, Appendix B flat-width equation, `4t_d` radius cap, each branch limit, immediate out-of-range state and exact 8-/16-sided `w`, `Z_min`, `lambda`, `F_a`, `M` reconstructions pass automated tests.
 - **Status:** For Review; governing formula excerpts are visually checked and exposed, but complete ASCE 48 compliance, Australian adoption and independent technical review remain outside this record.
+
+#### Planned polygon combined-stress check - not implemented
+
+- **Source audit:** ASCE/SEI 48-19 Cl. 5.2.2 to Cl. 5.2.6, including Eqs. (5.2-20) and (5.2-21), and Commentary C5.2.6 were visually checked in the supplied printed pp. 9-11 and Commentary p. 35 excerpts.
+- **Verified equation boundary:** Axial and biaxial bending stresses are combined at the same cross-section point as `P/A + Mx cy/Ix + My cx/Iy`; shear and torsion enter the separate distortion-energy term. The commentary prohibits adding unrelated maximum normal and shear stresses from different points.
+- **Implementation gate:** Define signed action axes and polygon orientation, evaluate every critical perimeter point, separate tensile and compressive limits, and add rotation/sign tests. Do not substitute a scalar moment or generic linear capacity interaction.
+- **Status:** Formula scope checked from partial excerpts; calculation and page not implemented; foreign-standard `For Review` limitation retained.
 
 #### `MONO-SLIP-OVERLAP-01`
 
@@ -556,11 +578,13 @@ Verification cases:
 
 | Test_ID | Calculation_ID | Case / input | Expected and checked result | Evidence | Status |
 | --- | --- | --- | --- | --- | --- |
-| `MONO-ASSEMBLY-STATIONS-01` | `MONO-ASSEMBLY-01` | Three physical sections `12.0 / 10.5 / 10.5 m` with `1.5 / 1.5 m` overlaps; `0.5 m` stations | `H = 30.0 m`; top station first, `z = 0` last; two parent sections active through each overlap; primary result labelled as the minimum evaluated station value | Independent assembly arithmetic plus automated test and local browser | Pass, 2026-07-28 |
+| `MONO-OVERALL-BANDS-01` | `MONO-ASSEMBLY-01` | `H = 30 m`, `D_b = 1200 mm`, `D_t = 300 mm`; thickness bands terminate at `10 / 20 / 30 m` | Three 10 m regions; boundary dimensions `1200 / 900 / 600 / 300 mm`; both adjacent thickness states evaluated at 10 m and 20 m; non-increasing or incomplete band schedules rejected | Independent linear interpolation plus automated calculation test and local browser two-band check | Pass, 2026-08-01 |
+| `MONO-ASSEMBLY-STATIONS-01` | `MONO-ASSEMBLY-01` | Three physical sections `12.0 / 10.5 / 10.5 m` with `1.5 / 1.5 m` overlaps; `0.5 m` stations | `H = 30.0 m`; top station first, `z = 0` last; two parent sections active through each overlap; summary reports the governing base-station value and the table retains every evaluated state | Independent assembly arithmetic plus automated test and local browser | Pass, updated 2026-08-03 |
 | `MONO-CHS-BRANCHES-01` | `MONO-CHS-MOMENT-01` | Exact 1000 x 10 CHS properties; `lambda_s = 50`, `100` and `130` branch cases | Exact `A`, `I`, `Z`, `S`; Compact, Non-compact and Slender branches; invalid `D <= 2t` rejected | Independent equations plus automated test | Pass, 2026-07-27 |
 | `MONO-CHS-AUSTUBE-01` | `MONO-CHS-MOMENT-01` | Austube Table 8-2(2): 165.1 x 3.5 CHS, C350L0, CF; published mass 13.9 kg/m and `phi Ms = 27.3 kN.m` | Calculated 13.94 kg/m and 27.2715 kN.m; browser displays 14 kg and 27.3 kN.m | Published catalogue value plus independent automated comparison | Pass, 2026-07-29 |
 | `MONO-CHS-AUSTUBE-02` | `MONO-CHS-MOMENT-01` | Austube Table 8-2(1): 406.4 x 12.7 CHS, C350L0, CF; Compact; published mass 123 kg/m and `phi Ms = 620 kN.m` | Calculated 123.43 kg/m and 620.3 kN.m; Compact branch | Published catalogue value plus independent automated comparison | Pass, 2026-07-29 |
 | `MONO-CHS-AUSTUBE-03` | `MONO-CHS-MOMENT-01` | Austube Table 8-2(1): 508.0 x 6.4 CHS, C350L0, CF; Non-compact; published mass 79.2 kg/m and `phi Ms = 408 kN.m` | Calculated 79.18 kg/m and 407.8559 kN.m; browser displays 79 kg and 407.9 kN.m | Published catalogue value plus independent automated comparison | Pass, 2026-07-29 |
+| `MONO-CHS-NM-AUSTUBE-01` | `MONO-CHS-NM-01` | Austube 508.0 x 6.4 CHS, C350L0: published `Ag = 10100 mm2`, `kf = 0.857` and `phi Ms = 408 kN.m` | Published inputs give `phi Ns = 2726.55 kN`; production `kf`, `phi Ns` and `phi Ms` agree within 0.5% | Austube Tables 3.1-2(1) and 8-2(1), independent substitution and automated comparison | Pass, 2026-08-03 |
 | `MONO-POLYGON-ASCE-DERIVED-01` | `MONO-POLYGON-MOMENT-01` | Standard-derived 12-sided case: `Do = 1000 mm`, `t = 10 mm`, `ri = 30 mm`, `fy = 350 MPa`; Appendix B approximate equations give `lambda = 1.043`, `Fa = 350 MPa`, `M = 2694.5 kN.m` | Exact sharp-corner model gives `lambda = 1.042`, `M = 2700.3 kN.m`; 0.21% above the Appendix B approximation | ASCE/SEI 48-19 Eqs. (5.2-8), (5.2-19a), Figs. B-3 and B-7; independent automated comparison | Pass, 2026-07-29 |
 | `MONO-POLYGON-ASCE-DERIVED-02` | `MONO-POLYGON-MOMENT-01` | Standard-derived 12-sided case: `Do = 1600 mm`, `t = 10 mm`, `ri = 30 mm`, `fy = 350 MPa`; Appendix B gives `lambda = 1.715`, `Fa = 315.98 MPa`, `M = 6298.7 kN.m` | Exact sharp-corner model gives `lambda = 1.715`, `Fa = 316.02 MPa`, `M = 6312.4 kN.m`; browser displays 6312.4 kN.m and no AS 4100 `phi` | ASCE/SEI 48-19 Eq. (5.2-9), Eq. (5.2-19a), Figs. B-3 and B-7; independent automated comparison | Pass, 2026-07-29 |
 | `MONO-POLYGON-ASCE-DERIVED-03` | `MONO-POLYGON-MOMENT-01` | Standard-derived range case: 12-sided, `Do = 2100 mm`, `t = 10 mm`, `ri = 30 mm`, `fy = 350 MPa`; Appendix B gives `lambda = 2.276 > 2.20` | Browser reports `Not checked`, identifies `lambda = 2.28 > 2.20`, and suppresses the resistance profile | ASCE/SEI 48-19 Eq. (5.2-9) upper applicability limit; independent automated comparison | Pass, 2026-07-29 |
@@ -572,7 +596,7 @@ Verification cases:
 | `MONO-POLYGON-FLAT-WIDTH-01` | `MONO-POLYGON-MOMENT-01` | 8-sided `Do = 1000 mm`, `t = 10 mm`, actual `ri = 30 / 60 mm` | `w = tan(pi/8)(Do - t - 2BR)`; `BR = 30 mm` and capped `BR = 40 mm`; missing radius rejected | Independent Appendix B arithmetic plus automated test | Pass, 2026-07-27 |
 | `MONO-POLYGON-BOUNDARIES-01` | `MONO-POLYGON-MOMENT-01` | 4-, 6-, 8-, 12- and 16-sided prescribed branch limits and immediate out-of-range cases | Exact limits return the prescribed `F_a`; immediately above each upper limit returns `Not checked`; `M = F_a I/c_max = F_a Z_min` | Visual formula transcription plus automated branch test | Pass, 2026-07-27 |
 | `MONO-RESISTANCE-MONOTONIC-01` | `MONO-CHS-MOMENT-01`; `MONO-POLYGON-MOMENT-01` | Circular categories `LW/HW/CF/HR/SR` and regular polygons `4/6/8/12/16`; `fy = 250/350/450 MPa`; fixed `t = 10 mm`; sampled outside dimensions | Resistance is non-decreasing with outside dimension throughout each implemented valid calculation range | Automated dense parameter sweep | Pass, 2026-07-28 |
-| `MONO-POLYGON-PAGE-01` | `MONO-POLYGON-MOMENT-01` | Default three-section schedule, 12 sides, `r_i/t_nom = 3.0`, Grade 350 plate lookup | Browser `M = 261.8 kN.m`; independent Appendix B approximate-property result `261.35 kN.m`; missing radius and out-of-range stations fail closed | Independent arithmetic plus desktop/phone/local-browser state checks | Pass, 2026-07-27 |
+| `MONO-POLYGON-PAGE-01` | `MONO-POLYGON-MOMENT-01` | Start from the editable 508 x 6.4 mm circular example; select 8-sided regular polygon with `r_i/t_nom = 1.5` and `fy = 350 MPa` | Browser base `M = 450.4 kN.m`; independent exact regular-polygon reconstruction agrees with production; polygon combined stress remains `Not evaluated`; missing radius and out-of-range stations fail closed | Independent arithmetic, automated reproduction and desktop/phone browser-state checks | Pass, 2026-08-07 |
 | `MONO-MASS-CONSTANT-01` | `MONO-MASS-01` | Constant and linearly tapered CHS shells; two 10 m shells with 2 m installed overlap | Constant `m = rho A L`; tapered exact linear-area mass and centroid; overlap does not subtract physical steel | Independent equations plus automated test | Pass, 2026-07-27 |
 | `MONO-SLIP-SCREEN-01` | `MONO-SLIP-OVERLAP-01` | Constant CHS, tapered lower-shell overlap and polygon cases; actual-installed boundary | `D_ins,max` is the maximum outer-profile inscribed-circle diameter over both shells in the overlap region; `L_o,design = 1.5D_ins,max`; `L_o,constructed = 1.35D_ins,max`; local joint capacity `Not evaluated` | Independent arithmetic plus automated test | Pass, 2026-07-27 |
 
@@ -580,11 +604,11 @@ Verification cases:
 
 | Source | Local file | Pack status | Current use |
 | --- | --- | --- | --- |
-| AS 4100:2020 | `AS4100.pdf` | 233 pages, 227 text pages, 97% coverage | Bolt, weld, beam, axial member |
+| AS 4100:2020 | `AS4100.pdf` | 233 pages, 227 text pages, 97% coverage; monopole Cl. 5.2, 6.1-6.2 and 8.1-8.3.2 visually checked | Bolt, weld, beam, axial member; circular monopole moment and compression/bending section-capacity intercepts |
 | AS/NZS 3678:2016 | `AS3678.pdf` | 45 pages, 45 text pages, 100% coverage; Table 8 visually checked on PDF page 24 / printed page 21 | Default steel monopole fabricated-plate `fy` lookup |
 | AS/NZS 1163:2016 incorporating Amd 1:2017 | `AS1163.pdf` | 57 pages, 48 text pages, 84% coverage; Table 7 visually checked on PDF page 24 / printed page 21 | Reference-only supplied CHS grades; not applied to tapered fabricated shells |
 | AS/NZS 7000:2016 | `AS7000.pdf` | 305 scanned pages, no searchable text; Appendix K printed pages 170-171 visually checked | Steel monopole source routing and slip-overlap geometric screen |
-| ASCE/SEI 48-19 | `ASCE_SEI_48-19_User_Provided_Excerpts/` | Readable screenshots: Chapter 5 pp. 9-11, Appendix A p. 59, Appendix B pp. 61-62, Commentary C5 pp. 33-37; formula pages visually checked | Foreign-standard `For Review` polygon pure-bending path; not complete ASCE 48 compliance |
+| ASCE/SEI 48-19 | `ASCE_SEI_48-19_User_Provided_Excerpts/` | Readable screenshots: Chapter 5 pp. 9-11, Appendix A p. 59, Appendix B pp. 61-62, Commentary C5 pp. 33-37; pure-bending and Cl. 5.2.6 combined-stress pages visually checked | Foreign-standard `For Review` polygon pure bending; combined stress source-audited but not implemented; not complete ASCE 48 compliance |
 | AS 3600:2018 incorporating Amd 1 and Amd 2 | `AS3600.pdf` | 273 pages, 269 text pages, 99% coverage | Concrete pad section; Rebar Connection Check |
 | AS/NZS 4671:2019 | External licensed Standard / supplier-aligned data table | Nominal bar data transcribed into `research/rebar-lap/rebar-data.csv` | Reo Lapping bar diameter and nominal area |
 | AS 5216:2026 | External licensed Standard / Standards Australia publication record | Current Australian PIR / fastening design boundary; published 10 April 2026. Licensed full text is not present in the local verified source set | Reo extension/PIR scope boundary only; no AS 5216:2026 product-capacity equation is implemented or labelled checked |
@@ -598,7 +622,7 @@ Verification cases:
 | InfraBuild hot-rolled catalogue 2019 | `InfraBuild-Hot-Rolled-Products-Catalogue-2019.pdf` | 35 pages, 34 text pages, 97% coverage | UB/UC, PFC, equal angle, rods catalogue basis |
 | OneSteel hot-rolled catalogue 8th edition | `Hot-rolled-and-structural-steel-products_8th-edn.pdf` | 35 pages, 34 text pages, 97% coverage | Secondary historical catalogue reference |
 | Orrcon National Product Catalogue 2024 | `Orrcon-National-Product-Catalogue-2024.pdf` | 40 pages, 39 text pages, 98% coverage | CHS D/t and grade availability |
-| Austube DCT Hollow Sections 2013 | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | 180 pages, 180 text pages, 100% coverage | CHS compression method basis |
+| Austube DCT Hollow Sections 2013 | `Austube-Design-Capacity-Tables-Hollow-Sections-2013.pdf` | 180 pages, 180 text pages, 100% coverage | CHS moment and compression section-capacity reproductions |
 | Steel Structures Design Manual to AS 4100 | `Steel Structures Design Manual to AS 4100.pdf` | 243 pages, 243 text pages, 100% coverage | Secondary explanatory reference only |
 
 ## Web Tab Source Matrix
@@ -628,10 +652,11 @@ Verification cases:
 | Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | AS 4100 Table 9.6.3.10(A) visually checked on PDF pages 147-148; ASI Simple Connections 2020 Table 2.14 visually checked on PDF page 19 | Visual checked |
 | Weld | Parent metal screen values | `5+SSC 2020.pdf` | ASI Simple Connections 2020 Tables 2.15 and 2.16 visually checked on PDF pages 20-21; Grade 300 flat bar / sections use `f_up = 440 MPa` | Visual checked |
 | Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | AS 1101.3 Fig. 2.1 visually checked on PDF page 9; AS 1101.3 Cl. 2.3.2.1 to AS 1101.3 Cl. 2.3.2.3 and AS 1101.3 Figs. 2.8 to 2.10 visually checked on PDF pages 14-15 | Visual checked |
-| Steel Monopole | Circular section moment capacity, `phi Ms` | `AS4100.pdf` | AS 4100:2020 Cl. 5.2 and Table 5.2 visually checked on PDF page 66; exact hollow-circle geometry is derived from entered `D` and design thickness `t_d` | For Review; pure calculations, branch boundaries, invalid input and default browser result checked 2026-07-27 |
+| Steel Monopole | Circular section moment capacity, `phi Ms` | `AS4100.pdf` | AS 4100:2020 Cl. 5.2 and Table 5.2 visually checked on PDF pages 67-69; exact hollow-circle geometry is derived from entered `D` and design thickness `t_d` | For Review; pure calculations, branch boundaries, invalid input and default browser result checked 2026-07-27 |
+| Steel Monopole | Circular compression and bending capacity intercepts | `AS4100.pdf`; Austube DCT Hollow Sections 2013 | AS 4100:2020 Cl. 5.2, Cl. 6.2 and Cl. 8.3.2 visually checked; Austube 508.0 x 6.4 CHS published `Ag`, `kf` and `phi Ms` reproduced | For Review; section-capacity intercepts only; no actions, utilisation, `Nc`, second-order or load-combination calculation |
 | Steel Monopole | Regular polygonal permitted bending moment, `M` | ASCE/SEI 48-19 excerpts | Cl. 5.2.3.2.1, Table 5-1, Cl. 5.2.5 and Appendix B screenshots visually checked; exact sharp-corner geometry and project `r_i/t_nom` input used | For Review foreign-standard path; isolated from the AS 4100 circular result |
 | Steel Monopole | Prescribed slip-overlap length | `AS7000.pdf` | AS/NZS 7000:2016 Appendix K9, printed page 171 visually checked: design minimum `1.5` times the largest circle inscribed within the outside profiles being joined; constructed minimum `1.35` times that diameter | Visual checked as a geometric screen only; fit-up, tolerances, jacking force and joint resistance are not evaluated |
-| Steel Monopole | Theoretical steel mass and centre of gravity | Entered geometry | Exact section area integrated over each fabricated section using `rho = 7850 kg/m3`; both shells are counted through an overlap | Derived; excludes fittings, coatings and appurtenances |
+| Steel Monopole | Theoretical steel mass and centre of gravity | Entered geometry | Exact section area integrated over each shell region using `rho = 7850 kg/m3`; no joint mass is added at an overall-profile thickness boundary, while both shells are counted through a physical overlap | Derived; excludes fittings, coatings and appurtenances |
 | Beam | Section moment capacity `phi Ms` | `AS4100.pdf` | AS 4100 Cl. 5.2.1 and AS 4100 Cl. 5.2.2 to Cl. 5.2.6 visually checked on PDF pages 67-69 | Visual checked |
 | Beam | Web shear capacity `phi Vv` | `AS4100.pdf` | AS 4100 Cl. 5.11.4 and AS 4100 Cl. 5.11.5 visually checked on PDF pages 86-88 | Visual checked |
 | Beam | Shear-bending interaction | `AS4100.pdf` | AS 4100 Cl. 5.12.3 visually checked on printed pages 76-77: `Vvm = Vv` for `M* <= 0.75 phi Ms`; otherwise `Vvm = Vv[2.2 - 1.6M*/(phi Ms)]` for `M* <= phi Ms`, with `V* <= phi Vvm`. The demand check fails immediately when `M* > phi Ms`; it does not pass through an unavailable reduced shear capacity | Visual checked; exact reduced-method equation and over-moment regression test implemented |
@@ -912,7 +937,7 @@ Build 0.7.12 clarifies inputs without changing calculation logic:
 - `AS 4100 fabrication category` states that it applies only to circular sections and selects the Table 5.2 compactness limits;
 - `Yield-strength basis` replaces the broader `Material basis` label because the control selects the source of `f_y`;
 - the inactive design-thickness note states `t_d = t_nom` by default and identifies the project-input purpose;
-- the polygon bend-radius ratio identifies 3.0 as an editable example, not a Standard value.
+- the polygon bend-radius ratio identifies 1.5 as an editable fabrication estimate, not a Standard or manufacturer value.
 
 The Monopole DOM contract asserts these labels and rejects the superseded ambiguous wording. Circular category branches, polygon calculations, material lookup, mass and overlap logic are unchanged.
 
@@ -934,7 +959,7 @@ Build 0.7.14 replaces the illustrative 30 m schedule with one traceable manufact
 | Nominal thickness | 3 mm | Published |
 | Material designation | E355BR | Published |
 | Yield stress | 355 MPa | Adopted editable calculation input; not separately published |
-| Inside bend-radius ratio | `r_i/t_nom = 3.0` | Calculation assumption; not published |
+| Inside bend-radius ratio | `r_i/t_nom = 1.5` | Fabrication estimate; not published |
 
 Source: `KISMAT ENGITECH LLP | Octagonal / Polygonal Poles | KOP-1230 manufacturing specifications | https://www.kismatengitech.com/octagonal-poles.html`.
 
@@ -969,3 +994,66 @@ Build 0.7.11 extracts two existing calculation paths into small browser-native m
 The Axial Member module remains limited to the displayed AS 4100 section/member compression and tension checks; it does not add connection, combined-action, flexural-torsional or complete member-design checks. The Screw Piles module distributes entered actions only for centroid-referenced, symmetric uncoupled layouts under the existing rigid-cap and equal-stiffness assumptions. It does not calculate geotechnical resistance, structural pile resistance, pad-soil interaction or project utilisation without a compatible project design-value source.
 
 The calculation modules remain plain JavaScript loaded before `app.js`; no package, framework, server, Python runtime or network calculation service was introduced. The page continues to expose the existing `Formula -> Substitution -> Result -> Applicability` record, while the production arithmetic can now be exercised directly by regression tests.
+
+## 2026-08-01 Steel Monopole Circular Combined Section Check
+
+Build 0.7.19 retains the pure-bending elevation profile and adds a separate optional circular-section compression and bending check at an entered elevation.
+
+| Audit ID | Page / state | Reproducible check | Result |
+| --- | --- | --- | --- |
+| `AUD-MONO-NM-SOURCE-01` | Circular combined section calculation | Reproduce Austube 508.0 x 6.4 CHS C350L0 using published `Ag = 10100 mm2`, `kf = 0.857` and `phi Ms = 408 kN.m`, with independent example actions `N* = 1000 kN`, `M* = 100 kN.m` | `phi Ns = 2726.55 kN`, `phi Mr = 258.36 kN.m`, `eta = 0.61186`; production result within 0.5% |
+| `AUD-MONO-NM-ZERO-01` | Circular combined section calculation | Set `N* = 0` | Reduced moment capacity equals the existing `phi Ms` exactly |
+| `AUD-MONO-NM-BOUNDARY-01` | Thickness or physical-section boundary | Enter the exact boundary elevation | Both adjacent active shell states are retained and the maximum `eta` governs |
+| `AUD-MONO-NM-SCOPE-01` | Polygon section form | Select any regular polygon | Combined section check is unavailable; the existing ASCE pure-bending path is unchanged |
+| `AUD-MONO-NM-RESPONSIVE-01` | Desktop and phone | Expand the circular combined check at 1428 px and 390 px | No document-level horizontal overflow; the technical results table scrolls only within its own container |
+
+The check uses AS 4100 Cl. 6.2 and Cl. 8.3.2 with `phi = 0.90`. It does not calculate load combinations, `Nc`, effective length, member buckling, global stability, second-order effects or polygon combined stress. Initial actions are editable examples, not product values. All 22 local regression files passed; the expanded check had no document-level overflow at 1428 px or 390 px and the browser console was clear. Status remains `For Review`.
+
+## 2026-08-03 Steel Monopole Combined Check Layout Alignment
+
+Build 0.7.20 aligns the optional circular combined-section check with the shared handbook component system. Its four inputs use the standard 46 px controls; the three primary outputs use the same capacity-card spacing, 11 px radius and result typography as the main Monopole results. The technical state table remains separately scrollable. Desktop and 390 px checks showed no document-level horizontal overflow and no browser console warnings or errors. Calculation logic and scope are unchanged.
+
+## 2026-08-03 Steel Monopole Result Disclosure Simplification
+
+Build 0.7.21 removes the generic Results heading and result-card grid. A compact always-visible shaft-properties line reports mass, self-weight, centre of gravity and assembled height. `Moment capacity` is open by default and summarises the governing base-station value; its elevation chart and top-to-base station table remain inside the disclosure. `Compression and bending` is closed by default and uses a compact `phi Ns / phi Mr / eta` strip rather than result cards. Polygon combined stress remains unavailable. The calculation methods, fail-closed range handling and station generation are unchanged. All 22 local regression files passed. Desktop and 390 px browser checks reported no console errors or document-level overflow; the chart and technical tables retain internal horizontal scrolling on narrow screens.
+
+## 2026-08-03 Steel Monopole Capacity Workflow Hierarchy
+
+Build 0.7.22 establishes three numbered workflow stages: `Input data`, `Moment capacity`, and `Compression and bending capacity`. Both capacity workflows identify the common 0.5 m station basis. For circular sections, the third stage now reports `phi Ns`, `phi Ms` and `kf` for every active station state in top-to-base order; `phi Ns` and `phi Ms` are identified as the intercepts of the AS 4100 Cl. 8.3.2 uniaxial section-capacity boundary. The existing entered-action check remains available as a nested, collapsed check at one elevation. Regular polygonal combined stress remains visibly `Not implemented`; its ASCE/SEI 48-19 pure-bending profile is unchanged. The page retains capacity-only and `For Review` scope.
+
+## 2026-08-03 Steel Monopole Capacity-Only Hierarchy
+
+Build 0.7.23 removes the monopole action check and its `N*`, `M*`, reduced-capacity and interaction-ratio implementation. The third stage now contains only the 0.5 m circular-section `phi Ns / phi Ms / kf` profile and a concise statement that these values are the intercepts of the AS 4100 Cl. 8.3.2 uniaxial section-capacity boundary. Stage titles, capacity summaries, subsection headings and supporting notes use four explicit typography levels. Desktop and phone layouts retain internal scrolling for technical tables and no document-level horizontal overflow.
+
+## 2026-08-03 Steel Monopole Release Layout Correction
+
+Build 0.7.24 makes the source-backed Austube 508.0 x 6.4 CHS C350L0 case the initial circular capacity example, with an explicitly illustrative 12 m profile length. KISMAT KOP-1230 remains the independently reproduced regular-polygon worked example. Both capacity stages are collapsed by default so their base summaries remain adjacent. The circular capacity-intercept scope note precedes its station table, the slip-joint screen is hidden when no positive overlap is entered, and the phone chart uses a compact responsive viewBox without horizontal chart scrolling. Technical tables retain contained horizontal scrolling. Calculation equations and capacity factors are unchanged.
+
+## 2026-08-03 Steel Monopole Terminology and Hierarchy Correction
+
+Build 0.7.25 removes the non-functional `01 / 02 / 03` stage badges and aligns the three primary section titles. The third section is named `Section capacity intercepts` so it cannot be mistaken for a completed action interaction check. The chart uses `Design section moment capacity, phi Ms` for circular AS 4100 results and `Permitted bending moment, M` for regular-polygon ASCE results. The overlap-zone legend and overlap-shell mass basis appear only when positive overlap geometry exists. The initial Austube row is identified as a circular-section example rather than a complete monopole product. No calculation equation or capacity factor changed.
+
+## 2026-08-03 Steel Monopole Polygon Bend-Radius Trace
+
+Build 0.7.26 identifies `r_i/t_nom` as a project or fabricator input and automatically derives the actual `r_i` for every thickness band or physical section. The input note reports the resulting `r_i` and effective `BR` range, while Calculation details records each numerical substitution for `r_i = (r_i/t_nom)t_nom` and `BR = min(r_i, 4t_d)`. The default ratio `3.0` remains an editable example rather than a Standard or manufacturer value. The polygon section-intercept state is labelled `Combined polygon stress not evaluated`; permitted pure-bending moment remains available. No capacity equation changed.
+
+## 2026-08-03 Steel Monopole Polygon Fabrication Estimate
+
+Build 0.7.27 changes the current polygon default to `r_i/t_nom = 1.5` and labels it as an editable fabrication estimate requiring verified project or manufacturer data. KISMAT KOP-1230 is a product-geometry reference rather than a manufacturer worked-capacity example; neither its bend radius nor capacity is published. Changing the initial circular example to a polygon replaces the product-specific `508 CHS` identifier with `S1` without overwriting entered geometry. The third disclosure dynamically becomes `Combined polygon stress` with summary `Not evaluated`. No resistance equation or capacity factor changed.
+
+## 2026-08-06 Steel Monopole Information Hierarchy
+
+Build 0.7.28 replaces the broad `Input data` label with three explicit page headings: `Section definition`, `Material and fabrication`, and `Section capacity`. The compact `Shaft properties` summary remains between inputs and capacity. `Moment capacity` and `Section capacity intercepts` remain adjacent collapsed disclosures on the common 0.5 m station basis; the polygon state remains `Combined polygon stress - Not evaluated`. The outline now distinguishes editable initial examples from fixed method constants. No geometry, resistance, mass, station, overlap or material calculation changed.
+
+## 2026-08-07 Steel Monopole Release Reconciliation
+
+Build 0.7.29 reconciles the Monopole branch with the current `origin/main` shared application while retaining the section-only calculation boundary. Current browser evidence replaces the superseded three-section polygon page state.
+
+| Audit ID | Page / state | Reproducible check | Result |
+| --- | --- | --- | --- |
+| `AUD-MONO-RELEASE-CHS-01` | Default circular fabricated section | Reload `#monopole` using the editable Austube 508.0 x 6.4 CHS C350L0 example | Base `phi Ms = 407.9 kN.m`; base `phi Ns = 2723.3 kN`; mass `950 kg`; self-weight `9.3 kN`; 25 moment rows and 25 compression/bending intercept rows |
+| `AUD-MONO-RELEASE-POLYGON-01` | Current polygon browser state | Select 8-sided regular polygon and retain 508 mm A/F, 6.4 mm, `fy = 350 MPa`, `ri/tnom = 1.5` | Base `M = 450.4 kN.m`; independent exact regular-polygon reconstruction agrees; basis remains `P = 0`, `M = FaI/c`, no AS 4100 `phi`; combined polygon stress is `Not evaluated` |
+| `AUD-MONO-RELEASE-INVALID-01` | Invalid nominal thickness | Set `tnom = 0` | Input error is shown; mass and both capacity summaries clear to `-` / `Not checked`; no stale result remains |
+| `AUD-MONO-RELEASE-RESPONSIVE-01` | 1428 px and 390 px | Inspect the current circular and polygon states | No document-level horizontal overflow; schedule/table overflow remains inside its technical scroller; browser console has no warnings or errors |
+
+All 24 local regression files and `git diff --check` passed after integration. This is local release evidence only; no remote push or public deployment is claimed.

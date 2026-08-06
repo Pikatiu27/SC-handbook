@@ -48,6 +48,40 @@ close(
   0.9 * 250 * slenderCircle.effectiveModulus / 1e6
 );
 
+const compactCompression = monopole.circularCompressionSectionCapacity(500, 10, 250);
+close(compactCompression.slenderness, 50);
+close(compactCompression.effectiveDiameter, 500);
+close(compactCompression.formFactor, 1);
+close(compactCompression.designSectionCapacity, 0.9 * compactCompression.properties.area * 250 / 1000);
+
+const austubeCompression = monopole.circularCompressionSectionCapacity(508, 6.4, 350);
+const austubeLambdaE = 508 / 6.4 * 350 / 250;
+const austubeEffectiveDiameter = 508 * Math.sqrt(82 / austubeLambdaE);
+const austubeEffectiveArea = austubeCompression.properties.area - Math.PI * (508 - austubeEffectiveDiameter) * 6.4;
+close(austubeCompression.slenderness, austubeLambdaE);
+close(austubeCompression.effectiveDiameter, austubeEffectiveDiameter);
+close(austubeCompression.formFactor, austubeEffectiveArea / austubeCompression.properties.area);
+close(austubeCompression.formFactor, 0.857, 0.001);
+
+const capacityProfileSections = monopole.overallProfileSections({
+  height: 12,
+  bottomDimension: 500,
+  topDimension: 250
+}, [
+  { id: "T1", topElevation: 6, form: "circular", dimensionBasis: "diameter", nominalThickness: 10, thickness: 10, yieldStress: 350, fabricationCategory: "LW" },
+  { id: "T2", topElevation: 12, form: "circular", dimensionBasis: "diameter", nominalThickness: 8, thickness: 8, yieldStress: 350, fabricationCategory: "LW" }
+]);
+const capacityProfileStations = monopole.buildStations(monopole.assembleSections(capacityProfileSections), 0.5);
+assert.equal(capacityProfileStations.length, 25);
+assert.equal(capacityProfileStations[0].elevation, 12);
+assert.equal(capacityProfileStations.at(-1).elevation, 0);
+assert.equal(capacityProfileStations.find(station => station.elevation === 6).active.length, 2);
+capacityProfileStations.forEach(station => station.active.forEach(state => {
+  const compression = monopole.circularCompressionSectionCapacity(state.outsideDimension, state.thickness, state.yieldStress);
+  assert.ok(Number.isFinite(compression.designSectionCapacity));
+  assert.ok(Number.isFinite(state.designResistance));
+}));
+
 ["LW", "HW", "CF", "HR", "SR"].forEach(category => {
   [250, 350, 450].forEach(yieldStress => {
     const values = [];
@@ -214,6 +248,36 @@ close(assembly.sections[1].end, 20.5);
 close(assembly.sections[2].start, 19.5);
 close(assembly.height, 28.5);
 close(monopole.localDimension(assembly.sections[1].section, 1.5), 838);
+
+const overallBands = monopole.overallProfileSections({
+  height: 30,
+  bottomDimension: 1200,
+  topDimension: 300
+}, [
+  { topElevation: 10, nominalThickness: 12, thickness: 12, yieldStress: 350 },
+  { topElevation: 20, nominalThickness: 10, thickness: 10, yieldStress: 350 },
+  { topElevation: 30, nominalThickness: 8, thickness: 8, yieldStress: 350 }
+]);
+assert.deepEqual(overallBands.map(band => band.id), ["T1", "T2", "T3"]);
+assert.deepEqual(overallBands.map(band => band.length), [10, 10, 10]);
+assert.deepEqual(overallBands.map(band => band.bottomDimension), [1200, 900, 600]);
+assert.deepEqual(overallBands.map(band => band.topDimension), [900, 600, 300]);
+const overallAssembly = monopole.assembleSections(overallBands);
+close(overallAssembly.height, 30);
+assert.equal(monopole.sectionStatesAtElevation(overallAssembly, 10).length, 2);
+assert.equal(monopole.sectionStatesAtElevation(overallAssembly, 20).length, 2);
+assert.equal(monopole.sectionStatesAtElevation(overallAssembly, 10.25).length, 1);
+assert.throws(() => monopole.sectionStatesAtElevation(overallAssembly, 30.001), /must not exceed/);
+assert.equal(monopole.buildStations(overallAssembly, 0.5).find(station => station.elevation === 10).active.length, 2);
+assert.equal(monopole.buildStations(overallAssembly, 0.5).find(station => station.elevation === 20).active.length, 2);
+assert.throws(() => monopole.overallProfileSections(
+  { height: 30, bottomDimension: 1200, topDimension: 300 },
+  [{ topElevation: 20 }, { topElevation: 10 }, { topElevation: 30 }]
+), /must increase/);
+assert.throws(() => monopole.overallProfileSections(
+  { height: 30, bottomDimension: 1200, topDimension: 300 },
+  [{ topElevation: 20 }]
+), /must terminate/);
 
 const stations = monopole.buildStations(assembly, 0.5);
 assert.equal(stations[0].elevation, 28.5);
