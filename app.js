@@ -849,22 +849,13 @@ const eaCatalogueSections = [
   principalSx: sxP * 1e3, principalSy: syP * 1e3, principalRx: rxP, principalRy: ryP, j: j * 1e3
 }));
 
-const eaAxialGrades = Object.freeze({
-  "150 x 150 x 12 EA": [300,1.000,340,1.000], "125 x 125 x 10 EA": [320,1.000,360,1.000],
-  "100 x 100 x 10 EA": [320,1.000,360,1.000], "100 x 100 x 8 EA": [320,1.000,360,1.000],
-  "100 x 100 x 6 EA": [320,0.906,360,0.856], "90 x 90 x 8 EA": [320,1.000,360,1.000],
-  "75 x 75 x 8 EA": [320,1.000,360,1.000], "75 x 75 x 6 EA": [320,1.000,360,1.000],
-  "65 x 65 x 6 EA": [320,1.000,360,1.000], "65 x 65 x 5 EA": [320,1.000,360,1.000],
-  "50 x 50 x 6 EA": [320,1.000,360,1.000], "50 x 50 x 5 EA": [320,1.000,360,1.000],
-  "50 x 50 x 3 EA": [320,0.907,360,0.858]
-});
-
-const eaSections = eaCatalogueSections.filter(section => eaAxialGrades[section.designation]).map(section => {
-  const [fy300,kf300,fy350,kf350] = eaAxialGrades[section.designation];
-  const grade300 = SteelMaterials.hotRolledStrength("300PLUS", section.actualT);
-  const grade350 = SteelMaterials.hotRolledStrength("Grade 350", section.actualT);
-  return { ...section, grades: { "300PLUS": { fy: fy300, fu: grade300.fu, kf: kf300 }, "Grade 350": { fy: fy350, fu: grade350.fu, kf: kf350 } } };
-});
+const eaSections = eaCatalogueSections.map(section => ({
+  ...section,
+  grades: Object.fromEntries(Object.entries(BeamHotRolledData.equalAngle[section.designation] || {}).map(([name, grade]) => [
+    name,
+    { ...grade, fu: SteelMaterials.hotRolledStrength(name, section.actualT)?.fu || 0 }
+  ]))
+}));
 
 const pfcSections = [
   [380, 55.2, 7030, 147, 30.4, 152, 6.48, 280, 100, 10.0, 17.5, 27.5, 56.7, 798, 946, 89.4, 236, 161, 491, 151],
@@ -899,7 +890,14 @@ const pfcSections = [
   bf,
   tw,
   tf,
-  grades: { "300PLUS": { fy, fu: SteelMaterials.hotRolledStrength("300PLUS", Math.max(tw, tf)).fu, kf: 1 } }
+  grades: Object.fromEntries(Object.entries(
+    BeamHotRolledData.pfc.find(section => section.designation === `${depth}PFC`)?.grades || {
+      "300PLUS": { fy, kf: 1 }
+    }
+  ).map(([name, grade]) => [
+    name,
+    { ...grade, fu: SteelMaterials.hotRolledStrength(name, Math.max(tw, tf))?.fu || 0 }
+  ]))
 }));
 
 function rodGrades(diameter) {
@@ -942,14 +940,9 @@ let sectionPropertiesMode = "catalogue";
 let sectionMaterialThicknessManual = false;
 
 const customSections = [{
-  designation: "Custom / Built-up properties",
+  designation: "Custom / Built-up",
   grades: { "User input": { fy: 350, fu: 450, kf: 1 } }
 }];
-
-const chsGrades = Object.fromEntries(["C250L0", "C350L0"].map(grade => [grade, {
-  ...SteelMaterials.hollowStrength(grade),
-  kf: 1
-}]));
 
 const screwPileCatalogues = {
   katana: {
@@ -2091,7 +2084,7 @@ const manualInputIds = [
   ...sectionPropertyInputIds, "sectionMaterialThickness", "sectionMaterialFyInput", "sectionMaterialFuInput",
   "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
-  "memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD",
+  "memberDimChsD", "memberDimChsT", "memberDimRodD",
   "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
@@ -3827,6 +3820,9 @@ function beamHollowSections(family) {
       t: first.t,
       mass: first.mass,
       area: first.area,
+      r: first.r,
+      rx: first.rx || first.r,
+      ry: first.ry || first.r,
       Aw: circular ? first.area : 0,
       I: circular || square ? first.I * 1e6 : first.Ix * 1e6,
       Zx: circular || square ? first.Z : first.Zx,
@@ -6009,17 +6005,15 @@ function calculateBeam() {
   ].join("");
 }
 
-function chsProperties(section) {
-  const properties = SectionGeometry.circularHollow(section.D, section.t);
-  return { area: properties.area, r: properties.rx, ix: properties.ix, iy: properties.iy };
-}
-
 function memberDimensionOverrideActive() {
   return memberType !== "custom" && Boolean($("memberDimensionOverride")?.checked);
 }
 
 function memberDimensionLabel(properties) {
+  if (memberType === "ub" || memberType === "uc") return `d = ${formatDimension(properties.d)} mm; b<sub>f</sub> = ${formatDimension(properties.bf)} mm; t<sub>w</sub> = ${formatDimension(properties.tw)} mm; t<sub>f</sub> = ${formatDimension(properties.tf)} mm`;
   if (memberType === "chs") return `D = ${formatDimension(properties.D)} mm; t = ${formatDimension(properties.t)} mm`;
+  if (memberType === "rhs") return `d = ${formatDimension(properties.d)} mm; b = ${formatDimension(properties.b)} mm; t = ${formatDimension(properties.t)} mm`;
+  if (memberType === "shs") return `b = d = ${formatDimension(properties.b)} mm; t = ${formatDimension(properties.t)} mm`;
   if (memberType === "rod") return `d = ${formatDimension(properties.diameter)} mm`;
   if (memberType === "ea") return `b = ${formatDimension(properties.b, 0)} mm; t = ${formatDimension(properties.t)} mm`;
   if (memberType === "pfc") return `d = ${formatDimension(properties.d, 0)} mm; b<sub>f</sub> = ${formatDimension(properties.bf, 0)} mm; t<sub>w</sub> = ${formatDimension(properties.tw)} mm; t<sub>f</sub> = ${formatDimension(properties.tf)} mm`;
@@ -6071,14 +6065,49 @@ function pfcGeometry(d, bf, tw, tf) {
 function memberDimensionProperties(section) {
   if (!memberDimensionOverrideActive()) return null;
   if (memberType === "chs") return chsGeometry(value("memberDimChsD"), value("memberDimChsT"));
-  if (memberType === "ea") return eaGeometry(value("memberDimEaB"), value("memberDimEaT"));
-  if (memberType === "pfc") return pfcGeometry(value("memberDimPfcD"), value("memberDimPfcBf"), value("memberDimPfcTw"), value("memberDimPfcTf"));
   if (memberType === "rod") return rodGeometry(value("memberDimRodD"));
   return null;
 }
 
+function memberHollowSections(family) {
+  const sections = beamHollowSections(family).map(section => {
+    const xAxis = family === "chs" ? section.axes.axis : family === "shs" ? section.axes.xy : section.axes.x;
+    const yAxis = family === "chs" ? section.axes.axis : family === "shs" ? section.axes.xy : section.axes.y;
+    const rx = section.rx;
+    const ry = section.ry;
+    return {
+      ...section,
+      r: Math.min(rx, ry),
+      rx,
+      ry,
+      ix: xAxis.I,
+      iy: yAxis.I,
+      grades: Object.fromEntries(Object.entries(section.grades).map(([name, grade]) => {
+        const strength = SteelMaterials.hollowStrength(name);
+        return [name, { ...grade, fu: strength?.fu || 0 }];
+      }))
+    };
+  });
+  return sections.sort((a, b) => {
+    const primary = family === "chs" ? Number(a.D) - Number(b.D) : Number(a.d) - Number(b.d);
+    if (primary) return primary;
+    const secondary = family === "chs" ? 0 : Number(a.b) - Number(b.b);
+    return secondary || Number(a.t) - Number(b.t);
+  });
+}
+
 function memberSections() {
-  if (memberType === "chs") return chsSections;
+  if (memberType === "ub" || memberType === "uc") {
+    const sections = memberType === "ub" ? ubSections : ucSections;
+    return sections.map(section => ({
+      ...section,
+      grades: Object.fromEntries(Object.entries(section.grades).map(([name, grade]) => {
+        const strength = SteelMaterials.hotRolledStrength(name, Math.max(section.tw, section.tf));
+        return [name, { ...grade, fu: strength?.fu || 0 }];
+      }))
+    }));
+  }
+  if (["chs", "rhs", "shs"].includes(memberType)) return memberHollowSections(memberType);
   if (memberType === "ea") return eaSections;
   if (memberType === "pfc") return pfcSections;
   if (memberType === "custom") return customSections;
@@ -6094,10 +6123,6 @@ function memberProperties(section) {
   }
   const override = memberDimensionProperties(section);
   if (override) return override;
-  if (memberType === "chs") {
-    const chs = chsProperties(section);
-    return { ...chs, rx: chs.r, ry: chs.r, D: section.D, t: section.t };
-  }
   if (memberType === "ea" && section.principalRx > 0 && section.principalRy > 0) {
     return {
       area: section.area,
@@ -6111,13 +6136,16 @@ function memberProperties(section) {
       principalAxisBasis: true
     };
   }
+  const rx = section.rx || section.r;
+  const ry = section.ry || section.r;
   return {
     area: section.area,
-    r: section.r,
-    rx: section.rx || section.r,
-    ry: section.ry || section.r,
+    r: Math.min(rx, ry),
+    rx,
+    ry,
     ix: section.ix,
     iy: section.iy,
+    D: section.D,
     b: section.b,
     d: section.d,
     diameter: section.diameter,
@@ -6128,19 +6156,23 @@ function memberProperties(section) {
   };
 }
 
-function memberAlphaBDefault(kf) {
+function memberAlphaBDefault(kf, section) {
   if (memberType === "custom") return alphaBInput("memberCustomAlphaBx");
-  if (memberType === "chs") return -0.5;
+  if (memberType === "chs" || memberType === "rhs" || memberType === "shs") return -0.5;
+  if (memberType === "ub" || memberType === "uc") return section?.tf > 40 ? 1.0 : 0;
   if (kf < 1) return 1.0;
   return 0.5;
 }
 
-function memberAlphaBBasis(kf) {
+function memberAlphaBBasis(kf, section) {
   if (memberType === "custom") {
     return "user-entered by axis";
   }
-  if (memberType === "chs") {
-    return `AS 4100 Table 6.3.3(${kf < 1 ? "B" : "A"}), cold-formed non-stress-relieved CHS`;
+  if (memberType === "chs" || memberType === "rhs" || memberType === "shs") {
+    return `AS 4100 Table 6.3.3(${kf < 1 ? "B" : "A"}), cold-formed non-stress-relieved RHS and CHS`;
+  }
+  if (memberType === "ub" || memberType === "uc") {
+    return `AS 4100 Table 6.3.3(${kf < 1 ? "B" : "A"}), hot-rolled UB and UC sections${section?.tf > 40 ? ", flange thickness over 40 mm" : ", flange thickness up to 40 mm"}`;
   }
   if (kf < 1) {
     return "AS 4100 Table 6.3.3(B), other sections not listed";
@@ -6161,22 +6193,37 @@ function memberKfValue(grade) {
 function memberKfBasisText(kf) {
   if (memberType === "custom") return "custom member input";
   if (memberDimensionOverrideActive()) {
-    if (memberType === "chs" || memberType === "rod" || memberType === "pfc") {
+    if (memberType === "chs" || memberType === "rod") {
       return `selected ${memberType.toUpperCase()} basis`;
-    }
-    if (memberType === "ea") {
-      return `selected Equal Angle basis`;
     }
   }
   return "selected section basis";
 }
 
 function memberRadiusBasis(defaultR) {
-  if (memberType === "chs") return `r = ${defaultR.toFixed(1)} mm from CHS geometry`;
+  if (memberType === "ub" || memberType === "uc") return `r = r<sub>y</sub> = ${defaultR.toFixed(1)} mm from the selected InfraBuild row`;
+  if (memberType === "chs") return `r = ${defaultR.toFixed(1)} mm from the selected Austube row`;
+  if (memberType === "rhs") return `r = r<sub>min</sub> = ${defaultR.toFixed(1)} mm from the selected Austube row`;
+  if (memberType === "shs") return `r = ${defaultR.toFixed(1)} mm for symmetric centroidal axes`;
   if (memberType === "rod") return `r = d/4 = ${defaultR.toFixed(1)} mm`;
   if (memberType === "pfc") return `r = r<sub>min</sub> = ${defaultR.toFixed(1)} mm`;
   if (memberType === "ea") return `r = r<sub>v</sub> = ${defaultR.toFixed(1)} mm about the minor principal axis`;
   return `r = ${defaultR.toFixed(1)} mm`;
+}
+
+function memberAxisBasisText() {
+  if (["chs", "shs", "rod"].includes(memberType)) return "symmetric axes";
+  if (memberType === "ea") return "minor principal axis";
+  return "minor y-y axis";
+}
+
+function memberCatalogueBasisText() {
+  if (memberType === "ub" || memberType === "uc") return "hot-rolled universal section";
+  if (memberType === "rhs" || memberType === "shs") return "cold-formed non-stress-relieved hollow section";
+  if (memberType === "pfc") return "hot-rolled channel";
+  if (memberType === "chs") return "cold-formed non-stress-relieved CHS";
+  if (memberType === "ea") return "hot-rolled equal angle";
+  return "solid round bar";
 }
 
 function setMemberDimensionDefaults(section) {
@@ -6185,16 +6232,6 @@ function setMemberDimensionDefaults(section) {
     $("memberDimChsD").value = (section.D || 0).toFixed(1);
     $("memberDimChsT").value = (section.t || 0).toFixed(1);
   }
-  if (memberType === "ea") {
-    $("memberDimEaB").value = section.t ? String(parseInt(section.designation, 10) || 100) : "100";
-    $("memberDimEaT").value = (section.t || 0).toFixed(1);
-  }
-  if (memberType === "pfc") {
-    $("memberDimPfcD").value = String(parseInt(section.designation, 10) || 150);
-    $("memberDimPfcBf").value = String(section.bf || Math.round((parseInt(section.designation, 10) || 150) / 2));
-    $("memberDimPfcTw").value = (section.tw || 0).toFixed(1);
-    $("memberDimPfcTf").value = (section.tf || 0).toFixed(1);
-  }
   if (memberType === "rod") {
     $("memberDimRodD").value = (section.diameter || 0).toFixed(1);
   }
@@ -6202,7 +6239,8 @@ function setMemberDimensionDefaults(section) {
 
 function updateMemberDimensionUi(properties = null) {
   const active = memberDimensionOverrideActive();
-  if ($("memberDimensionCard")) $("memberDimensionCard").hidden = memberType === "custom";
+  const dimensionOverrideSupported = ["chs", "rod"].includes(memberType);
+  if ($("memberDimensionCard")) $("memberDimensionCard").hidden = memberType === "custom" || !dimensionOverrideSupported;
   if ($("memberDimensionFields")) $("memberDimensionFields").hidden = !active || memberType === "custom";
   document.querySelectorAll("[data-member-dim]").forEach(field => {
     field.hidden = field.dataset.memberDim !== memberType;
@@ -6211,11 +6249,11 @@ function updateMemberDimensionUi(properties = null) {
     input.disabled = !active || memberType === "custom";
   });
   if ($("memberDimensionOverride")) $("memberDimensionOverride").disabled = memberType === "custom";
-  if ($("memberRadiusOverrideDetails")) $("memberRadiusOverrideDetails").hidden = memberType === "custom" || active;
+  if ($("memberRadiusField")) $("memberRadiusField").hidden = memberType === "custom" || active;
   const props = properties || (selectedMemberGrade() ? memberProperties(selectedMemberGrade().section) : null);
   if ($("memberDimensionStatus")) {
     $("memberDimensionStatus").hidden = !active || memberType === "custom";
-    const sourceText = `${memberType.toUpperCase()} override defines A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub>${memberType === "ea" || memberType === "pfc" ? " by simplified rectangular geometry" : " by circular geometry"}.`;
+    const sourceText = `${memberType.toUpperCase()} override defines A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub> by ideal circular geometry.`;
     $("memberDimensionStatus").innerHTML = props ? `${sourceText} A<sub>g</sub> = ${formatArea(props.area)}; r<sub>x</sub> = ${props.rx.toFixed(1)} mm; r<sub>y</sub> = ${props.ry.toFixed(1)} mm.` : sourceText;
   }
 }
@@ -6251,6 +6289,9 @@ function setMemberInvalidState(message, designation) {
     "memberGeometrySummary", "memberAreaSummary", "memberMaterialSummary",
     "memberCompressionSummary", "memberTensionSummary"
   ].forEach(id => { $(id).textContent = "\u2014"; });
+  $("memberNetSectionSummary").textContent = "Input required";
+  $("memberNetSectionBasis").textContent = "Connection basis not evaluated.";
+  document.querySelectorAll("[data-member-summary='net'], [data-member-summary='kt']").forEach(cell => { cell.hidden = true; });
   ["memberCompression", "sectionCompression", "memberTension", "memberSlenderness", "memberLambdaN", "memberAlphaC", "memberUtilisation"]
     .forEach(id => { $(id).textContent = "\u2014"; });
   ["grossYieldCapacity", "netFractureCapacity"].forEach(id => { $(id).textContent = "\u2014 kN"; });
@@ -6266,6 +6307,13 @@ function setMemberInvalidState(message, designation) {
     result: "Not evaluated",
     applicability: "Enter valid project inputs before using the AS 4100 axial-member checks."
   });
+}
+
+function setMemberFieldValidity(id, valid) {
+  const field = $(id);
+  if (!field) return;
+  if (valid) field.removeAttribute("aria-invalid");
+  else field.setAttribute("aria-invalid", "true");
 }
 
 function memberNetAreaInput(properties) {
@@ -6310,23 +6358,45 @@ function memberNetAreaInput(properties) {
 function populateMemberOptions() {
   const sections = memberSections();
   $("memberSection").innerHTML = sections.map((section, index) => `<option value="${index}">${section.designation}</option>`).join("");
-  $("memberSection").value = memberType === "chs"
-    ? String(chsSections.findIndex(s => s.D === 114.3 && s.t === 3.2))
-    : memberType === "ea"
-      ? String(eaSections.findIndex(s => s.designation === "100 x 100 x 10 EA"))
-      : memberType === "pfc"
-        ? String(pfcSections.findIndex(s => s.designation === "150PFC"))
-        : memberType === "rod"
-          ? String(rodSections.findIndex(s => s.diameter === 24))
-          : "0";
+  const defaultDesignation = {
+    ub: "310UB40.4",
+    uc: "200UC46.2",
+    pfc: "150PFC",
+    chs: "114.3 x 3.2 CHS",
+    rhs: "150 x 100 x 6 RHS",
+    shs: "100 x 100 x 6 SHS",
+    ea: "100 x 100 x 10 EA",
+    rod: "Ø24 Rod"
+  }[memberType];
+  const defaultIndex = sections.findIndex(section => section.designation === defaultDesignation);
+  $("memberSection").value = String(defaultIndex >= 0 ? defaultIndex : 0);
   populateMemberGrades();
+}
+
+function updateMemberNetSectionPresentation(properties, netArea, kt, netInput) {
+  const areaAdjusted = Math.abs(netArea - properties.area) > 0.5;
+  const ktAdjusted = Math.abs(kt - 1) > 0.005;
+  const connectionAdjusted = areaAdjusted || ktAdjusted || netInput.holeCount > 0;
+  const summary = connectionAdjusted
+    ? `Connection-adjusted tension basis &middot; A<sub>n</sub> = ${netArea.toFixed(0)} mm&sup2; &middot; k<sub>t</sub> = ${kt.toFixed(2)}`
+    : "Unperforated section &middot; A<sub>n</sub> = A<sub>g</sub> &middot; k<sub>t</sub> = 1.00";
+  $("memberNetSectionSummary").innerHTML = summary;
+  $("memberNetSectionBasis").innerHTML = summary;
+  $("memberNetSectionDetails").classList.toggle("is-modified", connectionAdjusted);
+  document.querySelectorAll("[data-member-summary='net'], [data-member-summary='kt']").forEach(cell => {
+    cell.hidden = !connectionAdjusted;
+  });
 }
 
 function populateMemberGrades() {
   const section = memberSections()[Number($("memberSection").value) || 0];
-  const grades = memberType === "chs" ? chsGrades : section.grades;
-  $("memberGrade").innerHTML = Object.keys(grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
-  $("memberGrade").value = memberType === "chs" ? "C350L0" : memberType === "custom" ? "User input" : "300PLUS";
+  const grades = section.grades;
+  const gradeNames = Object.keys(grades);
+  $("memberGrade").innerHTML = gradeNames.map(grade => `<option value="${grade}">${grade}</option>`).join("");
+  const preferredGrade = ["chs", "rhs", "shs"].includes(memberType)
+    ? "C350L0"
+    : memberType === "custom" ? "User input" : "300PLUS";
+  $("memberGrade").value = gradeNames.includes(preferredGrade) ? preferredGrade : (gradeNames[0] || "");
   setMemberDimensionDefaults(section);
   const properties = memberProperties(section);
   setMemberStrengthDefaults();
@@ -6335,8 +6405,10 @@ function populateMemberGrades() {
   $("memberHoleCount").value = "0";
   $("memberHoleDiameter").value = "0";
   $("memberHoleThickness").value = memberType === "pfc" ? (properties.tw || section.tw || 0).toFixed(1) : "0";
-  $("memberNetArea").value = String(Math.floor(properties.area * 1000) / 1000);
-  $("memberNetArea").max = String(properties.area);
+  const validArea = Number.isFinite(properties.area) && properties.area > 0;
+  $("memberNetArea").value = validArea ? String(Math.floor(properties.area * 1000) / 1000) : "";
+  if (validArea) $("memberNetArea").max = String(properties.area);
+  else $("memberNetArea").removeAttribute("max");
   $("memberKt").value = memberType === "ea" || memberType === "pfc" ? "0.85" : "1";
   calculateMember();
 }
@@ -6345,7 +6417,7 @@ function selectedMemberGrade() {
   const section = memberSections()[Number($("memberSection").value) || 0];
   if (!section) return null;
   const gradeName = $("memberGrade").value;
-  const grade = memberType === "chs" ? chsGrades[gradeName] : section.grades[gradeName];
+  const grade = section.grades[gradeName];
   return grade ? { section, gradeName, grade } : null;
 }
 
@@ -6356,33 +6428,66 @@ function setMemberStrengthDefaults() {
   $("memberFuInput").value = selected.grade.fu;
 }
 
+function updateMemberMaterialStatus(fy, fu, grade) {
+  const close = (actual, expected) => Number.isFinite(actual) && Number.isFinite(expected) && Math.abs(actual - expected) <= 0.01;
+  const valid = fy > 0 && fu >= fy;
+  const overridden = valid && (!close(fy, grade.fy) || !close(fu, grade.fu));
+  $("memberMaterialStatus").textContent = !valid
+    ? "Enter valid strengths"
+    : memberType === "custom"
+      ? overridden ? "Project input" : "Initial project values - verify"
+      : overridden ? "User override" : "Catalogue default";
+  $("memberMaterialReset").disabled = !overridden;
+  $("memberMaterialReset").hidden = !overridden;
+  return overridden;
+}
+
 function calculateMember() {
   const selected = selectedMemberGrade();
-  if (!selected) return;
+  if (!selected) {
+    setMemberInvalidState("select a valid steel grade", "INPUT REQUIRED");
+    return;
+  }
   const { section, gradeName, grade } = selected;
   const properties = memberProperties(section);
   updateMemberDimensionUi(properties);
   const kf = memberKfValue(grade);
   const kfBasis = memberKfBasisText(kf);
-  const alphaB = memberAlphaBDefault(kf);
-  const alphaBBasis = memberAlphaBBasis(kf);
+  const alphaB = memberAlphaBDefault(kf, section);
+  const alphaBBasis = memberAlphaBBasis(kf, section);
   if (memberType !== "custom") {
     $("memberAlphaB").value = String(alphaB);
   }
   const designR = memberDesignRadius(properties.r);
   const fy = signedValue("memberFyInput", NaN);
   const fu = signedValue("memberFuInput", NaN);
+  const materialOverridden = updateMemberMaterialStatus(fy, fu, grade);
   const designation = memberType === "custom"
     ? section.designation
     : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeName}`;
+  const customLex = memberType === "custom" ? signedValue("memberCustomLex", NaN) : NaN;
+  const customLey = memberType === "custom" ? signedValue("memberCustomLey", NaN) : NaN;
   const preliminaryErrors = [];
   if (!Number.isFinite(properties.area) || properties.area <= 0) preliminaryErrors.push("A_g must be greater than zero");
   if (!Number.isFinite(properties.rx) || properties.rx <= 0 || !Number.isFinite(properties.ry) || properties.ry <= 0) preliminaryErrors.push("r_x and r_y must be greater than zero");
-  if (!Number.isFinite(designR) || designR <= 0) preliminaryErrors.push("the governing radius r must be greater than zero");
+  if (memberType !== "custom" && (!Number.isFinite(designR) || designR <= 0)) preliminaryErrors.push("the governing radius r must be greater than zero");
+  if (memberType === "custom" && !(customLex > 0)) preliminaryErrors.push("L_ex must be greater than zero");
+  if (memberType === "custom" && !(customLey > 0)) preliminaryErrors.push("L_ey must be greater than zero");
   if (!Number.isFinite(kf) || kf <= 0 || kf > 1) preliminaryErrors.push("k_f must satisfy 0 < k_f <= 1");
   if (!Number.isFinite(fy) || fy <= 0) preliminaryErrors.push("f_y must be greater than zero");
   if (!Number.isFinite(fu) || fu <= 0) preliminaryErrors.push("f_u must be greater than zero");
   if (Number.isFinite(fy) && Number.isFinite(fu) && fu < fy) preliminaryErrors.push("f_u must not be less than f_y");
+  setMemberFieldValidity("memberRadiusInput", Number.isFinite(designR) && designR > 0);
+  setMemberFieldValidity("memberFyInput", Number.isFinite(fy) && fy > 0);
+  setMemberFieldValidity("memberFuInput", Number.isFinite(fu) && fu > 0 && (!Number.isFinite(fy) || fu >= fy));
+  if (memberType === "custom") {
+    setMemberFieldValidity("memberCustomArea", Number.isFinite(properties.area) && properties.area > 0);
+    setMemberFieldValidity("memberCustomRx", Number.isFinite(properties.rx) && properties.rx > 0);
+    setMemberFieldValidity("memberCustomRy", Number.isFinite(properties.ry) && properties.ry > 0);
+    setMemberFieldValidity("memberCustomKf", Number.isFinite(kf) && kf > 0 && kf <= 1);
+    setMemberFieldValidity("memberCustomLex", customLex > 0);
+    setMemberFieldValidity("memberCustomLey", customLey > 0);
+  }
   if (preliminaryErrors.length) {
     setMemberInvalidState(preliminaryErrors.join("; "), designation);
     return;
@@ -6396,17 +6501,19 @@ function calculateMember() {
       ? `r = ${designR.toFixed(1)} mm; default r = ${properties.r.toFixed(1)} mm`
       : memberRadiusBasis(properties.r);
   if (memberType !== "custom") {
-    $("memberRadiusSource").innerHTML = `${properties.customGeometry ? radiusBasis : memberRadiusBasis(properties.r)} Used for slenderness L<sub>e</sub>/r and design member capacity &phi;N<sub>c</sub>.`;
+    $("memberRadiusSource").textContent = properties.customGeometry ? "Non-catalogue section properties." : "Catalogue section and effective length.";
   } else {
-    $("memberRadiusSource").innerHTML = `User-defined effective section properties from a verified section-property calculation.`;
+    $("memberRadiusSource").textContent = "User-entered section properties · verification required.";
   }
   $("memberNetArea").max = String(properties.area);
   const netInput = memberNetAreaInput(properties);
   const netArea = netInput.netArea;
   const kt = signedValue("memberKt", NaN);
-  const strengthBasis = fy === grade.fy && fu === grade.fu
-    ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; grade ${gradeName}`
-    : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeName} default ${grade.fy}/${grade.fu} MPa`;
+  const strengthBasis = memberType === "custom"
+    ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; project input`
+    : materialOverridden
+      ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; user override; ${gradeName} default ${grade.fy}/${grade.fu} MPa`
+      : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeName} catalogue default`;
   const ktGuidance = kt >= 0.999
     ? "AS 4100 Cl. 7.3.1"
     : "AS 4100 Table 7.3.2";
@@ -6428,21 +6535,39 @@ function calculateMember() {
     if (!Number.isFinite(axis.effectiveLength) || axis.effectiveLength <= 0) calculationErrors.push(`${axis.title} effective length L_e must be greater than zero`);
     if (!Number.isFinite(axis.alphaB) || axis.alphaB < -1 || axis.alphaB > 1) calculationErrors.push(`${axis.title} alpha_b must be between -1.0 and 1.0`);
   });
+  setMemberFieldValidity("memberNetArea", Number.isFinite(netArea) && netArea > 0 && netArea <= properties.area);
+  setMemberFieldValidity("memberKt", Number.isFinite(kt) && kt >= 0.75 && kt <= 1);
+  setMemberFieldValidity("memberCompressionDemand", Number.isFinite(compressionDemand) && compressionDemand >= 0);
+  setMemberFieldValidity("memberTensionDemand", Number.isFinite(tensionDemand) && tensionDemand >= 0);
+  if (memberType === "custom") {
+    setMemberFieldValidity("memberCustomLex", Number.isFinite(axes[0].effectiveLength) && axes[0].effectiveLength > 0);
+    setMemberFieldValidity("memberCustomLey", Number.isFinite(axes[1].effectiveLength) && axes[1].effectiveLength > 0);
+    setMemberFieldValidity("memberCustomAlphaBx", Number.isFinite(axes[0].alphaB) && axes[0].alphaB >= -1 && axes[0].alphaB <= 1);
+    setMemberFieldValidity("memberCustomAlphaBy", Number.isFinite(axes[1].alphaB) && axes[1].alphaB >= -1 && axes[1].alphaB <= 1);
+  } else {
+    setMemberFieldValidity("memberLength", Number.isFinite(axes[0].effectiveLength) && axes[0].effectiveLength > 0);
+  }
   if (calculationErrors.length) {
     setMemberInvalidState(calculationErrors.join("; "), designation);
     return;
   }
-  const memberResult = MemberCapacity.calculate({
-    grossArea: properties.area,
-    netArea,
-    fy,
-    fu,
-    kf,
-    kt,
-    axes,
-    compressionDemand,
-    tensionDemand
-  });
+  let memberResult;
+  try {
+    memberResult = MemberCapacity.calculate({
+      grossArea: properties.area,
+      netArea,
+      fy,
+      fu,
+      kf,
+      kt,
+      axes,
+      compressionDemand,
+      tensionDemand
+    });
+  } catch (error) {
+    setMemberInvalidState(error instanceof Error ? error.message : "the adopted compression basis is outside the supported range", designation);
+    return;
+  }
   const {
     sectionCompression,
     axisResults,
@@ -6485,11 +6610,11 @@ function calculateMember() {
 
   $("memberDesignation").textContent = designation;
   $("memberAssumption").innerHTML = memberType === "custom"
-    ? "User-entered effective section properties; both axes checked."
-    : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${radiusOverridden ? "user-entered governing radius" : radiusBasis}${memberType === "chs" ? "; assumed cold-formed non-stress-relieved" : memberType === "pfc" ? "; hot-rolled channel basis" : ""}.`;
+    ? "User-entered section properties; flexural buckling checked about both entered axes."
+    : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${radiusOverridden ? "user-entered governing radius" : radiusBasis}; ${memberCatalogueBasisText()}.`;
   $("memberSummaryAxis").innerHTML = memberType === "custom"
     ? `${governingAxis.label}-axis / ${governingAxis.r.toFixed(1)} mm`
-    : `${memberType === "chs" || memberType === "rod" ? "symmetric" : memberType === "ea" ? "minor principal" : "minor y-y"} / ${designR.toFixed(1)} mm`;
+    : `${["chs", "shs", "rod"].includes(memberType) ? "symmetric" : memberType === "ea" ? "minor principal" : "minor y-y"} / ${designR.toFixed(1)} mm`;
   $("memberSummarySlenderness").innerHTML = memberType === "custom"
     ? `${(governingAxis.effectiveLength / 1000).toFixed(2)} m / ${governingAxis.leOverR.toFixed(1)}`
     : `${(axisResults[0].effectiveLength / 1000).toFixed(2)} m / ${axisResults[0].leOverR.toFixed(1)}`;
@@ -6499,14 +6624,15 @@ function calculateMember() {
     ? `${kf.toFixed(3)} / ${governingAxis.alphaB.toFixed(1)}`
     : `${kf.toFixed(3)} / ${alphaB.toFixed(1)}`;
   $("memberSummaryKt").textContent = kt.toFixed(2);
+  updateMemberNetSectionPresentation(properties, netArea, kt, netInput);
   $("memberGeometrySummary").innerHTML = memberType === "custom"
-    ? "User-entered effective properties; no catalogue geometry adopted."
+    ? "User-entered properties; no catalogue geometry adopted."
     : memberDimensionLabel(properties);
   $("memberAreaSummary").innerHTML = `A<sub>g</sub> = ${formatArea(properties.area)}; A<sub>n</sub> = ${formatArea(netArea)} (${netAreaBasisLabel})`;
-  $("memberMaterialSummary").innerHTML = `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
+  $("memberMaterialSummary").innerHTML = strengthBasis;
   $("memberCompressionSummary").innerHTML = memberType === "custom"
     ? `${axisResults.map(axis => `${axis.label}: L<sub>e${axis.label}</sub> = ${(axis.effectiveLength / 1000).toFixed(2)} m; r<sub>${axis.label}</sub> = ${axis.r.toFixed(1)} mm; L<sub>e${axis.label}</sub>/r<sub>${axis.label}</sub> = ${axis.leOverR.toFixed(1)}; &alpha;<sub>b,${axis.label}</sub> = ${axis.alphaB.toFixed(1)}`).join("; ")}; k<sub>f</sub> = ${kf.toFixed(3)}; ${governingAxis.label}-axis governs`
-    : `L<sub>e</sub> = ${(axisResults[0].effectiveLength / 1000).toFixed(2)} m; r used = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; ${memberType === "chs" || memberType === "rod" ? "symmetric axes" : memberType === "ea" ? "minor principal axis" : "minor y-y axis"}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}`;
+    : `L<sub>e</sub> = ${(axisResults[0].effectiveLength / 1000).toFixed(2)} m; r used = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; ${memberAxisBasisText()}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}`;
   $("memberTensionSummary").innerHTML = `k<sub>t</sub> = ${kt.toFixed(2)}; A<sub>n</sub> basis = ${netAreaBasisLabel}`;
   $("memberCompression").textContent = fixed(memberCompression);
   $("sectionCompression").textContent = fixed(sectionCompression);
@@ -6537,12 +6663,16 @@ function calculateMember() {
   $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for non-straight net paths.`;
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Scope: centroidal axial compression and axial tension only. CHS basis: assumed cold-formed non-stress-relieved; k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = -0.5.`
+    : memberType === "rhs" || memberType === "shs"
+      ? `Scope: centroidal axial compression and axial tension only. ${memberType.toUpperCase()} basis: cold-formed non-stress-relieved; ${memberAxisBasisText()}, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = -0.5.`
+    : memberType === "ub" || memberType === "uc"
+      ? `Scope: centroidal axial compression and axial tension only. ${memberType.toUpperCase()} basis: hot-rolled section, ${memberAxisBasisText()}, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`
     : memberType === "ea"
       ? `Scope: centroidal axial compression and axial tension only. Angle basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${customGeometryKfWarning}`
       : memberType === "pfc"
         ? `Scope: centroidal axial compression and axial tension only. PFC basis: hot-rolled channel, r = r<sub>min</sub>, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`
         : memberType === "custom"
-          ? `Scope: centroidal axial compression and axial tension using entered effective properties.`
+          ? `Flexural buckling about the entered axes only. Built-up action, local buckling, shear deformation and torsional buckling are not evaluated.`
           : `Scope: centroidal axial compression and axial tension only. Rod basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`;
   const sectionDataText = memberType === "custom"
     ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
@@ -9480,6 +9610,9 @@ function setMemberType(type) {
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
   const selectedMember = document.querySelector(".member-selected-section");
   if (selectedMember) selectedMember.classList.toggle("member-selected-custom", isCustom);
+  $("memberRadiusSource").textContent = isCustom
+    ? "User-entered section properties · verification required."
+    : "Catalogue section and effective length.";
   document.querySelectorAll("[data-member-guide]").forEach(card => {
     card.hidden = card.dataset.memberGuide !== type;
   });
@@ -9495,23 +9628,24 @@ function setMemberType(type) {
   $("memberSectionField").hidden = isCustom;
   $("memberGradeField").hidden = isCustom;
   $("memberLengthField").hidden = isCustom;
-  $("memberRadiusOverrideDetails").hidden = isCustom;
+  $("memberRadiusField").hidden = isCustom;
   $("memberFactorHelp").innerHTML = type === "chs"
     ? "CHS basis: k<sub>f</sub> = 1.000; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+    : type === "ub" || type === "uc"
+      ? "Catalogue k<sub>f</sub>; hot-rolled UB / UC &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+    : type === "rhs" || type === "shs"
+      ? "Catalogue k<sub>f</sub>; cold-formed non-stress-relieved hollow-section &alpha;<sub>b</sub>."
     : type === "ea"
       ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
     : type === "pfc"
       ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
       : type === "custom"
-        ? "Custom / Built-up properties: entered effective section properties; k<sub>f</sub> and &alpha;<sub>b</sub> are adopted AS 4100 compression factors."
+        ? "Custom / Built-up: user-entered section properties; k<sub>f</sub> and &alpha;<sub>b</sub> require project verification."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";
-  $("memberMaterialOverrideDetails").open = isCustom;
-  $("memberMaterialOverrideTitle").textContent = isCustom ? "Material strengths" : "Override grade values";
-  $("memberMaterialOverrideHelp").textContent = isCustom
-    ? "Enter verified project material strengths."
-    : "Use verified project material strengths only.";
   $("memberAlphaB").disabled = type !== "custom";
+  if (type === "ub" || type === "uc") $("memberAlphaB").value = "0";
   if (type === "chs") $("memberAlphaB").value = "-0.5";
+  if (type === "rhs" || type === "shs") $("memberAlphaB").value = "-0.5";
   if (type === "ea") $("memberAlphaB").value = "0.5";
   if (type === "pfc") $("memberAlphaB").value = "0.5";
   if (type === "rod") $("memberAlphaB").value = "0.5";
@@ -9705,12 +9839,27 @@ function initialise() {
     setMemberStrengthDefaults();
     calculateMember();
   });
+  $("memberMaterialReset").addEventListener("click", () => {
+    setMemberStrengthDefaults();
+    calculateMember();
+  });
   $("memberFyInput").addEventListener("input", calculateMember);
   $("memberFuInput").addEventListener("input", calculateMember);
   $("memberRadiusInput").addEventListener("input", calculateMember);
-  $("memberDimensionOverride").addEventListener("change", calculateMember);
-  ["memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD"].forEach(id => $(id).addEventListener("input", calculateMember));
-  ["memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"].forEach(id => $(id).addEventListener("input", calculateMember));
+  $("memberDimensionOverride").addEventListener("change", () => {
+    const selected = selectedMemberGrade();
+    if (selected) {
+      const properties = memberProperties(selected.section);
+      $("memberNetArea").value = properties.area.toFixed(3);
+    }
+    calculateMember();
+  });
+  ["memberDimChsD", "memberDimChsT", "memberDimRodD"].forEach(id => $(id).addEventListener("input", calculateMember));
+  ["memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"].forEach(id => {
+    const field = $(id);
+    field.addEventListener("input", calculateMember);
+    if (field.tagName === "SELECT") field.addEventListener("change", calculateMember);
+  });
   $("memberLength").addEventListener("input", calculateMember);
   $("memberAlphaB").addEventListener("change", calculateMember);
   $("memberCompressionDemand").addEventListener("input", calculateMember);

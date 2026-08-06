@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260803productflow36">
+  <link rel="stylesheet" href="styles.css?v=20260806axialrelease1">
 </head>
 <body>
   <header class="topbar">
@@ -982,29 +982,26 @@
       <div class="tool-heading"><div><p class="kicker">Axial members · AS 4100 Sections 6 and 7</p><h2>Axial Member Capacity</h2></div><span class="tool-status">For Review · user-confirmed inputs</span></div>
 
       <section class="lookup-card member-card">
-        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up properties</button></div>
+        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type" type="button" data-member-type="ub">UB</button><button class="member-type" type="button" data-member-type="uc">UC</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="rhs">RHS</button><button class="member-type" type="button" data-member-type="shs">SHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up</button></div>
 
         <div class="input-cluster input-cluster-four member-main-inputs">
           <section class="input-group input-group-section" id="memberSectionGroup">
-            <span class="input-group-heading"><b>Section properties</b><small id="memberRadiusSource">Geometry, r and L<sub>e</sub>.</small></span>
+            <span class="input-group-heading"><b>Member definition</b><small id="memberRadiusSource">Section and effective length.</small></span>
             <div id="memberCatalogueSectionFields">
-              <div class="input-group-fields two">
+              <div class="input-group-fields three member-definition-fields">
                 <label class="size-field" id="memberSectionField"><span>Section</span><select id="memberSection"></select></label>
                 <label id="memberLengthField"><span>Effective length L<sub>e</sub></span><span class="unit"><input id="memberLength" type="number" min="0.1" max="20" step="0.1" value="3"><em>m</em></span></label>
+                <label id="memberRadiusField"><span>r <i>governing radius</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
               </div>
-              <details class="input-override-details" id="memberRadiusOverrideDetails">
-                <summary><span><b>Override catalogue radius</b><small>Use a verified governing radius only.</small></span><i>+</i></summary>
-                <div class="input-group-fields"><label id="memberRadiusField"><span>r <i>governing radius</i></span><span class="unit"><input id="memberRadiusInput" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label></div>
-              </details>
             </div>
             <div class="input-group-fields three" id="memberCustomSectionFields" hidden>
-              <div class="member-custom-subheading"><b>User-defined section properties</b><small>Enter effective centroidal properties from a verified section-property calculation. If I<sub>x</sub> and I<sub>y</sub> are provided, use r<sub>x</sub> = sqrt(I<sub>x</sub> / A<sub>g</sub>) and r<sub>y</sub> = sqrt(I<sub>y</sub> / A<sub>g</sub>).</small></div>
-              <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1" value="2000"><em>mm²</em></span></label>
-              <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1" value="30"><em>mm</em></span></label>
-              <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1" value="20"><em>mm</em></span></label>
-              <div class="member-custom-subheading"><b>Effective lengths</b><small>Use the same value for L<sub>ex</sub> and L<sub>ey</sub> when restraint conditions are the same about both axes.</small></div>
-              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0.1" max="50" step="0.1" value="3"><em>m</em></span></label>
-              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0.1" max="50" step="0.1" value="3"><em>m</em></span></label>
+              <div class="member-custom-subheading"><b>User-entered section properties</b><small>Verification required. The entered axes must match the section-property report and member restraint directions.</small></div>
+              <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="memberCustomArea" type="number" min="1" step="1"><em>mm²</em></span></label>
+              <label><span>r<sub>x</sub></span><span class="unit"><input id="memberCustomRx" type="number" min="0.1" step="0.1"><em>mm</em></span></label>
+              <label><span>r<sub>y</sub></span><span class="unit"><input id="memberCustomRy" type="number" min="0.1" step="0.1"><em>mm</em></span></label>
+              <div class="member-custom-subheading"><b>Effective lengths</b><small>Enter both axes; use the same value only where the restraint conditions are equivalent.</small></div>
+              <label><span>L<sub>ex</sub></span><span class="unit"><input id="memberCustomLex" type="number" min="0.1" max="50" step="0.1"><em>m</em></span></label>
+              <label><span>L<sub>ey</sub></span><span class="unit"><input id="memberCustomLey" type="number" min="0.1" max="50" step="0.1"><em>m</em></span></label>
             </div>
             <div class="member-dimension-panel" id="memberDimensionCard">
               <div class="input-group-fields member-dimension-toggle">
@@ -1013,27 +1010,18 @@
               <div class="input-group-fields four member-dimension-fields" id="memberDimensionFields" hidden>
                 <label data-member-dim="chs"><span>D <i>outside diameter</i></span><span class="unit"><input id="memberDimChsD" type="number" min="0" step="0.1" value="60.3"><em>mm</em></span></label>
                 <label data-member-dim="chs"><span>t <i>wall thickness</i></span><span class="unit"><input id="memberDimChsT" type="number" min="0" step="0.1" value="3.2"><em>mm</em></span></label>
-                <label data-member-dim="ea" hidden><span>b <i>leg length</i></span><span class="unit"><input id="memberDimEaB" type="number" min="0" step="1" value="100"><em>mm</em></span></label>
-                <label data-member-dim="ea" hidden><span>t <i>leg thickness</i></span><span class="unit"><input id="memberDimEaT" type="number" min="0" step="0.1" value="10"><em>mm</em></span></label>
-                <label data-member-dim="pfc" hidden><span>d <i>overall depth</i></span><span class="unit"><input id="memberDimPfcD" type="number" min="0" step="1" value="150"><em>mm</em></span></label>
-                <label data-member-dim="pfc" hidden><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="memberDimPfcBf" type="number" min="0" step="1" value="75"><em>mm</em></span></label>
-                <label data-member-dim="pfc" hidden><span>t<sub>w</sub></span><span class="unit"><input id="memberDimPfcTw" type="number" min="0" step="0.1" value="6"><em>mm</em></span></label>
-                <label data-member-dim="pfc" hidden><span>t<sub>f</sub></span><span class="unit"><input id="memberDimPfcTf" type="number" min="0" step="0.1" value="9.5"><em>mm</em></span></label>
                 <label data-member-dim="rod" hidden><span>d <i>diameter</i></span><span class="unit"><input id="memberDimRodD" type="number" min="0" step="0.1" value="24"><em>mm</em></span></label>
               </div>
               <p class="result-note user-input-note" id="memberDimensionStatus" hidden></p>
             </div>
           </section>
           <section class="input-group input-group-material" id="memberMaterialGroup">
-            <span class="input-group-heading"><b>Material properties</b><small>Adopted f<sub>y</sub> and f<sub>u</sub> are shown in the selected-member summary.</small></span>
-            <div class="input-group-fields"><label id="memberGradeField"><span>Steel grade</span><select id="memberGrade"></select></label></div>
-            <details class="input-override-details" id="memberMaterialOverrideDetails">
-              <summary><span><b id="memberMaterialOverrideTitle">Override grade values</b><small id="memberMaterialOverrideHelp">Use verified project material strengths only.</small></span><i>+</i></summary>
-              <div class="input-group-fields two">
-                <label><span>f<sub>y</sub></span><span class="unit"><input id="memberFyInput" type="number" min="1" step="1" value="350"><em>MPa</em></span></label>
-                <label><span>f<sub>u</sub></span><span class="unit"><input id="memberFuInput" type="number" min="1" step="1" value="430"><em>MPa</em></span></label>
-              </div>
-            </details>
+            <span class="input-group-heading beam-material-heading"><span><b>Material properties</b><small><em id="memberMaterialStatus" class="input-source-status">Catalogue default</em></small></span><button id="memberMaterialReset" class="beam-material-reset" type="button" title="Restore selected-grade strengths" aria-label="Restore selected-grade strengths" hidden>&#8634;</button></span>
+            <div class="input-group-fields three member-material-fields">
+              <label id="memberGradeField"><span>Steel grade</span><select id="memberGrade"></select></label>
+              <label><span>Yield strength f<sub>y</sub></span><span class="unit"><input id="memberFyInput" type="number" min="1" step="1" inputmode="decimal" value="350"><em>MPa</em></span></label>
+              <label><span>Tensile strength f<sub>u</sub></span><span class="unit"><input id="memberFuInput" type="number" min="1" step="1" inputmode="decimal" value="430"><em>MPa</em></span></label>
+            </div>
           </section>
           <section class="input-group input-group-factor" id="memberFactorGroup">
             <span class="input-group-heading"><b>Compression reduction factors</b><small id="memberFactorHelp">Form factor k<sub>f</sub> and member section constant &alpha;<sub>b</sub>.</small></span>
@@ -1043,14 +1031,16 @@
             <div class="input-group-fields three" id="memberCustomFactorFields" hidden>
               <div class="member-custom-subheading"><b>Compression factors</b><small>Initial values: k<sub>f</sub> = 1.000 and &alpha;<sub>b,x</sub> = &alpha;<sub>b,y</sub> = 0.5. Confirm the adopted AS 4100 compression basis.</small></div>
               <label><span>k<sub>f</sub></span><input id="memberCustomKf" type="number" min="0.001" max="1" step="0.001" value="1.000"></label>
-              <label><span>&alpha;<sub>b,x</sub></span><input id="memberCustomAlphaBx" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
-              <label><span>&alpha;<sub>b,y</sub></span><input id="memberCustomAlphaBy" type="number" min="-1" max="1" step="0.5" value="0.5"></label>
+              <label><span>&alpha;<sub>b,x</sub></span><select id="memberCustomAlphaBx"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
+              <label><span>&alpha;<sub>b,y</sub></span><select id="memberCustomAlphaBy"><option value="-1">-1.0</option><option value="-0.5">-0.5</option><option value="0">0.0</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
             </div>
           </section>
         </div>
         <div class="input-cluster member-connection-inputs">
-          <section class="input-group input-group-factor member-net-section-group">
-            <span class="input-group-heading"><b>Connection / net-section inputs</b><small id="memberNetAreaSource">A<sub>n</sub> and k<sub>t</sub> for AS 4100 tension and compression checks.</small></span>
+          <details class="member-net-section-details" id="memberNetSectionDetails">
+            <summary><span><b>Connection / net section</b><small id="memberNetSectionSummary">Unperforated section &middot; A<sub>n</sub> = A<sub>g</sub> &middot; k<sub>t</sub> = 1.00</small></span><i>+</i></summary>
+            <section class="input-group input-group-factor member-net-section-group">
+              <span class="input-group-heading"><b>Tension basis</b><small id="memberNetAreaSource">Enter the actual connection net section where required.</small></span>
             <div class="input-group-fields member-net-section-fields">
               <label class="member-net-method"><span>A<sub>n</sub> method</span><span class="unit"><select id="memberNetAreaMode"><option value="auto">Auto from bolt holes</option><option value="manual">Manual A<sub>n</sub></option></select></span></label>
               <label class="member-hole-field"><span>n<sub>h</sub> <i>holes on net path</i></span><input id="memberHoleCount" type="number" min="0" max="20" step="1" value="0"></label>
@@ -1059,17 +1049,22 @@
               <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="memberNetArea" type="number" min="0.1" step="0.001" value="0"><em>mm²</em></span></label>
               <label><span>k<sub>t</sub> <i>AS 4100 Cl. 7.3</i></span><input id="memberKt" type="number" min="0.75" max="1" step="0.05" value="1"></label>
             </div>
-          </section>
+            </section>
+          </details>
         </div>
 
         <div class="member-summary member-selected-section">
           <div class="member-summary-visual" aria-label="Selected member section guide">
             <div class="section-guide diagram-guide">
-              <article class="manual-section-card" data-member-guide="chs"><img class="section-diagram" src="assets/generated/member-section-chs.svg" alt="CHS section diagram showing D and t dimensions"><div><strong>CHS</strong><small>D, t · Orrcon catalogue / AS/NZS 1163 basis</small></div></article>
+              <article class="manual-section-card" data-member-guide="ub" hidden><img class="section-diagram" src="assets/generated/beam-section-ub.svg" alt="Universal beam section diagram"><div><strong>UB</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub> · InfraBuild Tables 9-10</small></div></article>
+              <article class="manual-section-card" data-member-guide="uc" hidden><img class="section-diagram" src="assets/generated/beam-section-uc.svg" alt="Universal column section diagram"><div><strong>UC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub> · InfraBuild Tables 11-12</small></div></article>
+              <article class="manual-section-card" data-member-guide="chs"><img class="section-diagram" src="assets/generated/member-section-chs.svg" alt="CHS section diagram showing D and t dimensions"><div><strong>CHS</strong><small>D, t · Austube Tables 3.1-1 and 3.1-2</small></div></article>
+              <article class="manual-section-card" data-member-guide="rhs" hidden><img class="section-diagram" src="assets/generated/member-section-rhs.svg" alt="RHS section diagram showing d, b and t dimensions"><div><strong>RHS</strong><small>d, b, t · Austube Tables 3.1-3 and 3.1-4</small></div></article>
+              <article class="manual-section-card" data-member-guide="shs" hidden><img class="section-diagram" src="assets/generated/member-section-shs.svg" alt="SHS section diagram showing b and t dimensions"><div><strong>SHS</strong><small>b, t · Austube Tables 3.1-5 and 3.1-6</small></div></article>
               <article class="manual-section-card" data-member-guide="ea" hidden><img class="section-diagram" src="assets/generated/member-section-equal-angle.svg" alt="Equal angle section diagram showing b, t and r dimensions"><div><strong>Equal Angle</strong><small>b, t, r · OneSteel / InfraBuild Tables 19-21</small></div></article>
               <article class="manual-section-card" data-member-guide="pfc" hidden><img class="section-diagram" src="assets/generated/member-section-pfc.svg" alt="PFC section diagram showing d, bf, tw, tf and r dimensions"><div><strong>PFC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, r · OneSteel / InfraBuild Tables 15-16</small></div></article>
               <article class="manual-section-card" data-member-guide="rod" hidden><img class="section-diagram" src="assets/generated/member-section-rod.svg" alt="Round bar or rod section diagram showing diameter d"><div><strong>Rod</strong><small>d · OneSteel / InfraBuild Table 3</small></div></article>
-              <article class="manual-section-card custom-section-card" data-member-guide="custom" hidden><div><strong>Custom / Built-up properties</strong><small>User-entered effective section properties.</small></div></article>
+              <article class="manual-section-card custom-section-card" data-member-guide="custom" hidden><div><strong>Custom / Built-up</strong><small>User-entered properties &middot; verification required.</small></div></article>
             </div>
           </div>
           <div class="member-summary-copy">
@@ -1077,14 +1072,14 @@
             <dl class="member-summary-metrics member-summary-primary">
               <div><dt>Checked axis / r</dt><dd id="memberSummaryAxis">—</dd></div>
               <div><dt>L<sub>e</sub>; L<sub>e</sub>/r</dt><dd id="memberSummarySlenderness">—</dd></div>
-              <div><dt>A<sub>n</sub></dt><dd id="memberSummaryNetArea">—</dd></div>
+              <div data-member-summary="net"><dt>A<sub>n</sub></dt><dd id="memberSummaryNetArea">—</dd></div>
               <div><dt>f<sub>y</sub> / f<sub>u</sub></dt><dd id="memberSummaryStrength">—</dd></div>
               <div><dt>k<sub>f</sub> / &alpha;<sub>b</sub></dt><dd id="memberSummaryCompressionFactors">—</dd></div>
-              <div><dt>k<sub>t</sub></dt><dd id="memberSummaryKt">—</dd></div>
+              <div data-member-summary="kt"><dt>k<sub>t</sub></dt><dd id="memberSummaryKt">—</dd></div>
             </dl>
-            <p class="member-drawing-note">Diagram follows the selected family; properties come from the stated geometry or catalogue basis.</p>
+            <p class="member-net-basis" id="memberNetSectionBasis">Unperforated section &middot; A<sub>n</sub> = A<sub>g</sub> &middot; k<sub>t</sub> = 1.00</p>
           </div>
-          <details class="member-section-details">
+          <details class="member-section-details" id="memberSectionDetails">
             <summary><span><b>Section details</b><small>Geometry and supplementary calculation basis</small></span><i>+</i></summary>
             <dl class="member-summary-basis">
               <div><dt>Geometry</dt><dd id="memberGeometrySummary">—</dd></div>
@@ -1128,14 +1123,24 @@
         <div class="detail-body">
           <section>
             <h3>Capacity components</h3>
-            <div class="member-check-grid">
-              <div><span>Design section capacity</span><strong><output id="sectionCompression">—</output><small> kN</small></strong><small>&phi;N<sub>s</sub>, AS 4100 Cl. 6.2</small></div>
-              <div><span>Slenderness</span><strong id="memberSlenderness">—</strong><small>L<sub>e</sub>/r</small></div>
-              <div><span>Compression reduction factor</span><strong id="memberAlphaC">—</strong><small>&alpha;<sub>c</sub>, AS 4100 Cl. 6.3.3</small></div>
-              <div><span>Compression limit state</span><strong id="memberGoverning">—</strong><small>governing &phi;N<sub>c</sub> basis</small></div>
-              <div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>&phi;A<sub>g</sub>f<sub>y</sub></small></div>
-              <div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>&phi;(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>)</small></div>
-              <div><span>Tension limit state</span><strong id="tensionGoverning">—</strong><small>governing AS 4100 Cl. 7.2 basis</small></div>
+            <div class="member-check-groups">
+              <section class="member-check-group">
+                <h4>Compression</h4>
+                <div class="member-check-grid member-check-grid-compression">
+                  <div><span>Design section capacity</span><strong><output id="sectionCompression">—</output><small> kN</small></strong><small>&phi;N<sub>s</sub>, AS 4100 Cl. 6.2</small></div>
+                  <div><span>Slenderness</span><strong id="memberSlenderness">—</strong><small>L<sub>e</sub>/r</small></div>
+                  <div><span>Compression reduction factor</span><strong id="memberAlphaC">—</strong><small>&alpha;<sub>c</sub>, AS 4100 Cl. 6.3.3</small></div>
+                  <div><span>Governing compression limit</span><strong id="memberGoverning">—</strong><small>&phi;N<sub>c</sub> basis</small></div>
+                </div>
+              </section>
+              <section class="member-check-group">
+                <h4>Tension</h4>
+                <div class="member-check-grid member-check-grid-tension">
+                  <div><span>Gross-section yielding</span><strong id="grossYieldCapacity">—</strong><small>&phi;A<sub>g</sub>f<sub>y</sub></small></div>
+                  <div><span>Net-section fracture</span><strong id="netFractureCapacity">—</strong><small>&phi;(0.85k<sub>t</sub>A<sub>n</sub>f<sub>u</sub>)</small></div>
+                  <div><span>Governing tension limit</span><strong id="tensionGoverning">—</strong><small>AS 4100 Cl. 7.2 basis</small></div>
+                </div>
+              </section>
             </div>
             <span id="memberLambdaN" hidden>—</span>
           </section>
@@ -1146,8 +1151,8 @@
         </div>
       </details>
 
-      <details class="section-guide-card member-lookup-card">
-        <summary><span><b>Reference values</b><small>AS 4100 factors and section constants</small></span><i>+</i></summary>
+      <details class="section-guide-card member-lookup-card member-design-basis-card">
+        <summary><span><b>Design basis and limitations</b><small>AS 4100 factors, product data and exclusions</small></span><i>+</i></summary>
         <div class="lookup-table-stack">
           <section>
             <h3>&alpha;<sub>b</sub> member section constant</h3>
@@ -1156,6 +1161,8 @@
                 <thead><tr><th>Member case</th><th>Use this value when</th><th>α<sub>b</sub></th><th>Status</th></tr></thead>
                 <tbody>
                   <tr><td>CHS</td><td>Cold-formed, non-stress-relieved CHS.</td><td>-0.5</td><td>AS 4100 Table 6.3.3(A) or (B), CHS row selected by k<sub>f</sub>.</td></tr>
+                  <tr><td>RHS / SHS</td><td>Cold-formed, non-stress-relieved hollow section.</td><td>-0.5</td><td>AS 4100 Table 6.3.3(A) or (B), RHS and CHS row selected by k<sub>f</sub>.</td></tr>
+                  <tr><td>UB / UC</td><td>Hot-rolled section with flange thickness not exceeding 40 mm.</td><td>0</td><td>AS 4100 Table 6.3.3(A) or (B), hot-rolled UB and UC sections.</td></tr>
                   <tr><td>PFC</td><td>Hot-rolled channel with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), hot-rolled channels.</td></tr>
                   <tr><td>Equal Angle</td><td>Angle with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), angles.</td></tr>
                   <tr><td>Equal Angle</td><td>Angle with k<sub>f</sub> &lt; 1.0.</td><td>1.0</td><td>AS 4100 Table 6.3.3(B), other sections not listed.</td></tr>
@@ -1171,6 +1178,8 @@
                 <thead><tr><th>Member case</th><th>Form factor k<sub>f</sub></th><th>Source basis</th></tr></thead>
                 <tbody>
                   <tr><td>CHS</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, A<sub>e</sub> = A<sub>g</sub> for this quick CHS geometry screen.</td></tr>
+                  <tr><td>RHS / SHS</td><td>catalogue value</td><td>Austube Tables 3.1-3 to 3.1-6; some slender hollow sections are below 1.0.</td></tr>
+                  <tr><td>UB / UC</td><td>catalogue value</td><td>InfraBuild Tables 9-12; the selected section and grade determine k<sub>f</sub>.</td></tr>
                   <tr><td>PFC</td><td>1.000</td><td>OneSteel / InfraBuild Tables 15–16, form factor row.</td></tr>
                   <tr><td>Equal Angle</td><td>catalogue value</td><td>OneSteel / InfraBuild Tables 19–21, form factor row; some thin angles are below 1.0.</td></tr>
                   <tr><td>Rod</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, solid round geometry with A<sub>e</sub> = A<sub>g</sub>.</td></tr>
@@ -1199,26 +1208,22 @@
             <article><b>Not covered</b><span>Combined actions, flexural-torsional buckling, connection eccentricity and connection capacity remain outside this quick tab.</span></article>
           </section>
         </div>
-      </details>
-
-      <details class="source-card">
-        <summary><span><b>Basis and limitations</b><small>Manufacturer data and AS 4100 design boundaries</small></span><i>+</i></summary>
         <div class="source-body">
           <div class="source-notes">
-            <p><b>Issue status</b> &middot; For Review. Default PFC, Equal Angle and Rod rows have source-register traceability; remaining non-default embedded rows still need row traceability before `Checked` release.</p>
+            <p><b>Issue status</b> &middot; For Review. The shared catalogue rows are imported from the checked product tables; project assumptions remain user-confirmed.</p>
             <p><b>Material standards</b> &middot; Steel hollow sections are based on AS/NZS 1163. Hot-rolled plates, angles, rods and open sections are based on AS/NZS 3678 / AS/NZS 3679.1 where applicable. Verify grade, thickness range and test certificate before issue for design.</p>
-            <p><b>CHS product source</b> &middot; Orrcon National Product Catalogue 2024, AS/NZS 1163 C250L0/C350L0. Browser properties are geometric from D/t unless a table value is explicitly shown.</p>
+            <p><b>Hollow-section properties</b> &middot; Austube 2013 Tables 3.1-1 to 3.1-6 provide the imported CHS, RHS and SHS design rows. Confirm current product availability separately.</p>
             <p><b>Equal Angle / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. Equal Angle properties use Tables 19&ndash;21; PFC properties use Tables 15&ndash;16.</p>
             <p><b>Rod properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size availability and mass; OneSteel / InfraBuild Table 38 for diameter-dependent AS/NZS 3679.1 round-bar yield stress. Circular solid-bar geometry is used for A<sub>g</sub> and r.</p>
-            <p><b>Custom / Built-up properties</b> &middot; Uses user-entered effective section properties. The page does not verify the source section-property calculation, local slenderness, built-up connectors, torsional buckling or connection eccentricity.</p>
-            <p><b>Family custom dimensions</b> &middot; CHS, Equal Angle, PFC and Rod may use the custom-dimension override in Section properties. CHS and Rod derive A<sub>g</sub>, r and I from circular geometry. Equal Angle derives A<sub>g</sub> and principal radii from simplified rectangular geometry; PFC derives A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub>. Fillets and root radii are not reconstructed.</p>
+            <p><b>Custom / Built-up</b> &middot; Uses user-entered section properties. Flexural buckling is checked about the entered axes only; the page does not verify local slenderness, built-up connectors, shear deformation, torsional buckling or connection eccentricity.</p>
+            <p><b>Family custom dimensions</b> &middot; CHS and Rod may use the custom-dimension override; A<sub>g</sub>, r and I are derived from ideal circular geometry. Non-catalogue Equal Angle and PFC members require verified properties in Custom / Built-up.</p>
             <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and AS 4100 Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
             <p><b>Axial tension</b> &middot; AS 4100 Cl. 7.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3.</p>
           </div>
           <div class="source-notes">
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
             <p><b>Project inputs</b> &middot; Editable: f<sub>y</sub>, f<sub>u</sub> and the governing r where an override is required. Project-defined: A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub>. CHS and Rod are symmetric; catalogue Equal Angle and PFC checks adopt the minor principal and minor y-y axes respectively; Custom checks both entered axes. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases use AS 4100 Table 7.3.2.</p>
-            <p><b>Source status</b> &middot; CHS and Rod values are geometry-derived. Equal Angle and PFC values are catalogue-derived. AS 4100 Cl. 6.2 uses A<sub>n</sub>; if no holes are entered, A<sub>n</sub> = A<sub>g</sub>.</p>
+            <p><b>Source status</b> &middot; CHS, RHS, SHS, UB, UC, Equal Angle and PFC values are catalogue-derived. Rod properties use listed diameter and circular geometry. AS 4100 Cl. 6.2 uses A<sub>n</sub>; for an unperforated section, A<sub>n</sub> = A<sub>g</sub>.</p>
             <p><b>Excluded</b> &middot; Flexural-torsional buckling, connection eccentricity, bending, shear, combined actions, connection capacity, built-up connector spacing and local buckling.</p>
           </div>
         </div>
@@ -1717,22 +1722,22 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.11</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.16</b></footer>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
   <script src="weld-capacity.js?v=20260803productflow36"></script>
   <script src="concrete-section-calculation.js?v=20260803productflow36"></script>
   <script src="section-geometry.js?v=20260803productflow36"></script>
   <script src="section-catalogue.js?v=20260803productflow36"></script>
-  <script src="steel-materials.js?v=20260803productflow36"></script>
+  <script src="steel-materials.js?v=20260805axialfamilies2"></script>
   <script src="beam-section-data.js?v=20260803productflow36"></script>
   <script src="beam-hot-rolled-data.js?v=20260803productflow36"></script>
   <script src="beam-section-capacity.js?v=20260803productflow36"></script>
   <script src="beam-section-reconciliation.js?v=20260803productflow36"></script>
-  <script src="member-capacity.js?v=20260803purecalc1"></script>
+  <script src="member-capacity.js?v=20260806axialrelease1"></script>
   <script src="screw-demand.js?v=20260803purecalc1"></script>
   <script src="reo-calculation.js?v=20260803productflow36"></script>
-  <script src="app.js?v=20260803purecalc1"></script>
+  <script src="app.js?v=20260806axialrelease1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

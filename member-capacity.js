@@ -41,7 +41,10 @@
     }
 
     const alphaA = 2100 * (slenderness - 13.5) / (slenderness ** 2 - 15.3 * slenderness + 2050);
-    const modifiedLambda = Math.max(0.001, slenderness + alphaA * sectionConstant);
+    const modifiedLambda = slenderness + alphaA * sectionConstant;
+    if (modifiedLambda <= 0) {
+      throw new RangeError("Modified member slenderness lambda must be greater than zero for the adopted compression curve.");
+    }
     const eta = Math.max(0, 0.00326 * (modifiedLambda - 13.5));
     const ratio = modifiedLambda / 90;
     const xi = (ratio ** 2 + 1 + eta) / (2 * ratio ** 2);

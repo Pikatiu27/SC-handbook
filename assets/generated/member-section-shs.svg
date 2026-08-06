@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">SHS section guide</title>
+  <desc id="desc">Dimension-labelled square hollow section guide.</desc>
+  <defs><style>
+    .panel{fill:#fbfdff}.section{fill:#eef8ff;stroke:#263732;stroke-width:2.4}.void{fill:#fbfdff;stroke:#263732;stroke-width:2.4}.guide{stroke:#9aa9a3;stroke-width:1.2}.dim{stroke:#58736b;stroke-width:1.55}.arrow{fill:#58736b}.axis{stroke:#9aa9a3;stroke-width:1.1;stroke-dasharray:5 5}.label{font:800 15px Aptos,Calibri,Arial,sans-serif;fill:#425c55}
+  </style></defs>
+  <rect class="panel" width="360" height="240" rx="14"/>
+  <rect class="section" x="105" y="42" width="150" height="150" rx="12"/>
+  <rect class="void" x="128" y="65" width="104" height="104" rx="5"/>
+  <line class="axis" x1="75" y1="117" x2="285" y2="117"/><line class="axis" x1="180" y1="20" x2="180" y2="215"/>
+  <line class="dim" x1="105" y1="218" x2="255" y2="218"/><path class="arrow" d="M105 218l8-4v8zM255 218l-8-4v8z"/><line class="guide" x1="105" y1="196" x2="105" y2="226"/><line class="guide" x1="255" y1="196" x2="255" y2="226"/><text class="label" x="180" y="238" text-anchor="middle">b = d</text>
+  <line class="dim" x1="232" y1="87" x2="255" y2="87"/><path class="arrow" d="M232 87l7-3.5v7zM255 87l-7-3.5v7z"/><text class="label" x="244" y="78" text-anchor="middle">t</text>
+</svg>
