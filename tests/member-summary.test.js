@@ -7,9 +7,12 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const script = fs.readFileSync(path.join(root, "app.js"), "utf8");
+const memberCapacityScript = fs.readFileSync(path.join(root, "member-capacity.js"), "utf8");
 const styles = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"), "utf8");
+const hollowRows = require(path.join(root, "beam-section-data.js"));
+const hotRolledRows = require(path.join(root, "beam-hot-rolled-data.js"));
 
 [
   "memberSummaryAxis",
@@ -28,18 +31,57 @@ const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"
   "memberTensionSummary"
 ].forEach(id => assert.match(html, new RegExp(`id="${id}"`), `Missing selected-member basis row: ${id}`));
 
-assert.match(html, /<details class="member-section-details">/);
+assert.match(html, /<details class="member-section-details" id="memberSectionDetails">/);
+assert.match(script, /User-entered section properties · verification required\./);
+assert.match(script, /L_ex must be greater than zero/);
+assert.match(script, /L_ey must be greater than zero/);
 assert.doesNotMatch(html, /id="memberCustomName"/);
 assert.doesNotMatch(html, /id="memberAlphaBAssumption"/);
-assert.match(html, /id="memberRadiusOverrideDetails"/);
-assert.match(html, /id="memberMaterialOverrideDetails"/);
+assert.match(html, /class="input-group-fields three member-definition-fields"/);
+assert.match(html, /id="memberRadiusField"/);
+assert.doesNotMatch(html, /id="memberOverridesDetails"|id="memberRadiusOverrideDetails"/);
+assert.match(html, /<details class="member-net-section-details" id="memberNetSectionDetails">/);
+assert.doesNotMatch(html, /id="memberNetSectionDetails"[^>]*\sopen(?:\s|>)/);
+assert.doesNotMatch(html, /id="memberMaterialOverrideDetails"/);
+assert.match(html, /id="memberMaterialStatus" class="input-source-status"/);
+assert.match(html, /id="memberMaterialReset"/);
+assert.deepEqual(
+  [...html.matchAll(/class="member-type(?: active)?"[^>]+data-member-type="([^"]+)"/g)].map(match => match[1]),
+  ["ub", "uc", "pfc", "chs", "rhs", "shs", "ea", "rod", "custom"]
+);
+["ub", "uc", "rhs", "shs"].forEach(family => assert.match(html, new RegExp(`data-member-guide="${family}"`)));
 assert.match(html, /id="memberFactorHelp"/);
+[
+  "memberCustomArea",
+  "memberCustomRx",
+  "memberCustomRy",
+  "memberCustomLex",
+  "memberCustomLey"
+].forEach(id => {
+  const input = html.match(new RegExp(`<input id="${id}"[^>]*>`))?.[0] || "";
+  assert.ok(input, `Missing Custom / Built-up input: ${id}`);
+  assert.doesNotMatch(input, /\svalue="[^"]*"/, `${id} must start blank.`);
+});
+assert.match(html, /<select id="memberCustomAlphaBx">/);
+assert.match(html, /<select id="memberCustomAlphaBy">/);
+assert.match(html, /User-entered section properties<\/b><small>Verification required/);
 assert.match(html, /id="memberTensionBasis"/);
 assert.match(html, /<details class="member-demand-check" id="memberActionGroup">/);
+assert.match(html, /class="member-check-grid member-check-grid-compression"/);
+assert.match(html, /class="member-check-grid member-check-grid-tension"/);
+assert.match(styles, /\.member-check-grid-compression \{ grid-template-columns: repeat\(4/);
+assert.match(styles, /\.member-check-grid-tension \{ grid-template-columns: repeat\(3/);
 assert.doesNotMatch(html, /id="memberActionGroup"[^>]*\sopen(?:\s|>)/);
-assert.match(styles, /\.member-summary-primary \{[^}]*grid-template-columns: minmax\(190px, 1\.35fr\)/);
+assert.match(styles, /\.member-summary-primary \{[^}]*grid-template-columns: minmax\(170px, 1\.25fr\)/);
 assert.match(styles, /\.member-section-details \{[^}]*grid-column: 1 \/ -1/);
 assert.match(outline, /same hierarchy and visual structure as Beam `Selected section`/);
+assert.match(outline, /four always-visible primary metrics/);
+assert.match(outline, /Keep `Connection \/ net section` folded by default/);
+assert.match(html, /<b>Design basis and limitations<\/b>/);
+assert.doesNotMatch(html.slice(html.indexOf('id="memberPanel"'), html.indexOf('id="reoPanel"')), /<b>Reference values<\/b>|<b>Basis and limitations<\/b>/);
+assert.match(script, /function updateMemberNetSectionPresentation\(/);
+assert.match(script, /cell\.hidden = !connectionAdjusted/);
+assert.match(script, /\$\("memberNetArea"\)\.value = properties\.area\.toFixed\(3\)/);
 
 [
   "memberDimD",
@@ -66,10 +108,29 @@ assert.match(script, /L<sub>e\$\{axis\.label\}<\/sub>\/r<sub>\$\{axis\.label\}<\
 assert.doesNotMatch(script, /memberSummarySlenderness"\)\.innerHTML = memberType === "custom"\s*\?\s*axisResults\.map/);
 assert.match(script, /\$\("memberTensionBasis"\)\.textContent = `\$\{tensionGoverning\} governs · AS 4100 Cl\. 7\.2`/);
 assert.match(script, /if \(memberActionGroup && mobileView\) memberActionGroup\.open = false/);
-assert.match(script, /eta = Math\.max\(0, 0\.00326 \* \(modifiedLambda - 13\.5\)\)/);
+assert.match(memberCapacityScript, /eta = Math\.max\(0, 0\.00326 \* \(modifiedLambda - 13\.5\)\)/);
+assert.doesNotMatch(memberCapacityScript, /modifiedLambda = Math\.max/);
+assert.match(memberCapacityScript, /if \(modifiedLambda <= 0\)/);
 assert.match(script, /function setMemberInvalidState\(message, designation\)/);
 assert.match(script, /function formatMemberUtilisation\(ratio\)/);
 assert.match(script, /f_y must be greater than zero/);
+assert.match(script, /memberType === "ub" \|\| memberType === "uc"/);
+assert.match(script, /memberType === "rhs" \|\| memberType === "shs"/);
+assert.match(script, /\["chs", "rhs", "shs"\]\.includes\(memberType\)\) return memberHollowSections\(memberType\)/);
+assert.match(script, /r: first\.r/);
+assert.match(script, /const dimensionOverrideSupported = \["chs", "rod"\]/);
+assert.doesNotMatch(html, /id="memberDimEa|id="memberDimPfc/);
+assert.match(script, /setMemberFieldValidity\("memberRadiusInput"/);
+assert.match(script, /setMemberFieldValidity\("memberLength"/);
+assert.match(script, /const validArea = Number\.isFinite\(properties\.area\) && properties\.area > 0/);
+assert.match(script, /Flexural buckling about the entered axes only\. Built-up action, local buckling, shear deformation and torsional buckling are not evaluated\./);
+assert.match(script, /BeamHotRolledData\.equalAngle\[section\.designation\]/);
+assert.match(script, /BeamHotRolledData\.pfc\.find\(section => section\.designation === `\$\{depth\}PFC`\)/);
+assert.doesNotMatch(script, /const eaAxialGrades/);
+assert.doesNotMatch(script, /const chsGrades/);
+assert.match(script, /return section\?\.tf > 40 \? 1\.0 : 0/);
+assert.match(script, /return -0\.5/);
+assert.match(script, /"User override" : "Catalogue default"/);
 assert.match(script, /effective length L_e must be greater than zero/);
 assert.match(script, /k_t must be within the AS 4100 Cl\. 7\.3 range 0\.75 to 1\.00/);
 assert.doesNotMatch(script, /const fy = value\("memberFyInput"\) \|\| grade\.fy/);
@@ -95,9 +156,18 @@ assert.match(outline, /Keep the optional `Design action check` folded by default
 assert.match(outline, /Do not place `x: \.\.\.; y: \.\.\.` strings in an always-visible primary metric/);
 assert.match(outline, /eta = max\[0, 0\.00326\(lambda - 13\.5\)\]/);
 assert.match(outline, /Axial inputs must fail closed/);
+assert.match(outline, /Start project geometry and restraint inputs .* blank and fail closed/);
 assert.doesNotMatch(traceability, /Ns = kf Ag fy/);
 assert.match(traceability, /Ns = kf An fy/);
 assert.match(traceability, /minor principal `r = 19\.6 mm`/);
+assert.equal(hollowRows.filter(row => row.family === "chs").length, 73);
+assert.equal(new Set(hollowRows.filter(row => row.family === "rhs").map(row => row.designation)).size, 89);
+assert.equal(new Set(hollowRows.filter(row => row.family === "shs").map(row => row.designation)).size, 88);
+assert.equal(Object.keys(hotRolledRows.equalAngle).length, 46);
+assert.equal(hotRolledRows.pfc.length, 10);
+assert.ok(hotRolledRows.pfc.every(section => Object.keys(section.grades).length === 2));
+assert.match(outline, /all 73 Austube CHS grade-specific rows/);
+assert.match(traceability, /all 46 InfraBuild Equal Angle geometry\/design rows/);
 
 const defaultAngleRow = script.match(/\[100,10,14\.2,9\.5,8,5,9\.53,1810,[^\]]+\]/);
 assert.ok(defaultAngleRow, "Default 100 x 100 x 10 EA catalogue row not found.");

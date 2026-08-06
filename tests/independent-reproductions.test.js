@@ -39,7 +39,7 @@ function independentCompressionReduction(lambdaN, alphaB) {
   return { alphaA, modifiedLambda, eta, xi, alphaC };
 }
 
-const axialAg = 1117;
+const axialAg = 1120;
 const axialR = 39.3;
 const axialFy = 350;
 const axialLe = 3000;
@@ -52,7 +52,7 @@ const axialEta = Math.max(0, 0.00326 * (axialLambda - 13.5));
 const axialXi = ((axialLambda / 90) ** 2 + 1 + axialEta) / (2 * (axialLambda / 90) ** 2);
 const axialAlphaC = axialXi * (1 - Math.sqrt(1 - (90 / (axialXi * axialLambda)) ** 2));
 const axialPhiNc = 0.9 * axialAlphaC * axialKf * axialAg * axialFy / 1000;
-assert.equal(displayed(axialPhiNc), "236.6");
+assert.equal(displayed(axialPhiNc), "237.2");
 assert.equal(Math.max(0, 0.00326 * (13.49 - 13.5)), 0);
 assert.equal(Math.max(0, 0.00326 * (13.5 - 13.5)), 0);
 approximately(Math.max(0, 0.00326 * (13.51 - 13.5)), 0.0000326, 1e-12, "axial eta boundary above lambda 13.5");

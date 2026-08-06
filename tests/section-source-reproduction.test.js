@@ -7,13 +7,14 @@ const vm = require("node:vm");
 const SectionCatalogue = require("../section-catalogue.js");
 const SectionGeometry = require("../section-geometry.js");
 const SteelMaterials = require("../steel-materials.js");
+const BeamHotRolledData = require("../beam-hot-rolled-data.js");
 
 const source = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
 const start = source.indexOf("const beamShearDimensions =");
 const end = source.indexOf("let sectionPropertiesMode =");
 assert.ok(start >= 0 && end > start, "Section source-data block must remain discoverable.");
 
-const context = { SectionCatalogue, SectionGeometry, SteelMaterials };
+const context = { SectionCatalogue, SectionGeometry, SteelMaterials, BeamHotRolledData };
 vm.runInNewContext(
   `${source.slice(start, end)}
    this.auditData = { beamShearDimensions, sectionCatalogueFamilies };`,

@@ -1,0 +1,92 @@
+{
+  "adoption_id": "SC-HANDBOOK-UWEDS-001",
+  "project_id": "SC-HANDBOOK",
+  "project_name": "SC Handbook",
+  "adoption_status": "DRAFT",
+  "package": {
+    "document_id": "UWEDS-001",
+    "version": "1.10.0",
+    "adoption_mode": "GOVERNED_SUBSET",
+    "resolved_location": "C:/Users/silin/Documents/Codex/Drawing",
+    "manifest_ref": "PACKAGE_MANIFEST.md",
+    "pin_type": "CONTROLLED_DOCUMENT_REVISION",
+    "pin_value": "UWEDS-1.10.0-PACKAGE_MANIFEST-2026-08-03-SHA256-7d71cfa493defd5504966d6e20cc271f34485a5fc8e6b80f7a1340bf8611c7f1"
+  },
+  "governing_project_source_refs": [
+    "SC_HANDBOOK.md Sections 4, 6, 7, 9, 10, 11 and 15.8",
+    "REFERENCE_TRACEABILITY.md",
+    "Applicable Australian Standards and current certified manufacturer documents cited by each tab"
+  ],
+  "project_profile_ref": "UWEDS profiles/AU_STRUCTURAL_WEB_DEFAULT.yaml plus SC_HANDBOOK.md Section 15.8",
+  "adopted_modules": [
+    "00_UNIFIED_WEB_ENGINEERING_DRAWING_STANDARD_V1.md",
+    "DRAWING_STANDARD_MASTER_OUTLINE.md",
+    "PROJECT_ADOPTION_GUIDE.md",
+    "IMPLEMENTATION_HANDOFF.md",
+    "PACKAGE_MANIFEST.md",
+    "02_ANNOTATION_AND_DIMENSION_LAYOUT_ENGINE_SPEC_V1.md",
+    "03_DIMENSION_AND_ANNOTATION_RULES_EXTENSION_V1.md",
+    "04_CAD_TO_WEB_INTEGRATION_STANDARD_V1.md",
+    "05_INTERACTIVE_ENGINEERING_DRAWING_NOTATION_STANDARD_V1.md",
+    "06_ENGINEERING_WRITTEN_NOTATION_AND_SCRIPT_STANDARD_V1.md",
+    "07_GRAPHICAL_ANNOTATION_AND_CALLOUT_STANDARD_V1.md",
+    "profiles/AU_STRUCTURAL_WEB_DEFAULT.yaml",
+    "profiles/SCREEN_DISPLAY_DEFAULT.yaml",
+    "profiles/ENGINEERING_SYMBOL_DICTIONARY.yaml",
+    "profiles/ENGINEERING_WRITTEN_NOTATION.yaml",
+    "profiles/GRAPHICAL_ANNOTATION_DEFAULT.yaml",
+    "atlas/PRODUCT_TECHNICAL_DRAWING_AND_PHYSICAL_EXPRESSION_REFERENCE_OUTLINE_V1.md",
+    "atlas/PHYSICAL_CONNECTION_REPRESENTATION_ATLAS_OUTLINE.md",
+    "atlas/COMMON_ENGINEERING_COMPONENT_AND_CONNECTION_DRAWING_OUTLINE.md",
+    "atlas/STRUCTURAL_DIMENSION_AND_ANNOTATION_ATLAS.md",
+    "recipes/structural_dimension_annotation.yaml",
+    "rules/drawing_rules.yaml",
+    "rules/annotation_layout_rules.yaml",
+    "rules/dimension_annotation_rules.yaml",
+    "rules/cad_web_rules.yaml",
+    "rules/web_release_rules.yaml",
+    "rules/interactive_notation_rules.yaml",
+    "rules/written_notation_rules.yaml",
+    "rules/graphical_annotation_rules.yaml",
+    "rules/reference_case_rules.yaml",
+    "rules/project_adoption_rules.yaml",
+    "schemas/drawing_document.schema.json",
+    "schemas/pre_drawing_case_review.schema.json",
+    "schemas/project_adoption_record.schema.json",
+    "tests/PROJECT_ADOPTION_CHECKLIST.md",
+    "tests/PRE_DRAWING_CASE_REVIEW_CHECKLIST.md",
+    "tests/GOLDEN_CASE_REGISTER.md",
+    "tests/NEGATIVE_CASE_REGISTER.md"
+  ],
+  "object_classes": [
+    "SECTION",
+    "MEMBER",
+    "CONNECTION",
+    "FOUNDATION",
+    "PRODUCT",
+    "REINFORCEMENT"
+  ],
+  "output_types": [
+    "WEB_SVG",
+    "WEB_HTML"
+  ],
+  "overrides": [],
+  "pre_drawing_case_review": {
+    "required": true,
+    "record_location": "engineering/pre-drawing-case-reviews/"
+  },
+  "validation": {
+    "package_command": "python C:/Users/silin/Documents/Codex/Drawing/tools/validate_drawing_package.py",
+    "project_command": "run all tests/*.test.js and complete the SC_HANDBOOK.md Section 15.8 acceptance gate"
+  },
+  "release_boundary": "PRIVATE_REVIEW_ONLY",
+  "known_exclusions": [
+    "This adoption does not make handbook figures construction, fabrication, shop or certified design drawings.",
+    "The release-boundary enum records drawing authority, not website access; the public handbook remains engineering quick-reference only.",
+    "Existing inherited figures require case-by-case review before they may be described as UWEDS checked.",
+    "Full CAD production lifecycle modules are loaded only when exact CAD geometry or CAD-derived assets enter scope."
+  ],
+  "adoption_owner": "SC Handbook project owner",
+  "approved_by": null,
+  "approved_at": null
+}

@@ -220,6 +220,22 @@ The following public resources may guide handbook organisation and assurance. On
 
 These models support the current product direction: ASI-style engineering hierarchy, Blue Book/ASCE-style fast querying, AISC-style separation of data/examples/errata and NASA-style lightweight traceability. They do not expand the handbook's calculation entitlement.
 
+#### 4.3.1 Open-source Calculation and Verification Patterns
+
+Open-source projects may inform calculation structure, verification practice and reporting clarity. They are implementation references only: they do not establish Australian engineering authority, replace the adopted Standard or justify a formula that has not been checked against the project Reference library.
+
+| Project | Permitted lesson for SC Handbook | Do not adopt by default |
+| --- | --- | --- |
+| [efficalc](https://github.com/youandvern/efficalc) | Typed input/calculation objects, reusable calculation templates, testable calculation functions and selectable report detail | Python report runtime, server dependency or a report-first interface |
+| [handcalcs](https://github.com/connorferster/handcalcs) | Human-checkable `Formula -> Substitution -> Result` presentation and consistent numerical precision | Jupyter or LaTeX as a browser runtime dependency |
+| [StructuralCodes](https://github.com/fib-international/structuralcodes) | Separate calculation modules by Standard, material and edition; explicit versioning and tests | Foreign-code formulas, factors or defaults in an Australian calculation mode |
+| [section-properties](https://github.com/robbievanleeuwen/section-properties) | Independent section-property verification, documented theory, geometry test cases and explicit user-responsibility boundaries | General finite-element section analysis in the quick-reference interface |
+| [forallpeople](https://github.com/connorferster/forallpeople) | SI-normalised internal values, dimensional consistency and separation of stored values from display units | A new units framework where the existing static implementation can enforce the same contract simply |
+| [PyNite](https://github.com/JWock82/Pynite) | Continuous regression against textbook problems with known solutions, small learning examples and visible capability limits | Frame, plate, nonlinear or other structural-analysis solver functions |
+| [anaStruct](https://github.com/anastruct/anaStruct) | Compact structural diagrams, result-plot hierarchy and small deterministic examples | Expansion of the handbook into a general two-dimensional analysis application |
+
+Use the smallest applicable lesson. A reference project must not trigger a framework migration, wholesale page redesign or new user input unless the change independently passes the module admission gate. Record a new external dependency only when it removes material verified complexity that cannot be handled reliably by the current static architecture.
+
 ### 4.4 Online Evidence, Currency and Copyright
 
 Online sources may be used to locate governing material, verify currency/errata/publication status, inspect an official web-only dataset or learn a non-normative interaction/assurance pattern. Apply these rules:
@@ -617,6 +633,23 @@ Keep the handbook lightweight:
 - Add a visible result only when it answers the primary question or changes an engineering decision.
 - Use one concise visible warning for the controlling limitation. Keep full example evidence and residual exclusions in `REFERENCE_TRACEABILITY.md`.
 - Commercial software may provide an external comparison, but the handbook must remain understandable and verifiable without requiring that software.
+
+#### 6.2.12 Lightweight Calculation Implementation Boundary
+
+The released handbook remains a static, offline-friendly browser application. Open-source calculation projects are design and QA references, not required runtime dependencies.
+
+- Preserve the existing `index.html` + JavaScript + CSS architecture unless a separately approved product requirement proves that it is insufficient.
+- Keep normal calculations deterministic and local to the browser. Do not require Python, Jupyter, a database, a server-side calculation service or a finite-element solver for the public quick-reference workflow.
+- Use small pure calculation modules where logic is shared, branch-dependent or independently tested. Do not restructure a stable tab solely to imitate an external project.
+- Model each governing result internally with the minimum traceable fields needed to produce `Formula`, `Substitution`, `Result`, `Applicability`, source reference, warning and status. This internal consistency does not require visible new panels or controls.
+- Keep internal values in one declared unit basis and convert only at explicit input/output boundaries. Add dimensional and unit-conversion assertions to tests where a unit error is credible; do not add a user-facing unit system without a stated recurring need.
+- Python and specialist open-source tools may be used offline to reconstruct published examples, generate golden expected values, check section properties or produce committed static assets. Their output must be pinned, independently reviewable and regression-tested against the browser production path.
+- New framework or library adoption requires a documented problem, licence review, version pin, dependency risk, comparison with the current implementation and proof that the addition preserves load time, offline use, mobile essentials and fail-closed behaviour.
+- Prefer incremental changes: first improve calculation records and tests, then extract only the affected pure function, and change the visible page only where the engineering decision or clarity materially improves.
+
+The target is not to reproduce the feature set of the reference projects. The target is to retain the handbook's compact interface while adopting their strongest assurance practices: structured calculations, readable arithmetic, code separation, dimensional discipline and reproducible known-answer tests.
+
+Current production application of this rule includes dedicated pure modules for axial-member capacity (`member-capacity.js`) and symmetric rigid-cap screw-pile action distribution (`screw-demand.js`), alongside the existing bolt, weld, concrete, reinforcement and section modules. Their extraction does not add visible inputs, expand design scope or change the governing formula; it makes the released calculation path directly testable. Each extracted module must retain a separate independent arithmetic reproduction or equilibrium check so that a test cannot pass merely by repeating the production implementation.
 
 ## 7. Engineering Language
 
@@ -1167,7 +1200,7 @@ Web outline map:
 - `15.1` to `15.3` define product logic, tab structure, page states, dependency flow, disclosure rules, and result hierarchy.
 - `15.4` to `15.6` define visual format: typography, spacing, grids, responsive breakpoints, mobile behaviour, theme colours, input-state colours, semantic colours, and contrast.
 - `15.7` defines symbols, formulas, source references, and project-file responsibilities.
-- `15.8` defines input layout, editable-field behaviour, figure/chart rules, CAD-style drawing rules, and page annotation rules.
+- `15.8` defines input layout and the project drawing contract. Section `15.8.1` governs the pinned UWEDS adoption and future drawing workflow; the remaining subsections retain SC Handbook-specific figure, annotation and responsive rules.
 - `15.9` defines warning and limitation style.
 - `15.10` onward defines tab-specific engineering scope, formula boundaries, display rules, and exclusions.
 - `15.17A` defines the Steel Monopole Section Capacity tab.
@@ -1900,7 +1933,7 @@ Input grouping:
 - Do not force all input cards into one desktop row. Use multiple engineering rows when equal-width cards make labels, units or controls cramped.
 - Effective length, checked radius, gross area and similar member geometry/restraint values belong with `Section properties` or geometry inputs, not `Relevant factors`.
 - `Relevant factors` should be reserved for coefficients, reduction factors, category modifiers and code factors such as `alpha_b`, `k_t`, `k_r`, `k_h`, `phi`, `M_t` or similar.
-- For `Custom / Built-up properties` inputs, keep the same engineering card sequence and switch fields inside each card. User-defined effective section properties and effective lengths belong in `Section properties`; custom `k_f` and `alpha_b` values belong in `Relevant factors`. Do not add separate custom-only cards unless the value group has a different engineering purpose.
+- For `Custom / Built-up` inputs, keep the same engineering card sequence and switch fields inside each card. User-entered section properties and effective lengths belong in `Member definition`; custom `k_f` and `alpha_b` values belong in `Compression reduction factors`. Do not add separate custom-only cards unless the value group has a different engineering purpose.
 - Keep fully manual project inputs visually distinct from values selected from a lookup table, derived by the app, or defaulted from a cited source but still editable.
 - Fully manual inputs include design actions, actual dimensions, effective length, net area, material strengths entered from project documents, and connection-specific values.
 - Lookup / derived / overrideable inputs include catalogue section selection, standard category selection, table-based factors, default correction factors, and editable factors such as `alpha_b`, `k_t`, `k_r`, or `k_h` when the page provides a cited default or lookup basis.
@@ -1910,7 +1943,7 @@ Input grouping:
 - A free-text display name is not a calculation parameter. Do not include it in a capacity input group unless the page exports or stores a named project record.
 - Beam custom dimensions must remain inside the selected section family, following the Axial Member dimension-override pattern. Users enter family dimensions only; the page derives gross geometry and enables capacity only where a checked family-specific AS 4100 section-class and effective-modulus path exists. Unsupported custom directions fail closed.
 - Read-only calculated design factors must not be presented as editable project inputs. Put them in a `Derived values` row only when they are genuinely useful in the main workflow; otherwise show them in calculation steps or a folded details panel.
-- Connection-specific net-section inputs should use their own `Connection / net-section inputs` or `Connection / detailing inputs` row. Do not mix `A_n`, `k_t`, bolt-hole counts, hole diameter or net-path thickness into section, material or compression-factor rows.
+- Connection-specific net-section inputs should use their own `Connection / net section` or `Connection / detailing inputs` row. Do not mix `A_n`, `k_t`, bolt-hole counts, hole diameter or net-path thickness into section, material or compression-factor rows.
 - Optional design-action inputs are allowed when they only report utilisation against an already displayed capacity. They must not expand the tab into a full design workflow or imply that excluded checks have been completed.
 - Warning-only inputs and screens, such as parent-metal checks or connected-part prompts, must be visually lower priority than governing capacity inputs and results. Prefer collapsed `details` panels when the values are not needed for the main quick lookup.
 - Derived read-only factors should be shown as derived values only when they help the main workflow, or placed in calculation steps / an advanced details panel. Do not present calculated values such as stress-block factors as primary project inputs.
@@ -1940,7 +1973,51 @@ Reduction-factor inputs:
 - Do not imply that a project factor is an automatic AS 4100, AS/NZS 1554.1, or manufacturer-table value.
 - For weld checks, `k_r` must not be treated as a free project factor when it is being used for AS 4100 welded lap connections. If included, calculate and label it from AS 4100 Table 9.6.3.10(B), and only apply it when the user confirms the weld is a welded lap connection.
 
-#### 15.8.1 SC Handbook Web Engineering Drawing Contract
+#### 15.8.1 Drawing Package Adoption and Reference Rule
+
+SC Handbook adopts the shared `Unified Web Engineering Drawing Standard` (`UWEDS`) package in `C:/Users/silin/Documents/Codex/Drawing` as the common implementation baseline for engineering figures, annotations, CAD-to-web assets and drawing QA. The project-owned adoption record is `engineering/drawing-standard-adoption.json`. Read that record before starting or materially revising a figure; it fixes the package version, selected modules, project profile, validation route and release boundary.
+
+The authority order is:
+
+```text
+law and regulation
+-> approved client, asset-owner and project requirements
+-> applicable Australian design and drawing Standards
+-> current certified manufacturer documentation
+-> pinned UWEDS package
+-> SC Handbook Section 15.8 project rules and approved overrides
+-> examples and visual references
+```
+
+UWEDS controls reusable drawing mechanics. This handbook controls the narrower product boundary: lightweight engineering lookup, compact web placement, English terminology, current calculator state, mobile simplification and explicit calculation exclusions. A handbook rule may narrow UWEDS for this interface but must not weaken geometry authority, semantic identity, notation, dimension meaning, collision avoidance, accessibility, traceability or release QA. Record a genuine conflict as an approved project override; do not silently choose whichever rule is easier.
+
+Do not copy the Drawing package Markdown into this repository or restate it clause by clause. Reference the pinned package and retain only SC Handbook-specific decisions here. A moving folder path alone is not an issue-time pin. When the shared package changes, compare `PACKAGE_MANIFEST.md`, assess affected figures, update the adoption record and rerun the applicable checks before accepting the new version.
+
+Use this minimum loading matrix for future work:
+
+| SC Handbook drawing task | UWEDS modules to load in addition to the master outline, adoption guide, package manifest and AU web profiles |
+| --- | --- |
+| New or revised deterministic web SVG | Annotation layout, dimension/annotation, written notation, graphical annotation, structural annotation recipe and applicable golden/negative cases |
+| Interactive SVG or linked values | Interactive notation module, symbol dictionary, interactive annotation schema/rules and interaction checklist |
+| CAD-derived vector, screenshot or model view | CAD-to-web module, CAD web asset schema, conversion recipe/rules, web release rules and integration checklist |
+| Bolt, weld, anchor, clamp or other physical connection | Physical connection atlas, common-component atlas, physical-interface schema, connection rules and the object-specific recipe |
+| Manufacturer product drawing | Product technical drawing atlas, product evidence/rules and current certified manufacturer source |
+| Historical drawing reproduction | Historical-source reproduction module, profile, recipe, schema, rules and checklist |
+
+For every new controlled drawing family or materially changed physical representation:
+
+1. Define the engineering question, audience, figure level and accuracy class before choosing a view.
+2. Confirm geometry authority and source revision; do not infer dimensions from image scale.
+3. Create or update a pre-drawing case review under `engineering/pre-drawing-case-reviews/`.
+4. Select only the UWEDS modules, recipes and rule registries needed for that figure.
+5. Generate geometry from the same validated data used by the calculator, with stable semantic SVG groups and source identifiers where applicable.
+6. Apply the local annotation budget, responsive sizing and calculation-boundary rules below.
+7. Run the Drawing package validator and the SC Handbook project tests, then inspect desktop and phone rendering.
+8. Record the adopted package version, case-review ID, source basis and validation result in `REFERENCE_TRACEABILITY.md` before publication.
+
+Existing figures are inherited assets, not automatically UWEDS-compliant. A figure may remain in service when its current scope is clear, but any material geometry, annotation, interaction or source change triggers the adoption workflow above. Do not label a figure `Checked`, `value-driven`, `CAD-derived` or manufacturer-verified until the corresponding evidence and checks are complete.
+
+#### 15.8.2 SC Handbook Web Engineering Drawing Contract
 
 Engineering drawings in SC Handbook are compact calculation aids. They may identify an input dimension, explain a section or connection, show the geometry used by a calculation, clarify an axis/plane/restraint/load direction, or support visual checking of entered and catalogue-derived values.
 
@@ -1981,6 +2058,14 @@ Project-specific figure scope:
 
 Project drawing contract:
 
+- SC Handbook adopts the approved governed UWEDS V1.10.0 subset recorded in `engineering/drawing-standard-adoption.json`. Product figures remain `PRODUCT_REFERENCE_DRAWING` output within the `FOR_REVIEW` boundary and are explicitly marked `Not for fabrication`.
+- Every controlled product SVG must carry the applicable `data-standard-adoption-id`, `data-pre-drawing-case-review-id`, `data-representation-class` and `data-drawing-status`. View ID, purpose, projection, NTS status, unit policy, production mode, source reference/access date, derivative revision, rendered variant and source status must also remain machine-readable.
+- The current product-figure case review is `engineering/pre-drawing-case-reviews/product-reference-figures.json`. A materially different drawing family, representation class or installation-state view requires a new review record.
+- The lightweight product lookup intentionally excludes installation, expanded/locked and connection-engineering views. This project boundary does not relax manufacturer-source traceability or annotation clarity.
+- The visible view contract is `Orthographic product view · NTS · mm`. Supplier aliases may remain only where the caption or selected-product data defines their controlled engineering meaning.
+- A thread designation such as `M12` must not be displayed as a rod-diameter dimension or prefixed by an undefined supplier variable. Unverified physical rod diameter must not be inferred from the thread designation.
+- Source product views must not contain decorative section hatching. Hatching requires a declared section/cut plane and verified cut-part ownership.
+
 1. Use only the geometry, symbols and actions needed by the current calculator state.
 2. Use the same symbol, source value, unit and rounding as the input, formula and result.
 3. Generate value-driven geometry from the same validated data used by the calculation.
@@ -1992,7 +2077,7 @@ Project drawing contract:
 9. Keep phone figures compact and simplify annotations instead of shrinking text.
 10. Confirm the figure at normal and extreme-but-valid values before release.
 
-#### 15.8.2 Detailed Figure, Symbol and CAD Requirements
+#### 15.8.3 Detailed Figure, Symbol and CAD Requirements
 
 - Figures, diagrams, sketches and charts must support fast engineering lookup. They should read as restrained engineering schematics, not marketing graphics, decorative illustrations or publication-layout figures.
 - The target is SC Handbook screen reading on phone, tablet and desktop. Print-publication dimensions, DPI targets and EPS/PDF-first export rules do not govern these web figures.
@@ -2067,6 +2152,7 @@ Project drawing contract:
 - Use a small, consistent line-weight hierarchy: heavier for visible object outlines and governing load paths, lighter for dimensions, leaders, centre lines, construction lines, and hatching. Hidden or secondary geometry should never compete with the governing result.
 - Use standard CAD line types consistently: continuous visible lines, dashed hidden lines, chain centre lines, thin dimension and leader lines, and consistent hatch patterns for cut material. Do not encode engineering meaning with colour alone.
 - Dimensions must be unambiguous. Show units where the context is not obvious, keep arrowheads/ticks consistent, avoid duplicate dimensions, and avoid dimensions that cross through important geometry. Prefer one clear labelled dimension over several crowded labels.
+- Dimension-arrow tips must terminate on the measured extension line, feature or reference envelope. For a two-ended dimension, the start and end arrowheads must face opposite outward directions with their tips fixed at the two measured endpoints; do not centre the marker reference point within the arrowhead or allow both arrows to face the same direction.
 - Dimension text must describe exactly what is being measured. Use formula symbols where the calculator uses formula symbols, for example `d_f`, `d_h`, `e`, `A_w`, `d_1`, `t_w`, `L_e`, `r`, `M*`, and `V*`; use plain engineering names only where the formula does not have a symbol.
 - Show numeric values only when they come from the current input or selected catalogue row. Otherwise show symbol-only labels to avoid false precision.
 - Use the same rounding and unit convention in the figure label, input group, result card, and formula step. A drawing must not show a different rounded value from the calculator output unless the label states it is approximate.
@@ -2078,6 +2164,8 @@ Project drawing contract:
 - Title blocks, revision blocks, north points, grid bubbles, material callouts, weld symbols, section marks, detail bubbles, and other formal drawing elements should only be included when they serve the quick-reference purpose. Do not add full drawing-sheet decoration to calculator figures.
 - Before publishing a CAD-style figure, check it at desktop and phone width for clipping, overlapping labels, unreadable text, incorrect line hierarchy, and horizontal overflow.
 - Before publishing a value-driven figure, test at least one normal case and one extreme-but-valid input case. The geometry must stay inside the viewBox, labels must remain readable, and the displayed dimensions must still match the calculator values.
+- After every product-figure edit, capture and visually inspect the rendered figure at desktop and mobile widths before release. Automated bounds checks do not replace the screenshot review.
+- The screenshot review must check text against object lines, dimension lines, extension lines, leaders and arrowheads, not only text-to-text overlap. Reposition or remove an annotation whenever any line passes through its text.
 - CAD-style drawings should be reviewed against this acceptance checklist:
   - The figure purpose is clear and limited to one calculation idea.
   - The accuracy class is stated or obvious from context.
@@ -2219,32 +2307,40 @@ Manufacturer product lookup branches:
 - Keep three peer branches inside the Bolt tab: `Standard bolt capacity`, `U-bolt product lookup` and `Structural blind-bolt lookup`.
 - Treat U-bolts and structural blind bolts as manufacturer product lookups, not as AS 4100 ordinary bolt-capacity calculation paths.
 - State that each branch is a curated manufacturer reference set, not an exhaustive product catalogue.
-- Use the same lightweight sequence for both product branches: `Project requirement`, `Product source`, `Selected product`, manufacturer-published data and collapsed basis-and-limitations. Keep a separate dimensions/installation disclosure only where the product record is too detailed for the selected-product card.
+- Use the same lightweight sequence for both product branches: `Project requirement`, `Catalogue filters`, `Product selection`, `Selected product`, manufacturer-published data and collapsed basis-and-limitations.
 - Keep only selectors that materially assist product browsing. Optional geometry, head, finish and manufacturer fields must remain unrestricted by default.
-- `Catalogue entry` is the selection control. The `Selected product` strip confirms product identity and concise ordering information; do not repeat the same values in a second descriptive panel.
-- Show fit or grip range, hole geometry, material/finish and installation requirements once within the selected-product card. Do not repeat them in another descriptive panel.
+- `Catalogue filters` contains only optional manufacturer or brand and finish filters. Keep all options unrestricted by default.
+- `Catalogue product / family` or `Catalogue entry` belongs to a separate `Product selection` group and is the final confirmation control. Matching-entry counts belong to this group, not to `Catalogue filters`.
+- The `Selected product` strip confirms product identity and concise ordering information; do not repeat the same values in a second descriptive panel.
+- Show the minimum selection parameters once within `Selected product`. Put secondary installation, spacing, edge and ply requirements in one collapsed disclosure where required; do not repeat them elsewhere.
 - Use `PRODUCT DATA`, not `RESULTS`, for manufacturer values. Do not label a value as `Design capacity` unless the source itself publishes that basis and the governing jurisdiction is stated.
-- Keep catalogue brands separate from supply channels. Filter by `Brand / manufacturer` and show `Supplier` independently. Where no supported supply channel is recorded, display `Not specified`; do not substitute the manufacturer name.
+- Keep catalogue brands separate from supply channels in the underlying data. Do not show an unverified supplier as a primary selection parameter.
 - Retain manufacturer, supplier, product family, product code, nominal size, fit or grip range, material/finish, published value and basis, source document, revision/date, URL and source status in the underlying record.
 - Preserve the manufacturer's published terminology and basis, including `Working load`, `Safe working load`, `Characteristic resistance`, `ASD allowable load` or `LRFD design strength`. Do not silently convert or compare unlike bases.
 - Use three source states only: `Local reference checked`, `Manufacturer source checked online` and `Source not verified`. `Not published` describes a missing manufacturer value and does not make an otherwise checked source unverified.
-- Show source status once in the manufacturer-data heading. Put the source document, revision/date and direct link in the collapsed basis panel.
+  - Show source status once in the manufacturer-data heading.
+  - Put a direct `Manufacturer reference` link in `Selected product`. Use `Open technical data` for a manufacturer PDF and `Open product page` for a web catalogue page. The link must follow the currently selected record.
+  - Identify the source document by its concise manufacturer title beside the link. Retain checked date, revision and source state in the underlying record and reference register.
 - A matching catalogue product may be reported as `Matching product found`; an unresolved filter combination may be reported as `No matching product`. These are selection states, not structural PASS/FAIL.
 - Do not show generic N*, V* or M* inputs, action ratios, governing structural checks or connection PASS/FAIL in a product-lookup branch.
 - If a published value is absent, use one compact `Published load | Not published` row rather than a visually dominant capacity card.
-- Before a catalogue entry is selected, show one compact selection prompt only. Hide the empty selected-product fields, published-data cards and source-status badge until a product is confirmed.
-- Keep catalogue-option labels short enough for mobile selection. Use product family, nominal size and fit or grip range in the option; show manufacturer, product code, supplier and concise ordering information in the selected-product card.
+- Before a catalogue entry is selected, use the `Product selection` heading and matching-entry count as the only prompt. Hide the empty selected-product fields, published-data cards, source-status badge and any duplicate prompt row until a product is confirmed.
+- Keep catalogue-option labels short enough for mobile selection. Use the market-recognisable product name for U-bolts. For structural blind bolts, use product family, nominal size, official product code and grip range because the code distinguishes otherwise similar length variants.
+- Do not redraw or embed manufacturer product figures in the lightweight lookup. Product appearance, component details and manufacturer dimension diagrams belong to the linked current product page or technical data sheet.
+- Do not show generic installation or post-expansion diagrams in `Selected product`. The handbook reports structured selection data and links to the primary manufacturer source; it is not a substitute catalogue drawing.
 - Where tension and shear values share one published basis, show that basis once below the two value cards rather than repeating it in each card.
 - State the shared boundary as `Manufacturer-published data; not an AS 4100 design capacity.` Connected steelwork, local section effects and project suitability remain separate engineering checks.
 
 U-bolt product lookup branch:
 
 - Do not use `Application` as a filter; it overlaps member geometry and can exclude otherwise relevant products.
-- Use `Project requirement` for rod size and broad `Member geometry`; use `Product source` for brand or manufacturer, finish and catalogue entry.
+- Use `Project requirement` for thread designation and broad `Member geometry`; use `Catalogue filters` for optional brand or manufacturer and finish; use `Product selection` for the catalogue product or family.
 - Derive `Member geometry` from catalogue geometry: `Round / pipe`, `Square / rectangular`, `Beam / channel assembly` and `Custom / drawing-defined`. Keep `Any member geometry` as the default.
-- Default rod size to M12. Do not require an exact catalogue diameter, and do not represent discrete manufacturer diameters as a continuous fit range.
-- Keep the selected-product strip to product code, rod size and supplier; place manufacturer, family and series in the title/supporting line.
-- Merge concise U-bolt ordering information into `Selected product`: product code, rod size, supplier, member geometry and material / finish. Do not add a separate `Published dimensions and material` disclosure for the same record.
+- Default thread designation to M12. Do not require an exact catalogue diameter, and do not represent discrete manufacturer diameters as a continuous fit range.
+- Place manufacturer, family and series in the title/supporting line.
+- Keep U-bolt `Selected product` to product code, thread designation, member fit and material / finish. Do not add a separate dimensions or supplier panel for the same record.
+- Lead each U-bolt option with the market-recognisable product description and applicable member size. Do not lead with an internal series name where the product description is more useful for purchasing.
+- Preserve manufacturer dimension meanings in the structured member-fit text. Do not reinterpret supplier symbols or infer continuous fit from discrete catalogue sizes.
 - Where one published product load is reported, use one full-width horizontal result. Label it using the exact manufacturer basis. Where no value is published, use the compact missing-value row.
 - In U-bolt mode, use `U-bolt Product Lookup`, `U-bolt products · manufacturer data` and `Manufacturer data · no design capacity`.
 - Keep mounting-pipe / round-member products separate from beam or channel clamp assemblies. Main headframe-to-monopole clamps are OEM or project-engineered assemblies and are outside the standard-product lookup.
@@ -2255,12 +2351,16 @@ U-bolt product lookup branch:
 Structural blind-bolt product lookup branch:
 
 - Use `Structural blind-bolt lookup` as the generic branch name. Retain proprietary family names such as `Hollo-Bolt`, `HBS-Bolt`, `UNI-BOLT`, `Blind Bolt` and `BoxBolt` only for their verified manufacturer records.
-- Split the selectors into `Project requirement` for bolt size, total clamping thickness W and head type; and `Product source` for finish, manufacturer and catalogue entry.
+- Split the selectors into `Project requirement` for bolt size, total clamping thickness W and head type; `Catalogue filters` for optional manufacturer and finish; and `Product selection` for the catalogue entry.
 - Use nominal size as the primary blind-bolt filter. Leave head type, finish and manufacturer unrestricted by default.
 - Define total grip `W` as the total thickness of all connected plies. Keep it optional and blank by default. Use an entered positive value only to rank entries as `Compatible grip range` or `Other grip ranges`; do not remove the latter from the catalogue list. Where `W` is blank, show all entries for the selected primary filters without a compatibility claim.
 - Do not auto-present the first product as a recommendation. Require the user to confirm a catalogue entry before showing its published values.
-- Keep the selected-product strip to product code, nominal size and supplier; place manufacturer and product family in the title/supporting line.
-- Merge blind-bolt ordering and installation information into `Selected product`: product code, nominal size, supplier, grip range, hole diameter, head type, finish, minimum centres, edge or internal-clearance requirement, outer-ply condition or thickness basis, installation torque and tools. Do not repeat these values in a separate dimensions disclosure.
+- Place manufacturer and product family in the title/supporting line.
+- Keep primary blind-bolt selection data visible: product code, nominal size or length variant, grip range, hole diameter, head type and finish.
+- Put minimum centres, edge or internal-clearance requirement, outer-ply condition or thickness basis, installation torque and tools in one collapsed `Installation requirements` disclosure.
+- Keep manufacturer product code, size/length variant and grip range distinct. Do not replace an official code such as `HB20-1` with an inferred label such as `M20 #1`.
+- For Hollo-Bolt, display the manufacturer's assembled product length `B max` separately from nominal size and grip range. Retail descriptions such as `M20 x 90` may refer to bolt length rather than the manufacturer's assembled `B max`; do not treat the dimensions as interchangeable without a cited product mapping.
+- Keep product mechanism and proprietary component descriptions in the underlying record only where they assist identification or establish a limitation. Direct users to the linked manufacturer technical data for product views and detailed dimension diagrams.
 - Show published tension and shear values only where the same manufacturer source states their basis. Use separate cards when both values are published; otherwise use a compact missing-value row.
 - Do not rank products from different manufacturers by load where their published bases differ. Display the basis adjacent to every value.
 - Treat ICC-ES / AISC, ETA / Eurocode and manufacturer safe-working-load data as jurisdiction-specific product evidence. Do not relabel any of them as an Australian Standard design capacity.
@@ -2423,11 +2523,17 @@ The member tab should use AS 4100 member-design language.
 
 Current member calculators:
 
-- `CHS`
-- `Equal Angle`
+- `UB`
+- `UC`
 - `PFC`
+- `CHS`
+- `RHS`
+- `SHS`
+- `Equal Angle`
 - `Rod`
-- `Custom / Built-up properties`
+- `Custom / Built-up`
+
+Keep the catalogue-family switch aligned with Beam: `UB`, `UC`, `PFC`, `CHS`, `RHS`, `SHS`, `Equal Angle`, `Rod`, followed by `Custom / Built-up`. Axial Member may reuse only checked catalogue rows already accepted by Section Properties or Beam. For catalogue members, adopt the checked minimum centroidal or principal radius as the visible default and retain the radius override for a verified project axis.
 
 Member checks should include, where applicable:
 
@@ -2452,21 +2558,25 @@ Use standard language:
 
 For product dimensions and section properties, use Australian manufacturer data where possible, such as OneSteel / InfraBuild / Austube / Orrcon catalogues. Manufacturer data can define product availability and section properties, but design equations still need to trace back to AS 4100 or another governing standard.
 
-For the current CHS quick screen, keep the lightweight strategy: use nominal CHS `D` and `t` from the Australian product catalogue context, derive `A_g` and `r` by transparent circular hollow-section geometry, and apply the AS 4100 member-capacity method. Do not replace this with Austube / Orrcon table capacity values unless the scope changes to a row-checked hollow-section capacity-table lookup. The page must state that CHS values are formula-derived from nominal size and are not a certified table-capacity extraction.
+For catalogue CHS, use the accepted grade-specific Austube design-property row for `A_g`, `r` and `k_f`, then apply the AS 4100 member-capacity method. These are source section properties, not imported member-capacity values. Keep Orrcon current-product geometry and availability as a separate source context. The optional CHS dimension override remains ideal circular geometry and must be labelled non-catalogue.
 
 #### 15.11.1 Member Calculation Basis
 
 Connection- and axis-dependent terms must stay explicit:
 
 - Use table-derived default `alpha_b` values where the selected section family and embedded `k_f` condition match AS 4100 Table 6.3.3. Apply Table 6.3.3(A) when `k_f = 1.0` and Table 6.3.3(B) when `k_f < 1.0`. For the current member tab, this means cold-formed non-stress-relieved CHS = -0.5, PFC with `k_f = 1.0` = 0.5, Equal Angle with `k_f = 1.0` = 0.5, Equal Angle with `k_f < 1.0` = 1.0 as `other sections not listed` in Table 6.3.3(B), and Rod / solid round bar with `k_f = 1.0` = 0.5 as `other sections not listed` in Table 6.3.3(A). State the table row in the lookup panel and calculation steps. Do not ask the user to manually choose `alpha_b` unless the page provides an explicit advanced override for a different table row, axis, fabrication condition, or `k_f` case.
+- For checked hot-rolled UB and UC catalogue rows with flange thickness not exceeding 40 mm, use `alpha_b = 0` from AS 4100 Table 6.3.3(A) or (B), according to the selected row `k_f`. Use the catalogue minor-axis radius for the default one-axis quick check. A section outside that flange-thickness condition requires a different table branch and must not inherit the default silently.
+- For checked cold-formed non-stress-relieved RHS and SHS catalogue rows, use `alpha_b = -0.5` from AS 4100 Table 6.3.3(A) or (B), according to the selected row `k_f`. RHS defaults to its minimum centroidal radius; SHS reports symmetric centroidal axes.
+- The Axial catalogue must consume the accepted shared design-property rows rather than maintain a smaller copied subset. Use all 73 Austube CHS grade-specific rows, all 89 RHS and 88 SHS designations with their exact listed grades, all 46 InfraBuild Equal Angle designations and both checked PFC grades. Do not offer a grade that is absent from the selected checked row.
+- Sort CHS by outside diameter then wall thickness, and RHS/SHS by outside depth, width and wall thickness. This is a query order only; it must not alter source identity, grade availability or the default selected designation.
 - AS 4100 Cl. 6.2 compression section capacity must be written as `N_s = k_f A_n f_y`, with design capacity `phi N_s = 0.90 k_f A_n f_y`. Do not replace `A_n` with `A_g` in the displayed formula. Catalogue examples and unholed member tables may calculate the same value using `A_g` only because `A_n = A_g` for an unperforated section. The calculation steps must state this assumption when no holes or penetrations are entered.
 - Calculation examples should make the area basis explicit: `no holes: A_n = A_g`; `straight-line hole deduction only: A_n = A_g - n_h d_h t`; `manual net area: A_n` is user/project verified. Keep these examples short and use them to explain the limitation, not to expand the tab into a full connection-design tool.
-- Treat radius of gyration `r` as an axis-dependent compression input. AS 4100 slenderness uses `L_e/r` about the checked buckling axis; therefore a one-axis quick check may default to the governing catalogue/geometry value such as `r_min`, but the default must be visible and editable. CHS and Rod defaults may be geometry-derived because the radius is the same about any centroidal axis. EA/PFC defaults should state the catalogue/quick-check basis. Custom / Built-up properties input should keep separate `r_x`, `r_y`, `L_ex` and `L_ey` and report the governing axis.
-- Do not imply `k_f` is automatically derived from simplified custom family geometry unless the AS 4100 form-factor calculation is explicitly implemented. If custom Equal Angle dimensions are entered, state the current `k_f` source and require verification for slender angle geometry.
+- Treat radius of gyration `r` as an axis-dependent compression input. AS 4100 slenderness uses `L_e/r` about the checked buckling axis; therefore a one-axis quick check may default to the governing catalogue value such as `r_min`, but the default must be visible and editable. Catalogue CHS uses the published Austube radius; Rod and the CHS/Rod dimension overrides may use ideal circular geometry because the radius is the same about any centroidal axis. EA/PFC defaults should state the catalogue/quick-check basis. Custom / Built-up input should keep separate `r_x`, `r_y`, `L_ex` and `L_ey` and report the governing axis.
+- Do not combine simplified non-catalogue EA/PFC geometry with catalogue `k_f` or `alpha_b`. Route those members through Custom / Built-up and require verified section properties and compression factors.
 
 #### 15.11.2 Selected Member Summary
 
-The `Selected member` strip confirms the adopted calculation basis. It is not a second Section Properties report. Use the same hierarchy and visual structure as Beam `Selected section`: compact heading and scope text on the left, six primary calculation metrics below it, the selected family diagram on the right, and one full-width folded `Section details` row below both columns.
+The `Selected member` strip confirms the adopted calculation basis. It is not a second Section Properties report. Use the same hierarchy and visual structure as Beam `Selected section`: compact heading and scope text on the left, four primary compression/material metrics below it, the selected family diagram on the right, one concise net-section basis line, and one full-width folded `Section details` row below both columns.
 
 ##### Summary Content Contract
 
@@ -2474,21 +2584,22 @@ The always-visible summary has four layers only:
 
 1. selected member identity;
 2. one short scope / provenance sentence;
-3. six primary governing metrics;
-4. one folded `Section details` row.
+3. four primary governing metrics, with two conditional connection metrics only when required;
+4. one concise net-section basis line;
+5. one folded `Section details` row.
 
 Each primary metric must contain one decision-relevant value, not a list of alternatives, axes or load cases. A primary metric must not contain semicolon-separated values, multiple axis records, formula derivations, source notes or applicability prose. Put those items in `Section details`, calculation steps or limitations.
 
 Keep each primary metric value and its unit together on one line at normal desktop width. Do not leave a unit such as `mm`, `MPa` or `mm2` on a separate line. Do not solve an overlong value by reducing font size, reducing letter spacing, allowing text to overlap, clipping the value or hiding engineering content.
 
-The six primary metrics are:
+The four always-visible primary metrics are:
 
 - checked or governing axis with the actual governing `r used`;
 - governing effective length `L_e` and governing `L_e/r`;
-- adopted net area `A_n`;
 - adopted `f_y / f_u`;
 - `k_f / governing alpha_b`;
-- `k_t`.
+
+Show adopted net area `A_n` and `k_t` as additional primary metrics only when holes, a manual net area or `k_t != 1.00` modifies the connection basis. For an unperforated section, use one line: `Unperforated section · A_n = A_g · k_t = 1.00`; do not repeat default `A_n` and `k_t` in separate metric cells.
 
 For Custom / Built-up members, the primary strip must still show one governing record only:
 
@@ -2502,10 +2613,10 @@ State `both axes checked` in the scope sentence. Put the complete x-axis and y-a
 
 Content rules govern layout; column-width tuning is not a substitute for reducing the primary summary to governing values.
 
-- Wide desktop: six columns may be used only after the content contract above is satisfied.
-- The six tracks may be unequal. Give `Checked axis / r` the widest track, `L_e / L_e/r` the next widest track and `k_t` the narrowest.
+- Wide desktop: use four columns for the default record. Conditional `A_n` and `k_t` metrics may flow into the responsive grid when the connection basis is modified.
+- Give `Checked axis / r` the widest track and `L_e / L_e/r` the next widest track.
 - Intermediate desktop / tablet: use three columns by two rows before any value approaches the adjacent metric.
-- Phone: show the identity and short scope sentence only; omit the six-metric grid because the primary capacity outputs follow immediately below. Keep complete basis data in the folded details.
+- Phone: show the identity and short scope sentence only; omit the metric grid because the primary capacity outputs follow immediately below. Keep complete basis data in the folded details.
 - Metric labels align at the top and values align on a common baseline within each responsive row.
 - A metric and its unit move together to the next responsive row. They must never intrude into the adjacent metric.
 
@@ -2517,7 +2628,7 @@ The folded `Section details` must retain the complete basis without crowding the
 - `Compression basis`: effective length, actual `r used`, checked or governing axis, `k_f` and `alpha_b`.
 - `Tension basis`: `k_t` and the adopted net-area method.
 
-Lay out `Connection / net-section inputs` as a three-column, two-row desktop sequence: `A_n method`, `n_h`, `d_h`, then net-path `t`, `A_n` and `k_t`. Do not force these six controls into one row. Keep the field label for `t` short; place the PFC `t_w` default and flange-path `t_f` qualification in the group explanation rather than repeating it inside the control label.
+Keep `Connection / net section` folded by default. Its summary must state the adopted `A_n` and `k_t` basis. When opened, lay out the inputs as a three-column, two-row desktop sequence: `A_n method`, `n_h`, `d_h`, then net-path `t`, `A_n` and `k_t`. Do not force these six controls into one row. Keep the field label for `t` short; place the PFC `t_w` default and flange-path `t_f` qualification in the group explanation rather than repeating it inside the control label.
 
 Do not keep `r_x`, `r_y`, `I_x` and `I_y` as separate always-visible summary metrics when the calculation directly adopts `r used`. Put complete axis properties in Section Properties or the folded calculation/source layer. CHS and Rod should state symmetric axes once. PFC should identify the adopted minor axis. Equal Angle catalogue checks must use and identify the minor principal-axis radius from the checked table rather than substituting the equal leg-parallel radius. Custom / Built-up members must retain the complete x-axis and y-axis `L_e`, `r`, `L_e/r` and `alpha_b` records in `Section details`, name the governing axis in the primary strip and state that both axes were checked in the scope sentence.
 
@@ -2539,13 +2650,19 @@ The two primary tension limit states may share one result card, but the result n
 
 Keep the optional `Design action check` folded by default on desktop and phone. Capacity remains the primary answer; opening the optional check must not change the independently calculated capacities.
 
+Within `Detailed calculation`, group capacity components by limit-state family. Show four compression records (`phi Ns`, `Le/r`, `alpha_c`, governing compression limit) and three tension records (gross yielding, net fracture, governing tension limit) in separate labelled rows. Do not allow the governing tension record to wrap onto an orphan row after the compression records.
+
 #### 15.11.3 Member Inputs and Overrides
 
 - `f_y` and `f_u` may default from the selected material grade, manufacturer table or product standard, but keep them editable where project certificates, thickness ranges or product-specific values may govern. If the user overrides them, calculation steps must show the current values and state that `k_f`, `alpha_b` and catalogue geometry remain tied to the selected section / lookup basis unless separately changed.
+- Show `Steel grade`, `f_y` and `f_u` together in the always-visible Material properties row. Mark unchanged values as `Catalogue default`, changed catalogue values as `User override`, and Custom / Built-up values as `Project input`. Provide one reset control that restores the current selected-grade values. A section or grade change resets both strengths to the new applicable defaults.
+- Keep catalogue `Section`, `L_e` and the governing `r` together under `Member definition`. Populate `r` from the selected catalogue row and keep it directly editable. Show supported family dimensions as a separate low-frequency `Custom dimensions` toggle; when enabled, geometry-derived properties replace the editable catalogue-radius input.
+- Enable family-dimension overrides only for CHS and Rod, where ideal circular geometry gives an axis-independent gross-property path and `k_f = 1.0` is explicitly adopted. UB, UC, PFC, RHS, SHS and Equal Angle remain catalogue-only; Custom / Built-up is the verified-property route for non-catalogue members.
 - Do not imply `A_n` is known from the catalogue section alone; it must come from the actual connection net section.
 - For EA/PFC net-section checks, provide a lightweight straight-line bolt-hole deduction option (`A_n = A_g - n_h d_h t`) using the selected angle thickness for EA. Label this as a straight-line deduction only. For PFCs, show catalogue `t_w` / `t_f` from the manufacturer table, default the net-area deduction thickness to `t_w`, and allow manual override where the net path passes through the flange or a connected element.
 - Keep a manual `A_n` override for staggered holes, slots, cope cuts, multiple net-section paths, or any topology-dependent connection geometry.
-- Display net-section values in a `Connection / net-section inputs` row, separate from section properties, material strengths and compression reduction factors.
+- Display net-section values in a folded `Connection / net section` row, separate from section properties, material strengths and compression reduction factors.
+- Combine factor lookup tables, source status and exclusions under one folded `Design basis and limitations` section. Do not repeat separate `Reference values` and `Basis and limitations` sections on the Axial Member page.
 - Use `k_t = 1.00` only where the end connection satisfies AS 4100 Cl. 7.3.1 uniform force distribution.
 - For eccentric tension connections, use AS 4100 Table 7.3.2. Current quick defaults: Equal Angle one-leg connection `k_t = 0.85`; PFC/channel eccentric quick default `k_t = 0.85` unless the actual Table 7.3.2 case supports `0.90` or `1.00`; unequal angle connected by the short leg `k_t = 0.75` when that case applies. Keep `k_t` editable and project-confirmed.
 - Where the member tab reports utilisation, keep compression and tension design actions as separate optional project inputs (`N_c*` and `N_t*`). Do not use a single action-type selector; report `N_c* / phi N_c`, `N_t* / phi N_t` and the governing utilisation ratio without implying the actions act simultaneously.
@@ -2554,17 +2671,17 @@ Keep the optional `Design action check` folded by default on desktop and phone. 
 
 #### 15.11.4 Custom Member Geometry
 
-- `Custom / Built-up properties` member input may use user-entered effective properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`.
-- Treat this mode as a verified section-property-calculation quick check. If the source report gives `I_x` and `I_y`, the user should enter `r_x = sqrt(I_x / A_g)` and `r_y = sqrt(I_y / A_g)`.
+- `Custom / Built-up` member input may use user-entered properties directly: `A_g`, `r_x`, `r_y`, `k_f`, `alpha_bx`, `alpha_by`, `L_ex`, `L_ey`, `f_y`, `f_u`, `A_n` and `k_t`.
+- Start project geometry and restraint inputs (`A_g`, `r_x`, `r_y`, `L_ex`, `L_ey`) blank and fail closed. Material strengths and `k_f = 1.0`, `alpha_bx = alpha_by = 0.5` may remain clearly labelled initial values requiring verification.
+- Treat this mode as a user-entered section-property quick check; the browser must not claim that the values are verified. If the source report gives `I_x` and `I_y`, the user should enter `r_x = sqrt(I_x / A_g)` and `r_y = sqrt(I_y / A_g)`.
 - Hide catalogue section-guide imagery in this mode because no standard section geometry is being selected.
 - Calculate compression about both entered axes and report the governing `phi N_c`.
-- State clearly that the source section calculation, connector spacing, individual component slenderness, shear deformation, torsional/flexural-torsional buckling, local buckling derivation and connection eccentricity are not verified by the web tab.
-- CHS / Equal Angle / PFC / Rod may include a family-specific dimension override inside the Section properties card.
+- Keep a visible result-level limitation: flexural buckling is checked about the entered axes only. The source section calculation, connector spacing, individual component slenderness, built-up shear deformation, torsional/flexural-torsional buckling, local buckling derivation and connection eccentricity are not verified by the web tab.
+- CHS and Rod may include a family-specific dimension override inside the Section properties card.
 - Keep family-specific dimension override collapsed by default: show only one concise `Custom dimensions` checkbox without a repeated heading or explanatory subtitle, and expand the dimension inputs and geometry note only after it is selected.
 - The family override must feed the same member-capacity workflow (`A_g`, `A_n`, `r_x`, `r_y`, `r used`, `k_f`, `alpha_b`, `L_e`, material strengths and `k_t`) instead of creating a separate calculation path.
 - CHS and Rod geometry derive `A_g`, `r_x = r_y` and `I_x = I_y` from circular geometry.
-- Equal Angle and PFC custom dimensions derive `A_g`, `r_x` and `r_y` automatically from simplified rectangular component geometry; do not ask the user to manually enter `r_x/r_y` for these family overrides.
-- State that fillets/root radii and full manufacturer table properties are not reconstructed by the browser.
+- Non-catalogue Equal Angle and PFC members require verified `A_g`, `r_x`, `r_y`, `k_f` and `alpha_b` values in Custom / Built-up; do not reconstruct them from simplified rectangular geometry in the Axial tab.
 
 #### 15.11.5 Factor Lookup Tables
 
@@ -2670,7 +2787,7 @@ Page and evidence requirements:
 - Mark the axis location as indicative when a checked catalogue row lacks the centroid coordinates required to place both centroidal axes. The SVG is a convention guide, not a numeric source.
 - For PFC catalogue rows, use published `XL` to place the centroidal `y-y` axis and show published `XO` separately; do not replace either value with ideal sharp-corner geometry.
 - Use positive horizontal coordinates to the right, positive vertical coordinates upward and positive principal-axis rotation counter-clockwise.
-- For equal angles, follow the InfraBuild catalogue convention: centroidal `n-n` is horizontal, centroidal `p-p` is vertical, and `x-x` / `y-y` are principal axes at 45 degrees. Keep the complete 46-row Table 19 / Table 21 geometry directory and the matching 46-row Table 20 design-property directory, including mass, actual thickness, radii, centroid distances, directional `Z`, plastic moduli, `I_np`, principal properties, `J`, grade-specific `fy`, `kf` and Load A / B / C / D `Ze`. Do not substitute sharp-corner ideal geometry for a published rolled-angle value. The Axial Member tool may continue using its smaller, separately verified strength-data subset.
+- For equal angles, follow the InfraBuild catalogue convention: centroidal `n-n` is horizontal, centroidal `p-p` is vertical, and `x-x` / `y-y` are principal axes at 45 degrees. Keep the complete 46-row Table 19 / Table 21 geometry directory and the matching 46-row Table 20 design-property directory, including mass, actual thickness, radii, centroid distances, directional `Z`, plastic moduli, `I_np`, principal properties, `J`, grade-specific `fy`, `kf` and Load A / B / C / D `Ze`. Do not substitute sharp-corner ideal geometry for a published rolled-angle value. Axial Member must reuse the same 46 checked grade and `kf` records for its minor-principal-axis compression check.
 - Use the full axis notation consistently in headings, captions and descriptions: `n-n / p-p centroidal` and `x-x / y-y principal`. Do not shorten these to `p/n` or unqualified `x/y`.
 - Show the publisher, catalogue edition or year and checked-row status. Describe nominal dimensions combined with geometric formulas as a mixed basis, not a manufacturer table-property lookup.
 - Treat section compactness, element slenderness classification, `kf` and effective properties as grade-, direction- and standard-dependent attributes. Section Properties may display them only through its explicit material-grade branch and only for checked section/grade/direction rows already accepted by Beam or Axial Member. Design capacity remains in those downstream workflows.

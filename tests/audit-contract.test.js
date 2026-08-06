@@ -9,6 +9,8 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const script = fs.readFileSync(path.join(root, "app.js"), "utf8");
 const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"), "utf8");
+const drawingAdoptionPath = path.join(root, "engineering", "drawing-standard-adoption.json");
+const drawingAdoption = JSON.parse(fs.readFileSync(drawingAdoptionPath, "utf8"));
 const calculateWeldSource = script.slice(
   script.indexOf("function calculateWeld()"),
   script.indexOf("const beamFamilyDefinitions")
@@ -34,6 +36,11 @@ assert.match(script, /Design &phi;M<sub>uo<\/sub> = &phi; &times; M<sub>uo<\/sub
 assert.match(script, /design capacity = &phi; &times; V<sub>u<\/sub>/);
 assert.match(script, /mm<sup>2<\/sup> per strip/);
 assert.match(script, /reference: "Derived rigid-cap equilibrium model"/);
+assert.match(html, /<script src="member-capacity\.js\?v=[^"]+"><\/script>/);
+assert.match(html, /<script src="screw-demand\.js\?v=[^"]+"><\/script>/);
+assert.match(script, /MemberCapacity\.calculate\(/);
+assert.match(script, /ScrewDemand\.distribute\(/);
+assert.doesNotMatch(script, /function compressionReduction\(/);
 assert.match(script, /comparisonBasis === "project-source-missing"/);
 assert.match(script, /comparisonBasis === "project-basis-mismatch"/);
 assert.match(script, /Manufacturer values are not compared automatically/);
@@ -86,5 +93,24 @@ assert.match(traceability, /`AXIAL-REP-COMP-01`/);
 assert.match(traceability, /`AXIAL-EX-TENSION-01`/);
 assert.match(traceability, /`AXIAL-REP-TENSION-01`/);
 assert.match(outline, /independent hand calculation or separate script calculation must not call or copy the production calculation function/);
+assert.match(outline, /member-capacity\.js/);
+assert.match(outline, /screw-demand\.js/);
+assert.match(outline, /Drawing Package Adoption and Reference Rule/);
+assert.match(outline, /engineering\/drawing-standard-adoption\.json/);
+assert.match(outline, /Do not copy the Drawing package Markdown into this repository/);
+assert.equal(drawingAdoption.adoption_id, "SC-HANDBOOK-UWEDS-001");
+assert.equal(drawingAdoption.package.version, "1.10.0");
+assert.equal(drawingAdoption.package.adoption_mode, "GOVERNED_SUBSET");
+assert.match(drawingAdoption.package.pin_value, /SHA256-7d71cfa493defd5504966d6e20cc271f34485a5fc8e6b80f7a1340bf8611c7f1$/);
+[
+  "00_UNIFIED_WEB_ENGINEERING_DRAWING_STANDARD_V1.md",
+  "PROJECT_ADOPTION_GUIDE.md",
+  "PACKAGE_MANIFEST.md",
+  "profiles/AU_STRUCTURAL_WEB_DEFAULT.yaml",
+  "rules/web_release_rules.yaml",
+  "tests/PROJECT_ADOPTION_CHECKLIST.md"
+].forEach(module => assert.ok(drawingAdoption.adopted_modules.includes(module), `Missing adopted drawing module ${module}`));
+assert.equal(drawingAdoption.pre_drawing_case_review.required, true);
+assert.equal(drawingAdoption.release_boundary, "PRIVATE_REVIEW_ONLY");
 
 console.log("Professional audit contract tests passed.");

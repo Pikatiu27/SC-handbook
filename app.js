@@ -36,7 +36,7 @@ const uBoltProducts = [
     publishedCapacity: "Not published",
     capacityDirection: "Not published",
     capacityBasis: "The Australian product page publishes geometry, finish and application data, but no rated structural capacity.",
-    sourceStatus: "Source_Not_Verified",
+    sourceStatus: "Source_Online_Checked",
     sourceName: "Hilti Australia MP-UB OC metric product page",
     sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
   },
@@ -55,7 +55,7 @@ const uBoltProducts = [
     publishedCapacity: "Not published",
     capacityDirection: "Not published",
     capacityBasis: "The Australian product page publishes geometry, finish and application data, but no rated structural capacity.",
-    sourceStatus: "Source_Not_Verified",
+    sourceStatus: "Source_Online_Checked",
     sourceName: "Hilti Australia MP-UB OC metric product page",
     sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
   },
@@ -74,7 +74,7 @@ const uBoltProducts = [
     publishedCapacity: "Not published",
     capacityDirection: "Not published",
     capacityBasis: "The Australian configurator lists an M20 option; confirm the selected item geometry before specification.",
-    sourceStatus: "Source_Not_Verified",
+    sourceStatus: "Source_Online_Checked",
     sourceName: "Hilti Australia MP-UB OC metric product page",
     sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_PIPE_SUPPORTS/r12293804"
   },
@@ -98,15 +98,15 @@ const uBoltProducts = [
     sourceUrl: "https://www.hilti.com.au/c/CLS_MODULAR_SUPPORT_SYSTEM/CLS_SYS_CONNECTORS_INT/r2937"
   },
   ...[
-    { d: 60, code: "E14-060H", thread: "M10", workingLoad: "752 kg" },
-    { d: 76, code: "E14-076H", thread: "M12", workingLoad: "1,206 kg" },
-    { d: 89, code: "E14-089H", thread: "M12", workingLoad: "1,206 kg" },
-    { d: 102, code: "E14-102H", thread: "M12", workingLoad: "1,206 kg" },
-    { d: 114, code: "E14-114H", thread: "M12", workingLoad: "1,206 kg" },
-    { d: 140, code: "E14-140H", thread: "M12", workingLoad: "1,206 kg" },
-    { d: 165, code: "E14-165H", thread: "M12", workingLoad: "1,206 kg" },
-    { d: 219, code: "E14-219H", thread: "M16", workingLoad: "2,069 kg" },
-    { d: 273, code: "E14-273H", thread: "M20", workingLoad: "3,252 kg" }
+    { d: 60, c: 10, l: 110, t: 50, code: "E14-060H", thread: "M10", workingLoad: "752 kg" },
+    { d: 76, c: 12, l: 127, t: 50, code: "E14-076H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 89, c: 12, l: 140, t: 50, code: "E14-089H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 102, c: 12, l: 152, t: 50, code: "E14-102H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 114, c: 12, l: 165, t: 50, code: "E14-114H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 140, c: 12, l: 190, t: 50, code: "E14-140H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 165, c: 12, l: 215, t: 50, code: "E14-165H", thread: "M12", workingLoad: "1,206 kg" },
+    { d: 219, c: 16, l: 295, t: 75, code: "E14-219H", thread: "M16", workingLoad: "2,069 kg" },
+    { d: 273, c: 20, l: 370, t: 100, code: "E14-273H", thread: "M20", workingLoad: "3,252 kg" }
   ].map(row => ({
     id: `ezystrut-${row.code.toLowerCase()}`,
     application: "Mounting pipe / round member",
@@ -119,6 +119,7 @@ const uBoltProducts = [
     fit: `Pipe / round member D ${row.d} mm`,
     finish: "Outdoor HDG",
     material: "AS/NZS 1594 steel - HDG to AS/NZS 4680",
+    drawing: { shape: "round", convention: "ezystrut", fitDiameter: row.d, overallLength: row.l, threadLength: row.t, rodDiameter: row.c },
     publishedCapacity: `${row.workingLoad} working load`,
     capacityDirection: "Load direction not stated",
     capacityBasis: "Manufacturer working load with a stated 3:1 safety factor. Verify load direction and complete assembly applicability before project use.",
@@ -151,6 +152,7 @@ const uBoltProducts = [
     fit: `${row.nb}NB pipe / D ${row.d} mm - L ${row.l} mm`,
     finish: "Outdoor HDG",
     material: `Mild steel - HDG - two nuts - thread length ${row.t} mm`,
+    drawing: { shape: "round", convention: "hobson", insideWidth: row.d, overallLength: row.l, threadLength: row.t },
     publishedCapacity: "Not published",
     capacityDirection: "Not published",
     capacityBasis: "The official technical sheet publishes product geometry and pack data, but no rated structural capacity.",
@@ -178,6 +180,7 @@ const uBoltProducts = [
     fit: `${row.nb}NB pipe / D ${row.d} mm - L ${row.l} mm`,
     finish: "Galvanised - verify coating",
     material: `Mild steel - thread rolled - thread length ${row.t} mm`,
+    drawing: { shape: "round", convention: "catalogue", insideWidth: row.d, overallLength: row.l, threadLength: row.t },
     publishedCapacity: "Not published",
     capacityDirection: "Not published",
     capacityBasis: "The reviewed catalogue publishes geometry and a galvanised finish, but no rated capacity or coating standard. Confirm current availability and finish before use.",
@@ -203,6 +206,7 @@ const uBoltProducts = [
     fit: `Square member / W ${row.w} x L ${row.l} mm`,
     finish: "Galvanised - verify coating",
     material: `Mild steel - thread rolled - thread length ${row.t} mm`,
+    drawing: { shape: "square", convention: "catalogue", insideWidth: row.w, overallLength: row.l, threadLength: row.t, rodDiameter: 12 },
     publishedCapacity: "Not published",
     capacityDirection: "Not published",
     capacityBasis: "The reviewed catalogue publishes geometry and a galvanised finish, but no rated capacity or coating standard. Confirm current availability and finish before use.",
@@ -314,18 +318,22 @@ const uBoltProducts = [
 
 const blindBoltProducts = [
   ...[
-    { size: "M8", hole: 14, centres: 35, edge: "B + C >= 17.5 mm", outer: "6.0 mm for tabulated shear", torque: 23, loads: [16.8, 14.3], grips: [[3, 22, "HB-M08-1"], [22, 41, "HB-M08-2"], [41, 60, "HB-M08-3"]] },
-    { size: "M10", hole: 18, centres: 40, edge: "B + C >= 22.5 mm", outer: "8.0 mm for tabulated shear", torque: 45, loads: [27.4, 24.4], grips: [[3, 22, "HB-M10-1"], [22, 41, "HB-M10-2"], [41, 60, "HB-M10-3"]] },
-    { size: "M12", hole: 20, centres: 50, edge: "B + C >= 25 mm", outer: "8.0 mm for tabulated shear", torque: 80, loads: [38.0, 33.3], grips: [[3, 25, "HB-M12-1"], [25, 47, "HB-M12-2"], [47, 69, "HB-M12-3"]] },
-    { size: "M16", hole: 26, centres: 55, edge: "B + C >= 32.5 mm", outer: "10.0 mm for tabulated shear", torque: 190, loads: [61.8, 51.6], grips: [[12, 29, "HB-M16-1"], [29, 50, "HB-M16-2"], [50, 71, "HB-M16-3"]] },
-    { size: "M20", hole: 33, centres: 70, edge: "B + C >= 33 mm", outer: "12.0 mm for tabulated shear", torque: 300, loads: [89.0, 81.8], grips: [[12, 34, "HB-M20-1"], [34, 60, "HB-M20-2"], [60, 86, "HB-M20-3"]] }
-  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    { size: "M8", hole: 14, centres: 35, edge: "B + C >= 17.5 mm", outer: "6.0 mm for tabulated shear", torque: 23, loads: [16.8, 14.3], grips: [[3, 22, "HB08-1", 45], [22, 41, "HB08-2", 65], [41, 60, "HB08-3", 85]] },
+    { size: "M10", hole: 18, centres: 40, edge: "B + C >= 22.5 mm", outer: "8.0 mm for tabulated shear", torque: 45, loads: [27.4, 24.4], grips: [[3, 22, "HB10-1", 49], [22, 41, "HB10-2", 64], [41, 60, "HB10-3", 84]] },
+    { size: "M12", hole: 20, centres: 50, edge: "B + C >= 25 mm", outer: "8.0 mm for tabulated shear", torque: 80, loads: [38.0, 33.3], grips: [[3, 25, "HB12-1", 53], [25, 47, "HB12-2", 73], [47, 69, "HB12-3", 93]] },
+    { size: "M16", hole: 26, centres: 55, edge: "B + C >= 32.5 mm", outer: "10.0 mm for tabulated shear", torque: 190, loads: [61.8, 51.6], grips: [[12, 29, "HB16-1", 67], [29, 50, "HB16-2", 92], [50, 71, "HB16-3", 112]] },
+    { size: "M20", hole: 33, centres: 70, edge: "B + C >= 33 mm", outer: "12.0 mm for tabulated shear", torque: 300, loads: [89.0, 81.8], grips: [[12, 34, "HB20-1", 80], [34, 60, "HB20-2", 110], [60, 86, "HB20-3", 140]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code, lengthB]) => ({
     id: `lindapter-${code.toLowerCase()}`,
     manufacturer: "Lindapter",
     supplier: "Not specified",
     family: "Hollo-Bolt",
-    code: code.replace("HB-", "").replace(/-(\d)$/, " #$1"),
+    code,
     size: row.size,
+    variant: `Size ${code.slice(-1)}`,
+    catalogueLength: `B max ${lengthB} mm`,
+    mechanism: ["M16", "M20"].includes(row.size) ? "HCF" : "",
+    drawing: { kind: "expansion", lengthB },
     gripMin,
     gripMax,
     head: "Hexagonal",
@@ -345,12 +353,12 @@ const blindBoltProducts = [
     sourceUrl: "https://www.lindapter.com/assets/media/lindapter-esr-3330-and-sid-combined.pdf"
   }))),
   ...[
-    { size: "M8", hole: 14, centres: 35, edge: "C > 17.5 mm", outer: "1 mm fixture", torque: 25, loads: [6, 7], grips: [[3, 22, "KBB88GHM080050"], [22, 41, "KBB88GHM080070"], [41, 60, "KBB88GHM080090"]] },
-    { size: "M10", hole: 18, centres: 40, edge: "C > 22.5 mm", outer: "1 mm fixture", torque: 45, loads: [10, 12], grips: [[3, 22, "KBB88GHM100055"], [22, 41, "KBB88GHM100070"], [41, 60, "KBB88GHM100090"]] },
-    { size: "M12", hole: 20, centres: 50, edge: "C > 25 mm", outer: "1 mm fixture", torque: 80, loads: [13, 15], grips: [[3, 25, "KBB88GHM120060"], [25, 47, "KBB88GHM120080"], [47, 69, "KBB88GHM120110"]] },
-    { size: "M16", hole: 26, centres: 55, edge: "C > 32.5 mm", outer: "8 mm fixture", torque: 190, loads: [23, 28], grips: [[12, 29, "KBB88GHM160080"], [29, 50, "KBB88GHM160100"], [50, 71, "KBB88GHM160120"]] },
-    { size: "M20", hole: 33, centres: 70, edge: "C > 33 mm", outer: "8 mm fixture", torque: 300, loads: [34, 43], grips: [[12, 34, "KBB88GHM200090"], [34, 60, "KBB88GHM200120"], [60, 86, "KBB88GHM200140"]] }
-  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    { size: "M8", hole: 14, centres: 35, edge: "C > 17.5 mm", outer: "1 mm fixture", torque: 25, loads: [6, 7], grips: [[3, 22, "KBB88GHM080050", 50], [22, 41, "KBB88GHM080070", 70], [41, 60, "KBB88GHM080090", 90]] },
+    { size: "M10", hole: 18, centres: 40, edge: "C > 22.5 mm", outer: "1 mm fixture", torque: 45, loads: [10, 12], grips: [[3, 22, "KBB88GHM100055", 55], [22, 41, "KBB88GHM100070", 70], [41, 60, "KBB88GHM100090", 90]] },
+    { size: "M12", hole: 20, centres: 50, edge: "C > 25 mm", outer: "1 mm fixture", torque: 80, loads: [13, 15], grips: [[3, 25, "KBB88GHM120060", 60], [25, 47, "KBB88GHM120080", 80], [47, 69, "KBB88GHM120110", 110]] },
+    { size: "M16", hole: 26, centres: 55, edge: "C > 32.5 mm", outer: "8 mm fixture", torque: 190, loads: [23, 28], grips: [[12, 29, "KBB88GHM160080", 80], [29, 50, "KBB88GHM160100", 100], [50, 71, "KBB88GHM160120", 120]] },
+    { size: "M20", hole: 33, centres: 70, edge: "C > 33 mm", outer: "8 mm fixture", torque: 300, loads: [34, 43], grips: [[12, 34, "KBB88GHM200090", 90], [34, 60, "KBB88GHM200120", 120], [60, 86, "KBB88GHM200140", 140]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code, length]) => ({
     id: `hobson-${code.toLowerCase()}`,
     manufacturer: "Hobson Engineering",
     supplier: "Hobson Engineering",
@@ -360,6 +368,7 @@ const blindBoltProducts = [
     gripMin,
     gripMax,
     head: "Hexagonal",
+    drawing: { kind: "hbs-expansion", length },
     finish: "Outdoor HDG",
     hole: row.hole,
     centres: `${row.centres} mm`,
@@ -376,12 +385,12 @@ const blindBoltProducts = [
     sourceUrl: "https://content.hobson.com.au/category/high-tensile/hsd-hbs-bolt-data-sheet.pdf"
   }))),
   ...[
-    { size: "M8", hole: 14, centres: 35, edge: "B + wall thickness", outer: "Not stated", torque: 23, loads: [23.1, 29.1], grips: [[5, 26, "UNIBH-M08050G"], [26, 46, "UNIBH-M08070G"], [46, 66, "UNIBH-M08090G"]] },
-    { size: "M10", hole: 18, centres: 40, edge: "B + wall thickness", outer: "Not stated", torque: 45, loads: [35.8, 47.4], grips: [[5, 22, "UNIBH-M10050G"], [22, 42, "UNIBH-M10070G"], [42, 62, "UNIBH-M10090G"]] },
-    { size: "M12", hole: 20, centres: 50, edge: "B + wall thickness", outer: "Not stated", torque: 80, loads: [41.1, 64.2], grips: [[5, 25, "UNIBH-M12055G"], [23, 50, "UNIBH-M12080G"], [48, 70, "UNIBH-M12100G"]] },
-    { size: "M16", hole: 26, centres: 55, edge: "B + wall thickness", outer: "Not stated", torque: 190, loads: [81.2, 116.5], grips: [[8, 35, "UNIBH-M16075G"], [35, 60, "UNIBH-M16100G"], [60, 80, "UNIBH-M16120G"]] },
-    { size: "M20", hole: 33, centres: 70, edge: "B + wall thickness", outer: "Not stated", torque: 300, loads: [106.2, 183.3], grips: [[12, 43, "UNIBH-M20100G"], [43, 63, "UNIBH-M20120G"], [63, 93, "UNIBH-M20150G"]] }
-  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    { size: "M8", hole: 14, centres: 35, edge: "B + wall thickness", outer: "Not stated", torque: 23, loads: [23.1, 29.1], grips: [[5, 26, "UNIBH-M08050G", 50], [26, 46, "UNIBH-M08070G", 70], [46, 66, "UNIBH-M08090G", 90]] },
+    { size: "M10", hole: 18, centres: 40, edge: "B + wall thickness", outer: "Not stated", torque: 45, loads: [35.8, 47.4], grips: [[5, 22, "UNIBH-M10050G", 50], [22, 42, "UNIBH-M10070G", 70], [42, 62, "UNIBH-M10090G", 90]] },
+    { size: "M12", hole: 20, centres: 50, edge: "B + wall thickness", outer: "Not stated", torque: 80, loads: [41.1, 64.2], grips: [[5, 25, "UNIBH-M12055G", 55], [23, 50, "UNIBH-M12080G", 80], [48, 70, "UNIBH-M12100G", 100]] },
+    { size: "M16", hole: 26, centres: 55, edge: "B + wall thickness", outer: "Not stated", torque: 190, loads: [81.2, 116.5], grips: [[8, 35, "UNIBH-M16075G", 75], [35, 60, "UNIBH-M16100G", 100], [60, 80, "UNIBH-M16120G", 120]] },
+    { size: "M20", hole: 33, centres: 70, edge: "B + wall thickness", outer: "Not stated", torque: 300, loads: [106.2, 183.3], grips: [[12, 43, "UNIBH-M20100G", 100], [43, 63, "UNIBH-M20120G", 120], [63, 93, "UNIBH-M20150G", 150]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code, length]) => ({
     id: `iccons-${code.toLowerCase()}`,
     manufacturer: "ICCONS",
     supplier: "ICCONS",
@@ -391,6 +400,7 @@ const blindBoltProducts = [
     gripMin,
     gripMax,
     head: "Hexagonal",
+    drawing: { kind: "uni-expansion", length },
     finish: "Outdoor HDG",
     hole: row.hole,
     centres: `${row.centres} mm`,
@@ -407,12 +417,12 @@ const blindBoltProducts = [
     sourceUrl: "https://www.iccons.com.au/storage/products/1057200020001/ICCONS_TDS_Uni-Bolt_1053.1.pdf"
   }))),
   ...[
-    { size: "M8", hole: 14, centres: 35, torque: 25, loads: [23.6, 33.3], grips: [[5, 26, "BQ1G08"], [18, 46, "BQ2G08"], [30, 66, "BQ3G08"]] },
-    { size: "M10", hole: 18, centres: 40, torque: 45, loads: [41.8, 58.5], grips: [[5, 23, "BQ1G10"], [18, 43, "BQ2G10"], [35, 63, "BQ3G10"]] },
-    { size: "M12", hole: 20, centres: 50, torque: 80, loads: [53.7, 76.3], grips: [[5, 25, "BQ1G12"], [20, 50, "BQ2G12"], [40, 70, "BQ3G12"]] },
-    { size: "M16", hole: 26, centres: 55, torque: 190, loads: [96.0, 139.3], grips: [[5, 35, "BQ1G16"], [30, 60, "BQ2G16"], [55, 80, "BQ3G16"]] },
-    { size: "M20", hole: 33, centres: 70, torque: 300, loads: [168.0, 229.9], grips: [[8, 42, "BQ1G20"], [35, 72, "BQ2G20"], [65, 102, "BQ3G20"]] }
-  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    { size: "M8", hole: 14, centres: 35, torque: 25, loads: [23.6, 33.3], grips: [[5, 26, "BQ1G08", 50], [18, 46, "BQ2G08", 70], [30, 66, "BQ3G08", 90]] },
+    { size: "M10", hole: 18, centres: 40, torque: 45, loads: [41.8, 58.5], grips: [[5, 23, "BQ1G10", 50], [18, 43, "BQ2G10", 70], [35, 63, "BQ3G10", 90]] },
+    { size: "M12", hole: 20, centres: 50, torque: 80, loads: [53.7, 76.3], grips: [[5, 25, "BQ1G12", 55], [20, 50, "BQ2G12", 80], [40, 70, "BQ3G12", 100]] },
+    { size: "M16", hole: 26, centres: 55, torque: 190, loads: [96.0, 139.3], grips: [[5, 35, "BQ1G16", 75], [30, 60, "BQ2G16", 100], [55, 80, "BQ3G16", 120]] },
+    { size: "M20", hole: 33, centres: 70, torque: 300, loads: [168.0, 229.9], grips: [[8, 42, "BQ1G20", 100], [35, 72, "BQ2G20", 120], [65, 102, "BQ3G20", 150]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code, length]) => ({
     id: `keesafety-${code.toLowerCase()}`,
     manufacturer: "Kee Safety",
     supplier: "ICCONS",
@@ -422,6 +432,7 @@ const blindBoltProducts = [
     gripMin,
     gripMax,
     head: "Hexagonal",
+    drawing: { kind: "box-expansion", length },
     finish: "Outdoor HDG",
     hole: row.hole,
     centres: `${row.centres} mm`,
@@ -438,16 +449,16 @@ const blindBoltProducts = [
     sourceUrl: "https://www.keesafety.com/media/w0tnpucl/boxbolt-eta-20-1174-v1-151220-1.pdf"
   }))),
   ...[
-    { size: "M8", hole: 9, centres: 20, clearance: 19, depth: 25, torque: 15, loads: [14.6, 9.1], finish: "Zinc flake 1000 hr SSP", grips: [[9, 24, "BB0850ZF"]] },
-    { size: "M10", hole: 11, centres: 20, clearance: 23, depth: 30, torque: 24, loads: [23.2, 19.0], finish: "Zinc flake 1000 hr SSP", grips: [[10, 29, "BB1060ZF"], [25, 64, "BB1095ZF"], [55, 100, "BB10130ZF"]] },
-    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [33.7, 26.4], finish: "Zinc flake 1000 hr SSP", grips: [[12, 35, "BB1270ZF"]] },
-    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [33.7, 26.4], finish: "Hot-dip galvanised", grips: [[12, 33, "BB1270HDG"], [30, 84, "BB12120HDG"], [80, 143, "BB12180HDG"]] },
-    { size: "M14", hole: 15, centres: 32, clearance: 32, depth: 38, torque: 34, loads: [46.7, 34.8], finish: "Hot-dip galvanised", grips: [[14, 35, "GBB1475HDG"], [28, 82, "GBB14125HDG"], [75, 142, "GBB14185HDG"]] },
-    { size: "M16", hole: 17, centres: 35, clearance: 36, depth: 43, torque: 50, loads: [62.7, 49.1], finish: "Hot-dip galvanised", grips: [[13, 43, "GBB1690HDG"], [40, 75, "GBB16130HDG"], [55, 132, "GBB16180HDG"]] },
-    { size: "M20", hole: 22, centres: 48, clearance: 44, depth: 56, torque: 65, loads: [97.9, 76.1], finish: "Hot-dip galvanised", grips: [[21, 52, "GBB20110HDG"], [21, 82, "GBB20140HDG"], [80, 120, "GBB20180HDG"], [130, 190, "GBB20250HDG"]] },
-    { size: "M24", hole: 26, centres: 60, clearance: 53, depth: 64, torque: 75, loads: [141.0, 105.4], finish: "Hot-dip galvanised", grips: [[21, 62, "GBB24130HDG"], [21, 92, "GBB24160HDG"]] },
-    { size: "M30", hole: 32, centres: 75, clearance: 65, depth: 72, torque: 85, loads: [224.0, 164.6], finish: "Hot-dip galvanised", grips: [[27, 56, "GBB30140HDG"]] }
-  ].flatMap(row => row.grips.map(([gripMin, gripMax, code]) => ({
+    { size: "M8", hole: 9, centres: 20, clearance: 19, depth: 25, torque: 15, loads: [14.6, 9.1], finish: "Zinc flake 1000 hr SSP", grips: [[9, 24, "BB0850ZF", 50]] },
+    { size: "M10", hole: 11, centres: 20, clearance: 23, depth: 30, torque: 24, loads: [23.2, 19.0], finish: "Zinc flake 1000 hr SSP", grips: [[10, 29, "BB1060ZF", 60], [25, 64, "BB1095ZF", 95], [55, 100, "BB10130ZF", 130]] },
+    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [33.7, 26.4], finish: "Zinc flake 1000 hr SSP", grips: [[12, 35, "BB1270ZF", 70]] },
+    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [33.7, 26.4], finish: "Hot-dip galvanised", grips: [[12, 33, "BB1270HDG", 70], [30, 84, "BB12120HDG", 120], [80, 143, "BB12180HDG", 180]] },
+    { size: "M14", hole: 15, centres: 32, clearance: 32, depth: 38, torque: 34, loads: [46.7, 34.8], finish: "Hot-dip galvanised", grips: [[14, 35, "GBB1475HDG", 75], [28, 82, "GBB14125HDG", 125], [75, 142, "GBB14185HDG", 185]] },
+    { size: "M16", hole: 17, centres: 35, clearance: 36, depth: 43, torque: 50, loads: [62.7, 49.1], finish: "Hot-dip galvanised", grips: [[13, 43, "GBB1690HDG", 90], [40, 75, "GBB16130HDG", 130], [55, 132, "GBB16180HDG", 180]] },
+    { size: "M20", hole: 22, centres: 48, clearance: 44, depth: 56, torque: 65, loads: [97.9, 76.1], finish: "Hot-dip galvanised", grips: [[21, 52, "GBB20110HDG", 110], [21, 82, "GBB20140HDG", 140], [80, 120, "GBB20180HDG", 180], [130, 190, "GBB20250HDG", 250]] },
+    { size: "M24", hole: 26, centres: 60, clearance: 53, depth: 64, torque: 75, loads: [141.0, 105.4], finish: "Hot-dip galvanised", grips: [[21, 62, "GBB24130HDG", 130], [21, 92, "GBB24160HDG", 160]] },
+    { size: "M30", hole: 32, centres: 75, clearance: 65, depth: 72, torque: 85, loads: [224.0, 164.6], finish: "Hot-dip galvanised", grips: [[27, 56, "GBB30140HDG", 140]] }
+  ].flatMap(row => row.grips.map(([gripMin, gripMax, code, length]) => ({
     id: `blindbolt-${code.toLowerCase()}`,
     manufacturer: "Blind Bolt Company",
     supplier: "Not specified",
@@ -457,6 +468,7 @@ const blindBoltProducts = [
     gripMin,
     gripMax,
     head: "Drive-nut",
+    drawing: { kind: "drive-nut", length, anchorClearance: row.clearance, depthClearance: row.depth },
     finish: row.finish,
     hole: row.hole,
     centres: `${row.centres} mm`,
@@ -475,10 +487,10 @@ const blindBoltProducts = [
     sourceUrl: "https://www.blindbolt.co.uk/wp-content/uploads/2023/01/Blind-Bolt-Tech-Data-Metric.pdf"
   }))),
   ...[
-    [15.9, 22.2, "2NG2060"], [15.9, 34.9, "2NG2032"], [23.8, 36.5, "2NG2036"],
-    [36.5, 47.6, "2NG2048"], [47.6, 54.0, "2NG2057"], [54.0, 68.3, "2NG2068"],
-    [68.3, 95.3, "2NG2096"], [95.3, 131.8, "2NG2127"], [127.0, 211.1, "2NG2212"]
-  ].map(([gripMin, gripMax, code]) => ({
+    [15.9, 22.2, "2NG2060", 60], [15.9, 34.9, "2NG2032", 75], [23.8, 36.5, "2NG2036", 95],
+    [36.5, 47.6, "2NG2048", 95], [47.6, 54.0, "2NG2057", 95], [54.0, 68.3, "2NG2068", 135],
+    [68.3, 95.3, "2NG2096", 135], [95.3, 131.8, "2NG2127", 175], [127.0, 211.1, "2NG2212", 250]
+  ].map(([gripMin, gripMax, code, length]) => ({
     id: `allfasteners-${code.toLowerCase()}`,
     manufacturer: "Allfasteners",
     supplier: "Allfasteners",
@@ -488,6 +500,7 @@ const blindBoltProducts = [
     gripMin,
     gripMax,
     head: "Tension-control",
+    drawing: { kind: "tension-control", length },
     finish: "Magni 554 duplex",
     hole: 30,
     centres: "Per ESR-3975 and connection design",
@@ -506,6 +519,49 @@ const blindBoltProducts = [
     sourceUrl: "https://www.allfasteners.com.au/pub/media/ResourceGallery/n/e/nexgen2_tds_allfasteners_.pdf"
   }))
 ];
+
+const productFigureSourceRecords = {
+  "EzyStrut": { checked: "30 Jul 2026" },
+  "Hobson Engineering": { checked: "1 Aug 2026" },
+  "Lindapter": { checked: "1 Aug 2026" },
+  "ICCONS": { checked: "1 Aug 2026" },
+  "Kee Safety": { checked: "1 Aug 2026" },
+  "Blind Bolt Company": { checked: "1 Aug 2026" },
+  "Allfasteners": { checked: "1 Aug 2026" }
+};
+
+function setProductFigureBasis(prefix, product) {
+  const source = $(`${prefix}FigureSource`);
+  const checked = $(`${prefix}FigureChecked`);
+  const authority = $(`${prefix}FigureAuthority`);
+  const status = $(`${prefix}FigureStatus`);
+  const summary = $(`${prefix}FigureBasisSummary`);
+  const diagram = $(`${prefix}ProductDiagram`);
+  if (!source || !checked || !authority || !status || !summary) return;
+
+  const sourceRecord = productFigureSourceRecords[product?.manufacturer] || null;
+  const sourceVerified = ["Source_Checked", "Source_Online_Checked"].includes(product?.sourceStatus);
+  const hasVerifiedDrawing = sourceVerified && Boolean(product?.drawing);
+  source.textContent = product?.sourceName || "Not stated";
+  checked.textContent = sourceRecord?.checked || "Not verified";
+  authority.textContent = hasVerifiedDrawing ? "Manufacturer catalogue dimensions" : "No verified figure geometry";
+  status.textContent = hasVerifiedDrawing ? "Product reference · Not for fabrication" : "Figure withheld";
+  summary.textContent = sourceVerified ? "Source checked · product reference · NTS" : "Source not verified";
+  if (diagram) {
+    diagram.dataset.viewId = `${prefix.toUpperCase()}-PRODUCT-REFERENCE-01`;
+    diagram.dataset.viewPurpose = "AS_SUPPLIED_PRODUCT_IDENTIFICATION";
+    diagram.dataset.projection = "ORTHOGRAPHIC_SOURCE_VIEW";
+    diagram.dataset.scale = "NTS";
+    diagram.dataset.unitPolicy = "MILLIMETRES_UNLESS_NOTED";
+    diagram.dataset.productionMode = "WEB_NATIVE";
+    diagram.dataset.sourceReference = product?.sourceName || "NOT_STATED";
+    diagram.dataset.sourceRevision = product?.sourceName || "NOT_STATED";
+    diagram.dataset.sourceAccessDate = sourceRecord?.checked || "NOT_VERIFIED";
+    diagram.dataset.geometryAuthority = hasVerifiedDrawing ? "MANUFACTURER_CATALOGUE" : "NONE";
+    diagram.dataset.derivativeRevision = "SC-HANDBOOK-BOLT-FIGURES-R6";
+    diagram.dataset.drawingStatus = "FOR_REVIEW";
+  }
+}
 
 const weldSizes = [3, 4, 5, 6, 8, 10, 12, 16];
 const parentMetalGrades = {
@@ -793,22 +849,13 @@ const eaCatalogueSections = [
   principalSx: sxP * 1e3, principalSy: syP * 1e3, principalRx: rxP, principalRy: ryP, j: j * 1e3
 }));
 
-const eaAxialGrades = Object.freeze({
-  "150 x 150 x 12 EA": [300,1.000,340,1.000], "125 x 125 x 10 EA": [320,1.000,360,1.000],
-  "100 x 100 x 10 EA": [320,1.000,360,1.000], "100 x 100 x 8 EA": [320,1.000,360,1.000],
-  "100 x 100 x 6 EA": [320,0.906,360,0.856], "90 x 90 x 8 EA": [320,1.000,360,1.000],
-  "75 x 75 x 8 EA": [320,1.000,360,1.000], "75 x 75 x 6 EA": [320,1.000,360,1.000],
-  "65 x 65 x 6 EA": [320,1.000,360,1.000], "65 x 65 x 5 EA": [320,1.000,360,1.000],
-  "50 x 50 x 6 EA": [320,1.000,360,1.000], "50 x 50 x 5 EA": [320,1.000,360,1.000],
-  "50 x 50 x 3 EA": [320,0.907,360,0.858]
-});
-
-const eaSections = eaCatalogueSections.filter(section => eaAxialGrades[section.designation]).map(section => {
-  const [fy300,kf300,fy350,kf350] = eaAxialGrades[section.designation];
-  const grade300 = SteelMaterials.hotRolledStrength("300PLUS", section.actualT);
-  const grade350 = SteelMaterials.hotRolledStrength("Grade 350", section.actualT);
-  return { ...section, grades: { "300PLUS": { fy: fy300, fu: grade300.fu, kf: kf300 }, "Grade 350": { fy: fy350, fu: grade350.fu, kf: kf350 } } };
-});
+const eaSections = eaCatalogueSections.map(section => ({
+  ...section,
+  grades: Object.fromEntries(Object.entries(BeamHotRolledData.equalAngle[section.designation] || {}).map(([name, grade]) => [
+    name,
+    { ...grade, fu: SteelMaterials.hotRolledStrength(name, section.actualT)?.fu || 0 }
+  ]))
+}));
 
 const pfcSections = [
   [380, 55.2, 7030, 147, 30.4, 152, 6.48, 280, 100, 10.0, 17.5, 27.5, 56.7, 798, 946, 89.4, 236, 161, 491, 151],
@@ -843,7 +890,14 @@ const pfcSections = [
   bf,
   tw,
   tf,
-  grades: { "300PLUS": { fy, fu: SteelMaterials.hotRolledStrength("300PLUS", Math.max(tw, tf)).fu, kf: 1 } }
+  grades: Object.fromEntries(Object.entries(
+    BeamHotRolledData.pfc.find(section => section.designation === `${depth}PFC`)?.grades || {
+      "300PLUS": { fy, kf: 1 }
+    }
+  ).map(([name, grade]) => [
+    name,
+    { ...grade, fu: SteelMaterials.hotRolledStrength(name, Math.max(tw, tf))?.fu || 0 }
+  ]))
 }));
 
 function rodGrades(diameter) {
@@ -886,14 +940,9 @@ let sectionPropertiesMode = "catalogue";
 let sectionMaterialThicknessManual = false;
 
 const customSections = [{
-  designation: "Custom / Built-up properties",
+  designation: "Custom / Built-up",
   grades: { "User input": { fy: 350, fu: 450, kf: 1 } }
 }];
-
-const chsGrades = Object.fromEntries(["C250L0", "C350L0"].map(grade => [grade, {
-  ...SteelMaterials.hollowStrength(grade),
-  kf: 1
-}]));
 
 const screwPileCatalogues = {
   katana: {
@@ -2035,7 +2084,7 @@ const manualInputIds = [
   ...sectionPropertyInputIds, "sectionMaterialThickness", "sectionMaterialFyInput", "sectionMaterialFuInput",
   "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
-  "memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD",
+  "memberDimChsD", "memberDimChsT", "memberDimRodD",
   "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
@@ -2767,7 +2816,7 @@ function selectedUBoltProduct() {
 
 function populateUBoltFilters(initial = false) {
   setUBoltOptions("uBoltRodSize", sortMetricSizes(uniqueSorted(uBoltProducts, "thread")), {
-    allLabel: "Any rod size",
+    allLabel: "Any thread designation",
     preferred: initial ? "M12" : ""
   });
   const rodSize = $("uBoltRodSize").value;
@@ -2789,14 +2838,16 @@ function populateUBoltProducts() {
   const products = filteredUBoltProducts();
   const select = $("uBoltProduct");
   const previous = select.value;
-  select.innerHTML = '<option value="">Select catalogue entry</option>' + products.map(product => {
-    const label = `${product.series} - ${product.thread} - ${product.fitKey}`;
+  select.innerHTML = '<option value="">Select catalogue product / family</option>' + products.map(product => {
+    const label = product.product.includes(product.thread)
+      ? product.product
+      : `${product.product} · ${product.thread}`;
     return `<option value="${safeText(product.id)}">${safeText(label)}</option>`;
   }).join("");
   select.disabled = !products.length;
   if (products.some(product => product.id === previous)) select.value = previous;
   else select.value = "";
-  $("uBoltProductGroupNote").textContent = products.length
+  $("uBoltProductSelectionNote").textContent = products.length
     ? `${products.length} catalogue ${products.length === 1 ? "entry" : "entries"} available; select one to review.`
     : "No catalogue entry for the current filters.";
 }
@@ -2812,10 +2863,425 @@ function publishedLoadLabel(product) {
   return "Manufacturer-rated load";
 }
 
+function productDiagramDefs(markerId) {
+  return `<defs><marker id="${markerId}" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto-start-reverse" markerUnits="strokeWidth"><path d="M 0 0 L 8 4 L 0 8 z" fill="#59655f"></path></marker></defs>`;
+}
+
+function productDimensionLine(x1, y1, x2, y2, markerId, className = "") {
+  return `<line class="product-dimension ${className}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-start="url(#${markerId})" marker-end="url(#${markerId})"></line>`;
+}
+
+function productThreadLines(x, y1, y2) {
+  const lines = [];
+  for (let y = y1 + 4; y < y2; y += 5) {
+    lines.push(`<line class="product-thread" x1="${x - 6}" y1="${y}" x2="${x + 6}" y2="${y - 2}"></line>`);
+  }
+  return lines.join("");
+}
+
+function productHorizontalThreadLines(x1, x2, y) {
+  const lines = [];
+  for (let x = x1 + 4; x < x2; x += 5) {
+    lines.push(`<line class="product-thread" x1="${x}" y1="${y - 6}" x2="${x - 2}" y2="${y + 6}"></line>`);
+  }
+  return lines.join("");
+}
+
+function productHexNut(cx, cy, width = 20, height = 10, id = "") {
+  const halfWidth = width / 2;
+  const halfHeight = height / 2;
+  const shoulder = Math.min(4, width * 0.2);
+  const idAttribute = id ? ` id="${id}"` : "";
+  return `<polygon${idAttribute} class="product-object-thin product-nut" data-layer-role="fastener" points="${cx - halfWidth + shoulder},${cy - halfHeight} ${cx + halfWidth - shoulder},${cy - halfHeight} ${cx + halfWidth},${cy} ${cx + halfWidth - shoulder},${cy + halfHeight} ${cx - halfWidth + shoulder},${cy + halfHeight} ${cx - halfWidth},${cy}"></polygon>`;
+}
+
+function renderUBoltProductFigure(product) {
+  const figure = $("uBoltProductFigure");
+  const svg = $("uBoltProductDiagram");
+  if (!figure || !svg || !product) {
+    if (figure) figure.hidden = true;
+    if (svg) svg.replaceChildren();
+    return;
+  }
+
+  const drawing = product.drawing || null;
+  const verifiedRodDiameter = Number(drawing?.rodDiameter);
+  const displayRodDiameter = Number.isFinite(verifiedRodDiameter) && verifiedRodDiameter > 0
+    ? verifiedRodDiameter
+    : Number(String(product.thread).replace(/\D/g, "")) || 12;
+  const insideWidth = Number(drawing?.insideWidth || drawing?.fitDiameter);
+  const overallLength = Number(drawing?.overallLength);
+  const threadLength = Number(drawing?.threadLength);
+  const valueDriven = drawing && [insideWidth, overallLength, threadLength].every(value => Number.isFinite(value) && value > 0);
+  const markerId = "uBoltDimensionArrow";
+
+  svg.dataset.productVariantId = product.id;
+  svg.dataset.sourceStatus = product.sourceStatus || "Source_Not_Verified";
+
+  if (!valueDriven || !["ezystrut", "hobson"].includes(drawing.convention)) {
+    figure.hidden = true;
+    svg.replaceChildren();
+    return;
+  }
+
+  if (drawing.convention === "ezystrut") {
+    if (!(Number.isFinite(verifiedRodDiameter) && verifiedRodDiameter > 0)) {
+      figure.hidden = true;
+      svg.replaceChildren();
+      return;
+    }
+    const scale = Math.min(96 / (insideWidth + 2 * verifiedRodDiameter), 126 / overallLength);
+    const rodWidth = Math.max(5, Math.min(10, verifiedRodDiameter * scale));
+    const centreX = 168;
+    const outerTop = 22;
+    const outerBottom = outerTop + overallLength * scale;
+    const yTop = outerTop + rodWidth / 2;
+    const yBottom = outerBottom - rodWidth / 2;
+    const centreSpan = (insideWidth + verifiedRodDiameter) * scale;
+    const xLeft = centreX - centreSpan / 2;
+    const xRight = centreX + centreSpan / 2;
+    const bendRadius = centreSpan / 2;
+    const yBend = yBottom - bendRadius;
+    const threadEnd = Math.min(outerTop + threadLength * scale, yBend - 9);
+    const nutY = outerTop + Math.min(22, threadLength * scale * 0.45);
+    const referenceRadius = insideWidth * scale / 2;
+    const diagonal = referenceRadius * 0.7;
+    const dLabel = `ØD ${formatDimension(insideWidth, 0)} mm`;
+    const dLabelWidth = Math.max(48, dLabel.length * 6.2);
+    const objectPath = `M ${xLeft} ${yTop} L ${xLeft} ${yBend} A ${bendRadius} ${bendRadius} 0 0 0 ${xRight} ${yBend} L ${xRight} ${yTop}`;
+
+    svg.innerHTML = `
+      <title id="uBoltProductDiagramTitle">${safeText(product.product)} EzyStrut catalogue drawing</title>
+      <desc id="uBoltProductDiagramDescription">Source-based redraw of the EzyStrut front elevation with A overall length, B thread length, C rod diameter and D supported-member diameter.</desc>
+      ${productDiagramDefs(markerId)}
+      <g id="ubolt-reference-geometry" data-layer-role="reference">
+        <line id="ubolt-vertical-centreline" class="product-centre" x1="${centreX}" y1="${outerTop - 8}" x2="${centreX}" y2="${outerBottom + 7}"></line>
+        <circle id="ubolt-reference-pipe-envelope" class="product-reference-envelope" cx="${centreX}" cy="${yBend}" r="${referenceRadius}"></circle>
+      </g>
+      <g id="ubolt-product" data-layer-role="product">
+        <path id="ubolt-bent-rod" class="product-object" style="stroke-width:${rodWidth}" d="${objectPath}"></path>
+        <path class="product-object-highlight" style="stroke-width:${Math.max(1.2, rodWidth * 0.24)}" d="${objectPath}"></path>
+        <g id="ubolt-left-threaded-zone" data-layer-role="thread">${productThreadLines(xLeft, outerTop, threadEnd)}</g>
+        <g id="ubolt-right-threaded-zone" data-layer-role="thread">${productThreadLines(xRight, outerTop, threadEnd)}</g>
+        ${productHexNut(xLeft, nutY, 20, 10, "ubolt-left-nut")}
+        ${productHexNut(xRight, nutY, 20, 10, "ubolt-right-nut")}
+      </g>
+      <g id="ubolt-catalogue-dimensions" data-layer-role="dimensions">
+        <line class="product-extension" x1="${xLeft}" y1="${outerTop}" x2="42" y2="${outerTop}"></line>
+        <line class="product-extension" x1="${centreX}" y1="${outerBottom}" x2="42" y2="${outerBottom}"></line>
+        ${productDimensionLine(42, outerTop, 42, outerBottom, markerId)}
+        <text class="product-label" x="31" y="${(outerTop + outerBottom) / 2}" text-anchor="middle" transform="rotate(-90 31 ${(outerTop + outerBottom) / 2})">A ${formatDimension(overallLength, 0)} mm</text>
+
+        <line class="product-extension" x1="${xLeft}" y1="${outerTop}" x2="72" y2="${outerTop}"></line>
+        <line class="product-extension" x1="${xLeft}" y1="${threadEnd}" x2="72" y2="${threadEnd}"></line>
+        ${productDimensionLine(72, outerTop, 72, threadEnd, markerId)}
+        <text class="product-label-secondary" x="62" y="${(outerTop + threadEnd) / 2}" text-anchor="middle" transform="rotate(-90 62 ${(outerTop + threadEnd) / 2})">B ${formatDimension(threadLength, 0)} mm</text>
+
+        <line class="product-extension" x1="${xLeft - rodWidth / 2}" y1="${yTop}" x2="${xLeft - rodWidth / 2}" y2="12"></line>
+        <line class="product-extension" x1="${xLeft + rodWidth / 2}" y1="${yTop}" x2="${xLeft + rodWidth / 2}" y2="12"></line>
+        ${productDimensionLine(xLeft - rodWidth / 2, 12, xLeft + rodWidth / 2, 12, markerId)}
+        <text class="product-label-secondary" x="${xLeft + 14}" y="16">ØC ${formatDimension(verifiedRodDiameter, 0)} mm</text>
+
+        ${productDimensionLine(centreX - diagonal, yBend + diagonal, centreX + diagonal, yBend - diagonal, markerId)}
+        <rect class="product-label-plate" x="${centreX - dLabelWidth / 2}" y="${yBend - 9}" width="${dLabelWidth}" height="16" rx="2"></rect>
+        <text class="product-label-secondary" x="${centreX}" y="${yBend + 3}" text-anchor="middle">${dLabel}</text>
+      </g>`;
+
+    figure.hidden = false;
+    $("uBoltProductFigureCaption").textContent = "A depth · B thread · ØC rod · ØD fit · 2 x hex nuts included.";
+    return;
+  }
+
+  const scale = Math.min(154 / overallLength, 74 / (insideWidth + 2 * displayRodDiameter));
+  const rodWidth = Math.max(5, Math.min(10, displayRodDiameter * scale));
+  const outerLeft = 70;
+  const outerRight = outerLeft + overallLength * scale;
+  const centreY = 101;
+  const outerHeight = (insideWidth + 2 * displayRodDiameter) * scale;
+  const yTop = centreY - (insideWidth + displayRodDiameter) * scale / 2;
+  const yBottom = centreY + (insideWidth + displayRodDiameter) * scale / 2;
+  const bendRadius = (insideWidth + displayRodDiameter) * scale / 2;
+  const xOpen = outerLeft + rodWidth / 2;
+  const xBend = outerRight - rodWidth / 2 - bendRadius;
+  const threadEnd = Math.min(outerLeft + threadLength * scale, xBend - 10);
+  const nutX = outerLeft + Math.min(22, threadLength * scale * 0.45);
+  const objectPath = `M ${xOpen} ${yTop} L ${xBend} ${yTop} A ${bendRadius} ${bendRadius} 0 0 1 ${xBend} ${yBottom} L ${xOpen} ${yBottom}`;
+
+  svg.innerHTML = `
+    <title id="uBoltProductDiagramTitle">${safeText(product.product)} Hobson catalogue drawing</title>
+    <desc id="uBoltProductDiagramDescription">Source-based redraw of the Hobson side-view convention with the metric thread designation, W inside clear width, L overall length and T thread length.</desc>
+    ${productDiagramDefs(markerId)}
+    <line class="product-centre" x1="${outerLeft - 8}" y1="${centreY}" x2="${outerRight + 8}" y2="${centreY}"></line>
+    <g id="ubolt-product" data-layer-role="product">
+      <path id="ubolt-bent-rod" class="product-object" style="stroke-width:${rodWidth}" d="${objectPath}"></path>
+      <path class="product-object-highlight" style="stroke-width:${Math.max(1.2, rodWidth * 0.24)}" d="${objectPath}"></path>
+      <g id="ubolt-left-threaded-zone" data-layer-role="thread">${productHorizontalThreadLines(outerLeft, threadEnd, yTop)}</g>
+      <g id="ubolt-right-threaded-zone" data-layer-role="thread">${productHorizontalThreadLines(outerLeft, threadEnd, yBottom)}</g>
+      ${productHexNut(nutX, yTop, 10, 16, "ubolt-left-nut")}
+      ${productHexNut(nutX, yBottom, 10, 16, "ubolt-right-nut")}
+    </g>
+    <g id="ubolt-catalogue-dimensions" data-layer-role="dimensions">
+      <line class="product-extension" x1="${outerLeft}" y1="${yTop}" x2="${outerLeft}" y2="20"></line>
+      <line class="product-extension" x1="${outerRight}" y1="${centreY}" x2="${outerRight}" y2="20"></line>
+      ${productDimensionLine(outerLeft, 20, outerRight, 20, markerId)}
+      <text class="product-label" x="${(outerLeft + outerRight) / 2}" y="15" text-anchor="middle">L ${formatDimension(overallLength, 0)} mm</text>
+
+      <line class="product-extension" x1="${outerLeft}" y1="${yBottom}" x2="${outerLeft}" y2="167"></line>
+      <line class="product-extension" x1="${threadEnd}" y1="${yBottom}" x2="${threadEnd}" y2="167"></line>
+      ${productDimensionLine(outerLeft, 167, threadEnd, 167, markerId)}
+      <rect class="product-label-plate" x="${(outerLeft + threadEnd) / 2 - 25}" y="171" width="50" height="15" rx="2"></rect>
+      <text class="product-label-secondary" x="${(outerLeft + threadEnd) / 2}" y="183" text-anchor="middle">T ${formatDimension(threadLength, 0)} mm</text>
+
+      ${productDimensionLine(xBend - 12, yTop + rodWidth / 2, xBend - 12, yBottom - rodWidth / 2, markerId)}
+      <rect class="product-label-plate" x="${xBend - 5}" y="${centreY - 8}" width="52" height="16" rx="2"></rect>
+      <text class="product-label-secondary" x="${xBend - 2}" y="${centreY + 4}">W ${formatDimension(insideWidth, 0)} mm</text>
+
+      <path class="product-leader" d="M 58 145 L 64 145 L ${xOpen} ${yBottom + rodWidth / 2}" marker-end="url(#${markerId})"></path>
+      <text class="product-label-secondary" x="54" y="149" text-anchor="end">${safeText(product.thread)}</text>
+    </g>`;
+
+  figure.hidden = false;
+  $("uBoltProductFigureCaption").textContent = "M thread · W clear width · L length · T thread.";
+}
+
+function uBoltGeometrySummary(product) {
+  const drawing = product?.drawing;
+  if (!drawing) return product.fit || product.fitKey || "Not stated";
+  const overallLength = Number(drawing.overallLength);
+  const threadLength = Number(drawing.threadLength);
+  const sourceGeometry = product.fit || product.fitKey || "Not stated";
+  if (![overallLength, threadLength].every(value => Number.isFinite(value) && value > 0)) return sourceGeometry;
+  if (drawing.convention === "ezystrut") {
+    return `Round member · fit diameter ${formatDimension(Number(drawing.fitDiameter), 0)} mm · overall depth ${formatDimension(overallLength, 0)} mm · thread length ${formatDimension(threadLength, 0)} mm`;
+  }
+  if (drawing.convention === "hobson") {
+    return `Round member · inside clear width ${formatDimension(Number(drawing.insideWidth), 0)} mm · overall length ${formatDimension(overallLength, 0)} mm · thread length ${formatDimension(threadLength, 0)} mm`;
+  }
+  return `${sourceGeometry} · thread length ${formatDimension(threadLength, 0)} mm`;
+}
+
+function renderBlindBoltProductFigure(product) {
+  const figure = $("blindBoltProductFigure");
+  const svg = $("blindBoltProductDiagram");
+  if (!figure || !svg || !product) {
+    if (figure) figure.hidden = true;
+    if (svg) svg.replaceChildren();
+    return;
+  }
+
+  const markerId = "blindBoltDimensionArrow";
+  const drawing = product.drawing || {};
+  const kind = drawing.kind;
+  const lengthB = Number(product.drawing?.lengthB);
+  const length = Number(drawing.length);
+  const gripDimension = value => formatDimension(value, Number.isInteger(Number(value)) ? 0 : 1);
+  const gripRangeText = `${gripDimension(product.gripMin)}-${gripDimension(product.gripMax)} mm`;
+  const lengthText = Number.isFinite(length) && length > 0 ? `L ${formatDimension(length, 0)} mm` : "";
+
+  svg.dataset.productVariantId = product.id;
+  svg.dataset.sourceStatus = product.sourceStatus || "Source_Not_Verified";
+  const showFigure = (content, caption) => {
+    svg.innerHTML = content;
+    figure.hidden = false;
+    $("blindBoltProductFigureCaption").textContent = caption;
+  };
+
+  if (product.manufacturer === "Lindapter" && Number.isFinite(lengthB) && lengthB > 0) {
+    showFigure(`
+      <title id="blindBoltProductDiagramTitle">${safeText(product.family)} catalogue product geometry</title>
+      <desc id="blindBoltProductDiagramDescription">Source-based redraw of the uninstalled Lindapter Hollo-Bolt catalogue product view with assembled product length B max.</desc>
+      ${productDiagramDefs(markerId)}
+      <g id="blindbolt-lindapter-catalogue-view" data-layer-role="product">
+        <line class="product-centre" x1="155" y1="12" x2="155" y2="178"></line>
+        <polygon class="product-object-thin" points="130,31 138,22 172,22 180,31 180,46 130,46"></polygon>
+        <rect class="product-object-thin" x="118" y="46" width="74" height="18" rx="2"></rect>
+        <rect class="product-object-thin" x="132" y="64" width="46" height="69" rx="2"></rect>
+        <line class="product-object-thin" x1="155" y1="84" x2="155" y2="130"></line>
+        <path class="product-hidden" d="M 140 68 V 128 M 170 68 V 128"></path>
+        <polygon class="product-object-thin" points="132,133 178,133 171,147 139,147"></polygon>
+        <rect class="product-object-thin" x="141" y="147" width="28" height="10"></rect>
+        <polygon class="product-object-thin" points="145,157 165,157 162,166 148,166"></polygon>
+      </g>
+      <g id="blindbolt-lindapter-catalogue-dimensions" data-layer-role="dimensions">
+        <line class="product-extension" x1="118" y1="22" x2="91" y2="22"></line>
+        <line class="product-extension" x1="145" y1="166" x2="91" y2="166"></line>
+        ${productDimensionLine(91, 22, 91, 166, markerId)}
+        <text class="product-label" x="80" y="94" text-anchor="middle" transform="rotate(-90 80 94)">B max ${formatDimension(lengthB, 0)} mm</text>
+      </g>`,
+    "Lindapter Hollo-Bolt · B max length.");
+    return;
+  }
+
+  if (kind === "hbs-expansion" && Number.isFinite(length)) {
+    showFigure(`
+      <title id="blindBoltProductDiagramTitle">${safeText(product.family)} catalogue geometry</title>
+      <desc id="blindBoltProductDiagramDescription">Source-based redraw of the Hobson HBS-Bolt catalogue side view with fixed overall bolt length L. Grip range G is reported in the caption rather than drawn as a fixed product dimension.</desc>
+      ${productDiagramDefs(markerId)}
+      <g id="blindbolt-hobson-side-view" data-layer-role="product">
+        <line class="product-centre" x1="34" y1="96" x2="272" y2="96"></line>
+        <polygon class="product-object-thin" points="38,82 46,74 62,74 70,82 70,110 62,118 46,118 38,110"></polygon>
+        <rect class="product-object-thin" x="70" y="81" width="17" height="30"></rect>
+        <rect class="product-object-thin" x="87" y="84" width="142" height="24" rx="2"></rect>
+        <line class="product-object" style="stroke-width:3" x1="54" y1="96" x2="253" y2="96"></line>
+        <path class="product-object-thin" d="M 229 84 L 252 84 L 263 96 L 252 108 L 229 108 Z"></path>
+        <path class="product-thread" d="M 232 87 l 16 18 M 238 85 l 17 19 M 245 86 l 14 16"></path>
+      </g>
+      <g id="blindbolt-hobson-dimensions" data-layer-role="dimensions">
+        <line class="product-extension" x1="38" y1="74" x2="38" y2="25"></line>
+        <line class="product-extension" x1="263" y1="84" x2="263" y2="25"></line>
+        ${productDimensionLine(38, 25, 263, 25, markerId)}
+        <text class="product-label" x="150" y="18" text-anchor="middle">${lengthText}</text>
+      </g>`,
+    `Hobson HBS-Bolt · L ${formatDimension(length, 0)} mm · G ${gripRangeText}.`);
+    return;
+  }
+
+  if (kind === "uni-expansion" && Number.isFinite(length)) {
+    showFigure(`
+      <title id="blindBoltProductDiagramTitle">${safeText(product.family)} catalogue product geometry</title>
+      <desc id="blindBoltProductDiagramDescription">Source-based redraw of the uninstalled ICCONS UNI-BOLT catalogue product view with bolt, sleeve collar, sleeve and cone.</desc>
+      ${productDiagramDefs(markerId)}
+      <g id="blindbolt-iccons-catalogue-view" data-layer-role="product">
+        <line class="product-centre" x1="27" y1="98" x2="279" y2="98"></line>
+        <polygon class="product-object-thin" points="33,83 42,74 61,74 70,83 70,113 61,122 42,122 33,113"></polygon>
+        <rect class="product-object-thin" x="70" y="80" width="20" height="36"></rect>
+        <rect class="product-object-thin" x="90" y="82" width="145" height="32" rx="3"></rect>
+        <line class="product-object" style="stroke-width:3" x1="51" y1="98" x2="258" y2="98"></line>
+      <path class="product-hidden" d="M 103 88 H 223 M 103 108 H 223"></path>
+      <path class="product-object-thin" d="M 235 82 L 254 82 L 267 98 L 254 114 L 235 114 Z"></path>
+      <path class="product-thread" d="M 238 84 l 17 26 M 245 83 l 16 24 M 252 86 l 11 17"></path>
+      <g id="blindbolt-iccons-component-labels" data-layer-role="labels">
+        <path class="product-leader" d="M 80 80 L 91 56"></path>
+        <text class="product-label-secondary" x="64" y="48">Sleeve collar</text>
+        <path class="product-leader" d="M 160 82 L 176 56"></path>
+        <text class="product-label-secondary" x="170" y="48">Sleeve</text>
+        <path class="product-leader" d="M 250 82 L 262 56"></path>
+        <text class="product-label-secondary" x="274" y="48" text-anchor="end">Cone</text>
+        <path class="product-leader" d="M 51 98 L 45 137"></path>
+        <text class="product-label-secondary" x="30" y="154">Bolt</text>
+      </g>
+    </g>`,
+    "ICCONS UNI-BOLT · bolt / collar / sleeve / cone.");
+    return;
+  }
+
+  if (kind === "box-expansion" && Number.isFinite(length)) {
+    showFigure(`
+      <title id="blindBoltProductDiagramTitle">${safeText(product.family)} pre-installation geometry</title>
+      <desc id="blindBoltProductDiagramDescription">Source-based redraw of the BoxBolt pre-installation assembly with bolt length L and clearance-hole diameter d1.</desc>
+      ${productDiagramDefs(markerId)}
+      <g id="blindbolt-boxbolt-preinstallation-view" data-layer-role="product">
+        <line class="product-centre" x1="30" y1="98" x2="276" y2="98"></line>
+        <polygon class="product-object-thin" points="36,84 44,76 61,76 69,84 69,112 61,120 44,120 36,112"></polygon>
+        <rect class="product-object-thin" x="69" y="81" width="18" height="34"></rect>
+        <path class="product-object-thin" d="M 87 84 H 228 L 254 98 L 228 112 H 87 Z"></path>
+        <line class="product-object" style="stroke-width:3" x1="52" y1="98" x2="258" y2="98"></line>
+        <path class="product-hidden" d="M 91 88 H 221 M 91 108 H 221"></path>
+        <path class="product-thread" d="M 210 87 l 17 20 M 218 87 l 17 20 M 226 89 l 13 16"></path>
+      </g>
+      <g id="blindbolt-boxbolt-dimensions" data-layer-role="dimensions">
+        <line class="product-extension" x1="36" y1="76" x2="36" y2="24"></line>
+        <line class="product-extension" x1="263" y1="86" x2="263" y2="24"></line>
+        ${productDimensionLine(36, 24, 263, 24, markerId)}
+        <text class="product-label" x="150" y="17" text-anchor="middle">${lengthText}</text>
+        <path class="product-leader" d="M 108 84 L 143 55"></path>
+        <text class="product-label-secondary" x="147" y="53">Split sleeve</text>
+        <path class="product-leader" d="M 240 89 L 258 59"></path>
+        <text class="product-label-secondary" x="270" y="57" text-anchor="end">Cone</text>
+      </g>`,
+    "Kee Safety BoxBolt · L length.");
+    return;
+  }
+
+  if (kind === "drive-nut" && Number.isFinite(length)) {
+    const anchorClearance = Number(drawing.anchorClearance);
+    const depthClearance = Number(drawing.depthClearance);
+    showFigure(`
+      <title id="blindBoltProductDiagramTitle">${safeText(product.family)} technical-data geometry</title>
+      <desc id="blindBoltProductDiagramDescription">Source-based redraw of the Blind Bolt technical-data key. MAX and MIN are fixing thicknesses; AC is anchor clearance; DC is depth clearance; P is the non-load-bearing pivot axis. Dimensions are in millimetres.</desc>
+      ${productDiagramDefs(markerId)}
+      <g id="blindbolt-drive-nut-side-view" data-layer-role="product">
+        <line class="product-centre" x1="34" y1="99" x2="278" y2="99"></line>
+        <path class="product-object-thin" d="M 48 84 L 57 77 H 137 V 121 H 57 L 48 114 Z"></path>
+        <path class="product-object-thin" d="M 82 77 V 68 H 111 V 77 M 82 121 V 130 H 111 V 121"></path>
+        <circle class="product-object-thin" cx="101" cy="99" r="3.5"></circle>
+        <rect class="product-object-thin" x="137" y="89" width="88" height="20"></rect>
+        <path class="product-thread" d="M 139 90 l 16 18 M 148 90 l 16 18 M 157 90 l 16 18 M 166 90 l 16 18 M 175 90 l 16 18 M 184 90 l 16 18 M 193 90 l 16 18 M 202 90 l 16 18"></path>
+        <rect class="product-object-thin" x="225" y="79" width="10" height="40"></rect>
+        <polygon class="product-object-thin" points="235,84 243,77 260,77 268,84 268,114 260,121 243,121 235,114"></polygon>
+      </g>
+      <g id="blindbolt-drive-nut-labels" data-layer-role="labels">
+        <path class="product-leader" d="M 101 99 L 145 140"></path>
+        <text class="product-label-secondary" x="151" y="149">P</text>
+      </g>
+      <g id="blindbolt-drive-nut-dimensions" data-layer-role="dimensions">
+        <line class="product-extension" x1="111" y1="68" x2="111" y2="20"></line>
+        <line class="product-extension" x1="225" y1="79" x2="225" y2="20"></line>
+        ${productDimensionLine(111, 20, 225, 20, markerId)}
+        <text class="product-label-secondary" x="168" y="15" text-anchor="middle">MAX ${gripDimension(product.gripMax)}</text>
+
+        <line class="product-extension" x1="111" y1="68" x2="111" y2="50"></line>
+        <line class="product-extension" x1="137" y1="77" x2="137" y2="50"></line>
+        ${productDimensionLine(111, 50, 137, 50, markerId)}
+        <text class="product-label-secondary" x="170" y="44" text-anchor="middle">MIN ${gripDimension(product.gripMin)}</text>
+
+        <line class="product-extension" x1="48" y1="121" x2="48" y2="176"></line>
+        <line class="product-extension" x1="137" y1="121" x2="137" y2="176"></line>
+        ${productDimensionLine(48, 176, 137, 176, markerId)}
+        <text class="product-label-secondary" x="92" y="169" text-anchor="middle">DC ${formatDimension(depthClearance, 0)}</text>
+
+        <line class="product-extension" x1="48" y1="68" x2="24" y2="68"></line>
+        <line class="product-extension" x1="48" y1="130" x2="24" y2="130"></line>
+        ${productDimensionLine(24, 68, 24, 130, markerId)}
+        <text class="product-label-secondary" x="14" y="99" text-anchor="middle" transform="rotate(-90 14 99)">AC ${formatDimension(anchorClearance, 0)}</text>
+      </g>`,
+    "MAX/MIN grip · AC anchor · DC depth · P pivot.");
+    return;
+  }
+
+  if (kind === "tension-control" && Number.isFinite(length)) {
+    showFigure(`
+      <title id="blindBoltProductDiagramTitle">${safeText(product.family)} component geometry</title>
+      <desc id="blindBoltProductDiagramDescription">Source-based redraw of the NexGen2 catalogue parts view with M20 core bolt, tension-control spline, hex nut, face washer, collapsible washer and spring sleeve.</desc>
+      ${productDiagramDefs(markerId)}
+      <g id="blindbolt-nexgen2-component-view" data-layer-role="product">
+        <line class="product-centre" x1="31" y1="51" x2="271" y2="51"></line>
+        <polygon class="product-object-thin" points="31,40 39,32 55,32 63,40 63,62 55,70 39,70 31,62"></polygon>
+        <rect class="product-object-thin" x="63" y="42" width="170" height="18" rx="2"></rect>
+        <path class="product-thread" d="M 66 43 l 15 16 M 75 43 l 15 16 M 84 43 l 15 16 M 93 43 l 15 16 M 102 43 l 15 16 M 111 43 l 15 16 M 120 43 l 15 16 M 129 43 l 15 16 M 138 43 l 15 16 M 147 43 l 15 16 M 156 43 l 15 16 M 165 43 l 15 16"></path>
+        <rect class="product-object-thin" x="233" y="45" width="34" height="12" rx="2"></rect>
+        <path class="product-thread" d="M 237 46 l 10 10 M 244 46 l 10 10 M 251 46 l 10 10"></path>
+
+        <polygon class="product-object-thin" points="34,111 42,103 59,103 67,111 59,119 42,119"></polygon>
+        <circle class="product-object-thin" cx="101" cy="111" r="13"></circle>
+        <circle class="product-hidden" cx="101" cy="111" r="6"></circle>
+        <path class="product-object-thin" d="M 145 100 C 160 96 173 100 178 111 C 173 122 160 126 145 122 L 151 116 L 164 111 L 151 106 Z"></path>
+        <rect class="product-object-thin" x="213" y="99" width="17" height="24" rx="2"></rect>
+        <path class="product-object-thin" d="M 230 101 C 241 103 246 108 248 111 C 246 114 241 119 230 121"></path>
+        <path class="product-object-thin" d="M 248 101 C 259 103 264 108 266 111 C 264 114 259 119 248 121"></path>
+      </g>
+      <g id="blindbolt-nexgen2-labels" data-layer-role="labels">
+        <path class="product-leader" d="M 115 60 L 93 76"></path>
+        <text class="product-label-secondary" x="93" y="86" text-anchor="middle">Core bolt</text>
+        <path class="product-leader" d="M 250 57 L 270 76"></path>
+        <text class="product-label-secondary" x="274" y="86" text-anchor="end">Tension-control spline</text>
+        <text class="product-label-secondary" x="50" y="142" text-anchor="middle">Hex nut</text>
+        <text class="product-label-secondary" x="101" y="166" text-anchor="middle">Face washer</text>
+        <text class="product-label-secondary" x="160" y="142" text-anchor="middle">Collapsible washer</text>
+        <text class="product-label-secondary" x="240" y="166" text-anchor="middle">Spring sleeve</text>
+      </g>`,
+    "Allfasteners NexGen2 · supplied component set.");
+    return;
+  }
+
+  figure.hidden = true;
+  svg.replaceChildren();
+}
+
 function calculateUBolt() {
   const product = selectedUBoltProduct();
   if (!product) {
-    $("uBoltSelectionPrompt").hidden = false;
+    $("uBoltSelectionPrompt").hidden = true;
     $("uBoltSelectedSummary").hidden = true;
     $("uBoltPublishedSection").hidden = true;
     $("uBoltSelectionPromptTitle").textContent = $("uBoltProduct").disabled ? "No catalogue entry" : "Select a catalogue entry";
@@ -2825,7 +3291,7 @@ function calculateUBolt() {
     $("uBoltSelectionTypeLabel").textContent = "Product selection";
     $("uBoltSelectionTitle").textContent = $("uBoltProduct").disabled ? "No catalogue entry" : "Select catalogue entry";
     $("uBoltSelectionNote").textContent = "Member geometry, finish and manufacturer remain optional browse filters.";
-    ["uBoltCode", "uBoltThread", "uBoltSupplier", "uBoltPublishedGeometry", "uBoltPublishedMaterial"].forEach(id => {
+    ["uBoltCode", "uBoltThread", "uBoltPublishedGeometry", "uBoltPublishedMaterial"].forEach(id => {
       $(id).textContent = "-";
     });
     $("uBoltPublishedLoadLabel").textContent = "Manufacturer-published value";
@@ -2837,6 +3303,7 @@ function calculateUBolt() {
     $("uBoltSourceStatus").removeAttribute("href");
     $("uBoltSourceLink").textContent = "Manufacturer product listing";
     $("uBoltSourceLink").removeAttribute("href");
+    $("uBoltReferenceName").textContent = "Manufacturer product data";
     return;
   }
   $("uBoltSelectionPrompt").hidden = true;
@@ -2845,11 +3312,12 @@ function calculateUBolt() {
   const sourceLink = $("uBoltSourceLink");
   const customEntry = product.application === "Custom / project-manufactured";
 
-  $("uBoltProductGroupTitle").textContent = customEntry ? "Manufacturing source" : "Product source";
+  $("uBoltProductGroupTitle").textContent = customEntry ? "Manufacturing filters" : "Catalogue filters";
   $("uBoltProductGroupNote").textContent = customEntry
-    ? "Select the proposed manufacturer and project-specific entry."
-    : "Select the brand or manufacturer, finish and catalogue entry.";
-  $("uBoltProductFieldLabel").textContent = customEntry ? "Manufacturing entry" : "Catalogue entry";
+    ? "Proposed manufacturer and finish remain optional."
+    : "Brand or manufacturer and finish remain optional.";
+  $("uBoltProductSelectionTitle").textContent = customEntry ? "Manufacturing entry" : "Product selection";
+  $("uBoltProductFieldLabel").textContent = customEntry ? "Manufacturing entry" : "Catalogue product / family";
   $("uBoltSelectionTypeLabel").textContent = customEntry
     ? "Selected manufacturing entry"
     : "Selected product";
@@ -2857,8 +3325,7 @@ function calculateUBolt() {
   $("uBoltSelectionNote").textContent = `${product.manufacturer} · ${product.series}`;
   $("uBoltCode").textContent = product.code;
   $("uBoltThread").textContent = product.thread;
-  $("uBoltSupplier").textContent = product.supplier || "Not specified";
-  $("uBoltPublishedGeometry").textContent = product.fit || product.fitKey || "Not stated";
+  $("uBoltPublishedGeometry").textContent = uBoltGeometrySummary(product);
   $("uBoltPublishedMaterial").textContent = product.material || "Not stated";
   $("uBoltPublishedLoadLabel").textContent = publishedLoadLabel(product);
   $("uBoltPublishedCapacity").textContent = publishedCapacityText(product);
@@ -2873,9 +3340,9 @@ function calculateUBolt() {
   sourceStatus.textContent = sourceChecked ? "Local reference checked" : sourceOnline ? "Manufacturer source checked online" : "Source not verified";
   sourceStatus.classList.toggle("is-checked", sourceChecked);
   sourceStatus.classList.toggle("is-online", sourceOnline);
-  sourceStatus.href = product.sourceUrl || "#";
   sourceStatus.title = product.sourceName;
-  sourceLink.textContent = product.sourceName;
+  $("uBoltReferenceName").textContent = product.sourceName;
+  sourceLink.innerHTML = `Open ${/\.pdf($|\?)/i.test(product.sourceUrl || "") ? "technical data" : "product page"} <span aria-hidden="true">↗</span>`;
   sourceLink.href = product.sourceUrl || "#";
 }
 
@@ -2930,7 +3397,10 @@ function populateBlindBoltProducts() {
   const hasGrip = Number.isFinite(grip) && grip > 0;
   const compatible = hasGrip ? products.filter(blindBoltGripCompatible) : products;
   const otherRanges = hasGrip ? products.filter(product => !blindBoltGripCompatible(product)) : [];
-  const optionLabel = product => `${product.family} ${product.size} - W ${product.gripMin}-${product.gripMax} mm${product.legacySource ? " - legacy source" : ""}`;
+  const optionLabel = product => {
+    const mechanism = product.mechanism ? ` · ${product.mechanism}` : "";
+    return `${product.family} ${product.size} · ${product.code}${mechanism} · W ${product.gripMin}-${product.gripMax} mm${product.legacySource ? " · legacy source" : ""}`;
+  };
   const compatibleLabel = hasGrip ? "Compatible grip range" : "Catalogue entries";
   const compatibleOptions = compatible.map(product => `<option value="${safeText(product.id)}">${safeText(optionLabel(product))}</option>`).join("");
   const otherOptions = otherRanges.map(product => `<option value="${safeText(product.id)}">${safeText(optionLabel(product))}</option>`).join("");
@@ -2940,7 +3410,7 @@ function populateBlindBoltProducts() {
   select.disabled = !products.length;
   if (products.some(product => product.id === previous)) select.value = previous;
   else select.value = "";
-  $("blindBoltProductGroupNote").textContent = products.length
+  $("blindBoltProductSelectionNote").textContent = products.length
     ? hasGrip
       ? `${compatible.length} compatible of ${products.length} entries; other grip ranges remain available.`
       : `${products.length} catalogue ${products.length === 1 ? "entry" : "entries"} available.`
@@ -2954,14 +3424,12 @@ function setBlindBoltSourceStatus(product) {
   status.textContent = localChecked ? "Local reference checked" : onlineChecked ? "Manufacturer source checked online" : "Source not verified";
   status.classList.toggle("is-checked", localChecked);
   status.classList.toggle("is-online", onlineChecked);
-  if (product?.sourceUrl) status.href = product.sourceUrl;
-  else status.removeAttribute("href");
 }
 
 function calculateBlindBolt() {
   const product = selectedBlindBoltProduct();
   if (!product) {
-    $("blindBoltSelectionPrompt").hidden = false;
+    $("blindBoltSelectionPrompt").hidden = true;
     $("blindBoltSelectedSummary").hidden = true;
     $("blindBoltPublishedSection").hidden = true;
     $("blindBoltSelectionPromptTitle").textContent = $("blindBoltProduct").disabled ? "No catalogue entry" : "Select a catalogue entry";
@@ -2970,7 +3438,7 @@ function calculateBlindBolt() {
       : `${filteredBlindBoltProducts().length} entries available; published product data appears after selection.`;
     $("blindBoltSelectionTitle").textContent = $("blindBoltProduct").disabled ? "No catalogue entry" : "Select catalogue entry";
     $("blindBoltSelectionNote").textContent = "Clamping thickness ranks compatible entries without hiding other grip ranges.";
-    ["blindBoltCode", "blindBoltSelectedSize", "blindBoltGripRange", "blindBoltHole", "blindBoltSelectedFinish", "blindBoltSupplier", "blindBoltCentres", "blindBoltEdge", "blindBoltOuterPly", "blindBoltTorque", "blindBoltTools", "blindBoltSelectedHead"].forEach(id => {
+    ["blindBoltCode", "blindBoltSelectedSize", "blindBoltGripRange", "blindBoltHole", "blindBoltSelectedFinish", "blindBoltCentres", "blindBoltEdge", "blindBoltOuterPly", "blindBoltTorque", "blindBoltTools", "blindBoltSelectedHead"].forEach(id => {
       $(id).textContent = "-";
     });
     $("blindBoltPublishedValues").hidden = true;
@@ -2979,23 +3447,27 @@ function calculateBlindBolt() {
     setBlindBoltSourceStatus(null);
     $("blindBoltSourceLink").textContent = "Manufacturer technical data";
     $("blindBoltSourceLink").removeAttribute("href");
+    $("blindBoltReferenceName").textContent = "Manufacturer technical data";
     return;
   }
   $("blindBoltSelectionPrompt").hidden = true;
   $("blindBoltSelectedSummary").hidden = false;
   $("blindBoltPublishedSection").hidden = false;
 
-  $("blindBoltSelectionTitle").textContent = product.family;
+  const variant = product.variant ? ` · ${product.variant}` : "";
+  const mechanism = product.mechanism ? ` · ${product.mechanism}` : "";
+  $("blindBoltSelectionTitle").textContent = `${product.family} ${product.size}${variant}${mechanism}`;
   const gripStatus = Number($("blindBoltGrip").value) > 0
     ? blindBoltGripCompatible(product) ? "Compatible grip range" : "Outside selected grip range"
     : "Grip compatibility not assessed";
   $("blindBoltSelectionNote").textContent = `${product.manufacturer} \u00b7 ${gripStatus}`;
   $("blindBoltCode").textContent = product.code;
-  $("blindBoltSelectedSize").textContent = product.size;
+  $("blindBoltSelectedSize").textContent = product.catalogueLength
+    ? `${product.size} · ${product.catalogueLength}`
+    : product.size;
   $("blindBoltGripRange").textContent = `${product.gripMin}-${product.gripMax} mm`;
   $("blindBoltHole").textContent = `${product.hole} mm`;
   $("blindBoltSelectedFinish").textContent = product.finish;
-  $("blindBoltSupplier").textContent = product.supplier;
   $("blindBoltCentres").textContent = product.centres;
   $("blindBoltEdge").textContent = product.edge;
   $("blindBoltOuterPly").textContent = product.outerPly;
@@ -3015,7 +3487,8 @@ function calculateBlindBolt() {
   $("blindBoltUnavailableBasis").textContent = product.valueBasis;
   setBlindBoltSourceStatus(product);
   $("blindBoltSourceStatus").title = product.sourceName;
-  $("blindBoltSourceLink").textContent = product.sourceName;
+  $("blindBoltReferenceName").textContent = product.sourceName;
+  $("blindBoltSourceLink").innerHTML = `Open ${/\.pdf($|\?)/i.test(product.sourceUrl || "") ? "technical data" : "product page"} <span aria-hidden="true">↗</span>`;
   $("blindBoltSourceLink").href = product.sourceUrl;
 }
 
@@ -3347,6 +3820,9 @@ function beamHollowSections(family) {
       t: first.t,
       mass: first.mass,
       area: first.area,
+      r: first.r,
+      rx: first.rx || first.r,
+      ry: first.ry || first.r,
       Aw: circular ? first.area : 0,
       I: circular || square ? first.I * 1e6 : first.Ix * 1e6,
       Zx: circular || square ? first.Z : first.Zx,
@@ -5529,17 +6005,15 @@ function calculateBeam() {
   ].join("");
 }
 
-function chsProperties(section) {
-  const properties = SectionGeometry.circularHollow(section.D, section.t);
-  return { area: properties.area, r: properties.rx, ix: properties.ix, iy: properties.iy };
-}
-
 function memberDimensionOverrideActive() {
   return memberType !== "custom" && Boolean($("memberDimensionOverride")?.checked);
 }
 
 function memberDimensionLabel(properties) {
+  if (memberType === "ub" || memberType === "uc") return `d = ${formatDimension(properties.d)} mm; b<sub>f</sub> = ${formatDimension(properties.bf)} mm; t<sub>w</sub> = ${formatDimension(properties.tw)} mm; t<sub>f</sub> = ${formatDimension(properties.tf)} mm`;
   if (memberType === "chs") return `D = ${formatDimension(properties.D)} mm; t = ${formatDimension(properties.t)} mm`;
+  if (memberType === "rhs") return `d = ${formatDimension(properties.d)} mm; b = ${formatDimension(properties.b)} mm; t = ${formatDimension(properties.t)} mm`;
+  if (memberType === "shs") return `b = d = ${formatDimension(properties.b)} mm; t = ${formatDimension(properties.t)} mm`;
   if (memberType === "rod") return `d = ${formatDimension(properties.diameter)} mm`;
   if (memberType === "ea") return `b = ${formatDimension(properties.b, 0)} mm; t = ${formatDimension(properties.t)} mm`;
   if (memberType === "pfc") return `d = ${formatDimension(properties.d, 0)} mm; b<sub>f</sub> = ${formatDimension(properties.bf, 0)} mm; t<sub>w</sub> = ${formatDimension(properties.tw)} mm; t<sub>f</sub> = ${formatDimension(properties.tf)} mm`;
@@ -5591,14 +6065,49 @@ function pfcGeometry(d, bf, tw, tf) {
 function memberDimensionProperties(section) {
   if (!memberDimensionOverrideActive()) return null;
   if (memberType === "chs") return chsGeometry(value("memberDimChsD"), value("memberDimChsT"));
-  if (memberType === "ea") return eaGeometry(value("memberDimEaB"), value("memberDimEaT"));
-  if (memberType === "pfc") return pfcGeometry(value("memberDimPfcD"), value("memberDimPfcBf"), value("memberDimPfcTw"), value("memberDimPfcTf"));
   if (memberType === "rod") return rodGeometry(value("memberDimRodD"));
   return null;
 }
 
+function memberHollowSections(family) {
+  const sections = beamHollowSections(family).map(section => {
+    const xAxis = family === "chs" ? section.axes.axis : family === "shs" ? section.axes.xy : section.axes.x;
+    const yAxis = family === "chs" ? section.axes.axis : family === "shs" ? section.axes.xy : section.axes.y;
+    const rx = section.rx;
+    const ry = section.ry;
+    return {
+      ...section,
+      r: Math.min(rx, ry),
+      rx,
+      ry,
+      ix: xAxis.I,
+      iy: yAxis.I,
+      grades: Object.fromEntries(Object.entries(section.grades).map(([name, grade]) => {
+        const strength = SteelMaterials.hollowStrength(name);
+        return [name, { ...grade, fu: strength?.fu || 0 }];
+      }))
+    };
+  });
+  return sections.sort((a, b) => {
+    const primary = family === "chs" ? Number(a.D) - Number(b.D) : Number(a.d) - Number(b.d);
+    if (primary) return primary;
+    const secondary = family === "chs" ? 0 : Number(a.b) - Number(b.b);
+    return secondary || Number(a.t) - Number(b.t);
+  });
+}
+
 function memberSections() {
-  if (memberType === "chs") return chsSections;
+  if (memberType === "ub" || memberType === "uc") {
+    const sections = memberType === "ub" ? ubSections : ucSections;
+    return sections.map(section => ({
+      ...section,
+      grades: Object.fromEntries(Object.entries(section.grades).map(([name, grade]) => {
+        const strength = SteelMaterials.hotRolledStrength(name, Math.max(section.tw, section.tf));
+        return [name, { ...grade, fu: strength?.fu || 0 }];
+      }))
+    }));
+  }
+  if (["chs", "rhs", "shs"].includes(memberType)) return memberHollowSections(memberType);
   if (memberType === "ea") return eaSections;
   if (memberType === "pfc") return pfcSections;
   if (memberType === "custom") return customSections;
@@ -5614,10 +6123,6 @@ function memberProperties(section) {
   }
   const override = memberDimensionProperties(section);
   if (override) return override;
-  if (memberType === "chs") {
-    const chs = chsProperties(section);
-    return { ...chs, rx: chs.r, ry: chs.r, D: section.D, t: section.t };
-  }
   if (memberType === "ea" && section.principalRx > 0 && section.principalRy > 0) {
     return {
       area: section.area,
@@ -5631,13 +6136,16 @@ function memberProperties(section) {
       principalAxisBasis: true
     };
   }
+  const rx = section.rx || section.r;
+  const ry = section.ry || section.r;
   return {
     area: section.area,
-    r: section.r,
-    rx: section.rx || section.r,
-    ry: section.ry || section.r,
+    r: Math.min(rx, ry),
+    rx,
+    ry,
     ix: section.ix,
     iy: section.iy,
+    D: section.D,
     b: section.b,
     d: section.d,
     diameter: section.diameter,
@@ -5648,19 +6156,23 @@ function memberProperties(section) {
   };
 }
 
-function memberAlphaBDefault(kf) {
+function memberAlphaBDefault(kf, section) {
   if (memberType === "custom") return alphaBInput("memberCustomAlphaBx");
-  if (memberType === "chs") return -0.5;
+  if (memberType === "chs" || memberType === "rhs" || memberType === "shs") return -0.5;
+  if (memberType === "ub" || memberType === "uc") return section?.tf > 40 ? 1.0 : 0;
   if (kf < 1) return 1.0;
   return 0.5;
 }
 
-function memberAlphaBBasis(kf) {
+function memberAlphaBBasis(kf, section) {
   if (memberType === "custom") {
     return "user-entered by axis";
   }
-  if (memberType === "chs") {
-    return `AS 4100 Table 6.3.3(${kf < 1 ? "B" : "A"}), cold-formed non-stress-relieved CHS`;
+  if (memberType === "chs" || memberType === "rhs" || memberType === "shs") {
+    return `AS 4100 Table 6.3.3(${kf < 1 ? "B" : "A"}), cold-formed non-stress-relieved RHS and CHS`;
+  }
+  if (memberType === "ub" || memberType === "uc") {
+    return `AS 4100 Table 6.3.3(${kf < 1 ? "B" : "A"}), hot-rolled UB and UC sections${section?.tf > 40 ? ", flange thickness over 40 mm" : ", flange thickness up to 40 mm"}`;
   }
   if (kf < 1) {
     return "AS 4100 Table 6.3.3(B), other sections not listed";
@@ -5681,22 +6193,37 @@ function memberKfValue(grade) {
 function memberKfBasisText(kf) {
   if (memberType === "custom") return "custom member input";
   if (memberDimensionOverrideActive()) {
-    if (memberType === "chs" || memberType === "rod" || memberType === "pfc") {
+    if (memberType === "chs" || memberType === "rod") {
       return `selected ${memberType.toUpperCase()} basis`;
-    }
-    if (memberType === "ea") {
-      return `selected Equal Angle basis`;
     }
   }
   return "selected section basis";
 }
 
 function memberRadiusBasis(defaultR) {
-  if (memberType === "chs") return `r = ${defaultR.toFixed(1)} mm from CHS geometry`;
+  if (memberType === "ub" || memberType === "uc") return `r = r<sub>y</sub> = ${defaultR.toFixed(1)} mm from the selected InfraBuild row`;
+  if (memberType === "chs") return `r = ${defaultR.toFixed(1)} mm from the selected Austube row`;
+  if (memberType === "rhs") return `r = r<sub>min</sub> = ${defaultR.toFixed(1)} mm from the selected Austube row`;
+  if (memberType === "shs") return `r = ${defaultR.toFixed(1)} mm for symmetric centroidal axes`;
   if (memberType === "rod") return `r = d/4 = ${defaultR.toFixed(1)} mm`;
   if (memberType === "pfc") return `r = r<sub>min</sub> = ${defaultR.toFixed(1)} mm`;
   if (memberType === "ea") return `r = r<sub>v</sub> = ${defaultR.toFixed(1)} mm about the minor principal axis`;
   return `r = ${defaultR.toFixed(1)} mm`;
+}
+
+function memberAxisBasisText() {
+  if (["chs", "shs", "rod"].includes(memberType)) return "symmetric axes";
+  if (memberType === "ea") return "minor principal axis";
+  return "minor y-y axis";
+}
+
+function memberCatalogueBasisText() {
+  if (memberType === "ub" || memberType === "uc") return "hot-rolled universal section";
+  if (memberType === "rhs" || memberType === "shs") return "cold-formed non-stress-relieved hollow section";
+  if (memberType === "pfc") return "hot-rolled channel";
+  if (memberType === "chs") return "cold-formed non-stress-relieved CHS";
+  if (memberType === "ea") return "hot-rolled equal angle";
+  return "solid round bar";
 }
 
 function setMemberDimensionDefaults(section) {
@@ -5705,16 +6232,6 @@ function setMemberDimensionDefaults(section) {
     $("memberDimChsD").value = (section.D || 0).toFixed(1);
     $("memberDimChsT").value = (section.t || 0).toFixed(1);
   }
-  if (memberType === "ea") {
-    $("memberDimEaB").value = section.t ? String(parseInt(section.designation, 10) || 100) : "100";
-    $("memberDimEaT").value = (section.t || 0).toFixed(1);
-  }
-  if (memberType === "pfc") {
-    $("memberDimPfcD").value = String(parseInt(section.designation, 10) || 150);
-    $("memberDimPfcBf").value = String(section.bf || Math.round((parseInt(section.designation, 10) || 150) / 2));
-    $("memberDimPfcTw").value = (section.tw || 0).toFixed(1);
-    $("memberDimPfcTf").value = (section.tf || 0).toFixed(1);
-  }
   if (memberType === "rod") {
     $("memberDimRodD").value = (section.diameter || 0).toFixed(1);
   }
@@ -5722,7 +6239,8 @@ function setMemberDimensionDefaults(section) {
 
 function updateMemberDimensionUi(properties = null) {
   const active = memberDimensionOverrideActive();
-  if ($("memberDimensionCard")) $("memberDimensionCard").hidden = memberType === "custom";
+  const dimensionOverrideSupported = ["chs", "rod"].includes(memberType);
+  if ($("memberDimensionCard")) $("memberDimensionCard").hidden = memberType === "custom" || !dimensionOverrideSupported;
   if ($("memberDimensionFields")) $("memberDimensionFields").hidden = !active || memberType === "custom";
   document.querySelectorAll("[data-member-dim]").forEach(field => {
     field.hidden = field.dataset.memberDim !== memberType;
@@ -5731,11 +6249,11 @@ function updateMemberDimensionUi(properties = null) {
     input.disabled = !active || memberType === "custom";
   });
   if ($("memberDimensionOverride")) $("memberDimensionOverride").disabled = memberType === "custom";
-  if ($("memberRadiusOverrideDetails")) $("memberRadiusOverrideDetails").hidden = memberType === "custom" || active;
+  if ($("memberRadiusField")) $("memberRadiusField").hidden = memberType === "custom" || active;
   const props = properties || (selectedMemberGrade() ? memberProperties(selectedMemberGrade().section) : null);
   if ($("memberDimensionStatus")) {
     $("memberDimensionStatus").hidden = !active || memberType === "custom";
-    const sourceText = `${memberType.toUpperCase()} override defines A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub>${memberType === "ea" || memberType === "pfc" ? " by simplified rectangular geometry" : " by circular geometry"}.`;
+    const sourceText = `${memberType.toUpperCase()} override defines A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub> by ideal circular geometry.`;
     $("memberDimensionStatus").innerHTML = props ? `${sourceText} A<sub>g</sub> = ${formatArea(props.area)}; r<sub>x</sub> = ${props.rx.toFixed(1)} mm; r<sub>y</sub> = ${props.ry.toFixed(1)} mm.` : sourceText;
   }
 }
@@ -5752,24 +6270,6 @@ function memberDesignRadius(defaultR) {
   if (memberType === "custom") return defaultR;
   if (memberDimensionOverrideActive()) return defaultR;
   return signedValue("memberRadiusInput", NaN);
-}
-
-function compressionReduction(lambdaN, alphaB) {
-  let alphaC = 1;
-  let alphaA = 0;
-  let modifiedLambda = 0;
-  let eta = 0;
-  let xi = 1;
-  if (lambdaN > 0) {
-    alphaA = 2100 * (lambdaN - 13.5) / (lambdaN ** 2 - 15.3 * lambdaN + 2050);
-    modifiedLambda = Math.max(0.001, lambdaN + alphaA * alphaB);
-    eta = Math.max(0, 0.00326 * (modifiedLambda - 13.5));
-    const ratio = modifiedLambda / 90;
-    xi = (ratio ** 2 + 1 + eta) / (2 * ratio ** 2);
-    const rootTerm = Math.max(0, 1 - (90 / (xi * modifiedLambda)) ** 2);
-    alphaC = Math.min(1, Math.max(0, xi * (1 - Math.sqrt(rootTerm))));
-  }
-  return { alphaC, alphaA, modifiedLambda, eta, xi };
 }
 
 function formatMemberUtilisation(ratio) {
@@ -5789,6 +6289,9 @@ function setMemberInvalidState(message, designation) {
     "memberGeometrySummary", "memberAreaSummary", "memberMaterialSummary",
     "memberCompressionSummary", "memberTensionSummary"
   ].forEach(id => { $(id).textContent = "\u2014"; });
+  $("memberNetSectionSummary").textContent = "Input required";
+  $("memberNetSectionBasis").textContent = "Connection basis not evaluated.";
+  document.querySelectorAll("[data-member-summary='net'], [data-member-summary='kt']").forEach(cell => { cell.hidden = true; });
   ["memberCompression", "sectionCompression", "memberTension", "memberSlenderness", "memberLambdaN", "memberAlphaC", "memberUtilisation"]
     .forEach(id => { $(id).textContent = "\u2014"; });
   ["grossYieldCapacity", "netFractureCapacity"].forEach(id => { $(id).textContent = "\u2014 kN"; });
@@ -5804,6 +6307,13 @@ function setMemberInvalidState(message, designation) {
     result: "Not evaluated",
     applicability: "Enter valid project inputs before using the AS 4100 axial-member checks."
   });
+}
+
+function setMemberFieldValidity(id, valid) {
+  const field = $(id);
+  if (!field) return;
+  if (valid) field.removeAttribute("aria-invalid");
+  else field.setAttribute("aria-invalid", "true");
 }
 
 function memberNetAreaInput(properties) {
@@ -5848,23 +6358,45 @@ function memberNetAreaInput(properties) {
 function populateMemberOptions() {
   const sections = memberSections();
   $("memberSection").innerHTML = sections.map((section, index) => `<option value="${index}">${section.designation}</option>`).join("");
-  $("memberSection").value = memberType === "chs"
-    ? String(chsSections.findIndex(s => s.D === 114.3 && s.t === 3.2))
-    : memberType === "ea"
-      ? String(eaSections.findIndex(s => s.designation === "100 x 100 x 10 EA"))
-      : memberType === "pfc"
-        ? String(pfcSections.findIndex(s => s.designation === "150PFC"))
-        : memberType === "rod"
-          ? String(rodSections.findIndex(s => s.diameter === 24))
-          : "0";
+  const defaultDesignation = {
+    ub: "310UB40.4",
+    uc: "200UC46.2",
+    pfc: "150PFC",
+    chs: "114.3 x 3.2 CHS",
+    rhs: "150 x 100 x 6 RHS",
+    shs: "100 x 100 x 6 SHS",
+    ea: "100 x 100 x 10 EA",
+    rod: "Ø24 Rod"
+  }[memberType];
+  const defaultIndex = sections.findIndex(section => section.designation === defaultDesignation);
+  $("memberSection").value = String(defaultIndex >= 0 ? defaultIndex : 0);
   populateMemberGrades();
+}
+
+function updateMemberNetSectionPresentation(properties, netArea, kt, netInput) {
+  const areaAdjusted = Math.abs(netArea - properties.area) > 0.5;
+  const ktAdjusted = Math.abs(kt - 1) > 0.005;
+  const connectionAdjusted = areaAdjusted || ktAdjusted || netInput.holeCount > 0;
+  const summary = connectionAdjusted
+    ? `Connection-adjusted tension basis &middot; A<sub>n</sub> = ${netArea.toFixed(0)} mm&sup2; &middot; k<sub>t</sub> = ${kt.toFixed(2)}`
+    : "Unperforated section &middot; A<sub>n</sub> = A<sub>g</sub> &middot; k<sub>t</sub> = 1.00";
+  $("memberNetSectionSummary").innerHTML = summary;
+  $("memberNetSectionBasis").innerHTML = summary;
+  $("memberNetSectionDetails").classList.toggle("is-modified", connectionAdjusted);
+  document.querySelectorAll("[data-member-summary='net'], [data-member-summary='kt']").forEach(cell => {
+    cell.hidden = !connectionAdjusted;
+  });
 }
 
 function populateMemberGrades() {
   const section = memberSections()[Number($("memberSection").value) || 0];
-  const grades = memberType === "chs" ? chsGrades : section.grades;
-  $("memberGrade").innerHTML = Object.keys(grades).map(grade => `<option value="${grade}">${grade}</option>`).join("");
-  $("memberGrade").value = memberType === "chs" ? "C350L0" : memberType === "custom" ? "User input" : "300PLUS";
+  const grades = section.grades;
+  const gradeNames = Object.keys(grades);
+  $("memberGrade").innerHTML = gradeNames.map(grade => `<option value="${grade}">${grade}</option>`).join("");
+  const preferredGrade = ["chs", "rhs", "shs"].includes(memberType)
+    ? "C350L0"
+    : memberType === "custom" ? "User input" : "300PLUS";
+  $("memberGrade").value = gradeNames.includes(preferredGrade) ? preferredGrade : (gradeNames[0] || "");
   setMemberDimensionDefaults(section);
   const properties = memberProperties(section);
   setMemberStrengthDefaults();
@@ -5873,8 +6405,10 @@ function populateMemberGrades() {
   $("memberHoleCount").value = "0";
   $("memberHoleDiameter").value = "0";
   $("memberHoleThickness").value = memberType === "pfc" ? (properties.tw || section.tw || 0).toFixed(1) : "0";
-  $("memberNetArea").value = String(Math.floor(properties.area * 1000) / 1000);
-  $("memberNetArea").max = String(properties.area);
+  const validArea = Number.isFinite(properties.area) && properties.area > 0;
+  $("memberNetArea").value = validArea ? String(Math.floor(properties.area * 1000) / 1000) : "";
+  if (validArea) $("memberNetArea").max = String(properties.area);
+  else $("memberNetArea").removeAttribute("max");
   $("memberKt").value = memberType === "ea" || memberType === "pfc" ? "0.85" : "1";
   calculateMember();
 }
@@ -5883,7 +6417,7 @@ function selectedMemberGrade() {
   const section = memberSections()[Number($("memberSection").value) || 0];
   if (!section) return null;
   const gradeName = $("memberGrade").value;
-  const grade = memberType === "chs" ? chsGrades[gradeName] : section.grades[gradeName];
+  const grade = section.grades[gradeName];
   return grade ? { section, gradeName, grade } : null;
 }
 
@@ -5894,33 +6428,66 @@ function setMemberStrengthDefaults() {
   $("memberFuInput").value = selected.grade.fu;
 }
 
+function updateMemberMaterialStatus(fy, fu, grade) {
+  const close = (actual, expected) => Number.isFinite(actual) && Number.isFinite(expected) && Math.abs(actual - expected) <= 0.01;
+  const valid = fy > 0 && fu >= fy;
+  const overridden = valid && (!close(fy, grade.fy) || !close(fu, grade.fu));
+  $("memberMaterialStatus").textContent = !valid
+    ? "Enter valid strengths"
+    : memberType === "custom"
+      ? overridden ? "Project input" : "Initial project values - verify"
+      : overridden ? "User override" : "Catalogue default";
+  $("memberMaterialReset").disabled = !overridden;
+  $("memberMaterialReset").hidden = !overridden;
+  return overridden;
+}
+
 function calculateMember() {
   const selected = selectedMemberGrade();
-  if (!selected) return;
+  if (!selected) {
+    setMemberInvalidState("select a valid steel grade", "INPUT REQUIRED");
+    return;
+  }
   const { section, gradeName, grade } = selected;
   const properties = memberProperties(section);
   updateMemberDimensionUi(properties);
   const kf = memberKfValue(grade);
   const kfBasis = memberKfBasisText(kf);
-  const alphaB = memberAlphaBDefault(kf);
-  const alphaBBasis = memberAlphaBBasis(kf);
+  const alphaB = memberAlphaBDefault(kf, section);
+  const alphaBBasis = memberAlphaBBasis(kf, section);
   if (memberType !== "custom") {
     $("memberAlphaB").value = String(alphaB);
   }
   const designR = memberDesignRadius(properties.r);
   const fy = signedValue("memberFyInput", NaN);
   const fu = signedValue("memberFuInput", NaN);
+  const materialOverridden = updateMemberMaterialStatus(fy, fu, grade);
   const designation = memberType === "custom"
     ? section.designation
     : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeName}`;
+  const customLex = memberType === "custom" ? signedValue("memberCustomLex", NaN) : NaN;
+  const customLey = memberType === "custom" ? signedValue("memberCustomLey", NaN) : NaN;
   const preliminaryErrors = [];
   if (!Number.isFinite(properties.area) || properties.area <= 0) preliminaryErrors.push("A_g must be greater than zero");
   if (!Number.isFinite(properties.rx) || properties.rx <= 0 || !Number.isFinite(properties.ry) || properties.ry <= 0) preliminaryErrors.push("r_x and r_y must be greater than zero");
-  if (!Number.isFinite(designR) || designR <= 0) preliminaryErrors.push("the governing radius r must be greater than zero");
+  if (memberType !== "custom" && (!Number.isFinite(designR) || designR <= 0)) preliminaryErrors.push("the governing radius r must be greater than zero");
+  if (memberType === "custom" && !(customLex > 0)) preliminaryErrors.push("L_ex must be greater than zero");
+  if (memberType === "custom" && !(customLey > 0)) preliminaryErrors.push("L_ey must be greater than zero");
   if (!Number.isFinite(kf) || kf <= 0 || kf > 1) preliminaryErrors.push("k_f must satisfy 0 < k_f <= 1");
   if (!Number.isFinite(fy) || fy <= 0) preliminaryErrors.push("f_y must be greater than zero");
   if (!Number.isFinite(fu) || fu <= 0) preliminaryErrors.push("f_u must be greater than zero");
   if (Number.isFinite(fy) && Number.isFinite(fu) && fu < fy) preliminaryErrors.push("f_u must not be less than f_y");
+  setMemberFieldValidity("memberRadiusInput", Number.isFinite(designR) && designR > 0);
+  setMemberFieldValidity("memberFyInput", Number.isFinite(fy) && fy > 0);
+  setMemberFieldValidity("memberFuInput", Number.isFinite(fu) && fu > 0 && (!Number.isFinite(fy) || fu >= fy));
+  if (memberType === "custom") {
+    setMemberFieldValidity("memberCustomArea", Number.isFinite(properties.area) && properties.area > 0);
+    setMemberFieldValidity("memberCustomRx", Number.isFinite(properties.rx) && properties.rx > 0);
+    setMemberFieldValidity("memberCustomRy", Number.isFinite(properties.ry) && properties.ry > 0);
+    setMemberFieldValidity("memberCustomKf", Number.isFinite(kf) && kf > 0 && kf <= 1);
+    setMemberFieldValidity("memberCustomLex", customLex > 0);
+    setMemberFieldValidity("memberCustomLey", customLey > 0);
+  }
   if (preliminaryErrors.length) {
     setMemberInvalidState(preliminaryErrors.join("; "), designation);
     return;
@@ -5934,65 +6501,91 @@ function calculateMember() {
       ? `r = ${designR.toFixed(1)} mm; default r = ${properties.r.toFixed(1)} mm`
       : memberRadiusBasis(properties.r);
   if (memberType !== "custom") {
-    $("memberRadiusSource").innerHTML = `${properties.customGeometry ? radiusBasis : memberRadiusBasis(properties.r)} Used for slenderness L<sub>e</sub>/r and design member capacity &phi;N<sub>c</sub>.`;
+    $("memberRadiusSource").textContent = properties.customGeometry ? "Non-catalogue section properties." : "Catalogue section and effective length.";
   } else {
-    $("memberRadiusSource").innerHTML = `User-defined effective section properties from a verified section-property calculation.`;
+    $("memberRadiusSource").textContent = "User-entered section properties · verification required.";
   }
   $("memberNetArea").max = String(properties.area);
   const netInput = memberNetAreaInput(properties);
   const netArea = netInput.netArea;
   const kt = signedValue("memberKt", NaN);
-  const strengthBasis = fy === grade.fy && fu === grade.fu
-    ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; grade ${gradeName}`
-    : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeName} default ${grade.fy}/${grade.fu} MPa`;
+  const strengthBasis = memberType === "custom"
+    ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; project input`
+    : materialOverridden
+      ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; user override; ${gradeName} default ${grade.fy}/${grade.fu} MPa`
+      : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeName} catalogue default`;
   const ktGuidance = kt >= 0.999
     ? "AS 4100 Cl. 7.3.1"
     : "AS 4100 Table 7.3.2";
   const compressionArea = netArea;
-  const sectionCompression = 0.9 * kf * compressionArea * fy / 1000;
   const axes = memberType === "custom"
     ? [
         { label: "x", title: "x-axis", r: properties.rx, effectiveLength: value("memberCustomLex") * 1000, alphaB: alphaBInput("memberCustomAlphaBx") },
         { label: "y", title: "y-axis", r: properties.ry, effectiveLength: value("memberCustomLey") * 1000, alphaB: alphaBInput("memberCustomAlphaBy") }
       ]
     : [{ label: "", title: "selected axis", r: designR, effectiveLength: value("memberLength") * 1000, alphaB }];
+  const compressionDemand = signedValue("memberCompressionDemand", NaN);
+  const tensionDemand = signedValue("memberTensionDemand", NaN);
   const calculationErrors = [];
   if (!Number.isFinite(netArea) || netArea <= 0 || netArea > properties.area) calculationErrors.push("A_n must satisfy 0 < A_n <= A_g");
   if (!Number.isFinite(kt) || kt < 0.75 || kt > 1) calculationErrors.push("k_t must be within the AS 4100 Cl. 7.3 range 0.75 to 1.00");
+  if (!Number.isFinite(compressionDemand) || compressionDemand < 0) calculationErrors.push("compression design action must be zero or greater");
+  if (!Number.isFinite(tensionDemand) || tensionDemand < 0) calculationErrors.push("tension design action must be zero or greater");
   axes.forEach(axis => {
     if (!Number.isFinite(axis.effectiveLength) || axis.effectiveLength <= 0) calculationErrors.push(`${axis.title} effective length L_e must be greater than zero`);
     if (!Number.isFinite(axis.alphaB) || axis.alphaB < -1 || axis.alphaB > 1) calculationErrors.push(`${axis.title} alpha_b must be between -1.0 and 1.0`);
   });
+  setMemberFieldValidity("memberNetArea", Number.isFinite(netArea) && netArea > 0 && netArea <= properties.area);
+  setMemberFieldValidity("memberKt", Number.isFinite(kt) && kt >= 0.75 && kt <= 1);
+  setMemberFieldValidity("memberCompressionDemand", Number.isFinite(compressionDemand) && compressionDemand >= 0);
+  setMemberFieldValidity("memberTensionDemand", Number.isFinite(tensionDemand) && tensionDemand >= 0);
+  if (memberType === "custom") {
+    setMemberFieldValidity("memberCustomLex", Number.isFinite(axes[0].effectiveLength) && axes[0].effectiveLength > 0);
+    setMemberFieldValidity("memberCustomLey", Number.isFinite(axes[1].effectiveLength) && axes[1].effectiveLength > 0);
+    setMemberFieldValidity("memberCustomAlphaBx", Number.isFinite(axes[0].alphaB) && axes[0].alphaB >= -1 && axes[0].alphaB <= 1);
+    setMemberFieldValidity("memberCustomAlphaBy", Number.isFinite(axes[1].alphaB) && axes[1].alphaB >= -1 && axes[1].alphaB <= 1);
+  } else {
+    setMemberFieldValidity("memberLength", Number.isFinite(axes[0].effectiveLength) && axes[0].effectiveLength > 0);
+  }
   if (calculationErrors.length) {
     setMemberInvalidState(calculationErrors.join("; "), designation);
     return;
   }
-  const axisResults = axes.map(axis => {
-    const leOverR = axis.r > 0 ? axis.effectiveLength / axis.r : 0;
-    const lambdaN = leOverR * Math.sqrt(kf) * Math.sqrt(fy / 250);
-    const reduction = compressionReduction(lambdaN, axis.alphaB);
-    return {
-      ...axis,
-      leOverR,
-      lambdaN,
-      ...reduction,
-      memberCompression: reduction.alphaC * sectionCompression
-    };
-  });
-  const governingAxis = axisResults.reduce((lowest, axis) => axis.memberCompression < lowest.memberCompression ? axis : lowest, axisResults[0]);
-  const memberCompression = governingAxis.memberCompression;
-  const grossYield = 0.9 * properties.area * fy / 1000;
-  const netFracture = 0.9 * 0.85 * kt * netArea * fu / 1000;
-  const tensionCapacity = Math.min(grossYield, netFracture);
-  const tensionGoverning = grossYield <= netFracture ? "Gross-section yielding" : "Net-section fracture";
-  const compressionDemand = value("memberCompressionDemand");
-  const tensionDemand = value("memberTensionDemand");
-  const hasCompressionDemand = compressionDemand > 0;
-  const hasTensionDemand = tensionDemand > 0;
-  const hasMemberDemand = hasCompressionDemand || hasTensionDemand;
-  const compressionDemandRatio = memberCompression > 0 ? compressionDemand / memberCompression : Infinity;
-  const tensionDemandRatio = tensionCapacity > 0 ? tensionDemand / tensionCapacity : Infinity;
-  const governingDemandRatio = Math.max(hasCompressionDemand ? compressionDemandRatio : 0, hasTensionDemand ? tensionDemandRatio : 0);
+  let memberResult;
+  try {
+    memberResult = MemberCapacity.calculate({
+      grossArea: properties.area,
+      netArea,
+      fy,
+      fu,
+      kf,
+      kt,
+      axes,
+      compressionDemand,
+      tensionDemand
+    });
+  } catch (error) {
+    setMemberInvalidState(error instanceof Error ? error.message : "the adopted compression basis is outside the supported range", designation);
+    return;
+  }
+  const {
+    sectionCompression,
+    axisResults,
+    governingAxis,
+    memberCompression,
+    grossYield,
+    netFracture,
+    tensionCapacity,
+    tensionGoverning
+  } = memberResult;
+  const {
+    hasCompression: hasCompressionDemand,
+    hasTension: hasTensionDemand,
+    hasAny: hasMemberDemand,
+    compressionRatio: compressionDemandRatio,
+    tensionRatio: tensionDemandRatio,
+    governingRatio: governingDemandRatio
+  } = memberResult.demand;
   const demandChecks = [];
   if (hasCompressionDemand) {
     demandChecks.push(Number.isFinite(compressionDemandRatio)
@@ -6017,11 +6610,11 @@ function calculateMember() {
 
   $("memberDesignation").textContent = designation;
   $("memberAssumption").innerHTML = memberType === "custom"
-    ? "User-entered effective section properties; both axes checked."
-    : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${radiusOverridden ? "user-entered governing radius" : radiusBasis}${memberType === "chs" ? "; assumed cold-formed non-stress-relieved" : memberType === "pfc" ? "; hot-rolled channel basis" : ""}.`;
+    ? "User-entered section properties; flexural buckling checked about both entered axes."
+    : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${radiusOverridden ? "user-entered governing radius" : radiusBasis}; ${memberCatalogueBasisText()}.`;
   $("memberSummaryAxis").innerHTML = memberType === "custom"
     ? `${governingAxis.label}-axis / ${governingAxis.r.toFixed(1)} mm`
-    : `${memberType === "chs" || memberType === "rod" ? "symmetric" : memberType === "ea" ? "minor principal" : "minor y-y"} / ${designR.toFixed(1)} mm`;
+    : `${["chs", "shs", "rod"].includes(memberType) ? "symmetric" : memberType === "ea" ? "minor principal" : "minor y-y"} / ${designR.toFixed(1)} mm`;
   $("memberSummarySlenderness").innerHTML = memberType === "custom"
     ? `${(governingAxis.effectiveLength / 1000).toFixed(2)} m / ${governingAxis.leOverR.toFixed(1)}`
     : `${(axisResults[0].effectiveLength / 1000).toFixed(2)} m / ${axisResults[0].leOverR.toFixed(1)}`;
@@ -6031,14 +6624,15 @@ function calculateMember() {
     ? `${kf.toFixed(3)} / ${governingAxis.alphaB.toFixed(1)}`
     : `${kf.toFixed(3)} / ${alphaB.toFixed(1)}`;
   $("memberSummaryKt").textContent = kt.toFixed(2);
+  updateMemberNetSectionPresentation(properties, netArea, kt, netInput);
   $("memberGeometrySummary").innerHTML = memberType === "custom"
-    ? "User-entered effective properties; no catalogue geometry adopted."
+    ? "User-entered properties; no catalogue geometry adopted."
     : memberDimensionLabel(properties);
   $("memberAreaSummary").innerHTML = `A<sub>g</sub> = ${formatArea(properties.area)}; A<sub>n</sub> = ${formatArea(netArea)} (${netAreaBasisLabel})`;
-  $("memberMaterialSummary").innerHTML = `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;
+  $("memberMaterialSummary").innerHTML = strengthBasis;
   $("memberCompressionSummary").innerHTML = memberType === "custom"
     ? `${axisResults.map(axis => `${axis.label}: L<sub>e${axis.label}</sub> = ${(axis.effectiveLength / 1000).toFixed(2)} m; r<sub>${axis.label}</sub> = ${axis.r.toFixed(1)} mm; L<sub>e${axis.label}</sub>/r<sub>${axis.label}</sub> = ${axis.leOverR.toFixed(1)}; &alpha;<sub>b,${axis.label}</sub> = ${axis.alphaB.toFixed(1)}`).join("; ")}; k<sub>f</sub> = ${kf.toFixed(3)}; ${governingAxis.label}-axis governs`
-    : `L<sub>e</sub> = ${(axisResults[0].effectiveLength / 1000).toFixed(2)} m; r used = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; ${memberType === "chs" || memberType === "rod" ? "symmetric axes" : memberType === "ea" ? "minor principal axis" : "minor y-y axis"}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}`;
+    : `L<sub>e</sub> = ${(axisResults[0].effectiveLength / 1000).toFixed(2)} m; r used = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; ${memberAxisBasisText()}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}`;
   $("memberTensionSummary").innerHTML = `k<sub>t</sub> = ${kt.toFixed(2)}; A<sub>n</sub> basis = ${netAreaBasisLabel}`;
   $("memberCompression").textContent = fixed(memberCompression);
   $("sectionCompression").textContent = fixed(sectionCompression);
@@ -6069,12 +6663,16 @@ function calculateMember() {
   $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for non-straight net paths.`;
   $("memberWarning").innerHTML = memberType === "chs"
     ? `Scope: centroidal axial compression and axial tension only. CHS basis: assumed cold-formed non-stress-relieved; k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = -0.5.`
+    : memberType === "rhs" || memberType === "shs"
+      ? `Scope: centroidal axial compression and axial tension only. ${memberType.toUpperCase()} basis: cold-formed non-stress-relieved; ${memberAxisBasisText()}, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = -0.5.`
+    : memberType === "ub" || memberType === "uc"
+      ? `Scope: centroidal axial compression and axial tension only. ${memberType.toUpperCase()} basis: hot-rolled section, ${memberAxisBasisText()}, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`
     : memberType === "ea"
       ? `Scope: centroidal axial compression and axial tension only. Angle basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${customGeometryKfWarning}`
       : memberType === "pfc"
         ? `Scope: centroidal axial compression and axial tension only. PFC basis: hot-rolled channel, r = r<sub>min</sub>, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`
         : memberType === "custom"
-          ? `Scope: centroidal axial compression and axial tension using entered effective properties.`
+          ? `Flexural buckling about the entered axes only. Built-up action, local buckling, shear deformation and torsional buckling are not evaluated.`
           : `Scope: centroidal axial compression and axial tension only. Rod basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`;
   const sectionDataText = memberType === "custom"
     ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
@@ -7877,42 +8475,32 @@ function calculateScrewDemand(comparison) {
   };
   const actionBasisLabel = actionBasisLabels[actionBasis] || "action basis not stated";
   const coords = screwLayoutCoordinates();
-  const n = coords.length;
   const baseN = signedValue("screwDemandN");
   const vx = signedValue("screwDemandVx");
   const vy = signedValue("screwDemandVy");
   const mx = signedValue("screwDemandMx");
   const my = signedValue("screwDemandMy");
   const tz = signedValue("screwDemandTz");
-  const directShearX = n > 0 ? vx / n : 0;
-  const directShearY = n > 0 ? vy / n : 0;
-  const sumX2 = coords.reduce((sum, point) => sum + point.x ** 2, 0);
-  const sumY2 = coords.reduce((sum, point) => sum + point.y ** 2, 0);
-  const sumXY = coords.reduce((sum, point) => sum + point.x * point.y, 0);
-  const sumR2 = coords.reduce((sum, point) => sum + point.x ** 2 + point.y ** 2, 0);
-  const reactions = coords.map(point => {
-    const axial = baseN / n
-      + (sumY2 > 0 ? mx * point.y / sumY2 : 0)
-      + (sumX2 > 0 ? my * point.x / sumX2 : 0);
-    const torsionShearX = sumR2 > 0 ? -tz * point.y / sumR2 : 0;
-    const torsionShearY = sumR2 > 0 ? tz * point.x / sumR2 : 0;
-    const lateralX = directShearX + torsionShearX;
-    const lateralY = directShearY + torsionShearY;
-    const lateral = Math.hypot(lateralX, lateralY);
-    return { ...point, axial, lateral, lateralX, lateralY };
+  const distribution = ScrewDemand.distribute({
+    coordinates: coords,
+    axial: baseN,
+    shearX: vx,
+    shearY: vy,
+    momentX: mx,
+    momentY: my,
+    torsion: tz
   });
-  const maxCompression = Math.max(0, ...reactions.map(item => item.axial));
-  const maxUplift = Math.max(0, ...reactions.map(item => -item.axial));
-  const maxLateral = Math.max(0, ...reactions.map(item => item.lateral));
-  const maxCompressionPile = maxCompression > 0
-    ? reactions.reduce((current, item) => item.axial > current.axial ? item : current)
-    : null;
-  const maxUpliftPile = maxUplift > 0
-    ? reactions.reduce((current, item) => -item.axial > -current.axial ? item : current)
-    : null;
-  const maxLateralPile = maxLateral > 0
-    ? reactions.reduce((current, item) => item.lateral > current.lateral ? item : current)
-    : null;
+  const {
+    count: n,
+    reactions,
+    maxCompression,
+    maxUplift,
+    maxLateral,
+    maxCompressionPile,
+    maxUpliftPile,
+    maxLateralPile
+  } = distribution;
+  const { sumX2, sumY2, sumXY, sumR2 } = distribution.sums;
   $("screwDemandPileCount").textContent = String(n);
   $("screwDemandCompression").textContent = `${fixed(maxCompression)} kN`;
   $("screwDemandUplift").textContent = `${fixed(maxUplift)} kN`;
@@ -9029,6 +9617,9 @@ function setMemberType(type) {
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
   const selectedMember = document.querySelector(".member-selected-section");
   if (selectedMember) selectedMember.classList.toggle("member-selected-custom", isCustom);
+  $("memberRadiusSource").textContent = isCustom
+    ? "User-entered section properties · verification required."
+    : "Catalogue section and effective length.";
   document.querySelectorAll("[data-member-guide]").forEach(card => {
     card.hidden = card.dataset.memberGuide !== type;
   });
@@ -9044,23 +9635,24 @@ function setMemberType(type) {
   $("memberSectionField").hidden = isCustom;
   $("memberGradeField").hidden = isCustom;
   $("memberLengthField").hidden = isCustom;
-  $("memberRadiusOverrideDetails").hidden = isCustom;
+  $("memberRadiusField").hidden = isCustom;
   $("memberFactorHelp").innerHTML = type === "chs"
     ? "CHS basis: k<sub>f</sub> = 1.000; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+    : type === "ub" || type === "uc"
+      ? "Catalogue k<sub>f</sub>; hot-rolled UB / UC &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+    : type === "rhs" || type === "shs"
+      ? "Catalogue k<sub>f</sub>; cold-formed non-stress-relieved hollow-section &alpha;<sub>b</sub>."
     : type === "ea"
       ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
     : type === "pfc"
       ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
       : type === "custom"
-        ? "Custom / Built-up properties: entered effective section properties; k<sub>f</sub> and &alpha;<sub>b</sub> are adopted AS 4100 compression factors."
+        ? "Custom / Built-up: user-entered section properties; k<sub>f</sub> and &alpha;<sub>b</sub> require project verification."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";
-  $("memberMaterialOverrideDetails").open = isCustom;
-  $("memberMaterialOverrideTitle").textContent = isCustom ? "Material strengths" : "Override grade values";
-  $("memberMaterialOverrideHelp").textContent = isCustom
-    ? "Enter verified project material strengths."
-    : "Use verified project material strengths only.";
   $("memberAlphaB").disabled = type !== "custom";
+  if (type === "ub" || type === "uc") $("memberAlphaB").value = "0";
   if (type === "chs") $("memberAlphaB").value = "-0.5";
+  if (type === "rhs" || type === "shs") $("memberAlphaB").value = "-0.5";
   if (type === "ea") $("memberAlphaB").value = "0.5";
   if (type === "pfc") $("memberAlphaB").value = "0.5";
   if (type === "rod") $("memberAlphaB").value = "0.5";
@@ -9254,12 +9846,27 @@ function initialise() {
     setMemberStrengthDefaults();
     calculateMember();
   });
+  $("memberMaterialReset").addEventListener("click", () => {
+    setMemberStrengthDefaults();
+    calculateMember();
+  });
   $("memberFyInput").addEventListener("input", calculateMember);
   $("memberFuInput").addEventListener("input", calculateMember);
   $("memberRadiusInput").addEventListener("input", calculateMember);
-  $("memberDimensionOverride").addEventListener("change", calculateMember);
-  ["memberDimChsD", "memberDimChsT", "memberDimEaB", "memberDimEaT", "memberDimPfcD", "memberDimPfcBf", "memberDimPfcTw", "memberDimPfcTf", "memberDimRodD"].forEach(id => $(id).addEventListener("input", calculateMember));
-  ["memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"].forEach(id => $(id).addEventListener("input", calculateMember));
+  $("memberDimensionOverride").addEventListener("change", () => {
+    const selected = selectedMemberGrade();
+    if (selected) {
+      const properties = memberProperties(selected.section);
+      $("memberNetArea").value = properties.area.toFixed(3);
+    }
+    calculateMember();
+  });
+  ["memberDimChsD", "memberDimChsT", "memberDimRodD"].forEach(id => $(id).addEventListener("input", calculateMember));
+  ["memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"].forEach(id => {
+    const field = $(id);
+    field.addEventListener("input", calculateMember);
+    if (field.tagName === "SELECT") field.addEventListener("change", calculateMember);
+  });
   $("memberLength").addEventListener("input", calculateMember);
   $("memberAlphaB").addEventListener("change", calculateMember);
   $("memberCompressionDemand").addEventListener("input", calculateMember);

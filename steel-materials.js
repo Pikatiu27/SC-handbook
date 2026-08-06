@@ -36,7 +36,7 @@
       standard: "AS/NZS 1163:2016",
       table: "AS/NZS 1163 grade basis",
       thicknessLabel: "Nominal wall thickness",
-      grades: Object.freeze(["C250L0", "C350L0"])
+      grades: Object.freeze(["C250L0", "C350L0", "C450L0"])
     }),
     project: Object.freeze({
       label: "Project-defined steel",
@@ -76,6 +76,7 @@
   function hollowStrength(grade) {
     if (grade === "C250L0") return { fy: 250, fu: 320 };
     if (grade === "C350L0") return { fy: 350, fu: 430 };
+    if (grade === "C450L0") return { fy: 450, fu: 500 };
     return null;
   }
 

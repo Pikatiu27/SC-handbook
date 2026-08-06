@@ -12,7 +12,7 @@ const app = completeApp.slice(
   completeApp.indexOf("function setMemberType(")
 );
 
-const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
+const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
 const duplicateIds = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
 assert.deepEqual(duplicateIds, [], "HTML ids must be unique");
 
