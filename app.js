@@ -928,11 +928,70 @@ const rodSections = [
   grades: rodGrades(diameter)
 }));
 
+function sectionHollowCatalogueSections(family) {
+  const grouped = new Map();
+  BeamSectionData.filter(row => row.family === family).forEach(row => {
+    if (!grouped.has(row.designation)) grouped.set(row.designation, []);
+    grouped.get(row.designation).push(row);
+  });
+  return Array.from(grouped, ([designation, rows]) => {
+    const first = rows[0];
+    const circular = family === "chs";
+    const square = family === "shs";
+    const axes = circular
+      ? { axis: { I: first.I * 1e6, Z: first.Z, S: first.S } }
+      : square
+        ? { xy: { I: first.I * 1e6, Z: first.Z, S: first.S } }
+        : { x: { I: first.Ix * 1e6, Z: first.Zx, S: first.Sx }, y: { I: first.Iy * 1e6, Z: first.Zy, S: first.Sy } };
+    const grades = Object.fromEntries(rows.map(row => {
+      const directions = circular
+        ? { axis: { Ze: row.Ze, compactness: row.compactness } }
+        : square
+          ? { xy: { Ze: row.Ze, compactness: row.compactness } }
+          : { x: { Ze: row.Zex, compactness: row.compactnessX }, y: { Ze: row.Zey, compactness: row.compactnessY } };
+      return [row.grade, {
+        fy: row.fy,
+        fyw: row.fy,
+        kf: row.kf,
+        directions,
+        sourceRef: `Austube 2013 Table ${row.sourceTable} · PDF p. ${row.pdfPage}`
+      }];
+    }));
+    return {
+      designation,
+      family,
+      D: first.D,
+      d: first.d,
+      b: first.b,
+      t: first.t,
+      mass: first.mass,
+      area: first.area,
+      r: first.r,
+      rx: first.rx || first.r,
+      ry: first.ry || first.r,
+      Aw: circular ? first.area : 0,
+      I: circular || square ? first.I * 1e6 : first.Ix * 1e6,
+      Zx: circular || square ? first.Z : first.Zx,
+      Sx: circular || square ? first.S : first.Sx,
+      drawing: circular ? { shape: "chs", D: first.D, t: first.t } : { shape: "rhs", b: first.b, h: first.d || first.b, t: first.t },
+      axes,
+      grades,
+      capacityStatus: "checked",
+      shearMethod: circular ? "chs-section" : "rhs-web",
+      interactionMethod: circular ? null : "flat-web",
+      sourceRef: grades[Object.keys(grades)[0]].sourceRef,
+      sourceBasis: "Published design-capacity table"
+    };
+  });
+}
+
 const sectionCatalogueFamilies = SectionCatalogue.create({
   pfc: pfcSections,
   ub: ubSections,
   uc: ucSections,
   chs: chsSections,
+  rhs: sectionHollowCatalogueSections("rhs"),
+  shs: sectionHollowCatalogueSections("shs"),
   ea: eaCatalogueSections,
   rod: rodSections
 }, SectionGeometry);
@@ -2095,7 +2154,7 @@ const referenceInputIds = [
   "concreteDirection", "concreteReoDirection", "concreteDepthBasis", "concreteCrossingBar", "concreteShearReo", "concreteShearBar",
   "reoRebarPath", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoBar", "reoCastingPosition", "reoMaterialCondition", "reoCd", "reoExistingCd", "reoDoubleArea", "reoHalfSpliced", "reoRefinedArrangement", "reoAtrMinBasis", "reoPressureBasisConfirmed", "reoExistingBarOrigin", "reoAnchorageBasis", "reoCastInTermination", "reoCastInTerminationConfirmed", "reoExistingMemberType", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingMethod", "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingKValue", "reoExistingCombinedFactor", "reoExistingPressureBasisConfirmed",
   "layer1Active", "layer1Auto", "layer1Bar", "layer2Active", "layer2Auto", "layer2Bar", "layer3Active", "layer3Auto", "layer3Bar", "layer4Active", "layer4Auto", "layer4Bar",
-  "beamFamily", "beamSection", "beamGrade", "beamDirection", "sectionCatalogueFamily", "sectionCatalogueDesignation", "sectionShape", "sectionMaterialForm", "sectionMaterialGrade",
+  "beamFamily", "beamSection", "beamCustomMaterialForm", "beamGrade", "beamDirection", "sectionCatalogueFamily", "sectionCatalogueDesignation", "sectionShape", "sectionMaterialForm", "sectionMaterialGrade",
   "screwManufacturer", "screwSeries", "screwApplication", "screwCapacitySource", "screwSoil", "screwExposure", "screwInstallEvidence", "screwLateralSensitivity", "screwDemandBasis", "screwProjectBasis", "screwProjectSource", "screwLayout",
   "memberSection", "memberGrade", "memberFyInput", "memberFuInput", "memberRadiusInput", "memberAlphaB", "memberNetAreaMode", "memberKt", "memberDimensionOverride"
 ];
@@ -3783,60 +3842,7 @@ function beamPfcSection(section) {
 }
 
 function beamHollowSections(family) {
-  const grouped = new Map();
-  BeamSectionData.filter(row => row.family === family).forEach(row => {
-    if (!grouped.has(row.designation)) grouped.set(row.designation, []);
-    grouped.get(row.designation).push(row);
-  });
-  return Array.from(grouped, ([designation, rows]) => {
-    const first = rows[0];
-    const circular = family === "chs";
-    const square = family === "shs";
-    const axes = circular
-      ? { axis: { I: first.I * 1e6, Z: first.Z, S: first.S } }
-      : square
-        ? { xy: { I: first.I * 1e6, Z: first.Z, S: first.S } }
-        : { x: { I: first.Ix * 1e6, Z: first.Zx, S: first.Sx }, y: { I: first.Iy * 1e6, Z: first.Zy, S: first.Sy } };
-    const grades = Object.fromEntries(rows.map(row => {
-      const directions = circular
-        ? { axis: { Ze: row.Ze, compactness: row.compactness } }
-        : square
-          ? { xy: { Ze: row.Ze, compactness: row.compactness } }
-          : { x: { Ze: row.Zex, compactness: row.compactnessX }, y: { Ze: row.Zey, compactness: row.compactnessY } };
-      return [row.grade, {
-        fy: row.fy,
-        fyw: row.fy,
-        kf: row.kf,
-        directions,
-        sourceRef: `Austube 2013 Table ${row.sourceTable} · PDF p. ${row.pdfPage}`
-      }];
-    }));
-    return {
-      designation,
-      family,
-      D: first.D,
-      d: first.d,
-      b: first.b,
-      t: first.t,
-      mass: first.mass,
-      area: first.area,
-      r: first.r,
-      rx: first.rx || first.r,
-      ry: first.ry || first.r,
-      Aw: circular ? first.area : 0,
-      I: circular || square ? first.I * 1e6 : first.Ix * 1e6,
-      Zx: circular || square ? first.Z : first.Zx,
-      Sx: circular || square ? first.S : first.Sx,
-      drawing: circular ? { shape: "chs", D: first.D, t: first.t } : { shape: "rhs", b: first.b, h: first.d || first.b, t: first.t },
-      axes,
-      grades,
-      capacityStatus: "checked",
-      shearMethod: circular ? "chs-section" : "rhs-web",
-      interactionMethod: circular ? null : "flat-web",
-      sourceRef: grades[Object.keys(grades)[0]].sourceRef,
-      sourceBasis: "Published design-capacity table"
-    };
-  });
+  return sectionHollowCatalogueSections(family);
 }
 
 function beamAngleSection(section) {
@@ -3976,14 +3982,17 @@ const sectionShapeNames = {
   chs: "CHS",
   i: "Symmetric I-section",
   angle: "Equal angle",
-  channel: "Channel"
+  channel: "Channel",
+  tee: "T-section"
 };
 
 const sectionCatalogueFamilyNames = {
-  pfc: "PFC",
   ub: "UB",
   uc: "UC",
+  pfc: "PFC",
   chs: "CHS",
+  rhs: "RHS",
+  shs: "SHS",
   ea: "Equal angle",
   rod: "Round bar"
 };
@@ -4013,6 +4022,7 @@ function currentSectionGeometry() {
   if (shape === "chs") return SectionGeometry.circularHollow(value("sectionDiameter"), value("sectionThickness"));
   if (shape === "i") return SectionGeometry.symmetricI(value("sectionDepth"), value("sectionFlangeWidth"), value("sectionWebThickness"), value("sectionFlangeThickness"));
   if (shape === "angle") return SectionGeometry.equalAngle(value("sectionLeg"), value("sectionAngleThickness"));
+  if (shape === "tee") return SectionGeometry.tee(value("sectionDepth"), value("sectionFlangeWidth"), value("sectionWebThickness"), value("sectionFlangeThickness"));
   return SectionGeometry.channel(value("sectionDepth"), value("sectionFlangeWidth"), value("sectionWebThickness"), value("sectionFlangeThickness"));
 }
 
@@ -4032,6 +4042,7 @@ function sectionCompositionText(shape) {
   if (shape === "chs") return "Outside circle minus the concentric inside circle.";
   if (shape === "i") return "Two flange rectangles plus the clear web rectangle.";
   if (shape === "angle") return "Two leg rectangles minus their overlapping corner square.";
+  if (shape === "tee") return "One flange rectangle plus the centred clear web rectangle.";
   return "Two flange rectangles plus the clear web rectangle.";
 }
 
@@ -4049,6 +4060,10 @@ function customSectionRatios(shape) {
   if (shape === "channel") return [
     { label: "(d−2tf)/tw", value: (value("sectionDepth") - 2 * value("sectionFlangeThickness")) / value("sectionWebThickness") },
     { label: "(bf−tw)/tf", value: (value("sectionFlangeWidth") - value("sectionWebThickness")) / value("sectionFlangeThickness") }
+  ];
+  if (shape === "tee") return [
+    { label: "(d−tf)/tw", value: (value("sectionDepth") - value("sectionFlangeThickness")) / value("sectionWebThickness") },
+    { label: "(bf−tw)/2tf", value: (value("sectionFlangeWidth") - value("sectionWebThickness")) / (2 * value("sectionFlangeThickness")) }
   ];
   if (shape === "angle") return [{ label: "b/t", value: value("sectionLeg") / value("sectionAngleThickness") }];
   return [];
@@ -4084,6 +4099,7 @@ function idealDrawingProperties(drawing) {
   if (drawing.shape === "chs") return SectionGeometry.circularHollow(drawing.D, drawing.t);
   if (drawing.shape === "i") return SectionGeometry.symmetricI(drawing.d, drawing.bf, drawing.tw, drawing.tf);
   if (drawing.shape === "angle") return SectionGeometry.equalAngle(drawing.b, drawing.t);
+  if (drawing.shape === "tee") return SectionGeometry.tee(drawing.d, drawing.bf, drawing.tw, drawing.tf);
   return SectionGeometry.channel(drawing.d, drawing.bf, drawing.tw, drawing.tf);
 }
 
@@ -4132,6 +4148,12 @@ function renderSectionPropertiesDiagram(drawing, properties, title, catalogueMod
   } else if (shape === "angle") {
     const t = limitThickness(drawing.t);
     geometryMarkup = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + drawnWidth)} V ${line(y0 + t)} H ${line(x0 + t)} V ${line(y0 + drawnHeight)} H ${line(x0)} Z" />`;
+  } else if (shape === "tee") {
+    const tw = limitThickness(drawing.tw);
+    const tf = limitThickness(drawing.tf);
+    const webLeft = x0 + (drawnWidth - tw) / 2;
+    const webRight = webLeft + tw;
+    geometryMarkup = `<path class="section-properties-shape" d="M ${line(x0)} ${line(y0)} H ${line(x0 + drawnWidth)} V ${line(y0 + tf)} H ${line(webRight)} V ${line(y0 + drawnHeight)} H ${line(webLeft)} V ${line(y0 + tf)} H ${line(x0)} Z" />`;
   } else {
     const tw = limitThickness(drawing.tw);
     const tf = limitThickness(drawing.tf);
@@ -4215,7 +4237,7 @@ function selectedSectionCatalogueRecord() {
 function sectionMaterialDefaultForm() {
   if (sectionPropertiesMode === "catalogue") {
     const family = selectedSectionCatalogueFamily()?.key;
-    if (family === "chs") return "hollow-section";
+    if (family === "chs" || family === "rhs" || family === "shs") return "hollow-section";
     if (family === "rod") return "round-bar";
     return "hot-rolled-section";
   }
@@ -4232,14 +4254,14 @@ function sectionMaterialDefaultThickness() {
     if (!section) return null;
     if (family === "ea") return section.auxiliary?.actualT?.value || section.drawing?.t || null;
     if (family === "rod") return section.drawing?.D || section.diameter || null;
-    if (family === "chs") return section.drawing?.t || null;
+    if (family === "chs" || family === "rhs" || family === "shs") return section.drawing?.t || null;
     return Math.max(Number(section.drawing?.tf) || 0, Number(section.drawing?.tw) || 0) || null;
   }
   const shape = $("sectionShape").value;
   if (shape === "rectangle") return Math.min(value("sectionWidth"), value("sectionHeight"));
   if (shape === "rhs" || shape === "chs") return value("sectionThickness");
   if (shape === "circle") return value("sectionDiameter");
-  if (shape === "i" || shape === "channel") return Math.max(value("sectionWebThickness"), value("sectionFlangeThickness"));
+  if (shape === "i" || shape === "channel" || shape === "tee") return Math.max(value("sectionWebThickness"), value("sectionFlangeThickness"));
   if (shape === "angle") return value("sectionAngleThickness");
   return null;
 }
@@ -4362,6 +4384,9 @@ function sectionCheckedDesignRecord() {
   }
   if (family === "chs") return beamHollowSections("chs").find(item =>
     sameSectionDimension(item.D, selected.drawing?.D) && sameSectionDimension(item.t, selected.drawing?.t)
+  ) || null;
+  if (family === "rhs" || family === "shs") return beamHollowSections(family).find(item =>
+    item.designation === designation
   ) || null;
   if (family === "ea") {
     const section = eaCatalogueSections.find(item => item.designation === designation);
@@ -4855,9 +4880,12 @@ function configureSectionSpecificProperties(properties, shape) {
   const hasSupplementary = Object.values(cardVisibility).some(Boolean);
   $("sectionSupplementaryHeading").hidden = !hasSupplementary;
   $("sectionSupplementaryProperties").hidden = !hasSupplementary;
-  if (hasSupplementary && cardVisibility.sectionJpCard && Object.entries(cardVisibility).every(([id, visible]) => id === "sectionJpCard" || !visible)) {
-    $("sectionSupplementaryTitle").textContent = "Supplementary geometric reference";
-    $("sectionSupplementaryDescription").textContent = "Polar second moment about the displayed centroidal axes.";
+  if (hasSupplementary && !cardVisibility.sectionJCard && !cardVisibility.sectionIwCard && !cardVisibility.sectionXoCard) {
+    const polarOnly = cardVisibility.sectionJpCard && !cardVisibility.sectionAwCard;
+    $("sectionSupplementaryTitle").textContent = polarOnly ? "Supplementary geometric reference" : "Supplementary geometric references";
+    $("sectionSupplementaryDescription").textContent = polarOnly
+      ? "Polar second moment about the displayed centroidal axes."
+      : "Applicable clear-wall or clear-web area and polar second-moment references.";
   }
 
   const hasIxy = Number.isFinite(sectionPropertyNumber(properties?.ixy));
@@ -4934,7 +4962,7 @@ function calculateCustomSectionProperties() {
     const principalTwo = angleAxes ? "y" : "v";
     const shearReferenceText = shape === "rhs"
       ? "A<sub>wy</sub> and A<sub>wx</sub> are the combined areas of the two ideal vertical and horizontal walls"
-      : shape === "i" || shape === "channel"
+      : shape === "i" || shape === "channel" || shape === "tee"
         ? "A<sub>w</sub> is the ideal clear web area"
         : "No shear reference area is reported for this shape";
     renderSectionPropertiesDiagram(sectionDrawingFromInputs(shape), properties, sectionShapeNames[shape]);
@@ -5192,179 +5220,46 @@ function selectedBeamCatalogueSection() {
   return sections.find(section => section.designation === $("beamSection").value) || sections[0] || null;
 }
 
-function beamCustomGradeRecords(catalogueSection) {
-  const directionRecords = Object.fromEntries(beamDirections().map(([key]) => [key, { Ze: 0, compactness: null }]));
-  return Object.fromEntries(Object.entries(catalogueSection?.grades || {}).map(([name, grade]) => [name, {
-    ...grade,
-    directions: directionRecords,
-    sourceRef: `Selected ${name} strength basis from ${catalogueSection.designation}`
-  }]));
+function beamCustomDimensions() {
+  if (beamFamily === "ub" || beamFamily === "uc") return { d: value("beamDimID"), bf: value("beamDimIBf"), tw: value("beamDimITw"), tf: value("beamDimITf") };
+  if (beamFamily === "pfc") return { d: value("beamDimPfcD"), bf: value("beamDimPfcBf"), tw: value("beamDimPfcTw"), tf: value("beamDimPfcTf") };
+  if (beamFamily === "chs") return { D: value("beamDimChsD"), t: value("beamDimChsT") };
+  if (beamFamily === "rhs") return { d: value("beamDimRhsD"), b: value("beamDimRhsB"), t: value("beamDimRhsT") };
+  if (beamFamily === "shs") return { b: value("beamDimShsB"), t: value("beamDimShsT") };
+  if (beamFamily === "ea") return { b: value("beamDimEaB"), t: value("beamDimEaT") };
+  return { D: value("beamDimRodD") };
+}
+
+function beamCustomMaterial() {
+  return BeamCustomSection.resolveMaterial({
+    family: beamFamily,
+    productForm: $("beamCustomMaterialForm").value,
+    grade: $("beamGrade").value,
+    dimensions: beamCustomDimensions(),
+    fy: value("beamFyInput"),
+    fyw: value("beamFywInput")
+  });
+}
+
+function beamCustomGradeRecords() {
+  const material = beamCustomMaterial();
+  if (material.status !== "resolved") return {};
+  const directionRecords = Object.fromEntries(BeamCustomSection.directions(beamFamily).map(key => [key, { Ze: 0, compactness: null }]));
+  return {
+    [material.grade]: {
+      fy: material.fy,
+      fyw: material.fyw,
+      directions: directionRecords,
+      sourceRef: material.source
+    }
+  };
 }
 
 function beamCustomSection() {
-  const catalogueSection = selectedBeamCatalogueSection();
-  const grades = beamCustomGradeRecords(catalogueSection);
-  const common = {
-    family: beamFamily,
-    designation: `${beamFamilyDefinitions[beamFamily].label} · entered dimensions`,
-    customGeometry: true,
-    capacityStatus: "checked",
-    grades,
-    sourceRef: `Entered ideal ${beamFamilyDefinitions[beamFamily].label} dimensions`,
-    sourceBasis: "Entered dimensions; ideal sharp-corner geometry"
+  return {
+    ...BeamCustomSection.build(beamFamily, beamCustomDimensions()),
+    grades: beamCustomGradeRecords()
   };
-
-  try {
-    if (beamFamily === "ub" || beamFamily === "uc") {
-      const d = value("beamDimID");
-      const bf = value("beamDimIBf");
-      const tw = value("beamDimITw");
-      const tf = value("beamDimITf");
-      const properties = SectionGeometry.symmetricI(d, bf, tw, tf);
-      const d1 = d - 2 * tf;
-      return {
-        ...common,
-        d, bf, tw, tf, d1,
-        area: properties.area,
-        mass: properties.area * 0.00785,
-        Aw: properties.aw,
-        I: properties.ix,
-        Zx: properties.zx / 1000,
-        Sx: properties.sx / 1000,
-        drawing: { shape: "i", d, bf, tw, tf },
-        geometryProperties: properties,
-        axes: {
-          x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
-          y: { I: properties.iy, Z: properties.zy / 1000, S: properties.sy / 1000 }
-        },
-        shearMethod: "rolled-web",
-        interactionMethod: "flat-web"
-      };
-    }
-
-    if (beamFamily === "pfc") {
-      const d = value("beamDimPfcD");
-      const bf = value("beamDimPfcBf");
-      const tw = value("beamDimPfcTw");
-      const tf = value("beamDimPfcTf");
-      const properties = SectionGeometry.channel(d, bf, tw, tf);
-      const d1 = d - 2 * tf;
-      return {
-        ...common,
-        d, bf, tw, tf, d1,
-        xL: properties.cx,
-        area: properties.area,
-        mass: properties.area * 0.00785,
-        Aw: properties.aw,
-        I: properties.ix,
-        Zx: properties.zx / 1000,
-        Sx: properties.sx / 1000,
-        drawing: { shape: "channel", d, bf, tw, tf, xL: properties.cx },
-        geometryProperties: properties,
-        axes: {
-          x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
-          "y-a": { I: properties.iy, Z: properties.zyLeft / 1000, S: properties.sy / 1000 },
-          "y-b": { I: properties.iy, Z: properties.zyRight / 1000, S: properties.sy / 1000 }
-        },
-        shearMethod: "rolled-web",
-        interactionMethod: "flat-web"
-      };
-    }
-
-    if (beamFamily === "chs") {
-      const D = value("beamDimChsD");
-      const t = value("beamDimChsT");
-      const properties = SectionGeometry.circularHollow(D, t);
-      return {
-        ...common,
-        D, t,
-        area: properties.area,
-        mass: properties.area * 0.00785,
-        Aw: properties.area,
-        I: properties.ix,
-        Zx: properties.zx / 1000,
-        Sx: properties.sx / 1000,
-        drawing: { shape: "chs", D, t },
-        geometryProperties: properties,
-        axes: { axis: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } },
-        shearMethod: "chs-section",
-        interactionMethod: null
-      };
-    }
-
-    if (beamFamily === "rhs" || beamFamily === "shs") {
-      const square = beamFamily === "shs";
-      const b = value(square ? "beamDimShsB" : "beamDimRhsB");
-      const d = square ? b : value("beamDimRhsD");
-      const t = value(square ? "beamDimShsT" : "beamDimRhsT");
-      const properties = SectionGeometry.rectangularHollow(b, d, t);
-      const axes = square
-        ? { xy: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } }
-        : {
-            x: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 },
-            y: { I: properties.iy, Z: properties.zy / 1000, S: properties.sy / 1000 }
-          };
-      return {
-        ...common,
-        d, b, t,
-        area: properties.area,
-        mass: properties.area * 0.00785,
-        I: properties.ix,
-        Zx: properties.zx / 1000,
-        Sx: properties.sx / 1000,
-        drawing: { shape: "rhs", b, h: d, t },
-        geometryProperties: properties,
-        axes,
-        shearMethod: "rhs-web",
-        interactionMethod: "flat-web"
-      };
-    }
-
-    if (beamFamily === "ea") {
-      const b = value("beamDimEaB");
-      const t = value("beamDimEaT");
-      const properties = SectionGeometry.equalAngle(b, t);
-      return {
-        ...common,
-        b, t,
-        area: properties.area,
-        mass: properties.area * 0.00785,
-        I: properties.iu,
-        drawing: { shape: "angle", b, t },
-        geometryProperties: properties,
-        axes: {
-          a: { I: properties.iu, Z: 0, S: 0 },
-          b: { I: properties.iv, Z: 0, S: 0 },
-          c: { I: properties.iu, Z: 0, S: 0 },
-          d: { I: properties.iv, Z: 0, S: 0 }
-        }
-      };
-    }
-
-    const D = value("beamDimRodD");
-    const properties = SectionGeometry.circle(D);
-    return {
-      ...common,
-      D,
-      diameter: D,
-      area: properties.area,
-      mass: properties.area * 0.00785,
-      I: properties.ix,
-      Zx: properties.zx / 1000,
-      Sx: properties.sx / 1000,
-      drawing: { shape: "circle", D },
-      geometryProperties: properties,
-      axes: { axis: { I: properties.ix, Z: properties.zx / 1000, S: properties.sx / 1000 } }
-    };
-  } catch (error) {
-    return {
-      ...common,
-      capacityStatus: "unavailable",
-      invalidReason: error.message,
-      drawing: null,
-      axes: {}
-    };
-  }
 }
 
 function selectedBeamSection() {
@@ -5372,14 +5267,22 @@ function selectedBeamSection() {
 }
 
 function beamDirections() {
-  return beamFamilyDefinitions[beamFamily].directions;
+  const directions = beamFamilyDefinitions[beamFamily].directions;
+  if (!beamDimensionOverrideActive()) return directions;
+  const supported = BeamCustomSection.directions(beamFamily);
+  return directions.filter(([key]) => supported.includes(key));
 }
 
 function populateBeamDirections() {
   const directions = beamDirections();
+  if (!directions.length) {
+    $("beamDirection").innerHTML = "";
+    $("beamDirectionGroup").hidden = true;
+    return;
+  }
   const previous = beamDirectionMemory[beamFamily];
   const selected = directions.some(([key]) => key === previous) ? previous : directions[0][0];
-  const catalogueCase = beamFamily === "pfc" || beamFamily === "ea";
+  const catalogueCase = !beamDimensionOverrideActive() && (beamFamily === "pfc" || beamFamily === "ea");
   $("beamDirection").innerHTML = directions.map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
   $("beamDirection").value = selected;
   $("beamDirectionGroup").hidden = directions.length === 1;
@@ -5435,6 +5338,8 @@ function setBeamDimensionDefaults(section) {
 
 function updateBeamDimensionUi() {
   const active = beamDimensionOverrideActive();
+  const customSupported = BeamCustomSection.directions(beamFamily).length > 0;
+  $("beamDimensionOverride").disabled = !customSupported;
   $("beamDimensionFields").hidden = !active;
   document.querySelectorAll("[data-beam-dim]").forEach(field => {
     field.hidden = !field.dataset.beamDim.split(/\s+/).includes(beamFamily);
@@ -5445,13 +5350,24 @@ function updateBeamDimensionUi() {
     const applicable = input.closest("[data-beam-dim]")?.dataset.beamDim.split(/\s+/).includes(beamFamily);
     input.disabled = !active || !applicable;
   });
-  const sectionLabel = $("beamSectionField")?.querySelector(":scope > span");
-  if (sectionLabel) sectionLabel.textContent = active ? "Reference catalogue section" : "Catalogue section";
-  $("beamSection").setAttribute("aria-label", active ? "Reference catalogue beam section" : "Catalogue beam section");
+  $("beamSectionField").hidden = active;
+  $("beamCustomMaterialField").hidden = !active;
+  $("beamGradeField").hidden = active && !$("beamCustomMaterialForm").value;
+  $("beamSection").setAttribute("aria-label", "Catalogue beam section");
   $("beamSectionSource").textContent = active
-    ? `Entered ${beamFamilyDefinitions[beamFamily].label} dimensions; gross ideal geometry is generated automatically.`
+    ? "Entered ideal dimensions; select an explicit material basis before capacity is evaluated."
+    : !customSupported
+      ? `${beamFamilyDefinitions[beamFamily].source} Custom dimensions are unavailable here; use Section Properties for ideal angle geometry.`
     : beamFamilyDefinitions[beamFamily].source;
   $("beamDimensionStatus").hidden = !active;
+}
+
+function populateBeamCustomMaterialForms(reset = false) {
+  const select = $("beamCustomMaterialForm");
+  const previous = reset ? "" : select.value;
+  const forms = BeamCustomSection.productForms(beamFamily);
+  select.innerHTML = `<option value="">Select material basis</option>${forms.map(form => `<option value="${form}">${SteelMaterials.PRODUCT_FORMS[form].label}${form === "project" ? "" : " basis"}</option>`).join("")}`;
+  select.value = forms.includes(previous) ? previous : "";
 }
 
 function populateBeamOptions() {
@@ -5466,12 +5382,25 @@ function populateBeamOptions() {
     $("beamSection").innerHTML = sections.map(section => `<option value="${section.designation}">${section.designation}</option>`).join("");
     $("beamSection").value = sections.some(section => section.designation === previous) ? previous : (sections.some(section => section.designation === fallback) ? fallback : sections[0].designation);
   }
+  populateBeamCustomMaterialForms(true);
   populateBeamDirections();
   populateBeamGrades();
 }
 
 function beamMaterialDefaults() {
-  const section = selectedBeamSection();
+  if (beamDimensionOverrideActive()) {
+    const material = BeamCustomSection.resolveMaterial({
+      family: beamFamily,
+      productForm: $("beamCustomMaterialForm").value,
+      grade: $("beamGrade").value,
+      dimensions: beamCustomDimensions()
+    });
+    return {
+      fy: Number(material.fy) > 0 ? Number(material.fy) : 0,
+      fyw: Number(material.fyw) > 0 ? Number(material.fyw) : 0
+    };
+  }
+  const section = selectedBeamCatalogueSection();
   const grade = section?.grades?.[$("beamGrade").value] || null;
   const fy = Number(grade?.fy);
   const fyw = Number(grade?.fyw || grade?.fy);
@@ -5489,9 +5418,13 @@ function resetBeamMaterialStrengths() {
 }
 
 function populateBeamGrades() {
+  const custom = beamDimensionOverrideActive();
   const section = selectedBeamCatalogueSection();
   const previous = $("beamGrade").value;
-  const grades = section ? Object.keys(section.grades || {}) : [];
+  const form = $("beamCustomMaterialForm").value;
+  const grades = custom
+    ? form ? SteelMaterials.gradeOptions(form) : []
+    : section ? Object.keys(section.grades || {}) : [];
   if (!grades.length) {
     $("beamGrade").innerHTML = `<option value="">Not available</option>`;
     $("beamGrade").disabled = true;
@@ -5500,7 +5433,7 @@ function populateBeamGrades() {
     $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${grade}</option>`).join("");
     $("beamGrade").value = grades.includes(previous) ? previous : grades[0];
   }
-  setBeamDimensionDefaults(section);
+  if (!custom) setBeamDimensionDefaults(section);
   updateBeamDimensionUi();
   resetBeamMaterialStrengths();
 }
@@ -5508,6 +5441,7 @@ function populateBeamGrades() {
 function setBeamFamily(family) {
   if (!beamFamilyDefinitions[family]) return;
   beamFamily = family;
+  $("beamDimensionOverride").checked = false;
   $("beamFamily").value = family;
   document.querySelectorAll(".beam-family").forEach(button => {
     const active = button.dataset.beamFamily === beamFamily;
@@ -5675,24 +5609,34 @@ function calculateBeam() {
   beamDirectionMemory[beamFamily] = direction;
   const gradeName = $("beamGrade").value;
   const gradeBase = section?.grades?.[gradeName] || null;
+  const customMaterial = customDimensions ? beamCustomMaterial() : null;
   const defaults = beamMaterialDefaults();
   const fyInput = value("beamFyInput");
   const separateWebStrength = ["ub", "uc", "pfc"].includes(beamFamily);
   const fywInput = separateWebStrength ? value("beamFywInput") : fyInput;
+  const customMaterialForm = customDimensions ? $("beamCustomMaterialForm").value : "";
+  const customProjectMaterial = customMaterialForm === "project";
   const strengthClose = (actual, expected) => actual > 0 && expected > 0 && Math.abs(actual - expected) <= 0.01;
-  const momentOverride = Boolean(gradeBase && !strengthClose(fyInput, defaults.fy));
-  const webOverride = Boolean(gradeBase && separateWebStrength && !strengthClose(fywInput, defaults.fyw));
+  const momentOverride = Boolean(gradeBase && !customProjectMaterial && !strengthClose(fyInput, defaults.fy));
+  const webOverride = Boolean(gradeBase && !customProjectMaterial && separateWebStrength && !strengthClose(fywInput, defaults.fyw));
   const materialOverride = momentOverride || webOverride;
   const materialValid = Boolean(fyInput > 0 && (!separateWebStrength || fywInput > 0));
   $("beamFywField").hidden = !separateWebStrength;
-  $("beamMaterialStatus").textContent = !materialValid
-    ? "Enter positive strength"
+  $("beamMaterialStatus").textContent = customDimensions && !customMaterialForm
+    ? "Select material basis"
+    : !materialValid
+      ? "Enter positive strength"
+      : customProjectMaterial
+        ? "Project / legacy material"
     : materialOverride
       ? "Project / legacy override"
       : customDimensions
-        ? "Selected grade default"
+        ? "Standard material lookup"
         : "Catalogue default";
-  $("beamMaterialReset").disabled = !materialOverride;
+  $("beamMaterialReset").disabled = !materialOverride || customProjectMaterial;
+  const materialResetLabel = customDimensions ? "Restore standard material strengths" : "Restore catalogue material strengths";
+  $("beamMaterialReset").title = materialResetLabel;
+  $("beamMaterialReset").setAttribute("aria-label", materialResetLabel);
   const directionCapacity = gradeBase?.directions?.[direction] || null;
   const gradeForEvaluation = gradeBase
     ? { ...gradeBase, fy: fyInput, fyw: separateWebStrength ? fywInput : fyInput }
@@ -5761,7 +5705,8 @@ function calculateBeam() {
       : Math.max(momentDemand > 0 ? momentRatio : 0, shearAvailable && shearDemand > 0 ? shearRatio : 0)
     : NaN;
 
-  $("beamDesignation").textContent = section ? `${section.designation} · ${gradeName || "grade unavailable"}` : `${beamFamilyDefinitions[beamFamily].label} · no checked Beam row`;
+  const displayedGrade = customProjectMaterial ? "Project-defined steel" : gradeName || "material unresolved";
+  $("beamDesignation").textContent = section ? `${section.designation} · ${displayedGrade}` : `${beamFamilyDefinitions[beamFamily].label} · no checked Beam row`;
   $("beamAssumption").textContent = momentAvailable
     ? `${directionLabel} section moment${rolledWebShear || hollowWeb ? " and web shear" : chsSectionShear ? " and CHS shear" : ""}${customDimensions ? "; ideal custom geometry" : materialOverride ? "; project strength override" : ""}; member checks excluded.`
     : customDimensions
@@ -5790,7 +5735,9 @@ function calculateBeam() {
     coordination.status === "reconciled" ? "Reconciled" : coordination.status === "derived" ? "Derived" : "Unresolved",
     false
   );
-  const summarySource = customDimensions ? section?.sourceRef : gradeBase?.sourceRef || section?.sourceRef || section?.sourceBasis || "-";
+  const summarySource = customDimensions
+    ? `${section?.sourceRef || "Entered ideal geometry"}; ${customMaterial?.source || "material basis not selected"}`
+    : gradeBase?.sourceRef || section?.sourceRef || section?.sourceBasis || "—";
   setBeamSummaryCell("beamSummarySource", `${summarySource}${materialOverride ? " · project strength override" : ""}`, !section);
   const symbol = subscript || "";
   $("beamSummaryILabel").innerHTML = symbol ? `I<sub>${symbol}</sub>` : "I";
@@ -5850,6 +5797,9 @@ function calculateBeam() {
   $("beamDrawingNote").textContent = customDimensions
     ? "Diagram and gross properties follow entered ideal dimensions; product radii are omitted."
     : "Diagram follows selected catalogue dimensions; properties come from the cited table.";
+  $("beamSectionDetailsLabel").textContent = customDimensions
+    ? "Entered dimensions and automatically derived properties"
+    : "Dimensions and supplementary catalogue properties";
   $("beamDimensionStatus").hidden = !customDimensions;
   if (customDimensions) {
     $("beamDimensionStatus").innerHTML = section?.invalidReason
@@ -5858,7 +5808,9 @@ function calculateBeam() {
   }
   renderBeamSectionDiagram(section);
 
-  const source = customDimensions ? section?.sourceRef : gradeBase?.sourceRef || section?.sourceRef || beamFamilyDefinitions[beamFamily].source;
+  const source = customDimensions
+    ? `${section?.sourceRef || "Entered ideal geometry"}; ${customMaterial?.source || "material basis not selected"}`
+    : gradeBase?.sourceRef || section?.sourceRef || beamFamilyDefinitions[beamFamily].source;
   const geometryStep = section
     ? `${section.designation}; A<sub>g</sub> = ${formatBeamArea(section.area)}; source = ${source}`
     : `${beamFamilyDefinitions[beamFamily].label}; no valid section geometry is available`;
@@ -5885,7 +5837,7 @@ function calculateBeam() {
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
     : Number.isFinite(utilisation) ? `Governing section utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "FAIL" : "PASS"}.`
       : "Combined action not evaluated because one or more required capacity paths are unavailable.";
-  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${materialOverride ? `project / legacy override (catalogue defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : customDimensions ? "selected grade default applied to entered geometry" : "catalogue default"}.`;
+  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${customProjectMaterial ? "project / legacy material values" : materialOverride ? `project / legacy override (standard defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : customDimensions ? "explicit standard material lookup for entered geometry" : "catalogue default"}.`;
   const zeBasis = coordination.status === "derived"
     ? customDimensions ? "derived from entered geometry and adopted strength" : "independently regenerated from the entered project strength"
     : beamFamily === "rod"
@@ -5925,8 +5877,8 @@ function calculateBeam() {
     }),
     calculationTraceRow({
       title: "Material strength",
-      lookup: materialOverride ? "Project / legacy override" : customDimensions ? "Selected grade default" : "Catalogue default",
-      selection: gradeName || "Grade unavailable",
+      lookup: customProjectMaterial ? "Project / legacy material" : materialOverride ? "Project / legacy override" : customDimensions ? "Explicit standard material lookup" : "Catalogue default",
+      selection: displayedGrade,
       adopted: `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}`,
       applicability: materialStep
     }),
@@ -9754,9 +9706,12 @@ function initialise() {
   $("beamFamily").addEventListener("change", () => setBeamFamily($("beamFamily").value));
   $("beamSection").addEventListener("change", populateBeamGrades);
   $("beamGrade").addEventListener("change", resetBeamMaterialStrengths);
+  $("beamCustomMaterialForm").addEventListener("change", populateBeamGrades);
   $("beamDirection").addEventListener("change", calculateBeam);
   $("beamDimensionOverride").addEventListener("change", () => {
+    populateBeamCustomMaterialForms(true);
     updateBeamDimensionUi();
+    populateBeamGrades();
     populateBeamDirections();
     calculateBeam();
   });

@@ -2724,7 +2724,7 @@ Purpose and modes:
 
 - Use one shared geometry layer for dimension-derived section properties. Beam, Axial Member and future tabs must call this layer rather than reimplementing ideal-shape formulas.
 - Open the Section Properties tab in `Catalogue sections` mode and provide a separate `Custom geometry` mode.
-- Reuse only checked manufacturer rows already accepted elsewhere in the handbook. Custom geometry may cover ideal rectangles, RHS/SHS, solid circles, CHS, symmetric I-sections, equal angles and simplified channels.
+- Reuse only checked manufacturer rows already accepted elsewhere in the handbook. Catalogue mode includes `UB`, `UC`, `PFC`, `CHS`, `RHS`, `SHS`, `Equal Angle` and `Round Bar`; keep this order aligned with Beam and Axial Member, followed by `Custom geometry`. Custom geometry may cover ideal rectangles, RHS/SHS, solid circles, CHS, symmetric I-sections, equal angles, simplified channels and T-sections.
 - Treat Section Properties as the shared section, product and material attribute lookup for downstream steel-member workflows. It may report verified geometry, product identity, material strengths, common steel constants and checked standard-dependent attributes, but it must not calculate design capacity, member stability, actions or utilisation.
 
 Shared calculation contract:
@@ -2757,6 +2757,7 @@ Page and evidence requirements:
 - Within `Section properties`, use the engineering sequence: gross section basis; displayed-axis properties; applicable family-specific properties; principal-axis relationship where relevant; material-dependent section values; geometric ratios.
 - Within `Material properties`, show the selected standard and grade, governing thickness or diameter, `fy`, applicable exact-row `fy,w`, `fu`, `E`, `G`, Poisson's ratio, thermal expansion coefficient and density. Do not repeat the same material identity or thickness statement in both the group description and value cards.
 - Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx` / `Zy`, plastic `Sx` / `Sy`, and `rx` / `ry`. Orrcon CHS mass is a catalogue value; its remaining properties are geometry-derived from published nominal `D` / `t`. For custom geometry, a steel mass may be derived from `0.00785A kg/m` only when the assumed density `7850 kg/m3` is stated.
+- For catalogue RHS and SHS, use the accepted Austube Tables 3.1-3 to 3.1-6 product rows for mass, `Ag`, `I`, `Z`, `S` and `r`; retain each checked grade row for `fy`, `kf`, compactness and `Ze`. Do not replace rounded-product properties with sharp-corner hollow-section formulas. Centroid coordinates, symmetry relationships and nominal clear-wall `Awx` / `Awy` may be derived from stated overall dimensions and thickness only when labelled `Derived · catalogue data`.
 - Place a compact material-definition row after section selection. In catalogue mode, infer product form and controlling thickness from the selected product and default to a grade listed for that exact design-property row where one exists. A different standard grade may remain selectable for material lookup, but grade-dependent section attributes must then state `Selected grade not listed for this section`. In custom mode, require an explicit product-form / material basis and allow project-entered `fy` / `fu` where no standard lookup applies.
 - Present the accepted catalogue product families and `Custom geometry` in one compact horizontal category switch, consistent with the Axial Member family control. Do not add a second visible catalogue/custom mode row. Keep only `Section designation` in the catalogue selection row; retain the underlying family and source-mode values as application state without repeating visible dropdowns. Wrap catalogue families into two balanced columns on narrow screens and allow the longer custom label to span the final row.
 - Custom mode must start with the material basis unresolved. Do not infer a hot-rolled, round-bar or hollow-section product standard solely from the selected ideal shape. Resolve `fy` / `fu` only after the user explicitly selects a product form or project-defined steel basis.
@@ -2799,6 +2800,7 @@ Scope boundaries:
 
 - State that no material standard governs the pure geometric relationships.
 - Treat custom shapes as sharp-corner ideal geometry. Show the formulas and identify composite addition or subtraction where used.
+- Treat the custom T-section as one centred web rectangle plus one flange rectangle. Report `A`, `cx`, `cy`, `Ix`, `Iy`, directional elastic moduli, reviewed equal-area plastic moduli, radii and geometric clear-web area `Aw`; do not infer rolled-tee corner radii, `J`, `Iw`, shear centre, compactness or capacity.
 - Keep x/y axes explicit; do not describe unsymmetric x/y values as principal-axis properties.
 - Do not replace unavailable rolled-section properties with sharp-corner geometry. Use verified manufacturer values when available.
 - Report plastic modulus, torsion constant and warping constant only where the selected catalogue row publishes them or a reviewed ideal-geometry formula is implemented. Otherwise show `Not available`; never infer rolled-section values from simplified sharp-corner geometry.
@@ -2871,7 +2873,7 @@ Broaden the selector beyond UB / UC while keeping the page section-capacity focu
 | `SHS` | Austube Tables 3.1-5 and 3.1-6 | `x-x = y-y` for the symmetric section | Two-web shear | 114 grade-specific rows enabled for moment, shear and interaction |
 | `Equal Angle` | InfraBuild Tables 19 and 20 | Manufacturer load directions `A`, `B`, `C`, `D` | `Not evaluated` | 13 checked catalogue designations enabled for direction-specific moment only |
 | `Rod` | InfraBuild Table 3 plus Table 38 | Axis-independent | `Not evaluated` | 26 round-bar sizes enabled for moment only using generated solid-circle properties |
-| `Custom` | Entered dimensions plus reviewed fixed assumptions | Same direction set as the selected family | `Not evaluated` except where separately released | Dimensions-only geometry is generated for every family; design capacity is enabled only for solid Rod |
+| Family-local `Custom dimensions` | Entered ideal geometry plus explicit material basis | Only the reviewed custom directions listed in 15.12.4.3 | Family-dependent | UB / UC, PFC x-x, CHS, RHS / SHS and Rod capacity paths are enabled; Equal Angle custom capacity remains unavailable |
 
 Do not call an embedded Axial subset a complete catalogue. Each Beam family must use every checked designation in the adopted product table, or identify the selector visibly as a limited checked subset. PFC and Equal Angle require new Beam-specific property imports even though their Axial designations already exist.
 
@@ -2924,7 +2926,7 @@ For UB / UC / PFC, do not replace missing rolled root radii, tapered surfaces or
 
 Keep `Custom dimensions` inside each selected family, matching the Axial Member override pattern. Do not add a separate Custom family or a standalone Custom Rod tab state.
 
-The user enters dimensions only:
+For section geometry, the user enters dimensions only. Material identity is a separate required basis and must not be inferred from a previously selected catalogue section:
 
 - UB / UC: `d`, `bf`, `tw`, `tf`;
 - PFC: `d`, `bf`, `tw`, `tf`;
@@ -2936,14 +2938,27 @@ The user enters dimensions only:
 
 Generate `Ag`, mass, centroid, `I`, `Z`, `S`, clear web depth, shear reference area, section class and `Ze` automatically where the family method supports them. Never ask the user to enter a calculated section property.
 
-Use ideal sharp-corner geometry and state that rolled fillets, root radii and hollow-section corner radii are omitted. The current reviewed capacity boundary is:
+Use ideal sharp-corner geometry and state that rolled fillets, root radii and hollow-section corner radii are omitted. Once Custom dimensions is active, do not call the entered geometry a catalogue UB, UC or PFC product. Use `Ideal symmetric I-section`, `Ideal channel section`, `Ideal circular hollow section`, `Ideal rectangular hollow section`, `Ideal square hollow section` or `Solid circular section` as applicable.
+
+Custom material rules are:
+
+- hide the catalogue designation control and remove it from the active calculation state;
+- require an explicit compatible product-form / material basis before capacity is evaluated;
+- hot-rolled-section basis may be selected for ideal UB / UC / PFC geometry, with `fy,m` resolved from entered `tf` and `fy,w` independently resolved from entered `tw`;
+- cold-formed hollow-section basis may be selected for CHS / RHS / SHS, with grade strength resolved from the entered wall thickness;
+- round-bar basis may be selected for Rod, with strength resolved from the entered diameter;
+- project / legacy material requires positive user-confirmed `fy,m` and, for UB / UC / PFC, positive `fy,w`;
+- a missing or incompatible material basis leaves geometry visible but returns `Not evaluated` for capacity and utilisation;
+- changing family or re-entering Custom dimensions resets the material basis to unresolved; no material selection may carry silently between incompatible families.
+
+The current reviewed capacity boundary is:
 
 - UB / UC: x-x and y-y moment; x-x web shear and reviewed moment-shear interaction;
 - PFC: x-x moment, web shear and reviewed interaction; custom Load A / B remains `Not evaluated`;
 - CHS: axis-independent moment and section shear;
 - RHS / SHS: supported direction moment, two-web shear and reviewed interaction;
 - Rod: axis-independent moment only;
-- Equal Angle: geometry and figure only; custom Load A / B / C / D remains `Not evaluated`.
+- Equal Angle: Custom dimensions is disabled in the Beam tab; ideal angle geometry remains available in Section Properties until a reviewed Load A / B / C / D effective-modulus path is released.
 
 Invalid or physically impossible dimensions must clear the result. Unsupported custom directions must not fall back to catalogue `Ze`, another direction, or `Ze = Z`.
 
@@ -3017,7 +3032,10 @@ State requirements:
 
 - changing family repopulates only compatible sections, grades and directions;
 - Custom dimensions stays inside the selected family and shows only that family's dimensions;
-- the selected catalogue section remains visible as the reference geometry and grade-default source;
+- Custom dimensions hides the catalogue designation and starts with material basis unresolved; a previous catalogue row is not a geometry, grade or strength source for the custom calculation;
+- the material selector shows only family-compatible product forms, and the grade selector appears only after a material basis is chosen;
+- PFC Custom dimensions exposes x-x only; catalogue Load A / B is not offered in the custom state;
+- Equal Angle does not offer Custom dimensions in the Beam tab;
 - derived properties are read-only outputs, not disabled-looking input fields;
 - preserve the last valid choice separately for each family where practical;
 - invalid dimensions or an unsupported custom direction clears capacity to `Not evaluated` without reusing a stale result;
@@ -3037,7 +3055,7 @@ Section selection
   UB | UC | PFC | CHS | RHS | SHS | Equal Angle | Rod
   Selected family: Section | Grade
   Custom dimensions [optional family-local override]
-  Applicable family dimensions only
+  Applicable family dimensions only | explicit material basis
 
 Material strength
   Adopted source state | restore default
@@ -3158,11 +3176,12 @@ Do not publish an expanded family until all applicable gates pass:
 - published catalogue `Ze`, compactness and form-factor values are reconciled with AS 4100:2020 before changing the tab from `For Review`;
 - CHS catalogue examples match the AS 4100 CHS slenderness and shear equations;
 - representative UB, UC, PFC, CHS, RHS / SHS, Equal Angle and Rod moment capacities match independent calculations;
-- representative custom UB/UC, PFC x-x, CHS, RHS/SHS and Rod cases match independent ideal-geometry and AS 4100 calculations;
-- custom PFC Load A/B and Equal Angle Load A/B/C/D return `Not evaluated`;
+- representative custom UB, UC, PFC x-x, CHS, RHS, SHS and Rod cases each match an independent ideal-geometry, material-resolution and AS 4100 capacity calculation;
+- independent custom tests must exercise the production custom-section builder rather than only repeat helper formulas or inspect DOM text;
+- Custom PFC offers x-x only, and Beam Equal Angle does not offer Custom dimensions; no hidden fallback may calculate catalogue Load A/B or Load A/B/C/D from entered geometry;
 - missing-data and unsupported-direction tests return `Not evaluated` and never a zero or stale prior result;
 - unit conversion tests cover `mm³` to `kN·m` and catalogue `10³ mm³` values;
-- UI state tests confirm that Custom dimensions shows only the active family's fields and that irrelevant direction and shear controls are hidden;
+- UI state tests confirm that Custom dimensions hides catalogue designation, starts material basis unresolved, shows only compatible material forms and active-family dimensions, and hides irrelevant direction and shear controls;
 - desktop and phone checks confirm no overlapping axis labels, clipped values or horizontal overflow;
 - `REFERENCE_TRACEABILITY.md` records the exact source table, PDF page, checked date and sample result before release.
 
@@ -3190,7 +3209,7 @@ Current local implementation follows that order:
 | 5 RHS / SHS | Catalogue and entered ideal moment, direction-specific two-web shear and reviewed Cl. 5.12.3 interaction complete; catalogue rows also pass AS 4100:2020 coordination | Ideal geometry omits corner radii |
 | 6 Equal Angle | Complete for the 13 checked designations, including Table 19 principal-axis `I`, `Z`, `S`, Table 20 Load A / B / C / D `Ze` and direction-specific AS 4100 interval coordination | Selector remains visibly a checked subset, not a complete product range |
 | 7 Rod | Complete | Section moment only; no numeric shear |
-| 8 Custom dimensions | UB / UC, PFC x-x, CHS, RHS / SHS and Rod reviewed paths are enabled from entered ideal geometry | PFC Load A/B and Equal Angle Load A/B/C/D remain `Not evaluated` |
+| 8 Custom dimensions | UB / UC, PFC x-x, CHS, RHS / SHS and Rod reviewed paths are enabled from entered ideal geometry and an explicit compatible material basis | Catalogue designation is removed from active custom state; PFC Load A/B is hidden and Equal Angle Custom dimensions is unavailable |
 | 9 Shear / interaction expansion | UB / UC / PFC `x-x`, CHS shear and RHS / SHS direction-specific shear are complete; Cl. 5.12.3 interaction is enabled for the reviewed flat-web paths | CHS has no flat-web interaction; Equal Angle and Rod shear / interaction remain excluded |
 
 #### 15.12.13 Required Exclusions
@@ -3631,7 +3650,42 @@ A welded fabrication category may be preselected for a preliminary fabricated lo
 
 Report `Design section moment capacity, phi M_s`, `First-yield reference, M_y`, `Ideal plastic reference, M_p`, the section class / `Z_e` basis, and active material and fabrication provenance.
 
-#### 15.17A.6 Regular Polygonal Section Calculation Contract
+#### 15.17A.6 Compression and Bending Capacity Profile
+
+The primary elevation profile remains the pure-bending section-capacity result. For circular sections, a separate capacity workflow reports the compression and bending section-capacity intercepts at every 0.5 m and exact-boundary station. It does not accept design actions or make a member-design or whole-pole compliance claim.
+
+**Circular section-capacity boundary**
+
+The supported profile covers an unperforated circular section:
+
+| Item | Required contract |
+| --- | --- |
+| Stations | The same regular 0.5 m and exact-boundary stations used by the moment-capacity profile, ordered top to base |
+| Capacity output | `phi Ns`, retained pure-bending `phi Ms` and `kf` for every active section state; together `phi Ns` and `phi Ms` define the linear uniaxial section-capacity boundary |
+| Geometry | Resolve every active physical section or both adjacent thickness-band states at each evaluated elevation |
+| Circular path | AS 4100:2020 Cl. 6.2 nominal compression section capacity and Cl. 8.3.2 uniaxial combined section capacity; circular symmetry removes major/minor-axis ambiguity |
+| Boundary | Section capacity only; no action point, utilisation, `Nc`, member buckling, effective length, second-order analysis or whole-member compliance claim |
+
+Use the following capacity quantities:
+
+```text
+Ns = kf An fy
+phi Ns = 0.90 Ns
+phi Ms = 0.90 fy Ze
+N / (phi Ns) + M / (phi Ms) = 1
+```
+
+Use `phi = 0.90` for the AS 4100 section capacities. Determine `kf = Ae/Ag` in accordance with Cl. 6.2.2 to Cl. 6.2.4; do not assume `kf = 1.0` for a slender circular shell. The initial scope is unperforated shell only, so openings, penetrations and fastener-hole deductions are unavailable states rather than zero deductions. The displayed equation identifies the boundary represented by the two reported intercepts; do not expose `N`, `M`, reduced capacity or a utilisation ratio as page inputs or results.
+
+**Deferred polygon combined-stress check**
+
+The available ASCE/SEI 48-19 excerpts include axial-plus-bending normal stress in Cl. 5.2.6 Eqs. (5.2-20) and (5.2-21). This is a point-stress check, not a generic capacity-ratio equation. A polygon implementation therefore requires signed `Mx*` and `My*`, a visible section-axis and polygon-orientation convention, and evaluation at every critical perimeter point. With shear and torsion excluded, evaluate the signed normal stress from `P/A + Mx cy/Ix + My cx/Iy`; compare tensile points with the applicable tensile limit and compressive points with the applicable `Fa` branch. Do not reduce this to one scalar `M*` or use `M = Fa Zmin` once axial force is present.
+
+For polygon forms, change the third disclosure title from `Section capacity intercepts` to `Combined polygon stress` and show `Not evaluated`. Keep that state until the axis convention, pointwise geometry routine, ASCE material acceptance and independent sign/rotation tests are complete. Retain its foreign-standard `For Review` status; the supplied excerpts do not establish Australian adoption or complete ASCE 48 compliance.
+
+Retain traceability and independent tests for the `kf` branches, the two capacity intercepts, station order and thickness transitions. Polygon combined stress remains unavailable.
+
+#### 15.17A.7 Regular Polygonal Section Calculation Contract
 
 Require one supported side count `n`, outside across-flats `D_o`, design wall thickness `t_d`, yield stress `f_y`, and actual inside bend radius `r_i`. Collect a common project or fabricator ratio `r_i/t_nom` and derive `r_i = (r_i/t_nom)t_nom` separately for each thickness band or physical section. Display the derived `r_i` and `BR = min(r_i, 4t_d)` values in the calculation trace. The ratio cannot be inferred uniquely from outside dimensions, side count and wall thickness; do not calculate a polygon result while this input is missing. Use `E = 200 GPa`.
 
@@ -3677,7 +3731,7 @@ Use the actual inside bend radius derived from the entered `r_i/t_nom` and cap i
 
 AS/NZS 3678 plate strength may be used as a project material input, but the page does not establish material equivalence with the steel specifications referenced by ASCE/SEI 48-19. State this limitation and require project acceptance before using the polygon result for design.
 
-#### 15.17A.7 Slip-Joint Screening Contract
+#### 15.17A.8 Slip-Joint Screening Contract
 
 Slip joints belong in the segmented data model, but the module does not calculate a slip-joint moment capacity.
 
@@ -3694,7 +3748,7 @@ L_o,constructed >= 1.35 D_ins,max
 
 The quick page shows `Entered overlap`, `Required design overlap`, the prescribed-overlap screen and a visible statement that joint resistance is not calculated. Actual installed overlap and the `1.35 D_ins,max` construction-tolerance check remain available to the calculation layer and project verification record but are not first-page inputs. This screen is not evidence of fit-up, dimensional tolerance, jacking force, local contact, friction, ovalisation, seam, fatigue or joint moment capacity.
 
-#### 15.17A.8 Mass, Self-Weight and Centre of Gravity
+#### 15.17A.9 Mass, Self-Weight and Centre of Gravity
 
 Calculate physical steel volume and mass from `t_nom` for every fabricated section, including both shells in an overlap. Do not subtract overlap length from either physical section's steel mass.
 
@@ -3708,7 +3762,7 @@ z_cg = sum(m_i z_cg,i) / sum(m_i)
 
 Report `Total steel mass`, `Self-weight`, `Assembled centre of gravity`, and optional per-section mass in calculation details. Shaft steel only is included. Base plates, flange plates, anchor bolts, ladders, doors, stiffeners, brackets, platforms, weld metal, coatings, internal cables and attachments remain excluded.
 
-#### 15.17A.9 Page Structure and Figure Rules
+#### 15.17A.10 Page Structure and Figure Rules
 
 Use the shared static-app tab system, not a standalone page or framework rewrite. Use three aligned primary headings without numeric stage badges:
 
@@ -3734,7 +3788,7 @@ Limit common material and overall-profile input groups to three columns on wide 
 
 Use one spacing layer between monopole workflow sections; do not combine lookup-card grid gaps with child margins. Keep `Section form`, the active geometry definition and `Material properties` as visually equivalent engineering input bands beneath their parent headings. On desktop, use bounded control tracks that stop expanding once labels and selected values are comfortably readable. Place the polygon method note with `Section form`, the material provenance note with `Material properties`, and keep the design-thickness override in the active material-control grid instead of forcing an otherwise empty row. At every viewport, constrain schedule, station and overlap tables to their own paint-contained horizontal-scroll regions so a table cannot create page-level overflow. On phone, stack the same controls and notes in the same engineering order.
 
-#### 15.17A.10 Result States and Exclusions
+#### 15.17A.11 Result States and Exclusions
 
 Permitted states are `Calculated`, `Assumption`, `Source_Not_Verified`, `Not checked` and `Invalid input`. Do not use `PASS` or `FAIL`. A prescribed overlap comparison may state `Meets prescribed design overlap` or `Below prescribed design overlap`, but this is not a connection-capacity result.
 
@@ -3756,7 +3810,7 @@ Keep these exclusions explicit:
 - erection, transport and temporary conditions;
 - fire and seismic system design.
 
-#### 15.17A.11 Validation and Release Gates
+#### 15.17A.12 Validation and Release Gates
 
 Before a checked release, complete:
 
@@ -3776,7 +3830,7 @@ Before a checked release, complete:
 14. Confirmation that no demand, utilisation, `PASS` / `FAIL`, combined overlap capacity or excluded design claim appears.
 15. Traceability linking source -> calculation contract -> implementation -> tests -> visible result.
 
-#### 15.17A.12 Implementation Sequence
+#### 15.17A.13 Implementation Sequence
 
 Implement in this order:
 
@@ -3791,41 +3845,6 @@ Implement in this order:
 9. Browser, responsive, regression and traceability audit.
 
 Do not port the old monopole prototype wholesale. Start from the current main application and selectively reuse only calculations or presentation code that satisfies this contract.
-
-#### 15.17A.13 Compression and Bending Capacity Profile
-
-The primary elevation profile remains the pure-bending section-capacity result. For circular sections, a separate capacity workflow reports the compression and bending section-capacity intercepts at every 0.5 m and exact-boundary station. It does not accept design actions or make a member-design or whole-pole compliance claim.
-
-**Circular section-capacity boundary**
-
-The supported profile covers an unperforated circular section:
-
-| Item | Required contract |
-| --- | --- |
-| Stations | The same regular 0.5 m and exact-boundary stations used by the moment-capacity profile, ordered top to base |
-| Capacity output | `phi Ns`, retained pure-bending `phi Ms` and `kf` for every active section state; together `phi Ns` and `phi Ms` define the linear uniaxial section-capacity boundary |
-| Geometry | Resolve every active physical section or both adjacent thickness-band states at each evaluated elevation |
-| Circular path | AS 4100:2020 Cl. 6.2 nominal compression section capacity and Cl. 8.3.2 uniaxial combined section capacity; circular symmetry removes major/minor-axis ambiguity |
-| Boundary | Section capacity only; no action point, utilisation, `Nc`, member buckling, effective length, second-order analysis or whole-member compliance claim |
-
-Use the following capacity quantities:
-
-```text
-Ns = kf An fy
-phi Ns = 0.90 Ns
-phi Ms = 0.90 fy Ze
-N / (phi Ns) + M / (phi Ms) = 1
-```
-
-Use `phi = 0.90` for the AS 4100 section capacities. Determine `kf = Ae/Ag` in accordance with Cl. 6.2.2 to Cl. 6.2.4; do not assume `kf = 1.0` for a slender circular shell. The initial scope is unperforated shell only, so openings, penetrations and fastener-hole deductions are unavailable states rather than zero deductions. The displayed equation identifies the boundary represented by the two reported intercepts; do not expose `N`, `M`, reduced capacity or a utilisation ratio as page inputs or results.
-
-**Deferred polygon combined-stress check**
-
-The available ASCE/SEI 48-19 excerpts do include axial-plus-bending normal stress in Cl. 5.2.6 Eqs. (5.2-20) and (5.2-21). This is a point-stress check, not a generic capacity-ratio equation. A polygon implementation therefore requires signed `Mx*` and `My*`, a visible section-axis and polygon-orientation convention, and evaluation at every critical perimeter point. With shear and torsion excluded, evaluate the signed normal stress from `P/A + Mx cy/Ix + My cx/Iy`; compare tensile points with the applicable tensile limit and compressive points with the applicable `Fa` branch. Do not reduce this to one scalar `M*` or use `M = Fa Zmin` once axial force is present.
-
-For polygon forms, change the third disclosure title from `Section capacity intercepts` to `Combined polygon stress` and show `Not evaluated`. Keep that state until the axis convention, pointwise geometry routine, ASCE material acceptance and independent sign/rotation tests are complete. Retain its foreign-standard `For Review` status; the supplied excerpts do not establish Australian adoption or complete ASCE 48 compliance.
-
-Retain traceability and independent tests for the `kf` branches, the two capacity intercepts, station order and thickness transitions. Polygon combined stress remains unavailable.
 
 **Priority 2: Low-scope reporting improvements**
 

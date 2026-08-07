@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260807monopolerelease1">
+  <link rel="stylesheet" href="styles.css?v=20260807monopolerelease2">
 </head>
 <body>
   <header class="topbar">
@@ -731,16 +731,16 @@
           </section>
           <section class="input-group input-group-section" id="sectionCustomGroup" hidden>
             <span class="input-group-heading"><b>Custom geometry</b><small>Ideal sharp-corner dimensions, in millimetres.</small></span>
-            <div class="input-group-fields four section-properties-inputs">
-              <label class="size-field"><span>Shape</span><select id="sectionShape"><option value="rectangle">Rectangle</option><option value="rhs">RHS / SHS</option><option value="circle">Solid circle</option><option value="chs">CHS</option><option value="i">Symmetric I-section</option><option value="angle">Equal angle</option><option value="channel">Channel</option></select></label>
+            <div class="input-group-fields five section-properties-inputs">
+              <label class="size-field"><span>Shape</span><select id="sectionShape"><option value="rectangle">Rectangle</option><option value="rhs">RHS / SHS</option><option value="circle">Solid circle</option><option value="chs">CHS</option><option value="i">Symmetric I-section</option><option value="angle">Equal angle</option><option value="channel">Channel</option><option value="tee">T-section</option></select></label>
               <label data-section-shapes="rectangle rhs"><span>b <i>width</i></span><span class="unit"><input id="sectionWidth" type="number" min="0.1" step="1" value="200"><em>mm</em></span></label>
               <label data-section-shapes="rectangle rhs"><span>h <i>height</i></span><span class="unit"><input id="sectionHeight" type="number" min="0.1" step="1" value="300"><em>mm</em></span></label>
               <label data-section-shapes="rhs chs"><span>t <i>wall thickness</i></span><span class="unit"><input id="sectionThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
               <label data-section-shapes="circle chs" hidden><span>D <i>diameter</i></span><span class="unit"><input id="sectionDiameter" type="number" min="0.1" step="1" value="100"><em>mm</em></span></label>
-              <label data-section-shapes="i channel" hidden><span>d <i>overall depth</i></span><span class="unit"><input id="sectionDepth" type="number" min="0.1" step="1" value="300"><em>mm</em></span></label>
-              <label data-section-shapes="i channel" hidden><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="sectionFlangeWidth" type="number" min="0.1" step="1" value="150"><em>mm</em></span></label>
-              <label data-section-shapes="i channel" hidden><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="sectionWebThickness" type="number" min="0.1" step="0.1" value="8"><em>mm</em></span></label>
-              <label data-section-shapes="i channel" hidden><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="sectionFlangeThickness" type="number" min="0.1" step="0.1" value="12"><em>mm</em></span></label>
+              <label data-section-shapes="i channel tee" hidden><span>d <i>overall depth</i></span><span class="unit"><input id="sectionDepth" type="number" min="0.1" step="1" value="300"><em>mm</em></span></label>
+              <label data-section-shapes="i channel tee" hidden><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="sectionFlangeWidth" type="number" min="0.1" step="1" value="150"><em>mm</em></span></label>
+              <label data-section-shapes="i channel tee" hidden><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="sectionWebThickness" type="number" min="0.1" step="0.1" value="8"><em>mm</em></span></label>
+              <label data-section-shapes="i channel tee" hidden><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="sectionFlangeThickness" type="number" min="0.1" step="0.1" value="12"><em>mm</em></span></label>
               <label data-section-shapes="angle" hidden><span>b <i>equal leg length</i></span><span class="unit"><input id="sectionLeg" type="number" min="0.1" step="1" value="100"><em>mm</em></span></label>
               <label data-section-shapes="angle" hidden><span>t <i>thickness</i></span><span class="unit"><input id="sectionAngleThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
             </div>
@@ -875,6 +875,7 @@
             <span class="input-group-heading"><b>Section selection</b><small id="beamSectionSource">Checked catalogue identity and Beam-specific capacity data.</small></span>
             <div class="input-group-fields two beam-selection-fields">
               <label id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam section"></select></label>
+              <label id="beamCustomMaterialField" hidden><span>Material basis</span><select id="beamCustomMaterialForm" aria-label="Custom section material basis"><option value="">Select material basis</option></select></label>
               <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
             </div>
             <div class="member-dimension-panel beam-dimension-panel" id="beamDimensionCard">
@@ -926,7 +927,7 @@
             <div data-beam-summary-cell="axis"><dt>Bending direction</dt><dd id="beamSummaryDirection">x-x</dd></div><div data-beam-summary-cell="ze"><dt id="beamSummaryZeLabel">Z<sub>ex</sub></dt><dd id="beamZex">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="fym"><dt>f<sub>y,m</sub></dt><dd id="beamFy">320 MPa</dd></div><div data-beam-summary-cell="aw"><dt id="beamSummaryAreaLabel">A<sub>w</sub></dt><dd id="beamAw">1,730 mm&sup2;</dd></div><div data-beam-summary-cell="fyw"><dt>f<sub>y,w</sub></dt><dd id="beamFyw">320 MPa</dd></div><div data-beam-summary-cell="class"><dt>Section class</dt><dd id="beamCompactness">Compact</dd></div>
           </dl><p class="beam-drawing-note" id="beamDrawingNote">Diagram follows selected catalogue dimensions; properties come from the cited table.</p></div>
           <details class="beam-section-details">
-            <summary><span><b>Section details</b><small>Dimensions and supplementary catalogue properties</small></span><i>+</i></summary>
+            <summary><span><b>Section details</b><small id="beamSectionDetailsLabel">Dimensions and supplementary catalogue properties</small></span><i>+</i></summary>
             <dl class="beam-summary-metrics beam-summary-secondary">
             <div data-beam-summary-cell="D"><dt>d<sub>o</sub></dt><dd id="beamDimDiameter">—</dd></div><div data-beam-summary-cell="d"><dt>d</dt><dd id="beamDimDepth">304.0 mm</dd></div><div data-beam-summary-cell="b"><dt>b</dt><dd id="beamDimWidth">—</dd></div><div data-beam-summary-cell="bf"><dt>b<sub>f</sub></dt><dd id="beamDimBf">165.0 mm</dd></div><div data-beam-summary-cell="t"><dt>t</dt><dd id="beamDimThickness">—</dd></div><div data-beam-summary-cell="tw"><dt>t<sub>w</sub></dt><dd id="beamDimTw">6.1 mm</dd></div><div data-beam-summary-cell="tf"><dt>t<sub>f</sub></dt><dd id="beamDimTf">10.2 mm</dd></div><div data-beam-summary-cell="d1"><dt>d<sub>1</sub></dt><dd id="beamDimD1">283.6 mm</dd></div><div data-beam-summary-cell="xL"><dt>x<sub>L</sub></dt><dd id="beamDimXL">—</dd></div><div data-beam-summary-cell="xO"><dt>x<sub>O</sub></dt><dd id="beamDimXO">—</dd></div>
             <div data-beam-summary-cell="mass"><dt>Mass</dt><dd id="beamMass">40.4 kg/m</dd></div><div data-beam-summary-cell="area"><dt>A<sub>g</sub></dt><dd id="beamArea">5,210 mm&sup2;</dd></div><div data-beam-summary-cell="i"><dt id="beamSummaryILabel">I<sub>x</sub></dt><dd id="beamSummaryI">—</dd></div><div data-beam-summary-cell="z"><dt id="beamSummaryZLabel">Z<sub>x</sub></dt><dd id="beamSummaryZx">569 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="s"><dt id="beamSummarySLabel">S<sub>x</sub></dt><dd id="beamSummarySx">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="kf"><dt>k<sub>f</sub></dt><dd id="beamSummaryKf">0.952</dd></div><div data-beam-summary-cell="coordination"><dt>AS 4100 coordination</dt><dd id="beamCoordination">Reconciled</dd></div><div data-beam-summary-cell="source"><dt>Source</dt><dd id="beamSummarySource">InfraBuild Table 10</dd></div>
@@ -1914,24 +1915,25 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.29</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.30</b></footer>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
   <script src="weld-capacity.js?v=20260803productflow36"></script>
   <script src="concrete-section-calculation.js?v=20260803productflow36"></script>
-  <script src="section-geometry.js?v=20260803productflow36"></script>
-  <script src="section-catalogue.js?v=20260803productflow36"></script>
+  <script src="section-geometry.js?v=20260807sectionfamily2"></script>
+  <script src="section-catalogue.js?v=20260807sectionfamily2"></script>
   <script src="steel-materials.js?v=20260805axialfamilies2"></script>
   <script src="beam-section-data.js?v=20260803productflow36"></script>
   <script src="beam-hot-rolled-data.js?v=20260803productflow36"></script>
   <script src="beam-section-capacity.js?v=20260803productflow36"></script>
   <script src="beam-section-reconciliation.js?v=20260803productflow36"></script>
+  <script src="beam-custom-section.js?v=20260807beamcustom1"></script>
   <script src="member-capacity.js?v=20260806axialrelease1"></script>
   <script src="screw-demand.js?v=20260803purecalc1"></script>
   <script src="reo-calculation.js?v=20260803productflow36"></script>
-  <script src="monopole-capacity.js?v=20260807monopolerelease1"></script>
-  <script src="app.js?v=20260806axialrelease1"></script>
-  <script src="monopole-app.js?v=20260807monopolerelease1"></script>
+  <script src="monopole-capacity.js?v=20260807monopolerelease2"></script>
+  <script src="app.js?v=20260807beamcustom1"></script>
+  <script src="monopole-app.js?v=20260807monopolerelease2"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
 </body>
 </html>

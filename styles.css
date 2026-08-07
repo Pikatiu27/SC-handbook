@@ -306,9 +306,9 @@ main, footer { max-width: 1040px; margin: auto; }
 
 .member-type-switch, .section-properties-mode-switch, .section-catalogue-family-switch { display: inline-flex; flex-wrap: wrap; gap: 3px; margin-bottom: 17px; padding: 3px; border-radius: 8px; background: #edf1ee; }
 .member-type, .section-properties-mode, .section-catalogue-family-tab { min-width: 92px; padding: 8px 13px; }
-.section-catalogue-family-switch { width: fit-content; max-width: 100%; }
+.section-catalogue-family-switch { width: 100%; max-width: 100%; }
 .section-catalogue-family-switch[hidden] { display: none !important; }
-.section-catalogue-family-tab { min-height: 44px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: var(--fs-sm); font-weight: 800; }
+.section-catalogue-family-tab { min-height: 44px; flex: 1 1 86px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: var(--fs-sm); font-weight: 800; }
 .section-catalogue-family-tab[data-section-category-custom] { min-width: 146px; }
 .section-catalogue-family-tab.active { border-color: rgba(53, 111, 104, .20); background: var(--card); color: var(--properties-dark); box-shadow: 0 2px 7px rgba(55, 61, 56, .13); font-weight: 900; }
 .section-catalogue-family-tab:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }

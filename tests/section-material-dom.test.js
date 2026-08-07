@@ -53,6 +53,10 @@ assert.ok(styles.includes(".section-material-input-group > .input-group-heading 
 assert.ok(html.includes('id="sectionCatalogueFamilyTabs"'), "Section Properties must expose catalogue families as a visible category switch");
 assert.ok(html.includes('<label class="size-field" hidden><span>Product family</span><select id="sectionCatalogueFamily"></select></label>'), "The family select must remain as the calculation state control without duplicating the visible category UI");
 assert.ok(app.includes('class="section-catalogue-family-tab"'), "Catalogue family tabs must be generated from the accepted family directory");
+assert.ok(app.includes('rhs: sectionHollowCatalogueSections("rhs")'), "Section Properties must include the checked RHS catalogue directory");
+assert.ok(app.includes('shs: sectionHollowCatalogueSections("shs")'), "Section Properties must include the checked SHS catalogue directory");
+assert.ok(html.includes('<option value="tee">T-section</option>'), "Custom geometry must include the reviewed ideal T-section");
+assert.ok(html.includes('data-section-shapes="i channel tee"'), "T-section must expose d, bf, tw and tf inputs");
 assert.ok(app.includes("data-section-category-custom"), "Custom geometry must remain available in the same visible category switch");
 assert.ok(app.includes('button.setAttribute("aria-pressed", String(active))'), "Catalogue family tabs must expose their selected state");
 assert.ok(html.includes('class="section-properties-mode-switch" role="group" aria-label="Section property source" hidden'), "The legacy source-mode control must not create a second visible tab row");
