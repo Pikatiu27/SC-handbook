@@ -2870,7 +2870,7 @@ Broaden the selector beyond UB / UC while keeping the page section-capacity focu
 | `SHS` | Austube Tables 3.1-5 and 3.1-6 | `x-x = y-y` for the symmetric section | Two-web shear | 114 grade-specific rows enabled for moment, shear and interaction |
 | `Equal Angle` | InfraBuild Tables 19 and 20 | Manufacturer load directions `A`, `B`, `C`, `D` | `Not evaluated` | 13 checked catalogue designations enabled for direction-specific moment only |
 | `Rod` | InfraBuild Table 3 plus Table 38 | Axis-independent | `Not evaluated` | 26 round-bar sizes enabled for moment only using generated solid-circle properties |
-| `Custom` | Entered dimensions plus reviewed fixed assumptions | Same direction set as the selected family | `Not evaluated` except where separately released | Dimensions-only geometry is generated for every family; design capacity is enabled only for solid Rod |
+| Family-local `Custom dimensions` | Entered ideal geometry plus explicit material basis | Only the reviewed custom directions listed in 15.12.4.3 | Family-dependent | UB / UC, PFC x-x, CHS, RHS / SHS and Rod capacity paths are enabled; Equal Angle custom capacity remains unavailable |
 
 Do not call an embedded Axial subset a complete catalogue. Each Beam family must use every checked designation in the adopted product table, or identify the selector visibly as a limited checked subset. PFC and Equal Angle require new Beam-specific property imports even though their Axial designations already exist.
 
@@ -2923,7 +2923,7 @@ For UB / UC / PFC, do not replace missing rolled root radii, tapered surfaces or
 
 Keep `Custom dimensions` inside each selected family, matching the Axial Member override pattern. Do not add a separate Custom family or a standalone Custom Rod tab state.
 
-The user enters dimensions only:
+For section geometry, the user enters dimensions only. Material identity is a separate required basis and must not be inferred from a previously selected catalogue section:
 
 - UB / UC: `d`, `bf`, `tw`, `tf`;
 - PFC: `d`, `bf`, `tw`, `tf`;
@@ -2935,14 +2935,27 @@ The user enters dimensions only:
 
 Generate `Ag`, mass, centroid, `I`, `Z`, `S`, clear web depth, shear reference area, section class and `Ze` automatically where the family method supports them. Never ask the user to enter a calculated section property.
 
-Use ideal sharp-corner geometry and state that rolled fillets, root radii and hollow-section corner radii are omitted. The current reviewed capacity boundary is:
+Use ideal sharp-corner geometry and state that rolled fillets, root radii and hollow-section corner radii are omitted. Once Custom dimensions is active, do not call the entered geometry a catalogue UB, UC or PFC product. Use `Ideal symmetric I-section`, `Ideal channel section`, `Ideal circular hollow section`, `Ideal rectangular hollow section`, `Ideal square hollow section` or `Solid circular section` as applicable.
+
+Custom material rules are:
+
+- hide the catalogue designation control and remove it from the active calculation state;
+- require an explicit compatible product-form / material basis before capacity is evaluated;
+- hot-rolled-section basis may be selected for ideal UB / UC / PFC geometry, with `fy,m` resolved from entered `tf` and `fy,w` independently resolved from entered `tw`;
+- cold-formed hollow-section basis may be selected for CHS / RHS / SHS, with grade strength resolved from the entered wall thickness;
+- round-bar basis may be selected for Rod, with strength resolved from the entered diameter;
+- project / legacy material requires positive user-confirmed `fy,m` and, for UB / UC / PFC, positive `fy,w`;
+- a missing or incompatible material basis leaves geometry visible but returns `Not evaluated` for capacity and utilisation;
+- changing family or re-entering Custom dimensions resets the material basis to unresolved; no material selection may carry silently between incompatible families.
+
+The current reviewed capacity boundary is:
 
 - UB / UC: x-x and y-y moment; x-x web shear and reviewed moment-shear interaction;
 - PFC: x-x moment, web shear and reviewed interaction; custom Load A / B remains `Not evaluated`;
 - CHS: axis-independent moment and section shear;
 - RHS / SHS: supported direction moment, two-web shear and reviewed interaction;
 - Rod: axis-independent moment only;
-- Equal Angle: geometry and figure only; custom Load A / B / C / D remains `Not evaluated`.
+- Equal Angle: Custom dimensions is disabled in the Beam tab; ideal angle geometry remains available in Section Properties until a reviewed Load A / B / C / D effective-modulus path is released.
 
 Invalid or physically impossible dimensions must clear the result. Unsupported custom directions must not fall back to catalogue `Ze`, another direction, or `Ze = Z`.
 
@@ -3016,7 +3029,10 @@ State requirements:
 
 - changing family repopulates only compatible sections, grades and directions;
 - Custom dimensions stays inside the selected family and shows only that family's dimensions;
-- the selected catalogue section remains visible as the reference geometry and grade-default source;
+- Custom dimensions hides the catalogue designation and starts with material basis unresolved; a previous catalogue row is not a geometry, grade or strength source for the custom calculation;
+- the material selector shows only family-compatible product forms, and the grade selector appears only after a material basis is chosen;
+- PFC Custom dimensions exposes x-x only; catalogue Load A / B is not offered in the custom state;
+- Equal Angle does not offer Custom dimensions in the Beam tab;
 - derived properties are read-only outputs, not disabled-looking input fields;
 - preserve the last valid choice separately for each family where practical;
 - invalid dimensions or an unsupported custom direction clears capacity to `Not evaluated` without reusing a stale result;
@@ -3036,7 +3052,7 @@ Section selection
   UB | UC | PFC | CHS | RHS | SHS | Equal Angle | Rod
   Selected family: Section | Grade
   Custom dimensions [optional family-local override]
-  Applicable family dimensions only
+  Applicable family dimensions only | explicit material basis
 
 Material strength
   Adopted source state | restore default
@@ -3157,11 +3173,12 @@ Do not publish an expanded family until all applicable gates pass:
 - published catalogue `Ze`, compactness and form-factor values are reconciled with AS 4100:2020 before changing the tab from `For Review`;
 - CHS catalogue examples match the AS 4100 CHS slenderness and shear equations;
 - representative UB, UC, PFC, CHS, RHS / SHS, Equal Angle and Rod moment capacities match independent calculations;
-- representative custom UB/UC, PFC x-x, CHS, RHS/SHS and Rod cases match independent ideal-geometry and AS 4100 calculations;
-- custom PFC Load A/B and Equal Angle Load A/B/C/D return `Not evaluated`;
+- representative custom UB, UC, PFC x-x, CHS, RHS, SHS and Rod cases each match an independent ideal-geometry, material-resolution and AS 4100 capacity calculation;
+- independent custom tests must exercise the production custom-section builder rather than only repeat helper formulas or inspect DOM text;
+- Custom PFC offers x-x only, and Beam Equal Angle does not offer Custom dimensions; no hidden fallback may calculate catalogue Load A/B or Load A/B/C/D from entered geometry;
 - missing-data and unsupported-direction tests return `Not evaluated` and never a zero or stale prior result;
 - unit conversion tests cover `mm³` to `kN·m` and catalogue `10³ mm³` values;
-- UI state tests confirm that Custom dimensions shows only the active family's fields and that irrelevant direction and shear controls are hidden;
+- UI state tests confirm that Custom dimensions hides catalogue designation, starts material basis unresolved, shows only compatible material forms and active-family dimensions, and hides irrelevant direction and shear controls;
 - desktop and phone checks confirm no overlapping axis labels, clipped values or horizontal overflow;
 - `REFERENCE_TRACEABILITY.md` records the exact source table, PDF page, checked date and sample result before release.
 
@@ -3189,7 +3206,7 @@ Current local implementation follows that order:
 | 5 RHS / SHS | Catalogue and entered ideal moment, direction-specific two-web shear and reviewed Cl. 5.12.3 interaction complete; catalogue rows also pass AS 4100:2020 coordination | Ideal geometry omits corner radii |
 | 6 Equal Angle | Complete for the 13 checked designations, including Table 19 principal-axis `I`, `Z`, `S`, Table 20 Load A / B / C / D `Ze` and direction-specific AS 4100 interval coordination | Selector remains visibly a checked subset, not a complete product range |
 | 7 Rod | Complete | Section moment only; no numeric shear |
-| 8 Custom dimensions | UB / UC, PFC x-x, CHS, RHS / SHS and Rod reviewed paths are enabled from entered ideal geometry | PFC Load A/B and Equal Angle Load A/B/C/D remain `Not evaluated` |
+| 8 Custom dimensions | UB / UC, PFC x-x, CHS, RHS / SHS and Rod reviewed paths are enabled from entered ideal geometry and an explicit compatible material basis | Catalogue designation is removed from active custom state; PFC Load A/B is hidden and Equal Angle Custom dimensions is unavailable |
 | 9 Shear / interaction expansion | UB / UC / PFC `x-x`, CHS shear and RHS / SHS direction-specific shear are complete; Cl. 5.12.3 interaction is enabled for the reviewed flat-web paths | CHS has no flat-web interaction; Equal Angle and Rod shear / interaction remain excluded |
 
 #### 15.12.13 Required Exclusions
