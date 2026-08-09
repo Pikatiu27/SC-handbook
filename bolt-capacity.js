@@ -80,8 +80,10 @@
   function designSlipResistance({ slipFactor, interfaces, preload, holeFactor, phi = 0.7 }) {
     const nei = nonNegativeInteger(interfaces, "interfaces");
     if (nei < 1) throw new RangeError("interfaces must be at least 1.");
+    const mu = positive(slipFactor, "slipFactor");
+    if (mu > 1) throw new RangeError("slipFactor must not exceed 1.");
     return bounded(phi, "phi", 0.01, 1)
-      * bounded(slipFactor, "slipFactor", 0, 1)
+      * mu
       * nei
       * positive(preload, "preload")
       * bounded(holeFactor, "holeFactor", 0.7, 1);

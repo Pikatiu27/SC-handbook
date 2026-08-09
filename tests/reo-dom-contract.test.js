@@ -25,6 +25,8 @@ assert.match(html, /id="reoExistingRefinedCandidateLength"/);
 assert.match(html, /id="reoPressureReference"[^>]*value="Structural analysis · governing ULS load combination"/);
 assert.match(html, /id="reoExistingPressureReference"[^>]*value="Structural analysis · governing ULS load combination"/);
 assert.match(html, /id="reoTerminationRequirements"/);
+assert.match(html, /Galvanized reinforcement bend geometry is not represented; verify AS 3600 Cl\. 17\.2\.3\.3\(d\) separately\./);
+assert.match(html, /galvanized reinforcement bend geometry, complete hook\/cog geometry and detailing design/);
 assert.doesNotMatch(html, /id="reoApplicationField"|id="reoApplicationNote"|Connection context/);
 assert.doesNotMatch(html, /id="reoProfisDetails"/);
 assert.doesNotMatch(html, /id="reoAvailableDepth"/);

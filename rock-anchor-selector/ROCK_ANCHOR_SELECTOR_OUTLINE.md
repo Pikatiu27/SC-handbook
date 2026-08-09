@@ -91,7 +91,7 @@ Source status confirms the evidence type only. It does not confirm project suita
 
 ### Australian Supply Status
 
-- `Confirmed Australian provider pathway`
+- `Australian provider pathway`
 - `Australian supply confirmation required`
 - `Australian acceptance and supply confirmation required`
 - `Project procurement route`

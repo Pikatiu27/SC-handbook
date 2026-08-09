@@ -197,7 +197,7 @@ close(
   polygonCapacity.permittedMomentCapacity,
   polygonCapacity.stress.permittedStress * polygonCapacity.properties.elasticModulus / 1e6
 );
-assert.equal(polygonCapacity.method, "ASCE/SEI 48-19 Cl. 5.2.3.2.1 and 5.2.5");
+assert.equal(polygonCapacity.method, "ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5");
 assert.throws(() => monopole.polygonMomentCapacity({
   sideCount: 12,
   outsideDimension: 1000,

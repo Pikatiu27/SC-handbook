@@ -1054,7 +1054,7 @@ const screwPileCatalogues = {
         installControl: "Example guide correlation: 4000 Nm for 80 kN in stiff/dense soils",
         source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13; CodeMark CM30096 Rev 6",
         defaultSource: "series",
-        capacityBasis: "Compression SWL up to 80 kN in stiff clay/dense sand; within the current CodeMark series scope.",
+        capacityBasis: "Rev Z compression SWL up to 80 kN in stiff clay/dense sand; CM30096 Rev6 separately includes the 80 kN series, current catalogue row pending.",
         note: "Common CodeMark-compliant series. Lateral graph is available for 80 kN clay/sand cases; do not select by axial class alone."
       },
       "katana-100": {
@@ -1078,7 +1078,7 @@ const screwPileCatalogues = {
         installControl: "Use SWL vs torque table and project acceptance",
         source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13; CodeMark CM30096 Rev 6",
         defaultSource: "series",
-        capacityBasis: "Compression SWL up to 100 kN in stiff clay/dense sand; within the current CodeMark series scope.",
+        capacityBasis: "Rev Z compression SWL up to 100 kN in stiff clay/dense sand; CM30096 Rev6 separately includes the 100 kN series, current catalogue row pending.",
         note: "Same shaft as 80 kN with larger helix. Check helix size, torque and pile spacing before adopting."
       },
       "katana-150": {
@@ -1102,7 +1102,7 @@ const screwPileCatalogues = {
         installControl: "Use SWL vs torque table and project acceptance",
         source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13; CodeMark CM30096 Rev 6",
         defaultSource: "series",
-        capacityBasis: "Compression SWL up to 150 kN in stiff clay/dense sand; within the current CodeMark series scope.",
+        capacityBasis: "Rev Z compression SWL up to 150 kN in stiff clay/dense sand; CM30096 Rev6 separately includes the 150 kN series, current catalogue row pending.",
         note: "Larger shaft and helix. Lateral graph is available for 150 kN clay/sand cases; head fixity remains project-specific."
       },
       "katana-200": {
@@ -1126,7 +1126,7 @@ const screwPileCatalogues = {
         installControl: "Use SWL vs torque table and project acceptance",
         source: "Performance Guide Rev Z, 01/10/2024, pp. 8 and 12-13; CodeMark CM30096 Rev 6",
         defaultSource: "series",
-        capacityBasis: "Compression SWL up to 200 kN in stiff clay/dense sand; within the current CodeMark series scope.",
+        capacityBasis: "Rev Z compression SWL up to 200 kN in stiff clay/dense sand; CM30096 Rev6 separately includes the 200 kN series, current catalogue row pending.",
         note: "Two-helix option. Check inter-helix behaviour, pile spacing and installation torque before adopting."
       },
       "katana-250": {
@@ -2289,16 +2289,28 @@ function markInputSources() {
 }
 
 function calculateConnectedPly(config, bolt, count) {
-  const actualEdge = value(config.edgeDistanceId);
-  const effectiveEdge = Math.max(0, value(config.effectiveEdgeInputId));
+  const actualEdge = numericValue($(config.edgeDistanceId).value);
+  const effectiveEdge = numericValue($(config.effectiveEdgeInputId).value);
   const minimumEdge = value(config.edgeConditionId) * bolt.d;
-  const edgeDistancePass = actualEdge >= minimumEdge;
-  const plateStrength = value(config.plateStrengthId);
-  const plateThickness = value(config.plateThicknessId);
-  const bearingFull = 0.9 * 3.2 * bolt.d * plateThickness * plateStrength / 1000;
-  const bearingEdge = 0.9 * effectiveEdge * plateThickness * plateStrength / 1000;
-  const localCapacity = Math.min(bearingFull, bearingEdge);
-  const groupCapacity = count * localCapacity;
+  const plateStrength = numericValue($(config.plateStrengthId).value);
+  const plateThickness = numericValue($(config.plateThicknessId).value);
+  const valid = Number.isFinite(actualEdge) && actualEdge >= 0
+    && Number.isFinite(effectiveEdge) && effectiveEdge > 0
+    && Number.isFinite(plateStrength) && plateStrength > 0
+    && Number.isFinite(plateThickness) && plateThickness > 0;
+  const edgeDistancePass = valid && actualEdge >= minimumEdge;
+  const bearing = valid
+    ? BoltCapacity.designPlyBearing({
+        diameter: bolt.d,
+        thickness: plateThickness,
+        tensileStrength: plateStrength,
+        effectiveEdge
+      })
+    : null;
+  const bearingFull = bearing?.full ?? null;
+  const bearingEdge = bearing?.edge ?? null;
+  const localCapacity = bearing?.local ?? null;
+  const groupCapacity = valid ? count * localCapacity : null;
 
   return {
     ...config,
@@ -2308,6 +2320,7 @@ function calculateConnectedPly(config, bolt, count) {
     edgeDistancePass,
     plateStrength,
     plateThickness,
+    valid,
     bearingFull,
     bearingEdge,
     localCapacity,
@@ -2318,8 +2331,8 @@ function calculateConnectedPly(config, bolt, count) {
 
 function updateConnectedPlyOutputs(ply, suffix = "") {
   $(`minimumEdgeDistance${suffix}`).textContent = fixed(ply.minimumEdge);
-  $(`edgeDistanceStatus${suffix}`).textContent = ply.edgeDistancePass ? "PASS" : "FAIL";
-  $(`edgeDistanceStatus${suffix}`).className = `input-check-status ${ply.edgeDistancePass ? "pass" : "fail"}`;
+  $(`edgeDistanceStatus${suffix}`).textContent = !ply.valid ? "INPUT" : ply.edgeDistancePass ? "PASS" : "FAIL";
+  $(`edgeDistanceStatus${suffix}`).className = `input-check-status ${ply.valid && ply.edgeDistancePass ? "pass" : "fail"}`;
   const standardHole = value("holeFactor") === 1;
   $(`edgeDistanceRequirement${suffix}`).innerHTML = standardHole
     ? `<output id="minimumEdgeDistance${suffix}">${fixed(ply.minimumEdge)}</output> mm minimum &middot; standard hole: centre to edge`
@@ -2327,6 +2340,14 @@ function updateConnectedPlyOutputs(ply, suffix = "") {
 }
 
 function connectedPlyFormulaRows(ply, bolt, count) {
+  if (!ply.valid) {
+    return calculationTraceRow({
+      title: `${ply.label} bearing and edge checks`,
+      result: "Input required",
+      applicability: "Enter positive ply thickness, tensile strength and effective edge distance, plus a non-negative detailing edge distance.",
+      state: "warning"
+    });
+  }
   const effectiveEdgeBasis = `drawing value a<sub>e</sub> = ${fixed(ply.effectiveEdge)} mm`;
   return [
     calculationTraceRow({
@@ -2458,9 +2479,12 @@ function calculateBolt() {
   const strengthSourceNote = category.grade === "8.8" && bolt.d < 16
     ? "AS 4100 Table 9.2.1 Note 2: fuf = 800 MPa for property class 8.8 bolts below 16 mm."
     : `Selected property class ${category.grade}: fuf = ${fuf} MPa.`;
-  const kr = Math.min(1, Math.max(0.75, value("kr")));
+  const krInput = numericValue($("kr").value);
+  const krValid = Number.isFinite(krInput) && krInput >= 0.75 && krInput <= 1;
+  const kr = krValid ? krInput : null;
+  $("kr").setAttribute("aria-invalid", String(!krValid));
   const tension = BoltCapacity.designTension({ As: bolt.As, fuf });
-  const threadShearResult = BoltCapacity.designShear({
+  const threadShearResult = krValid ? BoltCapacity.designShear({
     grade: category.grade,
     fuf,
     kr,
@@ -2468,8 +2492,8 @@ function calculateBolt() {
     shankPlanes: 0,
     Ac: bolt.Ac,
     Ao: bolt.Ao
-  });
-  const shankShearResult = BoltCapacity.designShear({
+  }) : null;
+  const shankShearResult = krValid ? BoltCapacity.designShear({
     grade: category.grade,
     fuf,
     kr,
@@ -2477,31 +2501,37 @@ function calculateBolt() {
     shankPlanes: 1,
     Ac: bolt.Ac,
     Ao: bolt.Ao
-  });
-  const threadKrd = threadShearResult.krd;
-  const shankKrd = shankShearResult.krd;
-  const threadShear = threadShearResult.design;
-  const shankShear = shankShearResult.design;
+  }) : null;
+  const threadKrd = threadShearResult?.krd ?? null;
+  const shankKrd = shankShearResult?.krd ?? null;
+  const threadShear = threadShearResult?.design ?? null;
+  const shankShear = shankShearResult?.design ?? null;
   const selectedShear = plane === "N" ? threadShear : shankShear;
   const countInput = numericValue($("boltCount").value);
   const countValid = Number.isInteger(countInput) && countInput >= 1 && countInput <= 100;
   $("boltCount").setAttribute("aria-invalid", String(!countValid));
   const count = countValid ? countInput : 1;
-  const nThread = Math.round(value("threadPlanes"));
-  const nShank = Math.round(value("shankPlanes"));
+  const nThread = numericValue($("threadPlanes").value);
+  const nShank = numericValue($("shankPlanes").value);
+  const shearPlanesValid = Number.isInteger(nThread) && nThread >= 0 && nThread <= 10
+    && Number.isInteger(nShank) && nShank >= 0 && nShank <= 10
+    && nThread + nShank >= 1;
   const totalThreadPlanes = count * nThread;
   const totalShankPlanes = count * nShank;
-  const groupShearResult = BoltCapacity.designShear({
-    grade: category.grade,
-    fuf,
-    kr,
-    threadPlanes: totalThreadPlanes,
-    shankPlanes: totalShankPlanes,
-    Ac: bolt.Ac,
-    Ao: bolt.Ao
-  });
-  const groupKrd = groupShearResult.krd;
-  const groupShear = groupShearResult.design;
+  const groupShearInputsValid = countValid && shearPlanesValid && krValid;
+  const groupShearResult = groupShearInputsValid
+    ? BoltCapacity.designShear({
+        grade: category.grade,
+        fuf,
+        kr,
+        threadPlanes: totalThreadPlanes,
+        shankPlanes: totalShankPlanes,
+        Ac: bolt.Ac,
+        Ao: bolt.Ao
+      })
+    : null;
+  const groupKrd = groupShearResult?.krd ?? null;
+  const groupShear = groupShearResult?.design ?? null;
   const boltPitch = Math.max(0, value("boltPitch"));
   const minimumPitch = 2.5 * bolt.d;
   const pitchApplicable = count > 1;
@@ -2531,33 +2561,37 @@ function calculateBolt() {
   $("connectedPlyBasisNote").textContent = separatePlyCheck
     ? "Each connected ply is assessed using its entered properties and edge geometry."
     : "Primary ply properties apply to both connected plies.";
+  const connectedPlyInputsValid = primaryPly.valid && (!separatePlyCheck || secondPly.valid);
   const thinnerPlyThickness = separatePlyCheck
     ? Math.min(primaryPly.plateThickness, secondPly.plateThickness)
     : primaryPly.plateThickness;
-  const maximumPitch = Math.min(15 * thinnerPlyThickness, 200);
-  const maximumPitchPass = !pitchApplicable || boltPitch <= maximumPitch;
+  const maximumPitch = connectedPlyInputsValid ? Math.min(15 * thinnerPlyThickness, 200) : null;
+  const maximumPitchPass = connectedPlyInputsValid && (!pitchApplicable || boltPitch <= maximumPitch);
 
-  const capacitiesEqual = separatePlyCheck && Math.abs(primaryPly.groupCapacity - secondPly.groupCapacity) < 0.05;
-  const governingPly = separatePlyCheck && secondPly.groupCapacity < primaryPly.groupCapacity ? secondPly : primaryPly;
-  const fullCapacitiesEqual = separatePlyCheck && Math.abs(primaryPly.bearingFull - secondPly.bearingFull) < 0.05;
-  const edgeCapacitiesEqual = separatePlyCheck && Math.abs(primaryPly.bearingEdge - secondPly.bearingEdge) < 0.05;
-  const governingFullPly = separatePlyCheck && secondPly.bearingFull < primaryPly.bearingFull ? secondPly : primaryPly;
-  const governingEdgePly = separatePlyCheck && secondPly.bearingEdge < primaryPly.bearingEdge ? secondPly : primaryPly;
+  const capacitiesEqual = connectedPlyInputsValid && separatePlyCheck && Math.abs(primaryPly.groupCapacity - secondPly.groupCapacity) < 0.05;
+  const governingPly = connectedPlyInputsValid && separatePlyCheck && secondPly.groupCapacity < primaryPly.groupCapacity ? secondPly : primaryPly;
+  const fullCapacitiesEqual = connectedPlyInputsValid && separatePlyCheck && Math.abs(primaryPly.bearingFull - secondPly.bearingFull) < 0.05;
+  const edgeCapacitiesEqual = connectedPlyInputsValid && separatePlyCheck && Math.abs(primaryPly.bearingEdge - secondPly.bearingEdge) < 0.05;
+  const governingFullPly = connectedPlyInputsValid && separatePlyCheck && secondPly.bearingFull < primaryPly.bearingFull ? secondPly : primaryPly;
+  const governingEdgePly = connectedPlyInputsValid && separatePlyCheck && secondPly.bearingEdge < primaryPly.bearingEdge ? secondPly : primaryPly;
   const governingFullPlyLabel = !separatePlyCheck ? "Both plies identical" : fullCapacitiesEqual ? "Both plies equal" : governingFullPly.label;
   const governingEdgePlyLabel = !separatePlyCheck ? "Both plies identical" : edgeCapacitiesEqual ? "Both plies equal" : governingEdgePly.label;
-  const fullBearingGroupCapacity = count * governingFullPly.bearingFull;
-  const edgeTearoutGroupCapacity = count * governingEdgePly.bearingEdge;
+  const fullBearingGroupCapacity = connectedPlyInputsValid ? count * governingFullPly.bearingFull : null;
+  const edgeTearoutGroupCapacity = connectedPlyInputsValid ? count * governingEdgePly.bearingEdge : null;
   const governingPlyLabel = !separatePlyCheck
     ? "Both plies identical"
     : capacitiesEqual
       ? "Both plies equal"
       : governingPly.label;
   const preload = category.preload ? bolt[category.preload] : 0;
-  const slipInterfaces = Math.max(1, Math.round(value("interfaces")));
+  const slipInterfaces = numericValue($("interfaces").value);
   const holeFactor = value("holeFactor");
-  const slip = category.type === "friction"
+  const slipFactor = numericValue($("slipFactor").value);
+  const slipInputsValid = Number.isInteger(slipInterfaces) && slipInterfaces >= 1 && slipInterfaces <= 10
+    && Number.isFinite(slipFactor) && slipFactor > 0 && slipFactor <= 1;
+  const slip = category.type === "friction" && slipInputsValid
     ? BoltCapacity.designSlipResistance({
-        slipFactor: value("slipFactor"),
+        slipFactor,
         interfaces: slipInterfaces,
         preload,
         holeFactor
@@ -2578,15 +2612,20 @@ function calculateBolt() {
     : Infinity;
   const hasSlipDemand = slipShearDemand > 0 || slipTensionDemand > 0;
   const detailingFailures = [];
+  if (!krValid) detailingFailures.push("bolted-lap reduction factor");
+  if (!shearPlanesValid) detailingFailures.push("shear-plane counts");
   if (pitchApplicable && !pitchPass) detailingFailures.push("minimum pitch");
-  if (pitchApplicable && !maximumPitchPass) detailingFailures.push("maximum pitch");
-  if (!primaryPly.edgeDistancePass) detailingFailures.push(separatePlyCheck ? "primary-ply edge distance" : "edge distance");
-  if (separatePlyCheck && !secondPly.edgeDistancePass) detailingFailures.push("second-ply edge distance");
+  if (!connectedPlyInputsValid) detailingFailures.push("connected-ply inputs");
+  if (connectedPlyInputsValid && pitchApplicable && !maximumPitchPass) detailingFailures.push("maximum pitch");
+  if (primaryPly.valid && !primaryPly.edgeDistancePass) detailingFailures.push(separatePlyCheck ? "primary-ply edge distance" : "edge distance");
+  if (separatePlyCheck && secondPly.valid && !secondPly.edgeDistancePass) detailingFailures.push("second-ply edge distance");
   const detailingCompliant = detailingFailures.length === 0;
   const detailingFailureNote = detailingCompliant
     ? ""
     : `Detailing non-compliant: ${detailingFailures.join(", ")}. Do not adopt the displayed capacities.`;
-  const slipDisplayNote = !detailingCompliant
+  const slipDisplayNote = category.type === "friction" && !slipInputsValid
+    ? "Input required: enter a positive slip factor and a whole-number interface count from 1 to 10."
+    : !detailingCompliant
     ? detailingFailureNote
     : !hasSlipDemand
       ? "Enter serviceability slip actions for the AS 4100 Cl. 9.2.3.3 check."
@@ -2619,54 +2658,66 @@ function calculateBolt() {
     });
   });
   $("selectedShearLabel").innerHTML = `Design shear capacity, &phi;V<sub>f</sub> &middot; ${plane}-plane`;
-  $("selectedShearCapacity").textContent = fixed(selectedShear);
+  $("selectedShearCapacity").textContent = krValid ? fixed(selectedShear) : "Not evaluated";
   $("selectedShearNote").innerHTML = plane === "N"
     ? "Threads intercept shear plane &middot; AS 4100 Cl. 9.2.2.1"
     : "Threads clear of shear plane &middot; AS 4100 Cl. 9.2.2.1";
   $("tensionCapacity").textContent = fixed(tension);
-  $("boltResultNote").innerHTML = `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} &middot; k<sub>r</sub> = ${kr.toFixed(2)}.`;
+  $("boltResultNote").innerHTML = krValid
+    ? `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${(plane === "N" ? threadKrd : shankKrd).toFixed(2)} &middot; k<sub>r</sub> = ${kr.toFixed(2)}.`
+    : "Input required &middot; enter k<sub>r</sub> from 0.75 to 1.00.";
   $("boltDetailingStatus").hidden = countValid && detailingCompliant;
   $("boltDetailingStatus").textContent = countValid
     ? detailingFailureNote
     : "Invalid bolt-group input: enter a whole-number bolt count from 1 to 100.";
-  $("groupShearCapacity").textContent = countValid ? `${fixed(groupShear)} kN` : "Not evaluated";
-  $("groupShearBasis").textContent = countValid
+  $("groupShearCapacity").textContent = groupShearInputsValid ? `${fixed(groupShear)} kN` : "Not evaluated";
+  $("groupShearBasis").textContent = groupShearInputsValid
     ? `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal shear per bolt assumed`
-    : "Enter a whole-number bolt count from 1 to 100.";
-  $("primaryPlyCapacity").textContent = countValid ? `${fixed(primaryPly.groupCapacity)} kN` : "Not evaluated";
-  $("primaryPlyControl").textContent = primaryPly.controlLabel;
-  $("secondPlyCapacity").textContent = countValid ? `${fixed(secondPly.groupCapacity)} kN` : "Not evaluated";
-  $("secondPlyControl").textContent = secondPly.controlLabel;
-  $("bearingGroupCapacity").textContent = countValid ? `${fixed(fullBearingGroupCapacity)} kN` : "Not evaluated";
-  $("bearingGroupBasis").textContent = countValid
+    : countValid && krValid
+      ? "Enter whole-number N/X shear-plane counts with at least one shear plane."
+      : !countValid
+        ? "Enter a whole-number bolt count from 1 to 100."
+        : "Enter k_r from 0.75 to 1.00.";
+  $("primaryPlyCapacity").textContent = countValid && primaryPly.valid ? `${fixed(primaryPly.groupCapacity)} kN` : "Not evaluated";
+  $("primaryPlyControl").textContent = primaryPly.valid ? primaryPly.controlLabel : "Input required";
+  $("secondPlyCapacity").textContent = countValid && secondPly.valid ? `${fixed(secondPly.groupCapacity)} kN` : "Not evaluated";
+  $("secondPlyControl").textContent = secondPly.valid ? secondPly.controlLabel : "Input required";
+  $("bearingGroupCapacity").textContent = countValid && connectedPlyInputsValid ? `${fixed(fullBearingGroupCapacity)} kN` : "Not evaluated";
+  $("bearingGroupBasis").textContent = countValid && connectedPlyInputsValid
     ? `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`
-    : "Enter a valid bolt count.";
-  $("tearoutGroupCapacity").textContent = countValid ? `${fixed(edgeTearoutGroupCapacity)} kN` : "Not evaluated";
-  $("tearoutGroupBasis").textContent = countValid
+    : countValid ? "Complete the connected-ply inputs." : "Enter a valid bolt count.";
+  $("tearoutGroupCapacity").textContent = countValid && connectedPlyInputsValid ? `${fixed(edgeTearoutGroupCapacity)} kN` : "Not evaluated";
+  $("tearoutGroupBasis").textContent = countValid && connectedPlyInputsValid
     ? `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`
-    : "Enter a valid bolt count.";
-  $("connectedPlyGoverningBasis").textContent = countValid
+    : countValid ? "Complete the connected-ply inputs." : "Enter a valid bolt count.";
+  $("connectedPlyGoverningBasis").textContent = countValid && connectedPlyInputsValid
     ? `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`
-    : "Connected-ply group capacity not evaluated.";
+    : "Connected-ply group capacity not evaluated · input required.";
   updateConnectedPlyOutputs(primaryPly);
   updateConnectedPlyOutputs(secondPly, "2");
-  const pitchCompliant = pitchPass && maximumPitchPass;
+  const pitchCompliant = connectedPlyInputsValid && pitchPass && maximumPitchPass;
   $("pitchCheckValue").innerHTML = !countValid
     ? "Enter a whole-number bolt count from 1 to 100"
     : pitchApplicable
-    ? `<output id="minimumPitch">${fixed(minimumPitch)}</output>-<output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted &middot; AS 4100 Cl. 9.5.1; AS 4100 Cl. 9.5.3 general limit`
+    ? connectedPlyInputsValid
+      ? `<output id="minimumPitch">${fixed(minimumPitch)}</output>-<output id="maximumPitch">${fixed(maximumPitch)}</output> mm permitted &middot; AS 4100 Cl. 9.5.1; AS 4100 Cl. 9.5.3 general limit`
+      : "Input required · enter valid connected-ply thickness"
     : "Not applicable to a single-bolt connection";
-  $("pitchStatus").textContent = !countValid ? "INVALID" : pitchApplicable ? (pitchCompliant ? "PASS" : "FAIL") : "N/A";
-  $("pitchStatus").className = `input-check-status ${!countValid ? "fail" : pitchApplicable ? (pitchCompliant ? "pass" : "fail") : "neutral"}`;
-  $("slipCapacity").textContent = slip === null ? "Not applicable" : `${fixed(slip)} kN`;
+  $("pitchStatus").textContent = !countValid || !connectedPlyInputsValid ? "INPUT" : pitchApplicable ? (pitchCompliant ? "PASS" : "FAIL") : "N/A";
+  $("pitchStatus").className = `input-check-status ${!countValid || !connectedPlyInputsValid ? "fail" : pitchApplicable ? (pitchCompliant ? "pass" : "fail") : "neutral"}`;
+  $("slipCapacity").textContent = category.type !== "friction" ? "Not applicable" : !slipInputsValid ? "Input required" : `${fixed(slip)} kN`;
   $("slipCapacityBasis").innerHTML = !countValid
     ? "Per-bolt resistance shown; group resistance not evaluated until bolt count is valid"
-    : slip === null
+    : category.type !== "friction"
     ? "TF categories only"
+    : !slipInputsValid
+    ? "Enter a positive slip factor and a whole-number interface count from 1 to 10"
     : `Per bolt &middot; k<sub>h</sub> = ${holeFactor.toFixed(2)} &middot; ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
   $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
   $("slipGoverningStatus").textContent = !countValid
     ? "Invalid bolt count"
+    : category.type === "friction" && !slipInputsValid
+    ? "Input required"
     : !detailingCompliant
     ? "NON-COMPLIANT"
     : !hasSlipDemand
@@ -2674,7 +2725,7 @@ function calculateBolt() {
       : slipRatio <= 1
         ? "PASS"
         : "FAIL";
-  $("slipGoverningStatus").className = !countValid || !detailingCompliant ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
+  $("slipGoverningStatus").className = !countValid || !detailingCompliant || (category.type === "friction" && !slipInputsValid) ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
   $("slipGoverningNote").textContent = countValid
     ? slipDisplayNote
     : "Bolt-group slip interaction is not evaluated until a valid bolt count is entered.";
@@ -2739,29 +2790,31 @@ function calculateBolt() {
     calculationTraceRow({
       title: "Bolt shear capacity, N-plane",
       reference: "AS 4100 Cl. 9.2.2.1",
-      formula: `&phi;V<sub>f,N</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,N</sub>k<sub>r</sub>A<sub>c</sub>`,
-      substitution: `0.80 &times; 0.62 &times; ${fuf} MPa &times; ${threadKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ac} mm<sup>2</sup> / 1000`,
-      result: `Design capacity per shear plane = ${fixed(threadShear)} kN`,
-      applicability: "Threads intercept the shear plane."
+      formula: krValid ? `&phi;V<sub>f,N</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,N</sub>k<sub>r</sub>A<sub>c</sub>` : "",
+      substitution: krValid ? `0.80 &times; 0.62 &times; ${fuf} MPa &times; ${threadKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ac} mm<sup>2</sup> / 1000` : "",
+      result: krValid ? `Design capacity per shear plane = ${fixed(threadShear)} kN` : "Not evaluated",
+      applicability: krValid ? "Threads intercept the shear plane." : "Enter k_r from 0.75 to 1.00.",
+      state: krValid ? "" : "warning"
     }),
     calculationTraceRow({
       title: "Bolt shear capacity, X-plane",
       reference: "AS 4100 Cl. 9.2.2.1",
-      formula: `&phi;V<sub>f,X</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,X</sub>k<sub>r</sub>A<sub>o</sub>`,
-      substitution: `0.80 &times; 0.62 &times; ${fuf} MPa &times; ${shankKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ao} mm<sup>2</sup> / 1000`,
-      result: `Design capacity per shear plane = ${fixed(shankShear)} kN`,
-      applicability: "Threads do not intercept the shear plane; k<sub>rd,X</sub> = 1.00."
+      formula: krValid ? `&phi;V<sub>f,X</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,X</sub>k<sub>r</sub>A<sub>o</sub>` : "",
+      substitution: krValid ? `0.80 &times; 0.62 &times; ${fuf} MPa &times; ${shankKrd.toFixed(2)} &times; ${kr.toFixed(2)} &times; ${bolt.Ao} mm<sup>2</sup> / 1000` : "",
+      result: krValid ? `Design capacity per shear plane = ${fixed(shankShear)} kN` : "Not evaluated",
+      applicability: krValid ? "Threads do not intercept the shear plane; k<sub>rd,X</sub> = 1.00." : "Enter k_r from 0.75 to 1.00.",
+      state: krValid ? "" : "warning"
     }),
     calculationTraceRow({
       title: "Bolt group shear capacity",
       reference: "AS 4100 Cl. 9.2.2.1",
-      formula: countValid ? `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd</sub>k<sub>r</sub>(n<sub>N</sub>A<sub>c</sub> + n<sub>X</sub>A<sub>o</sub>)` : "",
-      substitution: countValid ? `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>rd</sub> = ${groupKrd.toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}` : "",
-      result: countValid ? `Design group capacity = ${fixed(groupShear)} kN` : "Not evaluated",
-      applicability: countValid
+      formula: groupShearInputsValid ? `&phi;V<sub>f</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd</sub>k<sub>r</sub>(n<sub>N</sub>A<sub>c</sub> + n<sub>X</sub>A<sub>o</sub>)` : "",
+      substitution: groupShearInputsValid ? `n<sub>N</sub> = ${count} &times; ${nThread} = ${totalThreadPlanes}; n<sub>X</sub> = ${count} &times; ${nShank} = ${totalShankPlanes}; k<sub>rd</sub> = ${groupKrd.toFixed(2)}; k<sub>r</sub> = ${kr.toFixed(2)}` : "",
+      result: groupShearInputsValid ? `Design group capacity = ${fixed(groupShear)} kN` : "Not evaluated",
+      applicability: groupShearInputsValid
         ? "Identical bolts with equal shear per bolt assumed; apply the bolted-lap reduction only where its stated conditions apply."
-        : "Enter a whole-number bolt count from 1 to 100.",
-      state: countValid ? "" : "warning"
+        : !countValid ? "Enter a whole-number bolt count from 1 to 100." : !krValid ? "Enter k_r from 0.75 to 1.00." : "Enter whole-number N/X shear-plane counts with at least one shear plane.",
+      state: groupShearInputsValid ? "" : "warning"
     }),
     calculationTraceRow({
       title: "Minimum pitch",
@@ -2774,10 +2827,10 @@ function calculateBolt() {
     calculationTraceRow({
       title: "Maximum pitch",
       reference: "AS 4100 Cl. 9.5.3",
-      formula: pitchApplicable ? `p<sub>max</sub> = min(15t<sub>p,min</sub>, 200 mm)` : "",
-      substitution: pitchApplicable ? `min(15 &times; ${fixed(thinnerPlyThickness)} mm, 200 mm) = ${fixed(maximumPitch)} mm; provided p = ${fixed(boltPitch)} mm` : "",
-      result: pitchApplicable ? `${maximumPitchPass ? "PASS" : "FAIL"}; permitted ${fixed(maximumPitch)} mm` : "Not applicable",
-      applicability: pitchApplicable ? "General limit only; AS 4100 Cl. 9.5.3(a) and AS 4100 Cl. 9.5.3(b) are not applied." : "One-bolt connection."
+      formula: pitchApplicable && connectedPlyInputsValid ? `p<sub>max</sub> = min(15t<sub>p,min</sub>, 200 mm)` : "",
+      substitution: pitchApplicable && connectedPlyInputsValid ? `min(15 &times; ${fixed(thinnerPlyThickness)} mm, 200 mm) = ${fixed(maximumPitch)} mm; provided p = ${fixed(boltPitch)} mm` : "",
+      result: !connectedPlyInputsValid ? "Input required" : pitchApplicable ? `${maximumPitchPass ? "PASS" : "FAIL"}; permitted ${fixed(maximumPitch)} mm` : "Not applicable",
+      applicability: !connectedPlyInputsValid ? "Enter valid connected-ply thickness." : pitchApplicable ? "General limit only; AS 4100 Cl. 9.5.3(a) and AS 4100 Cl. 9.5.3(b) are not applied." : "One-bolt connection."
     }),
     activePlyFormulaRows,
     integrityFormulaRows,
@@ -2795,22 +2848,24 @@ function calculateBolt() {
       title: "TF slip resistance",
       reference: "AS 4100 Cl. 9.2.3.1",
       formula: slip === null ? "" : `&phi;V<sub>sf</sub> = 0.70&mu;n<sub>ei</sub>N<sub>ti</sub>k<sub>h</sub>`,
-      substitution: slip === null ? "" : `0.70 &times; ${value("slipFactor")} &times; ${slipInterfaces} &times; ${preload} kN &times; ${holeFactor}`,
-      result: slip === null ? "Not applicable" : `Design slip resistance per bolt = ${fixed(slip)} kN`,
-      applicability: slip === null ? "TF categories only." : "Use mu = 0.35 only for clean as-rolled contact surfaces; other surfaces require test evidence."
+      substitution: slip === null ? "" : `0.70 &times; ${slipFactor} &times; ${slipInterfaces} &times; ${preload} kN &times; ${holeFactor}`,
+      result: category.type !== "friction" ? "Not applicable" : !slipInputsValid ? "Input required" : `Design slip resistance per bolt = ${fixed(slip)} kN`,
+      applicability: category.type !== "friction" ? "TF categories only." : !slipInputsValid ? "Enter a positive slip factor and a whole-number interface count from 1 to 10." : "Use mu = 0.35 only for clean as-rolled contact surfaces; other surfaces require test evidence.",
+      state: category.type === "friction" && !slipInputsValid ? "warning" : ""
     }),
     calculationTraceRow({
       title: "TF combined slip",
       reference: "AS 4100 Cl. 9.2.3.3",
       formula: slip === null ? "" : `V<sub>sf</sub><sup>*</sup>/&phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf</sub> &le; 1.0`,
       substitution: slip === null ? "" : `${fixed(slipShearDemand)}/${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)}/${fixed(slipTensionCapacity)}`,
-      result: slip === null ? "Not applicable" : `Interaction = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}`,
-      applicability: slip === null ? "Friction-type categories where serviceability slip is limited." : "Entered actions are total bolt-group serviceability actions with equal action per identical bolt; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70."
+      result: category.type !== "friction" ? "Not applicable" : !slipInputsValid ? "Input required" : `Interaction = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}`,
+      applicability: category.type !== "friction" ? "Friction-type categories where serviceability slip is limited." : !slipInputsValid ? "Complete the TF slip inputs before evaluating interaction." : "Entered actions are total bolt-group serviceability actions with equal action per identical bolt; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70.",
+      state: category.type === "friction" && !slipInputsValid ? "warning" : ""
     }),
     calculationTraceRow({
       title: "Capacity-only boundary",
       result: "Project strength actions and utilisation are not evaluated",
-      applicability: `Bolt, connected-ply bearing and optional integrity results are design capacities only.${slip === null ? "" : " Complete the separate TF serviceability slip check shown above."}`
+      applicability: `Bolt, connected-ply bearing and optional integrity results are design capacities only. Simultaneous strength shear and tension requires the squared interaction in AS 4100 Cl. 9.2.2.3.${category.type === "friction" ? " Complete the separate TF serviceability slip check shown above." : ""}`
     })
   ];
   $("formulaSteps").innerHTML = boltTraceRows.join("");
@@ -6917,80 +6972,34 @@ function solveConcreteSection(data) {
 }
 
 function concreteOneWayShear(data, result) {
-  const tensionLayers = result.layers.filter(layer => layer.d >= data.depth / 2 && layer.strain < -0.00005 && layer.area > 0);
-  const centroidArea = tensionLayers.reduce((sum, layer) => sum + layer.area, 0);
-  const d = centroidArea > 0
-    ? tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0) / centroidArea
-    : result.d0;
-  const dBasis = centroidArea > 0
-    ? tensionLayers.map(layer => `Mat ${layer.index}: A<sub>s</sub> = ${fixed(layer.area)} mm<sup>2</sup>, d = ${fixed(layer.d)} mm`).join("; ")
-    : `No reinforcement mat in the tensile half-depth; fallback d = d_o = ${fixed(result.d0)} mm`;
-  const dNumerator = tensionLayers.reduce((sum, layer) => sum + layer.area * layer.d, 0);
-  const dv = Math.max(0.72 * data.depth, 0.9 * d);
-  const bv = data.width;
   const shearReoMode = $("concreteShearReo").value;
   const shearProduct = concreteShearBarProduct();
   const fsyf = Math.max(1, Math.min(600, value("concreteFsyf")));
   const sv = Math.max(1, value("concreteSv"));
   const nsv = Math.max(0, value("concreteNsv"));
   const shearBarArea = shearProduct.area || Math.PI * shearProduct.diameter ** 2 / 4;
-  const asv = nsv * shearBarArea;
-  const asvPerS = shearReoMode === "vertical" ? asv / sv : 0;
-  const asvMinPerS = 0.08 * Math.sqrt(data.fc) * bv / fsyf;
-  const hasShearReo = shearReoMode === "vertical" && asv > 0 && sv > 0;
-  const minShearReoProvided = hasShearReo && asvPerS >= asvMinPerS;
-  const theta = 36;
-  const thetaRad = theta * Math.PI / 180;
-  const cotTheta = 1 / Math.tan(thetaRad);
-  const kvNoMinimum = Math.min(0.15, 200 / (1000 + 1.3 * dv));
-  const kv = minShearReoProvided ? 0.15 : kvNoMinimum;
-  const rootFc = Math.min(Math.sqrt(data.fc), 8.0);
-  const vuc = kv * bv * dv * rootFc / 1000;
-  const vus = hasShearReo ? asvPerS * fsyf * dv * cotTheta / 1000 : 0;
-  const vuRaw = vuc + vus;
-  const vuMax = 0.55 * 0.9 * data.fc * bv * dv * (cotTheta / (1 + cotTheta ** 2)) / 1000;
-  const vu = Math.min(vuRaw, vuMax);
-  const webCrushingLimited = vuRaw > vuMax;
-  const highStrengthLongitudinalLayers = data.layers.filter(layer => layer.fsy > 500);
-  const scopeFailures = [];
-  if (data.fc > 65) scopeFailures.push(`f'c = ${fixed(data.fc)} MPa exceeds 65 MPa`);
-  if (hasShearReo && fsyf > 500) scopeFailures.push(`shear reinforcement f_sy.f = ${fixed(fsyf)} MPa exceeds 500 MPa`);
-  if (highStrengthLongitudinalLayers.length) scopeFailures.push(`${highStrengthLongitudinalLayers.map(layer => `mat ${layer.index}`).join(", ")} f_sy exceeds 500 MPa`);
-  const withinSimplifiedScope = scopeFailures.length === 0;
-  const phi = minShearReoProvided && !webCrushingLimited ? 0.75 : 0.70;
+  const shear = ConcreteSectionCalculation.oneWayShear({
+    depth: data.depth,
+    width: data.width,
+    fc: data.fc,
+    layers: result.layers,
+    d0: result.d0,
+    shearReinforcement: {
+      mode: shearReoMode,
+      designation: shearProduct.designation,
+      barArea: shearBarArea,
+      legs: nsv,
+      spacing: sv,
+      yieldStress: fsyf
+    }
+  });
+  const dBasis = shear.centroidArea > 0
+    ? shear.tensionLayers.map(layer => `Mat ${layer.index}: A<sub>s</sub> = ${fixed(layer.area)} mm<sup>2</sup>, d = ${fixed(layer.d)} mm`).join("; ")
+    : `No reinforcement mat in the tensile half-depth; fallback d = d_o = ${fixed(result.d0)} mm`;
   return {
-    d,
+    ...shear,
     dBasis,
-    dNumerator,
-    centroidArea,
-    dv,
-    bv,
-    kv,
-    kvNoMinimum,
-    rootFc,
-    vuc,
-    shearReoMode,
-    shearDesignation: shearProduct.designation,
-    shearBarArea,
-    nsv,
-    asv,
-    sv,
-    fsyf,
-    asvPerS,
-    asvMinPerS,
-    hasShearReo,
-    minShearReoProvided,
-    theta,
-    cotTheta,
-    vus,
-    vuRaw,
-    vuMax,
-    vu,
-    webCrushingLimited,
-    withinSimplifiedScope,
-    scopeFailures,
-    phi,
-    phiVu: withinSimplifiedScope ? phi * vu : NaN
+    shearDesignation: shearProduct.designation
   };
 }
 
@@ -7383,7 +7392,7 @@ function screwSourceConfidence(manufacturerKey, pile) {
     return { level: "Project input", detail: "Source reference required", className: "source-user" };
   }
   if (manufacturerKey === "katana") {
-    return { level: "Published + local certificate", detail: "Rev Z guide; CodeMark scope checked separately", className: "source-official" };
+    return { level: "Published guide + scope certificate", detail: "Rev Z row; CM30096 Rev6 scope checked separately; current 2025 catalogue row pending", className: "source-official" };
   }
   if (manufacturerKey === "stopdigging") {
     return { level: "Manufacturer published", detail: "Directional values captured; project basis not verified", className: "source-official" };
@@ -8261,40 +8270,32 @@ function setStatusClass(element, className) {
 
 function screwLayoutCoordinates() {
   const layout = $("screwLayout").value;
-  const { columns, rows, lengthX, lengthY } = updateScrewLayoutControls();
-  const xValues = Array.from({ length: columns }, (_, index) => -lengthX / 2 + index * lengthX / (columns - 1));
-  const yValues = Array.from({ length: rows }, (_, index) => -lengthY / 2 + index * lengthY / (rows - 1));
-  let coordinates;
-  if (layout === "rect-grid") {
-    coordinates = yValues.slice().reverse().flatMap(y => xValues.map(x => ({ x, y })));
-  } else {
-    const top = xValues.map(x => ({ x, y: lengthY / 2 }));
-    const right = yValues.slice(1, -1).reverse().map(y => ({ x: lengthX / 2, y }));
-    const bottom = xValues.slice().reverse().map(x => ({ x, y: -lengthY / 2 }));
-    const left = yValues.slice(1, -1).map(y => ({ x: -lengthX / 2, y }));
-    coordinates = [...top, ...right, ...bottom, ...left];
-  }
-  return coordinates.map((point, index) => ({ id: index + 1, ...point }));
+  const layoutInputs = updateScrewLayoutControls();
+  if (!layoutInputs.valid) throw new RangeError(layoutInputs.error);
+  return ScrewDemand.rectangularCoordinates({ layout, ...layoutInputs });
 }
 
 function updateScrewLayoutControls() {
   const perimeter = $("screwLayout").value === "rect-perimeter";
-  const columns = Math.max(2, Math.min(8, Math.round(value("screwPileColumns") || 3)));
-  const rows = Math.max(2, Math.min(8, Math.round(value("screwPileRows") || 3)));
-  const enteredLengthX = value("screwGroupLengthX");
-  const enteredLengthY = value("screwGroupLengthY");
-  const lengthX = Math.max(0.1, enteredLengthX || 0.1);
-  const lengthY = Math.max(0.1, enteredLengthY || 0.1);
-  $("screwPileColumns").value = columns;
-  $("screwPileRows").value = rows;
   $("screwPileColumnsLabel").innerHTML = perimeter ? "Piles per X edge, n<sub>x</sub>" : "Pile columns, n<sub>x</sub>";
   $("screwPileRowsLabel").innerHTML = perimeter ? "Piles per Y edge, n<sub>y</sub>" : "Pile rows, n<sub>y</sub>";
   $("screwLayoutNote").innerHTML = perimeter
     ? "Counts include corner piles. L<sub>x</sub> and L<sub>y</sub> are centre-to-centre spans between outer piles."
     : "All grid intersections contain a pile. L<sub>x</sub> and L<sub>y</sub> are centre-to-centre spans between outer piles.";
-  if (enteredLengthX < 0.1) $("screwGroupLengthX").value = lengthX;
-  if (enteredLengthY < 0.1) $("screwGroupLengthY").value = lengthY;
-  return { columns, rows, lengthX, lengthY };
+  try {
+    return {
+      ...ScrewDemand.validateLayout({
+        columns: numericValue($("screwPileColumns").value),
+        rows: numericValue($("screwPileRows").value),
+        lengthX: numericValue($("screwGroupLengthX").value),
+        lengthY: numericValue($("screwGroupLengthY").value)
+      }),
+      valid: true,
+      error: ""
+    };
+  } catch (error) {
+    return { valid: false, error: error.message };
+  }
 }
 
 function screwRiskNotes(pile, compressionCap, upliftCap, lateralCap) {
@@ -8426,13 +8427,39 @@ function calculateScrewDemand(comparison) {
     service: "unfactored / service reference actions"
   };
   const actionBasisLabel = actionBasisLabels[actionBasis] || "action basis not stated";
+  const actionInputs = {
+    baseN: numericValue($("screwDemandN").value),
+    vx: numericValue($("screwDemandVx").value),
+    vy: numericValue($("screwDemandVy").value),
+    mx: numericValue($("screwDemandMx").value),
+    my: numericValue($("screwDemandMy").value),
+    tz: numericValue($("screwDemandTz").value)
+  };
+  const layoutInputs = updateScrewLayoutControls();
+  const actionsValid = Object.values(actionInputs).every(Number.isFinite);
+  if (!layoutInputs.valid || !actionsValid) {
+    $("screwDemandPileCount").textContent = "-";
+    $("screwDemandCompression").textContent = "Not evaluated";
+    $("screwDemandUplift").textContent = "Not evaluated";
+    $("screwDemandLateral").textContent = "Not evaluated";
+    $("screwDemandCompressionPile").textContent = "Pile -";
+    $("screwDemandUpliftPile").textContent = "Pile -";
+    $("screwDemandLateralPile").textContent = "Pile -";
+    $("screwReactionRows").innerHTML = "";
+    $("screwDemandRatio").textContent = "Not assessed";
+    $("screwDemandStatus").textContent = "Input required";
+    setStatusClass($("screwDemandStatus"), "check");
+    const reason = layoutInputs.valid ? "Enter a finite value for every group action." : layoutInputs.error;
+    $("screwDemandFormulaSteps").innerHTML = calculationTraceRow({
+      title: "Pile-group action distribution",
+      result: "Not evaluated",
+      applicability: reason,
+      state: "warning"
+    });
+    return;
+  }
   const coords = screwLayoutCoordinates();
-  const baseN = signedValue("screwDemandN");
-  const vx = signedValue("screwDemandVx");
-  const vy = signedValue("screwDemandVy");
-  const mx = signedValue("screwDemandMx");
-  const my = signedValue("screwDemandMy");
-  const tz = signedValue("screwDemandTz");
+  const { baseN, vx, vy, mx, my, tz } = actionInputs;
   const distribution = ScrewDemand.distribute({
     coordinates: coords,
     axial: baseN,
@@ -8764,7 +8791,7 @@ function updateReoConditionalFields(options) {
     const restraintRequirement = restraintRequired
       ? `Transverse restraint required: bar diameter at least ${db.toFixed(0)} mm, in contact, extending ${(4 * db).toFixed(0)} mm each side.`
       : "No >400 MPa transverse-restraint trigger from the selected stress basis.";
-    $("reoTerminationRequirements").innerHTML = `<b>Standard ${method} requirements</b><span>${methodRequirement} Bend diameter follows AS 3600 Cl. 17.2.3.3 (${bendFactor}d<sub>b</sub> for the selected condition). ${restraintRequirement}</span>`;
+    $("reoTerminationRequirements").innerHTML = `<b>Standard ${method} requirements</b><span>${methodRequirement} Bend diameter follows AS 3600 Cl. 17.2.3.3 (${bendFactor}d<sub>b</sub> for the selected condition). ${restraintRequirement} Galvanized reinforcement is not represented by this selector; verify AS 3600 Cl. 17.2.3.3(d) separately.</span>`;
   }
   $("reoSteelStressLabel").innerHTML = standardTerminationSelected
     ? "Maximum design tensile stress in anchored bar, &sigma;<sub>st</sub>"

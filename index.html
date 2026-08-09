@@ -97,6 +97,7 @@
             <article class="capacity-card tension"><span>Design tensile capacity, φN<sub>tf</sub></span><strong><output id="tensionCapacity">234.4</output><small> kN</small></strong><p>AS 4100 Cl. 9.2.2.2</p></article>
           </div>
           <p class="result-note" id="boltResultNote">Selected N-plane capacity · k<sub>rd</sub> = 1.00 · k<sub>r</sub> = 1.00.</p>
+          <p class="bolt-adoption-warning bolt-strength-interaction-note"><b>Combined strength actions</b> &middot; Simultaneous bolt shear and tension require the squared interaction check in AS 4100 Cl. 9.2.2.3; this capacity-only page does not evaluate it.</p>
           <p class="bolt-adoption-warning" id="boltDetailingStatus" role="status" hidden></p>
         </section>
       </section>
@@ -1119,7 +1120,7 @@
         </details>
 
         <details id="monopoleCombinedSection" class="monopole-combined-section monopole-station-details">
-          <summary><span><b id="monopoleCombinedCapacityTitle">Section capacity intercepts</b><small id="monopoleCombinedCapacityBasis">Compression and bending &middot; 0.5 m stations &middot; AS 4100 Cls 5.2, 6.2 and 8.3.2</small></span><strong id="monopoleCombinedCapacitySummary">Base capacity = -</strong><i>+</i></summary>
+          <summary><span><b id="monopoleCombinedCapacityTitle">Section capacity intercepts</b><small id="monopoleCombinedCapacityBasis">Compression and bending &middot; 0.5 m stations &middot; AS 4100 Cl. 5.2; AS 4100 Cl. 6.2; AS 4100 Cl. 8.3.2</small></span><strong id="monopoleCombinedCapacitySummary">Base capacity = -</strong><i>+</i></summary>
           <div class="monopole-combined-capacity-body">
             <div id="monopoleCombinedCapacityContent">
               <div class="monopole-subsection-heading"><b>Capacity by elevation</b><small id="monopoleCombinedCapacityCount">0 rows &middot; top to base</small></div>
@@ -1159,7 +1160,7 @@
           <div class="source-notes">
             <p><b>Circular</b> &middot; AS 4100:2020. Design section moment capacity follows Cl. 5.2 and Table 5.2.
               The 0.5 m compression-and-bending profile reports the Cl. 6.2 compression and Cl. 5.2 moment capacity intercepts. The interaction equation is Cl. 8.3.2; &phi; = 0.90.</p>
-            <p><b>Regular polygon</b> &middot; ASCE/SEI 48-19 Cls 5.2.3.2.1 and 5.2.5; P = 0 and M = F<sub>a</sub>I/c. BR = min(r<sub>i</sub>, 4t<sub>d</sub>); no AS 4100 &phi;. <a href="https://sp360.asce.org/personifyebusiness/Merchandise/Product-Details/productId/266165183" target="_blank" rel="noreferrer">Publication record</a>.</p>
+            <p><b>Regular polygon</b> &middot; ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5; P = 0 and M = F<sub>a</sub>I/c. BR = min(r<sub>i</sub>, 4t<sub>d</sub>); no AS 4100 &phi;. <a href="https://sp360.asce.org/personifyebusiness/Merchandise/Product-Details/productId/266165183" target="_blank" rel="noreferrer">Publication record</a>.</p>
             <p><b>Initial capacity example</b> &middot; Austube 508.0 &times; 6.4 CHS C350L0. The 12 m profile length is an editable calculation input, not a published product length. <a href="https://www.austubemills.com.au/resources/design-capacity-tables/" target="_blank" rel="noreferrer">Manufacturer capacity tables</a>.</p>
             <p><b>Product geometry reference</b> &middot; KISMAT KOP-1230: one 12 m, 8-sided section; D<sub>o,b</sub> = 240 mm A/F, D<sub>o,t</sub> = 90 mm A/F, t<sub>nom</sub> = 3 mm and E355BR. The adopted f<sub>y</sub> = 355 MPa and fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5 are not published product values. <a href="https://www.kismatengitech.com/octagonal-poles.html" target="_blank" rel="noreferrer">Manufacturer product table</a>.</p>
             <p><b>Material</b> &middot; AS/NZS 3678:2016 Table 8 f<sub>y</sub> uses t<sub>nom</sub>. Resistance uses t<sub>d</sub>; mass uses t<sub>nom</sub>. Confirm material equivalence and project acceptance for the ASCE method.</p>
@@ -1294,14 +1295,14 @@
             <summary><span><b>Design action check</b><small>Optional project actions and governing utilisation.</small></span><i>+</i></summary>
             <div class="member-demand-body">
               <div class="member-demand-row">
-                <div class="member-demand-copy"><b>Design actions</b><small>Optional actions from relevant load combinations.</small></div>
+                <div class="member-demand-copy"><b>Design actions</b><small>Optional actions from separate compression and tension load cases.</small></div>
                 <div class="member-demand-controls">
                   <label><span>Compression design action N<sub>c</sub><sup>*</sup></span><span class="unit"><input id="memberCompressionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
                   <label><span>Tension design action N<sub>t</sub><sup>*</sup></span><span class="unit"><input id="memberTensionDemand" type="number" min="0" step="1" value="0"><em>kN</em></span></label>
                 </div>
               </div>
               <div class="member-demand-row">
-                <div class="member-demand-copy"><b>Governing utilisation ratio</b><small>Maximum ratio from entered compression and tension actions.</small></div>
+                <div class="member-demand-copy"><b>Governing utilisation ratio</b><small>Envelope of the separate compression and tension load cases.</small></div>
                 <div class="member-demand-ratio-box"><strong id="memberUtilisation">&mdash;</strong><small id="memberUtilisationStatus" class="check">No design action</small></div>
               </div>
             </div>
@@ -1527,7 +1528,7 @@
             <section class="input-group input-group-action">
               <span class="input-group-heading"><b id="reoReferenceBasisHeading">Development basis</b><small id="reoReferenceBasisHelp">Post-installed reinforcement requires a qualified project design report.</small></span>
               <div class="input-group-fields four reo-origin-fields">
-                <label id="reoCastInTerminationField" hidden><span>Anchorage method</span><select id="reoCastInTermination"><option value="straight">Straight development</option><option value="hook">Standard hook</option><option value="cog">Standard cog</option></select><small class="field-help">Hook and cog are anchorage methods, not lap reductions &middot; AS 3600 Cls 13.1.2.6&ndash;13.1.2.7.</small></label>
+                <label id="reoCastInTerminationField" hidden><span>Anchorage method</span><select id="reoCastInTermination"><option value="straight">Straight development</option><option value="hook">Standard hook</option><option value="cog">Standard cog</option></select><small class="field-help">Hook and cog are anchorage methods, not lap reductions &middot; AS 3600 Cl. 13.1.2.6; AS 3600 Cl. 13.1.2.7.</small></label>
                 <div id="reoTerminationRequirements" class="reo-qualification-note" hidden></div>
                 <label id="reoCastInTerminationConfirmedField" class="checkbox-field reo-termination-confirm" hidden><span><b>Standard anchorage detailing confirmed</b><small>The displayed bend, extension and transverse-restraint requirements are satisfied.</small></span><input id="reoCastInTerminationConfirmed" type="checkbox"></label>
                 <label id="reoAnchorageBasisField"><span>Stress basis</span><select id="reoAnchorageBasis"><option value="full">Full-yield stress</option><option value="actual">Project steel stress</option></select></label>
@@ -1642,10 +1643,10 @@
           <div class="source-notes">
             <p><b>Not permitted</b> - bars &gt;40 mm and tension-tie laps. Tension-tie splices require welded or mechanical means under Cl. 13.2.1.</p>
             <p><b>Partial utilisation</b> - do not scale lap length by the steel-stress ratio. Cl. 13.1.2.4 is a separate development-length provision.</p>
-            <p><b>Cog / hook</b> - Cl. 13.1.2.6-13.1.2.7 governs end anchorage. No additional Cl. 13.2.2 lap reduction applies.</p>
+            <p><b>Cog / hook</b> - AS 3600 Cl. 13.1.2.6 and AS 3600 Cl. 13.1.2.7 govern end anchorage. No additional AS 3600 Cl. 13.2.2 lap reduction applies. Galvanized reinforcement bend geometry is not represented; verify AS 3600 Cl. 17.2.3.3(d) separately.</p>
             <p><b>PIR reference</b> - the displayed depth is an AS 3600 development reference using the selected stress basis. It is not an installation depth, AS 5216 result or adhesive-capacity result.</p>
             <p><b>Product refinement</b> - establish the applicable AS 5216 / EAD / ETA design model and verify steel, concrete-cone and bond-splitting failure. A qualified report may govern at a different depth.</p>
-            <p><b>Excluded</b> - compression laps, mesh, bundled bars, complete hook/cog geometry and detailing design, headed bars, welded or mechanical splice design, proprietary high-strength systems, seismic plastic-hinge detailing and bridge-specific requirements.</p>
+            <p><b>Excluded</b> - compression laps, mesh, bundled bars, galvanized reinforcement bend geometry, complete hook/cog geometry and detailing design, headed bars, welded or mechanical splice design, proprietary high-strength systems, seismic plastic-hinge detailing and bridge-specific requirements.</p>
             <p><b>Project checks</b> - product design, edge/spacing, splitting, breakout, installation, interface transfer, detailing, member capacity and foundation capacity.</p>
             <p><b>Supplier status</b> - the current InfraBuild page lists N10-N40; N40 is on request. The April 2022 Product Guide also lists N50 on request. N50 remains reference-only.</p>
             <p><b>Issue status</b> - For Review. Verify against the licensed Standard before design issue.</p>
@@ -1707,7 +1708,7 @@
                   <div><span>Maximum allowable torque</span><p><strong id="screwFactTorqueLimit">Not published; verify shaft torsional limit.</strong></p></div>
                   <div><span>Pile-head connection</span><p><strong id="screwFactHeadConnection">Project tension and shear-transfer detail required.</strong></p></div>
                   <div><span>Durability</span><p><strong id="screwFactDurability">Design life and corrosion allowance not stated.</strong></p></div>
-                  <div class="wide"><span>Source / data basis</span><p><strong id="screwFactSourceStatus">Published + local certificate</strong><a id="screwFactSource" href="https://katanafoundations.com.au/wp-content/uploads/2024/12/241001-Katana-Screw-Pile-_-Performance-Guide.pdf" target="_blank" rel="noreferrer">Performance Guide Rev Z, pp. 8 and 12-13</a><em id="screwFactCapacityBasis">Compression SWL up to in stated guide conditions.</em><small id="screwFactSourceReview">Local source reviewed · 10 Jul 2026</small></p></div>
+                  <div class="wide"><span>Source / data basis</span><p><strong id="screwFactSourceStatus">Published guide + scope certificate</strong><a id="screwFactSource" href="https://katanafoundations.com.au/wp-content/uploads/2024/12/241001-Katana-Screw-Pile-_-Performance-Guide.pdf" target="_blank" rel="noreferrer">Performance Guide Rev Z, pp. 8 and 12-13</a><em id="screwFactCapacityBasis">Rev Z compression SWL reference; current certificate scope checked separately.</em><small id="screwFactSourceReview">Local source reviewed · 10 Jul 2026</small></p></div>
                 </div>
               </section>
 
@@ -1915,11 +1916,11 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.30</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.35</b></footer>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
   <script src="weld-capacity.js?v=20260803productflow36"></script>
-  <script src="concrete-section-calculation.js?v=20260803productflow36"></script>
+  <script src="concrete-section-calculation.js?v=20260809shearaudit1"></script>
   <script src="section-geometry.js?v=20260807sectionfamily2"></script>
   <script src="section-catalogue.js?v=20260807sectionfamily2"></script>
   <script src="steel-materials.js?v=20260805axialfamilies2"></script>
@@ -1929,11 +1930,11 @@
   <script src="beam-section-reconciliation.js?v=20260803productflow36"></script>
   <script src="beam-custom-section.js?v=20260807beamcustom1"></script>
   <script src="member-capacity.js?v=20260806axialrelease1"></script>
-  <script src="screw-demand.js?v=20260803purecalc1"></script>
+  <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260803productflow36"></script>
-  <script src="monopole-capacity.js?v=20260807monopolerelease2"></script>
-  <script src="app.js?v=20260807beamcustom1"></script>
-  <script src="monopole-app.js?v=20260807monopolerelease2"></script>
-  <script type="module" src="rock-anchor-selector/app.js?v=20260711rocktab1"></script>
+  <script src="monopole-capacity.js?v=20260808audit1"></script>
+  <script src="app.js?v=20260809screwfailclosed2"></script>
+  <script src="monopole-app.js?v=20260808audit1"></script>
+  <script type="module" src="rock-anchor-selector/app.js?v=20260809rocksource1"></script>
 </body>
 </html>

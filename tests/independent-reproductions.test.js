@@ -28,6 +28,34 @@ approximately(independentWeldLapKr(1701), 0.99794, 1e-12, "welded-lap branch abo
 approximately(independentWeldLapKr(8000), 0.62, 1e-12, "welded-lap 8.0 m boundary");
 assert.equal(independentWeldLapKr(8001), 0.62);
 
+// BOLT-DETAILED-01: independent four-bolt connection and TF slip example.
+// This arithmetic intentionally imports no production module.
+const detailedBolt = {
+  count: 4,
+  diameter: 24,
+  fuf: 1040,
+  coreArea: 324,
+  krd: 0.83,
+  kr: 0.9,
+  preload: 295
+};
+const detailedBoltGroupShear = detailedBolt.count * 0.8 * 0.62 * detailedBolt.fuf
+  * detailedBolt.krd * detailedBolt.kr * detailedBolt.coreArea / 1000;
+const detailedBoltPrimaryFull = detailedBolt.count * 0.9 * 3.2 * detailedBolt.diameter * 10 * 410 / 1000;
+const detailedBoltPrimaryEdge = detailedBolt.count * 0.9 * 41 * 10 * 410 / 1000;
+const detailedBoltSecondaryFull = detailedBolt.count * 0.9 * 3.2 * detailedBolt.diameter * 8 * 440 / 1000;
+const detailedBoltSecondaryEdge = detailedBolt.count * 0.9 * 35 * 8 * 440 / 1000;
+const detailedBoltSlip = detailedBolt.count * 0.7 * 0.35 * 2 * detailedBolt.preload * 0.85;
+const detailedBoltSlipTension = 0.7 * detailedBolt.count * detailedBolt.preload;
+const detailedBoltSlipInteraction = 250 / detailedBoltSlip + 300 / detailedBoltSlipTension;
+approximately(detailedBoltGroupShear, 499.39089408, 1e-9, "four-bolt N-plane group shear");
+approximately(Math.min(detailedBoltPrimaryFull, detailedBoltSecondaryFull), 973.2096, 1e-9, "governing full bearing");
+approximately(Math.min(detailedBoltPrimaryEdge, detailedBoltSecondaryEdge), 443.52, 1e-9, "governing edge bearing");
+assert.deepEqual({ minimumPitch: 2.5 * 24, maximumPitch: Math.min(15 * 8, 200) }, { minimumPitch: 60, maximumPitch: 120 });
+approximately(detailedBoltSlip, 491.47, 1e-9, "four-bolt TF slip resistance");
+approximately(detailedBoltSlipInteraction, 0.871874173398173, 1e-12, "TF slip shear-tension interaction");
+assert.equal(detailedBoltSlipInteraction <= 1, true);
+
 // AXIAL-MEMBER-COMP-01 using the visible default CHS source values.
 function independentCompressionReduction(lambdaN, alphaB) {
   const alphaA = 2100 * (lambdaN - 13.5) / (lambdaN ** 2 - 15.3 * lambdaN + 2050);
@@ -205,6 +233,29 @@ assert.equal(displayed(concretePhiMuo), "287.1");
 assert.equal(displayed(concretePhiVu), "194.2");
 
 // REO-LAP-01: default Basic N20 contact lap, independently reconstructed.
+function independentReoDevelopment({
+  db,
+  fc,
+  cd,
+  k1 = 1,
+  materialFactor = 1,
+  applyBasicLowerLimit = true,
+  K = 0,
+  lambda = 0,
+  pressure = 0,
+  refined = false
+}) {
+  const k2 = (132 - db) / 100;
+  const k3 = Math.max(0.7, Math.min(1, 1 - 0.15 * (cd - db) / db));
+  const formula = 0.5 * k1 * k3 * 500 * db / (k2 * Math.sqrt(Math.min(fc, 65)));
+  const lowerLimit = 0.058 * 500 * k1 * db;
+  const basic = (applyBasicLowerLimit ? Math.max(formula, lowerLimit) : formula) * materialFactor;
+  const k4 = Math.max(0.7, Math.min(1, 1 - K * lambda));
+  const k5 = Math.max(0.7, Math.min(1, 1 - 0.04 * pressure));
+  const refinedFactor = refined ? Math.max(k4 * k5, 0.7 / k3) : 1;
+  return { k2, k3, formula, lowerLimit, k4, k5, raw: basic * refinedFactor };
+}
+
 const reoDb = 20;
 const reoFc = 32;
 const reoK1 = 1;
@@ -216,6 +267,40 @@ const reoRawLap = Math.max(0.058 * 500 * reoK1 * reoDb, 1.25 * reoLsyT);
 const reoAdoptedLap = Math.ceil(reoRawLap / 10) * 10;
 approximately(reoRawLap, 838.5, 0.1, "N20 default raw lap");
 assert.equal(reoAdoptedLap, 840);
+
+// REO-DEVELOPMENT-01: Basic, Refined, partial-stress and minimum-length branches.
+const reoBasicN20 = independentReoDevelopment({ db: 20, fc: 32, cd: 40 });
+approximately(reoBasicN20.raw, 670.8044, 0.0001, "N20 Basic development");
+assert.equal(Math.ceil(reoBasicN20.raw / 10) * 10, 680);
+
+const reoRefinedN28 = independentReoDevelopment({
+  db: 28,
+  fc: 32,
+  cd: 30,
+  K: 0.05,
+  lambda: 1,
+  refined: true
+});
+approximately(reoRefinedN28.formula, 1177.0948, 0.0001, "N28 basic formula before Refined factors");
+assert.equal(reoRefinedN28.k4, 0.95);
+approximately(reoRefinedN28.raw, 1118.2401, 0.0001, "N28 Refined development");
+assert.equal(Math.ceil(reoRefinedN28.raw / 10) * 10, 1120);
+
+const reoN20At250 = Math.max(reoBasicN20.raw * 250 / 500, 12 * 20);
+approximately(reoN20At250, 335.4022, 0.0001, "N20 development at 250 MPa");
+assert.equal(Math.ceil(reoN20At250 / 10) * 10, 340);
+assert.equal(Math.max(reoBasicN20.raw * 25 / 500, 12 * 20), 240);
+
+// REO-ANCHORAGE-01: qualified standard hook/cog uses half of the verified development path.
+const reoN28Hook = 0.5 * reoRefinedN28.raw;
+approximately(reoN28Hook, 559.1200, 0.0001, "N28 standard hook reference");
+assert.equal(Math.ceil(reoN28Hook / 10) * 10, 560);
+
+// Cl. 13.2.2 k7 and narrow non-contact branches.
+const reoQualifiedLap = Math.max(0.058 * 500 * reoDb, reoLsyT);
+const reoNarrowGap80 = Math.max(0.058 * 500 * reoDb, reoLsyT, reoLsyT + 1.5 * 80);
+assert.equal(Math.ceil(reoQualifiedLap / 10) * 10, 680);
+assert.equal(Math.ceil(reoNarrowGap80 / 10) * 10, 800);
 
 // SCREW-GROUP-ACTIONS-01: independent symmetric perimeter-group equilibrium.
 const screwCoordinates = [

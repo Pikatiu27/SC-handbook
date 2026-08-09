@@ -330,7 +330,7 @@
     const stress = polygonStressLimit(properties.sideCount, slenderness, fy);
     const permittedMoment = stress.checked ? stress.permittedStress * properties.elasticModulus / 1e6 : null;
     return Object.freeze({
-      method: "ASCE/SEI 48-19 Cl. 5.2.3.2.1 and 5.2.5",
+      method: "ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5",
       sourceStatus: "For Review",
       slenderness,
       clearFlatWidth: flat.clearFlatWidth,

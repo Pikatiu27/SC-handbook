@@ -9,6 +9,7 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const script = fs.readFileSync(path.join(root, "app.js"), "utf8");
 const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"), "utf8");
+const concreteCalculation = fs.readFileSync(path.join(root, "concrete-section-calculation.js"), "utf8");
 const drawingAdoptionPath = path.join(root, "engineering", "drawing-standard-adoption.json");
 const drawingAdoption = JSON.parse(fs.readFileSync(drawingAdoptionPath, "utf8"));
 const calculateWeldSource = script.slice(
@@ -40,6 +41,10 @@ assert.match(html, /<script src="member-capacity\.js\?v=[^"]+"><\/script>/);
 assert.match(html, /<script src="screw-demand\.js\?v=[^"]+"><\/script>/);
 assert.match(script, /MemberCapacity\.calculate\(/);
 assert.match(script, /ScrewDemand\.distribute\(/);
+assert.match(script, /ScrewDemand\.validateLayout\(/);
+assert.match(script, /ScrewDemand\.rectangularCoordinates\(/);
+assert.match(script, /title: "Pile-group action distribution"[\s\S]*?result: "Not evaluated"/);
+assert.doesNotMatch(script, /Math\.round\(value\("screwPile(?:Columns|Rows)"\)/);
 assert.doesNotMatch(script, /function compressionReduction\(/);
 assert.match(script, /comparisonBasis === "project-source-missing"/);
 assert.match(script, /comparisonBasis === "project-basis-mismatch"/);
@@ -50,10 +55,18 @@ assert.match(calculateWeldSource, /effective weld lines must be a positive whole
 assert.match(calculateWeldSource, /IPBW design throat a_w must be greater than zero/);
 assert.match(calculateWeldSource, /title: "Input validation"[\s\S]*?result: "Not evaluated"/);
 assert.match(calculateBoltSource, /Number\.isInteger\(countInput\) && countInput >= 1 && countInput <= 100/);
-assert.match(calculateBoltSource, /groupShearCapacity"\)\.textContent = countValid \?[\s\S]*?"Not evaluated"/);
-assert.match(calculateBoltSource, /title: "Bolt group shear capacity"[\s\S]*?result: countValid \?[\s\S]*?"Not evaluated"/);
+assert.match(calculateBoltSource, /const shearPlanesValid = Number\.isInteger\(nThread\)/);
+assert.match(calculateBoltSource, /const krValid = Number\.isFinite\(krInput\) && krInput >= 0\.75 && krInput <= 1/);
+assert.match(calculateBoltSource, /const connectedPlyInputsValid = primaryPly\.valid/);
+assert.match(calculateBoltSource, /const slipInputsValid = Number\.isInteger\(slipInterfaces\)/);
+assert.match(calculateBoltSource, /groupShearCapacity"\)\.textContent = groupShearInputsValid \?[\s\S]*?"Not evaluated"/);
+assert.match(calculateBoltSource, /title: "Bolt group shear capacity"[\s\S]*?result: groupShearInputsValid \?[\s\S]*?"Not evaluated"/);
+assert.doesNotMatch(calculateBoltSource, /Math\.round\(value\("(?:threadPlanes|shankPlanes|interfaces)"\)\)/);
+assert.match(html, /Simultaneous bolt shear and tension require the squared interaction check in AS 4100 Cl\. 9\.2\.2\.3/);
 assert.match(calculateConcreteSource, /fcInput >= 20 && fcInput <= 120/);
 assert.match(calculateConcreteSource, /concreteStatusValue"\)\.textContent = fcValid \? "Review required" : "Invalid input"/);
+assert.match(script, /ConcreteSectionCalculation\.oneWayShear\(/);
+assert.match(concreteCalculation, /function oneWayShear\(data\)/);
 assert.match(script, /function catalogueDerivedTraceRows\(/);
 assert.match(script, /title: "Circular hollow-section area"/);
 assert.match(script, /title: "Clear web reference area"/);
@@ -69,6 +82,7 @@ assert.doesNotMatch(script, /mm2\/mm/);
   "AUD-AXIAL-TENSION-02",
   "AUD-AXIAL-INPUT-01",
   "AUD-AXIAL-DISPLAY-01",
+  "AUD-BOLT-DETAILED-01",
   "BEAM-MOMENT-01",
   "MONO-ASSEMBLY-01",
   "MONO-CHS-MOMENT-01",
@@ -77,6 +91,9 @@ assert.doesNotMatch(script, /mm2\/mm/);
   "MONO-SLIP-OVERLAP-01",
   "MONO-MASS-01",
   "CONCRETE-FLEXURE-01",
+  "AUD-CONCRETE-FLEXURE-BRANCH-01",
+  "AUD-CONCRETE-SHEAR-BOUNDARY-01",
+  "AUD-MONO-NM-INDEPENDENT-02",
   "REO-LAP-01",
   "SCREW-GROUP-ACTIONS-01",
   "ROCK-PRODUCT-LOOKUP-01"

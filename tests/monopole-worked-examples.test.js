@@ -77,6 +77,27 @@ assert.ok(relativeError(publishedCompressionRow.formFactor, publishedCapacityBas
 assert.ok(relativeError(publishedCompressionRow.designSectionCapacity, publishedDesignCompression) <= 0.005);
 assert.ok(relativeError(publishedMomentRow.designMomentCapacity, publishedCapacityBasis.designMomentCapacity) <= 0.005);
 
+// MONO-CHS-NM-01: independent AS 4100 Cl. 8.3.2 uniaxial section-boundary example.
+// The current page displays the two production intercepts only; actions and the
+// following interaction arithmetic intentionally remain outside the page scope.
+const monopoleExampleActions = { axial: 1000, moment: 100 };
+const independentReducedMoment = publishedCapacityBasis.designMomentCapacity
+  * (1 - monopoleExampleActions.axial / publishedDesignCompression);
+const independentInteraction = monopoleExampleActions.axial / publishedDesignCompression
+  + monopoleExampleActions.moment / publishedCapacityBasis.designMomentCapacity;
+closeTo(publishedDesignCompression, 2726.5455, 1e-9, "published CHS design compression intercept");
+closeTo(independentReducedMoment, 258.36009852027, 1e-9, "reduced section moment boundary");
+closeTo(independentInteraction, 0.611862503626788, 1e-12, "uniaxial section interaction ratio");
+assert.equal(monopoleExampleActions.moment <= independentReducedMoment, true);
+closeTo(
+  publishedCapacityBasis.designMomentCapacity * (1 - 0 / publishedDesignCompression),
+  publishedCapacityBasis.designMomentCapacity,
+  1e-12,
+  "zero-axial reduced moment boundary"
+);
+assert.ok(relativeError(publishedCompressionRow.designSectionCapacity, publishedDesignCompression) <= 0.005);
+assert.ok(relativeError(publishedMomentRow.designMomentCapacity, publishedCapacityBasis.designMomentCapacity) <= 0.005);
+
 // ASCE/SEI 48-19 Appendix B approximate equations provide an independent
 // check on the exact sharp-corner geometry used by the calculator.
 const asce12AppendixExample = outsideDimension => {

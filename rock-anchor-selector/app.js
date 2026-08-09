@@ -105,6 +105,9 @@ const williamsRows = makeRows("williams", "Williams Form Engineering", [
   hardware: "Expansion shell, hollow bar, bearing plate and anchor nut",
   sourceKind: "current-williams-row",
   source: "Williams Ground Engineering Systems, R7S Spin-Lock Rock Anchor table, 2025",
+  sourceUrl: "https://www.williamsform.com/rock/spin-lock-anchors/r7s-spin-lock-rock-bolt/",
+  sourceRegion: "United States",
+  sourceChecked: "9 Aug 2026",
   sourceNote: "Official manufacturer row; confirm Australian acceptance, supply and project corrosion protection.",
   summary: "Mechanical rock-anchor system that can be prestressed and subsequently grouted."
 });
@@ -246,7 +249,7 @@ function dataMeta(product) {
 
 function supplyMeta(product) {
   if (product.sourceKind === "project") return { label: "Project procurement route", className: "status-project" };
-  if (product.sourceKind === "au-pathway") return { label: "Confirmed Australian provider pathway", className: "status-au" };
+  if (product.sourceKind === "au-pathway") return { label: "Australian provider pathway", className: "status-au" };
   if (product.providerKey === "bbr") return { label: "Australian acceptance and supply confirmation required", className: "status-us" };
   return { label: "Australian supply confirmation required", className: "status-us" };
 }
@@ -279,7 +282,12 @@ function sourceRecord(product) {
     srg: { url: "https://srgglobal.com.au/what-we-do/technology/dam-anchoring-and-monitoring/", region: "Australia", checked: "10 Jul 2026" },
     custom: { url: "", region: "Project-defined", checked: "Not applicable" }
   };
-  return records[product.providerKey] || records.custom;
+  const providerRecord = records[product.providerKey] || records.custom;
+  return {
+    url: product.sourceUrl ?? providerRecord.url,
+    region: product.sourceRegion ?? providerRecord.region,
+    checked: product.sourceChecked ?? providerRecord.checked
+  };
 }
 
 function loadLabels(product) {
