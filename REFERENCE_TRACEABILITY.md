@@ -97,9 +97,9 @@ This register is the authoritative ID map. It identifies the claim and evidence 
 | `BOLT-DETAILING-01` | Bolt / pitch and edge-distance warning state | AS 4100 Cl. 9.5.1 to Cl. 9.5.3; AS 4100 Table 9.5.2 | `app.js` `calculateBolt()` | Warning-state regression; For Review |
 | `BOLT-PLY-TENSION-01` | Bolt / connected-ply design section tension capacity | AS 4100 Cl. 9.1.9(b); AS 4100 Cl. 7.2 | `bolt-integrity.js`; `app.js` | Formal record below; For Review |
 | `BOLT-BLOCK-SHEAR-01` | Bolt / connected-ply block shear capacity | AS 4100 Cl. 9.1.9(e) | `bolt-integrity.js`; `app.js` | Formal record and worked example below; For Review |
-| `WELD-FILLET-01` | Weld / fillet and IPBW throat capacity | AS 4100 Cl. 9.6.2.7; AS 4100 Cl. 9.6.3.10; AS 4100 Table 3.4 | `weld-capacity.js`; `app.js` `calculateWeld()` | `AUD-WELD-DEFAULT-01`; `PUB-WELD-9413-01`; For Review |
+| `WELD-FILLET-01` | Weld / fillet and IPBW throat capacity | AS 4100 Cl. 9.6.2.7; AS 4100 Cl. 9.6.3.5; AS 4100 Cl. 9.6.3.10; AS 4100 Table 3.4 | `weld-capacity.js`; `app.js` `calculateWeld()` | `AUD-WELD-DEFAULT-01`; `AUD-WELD-IPBW-01`; `AUD-WELD-INPUT-02`; `PUB-WELD-9413-01`; For Review |
 | `WELD-LAP-KR-01` | Weld / welded-lap reduction | AS 4100 Table 9.6.3.10(B) | `weld-capacity.js` `lapReduction()`; `app.js` | `AUD-WELD-KR-BOUNDARY-01`; For Review |
-| `WELD-PARENT-SCREEN-01` | Weld / warning-only parent-metal per-mm screen | Derived warning aid from AS 4100 member resistance context | `app.js` `calculateWeld()` | Explicitly non-governing; For Review |
+| `WELD-PARENT-SCREEN-01` | Weld / warning-only parent-metal per-mm screen | Derived warning aid from AS 4100 member resistance context | `weld-capacity.js` `parentMetalScreen()`; `app.js` `calculateWeld()` | `AUD-WELD-PARENT-01`; explicitly non-governing; For Review |
 | `SECTION-CATALOGUE-01` | Section Properties / published catalogue lookup | Exact cited manufacturer row | `section-catalogue.js`; source data modules | `AUD-SECTION-SOURCE-01`, row and DOM regression; Draft only where a row is not traced |
 | `SECTION-GEOMETRY-01` | Section Properties / entered or catalogue-linked ideal geometry | Closed-form geometric identities | `section-geometry.js`; `app.js` | `AUD-SECTION-CHS-01`; source and geometry regression; For Review |
 | `SECTION-MATERIAL-01` | Section Properties / material strength and constants lookup | AS/NZS 3679.1 Tables 14 and 15; AS/NZS 1163; AS 4100 Cl. 2.2.4 | `steel-materials.js`; `app.js` | Boundary, material and DOM regression; For Review |
@@ -306,8 +306,11 @@ Formula cases below are implemented in `tests/independent-reproductions.test.js`
 
 | Test_ID | Linked Calculation_ID | Independent case | Expected / browser result | Branch or invariant | Status |
 | --- | --- | --- | --- | --- | --- |
-| `AUD-WELD-DEFAULT-01` | `WELD-FILLET-01` | 6 mm equal-leg fillet, `fuw = 490 MPa`, `phi = 0.80`, `lw = 200 mm`, one weld line | `199.489 kN`; displayed `199.5 kN` | Direct fillet-throat path | Pass |
+| `AUD-WELD-DEFAULT-01` | `WELD-FILLET-01` | 6 mm equal-leg fillet, `fuw = 490 MPa`, `phi = 0.80`, `lw = 200 mm`, one weld line | `t_t = 4.242 mm`; `phi R/l_w = 0.9977184 kN/mm`; total `199.54368 kN`; displayed `199.5 kN` | Direct fillet-throat path; corrected the earlier evidence-record arithmetic without changing the displayed result | Pass, 2026-08-09 |
 | `AUD-WELD-KR-BOUNDARY-01` | `WELD-LAP-KR-01` | `lw = 1.699 / 1.700 / 1.701 / 8.000 / 8.001 m` | `kr = 1.000 / 1.000 / 0.99794 / 0.620 / 0.620` | Below, at and above both table branch thresholds | Pass |
+| `AUD-WELD-IPBW-01` | `WELD-FILLET-01` | IPBW, project-specified `t_t = 7.5 mm`, `f_uw = 490 MPa`, `l_w = 320 mm`, two effective weld lines; compare SP and GP | SP: `1.764 kN/mm`, total `1128.96 kN`; GP: `1.323 kN/mm`, total `846.72 kN` | Independent AS 4100 Cl. 9.6.2.7 / Cl. 9.6.3.10 substitution; Table 3.4 SP/GP branches | Pass, 2026-08-09 |
+| `AUD-WELD-INPUT-02` | `WELD-FILLET-01` | 6 mm fillet with `l_w = 23.99 mm`; non-integer `1.5` effective weld lines; IPBW with zero design throat | Production module throws and page reports `Not evaluated`; no rounded line count or normal capacity remains | AS 4100 Cl. 9.6.3.5 minimum `4s`, positive whole-number line count and required IPBW throat | Pass after local correction, 2026-08-09 |
+| `AUD-WELD-PARENT-01` | `WELD-PARENT-SCREEN-01` | Grade 250 plate warning input: `f_up = 410 MPa`, `t = 10 mm`, `phi = 0.90` | Indicative screen `2.214 kN/mm`; does not alter weld PASS/FAIL and is not a joined-part capacity | Separate pure production helper and independent arithmetic; warning-only scope retained | Pass, 2026-08-09 |
 | `AUD-SECTION-CHS-01` | `SECTION-GEOMETRY-01` | Ideal CHS `D = 114.3 mm`, `t = 4.5 mm` | `Ag = 1552.26 mm2`; `I = 2.343194E6 mm4`; `Z = 4.100077E4 mm3`; `r = 38.853 mm` | Closed-form area, second moment, modulus and radius identities | Pass |
 | `AUD-SECTION-SOURCE-01` | `SECTION-CATALOGUE-01`; `SECTION-GEOMETRY-01` | Production rows: 310UB40.4, 200UC46.2, 150PFC, 114.3 x 4.5 CHS, 100 x 100 x 10 EA and 24 mm rod; plus 530UB92.4 dimensional correction | Exact source values for mass, area, dimensions and directional properties; CHS and rod geometry independently reproduced | InfraBuild 2019 Tables 9, 11, 15, 19 and 21; Orrcon 2024 CHS table; implemented in `tests/section-source-reproduction.test.js` | Pass after correcting 530UB92.4 `tf` from 16.5 mm to 15.6 mm |
 | `AUD-AXIAL-CHS-01` | `AXIAL-MEMBER-COMP-01` | Austube Table 3.1-2 CHS default `Ag = 1120 mm2`, `r = 39.3 mm`, `Le = 3000 mm`, `fy = 350 MPa`, `kf = 1`, `alpha_b = -0.5` | Design member compression `237.2 kN` | Full lambda / alpha_a / eta / xi / alpha_c sequence | Pass |
@@ -916,6 +919,29 @@ Build 0.7.35 continues the independent audit without expanding the handbook into
 
 The complete local suite passes 28 test files, including independent arithmetic, published worked examples, catalogue reconciliation, source-row reproductions, invalid-state checks and page contracts. Concrete bottom-compression and four-layer composite flexure cases, plus the Rock Anchor default, Williams row, VSL family and Custom states, were reproduced in the local browser. Existing `For Review`, `Draft`, source-pending and project-verification states remain in force; this audit does not promote them to `Checked`.
 
+### Local Result-Status Semantics Audit - 2026-08-09
+
+| Test_ID | Scope | Required result | Evidence and disposition |
+| --- | --- | --- | --- |
+| `AUD-STATUS-SEMANTICS-01` | Bolt TF slip, Weld demand, Beam section demand, Axial demand, Weld parent-metal warning and Screw Piles product-data guidance | Numerical comparisons use scoped status names; blank actions retain `No design action`; source and warning states never use pass/fail styling | `tests/status-semantics.test.js` plus the existing invalid-input and page-contract suites; local correction passes |
+
+This local continuation changes no resistance, action distribution or utilisation arithmetic. It scopes visible status text to `TF slip`, `Weld throat`, `Section check` and `Axial check`; retains the parent-metal screen as review-only; and displays screw-pile product-data availability as a review state rather than an engineering pass. The Weld trace now shows the optional demand equation, substituted values and scoped result. The complete local suite passes 30 test files; publication remains pending.
+
+Desktop (1440 px) and phone (390 px) browser reproductions then exercised zero-action, passing-action and failing-action states for Bolt TF slip, Weld throat, Beam section and Axial member checks. The Weld geometry boundary also reproduced the fail-closed `l_w < 4s` state. All reviewed routes cleared stale statuses, had no document-level horizontal overflow and produced no console error after correction. This browser pass identified an outdated `weld-capacity.js` cache key that loaded the pre-helper module and stopped Weld recalculation; `index.html` now versions that module with `20260809weldrepro1`. No formula or displayed engineering value changed.
+
+### Local Concrete Pad and Reinforcement Browser Reproduction - 2026-08-10
+
+| Test_ID | Page / state | Reproduced result | Disposition |
+| --- | --- | --- | --- |
+| `AUD-CONCRETE-BROWSER-01` | Default 1000 mm strip, 500 mm top pad, top compression, N20 at 200 mm, no shear reinforcement | `phi Muo = 287.1 kNm`; `phi Vu = 194.2 kN` | Matches the recorded independent default case |
+| `AUD-CONCRETE-BROWSER-02` | `f'c = 0`, `f'c = 66 MPa`, bottom compression, composite top-plus-bottom pad, and both pad depths zero | Invalid material input clears both capacities; the 66 MPa state retains flexure but reports simplified shear `Not evaluated`; bottom and composite branches calculate; zero total depth reports `No pad section defined` / `Review required` and clears capacities | Fail-closed and scope states reproduced without stale values |
+| `AUD-REO-BROWSER-01` | Default N20 Basic contact lap | Adopted lap `840 mm`, `42.0db` | Matches the current production default |
+| `AUD-REO-BROWSER-02` | Published N28 development reconstruction: `f'c = 32 MPa`, cover `40 mm`, clear spacing `60 mm`, Refined custom confinement, beam/column `Atr,min`, `nf = 0`, `nbs = 1`, `Sigma Atr = 770 mm2` | After effective-location and candidate-length confirmations: `K = 0.050`, `lambda = 1.000`, `k4 = 0.950`, `k5 = 1.000`, adopted `Lsy.t = 1120 mm` | Matches `PUB-REO-N28-01`; before confirmation the Basic `1180 mm` reference remains and the candidate is not adopted |
+| `AUD-REO-BROWSER-03` | Refined development with `f'c = 0`, then restored to `32 MPa` | Invalid input clears the reference length; changing the dependent input resets the candidate-length confirmation and restores the conservative Basic `1180 mm` result until evidence is reconfirmed | Dependent confirmation and stale-result clearing reproduced |
+| `AUD-CONCRETE-REO-RESPONSIVE-01` | 1440 px and 390 px Pad and Reinforcement routes | Required inputs and primary outputs remain available; no document-level horizontal overflow; browser console has no warning or error | Responsive contract reproduced |
+
+This continuation changes no formula, source value, capacity factor, result status or page layout. It records direct browser evidence for the existing independent Concrete and Reinforcement cases. Publication remains pending.
+
 ## 2026-07-30 Full-page Regression Audit
 
 Build 0.7.10 was checked against the current `SC_HANDBOOK.md` calculation, validation, traceability and responsive-layout contract. This pass did not expand any tab into a complete design engine.
@@ -1076,3 +1102,19 @@ Build 0.7.30 reconciles the Monopole branch with the current `origin/main` Secti
 | `AUD-MONO-RELEASE-RESPONSIVE-01` | 1428 px and 390 px | Inspect the current circular and polygon states | No document-level horizontal overflow; schedule/table overflow remains inside its technical scroller; browser console has no warnings or errors |
 
 All 25 local regression files and `git diff --check` passed after final main integration. This record is local release evidence; remote and public deployment evidence is verified separately at publication.
+
+## 2026-08-10 Screw Piles and Rock Anchor Browser Reproduction
+
+Build 0.7.35 was reproduced in the local browser at 1440 px and 390 px. This audit did not change formulas, product values or selector scope.
+
+| Audit ID | Page / state | Reproducible check | Result |
+| --- | --- | --- | --- |
+| `AUD-SCREW-BROWSER-01` | Screw Piles / symmetric perimeter group | Enter `N* = 800 kN`, `Vx* = 80 kN`, `Vy* = 40 kN`, `Mx* = 90 kN.m`, `My* = -45 kN.m` and `Tz* = 30 kN.m` for the default eight-pile 3 m x 3 m perimeter layout | Maximum compression `115.0 kN`, maximum tension `0.0 kN` and maximum horizontal pile action `13.4 kN`; the displayed formula, substitution and result agree with `tests/screw-demand.test.js` |
+| `AUD-SCREW-BROWSER-INVALID-01` | Screw Piles / invalid layout | Change the X-edge pile count to `2.5` | Status changes to `Input required`; pile count and all pile-action outputs become `Not evaluated`; no stale result remains |
+| `AUD-SCREW-BROWSER-GATE-01` | Screw Piles / project comparison | Enter project directional values without a source, then add a source with a mismatched basis, then use matching ULS values | Missing source and basis mismatch both suppress the ratio. Matching values produce decimal half-up `eta_proj = 0.58` for 115/200 and `eta_proj = 1.15` for 115/100, with the correct non-exceedance/exceedance status. Manufacturer values are not substituted automatically |
+| `AUD-ROCK-BROWSER-01` | Rock Anchor / exact product row | Select Williams R7S Spin-Lock 32 mm | Published tendon yield and ultimate loads reproduce as `517 kN` and `647 kN`; both remain labelled as manufacturer tendon values and not anchor resistance |
+| `AUD-ROCK-BROWSER-BOUNDARY-01` | Rock Anchor / provider and Custom states | Select Keller bar ground anchor, then Custom / project | Both load fields remain `Not published`; the Custom state requires a project source and neither state infers anchor resistance or utilisation |
+| `AUD-SCREW-ROCK-RESPONSIVE-01` | Screw Piles and Rock Anchor / phone | Inspect the primary selector, product values, source status and limitation at 390 x 844 px | No document-level horizontal overflow; essential selector information remains available through the compact Tools navigation; browser console is clear |
+| `AUD-DISPLAY-HALF-UP-01` | Shared calculated-result display | Format the exact Screw project ratio `115/200 = 0.575` to two decimal places after loading `engineering-number-format.js` | Browser displays `eta_proj = 0.58`; the exact ratio still governs the comparison. Bolt, Weld, Beam and Axial default results load without console errors |
+
+The former `0.57` display for the exact ratio `115/200 = 0.575` was a presentation-rounding boundary caused by binary floating-point formatting. Build 0.7.35 now routes this ratio and the shared primary result formatters through `engineering-number-format.js`, producing decimal half-up `0.58`. Governing comparisons continue to use the unrounded value. `tests/engineering-number-format.test.js` covers positive and negative ties, carry, small values, zero and invalid input.

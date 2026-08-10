@@ -146,6 +146,8 @@ Use the correct minimum chain and claim for the active workflow:
 
 Where one tab supports both capacity and quick-check use, keep the capacity result independent of optional design actions. Blank actions must suppress utilisation and `PASS` / `FAIL`, not convert demand to zero. A scoped pass must name the check, for example `Bolt shear PASS`; it must not imply `Connection PASS` when connected-ply, block shear, prying, fatigue or other relevant checks remain outside scope.
 
+Reserve green/red pass-fail styling for a valid numerical comparison against a compatible entered design action. `For Review`, source availability, published product data, warning-only screens, calculated capacities without actions and project-confirmation states must remain neutral or review-coloured. A summary status must name its scope, such as `Weld throat PASS`, `Section check PASS`, `Axial check PASS` or `TF slip PASS`; a bare page-level `PASS` or `FAIL` is not permitted.
+
 ## 3. Optional Workbook Structure
 
 When an Excel workbook is requested, use one workbook with multiple function-specific tabs.
@@ -490,6 +492,7 @@ Define one internal unit convention for each calculation family. Convert at the 
 
 - Use unrounded values for intermediate calculations, governing comparisons, utilisation and status decisions.
 - Round only for display unless the governing source explicitly requires a rounded table value.
+- Use the shared decimal half-up display formatter for calculated values (`5` rounds away from zero). For example, display `0.575` to two decimal places as `0.58`. Do not use binary floating-point `toFixed()` directly for an engineering result, formula substitution, summary or repeated figure label.
 - Do not feed displayed values back into later calculations.
 - Record the comparison tolerance for each verification case. Use a tolerance appropriate to exact lookups, closed-form arithmetic, iterative solutions or source values published to limited precision; do not apply one arbitrary percentage to every calculation.
 - Where a displayed value is repeated in a figure, summary and formula step, use the same source value and rounding rule.
@@ -2767,6 +2770,8 @@ Page and evidence requirements:
 - Within `Section properties`, use the engineering sequence: gross section basis; displayed-axis properties; applicable family-specific properties; principal-axis relationship where relevant; material-dependent section values; geometric ratios.
 - Within `Material properties`, show the selected standard and grade, governing thickness or diameter, `fy`, applicable exact-row `fy,w`, `fu`, `E`, `G`, Poisson's ratio, thermal expansion coefficient and density. Do not repeat the same material identity or thickness statement in both the group description and value cards.
 - Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx` / `Zy`, plastic `Sx` / `Sy`, and `rx` / `ry`. Orrcon CHS mass is a catalogue value; its remaining properties are geometry-derived from published nominal `D` / `t`. For custom geometry, a steel mass may be derived from `0.00785A kg/m` only when the assumed density `7850 kg/m3` is stated.
+- The selected-section summary must state the active value basis rather than use a generic phrase such as `Stated by property`. For Orrcon CHS, show `Catalogue mass + nominal D/t-derived properties`; for round bar, distinguish the published mass/diameter from ideal solid-circle properties; for mixed rolled-section rows, state that catalogue values and identified derived references are both present.
+- Keep Equal Angle axis notation source-specific and explicit. Section Properties uses centroidal `n-n / p-p` and catalogue principal `x-x / y-y`; Beam catalogue Load A/C acts about principal `x-x` and Load B/D about principal `y-y`. The selected Beam direction must include the word `principal` so its `Ix/Iy` values cannot be mistaken for the angle's centroidal `In/Ip` values.
 - For catalogue RHS and SHS, use the accepted Austube Tables 3.1-3 to 3.1-6 product rows for mass, `Ag`, `I`, `Z`, `S` and `r`; retain each checked grade row for `fy`, `kf`, compactness and `Ze`. Do not replace rounded-product properties with sharp-corner hollow-section formulas. Centroid coordinates, symmetry relationships and nominal clear-wall `Awx` / `Awy` may be derived from stated overall dimensions and thickness only when labelled `Derived · catalogue data`.
 - Place a compact material-definition row after section selection. In catalogue mode, infer product form and controlling thickness from the selected product and default to a grade listed for that exact design-property row where one exists. A different standard grade may remain selectable for material lookup, but grade-dependent section attributes must then state `Selected grade not listed for this section`. In custom mode, require an explicit product-form / material basis and allow project-entered `fy` / `fu` where no standard lookup applies.
 - Present the accepted catalogue product families and `Custom geometry` in one compact horizontal category switch, consistent with the Axial Member family control. Do not add a second visible catalogue/custom mode row. Keep only `Section designation` in the catalogue selection row; retain the underlying family and source-mode values as application state without repeating visible dropdowns. Wrap catalogue families into two balanced columns on narrow screens and allow the longer custom label to span the final row.
@@ -3260,6 +3265,7 @@ Required AS 4100 and reference basis:
 
 - Fillet weld capacity must follow AS 4100 Cl. 9.6.3.10: `v_w = 0.6 f_uw t_t k_r`, reported as `phi R / l_w = phi 0.6 f_uw t_t k_r`.
 - Use `t_t = 0.707s` for an ordinary equal-leg fillet weld.
+- Require the entered fillet-weld effective length to satisfy `l_w >= 4s` in accordance with AS 4100 Cl. 9.6.3.5. Keep the quick calculator lightweight by failing closed below this limit rather than automatically applying the reduced design-size alternative.
 - For IPBW, use the project-specified design throat and calculate capacity by the fillet-weld method in accordance with AS 4100 Cl. 9.6.2.7.
 - For CPBW, do not calculate weld-metal throat capacity. AS 4100 Cl. 9.6.2.7 takes design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor; report `Not evaluated` until that joined-part limit state is defined.
 - For compound welds, do not use `a_w + 0.707s`. AS 4100 Cl. 9.6.5.2 requires the design throat to be determined from the actual total weld cross-section; report `Not evaluated` when that geometry is not defined.
@@ -3274,6 +3280,7 @@ Display and limitation rules:
 
 - For fillet weld and IPBW, the main quick result should remain `kN/mm per weld line`; total capacity is secondary.
 - State that effective weld lines are not welding passes.
+- Accept only positive whole numbers of identical effective weld lines. Never round, clamp or infer a line count inside the calculation module.
 - CPBW, IPBW and compound welds require project-confirmed joint preparation, WPS, inspection and acceptance criteria. IPBW additionally requires a specified design throat. CPBW and compound selections must not display a numeric capacity from the limited weld-metal inputs.
 - Keep plug / slot welds, weld groups, longitudinal RHS fillet welds where `t < 3 mm`, parent-metal rupture, HAZ, block shear, net-section rupture, eccentric weld groups, intermittent weld rules, fatigue, seismic detailing, lamellar tearing, fabrication access and inspection acceptance outside the quick calculator unless they are deliberately added as separate sourced checks.
 - Weld symbols are visual guides only and must continue to follow AS 1101.3 Fig. 2.1 and AS 1101.3 Figs. 2.8 to 2.10 conventions.

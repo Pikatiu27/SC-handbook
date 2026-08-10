@@ -28,6 +28,20 @@ approximately(independentWeldLapKr(1701), 0.99794, 1e-12, "welded-lap branch abo
 approximately(independentWeldLapKr(8000), 0.62, 1e-12, "welded-lap 8.0 m boundary");
 assert.equal(independentWeldLapKr(8001), 0.62);
 
+// WELD-IPBW-01 and WELD-PARENT-SCREEN-01.
+// Independent substitution from AS 4100 Cl. 9.6.2.7, Cl. 9.6.3.10 and Table 3.4.
+const ipbwThroat = 7.5;
+const ipbwLength = 320;
+const ipbwLines = 2;
+const ipbwSpPerMm = 0.8 * 0.6 * 490 * ipbwThroat / 1000;
+const ipbwGpPerMm = 0.6 * 0.6 * 490 * ipbwThroat / 1000;
+approximately(ipbwSpPerMm, 1.764, 1e-12, "IPBW SP capacity per unit length");
+approximately(ipbwSpPerMm * ipbwLength * ipbwLines, 1128.96, 1e-9, "IPBW SP total capacity");
+approximately(ipbwGpPerMm, 1.323, 1e-12, "IPBW GP capacity per unit length");
+approximately(ipbwGpPerMm * ipbwLength * ipbwLines, 846.72, 1e-9, "IPBW GP total capacity");
+approximately(0.9 * 0.6 * 410 * 10 / 1000, 2.214, 1e-12, "warning-only parent-metal screen");
+assert.equal(23.99 < 4 * 6, true, "short fillet weld must use the fail-closed path");
+
 // BOLT-DETAILED-01: independent four-bolt connection and TF slip example.
 // This arithmetic intentionally imports no production module.
 const detailedBolt = {

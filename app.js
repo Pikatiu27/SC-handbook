@@ -2176,8 +2176,9 @@ function signedValue(id, fallback = 0) {
   return Number.isFinite(number) ? number : fallback;
 }
 function alphaBInput(id) { return signedValue(id, NaN); }
-function fixed(number) { return Number(number).toFixed(1); }
-function fixed2(number) { return Number(number).toFixed(2); }
+function displayFixed(number, digits = 0) { return EngineeringNumberFormat.decimalHalfUp(number, digits); }
+function fixed(number) { return displayFixed(number, 1); }
+function fixed2(number) { return displayFixed(number, 2); }
 function weldLapReduction(lengthMm) {
   return WeldCapacity.lapReduction(lengthMm);
 }
@@ -2187,16 +2188,16 @@ function weldCapacityFactor(type, category) {
 function formatArea(number) { return `${Math.round(number).toLocaleString("en-AU")} mm²`; }
 function formatDimension(number, digits = 1) {
   const value = Number(number);
-  return Number.isFinite(value) ? value.toFixed(digits).replace(/\.0$/, "") : "—";
+  return Number.isFinite(value) ? displayFixed(value, digits).replace(/\.0$/, "") : "—";
 }
 function formatInertia(number) {
   const value = Number(number);
   if (!Number.isFinite(value) || value <= 0) return "—";
-  if (value >= 1e6) return `${(value / 1e6).toFixed(2)} × 10<sup>6</sup> mm<sup>4</sup>`;
-  if (value >= 1e3) return `${(value / 1e3).toFixed(2)} × 10<sup>3</sup> mm<sup>4</sup>`;
-  return `${value.toFixed(0)} mm<sup>4</sup>`;
+  if (value >= 1e6) return `${displayFixed(value / 1e6, 2)} × 10<sup>6</sup> mm<sup>4</sup>`;
+  if (value >= 1e3) return `${displayFixed(value / 1e3, 2)} × 10<sup>3</sup> mm<sup>4</sup>`;
+  return `${displayFixed(value, 0)} mm<sup>4</sup>`;
 }
-function signedFixed(number, digits = 1) { return `${number >= 0 ? "+" : ""}${Number(number).toFixed(digits)}`; }
+function signedFixed(number, digits = 1) { return `${number >= 0 ? "+" : ""}${displayFixed(number, digits)}`; }
 function safeText(text) {
   return String(text ?? "").replace(/[&<>"']/g, char => ({
     "&": "&amp;",
@@ -2629,7 +2630,7 @@ function calculateBolt() {
     ? detailingFailureNote
     : !hasSlipDemand
       ? "Enter serviceability slip actions for the AS 4100 Cl. 9.2.3.3 check."
-      : `AS 4100 Cl. 9.2.3.3: Vsf* / \u03c6Vsf + Ntf* / \u03c6Ntf = ${slipRatio.toFixed(2)}; limit \u2264 1.0.`;
+      : `AS 4100 Cl. 9.2.3.3: Vsf* / \u03c6Vsf + Ntf* / \u03c6Ntf = ${displayFixed(slipRatio, 2)}; limit \u2264 1.0.`;
 
   const connectionCategory = categoryKey.split("/")[1];
   const drawingCallout = BoltCapacity.formatDrawingCallout({
@@ -2713,7 +2714,7 @@ function calculateBolt() {
     : !slipInputsValid
     ? "Enter a positive slip factor and a whole-number interface count from 1 to 10"
     : `Per bolt &middot; k<sub>h</sub> = ${holeFactor.toFixed(2)} &middot; ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
-  $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? slipRatio.toFixed(2) : "—";
+  $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? displayFixed(slipRatio, 2) : "—";
   $("slipGoverningStatus").textContent = !countValid
     ? "Invalid bolt count"
     : category.type === "friction" && !slipInputsValid
@@ -2723,8 +2724,8 @@ function calculateBolt() {
     : !hasSlipDemand
       ? "Enter slip actions"
       : slipRatio <= 1
-        ? "PASS"
-        : "FAIL";
+        ? "TF slip PASS"
+        : "TF slip FAIL";
   $("slipGoverningStatus").className = !countValid || !detailingCompliant || (category.type === "friction" && !slipInputsValid) ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
   $("slipGoverningNote").textContent = countValid
     ? slipDisplayNote
@@ -2858,7 +2859,7 @@ function calculateBolt() {
       reference: "AS 4100 Cl. 9.2.3.3",
       formula: slip === null ? "" : `V<sub>sf</sub><sup>*</sup>/&phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf</sub> &le; 1.0`,
       substitution: slip === null ? "" : `${fixed(slipShearDemand)}/${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)}/${fixed(slipTensionCapacity)}`,
-      result: category.type !== "friction" ? "Not applicable" : !slipInputsValid ? "Input required" : `Interaction = ${Number.isFinite(slipRatio) ? slipRatio.toFixed(2) : "-"}`,
+      result: category.type !== "friction" ? "Not applicable" : !slipInputsValid ? "Input required" : `Interaction = ${Number.isFinite(slipRatio) ? displayFixed(slipRatio, 2) : "-"}`,
       applicability: category.type !== "friction" ? "Friction-type categories where serviceability slip is limited." : !slipInputsValid ? "Complete the TF slip inputs before evaluating interaction." : "Entered actions are total bolt-group serviceability actions with equal action per identical bolt; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70.",
       state: category.type === "friction" && !slipInputsValid ? "warning" : ""
     }),
@@ -3657,10 +3658,11 @@ function calculateWeld() {
   const weldMethodAvailable = type === "fillet" || type === "ipbw";
   const inputErrors = [];
   if (weldMethodAvailable && !(length > 0)) inputErrors.push("effective weld length l_w must be greater than zero");
+  if (type === "fillet" && length > 0 && length < 4 * size) inputErrors.push("fillet weld effective length l_w must be at least 4s");
   if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("effective weld lines must be a positive whole number");
   if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW design throat a_w must be greater than zero");
   [
-    ["weldLength", length > 0],
+    ["weldLength", length > 0 && (type !== "fillet" || length >= 4 * size)],
     ["weldRuns", runsValue >= 1 && Number.isInteger(runsValue)],
     ["weldEffectiveThroat", type !== "ipbw" || effectiveThroat > 0]
   ].forEach(([id, valid]) => {
@@ -3687,8 +3689,10 @@ function calculateWeld() {
       capacity: NaN
     };
   const { calculationAvailable, throat, phi, kr, capacityPerMm, capacity } = weldResult;
-  const parentPerMm = parentPhi * 0.6 * parentGrade.fup * parentThickness / 1000;
   const parentCheckActive = parentThickness > 0;
+  const parentPerMm = parentCheckActive
+    ? WeldCapacity.parentMetalScreen({ fup: parentGrade.fup, thickness: parentThickness, phi: parentPhi })
+    : NaN;
   const parentGoverns = calculationAvailable && parentCheckActive && parentPerMm < capacityPerMm;
   const demand = value("weldDemand");
   const utilisation = calculationAvailable && capacity > 0 ? demand / capacity : Infinity;
@@ -3708,7 +3712,7 @@ function calculateWeld() {
   $("weldThroatValue").textContent = calculationAvailable ? `${fixed2(throat)} mm` : inputErrors.length ? "\u2014" : "Project-defined";
   $("weldLengthValue").textContent = length > 0 ? `${fixed(length)} mm` : "\u2014";
   $("weldRunsValue").textContent = runsValue >= 1 && Number.isInteger(runsValue) ? String(runs) : "\u2014";
-  $("weldPhiValue").textContent = type === "compound" ? "-" : phi.toFixed(2);
+  $("weldPhiValue").textContent = type === "compound" ? "-" : displayFixed(phi, 2);
   $("weldCapacityLabel").textContent = calculationAvailable
     ? "Capacity per mm per weld line"
     : type === "cpbw"
@@ -3722,7 +3726,7 @@ function calculateWeld() {
       ? "AS 4100 Cl. 9.6.2.7; joined-part capacity is not defined by this weld-metal input set"
       : "AS 4100 Cl. 9.6.5.2; total design throat requires the actual compound-weld geometry";
   $("weldCapacity").textContent = calculationAvailable ? fixed(capacity) : "Not evaluated";
-  $("weldCapacityPerMm").textContent = calculationAvailable ? capacityPerMm.toFixed(2) : "Not evaluated";
+  $("weldCapacityPerMm").textContent = calculationAvailable ? displayFixed(capacityPerMm, 2) : "Not evaluated";
   $("weldCapacityUnit").hidden = !calculationAvailable;
   $("weldTotalCapacityUnit").hidden = !calculationAvailable;
   $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";
@@ -3733,9 +3737,9 @@ function calculateWeld() {
     : parentGoverns
       ? `warning only; parent screen lower, f_up ${parentGrade.fup} MPa`
       : "warning only; weld capacity governs";
-  $("parentGoverningNote").className = !parentCheckActive || !calculationAvailable ? "" : parentGoverns ? "fail" : "pass";
-  $("weldUtilisation").textContent = !calculationAvailable || !hasDemand ? "\u2014" : utilisation.toFixed(2);
-  $("weldStatus").textContent = !calculationAvailable ? "Not evaluated" : !hasDemand ? "No design action" : utilisation <= 1 ? "PASS" : "FAIL";
+  $("parentGoverningNote").className = parentCheckActive ? "check" : "";
+  $("weldUtilisation").textContent = !calculationAvailable || !hasDemand ? "\u2014" : displayFixed(utilisation, 2);
+  $("weldStatus").textContent = !calculationAvailable ? "Not evaluated" : !hasDemand ? "No design action" : utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL";
   $("weldStatus").className = !calculationAvailable || !hasDemand ? "check" : utilisation <= 1 ? "pass" : "fail";
 
   if (calculationAvailable) {
@@ -3749,18 +3753,18 @@ function calculateWeld() {
       }),
       calculationTraceRow({
         title: "Design throat thickness",
-        reference: type === "fillet" ? "AS 4100 Cl. 9.6.3" : "AS 4100 Cl. 9.6.2.7",
+        reference: type === "fillet" ? "AS 4100 Cl. 9.6.3.4" : "AS 4100 Cl. 9.6.2.7",
         formula: type === "fillet" ? `t<sub>t</sub> = 0.707s` : `t<sub>t</sub> = a<sub>w</sub>`,
         substitution: type === "fillet" ? `0.707 &times; ${size.toFixed(0)} mm` : `${effectiveThroat.toFixed(1)} mm`,
         result: `Design throat thickness = ${fixed2(throat)} mm`,
-        applicability: type === "fillet" ? "Equal-leg fillet weld." : "Incomplete-penetration butt weld with project-specified design throat."
+        applicability: type === "fillet" ? "Equal-leg fillet weld; entered effective length satisfies AS 4100 Cl. 9.6.3.5 minimum 4s." : "Incomplete-penetration butt weld with project-specified design throat."
       }),
       calculationTraceRow({
         title: "Capacity per unit length",
         reference: "AS 4100 Cl. 9.6.3.10 and AS 4100 Table 3.4",
         formula: `&phi;R/l<sub>w</sub> = &phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub>`,
         substitution: `${phi.toFixed(2)} &times; 0.6 &times; ${fuw.toFixed(0)} MPa &times; ${fixed2(throat)} mm &times; ${kr.toFixed(2)} / 1000`,
-        result: `Design capacity = ${capacityPerMm.toFixed(2)} kN/mm per weld line`,
+        result: `Design capacity = ${displayFixed(capacityPerMm, 2)} kN/mm per weld line`,
         applicability: "Direct throat resistance for the selected fillet weld or IPBW path."
       }),
       calculationTraceRow({
@@ -3774,9 +3778,16 @@ function calculateWeld() {
       calculationTraceRow({
         title: "Total weld capacity",
         formula: `&phi;R<sub>total</sub> = (&phi;R/l<sub>w</sub>)l<sub>w</sub>n<sub>w</sub>`,
-        substitution: `${capacityPerMm.toFixed(2)} kN/mm &times; ${fixed(length)} mm &times; ${runs}`,
+        substitution: `${displayFixed(capacityPerMm, 2)} kN/mm &times; ${fixed(length)} mm &times; ${runs}`,
         result: `Design capacity = ${fixed(capacity)} kN`,
         applicability: `${runs} identical effective weld line${runs === 1 ? "" : "s"}; effective weld lines are not welding passes.`
+      }),
+      calculationTraceRow({
+        title: "Optional weld throat utilisation",
+        formula: hasDemand ? `&eta;<sub>w</sub> = V<sub>w</sub><sup>*</sup>/&phi;R<sub>total</sub>` : "",
+        substitution: hasDemand ? `${fixed(demand)} kN / ${fixed(capacity)} kN` : "",
+        result: hasDemand ? `&eta;<sub>w</sub> = ${displayFixed(utilisation, 2)}; ${utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL"}` : "No design action entered",
+        applicability: "Direct action against the calculated throat resistance only; weld group effects, eccentricity and connected-part limit states remain excluded."
       }),
       calculationTraceRow({
         title: "Parent metal screen",
@@ -5154,10 +5165,15 @@ function calculateCatalogueSectionProperties() {
       : hasCy
         ? "x-x centroidal · y-y indicative"
         : "Indicative x-x / y-y";
+  const catalogueDataBasis = family.key === "chs"
+    ? "Catalogue mass + nominal D/t-derived properties"
+    : family.key === "rod"
+      ? "Catalogue mass/diameter + geometry-derived properties"
+      : "Catalogue values + identified derived references";
   setSectionSummary("Selected catalogue section", section.designation, section.dimensions || "Dimensions not available in the current checked row", [
     { label: "Section family", value: sectionCatalogueFamilyNames[family.key] || family.label },
     { label: "Reference axes", value: axisDisplay },
-    { label: "Data basis", value: "Stated by property" },
+    { label: "Data basis", value: catalogueDataBasis },
     { label: "Catalogue", value: `${safeText(source.publisher)} ${safeText(source.document.match(/\b\d{4}\b/)?.[0] || "catalogue")}` }
   ]);
   renderSectionPropertiesDiagram(section.drawing, properties, section.designation, true);
@@ -5643,18 +5659,18 @@ function formatBeamUtilisation(value) {
   if (Math.abs(value - 1) < 1e-9) return "1.00";
   if (value > 1 && value < 1.005) return ">1.00";
   if (value < 1 && value > 0.995) return "<1.00";
-  return value.toFixed(2);
+  return displayFixed(value, 2);
 }
 
 function formatBeamInteractionRatio(value) {
   if (!Number.isFinite(value)) return "—";
   const nearBranch = Math.abs(value - 0.75) < 0.001 || Math.abs(value - 1) < 0.001;
-  return value.toFixed(nearBranch ? 6 : 2);
+  return displayFixed(value, nearBranch ? 6 : 2);
 }
 
 function formatBeamInteractionFactor(value) {
   if (!Number.isFinite(value)) return "—";
-  return value < 1 && value > 0.995 ? value.toFixed(6) : value.toFixed(3);
+  return value < 1 && value > 0.995 ? displayFixed(value, 6) : displayFixed(value, 3);
 }
 
 function calculateBeam() {
@@ -5714,6 +5730,7 @@ function calculateBeam() {
     : null;
   const axis = beamAxisProperties(section, direction);
   const subscript = beamDirectionSubscript(direction);
+  const symbol = subscript || "";
   const loadCase = beamDirectionLoadCase(direction);
   const loadCaseHtml = loadCase ? ` &middot; ${loadCase}` : "";
   const directionLabel = beamDirections().find(([key]) => key === direction)?.[1] || "—";
@@ -5776,7 +5793,10 @@ function calculateBeam() {
   const displayedShearArea = hollowWeb?.webArea || section?.Aw;
   setBeamSummaryCell("beamAw", formatBeamArea(displayedShearArea), !shearAvailable);
   $("beamSummaryAreaLabel").innerHTML = chsSectionShear ? "A<sub>e</sub>" : "A<sub>w</sub>";
-  setBeamSummaryCell("beamSummaryDirection", directionLabel, false);
+  const summaryDirectionLabel = beamFamily === "ea" && !customDimensions
+    ? `${directionLabel} · principal ${symbol}-${symbol}`
+    : directionLabel;
+  setBeamSummaryCell("beamSummaryDirection", summaryDirectionLabel, false);
   setBeamSummaryCell("beamSummaryI", formatBeamInertia(axis.I), !(axis.I > 0));
   setBeamSummaryCell("beamSummaryZx", formatBeamModulus(axis.Z), !(axis.Z > 0));
   setBeamSummaryCell("beamSummarySx", formatBeamModulus(axis.S), !(axis.S > 0));
@@ -5794,7 +5814,6 @@ function calculateBeam() {
     ? `${section?.sourceRef || "Entered ideal geometry"}; ${customMaterial?.source || "material basis not selected"}`
     : gradeBase?.sourceRef || section?.sourceRef || section?.sourceBasis || "—";
   setBeamSummaryCell("beamSummarySource", `${summarySource}${materialOverride ? " · project strength override" : ""}`, !section);
-  const symbol = subscript || "";
   $("beamSummaryILabel").innerHTML = symbol ? `I<sub>${symbol}</sub>` : "I";
   $("beamSummaryZLabel").innerHTML = symbol ? `Z<sub>${symbol}</sub>` : "Z";
   $("beamSummarySLabel").innerHTML = symbol ? `S<sub>${symbol}</sub>` : "S";
@@ -5831,7 +5850,7 @@ function calculateBeam() {
       ? "No design action"
       : !allDemandPathsAvailable
         ? "Combined action not evaluated"
-        : utilisation > 1 ? "FAIL" : "PASS";
+        : utilisation > 1 ? "Section check FAIL" : "Section check PASS";
   $("beamStatus").className = !momentAvailable || !allDemandPathsAvailable || !hasDemand ? "check" : utilisation > 1 ? "fail" : "pass";
   const resultStatus = $("beamResultStatus");
   resultStatus.textContent = !section || section.invalidReason
@@ -5889,8 +5908,8 @@ function calculateBeam() {
     : "Not reconciled.";
   const demandStep = !hasDemand ? "No design action entered."
     : interactionDemand?.failureMode === "moment"
-      ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
-    : Number.isFinite(utilisation) ? `Governing section utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "FAIL" : "PASS"}.`
+      ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; section moment FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
+    : Number.isFinite(utilisation) ? `Governing section utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "section check FAIL" : "section check PASS"}.`
       : "Combined action not evaluated because one or more required capacity paths are unavailable.";
   const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${customProjectMaterial ? "project / legacy material values" : materialOverride ? `project / legacy override (standard defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : customDimensions ? "explicit standard material lookup for entered geometry" : "catalogue default"}.`;
   const zeBasis = coordination.status === "derived"
@@ -6001,7 +6020,7 @@ function calculateBeam() {
       reference: interactionAvailable ? "AS 4100 Cl. 5.12.3" : "",
       formula: hasDemand ? utilisationFormula : "",
       substitution: utilisationSubstitution,
-      result: !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "FAIL" : "PASS"}` : "Not evaluated",
+      result: !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "Section check FAIL" : "Section check PASS"}` : "Not evaluated",
       applicability: demandStep
     }),
     calculationTraceRow({
@@ -6284,7 +6303,7 @@ function formatMemberUtilisation(ratio) {
   if (ratio === 1) return "1.00";
   if (ratio > 1 && ratio < 1.005) return ">1.00";
   if (ratio < 1 && ratio > 0.995) return "<1.00";
-  return ratio.toFixed(2);
+  return displayFixed(ratio, 2);
 }
 
 function setMemberInvalidState(message, designation) {
@@ -6654,7 +6673,7 @@ function calculateMember() {
   $("memberGoverning").textContent = governingAxis.alphaC < 0.999 ? (memberType === "custom" ? `${governingAxis.title} buckling controls` : "Member buckling controls") : "Section capacity controls";
   $("memberUtilisation").textContent = hasMemberDemand ? formatMemberUtilisation(governingDemandRatio) : "\u2014";
   const memberUtilisationStatus = $("memberUtilisationStatus");
-  memberUtilisationStatus.textContent = hasMemberDemand ? (governingDemandRatio <= 1 ? "PASS" : "FAIL") : "No design action";
+  memberUtilisationStatus.textContent = hasMemberDemand ? (governingDemandRatio <= 1 ? "Axial check PASS" : "Axial check FAIL") : "No design action";
   memberUtilisationStatus.className = hasMemberDemand ? (governingDemandRatio <= 1 ? "pass" : "fail") : "check";
   const customGeometryKfWarning = properties.customGeometry && memberType === "ea"
     ? " Verify k<sub>f</sub> for slender custom angle geometry."
@@ -6797,7 +6816,7 @@ function calculateMember() {
       title: "Design action utilisation",
       formula: hasMemberDemand ? `&eta; = max(N<sub>c</sub><sup>*</sup>/&phi;N<sub>c</sub>, N<sub>t</sub><sup>*</sup>/&phi;N<sub>t</sub>)` : "",
       substitution: hasMemberDemand ? demandChecks.join("; ") : "",
-      result: hasMemberDemand ? `Governing utilisation = ${formatMemberUtilisation(governingDemandRatio)}; ${governingDemandRatio <= 1 ? "PASS" : "FAIL"}` : "No design action specified",
+      result: hasMemberDemand ? `Governing utilisation = ${formatMemberUtilisation(governingDemandRatio)}; ${governingDemandRatio <= 1 ? "Axial check PASS" : "Axial check FAIL"}` : "No design action specified",
       applicability: "Compression and tension entries represent separate governing axial load cases, not simultaneous combined actions. No combined bending or flexural-torsional buckling check."
     })
   ].join("");
@@ -8411,7 +8430,7 @@ function updateScrewRisk(pile, compressionCap, upliftCap, lateralCap) {
   const status = $("screwSelectionStatus");
   if (!status) return;
   status.textContent = advice.label;
-  setStatusClass(status, advice.className === "fit-data" ? "pass" : advice.className === "fit-alert" ? "fail" : "check");
+  setStatusClass(status, "check");
   setOptionalText("screwSelectionGuidance", advice.note);
 }
 
@@ -8516,7 +8535,7 @@ function calculateScrewDemand(comparison) {
   };
   setOptionalText("screwDemandComparisonLabel", comparisonNames[comparisonBasis] || comparisonNames.none);
   const ratioSymbol = "&eta;<sub>proj</sub>";
-  $("screwDemandRatio").innerHTML = !hasDemand || !comparisonEnabled ? "Not assessed" : missingCapacity ? `${ratioSymbol} = incomplete` : `${ratioSymbol} = ${utilisation.toFixed(2)}`;
+  $("screwDemandRatio").innerHTML = !hasDemand || !comparisonEnabled ? "Not assessed" : missingCapacity ? `${ratioSymbol} = incomplete` : `${ratioSymbol} = ${displayFixed(utilisation, 2)}`;
   if (!hasDemand) {
     $("screwDemandStatus").textContent = "No demand entered";
     setStatusClass($("screwDemandStatus"), "");
@@ -8553,7 +8572,7 @@ function calculateScrewDemand(comparison) {
       title: "Project directional comparison",
       formula: `&eta;<sub>proj</sub> = max(N<sub>c,max</sub><sup>*</sup>/R<sub>c,proj</sub>, N<sub>t,max</sub><sup>*</sup>/R<sub>t,proj</sub>, V<sub>h,max</sub><sup>*</sup>/R<sub>h,proj</sub>)`,
       substitution: capacityComparisons,
-      result: missingCapacity ? "Incomplete project comparison" : `Maximum directional ratio = ${utilisation.toFixed(2)}`,
+      result: missingCapacity ? "Incomplete project comparison" : `Maximum directional ratio = ${displayFixed(utilisation, 2)}`,
       applicability: `Entered source: ${safeText(comparison.source)}. Action and value basis: ${actionBasisLabel}. Combined axial-horizontal interaction is not assessed.`
     });
   } else if (comparisonBasis === "project-source-missing") {

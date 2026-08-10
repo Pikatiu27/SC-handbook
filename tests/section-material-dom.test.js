@@ -46,6 +46,9 @@ assert.ok(/sectionShape"\)\.addEventListener\("change", \(\) => \{\s+syncSection
 assert.ok(app.includes('closest(".section-properties-figure").hidden = true'), "Invalid geometry must hide the stale section figure");
 assert.ok(app.includes("zero by rotational symmetry"), "Circular zero warping must be interpreted");
 assert.ok(app.includes("n-n / p-p centroidal · x-x / y-y principal"), "Equal Angle captions must use full axis notation");
+assert.ok(app.includes("Catalogue mass + nominal D/t-derived properties"), "CHS summary must distinguish catalogue mass from D/t-derived properties");
+assert.ok(app.includes("Catalogue mass/diameter + geometry-derived properties"), "Round-bar summary must distinguish published inputs from derived properties");
+assert.ok(app.includes('`${directionLabel} · principal ${symbol}-${symbol}`'), "Beam Equal Angle summary must identify the selected principal axis");
 assert.ok(!styles.includes(".section-properties-figure { display: none; }"), "The Section Properties axis figure must remain available on phone");
 assert.ok(styles.includes("#propertiesPanel .section-properties-table .section-directional-value { display: block; }"), "Directional values must stack within narrow phone table cells");
 assert.ok(styles.includes(".input-group-fields.section-material-inputs { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }"), "Material controls must align by their top label rather than the lower status row");

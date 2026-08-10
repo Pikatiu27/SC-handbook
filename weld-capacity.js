@@ -17,6 +17,12 @@
     return number;
   }
 
+  function positiveInteger(value, name) {
+    const number = positive(value, name);
+    if (!Number.isInteger(number)) throw new RangeError(`${name} must be a positive integer.`);
+    return number;
+  }
+
   function lapReduction(lengthMm) {
     const lengthM = nonNegative(lengthMm, "lengthMm") / 1000;
     if (lengthM <= 1.7) return 1;
@@ -33,6 +39,10 @@
     if (type === "fillet") return 0.707 * positive(size, "size");
     if (type === "ipbw") return positive(effectiveThroat, "effectiveThroat");
     return NaN;
+  }
+
+  function parentMetalScreen({ fup, thickness, phi = 0.9 }) {
+    return positive(phi, "phi") * 0.6 * positive(fup, "fup") * positive(thickness, "thickness") / 1000;
   }
 
   function calculate({
@@ -58,7 +68,10 @@
     }
 
     const effectiveLength = positive(length, "length");
-    const lineCount = Math.max(1, Math.round(positive(runs, "runs")));
+    const lineCount = positiveInteger(runs, "runs");
+    if (type === "fillet" && effectiveLength < 4 * positive(size, "size")) {
+      throw new RangeError("fillet weld effective length must be at least 4 times the weld size.");
+    }
     const throat = designThroat(type, size, effectiveThroat);
     const phi = capacityFactor(type, category);
     const kr = weldedLap && type === "fillet" ? lapReduction(effectiveLength) : 1;
@@ -78,6 +91,7 @@
     lapReduction,
     capacityFactor,
     designThroat,
+    parentMetalScreen,
     calculate
   });
 });
