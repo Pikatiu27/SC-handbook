@@ -496,6 +496,7 @@ Define one internal unit convention for each calculation family. Convert at the 
 - Do not feed displayed values back into later calculations.
 - Record the comparison tolerance for each verification case. Use a tolerance appropriate to exact lookups, closed-form arithmetic, iterative solutions or source values published to limited precision; do not apply one arbitrary percentage to every calculation.
 - Where a displayed value is repeated in a figure, summary and formula step, use the same source value and rounding rule.
+- A visible substitution must retain enough intermediate precision to reproduce the displayed final result at its stated precision. If a compact summary value is too coarsely rounded for that purpose, show additional digits in `Calculation Steps` or substitute the governing primitive terms; do not change the unrounded calculation engine or inflate the primary result precision.
 
 #### 6.2.7 Minimum Verification Matrix
 

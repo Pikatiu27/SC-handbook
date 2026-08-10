@@ -61,6 +61,8 @@ assert.match(script, /&phi;V<sub>v<\/sub> = 0\.90V<sub>v<\/sub>/);
 assert.match(script, /&lambda;<sub>v<\/sub> = \(\$\{formatBeamNumber\(section\.d1, 1\)\}\/\$\{formatBeamNumber\(section\.tw, 1\)\}\)/);
 assert.match(script, /V<sub>v<\/sub> = min\(\$\{fixed\(hollowWeb\.shearYieldCapacity\)\}, \$\{fixed\(hollowWeb\.nonUniformCapacity\)\}\) = \$\{fixed\(hollowWeb\.nominalCapacity\)\} kN/);
 assert.match(script, /reference: "AS 4100 Cl\. 5\.2\.1"/);
+assert.doesNotMatch(script, /selection: `\$\{directionLabel\}\$\{loadCaseHtml\}`/);
+assert.match(script, /formula: momentAvailable \? `&phi;M<sub>s\$\{symbol\}<\/sub> = &phi;f<sub>y,m<\/sub>Z<sub>e\$\{symbol\}<\/sub>`/);
 assert.match(script, /reference: "AS 4100 Cl\. 5\.2\.2 to AS 4100 Cl\. 5\.2\.5"/);
 assert.match(script, /reference: interactionAvailable \? "AS 4100 Cl\. 5\.12\.3" : ""/);
 assert.match(script, /function formatBeamUtilisation\(value\)/);

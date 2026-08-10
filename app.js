@@ -3778,7 +3778,7 @@ function calculateWeld() {
       calculationTraceRow({
         title: "Total weld capacity",
         formula: `&phi;R<sub>total</sub> = (&phi;R/l<sub>w</sub>)l<sub>w</sub>n<sub>w</sub>`,
-        substitution: `${displayFixed(capacityPerMm, 2)} kN/mm &times; ${fixed(length)} mm &times; ${runs}`,
+        substitution: `${displayFixed(phi, 2)} &times; 0.6 &times; ${fuw.toFixed(0)} MPa &times; ${type === "fillet" ? `(0.707 &times; ${size.toFixed(0)} mm)` : `${displayFixed(throat, 3)} mm`} &times; ${displayFixed(kr, 3)} &times; ${fixed(length)} mm &times; ${runs} / 1000`,
         result: `Design capacity = ${fixed(capacity)} kN`,
         applicability: `${runs} identical effective weld line${runs === 1 ? "" : "s"}; effective weld lines are not welding passes.`
       }),
@@ -5975,7 +5975,7 @@ function calculateBeam() {
       title: "Effective section modulus",
       reference: "AS 4100 Cl. 5.2.1",
       lookup: zeBasis,
-      selection: `${directionLabel}${loadCaseHtml}`,
+      selection: directionLabel,
       adopted: momentAvailable ? `Z<sub>e${symbol}</sub>${loadCaseHtml} = ${formatBeamModulus(grade.Ze)}` : "Not established",
       applicability: momentAvailable ? "Direction-specific value used in section moment capacity." : "A reviewed direction-specific classification and effective modulus are required."
     }),
@@ -5990,7 +5990,7 @@ function calculateBeam() {
     calculationTraceRow({
       title: "Section moment capacity",
       reference: "AS 4100 Cl. 5.2.1",
-      formula: momentAvailable ? `&phi;M<sub>s${symbol}</sub>${loadCaseHtml} = &phi;f<sub>y,m</sub>Z<sub>e${symbol}</sub>${loadCaseHtml}` : "",
+      formula: momentAvailable ? `&phi;M<sub>s${symbol}</sub> = &phi;f<sub>y,m</sub>Z<sub>e${symbol}</sub>` : "",
       substitution: momentAvailable ? `0.90 &times; ${formatBeamNumber(grade.fy, 0)} MPa &times; ${formatBeamNumber(grade.Ze, 1)} &times; 10<sup>3</sup> mm<sup>3</sup> / 10<sup>6</sup>` : "",
       result: momentAvailable ? `Design section moment capacity = ${fixed(momentCapacity)} kN&middot;m` : "Not evaluated",
       applicability: momentAvailable ? "Cross-section resistance in the selected direction." : "A reviewed f<sub>y,m</sub>, section class and Z<sub>e</sub> record are required."

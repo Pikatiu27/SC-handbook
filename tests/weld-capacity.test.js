@@ -2,6 +2,7 @@
 
 const assert = require("node:assert/strict");
 const WeldCapacity = require("../weld-capacity.js");
+const appSource = require("node:fs").readFileSync(require("node:path").join(__dirname, "..", "app.js"), "utf8");
 
 function closeTo(actual, expected, tolerance = 1e-9) {
   assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} != ${expected}`);
@@ -52,6 +53,8 @@ function closeTo(actual, expected, tolerance = 1e-9) {
   closeTo(WeldCapacity.lapReduction(8001), 0.62);
   closeTo(WeldCapacity.parentMetalScreen({ fup: 410, thickness: 10 }), 2.214);
 }
+
+assert.match(appSource, /displayFixed\(phi, 2\).*0\.707.*displayFixed\(kr, 3\).*fixed\(length\).*\$\{runs\} \/ 1000/s);
 
 {
   assert.throws(() => WeldCapacity.calculate({
