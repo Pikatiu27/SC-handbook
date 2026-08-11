@@ -142,6 +142,13 @@ assert.equal(manualAngleTension.governing, "gross yielding");
 assert.equal(displayed(manualAngleTension.phiNt), "103.7");
 assert.equal(displayed(0.9 * 0.85 * 0.85 * 443 * 410 / 1000), "118.1");
 
+// Design Manual Example 5.3.4: straight-line hole deduction for 75 x 75 x 6 EA.
+const manualAngleNetArea = 867 - 1 * 22 * 6;
+assert.equal(manualAngleNetArea, 735);
+const manualAngleWithHole = independentAxialTension(867, manualAngleNetArea, 260, 410, 0.85);
+assert.equal(manualAngleWithHole.governing, "net fracture");
+assert.equal(displayed(manualAngleWithHole.phiNt), "196.0");
+
 // BEAM-MOMENT-01 and BEAM-SHEAR-01 using the visible default 310UB40.4 values.
 const beamPhiMs = 0.9 * 320 * 633000 / 1e6;
 const beamPhiVv = 0.9 * 0.6 * 320 * (283.6 * 6.1) / 1000;

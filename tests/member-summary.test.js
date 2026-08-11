@@ -51,6 +51,10 @@ assert.deepEqual(
 );
 ["ub", "uc", "rhs", "shs"].forEach(family => assert.match(html, new RegExp(`data-member-guide="${family}"`)));
 assert.match(html, /id="memberFactorHelp"/);
+assert.match(script, /MemberCapacity\.catalogueCompressionDefaults\(\{/);
+assert.match(script, /dimensionOverride: memberDimensionOverrideActive\(\)/);
+assert.doesNotMatch(script, /CHS basis: k<sub>f<\/sub> = 1\.000/);
+assert.match(script, /Catalogue k<sub>f<\/sub>, or k<sub>f<\/sub> = 1\.000 for an ideal circular dimension override/);
 [
   "memberCustomArea",
   "memberCustomRx",
@@ -82,6 +86,13 @@ assert.doesNotMatch(html.slice(html.indexOf('id="memberPanel"'), html.indexOf('i
 assert.match(script, /function updateMemberNetSectionPresentation\(/);
 assert.match(script, /cell\.hidden = !connectionAdjusted/);
 assert.match(script, /\$\("memberNetArea"\)\.value = properties\.area\.toFixed\(3\)/);
+assert.match(script, /MemberCapacity\.straightLineNetArea\(\{/);
+assert.doesNotMatch(script, /Math\.round\(value\("memberHoleCount"\)\)/);
+assert.match(script, /t: section\.actualT \|\| section\.t/);
+assert.match(script, /actual t = \$\{formatDimension\(properties\.t\)\} mm/);
+assert.match(script, /AS 4100 Cl\. 6\.2\.1, AS 4100 Cl\. 7\.2 and AS 4100 Cl\. 9\.1\.10/);
+assert.match(script, /AS 4100 Table 7\.3\.2 Case \(a\); equal angle connected through one leg/);
+assert.match(script, /replace\(\/\[\.\]\+\$\/, ""\)/);
 
 [
   "memberDimD",
@@ -128,8 +139,8 @@ assert.match(script, /BeamHotRolledData\.equalAngle\[section\.designation\]/);
 assert.match(script, /BeamHotRolledData\.pfc\.find\(section => section\.designation === `\$\{depth\}PFC`\)/);
 assert.doesNotMatch(script, /const eaAxialGrades/);
 assert.doesNotMatch(script, /const chsGrades/);
-assert.match(script, /return section\?\.tf > 40 \? 1\.0 : 0/);
-assert.match(script, /return -0\.5/);
+assert.match(memberCapacityScript, /alphaB = tf > 40 \? 1 : 0/);
+assert.match(memberCapacityScript, /alphaB = -0\.5/);
 assert.match(script, /"User override" : "Catalogue default"/);
 assert.match(script, /effective length L_e must be greater than zero/);
 assert.match(script, /k_t must be within the AS 4100 Cl\. 7\.3 range 0\.75 to 1\.00/);
@@ -167,14 +178,21 @@ assert.equal(Object.keys(hotRolledRows.equalAngle).length, 46);
 assert.equal(hotRolledRows.pfc.length, 10);
 assert.ok(hotRolledRows.pfc.every(section => Object.keys(section.grades).length === 2));
 assert.match(outline, /all 73 Austube CHS grade-specific rows/);
+assert.match(outline, /must not inherit `k_f` from the catalogue row used to initialise its dimensions/);
 assert.match(traceability, /all 46 InfraBuild Equal Angle geometry\/design rows/);
 
 const defaultAngleRow = script.match(/\[100,10,14\.2,9\.5,8,5,9\.53,1810,[^\]]+\]/);
 assert.ok(defaultAngleRow, "Default 100 x 100 x 10 EA catalogue row not found.");
 const angleValues = defaultAngleRow[0].slice(1, -1).split(",").map(Number);
+const angleNominalThickness = angleValues[1];
+const angleActualThickness = angleValues[3];
 const angleArea = angleValues[7];
 const angleMinorPrincipalRadius = angleValues[24];
+assert.equal(angleNominalThickness, 10);
+assert.equal(angleActualThickness, 9.5);
 assert.equal(angleArea, 1810);
+assert.equal(angleArea - 26 * angleActualThickness, 1563);
+assert.notEqual(angleArea - 26 * angleNominalThickness, 1563);
 assert.equal(angleMinorPrincipalRadius, 19.6);
 
 const effectiveLength = 3000;

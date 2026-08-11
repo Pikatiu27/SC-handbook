@@ -3,6 +3,7 @@
 const assert = require("node:assert/strict");
 const MemberCapacity = require("../member-capacity.js");
 const BeamSectionData = require("../beam-section-data.js");
+const SectionGeometry = require("../section-geometry.js");
 
 function approximately(actual, expected, tolerance, label) {
   assert.ok(Math.abs(actual - expected) <= tolerance, `${label}: expected ${expected}, received ${actual}`);
@@ -14,6 +15,76 @@ assert.deepEqual(
   { area: defaultChs.area, r: defaultChs.r, fy: defaultChs.fy, kf: defaultChs.kf, table: defaultChs.sourceTable },
   { area: 1120, r: 39.3, fy: 350, kf: 1, table: "3.1-2" }
 );
+
+[
+  [{ family: "chs", catalogueKf: 0.857 }, { kf: 0.857, alphaB: -0.5 }],
+  [{ family: "chs", catalogueKf: 0.857, dimensionOverride: true }, { kf: 1, alphaB: -0.5 }],
+  [{ family: "rhs", catalogueKf: 0.553 }, { kf: 0.553, alphaB: -0.5 }],
+  [{ family: "shs", catalogueKf: 0.624 }, { kf: 0.624, alphaB: -0.5 }],
+  [{ family: "ub", catalogueKf: 0.95, flangeThickness: 19.6 }, { kf: 0.95, alphaB: 0 }],
+  [{ family: "uc", catalogueKf: 1, flangeThickness: 25 }, { kf: 1, alphaB: 0 }],
+  [{ family: "ub", catalogueKf: 0.95, flangeThickness: 41 }, { kf: 0.95, alphaB: 1 }],
+  [{ family: "pfc", catalogueKf: 1 }, { kf: 1, alphaB: 0.5 }],
+  [{ family: "pfc", catalogueKf: 0.9 }, { kf: 0.9, alphaB: 1 }],
+  [{ family: "ea", catalogueKf: 1 }, { kf: 1, alphaB: 0.5 }],
+  [{ family: "ea", catalogueKf: 0.856 }, { kf: 0.856, alphaB: 1 }],
+  [{ family: "rod", catalogueKf: 1 }, { kf: 1, alphaB: 0.5 }]
+].forEach(([input, expected]) => {
+  assert.deepEqual(MemberCapacity.catalogueCompressionDefaults(input), expected);
+});
+
+const sourceLargeChs = BeamSectionData.find(row => row.family === "chs" && row.designation === "508 x 6.4 CHS" && row.grade === "C350L0");
+assert.equal(sourceLargeChs.kf, 0.857);
+const overrideChsGeometry = SectionGeometry.circularHollow(114.3, 3.2);
+const overrideChsDefaults = MemberCapacity.catalogueCompressionDefaults({
+  family: "chs",
+  catalogueKf: sourceLargeChs.kf,
+  dimensionOverride: true
+});
+const overrideChs = MemberCapacity.calculate({
+  grossArea: overrideChsGeometry.area,
+  netArea: overrideChsGeometry.area,
+  fy: 350,
+  fu: 430,
+  kf: overrideChsDefaults.kf,
+  kt: 1,
+  axes: [{ r: overrideChsGeometry.rx, effectiveLength: 3000, alphaB: overrideChsDefaults.alphaB }]
+});
+approximately(overrideChs.memberCompression, 236.5449267936848, 1e-9, "CHS dimension override adopts k_f = 1.0");
+
+const manualAngleNetArea = MemberCapacity.straightLineNetArea({
+  grossArea: 867,
+  holeCount: 1,
+  holeDiameter: 22,
+  thickness: 6
+});
+assert.deepEqual(manualAngleNetArea, {
+  grossArea: 867,
+  holeCount: 1,
+  holeDiameter: 22,
+  thickness: 6,
+  holeDeduction: 132,
+  netArea: 735
+});
+const manualAngleCapacity = MemberCapacity.calculate({
+  grossArea: 867,
+  netArea: manualAngleNetArea.netArea,
+  fy: 260,
+  fu: 410,
+  kf: 1,
+  kt: 0.85,
+  axes: [{ r: 14.7, effectiveLength: 3000, alphaB: 0.5 }]
+});
+approximately(manualAngleCapacity.netFracture, 195.9528375, 1e-9, "Design Manual Example 5.3.4 net-section fracture");
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 867, holeCount: 1.5, holeDiameter: 22, thickness: 6 }), /whole number/);
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 867, holeCount: Number.NaN, holeDiameter: 22, thickness: 6 }), /must be finite/);
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 867, holeCount: -1, holeDiameter: 22, thickness: 6 }), /must not be negative/);
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 867, holeCount: 21, holeDiameter: 22, thickness: 6 }), /must not exceed 20/);
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 867, holeCount: 1, holeDiameter: 0, thickness: 6 }), /greater than zero when holes are present/);
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 867, holeCount: 1, holeDiameter: Number.NaN, thickness: 6 }), /must be finite/);
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 867, holeCount: 1, holeDiameter: 22, thickness: 0 }), /Net-path thickness/);
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 867, holeCount: 1, holeDiameter: 22, thickness: Number.NaN }), /must be finite/);
+assert.throws(() => MemberCapacity.straightLineNetArea({ grossArea: 100, holeCount: 1, holeDiameter: 22, thickness: 6 }), /positive net area/);
 
 const chs = MemberCapacity.calculate({
   grossArea: defaultChs.area,

@@ -6069,7 +6069,7 @@ function memberDimensionLabel(properties) {
   if (memberType === "rhs") return `d = ${formatDimension(properties.d)} mm; b = ${formatDimension(properties.b)} mm; t = ${formatDimension(properties.t)} mm`;
   if (memberType === "shs") return `b = d = ${formatDimension(properties.b)} mm; t = ${formatDimension(properties.t)} mm`;
   if (memberType === "rod") return `d = ${formatDimension(properties.diameter)} mm`;
-  if (memberType === "ea") return `b = ${formatDimension(properties.b, 0)} mm; t = ${formatDimension(properties.t)} mm`;
+  if (memberType === "ea") return `b = ${formatDimension(properties.b, 0)} mm; actual t = ${formatDimension(properties.t)} mm${properties.nominalT && Math.abs(properties.nominalT - properties.t) > 0.01 ? `; nominal t = ${formatDimension(properties.nominalT)} mm` : ""}`;
   if (memberType === "pfc") return `d = ${formatDimension(properties.d, 0)} mm; b<sub>f</sub> = ${formatDimension(properties.bf, 0)} mm; t<sub>w</sub> = ${formatDimension(properties.tw)} mm; t<sub>f</sub> = ${formatDimension(properties.tf)} mm`;
   return "User-entered effective properties";
 }
@@ -6186,7 +6186,9 @@ function memberProperties(section) {
       ix: section.principalIx,
       iy: section.principalIy,
       b: section.b,
-      t: section.t,
+      t: section.actualT || section.t,
+      actualT: section.actualT || section.t,
+      nominalT: section.t,
       principalAxisBasis: true
     };
   }
@@ -6210,12 +6212,16 @@ function memberProperties(section) {
   };
 }
 
-function memberAlphaBDefault(kf, section) {
-  if (memberType === "custom") return alphaBInput("memberCustomAlphaBx");
-  if (memberType === "chs" || memberType === "rhs" || memberType === "shs") return -0.5;
-  if (memberType === "ub" || memberType === "uc") return section?.tf > 40 ? 1.0 : 0;
-  if (kf < 1) return 1.0;
-  return 0.5;
+function memberCompressionDefaults(grade, section) {
+  if (memberType === "custom") {
+    return { kf: signedValue("memberCustomKf", NaN), alphaB: alphaBInput("memberCustomAlphaBx") };
+  }
+  return MemberCapacity.catalogueCompressionDefaults({
+    family: memberType,
+    catalogueKf: grade.kf,
+    flangeThickness: section?.tf,
+    dimensionOverride: memberDimensionOverrideActive()
+  });
 }
 
 function memberAlphaBBasis(kf, section) {
@@ -6240,15 +6246,11 @@ function memberAlphaBBasis(kf, section) {
   return "AS 4100 Table 6.3.3(A), other sections not listed in the table";
 }
 
-function memberKfValue(grade) {
-  return memberType === "custom" ? signedValue("memberCustomKf", NaN) : grade.kf;
-}
-
 function memberKfBasisText(kf) {
   if (memberType === "custom") return "custom member input";
   if (memberDimensionOverrideActive()) {
     if (memberType === "chs" || memberType === "rod") {
-      return `selected ${memberType.toUpperCase()} basis`;
+      return `ideal circular geometry override; k<sub>f</sub> = ${kf.toFixed(3)}`;
     }
   }
   return "selected section basis";
@@ -6335,6 +6337,7 @@ function formatMemberUtilisation(ratio) {
 }
 
 function setMemberInvalidState(message, designation) {
+  const validationMessage = String(message || "invalid project inputs").trim().replace(/[.]+$/, "");
   $("memberDesignation").textContent = designation;
   $("memberAssumption").textContent = "Inputs are incomplete or outside the supported axial-member scope.";
   [
@@ -6354,10 +6357,10 @@ function setMemberInvalidState(message, designation) {
   $("memberGoverning").textContent = "Not evaluated";
   $("memberUtilisationStatus").textContent = "INPUT REQUIRED";
   $("memberUtilisationStatus").className = "check";
-  $("memberWarning").innerHTML = `Input required: ${message}. No axial capacity has been evaluated.`;
+  $("memberWarning").innerHTML = `Input required: ${validationMessage}. No axial capacity has been evaluated.`;
   $("memberFormulaSteps").innerHTML = calculationTraceRow({
     title: "Input validation",
-    selection: message,
+    selection: validationMessage,
     result: "Not evaluated",
     applicability: "Enter valid project inputs before using the AS 4100 axial-member checks."
   });
@@ -6374,18 +6377,31 @@ function memberNetAreaInput(properties) {
   const autoAvailable = memberType === "ea" || memberType === "pfc";
   const mode = autoAvailable ? $("memberNetAreaMode").value : "manual";
   const grossArea = properties.area;
-  const holeCount = Math.max(0, Math.round(value("memberHoleCount")));
-  const holeDiameter = value("memberHoleDiameter");
+  const holeCount = signedValue("memberHoleCount", NaN);
+  const holeDiameter = signedValue("memberHoleDiameter", NaN);
   const deductionThickness = memberType === "ea"
     ? properties.t || 0
     : memberType === "pfc"
-      ? value("memberHoleThickness")
+      ? signedValue("memberHoleThickness", NaN)
       : 0;
-  const holeDeduction = holeCount * holeDiameter * deductionThickness;
-  const automaticNetArea = Math.max(0, Math.min(grossArea, grossArea - holeDeduction));
   const manualNetArea = signedValue("memberNetArea", NaN);
+  let automatic = null;
+  let error = "";
   if (mode === "auto") {
-    $("memberNetArea").value = automaticNetArea.toFixed(0);
+    try {
+      automatic = MemberCapacity.straightLineNetArea({
+        grossArea,
+        holeCount,
+        holeDiameter,
+        thickness: deductionThickness
+      });
+    } catch (calculationError) {
+      error = calculationError instanceof Error ? calculationError.message : "Invalid straight-line net-area inputs.";
+    }
+  }
+  const automaticNetArea = automatic?.netArea ?? NaN;
+  if (mode === "auto") {
+    $("memberNetArea").value = Number.isFinite(automaticNetArea) ? automaticNetArea.toFixed(0) : "";
   }
   $("memberNetArea").readOnly = mode === "auto";
   $("memberHoleCount").disabled = !autoAvailable || mode !== "auto";
@@ -6398,14 +6414,21 @@ function memberNetAreaInput(properties) {
   document.querySelectorAll(".member-thickness-field").forEach(field => {
     field.hidden = memberType !== "pfc";
   });
+  const validHoleCount = mode !== "auto" || (Number.isInteger(holeCount) && holeCount >= 0 && holeCount <= 20);
+  const validHoleDiameter = mode !== "auto" || (Number.isFinite(holeDiameter) && holeDiameter >= 0 && (holeCount === 0 || holeDiameter > 0));
+  const validThickness = mode !== "auto" || (Number.isFinite(deductionThickness) && deductionThickness > 0);
+  setMemberFieldValidity("memberHoleCount", validHoleCount);
+  setMemberFieldValidity("memberHoleDiameter", validHoleDiameter);
+  if (memberType === "pfc") setMemberFieldValidity("memberHoleThickness", validThickness);
   return {
     mode,
     holeCount,
     holeDiameter,
     deductionThickness,
-    holeDeduction,
+    holeDeduction: automatic?.holeDeduction ?? NaN,
     automaticNetArea,
-    netArea: mode === "auto" ? automaticNetArea : manualNetArea
+    netArea: mode === "auto" ? automaticNetArea : manualNetArea,
+    error
   };
 }
 
@@ -6505,9 +6528,10 @@ function calculateMember() {
   const { section, gradeName, grade } = selected;
   const properties = memberProperties(section);
   updateMemberDimensionUi(properties);
-  const kf = memberKfValue(grade);
+  const compressionDefaults = memberCompressionDefaults(grade, section);
+  const kf = compressionDefaults.kf;
   const kfBasis = memberKfBasisText(kf);
-  const alphaB = memberAlphaBDefault(kf, section);
+  const alphaB = compressionDefaults.alphaB;
   const alphaBBasis = memberAlphaBBasis(kf, section);
   if (memberType !== "custom") {
     $("memberAlphaB").value = String(alphaB);
@@ -6569,8 +6593,12 @@ function calculateMember() {
       ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; user override; ${gradeName} default ${grade.fy}/${grade.fu} MPa`
       : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeName} catalogue default`;
   const ktGuidance = kt >= 0.999
-    ? "AS 4100 Cl. 7.3.1"
-    : "AS 4100 Table 7.3.2";
+    ? "AS 4100 Cl. 7.3.1; confirm uniform force distribution"
+    : memberType === "ea" && Math.abs(kt - 0.85) <= 0.005
+      ? "AS 4100 Table 7.3.2 Case (a); equal angle connected through one leg"
+      : memberType === "pfc" && Math.abs(kt - 0.85) <= 0.005
+        ? "AS 4100 Table 7.3.2 Case (c); channel connected through the web"
+        : "AS 4100 Table 7.3.2; confirm the actual connection configuration";
   const compressionArea = netArea;
   const axes = memberType === "custom"
     ? [
@@ -6581,7 +6609,8 @@ function calculateMember() {
   const compressionDemand = signedValue("memberCompressionDemand", NaN);
   const tensionDemand = signedValue("memberTensionDemand", NaN);
   const calculationErrors = [];
-  if (!Number.isFinite(netArea) || netArea <= 0 || netArea > properties.area) calculationErrors.push("A_n must satisfy 0 < A_n <= A_g");
+  if (netInput.error) calculationErrors.push(netInput.error);
+  if (!netInput.error && (!Number.isFinite(netArea) || netArea <= 0 || netArea > properties.area)) calculationErrors.push("A_n must satisfy 0 < A_n <= A_g");
   if (!Number.isFinite(kt) || kt < 0.75 || kt > 1) calculationErrors.push("k_t must be within the AS 4100 Cl. 7.3 range 0.75 to 1.00");
   if (!Number.isFinite(compressionDemand) || compressionDemand < 0) calculationErrors.push("compression design action must be zero or greater");
   if (!Number.isFinite(tensionDemand) || tensionDemand < 0) calculationErrors.push("tension design action must be zero or greater");
@@ -6687,7 +6716,7 @@ function calculateMember() {
   $("memberCompressionSummary").innerHTML = memberType === "custom"
     ? `${axisResults.map(axis => `${axis.label}: L<sub>e${axis.label}</sub> = ${(axis.effectiveLength / 1000).toFixed(2)} m; r<sub>${axis.label}</sub> = ${axis.r.toFixed(1)} mm; L<sub>e${axis.label}</sub>/r<sub>${axis.label}</sub> = ${axis.leOverR.toFixed(1)}; &alpha;<sub>b,${axis.label}</sub> = ${axis.alphaB.toFixed(1)}`).join("; ")}; k<sub>f</sub> = ${kf.toFixed(3)}; ${governingAxis.label}-axis governs`
     : `L<sub>e</sub> = ${(axisResults[0].effectiveLength / 1000).toFixed(2)} m; r used = ${designR.toFixed(1)} mm${radiusOverridden ? ` (default ${properties.r.toFixed(1)} mm)` : ""}; ${memberAxisBasisText()}; k<sub>f</sub> = ${kf.toFixed(3)}; &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}`;
-  $("memberTensionSummary").innerHTML = `k<sub>t</sub> = ${kt.toFixed(2)}; A<sub>n</sub> basis = ${netAreaBasisLabel}`;
+  $("memberTensionSummary").innerHTML = `k<sub>t</sub> = ${kt.toFixed(2)}; A<sub>n</sub> basis = ${netAreaBasisLabel}; ${ktGuidance}`;
   $("memberCompression").textContent = fixed(memberCompression);
   $("sectionCompression").textContent = fixed(sectionCompression);
   $("memberTension").textContent = fixed(tensionCapacity);
@@ -6713,6 +6742,8 @@ function calculateMember() {
       : `Manual A<sub>n</sub> = ${netArea.toFixed(0)} mm².`;
   const manualReason = memberType === "pfc"
     ? ` PFC default t = t<sub>w</sub> = ${fixed(properties.tw || section.tw || 0)} mm; use verified t for the net path.`
+    : memberType === "ea"
+      ? ` Equal Angle deduction uses catalogue actual t = ${fixed(properties.t)} mm${properties.nominalT && Math.abs(properties.nominalT - properties.t) > 0.01 ? `, not nominal ${fixed(properties.nominalT)} mm` : ""}.`
     : "";
   $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for non-straight net paths.`;
   $("memberWarning").innerHTML = memberType === "chs"
@@ -6807,7 +6838,7 @@ function calculateMember() {
     }),
     calculationTraceRow({
       title: "Net area",
-      reference: "AS 4100 Cl. 6.2.1 and AS 4100 Cl. 7.2",
+      reference: "AS 4100 Cl. 6.2.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 9.1.10",
       formula: netAreaFormula,
       substitution: netAreaSubstitution,
       result: `A<sub>n</sub> = ${netArea.toFixed(0)} mm<sup>2</sup>`,
@@ -9680,7 +9711,7 @@ function setMemberType(type) {
   $("memberLengthField").hidden = isCustom;
   $("memberRadiusField").hidden = isCustom;
   $("memberFactorHelp").innerHTML = type === "chs"
-    ? "CHS basis: k<sub>f</sub> = 1.000; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+    ? "Catalogue k<sub>f</sub>, or k<sub>f</sub> = 1.000 for an ideal circular dimension override; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
     : type === "ub" || type === "uc"
       ? "Catalogue k<sub>f</sub>; hot-rolled UB / UC &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
     : type === "rhs" || type === "shs"

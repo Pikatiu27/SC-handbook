@@ -105,7 +105,7 @@ This register is the authoritative ID map. It identifies the claim and evidence 
 | `SECTION-MATERIAL-01` | Section Properties / material strength and constants lookup | AS/NZS 3679.1 Tables 14 and 15; AS/NZS 1163; AS 4100 Cl. 2.2.4 | `steel-materials.js`; `app.js` | Boundary, material and DOM regression; For Review |
 | `AXIAL-SECTION-COMP-01` | Axial / design section compression capacity | AS 4100 Cl. 6.2 | `app.js` `calculateMember()` | Formula trace and regression; For Review |
 | `AXIAL-MEMBER-COMP-01` | Axial / design member compression capacity | AS 4100 Cl. 6.3.3; AS 4100 Table 6.3.3 | `app.js` `calculateMember()` | `AUD-AXIAL-CHS-01` plus EA regression; For Review |
-| `AXIAL-TENSION-01` | Axial / gross yielding and net fracture | AS 4100 Cl. 7.2 and Cl. 7.3 | `app.js` `calculateMember()` | Formula trace and governing-state regression; For Review |
+| `AXIAL-TENSION-01` | Axial / gross yielding, straight-line net area and net fracture | AS 4100 Cl. 7.2, Cl. 7.3 and Cl. 9.1.10 | `member-capacity.js`; `app.js` `calculateMember()` | `AUD-AXIAL-TENSION-02`; `AUD-AXIAL-NET-01`; formula trace and governing-state regression; For Review |
 | `BEAM-MOMENT-01` | Beam / design section moment capacity | AS 4100 Cl. 5.2; AS 4100 Table 3.4 | `beam-section-capacity.js`; `app.js` | `AUD-BEAM-DEFAULT-01` plus 717-row reconciliation; For Review |
 | `BEAM-SHEAR-01` | Beam / design section shear capacity | AS 4100 Cl. 5.11 | `beam-section-capacity.js`; `app.js` | `AUD-BEAM-DEFAULT-01` plus family regression; For Review |
 | `BEAM-SHEAR-MOMENT-01` | Beam / section shear-bending interaction | AS 4100 Cl. 5.12 | `beam-section-capacity.js`; `app.js` | Branch and trace regression; For Review |
@@ -318,6 +318,7 @@ Formula cases below are implemented in `tests/independent-reproductions.test.js`
 | `AUD-AXIAL-TENSION-BRANCH-01` | `AXIAL-TENSION-01` | Equal Angle `Ag = An = 1810 mm2`, `fy = 320 MPa`, `fu = 440 MPa`; compare `kt = 1.00` and `0.85` | Gross yielding governs at `521.3 kN`; net fracture governs at `517.9 kN` | Both governing tension branches | Pass |
 | `AUD-AXIAL-COMP-02` | `AXIAL-MEMBER-COMP-01` | AS 4100 Table 6.3.3(C) point `lambda_n = 150`, `alpha_b = -0.5`; Design Manual Example 6.4.2 rounded inputs | `alpha_c = 0.316`; independent `phi Nc = 159.9 kN` versus published `160.7 kN` | Table point and published CHS compression example | Pass; published difference is within `1.0 kN` and attributable to rounded printed properties / table interpolation |
 | `AUD-AXIAL-TENSION-02` | `AXIAL-TENSION-01` | Design Manual Example 5.3.1, 50 x 50 x 5 EA: `Ag = An = 443 mm2`, `fy = 260 MPa`, `fu = 410 MPa`, `kt = 0.85` | Gross yielding `103.7 kN`; net fracture `118.1 kN`; gross yielding governs | Published tension-member example | Pass |
+| `AUD-AXIAL-NET-01` | `AXIAL-TENSION-01` | Design Manual Example 5.3.4, 75 x 75 x 6 EA: `Ag = 867 mm2`, one 22 mm hole, actual `t = 6 mm`, `An = 735 mm2`, `fy = 260 MPa`, `fu = 410 MPa`, `kt = 0.85` | Gross yielding `202.9 kN`; net fracture `195.95 kN`; net fracture governs | Independent straight-line deduction and production helper; invalid whole-number, range, diameter, thickness and positive-area boundaries | Pass after local correction, 2026-08-11 |
 | `AUD-AXIAL-INPUT-01` | `AXIAL-SECTION-COMP-01`; `AXIAL-MEMBER-COMP-01`; `AXIAL-TENSION-01` | Browser entries `fy = 0` and `Le = 0`, plus invalid range cases | `INPUT REQUIRED`; capacities and utilisation cleared; no catalogue fallback | Invalid-input and stale-result suppression | Pass after local correction |
 | `AUD-AXIAL-DISPLAY-01` | `AXIAL-MEMBER-COMP-01`; `AXIAL-TENSION-01` | Enter an axial action giving an unrounded utilisation immediately above `1.00` | `>1.00`; `FAIL` remains based on the unrounded ratio | Display rounding must not contradict status | Pass after local correction |
 | `AUD-BEAM-DEFAULT-01` | `BEAM-MOMENT-01`; `BEAM-SHEAR-01` | 310UB40.4 visible default source values | `phi Ms = 182.3 kN.m`; `phi Vv = 298.9 kN` | Independent moment and web-shear arithmetic | Pass |
@@ -383,6 +384,32 @@ Formula cases below are implemented in `tests/independent-reproductions.test.js`
 | Reconstructed result | Gross yielding `103.7 kN`; net fracture `118.1 kN`; gross yielding governs |
 | Difference / tolerance | Agreement to the source's stated one-decimal / whole-kN precision |
 | Status | Pass |
+
+#### `AXIAL-EX-NET-01`
+
+| Field | Record |
+| --- | --- |
+| Linked `Calculation_ID` | `AXIAL-TENSION-01` |
+| Source role | Worked example with fastener-hole deduction |
+| Governing source | `AS4100.pdf` \| AS 4100 Cl. 7.2, AS 4100 Table 7.3.2 and AS 4100 Cl. 9.1.10 \| PDF pages 112-113 and 129-130 \| printed pages 99-100 and 116-117 |
+| Worked-example source | `Steel Structures Design Manual to AS 4100.pdf` \| Example 5.3.4 \| PDF pages 98-99 \| printed pages 84-85 |
+| Problem statement | 75 x 75 x 6 EA tension brace connected through one leg by one line of M20 bolts |
+| Source inputs | `Ag = 867 mm2`; actual `t = 6 mm`; standard hole `dh = 20 + 2 = 22 mm`; `nh = 1`; `An = 735 mm2`; `fy = 260 MPa`; `fu = 410 MPa`; `kt = 0.85`; `phi = 0.90` |
+| Published result | `phi Ntf = 195.95 kN`; net-section fracture governs over gross yielding `202.9 kN` |
+| Applicability to SC Handbook | Direct test of the supported straight-line `An = Ag - nh dh t` path; staggered and non-straight critical paths remain manual |
+| Selection status | Accepted |
+
+#### `AXIAL-REP-NET-01`
+
+| Field | Record |
+| --- | --- |
+| Linked evidence | `AXIAL-EX-NET-01`; `AXIAL-TENSION-01` |
+| Independent method | Standalone arithmetic in `tests/independent-reproductions.test.js`; production helper separately exercised in `tests/member-capacity.test.js` |
+| Formula sequence | `An = Ag - nh dh t`; `phi Nty = phi Ag fy`; `phi Ntf = phi 0.85 kt An fu`; `phi Nt = min(phi Nty, phi Ntf)` |
+| Reconstructed result | `An = 735 mm2`; gross yielding `202.878 kN`; net fracture `195.9528 kN`; displayed `196.0 kN`; net fracture governs |
+| Input boundaries | Blank/non-finite, negative, fractional and over-limit `nh`; non-positive applicable `dh`; non-positive `t`; and non-positive resulting `An` fail closed |
+| Catalogue-thickness regression | Equal Angle automatic deduction consumes manufacturer actual `t`; nominal designation thickness remains visible only as context where it differs |
+| Status | Pass after local correction, 2026-08-11 |
 
 ### Beam Shear-Bending Interaction Evidence
 
@@ -1142,3 +1169,19 @@ Build 0.7.35 was reproduced in the local browser at 1440 px and 390 px. This aud
 | `AUD-DISPLAY-HALF-UP-01` | Shared calculated-result display | Format the exact Screw project ratio `115/200 = 0.575` to two decimal places after loading `engineering-number-format.js` | Browser displays `eta_proj = 0.58`; the exact ratio still governs the comparison. Bolt, Weld, Beam and Axial default results load without console errors |
 
 The former `0.57` display for the exact ratio `115/200 = 0.575` was a presentation-rounding boundary caused by binary floating-point formatting. Build 0.7.35 now routes this ratio and the shared primary result formatters through `engineering-number-format.js`, producing decimal half-up `0.58`. Governing comparisons continue to use the unrounded value. `tests/engineering-number-format.test.js` covers positive and negative ties, carry, small values, zero and invalid input.
+
+## 2026-08-11 Axial Member Compression-default Audit
+
+AS 4100 Table 6.3.3(A)/(B) was rechecked against the complete Axial Member family mapping. Cold-formed non-stress-relieved CHS/RHS/SHS use `alpha_b = -0.5`; hot-rolled UB/UC use `alpha_b = 0` up to 40 mm flange thickness and `1.0` over 40 mm; PFC, Equal Angle and Rod use the applicable listed or other-section row selected by `k_f`.
+
+The CHS dimension override previously retained the selected catalogue row's `k_f`. This conflicted with the governed ideal-circular override basis of `k_f = 1.0` and could incorrectly retain `k_f = 0.857`, `0.904` or `0.960` from the three affected C350L0 CHS rows. The production path now resolves `k_f` and `alpha_b` together in `member-capacity.js`; active CHS and Rod dimension overrides adopt `k_f = 1.0` without inheriting the source row factor. A reproduced 114.3 x 3.2 CHS override initialised from the 508 x 6.4 CHS row returns `phi Nc = 236.5449 kN` for `Le = 3.0 m`, `fy = 350 MPa` and `alpha_b = -0.5`.
+
+`tests/member-capacity.test.js` now covers every supported family branch, both AS 4100 Table 6.3.3(A)/(B) selection paths, the UB/UC 40 mm flange boundary and the CHS override regression. The contextual CHS help text distinguishes catalogue `k_f` from the ideal-circular override value.
+
+## 2026-08-11 Axial Member Net-section Audit
+
+AS 4100 Cl. 7.2, Cl. 7.3.1, Table 7.3.2 and Cl. 9.1.10 were visually rechecked together with Design Manual Examples 5.3.1 and 5.3.4. The gross-yielding and net-fracture equations remain unchanged. The straight-line automatic path is limited to `An = Ag - nh dh t`; staggered holes, slots, copes, multiple paths and other topology-dependent sections remain manual.
+
+The former page path rounded `nh` and converted blank or negative hole values to zero before calculating. It also used the Equal Angle nominal designation thickness instead of the catalogue actual thickness. The corrected path validates the unmodified user values, fails closed for invalid hole geometry, uses catalogue actual `t`, names the applicable `kt` default case and cites AS 4100 Cl. 9.1.10 in the visible trace.
+
+`tests/independent-reproductions.test.js` independently reconstructs Example 5.3.4 as `An = 867 - 1 x 22 x 6 = 735 mm2` and `phi Ntf = 195.9528 kN`. `tests/member-capacity.test.js` checks the production helper and its whole-number, range, diameter, thickness and positive-area boundaries. `tests/member-summary.test.js` locks the actual-thickness route, no-rounding contract, connection-case wording and visible clause reference.

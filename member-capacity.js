@@ -33,6 +33,59 @@
     return number;
   }
 
+  function catalogueCompressionDefaults({
+    family,
+    catalogueKf,
+    flangeThickness,
+    dimensionOverride = false
+  }) {
+    const sectionFamily = String(family || "").toLowerCase();
+    const supported = ["ub", "uc", "chs", "rhs", "shs", "ea", "pfc", "rod"];
+    if (!supported.includes(sectionFamily)) throw new RangeError("A supported catalogue member family is required.");
+
+    const idealCircularOverride = dimensionOverride && (sectionFamily === "chs" || sectionFamily === "rod");
+    const kf = idealCircularOverride
+      ? 1
+      : bounded(catalogueKf, "Catalogue form factor k_f", Number.EPSILON, 1);
+
+    let alphaB;
+    if (["chs", "rhs", "shs"].includes(sectionFamily)) {
+      alphaB = -0.5;
+    } else if (sectionFamily === "ub" || sectionFamily === "uc") {
+      const tf = positive(flangeThickness, "Universal-section flange thickness");
+      alphaB = tf > 40 ? 1 : 0;
+    } else {
+      alphaB = kf < 1 ? 1 : 0.5;
+    }
+
+    return Object.freeze({ kf, alphaB });
+  }
+
+  function straightLineNetArea({ grossArea, holeCount, holeDiameter, thickness, maximumHoleCount = 20 }) {
+    const Ag = positive(grossArea, "Gross area A_g");
+    const holes = nonNegative(holeCount, "Hole count n_h");
+    if (!Number.isInteger(holes)) throw new RangeError("Hole count n_h must be a whole number.");
+    const maximum = positive(maximumHoleCount, "Maximum hole count");
+    if (!Number.isInteger(maximum)) throw new RangeError("Maximum hole count must be a whole number.");
+    if (holes > maximum) throw new RangeError(`Hole count n_h must not exceed ${maximum}.`);
+
+    const diameter = nonNegative(holeDiameter, "Hole diameter d_h");
+    if (holes > 0 && diameter <= 0) throw new RangeError("Hole diameter d_h must be greater than zero when holes are present.");
+    const netPathThickness = positive(thickness, "Net-path thickness t");
+    const holeDeduction = holes * diameter * netPathThickness;
+    const netArea = Ag - holeDeduction;
+    if (netArea <= 0) throw new RangeError("Straight-line hole deduction must leave a positive net area A_n.");
+
+    return Object.freeze({
+      grossArea: Ag,
+      holeCount: holes,
+      holeDiameter: diameter,
+      thickness: netPathThickness,
+      holeDeduction,
+      netArea
+    });
+  }
+
   function compressionReduction(lambdaN, alphaB) {
     const slenderness = nonNegative(lambdaN, "Modified section slenderness");
     const sectionConstant = bounded(alphaB, "Section constant alpha_b", -1, 1);
@@ -134,5 +187,5 @@
     });
   }
 
-  return Object.freeze({ PHI, compressionReduction, calculate });
+  return Object.freeze({ PHI, catalogueCompressionDefaults, straightLineNetArea, compressionReduction, calculate });
 });

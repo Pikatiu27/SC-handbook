@@ -80,6 +80,7 @@ assert.doesNotMatch(script, /mm2\/mm/);
   "AXIAL-MEMBER-COMP-01",
   "AUD-AXIAL-COMP-02",
   "AUD-AXIAL-TENSION-02",
+  "AUD-AXIAL-NET-01",
   "AUD-AXIAL-INPUT-01",
   "AUD-AXIAL-DISPLAY-01",
   "AUD-BOLT-DETAILED-01",
