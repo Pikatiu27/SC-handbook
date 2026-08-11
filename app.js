@@ -916,7 +916,7 @@ const rodSections = [
   [45, 12.5], [48, 14.2], [50, 15.4], [56, 19.3], [60, 22.2], [65, 26.0],
   [75, 34.7], [90, 49.9]
 ].map(([diameter, mass]) => ({
-  designation: `Ø${diameter} Rod`,
+  designation: `Ø${diameter} Round Bar`,
   diameter,
   mass,
   area: Math.PI * diameter ** 2 / 4,
@@ -2129,6 +2129,17 @@ const publicToolHashes = { concrete: "pad" };
 let boltMode = "standard";
 let beamFamily = "ub";
 let memberType = "chs";
+const MEMBER_TYPE_LABELS = Object.freeze({
+  ub: "UB",
+  uc: "UC",
+  pfc: "PFC",
+  chs: "CHS",
+  rhs: "RHS",
+  shs: "SHS",
+  ea: "EA",
+  rod: "Round Bar",
+  custom: "Custom / Built-up"
+});
 let reoPreviousRouteKey = "";
 let mobileLayoutActive = window.matchMedia("(max-width: 500px)").matches;
 const manualInputIds = [
@@ -3831,8 +3842,8 @@ const beamFamilyDefinitions = Object.freeze({
   chs: { label: "CHS", source: "Austube 2013 Tables 3.1-1 and 3.1-2 · checked grade rows", defaultSection: "114.3 x 4.5 CHS", directions: [["axis", "Axis-independent"]] },
   rhs: { label: "RHS", source: "Austube 2013 Tables 3.1-3 and 3.1-4 · checked x-x and y-y rows", defaultSection: "150 x 100 x 6 RHS", directions: [["x", "x-x"], ["y", "y-y"]] },
   shs: { label: "SHS", source: "Austube 2013 Tables 3.1-5 and 3.1-6 · checked axis-independent rows", defaultSection: "100 x 100 x 6 SHS", directions: [["xy", "x-x = y-y"]] },
-  ea: { label: "Equal Angle", source: "InfraBuild 2019 Tables 19-20 · checked Load A/B/C/D subset", defaultSection: "100 x 100 x 10 EA", directions: [["a", "Load A"], ["b", "Load B"], ["c", "Load C"], ["d", "Load D"]] },
-  rod: { label: "Rod", source: "InfraBuild round-bar diameter and mass rows", defaultSection: "Ø24 Rod", directions: [["axis", "Axis-independent"]] }
+  ea: { label: "EA", source: "InfraBuild 2019 Tables 19-20 · checked Load A/B/C/D rows · Grade 350 availability by enquiry", defaultSection: "100 x 100 x 10 EA", directions: [["a", "Load A"], ["b", "Load B"], ["c", "Load C"], ["d", "Load D"]] },
+  rod: { label: "Round Bar", source: "InfraBuild 2019 Table 3 Rounds and Table 38 strengths · confirm grade and diameter availability", defaultSection: "Ø24 Round Bar", directions: [["axis", "Axis-independent"]] }
 });
 
 function beamUniversalWebYield(section, gradeName, grade) {
@@ -4059,8 +4070,8 @@ const sectionCatalogueFamilyNames = {
   chs: "CHS",
   rhs: "RHS",
   shs: "SHS",
-  ea: "Equal angle",
-  rod: "Round bar"
+  ea: "EA",
+  rod: "Round Bar"
 };
 
 function sectionPowerValue(number) {
@@ -4343,7 +4354,7 @@ function populateSectionMaterialGrades(preferredGrade) {
     return;
   }
   const grades = SteelMaterials.gradeOptions(form);
-  $("sectionMaterialGrade").innerHTML = grades.map(grade => `<option value="${safeText(grade)}">${safeText(grade)}</option>`).join("");
+  $("sectionMaterialGrade").innerHTML = grades.map(grade => `<option value="${safeText(grade)}">${safeText(SteelMaterials.gradeLabel(grade))}</option>`).join("");
   const defaultGrade = form === "hollow-section" ? "C350L0" : grades[0];
   $("sectionMaterialGrade").value = grades.includes(preferredGrade) ? preferredGrade : defaultGrade;
   const project = form === "project";
@@ -4487,7 +4498,7 @@ function renderSectionMaterial(material, designRecord) {
   const thicknessText = Number.isFinite(material.thickness)
     ? `${material.thicknessLabel} = ${material.thickness.toLocaleString("en-AU", { maximumFractionDigits: 1 })} mm`
     : `${material.thicknessLabel} not resolved`;
-  $("sectionMaterialStandard").textContent = `${material.standard} · ${material.grade}`;
+  $("sectionMaterialStandard").textContent = `${material.standard} · ${SteelMaterials.gradeLabel(material.grade)}`;
   $("sectionMaterialStandardBasis").textContent = material.productForm
     ? `${material.table} · ${thicknessText} · ${thicknessBasisLabel}`
     : "Select product form";
@@ -5521,7 +5532,7 @@ function populateBeamGrades() {
     $("beamGrade").disabled = true;
   } else {
     $("beamGrade").disabled = false;
-    $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${grade}</option>`).join("");
+    $("beamGrade").innerHTML = grades.map(grade => `<option value="${grade}">${SteelMaterials.gradeLabel(grade)}</option>`).join("");
     $("beamGrade").value = grades.includes(previous) ? previous : grades[0];
   }
   if (!custom) setBeamDimensionDefaults(section);
@@ -5805,7 +5816,7 @@ function calculateBeam() {
       : Math.max(momentDemand > 0 ? momentRatio : 0, shearAvailable && shearDemand > 0 ? shearRatio : 0)
     : NaN;
 
-  const displayedGrade = customProjectMaterial ? "Project-defined steel" : gradeName || "material unresolved";
+  const displayedGrade = customProjectMaterial ? "Project-defined steel" : SteelMaterials.gradeLabel(gradeName) || "material unresolved";
   $("beamDesignation").textContent = section ? `${section.designation} · ${displayedGrade}` : `${beamFamilyDefinitions[beamFamily].label} · no checked Beam row`;
   $("beamAssumption").textContent = momentAvailable
     ? `${directionLabel} section moment${rolledWebShear || hollowWeb ? " and web shear" : chsSectionShear ? " and CHS shear" : ""}${customDimensions ? "; ideal custom geometry" : materialOverride ? "; project strength override" : ""}; member checks excluded.`
@@ -6309,7 +6320,7 @@ function updateMemberDimensionUi(properties = null) {
   const props = properties || (selectedMemberGrade() ? memberProperties(selectedMemberGrade().section) : null);
   if ($("memberDimensionStatus")) {
     $("memberDimensionStatus").hidden = !active || memberType === "custom";
-    const sourceText = `${memberType.toUpperCase()} override defines A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub> by ideal circular geometry.`;
+    const sourceText = `${MEMBER_TYPE_LABELS[memberType]} override defines A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub> by ideal circular geometry.`;
     $("memberDimensionStatus").innerHTML = props ? `${sourceText} A<sub>g</sub> = ${formatArea(props.area)}; r<sub>x</sub> = ${props.rx.toFixed(1)} mm; r<sub>y</sub> = ${props.ry.toFixed(1)} mm.` : sourceText;
   }
 }
@@ -6443,7 +6454,7 @@ function populateMemberOptions() {
     rhs: "150 x 100 x 6 RHS",
     shs: "100 x 100 x 6 SHS",
     ea: "100 x 100 x 10 EA",
-    rod: "Ø24 Rod"
+    rod: "Ø24 Round Bar"
   }[memberType];
   const defaultIndex = sections.findIndex(section => section.designation === defaultDesignation);
   $("memberSection").value = String(defaultIndex >= 0 ? defaultIndex : 0);
@@ -6469,7 +6480,7 @@ function populateMemberGrades() {
   const section = memberSections()[Number($("memberSection").value) || 0];
   const grades = section.grades;
   const gradeNames = Object.keys(grades);
-  $("memberGrade").innerHTML = gradeNames.map(grade => `<option value="${grade}">${grade}</option>`).join("");
+  $("memberGrade").innerHTML = gradeNames.map(grade => `<option value="${grade}">${SteelMaterials.gradeLabel(grade)}</option>`).join("");
   const preferredGrade = ["chs", "rhs", "shs"].includes(memberType)
     ? "C350L0"
     : memberType === "custom" ? "User input" : "300PLUS";
@@ -6526,6 +6537,7 @@ function calculateMember() {
     return;
   }
   const { section, gradeName, grade } = selected;
+  const gradeDisplayName = SteelMaterials.gradeLabel(gradeName);
   const properties = memberProperties(section);
   updateMemberDimensionUi(properties);
   const compressionDefaults = memberCompressionDefaults(grade, section);
@@ -6542,7 +6554,7 @@ function calculateMember() {
   const materialOverridden = updateMemberMaterialStatus(fy, fu, grade);
   const designation = memberType === "custom"
     ? section.designation
-    : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeName}`;
+    : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeDisplayName}`;
   const customLex = memberType === "custom" ? signedValue("memberCustomLex", NaN) : NaN;
   const customLey = memberType === "custom" ? signedValue("memberCustomLey", NaN) : NaN;
   const preliminaryErrors = [];
@@ -6574,7 +6586,7 @@ function calculateMember() {
   const radiusBasis = memberType === "custom"
     ? "r entered by axis"
     : properties.customGeometry
-      ? `r = ${properties.r.toFixed(1)} mm from ${memberType.toUpperCase()} override`
+      ? `r = ${properties.r.toFixed(1)} mm from ${MEMBER_TYPE_LABELS[memberType]} override`
     : radiusOverridden
       ? `r = ${designR.toFixed(1)} mm; default r = ${properties.r.toFixed(1)} mm`
       : memberRadiusBasis(properties.r);
@@ -6590,8 +6602,8 @@ function calculateMember() {
   const strengthBasis = memberType === "custom"
     ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; project input`
     : materialOverridden
-      ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; user override; ${gradeName} default ${grade.fy}/${grade.fu} MPa`
-      : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeName} catalogue default`;
+      ? `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; user override; ${gradeDisplayName} default ${grade.fy}/${grade.fu} MPa`
+      : `f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa; ${gradeDisplayName} catalogue default`;
   const ktGuidance = kt >= 0.999
     ? "AS 4100 Cl. 7.3.1; confirm uniform force distribution"
     : memberType === "ea" && Math.abs(kt - 0.85) <= 0.005
@@ -6743,7 +6755,7 @@ function calculateMember() {
   const manualReason = memberType === "pfc"
     ? ` PFC default t = t<sub>w</sub> = ${fixed(properties.tw || section.tw || 0)} mm; use verified t for the net path.`
     : memberType === "ea"
-      ? ` Equal Angle deduction uses catalogue actual t = ${fixed(properties.t)} mm${properties.nominalT && Math.abs(properties.nominalT - properties.t) > 0.01 ? `, not nominal ${fixed(properties.nominalT)} mm` : ""}.`
+      ? ` EA deduction uses catalogue actual t = ${fixed(properties.t)} mm${properties.nominalT && Math.abs(properties.nominalT - properties.t) > 0.01 ? `, not nominal ${fixed(properties.nominalT)} mm` : ""}.`
     : "";
   $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for non-straight net paths.`;
   $("memberWarning").innerHTML = memberType === "chs"
@@ -6753,12 +6765,12 @@ function calculateMember() {
     : memberType === "ub" || memberType === "uc"
       ? `Scope: centroidal axial compression and axial tension only. ${memberType.toUpperCase()} basis: hot-rolled section, ${memberAxisBasisText()}, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`
     : memberType === "ea"
-      ? `Scope: centroidal axial compression and axial tension only. Angle basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${customGeometryKfWarning}`
+      ? `Scope: centroidal axial compression and axial tension only. EA basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.${gradeName === "Grade 350" ? " Grade 350 availability is by enquiry and depends on section and quantity." : ""}${customGeometryKfWarning}`
       : memberType === "pfc"
         ? `Scope: centroidal axial compression and axial tension only. PFC basis: hot-rolled channel, r = r<sub>min</sub>, k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`
         : memberType === "custom"
           ? `Flexural buckling about the entered axes only. Built-up action, local buckling, shear deformation and torsional buckling are not evaluated.`
-          : `Scope: centroidal axial compression and axial tension only. Rod basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}.`;
+          : `Scope: centroidal axial compression and axial tension only. Round Bar basis: k<sub>f</sub> = ${kf.toFixed(3)}, &alpha;<sub>b</sub> = ${alphaB.toFixed(1)}. Confirm grade and diameter availability.`;
   const sectionDataText = memberType === "custom"
     ? `A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`
     : `${properties.customGeometry ? "Geometry override" : "Catalogue basis"}; ${memberDimensionLabel(properties)}; A<sub>g</sub> = ${properties.area.toFixed(0)} mm²; A<sub>n</sub> = ${compressionArea.toFixed(0)} mm²; r<sub>x</sub> = ${properties.rx.toFixed(1)} mm; r<sub>y</sub> = ${properties.ry.toFixed(1)} mm; I<sub>x</sub> = ${formatInertia(properties.ix)}; I<sub>y</sub> = ${formatInertia(properties.iy)}; r = ${designR.toFixed(1)} mm${radiusOverridden ? `; default r = ${properties.r.toFixed(1)} mm` : ""}; f<sub>y</sub> = ${fy} MPa; f<sub>u</sub> = ${fu} MPa`;

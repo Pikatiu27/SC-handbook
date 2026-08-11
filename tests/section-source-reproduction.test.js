@@ -99,7 +99,7 @@ assert.equal(angle.properties.iv.value, 0.695e6);
 assert.equal(angle.properties.thetaU.value, 45);
 
 // InfraBuild 2019 round-bar diameter and mass table; geometry is independently derived.
-const rod = section("rod", "Ø24 Rod");
+const rod = section("rod", "Ø24 Round Bar");
 assert.equal(rod.mass, 3.55);
 close(rod.properties.area.value, Math.PI * 24 ** 2 / 4);
 close(rod.properties.ix.value, Math.PI * 24 ** 4 / 64);

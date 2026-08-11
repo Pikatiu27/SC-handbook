@@ -866,9 +866,9 @@
           <button class="beam-family" type="button" data-beam-family="chs" aria-pressed="false">CHS</button>
           <button class="beam-family" type="button" data-beam-family="rhs" aria-pressed="false">RHS</button>
           <button class="beam-family" type="button" data-beam-family="shs" aria-pressed="false">SHS</button>
-          <button class="beam-family" type="button" data-beam-family="ea" aria-pressed="false">Equal Angle</button>
-          <button class="beam-family" type="button" data-beam-family="rod" aria-pressed="false">Rod</button>
-          <select id="beamFamily" aria-label="Beam section family" hidden tabindex="-1"><option value="ub">UB</option><option value="uc">UC</option><option value="pfc">PFC</option><option value="chs">CHS</option><option value="rhs">RHS</option><option value="shs">SHS</option><option value="ea">Equal Angle</option><option value="rod">Rod</option></select>
+          <button class="beam-family" type="button" data-beam-family="ea" aria-pressed="false" aria-label="Equal Angle (EA)" title="Equal Angle">EA</button>
+          <button class="beam-family" type="button" data-beam-family="rod" aria-pressed="false">Round Bar</button>
+          <select id="beamFamily" aria-label="Beam section family" hidden tabindex="-1"><option value="ub">UB</option><option value="uc">UC</option><option value="pfc">PFC</option><option value="chs">CHS</option><option value="rhs">RHS</option><option value="shs">SHS</option><option value="ea">EA</option><option value="rod">Round Bar</option></select>
         </div>
 
         <div class="input-cluster beam-selection-inputs">
@@ -923,7 +923,7 @@
 
         <div class="beam-summary beam-selected-section">
           <figure class="beam-section-figure"><svg id="beamSectionDiagram" viewBox="0 0 240 170" role="img" aria-labelledby="beamSectionDiagramTitle beamSectionDiagramDescription"></svg><figcaption id="beamSectionDiagramCaption">Selected dimensions · centroidal axes</figcaption></figure>
-          <div class="beam-summary-copy"><div><span>Selected section</span><strong id="beamDesignation">310UB40.4 · 300PLUS</strong><small id="beamAssumption">x-x section moment and web shear; member checks excluded.</small></div><dl class="beam-summary-metrics beam-summary-primary">
+          <div class="beam-summary-copy"><div><span>Selected section</span><strong id="beamDesignation">310UB40.4 · Grade 300 (300PLUS)</strong><small id="beamAssumption">x-x section moment and web shear; member checks excluded.</small></div><dl class="beam-summary-metrics beam-summary-primary">
             <div data-beam-summary-cell="axis"><dt>Bending direction</dt><dd id="beamSummaryDirection">x-x</dd></div><div data-beam-summary-cell="ze"><dt id="beamSummaryZeLabel">Z<sub>ex</sub></dt><dd id="beamZex">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="fym"><dt>f<sub>y,m</sub></dt><dd id="beamFy">320 MPa</dd></div><div data-beam-summary-cell="aw"><dt id="beamSummaryAreaLabel">A<sub>w</sub></dt><dd id="beamAw">1,730 mm&sup2;</dd></div><div data-beam-summary-cell="fyw"><dt>f<sub>y,w</sub></dt><dd id="beamFyw">320 MPa</dd></div><div data-beam-summary-cell="class"><dt>Section class</dt><dd id="beamCompactness">Compact</dd></div>
           </dl><p class="beam-drawing-note" id="beamDrawingNote">Diagram follows selected catalogue dimensions; properties come from the cited table.</p></div>
           <details class="beam-section-details">
@@ -967,13 +967,13 @@
           <div class="source-notes">
             <p><b>Scope</b> - cross-section resistance under AS 4100 Section 5. Member moment capacity M<sub>b</sub>, lateral-torsional buckling, restraint, deflection, vibration, torsion, web bearing, concentrated loads, holes and composite action are excluded.</p>
             <p><b>Capacity rule</b> - catalogue mode uses reviewed product-table data. Custom dimensions use ideal sharp-corner geometry and report capacity only where the family-specific AS 4100 section-classification and effective-modulus path is implemented. Missing direction data returns <i>Not evaluated</i>.</p>
-            <p><b>Checked moment rows</b> - InfraBuild 2019 Tables 9-20 cover UB, UC, PFC and the listed Equal Angle subset. Austube 2013 Tables 3.1-1 to 3.1-6 cover CHS, RHS and SHS. Rod moment uses checked diameter and grade with solid-circle geometry.</p>
-            <p><b>Catalogue coordination</b> - 717 family, grade and direction rows are programmatically reconciled against AS 4100 Cl. 5.2 and AS 4100 Cl. 6.2. Slender hollow rows retain the permitted effective-cross-section Z<sub>e</sub>; asymmetric PFC and Equal Angle classes are identified from the published load-case Z<sub>e</sub> interval. k<sub>f</sub> is an axial-compression form factor and is not applied to beam moment capacity. The tab remains <i>For Review</i> as a section-resistance quick reference.</p>
+            <p><b>Checked moment rows</b> - InfraBuild 2019 Tables 9-20 cover UB, UC, PFC and the listed EA subset. Austube 2013 Tables 3.1-1 to 3.1-6 cover CHS, RHS and SHS. Round Bar moment uses checked diameter and grade with solid-circle geometry.</p>
+            <p><b>Catalogue coordination</b> - 717 family, grade and direction rows are programmatically reconciled against AS 4100 Cl. 5.2 and AS 4100 Cl. 6.2. Slender hollow rows retain the permitted effective-cross-section Z<sub>e</sub>; asymmetric PFC and EA classes are identified from the published load-case Z<sub>e</sub> interval. k<sub>f</sub> is an axial-compression form factor and is not applied to beam moment capacity. The tab remains <i>For Review</i> as a section-resistance quick reference.</p>
           </div>
           <div class="source-notes">
             <p><b>Custom dimensions</b> - dimensions are entered within the selected family. Gross geometry is generated automatically; users do not enter A<sub>g</sub>, I, Z, S, Z<sub>e</sub>, section class or shear area. Ideal geometry omits product fillets, root radii and hollow-section corner radii.</p>
-            <p><b>Shear</b> - reviewed numeric shear is provided for UB, UC and PFC x-x web shear, CHS section shear, and catalogue RHS/SHS direction-specific two-web shear. AS 4100 Cl. 5.12.3 interaction is evaluated for UB, UC and PFC x-x and catalogue RHS/SHS; CHS, Equal Angle and Rod interaction paths remain <i>Not evaluated</i>.</p>
-            <p><b>Catalogue cases</b> - PFC Load A/B and Equal Angle Load A/B/C/D identify the manufacturer bending sign and compression side, not the external load application point. Arbitrary non-principal and biaxial bending remain excluded.</p>
+            <p><b>Shear</b> - reviewed numeric shear is provided for UB, UC and PFC x-x web shear, CHS section shear, and catalogue RHS/SHS direction-specific two-web shear. AS 4100 Cl. 5.12.3 interaction is evaluated for UB, UC and PFC x-x and catalogue RHS/SHS; CHS, EA and Round Bar interaction paths remain <i>Not evaluated</i>.</p>
+            <p><b>Catalogue cases</b> - PFC Load A/B and EA Load A/B/C/D identify the manufacturer bending sign and compression side, not the external load application point. Arbitrary non-principal and biaxial bending remain excluded.</p>
             <p><b>Product status</b> - embedded catalogue rows are design-reference data, not a statement of current stock availability. Confirm the current product, grade and supplier documentation before design issue.</p>
           </div>
         </div>
@@ -1175,7 +1175,7 @@
       <div class="tool-heading"><div><p class="kicker">Axial members · AS 4100 Sections 6 and 7</p><h2>Axial Member Capacity</h2></div><span class="tool-status">For Review · user-confirmed inputs</span></div>
 
       <section class="lookup-card member-card">
-        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type" type="button" data-member-type="ub">UB</button><button class="member-type" type="button" data-member-type="uc">UC</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="rhs">RHS</button><button class="member-type" type="button" data-member-type="shs">SHS</button><button class="member-type" type="button" data-member-type="ea">Equal Angle</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up</button></div>
+        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type" type="button" data-member-type="ub">UB</button><button class="member-type" type="button" data-member-type="uc">UC</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="rhs">RHS</button><button class="member-type" type="button" data-member-type="shs">SHS</button><button class="member-type" type="button" data-member-type="ea" aria-label="Equal Angle (EA)" title="Equal Angle">EA</button><button class="member-type" type="button" data-member-type="rod">Round Bar</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up</button></div>
 
         <div class="input-cluster input-cluster-four member-main-inputs">
           <section class="input-group input-group-section" id="memberSectionGroup">
@@ -1254,9 +1254,9 @@
               <article class="manual-section-card" data-member-guide="chs"><img class="section-diagram" src="assets/generated/member-section-chs.svg" alt="CHS section diagram showing D and t dimensions"><div><strong>CHS</strong><small>D, t · Austube Tables 3.1-1 and 3.1-2</small></div></article>
               <article class="manual-section-card" data-member-guide="rhs" hidden><img class="section-diagram" src="assets/generated/member-section-rhs.svg" alt="RHS section diagram showing d, b and t dimensions"><div><strong>RHS</strong><small>d, b, t · Austube Tables 3.1-3 and 3.1-4</small></div></article>
               <article class="manual-section-card" data-member-guide="shs" hidden><img class="section-diagram" src="assets/generated/member-section-shs.svg" alt="SHS section diagram showing b and t dimensions"><div><strong>SHS</strong><small>b, t · Austube Tables 3.1-5 and 3.1-6</small></div></article>
-              <article class="manual-section-card" data-member-guide="ea" hidden><img class="section-diagram" src="assets/generated/member-section-equal-angle.svg" alt="Equal angle section diagram showing b, t and r dimensions"><div><strong>Equal Angle</strong><small>b, t, r · OneSteel / InfraBuild Tables 19-21</small></div></article>
+              <article class="manual-section-card" data-member-guide="ea" hidden><img class="section-diagram" src="assets/generated/member-section-equal-angle.svg" alt="Equal angle section diagram showing b, t and r dimensions"><div><strong>EA</strong><small>Equal angle · b, t, r · OneSteel / InfraBuild Tables 19-21</small></div></article>
               <article class="manual-section-card" data-member-guide="pfc" hidden><img class="section-diagram" src="assets/generated/member-section-pfc.svg" alt="PFC section diagram showing d, bf, tw, tf and r dimensions"><div><strong>PFC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub>, r · OneSteel / InfraBuild Tables 15-16</small></div></article>
-              <article class="manual-section-card" data-member-guide="rod" hidden><img class="section-diagram" src="assets/generated/member-section-rod.svg" alt="Round bar or rod section diagram showing diameter d"><div><strong>Rod</strong><small>d · OneSteel / InfraBuild Table 3</small></div></article>
+              <article class="manual-section-card" data-member-guide="rod" hidden><img class="section-diagram" src="assets/generated/member-section-rod.svg" alt="Round bar section diagram showing diameter d"><div><strong>Round Bar</strong><small>d · OneSteel / InfraBuild Table 3 Rounds</small></div></article>
               <article class="manual-section-card custom-section-card" data-member-guide="custom" hidden><div><strong>Custom / Built-up</strong><small>User-entered properties &middot; verification required.</small></div></article>
             </div>
           </div>
@@ -1357,9 +1357,9 @@
                   <tr><td>RHS / SHS</td><td>Cold-formed, non-stress-relieved hollow section.</td><td>-0.5</td><td>AS 4100 Table 6.3.3(A) or (B), RHS and CHS row selected by k<sub>f</sub>.</td></tr>
                   <tr><td>UB / UC</td><td>Hot-rolled section with flange thickness not exceeding 40 mm.</td><td>0</td><td>AS 4100 Table 6.3.3(A) or (B), hot-rolled UB and UC sections.</td></tr>
                   <tr><td>PFC</td><td>Hot-rolled channel with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), hot-rolled channels.</td></tr>
-                  <tr><td>Equal Angle</td><td>Angle with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), angles.</td></tr>
-                  <tr><td>Equal Angle</td><td>Angle with k<sub>f</sub> &lt; 1.0.</td><td>1.0</td><td>AS 4100 Table 6.3.3(B), other sections not listed.</td></tr>
-                  <tr><td>Rod</td><td>Solid circular rod with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), other sections not listed.</td></tr>
+                  <tr><td>EA</td><td>Equal angle with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), angles.</td></tr>
+                  <tr><td>EA</td><td>Equal angle with k<sub>f</sub> &lt; 1.0.</td><td>1.0</td><td>AS 4100 Table 6.3.3(B), other sections not listed.</td></tr>
+                  <tr><td>Round Bar</td><td>Solid round bar with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), other sections not listed.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1374,8 +1374,8 @@
                   <tr><td>RHS / SHS</td><td>catalogue value</td><td>Austube Tables 3.1-3 to 3.1-6; some slender hollow sections are below 1.0.</td></tr>
                   <tr><td>UB / UC</td><td>catalogue value</td><td>InfraBuild Tables 9-12; the selected section and grade determine k<sub>f</sub>.</td></tr>
                   <tr><td>PFC</td><td>1.000</td><td>OneSteel / InfraBuild Tables 15–16, form factor row.</td></tr>
-                  <tr><td>Equal Angle</td><td>catalogue value</td><td>OneSteel / InfraBuild Tables 19–21, form factor row; some thin angles are below 1.0.</td></tr>
-                  <tr><td>Rod</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, solid round geometry with A<sub>e</sub> = A<sub>g</sub>.</td></tr>
+                  <tr><td>EA</td><td>catalogue value</td><td>OneSteel / InfraBuild Tables 19–21, form factor row; some thin angles are below 1.0.</td></tr>
+                  <tr><td>Round Bar</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, solid round geometry with A<sub>e</sub> = A<sub>g</sub>.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1404,19 +1404,19 @@
         <div class="source-body">
           <div class="source-notes">
             <p><b>Issue status</b> &middot; For Review. The shared catalogue rows are imported from the checked product tables; project assumptions remain user-confirmed.</p>
-            <p><b>Material standards</b> &middot; Steel hollow sections are based on AS/NZS 1163. Hot-rolled plates, angles, rods and open sections are based on AS/NZS 3678 / AS/NZS 3679.1 where applicable. Verify grade, thickness range and test certificate before issue for design.</p>
+            <p><b>Material standards</b> &middot; Steel hollow sections are based on AS/NZS 1163. Hot-rolled open sections, EA and Round Bar are based on AS/NZS 3679.1 where applicable. Verify grade, size range and test certificate before issue for design.</p>
             <p><b>Hollow-section properties</b> &middot; Austube 2013 Tables 3.1-1 to 3.1-6 provide the imported CHS, RHS and SHS design rows. Confirm current product availability separately.</p>
-            <p><b>Equal Angle / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. Equal Angle properties use Tables 19&ndash;21; PFC properties use Tables 15&ndash;16.</p>
-            <p><b>Rod properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size availability and mass; OneSteel / InfraBuild Table 38 for diameter-dependent AS/NZS 3679.1 round-bar yield stress. Circular solid-bar geometry is used for A<sub>g</sub> and r.</p>
+            <p><b>EA / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. EA properties use Tables 19&ndash;21; Grade 350 supply is by enquiry and depends on section and quantity. PFC properties use Tables 15&ndash;16.</p>
+            <p><b>Round Bar properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size and mass; Table 38 for diameter-dependent Grade 300 (300PLUS) and Grade 350 strengths. Confirm actual grade and diameter availability. Catalogue Table 7 Rods and Light Billets is a different product family and is not used.</p>
             <p><b>Custom / Built-up</b> &middot; Uses user-entered section properties. Flexural buckling is checked about the entered axes only; the page does not verify local slenderness, built-up connectors, shear deformation, torsional buckling or connection eccentricity.</p>
-            <p><b>Family custom dimensions</b> &middot; CHS and Rod may use the custom-dimension override; A<sub>g</sub>, r and I are derived from ideal circular geometry. Non-catalogue Equal Angle and PFC members require verified properties in Custom / Built-up.</p>
+            <p><b>Family custom dimensions</b> &middot; CHS and Round Bar may use the custom-dimension override; A<sub>g</sub>, r and I are derived from ideal circular geometry. Non-catalogue EA and PFC members require verified properties in Custom / Built-up.</p>
             <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and AS 4100 Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
             <p><b>Axial tension</b> &middot; AS 4100 Cl. 7.1, AS 4100 Cl. 7.2 and AS 4100 Cl. 7.3.</p>
           </div>
           <div class="source-notes">
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
-            <p><b>Project inputs</b> &middot; Editable: f<sub>y</sub>, f<sub>u</sub> and the governing r where an override is required. Project-defined: A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub>. CHS and Rod are symmetric; catalogue Equal Angle and PFC checks adopt the minor principal and minor y-y axes respectively; Custom checks both entered axes. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases use AS 4100 Table 7.3.2.</p>
-            <p><b>Source status</b> &middot; CHS, RHS, SHS, UB, UC, Equal Angle and PFC values are catalogue-derived. Rod properties use listed diameter and circular geometry. AS 4100 Cl. 6.2 uses A<sub>n</sub>; for an unperforated section, A<sub>n</sub> = A<sub>g</sub>.</p>
+            <p><b>Project inputs</b> &middot; Editable: f<sub>y</sub>, f<sub>u</sub> and the governing r where an override is required. Project-defined: A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub>. CHS and Round Bar are symmetric; catalogue EA and PFC checks adopt the minor principal and minor y-y axes respectively; Custom checks both entered axes. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases use AS 4100 Table 7.3.2.</p>
+            <p><b>Source status</b> &middot; CHS, RHS, SHS, UB, UC, EA and PFC values are catalogue-derived. Round Bar uses listed diameter and mass with circular geometry. AS 4100 Cl. 6.2 uses A<sub>n</sub>; for an unperforated section, A<sub>n</sub> = A<sub>g</sub>.</p>
             <p><b>Excluded</b> &middot; Flexural-torsional buckling, connection eccentricity, bending, shear, combined actions, connection capacity, built-up connector spacing and local buckling.</p>
           </div>
         </div>
@@ -1915,15 +1915,15 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.38</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.39</b></footer>
   <script src="engineering-number-format.js?v=20260810halfup1"></script>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
   <script src="weld-capacity.js?v=20260809weldrepro1"></script>
   <script src="concrete-section-calculation.js?v=20260809shearaudit1"></script>
   <script src="section-geometry.js?v=20260807sectionfamily2"></script>
-  <script src="section-catalogue.js?v=20260807sectionfamily2"></script>
-  <script src="steel-materials.js?v=20260805axialfamilies2"></script>
+  <script src="section-catalogue.js?v=20260811membernames1"></script>
+  <script src="steel-materials.js?v=20260811membernames1"></script>
   <script src="beam-section-data.js?v=20260803productflow36"></script>
   <script src="beam-hot-rolled-data.js?v=20260803productflow36"></script>
   <script src="beam-section-capacity.js?v=20260803productflow36"></script>
@@ -1933,7 +1933,7 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260803productflow36"></script>
   <script src="monopole-capacity.js?v=20260808audit1"></script>
-  <script src="app.js?v=20260811axialnet1"></script>
+  <script src="app.js?v=20260811membernames1"></script>
   <script src="monopole-app.js?v=20260808audit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260809rocksource1"></script>
 </body>

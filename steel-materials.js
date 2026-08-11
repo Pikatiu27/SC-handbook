@@ -25,7 +25,7 @@
       grades: Object.freeze(["300PLUS", "Grade 350"])
     }),
     "round-bar": Object.freeze({
-      label: "Round bar",
+      label: "Round Bar",
       standard: "AS/NZS 3679.1:2016",
       table: "Table 15",
       thicknessLabel: "Nominal diameter",
@@ -45,6 +45,12 @@
       thicknessLabel: "Governing thickness",
       grades: Object.freeze(["User input"])
     })
+  });
+
+  const GRADE_LABELS = Object.freeze({
+    "300PLUS": "Grade 300 (300PLUS)",
+    "Grade 350": "Grade 350",
+    "User input": "Project input"
   });
 
   const positive = value => Number.isFinite(Number(value)) && Number(value) > 0;
@@ -82,6 +88,10 @@
 
   function gradeOptions(productForm) {
     return PRODUCT_FORMS[productForm]?.grades || PRODUCT_FORMS.project.grades;
+  }
+
+  function gradeLabel(grade) {
+    return GRADE_LABELS[grade] || String(grade || "");
   }
 
   function resolve(input = {}) {
@@ -153,7 +163,9 @@
   return Object.freeze({
     COMMON,
     PRODUCT_FORMS,
+    GRADE_LABELS,
     gradeOptions,
+    gradeLabel,
     resolve,
     hotRolledStrength,
     roundBarStrength,

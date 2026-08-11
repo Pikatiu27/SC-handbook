@@ -161,7 +161,7 @@ assert.ok(
   "Member reduction must precede governing member compression in the calculation trace."
 );
 assert.match(outline, /It is not a second Section Properties report/);
-assert.match(outline, /Equal Angle catalogue checks must use and identify the minor principal-axis radius/);
+assert.match(outline, /EA catalogue checks must use and identify the minor principal-axis radius/);
 assert.match(outline, /result note must name the active governing limit state/);
 assert.match(outline, /Keep the optional `Design action check` folded by default/);
 assert.match(outline, /Do not place `x: \.\.\.; y: \.\.\.` strings in an always-visible primary metric/);
@@ -179,7 +179,7 @@ assert.equal(hotRolledRows.pfc.length, 10);
 assert.ok(hotRolledRows.pfc.every(section => Object.keys(section.grades).length === 2));
 assert.match(outline, /all 73 Austube CHS grade-specific rows/);
 assert.match(outline, /must not inherit `k_f` from the catalogue row used to initialise its dimensions/);
-assert.match(traceability, /all 46 InfraBuild Equal Angle geometry\/design rows/);
+assert.match(traceability, /all 46 InfraBuild EA geometry\/design rows/);
 
 const defaultAngleRow = script.match(/\[100,10,14\.2,9\.5,8,5,9\.53,1810,[^\]]+\]/);
 assert.ok(defaultAngleRow, "Default 100 x 100 x 10 EA catalogue row not found.");

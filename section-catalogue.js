@@ -36,7 +36,7 @@
     roundBar: Object.freeze({
       publisher: "InfraBuild",
       document: "Hot Rolled Steel Products Catalogue 2019",
-      status: "Round-bar diameter and linear-mass rows used by the selected directory"
+      status: "InfraBuild Table 3 Rounds diameter and linear-mass rows; confirm grade and diameter availability"
     }),
     chs: Object.freeze({
       publisher: "Orrcon Steel",
@@ -364,8 +364,8 @@
       family("chs", "Circular Hollow Section (CHS)", sources.chs.map(section => chsRecord(section, geometry))),
       family("rhs", "Rectangular Hollow Section (RHS)", sources.rhs.map(section => rectangularHollowRecord(section, "rhs"))),
       family("shs", "Square Hollow Section (SHS)", sources.shs.map(section => rectangularHollowRecord(section, "shs"))),
-      family("ea", "Equal Angle (EA)", sources.ea.map(angleRecord)),
-      family("rod", "Round Bar / Rod", sources.rod.map(rodRecord))
+      family("ea", "EA", sources.ea.map(angleRecord)),
+      family("rod", "Round Bar", sources.rod.map(rodRecord))
     ]);
   }
 

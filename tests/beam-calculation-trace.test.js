@@ -56,9 +56,9 @@ assert.match(styles, /\.beam-family-switch \{[^}]*grid-template-columns: repeat\
 assert.match(outline, /one horizontal segmented row on the desktop Beam page/);
 assert.match(outline, /Keep `Custom dimensions` inside each selected family/);
 assert.match(outline, /PFC: x-x moment.*custom Load A \/ B remains `Not evaluated`/);
-assert.match(outline, /Do not add a separate Custom family or a standalone Custom Rod tab state/);
+assert.match(outline, /Do not add a separate Custom family or a standalone Custom Round Bar tab state/);
 assert.match(outline, /hide the catalogue designation control and remove it from the active calculation state/);
-assert.match(outline, /Equal Angle: Custom dimensions is disabled in the Beam tab/);
+assert.match(outline, /EA: Custom dimensions is disabled in the Beam tab/);
 assert.match(outline, /one always-visible `Material properties` group/);
 assert.match(outline, /Do not hide the adopted strengths inside an override disclosure/);
 assert.doesNotMatch(html, /AS 4100:2020 Cl\./);

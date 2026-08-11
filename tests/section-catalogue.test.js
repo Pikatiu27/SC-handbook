@@ -12,10 +12,12 @@ const families = catalogue.create({
   rhs: [{ designation: "150 x 100 x 5 RHS", family: "rhs", d: 150, b: 100, t: 5, mass: 18, area: 2290, rx: 54, ry: 37, axes: { x: { I: 6.68e6, Z: 89.1, S: 105 }, y: { I: 3.08e6, Z: 61.6, S: 73.2 } } }],
   shs: [{ designation: "100 x 100 x 5 SHS", family: "shs", d: 100, b: 100, t: 5, mass: 14.4, area: 1840, rx: 38.2, ry: 38.2, axes: { xy: { I: 2.68e6, Z: 53.6, S: 63.5 } } }],
   ea: [{ designation: "100 x 100 x 10 EA", mass: 14.2, area: 1810, b: 100, t: 10, actualT: 9.5, rootRadius: 8, toeRadius: 5, legRatio: 9.53, centroidNear: 28.2, centroidFar: 71.8, in: 1.70e6, ip: 1.70e6, znB: 60.1e3, znT: 23.6e3, zpL: 60.1e3, zpR: 23.6e3, sn: 42.9e3, sp: 42.9e3, rn: 30.6, rp: 30.6, inp: -1.00e6, principalIx: 2.70e6, principalIy: 0.695e6, principalZx: 38.2e3, principalZy3: 19.6e3, principalZy5: 17.4e3, principalSx: 60.4e3, principalSy: 30.7e3, principalRx: 38.6, principalRy: 19.6, j: 56.2e3 }],
-  rod: [{ designation: "Ø24 Rod", diameter: 24, mass: 3.55, area: Math.PI * 24 ** 2 / 4, ix: Math.PI * 24 ** 4 / 64, iy: Math.PI * 24 ** 4 / 64, rx: 6, ry: 6 }]
+  rod: [{ designation: "Ø24 Round Bar", diameter: 24, mass: 3.55, area: Math.PI * 24 ** 2 / 4, ix: Math.PI * 24 ** 4 / 64, iy: Math.PI * 24 ** 4 / 64, rx: 6, ry: 6 }]
 }, geometry);
 
 assert.deepEqual(families.map(item => item.key), ["ub", "uc", "pfc", "chs", "rhs", "shs", "ea", "rod"]);
+assert.equal(families.find(item => item.key === "ea").label, "EA");
+assert.equal(families.find(item => item.key === "rod").label, "Round Bar");
 families.flatMap(family => family.sections).forEach(section => {
   assert.deepEqual(Object.keys(section.properties), ["area", "cx", "cy", "ix", "iy", "zx", "zxAlt", "zy", "zyAlt", "sx", "sy", "rx", "ry", "j", "iw", "xo", "aw", "awx", "awy", "jp", "ixy", "iu", "iv", "ru", "rv", "thetaU"]);
   assert.ok(Object.hasOwn(section, "mass"));

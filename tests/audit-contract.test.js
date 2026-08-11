@@ -28,10 +28,17 @@ const calculateConcreteSource = script.slice(
 assert.match(html, /Concrete Pad Section<\/h2><\/div><span class="tool-status">For Review · section resistance only<\/span>/);
 assert.match(html, /round-bar strengths follow AS\/NZS 3679\.1 Table 15 using diameter/);
 assert.match(html, /AS 4100 Table 6\.3\.3\(B\) when k<sub>f<\/sub> &lt; 1\.0/);
-assert.match(html, /OneSteel \/ InfraBuild Table 38 for diameter-dependent/);
+assert.match(html, /Table 38 for diameter-dependent Grade 300 \(300PLUS\) and Grade 350 strengths/);
 assert.doesNotMatch(html, /round-bar strengths follow Table 15/);
 assert.doesNotMatch(html, /and Table 6\.3\.3\(B\) when/);
-assert.doesNotMatch(html, /; Table 38 for diameter-dependent/);
+assert.match(html, /data-beam-family="ea"[^>]*>EA<\/button>/);
+assert.match(html, /data-beam-family="rod"[^>]*>Round Bar<\/button>/);
+assert.match(html, /data-member-type="ea"[^>]*>EA<\/button>/);
+assert.match(html, /data-member-type="rod"[^>]*>Round Bar<\/button>/);
+assert.doesNotMatch(html, /data-(?:beam-family|member-type)="rod"[^>]*>ROD<\/button>/);
+assert.match(outline, /visible grade labels: `Grade 300 \(300PLUS\)` and `Grade 350`/);
+assert.match(outline, /Do not offer `Grade 250` for the adopted AS\/NZS 3679\.1 EA or Round Bar families/);
+assert.match(traceability, /InfraBuild Table 7 `Rods and Light Billets`[^\n]*separate product family/);
 
 assert.match(script, /Design &phi;M<sub>uo<\/sub> = &phi; &times; M<sub>uo<\/sub>/);
 assert.match(script, /design capacity = &phi; &times; V<sub>u<\/sub>/);
