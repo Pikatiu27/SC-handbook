@@ -295,7 +295,7 @@
       </section>
 
       <details class="source-card" data-bolt-mode-panel="ubolt" hidden>
-        <summary><span><b>Basis and limitations</b><small>Published data, design boundary and project checks</small></span><i>+</i></summary>
+        <summary><span><b>Product basis and limitations</b><small>Published data, design boundary and project checks</small></span><i>+</i></summary>
         <div class="source-body">
           <div class="source-notes">
             <p><b>Product basis</b> - Published load, geometry and finish are reported as stated by the manufacturer. Values are not converted to AS 4100 design capacities.</p>
@@ -379,7 +379,7 @@
       </section>
 
       <details class="source-card" data-bolt-mode-panel="blind" hidden>
-        <summary><span><b>Basis and limitations</b><small>Published data, source basis and design boundary</small></span><i>+</i></summary>
+        <summary><span><b>Product basis and limitations</b><small>Published data, source basis and design boundary</small></span><i>+</i></summary>
         <div class="source-body">
           <div class="source-notes">
             <p><b>Product basis</b> - Published resistance or working-load values retain the manufacturer's safety format.</p>
@@ -749,7 +749,7 @@
           <section class="input-group input-group-material section-material-input-group">
             <span class="input-group-heading"><b>Material definition</b><small id="sectionMaterialInputNote">Product form and governing thickness follow the selected section.</small></span>
             <div class="input-group-fields four section-material-inputs">
-              <label><span>Product form</span><select id="sectionMaterialForm"><option value="">Select material basis</option><option value="hot-rolled-section">Hot-rolled section</option><option value="round-bar">Round bar</option><option value="hollow-section">Cold-formed hollow section</option><option value="project">Project-defined steel</option></select></label>
+              <label><span>Product form</span><select id="sectionMaterialForm"><option value="">Select material basis</option><option value="hot-rolled-section">Hot-rolled section</option><option value="round-bar">Round Bar</option><option value="hollow-section">Cold-formed hollow section</option><option value="project">Project-defined steel</option></select></label>
               <label><span>Steel grade</span><select id="sectionMaterialGrade"></select></label>
               <div class="section-material-thickness-control">
                 <label><span id="sectionMaterialThicknessLabel">Governing thickness</span><span class="unit"><input id="sectionMaterialThickness" type="number" min="0.1" step="0.1" value="10" aria-describedby="sectionMaterialThicknessState sectionMaterialValidation"><em>mm</em></span></label>
@@ -1891,12 +1891,13 @@
       </section>
 
       <details class="source-card">
-        <summary><span><b>Calculation basis and limitations</b><small>Product-data scope and source status.</small></span><i>+</i></summary>
+        <summary><span><b>Product basis and limitations</b><small>Product-data scope and source status.</small></span><i>+</i></summary>
         <div class="source-body rock-source-body">
           <div class="source-notes">
             <p><b>Scope</b> &middot; Product selection for active post-tensioned foundation anchors.</p>
             <p><b>Published loads</b> &middot; Manufacturer tendon reference values; not anchor design resistance.</p>
             <p><b>Not covered</b> &middot; Load distribution, anchor resistance, rock-mass failure, concrete anchorage, durability, stressing or acceptance.</p>
+            <p><b>Australian execution reference</b> &middot; Austroads ATS 5140-26 covers post-tensioned ground-anchor supply, assembly, installation, grouting, stressing, testing and monitoring. It is not used here to infer design resistance.</p>
             <p><b>Before adoption</b> &middot; Confirm product revision, Australian supply, project design and execution requirements.</p>
           </div>
           <div class="rock-source-grid">
@@ -1915,7 +1916,7 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.39</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.42</b></footer>
   <script src="engineering-number-format.js?v=20260810halfup1"></script>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
@@ -1933,8 +1934,8 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260803productflow36"></script>
   <script src="monopole-capacity.js?v=20260808audit1"></script>
-  <script src="app.js?v=20260811membernames1"></script>
+  <script src="app.js?v=20260811productaudit1"></script>
   <script src="monopole-app.js?v=20260808audit1"></script>
-  <script type="module" src="rock-anchor-selector/app.js?v=20260809rocksource1"></script>
+  <script type="module" src="rock-anchor-selector/app.js?v=20260811rockaudit2"></script>
 </body>
 </html>

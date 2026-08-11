@@ -124,8 +124,8 @@ const uBoltProducts = [
     capacityDirection: "Load direction not stated",
     capacityBasis: "Manufacturer working load with a stated 3:1 safety factor. Verify load direction and complete assembly applicability before project use.",
     sourceStatus: "Source_Checked",
-    sourceName: "EzyStrut E14 Heavy Duty U Bolt HDG product table",
-    sourceUrl: "https://www.ezystrut.com.au/products/pipe-support-systems/u-bolts/e14h/"
+    sourceName: "EzyStrut Heavy Duty U Bolt datasheet",
+    sourceUrl: "https://www.ezystrut.com.au/assets/Datasheets/Heavy-Duty-U-Bolt-DataSheet.pdf"
   })),
   ...[
     { nb: 50, d: 60, l: 110, t: 50, code: "KURMSGCM100060", thread: "M10" },
@@ -449,15 +449,15 @@ const blindBoltProducts = [
     sourceUrl: "https://www.keesafety.com/media/w0tnpucl/boxbolt-eta-20-1174-v1-151220-1.pdf"
   }))),
   ...[
-    { size: "M8", hole: 9, centres: 20, clearance: 19, depth: 25, torque: 15, loads: [14.6, 9.1], finish: "Zinc flake 1000 hr SSP", grips: [[9, 24, "BB0850ZF", 50]] },
-    { size: "M10", hole: 11, centres: 20, clearance: 23, depth: 30, torque: 24, loads: [23.2, 19.0], finish: "Zinc flake 1000 hr SSP", grips: [[10, 29, "BB1060ZF", 60], [25, 64, "BB1095ZF", 95], [55, 100, "BB10130ZF", 130]] },
-    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [33.7, 26.4], finish: "Zinc flake 1000 hr SSP", grips: [[12, 35, "BB1270ZF", 70]] },
-    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [33.7, 26.4], finish: "Hot-dip galvanised", grips: [[12, 33, "BB1270HDG", 70], [30, 84, "BB12120HDG", 120], [80, 143, "BB12180HDG", 180]] },
-    { size: "M14", hole: 15, centres: 32, clearance: 32, depth: 38, torque: 34, loads: [46.7, 34.8], finish: "Hot-dip galvanised", grips: [[14, 35, "GBB1475HDG", 75], [28, 82, "GBB14125HDG", 125], [75, 142, "GBB14185HDG", 185]] },
-    { size: "M16", hole: 17, centres: 35, clearance: 36, depth: 43, torque: 50, loads: [62.7, 49.1], finish: "Hot-dip galvanised", grips: [[13, 43, "GBB1690HDG", 90], [40, 75, "GBB16130HDG", 130], [55, 132, "GBB16180HDG", 180]] },
-    { size: "M20", hole: 22, centres: 48, clearance: 44, depth: 56, torque: 65, loads: [97.9, 76.1], finish: "Hot-dip galvanised", grips: [[21, 52, "GBB20110HDG", 110], [21, 82, "GBB20140HDG", 140], [80, 120, "GBB20180HDG", 180], [130, 190, "GBB20250HDG", 250]] },
-    { size: "M24", hole: 26, centres: 60, clearance: 53, depth: 64, torque: 75, loads: [141.0, 105.4], finish: "Hot-dip galvanised", grips: [[21, 62, "GBB24130HDG", 130], [21, 92, "GBB24160HDG", 160]] },
-    { size: "M30", hole: 32, centres: 75, clearance: 65, depth: 72, torque: 85, loads: [224.0, 164.6], finish: "Hot-dip galvanised", grips: [[27, 56, "GBB30140HDG", 140]] }
+    { size: "M8", hole: 9, centres: 20, clearance: 19, depth: 25, torque: 15, loads: [9.8, 14.6], finish: "Zinc flake 1000 hr SSP", grips: [[9, 24, "BB0850ZF", 50]] },
+    { size: "M10", hole: 11, centres: 20, clearance: 23, depth: 30, torque: 24, loads: [14.1, 23.2], finish: "Zinc flake 1000 hr SSP", grips: [[10, 29, "BB1060ZF", 60], [25, 64, "BB1095ZF", 95], [55, 100, "BB10130ZF", 130]] },
+    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [22.4, 33.7], finish: "Zinc flake 1000 hr SSP", grips: [[12, 35, "BB1270ZF", 70]] },
+    { size: "M12", hole: 13, centres: 25, clearance: 26, depth: 35, torque: 30, loads: [22.4, 33.7], finish: "Hot-dip galvanised", grips: [[12, 33, "BB1270HDG", 70], [30, 84, "BB12120HDG", 120], [80, 143, "BB12180HDG", 180]] },
+    { size: "M14", hole: 15, centres: 32, clearance: 32, depth: 38, torque: 34, torqueConflict: [34, 40], loads: [34.8, 46.7], finish: "Hot-dip galvanised", grips: [[14, 35, "GBB1475HDG", 75], [28, 82, "GBB14125HDG", 125], [75, 142, "GBB14185HDG", 185]] },
+    { size: "M16", hole: 17, centres: 35, clearance: 36, depth: 43, torque: 50, loads: [38.8, 62.7], finish: "Hot-dip galvanised", grips: [[13, 43, "GBB1690HDG", 90], [40, 75, "GBB16130HDG", 130], [55, 132, "GBB16180HDG", 180]] },
+    { size: "M20", hole: 22, centres: 48, clearance: 44, depth: 56, torque: 65, loads: [71.4, 97.9], finish: "Hot-dip galvanised", grips: [[21, 52, "GBB20110HDG", 110], [21, 82, "GBB20140HDG", 140], [80, 120, "GBB20180HDG", 180], [130, 190, "GBB20250HDG", 250]] },
+    { size: "M24", hole: 26, centres: 60, clearance: 53, depth: 64, torque: 75, loads: [116.7, 141.0], finish: "Hot-dip galvanised", grips: [[21, 62, "GBB24130HDG", 130], [21, 92, "GBB24160HDG", 160]] },
+    { size: "M30", hole: 32, centres: 75, clearance: 65, depth: 72, torque: 85, loads: [174.5, 224.0], finish: "Hot-dip galvanised", grips: [[27, 56, "GBB30140HDG", 140]] }
   ].flatMap(row => row.grips.map(([gripMin, gripMax, code, length]) => ({
     id: `blindbolt-${code.toLowerCase()}`,
     manufacturer: "Blind Bolt Company",
@@ -465,8 +465,11 @@ const blindBoltProducts = [
     family: "Blind Bolt",
     code,
     size: row.size,
-    gripMin,
+    gripMin: code === "GBB1690HDG" ? 16 : gripMin,
     gripMax,
+    gripSourceConflict: code === "GBB1690HDG"
+      ? "March 2026 technical-data PDF states 13 mm minimum; the current manufacturer product page states 16 mm. The lookup uses 16 mm for conservative filtering pending manufacturer confirmation."
+      : null,
     head: "Drive-nut",
     drawing: { kind: "drive-nut", length, anchorClearance: row.clearance, depthClearance: row.depth },
     finish: row.finish,
@@ -474,7 +477,10 @@ const blindBoltProducts = [
     centres: `${row.centres} mm`,
     edge: "Confirm from connected-steel design",
     outerPly: "Not stated",
-    torque: `${row.torque} Nm`,
+    torque: row.torqueConflict
+      ? `Source conflict: ${row.torqueConflict[0]} Nm in the March 2026 PDF; ${row.torqueConflict[1]} Nm on the current product page. Confirm with the manufacturer.`
+      : `${row.torque} Nm`,
+    torqueSourceConflict: row.torqueConflict || null,
     tools: `${row.clearance} mm anchor clearance; ${row.depth} mm insertion depth`,
     tension: row.loads[0],
     shear: row.loads[1],
@@ -520,15 +526,21 @@ const blindBoltProducts = [
   }))
 ];
 
-const productFigureSourceRecords = {
-  "EzyStrut": { checked: "30 Jul 2026" },
-  "Hobson Engineering": { checked: "1 Aug 2026" },
-  "Lindapter": { checked: "1 Aug 2026" },
-  "ICCONS": { checked: "1 Aug 2026" },
-  "Kee Safety": { checked: "1 Aug 2026" },
-  "Blind Bolt Company": { checked: "1 Aug 2026" },
-  "Allfasteners": { checked: "1 Aug 2026" }
+const productSourceCheckedDates = {
+  "Hilti": "11 Aug 2026",
+  "EzyStrut": "11 Aug 2026",
+  "Hobson Engineering": "11 Aug 2026",
+  "Lindapter": "11 Aug 2026",
+  "ICCONS": "11 Aug 2026",
+  "Kee Safety": "11 Aug 2026",
+  "Blind Bolt Company": "11 Aug 2026",
+  "Allfasteners": "11 Aug 2026"
 };
+
+function productSourceCheckedDate(product) {
+  if (!product || !["Source_Checked", "Source_Online_Checked"].includes(product.sourceStatus)) return null;
+  return productSourceCheckedDates[product.manufacturer] || null;
+}
 
 function setProductFigureBasis(prefix, product) {
   const source = $(`${prefix}FigureSource`);
@@ -539,11 +551,11 @@ function setProductFigureBasis(prefix, product) {
   const diagram = $(`${prefix}ProductDiagram`);
   if (!source || !checked || !authority || !status || !summary) return;
 
-  const sourceRecord = productFigureSourceRecords[product?.manufacturer] || null;
+  const sourceCheckedDate = productSourceCheckedDate(product);
   const sourceVerified = ["Source_Checked", "Source_Online_Checked"].includes(product?.sourceStatus);
   const hasVerifiedDrawing = sourceVerified && Boolean(product?.drawing);
   source.textContent = product?.sourceName || "Not stated";
-  checked.textContent = sourceRecord?.checked || "Not verified";
+  checked.textContent = sourceCheckedDate || "Not verified";
   authority.textContent = hasVerifiedDrawing ? "Manufacturer catalogue dimensions" : "No verified figure geometry";
   status.textContent = hasVerifiedDrawing ? "Product reference · Not for fabrication" : "Figure withheld";
   summary.textContent = sourceVerified ? "Source checked · product reference · NTS" : "Source not verified";
@@ -2141,7 +2153,7 @@ const MEMBER_TYPE_LABELS = Object.freeze({
   custom: "Custom / Built-up"
 });
 let reoPreviousRouteKey = "";
-let mobileLayoutActive = window.matchMedia("(max-width: 500px)").matches;
+let mobileLayoutActive = typeof window !== "undefined" && window.matchMedia("(max-width: 500px)").matches;
 const manualInputIds = [
   "boltCount", "threadPlanes", "shankPlanes", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "interfaces", "slipFactor",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
@@ -3410,12 +3422,12 @@ function calculateUBolt() {
     $("uBoltSelectionPrompt").hidden = true;
     $("uBoltSelectedSummary").hidden = true;
     $("uBoltPublishedSection").hidden = true;
-    $("uBoltSelectionPromptTitle").textContent = $("uBoltProduct").disabled ? "No catalogue entry" : "Select a catalogue entry";
+    $("uBoltSelectionPromptTitle").textContent = $("uBoltProduct").disabled ? "No curated catalogue entry" : "Select a catalogue entry";
     $("uBoltSelectionPromptNote").textContent = $("uBoltProduct").disabled
       ? "Revise the browse filters."
       : `${filteredUBoltProducts().length} entries available; published product data appears after selection.`;
     $("uBoltSelectionTypeLabel").textContent = "Product selection";
-    $("uBoltSelectionTitle").textContent = $("uBoltProduct").disabled ? "No catalogue entry" : "Select catalogue entry";
+    $("uBoltSelectionTitle").textContent = $("uBoltProduct").disabled ? "No curated catalogue entry" : "Select catalogue entry";
     $("uBoltSelectionNote").textContent = "Member geometry, finish and manufacturer remain optional browse filters.";
     ["uBoltCode", "uBoltThread", "uBoltPublishedGeometry", "uBoltPublishedMaterial"].forEach(id => {
       $(id).textContent = "-";
@@ -3466,7 +3478,8 @@ function calculateUBolt() {
   sourceStatus.textContent = sourceChecked ? "Local reference checked" : sourceOnline ? "Manufacturer source checked online" : "Source not verified";
   sourceStatus.classList.toggle("is-checked", sourceChecked);
   sourceStatus.classList.toggle("is-online", sourceOnline);
-  sourceStatus.title = product.sourceName;
+  const sourceCheckedDate = productSourceCheckedDate(product);
+  sourceStatus.title = `${product.sourceName}${sourceCheckedDate ? `; checked ${sourceCheckedDate}` : ""}`;
   $("uBoltReferenceName").textContent = product.sourceName;
   sourceLink.innerHTML = `Open ${/\.pdf($|\?)/i.test(product.sourceUrl || "") ? "technical data" : "product page"} <span aria-hidden="true">↗</span>`;
   sourceLink.href = product.sourceUrl || "#";
@@ -3525,7 +3538,8 @@ function populateBlindBoltProducts() {
   const otherRanges = hasGrip ? products.filter(product => !blindBoltGripCompatible(product)) : [];
   const optionLabel = product => {
     const mechanism = product.mechanism ? ` · ${product.mechanism}` : "";
-    return `${product.family} ${product.size} · ${product.code}${mechanism} · W ${product.gripMin}-${product.gripMax} mm${product.legacySource ? " · legacy source" : ""}`;
+    const sourceConflict = product.gripSourceConflict || product.torqueSourceConflict ? " · source conflict" : "";
+    return `${product.family} ${product.size} · ${product.code}${mechanism} · W ${product.gripMin}-${product.gripMax} mm${sourceConflict}${product.legacySource ? " · legacy source" : ""}`;
   };
   const compatibleLabel = hasGrip ? "Compatible grip range" : "Catalogue entries";
   const compatibleOptions = compatible.map(product => `<option value="${safeText(product.id)}">${safeText(optionLabel(product))}</option>`).join("");
@@ -3550,6 +3564,10 @@ function setBlindBoltSourceStatus(product) {
   status.textContent = localChecked ? "Local reference checked" : onlineChecked ? "Manufacturer source checked online" : "Source not verified";
   status.classList.toggle("is-checked", localChecked);
   status.classList.toggle("is-online", onlineChecked);
+  const sourceCheckedDate = productSourceCheckedDate(product);
+  status.title = product
+    ? `${product.sourceName}${sourceCheckedDate ? `; checked ${sourceCheckedDate}` : ""}`
+    : "No source selected";
 }
 
 function calculateBlindBolt() {
@@ -3558,11 +3576,11 @@ function calculateBlindBolt() {
     $("blindBoltSelectionPrompt").hidden = true;
     $("blindBoltSelectedSummary").hidden = true;
     $("blindBoltPublishedSection").hidden = true;
-    $("blindBoltSelectionPromptTitle").textContent = $("blindBoltProduct").disabled ? "No catalogue entry" : "Select a catalogue entry";
+    $("blindBoltSelectionPromptTitle").textContent = $("blindBoltProduct").disabled ? "No curated catalogue entry" : "Select a catalogue entry";
     $("blindBoltSelectionPromptNote").textContent = $("blindBoltProduct").disabled
       ? "Revise the browse filters."
       : `${filteredBlindBoltProducts().length} entries available; published product data appears after selection.`;
-    $("blindBoltSelectionTitle").textContent = $("blindBoltProduct").disabled ? "No catalogue entry" : "Select catalogue entry";
+    $("blindBoltSelectionTitle").textContent = $("blindBoltProduct").disabled ? "No curated catalogue entry" : "Select catalogue entry";
     $("blindBoltSelectionNote").textContent = "Clamping thickness ranks compatible entries without hiding other grip ranges.";
     ["blindBoltCode", "blindBoltSelectedSize", "blindBoltGripRange", "blindBoltHole", "blindBoltSelectedFinish", "blindBoltCentres", "blindBoltEdge", "blindBoltOuterPly", "blindBoltTorque", "blindBoltTools", "blindBoltSelectedHead"].forEach(id => {
       $(id).textContent = "-";
@@ -3586,12 +3604,15 @@ function calculateBlindBolt() {
   const gripStatus = Number($("blindBoltGrip").value) > 0
     ? blindBoltGripCompatible(product) ? "Compatible grip range" : "Outside selected grip range"
     : "Grip compatibility not assessed";
-  $("blindBoltSelectionNote").textContent = `${product.manufacturer} \u00b7 ${gripStatus}`;
+  const sourceConflict = product.gripSourceConflict || product.torqueSourceConflict;
+  $("blindBoltSelectionNote").textContent = `${product.manufacturer} \u00b7 ${gripStatus}${sourceConflict ? " · source confirmation required" : ""}`;
   $("blindBoltCode").textContent = product.code;
   $("blindBoltSelectedSize").textContent = product.catalogueLength
     ? `${product.size} · ${product.catalogueLength}`
     : product.size;
-  $("blindBoltGripRange").textContent = `${product.gripMin}-${product.gripMax} mm`;
+  $("blindBoltGripRange").textContent = product.gripSourceConflict
+    ? `${product.gripMin}-${product.gripMax} mm · source conflict; confirm manufacturer`
+    : `${product.gripMin}-${product.gripMax} mm`;
   $("blindBoltHole").textContent = `${product.hole} mm`;
   $("blindBoltSelectedFinish").textContent = product.finish;
   $("blindBoltCentres").textContent = product.centres;
@@ -3612,7 +3633,6 @@ function calculateBlindBolt() {
   $("blindBoltValueBasis").textContent = product.valueBasis;
   $("blindBoltUnavailableBasis").textContent = product.valueBasis;
   setBlindBoltSourceStatus(product);
-  $("blindBoltSourceStatus").title = product.sourceName;
   $("blindBoltReferenceName").textContent = product.sourceName;
   $("blindBoltSourceLink").innerHTML = `Open ${/\.pdf($|\?)/i.test(product.sourceUrl || "") ? "technical data" : "product page"} <span aria-hidden="true">↗</span>`;
   $("blindBoltSourceLink").href = product.sourceUrl;
@@ -9985,4 +10005,4 @@ function initialise() {
   syncResponsiveDefaults(true);
 }
 
-initialise();
+if (typeof document !== "undefined" && typeof window !== "undefined") initialise();

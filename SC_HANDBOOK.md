@@ -430,6 +430,8 @@ Use these evidence classes:
 
 Normative sources control code requirements. Interpretive references and worked examples may support interpretation and numerical verification but do not replace the governing Standard. Where credible sources conflict, record the conflict and stop the affected result from being described as checked until the governing interpretation is resolved.
 
+For catalogue and product lookup rows, map every displayed value to the exact source column named by the page label. A tension output must reproduce the manufacturer's tension column; a shear output must identify and reproduce the stated shear-plane column. Do not substitute another available column. Where current official manufacturer sources conflict on a product, selection or installation property, show `Source conflict`, retain both published values in the supporting text and require manufacturer confirmation. For compatibility filtering, use only the conservative intersection of conflicting ranges; do not silently choose one source.
+
 Apply the Australian-first hierarchy in Section 4. For a default Australian module, an international Standard/manual/tool remains `Interpretive`, `Worked example` or interface/assurance guidance unless the documented project basis explicitly adopts it. Do not use international agreement as a substitute for unreadable or missing Australian normative evidence.
 
 #### 6.2.3 Governing Formula Record
@@ -830,6 +832,7 @@ Minimum validation:
 7. Scan for implementation and formula errors.
 8. Confirm locked, editable, overrideable and derived fields use the intended behaviour.
 9. Confirm the module is readable and reviewable without developer explanation.
+10. For every checked embedded numeric catalogue or product row, run an executable source-reproduction test covering product code, applicable range, displayed value and safety basis. DOM text and regular-expression assertions alone do not establish numerical traceability.
 
 Formula error scan must check for:
 
@@ -2331,6 +2334,7 @@ Manufacturer product lookup branches:
 - Keep catalogue brands separate from supply channels in the underlying data. Do not show an unverified supplier as a primary selection parameter.
 - Retain manufacturer, supplier, product family, product code, nominal size, fit or grip range, material/finish, published value and basis, source document, revision/date, URL and source status in the underlying record.
 - Preserve the manufacturer's published terminology and basis, including `Working load`, `Safe working load`, `Characteristic resistance`, `ASD allowable load` or `LRFD design strength`. Do not silently convert or compare unlike bases.
+- Apply the catalogue-row mapping, source-conflict and executable reproduction requirements in Sections 6.2.2 and 9 to every checked manufacturer record.
 - Use three source states only: `Local reference checked`, `Manufacturer source checked online` and `Source not verified`. `Not published` describes a missing manufacturer value and does not make an otherwise checked source unverified.
   - Show source status once in the manufacturer-data heading.
   - Put a direct `Manufacturer reference` link in `Selected product`. Use `Open technical data` for a manufacturer PDF and `Open product page` for a web catalogue page. The link must follow the currently selected record.
@@ -2383,6 +2387,7 @@ Structural blind-bolt product lookup branch:
 - For HBS-Bolt, retain the manufacturer's working load rather than presenting the separate characteristic resistance as a design capacity.
 - For BoxBolt, report ETA 20/1174 `Ft,Rk` and `Fv,Rk` as characteristic resistance with no design partial factor applied.
 - For Blind Bolt Company products, use the current March 2026 BS EN 1993-1-8 design resistance, identify `gamma M2 = 1.25` as already applied and state whether the shear plane crosses the thread or slot.
+- For Blind Bolt Company products, map `Ft,Rd` to tension and `Fv,Rd,thread` to shear over thread. Do not substitute `Fv,Rd,slot`. The March 2026 PDF remains the displayed resistance source. The current official product page conflicts with that PDF for the M14 tightening torque and the GBB1690HDG minimum fixing thickness; show both values, require confirmation and use 16 mm as the conservative GBB1690HDG filtering minimum pending confirmation.
 - Keep NexGen2 as an M20 tower-oriented ICC-ES / TIA product record. Identify the displayed TIA-222-G strength and shear-plane condition; do not relabel it as AS 4100 capacity.
 - State that the displayed fastener value does not evaluate connected plate or HSS wall bearing, tear-out, net section, block shear, local deformation, punching/pull-through, prying or combined actions.
 - Thin-wall or curved monopole-shell applications remain project-specific and are not qualified by a generic structural blind-bolt product match.
@@ -3468,6 +3473,8 @@ The main selected-product card must prioritise:
 
 Use `Not published` rather than zero or an inferred value. Manufacturer tendon values are not anchor design resistance. Do not convert tendon yield or ultimate load into allowable resistance, working load, ULS capacity or utilisation without a verified project design basis.
 
+Where two rows in the same governing manufacturer source publish conflicting values for one product property, fail closed for that property. Show `Source conflict`, state both published values in the supporting note and require manufacturer confirmation; do not silently select either value. Other non-conflicting properties for that product may remain visible.
+
 Use the `PRODUCT DATA` tag above the selected product name. `Selected product` describes the adopted item in helper text or accessible labels; it is not a calculation result-state tag.
 
 Keep the selector scope narrow:
@@ -3488,9 +3495,11 @@ Implementation rule:
 - The tab is part of the shared `index.html` tool-panel system, belongs to `Foundations`, and uses the full visible navigation label `Rock Anchor Selector`.
 - The current data/update logic may live in the scoped module `rock-anchor-selector/app.js`; do not treat this as a separate standalone page when editing the main handbook.
 - Keep the product-card layout consistent with other tabs: input row, selected summary, compact published values, specification grid and folded limitations/source panel.
+- Use `Product basis and limitations`, not `Calculation basis and limitations`, for lookup-only tabs that contain no calculation.
+- Link a selected product or system to the most specific official product page available. Use a supplier-family page only when no product/system page is available.
 - Keep all visible text English-only and concise.
 
-Validation must include supplier/product selection, default row rendering, project-defined/custom row rendering, `Not published` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values.
+Validation must include supplier/product selection, default row rendering, project-defined/custom row rendering, `Not published` and `Source conflict` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values. Apply the Section 9 executable source-reproduction requirement to every checked numeric product row.
 
 ### 15.17 Reinforcement Development & Lap Lengths Web Tab Rules
 

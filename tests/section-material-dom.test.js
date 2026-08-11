@@ -41,6 +41,7 @@ assert.ok(app.includes("maximumSignificantDigits: 3"), "Small catalogue Ze value
 assert.ok(app.includes("sectionMaterialThicknessManual"), "Custom material thickness must expose a manual override state");
 assert.ok(app.includes("syncSectionMaterialControls(false, true)"), "Custom geometry edits must refresh linked material thickness");
 assert.ok(html.includes('<option value="">Select material basis</option>'), "Custom material selection must expose an unresolved initial basis");
+assert.ok(html.includes('<option value="round-bar">Round Bar</option>'), "Section Properties must use the canonical Round Bar family label");
 assert.ok(app.includes('"Select material basis"'), "Custom material controls must explain the unresolved basis");
 assert.ok(/sectionShape"\)\.addEventListener\("change", \(\) => \{\s+syncSectionMaterialControls\(true\);/.test(app), "Changing custom shape must reset the material basis");
 assert.ok(app.includes('closest(".section-properties-figure").hidden = true'), "Invalid geometry must hide the stale section figure");

@@ -74,7 +74,8 @@ const sasRows = makeRows("sas", "SAS Stressteel", [
   id: `sas-${String(diameter).replace(".", "-")}`,
   name: `SAS ${diameter <= 47 ? "950/1050" : "835/1035"} ${diameter} mm`,
   tendon: `${diameter} mm threadbar; ${area.toLocaleString("en-AU")} mm²`,
-  yieldLoad,
+  yieldLoad: diameter === 65 ? null : yieldLoad,
+  yieldConflict: diameter === 65 ? [2780, 2790] : null,
   ultimateLoad,
   sourceNote: diameter === 65
     ? "The product table gives 2,780 kN yield load while a design-forces table gives 2,790 kN; confirm the adopted value with SAS."
@@ -107,7 +108,7 @@ const williamsRows = makeRows("williams", "Williams Form Engineering", [
   source: "Williams Ground Engineering Systems, R7S Spin-Lock Rock Anchor table, 2025",
   sourceUrl: "https://www.williamsform.com/rock/spin-lock-anchors/r7s-spin-lock-rock-bolt/",
   sourceRegion: "United States",
-  sourceChecked: "9 Aug 2026",
+  sourceChecked: "11 Aug 2026",
   sourceNote: "Official manufacturer row; confirm Australian acceptance, supply and project corrosion protection.",
   summary: "Mechanical rock-anchor system that can be prestressed and subsequently grouted."
 });
@@ -118,6 +119,7 @@ const williamsFamilyRows = [
     formGroup: "bar", type: "Grout-bonded prestressed bar anchor", tendon: "Grade 150 KSI All-Thread Bar; 26 to 75 mm system range",
     protection: "PTI Class II; two barriers in free-stressing zone", hardware: "Bar, sleeves, centralizers, plate, nut and protective cap",
     sourceKind: "global-family", source: "Williams Multiple Corrosion Protection Anchors product page",
+    sourceUrl: "https://www.williamsform.com/rock/grout-bonded-anchors/",
     sourceNote: "Official system family; obtain the project tendon, load and drill-hole schedule.",
     summary: "MCP I grout-bonded bar anchor with Class II corrosion protection."
   },
@@ -126,6 +128,7 @@ const williamsFamilyRows = [
     formGroup: "bar", type: "Grout-bonded prestressed bar anchor", tendon: "Grade 150 KSI All-Thread Bar; 26 to 75 mm system range",
     protection: "PTI Class I; two barriers around the bar full length", hardware: "Pre-grouted corrugated tube, sleeve, centralizers, plate and nut",
     sourceKind: "global-family", source: "Williams Multiple Corrosion Protection Anchors product page",
+    sourceUrl: "https://www.williamsform.com/rock/grout-bonded-anchors/",
     sourceNote: "Official system family; obtain the project tendon, load and drill-hole schedule.",
     summary: "MCP II grout-bonded bar anchor with Class I corrosion protection."
   },
@@ -134,6 +137,7 @@ const williamsFamilyRows = [
     formGroup: "bar", type: "Grout-bonded prestressed bar anchor", tendon: "Grade 150 KSI All-Thread Bar; 26 to 75 mm system range",
     protection: "PTI Class I; three free-zone barriers and two bond-zone barriers", hardware: "Pre-grouted corrugated tube, sleeve, trumpet, plate, nut and cap",
     sourceKind: "global-family", source: "Williams Multiple Corrosion Protection Anchors product page",
+    sourceUrl: "https://www.williamsform.com/rock/grout-bonded-anchors/",
     sourceNote: "Official system family; obtain the project tendon, load and drill-hole schedule.",
     summary: "MCP III grout-bonded bar anchor with enhanced Class I corrosion protection."
   },
@@ -142,6 +146,7 @@ const williamsFamilyRows = [
     formGroup: "strand", type: "Multi-strand anchor", tendon: "270 KSI low-relaxation strand; project strand count",
     protection: "PTI Class I or Class II project configuration", hardware: "Multi-strand head, bearing plate, free zone and bonded tendon zone",
     sourceKind: "global-family", source: "Williams Tieback & Tiedown Anchors product page",
+    sourceUrl: "https://www.williamsform.com/rock/strand-anchors/",
     sourceNote: "Official prestressed ground-anchor family; obtain the current project strand and load schedule.",
     summary: "Project-configured multi-strand prestressed ground-anchor system."
   }
@@ -259,27 +264,27 @@ function sourceRecord(product) {
     freyssinet: {
       url: "https://www.freyssinet.com/wp-content/uploads/sites/1/2021/08/Brochure-Freyssinet-anchoring-systems-for-geotechnical-engineering-1.pdf",
       region: "Global",
-      checked: "10 Jul 2026"
+      checked: "11 Aug 2026"
     },
     dywidag: {
       url: "https://assets.ctfassets.net/wz1xpzqb46pe/4i3VUcbjerya1EklUSmpwM/8e603f793e164b15063c8326529010c9/DYWIDAG_PT_Threadbar_Technical_Specification_Oct24_EN_Web.pdf",
       region: "United States",
-      checked: "10 Jul 2026"
+      checked: "11 Aug 2026"
     },
     sas: {
       url: "https://www.annahuette.com/wp-content/uploads/jet-form-builder/d48dacaabeb4eeb673b4828b7de2b0d5/2026/02/SAS-pt-system_en_01-2026-_SAS-950-1050_SAS-835-1035-Vorspannsystem.pdf",
       region: "External manufacturer",
-      checked: "10 Jul 2026"
+      checked: "11 Aug 2026"
     },
     williams: {
       url: "https://www.williamsform.com/rock/tieback-tiedown-anchors/",
       region: "United States",
-      checked: "11 Jul 2026"
+      checked: "11 Aug 2026"
     },
-    vsl: { url: "https://vsl.com/technology/ground-anchors/", region: "Global", checked: "10 Jul 2026" },
-    bbr: { url: "https://www.bbrnetwork.com/fileadmin/userdaten/Zulassungen%20EU/CONA_CMG_ground/BBR_ETA-21-1053_CMG_EN_Rev1_1023-short.pdf", region: "European ETA", checked: "10 Jul 2026" },
-    keller: { url: "https://www.keller.com.au/expertise/techniques/anchors", region: "Australia", checked: "10 Jul 2026" },
-    srg: { url: "https://srgglobal.com.au/what-we-do/technology/dam-anchoring-and-monitoring/", region: "Australia", checked: "10 Jul 2026" },
+    vsl: { url: "https://vsl.com/technology/ground-anchors/", region: "Global", checked: "11 Aug 2026" },
+    bbr: { url: "https://www.bbrnetwork.com/fileadmin/userdaten/Zulassungen%20EU/CONA_CMG_ground/BBR_ETA-21-1053_CMG_EN_Rev1_1023-short.pdf", region: "European ETA", checked: "11 Aug 2026" },
+    keller: { url: "https://www.keller.com.au/expertise/techniques/anchors", region: "Australia", checked: "11 Aug 2026" },
+    srg: { url: "https://srgglobal.com.au/what-we-do/technology/dam-anchoring-and-monitoring/", region: "Australia", checked: "11 Aug 2026" },
     custom: { url: "", region: "Project-defined", checked: "Not applicable" }
   };
   const providerRecord = records[product.providerKey] || records.custom;
@@ -295,6 +300,30 @@ function loadLabels(product) {
     return { yield: "Published yield / proof load", ultimate: "Minimum ultimate tensile load" };
   }
   return { yield: "Published yield load", ultimate: "Published ultimate load" };
+}
+
+function loadDisplay(product, kind) {
+  const value = product[`${kind}Load`];
+  const conflict = product[`${kind}Conflict`];
+  if (Array.isArray(conflict) && conflict.length > 1) {
+    return {
+      value: "Source conflict",
+      unit: "",
+      note: `Published values conflict (${conflict.map(item => item.toLocaleString("en-AU")).join(" / ")} kN); manufacturer confirmation required.`
+    };
+  }
+  if (Number.isFinite(value)) {
+    return {
+      value: value.toLocaleString("en-AU"),
+      unit: " kN",
+      note: "Manufacturer tendon value; not anchor resistance."
+    };
+  }
+  return {
+    value: "Not published",
+    unit: "",
+    note: `No row-level ${kind} load is available in the captured source.`
+  };
 }
 
 function productConstraint(product) {
@@ -316,6 +345,8 @@ function renderSelected() {
   const supply = supplyMeta(product);
   const record = sourceRecord(product);
   const labels = loadLabels(product);
+  const yieldDisplay = loadDisplay(product, "yield");
+  const ultimateDisplay = loadDisplay(product, "ultimate");
   $("selectedName").textContent = product.name;
   $("selectedSummary").textContent = product.summary;
   $("dataStatus").textContent = data.label;
@@ -326,16 +357,12 @@ function renderSelected() {
   $("supplyStatus").className = `status-pill ${supply.className}`;
   $("factYieldLabel").textContent = labels.yield;
   $("factUltimateLabel").textContent = labels.ultimate;
-  $("factYieldLoad").textContent = product.yieldLoad ? product.yieldLoad.toLocaleString("en-AU") : "Not published";
-  $("factYieldUnit").textContent = product.yieldLoad ? " kN" : "";
-  $("factUltimateLoad").textContent = product.ultimateLoad ? product.ultimateLoad.toLocaleString("en-AU") : "Not published";
-  $("factUltimateUnit").textContent = product.ultimateLoad ? " kN" : "";
-  $("factYieldNote").textContent = product.yieldLoad
-    ? "Manufacturer tendon value; not anchor resistance."
-    : "No row-level yield load is available in the captured source.";
-  $("factUltimateNote").textContent = product.ultimateLoad
-    ? "Manufacturer tendon value; not anchor resistance."
-    : "No row-level ultimate load is available in the captured source.";
+  $("factYieldLoad").textContent = yieldDisplay.value;
+  $("factYieldUnit").textContent = yieldDisplay.unit;
+  $("factUltimateLoad").textContent = ultimateDisplay.value;
+  $("factUltimateUnit").textContent = ultimateDisplay.unit;
+  $("factYieldNote").textContent = yieldDisplay.note;
+  $("factUltimateNote").textContent = ultimateDisplay.note;
   $("factProvider").textContent = product.provider;
   $("factType").textContent = product.type;
   $("factTendon").textContent = product.tendon;
@@ -395,4 +422,8 @@ function initialise() {
   renderSelected();
 }
 
-initialise();
+if (typeof document !== "undefined" && document.getElementById("supplierFilter")) initialise();
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { products, sourceMeta, dataMeta, supplyMeta, sourceRecord, loadDisplay, productConstraint };
+}

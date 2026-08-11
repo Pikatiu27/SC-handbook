@@ -925,7 +925,7 @@ The `Structural blind-bolt lookup` branch reports manufacturer-published product
 | ICCONS UNI-BOLT | TDS 1053.1, 2025; ETA 25/0374 | AS 4100 design capacity; `phi = 0.8` already included | Manufacturer source checked online |
 | Hobson HBS-Bolt | HBS-Bolt Product Data 200806DS | Manufacturer working load; characteristic resistance not substituted | Manufacturer source checked online |
 | Kee Safety BoxBolt | ETA 20/1174, December 2020 | Characteristic resistance `Ft,Rk` and `Fv,Rk`; no design partial factor applied | Manufacturer source checked online |
-| Blind Bolt Company Blind Bolt | Metric Technical Data, March 2026 | BS EN 1993-1-8 design resistance; `gamma M2 = 1.25` already applied; displayed shear crosses the thread | Manufacturer source checked online |
+| Blind Bolt Company Blind Bolt | Metric Technical Data, March 2026; current official product page | BS EN 1993-1-8 `Ft,Rd` tension and `Fv,Rd,thread` shear design resistance; `gamma M2 = 1.25` already applied. M14 torque and GBB1690HDG minimum grip conflicts are displayed and require manufacturer confirmation | Manufacturer sources checked online |
 | Allfasteners NexGen2 | NexGen2 Blind Bolt TDS, July 2019 | M20 TIA-222-G design strength; displayed shear has threads included | Manufacturer source checked online; confirm current ICC-ES report and Australian adoption before specification |
 
 Connected steel, local HSS or shell effects, bearing, tear-out, net section, block shear, punching or pull-through, prying, combined actions, fatigue and installation acceptance remain outside the lookup.
@@ -1199,3 +1199,21 @@ The visible family and grade vocabulary was checked against `InfraBuild-Hot-Roll
 | Hollow-section grades | AS/NZS 1163 product-grade basis | Keep `C250L0`, `C350L0` and `C450L0`; generic Grade 250 / 350 / 450 labels would remove required product-form meaning. |
 
 Internal family and grade keys remain `ea`, `rod`, `300PLUS` and `Grade 350` so that the nomenclature correction does not alter source data, formulas or saved selector logic. Visible labels are resolved through the shared `SteelMaterials.gradeLabel()` function and the canonical family-label maps. A nomenclature contract test verifies the shared labels, page selectors, outline rule and Table 7 exclusion.
+
+## 2026-08-11 Rock Anchor Source-row and Fail-closed Audit
+
+Freyssinet bar and strand rows, DYWIDAG Grade 150 threadbar rows, SAS threadbar rows and Williams R7S Spin-Lock rows were independently transcribed from the cited official manufacturer sources. All 36 embedded numeric product rows agree with those sources. The SAS 65 mm source remains internally inconsistent: its product table gives `2,780 kN` yield load while its design-forces table gives `2,790 kN`. Build 0.7.41 therefore reports `Source conflict` for that property, retains both published values in the note and does not adopt either value. The non-conflicting `3,447 kN` ultimate load remains visible.
+
+Williams MCP I-III and multi-strand family entries now route to their specific official product pages. The folded product basis also identifies Austroads ATS 5140-26 as an Australian execution, stressing, testing and monitoring boundary without using it to infer anchor resistance.
+
+`tests/rock-anchor-data.test.js` executes the 36-row source matrix, the SAS conflict state, all family/provider/custom unpublished states, source-link routing, source/supply metadata and the no-resistance/no-utilisation data boundary. This complements the DOM contract rather than treating source-code text matching as product-data reproduction.
+
+## 2026-08-11 U-bolt and Structural Blind-bolt Source-reproduction Audit
+
+Build 0.7.42 rechecks the two manufacturer-product branches without adding project actions, utilisation or complete connection design. The U-bolt lookup remains a curated, non-exhaustive selector. Its nine adopted EzyStrut E14 rows reproduce the manufacturer datasheet geometry and working loads with the stated 3:1 safety factor; the source link now opens that exact datasheet, whose zero-padded product codes match the embedded rows. Eleven Hobson round U-bolt rows reproduce the checked geometry table and remain `Not published` for rated structural load.
+
+The structural blind-bolt source matrix contains 90 catalogue rows: 15 Lindapter Hollo-Bolt, 15 Hobson HBS-Bolt, 15 ICCONS UNI-BOLT, 15 Kee Safety BoxBolt, 21 Blind Bolt Company and 9 Allfasteners NexGen2 rows. Each family retains its manufacturer safety basis. The audit found that Blind Bolt Company values had been mapped from the two shear columns while the page labelled them as tension and shear over thread. The corrected rows now map the March 2026 PDF `Ft,Rd` column to tension and `Fv,Rd,thread` to shear over thread for M8-M30. No `Fv,Rd,slot` value is substituted.
+
+Two current official Blind Bolt Company sources conflict. The March 2026 PDF states 34 Nm for M14 while the current product page states 40 Nm. For GBB1690HDG, the PDF states a 13 mm minimum fixing thickness while the product page states 16 mm. Build 0.7.42 displays both torque values, requires manufacturer confirmation and uses 16 mm as the conservative compatibility-filter minimum while retaining both published grip values in the conflict note.
+
+`tests/product-lookup-data.test.js` independently executes the adopted U-bolt source rows, all blind-bolt product codes and grip ranges, each family/size value table, source dates and safety-basis labels. `tests/product-lookup-dom.test.js` separately locks the lightweight lookup structure, product-basis heading, exact source routing and conflict-display contract.
