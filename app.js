@@ -572,21 +572,21 @@ const parentMetalGrades = {
 const weldTypeData = {
   fillet: {
     label: "Fillet",
-    note: "AS 4100 throat-capacity check",
+    note: "AS 4100 weld-throat resistance calculation",
     throatNote: "equal-leg fillet: t_t = 0.707s",
-    scope: "fillet-weld throat capacity"
+    scope: "fillet-weld throat resistance"
   },
   cpbw: {
     label: "CPBW",
-    note: "capacity follows the weaker joined part",
+    note: "resistance governed by the weaker joined part",
     throatNote: "no automatic weld-metal throat calculation",
-    scope: "complete-penetration butt-weld reference"
+    scope: "complete-penetration butt-weld reference only"
   },
   ipbw: {
     label: "IPBW",
-    note: "specified throat capacity only",
+    note: "project-specified design throat required",
     throatNote: "incomplete penetration: use specified a_w",
-    scope: "incomplete-penetration butt-weld capacity view"
+    scope: "incomplete-penetration butt-weld throat resistance"
   },
   compound: {
     label: "Compound",
@@ -3657,9 +3657,9 @@ function calculateWeld() {
   const parentPhi = 0.9;
   const weldMethodAvailable = type === "fillet" || type === "ipbw";
   const inputErrors = [];
-  if (weldMethodAvailable && !(length > 0)) inputErrors.push("effective weld length l_w must be greater than zero");
-  if (type === "fillet" && length > 0 && length < 4 * size) inputErrors.push("fillet weld effective length l_w must be at least 4s");
-  if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("effective weld lines must be a positive whole number");
+  if (weldMethodAvailable && !(length > 0)) inputErrors.push("Effective weld length l_w must be greater than zero");
+  if (type === "fillet" && length > 0 && length < 4 * size) inputErrors.push("Fillet-weld effective length l_w must be at least 4s");
+  if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("Effective weld lines must be a positive whole number");
   if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW design throat a_w must be greater than zero");
   [
     ["weldLength", length > 0 && (type !== "fillet" || length >= 4 * size)],
@@ -3699,7 +3699,7 @@ function calculateWeld() {
   const hasDemand = demand > 0;
   const callouts = {
     fillet: `${size} mm CFW, category ${category}, f_uw ${fuw} MPa`,
-    cpbw: `CPBW, category ${category}; design to weaker joined part`,
+    cpbw: `CPBW, category ${category}; resistance governed by the weaker joined part`,
     ipbw: `IPBW, a_w ${effectiveThroat.toFixed(1)} mm, category ${category}, f_uw ${fuw} MPa`,
     compound: `Compound weld; total design throat to be project-defined`
   };
@@ -3714,16 +3714,16 @@ function calculateWeld() {
   $("weldRunsValue").textContent = runsValue >= 1 && Number.isInteger(runsValue) ? String(runs) : "\u2014";
   $("weldPhiValue").textContent = type === "compound" ? "-" : displayFixed(phi, 2);
   $("weldCapacityLabel").textContent = calculationAvailable
-    ? "Capacity per mm per weld line"
+      ? "Design capacity per unit effective length"
     : type === "cpbw"
-      ? "Capacity governed by weaker joined part"
-      : "Project-specific capacity required";
+      ? "Resistance governed by the weaker joined part"
+      : "Project-specific resistance required";
   $("weldCapacityBasis").innerHTML = calculationAvailable
     ? `${typeData.scope}; ${category}; &phi; = ${phi.toFixed(2)} from AS 4100 Table 3.4`
     : inputErrors.length
-      ? "Not evaluated; enter valid weld geometry"
+      ? "Not evaluated; valid weld geometry is required"
     : type === "cpbw"
-      ? "AS 4100 Cl. 9.6.2.7; joined-part capacity is not defined by this weld-metal input set"
+      ? "AS 4100 Cl. 9.6.2.7; joined-part resistance is not defined by this weld-metal input set"
       : "AS 4100 Cl. 9.6.5.2; total design throat requires the actual compound-weld geometry";
   $("weldCapacity").textContent = calculationAvailable ? fixed(capacity) : "Not evaluated";
   $("weldCapacityPerMm").textContent = calculationAvailable ? displayFixed(capacityPerMm, 2) : "Not evaluated";
@@ -3731,12 +3731,12 @@ function calculateWeld() {
   $("weldTotalCapacityUnit").hidden = !calculationAvailable;
   $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";
   $("parentGoverningNote").textContent = !parentCheckActive
-    ? "enter ply thickness"
+    ? "Positive ply thickness required"
     : !calculationAvailable
-      ? "warning only; not the required joined-part capacity check"
+      ? "Advisory only; joined-part resistance not evaluated"
     : parentGoverns
-      ? `warning only; parent screen lower, f_up ${parentGrade.fup} MPa`
-      : "warning only; weld capacity governs";
+      ? `Advisory screen lower; f_up ${parentGrade.fup} MPa`
+      : "Advisory screen does not govern weld-throat resistance";
   $("parentGoverningNote").className = parentCheckActive ? "check" : "";
   $("weldUtilisation").textContent = !calculationAvailable || !hasDemand ? "\u2014" : displayFixed(utilisation, 2);
   $("weldStatus").textContent = !calculationAvailable ? "Not evaluated" : !hasDemand ? "No design action" : utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL";
@@ -3745,8 +3745,8 @@ function calculateWeld() {
   if (calculationAvailable) {
     $("weldFormulaSteps").innerHTML = [
       calculationTraceRow({
-        title: "Selected weld",
-        lookup: "Weld type and category selected from the page options.",
+        title: "Weld classification",
+        lookup: "Selected weld type and weld category.",
         selection: `${typeData.label}; category ${category}`,
         adopted: typeData.scope,
         applicability: callouts[type] || callouts.fillet
@@ -3760,12 +3760,12 @@ function calculateWeld() {
         applicability: type === "fillet" ? "Equal-leg fillet weld; entered effective length satisfies AS 4100 Cl. 9.6.3.5 minimum 4s." : "Incomplete-penetration butt weld with project-specified design throat."
       }),
       calculationTraceRow({
-        title: "Capacity per unit length",
+        title: "Design capacity per unit effective length",
         reference: "AS 4100 Cl. 9.6.3.10 and AS 4100 Table 3.4",
         formula: `&phi;R/l<sub>w</sub> = &phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub>`,
         substitution: `${phi.toFixed(2)} &times; 0.6 &times; ${fuw.toFixed(0)} MPa &times; ${fixed2(throat)} mm &times; ${kr.toFixed(2)} / 1000`,
-        result: `Design capacity = ${displayFixed(capacityPerMm, 2)} kN/mm per weld line`,
-        applicability: "Direct throat resistance for the selected fillet weld or IPBW path."
+        result: `Design weld capacity per unit effective length = ${displayFixed(capacityPerMm, 2)} kN/mm per effective weld line`,
+        applicability: "Direct weld-throat resistance for the selected fillet-weld or IPBW calculation path."
       }),
       calculationTraceRow({
         title: "Welded-lap reduction",
@@ -3773,13 +3773,13 @@ function calculateWeld() {
         lookup: "Reduction factor by welded-lap connection status and weld length.",
         selection: lapReductionActive ? `l<sub>w</sub> = ${fixed(length)} mm = ${(length / 1000).toFixed(2)} m` : "Welded-lap reduction not selected",
         adopted: `k<sub>r</sub> = ${kr.toFixed(2)}`,
-        applicability: lapReductionActive ? "Applied to the selected fillet welded-lap connection." : "Not applied because the welded-lap option is No or the weld type is not a fillet weld."
+        applicability: lapReductionActive ? "Applicable to the selected fillet welded-lap connection." : "Not applicable to the selected connection condition or weld type."
       }),
       calculationTraceRow({
-        title: "Total weld capacity",
+        title: "Total design weld capacity",
         formula: `&phi;R<sub>total</sub> = (&phi;R/l<sub>w</sub>)l<sub>w</sub>n<sub>w</sub>`,
         substitution: `${displayFixed(phi, 2)} &times; 0.6 &times; ${fuw.toFixed(0)} MPa &times; ${type === "fillet" ? `(0.707 &times; ${size.toFixed(0)} mm)` : `${displayFixed(throat, 3)} mm`} &times; ${displayFixed(kr, 3)} &times; ${fixed(length)} mm &times; ${runs} / 1000`,
-        result: `Design capacity = ${fixed(capacity)} kN`,
+        result: `Total design weld capacity = ${fixed(capacity)} kN`,
         applicability: `${runs} identical effective weld line${runs === 1 ? "" : "s"}; effective weld lines are not welding passes.`
       }),
       calculationTraceRow({
@@ -3790,16 +3790,16 @@ function calculateWeld() {
         applicability: "Direct action against the calculated throat resistance only; weld group effects, eccentricity and connected-part limit states remain excluded."
       }),
       calculationTraceRow({
-        title: "Parent metal screen",
+        title: "Indicative parent-metal screen",
         formula: parentCheckActive ? `&phi;R<sub>p</sub>/l = 0.90(0.6f<sub>up</sub>t)` : "",
         substitution: parentCheckActive ? `0.90 &times; 0.6 &times; ${parentGrade.fup} MPa &times; ${fixed2(parentThickness)} mm / 1000` : "",
-        result: parentCheckActive ? `Indicative resistance = ${fixed2(parentPerMm)} kN/mm` : "Not evaluated",
-        applicability: parentCheckActive ? `Warning-only screen; ${parentGrade.standard}. It is not the weaker-part CPBW capacity.` : "Enter ply thickness only where the warning screen is useful."
+        result: parentCheckActive ? `Indicative resistance per unit length = ${fixed2(parentPerMm)} kN/mm` : "Not evaluated",
+        applicability: parentCheckActive ? `Advisory screening result; ${parentGrade.standard}. This is not the weaker-joined-part CPBW resistance.` : "A positive ply thickness is required to display this optional screening result."
       }),
       calculationTraceRow({
         title: "Design boundary",
-        result: "Scoped weld throat-capacity quick check",
-        applicability: "Not a full welded-joint design. Weld groups, connected-part rupture, HAZ, joint preparation, WPS, inspection, fatigue and effective-length rules beyond the entered length are excluded."
+        result: "Scoped weld-throat resistance calculation",
+        applicability: "Not a complete welded-joint design. Weld groups, connected-part rupture, heat-affected-zone requirements, joint preparation, welding procedure specifications, inspection, fatigue and effective-length provisions beyond the entered length are excluded."
       })
     ].join("");
   } else if (inputErrors.length) {
@@ -3812,13 +3812,13 @@ function calculateWeld() {
     });
   } else {
     const capacityRule = type === "cpbw"
-      ? `AS 4100 Cl. 9.6.2.7 takes CPBW design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. The weaker-part resistance is not defined by weld-metal strength and throat alone.`
+      ? `AS 4100 Cl. 9.6.2.7 takes CPBW design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. The resistance of that joined part is not defined by weld-metal strength and throat alone.`
       : `AS 4100 Cl. 9.6.5.2 defines compound-weld throat from the actual total weld cross-section. It is not a<sub>w</sub> + 0.707s; the present inputs cannot establish that geometry.`;
     $("weldFormulaSteps").innerHTML = calculationTraceRow({
       title: typeData.label,
       reference: type === "cpbw" ? "AS 4100 Cl. 9.6.2.7" : "AS 4100 Cl. 9.6.5.2",
       result: "Not evaluated",
-      applicability: `${capacityRule} ${type === "cpbw" ? "Define the weaker joined part, applicable limit state, material strength, net/gross section and capacity factor." : "Define the prepared joint and total weld cross-section before determining the design throat."} WPS, preparation, inspection, fatigue, HAZ and connected-part limit states remain project-specific.`,
+      applicability: `${capacityRule} ${type === "cpbw" ? "Define the weaker joined part, applicable limit state, material strength, net/gross section and capacity factor." : "Define the prepared joint and total weld cross-section before determining the design throat."} The welding procedure specification, preparation, inspection, fatigue, heat-affected-zone requirements and connected-part limit states remain project-specific.`,
       state: "warning"
     });
   }
@@ -7160,12 +7160,12 @@ function calculateConcrete() {
   const reviewFlags = [];
   if (!shear.withinSimplifiedScope) reviewFlags.push(`one-way shear not evaluated outside AS 3600 Cl. 8.2.4 simplified-method scope (${shear.scopeFailures.join("; ")})`);
   if (shear.shearReoMode === "vertical" && !shear.hasShearReo) reviewFlags.push("selected shear reinforcement requires at least one fitment leg and positive spacing");
-  if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A<sub>sv</sub>/s below the AS 3600 Cl. 8.2.1.7 minimum (${shear.asvPerS.toFixed(3)} < ${shear.asvMinPerS.toFixed(3)} mm<sup>2</sup>/mm)`);
+  if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A<sub>sv</sub>/s below the AS 3600 Cl. 8.2.1.7 minimum (${displayFixed(shear.asvPerS, 3)} < ${displayFixed(shear.asvMinPerS, 3)} mm<sup>2</sup>/mm)`);
   if (shear.webCrushingLimited) reviewFlags.push(`V<sub>u</sub> limited by AS 3600 Cl. 8.2.3.3 web crushing`);
   if (coverWarnings.length) reviewFlags.push(`${coverWarnings.map(layer => `mat ${layer.index}`).join(", ")} cover check`);
   if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
   if (fsyCappedLayers.length) reviewFlags.push(`f<sub>sy</sub> capped at 600 MPa for ${fsyCappedLayers.map(layer => `mat ${layer.index}`).join(", ")}`);
-  if (result.kuo > 0.36) reviewFlags.push(`k<sub>uo</sub> = ${result.kuo.toFixed(3)} > 0.36; check AS 3600 Cl. 8.1.5`);
+  if (result.kuo > 0.36) reviewFlags.push(`k<sub>uo</sub> = ${displayFixed(result.kuo, 3)} > 0.36; check AS 3600 Cl. 8.1.5`);
   const compositeBoundary = compositeSection
     ? " Verify interface transfer, anchorage and composite action."
     : "";
@@ -7183,10 +7183,10 @@ function calculateConcrete() {
   $("concreteWarningText").innerHTML = warningText;
 
   const shearState = shear.withinSimplifiedScope
-    ? `<article><b>One-way shear capacity</b><span>&phi;V<sub>u</sub> = ${fixed(shear.phiVu)} kN; &phi; = ${shear.phi.toFixed(2)}</span><small>V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u.max</sub>) = ${fixed(shear.vu)} kN${shear.webCrushingLimited ? "; web crushing governs" : ""}</small></article>`
+    ? `<article><b>One-way shear capacity</b><span>&phi;V<sub>u</sub> = ${fixed(shear.phiVu)} kN; &phi; = ${displayFixed(shear.phi, 2)}</span><small>V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u.max</sub>) = ${fixed(shear.vu)} kN${shear.webCrushingLimited ? "; web crushing governs" : ""}</small></article>`
     : `<article><b>One-way shear state</b><span>Not evaluated - outside AS 3600 Cl. 8.2.4 simplified-method scope.</span><small>${shear.scopeFailures.join("; ")}. Use the applicable general shear method for the project.</small></article>`;
   $("concreteSectionState").innerHTML = `
-    <article><b>Flexural section state</b><span>Neutral axis depth x = ${fixed(result.x)} mm from the selected compression face; d<sub>o</sub> = ${fixed(result.d0)} mm; k<sub>uo</sub> = ${result.kuo.toFixed(3)}; M<sub>uo</sub> = ${fixed(result.muo)} kNm</span><small>C<sub>c</sub> = ${fixed(result.cc / 1000)} kN; &phi; = ${result.phi.toFixed(2)}; &phi;M<sub>uo</sub> = ${fixed(result.phiMuo)} kNm</small></article>
+    <article><b>Flexural section state</b><span>Neutral axis depth x = ${fixed(result.x)} mm from the selected compression face; d<sub>o</sub> = ${fixed(result.d0)} mm; k<sub>uo</sub> = ${displayFixed(result.kuo, 3)}; M<sub>uo</sub> = ${fixed(result.muo)} kNm</span><small>C<sub>c</sub> = ${fixed(result.cc / 1000)} kN; &phi; = ${displayFixed(result.phi, 2)}; &phi;M<sub>uo</sub> = ${fixed(result.phiMuo)} kNm</small></article>
     ${shearState}`;
 
   $("concreteLayerResults").innerHTML = result.layers.map(layer => {
@@ -7224,23 +7224,23 @@ function calculateConcrete() {
     calculationTraceRow({
       title: "Shear reinforcement area",
       formula: shear.hasShearReo ? `A<sub>sv</sub> = n<sub>sv</sub>A<sub>bar</sub>; A<sub>sv</sub>/s = A<sub>sv</sub>/s` : `A<sub>sv</sub>/s = 0`,
-      substitution: shear.hasShearReo ? `${shear.nsv.toFixed(0)} &times; ${fixed(shear.shearBarArea)} mm<sup>2</sup> = ${fixed(shear.asv)} mm<sup>2</sup>; ${fixed(shear.asv)}/${fixed(shear.sv)}` : "",
-      result: `A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} mm<sup>2</sup>/mm`,
+      substitution: shear.hasShearReo ? `${displayFixed(shear.nsv, 0)} &times; ${fixed(shear.shearBarArea)} mm<sup>2</sup> = ${fixed(shear.asv)} mm<sup>2</sup>; ${fixed(shear.asv)}/${fixed(shear.sv)}` : "",
+      result: `A<sub>sv</sub>/s = ${displayFixed(shear.asvPerS, 3)} mm<sup>2</sup>/mm`,
       applicability: shear.hasShearReo ? `${shear.shearDesignation}; area from the reinforcement table.` : "No vertical shear reinforcement selected."
     }),
     calculationTraceRow({
       title: "Simplified shear factor",
       reference: "AS 3600 Cl. 8.2.4.3",
       formula: shear.minShearReoProvided ? `k<sub>v</sub> = 0.15` : `k<sub>v</sub> = min[200/(1000 + 1.3d<sub>v</sub>), 0.15]`,
-      substitution: shear.minShearReoProvided ? `A<sub>sv</sub>/s = ${shear.asvPerS.toFixed(3)} &ge; ${shear.asvMinPerS.toFixed(3)} mm<sup>2</sup>/mm` : `min[200/(1000 + 1.3 &times; ${fixed(shear.dv)}), 0.15]`,
-      result: `k<sub>v</sub> = ${shear.kv.toFixed(3)}; &theta;<sub>v</sub> = ${shear.theta.toFixed(0)}&deg;`,
-      applicability: `Minimum A<sub>sv</sub>/s = ${shear.asvMinPerS.toFixed(3)} mm<sup>2</sup>/mm.`
+      substitution: shear.minShearReoProvided ? `A<sub>sv</sub>/s = ${displayFixed(shear.asvPerS, 3)} &ge; ${displayFixed(shear.asvMinPerS, 3)} mm<sup>2</sup>/mm` : `min[200/(1000 + 1.3 &times; ${displayFixed(shear.dv, 3)}), 0.15]`,
+      result: `k<sub>v</sub> = ${displayFixed(shear.kv, 3)}; &theta;<sub>v</sub> = ${displayFixed(shear.theta, 0)}&deg;`,
+      applicability: `Minimum A<sub>sv</sub>/s = ${displayFixed(shear.asvMinPerS, 3)} mm<sup>2</sup>/mm.`
     }),
     calculationTraceRow({
       title: "Concrete shear contribution",
       reference: "AS 3600 Cl. 8.2.4.1",
       formula: `V<sub>uc</sub> = k<sub>v</sub>b<sub>v</sub>d<sub>v</sub>&radic;f'<sub>c</sub>`,
-      substitution: `${shear.kv.toFixed(3)} &times; ${fixed(shear.bv)} mm &times; ${fixed(shear.dv)} mm &times; ${shear.rootFc.toFixed(2)} MPa<sup>0.5</sup> / 1000`,
+      substitution: `${displayFixed(shear.kv, 6)} &times; ${fixed(shear.bv)} mm &times; ${displayFixed(shear.dv, 3)} mm &times; ${displayFixed(shear.rootFc, 5)} MPa<sup>0.5</sup> / 1000`,
       result: `V<sub>uc</sub> = ${fixed(shear.vuc)} kN`,
       applicability: "&radic;f'<sub>c</sub> is limited to 8.0 MPa."
     }),
@@ -7248,7 +7248,7 @@ function calculateConcrete() {
       title: "Shear reinforcement contribution",
       reference: "AS 3600 Cl. 8.2.5.2",
       formula: shear.hasShearReo ? `V<sub>us</sub> = (A<sub>sv</sub>f<sub>sy.f</sub>d<sub>v</sub>/s)cot&theta;<sub>v</sub>` : `V<sub>us</sub> = 0`,
-      substitution: shear.hasShearReo ? `(${fixed(shear.asv)} &times; ${fixed(shear.fsyf)} &times; ${fixed(shear.dv)} / ${fixed(shear.sv)}) &times; ${shear.cotTheta.toFixed(3)} / 1000` : "",
+      substitution: shear.hasShearReo ? `(${fixed(shear.asv)} &times; ${fixed(shear.fsyf)} &times; ${displayFixed(shear.dv, 3)} / ${fixed(shear.sv)}) &times; ${displayFixed(shear.cotTheta, 6)} / 1000` : "",
       result: `V<sub>us</sub> = ${fixed(shear.vus)} kN`,
       applicability: shear.hasShearReo && !shear.minShearReoProvided ? "Provided A<sub>sv</sub>/s is below the AS 3600 Cl. 8.2.1.7 minimum; review required." : "Selected shear-reinforcement state."
     }),
@@ -7256,7 +7256,7 @@ function calculateConcrete() {
       title: "One-way shear design capacity",
       reference: "AS 3600 Cl. 8.2.3.1 and AS 3600 Table 2.2.2",
       formula: `V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u,max</sub>); design capacity = &phi; &times; V<sub>u</sub>`,
-      substitution: `min(${fixed(shear.vuc)} + ${fixed(shear.vus)}, ${fixed(shear.vuMax)}) kN; &phi; = ${shear.phi.toFixed(2)}`,
+      substitution: `min(${displayFixed(shear.vuc, 3)} + ${displayFixed(shear.vus, 3)}, ${displayFixed(shear.vuMax, 3)}) kN; &phi; = ${displayFixed(shear.phi, 2)}`,
       result: `Design one-way shear capacity = ${fixed(shear.phiVu)} kN`,
       applicability: shear.webCrushingLimited ? "Web crushing governs." : shear.minShearReoProvided ? "Verified minimum Class N fitments; no web-crushing limit governs." : "No verified minimum Class N fitments."
     })
@@ -7270,6 +7270,15 @@ function calculateConcrete() {
 
   const layerAreaSubstitution = data.layers.map(layer => `${layer.designation}: ${fixed(layer.barArea)} &times; ${fixed(data.width)}/${fixed(layer.spacing)} = ${fixed(layer.area)} mm<sup>2</sup>`).join("; ");
   const layerDepthSubstitution = data.layers.map(layer => `d<sub>${layer.index}</sub> = ${fixed(direction === "top" ? layer.yTop : data.depth - layer.yTop)} mm`).join("; ");
+  const layerStateSubstitution = result.layers.map(layer =>
+    `Mat ${layer.index}: &epsilon;<sub>s</sub> = ${signedFixed(layer.strain, 6)}, f<sub>s</sub> = ${signedFixed(layer.stress, 3)} MPa, F<sub>s</sub> = ${signedFixed(layer.force / 1000, 3)} kN`
+  ).join("; ");
+  const equilibriumTerms = result.layers.map(layer =>
+    `${layer.force >= 0 ? "+" : "-"} ${displayFixed(Math.abs(layer.force) / 1000, 3)}`
+  ).join(" ");
+  const momentTerms = `${displayFixed(result.cc / 1000, 3)} &times; ${displayFixed(result.yCc, 3)} ${result.layers.map(layer =>
+    `${layer.force >= 0 ? "+" : "-"} (${displayFixed(Math.abs(layer.force) / 1000, 3)} &times; ${displayFixed(layer.yTop, 3)})`
+  ).join(" ")}`;
   $("concreteFormulaSteps").innerHTML = [
     calculationTraceRow({
       title: "Analysis basis",
@@ -7294,37 +7303,41 @@ function calculateConcrete() {
     }),
     calculationTraceRow({
       title: "Concrete stress-block factors",
-      reference: "AS 3600 Cl. 8.1",
+      reference: "AS 3600 Cl. 8.1.3",
       formula: `&alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67); &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67)`,
-      substitution: `f'<sub>c</sub> = ${fixed(data.fc)} MPa`,
-      result: `&alpha;<sub>2</sub> = ${data.alpha2.toFixed(3)}; &gamma; = ${data.gamma.toFixed(3)}`,
+      substitution: `f'<sub>c</sub> = ${fixed(data.fc)} MPa; max(0.85 - 0.0015 &times; ${fixed(data.fc)}, 0.67); max(0.97 - 0.0025 &times; ${fixed(data.fc)}, 0.67)`,
+      result: `&alpha;<sub>2</sub> = ${displayFixed(data.alpha2, 3)}; &gamma; = ${displayFixed(data.gamma, 3)}`,
       applicability: "Rectangular equivalent concrete compression block."
     }),
     calculationTraceRow({
       title: "Equivalent concrete compression force",
+      reference: "AS 3600 Cl. 8.1.3",
       formula: `a = min(D, &gamma;x); C<sub>c</sub> = &alpha;<sub>2</sub>f'<sub>c</sub>ba`,
-      substitution: `a = min(${fixed(data.depth)}, ${data.gamma.toFixed(3)} &times; ${fixed(result.x)}) = ${fixed(result.blockDepth)} mm`,
+      substitution: `a = min(${fixed(data.depth)}, ${displayFixed(data.gamma, 3)} &times; ${displayFixed(result.x, 4)}) = ${displayFixed(result.blockDepth, 4)} mm; C<sub>c</sub> = ${displayFixed(data.alpha2, 3)} &times; ${fixed(data.fc)} &times; ${fixed(data.width)} &times; ${displayFixed(result.blockDepth, 4)} / 1000`,
       result: `C<sub>c</sub> = ${fixed(result.cc / 1000)} kN`,
       applicability: "Compression force for the selected strip width."
     }),
     calculationTraceRow({
       title: "Reinforcement strain and stress",
+      reference: "AS 3600 Cl. 8.1.2",
       formula: `&epsilon;<sub>si</sub> = &epsilon;<sub>cu</sub>(x - d<sub>i</sub>)/x; f<sub>si</sub> = clamp(E<sub>s</sub>&epsilon;<sub>si</sub>, &plusmn;f<sub>sy</sub>)`,
-      substitution: `x = ${fixed(result.x)} mm; ${layerDepthSubstitution}`,
-      result: "Layer strains, stresses and forces are shown in Reinforcement force state.",
+      substitution: `x = ${displayFixed(result.x, 4)} mm; ${layerDepthSubstitution}; ${layerStateSubstitution}`,
+      result: "Layer forces are included in the neutral-axis and moment calculations below.",
       applicability: "Compression is positive and tension is negative. Displaced concrete stress is removed for bars inside the compression block."
     }),
     calculationTraceRow({
       title: "Neutral-axis equilibrium",
+      reference: "AS 3600 Cl. 8.1.2",
       formula: `C<sub>c</sub> + &Sigma;F<sub>s</sub> = N<sup>*</sup>`,
-      substitution: `N<sup>*</sup> = 0; solved x = ${fixed(result.x)} mm`,
-      result: `Equilibrium residual = ${residual.toFixed(3)} kN`,
+      substitution: `${displayFixed(result.cc / 1000, 3)} ${equilibriumTerms} = 0 kN; solved x = ${displayFixed(result.x, 4)} mm`,
+      result: `Equilibrium residual = ${displayFixed(residual, 3)} kN`,
       applicability: "Pure-bending section solution; no applied axial force."
     }),
     calculationTraceRow({
       title: "Nominal flexural capacity",
+      reference: "AS 3600 Cl. 8.1.2 and AS 3600 Cl. 8.1.5",
       formula: `M<sub>uo</sub> = &Sigma;F<sub>i</sub>z<sub>i</sub>`,
-      substitution: "Equilibrated concrete and reinforcement forces about the selected section datum.",
+      substitution: `|${momentTerms}| / 1000`,
       result: `Nominal section moment capacity M<sub>uo</sub> = ${fixed(result.muo)} kN&middot;m`,
       applicability: `Selected strip width b = ${fixed(data.width)} mm.`
     }),
@@ -7332,15 +7345,15 @@ function calculateConcrete() {
       title: "Flexural capacity factor",
       reference: "AS 3600 Table 2.2.2",
       formula: legacyLayers.length ? `&phi; = 0.65` : `k<sub>uo</sub> = x/d<sub>o</sub>; &phi; = clamp(1.24 - 13k<sub>uo</sub>/12, 0.65, 0.85)`,
-      substitution: legacyLayers.length ? "Legacy Y bar quick-screen basis." : `${fixed(result.x)}/${fixed(result.d0)} = ${result.kuo.toFixed(3)}`,
-      result: `&phi; = ${result.phi.toFixed(2)}`,
+      substitution: legacyLayers.length ? "Legacy Y bar quick-screen basis." : `${displayFixed(result.x, 4)}/${displayFixed(result.d0, 3)} = ${displayFixed(result.kuo, 4)}`,
+      result: `&phi; = ${displayFixed(result.phi, 3)}`,
       applicability: legacyLayers.length ? "Conservative pending actual bar grade and N-class equivalence." : "Pure bending with N-class reinforcement assumption."
     }),
     calculationTraceRow({
       title: "Ductility limit",
       reference: "AS 3600 Cl. 8.1.5",
       formula: `k<sub>uo</sub> = x/d<sub>o</sub> &le; 0.36`,
-      substitution: `${fixed(result.x)}/${fixed(result.d0)} = ${result.kuo.toFixed(3)}`,
+      substitution: `${displayFixed(result.x, 4)}/${displayFixed(result.d0, 3)} = ${displayFixed(result.kuo, 4)}`,
       result: result.kuo <= 0.36 ? "Within displayed limit" : "Review required",
       applicability: result.kuo > 0.36 ? "AS 3600 Cl. 8.1.5 conditions must be satisfied before using this as a design section." : "Displayed ductility boundary satisfied."
     }),
@@ -7348,7 +7361,7 @@ function calculateConcrete() {
       title: "Design flexural capacity",
       reference: "AS 3600 Table 2.2.2",
       formula: `Design &phi;M<sub>uo</sub> = &phi; &times; M<sub>uo</sub>`,
-      substitution: `${result.phi.toFixed(2)} &times; ${fixed(result.muo)} kN&middot;m`,
+      substitution: `${displayFixed(result.phi, 4)} &times; ${displayFixed(result.muo, 3)} kN&middot;m`,
       result: `Design section moment capacity = ${fixed(result.phiMuo)} kN&middot;m`,
       applicability: "Verify capacity-factor and ductility assumptions before issue for design."
     }),
@@ -8766,7 +8779,7 @@ function reoPathState(options) {
 function populateReoData() {
   $("reoBar").innerHTML = reoBars.filter(bar => bar.diameter <= 40).map(bar => `<option value="${bar.designation}">${bar.designation}</option>`).join("");
   $("reoBar").value = "N20";
-  $("reoProductTableRows").innerHTML = reoBars.map(bar => `<tr class="${bar.diameter > 40 ? "is-excluded" : ""}"><td>${bar.designation}</td><td>${bar.diameter} mm</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${bar.standardMass.toFixed(bar.standardMass < 1 ? 3 : 2)} kg/m</td><td>${bar.supplierMass.toFixed(2)} kg/m</td><td>${bar.metresPerTonne.toLocaleString("en-AU")} m/t</td><td>${bar.availability}</td><td>${bar.diameter > 40 ? "Reference only · outside calculator scope" : "Within calculator scope"}</td></tr>`).join("");
+  $("reoProductTableRows").innerHTML = reoBars.map(bar => `<tr class="${bar.diameter > 40 ? "is-excluded" : ""}"><td>${bar.designation}</td><td>${bar.diameter} mm</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${displayFixed(bar.standardMass, bar.standardMass < 1 ? 3 : 2)} kg/m</td><td>${displayFixed(bar.supplierMass, 2)} kg/m</td><td>${bar.metresPerTonne.toLocaleString("en-AU")} m/t</td><td>${bar.availability}</td><td>${bar.diameter > 40 ? "Reference only · outside calculator scope" : "Within calculator scope"}</td></tr>`).join("");
 }
 
 function updateReoConditionalFields(options) {
@@ -8805,10 +8818,10 @@ function updateReoConditionalFields(options) {
   if (standardTerminationSelected) {
     const method = $("reoCastInTermination").value;
     const methodRequirement = method === "cog"
-      ? `90&deg; cog; internal bend diameter ${bendDiameter.toFixed(0)} mm minimum and ${(8 * db).toFixed(0)} mm maximum; total bar length as the corresponding 180&deg; hook.`
-      : `180&deg; or 135&deg; hook; straight extension ${hookExtension.toFixed(0)} mm minimum.`;
+      ? `90&deg; cog; internal bend diameter ${displayFixed(bendDiameter, 0)} mm minimum and ${displayFixed(8 * db, 0)} mm maximum; total bar length as the corresponding 180&deg; hook.`
+      : `180&deg; or 135&deg; hook; straight extension ${displayFixed(hookExtension, 0)} mm minimum.`;
     const restraintRequirement = restraintRequired
-      ? `Transverse restraint required: bar diameter at least ${db.toFixed(0)} mm, in contact, extending ${(4 * db).toFixed(0)} mm each side.`
+    ? `Transverse restraint required: bar diameter at least ${displayFixed(db, 0)} mm, in contact, extending ${displayFixed(4 * db, 0)} mm each side.`
       : "No >400 MPa transverse-restraint trigger from the selected stress basis.";
     $("reoTerminationRequirements").innerHTML = `<b>Standard ${method} requirements</b><span>${methodRequirement} Bend diameter follows AS 3600 Cl. 17.2.3.3 (${bendFactor}d<sub>b</sub> for the selected condition). ${restraintRequirement} Galvanized reinforcement is not represented by this selector; verify AS 3600 Cl. 17.2.3.3(d) separately.</span>`;
   }
@@ -8958,11 +8971,11 @@ function updateReoReductionAssessment(options, result, basicReference) {
   const qualificationCount = Number(options.doubleArea) + Number(options.halfSpliced);
 
   if (qualificationCount === 2) {
-    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.00 &middot; adopted reduction ${reduction.toFixed(0)} mm`;
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.00 &middot; adopted reduction ${displayFixed(reduction, 0)} mm`;
   } else if (qualificationCount === 1) {
-    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; one condition pending &middot; potential ${reduction.toFixed(0)} mm`;
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; one condition pending &middot; potential ${displayFixed(reduction, 0)} mm`;
   } else {
-    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; potential reduction ${reduction.toFixed(0)} mm`;
+    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; potential reduction ${displayFixed(reduction, 0)} mm`;
   }
 
   $("reoK7ReductionNote").textContent = "Both conditions are required for k7 = 1.00.";
@@ -8976,8 +8989,12 @@ function updateReoSchedule(options, selectedDesignation) {
   $("reoLapTableRows").innerHTML = reoBars.filter(bar => bar.diameter <= 40).map(bar => {
     const result = reoLapCalculation(bar, options);
     if (!result.eligible) return `<tr class="${bar.designation === selectedDesignation ? "is-selected" : ""}"><td>${bar.designation}</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Not eligible for current inputs</td></tr>`;
-    return `<tr class="${bar.designation === selectedDesignation ? "is-selected" : ""}"><td>${bar.designation}</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${Math.ceil(result.developmentLength)} mm</td><td><b>${result.adoptedLength} mm</b></td><td>${result.ratio.toFixed(1)}d<sub>b</sub></td><td>${result.governing.label}</td></tr>`;
+    return `<tr class="${bar.designation === selectedDesignation ? "is-selected" : ""}"><td>${bar.designation}</td><td>${bar.area.toLocaleString("en-AU")} mm&sup2;</td><td>${Math.ceil(result.developmentLength)} mm</td><td><b>${result.adoptedLength} mm</b></td><td>${displayFixed(result.ratio, 1)}d<sub>b</sub></td><td>${result.governing.label}</td></tr>`;
   }).join("");
+}
+
+function reoBasicFormulaSubstitution(result) {
+  return `0.5 &times; ${displayFixed(result.k1, 2)} &times; ${displayFixed(result.k3, 4)} &times; ${displayFixed(result.fsy, 0)} &times; ${displayFixed(result.bar.diameter, 0)} / (${displayFixed(result.k2, 3)} &times; &radic;${displayFixed(result.fcUsed, 1)}) = ${displayFixed(result.basicFormula, 2)} mm`;
 }
 
 function reoRefinedFormulaHtml(result, options, label) {
@@ -8996,26 +9013,26 @@ function reoRefinedFormulaHtml(result, options, label) {
         ? "effective transverse-reinforcement location confirmed"
         : "location not confirmed; K = 0";
   const countStatus = result.confinementCreditRequested
-    ? (result.atrCountConfirmed ? "candidate-length count confirmed" : `candidate k<sub>4</sub> = ${result.k4Candidate.toFixed(3)} not adopted until the candidate-length count is confirmed`)
+    ? (result.atrCountConfirmed ? "candidate-length count confirmed" : `candidate k<sub>4</sub> = ${displayFixed(result.k4Candidate, 3)} not adopted until the candidate-length count is confirmed`)
     : "no k4 confinement credit requested";
   const pressureStatus = result.pressureCreditRequested
-    ? (result.pressureCreditApplied ? `pressure reference ${safeText(result.pressureReference)} and applicability confirmed` : `candidate k<sub>5</sub> = ${result.k5Candidate.toFixed(3)} not adopted until a calculation/source reference and applicability confirmation are provided`)
+    ? (result.pressureCreditApplied ? `pressure reference ${safeText(result.pressureReference)} and applicability confirmed` : `candidate k<sub>5</sub> = ${displayFixed(result.k5Candidate, 3)} not adopted until a calculation/source reference and applicability confirmation are provided`)
     : "no k5 pressure credit requested";
   return [
     calculationTraceRow({
       title: `${label} refined factors`,
       reference: "AS 3600 Cl. 13.1.2.3",
       formula: `K = min[0.05(1 + n<sub>f</sub>/n<sub>bs</sub>), 0.10]; &lambda; = max[(&Sigma;A<sub>tr</sub> - &Sigma;A<sub>tr,min</sub>)/A<sub>s</sub>, 0]; k<sub>4</sub> = clamp(1 - K&lambda;, 0.7, 1.0); k<sub>5</sub> = clamp(1 - 0.04p, 0.7, 1.0)`,
-      substitution: `K = ${result.K.toFixed(3)}; &Sigma;A<sub>tr,min</sub> = ${result.atrMin.toFixed(1)} mm<sup>2</sup>; &lambda; = ${result.lambda.toFixed(3)}; candidate k<sub>4</sub>/k<sub>5</sub> = ${result.candidateK4.toFixed(3)}/${result.candidateK5.toFixed(3)}`,
-      result: `Adopted k<sub>4</sub>/k<sub>5</sub> = ${result.k4.toFixed(3)}/${result.k5.toFixed(3)}`,
+      substitution: `K = ${displayFixed(result.K, 3)}; &Sigma;A<sub>tr,min</sub> = ${displayFixed(result.atrMin, 1)} mm<sup>2</sup>; &lambda; = ${displayFixed(result.lambda, 3)}; candidate k<sub>4</sub>/k<sub>5</sub> = ${displayFixed(result.candidateK4, 3)}/${displayFixed(result.candidateK5, 3)}`,
+      result: `Adopted k<sub>4</sub>/k<sub>5</sub> = ${displayFixed(result.k4, 3)}/${displayFixed(result.k5, 3)}`,
       applicability: `${location}; ${countStatus}; ${pressureStatus}.`
     }),
     calculationTraceRow({
       title: `${label} refined-factor reconciliation`,
       reference: "AS 3600 Cl. 13.1.2.3",
       formula: `k<sub>ref</sub> = max(k<sub>4</sub>k<sub>5</sub>, 0.7/k<sub>3</sub>); L = L<sub>basic,modified</sub>k<sub>ref</sub>`,
-      substitution: `Candidate factor = ${result.candidateRefinedFactor.toFixed(3)}; adopted factor = ${result.refinedFactor.toFixed(3)}`,
-      result: `Candidate development = ${result.candidateDevelopmentLength.toFixed(1)} mm; adopted development = ${result.developmentLength.toFixed(1)} mm`,
+      substitution: `Candidate factor = ${displayFixed(result.candidateRefinedFactor, 3)}; adopted factor = ${displayFixed(result.refinedFactor, 3)}`,
+      result: `Candidate development = ${displayFixed(result.candidateDevelopmentLength, 1)} mm; adopted development = ${displayFixed(result.developmentLength, 1)} mm`,
       applicability: "k<sub>3</sub> multiplied by each adopted refined factor remains at least 0.700."
     })
   ].join("");
@@ -9036,8 +9053,8 @@ function reoLapFormulaHtml(result, options, referenceOnly) {
         title: "Narrow-member lap candidate",
         reference: "AS 3600 Cl. 13.2.2",
         formula: `L<sub>lap,narrow</sub> = L<sub>sy.t</sub> + 1.5s<sub>b</sub>`,
-        substitution: `${result.developmentLength.toFixed(1)} + 1.5 &times; ${result.gapUsed.toFixed(1)} mm`,
-        result: `Candidate = ${result.narrowCandidate.toFixed(1)} mm`,
+        substitution: `${displayFixed(result.developmentLength, 1)} + 1.5 &times; ${displayFixed(result.gapUsed, 1)} mm`,
+        result: `Candidate = ${displayFixed(result.narrowCandidate, 1)} mm`,
         applicability: result.gapEntered <= 3 * result.bar.diameter ? "Entered s<sub>b</sub> &le; 3d<sub>b</sub>; s<sub>b</sub> = 0 for this candidate." : "Entered non-contact bar gap used."
       })
     : "";
@@ -9059,16 +9076,16 @@ function reoLapFormulaHtml(result, options, referenceOnly) {
     calculationTraceRow({
       title: "New-work lap geometry",
       formula: `c<sub>d</sub> = min(a/2, c)`,
-      substitution: `min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)}) mm`,
-      result: `c<sub>d</sub> = ${result.cd.toFixed(1)} mm`,
-      applicability: `d<sub>b</sub> = ${result.bar.diameter} mm; A<sub>s</sub> = ${result.bar.area.toFixed(1)} mm<sup>2</sup>; f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa.`
+      substitution: `min(${displayFixed(options.clearSpacing, 1)}/2, ${displayFixed(options.cover, 1)}) mm`,
+      result: `c<sub>d</sub> = ${displayFixed(result.cd, 1)} mm`,
+      applicability: `d<sub>b</sub> = ${result.bar.diameter} mm; A<sub>s</sub> = ${displayFixed(result.bar.area, 1)} mm<sup>2</sup>; f'<sub>c</sub> used = ${displayFixed(result.fcUsed, 1)} MPa.`
     }),
     calculationTraceRow({
       title: "Lap development expression",
       reference: "AS 3600 Cl. 13.1.2.2 and AS 3600 Cl. 13.2.2",
       formula: `L<sub>sy.tb</sub> = 0.5k<sub>1</sub>k<sub>3</sub>f<sub>sy</sub>d<sub>b</sub>/(k<sub>2</sub>&radic;f'<sub>c</sub>); L<sub>sy.t</sub> = L<sub>sy.tb</sub>k<sub>material</sub>k<sub>ref</sub>`,
-      substitution: `L<sub>sy.tb,formula</sub> = ${result.basicFormula.toFixed(1)} mm; k<sub>material</sub> = ${result.conditionFactor.toFixed(2)}; k<sub>ref</sub> = ${result.refinedFactor.toFixed(3)}`,
-      result: `L<sub>sy.t</sub> = ${result.developmentLength.toFixed(1)} mm`,
+      substitution: `${reoBasicFormulaSubstitution(result)}; k<sub>material</sub> = ${displayFixed(result.conditionFactor, 2)}; k<sub>ref</sub> = ${displayFixed(result.refinedFactor, 3)}`,
+      result: `L<sub>sy.t</sub> = ${displayFixed(result.developmentLength, 1)} mm`,
       applicability: "The AS 3600 Cl. 13.1.2.2 basic lower limit is not imposed before the AS 3600 Cl. 13.2.2 lap equation."
     }),
     reoRefinedFormulaHtml(result, options, "Lap"),
@@ -9076,16 +9093,16 @@ function reoLapFormulaHtml(result, options, referenceOnly) {
       title: "Lap candidates",
       reference: "AS 3600 Cl. 13.2.2",
       formula: `L<sub>lap</sub> = max(k<sub>7</sub>L<sub>sy.t</sub>, L<sub>lap,min</sub>${options.memberType === "narrow" ? ", L<sub>sy.t</sub> + 1.5s<sub>b</sub>" : ""})`,
-      substitution: `k<sub>7</sub>L<sub>sy.t</sub> = ${result.k7.toFixed(2)} &times; ${result.developmentLength.toFixed(1)} = ${result.k7Candidate.toFixed(1)} mm; lower limit = ${result.lapLowerLimit.toFixed(1)} mm`,
-      result: `${safeText(result.governing.label)} governs at ${result.rawLength.toFixed(1)} mm`,
+      substitution: `k<sub>7</sub>L<sub>sy.t</sub> = ${displayFixed(result.k7, 2)} &times; ${displayFixed(result.developmentLength, 2)} = ${displayFixed(result.k7Candidate, 2)} mm; L<sub>lap,min</sub> = 0.058 &times; ${displayFixed(result.fsy, 0)} &times; ${displayFixed(result.k1, 2)} &times; ${displayFixed(result.bar.diameter, 0)} = ${displayFixed(result.lapLowerLimit, 1)} mm`,
+      result: `${safeText(result.governing.label)} governs at ${displayFixed(result.rawLength, 2)} mm`,
       applicability: "Candidate comparison uses unrounded values."
     }),
     narrow,
     calculationTraceRow({
       title: "Adopted lap reference",
       formula: `L<sub>lap,adopted</sub> = ceil(L<sub>lap</sub>/10)&times;10`,
-      substitution: `ceil(${result.rawLength.toFixed(1)}/10)&times;10`,
-      result: `${result.adoptedLength} mm = ${result.ratio.toFixed(1)}d<sub>b</sub>`,
+      substitution: `ceil(${displayFixed(result.rawLength, 2)}/10)&times;10`,
+      result: `${result.adoptedLength} mm = ${displayFixed(result.ratio, 1)}d<sub>b</sub>`,
       applicability: "Rounded upward to the next 10 mm."
     })
   ].join("");
@@ -9103,11 +9120,11 @@ function reoDevelopmentFormulaHtml(result, options, anchorage) {
   }
   const cdExpression = result.hookedOrCogged
     ? result.memberType === "narrow"
-      ? `min(${options.clearSpacing.toFixed(1)}/2, ${options.c1.toFixed(1)})`
-      : `${options.clearSpacing.toFixed(1)}/2`
+      ? `min(${displayFixed(options.clearSpacing, 1)}/2, ${displayFixed(options.c1, 1)})`
+      : `${displayFixed(options.clearSpacing, 1)}/2`
     : result.memberType === "narrow"
-      ? `min(${options.clearSpacing.toFixed(1)}/2, ${options.c1.toFixed(1)}, ${options.cover.toFixed(1)})`
-      : `min(${options.clearSpacing.toFixed(1)}/2, ${options.cover.toFixed(1)})`;
+      ? `min(${displayFixed(options.clearSpacing, 1)}/2, ${displayFixed(options.c1, 1)}, ${displayFixed(options.cover, 1)})`
+      : `min(${displayFixed(options.clearSpacing, 1)}/2, ${displayFixed(options.cover, 1)})`;
   let stressStep = calculationTraceRow({
     title: "Selected development reference",
     result: `Full-yield adopted development reference = ${result.adoptedLength} mm`,
@@ -9119,15 +9136,15 @@ function reoDevelopmentFormulaHtml(result, options, anchorage) {
           title: "Project steel stress",
           reference: "AS 3600 Cl. 13.1.2.4",
           result: "Reduced benchmark not evaluated",
-          applicability: `&sigma;<sub>st</sub> = ${anchorage.actualStress.toFixed(1)} MPa exceeds f<sub>sy</sub> = ${anchorage.fsy.toFixed(0)} MPa; review the bar design.`,
+          applicability: `&sigma;<sub>st</sub> = ${displayFixed(anchorage.actualStress, 1)} MPa exceeds f<sub>sy</sub> = ${displayFixed(anchorage.fsy, 0)} MPa; review the bar design.`,
           state: "warning"
         })
       : anchorage.refinedReducedLengthConfirmationMissing
         ? calculationTraceRow({
             title: "Combined reduction candidate",
             formula: `L<sub>st</sub> = max(L<sub>development</sub>&sigma;<sub>st</sub>/f<sub>sy</sub>, 12d<sub>b</sub>)`,
-            substitution: `${anchorage.reducedDevelopmentCandidateRaw.toFixed(1)} mm raw`,
-            result: `${anchorage.reducedDevelopmentCandidateAdopted.toFixed(0)} mm if confirmed`,
+            substitution: `${displayFixed(anchorage.reducedDevelopmentCandidateRaw, 1)} mm raw`,
+            result: `${displayFixed(anchorage.reducedDevelopmentCandidateAdopted, 0)} mm if confirmed`,
             applicability: "Verify Refined confinement and pressure evidence throughout this candidate length before adoption.",
             state: "warning"
           })
@@ -9136,8 +9153,8 @@ function reoDevelopmentFormulaHtml(result, options, anchorage) {
             title: "Project steel stress",
             reference: "AS 3600 Cl. 13.1.2.4",
             formula: `L<sub>st</sub> = max(L<sub>development</sub>&sigma;<sub>st</sub>/f<sub>sy</sub>, 12d<sub>b</sub>)`,
-            substitution: `max(${result.rawLength.toFixed(1)} &times; ${anchorage.actualStress.toFixed(1)}/${anchorage.fsy.toFixed(0)}, 12 &times; ${result.bar.diameter}) mm`,
-            result: `Reduced development benchmark = ${anchorage.reducedDevelopmentRaw.toFixed(1)} mm`,
+            substitution: `max(${displayFixed(result.rawLength, 2)} &times; ${displayFixed(anchorage.actualStress, 1)}/${displayFixed(anchorage.fsy, 0)}, 12 &times; ${result.bar.diameter}) mm`,
+            result: `Reduced development benchmark = ${displayFixed(anchorage.reducedDevelopmentRaw, 1)} mm`,
             applicability: "Verify &sigma;<sub>st</sub> against the project calculation before issue."
           })
         : calculationTraceRow({
@@ -9152,7 +9169,7 @@ function reoDevelopmentFormulaHtml(result, options, anchorage) {
         title: `Cast-in ${safeText(anchorage.terminationType)} detailing`,
         reference: "AS 3600 Cl. 13.1.2.6 and AS 3600 Cl. 13.1.2.7",
         result: "Half-development reference withheld",
-        applicability: `Minimum bend diameter = ${anchorage.minimumBendDiameter.toFixed(0)} mm (${anchorage.minimumBendDiameterFactor}d<sub>b</sub>); ${anchorage.terminationType === "hook" ? `straight extension = ${anchorage.hookStraightExtension.toFixed(0)} mm minimum` : `90-degree cog, bend diameter not exceeding ${anchorage.maximumCogBendDiameter.toFixed(0)} mm and total bar length equal to the corresponding 180-degree hook`}.${anchorage.transverseRestraintRequired ? ` Transverse bar diameter at least ${anchorage.transverseBarMinimumDiameter.toFixed(0)} mm, in contact and extending ${anchorage.transverseBarExtensionEachSide.toFixed(0)} mm each side.` : ""} Confirm detailing before adoption; no lap-splice reduction applies.`,
+        applicability: `Minimum bend diameter = ${displayFixed(anchorage.minimumBendDiameter, 0)} mm (${anchorage.minimumBendDiameterFactor}d<sub>b</sub>); ${anchorage.terminationType === "hook" ? `straight extension = ${displayFixed(anchorage.hookStraightExtension, 0)} mm minimum` : `90-degree cog, bend diameter not exceeding ${displayFixed(anchorage.maximumCogBendDiameter, 0)} mm and total bar length equal to the corresponding 180-degree hook`}.${anchorage.transverseRestraintRequired ? ` Transverse bar diameter at least ${displayFixed(anchorage.transverseBarMinimumDiameter, 0)} mm, in contact and extending ${displayFixed(anchorage.transverseBarExtensionEachSide, 0)} mm each side.` : ""} Confirm detailing before adoption; no lap-splice reduction applies.`,
         state: "warning"
       })
     : anchorage?.terminationFactor === 0.5
@@ -9160,8 +9177,8 @@ function reoDevelopmentFormulaHtml(result, options, anchorage) {
           title: `Cast-in ${safeText(anchorage.terminationType)} termination`,
           reference: "AS 3600 Cl. 13.1.2.6 and AS 3600 Cl. 13.1.2.7",
           formula: `L<sub>termination</sub> = 0.5L<sub>straight</sub>`,
-          substitution: `0.5 &times; ${anchorage.actualStressApplied ? anchorage.reducedDevelopmentRaw.toFixed(1) : result.rawLength.toFixed(1)} mm`,
-          result: `Raw = ${anchorage.asBenchmarkRaw.toFixed(1)} mm; adopted = ${anchorage.asBenchmarkAdopted} mm`,
+          substitution: `0.5 &times; ${anchorage.actualStressApplied ? displayFixed(anchorage.reducedDevelopmentRaw, 2) : displayFixed(result.rawLength, 2)} mm`,
+          result: `Raw = ${displayFixed(anchorage.asBenchmarkRaw, 2)} mm; adopted = ${anchorage.asBenchmarkAdopted} mm`,
           applicability: "Confirmed standard detailing; measured from the outside of the hook/cog. No lap-splice reduction applies."
         })
       : "";
@@ -9169,24 +9186,24 @@ function reoDevelopmentFormulaHtml(result, options, anchorage) {
     calculationTraceRow({
       title: "Existing-concrete development geometry",
       formula: `c<sub>d</sub> = ${cdExpression}`,
-      substitution: `${cdExpression} = ${result.cd.toFixed(1)} mm`,
-      result: `c<sub>d</sub> = ${result.cd.toFixed(1)} mm`,
-      applicability: `f'<sub>c</sub> used = ${result.fcUsed.toFixed(1)} MPa; selected ${result.terminationType} termination.`
+      substitution: `${cdExpression} = ${displayFixed(result.cd, 1)} mm`,
+      result: `c<sub>d</sub> = ${displayFixed(result.cd, 1)} mm`,
+      applicability: `f'<sub>c</sub> used = ${displayFixed(result.fcUsed, 1)} MPa; selected ${result.terminationType} termination.`
     }),
     calculationTraceRow({
       title: "Basic development length",
       reference: "AS 3600 Cl. 13.1.2.2",
       formula: `L<sub>sy.tb</sub> = 0.5k<sub>1</sub>k<sub>3</sub>f<sub>sy</sub>d<sub>b</sub>/(k<sub>2</sub>&radic;f'<sub>c</sub>); L<sub>min</sub> = 0.058f<sub>sy</sub>k<sub>1</sub>d<sub>b</sub>`,
-      substitution: `Formula = ${result.basicFormula.toFixed(1)} mm; lower limit = ${result.basicLowerLimit.toFixed(1)} mm; material multiplier = ${result.conditionFactor.toFixed(2)}`,
-      result: `Modified basic development = ${result.basicModified.toFixed(1)} mm`,
-      applicability: `Adopted before material multiplier = ${result.basicBeforeMaterial.toFixed(1)} mm; the lower limit is applied before the material and refined factors.`
+      substitution: `${reoBasicFormulaSubstitution(result)}; L<sub>min</sub> = 0.058 &times; ${displayFixed(result.fsy, 0)} &times; ${displayFixed(result.k1, 2)} &times; ${displayFixed(result.bar.diameter, 0)} = ${displayFixed(result.basicLowerLimit, 1)} mm; k<sub>material</sub> = ${displayFixed(result.conditionFactor, 2)}`,
+      result: `Modified basic development = ${displayFixed(result.basicModified, 1)} mm`,
+      applicability: `Adopted before material multiplier = ${displayFixed(result.basicBeforeMaterial, 1)} mm; the lower limit is applied before the material and refined factors.`
     }),
     reoRefinedFormulaHtml(result, options, "Existing-concrete"),
     calculationTraceRow({
       title: "Full-yield development reference",
       formula: `L<sub>adopted</sub> = ceil(L<sub>raw</sub>/10)&times;10`,
-      substitution: `ceil(${result.rawLength.toFixed(1)}/10)&times;10`,
-      result: `Raw = ${result.rawLength.toFixed(1)} mm; adopted = ${result.adoptedLength} mm`,
+      substitution: `ceil(${displayFixed(result.rawLength, 2)}/10)&times;10`,
+      result: `Raw = ${displayFixed(result.rawLength, 2)} mm; adopted = ${result.adoptedLength} mm`,
       applicability: "Full-yield straight development reference before any qualified hook/cog or project-stress adjustment."
     }),
     stressStep,
@@ -9216,7 +9233,7 @@ function clearReoAnchorageOutputs(message = "A valid existing-concrete developme
 function updateReoDevelopmentDerived(result, options, basicReference) {
   if (!result?.eligible) {
     if (options.method === "refined" && basicReference?.eligible) {
-      $("reoExistingCd").textContent = basicReference.cd.toFixed(1);
+    $("reoExistingCd").textContent = displayFixed(basicReference.cd, 1);
       $("reoExistingKValue").textContent = "-";
       $("reoExistingCombinedFactor").textContent = "-";
       $("reoExistingRefinedCandidateLength").textContent = "-";
@@ -9230,17 +9247,17 @@ function updateReoDevelopmentDerived(result, options, basicReference) {
     $("reoExistingRefinedNote").textContent = result?.issues?.join(" ") || "Development reference unavailable.";
     return;
   }
-  $("reoExistingCd").textContent = result.cd.toFixed(1);
-  $("reoExistingKValue").textContent = result.K.toFixed(3);
-  $("reoExistingCombinedFactor").textContent = `${result.lambda.toFixed(3)} / ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}`;
+  $("reoExistingCd").textContent = displayFixed(result.cd, 1);
+  $("reoExistingKValue").textContent = displayFixed(result.K, 3);
+  $("reoExistingCombinedFactor").textContent = `${displayFixed(result.lambda, 3)} / ${displayFixed(result.k4, 3)} / ${displayFixed(result.k5, 3)}`;
   $("reoExistingRefinedCandidateLength").textContent = options.method === "refined"
-    ? result.refinedCandidateAdoptedLength.toFixed(0)
+    ? displayFixed(result.refinedCandidateAdoptedLength, 0)
     : "-";
   $("reoExistingRefinedNote").textContent = options.method === "refined"
     ? result.refinedReconciliationRequired
-      ? `Candidate ${result.refinedCandidateAdoptedLength.toFixed(0)} mm is not adopted. Confirm the qualifying reinforcement count and any pressure basis throughout that candidate length.`
+      ? `Candidate ${displayFixed(result.refinedCandidateAdoptedLength, 0)} mm is not adopted. Confirm the qualifying reinforcement count and any pressure basis throughout that candidate length.`
       : result.refinedCreditRequested
-        ? `Candidate evidence confirmed; ${result.adoptedLength.toFixed(0)} mm is adopted.`
+        ? `Candidate evidence confirmed; ${displayFixed(result.adoptedLength, 0)} mm is adopted.`
         : "No Refined reduction applies for the entered arrangement."
     : "Basic development; no confinement reduction.";
 }
@@ -9271,7 +9288,7 @@ function updateReoAnchorage(options, selectedBar, developmentResult, development
     return anchorage;
   }
 
-  const formatLength = value => Number.isFinite(value) ? Number(value).toFixed(0) : "-";
+  const formatLength = value => Number.isFinite(value) ? displayFixed(value, 0) : "-";
   $("reoAsFullDevelopment").textContent = formatLength(anchorage.fullDevelopmentAdopted);
   $("reoAnchoragePrimaryResult").textContent = anchorage.benchmarkAvailable ? formatLength(anchorage.asBenchmarkAdopted) : "-";
 
@@ -9312,11 +9329,11 @@ function updateReoAnchorage(options, selectedBar, developmentResult, development
 
   const basisNotes = [];
   if (anchorage.stressOverYield) {
-    basisNotes.push(`Entered sigma_st = ${anchorage.actualStress.toFixed(0)} MPa exceeds fsy; review the bar design.`);
+    basisNotes.push(`Entered sigma_st = ${displayFixed(anchorage.actualStress, 0)} MPa exceeds fsy; review the bar design.`);
   } else if (anchorage.refinedReducedLengthConfirmationMissing) {
     basisNotes.push(`Candidate stress-based length ${formatLength(anchorage.reducedDevelopmentCandidateAdopted)} mm. Confirm the Refined evidence throughout that candidate before adoption.`);
   } else if (anchorage.actualStressApplied) {
-    basisNotes.push(`Project sigma_st = ${anchorage.actualStress.toFixed(0)} MPa; the 12db minimum is retained.`);
+    basisNotes.push(`Project sigma_st = ${displayFixed(anchorage.actualStress, 0)} MPa; the 12db minimum is retained.`);
   } else if (anchorage.actualStressRequested) {
     basisNotes.push("Enter a positive project design tensile stress not exceeding fsy.");
   }
@@ -9423,19 +9440,19 @@ function renderReoLapResult(options, result, path, basicReference) {
   }
   if (!result?.eligible) {
     if (options.method === "refined" && basicReference?.eligible) {
-      $("reoCd").textContent = basicReference.cd.toFixed(1);
-      $("reoK1").textContent = basicReference.k1.toFixed(2);
-      $("reoK2").textContent = basicReference.k2.toFixed(3);
-      $("reoK3").textContent = basicReference.k3.toFixed(3);
-      $("reoK7").textContent = basicReference.k7.toFixed(2);
+      $("reoCd").textContent = displayFixed(basicReference.cd, 1);
+      $("reoK1").textContent = displayFixed(basicReference.k1, 2);
+      $("reoK2").textContent = displayFixed(basicReference.k2, 3);
+      $("reoK3").textContent = displayFixed(basicReference.k3, 3);
+      $("reoK7").textContent = displayFixed(basicReference.k7, 2);
       $("reoKValue").textContent = "-";
       $("reoCombinedFactor").textContent = "-";
       $("reoRefinedCandidateLength").textContent = "-";
       $("reoPrimaryResultLabel").textContent = "Basic-reference tensile lap";
-      $("reoRequiredLength").textContent = basicReference.adoptedLength.toFixed(0);
-      $("reoLapRatio").textContent = basicReference.ratio.toFixed(1);
+      $("reoRequiredLength").textContent = displayFixed(basicReference.adoptedLength, 0);
+      $("reoLapRatio").textContent = displayFixed(basicReference.ratio, 1);
       $("reoGoverning").textContent = `Basic reference: ${basicReference.governing.label}`;
-      $("reoDevelopmentLength").textContent = `Basic Lsy.t = ${basicReference.developmentLength.toFixed(1)} mm`;
+      $("reoDevelopmentLength").textContent = `Basic Lsy.t = ${displayFixed(basicReference.developmentLength, 1)} mm`;
       $("reoResultStatus").textContent = "BASIC REFERENCE · REFINED INPUT REQUIRED";
       $("reoResultNote").textContent = `Refined result unavailable. Basic reference retained for context. ${result.issues.join(" ")}`;
       $("reoResultNote").className = "result-note is-warning";
@@ -9447,21 +9464,21 @@ function renderReoLapResult(options, result, path, basicReference) {
     $("reoResultStatus").textContent = prohibited ? "LAP SPLICE NOT PERMITTED" : "INVALID INPUT";
     return;
   }
-  $("reoCd").textContent = result.cd.toFixed(1);
-  $("reoK1").textContent = result.k1.toFixed(2);
-  $("reoK2").textContent = result.k2.toFixed(3);
-  $("reoK3").textContent = result.k3.toFixed(3);
-  $("reoK7").textContent = result.k7.toFixed(2);
-  $("reoKValue").textContent = result.K.toFixed(3);
-  $("reoCombinedFactor").textContent = `${result.lambda.toFixed(3)} / ${result.k4.toFixed(3)} / ${result.k5.toFixed(3)}`;
+  $("reoCd").textContent = displayFixed(result.cd, 1);
+  $("reoK1").textContent = displayFixed(result.k1, 2);
+  $("reoK2").textContent = displayFixed(result.k2, 3);
+  $("reoK3").textContent = displayFixed(result.k3, 3);
+  $("reoK7").textContent = displayFixed(result.k7, 2);
+  $("reoKValue").textContent = displayFixed(result.K, 3);
+  $("reoCombinedFactor").textContent = `${displayFixed(result.lambda, 3)} / ${displayFixed(result.k4, 3)} / ${displayFixed(result.k5, 3)}`;
   $("reoRefinedCandidateLength").textContent = options.method === "refined"
-    ? result.refinedCandidateAdoptedLength.toFixed(0)
+    ? displayFixed(result.refinedCandidateAdoptedLength, 0)
     : "-";
   $("reoPrimaryResultLabel").textContent = "Adopted lap length";
-  $("reoRequiredLength").textContent = result.adoptedLength.toFixed(0);
-  $("reoLapRatio").textContent = result.ratio.toFixed(1);
+  $("reoRequiredLength").textContent = displayFixed(result.adoptedLength, 0);
+  $("reoLapRatio").textContent = displayFixed(result.ratio, 1);
   $("reoGoverning").textContent = result.governing.label;
-  $("reoDevelopmentLength").textContent = `Lsy.t = ${result.developmentLength.toFixed(1)} mm`;
+  $("reoDevelopmentLength").textContent = `Lsy.t = ${displayFixed(result.developmentLength, 1)} mm`;
   const notices = result.notices.filter(note => ![
     "No verified custom transverse-reinforcement arrangement is being used.",
     "Sigma Atr is confirmed for the candidate lap length.",
@@ -9482,9 +9499,9 @@ function renderReoLapResult(options, result, path, basicReference) {
   const refinedEvidencePending = result.refinedReconciliationRequired;
   $("reoRefinedNote").textContent = options.method === "refined"
     ? (refinedEvidencePending
-      ? `Candidate ${result.refinedCandidateAdoptedLength.toFixed(0)} mm is not adopted. Confirm the qualifying reinforcement count and any pressure basis throughout that candidate length.`
+      ? `Candidate ${displayFixed(result.refinedCandidateAdoptedLength, 0)} mm is not adopted. Confirm the qualifying reinforcement count and any pressure basis throughout that candidate length.`
       : refinedReduction > 0
-        ? `Refined reduction applied: adopted lap is ${refinedReduction.toFixed(0)} mm below the Basic reference.`
+        ? `Refined reduction applied: adopted lap is ${displayFixed(refinedReduction, 0)} mm below the Basic reference.`
         : "No Refined reduction applies.")
     : "Basic lap development; no confinement reduction.";
 }

@@ -218,7 +218,7 @@ assert.ok(capacityScript >= 0 && capacityScript < sharedAppScript && sharedAppSc
 assert.match(html, /src="monopole-capacity\.js\?v=20260808audit1"/);
 assert.match(html, /src="monopole-app\.js\?v=20260808audit1"/);
 assert.match(html, /href="styles\.css\?v=20260807monopolerelease2"/);
-assert.match(html, /SC Handbook &middot; Build 0\.7\.35/);
+assert.match(html, /SC Handbook &middot; Build 0\.7\.36/);
 assert.doesNotMatch(panel, /id="monopoleMomentSection"[^>]*open/);
 assert.doesNotMatch(panel, /id="monopoleCombinedSection"[^>]*open/);
 assert.match(panel, /id="monopoleOverlapSection" class="monopole-overlap-section" hidden/);

@@ -943,6 +943,29 @@ Desktop (1440 px) and phone (390 px) browser reproductions then exercised zero-a
 
 This continuation changes no formula, source value, capacity factor, result status or page layout. It records direct browser evidence for the existing independent Concrete and Reinforcement cases. Publication remains pending.
 
+### Concrete and Reinforcement Calculation-Trace Correction - 2026-08-11
+
+| Test_ID | Page / correction | Verified outcome |
+| --- | --- | --- |
+| `AUD-CONCRETE-TRACE-02` | Concrete stress block, force equilibrium and nominal moment | The trace cites AS 3600 Cl. 8.1.2 and Cl. 8.1.3 as applicable, expands current concrete and reinforcement force terms, and numerically reproduces `Muo = 337.8 kN.m` and `phi Muo = 287.1 kN.m` |
+| `AUD-CONCRETE-SHEAR-TRACE-02` | Concrete and fitment shear contributions | The visible substitution retains sufficient `kv`, square-root and `cot theta_v` precision to reproduce the displayed `Vuc`, `Vus` and `phi Vu` values |
+| `AUD-REO-TRACE-02` | Basic lap and development references | The trace substitutes `k1`, `k2`, `k3`, `fsy`, `db` and `f'c` into the governing AS 3600 expression before candidate comparison and upward 10 mm adoption |
+| `AUD-CONCRETE-REO-ROUND-01` | Concrete and Reinforcement visible engineering values | Direct `toFixed()` output was removed from both page calculation regions; visible values use the shared decimal half-up formatter while calculation engines retain unrounded values |
+
+The production formulas, source data, capacity factors and primary results are unchanged. The full 32-file regression suite, default browser reproduction, invalid Reinforcement input state, 375 px phone-width overflow check and browser console check passed. The focused trace contract is retained in `tests/concrete-reo-trace.test.js`.
+
+### Weld Engineering-Language Review - 2026-08-11
+
+Build 0.7.36 standardises the Weld page as a formal engineering quick-reference without changing weld resistance, capacity factors, welded-lap reduction, parent-metal screening arithmetic or calculation branches.
+
+| Test_ID | Page / review | Verified outcome |
+| --- | --- | --- |
+| `AUD-WELD-LANGUAGE-01` | Weld inputs, results, calculation trace and limitations | Visible terminology distinguishes calculated weld-throat resistance, the advisory parent-metal screen and project-specific fabrication or detailing requirements; conversational terms and the `SSHS` typo are removed |
+| `AUD-WELD-STATE-02` | CPBW and invalid fillet-weld geometry | CPBW remains `Not evaluated` because the weaker joined-part resistance is not defined; `l_w < 4s` remains `Not evaluated` with `aria-invalid=true` and no stale capacity |
+| `AUD-WELD-RESPONSIVE-02` | Desktop and 390 px browser states | Result labels wrap within their cards, the page has no document-level horizontal overflow and the browser console is clear |
+
+The full 33-file regression suite passes, including the independent Weld arithmetic cases and the new visible-language contract in `tests/weld-language.test.js`. The page remains `For Review`; AS/NZS 1554.1 welding procedure, fabrication and inspection coordination remains project-specific.
+
 ## 2026-07-30 Full-page Regression Audit
 
 Build 0.7.10 was checked against the current `SC_HANDBOOK.md` calculation, validation, traceability and responsive-layout contract. This pass did not expand any tab into a complete design engine.

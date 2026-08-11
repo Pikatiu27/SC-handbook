@@ -3279,7 +3279,10 @@ Required AS 4100 and reference basis:
 
 Display and limitation rules:
 
-- For fillet weld and IPBW, the main quick result should remain `kN/mm per weld line`; total capacity is secondary.
+- For fillet weld and IPBW, the main quick result should remain `kN/mm per effective weld line`; total capacity is secondary.
+- Use formal resistance terminology throughout the page. Prefer `Design capacity per unit effective length`, `Total design weld capacity`, `Indicative parent-metal screen`, `No design action`, and `Not evaluated`. Do not use conversational or software-internal wording such as `usual detail`, `warning only`, `fails closed`, or `capacity view only` in visible copy.
+- Separate three claim levels explicitly: calculated weld-throat resistance, advisory screening information, and project-specific detailing or fabrication requirements. Application notes may identify a potential or typical configuration, but must not present a generic weld detail as a design selection.
+- Use `Applicable`, `Not applicable`, `Required`, `Not evaluated`, and `Verify separately` for conditions and boundaries. Expand specialist abbreviations such as heat-affected zone on first visible use; retain standard weld abbreviations such as CPBW and IPBW only where the full weld type is also available in the selector or nearby text.
 - State that effective weld lines are not welding passes.
 - Accept only positive whole numbers of identical effective weld lines. Never round, clamp or infer a line count inside the calculation module.
 - CPBW, IPBW and compound welds require project-confirmed joint preparation, WPS, inspection and acceptance criteria. IPBW additionally requires a specified design throat. CPBW and compound selections must not display a numeric capacity from the limited weld-metal inputs.

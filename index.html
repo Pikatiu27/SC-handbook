@@ -396,7 +396,7 @@
     </section>
 
     <section id="weldPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Welded connections - AS 4100 Cl. 9.6</p><h2>Weld Capacity</h2></div><span class="tool-status">For Review - AS/NZS 1554.1 coordination</span></div>
+      <div class="tool-heading"><div><p class="kicker">Welded connections &middot; AS 4100 Cl. 9.6</p><h2>Weld Capacity</h2></div><span class="tool-status">For Review &middot; AS/NZS 1554.1 coordination required</span></div>
 
       <section class="lookup-card weld-card">
         <div class="input-cluster input-cluster-two">
@@ -414,14 +414,14 @@
             <span class="input-group-heading"><b>Material properties</b><small>Weld category and nominal tensile strength of weld metal.</small></span>
             <div class="input-group-fields two">
               <label><span>Weld category</span><select id="weldCategory" aria-label="Weld category"><option value="SP">SP - Structural Purpose</option><option value="GP">GP - General Purpose</option></select></label>
-              <label><span>f<sub>uw</sub> weld-metal strength</span><select id="weldStrength" aria-label="Nominal tensile strength of weld metal"><option value="430">430 MPa</option><option value="490" selected>490 MPa</option><option value="550">550 MPa</option></select></label>
+              <label><span>Nominal weld-metal strength, f<sub>uw</sub></span><select id="weldStrength" aria-label="Nominal tensile strength of weld metal"><option value="430">430 MPa</option><option value="490" selected>490 MPa</option><option value="550">550 MPa</option></select></label>
             </div>
           </section>
         </div>
 
         <div class="weld-summary">
           <div><span>Weld designation</span><strong id="weldCallout">6 mm CFW, category SP, f_uw 490 MPa</strong><small>Show weld type, size or throat, category and nominal weld-metal strength on drawings.</small></div>
-          <dl><div><dt>type</dt><dd id="weldTypeValue">Fillet</dd></div><div><dt>t<sub>t</sub></dt><dd id="weldThroatValue">4.24 mm</dd></div><div><dt>l<sub>w</sub></dt><dd id="weldLengthValue">100 mm</dd></div><div><dt>lines</dt><dd id="weldRunsValue">2</dd></div><div><dt>&phi;</dt><dd id="weldPhiValue">0.80</dd></div></dl>
+          <dl><div><dt>Weld type</dt><dd id="weldTypeValue">Fillet</dd></div><div><dt>t<sub>t</sub></dt><dd id="weldThroatValue">4.24 mm</dd></div><div><dt>l<sub>w</sub></dt><dd id="weldLengthValue">100 mm</dd></div><div><dt>Effective lines</dt><dd id="weldRunsValue">2</dd></div><div><dt>&phi;</dt><dd id="weldPhiValue">0.80</dd></div></dl>
         </div>
 
         <div class="symbol-key" aria-label="AS 4100 weld symbols"><span><b>s</b> fillet weld leg size</span><span><b>t<sub>t</sub></b> design throat thickness</span><span><b>a<sub>w</sub></b> butt-weld design throat</span><span><b>l<sub>w</sub></b> effective weld length</span><span><b>f<sub>uw</sub></b> nominal tensile strength of weld metal</span></div>
@@ -539,18 +539,18 @@
           </section>
         </details>
 
-        <details class="weld-guide" aria-label="Weld selection guide">
-          <summary><span><b>Weld selection guide</b><small>Common structural-steel use cases and limits.</small></span><i>+</i></summary>
+        <details class="weld-guide" aria-label="Weld application notes">
+          <summary><span><b>Weld application notes</b><small>Indicative structural-steel applications and required project checks.</small></span><i>+</i></summary>
           <div class="weld-scenario-grid">
-            <article><b>Shear cleat / web plate</b><strong>Usual detail: fillet weld both sides</strong><span>Use for direct shear transfer where both sides are accessible. Typical designation: 6 or 8 mm CFW both sides, SP.</span><small>Check eccentric weld groups where the action is not concentric.</small></article>
-            <article><b>Bracing gusset / cleat</b><strong>Usual detail: continuous fillet weld</strong><span>Use for gusset-to-member shear transfer with practical fit-up. Typical designation: 6 or 8 mm CFW all round or both sides, SP.</span><small>Check effective length, block shear path and local wall or plate capacity.</small></article>
-            <article><b>Base plate to column</b><strong>Usual detail: fillet weld around column</strong><span>Use where bearing carries compression and the weld transfers shear, erection effects or uplift.</span><small>Check anchors, bearing, prying and column wall or flange limits separately.</small></article>
-            <article><b>Full-strength splice</b><strong>Select: complete penetration butt weld</strong><span>Use where the joint must develop full member or plate continuity through the thickness.</span><small>Requires preparation, WPS, NDT and distortion control.</small></article>
-            <article><b>Partial-strength butt joint</b><strong>Select: IPBW with specified a<sub>w</sub></strong><span>Use only where the required design throat is deliberately specified and full penetration is not required.</span><small>Avoid for fatigue-sensitive or full-strength continuity unless justified.</small></article>
-            <article><b>Moment flange / heavy joint</b><strong>Select: CPBW or compound weld</strong><span>Use where flange force, restraint demand or geometry requires a butt weld with a supplementary fillet.</span><small>Confirm access, sequencing, inspection and through-thickness risk.</small></article>
-            <article><b>Tube / SSHS plate</b><strong>Usual detail: fillet weld where practical</strong><span>Use CFW where wall thickness, access and weld size are practical.</span><small>Check local wall capacity and closed-section access.</small></article>
-            <article><b>Fatigue-sensitive detail</b><strong>Select: fatigue-specific weld detail</strong><span>Use only after fatigue category, weld profile, finish and inspection level are defined.</span><small>Do not select from static capacity alone.</small></article>
-            <article><b>Site welding / restricted access</b><strong>Select after constructability review</strong><span>Prefer simple fillet details where access, sheltering and WPS controls are practical.</span><small>Confirm welder qualification, preheat and inspection before issue.</small></article>
+            <article><b>Shear cleat / web plate</b><strong>Typical configuration: double-sided fillet weld</strong><span>Applicable to direct shear transfer where both sides are accessible.</span><small>Evaluate weld-group eccentricity where the design action is not concentric.</small></article>
+            <article><b>Bracing gusset / cleat</b><strong>Typical configuration: continuous fillet weld</strong><span>Applicable to gusset-to-member shear transfer where fit-up and access are suitable.</span><small>Verify effective length, connected-part limit states and local member resistance.</small></article>
+            <article><b>Base plate to column</b><strong>Typical configuration: perimeter fillet weld</strong><span>The weld may transfer shear, erection actions or uplift where compression is transferred by bearing.</span><small>Verify anchors, bearing, prying and local column resistance separately.</small></article>
+            <article><b>Continuity splice</b><strong>Potential configuration: complete-penetration butt weld</strong><span>Project design must establish the required joined-part resistance and continuity.</span><small>Specify joint preparation, welding procedure, inspection and distortion controls.</small></article>
+            <article><b>Incomplete-penetration butt joint</b><strong>Required input: specified design throat, a<sub>w</sub></strong><span>Applicable only where the required design throat is established by the project design.</span><small>Fatigue and continuity requirements require separate assessment.</small></article>
+            <article><b>Moment flange / heavily restrained joint</b><strong>Potential configuration: CPBW or compound weld</strong><span>Selection depends on force transfer, restraint, joint geometry and fabrication access.</span><small>Verify sequencing, inspection and through-thickness material requirements.</small></article>
+            <article><b>RHS / SHS connection plate</b><strong>Potential configuration: fillet weld</strong><span>Applicability depends on wall thickness, access and the required weld size.</span><small>Verify local wall resistance and fabrication access separately.</small></article>
+            <article><b>Fatigue-sensitive detail</b><strong>Project-specific fatigue detail required</strong><span>Define the fatigue category, weld profile, finish and inspection requirements.</span><small>Static throat capacity alone does not establish fatigue resistance.</small></article>
+            <article><b>Site weld / restricted access</b><strong>Constructability review required</strong><span>Confirm access, environmental controls and the applicable welding procedure.</span><small>Verify welder qualification, preheat and inspection before issue for construction.</small></article>
           </div>
           <div class="weld-standard-strip"><span>AS 4100 Cl. 9.6</span><span>AS 4100 Table 9.6.3.10</span><span>AS/NZS 1554.1 WPS / inspection</span><span>ASI Simple Connections Figure 2.7</span></div>
         </details>
@@ -558,15 +558,15 @@
         <section class="capacity-section" aria-live="polite">
           <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Weld capacity</h2></div><span>per effective weld line</span></div>
           <div class="capacity-grid weld-results">
-            <article class="capacity-card selected-shear"><span id="weldCapacityLabel">Capacity per mm per weld line</span><strong><output id="weldCapacityPerMm">1.00</output><small id="weldCapacityUnit"> kN/mm</small></strong><p id="weldCapacityBasis">&phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub></p></article>
-            <article class="capacity-card alternate-shear"><span>Parent metal screen</span><strong><output id="parentGoverningPerMm">2.21</output><small> kN/mm</small></strong><p id="parentGoverningNote">warning only</p></article>
+            <article class="capacity-card selected-shear"><span id="weldCapacityLabel">Design capacity per unit effective length</span><strong><output id="weldCapacityPerMm">1.00</output><small id="weldCapacityUnit"> kN/mm</small></strong><p id="weldCapacityBasis">&phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub></p></article>
+            <article class="capacity-card alternate-shear"><span>Indicative parent-metal screen</span><strong><output id="parentGoverningPerMm">2.21</output><small> kN/mm</small></strong><p id="parentGoverningNote">Advisory screening result</p></article>
           </div>
           <details class="advanced-input-card">
-            <summary><span><b>Optional screens: parent metal and welded lap</b><small>Warning-only parent-metal screen and AS 4100 welded-lap k<sub>r</sub>.</small></span><i>+</i></summary>
+            <summary><span><b>Optional factors and screening inputs</b><small>Indicative parent-metal screen and AS 4100 welded-lap reduction factor k<sub>r</sub>.</small></span><i>+</i></summary>
             <div class="advanced-input-body">
               <div class="weld-extra-inputs input-cluster input-cluster-two">
                 <section class="input-group input-group-warning">
-                  <span class="input-group-heading"><b>Parent metal screen</b><small>Warning only; not a connected-part design check.</small></span>
+                  <span class="input-group-heading"><b>Indicative parent-metal screen</b><small>Advisory only; this is not a connected-part resistance check.</small></span>
                   <div class="input-group-fields two">
                     <label><span>Ply thickness, t</span><span class="unit"><input id="weldParentThickness" type="number" min="0" step="0.5" value="10"><em>mm</em></span></label>
                     <label><span>Parent metal grade</span><select id="weldParentGrade" aria-label="Parent metal grade"></select></label>
@@ -593,16 +593,16 @@
               </div>
             </div>
           </details>
-          <p class="result-note">Capacity view only; verify connected parts, HAZ, eccentric weld groups, fatigue and inspection separately.</p>
+          <p class="result-note">Weld-throat resistance only. Verify connected-part limit states, heat-affected-zone requirements, weld-group effects, fatigue and inspection separately.</p>
         </section>
       </section>
 
-      <details class="detail-card"><summary><span><b>Calculation details</b><small>Formula trace, total capacity and warning-only parent-metal screen.</small></span><i>+</i></summary><div class="detail-body">
+      <details class="detail-card"><summary><span><b>Calculation details</b><small>Formula trace, total capacity and indicative parent-metal screen.</small></span><i>+</i></summary><div class="detail-body">
         <section><h3>Formula trace</h3><div id="weldFormulaSteps" class="formula-list"></div></section>
-        <section><h3>Calculated values</h3><div class="member-check-grid weld-detail-grid"><div><span>Total weld capacity</span><strong><output id="weldCapacity">199.5</output><small id="weldTotalCapacityUnit"> kN</small></strong><small>per-mm capacity x l<sub>w</sub> x effective weld lines</small></div></div></section>
+        <section><h3>Calculated values</h3><div class="member-check-grid weld-detail-grid"><div><span>Total design weld capacity</span><strong><output id="weldCapacity">199.5</output><small id="weldTotalCapacityUnit"> kN</small></strong><small>capacity per unit effective length &times; l<sub>w</sub> &times; effective weld lines</small></div></div></section>
       </div></details>
 
-        <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100 weld capacity, AS/NZS 1554.1 coordination and excluded checks.</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Issue status</b> - For Review. Formula basis is shown; symbol redraws and fabrication requirements remain project-drawing dependent.</p><p><b>Primary basis</b> - AS 4100 Cl. 9.6 welded connections. Fillet-weld throat capacity is calculated as &phi;R = &phi;0.6f<sub>uw</sub>t<sub>t</sub>l<sub>w</sub>k<sub>r</sub>. An IPBW is evaluated by the fillet-weld method using the entered design throat in accordance with AS 4100 Cl. 9.6.2.7. AS 4100 Table 3.4 supplies the applicable capacity factor.</p><p><b>CPBW</b> - AS 4100 Cl. 9.6.2.7 takes design capacity from the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. This page therefore reports CPBW capacity as Not evaluated rather than applying a weld-metal throat formula.</p><p><b>Compound weld</b> - AS 4100 Cl. 9.6.5.2 determines design throat from the actual total weld cross-section. The page does not use a<sub>w</sub> + 0.707s and reports compound-weld capacity as Not evaluated.</p><p><b>Strength data</b> - f<sub>uw</sub> options follow AS 4100 Table 9.6.3.10(A), also summarised in ASI Simple Connections 2020 Table 2.14.</p><p><b>Effective length</b> - entered fillet-weld effective length must be at least 4s in accordance with AS 4100 Cl. 9.6.3.5. This quick check fails closed rather than applying the Clause's reduced design-size alternative.</p><p><b>Effective weld lines</b> - use only for identical effective weld lines acting together, such as both sides of a plate. It is not the number of welding passes.</p><p><b>Welded-lap reduction</b> - k<sub>r</sub> is from AS 4100 Table 9.6.3.10(B) and applies only when the welded-lap option is selected. The table length l<sub>w</sub> is in metres.</p><p><b>Parent metal screen</b> - the displayed parent-metal value is an indicative per-mm screen, &phi;0.6f<sub>up</sub>t with &phi; = 0.90. It is warning only and is not the weaker-part CPBW capacity check.</p></div><div class="source-notes"><p><b>Symbols</b> - AS 1101.3-style examples show arrow-side symbols below the reference line and other-side symbols above it. Verify final symbols on project drawings.</p><p><b>Calculated scope</b> - direct throat-capacity lookup for equal-leg fillet welds and IPBW with a project-specified design throat.</p><p><b>Reference-only scope</b> - CPBW and compound weld types remain available for terminology and detailing guidance but do not return capacity or PASS/FAIL.</p><p><b>Excluded</b> - longitudinal fillet welds in RHS where t &lt; 3 mm, plug and slot welds, weld groups, parent-metal rupture, HAZ, block shear, net-section rupture, joint preparation, backing/gouging, eccentricity, intermittent weld spacing and end-return rules, fatigue, seismic detailing, lamellar tearing and inspection acceptance.</p></div></div></details>
+        <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100 weld resistance, AS/NZS 1554.1 coordination and excluded checks.</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Issue status</b> - For Review. The resistance basis is shown; weld symbols and fabrication requirements remain subject to the project documentation.</p><p><b>Primary basis</b> - AS 4100 Cl. 9.6 welded connections. Fillet-weld throat resistance is calculated as &phi;R = &phi;0.6f<sub>uw</sub>t<sub>t</sub>l<sub>w</sub>k<sub>r</sub>. An IPBW is evaluated by the fillet-weld method using the entered design throat in accordance with AS 4100 Cl. 9.6.2.7. AS 4100 Table 3.4 supplies the applicable capacity factor.</p><p><b>CPBW</b> - AS 4100 Cl. 9.6.2.7 bases design capacity on the nominal capacity of the weaker joined part and the applicable capacity factor. The limited weld-metal inputs on this page do not establish that resistance; the result is therefore Not evaluated.</p><p><b>Compound weld</b> - AS 4100 Cl. 9.6.5.2 determines design throat from the actual total weld cross-section. The page does not use a<sub>w</sub> + 0.707s and reports compound-weld capacity as Not evaluated.</p><p><b>Strength data</b> - f<sub>uw</sub> options follow AS 4100 Table 9.6.3.10(A), also summarised in ASI Simple Connections 2020 Table 2.14.</p><p><b>Effective length</b> - the entered fillet-weld effective length must be at least 4s in accordance with AS 4100 Cl. 9.6.3.5. Inputs below this limit return Not evaluated; the reduced design-size alternative is outside the current page scope.</p><p><b>Effective weld lines</b> - use only for identical effective weld lines acting together, such as welds on both sides of a plate. This value is not the number of welding passes.</p><p><b>Welded-lap reduction</b> - k<sub>r</sub> is obtained from AS 4100 Table 9.6.3.10(B) and applies only when the welded-lap condition is selected. The table length l<sub>w</sub> is expressed in metres.</p><p><b>Indicative parent-metal screen</b> - the displayed value is &phi;0.6f<sub>up</sub>t per unit length with &phi; = 0.90. It is an advisory screening result, not the weaker-joined-part CPBW resistance.</p></div><div class="source-notes"><p><b>Symbols</b> - AS 1101.3-style examples show arrow-side symbols below the reference line and other-side symbols above it. Verify the final symbols in the project drawings.</p><p><b>Calculated scope</b> - direct weld-throat resistance for ordinary equal-leg fillet welds and IPBW with a project-specified design throat.</p><p><b>Reference-only scope</b> - CPBW and compound weld types remain available for terminology and detailing context but do not return capacity or PASS/FAIL.</p><p><b>Excluded</b> - longitudinal fillet welds in RHS where t &lt; 3 mm, plug and slot welds, weld groups, connected-part rupture, heat-affected-zone requirements, block shear, net-section rupture, joint preparation, backing or gouging, eccentricity, intermittent-weld spacing and end-return rules, fatigue, seismic detailing, lamellar tearing and inspection acceptance.</p></div></div></details>
     </section>
 
     <section id="concretePanel" class="tool-panel" hidden>
@@ -1916,7 +1916,7 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.35</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.36</b></footer>
   <script src="engineering-number-format.js?v=20260810halfup1"></script>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
@@ -1934,7 +1934,7 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260803productflow36"></script>
   <script src="monopole-capacity.js?v=20260808audit1"></script>
-  <script src="app.js?v=20260810trace3"></script>
+  <script src="app.js?v=20260811weldlanguage1"></script>
   <script src="monopole-app.js?v=20260808audit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260809rocksource1"></script>
 </body>
