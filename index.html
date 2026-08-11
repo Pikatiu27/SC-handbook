@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260807monopolerelease2">
+  <link rel="stylesheet" href="styles.css?v=20260811beammaterial1">
 </head>
 <body>
   <header class="topbar">
@@ -874,10 +874,8 @@
         <div class="input-cluster beam-selection-inputs">
           <section class="input-group input-group-section" id="beamSectionGroup">
             <span class="input-group-heading"><b>Section selection</b><small id="beamSectionSource">Checked catalogue identity and Beam-specific capacity data.</small></span>
-            <div class="input-group-fields two beam-selection-fields">
+            <div class="input-group-fields one beam-selection-fields">
               <label id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam section"></select></label>
-              <label id="beamCustomMaterialField" hidden><span>Material basis</span><select id="beamCustomMaterialForm" aria-label="Custom section material basis"><option value="">Select material basis</option></select></label>
-              <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
             </div>
             <div class="member-dimension-panel beam-dimension-panel" id="beamDimensionCard">
               <div class="input-group-fields member-dimension-toggle">
@@ -907,14 +905,15 @@
             </div>
           </section>
           <section class="input-group input-group-material beam-material-group" id="beamMaterialGroup">
-            <span class="input-group-heading beam-material-heading"><span><b>Material strength</b><small>Adopted values are shown in the selected-section summary. <em id="beamMaterialStatus" class="input-source-status">Catalogue default</em></small></span><button id="beamMaterialReset" class="beam-material-reset" type="button" title="Restore catalogue material strengths" aria-label="Restore catalogue material strengths">&#8634;</button></span>
-            <details class="input-override-details">
-              <summary><span><b>Override material values</b><small>Use verified project or legacy strengths only.</small></span><i>+</i></summary>
-              <div class="input-group-fields two beam-material-fields">
-                <label><span>Member yield strength f<sub>y,m</sub></span><span class="unit"><input id="beamFyInput" type="number" min="1" step="1" inputmode="decimal"><em>MPa</em></span></label>
-                <label id="beamFywField"><span>Web yield strength f<sub>y,w</sub></span><span class="unit"><input id="beamFywInput" type="number" min="1" step="1" inputmode="decimal"><em>MPa</em></span></label>
-              </div>
-            </details>
+            <span class="input-group-heading beam-material-heading"><span><b>Material properties</b><small>Grade and editable strengths. <em id="beamMaterialStatus" class="input-source-status">Catalogue default</em></small></span><button id="beamMaterialReset" class="beam-material-reset" type="button" title="Restore catalogue material strengths" aria-label="Restore catalogue material strengths">&#8634;</button></span>
+            <div class="input-group-fields four beam-material-fields" id="beamMaterialFields">
+              <label id="beamCustomMaterialField" hidden><span>Material basis</span><select id="beamCustomMaterialForm" aria-label="Custom section material basis"><option value="">Select material basis</option></select></label>
+              <label id="beamGradeField"><span>Steel grade</span><select id="beamGrade" aria-label="Steel grade"></select></label>
+              <label id="beamFyField"><span>Member yield strength f<sub>y,m</sub></span><span class="unit"><input id="beamFyInput" type="number" min="1" step="1" inputmode="decimal"><em>MPa</em></span></label>
+              <label id="beamFywField"><span>Web yield strength f<sub>y,w</sub></span><span class="unit"><input id="beamFywInput" type="number" min="1" step="1" inputmode="decimal"><em>MPa</em></span></label>
+              <label id="beamFuField"><span>Tensile strength f<sub>u</sub></span><span class="unit"><input id="beamFuInput" type="number" min="1" step="1" inputmode="decimal"><em>MPa</em></span></label>
+            </div>
+            <p class="beam-material-note">f<sub>u</sub> confirms the adopted material record; current section moment and shear capacities use the applicable f<sub>y</sub> value.</p>
           </section>
           <section class="input-group beam-direction-group" id="beamDirectionGroup">
             <span class="input-group-heading"><b id="beamDirectionHeading">Bending direction</b><small id="beamDirectionHelp">Select the catalogue load direction used for the effective section modulus.</small></span>
@@ -1916,7 +1915,7 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.36</b></footer>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.37</b></footer>
   <script src="engineering-number-format.js?v=20260810halfup1"></script>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
@@ -1929,12 +1928,12 @@
   <script src="beam-hot-rolled-data.js?v=20260803productflow36"></script>
   <script src="beam-section-capacity.js?v=20260803productflow36"></script>
   <script src="beam-section-reconciliation.js?v=20260803productflow36"></script>
-  <script src="beam-custom-section.js?v=20260807beamcustom1"></script>
+  <script src="beam-custom-section.js?v=20260811beammaterial1"></script>
   <script src="member-capacity.js?v=20260806axialrelease1"></script>
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260803productflow36"></script>
   <script src="monopole-capacity.js?v=20260808audit1"></script>
-  <script src="app.js?v=20260811weldlanguage1"></script>
+  <script src="app.js?v=20260811beammaterial1"></script>
   <script src="monopole-app.js?v=20260808audit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260809rocksource1"></script>
 </body>

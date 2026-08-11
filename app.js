@@ -2139,7 +2139,7 @@ const manualInputIds = [
   "reoExistingConcreteStrength", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
   "layer3Y", "layer3Spacing", "layer3Fsy", "layer3Es", "layer4Y", "layer4Spacing", "layer4Fsy", "layer4Es",
-  "beamMomentDemand", "beamShearDemand", "beamFyInput", "beamFywInput", ...beamDimensionInputIds,
+  "beamMomentDemand", "beamShearDemand", "beamFyInput", "beamFywInput", "beamFuInput", ...beamDimensionInputIds,
   ...sectionPropertyInputIds, "sectionMaterialThickness", "sectionMaterialFyInput", "sectionMaterialFuInput",
   "screwFilterCompression", "screwFilterTension", "screwCompressionCap", "screwUpliftCap", "screwLateralCap", "screwProjectCompression", "screwProjectTension", "screwProjectHorizontal", "screwDemandN", "screwDemandVx", "screwDemandVy", "screwDemandMx", "screwDemandMy", "screwDemandTz", "screwPileColumns", "screwPileRows", "screwGroupLengthX", "screwGroupLengthY",
   "memberLength", "memberCompressionDemand", "memberTensionDemand", "memberHoleCount", "memberHoleDiameter", "memberHoleThickness", "memberNetArea",
@@ -5308,7 +5308,8 @@ function beamCustomMaterial() {
     grade: $("beamGrade").value,
     dimensions: beamCustomDimensions(),
     fy: value("beamFyInput"),
-    fyw: value("beamFywInput")
+    fyw: value("beamFywInput"),
+    fu: value("beamFuInput")
   });
 }
 
@@ -5320,6 +5321,7 @@ function beamCustomGradeRecords() {
     [material.grade]: {
       fy: material.fy,
       fyw: material.fyw,
+      fu: material.fu,
       directions: directionRecords,
       sourceRef: material.source
     }
@@ -5423,7 +5425,12 @@ function updateBeamDimensionUi() {
   });
   $("beamSectionField").hidden = active;
   $("beamCustomMaterialField").hidden = !active;
-  $("beamGradeField").hidden = active && !$("beamCustomMaterialForm").value;
+  const materialBasisResolved = !active || Boolean($("beamCustomMaterialForm").value);
+  $("beamGradeField").hidden = !materialBasisResolved;
+  $("beamFyField").hidden = !materialBasisResolved;
+  $("beamFywField").hidden = !materialBasisResolved || !["ub", "uc", "pfc"].includes(beamFamily);
+  $("beamFuField").hidden = !materialBasisResolved;
+  $("beamMaterialFields").classList.toggle("is-custom", active);
   $("beamSection").setAttribute("aria-label", "Catalogue beam section");
   $("beamSectionSource").textContent = active
     ? "Entered ideal dimensions; select an explicit material basis before capacity is evaluated."
@@ -5468,16 +5475,28 @@ function beamMaterialDefaults() {
     });
     return {
       fy: Number(material.fy) > 0 ? Number(material.fy) : 0,
-      fyw: Number(material.fyw) > 0 ? Number(material.fyw) : 0
+      fyw: Number(material.fyw) > 0 ? Number(material.fyw) : 0,
+      fu: Number(material.fu) > 0 ? Number(material.fu) : 0
     };
   }
   const section = selectedBeamCatalogueSection();
   const grade = section?.grades?.[$("beamGrade").value] || null;
   const fy = Number(grade?.fy);
   const fyw = Number(grade?.fyw || grade?.fy);
+  const gradeName = $("beamGrade").value;
+  let standardStrength = null;
+  if (["ub", "uc", "pfc", "ea"].includes(beamFamily)) {
+    standardStrength = SteelMaterials.hotRolledStrength(gradeName, section?.tf || section?.actualT || section?.t);
+  } else if (["chs", "rhs", "shs"].includes(beamFamily)) {
+    standardStrength = SteelMaterials.hollowStrength(gradeName);
+  } else if (beamFamily === "rod") {
+    standardStrength = SteelMaterials.roundBarStrength(gradeName, section?.diameter || section?.D);
+  }
+  const fu = Number(grade?.fu || standardStrength?.fu);
   return {
     fy: Number.isFinite(fy) && fy > 0 ? fy : 0,
-    fyw: Number.isFinite(fyw) && fyw > 0 ? fyw : 0
+    fyw: Number.isFinite(fyw) && fyw > 0 ? fyw : 0,
+    fu: Number.isFinite(fu) && fu > 0 ? fu : 0
   };
 }
 
@@ -5485,6 +5504,7 @@ function resetBeamMaterialStrengths() {
   const defaults = beamMaterialDefaults();
   $("beamFyInput").value = defaults.fy || "";
   $("beamFywInput").value = defaults.fyw || "";
+  $("beamFuInput").value = defaults.fu || "";
   calculateBeam();
 }
 
@@ -5685,22 +5705,28 @@ function calculateBeam() {
   const fyInput = value("beamFyInput");
   const separateWebStrength = ["ub", "uc", "pfc"].includes(beamFamily);
   const fywInput = separateWebStrength ? value("beamFywInput") : fyInput;
+  const fuInput = value("beamFuInput");
   const customMaterialForm = customDimensions ? $("beamCustomMaterialForm").value : "";
   const customProjectMaterial = customMaterialForm === "project";
   const strengthClose = (actual, expected) => actual > 0 && expected > 0 && Math.abs(actual - expected) <= 0.01;
   const momentOverride = Boolean(gradeBase && !customProjectMaterial && !strengthClose(fyInput, defaults.fy));
   const webOverride = Boolean(gradeBase && !customProjectMaterial && separateWebStrength && !strengthClose(fywInput, defaults.fyw));
-  const materialOverride = momentOverride || webOverride;
-  const materialValid = Boolean(fyInput > 0 && (!separateWebStrength || fywInput > 0));
-  $("beamFywField").hidden = !separateWebStrength;
+  const ultimateOverride = Boolean(gradeBase && !customProjectMaterial && !strengthClose(fuInput, defaults.fu));
+  const materialOverride = momentOverride || webOverride || ultimateOverride;
+  const maximumYield = Math.max(fyInput, separateWebStrength ? fywInput : fyInput);
+  const materialValid = Boolean(fyInput > 0 && (!separateWebStrength || fywInput > 0) && fuInput > 0 && fuInput >= maximumYield);
+  $("beamFywField").hidden = (customDimensions && !customMaterialForm) || !separateWebStrength;
+  $("beamFyInput").setAttribute("aria-invalid", String(!(fyInput > 0) || (fuInput > 0 && fuInput < fyInput)));
+  $("beamFywInput").setAttribute("aria-invalid", String(separateWebStrength && (!(fywInput > 0) || (fuInput > 0 && fuInput < fywInput))));
+  $("beamFuInput").setAttribute("aria-invalid", String(!(fuInput > 0) || fuInput < maximumYield));
   $("beamMaterialStatus").textContent = customDimensions && !customMaterialForm
     ? "Select material basis"
     : !materialValid
-      ? "Enter positive strength"
+      ? "Check fy / fu values"
       : customProjectMaterial
         ? "Project / legacy material"
     : materialOverride
-      ? "Project / legacy override"
+      ? "User override"
       : customDimensions
         ? "Standard material lookup"
         : "Catalogue default";
@@ -5709,8 +5735,8 @@ function calculateBeam() {
   $("beamMaterialReset").title = materialResetLabel;
   $("beamMaterialReset").setAttribute("aria-label", materialResetLabel);
   const directionCapacity = gradeBase?.directions?.[direction] || null;
-  const gradeForEvaluation = gradeBase
-    ? { ...gradeBase, fy: fyInput, fyw: separateWebStrength ? fywInput : fyInput }
+  const gradeForEvaluation = gradeBase && materialValid
+    ? { ...gradeBase, fy: fyInput, fyw: separateWebStrength ? fywInput : fyInput, fu: fuInput }
     : null;
   const coordination = customDimensions || momentOverride
     ? BeamSectionReconciliation.deriveProject(section, gradeForEvaluation, direction)
@@ -5721,6 +5747,7 @@ function calculateBeam() {
         ...directionCapacity,
         fy: fyInput,
         fyw: separateWebStrength ? fywInput : fyInput,
+        fu: fuInput,
         Ze: coordination.status === "derived" ? coordination.expectedZe : directionCapacity.Ze,
         kf: coordination.status === "derived" ? coordination.expectedKf : gradeBase.kf,
         compactness: coordination.status === "derived"
@@ -5737,6 +5764,7 @@ function calculateBeam() {
   const momentAvailable = Boolean(
     section?.capacityStatus === "checked"
     && ["reconciled", "derived"].includes(coordination.status)
+    && materialValid
     && grade?.fy > 0
     && grade?.Ze > 0
   );
@@ -5911,7 +5939,7 @@ function calculateBeam() {
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${momentRatio.toFixed(2)} &gt; 1.00; section moment FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
     : Number.isFinite(utilisation) ? `Governing section utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "section check FAIL" : "section check PASS"}.`
       : "Combined action not evaluated because one or more required capacity paths are unavailable.";
-  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; ${customProjectMaterial ? "project / legacy material values" : materialOverride ? `project / legacy override (standard defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} MPa` : customDimensions ? "explicit standard material lookup for entered geometry" : "catalogue default"}.`;
+  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; f<sub>u</sub> = ${fuInput > 0 ? `${formatBeamNumber(fuInput, 0)} MPa` : "invalid"}. ${customProjectMaterial ? "Project / legacy material values" : materialOverride ? `User override; standard defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} / ${formatBeamNumber(defaults.fu, 0)} MPa` : customDimensions ? "Explicit standard material lookup for entered geometry" : "Catalogue default"}. f<sub>u</sub> confirms the material record and is not used in the current section moment or shear equations.`;
   const zeBasis = coordination.status === "derived"
     ? customDimensions ? "derived from entered geometry and adopted strength" : "independently regenerated from the entered project strength"
     : beamFamily === "rod"
@@ -5953,7 +5981,7 @@ function calculateBeam() {
       title: "Material strength",
       lookup: customProjectMaterial ? "Project / legacy material" : materialOverride ? "Project / legacy override" : customDimensions ? "Explicit standard material lookup" : "Catalogue default",
       selection: displayedGrade,
-      adopted: `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}`,
+      adopted: `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; f<sub>u</sub> = ${fuInput > 0 ? `${formatBeamNumber(fuInput, 0)} MPa` : "invalid"}`,
       applicability: materialStep
     }),
     calculationTraceRow({
@@ -9781,6 +9809,7 @@ function initialise() {
   beamDimensionInputIds.forEach(id => $(id).addEventListener("input", calculateBeam));
   $("beamFyInput").addEventListener("input", calculateBeam);
   $("beamFywInput").addEventListener("input", calculateBeam);
+  $("beamFuInput").addEventListener("input", calculateBeam);
   $("beamMaterialReset").addEventListener("click", resetBeamMaterialStrengths);
   $("beamMomentDemand").addEventListener("input", calculateBeam);
   $("beamShearDemand").addEventListener("input", calculateBeam);

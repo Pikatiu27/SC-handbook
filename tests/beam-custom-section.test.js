@@ -55,7 +55,7 @@ close(ub.axes.y.I, ubIndependent.iy);
 close(ub.axes.x.Z * 1000, ubIndependent.zx);
 close(ub.axes.y.S * 1000, ubIndependent.sy);
 const ubMaterial = custom.resolveMaterial({ family: "ub", productForm: "hot-rolled-section", grade: "300PLUS", dimensions: ubDims });
-assert.deepEqual({ fy: ubMaterial.fy, fyw: ubMaterial.fyw }, { fy: 300, fyw: 320 });
+assert.deepEqual({ fy: ubMaterial.fy, fyw: ubMaterial.fyw, fu: ubMaterial.fu }, { fy: 300, fyw: 320, fu: 440 });
 const ubX = reconciliation.deriveProject(ub, ubMaterial, "x");
 assert.equal(ubX.expectedClass, "C");
 close(ubX.expectedZe * 1000, compactZe(ubIndependent.zx, ubIndependent.sx));
@@ -132,10 +132,11 @@ assert.equal(custom.productForms("ea").length, 0);
 assert.equal(custom.directions("ea").length, 0);
 assert.equal(custom.build("ea", { b: 75, t: 6 }).capacityStatus, "unavailable");
 assert.equal(custom.resolveMaterial({ family: "rhs", productForm: "hot-rolled-section", grade: "300PLUS", dimensions: rhsDims }).status, "not-verified");
-assert.equal(custom.resolveMaterial({ family: "ub", productForm: "project", fy: 300, fyw: 0, dimensions: ubDims }).status, "not-verified");
+assert.equal(custom.resolveMaterial({ family: "ub", productForm: "project", fy: 300, fyw: 0, fu: 440, dimensions: ubDims }).status, "not-verified");
+assert.equal(custom.resolveMaterial({ family: "ub", productForm: "project", fy: 300, fyw: 320, fu: 300, dimensions: ubDims }).status, "not-verified");
 assert.deepEqual(
-  custom.resolveMaterial({ family: "ub", productForm: "project", fy: 300, fyw: 280, dimensions: ubDims }),
-  { status: "resolved", grade: "User input", fy: 300, fyw: 280, source: "Project / legacy material values" }
+  custom.resolveMaterial({ family: "ub", productForm: "project", fy: 300, fyw: 280, fu: 440, dimensions: ubDims }),
+  { status: "resolved", grade: "User input", fy: 300, fyw: 280, fu: 440, source: "Project / legacy material values" }
 );
 
 console.log("beam custom-section independent tests passed (7 capacity families)");

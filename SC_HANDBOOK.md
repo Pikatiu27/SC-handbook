@@ -3032,10 +3032,19 @@ Use one family-selection row on the desktop Beam page. The section families are 
 Catalogue inputs:
 
 - `Catalogue section`;
-- `Steel grade`, limited to grades supported by the selected row;
 - `Bending direction`, shown only where more than one valid direction exists.
-- `Custom dimensions`, a family-local checkbox below Section and Grade;
+- `Custom dimensions`, a family-local checkbox below the selected section;
 - family dimensions only when the checkbox is active.
+
+Keep one always-visible `Material properties` group immediately after Section selection. Do not hide the adopted strengths inside an override disclosure:
+
+- place `Steel grade`, editable `fy,m` and editable `fu` together in this group;
+- show editable `fy,w` between `fy,m` and `fu` for UB, UC and PFC because web shear may use a different thickness-dependent yield strength;
+- for Custom dimensions, place the required family-compatible `Material basis` first in the same group and show Grade and strengths only after that basis is selected;
+- changing section, grade or material basis resets the strengths to the applicable checked catalogue or shared material-standard defaults;
+- editing a default strength marks the group `User override`; provide one reset control that restores all current defaults;
+- require positive `fy,m`, positive applicable `fy,w`, positive `fu`, and `fu >= max(fy,m, fy,w)` before reporting capacity;
+- `fu` is retained to confirm a coherent material record and must be identified as not used in the current section moment and shear equations; the calculation trace must still show its adopted value and basis.
 
 Family-specific direction logic:
 

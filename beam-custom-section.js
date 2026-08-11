@@ -178,21 +178,23 @@
     }
   }
 
-  function resolveMaterial({ family, productForm, grade, dimensions = {}, fy, fyw } = {}) {
+  function resolveMaterial({ family, productForm, grade, dimensions = {}, fy, fyw, fu } = {}) {
     if (!productForms(family).includes(productForm)) {
-      return Object.freeze({ status: "not-verified", grade: "", fy: null, fyw: null, source: "Material basis not selected" });
+      return Object.freeze({ status: "not-verified", grade: "", fy: null, fyw: null, fu: null, source: "Material basis not selected" });
     }
 
     const separateWebStrength = ["ub", "uc", "pfc"].includes(family);
     if (productForm === "project") {
       const momentStrength = Number(fy);
       const webStrength = separateWebStrength ? Number(fyw) : momentStrength;
-      const valid = momentStrength > 0 && webStrength > 0;
+      const tensileStrength = Number(fu);
+      const valid = momentStrength > 0 && webStrength > 0 && tensileStrength >= Math.max(momentStrength, webStrength);
       return Object.freeze({
         status: valid ? "resolved" : "not-verified",
         grade: "User input",
         fy: valid ? momentStrength : null,
         fyw: valid ? webStrength : null,
+        fu: valid ? tensileStrength : null,
         source: "Project / legacy material values"
       });
     }
@@ -214,6 +216,7 @@
       grade,
       fy: moment?.fy ?? null,
       fyw: web?.fy ?? null,
+      fu: moment?.fu ?? null,
       source: moment && web ? SteelMaterials.PRODUCT_FORMS[productForm].standard : "Material strength not resolved"
     });
   }
