@@ -1000,6 +1000,13 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-selected-header > b.data-rating { border-color: #d9d3c2; background: #f8f6ef; color: #655d46; }
 .screw-selected-header > b.data-geometry, .screw-selected-header > b.data-project { border-color: #d4dbe0; background: #f4f6f7; color: #59656c; }
 .screw-selected-header > b.data-typical { border-color: #cbd7e3; background: #f0f6fb; color: #365d7b; }
+.screw-selected-header > b.data-ultimate, .screw-selected-header > b.data-supplier-rating { border-color: #e2cf9f; background: #fff7e5; color: #74521d; }
+.screw-product-identity { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 12px; border: 1px solid #dce5e0; border-radius: 7px; background: #f8faf9; overflow: hidden; }
+.screw-product-identity > div { min-width: 0; padding: 9px 11px; border-right: 1px solid #dce5e0; }
+.screw-product-identity > div:last-child { border-right: 0; }
+.screw-product-identity dt, .screw-product-identity dd { margin: 0; }
+.screw-product-identity dt { color: #617069; font-size: var(--fs-xs); line-height: 1.2; font-weight: 800; }
+.screw-product-identity dd { margin-top: 3px; color: var(--ink); font-size: var(--fs-xs); line-height: 1.3; font-weight: 900; overflow-wrap: anywhere; }
 .screw-readiness-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; }
 .screw-readiness-strip div { min-width: 0; padding: 9px 10px; border: 1px solid #d7e2e8; border-radius: 8px; background: #f8fbfd; }
 .screw-readiness-strip span, .screw-readiness-strip strong, .screw-readiness-strip em { display: block; }
@@ -1008,6 +1015,12 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-readiness-strip em { margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.25; font-style: normal; font-weight: 700; overflow-wrap: anywhere; }
 .screw-selected-overview { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: start; }
 .screw-selected-summary { min-width: 0; display: flex; flex-direction: column; gap: 9px; }
+.screw-reference-load { display: grid; grid-template-columns: minmax(170px, .8fr) minmax(110px, .45fr) minmax(0, 1.75fr); align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid #d8e1dc; border-left: 3px solid #6f8f80; border-radius: 7px; background: #f8faf9; }
+.screw-reference-load span, .screw-reference-load strong, .screw-reference-load em { display: block; min-width: 0; }
+.screw-reference-load span { color: #52645b; font-size: var(--fs-xs); line-height: 1.25; font-weight: 900; }
+.screw-reference-load strong { color: var(--ink); font-size: var(--fs-md); line-height: 1.1; font-weight: 900; font-variant-numeric: tabular-nums; }
+.screw-reference-load small { color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
+.screw-reference-load em { color: var(--muted); font-size: var(--fs-xs); line-height: 1.3; font-style: normal; font-weight: 700; overflow-wrap: anywhere; }
 .screw-visual-card { min-width: 0; margin: 0; padding: 12px 12px 10px; border: 1px solid #d2e3dd; border-radius: 8px; background: #fff; overflow: hidden; }
 .screw-pile-sketch { display: block; width: 100%; min-height: 278px; aspect-ratio: 5 / 3; }
 .screw-sketch-bg { fill: #ffffff; }
@@ -1071,6 +1084,8 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .screw-specification-grid em, .screw-specification-grid small { margin-top: 3px; color: var(--muted); font-size: 11px; line-height: 1.3; font-style: normal; font-weight: 700; }
 .screw-specification-grid a { margin-top: 3px; color: #2d6652; font-size: var(--fs-xs); line-height: 1.3; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
 .screw-specification-grid a[aria-disabled="true"] { color: var(--muted); text-decoration: none; }
+.screw-specification-grid > .screw-data-required span { background: #fff8eb; color: #765f31; }
+.screw-specification-grid > .screw-data-required strong { color: #4b4029; }
 .screw-product-limitation { display: grid; grid-template-columns: minmax(140px, .3fr) minmax(0, 1.7fr); gap: 12px; margin-top: 10px; padding: 10px 12px; border-left: 3px solid #b9974d; background: #fffaf0; }
 .screw-product-limitation span, .screw-product-limitation strong { display: block; }
 .screw-product-limitation span { color: #765f31; font-size: var(--fs-xs); line-height: 1.25; font-weight: 900; }
@@ -1927,6 +1942,11 @@ footer b { white-space: nowrap; }
   .screw-market-table td:nth-child(9)::before { content: ""; }
   .screw-market-table .mini-action { width: 100%; }
   .screw-context-panel, .screw-product-limitation { grid-template-columns: 1fr; gap: 7px; }
+  .screw-reference-load { grid-template-columns: minmax(0, 1fr) auto; gap: 5px 10px; }
+  .screw-reference-load em { grid-column: 1 / -1; }
+  .screw-product-identity { grid-template-columns: 1fr; }
+  .screw-product-identity > div { border-right: 0; border-bottom: 1px solid #dce5e0; }
+  .screw-product-identity > div:last-child { border-bottom: 0; }
   .screw-specification-grid { grid-template-columns: 1fr; }
   .screw-specification-grid > div.wide { grid-column: auto; grid-template-columns: minmax(120px, .7fr) minmax(0, 1.3fr); }
   .wind-result-table td:nth-child(3)::before { content: "Suggested TC / rule: "; color: var(--ink); font-weight: 900; }
@@ -1989,6 +2009,8 @@ footer b { white-space: nowrap; }
   .rock-product-limitation { grid-template-columns: 1fr; gap: 4px; }
   .screw-product-filter-grid { grid-template-columns: 1fr; }
   .screw-capacity-strip, .screw-selected-summary .screw-capacity-strip, .screw-readiness-strip, .screw-decision-strip, .screw-detail-grid { grid-template-columns: 1fr; }
+  .screw-reference-load { grid-template-columns: 1fr; }
+  .screw-reference-load em { grid-column: auto; }
   .screw-decision-strip div.wide { grid-column: auto; }
   .screw-review-panel > summary { align-items: flex-start; }
   .screw-review-panel > summary > b { margin-left: auto; }
