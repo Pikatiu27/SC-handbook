@@ -1319,4 +1319,4 @@ The accepted Build 0.7.47 display, stale-state and selector-transition audits we
 | Phone release state | Reload all ten public tools at 390 x 844 px | Essential inputs/results remain available; no document-level horizontal overflow |
 | Runtime log | Traverse all released routes in the clean browser session | 0 errors; 0 warnings |
 
-This record completes audit protocol Step 10 for the merged local release candidate. Remote commit identity and public GitHub Pages parity are recorded after the release push; until that verification succeeds, this evidence describes the local release candidate only.
+The verified release candidate was committed as `680bae0` and pushed to remote `main`. GitHub Pages run `31639342546` completed successfully. A cache-busted public fetch returned HTTP 200 with Build 0.7.47, the audited shared-app, stylesheet, formatter, Monopole and Rock Anchor resource keys, and all ten released tool panels. This closes audit protocol Step 10 for the public release.
