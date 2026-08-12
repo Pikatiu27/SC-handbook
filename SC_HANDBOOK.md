@@ -3386,23 +3386,32 @@ The Screw Piles Selector is a product-selection aid with an optional pile-group 
 
 Use this primary workflow:
 
-1. Select a supplier and one published product.
-2. Show the selected product's essential published values, geometry, source status and principal limitation.
+1. Select a supplier and one published product, series or engineered system.
+2. Show the selected item's identity, essential published values, geometry, source status and principal limitation.
 3. Keep the `Preliminary Pile-Group Action Distribution` collapsed and secondary to product selection.
 
 Use `Not published` rather than zero or an inferred value. The selected-product summary must prioritise:
 
 - direction-specific compression, tension and lateral values, where published;
-- system SWL, indicative rating or typical benchmark only when clearly labelled as such;
+- non-directional system SWL, maximum load, supplier rating or typical benchmark in one separate `Published reference load` row, never in a compression/tension/lateral field;
 - shaft diameter and wall thickness;
 - helix or bearing-element count, diameter and thickness;
 - length, extension or splice basis;
-- installation criterion, maximum allowable installation torque, pile-head connection and durability information as separate fields;
+- model or series code, system type and data level; show supply basis only when the source gives specific availability or procurement information;
+- founding criterion, installation criterion, maximum allowable installation torque, pile-head connection and durability information where directly published;
 - per-pile, complete-system or benchmark basis, together with the source load terminology (`SWL`, indicative rating or basis not stated);
-- direct source link and data status: `Published directional values`, `Compression SWL up to`, `System SWL up to`, `Indicative system rating`, `Typical SWL benchmark`, `Geometry only` or `Project input`;
+- direct source link and data status: `Published directional values`, `Compression SWL up to`, `System SWL up to`, `Published ultimate table`, `Supplier rating up to`, `Indicative system rating`, `Typical SWL benchmark`, `Geometry only` or `Project input`;
 - concise visible source labels such as `Published guide + scope certificate`, `Manufacturer published`, `Supplier range`, `Manufacturer dimensions`, `Published benchmark` or `Project input`; detailed local-pack status remains in traceability documentation rather than the main selector.
 
+Classify each entry as a published product, stocked series, design-table row, published system row, engineered supplier range, geometry row, component family, technique benchmark, alternative foundation system or project-defined product. Do not imply that a series or supplier range is one certified product.
+
+Hide optional specification rows when the selected source does not publish a product-specific value. Consolidate missing data and the governing product limitation into one `Required before adoption` row. Prioritise direction-specific compression, tension and lateral resistance, founding criterion, installation torque/acceptance, pile-head connection and durability basis without repeating the source or result cards.
+
+Use a separate basis note for each published direction. A lateral limit must state its own load-height, fixity, movement or testing condition where the source provides one; it must not inherit an axial maximum-load or SWL note.
+
 Do not infer uplift or lateral resistance from a compression series class. Manufacturer dimensions, system ratings and typical benchmarks must not be presented as project design strengths.
+
+Do not relabel a published ultimate maximum load as `SWL` or compression resistance. Do not assign a load direction or safety basis to an `up to` supplier rating when the source does not state one.
 
 Do not combine an older public product-table row with a newer certificate scope into one apparently current verified row. Show the product-table revision and certificate revision separately. If the current certificate cites a newer non-local catalogue or technical statement, label current row verification as pending until that cited source is available and checked.
 
@@ -3457,8 +3466,10 @@ The Rock Anchor Selector is a product-selection aid for active post-tensioned fo
 Use this primary workflow:
 
 1. Select a supplier.
-2. Select one published product, tendon row or provider pathway.
+2. Select one published product row, system family or provider pathway from the grouped product list.
 3. Show the selected product's published tendon values, source status, Australian supply/adoption status and principal adoption constraint.
+
+Keep this as a two-level selector. Within the product list, use only the broad groups `Published products`, `System families`, `Australian pathways` and `Project schedule` where applicable. Do not subdivide again by bar/strand type, add a third classification selector or add a product-results table. Product-option labels should be short because the supplier is already selected; retain the full product name in the selected-product heading.
 
 The main selected-product card must prioritise:
 
@@ -3466,10 +3477,15 @@ The main selected-product card must prioritise:
 - anchor form: prestressed bar, multi-strand anchor, mechanical rock anchor, provider pathway or project-defined system;
 - tendon description, including diameter, strand count, bar grade or area where published;
 - published yield/proof load and ultimate load where a row-level source provides them;
+- the exact manufacturer load terminology, including characteristic proof and maximum force notation where applicable;
+- system configuration and standard/product approval;
+- published geometry or product code where captured from the specific source;
 - protection and typical hardware only as product/system information, not as project detailing approval;
 - source/data basis, including document name, page or product-family basis where available;
 - source status: archived global row, current external row, US row, global family, Australian provider pathway or project-defined system;
 - visible supply/adoption status, especially where Australian supply, grade, ETA acceptance or provider confirmation is still required;
+- a concise Australian pathway statement that distinguishes an identifiable local provider from confirmed product availability, acceptance or certification;
+- a direct Australian reference or contact link only where an official route has been verified;
 - a concise `Before adoption` constraint.
 
 Use `Not published` rather than zero or an inferred value. Manufacturer tendon values are not anchor design resistance. Do not convert tendon yield or ultimate load into allowable resistance, working load, ULS capacity or utilisation without a verified project design basis.
@@ -3500,7 +3516,7 @@ Implementation rule:
 - Link a selected product or system to the most specific official product page available. Use a supplier-family page only when no product/system page is available.
 - Keep all visible text English-only and concise.
 
-Validation must include supplier/product selection, default row rendering, project-defined/custom row rendering, `Not published` and `Source conflict` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values. Apply the Section 9 executable source-reproduction requirement to every checked numeric product row.
+Validation must include supplier/product selection, broad grouped product options, concise selector labels, default row rendering, project-defined/custom row rendering, exact manufacturer load labels, configuration/standard/geometry/Australian-pathway fields, verified Australian-link routing, `Not published` and `Source conflict` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values. Apply the Section 9 executable source-reproduction requirement to every checked numeric product row.
 
 ### 15.17 Reinforcement Development & Lap Lengths Web Tab Rules
 
