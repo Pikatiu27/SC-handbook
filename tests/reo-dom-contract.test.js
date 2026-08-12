@@ -32,5 +32,9 @@ assert.doesNotMatch(html, /id="reoProfisDetails"/);
 assert.doesNotMatch(html, /id="reoAvailableDepth"/);
 assert.doesNotMatch(html, /id="reoExtensionRecord"|Extension design paths|REFERENCE SUMMARY/);
 assert.doesNotMatch(app, /Project context|updateReoConnectionStatus/);
+assert.match(completeApp, /const reoTransverseLocationResetIds = new Set\(reoLapLengthChangingIds\.filter\(id => id !== "reoTransverseLocationConfirmed"\)\);/);
+assert.match(completeApp, /const reoExistingTransverseLocationResetIds = new Set\(reoExistingLengthChangingIds\.filter\(id => id !== "reoExistingTransverseLocationConfirmed"\)\);/);
+assert.match(completeApp, /if \(reoTransverseLocationResetIds\.has\(id\)\) \$\("reoTransverseLocationConfirmed"\)\.checked = false;/);
+assert.match(completeApp, /if \(reoExistingTransverseLocationResetIds\.has\(id\)\) \$\("reoExistingTransverseLocationConfirmed"\)\.checked = false;/);
 
 console.log("Reo DOM contract tests passed.");

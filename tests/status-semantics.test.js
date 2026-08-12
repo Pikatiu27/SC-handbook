@@ -20,11 +20,20 @@ assert.doesNotMatch(app, /memberUtilisationStatus\.textContent[\s\S]{0,180}\?\s*
 assert.match(app, /parentGoverningNote"\)\.className = parentCheckActive \? "check" : ""/);
 assert.match(app, /function updateScrewRisk[\s\S]*setStatusClass\(status, "check"\)/);
 assert.match(app, /title: "Optional weld throat utilisation"/);
+assert.match(app, /Partial result · shear calculated; moment not evaluated/);
+assert.match(app, /Shear section resistance is calculated from the valid web-strength path/);
 
 assert.match(html, /id="beamResultStatus">Calculated[^<]*section resistance only/);
 assert.match(html, /id="beamStatus" class="check">No design action/);
 assert.match(html, /id="memberUtilisationStatus" class="check">No design action/);
 assert.match(html, /id="weldStatus" class="check">No design action/);
 assert.doesNotMatch(html, /tool-status[^>]*>Checked/);
+
+const issueStatuses = [...html.matchAll(/<span[^>]*class="tool-status"[^>]*>([^<]+)<\/span>/g)]
+  .map(match => match[1].replace(/&middot;/g, "·").trim());
+assert.equal(issueStatuses.length, 10, "Every current tool must expose one issue status.");
+issueStatuses.forEach(status => {
+  assert.match(status, /^(Draft|For Review|Checked|Superseded|Do_Not_Use)(?:\b|\s|·)/);
+});
 
 console.log("Result-status semantics tests passed.");

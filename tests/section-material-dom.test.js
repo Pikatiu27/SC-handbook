@@ -37,7 +37,7 @@ assert.ok(app.includes("Selected grade not listed for this section"), "Unavailab
 assert.ok(app.includes("Derived · catalogue Ze interval"), "Equal Angle compactness must identify its derived catalogue-Ze basis");
 assert.ok(app.includes('function beamPfcSection(section)'), "Section Properties must retain the shared PFC record builder");
 assert.ok(app.includes('BeamSectionReconciliation.reconcile(record, grade, key)'), "PFC and Equal Angle classifications must reuse the checked reconciliation layer");
-assert.ok(app.includes("maximumSignificantDigits: 3"), "Small catalogue Ze values must retain three significant digits");
+assert.ok(app.includes("displayGroupedSignificant(value, 3)"), "Catalogue Ze values must retain three decimal half-up significant digits");
 assert.ok(app.includes("sectionMaterialThicknessManual"), "Custom material thickness must expose a manual override state");
 assert.ok(app.includes("syncSectionMaterialControls(false, true)"), "Custom geometry edits must refresh linked material thickness");
 assert.ok(html.includes('<option value="">Select material basis</option>'), "Custom material selection must expose an unresolved initial basis");

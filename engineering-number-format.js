@@ -38,5 +38,26 @@
     return `${negative && rounded !== 0n ? "-" : ""}${roundedText}`;
   }
 
-  return Object.freeze({ decimalHalfUp });
+  function decimalHalfUpSignificant(value, significantDigits = 3) {
+    const number = Number(value);
+    const digits = Number(significantDigits);
+    if (!Number.isFinite(number) || !Number.isInteger(digits) || digits < 1 || digits > 20) return "—";
+    if (number === 0) return "0";
+
+    const exponent = Math.floor(Math.log10(Math.abs(number)));
+    const places = digits - exponent - 1;
+    if (places >= 0) {
+      const rounded = decimalHalfUp(number, places);
+      return rounded.includes(".") ? rounded.replace(/0+$/, "").replace(/\.$/, "") : rounded;
+    }
+
+    const scalePlaces = -places;
+    const rounded = decimalHalfUp(number / 10 ** scalePlaces, 0);
+    if (rounded === "—") return rounded;
+    const sign = rounded.startsWith("-") ? "-" : "";
+    const magnitude = sign ? rounded.slice(1) : rounded;
+    return `${sign}${magnitude}${"0".repeat(scalePlaces)}`;
+  }
+
+  return Object.freeze({ decimalHalfUp, decimalHalfUpSignificant });
 });

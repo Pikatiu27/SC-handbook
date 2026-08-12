@@ -1217,3 +1217,76 @@ The structural blind-bolt source matrix contains 90 catalogue rows: 15 Lindapter
 Two current official Blind Bolt Company sources conflict. The March 2026 PDF states 34 Nm for M14 while the current product page states 40 Nm. For GBB1690HDG, the PDF states a 13 mm minimum fixing thickness while the product page states 16 mm. Build 0.7.42 displays both torque values, requires manufacturer confirmation and uses 16 mm as the conservative compatibility-filter minimum while retaining both published grip values in the conflict note.
 
 `tests/product-lookup-data.test.js` independently executes the adopted U-bolt source rows, all blind-bolt product codes and grip ranges, each family/size value table, source dates and safety-basis labels. `tests/product-lookup-dom.test.js` separately locks the lightweight lookup structure, product-basis heading, exact source routing and conflict-display contract.
+
+## 2026-08-12 Section Properties Display and Issue-status Audit
+
+Build 0.7.43 aligns the Section Properties display layer with the governed decimal half-up rule without changing geometry, material resolution, catalogue values, capacity methods or source classifications. Section-property summaries, material constants, design attributes, derived formula substitutions and derived results now use the shared formatter. Three-significant-digit catalogue `Ze` display is also rounded by the shared decimal method before grouping; engineering calculations continue to use unrounded values.
+
+The Screw Piles Selector heading now shows `For Review · product data · limitations`, consistent with the module register and the allowed issue-status vocabulary. The status contract checks that every current tool exposes exactly one allowed issue-status prefix rather than only preventing an unsupported `Checked` claim.
+
+| Audit ID | Page / state | Reproducible check | Result |
+| --- | --- | --- | --- |
+| `AUD-SECTION-DISPLAY-01` | Section Properties display block | Scan the complete Section Properties rendering path for direct `toFixed()` and `toLocaleString()` calls | No direct binary or `Intl` engineering rounding remains in the block; all values route through shared decimal half-up helpers |
+| `AUD-SECTION-DISPLAY-02` | Shared significant-digit formatter | Check positive/negative ties, decimal values, small values, carry and invalid input | Decimal half-up significant-digit cases pass, including `569.5 -> 570` and `9995 -> 10000` at three significant digits |
+| `AUD-ISSUE-STATUS-01` | All ten public tools | Extract every `.tool-status` value and check its prefix against the governed status vocabulary | Ten statuses found; all begin with `Draft`, `For Review`, `Checked`, `Superseded` or `Do_Not_Use` |
+| `AUD-SECTION-RESPONSIVE-02` | Section Properties at 1440 x 900 and 390 x 844 px | Reload Build 0.7.43 and inspect the default 380PFC state | No document-level horizontal overflow; the phone figure remains available; grouped values and fixed catalogue precision remain readable |
+
+All 36 local regression files and JavaScript syntax checks pass. The local browser console reports no warnings or errors. The continued cross-module display audit identified remaining direct user-facing binary-format calls outside Section Properties; those calls require a separate controlled migration because they span multiple calculation traces and standalone modules.
+
+## 2026-08-12 Cross-module Calculation Display Audit
+
+Build 0.7.44 completes the controlled display-only migration identified by the Section Properties audit. Bolt, Weld, Beam, Axial Member, Reinforcement and Steel Monopole visible engineering results, summaries, warnings and formula substitutions now use the shared decimal half-up formatter. Unrounded values still govern every calculation and comparison. Published product-table values, editable-input serialization, generated designation text and SVG path coordinates remain outside this display-rounding contract.
+
+The public tool-navigation label is now `Steel Monopole Section Capacity`, matching the page heading, module register and `SC_HANDBOOK.md` public-name rule. No capacity method, input default, source row, design scope or issue status changed.
+
+| Audit ID | Page / state | Reproducible check | Result |
+| --- | --- | --- | --- |
+| `AUD-CALC-DISPLAY-01` | Bolt, Weld, Beam and Axial Member visible calculation blocks | Scan the governed output, summary and formula-trace functions for direct `toFixed()` and `toLocaleString()` calls | No direct binary or `Intl` engineering rounding remains; output uses shared decimal half-up helpers |
+| `AUD-CALC-DISPLAY-02` | Reinforcement calculation notices and candidate labels | Load `reo-calculation.js` through the browser and CommonJS test path, then scan for direct formatting calls | The module requires the shared formatter in both paths; no direct binary or `Intl` rounding remains |
+| `AUD-CALC-DISPLAY-03` | Steel Monopole calculated display | Inspect the local fixed-precision grouping helper and all default calculated outputs | Fixed trailing zeros and grouped thousands are retained after shared decimal half-up rounding; chart coordinates remain an explicit SVG-only exception |
+| `AUD-MODULE-NAME-01` | Steel Members navigation | Compare navigation label, page heading, module register and public-name rule | All use `Steel Monopole Section Capacity` |
+| `AUD-REFERENCE-FORMAT-01` | Weld, Reinforcement and Steel Monopole visible references | Scan user-facing clause, table and figure references against the complete `[source] [reference type] [number]` rule | Bare Reinforcement and Monopole clause references now repeat `AS 3600` or `AS 4100`; the Weld supporting figure uses `Fig.` consistently |
+| `AUD-CALC-RESPONSIVE-01` | Weld, Beam, Axial Member, Reinforcement and Steel Monopole at desktop and 390 x 844 px | Load every affected tab, inspect default outputs and trace-row counts, and measure document overflow | All panels load with non-empty result/trace content and zero document-level horizontal overflow; the Monopole schedule retains intentional internal table scrolling |
+
+All 37 local regression files and JavaScript syntax checks pass. The local browser console reports no warnings or errors across the affected tabs.
+
+## 2026-08-12 Cross-module Input-state and Stale-result Audit
+
+Build 0.7.45 exercises the governed valid-to-invalid-to-valid transition on every page that performs an engineering calculation. The audit checks the complete displayed dependency chain: result value, scope/status wording, warning, formula content, table rows and recovery after the input is restored. Product-only Bolt and Rock Anchor lookup branches remain covered by their source-state tests rather than being represented as calculation pages.
+
+| Audit ID | Page / transition | Browser result |
+| --- | --- | --- |
+| `AUD-BOLT-STATE-03` | Valid standard bolt to invalid `k_r`; valid bolt group to `n_b = 0`; restore both values | Per-bolt shear clears for invalid `k_r`; group shear, bearing and tear-out clear for invalid count; restored inputs recalculate without stale values |
+| `AUD-WELD-STATE-03` | Valid fillet weld to `l_w = 0`; restore length | Capacity per unit length, total capacity and status become `Not evaluated`; restored geometry recalculates |
+| `AUD-SECTION-STATE-03` | Valid custom RHS to wall thickness greater than half the smaller outside dimension; restore thickness | All section properties clear, the previous figure is hidden and the exact geometry error is shown; valid properties and figure return after restoration |
+| `AUD-AXIAL-STATE-03` | Valid CHS member to `L_e = 0`; restore effective length | Compression, tension, utilisation and governing state clear; restored input reproduces the prior capacities |
+| `AUD-BEAM-STATE-03` | Valid UB material to invalid member-strength path while the independent web-strength path remains valid; restore `f_y,m` | Moment becomes `Not evaluated`; shear remains calculated from `f_y,w`; status now states `Partial result · shear calculated; moment not evaluated`; restored material returns both capacities |
+| `AUD-CONCRETE-STATE-03` | Valid pad strip to `f'_c = 10 MPa`; restore `32 MPa` | Flexural and one-way shear values clear and `Invalid input` is shown; restored concrete strength reproduces both section capacities |
+| `AUD-REO-STATE-04` | Valid Basic lap case to `f'_c = 10 MPa`; restore `32 MPa` | Adopted length and ratio clear with `INVALID INPUT`; restored input reproduces `840 mm` and `42.0 d_b` |
+| `AUD-SCREW-STATE-03` | Enter `N* = 100 kN` for the default eight-pile group; set `n_x = 1`; restore `n_x = 3` | All pile actions and reaction rows clear with `Input required`; restored layout reproduces eight rows and `12.5 kN` maximum compression |
+| `AUD-MONO-STATE-03` | Valid 8-sided polygon to `r_i/t_nom = 0`; restore `1.5` | Mass, station rows and both capacity summaries clear; summaries use `Not evaluated`; restored radius reproduces 25 station rows and base `M = 450.4 kN.m` |
+
+The Beam correction is status-only: it preserves a valid shear result when only the member-strength path is invalid, but no longer labels the whole result block as simply unavailable. The Steel Monopole correction replaces the ambiguous `Not checked` wording with the governed `Not evaluated` state. No formula, source value, input default or resistance result changed.
+
+The corrected Beam and Steel Monopole invalid states were also rechecked at 390 x 844 px. Both controlling messages remain visible after layout stabilisation, and neither page has document-level horizontal overflow.
+
+## 2026-08-12 Selector, Override and Reset Transition Audit
+
+Build 0.7.47 extends the stale-result review from single invalid inputs to complete state transitions. Each case was exercised in the local browser by changing the governing selector or auto/manual state, editing the newly active input, returning to the original state and checking the displayed value, status and dependency basis. Formula methods, source values and capacity factors are unchanged.
+
+| Audit ID | Page / transition | Browser result |
+| --- | --- | --- |
+| `AUD-BEAM-TRANSITION-01` | Catalogue material -> user `f_y` override -> reset; catalogue -> Custom dimensions -> catalogue | Override status and moment update together; reset restores current catalogue strengths; Custom clears the catalogue capacity until a material basis is selected; returning to catalogue reproduces the original result |
+| `AUD-SECTION-TRANSITION-01` | Geometry-linked material thickness -> manual thickness override -> `Use geometry`; RHS -> circular form | Linked thickness follows geometry; manual thickness remains independent; reset restores linkage; changing form clears incompatible material selections and suppresses material-dependent output |
+| `AUD-AXIAL-TRANSITION-01` | CHS dimension override with default `A_n = A_g`; direct manual `A_n`; override reset | Changing `D` from 114.3 mm to 200 mm updates both `A_g` and the unedited `A_n` to 1,978 mm2. Entering `A_n = 1,500 mm2` stops linkage while later geometry changes continue to update `A_g`. Resetting the dimension-override basis restores `A_n = A_g` |
+| `AUD-AXIAL-TRANSITION-02` | EA automatic straight-hole deduction -> manual net area -> automatic deduction | Automatic `A_n = A_g - n_h d_h t` is read-only and updates tension capacity; Manual accepts the project net area; returning to Auto reproduces the straight-line deduction |
+| `AUD-WELD-TRANSITION-01` | Fillet -> IPBW -> CPBW -> Compound -> Fillet | Fillet size does not affect IPBW and effective throat does not affect fillet. CPBW and Compound return `Not evaluated` without actual joined-part or compound geometry. Returning to Fillet reproduces the active fillet result |
+| `AUD-BOLT-TRANSITION-01` | Standard bolt -> U-bolt lookup -> structural blind-bolt lookup -> Standard bolt | Product selections remain isolated from the AS 4100 standard-bolt calculation. The selected M20 X-plane result returns unchanged at 129.3 kN shear and 162.7 kN tension |
+| `AUD-REO-TRANSITION-01` | Basic -> Refined confinement confirmations -> Basic; hook confirmation -> cog | Candidate-length, pressure and effective-location confirmations clear when their method, evidence or length basis changes. A confirmed hook returns 310 mm; selecting cog clears the result and returns `COG DETAILING REQUIRED` until separately confirmed |
+| `AUD-CONCRETE-TRANSITION-01` | Top/bottom compression; automatic mat depth -> manual depth -> automatic; bottom pad 0 -> 300 -> 0 -> 300 mm | Mirrored default top/bottom cases agree. Manual Layer 1 depth changes `phi Muo` from 287.1 to 309.5 kN.m; restoring Auto returns `y = 105.0 mm` and 287.1 kN.m. Bottom mats disable and clear at zero depth, then recover their auto geometry when the bottom pad returns |
+| `AUD-SCREW-TRANSITION-01` | 3 x 3 perimeter -> full grid -> perimeter; project value without source -> sourced matching basis -> mismatched basis | Perimeter and grid produce 8 and 9 reaction rows. Missing source or mismatched action/value bases suppress utilisation. A sourced matching ULS case gives `eta_proj = 0.56` for 11.25/20 |
+| `AUD-MONO-TRANSITION-01` | Nominal/design thickness; circular/polygon; schedule/overall; plate/manual material | Design thickness changes capacity but not physical mass and resets to nominal when disabled. Circular and polygon methods remain isolated. Schedule and overall geometry preserve their own values. Plate `f_y` is read-only derived data and becomes editable only in Manual mode |
+
+The audit identified and corrected two dependency defects. First, the CHS/Round Bar initial unperforated `A_n` retained an earlier gross area after a dimension override; it now follows current geometry until directly edited. Second, the Reinforcement effective transverse-location confirmation survived a Refined-to-Basic transition; both lap and development paths now clear that confirmation whenever a candidate-length or evidence input changes. Static state-contract tests lock both reset rules.
+
+All 37 local regression files, JavaScript syntax checks and `git diff --check` pass. Axial Member, Reinforcement, Concrete Pad, Screw Piles and Steel Monopole were reloaded at 1440 x 900 px and 390 x 844 px with no document-level horizontal overflow. A missing favicon was the only initial console error; the empty data favicon removes that unrelated request, and the final phone-width route sweep reports zero browser warnings or errors.

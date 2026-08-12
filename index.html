@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="styles.css?v=20260811beammaterial1">
 </head>
 <body>
@@ -33,7 +34,7 @@
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-pressed="false" hidden>Monopole Section Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-pressed="false" hidden>Steel Monopole Section Capacity</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-pressed="false" hidden>Concrete Pad Section</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-pressed="false" hidden>Reinforcement</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-pressed="false" hidden>Screw Piles Selector</button>
@@ -552,7 +553,7 @@
             <article><b>Fatigue-sensitive detail</b><strong>Project-specific fatigue detail required</strong><span>Define the fatigue category, weld profile, finish and inspection requirements.</span><small>Static throat capacity alone does not establish fatigue resistance.</small></article>
             <article><b>Site weld / restricted access</b><strong>Constructability review required</strong><span>Confirm access, environmental controls and the applicable welding procedure.</span><small>Verify welder qualification, preheat and inspection before issue for construction.</small></article>
           </div>
-          <div class="weld-standard-strip"><span>AS 4100 Cl. 9.6</span><span>AS 4100 Table 9.6.3.10</span><span>AS/NZS 1554.1 WPS / inspection</span><span>ASI Simple Connections Figure 2.7</span></div>
+          <div class="weld-standard-strip"><span>AS 4100 Cl. 9.6</span><span>AS 4100 Table 9.6.3.10</span><span>AS/NZS 1554.1 WPS / inspection</span><span>ASI Simple Connections Fig. 2.7</span></div>
         </details>
 
         <section class="capacity-section" aria-live="polite">
@@ -1157,8 +1158,8 @@
         <summary><span><b>Sources and limitations</b><small>Methods, applicability and exclusions</small></span><i>+</i></summary>
         <div class="source-body">
           <div class="source-notes">
-            <p><b>Circular</b> &middot; AS 4100:2020. Design section moment capacity follows Cl. 5.2 and Table 5.2.
-              The 0.5 m compression-and-bending profile reports the Cl. 6.2 compression and Cl. 5.2 moment capacity intercepts. The interaction equation is Cl. 8.3.2; &phi; = 0.90.</p>
+            <p><b>Circular</b> &middot; AS 4100:2020. Design section moment capacity follows AS 4100 Cl. 5.2 and AS 4100 Table 5.2.
+              The 0.5 m compression-and-bending profile reports the AS 4100 Cl. 6.2 compression and AS 4100 Cl. 5.2 moment capacity intercepts. The interaction equation is AS 4100 Cl. 8.3.2; &phi; = 0.90.</p>
             <p><b>Regular polygon</b> &middot; ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5; P = 0 and M = F<sub>a</sub>I/c. BR = min(r<sub>i</sub>, 4t<sub>d</sub>); no AS 4100 &phi;. <a href="https://sp360.asce.org/personifyebusiness/Merchandise/Product-Details/productId/266165183" target="_blank" rel="noreferrer">Publication record</a>.</p>
             <p><b>Initial capacity example</b> &middot; Austube 508.0 &times; 6.4 CHS C350L0. The 12 m profile length is an editable calculation input, not a published product length. <a href="https://www.austubemills.com.au/resources/design-capacity-tables/" target="_blank" rel="noreferrer">Manufacturer capacity tables</a>.</p>
             <p><b>Product geometry reference</b> &middot; KISMAT KOP-1230: one 12 m, 8-sided section; D<sub>o,b</sub> = 240 mm A/F, D<sub>o,t</sub> = 90 mm A/F, t<sub>nom</sub> = 3 mm and E355BR. The adopted f<sub>y</sub> = 355 MPa and fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5 are not published product values. <a href="https://www.kismatengitech.com/octagonal-poles.html" target="_blank" rel="noreferrer">Manufacturer product table</a>.</p>
@@ -1389,7 +1390,7 @@
                   <tr><td>Uniform force distribution</td><td>End connection satisfies AS 4100 Cl. 7.3.1.</td><td>1.00</td><td>AS 4100 Cl. 7.3.1.</td></tr>
                   <tr><td>Angle, one leg connected</td><td>Table case (a); use 0.75 only for unequal angle connected by the short leg.</td><td>0.85</td><td>AS 4100 Table 7.3.2.</td></tr>
                   <tr><td>Unequal Angle, short leg connected</td><td>Table case (a), unequal angle connected by the short leg.</td><td>0.75</td><td>AS 4100 Table 7.3.2.</td></tr>
-                  <tr><td>Channel / tee eccentric cases</td><td>Use the matching Table 7.3.2 configuration case.</td><td>0.85 / 0.90 / 1.00</td><td>AS 4100 Table 7.3.2.</td></tr>
+                  <tr><td>Channel / tee eccentric cases</td><td>Use the matching AS 4100 Table 7.3.2 configuration case.</td><td>0.85 / 0.90 / 1.00</td><td>AS 4100 Table 7.3.2.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1407,7 +1408,7 @@
             <p><b>Material standards</b> &middot; Steel hollow sections are based on AS/NZS 1163. Hot-rolled open sections, EA and Round Bar are based on AS/NZS 3679.1 where applicable. Verify grade, size range and test certificate before issue for design.</p>
             <p><b>Hollow-section properties</b> &middot; Austube 2013 Tables 3.1-1 to 3.1-6 provide the imported CHS, RHS and SHS design rows. Confirm current product availability separately.</p>
             <p><b>EA / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. EA properties use Tables 19&ndash;21; Grade 350 supply is by enquiry and depends on section and quantity. PFC properties use Tables 15&ndash;16.</p>
-            <p><b>Round Bar properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size and mass; Table 38 for diameter-dependent Grade 300 (300PLUS) and Grade 350 strengths. Confirm actual grade and diameter availability. Catalogue Table 7 Rods and Light Billets is a different product family and is not used.</p>
+            <p><b>Round Bar properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size and mass; OneSteel / InfraBuild Table 38 for diameter-dependent Grade 300 (300PLUS) and Grade 350 strengths. Confirm actual grade and diameter availability. OneSteel / InfraBuild Table 7 Rods and Light Billets is a different product family and is not used.</p>
             <p><b>Custom / Built-up</b> &middot; Uses user-entered section properties. Flexural buckling is checked about the entered axes only; the page does not verify local slenderness, built-up connectors, shear deformation, torsional buckling or connection eccentricity.</p>
             <p><b>Family custom dimensions</b> &middot; CHS and Round Bar may use the custom-dimension override; A<sub>g</sub>, r and I are derived from ideal circular geometry. Non-catalogue EA and PFC members require verified properties in Custom / Built-up.</p>
             <p><b>k<sub>f</sub> and &alpha;<sub>b</sub></b> &middot; k<sub>f</sub> is the AS 4100 Cl. 6.2.2 form factor A<sub>e</sub>/A<sub>g</sub>. &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A) when k<sub>f</sub> = 1.0 and AS 4100 Table 6.3.3(B) when k<sub>f</sub> &lt; 1.0.</p>
@@ -1634,14 +1635,14 @@
             <p><b>Primary basis</b> - AS 3600 Cl. 13.1.2.2 to AS 3600 Cl. 13.1.2.4 and AS 3600 Cl. 13.2.1 to AS 3600 Cl. 13.2.2. Governing edition: AS 3600:2018 incorporating Amendments 1 and 2. The licensed Standard governs.</p>
             <p><b>Scope</b> - N10-N40 500N deformed bars in tension; bar-to-bar lap, straight development and detailing-gated standard hook/cog anchorage.</p>
             <p><b>Input sets</b> - lap and existing-concrete properties are independent unless project evidence confirms identical conditions.</p>
-            <p><b>Lap lower limit</b> - L<sub>sy.t</sub> excludes the Cl. 13.1.2.2 basic lower limit before the Cl. 13.2.2 lap comparison.</p>
+            <p><b>Lap lower limit</b> - L<sub>sy.t</sub> excludes the AS 3600 Cl. 13.1.2.2 basic lower limit before the AS 3600 Cl. 13.2.2 lap comparison.</p>
             <p><b>Rounding</b> - adopted lengths are rounded up to 10 mm; this is a presentation convention.</p>
-            <p><b>Stagger</b> - Figure 13.2.2 gives &ge;0.3L<sub>sy.t.lap</sub> for adjacent 50% staggered zones. This guide neither confirms splice proportion nor qualifies k<sub>7</sub>.</p>
+            <p><b>Stagger</b> - AS 3600 Fig. 13.2.2 gives &ge;0.3L<sub>sy.t.lap</sub> for adjacent 50% staggered zones. This guide neither confirms splice proportion nor qualifies k<sub>7</sub>.</p>
             <p><b>Product data</b> - AS/NZS 4671 diameter and area are calculation data. Supplier mass and availability are reference data only.</p>
           </div>
           <div class="source-notes">
-            <p><b>Not permitted</b> - bars &gt;40 mm and tension-tie laps. Tension-tie splices require welded or mechanical means under Cl. 13.2.1.</p>
-            <p><b>Partial utilisation</b> - do not scale lap length by the steel-stress ratio. Cl. 13.1.2.4 is a separate development-length provision.</p>
+            <p><b>Not permitted</b> - bars &gt;40 mm and tension-tie laps. Tension-tie splices require welded or mechanical means under AS 3600 Cl. 13.2.1.</p>
+            <p><b>Partial utilisation</b> - do not scale lap length by the steel-stress ratio. AS 3600 Cl. 13.1.2.4 is a separate development-length provision.</p>
             <p><b>Cog / hook</b> - AS 3600 Cl. 13.1.2.6 and AS 3600 Cl. 13.1.2.7 govern end anchorage. No additional AS 3600 Cl. 13.2.2 lap reduction applies. Galvanized reinforcement bend geometry is not represented; verify AS 3600 Cl. 17.2.3.3(d) separately.</p>
             <p><b>PIR reference</b> - the displayed depth is an AS 3600 development reference using the selected stress basis. It is not an installation depth, AS 5216 result or adhesive-capacity result.</p>
             <p><b>Product refinement</b> - establish the applicable AS 5216 / EAD / ETA design model and verify steel, concrete-cone and bond-splitting failure. A qualified report may govern at a different depth.</p>
@@ -1658,7 +1659,7 @@
     <section id="screwPanel" class="tool-panel" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Screw piles &middot; product selector</p><h2>Screw Piles Selector</h2></div>
-        <span class="tool-status">Product data &middot; geometry &middot; limitations</span>
+        <span class="tool-status">For Review &middot; product data &middot; limitations</span>
       </div>
 
       <section class="lookup-card screw-card">
@@ -1916,8 +1917,8 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.42</b></footer>
-  <script src="engineering-number-format.js?v=20260810halfup1"></script>
+  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.47</b></footer>
+  <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
   <script src="weld-capacity.js?v=20260809weldrepro1"></script>
@@ -1932,10 +1933,10 @@
   <script src="beam-custom-section.js?v=20260811beammaterial1"></script>
   <script src="member-capacity.js?v=20260811axialnet1"></script>
   <script src="screw-demand.js?v=20260809coordinates1"></script>
-  <script src="reo-calculation.js?v=20260803productflow36"></script>
+  <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="monopole-capacity.js?v=20260808audit1"></script>
-  <script src="app.js?v=20260811productaudit1"></script>
-  <script src="monopole-app.js?v=20260808audit1"></script>
+  <script src="app.js?v=20260812transitionaudit2"></script>
+  <script src="monopole-app.js?v=20260812stateaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260811rockaudit2"></script>
 </body>
 </html>

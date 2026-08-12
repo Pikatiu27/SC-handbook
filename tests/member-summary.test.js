@@ -113,9 +113,9 @@ assert.match(script, /r = r<sub>v<\/sub> = .*minor principal axis/);
 assert.match(script, /A<sub>n<\/sub> = .*netArea/);
 assert.match(script, /governingAxis\.label}-axis governs/);
 assert.match(script, /governingAxis\.effectiveLength \/ 1000/);
-assert.match(script, /governingAxis\.leOverR\.toFixed\(1\)/);
-assert.match(script, /governingAxis\.alphaB\.toFixed\(1\)/);
-assert.match(script, /L<sub>e\$\{axis\.label\}<\/sub>\/r<sub>\$\{axis\.label\}<\/sub> = \$\{axis\.leOverR\.toFixed\(1\)\}/);
+assert.match(script, /displayFixed\(governingAxis\.leOverR, 1\)/);
+assert.match(script, /displayFixed\(governingAxis\.alphaB, 1\)/);
+assert.match(script, /L<sub>e\$\{axis\.label\}<\/sub>\/r<sub>\$\{axis\.label\}<\/sub> = \$\{displayFixed\(axis\.leOverR, 1\)\}/);
 assert.doesNotMatch(script, /memberSummarySlenderness"\)\.innerHTML = memberType === "custom"\s*\?\s*axisResults\.map/);
 assert.match(script, /\$\("memberTensionBasis"\)\.textContent = `\$\{tensionGoverning\} governs · AS 4100 Cl\. 7\.2`/);
 assert.match(script, /if \(memberActionGroup && mobileView\) memberActionGroup\.open = false/);
@@ -142,6 +142,10 @@ assert.doesNotMatch(script, /const chsGrades/);
 assert.match(memberCapacityScript, /alphaB = tf > 40 \? 1 : 0/);
 assert.match(memberCapacityScript, /alphaB = -0\.5/);
 assert.match(script, /"User override" : "Catalogue default"/);
+assert.match(script, /let memberNetAreaTracksGross = true/);
+assert.match(script, /function syncMemberManualNetAreaToGross\(properties\)/);
+assert.match(script, /memberType === "custom" \|\| automaticHolePath \|\| !memberNetAreaTracksGross/);
+assert.match(script, /memberNetAreaTracksGross = false;\s+calculateMember\(\)/);
 assert.match(script, /effective length L_e must be greater than zero/);
 assert.match(script, /k_t must be within the AS 4100 Cl\. 7\.3 range 0\.75 to 1\.00/);
 assert.doesNotMatch(script, /const fy = value\("memberFyInput"\) \|\| grade\.fy/);
@@ -151,7 +155,7 @@ assert.match(html, /id="memberFyInput" type="number" min="1"/);
 assert.match(html, /id="memberKt" type="number" min="0\.75"/);
 assert.match(script, /formula: `&eta; = max\[0, 0\.00326\(&lambda; - 13\.5\)\]/);
 assert.match(script, /&alpha;<sub>a<\/sub> = 2100\(&lambda;<sub>n<\/sub> - 13\.5\)/);
-assert.match(script, /&alpha;<sub>a<\/sub> = \$\{axis\.alphaA\.toFixed\(2\)\}; &alpha;<sub>b<\/sub> = \$\{axis\.alphaB\.toFixed\(1\)\}; &lambda; = \$\{axis\.modifiedLambda\.toFixed\(1\)\}; &eta; = \$\{axis\.eta\.toFixed\(3\)\}; &xi; = \$\{axis\.xi\.toFixed\(3\)\}/);
+assert.match(script, /&alpha;<sub>a<\/sub> = \$\{displayFixed\(axis\.alphaA, 2\)\}; &alpha;<sub>b<\/sub> = \$\{displayFixed\(axis\.alphaB, 1\)\}; &lambda; = \$\{displayFixed\(axis\.modifiedLambda, 1\)\}; &eta; = \$\{displayFixed\(axis\.eta, 3\)\}; &xi; = \$\{displayFixed\(axis\.xi, 3\)\}/);
 assert.ok(
   script.indexOf('title: "Design section compression capacity"') < script.indexOf("compressionTraceRows,"),
   "Section compression must precede member slenderness and reduction in the calculation trace."

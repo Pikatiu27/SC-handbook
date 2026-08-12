@@ -2,7 +2,8 @@
   "use strict";
 
   const capacity = window.MonopoleCapacity;
-  if (!capacity) return;
+  const numberFormat = window.EngineeringNumberFormat;
+  if (!capacity || !numberFormat?.decimalHalfUp) return;
 
   const $ = id => document.getElementById(id);
   const sectionColours = ["#2f7b57", "#a95344", "#356f9f", "#8063a6", "#8a6a2c", "#4f7771"];
@@ -28,10 +29,10 @@
   }
 
   function fixed(value, digits = 1) {
-    return Number(value).toLocaleString("en-AU", {
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits
-    });
+    const rounded = numberFormat.decimalHalfUp(value, digits);
+    const [whole, fraction] = rounded.split(".");
+    const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return fraction === undefined ? grouped : `${grouped}.${fraction}`;
   }
 
   function plateLookupActive() {
@@ -399,7 +400,7 @@
     ["monopoleMass", "monopoleSelfWeight", "monopoleCentreOfGravity"].forEach(id => {
       $(id).textContent = "-";
     });
-    $("monopoleMomentSummary").textContent = "Not checked";
+    $("monopoleMomentSummary").textContent = "Not evaluated";
     $("monopoleAssembledHeight").textContent = "-";
     $("monopoleSectionCount").textContent = "-";
     $("monopoleChart").classList.add("is-unavailable");
@@ -409,7 +410,7 @@
     $("monopoleStationCount").textContent = "0 rows";
     $("monopoleCombinedCapacityBody").innerHTML = "";
     $("monopoleCombinedCapacityCount").textContent = "0 rows · top to base";
-    $("monopoleCombinedCapacitySummary").textContent = "Not checked";
+    $("monopoleCombinedCapacitySummary").textContent = "Not evaluated";
     $("monopoleCombinedCapacityStatus").textContent = message;
     $("monopoleCombinedCapacityStatus").className = "result-note is-warning";
     $("monopoleCombinedCapacityStatus").hidden = false;
@@ -465,7 +466,7 @@
             <td>${fixed(active.thickness, 1)} mm</td>
             <td>${fixed(active.yieldStress, 0)} MPa</td>
             <td>${escapeHtml(capacityState(active))}</td>
-            <td>${Number.isFinite(resistance) ? `${fixed(resistance, 1)} kN&middot;m` : "Not checked"}</td>
+            <td>${Number.isFinite(resistance) ? `${fixed(resistance, 1)} kN&middot;m` : "Not evaluated"}</td>
           </tr>`);
       });
     });
@@ -634,7 +635,7 @@
       $("monopoleCombinedCapacityCount").textContent = `${rows.length} rows · top to base`;
       $("monopoleCombinedCapacityStatus").hidden = true;
     } catch (error) {
-      $("monopoleCombinedCapacitySummary").textContent = "Not checked";
+      $("monopoleCombinedCapacitySummary").textContent = "Not evaluated";
       $("monopoleCombinedCapacityBody").innerHTML = "";
       $("monopoleCombinedCapacityCount").textContent = "0 rows · top to base";
       $("monopoleCombinedCapacityStatus").textContent = error instanceof Error ? error.message : "Compression and bending section capacities are unavailable.";
@@ -667,7 +668,7 @@
       : "";
     const resistanceExpression = polygon
       ? `P = 0; w = tan(&pi;/${selection.sideCount})(D<sub>o</sub> - t<sub>d</sub> - 2BR); &lambda; = (w/t<sub>d</sub>)&radic;(f<sub>y</sub>/E); M = F<sub>a</sub>I/c<sub>max</sub> = F<sub>a</sub>Z<sub>min</sub>; AS 4100 &phi; is not applied. ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5.`
-      : "&lambda;<sub>s</sub> = (D/t<sub>d</sub>)(f<sub>y</sub>/250); &phi;M<sub>s</sub> = 0.90f<sub>y</sub>Z<sub>e</sub>; AS 4100 Cl. 5.2 and Table 5.2.";
+      : "&lambda;<sub>s</sub> = (D/t<sub>d</sub>)(f<sub>y</sub>/250); &phi;M<sub>s</sub> = 0.90f<sub>y</sub>Z<sub>e</sub>; AS 4100 Cl. 5.2 and AS 4100 Table 5.2.";
     $("monopoleFormulaSteps").innerHTML = `
       <div><b>Assembly geometry</b><code>${assemblyExpression}${mode === "schedule" ? "; each taper uses its local section coordinate." : ""}</code></div>
       <div><b>Stations</b><code>0.5 m spacing plus exact base, top and ${mode === "overall" ? "thickness-band" : "section"} boundaries; the summary reports the governing base-station value and the table retains all evaluated states.</code></div>
@@ -702,7 +703,7 @@
       const rangeMessage = polygonRangeMessage(rangeFailure);
 
       $("monopoleMomentSummary").innerHTML = unavailable || !base
-        ? "Moment profile not checked"
+        ? "Moment profile not evaluated"
         : polygon
           ? `Base M = ${fixed(base.value, 1)} kN&middot;m`
           : `Base &phi;M<sub>s</sub> = ${fixed(base.value, 1)} kN&middot;m`;
