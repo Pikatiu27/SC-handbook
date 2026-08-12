@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="stylesheet" href="styles.css?v=20260812rockrelease1">
+  <link rel="stylesheet" href="styles.css?v=20260812foundationmerge1">
 </head>
 <body>
   <header class="topbar">
@@ -1663,9 +1663,9 @@
 
       <section class="lookup-card screw-card">
         <section class="input-group input-group-section screw-selection-panel" aria-label="Screw pile product selection">
-          <span class="input-group-heading"><b>Product selection</b><small>Select a supplier and published product.</small></span>
+          <span class="input-group-heading"><b>Product selection</b><small>Select a supplier and product or system.</small></span>
           <div class="input-group-fields two">
-            <label><span>Supplier</span><select id="screwManufacturer"><option value="katana">Katana</option><option value="ideal">Ideal Foundations</option><option value="blade">Blade Pile</option><option value="piletech">Piletech</option><option value="driven">Driven Engineering</option><option value="keller">Keller</option><option value="minmetals">Minmetals Helicast</option><option value="surefoot">Surefoot</option><option value="stopdigging">StopDigging AU</option><option value="groundscrews">Ground Screws Australia</option><option value="hpa">Helical Piles Australia</option><option value="custom">Custom / other</option></select></label>
+            <label><span>Supplier</span><select id="screwManufacturer"><option value="katana">Katana</option><option value="ideal">Ideal Foundations</option><option value="solidity">Solidity</option><option value="madewell">Madewell Products</option><option value="blade">Blade Pile</option><option value="piletech">Piletech</option><option value="driven">Driven Engineering</option><option value="keller">Keller</option><option value="minmetals">Minmetals Helicast</option><option value="surefoot">Surefoot</option><option value="stopdigging">StopDigging AU</option><option value="groundscrews">Ground Screws Australia</option><option value="hpa">Helical Piles Australia</option><option value="custom">Custom / other</option></select></label>
             <label><span>Product</span><select id="screwSeries"></select></label>
           </div>
           <div hidden aria-hidden="true">
@@ -1682,18 +1682,29 @@
             <div>
               <span class="section-tag">PRODUCT DATA</span>
               <h2 id="screwDesignation">Katana 80 kN series</h2>
-              <p id="screwAssumption">Katana &middot; helical screw pile.</p>
+              <p id="screwAssumption" hidden>Supply basis to be confirmed.</p>
             </div>
             <b id="screwCapacityStatus" hidden>Compression SWL up to</b>
           </div>
 
+          <dl class="screw-product-identity" aria-label="Selected product identity">
+            <div><dt>Model / series</dt><dd id="screwFactProductCode">80 kN series</dd></div>
+            <div><dt>System</dt><dd id="screwFactSystemType">Helical screw pile</dd></div>
+            <div><dt>Data level</dt><dd id="screwFactProductClass">Published series</dd></div>
+          </dl>
+
           <div class="screw-selected-overview">
             <div class="screw-selected-summary">
+              <div class="screw-reference-load" id="screwReferenceLoadRow" hidden>
+                <span id="screwReferenceLoadLabel">Published reference load</span>
+                <strong><output id="screwReferenceLoadValue">-</output><small> kN</small></strong>
+                <em id="screwReferenceLoadBasis">Load basis to be confirmed.</em>
+              </div>
               <div class="screw-capacity-strip" aria-label="Selected product published values">
                 <div hidden><output id="screwAxialClass">80</output><em id="screwAxialBasis">Series class from current certificate.</em></div>
                 <div><span id="screwCompressionLabel">Compression SWL up to</span><strong><output id="screwCompressionResult">80</output><small id="screwCompressionUnit"> kN</small></strong><em id="screwCompressionBasis">Guide SWL up to; stated conditions apply.</em></div>
-                <div><span id="screwUpliftLabel">Published uplift load</span><strong><output id="screwUpliftResult">Not published</output><small id="screwUpliftUnit"></small></strong><em id="screwUpliftBasis">No direction-specific value published.</em></div>
-                <div class="secondary"><span id="screwLateralLabel">Published lateral load</span><strong><output id="screwLateralResult">Not published</output><small id="screwLateralUnit"></small></strong><em id="screwLateralBasis">No direction-specific value published.</em></div>
+                <div><span id="screwUpliftLabel">Published tension / uplift</span><strong><output id="screwUpliftResult">Not published</output><small id="screwUpliftUnit"></small></strong><em id="screwUpliftBasis">Not published for this direction.</em></div>
+                <div class="secondary"><span id="screwLateralLabel">Published lateral</span><strong><output id="screwLateralResult">Not published</output><small id="screwLateralUnit"></small></strong><em id="screwLateralBasis">Not published for this direction.</em></div>
               </div>
 
               <section class="screw-product-specification" aria-label="Selected product specification">
@@ -1701,18 +1712,19 @@
                 <div class="screw-specification-grid">
                   <div><span>Shaft</span><p><strong id="screwFactShaft">76.1 mm OD / 4.0 mm wall</strong><em id="screwFactSteel">AS/NZS 1163 CHS</em></p></div>
                   <div><span>Helix / bearing</span><p><strong id="screwFactHelixCount">1 helix</strong><em id="screwFactHelix">250 mm dia x 8 mm plate</em></p></div>
-                  <div><span>Pitch / spacing</span><p><strong id="screwFactPitch">Not published</strong></p></div>
-                  <div><span>Length / extension</span><p><strong id="screwFactLength">1.0-4.0 m series range noted</strong><em id="screwFactExtension">0.5 m increments; extension sections available</em></p></div>
-                  <div><span>Installation criterion</span><p><strong id="screwFactInstallCriterion">Guide torque: 4000 Nm for stated conditions.</strong></p></div>
-                  <div><span>Maximum allowable torque</span><p><strong id="screwFactTorqueLimit">Not published; verify shaft torsional limit.</strong></p></div>
-                  <div><span>Pile-head connection</span><p><strong id="screwFactHeadConnection">Project tension and shear-transfer detail required.</strong></p></div>
-                  <div><span>Durability</span><p><strong id="screwFactDurability">Design life and corrosion allowance not stated.</strong></p></div>
-                  <div class="wide"><span>Source / data basis</span><p><strong id="screwFactSourceStatus">Published guide + scope certificate</strong><a id="screwFactSource" href="https://katanafoundations.com.au/wp-content/uploads/2024/12/241001-Katana-Screw-Pile-_-Performance-Guide.pdf" target="_blank" rel="noreferrer">Performance Guide Rev Z, pp. 8 and 12-13</a><em id="screwFactCapacityBasis">Rev Z compression SWL reference; current certificate scope checked separately.</em><small id="screwFactSourceReview">Local source reviewed · 10 Jul 2026</small></p></div>
+                  <div><span>Lead / extension</span><p><strong id="screwFactLength">1.0-4.0 m series range noted</strong><em id="screwFactExtension">0.5 m increments; extension sections available</em></p></div>
+                  <div id="screwFactFoundingRow"><span>Founding criterion</span><p><strong id="screwFactFounding">Stiff clay / dense sand indicator</strong></p></div>
+                  <div id="screwFactPitchRow" hidden><span>Helix spacing</span><p><strong id="screwFactPitch">Not published</strong></p></div>
+                  <div id="screwFactInstallRow"><span>Installation control</span><p><strong id="screwFactInstallCriterion">Guide torque: 4,000 N&middot;m for stated conditions.</strong></p></div>
+                  <div id="screwFactTorqueRow" hidden><span>Maximum installation torque</span><p><strong id="screwFactTorqueLimit">Not published</strong></p></div>
+                  <div id="screwFactHeadRow" hidden><span>Pile-head connection</span><p><strong id="screwFactHeadConnection">Not published</strong></p></div>
+                  <div id="screwFactDurabilityRow" hidden><span>Finish / durability</span><p><strong id="screwFactDurability">Not published</strong></p></div>
+                  <div class="wide"><span>Source and load basis</span><p><strong id="screwFactSourceStatus">Published guide + scope certificate</strong><a id="screwFactSource" href="https://katanafoundations.com.au/wp-content/uploads/2024/12/241001-Katana-Screw-Pile-_-Performance-Guide.pdf" target="_blank" rel="noreferrer">Performance Guide Rev Z, pp. 8 and 12-13</a><em id="screwFactCapacityBasis">Rev Z compression SWL reference; current certificate scope checked separately.</em><small id="screwFactSourceReview">Local source reviewed &middot; 10 Jul 2026</small></p></div>
                 </div>
               </section>
 
-              <div class="screw-product-limitation" aria-label="Selected product limitation">
-                <span>Product limitation</span><strong id="screwFactLimitation">Obtain project tension resistance and complete the lateral-response assessment.</strong>
+              <div class="screw-product-limitation" id="screwAdoptionRow" aria-label="Requirements before adoption">
+                <span>Required before adoption</span><strong id="screwFactAdoption">Obtain project tension and lateral resistances, installation criteria, pile-head detail and durability basis.</strong>
               </div>
 
               <div class="screw-capacity-editor" hidden aria-hidden="true">
@@ -1747,7 +1759,7 @@
               <dl class="screw-detail-grid">
                 <div><dt>Steel / material</dt><dd id="screwSteel">AS/NZS 1163 CHS, guide table</dd></div>
                 <div><dt>Soil requirement</dt><dd id="screwSoilRequirement">Stiff clay / dense sand indicator</dd></div>
-                <div><dt>Installation control</dt><dd id="screwInstallControl">Example guide correlation: 4000 Nm for 80 kN</dd></div>
+                <div><dt>Installation control</dt><dd id="screwInstallControl">Example guide correlation: 4,000 N&middot;m for 80 kN</dd></div>
                 <div><dt>Capacity basis</dt><dd id="screwCapacityBasis">Series class and published compression SWL.</dd></div>
                 <div><dt>Source</dt><dd id="screwSource">Katana Performance Guide Rev Z / CodeMark</dd></div>
               </dl>
@@ -1771,9 +1783,9 @@
               <label><span>N<sup>*</sup> vertical</span><span class="unit"><input id="screwDemandN" type="number" step="1" value="0"><em>kN</em></span></label>
               <label><span>V<sub>x</sub><sup>*</sup> horizontal</span><span class="unit"><input id="screwDemandVx" type="number" step="1" value="0"><em>kN</em></span></label>
               <label><span>V<sub>y</sub><sup>*</sup> horizontal</span><span class="unit"><input id="screwDemandVy" type="number" step="1" value="0"><em>kN</em></span></label>
-              <label><span>M<sub>x</sub><sup>*</sup> moment</span><span class="unit"><input id="screwDemandMx" type="number" step="1" value="0"><em>kNm</em></span></label>
-              <label><span>M<sub>y</sub><sup>*</sup> moment</span><span class="unit"><input id="screwDemandMy" type="number" step="1" value="0"><em>kNm</em></span></label>
-              <label><span>T<sub>z</sub><sup>*</sup> torsion</span><span class="unit"><input id="screwDemandTz" type="number" step="1" value="0"><em>kNm</em></span></label>
+              <label><span>M<sub>x</sub><sup>*</sup> moment</span><span class="unit"><input id="screwDemandMx" type="number" step="1" value="0"><em>kN&middot;m</em></span></label>
+              <label><span>M<sub>y</sub><sup>*</sup> moment</span><span class="unit"><input id="screwDemandMy" type="number" step="1" value="0"><em>kN&middot;m</em></span></label>
+              <label><span>T<sub>z</sub><sup>*</sup> torsion</span><span class="unit"><input id="screwDemandTz" type="number" step="1" value="0"><em>kN&middot;m</em></span></label>
             </div>
             <p class="result-note">N<sup>*</sup> &gt; 0 denotes compression. Include project eccentricities. Pile-position tolerance effects are excluded.</p>
             <details class="screw-project-inputs">
@@ -1938,7 +1950,7 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260803productflow36"></script>
   <script src="monopole-capacity.js?v=20260808audit1"></script>
-  <script src="app.js?v=20260811productaudit1"></script>
+  <script src="app.js?v=20260812screwquery2"></script>
   <script src="monopole-app.js?v=20260808audit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>
