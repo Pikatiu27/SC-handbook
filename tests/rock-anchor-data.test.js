@@ -7,8 +7,13 @@ const {
   dataMeta,
   supplyMeta,
   sourceRecord,
+  loadLabels,
   loadDisplay,
-  productConstraint
+  productConstraint,
+  productGroup,
+  selectorName,
+  australiaPathway,
+  australiaRecord
 } = require("../rock-anchor-selector/app.js");
 
 const expectedRows = [
@@ -25,10 +30,17 @@ const expectedRows = [
   ["sas-36", 960, 1070], ["sas-40", 1190, 1320], ["sas-47", 1650, 1820],
   ["sas-57", 2155, 2671], ["sas-65", null, 3447], ["sas-75", 3690, 4572],
   ["williams-spinlock-25", 324, 404], ["williams-spinlock-32", 517, 647],
-  ["williams-spinlock-38", 750, 937]
+  ["williams-spinlock-38", 750, 937], ["williams-spinlock-48", 1286, 1608],
+  ["bbr-cona-0206", 492, 558], ["bbr-cona-0306", 738, 837],
+  ["bbr-cona-0406", 984, 1116], ["bbr-cona-0506", 1230, 1395],
+  ["bbr-cona-0606", 1476, 1674], ["bbr-cona-0706", 1722, 1953],
+  ["bbr-cona-0806", 1968, 2232], ["bbr-cona-0906", 2214, 2511],
+  ["bbr-cona-1206", 2952, 3348], ["bbr-cona-1306", 3198, 3627],
+  ["bbr-cona-1506", 3690, 4185], ["bbr-cona-1606", 3936, 4464],
+  ["bbr-cona-1906", 4674, 5301], ["bbr-cona-2206", 5412, 6138]
 ];
 
-assert.equal(expectedRows.length, 36, "The independent product-row matrix must remain complete");
+assert.equal(expectedRows.length, 51, "The independent product-row matrix must remain complete");
 for (const [id, yieldLoad, ultimateLoad] of expectedRows) {
   const product = products.find(item => item.id === id);
   assert.ok(product, `Missing source row ${id}`);
@@ -50,9 +62,12 @@ assert.deepEqual(loadDisplay(sas65, "ultimate"), {
 });
 
 const unpublishedIds = [
+  "frey-permanent-bar", "frey-strand-a2", "frey-strand-b2",
+  "dywidag-threadbar-system", "dywidag-strand-system", "dywidag-twin-corr",
+  "dywidag-multi-stage", "dywidag-el-iso",
   "williams-mcp-i", "williams-mcp-ii", "williams-mcp-iii", "williams-strand",
   "vsl-strand", "vsl-bar", "bbr-cona", "keller-bar", "keller-strand",
-  "srg-strand", "srg-bar", "custom"
+  "srg-strand", "srg-bar", "srg-bbr-h-bar", "custom"
 ];
 for (const id of unpublishedIds) {
   const product = products.find(item => item.id === id);
@@ -71,6 +86,34 @@ assert.equal(dataMeta(mcp).label, "Ground-anchor system family");
 assert.equal(supplyMeta(mcp).label, "Australian supply confirmation required");
 assert.equal(productConstraint(mcp), "Obtain a row-level tendon and complete anchor schedule.");
 
+const williams48 = products.find(product => product.id === "williams-spinlock-48");
+assert.equal(williams48.publishedGeometry, "89 mm drill hole · C28 head · R7S15C28");
+assert.equal(loadLabels(williams48).yield, "Published yield force · fy");
+assert.equal(productGroup(williams48).label, "Published products");
+assert.equal(selectorName(williams48), "R7S Spin-Lock 48 mm");
+
+const bbr22 = products.find(product => product.id === "bbr-cona-2206");
+assert.equal(sourceMeta(bbr22).label, "Manufacturer row · Jun 2021 · ETA system");
+assert.equal(sourceRecord(bbr22).url, "https://www.bbrnetwork.com/fileadmin/userdaten/Broschueren/GT/BBR_VT_CONA_CMG_EN_Rev3_0621.pdf");
+assert.equal(loadLabels(bbr22).yield, "Characteristic 0.1% proof force · Fp0.1k");
+assert.equal(loadLabels(bbr22).ultimate, "Characteristic maximum force · Fpk");
+assert.equal(dataMeta(bbr22).label, "Published product row");
+assert.equal(selectorName(bbr22), "CONA CMG 2206 · 22T15.7");
+assert.equal(australiaRecord(bbr22).label, "Open Australian capability");
+
+const dywidagFamily = products.find(product => product.id === "dywidag-twin-corr");
+assert.equal(productGroup(dywidagFamily).label, "System families");
+assert.match(australiaPathway(dywidagFamily), /Australian contact and project-delivery pathway identified/);
+
+const srgHBar = products.find(product => product.id === "srg-bbr-h-bar");
+assert.equal(productGroup(srgHBar).label, "Australian pathways");
+assert.match(australiaPathway(srgHBar), /current BBR specialist certification/);
+assert.equal(australiaRecord(srgHBar).url, "https://www.srgglobal.com.au/wp-content/uploads/2020/07/srgg_products_capability_2020-07_e.pdf");
+
+const freyssinet7 = products.find(product => product.id === "frey-strand-7");
+assert.equal(selectorName(freyssinet7), "7T15.7 strand anchor");
+assert.equal(australiaRecord(freyssinet7).label, "Open Australian reference");
+
 const custom = products.find(product => product.id === "custom");
 assert.equal(sourceRecord(custom).url, "");
 assert.equal(dataMeta(custom).label, "Project-defined system");
@@ -82,4 +125,4 @@ for (const product of products) {
   });
 }
 
-console.log("Rock Anchor source-row and selector-state tests passed (36 published rows).");
+console.log("Rock Anchor source-row and selector-state tests passed (51 published rows).");

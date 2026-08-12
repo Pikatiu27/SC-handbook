@@ -3456,8 +3456,10 @@ The Rock Anchor Selector is a product-selection aid for active post-tensioned fo
 Use this primary workflow:
 
 1. Select a supplier.
-2. Select one published product, tendon row or provider pathway.
+2. Select one published product row, system family or provider pathway from the grouped product list.
 3. Show the selected product's published tendon values, source status, Australian supply/adoption status and principal adoption constraint.
+
+Keep this as a two-level selector. Within the product list, use only the broad groups `Published products`, `System families`, `Australian pathways` and `Project schedule` where applicable. Do not subdivide again by bar/strand type, add a third classification selector or add a product-results table. Product-option labels should be short because the supplier is already selected; retain the full product name in the selected-product heading.
 
 The main selected-product card must prioritise:
 
@@ -3465,10 +3467,15 @@ The main selected-product card must prioritise:
 - anchor form: prestressed bar, multi-strand anchor, mechanical rock anchor, provider pathway or project-defined system;
 - tendon description, including diameter, strand count, bar grade or area where published;
 - published yield/proof load and ultimate load where a row-level source provides them;
+- the exact manufacturer load terminology, including characteristic proof and maximum force notation where applicable;
+- system configuration and standard/product approval;
+- published geometry or product code where captured from the specific source;
 - protection and typical hardware only as product/system information, not as project detailing approval;
 - source/data basis, including document name, page or product-family basis where available;
 - source status: archived global row, current external row, US row, global family, Australian provider pathway or project-defined system;
 - visible supply/adoption status, especially where Australian supply, grade, ETA acceptance or provider confirmation is still required;
+- a concise Australian pathway statement that distinguishes an identifiable local provider from confirmed product availability, acceptance or certification;
+- a direct Australian reference or contact link only where an official route has been verified;
 - a concise `Before adoption` constraint.
 
 Use `Not published` rather than zero or an inferred value. Manufacturer tendon values are not anchor design resistance. Do not convert tendon yield or ultimate load into allowable resistance, working load, ULS capacity or utilisation without a verified project design basis.
@@ -3499,7 +3506,7 @@ Implementation rule:
 - Link a selected product or system to the most specific official product page available. Use a supplier-family page only when no product/system page is available.
 - Keep all visible text English-only and concise.
 
-Validation must include supplier/product selection, default row rendering, project-defined/custom row rendering, `Not published` and `Source conflict` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values. Apply the Section 9 executable source-reproduction requirement to every checked numeric product row.
+Validation must include supplier/product selection, broad grouped product options, concise selector labels, default row rendering, project-defined/custom row rendering, exact manufacturer load labels, configuration/standard/geometry/Australian-pathway fields, verified Australian-link routing, `Not published` and `Source conflict` load display, source/status pill updates, source link updates and confirmation that no utilisation or design resistance is reported from manufacturer tendon values. Apply the Section 9 executable source-reproduction requirement to every checked numeric product row.
 
 ### 15.17 Reinforcement Development & Lap Lengths Web Tab Rules
 

@@ -893,6 +893,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .rock-source-fact a { margin-right: 10px; color: var(--green-dark); font-weight: 900; }
 .rock-source-fact a[aria-disabled="true"] { color: var(--muted); text-decoration: none; }
 .rock-source-fact small { color: var(--muted); }
+.rock-australia-fact a { display: inline-block; margin-top: 5px; color: var(--green-dark); font-size: var(--fs-xs); font-weight: 900; }
 .rock-product-limitation { display: grid; grid-template-columns: minmax(110px, .35fr) minmax(0, 1.65fr); gap: 12px; margin-top: 10px; padding: 10px 11px; border-left: 3px solid #b9974d; border-radius: 7px; background: #fff6df; }
 .rock-product-limitation span { color: #765f31; font-size: var(--fs-xs); font-weight: 900; }
 .rock-product-limitation strong { color: #3e3727; font-size: var(--fs-sm); line-height: 1.3; }

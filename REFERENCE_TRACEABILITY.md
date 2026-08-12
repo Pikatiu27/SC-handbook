@@ -124,7 +124,7 @@ This register is the authoritative ID map. It identifies the claim and evidence 
 | `SCREW-GROUP-ACTIONS-01` | Screw Piles / symmetric rigid-cap pile action distribution | Derived rigid-cap equilibrium model | `app.js` `calculateScrewDemand()` | `AUD-SCREW-GROUP-01`; not an AS 2159 resistance calculation; For Review |
 | `SCREW-PROJECT-COMPARE-01` | Screw Piles / directional comparison with entered project values | Derived ratio using user-sourced project design values | `app.js` `calculateScrewDemand()` | Source/basis gating regression required; For Review |
 | `SCREW-PRODUCT-LOOKUP-01` | Screw Piles / published product selection | Exact manufacturer document row | `app.js` product data | Selector only; Draft where source is pending |
-| `ROCK-PRODUCT-LOOKUP-01` | Rock Anchor / published product selection | Exact manufacturer document row | `rock-anchor-selector/app.js`; `tests/rock-anchor-dom-contract.test.js`; local browser supplier/product/custom-state reproduction | Selector only; Draft and no inferred resistance |
+| `ROCK-PRODUCT-LOOKUP-01` | Rock Anchor / published product selection | Exact manufacturer document row | `rock-anchor-selector/app.js`; `tests/rock-anchor-dom-contract.test.js`; local browser supplier/product/custom-state reproduction | Selector only; For Review and no inferred resistance |
 
 ### Standard Execution Sequence
 
@@ -903,14 +903,14 @@ The `Rock Anchor` tab is a product selector only. It does not calculate anchor a
 
 | Source area | Selector use | Status |
 | --- | --- | --- |
-| Freyssinet `Anchoring systems for geotechnical engineering`, C IX 0 - 01/14 | Freyssibar 26.5-50 mm and 2-13 T15.7 strand published tendon yield / ultimate rows | Official archived global rows; confirm current Australian revision and supply |
-| DYWIDAG `PT Threadbar Technical Specification`, October 2024, ASTM A722 | Grade 150 threadbar 26-75 mm published minimum ultimate-load rows | Official US rows; confirm Australian grade, assembly and availability |
+| Freyssinet current geotechnics page and `Anchoring systems for geotechnical engineering`, C IX 0 - 01/14 | Current Permanent Freyssibar and A2/B2 strand families; archived Freyssibar 26.5-50 mm and 2-13 T15.7 strand tendon rows | Current families plus official archived numeric rows; exact Australian product and supply require confirmation |
+| DYWIDAG current ground-anchor pages and `PT Threadbar Technical Specification`, October 2024, ASTM A722 | Threadbar, Strand, Twin-Corr, Multi-Stage and El-Iso system families; Grade 150 threadbar 26-75 mm published minimum ultimate-load rows | Current system families plus official US numeric rows; exact Australian product, grade and assembly require confirmation |
 | SAS post-tensioning system design guide, January 2026 | SAS 950/1050 and 835/1035 published tendon rows | Current external manufacturer rows; confirm Australian ground-anchor applicability; resolve the 65 mm 2,780 / 2,790 kN yield-load discrepancy before adoption |
-| Williams Form Engineering `Ground Engineering Systems` and official rock-anchor product pages | R7S Spin-Lock 25/32/38 mm published yield / ultimate rows; MCP I-III and multi-strand prestressed ground-anchor families | R7S row values and direct product link rechecked against the official manufacturer page 9 Aug 2026; family entries remain system-level only; confirm Australian acceptance, supply and certified project schedule |
-| VSL Ground Anchors public system page | Bar / strand family and corrosion-protection pathways | System-family entry only; no row-level load embedded |
-| BBR VT CONA CMG / ETA 21/1053 | Strand ground-anchor family scope | System-family entry only; confirm Australian acceptance and current schedule |
+| Williams Form Engineering official rock-anchor product pages | R7S Spin-Lock 25/32/38/48 mm published yield / ultimate rows; MCP I-III and multi-strand prestressed ground-anchor families | R7S rows use the specific official product table; family entries remain system-level only; confirm Australian acceptance, supply and certified project schedule |
+| VSL Ground Anchors and VSL Australia pages | Bar / strand family, corrosion-protection options and Australian provider pathway | System-family entry only; an Australian provider does not confirm exact product availability or acceptance |
+| BBR VT CONA CMG technical brochure / ETA 21/1053 | Fourteen Y1860S7-15.7 product rows from 2 to 22 strands, plus family scope | Official manufacturer/ETA basis; current Australian specialist certification, exact kit, acceptance and supply require confirmation |
 | Keller Australia Anchors | Australian bar, strand and SBMA delivery pathways | Provider pathway only; certified project schedule required |
-| SRG Global anchoring capability | Australian high-capacity strand and stress-bar delivery pathways | Provider pathway only; certified project system schedule required |
+| SRG Global anchoring capability and BBR H Bar product page | Australian high-capacity strand, stress-bar and BBR H Bar delivery pathways | Provider pathway only; the captured 2025/26 BBR specialist certificate expired 31 Mar 2026, so current certification and a certified project system schedule are required |
 | Austroads ATS 5140-26, Edition 2.0 | Execution, corrosion protection, stressing, testing and monitoring boundary | Scope reference only; no numeric design criteria embedded in the selector |
 
 Published tendon values are reference product data and must not be described as complete anchor design resistance.
@@ -1217,3 +1217,17 @@ The structural blind-bolt source matrix contains 90 catalogue rows: 15 Lindapter
 Two current official Blind Bolt Company sources conflict. The March 2026 PDF states 34 Nm for M14 while the current product page states 40 Nm. For GBB1690HDG, the PDF states a 13 mm minimum fixing thickness while the product page states 16 mm. Build 0.7.42 displays both torque values, requires manufacturer confirmation and uses 16 mm as the conservative compatibility-filter minimum while retaining both published grip values in the conflict note.
 
 `tests/product-lookup-data.test.js` independently executes the adopted U-bolt source rows, all blind-bolt product codes and grip ranges, each family/size value table, source dates and safety-basis labels. `tests/product-lookup-dom.test.js` separately locks the lightweight lookup structure, product-basis heading, exact source routing and conflict-display contract.
+
+## 2026-08-12 Rock Anchor Catalogue and Selection-flow Update
+
+The selector remains a two-level `Supplier` to `Product / system` workflow. The product list uses only four broad evidence/procurement groups: `Published products`, `System families`, `Australian pathways` and `Project schedule`. These are not subdivided again by tendon form. No third selector, product-results table, design resistance or utilisation has been added.
+
+The numeric source matrix now contains 51 published rows: the previous 36 rows, Williams R7S Spin-Lock 48 mm and 14 BBR CONA CMG Y1860S7-15.7 rows from system sizes 0206 to 2206. Selected-product output retains each manufacturer's terminology (`yield`, `ultimate`, `Fp0.1k` and `Fpk`) and now also exposes system configuration, standard/approval, published geometry or code, and the Australian pathway. Missing row-level values remain `Not published`.
+
+Current DYWIDAG Threadbar, Strand, Twin-Corr, Multi-Stage and El-Iso families and current Freyssinet Permanent Freyssibar/A2/B2 families are source-bound system entries without inferred loads. VSL, Freyssinet and DYWIDAG Australian routes are identified separately from exact-product availability. BBR/SRG entries require current specialist certification; the previously located 2025/26 certificate is not treated as current after its 31 March 2026 expiry.
+
+The concise-query pass removes repeated supplier prefixes from selector labels where practical, keeps full names in the selected-product heading, changes the section heading to `Key product data`, removes repeated component/protection prompts and links an Australian reference/contact only where an official route has been identified. The local-provider link is supporting evidence, not confirmation of current product availability or project acceptance.
+
+`tests/rock-anchor-data.test.js` reproduces all 51 numeric rows and checks exact load labels, source routing, grouping, unpublished states and Australian-pathway wording. `tests/rock-anchor-dom-contract.test.js` locks the new selected-product fields, grouped selector contract, source links and no-resistance boundary.
+
+All 35 local Node test files and `git diff --check` pass. Browser reproduction at 1280 px and 390 x 844 px confirms no document-level horizontal overflow, a three-column-to-single-column specification-grid transition, grouped BBR and DYWIDAG selections, correct SRG/Custom unpublished states and no console errors.
