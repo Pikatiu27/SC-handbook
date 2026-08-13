@@ -158,6 +158,8 @@ assert.doesNotMatch(monopoleApp, /Source_Not_Verified/);
 assert.match(monopoleCapacity, /permittedMomentCapacity/);
 assert.match(monopoleApp, /M = F<sub>a<\/sub>I\/c/);
 assert.match(monopoleApp, /P = 0/);
+assert.match(monopoleApp, /D<sub>o<\/sub> - 2t<sub>d<\/sub> - 2BR/);
+assert.doesNotMatch(monopoleApp, /D<sub>o<\/sub> - t<sub>d<\/sub> - 2BR/);
 assert.match(monopoleApp, /AS 4100 &phi; is not applied/);
 assert.match(monopoleApp, /&phi; = 0\.90/);
 assert.match(monopoleApp, /function syncMethodPresentation\(\)/);

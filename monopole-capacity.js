@@ -301,7 +301,7 @@
     const actualRadius = positive(insideBendRadius, "Actual inside bend radius");
     const effectiveRadius = Math.min(actualRadius, 4 * t);
     const meanAcrossFlats = properties.outsideAcrossFlats - t;
-    const clearFlatWidth = Math.tan(Math.PI / properties.sideCount) * (meanAcrossFlats - 2 * effectiveRadius);
+    const clearFlatWidth = Math.tan(Math.PI / properties.sideCount) * (meanAcrossFlats - t - 2 * effectiveRadius);
     if (clearFlatWidth <= 0) {
       throw new RangeError("Inside bend radius leaves no positive polygon flat width.");
     }

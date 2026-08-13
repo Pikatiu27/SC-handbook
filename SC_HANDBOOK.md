@@ -3785,7 +3785,7 @@ For local buckling define:
 lambda = (w / t_d) sqrt(f_y / E)
 beta = 360 degrees / n
 BR = min(r_i, 4t_d)
-w = tan(pi / n) (D_o - t_d - 2BR)
+w = tan(pi / n) (D_o - 2t_d - 2BR)
 ```
 
 For pure bending with no axial action, use these ASCE/SEI 48-19 branches:
@@ -3809,7 +3809,7 @@ M = F_a I / c_max = F_a Z_min
 
 Use `Permitted bending moment, M`. Do not label the ASCE result `phi M_s` and do not apply an additional `phi = 0.90`.
 
-Use the actual inside bend radius derived from the entered `r_i/t_nom` and cap its contribution to the flat-width equation at `4t_d`, as required by Cl. 5.2.3.2.1 and Appendix B Fig. B-7. Do not substitute the full nominal side length when bend information is unavailable.
+Use the actual inside bend radius derived from the entered `r_i/t_nom` and cap its contribution to the flat-width equation at `4t_d`, as required by Cl. 5.2.3.2.1 and Appendix B Fig. B-7. For outside across-flats input `D_o`, use the Appendix B definitions `D = D_o - t_d` and `w = tan(pi/n)(D - t_d - 2BR) = tan(pi/n)(D_o - 2t_d - 2BR)`. Do not substitute the full nominal side length when bend information is unavailable.
 
 AS/NZS 3678 plate strength may be used as a project material input, but the page does not establish material equivalence with the steel specifications referenced by ASCE/SEI 48-19. State this limitation and require project acceptance before using the polygon result for design.
 

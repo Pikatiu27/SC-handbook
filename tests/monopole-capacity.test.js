@@ -141,11 +141,11 @@ close(octagonAf.inertia, octagonAc.inertia);
 });
 
 const octagonFlat = monopole.polygonFlatWidth(8, 1000, 10, 30);
-close(octagonFlat.clearFlatWidth, Math.tan(Math.PI / 8) * (1000 - 10 - 2 * 30));
+close(octagonFlat.clearFlatWidth, Math.tan(Math.PI / 8) * (1000 - 2 * 10 - 2 * 30));
 assert.equal(octagonFlat.effectiveRadius, 30);
 assert.equal(octagonFlat.radiusCappedAtFourThicknesses, false);
 const cappedOctagonFlat = monopole.polygonFlatWidth(8, 1000, 10, 60);
-close(cappedOctagonFlat.clearFlatWidth, Math.tan(Math.PI / 8) * (1000 - 10 - 2 * 40));
+close(cappedOctagonFlat.clearFlatWidth, Math.tan(Math.PI / 8) * (1000 - 2 * 10 - 2 * 40));
 assert.equal(cappedOctagonFlat.effectiveRadius, 40);
 assert.equal(cappedOctagonFlat.radiusCappedAtFourThicknesses, true);
 

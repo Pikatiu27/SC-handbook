@@ -106,7 +106,7 @@ const asce12AppendixExample = outsideDimension => {
   const elasticModulus = 200000;
   const meanDiameter = outsideDimension - thickness;
   const effectiveBendRadius = 30;
-  const flatWidth = 0.268 * (meanDiameter - 2 * effectiveBendRadius);
+  const flatWidth = 0.268 * (meanDiameter - thickness - 2 * effectiveBendRadius);
   const slenderness = flatWidth / thickness * Math.sqrt(yieldStress / elasticModulus);
   const permittedStress = slenderness <= 1.41
     ? yieldStress
@@ -142,6 +142,52 @@ const asce12AppendixExample = outsideDimension => {
   assert.ok(relativeError(result.permittedMomentCapacity, appendix.moment) <= 0.003);
 });
 
+// External legacy subcheck: the public ASCE 48-11 PolygonCapacity worksheet
+// reports this octagonal case using Appendix II rounded coefficients. It is a
+// secondary user-uploaded source, so it verifies only common geometry and flat-
+// width quantities; it is not a complete ASCE 48-19 pure-bending reproduction.
+// https://www.scribd.com/document/438722543/PolygonCapacity-xlsx
+const externalLegacyOctagon = {
+  meanAcrossFlats: 20,
+  thickness: 0.5,
+  effectiveBendRadius: 2,
+  yieldStress: 50
+};
+const externalLegacyArea = 3.32
+  * externalLegacyOctagon.meanAcrossFlats
+  * externalLegacyOctagon.thickness;
+const externalLegacyInertia = 0.438
+  * externalLegacyOctagon.meanAcrossFlats ** 3
+  * externalLegacyOctagon.thickness;
+const externalLegacyFlatWidth = 0.414 * (
+  externalLegacyOctagon.meanAcrossFlats
+  - externalLegacyOctagon.thickness
+  - 2 * externalLegacyOctagon.effectiveBendRadius
+);
+closeTo(externalLegacyArea, 33.2, 1e-12, "external ASCE 48-11 octagon Ag");
+closeTo(externalLegacyInertia, 1752, 1e-12, "external ASCE 48-11 octagon I");
+closeTo(externalLegacyFlatWidth, 6.417, 1e-12, "external ASCE 48-11 octagon w");
+
+const externalLegacyProduction = monopole.polygonMomentCapacity({
+  sideCount: 8,
+  outsideDimension: (externalLegacyOctagon.meanAcrossFlats + externalLegacyOctagon.thickness) * 25.4,
+  thickness: externalLegacyOctagon.thickness * 25.4,
+  yieldStress: externalLegacyOctagon.yieldStress * 6.894757293168,
+  insideBendRadius: externalLegacyOctagon.effectiveBendRadius * 25.4
+});
+const externalProductionArea = externalLegacyProduction.properties.area / 25.4 ** 2;
+const externalProductionInertia = externalLegacyProduction.properties.inertia / 25.4 ** 4;
+const externalProductionFlatWidth = externalLegacyProduction.clearFlatWidth / 25.4;
+assert.ok(relativeError(externalProductionArea, externalLegacyArea) <= 0.0025);
+assert.ok(relativeError(externalProductionInertia, externalLegacyInertia) <= 0.001);
+assert.ok(relativeError(externalProductionFlatWidth, externalLegacyFlatWidth) <= 0.001);
+closeTo(
+  externalLegacyProduction.stress.permittedStress / 6.894757293168,
+  externalLegacyOctagon.yieldStress,
+  1e-9,
+  "external ASCE 48-11 octagon Fa"
+);
+
 const outsideRange = monopole.polygonMomentCapacity({
   sideCount: 12,
   outsideDimension: 2100,
@@ -169,7 +215,7 @@ const independentPolygonExample = ({ sideCount, outsideAcrossFlats, thickness, y
   const elasticModulus = inertia / outsideCircumradius;
   const effectiveBendRadius = Math.min(insideBendRadius, 4 * thickness);
   const clearFlatWidth = Math.tan(halfAngle)
-    * (outsideAcrossFlats - thickness - 2 * effectiveBendRadius);
+    * (outsideAcrossFlats - 2 * thickness - 2 * effectiveBendRadius);
   const slenderness = clearFlatWidth / thickness * Math.sqrt(yieldStress / 200000);
   const beta = 360 / sideCount;
   const branch = beta >= 45
@@ -195,11 +241,11 @@ const independentPolygonExample = ({ sideCount, outsideAcrossFlats, thickness, y
     label: "8-sided reduced-stress example",
     input: { sideCount: 8, outsideAcrossFlats: 900, thickness: 8, yieldStress: 350, insideBendRadius: 24 },
     expected: {
-      clearFlatWidth: 349.596246643,
+      clearFlatWidth: 346.28253814390746,
       elasticModulus: 5105050.806228,
-      slenderness: 1.828082531,
-      permittedStress: 320.739938506,
-      moment: 1637.393681662
+      slenderness: 1.810754734698554,
+      permittedStress: 322.41064998983484,
+      moment: 1645.9227486670102
     },
     state: "Reduced stress"
   },
@@ -207,9 +253,9 @@ const independentPolygonExample = ({ sideCount, outsideAcrossFlats, thickness, y
     label: "16-sided full-yield example",
     input: { sideCount: 16, outsideAcrossFlats: 1200, thickness: 10, yieldStress: 350, insideBendRadius: 30 },
     expected: {
-      clearFlatWidth: 224.770975139,
+      clearFlatWidth: 222.78185146521696,
       elasticModulus: 11103921.019959,
-      slenderness: 0.940284450,
+      slenderness: 0.9319633487909945,
       permittedStress: 350,
       moment: 3886.372356986
     },
@@ -296,7 +342,7 @@ const independentProductStation = outsideAcrossFlats => {
   const elasticModulus = inertia / outsideCircumradius;
   const clearFlatWidth = Math.tan(halfAngle) * (
     outsideAcrossFlats
-    - productExample.thickness
+    - 2 * productExample.thickness
     - 2 * Math.min(productExample.insideBendRadius, 4 * productExample.thickness)
   );
   const slenderness = clearFlatWidth / productExample.thickness
@@ -331,12 +377,12 @@ const independentCentreOfGravity = productExample.length
 closeTo(productBottom.area, 2356.0467427781814, 1e-9, "KOP-1230 independent base A");
 closeTo(productBottom.inertia, 17490959.305263974, 1e-6, "KOP-1230 independent base I");
 closeTo(productBottom.elasticModulus, 134662.82755101015, 1e-9, "KOP-1230 independent base Zmin");
-closeTo(productBottom.slenderness, 1.326285695561918, 1e-12, "KOP-1230 independent base lambda");
+closeTo(productBottom.slenderness, 1.3088345679887348, 1e-12, "KOP-1230 independent base lambda");
 closeTo(productBottom.moment, 47.805303780608604, 1e-12, "KOP-1230 independent base M");
 closeTo(productTop.area, 864.8779182350222, 1e-9, "KOP-1230 independent top A");
 closeTo(productTop.inertia, 866109.6214616665, 1e-6, "KOP-1230 independent top I");
 closeTo(productTop.elasticModulus, 17781.798937322936, 1e-9, "KOP-1230 independent top Zmin");
-closeTo(productTop.slenderness, 0.45372931690276136, 1e-12, "KOP-1230 independent top lambda");
+closeTo(productTop.slenderness, 0.43627818932957824, 1e-12, "KOP-1230 independent top lambda");
 closeTo(productTop.moment, 6.312538622749642, 1e-12, "KOP-1230 independent top M");
 closeTo(independentMass, 151.7055515337219, 1e-9, "KOP-1230 independent mass");
 closeTo(independentSelfWeight, 1.4877232469481738, 1e-12, "KOP-1230 independent self-weight");

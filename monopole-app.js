@@ -667,7 +667,7 @@
         ).join(" ")
       : "";
     const resistanceExpression = polygon
-      ? `P = 0; w = tan(&pi;/${selection.sideCount})(D<sub>o</sub> - t<sub>d</sub> - 2BR); &lambda; = (w/t<sub>d</sub>)&radic;(f<sub>y</sub>/E); M = F<sub>a</sub>I/c<sub>max</sub> = F<sub>a</sub>Z<sub>min</sub>; AS 4100 &phi; is not applied. ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5.`
+      ? `P = 0; w = tan(&pi;/${selection.sideCount})(D<sub>o</sub> - 2t<sub>d</sub> - 2BR); &lambda; = (w/t<sub>d</sub>)&radic;(f<sub>y</sub>/E); M = F<sub>a</sub>I/c<sub>max</sub> = F<sub>a</sub>Z<sub>min</sub>; AS 4100 &phi; is not applied. ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5.`
       : "&lambda;<sub>s</sub> = (D/t<sub>d</sub>)(f<sub>y</sub>/250); &phi;M<sub>s</sub> = 0.90f<sub>y</sub>Z<sub>e</sub>; AS 4100 Cl. 5.2 and AS 4100 Table 5.2.";
     $("monopoleFormulaSteps").innerHTML = `
       <div><b>Assembly geometry</b><code>${assemblyExpression}${mode === "schedule" ? "; each taper uses its local section coordinate." : ""}</code></div>
