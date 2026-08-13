@@ -70,6 +70,7 @@ assert.match(html, /<select id="memberCustomAlphaBx">/);
 assert.match(html, /<select id="memberCustomAlphaBy">/);
 assert.match(html, /User-entered section properties<\/b><small>Verification required/);
 assert.match(html, /id="memberTensionBasis"/);
+assert.match(html, /AS 4100 Cl\. 6\.3 &middot; flexural buckling only; flexural-torsional buckling not evaluated/);
 assert.match(html, /<details class="member-demand-check" id="memberActionGroup">/);
 assert.match(html, /class="member-check-grid member-check-grid-compression"/);
 assert.match(html, /class="member-check-grid member-check-grid-tension"/);
