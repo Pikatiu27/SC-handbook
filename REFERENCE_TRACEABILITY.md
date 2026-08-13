@@ -1331,3 +1331,13 @@ The retired Austube resource URL was replaced by the current official Design Cap
 `tests/public-release-contract.test.js` preserves the visible beta boundary, feedback route, Build/cache key, current Austube link, notices, font licence and verify-before-deploy dependency. The integrated suite passes 39/39 test files; five production JavaScript syntax checks and `git diff --check` pass. Local browser review at 1440 x 900 px and 390 x 844 px shows the compact notice without page-level horizontal overflow or calculator reordering; the console reports zero errors and zero warnings.
 
 Standards-content publication entitlement remains a non-technical release decision. Technical verification does not grant permission to reproduce Standards content. Keep the public-beta status until the Standards-derived formula/table/figure inventory has been reviewed against the applicable licence or written permission.
+
+## 2026-08-14 Build 0.7.49 Polygon Flat-width Correction
+
+Build 0.7.49 corrects the regular-polygon flat-width substitution without changing the supported section forms, material inputs, station model or scope. ASCE/SEI 48-19 Appendix B defines the mean across-flats dimension as `D = Do - t` and the clear flat width as `w = tan(pi/n)(D - t - 2BR)`. For the page input `Do`, the implemented expression is therefore `w = tan(pi/n)(Do - 2t - 2BR)`. The previous implementation omitted the second thickness deduction.
+
+The correction reduces `w` and local slenderness. It changes permitted moment only where the section is in a reduced-stress branch; full-yield examples remain unchanged. The default editable 508 x 6.4 mm 8-sided case remains `M = 450.4 kN.m`. The 900 x 8 mm reduced-stress audit case changes from `1637.4 kN.m` to `1645.9 kN.m`.
+
+The public ASCE 48-11 `PolygonCapacity.xlsx` octagonal worksheet was independently reproduced as a secondary external subcheck. After mapping its mean dimension `D = 20 in` to page input `Do = 20.5 in`, the exact implementation agrees with its rounded `Ag`, `I`, `w` and full-yield `Fa` quantities within 0.25%. Its final combined-stress result is not treated as a verification of the page's direction-independent ASCE/SEI 48-19 pure-bending result. Regular-polygon capacity remains `For Review`; polygon combined axial-bending stress remains `Not evaluated`.
+
+The complete local test suite, production JavaScript syntax checks and `git diff --check` pass. The corrected polygon state was reproduced at 1428 x 900 px and 390 x 844 px with no document-level horizontal overflow or browser console warning/error. The Monopole calculation and display resources use a new cache key for publication.

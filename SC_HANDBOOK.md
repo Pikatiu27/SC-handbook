@@ -3872,7 +3872,7 @@ Use one spacing layer between monopole workflow sections; do not combine lookup-
 
 #### 15.17A.11 Result States and Exclusions
 
-Permitted states are `Calculated`, `Assumption`, `Source_Not_Verified`, `Not checked` and `Invalid input`. Do not use `PASS` or `FAIL`. A prescribed overlap comparison may state `Meets prescribed design overlap` or `Below prescribed design overlap`, but this is not a connection-capacity result.
+Permitted states are `Calculated`, `Assumption`, `Source_Not_Verified`, `Not checked`, `Not evaluated` and `Invalid input`. Use `Not checked` where entered geometry lies outside an implemented method range; use `Not evaluated` where a calculation path is intentionally unavailable, including polygon combined stress and slip-joint local capacity. Do not use `PASS` or `FAIL`. A prescribed overlap comparison may state `Meets prescribed design overlap` or `Below prescribed design overlap`, but this is not a connection-capacity result.
 
 Keep these exclusions explicit:
 
@@ -3899,7 +3899,7 @@ Before a checked release, complete:
 1. Licensed-source checks for every implemented AS 4100 and ASCE clause, limit, symbol and branch.
 2. Checked AS/NZS 3678 Table 8 plate `f_y` lookup with exact thickness boundaries and fail-closed unsupported ranges. AS/NZS 1163 Table 7 remains reference-only because the tapered-shell page does not claim a supplied CHS product.
 3. Independent circular-section `A`, `I`, `Z`, `S`, `Z_e` and `phi M_s` cases.
-4. Independent 4-, 6-, 8-, 12- and 16-sided polygon geometry plus 8-, 12- and 16-sided `w`, `Z_min`, `lambda`, `F_a` and `M` cases.
+4. Independent 4-, 6-, 8-, 12- and 16-sided polygon geometry plus 8-, 12- and 16-sided `w`, `Z_min`, `lambda`, `F_a` and `M` cases. Reproduce the ASCE Appendix B coefficients and at least one external calculation record, while distinguishing a legacy or partial subcheck from a complete current-edition worked example.
 5. Exact transition and upper-bound tests for every polygon branch, plus fail-closed tests immediately outside each range.
 6. Across-flats/across-corners geometry conversion, actual-radius input, `4t_d` bend-radius cap and fail-closed missing-radius tests.
 7. One-section and multi-section assembly-height tests.
@@ -3911,6 +3911,8 @@ Before a checked release, complete:
 13. Desktop and phone chart/table checks for order, labels, `5 m` guides, overlap lines, clipping and horizontal overflow.
 14. Confirmation that no demand, utilisation, `PASS` / `FAIL`, combined overlap capacity or excluded design claim appears.
 15. Traceability linking source -> calculation contract -> implementation -> tests -> visible result.
+
+The current `For Review` release has independent exact-geometry and ASCE/SEI 48-19 Appendix B comparisons. It also reproduces the common `A_g`, `I`, `w` and `F_a` quantities from one public ASCE 48-11 octagonal worksheet. This is a legacy external subcheck, not a complete ASCE/SEI 48-19 pure-bending worked-example reproduction; do not promote the polygon path beyond `For Review` on that evidence alone.
 
 #### 15.17A.13 Implementation Sequence
 

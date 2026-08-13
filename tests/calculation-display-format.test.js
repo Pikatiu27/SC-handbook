@@ -42,6 +42,6 @@ assert.match(monopoleFixed, /decimalHalfUp/);
 
 assert.match(html, /reo-calculation\.js\?v=20260812displaycontract1/);
 assert.match(html, /app\.js\?v=20260813weldlayout1/);
-assert.match(html, /monopole-app\.js\?v=20260812stateaudit1/);
+assert.match(html, /monopole-app\.js\?v=20260814polygonflat1/);
 
 console.log("Calculation display-format contract tests passed.");
