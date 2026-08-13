@@ -3989,16 +3989,16 @@ function calculateWeld() {
   const utilisation = calculationAvailable && capacity > 0 ? demand / capacity : Infinity;
   const hasDemand = demand > 0;
   const callouts = {
-    fillet: `${size} mm CFW, category ${category}, f_uw ${fuw} MPa`,
+    fillet: `${size} mm CFW, category ${category}, f<sub>uw</sub> ${fuw} MPa`,
     cpbw: `CPBW, category ${category}; resistance governed by the weaker joined part`,
-    ipbw: `IPBW, a_w ${displayFixed(effectiveThroat, 1)} mm, category ${category}, f_uw ${fuw} MPa`,
+    ipbw: `IPBW, a<sub>w</sub> ${displayFixed(effectiveThroat, 1)} mm, category ${category}, f<sub>uw</sub> ${fuw} MPa`,
     compound: `Compound weld; total design throat to be project-defined`
   };
 
   $("weldSizeField").hidden = type !== "fillet";
   $("weldThroatField").hidden = type !== "ipbw";
 
-  $("weldCallout").textContent = callouts[type] || callouts.fillet;
+  $("weldCallout").innerHTML = callouts[type] || callouts.fillet;
   $("weldTypeValue").textContent = typeData.label;
   $("weldThroatValue").textContent = calculationAvailable ? `${fixed2(throat)} mm` : inputErrors.length ? "\u2014" : "Project-defined";
   $("weldLengthValue").textContent = length > 0 ? `${fixed(length)} mm` : "\u2014";

@@ -8,6 +8,10 @@ const root = path.join(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
 
+assert.match(html, /aria-label="Weld geometry inputs"[\s\S]*?class="input-group-fields four"/);
+assert.match(html, /id="weldCallout"[^>]*>[\s\S]*?f<sub>uw<\/sub>/);
+assert.match(app, /\$\("weldCallout"\)\.innerHTML = callouts\[type\] \|\| callouts\.fillet/);
+
 assert.match(html, /Design capacity per unit effective length/);
 assert.match(html, /Indicative parent-metal screen/);
 assert.match(html, /Weld-throat resistance only/);

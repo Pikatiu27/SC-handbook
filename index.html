@@ -413,7 +413,7 @@
         <div class="input-cluster input-cluster-two">
           <section class="input-group input-group-section" aria-label="Weld geometry inputs">
             <span class="input-group-heading"><b>Weld geometry</b><small>Type, size, throat, effective length and effective weld lines.</small></span>
-            <div class="input-group-fields five">
+            <div class="input-group-fields four">
               <label class="size-field"><span>Weld type</span><select id="weldType" aria-label="Weld type"><option value="fillet">Fillet weld</option><option value="cpbw">Complete penetration butt weld</option><option value="ipbw">Incomplete penetration butt weld</option><option value="compound">Compound weld</option></select></label>
               <label id="weldSizeField"><span>Fillet size, s</span><select id="weldSize" aria-label="Fillet weld size"></select></label>
               <label id="weldThroatField" hidden><span>IPBW design throat, a<sub>w</sub></span><span class="unit"><input id="weldEffectiveThroat" type="number" min="1" step="0.5" value="10"><em>mm</em></span></label>
@@ -431,7 +431,7 @@
         </div>
 
         <div class="weld-summary">
-          <div><span>Weld designation</span><strong id="weldCallout">6 mm CFW, category SP, f_uw 490 MPa</strong><small>Show weld type, size or throat, category and nominal weld-metal strength on drawings.</small></div>
+          <div><span>Weld designation</span><strong id="weldCallout">6 mm CFW, category SP, f<sub>uw</sub> 490 MPa</strong><small>Show weld type, size or throat, category and nominal weld-metal strength on drawings.</small></div>
           <dl><div><dt>Weld type</dt><dd id="weldTypeValue">Fillet</dd></div><div><dt>t<sub>t</sub></dt><dd id="weldThroatValue">4.24 mm</dd></div><div><dt>l<sub>w</sub></dt><dd id="weldLengthValue">100 mm</dd></div><div><dt>Effective lines</dt><dd id="weldRunsValue">2</dd></div><div><dt>&phi;</dt><dd id="weldPhiValue">0.80</dd></div></dl>
         </div>
 
@@ -1964,7 +1964,7 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="monopole-capacity.js?v=20260808audit1"></script>
-  <script src="app.js?v=20260813release1"></script>
+  <script src="app.js?v=20260813weldlayout1"></script>
   <script src="monopole-app.js?v=20260812stateaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>
