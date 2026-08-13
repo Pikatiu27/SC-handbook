@@ -2075,7 +2075,7 @@ Project-specific figure scope:
 | --- | --- | --- |
 | `Bolt Capacity` | `e`, `d_h` or `d_f`, N/X plane and governing action direction | Block shear, prying and full connection topology |
 | `Axial Member Capacity` | Section family, `L_e`, checked axis and radius `r` | Full buckling theory and excluded flexural-torsional checks |
-| `Beam Section Capacity` | Section orientation, `A_w = d_1t_w`, `M*` or `V*` direction | Full compactness tables, `M_b` and complete member stability |
+| `Beam Section Capacity` | Section orientation, rolled-web `A_w = dt_w`, `M*` or `V*` direction | Full compactness tables, `M_b` and complete member stability |
 | `Section Properties` | Selected section shape and dimensions used by the geometry model | Capacity, availability or properties not supplied by the selected source |
 | `Weld Capacity` | `t_t`, `l_w`, weld side, arrow and reference line | WPS, inspection scope and a full weld-symbol catalogue |
 | `Concrete Pad Section` | `d`, compression face, selected strip and active reinforcement layers | Full strain equations, anchorage and excluded footing checks |
@@ -3016,8 +3016,8 @@ The default catalogue and entered-geometry calculation is an unperforated gross-
 
 Shear remains secondary to section moment and is family-dependent:
 
-- UB / UC / PFC web shear: `Vw = 0.6 fy,w Aw`, using the checked web yield stress `fy,w` and gross web area. Apply the reviewed AS 4100 Cl. 5.11.2 to 5.11.5 web slenderness and unstiffened-web reduction.
-- Current rolled open-section quick basis: use the reviewed clear web depth and `tw`; do not silently substitute overall depth.
+- UB / UC / PFC web shear: `Vw = 0.6 fy,w Aw`, using the checked web yield stress `fy,w` and gross web area `Aw = d tw` under AS 4100 Cl. 5.11.4. Apply the reviewed AS 4100 Cl. 5.11.2 to 5.11.5 web slenderness and unstiffened-web reduction.
+- Current rolled open-section quick basis: use `dp = d1` with `tw` for web slenderness, and use the overall section depth `d` with `tw` for gross web area. Keep both substitutions visible; do not use `d1 tw` as `Aw`.
 - CHS: use AS 4100 Cl. 5.11.4, `Vw = 0.36 fy Ae`; use gross area for `Ae` only under the clause hole / net-area condition. For the unperforated catalogue path, state `Ae = Ag`.
 - RHS / SHS: use the reviewed Austube Section 5.2.2.4 direction-specific path. Take the two-web area as `Aw = 2t(d - 2t)` for x-axis bending or `Aw = 2t(b - 2t)` for y-axis bending, apply the AS 4100 web-slenderness reduction where required, and take the lesser of the uniform-shear and Cl. 5.11.3 non-uniform-shear capacities. For y-axis bending, interchange `b` and `d` in the maximum-to-average shear-stress ratio.
 - EA and Round Bar: report no numeric shear capacity in the initial expanded tab.
@@ -3208,7 +3208,7 @@ The folded `Calculation steps` panel follows one consistent sequence:
 4. `Z`, `S`, section slenderness, class and `Ze` basis.
 5. Product-data edition and AS 4100:2020 compatibility status.
 6. `Ms = fy,m Ze` and `phi Ms`.
-7. Family-specific shear calculation where available; for the reviewed rolled-web path state `dp = d1`, `Aw = dp tw`, web slenderness and `alpha_v` explicitly.
+7. Family-specific shear calculation where available; for the reviewed rolled-web path state `dp = d1` for slenderness, `Aw = d tw` for gross web area, web slenderness and `alpha_v` explicitly.
 8. Moment-shear interaction and utilisation where actions are entered.
 
 For every evaluated shear path, the trace must show the governing formula before substitution:

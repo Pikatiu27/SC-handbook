@@ -741,7 +741,7 @@ function beamSectionRecord([designation, mass, area, Sx, Zx, grades]) {
   const d1 = shear.d1 || 0;
   const tw = shear.tw || 0;
   const tf = shear.tf || 0;
-  return { designation, mass, area, Sx, Zx, d, bf, d1, tw, tf, Aw: d1 * tw, grades, ...(hotRolledSectionProperties[designation] || {}) };
+  return { designation, mass, area, Sx, Zx, d, bf, d1, tw, tf, Aw: d * tw, grades, ...(hotRolledSectionProperties[designation] || {}) };
 }
 
 const ubSections = [
@@ -4172,7 +4172,7 @@ function beamPfcSection(section) {
     family: "pfc",
     drawing: { shape: "channel", d: section.d, bf: section.bf, tw: section.tw, tf: section.tf, xL: section.xL, xO: section.xO },
     geometryProperties: { cx: section.xL, cy: section.d / 2 },
-    Aw: section.d1 * section.tw,
+    Aw: section.d * section.tw,
     I: section.axes.x.I,
     Zx: section.axes.x.Z,
     Sx: section.axes.x.S,
@@ -6146,7 +6146,7 @@ function calculateBeam() {
     : "Design web shear capacity &phi;V<sub>v</sub>";
   $("beamShearResultBasis").innerHTML = chsSectionShear
     ? "0.36 f<sub>y</sub>A<sub>e</sub> · AS 4100 Cl. 5.11.4"
-    : "d<sub>p</sub> = d<sub>1</sub>; A<sub>w</sub> = d<sub>p</sub>t<sub>w</sub> · AS 4100 Cl. 5.11";
+    : "d<sub>p</sub> = d<sub>1</sub> for slenderness; A<sub>w</sub> = dt<sub>w</sub> · AS 4100 Cl. 5.11.4";
   if (hollowWeb) {
     $("beamShearResultBasis").innerHTML = "Two webs + non-uniform shear stress &middot; AS 4100 Cl. 5.11.3 to AS 4100 Cl. 5.11.5";
   }
@@ -6251,7 +6251,7 @@ function calculateBeam() {
   const shearSubstitution = !shearAvailable
     ? ""
     : rolledWebShear
-      ? `&lambda;<sub>v</sub> = (${formatBeamNumber(section.d1, 1)}/${formatBeamNumber(section.tw, 1)})&radic;(${formatBeamNumber(grade.fyw || grade.fy, 0)}/250) = ${displayFixed(webShear.slenderness, 2)}; &alpha;<sub>v</sub> = min[1, (82/${displayFixed(webShear.slenderness, 2)})<sup>2</sup>] = ${displayFixed(webShear.alphaV, 3)}; A<sub>w</sub> = ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup>; 0.90 &times; ${displayFixed(webShear.alphaV, 3)} &times; 0.6 &times; ${formatBeamNumber(grade.fyw || grade.fy, 0)} MPa &times; ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup> / 1000`
+      ? `&lambda;<sub>v</sub> = (${formatBeamNumber(section.d1, 1)}/${formatBeamNumber(section.tw, 1)})&radic;(${formatBeamNumber(grade.fyw || grade.fy, 0)}/250) = ${displayFixed(webShear.slenderness, 2)}; &alpha;<sub>v</sub> = min[1, (82/${displayFixed(webShear.slenderness, 2)})<sup>2</sup>] = ${displayFixed(webShear.alphaV, 3)}; A<sub>w</sub> = ${formatBeamNumber(section.d, 1)} &times; ${formatBeamNumber(section.tw, 1)} = ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup>; 0.90 &times; ${displayFixed(webShear.alphaV, 3)} &times; 0.6 &times; ${formatBeamNumber(grade.fyw || grade.fy, 0)} MPa &times; ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup> / 1000`
       : chsSectionShear
         ? `0.90 &times; 0.36 &times; ${formatBeamNumber(grade.fy, 0)} MPa &times; ${formatBeamNumber(section.area, 0)} mm<sup>2</sup> / 1000`
       : `d<sub>p</sub> = ${formatBeamNumber(hollowWeb.clearWebDepth, 1)} mm; A<sub>w</sub> = 2 &times; ${formatBeamNumber(section.t, 1)} &times; ${formatBeamNumber(hollowWeb.clearWebDepth, 1)} = ${formatBeamNumber(hollowWeb.webArea, 0)} mm<sup>2</sup>; &lambda;<sub>v</sub> = (${formatBeamNumber(hollowWeb.clearWebDepth, 1)}/${formatBeamNumber(section.t, 1)})&radic;(${formatBeamNumber(grade.fyw || grade.fy, 0)}/250) = ${displayFixed(hollowWeb.slenderness, 2)}; &alpha;<sub>v</sub> = min[1, (82/${displayFixed(hollowWeb.slenderness, 2)})<sup>2</sup>] = ${displayFixed(hollowWeb.alphaV, 3)}; &rho; = ${displayFixed(hollowWeb.stressRatio, 3)}; V<sub>v</sub> = min(${fixed(hollowWeb.shearYieldCapacity)}, ${fixed(hollowWeb.nonUniformCapacity)}) = ${fixed(hollowWeb.nominalCapacity)} kN; &phi;V<sub>v</sub> = 0.90 &times; ${fixed(hollowWeb.nominalCapacity)} = ${fixed(hollowWeb.designCapacity)} kN`;
@@ -6333,7 +6333,7 @@ function calculateBeam() {
       result: shearAvailable ? `Design section shear capacity = ${fixed(shearCapacity)} kN` : "Not evaluated",
       applicability: shearAvailable
         ? rolledWebShear
-          ? `d<sub>p</sub> = d<sub>1</sub> = ${formatBeamNumber(section.d1, 1)} mm; web slenderness = ${displayFixed(webShear.slenderness, 2)}.`
+          ? `d<sub>p</sub> = d<sub>1</sub> = ${formatBeamNumber(section.d1, 1)} mm for web slenderness; gross web area A<sub>w</sub> = dt<sub>w</sub> = ${formatBeamNumber(section.Aw, 0)} mm<sup>2</sup>.`
           : chsSectionShear
             ? "Unperforated catalogue CHS with A<sub>e</sub> = A<sub>g</sub> for this quick check."
             : `Two resisting webs; non-uniform shear-stress ratio = ${displayFixed(hollowWeb.stressRatio, 3)}.`

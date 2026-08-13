@@ -151,9 +151,14 @@ assert.equal(displayed(manualAngleWithHole.phiNt), "196.0");
 
 // BEAM-MOMENT-01 and BEAM-SHEAR-01 using the visible default 310UB40.4 values.
 const beamPhiMs = 0.9 * 320 * 633000 / 1e6;
-const beamPhiVv = 0.9 * 0.6 * 320 * (283.6 * 6.1) / 1000;
+const beamPhiVv = 0.9 * 0.6 * 320 * (304.0 * 6.1) / 1000;
 assert.equal(displayed(beamPhiMs), "182.3");
-assert.equal(displayed(beamPhiVv), "298.9");
+assert.equal(displayed(beamPhiVv), "320.4");
+
+// Design Manual 360UB50.7 example: source rounds d to 356 mm and phiMs to 242 kN.m.
+const beamManualGrossWebArea = 356 * 7.3;
+const beamManualDesignShear = 0.9 * 0.6 * 320 * beamManualGrossWebArea / 1000;
+assert.equal(displayed(beamManualDesignShear), "449.1");
 
 // BEAM-SHEAR-MOMENT-01: AS 4100 Cl. 5.12.3 and the design-manual example.
 function independentBeamInteraction(momentDemand, designMomentCapacity, nominalShearCapacity, phi = 0.9) {

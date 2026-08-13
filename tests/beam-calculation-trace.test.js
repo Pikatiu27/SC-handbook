@@ -68,6 +68,10 @@ assert.match(script, /&alpha;<sub>v<\/sub> = min\[1, \(82\/&lambda;<sub>v<\/sub>
 assert.match(script, /V<sub>v<\/sub> = min\[V<sub>u<\/sub>, 2V<sub>u<\/sub>\/\(0\.9 \+ &rho;\)\]/);
 assert.match(script, /&phi;V<sub>v<\/sub> = 0\.90V<sub>v<\/sub>/);
 assert.match(script, /&lambda;<sub>v<\/sub> = \(\$\{formatBeamNumber\(section\.d1, 1\)\}\/\$\{formatBeamNumber\(section\.tw, 1\)\}\)/);
+assert.match(script, /Aw: d \* tw/);
+assert.match(script, /Aw: section\.d \* section\.tw/);
+assert.match(script, /A<sub>w<\/sub> = \$\{formatBeamNumber\(section\.d, 1\)\} &times; \$\{formatBeamNumber\(section\.tw, 1\)\}/);
+assert.match(script, /d<sub>p<\/sub> = d<sub>1<\/sub> for slenderness; A<sub>w<\/sub> = dt<sub>w<\/sub>/);
 assert.match(script, /V<sub>v<\/sub> = min\(\$\{fixed\(hollowWeb\.shearYieldCapacity\)\}, \$\{fixed\(hollowWeb\.nonUniformCapacity\)\}\) = \$\{fixed\(hollowWeb\.nominalCapacity\)\} kN/);
 assert.match(script, /reference: "AS 4100 Cl\. 5\.2\.1"/);
 assert.doesNotMatch(script, /selection: `\$\{directionLabel\}\$\{loadCaseHtml\}`/);

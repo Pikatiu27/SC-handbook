@@ -321,7 +321,7 @@ Formula cases below are implemented in `tests/independent-reproductions.test.js`
 | `AUD-AXIAL-NET-01` | `AXIAL-TENSION-01` | Design Manual Example 5.3.4, 75 x 75 x 6 EA: `Ag = 867 mm2`, one 22 mm hole, actual `t = 6 mm`, `An = 735 mm2`, `fy = 260 MPa`, `fu = 410 MPa`, `kt = 0.85` | Gross yielding `202.9 kN`; net fracture `195.95 kN`; net fracture governs | Independent straight-line deduction and production helper; invalid whole-number, range, diameter, thickness and positive-area boundaries | Pass after local correction, 2026-08-11 |
 | `AUD-AXIAL-INPUT-01` | `AXIAL-SECTION-COMP-01`; `AXIAL-MEMBER-COMP-01`; `AXIAL-TENSION-01` | Browser entries `fy = 0` and `Le = 0`, plus invalid range cases | `INPUT REQUIRED`; capacities and utilisation cleared; no catalogue fallback | Invalid-input and stale-result suppression | Pass after local correction |
 | `AUD-AXIAL-DISPLAY-01` | `AXIAL-MEMBER-COMP-01`; `AXIAL-TENSION-01` | Enter an axial action giving an unrounded utilisation immediately above `1.00` | `>1.00`; `FAIL` remains based on the unrounded ratio | Display rounding must not contradict status | Pass after local correction |
-| `AUD-BEAM-DEFAULT-01` | `BEAM-MOMENT-01`; `BEAM-SHEAR-01` | 310UB40.4 visible default source values | `phi Ms = 182.3 kN.m`; `phi Vv = 298.9 kN` | Independent moment and web-shear arithmetic | Pass |
+| `AUD-BEAM-DEFAULT-01` | `BEAM-MOMENT-01`; `BEAM-SHEAR-01` | 310UB40.4 visible default source values | `phi Ms = 182.3 kN.m`; `phi Vv = 320.4 kN` | Independent moment and gross-web shear arithmetic | Pass after Build 0.7.50 correction |
 | `AUD-BEAM-INTERACTION-01` | `BEAM-SHEAR-MOMENT-01` | Design-manual case: `M* = 232 kN.m`, `phi Ms = 242 kN.m`, nominal `Vv = 498.97 kN`, `V* = 72 kN` | `beta_v = 0.666116`; `phi Vvm = 299.135 kN`; published/displayed `299.1 kN`; PASS | AS 4100 Cl. 5.12.3 reduced branch plus `0.75` and `1.00` boundaries | Pass |
 | `AUD-BEAM-INTERACTION-DISPLAY-01` | `BEAM-SHEAR-MOMENT-01` | Browser default 310UB40.4, `M*/phi Ms` immediately above `0.75`, `V* = phi Vv` | Exact utilisation above `1.0` displays `>1.00`; trace retains sufficient branch precision; FAIL remains based on unrounded values | Display rounding must not contradict the governing status | Pass after local correction |
 | `AUD-CONCRETE-DEFAULT-01` | `CONCRETE-FLEXURE-01`; `CONCRETE-SHEAR-SIMPLIFIED-01` | 1000 mm strip, 500 mm depth, 32 MPa concrete, two N20@200 mats at 105/395 mm, no shear reinforcement | `x = 62.5 mm`; `phi Muo = 287.1 kN.m`; `phi Vu = 194.2 kN`; axial residual below `0.001 kN` | Independent strain compatibility, bisection equilibrium and simplified-shear reconstruction | Pass |
@@ -412,6 +412,30 @@ Formula cases below are implemented in `tests/independent-reproductions.test.js`
 | Status | Pass after local correction, 2026-08-11 |
 
 ### Beam Shear-Bending Interaction Evidence
+
+#### `BEAM-EX-SHEAR-01`
+
+| Field | Record |
+| --- | --- |
+| Linked `Calculation_ID` | `BEAM-SHEAR-01`; `BEAM-SHEAR-MOMENT-01` |
+| Source role | Published worked example |
+| Governing source | `AS4100.pdf` \| AS 4100 Cl. 5.11.4 and Cl. 5.12.3 \| PDF pages 86 and 89-90 \| printed pages 73 and 76-77 |
+| Worked-example source | `Steel Structures Design Manual to AS 4100.pdf` \| 360UB50.7 web shear and combined moment-shear check \| PDF pages 148-149 \| printed pages 134-135 |
+| Source inputs | 360UB50.7; `d = 356 mm`; `tw = 7.3 mm`; `fy,w = 320 MPa`; `phi = 0.90`; `M* = 232 kN.m`; `phi Ms = 242 kN.m`; `V* = 72 kN` |
+| Published sequence | `Aw = d tw = 356 x 7.3`; `Vv = 0.6 fy,w Aw = 498.97 kN`; `phi Vv = 449 kN`; reduced `phi Vvm = 299.1 kN` |
+| Applicability to SC Handbook | Direct confirmation that rolled UB gross web area uses overall depth `d`, while `dp = d1` remains the web-slenderness depth |
+| Selection status | Accepted |
+
+#### `BEAM-REP-SHEAR-01`
+
+| Field | Record |
+| --- | --- |
+| Linked evidence | `BEAM-EX-SHEAR-01`; `BEAM-SHEAR-01`; `BEAM-SHEAR-MOMENT-01` |
+| Independent method | Standalone arithmetic in `tests/independent-reproductions.test.js`; production capacity functions are not imported |
+| Source-rounded reconstruction | `Aw = 2598.8 mm2`; `phi Vv = 449.1 kN`; source reports `449 kN`; reduced `phi Vvm = 299.1 kN` |
+| Catalogue-precision browser expectation | With `d = 355.6 mm`, `Aw = 2595.88 mm2`, `phi Vv = 448.6 kN`; with unrounded `phi Ms = 242.19 kN.m`, `phi Vvm = 299.3 kN` |
+| Difference / tolerance | Differences are caused only by the source's rounded section depth and moment capacity; compare at the stated precision |
+| Status | Pass after Build 0.7.50 correction |
 
 #### `BEAM-EX-INT-01`
 
@@ -797,7 +821,7 @@ Default outputs were checked on the local static page at `http://127.0.0.1:8765/
 | Bolt `Nti` lookup | `/S`; M16 8.8/TB and 8.8/TF; M16 10.9/TB; M20 8.8/TB | `/S`: Not required; M16 8.8/TB and 8.8/TF: 95 kN; M16 10.9/TB: 130 kN; M20 8.8/TB: 145 kN | Representative DOM outputs checked on 2026-07-23; the full M16-M36 lookup matches AS 4100 Table 15.2.2.2; lightweight display and TF-only conditional inputs checked locally |
 | Weld | 6 mm fillet, SP, `fuw` 490 MPa, 100 mm, 2 lines | throat 4.24 mm; weld capacity 199.5 kN; capacity per mm 1.00 kN/mm; parent screen 2.21 kN/mm for Grade 250 plate, 10 mm | DOM output matched independent calculation |
 | Weld published example `PUB-WELD-9413-01` | 8 mm E48XX SP fillet weld; `f_uw = 480 MPa`; `l_w = 280 mm`; applied resultant `0.84 kN/mm` | throat `5.66 mm`; design capacity `1.30 kN/mm`; applied resultant is below capacity | Steel Structures Design Manual to AS 4100, Example 9.4.1.3, source PDF page 198 / printed page 184; independently reproduced by `tests/published-worked-examples.test.js` |
-| Beam | 310UB40.4 300PLUS | `Ag` 5210 mm2; `Aw` 1730 mm2; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; `kf` 0.952; `phi Ms` 182.3 kNm; `phi Vv` 298.9 kN | DOM output matched independent calculation |
+| Beam | 310UB40.4 300PLUS | `Ag` 5210 mm2; `Aw` 1854.4 mm2; `fy` 320 MPa; `Zex` 633 x 10^3 mm3; `kf` 0.952; `phi Ms` 182.3 kNm; `phi Vv` 320.4 kN | DOM output matched corrected independent gross-web calculation |
 | Beam | 200UC46.2 300PLUS | `Ag` 5900 mm2; `Aw` 1324 mm2; `fy` 300 MPa; `Zex` 494 x 10^3 mm3; `kf` 1.000; `phi Ms` 133.4 kNm; `phi Vv` 214.5 kN | DOM output matched independent calculation |
 | Beam | 150PFC 300PLUS, x-x | `fy,m` 320 MPa; `fy,w` 320 MPa; `Zex` 129 x 10^3 mm3; `phi Ms` 37.2 kNm; `phi Vv` 135.8 kN | Independent equation and automated regression matched the app data path |
 | Beam | 114.3 x 4.5 CHS C250L0 | `fy` 250 MPa; `Ze` 54.3 x 10^3 mm3; `phi Ms` 12.2 kNm; `phi Vv` 125.6 kN | Independent equation and automated regression matched the app data path |
@@ -854,7 +878,7 @@ Outputs were checked on the local static page at `http://127.0.0.1:8765/?audit=2
 ### 2026-07-29 Beam and Axial Formula-Trace Audit
 
 - AS 4100 Table 3.4, AS 4100 Cl. 5.2.1 to Cl. 5.2.6, AS 4100 Cl. 5.11.1 to Cl. 5.11.5, AS 4100 Cl. 5.12.3, AS 4100 Cl. 6.2.1, AS 4100 Cl. 6.3.3, AS 4100 Table 6.3.3, AS 4100 Cl. 7.2 and AS 4100 Table 7.3.2 were visually rechecked against the local licensed PDF.
-- Beam desktop DOM checks matched independent calculations: 310UB40.4 / 300PLUS x-x gave `phi Ms = 182.3 kN.m` and `phi Vv = 298.9 kN`; 150 x 100 x 6 RHS / C450L0 x-x gave `phi Ms = 54.3 kN.m` and `phi Vv = 389.4 kN`.
+- Beam desktop DOM checks matched independent calculations after the rolled-web correction: 310UB40.4 / 300PLUS x-x gives `phi Ms = 182.3 kN.m` and `phi Vv = 320.4 kN`; 150 x 100 x 6 RHS / C450L0 x-x gives `phi Ms = 54.3 kN.m` and `phi Vv = 389.4 kN`.
 - The Beam trace now shows the governing formula before substitution and separately resolves `lambda_v`, `alpha_v`, nominal `Vv` and design `phi Vv`; the RHS / SHS non-uniform shear branch no longer uses the ambiguous visual expression `phi Vv = phi Vv`.
 - Axial desktop DOM checks matched the independent values above for the default EA and PFC. The Custom default checks both axes and reports `phi Nc,x = 245.8 kN`, `phi Nc,y = 130.3 kN`, with the y-axis governing.
 - Axial formula traces now expose `alpha_a`, adopted `alpha_b`, modified `lambda`, `eta`, `xi` and `alpha_c` before `phi Nc`. The 100 x 100 x 10 EA source row was rechecked as principal radii `38.6 mm` and `19.6 mm`; `19.6 mm` remains the adopted flexural-buckling radius.
@@ -1343,3 +1367,11 @@ The public ASCE 48-11 `PolygonCapacity.xlsx` octagonal worksheet was independent
 The complete local test suite, production JavaScript syntax checks and `git diff --check` pass. The corrected polygon state was reproduced at 1428 x 900 px and 390 x 844 px with no document-level horizontal overflow or browser console warning/error. The Monopole calculation and display resources use a new cache key for publication.
 
 The release candidate was committed as `f2a03eb` and pushed by fast-forward to remote `main`. GitHub Pages workflow `31740072198` completed both verification and deployment successfully. A cache-busted public fetch returned HTTP 200 with Build 0.7.49, both `20260814polygonflat1` Monopole resources and the corrected flat-width expression. Direct public-browser reproduction returned `Base M = 450.4 kN.m`, `Combined polygon stress: Not evaluated`, the corrected visible formula and no console warning/error.
+
+## 2026-08-14 Build 0.7.50 Rolled-web Shear Correction
+
+Build 0.7.50 corrects the UB, UC and PFC catalogue shear area from `d1 tw` to the AS 4100 Cl. 5.11.4 gross web area `d tw`. The clear web depth remains `dp = d1` only for the Cl. 5.11 web-slenderness calculation. Custom ideal geometry retains its independently derived physical web area and is not changed by this catalogue correction.
+
+The correction is reproduced against the published 360UB50.7 design-manual example. Using its rounded `d = 356 mm`, `tw = 7.3 mm` and `fy,w = 320 MPa` gives `phi Vv = 449.1 kN`, consistent with the published `449 kN`. Using the page's catalogue precision `d = 355.6 mm` gives `phi Vv = 448.6 kN`; with `M* = 232 kN.m` and unrounded `phi Ms = 242.19 kN.m`, the page gives reduced `phi Vvm = 299.3 kN`, compared with the source's rounded `299.1 kN`.
+
+The default 310UB40.4 result changes from the superseded `298.9 kN` to `320.4 kN`. Tests lock representative UB, UC and PFC gross-web areas, the source-rounded independent reconstruction, interaction branches and the visible formula/source wording. The release remains a section-capacity quick check; member stability, bearing stiffeners, load introduction and complete beam design remain excluded.
