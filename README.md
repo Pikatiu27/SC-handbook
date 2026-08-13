@@ -2,6 +2,12 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
+**Release status:** Public beta. This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+
+Public site: <https://pikatiu27.github.io/SC-handbook/>
+
+Report calculation, source, accessibility or publication issues through the [issue tracker](https://github.com/Pikatiu27/SC-handbook/issues/new). Do not include confidential project information.
+
 ## Tools
 
 ### Bolt Capacity
@@ -140,7 +146,7 @@ The project documentation is split deliberately:
 
 The only working reference folder for this project is:
 
-`C:\Users\silin\Documents\Codex\Reference`
+`%USERPROFILE%\Documents\Codex\Reference`
 
 Do not keep duplicate source references in this repository. Relevant standards, manufacturer catalogues, ASI guides, converted Markdown references and technical sheets should all live in the Codex Reference folder.
 
@@ -157,3 +163,12 @@ See `REFERENCE_TRACEABILITY.md` for the current source matrix, readable-pack sta
 ## Verification boundary
 
 This is engineering quick-reference software, not certified design software. Confirm section availability, effective length, restraint, connection effects, actions and all governing limit states for the project before design issue.
+
+## Publication and repository terms
+
+- `PUBLICATION_NOTICE.md` states the public-beta engineering, Standards/copyright and privacy boundaries.
+- `LICENSE.md` states the repository use terms; public visibility is not an open-source licence.
+- `THIRD_PARTY_NOTICES.md` and `assets/fonts/OFL.txt` retain third-party font notices.
+- `.github/workflows/pages.yml` runs every calculation/contract test, production JavaScript syntax checks and diff-integrity checks before the verified artifact may deploy.
+
+The GitHub Pages source must be configured as **GitHub Actions**. Do not use the legacy direct-from-branch Pages build for a normal public release because it can publish `main` without first passing the repository verification workflow.

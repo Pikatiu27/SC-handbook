@@ -5,14 +5,14 @@ Last updated: 2026-08-11
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
-`C:\Users\silin\Documents\Codex\Reference`
+`%USERPROFILE%\Documents\Codex\Reference`
 
-Use `C:\Users\silin\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md` before treating any source item as checked. Generated reference packs are search aids only; final equations, tables, and values must be visually checked against the source PDF page.
+Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md` before treating any source item as checked. Generated reference packs are search aids only; final equations, tables, and values must be visually checked against the source PDF page.
 
 ## Document Hygiene
 
 - `SC_HANDBOOK.md` remains the only canonical outline and rule file.
-- Source-reference files remain outside this workspace in `C:\Users\silin\Documents\Codex\Reference`.
+- Source-reference files remain outside this workspace in `%USERPROFILE%\Documents\Codex\Reference`.
 - 2026-07-02 local text audit checked `SC_HANDBOOK.md`, `REFERENCE_TRACEABILITY.md`, `README.md`, `index.html`, `app.js` and `styles.css` for common mojibake markers; no active mojibake remains in tracked handbook files.
 - `wind-region-workpack/` is not present in the current detached audit worktree and is not part of the checked source-traceability register unless explicitly promoted later.
 
@@ -1320,3 +1320,13 @@ The accepted Build 0.7.47 display, stale-state and selector-transition audits we
 | Runtime log | Traverse all released routes in the clean browser session | 0 errors; 0 warnings |
 
 The verified release candidate was committed as `680bae0` and pushed to remote `main`. GitHub Pages run `31639342546` completed successfully. A cache-busted public fetch returned HTTP 200 with Build 0.7.47, the audited shared-app, stylesheet, formatter, Monopole and Rock Anchor resource keys, and all ten released tool panels. This closes audit protocol Step 10 for the public release.
+
+## 2026-08-13 Build 0.7.48 Public-Beta Release Governance
+
+Build 0.7.48 adds the public-release boundary without changing a formula, source value, capacity factor, result branch or calculation scope. The first viewport now identifies the site as `Public beta`, states that it is not certified design software and links directly to the public issue tracker. The footer records the public-beta Build and technical-review date and links to the publication, repository and third-party notices.
+
+The retired Austube resource URL was replaced by the current official Design Capacity Tables application-guide page. Repository terms, a public engineering/copyright/privacy notice, Lato third-party attribution and the complete SIL Open Font License 1.1 text were added. The repository now contains a governed GitHub Pages workflow in which deployment depends on the complete Node test suite, production JavaScript syntax checks and `git diff --check`. GitHub Pages must be switched from the legacy branch build to GitHub Actions before this workflow is treated as the active public deployment gate.
+
+`tests/public-release-contract.test.js` preserves the visible beta boundary, feedback route, Build/cache key, current Austube link, notices, font licence and verify-before-deploy dependency. The integrated suite passes 39/39 test files; five production JavaScript syntax checks and `git diff --check` pass. Local browser review at 1440 x 900 px and 390 x 844 px shows the compact notice without page-level horizontal overflow or calculator reordering; the console reports zero errors and zero warnings.
+
+Standards-content publication entitlement remains a non-technical release decision. Technical verification does not grant permission to reproduce Standards content. Keep the public-beta status until the Standards-derived formula/table/figure inventory has been reviewed against the applicable licence or written permission.

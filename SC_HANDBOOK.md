@@ -176,9 +176,9 @@ Keep worksheet names short, stable, and script-friendly.
 
 Primary source location:
 
-- `C:\Users\silin\Documents\Codex\Reference`
+- `%USERPROFILE%\Documents\Codex\Reference`
 
-All downloaded technical source files for this project must be stored in that folder. Do not keep duplicate reference PDFs, standards, catalogues, converted Markdown references or technical sheets in the project workspace. If a source document is found in another project folder, move it into `C:\Users\silin\Documents\Codex\Reference` before treating it as a project reference. A web-only authoritative source may remain a URL record when licensing, access terms or continuous data prevent local copying; record its publisher, page title, version/date, URL, checked date and any retained evidence capture in `REFERENCE_TRACEABILITY.md`.
+All downloaded technical source files for this project must be stored in that folder. Do not keep duplicate reference PDFs, standards, catalogues, converted Markdown references or technical sheets in the project workspace. If a source document is found in another project folder, move it into `%USERPROFILE%\Documents\Codex\Reference` before treating it as a project reference. A web-only authoritative source may remain a URL record when licensing, access terms or continuous data prevent local copying; record its publisher, page title, version/date, URL, checked date and any retained evidence capture in `REFERENCE_TRACEABILITY.md`.
 
 Storage location does not establish engineering authority. Classify and apply every source under the hierarchy below.
 
@@ -248,6 +248,15 @@ Online sources may be used to locate governing material, verify currency/errata/
 - A public preview may establish publication structure, scope or metadata but not unreadable technical values.
 - Do not use search-result snippets, AI summaries, forum answers or secondary calculators as the governing source.
 - When an online dataset changes, preserve the version or evidence needed to reproduce the checked result.
+
+Public release does not change the source entitlement. Before a public-beta or normal public release:
+
+- maintain `PUBLICATION_NOTICE.md` as the concise public engineering, copyright and privacy boundary;
+- identify every Standards-derived formula, table value, figure and close paraphrase, then confirm whether citation alone is sufficient or reproduction permission is required;
+- do not treat a repository licence as permission to redistribute Standards, catalogues, trademarks or other third-party material;
+- retain the applicable third-party notices and licence text for every redistributed font, library or asset;
+- provide one visible issue-reporting path and tell users not to submit confidential project information;
+- keep unresolved copyright or source-entitlement items recorded as public-release blockers rather than implying that technical verification grants publication rights.
 
 Source gaps must be reported, not hidden:
 
@@ -1104,7 +1113,7 @@ Never modify source reference files unless the user explicitly asks.
 
 Protected source locations include:
 
-- `C:\Users\silin\Documents\Codex\Reference`
+- `%USERPROFILE%\Documents\Codex\Reference`
 
 The project workspace should not contain active source reference files. If `reference/` or `Tech sheet/` exists, treat it as non-canonical and keep it empty unless the user explicitly asks for a temporary staging area.
 
@@ -1228,7 +1237,7 @@ For a formal page or calculation audit, this short implementation checklist is o
 
 1. Confirm the active app root is the current `SC Handbook` checkout and the affected files are `index.html`, `app.js`, `styles.css`, any scoped tab module such as `rock-anchor-selector/app.js`, and, where durable rules changed, `SC_HANDBOOK.md`.
 2. Keep the UI English-only and use Australian engineering language.
-3. Check the local reference folder first: `C:\Users\silin\Documents\Codex\Reference`.
+3. Check the local reference folder first: `%USERPROFILE%\Documents\Codex\Reference`.
 4. If the governing source cannot be found or read, tell the user and mark the item `Source_Not_Verified`; do not present it as checked.
 5. Keep the web page a quick-reference handbook, not a full design engine. Add clear limitations instead of forcing complex topology into the page.
 6. Use the standard web order: primary inputs, adopted-basis summary, workflow-specific primary answer, supporting checks/data, then calculation/source basis and limitations.
@@ -1925,7 +1934,7 @@ Related project files:
 - `SC_HANDBOOK.md` is the only project outline and rulebook. Update it for durable scope, UI, terminology, calculation-boundary and formatting rules.
 - `README.md` is the public project summary. Keep it short and user-facing; do not duplicate detailed audit tables there.
 - `REFERENCE_TRACEABILITY.md` is the source evidence register. Put visual-check status, PDF page evidence, row-level checks and remaining source gaps there.
-- Source PDFs, converted Markdown packs and technical sheets live only in `C:\Users\silin\Documents\Codex\Reference`. Do not create a second reference folder inside this repo.
+- Source PDFs, converted Markdown packs and technical sheets live only in `%USERPROFILE%\Documents\Codex\Reference`. Do not create a second reference folder inside this repo.
 
 ### 15.8 Web Input Layout Logic
 
@@ -4027,7 +4036,7 @@ Default audit behaviour:
 2. State the audit scope: full handbook, selected tab, selected calculation, page logic, visual layout, source evidence, or deployment state.
 3. Identify the exact local checkout, branch, commit, build identifier and files reviewed. Do not assume the open browser is showing the same revision as the worktree.
 4. Read this handbook first, then the tab-specific rules, then the implementation and traceability record.
-5. Use `C:\Users\silin\Documents\Codex\Reference` as the only default reference library. Follow its routing and source-register files before opening individual source documents.
+5. Use `%USERPROFILE%\Documents\Codex\Reference` as the only default reference library. Follow its routing and source-register files before opening individual source documents.
 6. Report findings before editing using the standard audit report in Section 15.19.16.
 7. After the user accepts a finding, modify only the accepted scope, run the applicable regression matrix, and show the resulting local state.
 8. Commit, merge, push or deploy only when the user requests it. Verify local, remote and published states separately.
@@ -4300,6 +4309,15 @@ Run the checks appropriate to the change:
 - confirm cache-busting asset versions where HTML, JavaScript, CSS or generated assets changed;
 - after push, confirm remote `main`, published HTML, script/style asset versions, public hash routes and browser-rendered behaviour;
 - confirm the local worktree is clean or explicitly list remaining unrelated files.
+
+For the public GitHub Pages release:
+
+- use the governed `.github/workflows/pages.yml` workflow as the Pages source;
+- require the complete `tests/*.test.js` suite, production JavaScript syntax checks and `git diff --check` to pass before artifact upload;
+- deploy the exact artifact produced after verification; do not rebuild or edit it between verification and deployment;
+- do not use the legacy direct-from-branch Pages build for a normal public release because it can publish an unverified `main` commit;
+- keep the visible `Public beta` state until Standards-content publication rights, repository terms, third-party notices, public limitations and feedback routing are all reviewed;
+- record the workflow run, release commit, public Build label, cache keys and public-route verification in `REFERENCE_TRACEABILITY.md`.
 
 No audit is complete because `git status` is clean, a formula looks familiar, or the default page renders. Evidence must cover the changed engineering branch and the changed interface state.
 

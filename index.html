@@ -3,10 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Engineering lookup handbook and quick-reference calculators">
+  <meta name="description" content="Public-beta Australian structural engineering quick-reference tools with traceable calculations, sources and limitations.">
+  <link rel="canonical" href="https://pikatiu27.github.io/SC-handbook/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SC Handbook · Engineering Lookup">
+  <meta property="og:description" content="Australian structural engineering quick-reference tools with traceable calculations, sources and limitations.">
+  <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260812foundationmerge1">
+  <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=20260813publicbeta1">
 </head>
 <body>
   <header class="topbar">
@@ -15,6 +20,11 @@
 
   <main id="top">
     <h1 class="visually-hidden">SC Handbook engineering tools</h1>
+
+    <aside class="release-notice" aria-label="Public beta notice">
+      <p><b>Public beta</b><span>Engineering quick reference only. Not certified design software. Verify the adopted method, inputs and results against licensed current Standards and project requirements.</span></p>
+      <a href="https://github.com/Pikatiu27/SC-handbook/issues/new" target="_blank" rel="noopener noreferrer">Report an issue</a>
+    </aside>
 
     <section class="tool-navigation" aria-label="Engineering tool navigation">
       <div class="mobile-tool-bar">
@@ -1161,7 +1171,7 @@
             <p><b>Circular</b> &middot; AS 4100:2020. Design section moment capacity follows AS 4100 Cl. 5.2 and AS 4100 Table 5.2.
               The 0.5 m compression-and-bending profile reports the AS 4100 Cl. 6.2 compression and AS 4100 Cl. 5.2 moment capacity intercepts. The interaction equation is AS 4100 Cl. 8.3.2; &phi; = 0.90.</p>
             <p><b>Regular polygon</b> &middot; ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5; P = 0 and M = F<sub>a</sub>I/c. BR = min(r<sub>i</sub>, 4t<sub>d</sub>); no AS 4100 &phi;. <a href="https://sp360.asce.org/personifyebusiness/Merchandise/Product-Details/productId/266165183" target="_blank" rel="noreferrer">Publication record</a>.</p>
-            <p><b>Initial capacity example</b> &middot; Austube 508.0 &times; 6.4 CHS C350L0. The 12 m profile length is an editable calculation input, not a published product length. <a href="https://www.austubemills.com.au/resources/design-capacity-tables/" target="_blank" rel="noreferrer">Manufacturer capacity tables</a>.</p>
+            <p><b>Initial capacity example</b> &middot; Austube 508.0 &times; 6.4 CHS C350L0. The 12 m profile length is an editable calculation input, not a published product length. <a href="https://www.austubemills.com.au/resources/application-guide/design-capacity-tables-for-structural-steel-hollow/" target="_blank" rel="noopener noreferrer">Manufacturer capacity tables</a>.</p>
             <p><b>Product geometry reference</b> &middot; KISMAT KOP-1230: one 12 m, 8-sided section; D<sub>o,b</sub> = 240 mm A/F, D<sub>o,t</sub> = 90 mm A/F, t<sub>nom</sub> = 3 mm and E355BR. The adopted f<sub>y</sub> = 355 MPa and fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5 are not published product values. <a href="https://www.kismatengitech.com/octagonal-poles.html" target="_blank" rel="noreferrer">Manufacturer product table</a>.</p>
             <p><b>Material</b> &middot; AS/NZS 3678:2016 Table 8 f<sub>y</sub> uses t<sub>nom</sub>. Resistance uses t<sub>d</sub>; mass uses t<sub>nom</sub>. Confirm material equivalence and project acceptance for the ASCE method.</p>
             <p><b>Slip joints</b> &middot; AS/NZS 7000:2016 Appendix K9: L<sub>o</sub> &ge; 1.5D<sub>ins,max</sub>, where D<sub>ins,max</sub> is the largest circle inscribed within the outside profiles being joined. Joint resistance, fit-up, tolerances, jacking and installed overlap are not evaluated.</p>
@@ -1933,7 +1943,10 @@
 
   </main>
 
-  <footer><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><b>SC Handbook &middot; Build 0.7.47</b></footer>
+  <footer>
+    <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.48 &middot; technically reviewed 13 Aug 2026</b>
+  </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
