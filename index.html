@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260813publicbeta1">
+  <link rel="stylesheet" href="styles.css?v=20260814weldsymbols1">
 </head>
 <body>
   <header class="topbar">
@@ -431,26 +431,27 @@
         </div>
 
         <div class="weld-summary">
-          <div><span>Weld designation</span><strong id="weldCallout">6 mm CFW, category SP, f<sub>uw</sub> 490 MPa</strong><small>Show weld type, size or throat, category and nominal weld-metal strength on drawings.</small></div>
+          <div><span>Weld designation</span><strong id="weldCallout">6 mm CFW, category SP, f<sub>uw</sub> 490 MPa</strong><small>Show weld type and size or throat on the detail; define category, WPS and inspection in the drawing notes or referenced specification.</small></div>
           <dl><div><dt>Weld type</dt><dd id="weldTypeValue">Fillet</dd></div><div><dt>t<sub>t</sub></dt><dd id="weldThroatValue">4.24 mm</dd></div><div><dt>l<sub>w</sub></dt><dd id="weldLengthValue">100 mm</dd></div><div><dt>Effective lines</dt><dd id="weldRunsValue">2</dd></div><div><dt>&phi;</dt><dd id="weldPhiValue">0.80</dd></div></dl>
         </div>
 
         <div class="symbol-key" aria-label="AS 4100 weld symbols"><span><b>s</b> fillet weld leg size</span><span><b>t<sub>t</sub></b> design throat thickness</span><span><b>a<sub>w</sub></b> butt-weld design throat</span><span><b>l<sub>w</sub></b> effective weld length</span><span><b>f<sub>uw</sub></b> nominal tensile strength of weld metal</span></div>
 
         <details class="weld-legend-card">
-          <summary><span><b>Weld symbol legend</b><small>Common AS 1101.3 symbol positions; verify project drawings.</small></span><i>+</i></summary>
+          <summary><span><b>Weld symbol legend</b><small>Common AS 1101.3 symbols and Australian drawing callouts.</small></span><i>+</i></summary>
           <section class="weld-figure-section" aria-label="Weld symbol legend examples">
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgArrowSideTitle">
-                <title id="weldSvgArrowSideTitle">Fillet weld symbol below reference line for arrow side</title>
+                <title id="weldSvgArrowSideTitle">Arrow-side fillet weld with labelled reference line and arrow line</title>
                 <line class="svg-line" x1="55" y1="48" x2="188" y2="48"></line>
                 <line class="svg-line" x1="55" y1="48" x2="25" y2="82"></line>
                 <path class="svg-arrow" d="M25 82 L35 78 L31 69 Z"></path>
                 <path class="svg-weld-mark" d="M96 48 L126 48 L96 70 Z"></path>
-                <text x="76" y="66">6</text>
-                <text class="svg-caption" x="55" y="96">symbol below reference line</text>
+                <text class="svg-caption" x="104" y="37">reference line</text>
+                <text class="svg-caption" x="12" y="100">arrow line</text>
+                <text class="svg-caption" x="91" y="95">towards reader</text>
               </svg>
-              <div><strong>Fillet weld - arrow side</strong><small>Symbol below the reference line denotes the arrow-side weld.</small></div>
+              <div><strong>Fillet weld - arrow side</strong><small>Place the symbol on the side of the reference line towards the reader.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgOtherSideTitle">
@@ -459,36 +460,36 @@
                 <line class="svg-line" x1="55" y1="64" x2="25" y2="92"></line>
                 <path class="svg-arrow" d="M25 92 L35 88 L31 79 Z"></path>
                 <path class="svg-weld-mark" d="M96 64 L126 64 L96 42 Z"></path>
-                <text x="76" y="51">6</text>
-                <text class="svg-caption" x="55" y="18">symbol above reference line</text>
+                <text class="svg-caption" x="55" y="18">away from reader</text>
               </svg>
-              <div><strong>Fillet weld - other side</strong><small>Symbol above the reference line denotes the other-side weld.</small></div>
+              <div><strong>Fillet weld - other side</strong><small>Place the symbol on the side of the reference line away from the reader.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgBothSidesTitle">
-                <title id="weldSvgBothSidesTitle">Fillet weld symbols above and below reference line for both sides</title>
+                <title id="weldSvgBothSidesTitle">Eight millimetre fillet weld symbols on both sides of the reference line</title>
                 <line class="svg-line" x1="55" y1="56" x2="188" y2="56"></line>
                 <line class="svg-line" x1="55" y1="56" x2="25" y2="88"></line>
                 <path class="svg-arrow" d="M25 88 L35 84 L31 75 Z"></path>
                 <path class="svg-weld-mark" d="M96 56 L126 56 L96 34 Z"></path>
                 <path class="svg-weld-mark" d="M96 56 L126 56 L96 78 Z"></path>
-                <text x="76" y="46">6</text>
-                <text x="76" y="73">6</text>
-                <text class="svg-caption" x="55" y="101">symbols on both sides</text>
+                <text x="78" y="46">8</text>
+                <text x="78" y="75">8</text>
+                <text class="svg-caption" x="55" y="101">same size shown on each side</text>
               </svg>
-              <div><strong>Fillet weld - both sides</strong><small>Symbols on both sides of the reference line denote welds both sides.</small></div>
+              <div><strong>Fillet weld - both sides</strong><small>Show dimensions on the same side of the reference line as each symbol. <code>TYP</code> is a project note, not a basic weld symbol.</small></div>
             </article>
             <article class="weld-figure-card">
-              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgCpbwTitle">
-                <title id="weldSvgCpbwTitle">Complete penetration butt weld callout on reference line</title>
-                <line class="svg-line" x1="55" y1="56" x2="188" y2="56"></line>
-                <line class="svg-line" x1="55" y1="56" x2="25" y2="88"></line>
-                <path class="svg-arrow" d="M25 88 L35 84 L31 75 Z"></path>
-                <path class="svg-tail" d="M188 56 L203 43 M188 56 L203 69"></path>
-                <text class="svg-tag" x="90" y="48">CPBW</text>
-                <text class="svg-caption" x="55" y="101">callout text where specified</text>
+              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgFpbwTitle">
+                <title id="weldSvgFpbwTitle">Square butt weld symbol above the reference line with FPBW in the tail</title>
+                <line class="svg-line" x1="52" y1="60" x2="148" y2="60"></line>
+                <line class="svg-line" x1="52" y1="60" x2="24" y2="91"></line>
+                <path class="svg-arrow" d="M24 91 L34 87 L30 78 Z"></path>
+                <path class="svg-tail" d="M148 60 L214 15 M148 60 L214 105"></path>
+                <path class="svg-groove-mark" d="M92 60 L92 34 M112 60 L112 34"></path>
+                <text class="svg-tag" x="174" y="64">FPBW</text>
+                <text class="svg-caption" x="110" y="108" text-anchor="middle">other side; FPBW in tail</text>
               </svg>
-              <div><strong>Complete penetration butt weld</strong><small>Designation example only; specify preparation, WPS and inspection separately.</small></div>
+              <div><strong>Square butt + FPBW tail</strong><small><code>FPBW</code> is a common project abbreviation for full penetration butt weld. Define it in the drawing legend; it is not the basic square-butt symbol.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgSquareButtTitle">
@@ -497,9 +498,9 @@
                 <line class="svg-line" x1="55" y1="50" x2="25" y2="84"></line>
                 <path class="svg-arrow" d="M25 84 L35 80 L31 71 Z"></path>
                 <path class="svg-groove-mark" d="M101 50 L101 76 M121 50 L121 76"></path>
-                <text class="svg-caption" x="55" y="99">square butt symbol below line</text>
+                <text class="svg-caption" x="55" y="99">square butt; arrow side</text>
               </svg>
-              <div><strong>Square butt weld</strong><small>Basic butt-weld symbol shown in the arrow-side position.</small></div>
+              <div><strong>Square butt weld</strong><small>Basic butt-weld symbol shown on the arrow side.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgVButtTitle">
@@ -507,10 +508,10 @@
                 <line class="svg-line" x1="55" y1="50" x2="188" y2="50"></line>
                 <line class="svg-line" x1="55" y1="50" x2="25" y2="84"></line>
                 <path class="svg-arrow" d="M25 84 L35 80 L31 71 Z"></path>
-                <path class="svg-groove-mark" d="M96 50 L111 76 L126 50"></path>
-                <text class="svg-caption" x="55" y="99">single-V symbol below line</text>
+                <path class="svg-groove-mark" d="M96 76 L111 50 L126 76"></path>
+                <text class="svg-caption" x="55" y="99">single-V; arrow side</text>
               </svg>
-              <div><strong>Single-V butt weld</strong><small>Basic V butt-weld symbol shown in the arrow-side position.</small></div>
+              <div><strong>Single-V butt weld</strong><small>The V apex meets the reference line and its legs extend towards the weld side.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgBevelButtTitle">
@@ -518,10 +519,10 @@
                 <line class="svg-line" x1="55" y1="50" x2="188" y2="50"></line>
                 <line class="svg-line" x1="55" y1="50" x2="25" y2="84"></line>
                 <path class="svg-arrow" d="M25 84 L35 80 L31 71 Z"></path>
-                <path class="svg-groove-mark" d="M100 50 L100 76 L126 50"></path>
-                <text class="svg-caption" x="55" y="99">single-bevel symbol below line</text>
+                <path class="svg-groove-mark" d="M106 50 L106 76 M106 50 L132 76"></path>
+                <text class="svg-caption" x="55" y="99">single-bevel; arrow side</text>
               </svg>
-              <div><strong>Single-bevel butt weld</strong><small>Basic bevel butt-weld symbol. Confirm the prepared member on the project drawing.</small></div>
+              <div><strong>Single-bevel butt weld</strong><small>The vertical and inclined legs share a point on the reference line. Identify the prepared member on the drawing.</small></div>
             </article>
             <article class="weld-figure-card">
               <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgDoubleVButtTitle">
@@ -529,24 +530,12 @@
                 <line class="svg-line" x1="55" y1="56" x2="188" y2="56"></line>
                 <line class="svg-line" x1="55" y1="56" x2="25" y2="88"></line>
                 <path class="svg-arrow" d="M25 88 L35 84 L31 75 Z"></path>
-                <path class="svg-groove-mark" d="M96 56 L111 34 L126 56 L111 78 Z"></path>
-                <text class="svg-caption" x="55" y="101">double-V both sides</text>
+                <path class="svg-groove-mark" d="M96 34 L111 56 L126 34 M96 78 L111 56 L126 78"></path>
+                <text class="svg-caption" x="55" y="101">double-V; both sides</text>
               </svg>
-              <div><strong>Double-V butt weld</strong><small>V symbols mirrored across the reference line denote both-side preparation.</small></div>
+              <div><strong>Double-V butt weld</strong><small>Two V symbols share their apex at the reference line and extend to both sides.</small></div>
             </article>
-            <article class="weld-figure-card">
-              <svg class="weld-symbol-svg" viewBox="0 0 220 112" role="img" aria-labelledby="weldSvgIpbwTitle">
-                <title id="weldSvgIpbwTitle">Incomplete penetration butt weld callout on reference line</title>
-                <line class="svg-line" x1="55" y1="56" x2="188" y2="56"></line>
-                <line class="svg-line" x1="55" y1="56" x2="25" y2="88"></line>
-                <path class="svg-arrow" d="M25 88 L35 84 L31 75 Z"></path>
-                <path class="svg-tail" d="M188 56 L203 43 M188 56 L203 69"></path>
-                <text class="svg-tag" x="90" y="48">IPBW</text>
-                <text class="svg-caption" x="55" y="101">specified throat where required</text>
-              </svg>
-              <div><strong>Incomplete penetration butt weld</strong><small>Designation example only; specify the required design throat.</small></div>
-            </article>
-            <p class="weld-legend-source">SVG schematic redrawn from common AS 1101.3:2005 weld-symbol conventions. Use for quick reference only; project drawings must define size, length, pitch, process, contour, finish, weld category, WPS and inspection requirements where applicable.</p>
+            <p class="weld-legend-source"><b>Source basis</b> - basic symbols: AS 1101.3:2005 Fig. 2.1; weld side: Cl. 2.3.2 and Figs. 2.8 to 2.10; tail references: Cl. 2.3.4 and Fig. 2.11; fillet dimensions: Cls. 3.1 to 3.3. <code>FPBW</code>, <code>IPBW</code> / <code>PPBW</code> and <code>TYP</code> are drawing or project abbreviations, not basic weld symbols, and must be defined by the project. Schematic only, not to scale.</p>
           </section>
         </details>
 
@@ -554,7 +543,7 @@
           <summary><span><b>Weld application notes</b><small>Indicative structural-steel applications and required project checks.</small></span><i>+</i></summary>
           <div class="weld-scenario-grid">
             <article><b>Shear cleat / web plate</b><strong>Typical configuration: double-sided fillet weld</strong><span>Applicable to direct shear transfer where both sides are accessible.</span><small>Evaluate weld-group eccentricity where the design action is not concentric.</small></article>
-            <article><b>Bracing gusset / cleat</b><strong>Typical configuration: continuous fillet weld</strong><span>Applicable to gusset-to-member shear transfer where fit-up and access are suitable.</span><small>Verify effective length, connected-part limit states and local member resistance.</small></article>
+            <article><b>Bracing gusset / cleat</b><strong>Typical configuration: continuous fillet weld</strong><span>Applicable to gusset-to-member shear transfer where fit-up and access are suitable. Specify all-around only where the weld continues completely around the joint.</span><small>Verify effective length, connected-part limit states and local member resistance.</small></article>
             <article><b>Base plate to column</b><strong>Typical configuration: perimeter fillet weld</strong><span>The weld may transfer shear, erection actions or uplift where compression is transferred by bearing.</span><small>Verify anchors, bearing, prying and local column resistance separately.</small></article>
             <article><b>Continuity splice</b><strong>Potential configuration: complete-penetration butt weld</strong><span>Project design must establish the required joined-part resistance and continuity.</span><small>Specify joint preparation, welding procedure, inspection and distortion controls.</small></article>
             <article><b>Incomplete-penetration butt joint</b><strong>Required input: specified design throat, a<sub>w</sub></strong><span>Applicable only where the required design throat is established by the project design.</span><small>Fatigue and continuity requirements require separate assessment.</small></article>
@@ -613,7 +602,7 @@
         <section><h3>Calculated values</h3><div class="member-check-grid weld-detail-grid"><div><span>Total design weld capacity</span><strong><output id="weldCapacity">199.5</output><small id="weldTotalCapacityUnit"> kN</small></strong><small>capacity per unit effective length &times; l<sub>w</sub> &times; effective weld lines</small></div></div></section>
       </div></details>
 
-        <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100 weld resistance, AS/NZS 1554.1 coordination and excluded checks.</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Issue status</b> - For Review. The resistance basis is shown; weld symbols and fabrication requirements remain subject to the project documentation.</p><p><b>Primary basis</b> - AS 4100 Cl. 9.6 welded connections. Fillet-weld throat resistance is calculated as &phi;R = &phi;0.6f<sub>uw</sub>t<sub>t</sub>l<sub>w</sub>k<sub>r</sub>. An IPBW is evaluated by the fillet-weld method using the entered design throat in accordance with AS 4100 Cl. 9.6.2.7. AS 4100 Table 3.4 supplies the applicable capacity factor.</p><p><b>CPBW</b> - AS 4100 Cl. 9.6.2.7 bases design capacity on the nominal capacity of the weaker joined part and the applicable capacity factor. The limited weld-metal inputs on this page do not establish that resistance; the result is therefore Not evaluated.</p><p><b>Compound weld</b> - AS 4100 Cl. 9.6.5.2 determines design throat from the actual total weld cross-section. The page does not use a<sub>w</sub> + 0.707s and reports compound-weld capacity as Not evaluated.</p><p><b>Strength data</b> - f<sub>uw</sub> options follow AS 4100 Table 9.6.3.10(A), also summarised in ASI Simple Connections 2020 Table 2.14.</p><p><b>Effective length</b> - the entered fillet-weld effective length must be at least 4s in accordance with AS 4100 Cl. 9.6.3.5. Inputs below this limit return Not evaluated; the reduced design-size alternative is outside the current page scope.</p><p><b>Effective weld lines</b> - use only for identical effective weld lines acting together, such as welds on both sides of a plate. This value is not the number of welding passes.</p><p><b>Welded-lap reduction</b> - k<sub>r</sub> is obtained from AS 4100 Table 9.6.3.10(B) and applies only when the welded-lap condition is selected. The table length l<sub>w</sub> is expressed in metres.</p><p><b>Indicative parent-metal screen</b> - the displayed value is &phi;0.6f<sub>up</sub>t per unit length with &phi; = 0.90. It is an advisory screening result, not the weaker-joined-part CPBW resistance.</p></div><div class="source-notes"><p><b>Symbols</b> - AS 1101.3-style examples show arrow-side symbols below the reference line and other-side symbols above it. Verify the final symbols in the project drawings.</p><p><b>Calculated scope</b> - direct weld-throat resistance for ordinary equal-leg fillet welds and IPBW with a project-specified design throat.</p><p><b>Reference-only scope</b> - CPBW and compound weld types remain available for terminology and detailing context but do not return capacity or PASS/FAIL.</p><p><b>Excluded</b> - longitudinal fillet welds in RHS where t &lt; 3 mm, plug and slot welds, weld groups, connected-part rupture, heat-affected-zone requirements, block shear, net-section rupture, joint preparation, backing or gouging, eccentricity, intermittent-weld spacing and end-return rules, fatigue, seismic detailing, lamellar tearing and inspection acceptance.</p></div></div></details>
+        <details class="source-card"><summary><span><b>Calculation basis and limitations</b><small>AS 4100 weld resistance, AS/NZS 1554.1 coordination and excluded checks.</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Issue status</b> - For Review. The resistance basis is shown; weld symbols and fabrication requirements remain subject to the project documentation.</p><p><b>Primary basis</b> - AS 4100 Cl. 9.6 welded connections. Fillet-weld throat resistance is calculated as &phi;R = &phi;0.6f<sub>uw</sub>t<sub>t</sub>l<sub>w</sub>k<sub>r</sub>. An IPBW is evaluated by the fillet-weld method using the entered design throat in accordance with AS 4100 Cl. 9.6.2.7. AS 4100 Table 3.4 supplies the applicable capacity factor.</p><p><b>CPBW</b> - AS 4100 Cl. 9.6.2.7 bases design capacity on the nominal capacity of the weaker joined part and the applicable capacity factor. The limited weld-metal inputs on this page do not establish that resistance; the result is therefore Not evaluated.</p><p><b>Compound weld</b> - AS 4100 Cl. 9.6.5.2 determines design throat from the actual total weld cross-section. The page does not use a<sub>w</sub> + 0.707s and reports compound-weld capacity as Not evaluated.</p><p><b>Strength data</b> - f<sub>uw</sub> options follow AS 4100 Table 9.6.3.10(A), also summarised in ASI Simple Connections 2020 Table 2.14.</p><p><b>Effective length</b> - the entered fillet-weld effective length must be at least 4s in accordance with AS 4100 Cl. 9.6.3.5. Inputs below this limit return Not evaluated; the reduced design-size alternative is outside the current page scope.</p><p><b>Effective weld lines</b> - use only for identical effective weld lines acting together, such as welds on both sides of a plate. This value is not the number of welding passes.</p><p><b>Welded-lap reduction</b> - k<sub>r</sub> is obtained from AS 4100 Table 9.6.3.10(B) and applies only when the welded-lap condition is selected. The table length l<sub>w</sub> is expressed in metres.</p><p><b>Indicative parent-metal screen</b> - the displayed value is &phi;0.6f<sub>up</sub>t per unit length with &phi; = 0.90. It is an advisory screening result, not the weaker-joined-part CPBW resistance.</p></div><div class="source-notes"><p><b>Symbols</b> - AS 1101.3:2005 Fig. 2.1 gives the basic symbols; Cl. 2.3.2 and Figs. 2.8 to 2.10 govern arrow-side, other-side and both-side placement; Cl. 2.3.4 and Fig. 2.11 govern tail references. <code>FPBW</code>, <code>IPBW</code> / <code>PPBW</code> and <code>TYP</code> are project abbreviations, not basic symbols, and must be defined in the drawing legend, specification or WPS.</p><p><b>Calculated scope</b> - direct weld-throat resistance for ordinary equal-leg fillet welds and IPBW with a project-specified design throat.</p><p><b>Reference-only scope</b> - CPBW and compound weld types remain available for terminology and detailing context but do not return capacity or PASS/FAIL.</p><p><b>Excluded</b> - longitudinal fillet welds in RHS where t &lt; 3 mm, plug and slot welds, weld groups, connected-part rupture, heat-affected-zone requirements, block shear, net-section rupture, joint preparation, backing or gouging, eccentricity, intermittent-weld spacing and end-return rules, fatigue, seismic detailing, lamellar tearing and inspection acceptance.</p></div></div></details>
     </section>
 
     <section id="concretePanel" class="tool-panel" hidden>
