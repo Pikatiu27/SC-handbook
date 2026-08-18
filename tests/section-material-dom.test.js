@@ -25,6 +25,8 @@ const styles = fs.readFileSync(path.join(__dirname, "..", "styles.css"), "utf8")
   "sectionDesignCompactness",
   "sectionDesignZe"
 ].forEach(id => assert.ok(html.includes(`id="${id}"`), `Missing Section Properties material field ${id}`));
+assert.ok(html.includes('id="sectionCatalogueCoverage"'), "Section Properties must expose the active catalogue size range");
+assert.ok(html.includes('id="sectionCatalogueDirectoryList"'), "Section Properties must expose one folded all-family directory summary");
 
 assert.ok(
   html.indexOf("steel-materials.js") < html.indexOf("app.js"),
@@ -57,8 +59,15 @@ assert.ok(styles.includes(".section-material-input-group > .input-group-heading 
 assert.ok(html.includes('id="sectionCatalogueFamilyTabs"'), "Section Properties must expose catalogue families as a visible category switch");
 assert.ok(html.includes('<label class="size-field" hidden><span>Product family</span><select id="sectionCatalogueFamily"></select></label>'), "The family select must remain as the calculation state control without duplicating the visible category UI");
 assert.ok(app.includes('class="section-catalogue-family-tab"'), "Catalogue family tabs must be generated from the accepted family directory");
-assert.ok(app.includes('rhs: sectionHollowCatalogueSections("rhs")'), "Section Properties must include the checked RHS catalogue directory");
-assert.ok(app.includes('shs: sectionHollowCatalogueSections("shs")'), "Section Properties must include the checked SHS catalogue directory");
+assert.ok(app.includes('rhs: Object.freeze(sortSectionCatalogueByPrimarySize(sectionHollowCatalogueSections("rhs")))'), "Section Properties must include the checked RHS catalogue directory in discoverable size order");
+assert.ok(app.includes('shs: Object.freeze(sortSectionCatalogueByPrimarySize(sectionHollowCatalogueSections("shs")))'), "Section Properties must include the checked SHS catalogue directory in discoverable size order");
+assert.ok(app.includes('sectionCatalogueChsSections()'), "Section Properties must merge the complete Austube CHS directory with checked geometry-only rows");
+assert.ok(app.includes('const sectionProductDirectory = Object.freeze({'), "Section Properties must own the canonical shared product directory");
+assert.ok(app.includes('return sectionProductDirectory[family] || []'), "Beam hollow-section selectors must reuse the canonical product directory");
+assert.ok(app.includes('const sections = sectionProductDirectory[memberType]'), "Axial Member rolled-section selectors must reuse the canonical product directory");
+assert.ok(app.includes('$("sectionCatalogueDirectoryList").innerHTML = sectionCatalogueFamilies'), "The folded coverage summary must be generated from the canonical family directory");
+assert.ok(app.includes('73 Austube design-table rows + 1 Orrcon geometry row'), "CHS coverage must distinguish design-table and geometry-only rows");
+assert.ok(app.includes('Published catalogue properties + derived circular references'), "Austube CHS rows must state their mixed catalogue and symmetry basis");
 assert.ok(html.includes('<option value="tee">T-section</option>'), "Custom geometry must include the reviewed ideal T-section");
 assert.ok(html.includes('data-section-shapes="i channel tee"'), "T-section must expose d, bf, tw and tf inputs");
 assert.ok(app.includes("data-section-category-custom"), "Custom geometry must remain available in the same visible category switch");

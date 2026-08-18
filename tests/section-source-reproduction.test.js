@@ -18,7 +18,7 @@ assert.ok(start >= 0 && end > start, "Section source-data block must remain disc
 const context = { SectionCatalogue, SectionGeometry, SteelMaterials, BeamHotRolledData, BeamSectionData };
 vm.runInNewContext(
   `${source.slice(start, end)}
-   this.auditData = { beamShearDimensions, sectionCatalogueFamilies };`,
+   this.auditData = { beamShearDimensions, sectionProductDirectory, sectionCatalogueFamilies };`,
   context
 );
 
@@ -30,6 +30,11 @@ const close = (actual, expected, tolerance = 1e-9) => {
     `${actual} != ${expected}`
   );
 };
+
+assert.deepEqual(
+  JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(context.auditData.sectionProductDirectory).map(([key, rows]) => [key, rows.length])))),
+  { ub: 28, uc: 13, pfc: 10, chs: 74, rhs: 89, shs: 88, ea: 46, rod: 26 }
+);
 
 // InfraBuild, Hot Rolled Steel Products Catalogue 2019, Table 9, PDF page 12.
 assert.deepEqual(
@@ -60,12 +65,23 @@ assert.equal(pfc.properties.zy.value, 25.7e3);
 assert.equal(pfc.properties.zyAlt.value, 51.6e3);
 assert.equal(pfc.properties.xo.value, 51);
 
-// Orrcon, National Product Catalogue 2024, CHS table, PDF page 10.
-const chs = section("chs", "114.3 x 4.5 CHS");
-assert.equal(chs.mass, 12.19);
-close(chs.properties.area.value, Math.PI * (114.3 ** 2 - 105.3 ** 2) / 4);
-close(chs.properties.ix.value, Math.PI * (114.3 ** 4 - 105.3 ** 4) / 64);
-assert.equal(chs.properties.area.basis, "derived");
+// Austube 2013, Table 3.1-2, PDF page 29.
+assert.equal(family("chs").sections.length, 74);
+assert.equal(family("chs").sections[0].designation, "508 x 12.7 CHS");
+const chs = section("chs", "508 x 6.4 CHS");
+assert.equal(chs.mass, 79.2);
+assert.equal(chs.properties.area.value, 10100);
+assert.equal(chs.properties.ix.value, 317e6);
+assert.equal(chs.properties.zx.value, 1250e3);
+assert.equal(chs.properties.sx.value, 1610e3);
+assert.equal(chs.properties.rx.value, 177);
+assert.equal(chs.properties.area.basis, "catalogue");
+
+// Orrcon, National Product Catalogue 2024, CHS table: geometry-only row not in Austube Tables 3.1-1/2.
+const geometryOnlyChs = section("chs", "60.3 x 3.5 CHS");
+assert.equal(geometryOnlyChs.mass, 4.9);
+close(geometryOnlyChs.properties.area.value, Math.PI * (60.3 ** 2 - 53.3 ** 2) / 4);
+assert.equal(geometryOnlyChs.properties.area.basis, "derived");
 
 // Austube 2013, Table 3.1-3, PDF page 31.
 const rhs = section("rhs", "75 x 25 x 2.5 RHS");

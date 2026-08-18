@@ -2769,7 +2769,30 @@ Purpose and modes:
 - Use one shared geometry layer for dimension-derived section properties. Beam, Axial Member and future tabs must call this layer rather than reimplementing ideal-shape formulas.
 - Open the Section Properties tab in `Catalogue sections` mode and provide a separate `Custom geometry` mode.
 - Reuse only checked manufacturer rows already accepted elsewhere in the handbook. Catalogue mode includes `UB`, `UC`, `PFC`, `CHS`, `RHS`, `SHS`, `EA` and `Round Bar`; keep this order aligned with Beam and Axial Member, followed by `Custom geometry`. Custom geometry may cover ideal rectangles, RHS/SHS, solid circles, CHS, symmetric I-sections, equal angles, simplified channels and T-sections.
+- Show a compact directory-coverage line below the selected designation. State the accepted row count and governing dimension range for the active family, and order hollow-section designations by descending primary size so large common products are immediately discoverable.
 - Treat Section Properties as the shared section, product and material attribute lookup for downstream steel-member workflows. It may report verified geometry, product identity, material strengths, common steel constants and checked standard-dependent attributes, but it must not calculate design capacity, member stability, actions or utilisation.
+
+Controlled product-directory contract:
+
+- `sectionProductDirectory` is the canonical in-app product directory. Section Properties renders it directly; Beam, Axial Member and future calculation tabs must filter or map the same family arrays rather than recreate manufacturer size lists.
+- A downstream workflow may expose only the subset for which its calculation method is implemented, but it must state that limitation and must not silently maintain a conflicting local catalogue. Product additions, corrections and deletions enter Section Properties first, then flow to dependent selectors through the shared directory.
+- Preserve one stable identity per accepted row using family plus published designation, with numeric dimension matching where manufacturer formatting differs. Keep geometry, mass, section properties, grade rows and source references attached to that identity; do not join by dropdown position or rounded display text.
+- Treat `complete` as complete within the adopted, row-checked source tables below. It does not mean every product that may be commercially available in Australia. Availability guides, distributor stock lists and uncited web ranges may identify candidates for review but cannot create an engineering-property row.
+- Keep the directory coverage summary folded by default. It may show all accepted families, counts and ranges, while the active-family line remains visible for quick lookup.
+
+| Family | Accepted directory coverage | Adopted source basis |
+|---|---|---|
+| UB | 28 sizes; overall `d = 150–611.6 mm` | InfraBuild 2019 Tables 9-10 |
+| UC | 13 sizes; overall `d = 97–327.2 mm` | InfraBuild 2019 Tables 11-12 |
+| PFC | 10 sizes; overall `d = 75–380 mm` | InfraBuild 2019 Tables 15-16 |
+| CHS | 74 visible sizes; `D = 26.9–508 mm`, `t = 2.0–12.7 mm` | 73 Austube Tables 3.1-1/2 engineering rows plus the Orrcon `60.3 x 3.5 CHS` geometry-only row |
+| RHS | 89 sizes; `d = 50–400 mm`, `b = 20–300 mm`, `t = 1.6–16 mm` | Austube Tables 3.1-3/4 |
+| SHS | 88 sizes; `b = d = 20–400 mm`, `t = 1.6–16 mm` | Austube Tables 3.1-5/6 |
+| EA | 46 sizes; equal leg `b = 25–200 mm`, nominal `t = 3–26 mm` | InfraBuild 2019 Tables 19-21 |
+| Round Bar | 26 sizes; `D = 10–90 mm` | InfraBuild 2019 Table 3 diameter and linear-mass rows |
+
+- The table above is the release baseline, not a hard-coded permanent ceiling. When a newer adopted manufacturer table is checked, update the shared directory, coverage summary, traceability record, source reproduction and dependent-selector tests together.
+- New families such as welded beams/columns, unequal angles, flats, squares or tapered-flange sections require their own complete row-level geometry/property source and family-specific axis rules before admission. Do not mix incomplete placeholder families into the accepted directory.
 
 Shared calculation contract:
 
@@ -2800,7 +2823,7 @@ Page and evidence requirements:
 - Use this visible page sequence: section selection; material definition; selected-section summary and axis figure; `Section properties`; `Material properties`; conditional folded `Derivations`; folded `Source and limitations`.
 - Within `Section properties`, use the engineering sequence: gross section basis; displayed-axis properties; applicable family-specific properties; principal-axis relationship where relevant; material-dependent section values; geometric ratios.
 - Within `Material properties`, show the selected standard and grade, governing thickness or diameter, `fy`, applicable exact-row `fy,w`, `fu`, `E`, `G`, Poisson's ratio, thermal expansion coefficient and density. Do not repeat the same material identity or thickness statement in both the group description and value cards.
-- Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx` / `Zy`, plastic `Sx` / `Sy`, and `rx` / `ry`. Orrcon CHS mass is a catalogue value; its remaining properties are geometry-derived from published nominal `D` / `t`. For custom geometry, a steel mass may be derived from `0.00785A kg/m` only when the assumed density `7850 kg/m3` is stated.
+- Present mass per metre where available, gross area, centroid coordinates, `Ix`, `Iy`, elastic `Zx` / `Zy`, plastic `Sx` / `Sy`, and `rx` / `ry`. The accepted CHS directory contains all 73 distinct Austube Tables 3.1-1 and 3.1-2 rows from `D = 26.9–508 mm` and `t = 2.0–12.7 mm`; retain their published mass, `Ag`, `I`, `Z`, `S` and `r`. Add the separately checked Orrcon `60.3 x 3.5 CHS` product as one geometry-only row: its mass is a catalogue value and its remaining properties are geometry-derived from published nominal `D` / `t`. For custom geometry, a steel mass may be derived from `0.00785A kg/m` only when the assumed density `7850 kg/m3` is stated.
 - The selected-section summary must state the active value basis rather than use a generic phrase such as `Stated by property`. For Orrcon CHS, show `Catalogue mass + nominal D/t-derived properties`; for round bar, distinguish the published mass/diameter from ideal solid-circle properties; for mixed rolled-section rows, state that catalogue values and identified derived references are both present.
 - Keep EA axis notation source-specific and explicit. Section Properties uses centroidal `n-n / p-p` and catalogue principal `x-x / y-y`; Beam catalogue Load A/C acts about principal `x-x` and Load B/D about principal `y-y`. The selected Beam direction must include the word `principal` so its `Ix/Iy` values cannot be mistaken for the angle's centroidal `In/Ip` values.
 - For catalogue RHS and SHS, use the accepted Austube Tables 3.1-3 to 3.1-6 product rows for mass, `Ag`, `I`, `Z`, `S` and `r`; retain each checked grade row for `fy`, `kf`, compactness and `Ze`. Do not replace rounded-product properties with sharp-corner hollow-section formulas. Centroid coordinates, symmetry relationships and nominal clear-wall `Awx` / `Awy` may be derived from stated overall dimensions and thickness only when labelled `Derived · catalogue data`.
@@ -2825,7 +2848,7 @@ Page and evidence requirements:
 - Use a compact scalar summary plus an x/y property table rather than repeating a large card for each axis value.
 - Keep the two primary result groups visually stronger than their internal subsection headings. Do not present axis properties, torsion, principal axes, checked design references or geometric ratios as additional page-level categories.
 - For rotationally symmetric CHS, solid circles and round bars, show one equivalent centroidal-axis column and state that every centroidal diameter has the same properties. Do not repeat identical x/y values as separate decision information.
-- Coordinate Orrcon CHS geometry rows with Austube design-property rows by numeric outside diameter `D` and thickness `t`, not by designation-string formatting. Preserve the Austube grade-specific product range: do not copy a C250L0 row into C350L0 or vice versa, and state `No checked design row` for a geometry not present in the adopted design tables.
+- Coordinate Orrcon CHS geometry rows with Austube design-property rows by numeric outside diameter `D` and thickness `t`, not by designation-string formatting. Preserve the Austube grade-specific product range: do not copy a C250L0 row into C350L0 or vice versa, and state `No checked design row` for a geometry not present in the adopted design tables. Current wider commercial-availability literature must not add 610 or 660 mm CHS to the engineering-property directory until row-level mass and section properties are independently verified from an adopted source.
 - For equal angles, place actual thickness, root/toe radii and centroid distances with the gross product geometry; keep n-n / p-p centroidal properties in the main axis table; then present the principal x-x / y-y inertia, radii, angle and moduli as a separate structured group.
 - Hide family-inapplicable supplementary cards instead of filling the main result hierarchy with unavailable J, Iw, XO or shear-reference placeholders. Retain unavailable status in the detailed basis where it is useful for completeness.
 - Title the section-specific subsection from the values actually shown. Where the polar second moment is the only applicable item, use `Supplementary geometric reference` rather than implying that torsion, warping or shear properties are present.

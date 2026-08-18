@@ -321,6 +321,19 @@ main, footer { max-width: 1040px; margin: auto; }
 .section-catalogue-family-tab.active { border-color: rgba(53, 111, 104, .20); background: var(--card); color: var(--properties-dark); box-shadow: 0 2px 7px rgba(55, 61, 56, .13); font-weight: 900; }
 .section-catalogue-family-tab:focus-visible { outline: 3px solid rgba(23,107,75,.22); outline-offset: 1px; }
 .section-properties-catalogue-inputs { grid-template-columns: minmax(0, 1fr); }
+.section-catalogue-coverage { grid-column: 2; margin: 7px 0 0; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
+.section-catalogue-directory { grid-column: 2; margin-top: 1px; border-top: 1px solid var(--line); }
+.section-catalogue-directory > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0 4px; list-style: none; cursor: pointer; }
+.section-catalogue-directory > summary::-webkit-details-marker { display: none; }
+.section-catalogue-directory > summary span, .section-catalogue-directory > summary b, .section-catalogue-directory > summary small { display: block; }
+.section-catalogue-directory > summary b { color: var(--ink); font-size: var(--fs-xs); font-weight: 800; }
+.section-catalogue-directory > summary small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
+.section-catalogue-directory > summary i { color: var(--green); font-size: var(--fs-md); font-style: normal; transition: transform .2s; }
+.section-catalogue-directory[open] > summary i { transform: rotate(45deg); }
+.section-catalogue-directory-list { padding: 7px 0 3px; display: grid; gap: 0; }
+.section-catalogue-directory-row { display: grid; grid-template-columns: minmax(80px, .22fr) minmax(0, 1fr); gap: 12px; padding: 7px 0; border-top: 1px solid rgba(112, 132, 122, .18); }
+.section-catalogue-directory-row b { color: var(--ink); font-size: var(--fs-xs); }
+.section-catalogue-directory-row span { color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
 .beam-family-switch { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 3px; width: 100%; margin: 0 0 17px; padding: 3px; border-radius: 8px; background: #edf1ee; }
 .beam-family { min-width: 0; min-height: 40px; padding: 8px 7px; white-space: nowrap; }
 .section-guide-card { margin: 0 0 17px; border: 1px solid var(--line); border-radius: 9px; background: #f8fbfd; overflow: hidden; }

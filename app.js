@@ -997,16 +997,47 @@ function sectionHollowCatalogueSections(family) {
   });
 }
 
-const sectionCatalogueFamilies = SectionCatalogue.create({
-  pfc: pfcSections,
-  ub: ubSections,
-  uc: ucSections,
-  chs: chsSections,
-  rhs: sectionHollowCatalogueSections("rhs"),
-  shs: sectionHollowCatalogueSections("shs"),
-  ea: eaCatalogueSections,
-  rod: rodSections
-}, SectionGeometry);
+function sortSectionCatalogueByPrimarySize(sections) {
+  const primary = section => Number(section.D ?? section.d ?? section.b ?? section.diameter ?? 0);
+  const secondary = section => Number(section.b ?? section.D ?? section.d ?? section.diameter ?? 0);
+  return sections.slice().sort((left, right) =>
+    primary(right) - primary(left)
+    || secondary(right) - secondary(left)
+    || Number(right.t || 0) - Number(left.t || 0)
+  );
+}
+
+function sectionCatalogueChsSections() {
+  const byGeometry = new Map();
+  sectionHollowCatalogueSections("chs").forEach(section => {
+    byGeometry.set(`${Number(section.D)}|${Number(section.t)}`, section);
+  });
+  chsSections.forEach(section => {
+    const key = `${Number(section.D)}|${Number(section.t)}`;
+    if (!byGeometry.has(key)) byGeometry.set(key, section);
+  });
+  return sortSectionCatalogueByPrimarySize(Array.from(byGeometry.values()));
+}
+
+function sectionCataloguePfcSections() {
+  return pfcSections.map(section => ({
+    ...section,
+    ...(BeamHotRolledData.pfc.find(item => item.designation === section.designation) || {})
+  }));
+}
+
+const sectionProductDirectory = Object.freeze({
+  ub: Object.freeze(ubSections),
+  uc: Object.freeze(ucSections),
+  pfc: Object.freeze(sectionCataloguePfcSections()),
+  chs: Object.freeze(sectionCatalogueChsSections()),
+  rhs: Object.freeze(sortSectionCatalogueByPrimarySize(sectionHollowCatalogueSections("rhs"))),
+  shs: Object.freeze(sortSectionCatalogueByPrimarySize(sectionHollowCatalogueSections("shs"))),
+  ea: Object.freeze(eaSections),
+  rod: Object.freeze(rodSections)
+});
+
+const sectionCatalogueFamilies = SectionCatalogue.create(sectionProductDirectory, SectionGeometry);
 let sectionPropertiesMode = "catalogue";
 let sectionMaterialThicknessManual = false;
 
@@ -4199,7 +4230,7 @@ function beamPfcSection(section) {
 }
 
 function beamHollowSections(family) {
-  return sectionHollowCatalogueSections(family);
+  return sectionProductDirectory[family] || [];
 }
 
 function beamAngleSection(section) {
@@ -4270,12 +4301,12 @@ function beamRodSection(section) {
 }
 
 function beamCatalogueSections() {
-  if (beamFamily === "ub") return ubSections.map(section => beamRolledSection(section, "ub"));
-  if (beamFamily === "uc") return ucSections.map(section => beamRolledSection(section, "uc"));
-  if (beamFamily === "pfc") return BeamHotRolledData.pfc.map(beamPfcSection);
+  if (beamFamily === "ub") return sectionProductDirectory.ub.map(section => beamRolledSection(section, "ub"));
+  if (beamFamily === "uc") return sectionProductDirectory.uc.map(section => beamRolledSection(section, "uc"));
+  if (beamFamily === "pfc") return sectionProductDirectory.pfc.map(beamPfcSection);
   if (["chs", "rhs", "shs"].includes(beamFamily)) return beamHollowSections(beamFamily);
-  if (beamFamily === "ea") return eaSections.map(beamAngleSection);
-  if (beamFamily === "rod") return rodSections.map(beamRodSection);
+  if (beamFamily === "ea") return sectionProductDirectory.ea.map(beamAngleSection);
+  if (beamFamily === "rod") return sectionProductDirectory.rod.map(beamRodSection);
   return [];
 }
 
@@ -4728,15 +4759,15 @@ function sectionCheckedDesignRecord() {
   const designation = selected?.designation;
   if (!designation) return null;
   if (family === "ub") {
-    const section = ubSections.find(item => item.designation === designation);
+    const section = sectionProductDirectory.ub.find(item => item.designation === designation);
     return section ? beamRolledSection(section, "ub") : null;
   }
   if (family === "uc") {
-    const section = ucSections.find(item => item.designation === designation);
+    const section = sectionProductDirectory.uc.find(item => item.designation === designation);
     return section ? beamRolledSection(section, "uc") : null;
   }
   if (family === "pfc") {
-    const section = BeamHotRolledData.pfc.find(item => item.designation === designation);
+    const section = sectionProductDirectory.pfc.find(item => item.designation === designation);
     return section ? beamPfcSection(section) : null;
   }
   if (family === "chs") return beamHollowSections("chs").find(item =>
@@ -4746,11 +4777,11 @@ function sectionCheckedDesignRecord() {
     item.designation === designation
   ) || null;
   if (family === "ea") {
-    const section = eaCatalogueSections.find(item => item.designation === designation);
+    const section = sectionProductDirectory.ea.find(item => item.designation === designation);
     return section ? beamAngleSection(section) : null;
   }
   if (family === "rod") {
-    const section = rodSections.find(item => item.designation === designation);
+    const section = sectionProductDirectory.rod.find(item => item.designation === designation);
     return section ? beamRodSection(section) : null;
   }
   return null;
@@ -4869,6 +4900,9 @@ function populateSectionCatalogueFamilies() {
   $("sectionCatalogueFamilyTabs").innerHTML = sectionCatalogueFamilies
     .map(family => `<button class="section-catalogue-family-tab" type="button" data-section-catalogue-family="${family.key}" aria-pressed="false">${safeText(sectionCatalogueFamilyNames[family.key] || family.label)}</button>`)
     .join("") + '<button class="section-catalogue-family-tab" type="button" data-section-category-custom aria-pressed="false">Custom geometry</button>';
+  $("sectionCatalogueDirectoryList").innerHTML = sectionCatalogueFamilies
+    .map(family => `<div class="section-catalogue-directory-row"><b>${safeText(sectionCatalogueFamilyNames[family.key] || family.label)}</b><span>${safeText(sectionCatalogueCoverageText(family))}</span></div>`)
+    .join("");
   $("sectionCatalogueFamily").value = "pfc";
   populateSectionCatalogueDesignations(false);
   syncSectionMaterialControls(true);
@@ -4885,9 +4919,43 @@ function syncSectionCatalogueFamilyTabs() {
   });
 }
 
+function sectionCatalogueRange(values) {
+  const finiteValues = values.map(Number).filter(Number.isFinite);
+  if (!finiteValues.length) return "not stated";
+  const minimum = Math.min(...finiteValues);
+  const maximum = Math.max(...finiteValues);
+  return minimum === maximum ? `${minimum}` : `${minimum}–${maximum}`;
+}
+
+function sectionCatalogueCoverageText(family) {
+  const sections = family.sections;
+  const count = sections.length;
+  const drawings = sections.map(section => section.drawing || {});
+  if (family.key === "chs") {
+    return `${count} directory sizes · D ${sectionCatalogueRange(drawings.map(item => item.D))} mm · t ${sectionCatalogueRange(drawings.map(item => item.t))} mm · 73 Austube design-table rows + 1 Orrcon geometry row`;
+  }
+  if (family.key === "rhs") {
+    return `${count} checked sizes · d ${sectionCatalogueRange(drawings.map(item => item.h))} mm · b ${sectionCatalogueRange(drawings.map(item => item.b))} mm · t ${sectionCatalogueRange(drawings.map(item => item.t))} mm`;
+  }
+  if (family.key === "shs") {
+    return `${count} checked sizes · b = d ${sectionCatalogueRange(drawings.map(item => item.b))} mm · t ${sectionCatalogueRange(drawings.map(item => item.t))} mm`;
+  }
+  if (["ub", "uc", "pfc"].includes(family.key)) {
+    return `${count} checked sizes · overall d ${sectionCatalogueRange(drawings.map(item => item.d))} mm`;
+  }
+  if (family.key === "ea") {
+    return `${count} checked sizes · equal leg ${sectionCatalogueRange(drawings.map(item => item.b))} mm · nominal t ${sectionCatalogueRange(drawings.map(item => item.t))} mm`;
+  }
+  if (family.key === "rod") {
+    return `${count} checked sizes · diameter ${sectionCatalogueRange(drawings.map(item => item.D))} mm`;
+  }
+  return `${count} checked sizes`;
+}
+
 function populateSectionCatalogueDesignations(recalculate = true) {
   const family = selectedSectionCatalogueFamily();
   syncSectionCatalogueFamilyTabs();
+  $("sectionCatalogueCoverage").textContent = sectionCatalogueCoverageText(family);
   $("sectionCatalogueDesignation").innerHTML = family.sections
     .map(section => `<option value="${safeText(section.id)}">${safeText(section.designation)}</option>`)
     .join("");
@@ -5457,7 +5525,9 @@ function calculateCatalogueSectionProperties() {
         ? "x-x centroidal · y-y indicative"
         : "Indicative x-x / y-y";
   const catalogueDataBasis = family.key === "chs"
-    ? "Catalogue mass + nominal D/t-derived properties"
+    ? properties.area?.basis === "catalogue"
+      ? "Published catalogue properties + derived circular references"
+      : "Catalogue mass + nominal D/t-derived properties"
     : family.key === "rod"
       ? "Catalogue mass/diameter + geometry-derived properties"
       : "Catalogue values + identified derived references";
@@ -6448,7 +6518,7 @@ function memberHollowSections(family) {
 
 function memberSections() {
   if (memberType === "ub" || memberType === "uc") {
-    const sections = memberType === "ub" ? ubSections : ucSections;
+    const sections = sectionProductDirectory[memberType];
     return sections.map(section => ({
       ...section,
       grades: Object.fromEntries(Object.entries(section.grades).map(([name, grade]) => {
@@ -6458,10 +6528,10 @@ function memberSections() {
     }));
   }
   if (["chs", "rhs", "shs"].includes(memberType)) return memberHollowSections(memberType);
-  if (memberType === "ea") return eaSections;
-  if (memberType === "pfc") return pfcSections;
+  if (memberType === "ea") return sectionProductDirectory.ea;
+  if (memberType === "pfc") return sectionProductDirectory.pfc;
   if (memberType === "custom") return customSections;
-  return rodSections;
+  return sectionProductDirectory.rod;
 }
 
 function memberProperties(section) {

@@ -46,7 +46,7 @@
     hollowSection: Object.freeze({
       publisher: "Austube Mills",
       document: "Design Capacity Tables for Structural Steel Hollow Sections 2013",
-      status: "RHS and SHS Tables 3.1-3 to 3.1-6 checked against the selected catalogue rows"
+      status: "CHS, RHS and SHS Tables 3.1-1 to 3.1-6 checked against the selected catalogue rows"
     })
   });
 
@@ -189,6 +189,38 @@
   }
 
   function chsRecord(section, geometry) {
+    const catalogueAxis = section.axes?.axis;
+    if (catalogueAxis && finite(section.area) && finite(catalogueAxis.I)) {
+      const ix = catalogueAxis.I;
+      const principal = derivedPrincipal(ix, ix, section.area);
+      return Object.freeze({
+        id: `chs-${section.designation}`,
+        family: "chs",
+        designation: section.designation,
+        mass: section.mass,
+        drawing: Object.freeze({ shape: "chs", D: section.D, t: section.t }),
+        dimensions: joinDimensions([dimension("D", section.D), dimension("t", section.t)]),
+        source: SOURCES.hollowSection,
+        ratios: ratioSet([ratio("D/t", section.D / section.t)]),
+        properties: propertySet({
+          area: available(section.area, "catalogue"),
+          cx: available(section.D / 2, "derived"),
+          cy: available(section.D / 2, "derived"),
+          ix: available(ix, "catalogue"),
+          iy: available(ix, "catalogue"),
+          zx: property(catalogueAxis.Z * 1e3, "catalogue"),
+          zy: property(catalogueAxis.Z * 1e3, "catalogue"),
+          sx: property(catalogueAxis.S * 1e3, "catalogue"),
+          sy: property(catalogueAxis.S * 1e3, "catalogue"),
+          rx: property(section.r, "catalogue"),
+          ry: property(section.r, "catalogue"),
+          j: available(2 * ix, "derived"),
+          iw: available(0, "derived"),
+          ...principal
+        }),
+        derivation: "Mass, Ag, I, Z, S and r are published Austube catalogue properties. Centroid coordinates, J = 2I, Iw = 0, the polar second moment Ix + Iy and equivalent principal values follow circular symmetry; principal orientation is indeterminate."
+      });
+    }
     const properties = geometry.circularHollow(section.D, section.t);
     return Object.freeze({
       id: `chs-${section.designation}`,
