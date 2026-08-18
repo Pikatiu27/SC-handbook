@@ -972,8 +972,8 @@
           <div class="source-notes">
             <p><b>Scope</b> - cross-section resistance under AS 4100 Section 5. Member moment capacity M<sub>b</sub>, lateral-torsional buckling, restraint, deflection, vibration, torsion, web bearing, concentrated loads, holes and composite action are excluded.</p>
             <p><b>Capacity rule</b> - catalogue mode uses reviewed product-table data. Custom dimensions use ideal sharp-corner geometry and report capacity only where the family-specific AS 4100 section-classification and effective-modulus path is implemented. Missing direction data returns <i>Not evaluated</i>.</p>
-            <p><b>Checked moment rows</b> - InfraBuild 2019 Tables 9-20 cover UB, UC, PFC and the listed EA subset. Austube 2013 Tables 3.1-1 to 3.1-6 cover CHS, RHS and SHS. Round Bar moment uses checked diameter and grade with solid-circle geometry.</p>
-            <p><b>Catalogue coordination</b> - 717 family, grade and direction rows are programmatically reconciled against AS 4100 Cl. 5.2 and AS 4100 Cl. 6.2. Slender hollow rows retain the permitted effective-cross-section Z<sub>e</sub>; asymmetric PFC and EA classes are identified from the published load-case Z<sub>e</sub> interval. k<sub>f</sub> is an axial-compression form factor and is not applied to beam moment capacity. The tab remains <i>For Review</i> as a section-resistance quick reference.</p>
+            <p><b>Checked moment rows</b> - InfraBuild 2019 Tables 9-20 cover all listed UB, UC, PFC and 46 EA designations. Austube 2013 Tables 3.1-1 to 3.1-6 cover 73 CHS, 89 RHS and 88 SHS designations. Geometry-only products remain available in Section Properties but are excluded from capacity selectors. Round Bar moment uses checked diameter and grade with solid-circle geometry.</p>
+            <p><b>Catalogue coordination</b> - 981 family, grade and direction rows are programmatically reconciled against AS 4100 Cl. 5.2 and AS 4100 Cl. 6.2. Slender hollow rows retain the permitted effective-cross-section Z<sub>e</sub>; asymmetric PFC and EA classes are identified from the published load-case Z<sub>e</sub> interval. k<sub>f</sub> is an axial-compression form factor and is not applied to beam moment capacity. The tab remains <i>For Review</i> as a section-resistance quick reference.</p>
           </div>
           <div class="source-notes">
             <p><b>Custom dimensions</b> - dimensions are entered within the selected family. Gross geometry is generated automatically; users do not enter A<sub>g</sub>, I, Z, S, Z<sub>e</sub>, section class or shear area. Ideal geometry omits product fillets, root radii and hollow-section corner radii.</p>
@@ -1410,7 +1410,7 @@
           <div class="source-notes">
             <p><b>Issue status</b> &middot; For Review. The shared catalogue rows are imported from the checked product tables; project assumptions remain user-confirmed.</p>
             <p><b>Material standards</b> &middot; Steel hollow sections are based on AS/NZS 1163. Hot-rolled open sections, EA and Round Bar are based on AS/NZS 3679.1 where applicable. Verify grade, size range and test certificate before issue for design.</p>
-            <p><b>Hollow-section properties</b> &middot; Austube 2013 Tables 3.1-1 to 3.1-6 provide the imported CHS, RHS and SHS design rows. Confirm current product availability separately.</p>
+            <p><b>Hollow-section properties</b> &middot; Austube 2013 Tables 3.1-1 to 3.1-6 provide 73 CHS, 89 RHS and 88 SHS designations used by this calculation selector. Geometry-only products remain in Section Properties. Confirm current product availability separately.</p>
             <p><b>EA / PFC properties</b> &middot; OneSteel / InfraBuild Hot Rolled Products Catalogue, 9th edition. EA properties use Tables 19&ndash;21; Grade 350 supply is by enquiry and depends on section and quantity. PFC properties use Tables 15&ndash;16.</p>
             <p><b>Round Bar properties</b> &middot; OneSteel / InfraBuild Table 3 for Rounds size and mass; OneSteel / InfraBuild Table 38 for diameter-dependent Grade 300 (300PLUS) and Grade 350 strengths. Confirm actual grade and diameter availability. OneSteel / InfraBuild Table 7 Rods and Light Billets is a different product family and is not used.</p>
             <p><b>Custom / Built-up</b> &middot; Uses user-entered section properties. Flexural buckling is checked about the entered axes only; the page does not verify local slenderness, built-up connectors, shear deformation, torsional buckling or connection eccentricity.</p>
@@ -1939,7 +1939,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.51 &middot; technically reviewed 18 Aug 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.52 &middot; technically reviewed 18 Aug 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260803productflow36"></script>
@@ -1947,7 +1947,7 @@
   <script src="weld-capacity.js?v=20260809weldrepro1"></script>
   <script src="concrete-section-calculation.js?v=20260809shearaudit1"></script>
   <script src="section-geometry.js?v=20260807sectionfamily2"></script>
-  <script src="section-catalogue.js?v=20260818sectiondirectory1"></script>
+  <script src="section-catalogue.js?v=20260818sectiondirectory2"></script>
   <script src="steel-materials.js?v=20260811membernames1"></script>
   <script src="beam-section-data.js?v=20260803productflow36"></script>
   <script src="beam-hot-rolled-data.js?v=20260803productflow36"></script>
@@ -1958,7 +1958,7 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="monopole-capacity.js?v=20260814polygonflat1"></script>
-  <script src="app.js?v=20260818sectiondirectory1"></script>
+  <script src="app.js?v=20260818sectiondirectory2"></script>
   <script src="monopole-app.js?v=20260814polygonflat1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>

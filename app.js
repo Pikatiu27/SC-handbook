@@ -4150,7 +4150,7 @@ const beamFamilyDefinitions = Object.freeze({
   ub: { label: "UB", source: "InfraBuild 2019 Tables 9-10 · checked x-x and y-y rows", defaultSection: "310UB40.4", directions: [["x", "x-x"], ["y", "y-y"]] },
   uc: { label: "UC", source: "InfraBuild 2019 Tables 11-12 · checked x-x and y-y rows", defaultSection: "200UC46.2", directions: [["x", "x-x"], ["y", "y-y"]] },
   pfc: { label: "PFC", source: "InfraBuild 2019 Tables 15-16 · checked x-x, Load A and Load B rows", defaultSection: "150PFC", directions: [["x", "x-x"], ["y-a", "y-y · Load A"], ["y-b", "y-y · Load B"]] },
-  chs: { label: "CHS", source: "Austube 2013 Tables 3.1-1 and 3.1-2 · checked grade rows", defaultSection: "114.3 x 4.5 CHS", directions: [["axis", "Axis-independent"]] },
+  chs: { label: "CHS", source: "Austube 2013 Tables 3.1-1 and 3.1-2 · 73 checked design rows", defaultSection: "114.3 x 4.5 CHS", directions: [["axis", "Axis-independent"]] },
   rhs: { label: "RHS", source: "Austube 2013 Tables 3.1-3 and 3.1-4 · checked x-x and y-y rows", defaultSection: "150 x 100 x 6 RHS", directions: [["x", "x-x"], ["y", "y-y"]] },
   shs: { label: "SHS", source: "Austube 2013 Tables 3.1-5 and 3.1-6 · checked axis-independent rows", defaultSection: "100 x 100 x 6 SHS", directions: [["xy", "x-x = y-y"]] },
   ea: { label: "EA", source: "InfraBuild 2019 Tables 19-20 · checked Load A/B/C/D rows · Grade 350 availability by enquiry", defaultSection: "100 x 100 x 10 EA", directions: [["a", "Load A"], ["b", "Load B"], ["c", "Load C"], ["d", "Load D"]] },
@@ -4230,7 +4230,7 @@ function beamPfcSection(section) {
 }
 
 function beamHollowSections(family) {
-  return sectionProductDirectory[family] || [];
+  return SectionCatalogue.checkedDesignRows(family, sectionProductDirectory[family] || []);
 }
 
 function beamAngleSection(section) {
@@ -6490,7 +6490,7 @@ function memberDimensionProperties(section) {
 }
 
 function memberHollowSections(family) {
-  const sections = beamHollowSections(family).map(section => {
+  return beamHollowSections(family).map(section => {
     const xAxis = family === "chs" ? section.axes.axis : family === "shs" ? section.axes.xy : section.axes.x;
     const yAxis = family === "chs" ? section.axes.axis : family === "shs" ? section.axes.xy : section.axes.y;
     const rx = section.rx;
@@ -6507,12 +6507,6 @@ function memberHollowSections(family) {
         return [name, { ...grade, fu: strength?.fu || 0 }];
       }))
     };
-  });
-  return sections.sort((a, b) => {
-    const primary = family === "chs" ? Number(a.D) - Number(b.D) : Number(a.d) - Number(b.d);
-    if (primary) return primary;
-    const secondary = family === "chs" ? 0 : Number(a.b) - Number(b.b);
-    return secondary || Number(a.t) - Number(b.t);
   });
 }
 

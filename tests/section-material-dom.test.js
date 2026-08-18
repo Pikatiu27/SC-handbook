@@ -63,7 +63,8 @@ assert.ok(app.includes('rhs: Object.freeze(sortSectionCatalogueByPrimarySize(sec
 assert.ok(app.includes('shs: Object.freeze(sortSectionCatalogueByPrimarySize(sectionHollowCatalogueSections("shs")))'), "Section Properties must include the checked SHS catalogue directory in discoverable size order");
 assert.ok(app.includes('sectionCatalogueChsSections()'), "Section Properties must merge the complete Austube CHS directory with checked geometry-only rows");
 assert.ok(app.includes('const sectionProductDirectory = Object.freeze({'), "Section Properties must own the canonical shared product directory");
-assert.ok(app.includes('return sectionProductDirectory[family] || []'), "Beam hollow-section selectors must reuse the canonical product directory");
+assert.ok(app.includes('SectionCatalogue.checkedDesignRows(family, sectionProductDirectory[family] || [])'), "Beam and Axial hollow-section selectors must filter the canonical directory to checked design rows");
+assert.ok(!app.includes('return sections.sort((a, b) =>'), "Axial hollow-section selectors must preserve canonical directory order");
 assert.ok(app.includes('const sections = sectionProductDirectory[memberType]'), "Axial Member rolled-section selectors must reuse the canonical product directory");
 assert.ok(app.includes('$("sectionCatalogueDirectoryList").innerHTML = sectionCatalogueFamilies'), "The folded coverage summary must be generated from the canonical family directory");
 assert.ok(app.includes('73 Austube design-table rows + 1 Orrcon geometry row'), "CHS coverage must distinguish design-table and geometry-only rows");

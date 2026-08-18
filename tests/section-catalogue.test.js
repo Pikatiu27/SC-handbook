@@ -119,6 +119,15 @@ assert.equal(rod.properties.zx.value, rod.properties.zy.value);
 assert.equal(rod.properties.iw.value, 0);
 assert.equal(rod.properties.jp.value, rod.properties.j.value);
 
+const checkedRows = catalogue.checkedDesignRows("chs", [
+  { designation: "508 x 6.4 CHS", axes: { axis: {} }, grades: { C350L0: {} } },
+  { designation: "114.3 x 4.5 CHS", axes: { axis: {} }, grades: { C350L0: {} } },
+  { designation: "60.3 x 3.5 CHS" }
+]);
+assert.deepEqual(checkedRows.map(section => section.designation), ["508 x 6.4 CHS", "114.3 x 4.5 CHS"]);
+assert.ok(Object.isFrozen(checkedRows));
+assert.throws(() => catalogue.checkedDesignRows("chs", null), /array/);
+
 assert.throws(() => catalogue.create({}, null), /required/);
 
 console.log("section-catalogue tests passed");

@@ -385,6 +385,19 @@
     return Object.freeze({ key, label, sections: Object.freeze(sections) });
   }
 
+  function hasCheckedDesignRow(familyKey, section) {
+    if (!section || !section.grades || Object.keys(section.grades).length === 0 || !section.axes) return false;
+    if (familyKey === "chs") return Boolean(section.axes.axis);
+    if (familyKey === "rhs") return Boolean(section.axes.x && section.axes.y);
+    if (familyKey === "shs") return Boolean(section.axes.xy);
+    return true;
+  }
+
+  function checkedDesignRows(familyKey, sections) {
+    if (!Array.isArray(sections)) throw new TypeError("Section rows must be an array.");
+    return Object.freeze(sections.filter(section => hasCheckedDesignRow(familyKey, section)));
+  }
+
   function create(sources, geometry) {
     if (!sources || !geometry || typeof geometry.circularHollow !== "function") {
       throw new TypeError("Catalogue sources and the shared section geometry API are required.");
@@ -401,5 +414,5 @@
     ]);
   }
 
-  return Object.freeze({ BASIS, SOURCES, create });
+  return Object.freeze({ BASIS, SOURCES, create, checkedDesignRows });
 });

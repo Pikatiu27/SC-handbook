@@ -82,6 +82,11 @@ const geometryOnlyChs = section("chs", "60.3 x 3.5 CHS");
 assert.equal(geometryOnlyChs.mass, 4.9);
 close(geometryOnlyChs.properties.area.value, Math.PI * (60.3 ** 2 - 53.3 ** 2) / 4);
 assert.equal(geometryOnlyChs.properties.area.basis, "derived");
+const checkedChs = SectionCatalogue.checkedDesignRows("chs", context.auditData.sectionProductDirectory.chs);
+assert.equal(checkedChs.length, 73);
+assert.equal(checkedChs[0].designation, "508 x 12.7 CHS");
+assert.equal(checkedChs.at(-1).designation, "26.9 x 2 CHS");
+assert.ok(!checkedChs.some(item => item.designation === "60.3 x 3.5 CHS"));
 
 // Austube 2013, Table 3.1-3, PDF page 31.
 const rhs = section("rhs", "75 x 25 x 2.5 RHS");
@@ -104,6 +109,14 @@ assert.equal(shs.properties.zx.value, 280e3);
 assert.equal(shs.properties.sy.value, 327e3);
 assert.equal(shs.properties.rx.value, 78.6);
 assert.equal(shs.properties.ry.value, 78.6);
+const checkedRhs = SectionCatalogue.checkedDesignRows("rhs", context.auditData.sectionProductDirectory.rhs);
+const checkedShs = SectionCatalogue.checkedDesignRows("shs", context.auditData.sectionProductDirectory.shs);
+assert.equal(checkedRhs.length, 89);
+assert.equal(checkedShs.length, 88);
+assert.equal(checkedRhs[0].designation, context.auditData.sectionProductDirectory.rhs[0].designation);
+assert.equal(checkedRhs.at(-1).designation, context.auditData.sectionProductDirectory.rhs.at(-1).designation);
+assert.equal(checkedShs[0].designation, context.auditData.sectionProductDirectory.shs[0].designation);
+assert.equal(checkedShs.at(-1).designation, context.auditData.sectionProductDirectory.shs.at(-1).designation);
 
 // InfraBuild 2019, Tables 19 and 21, PDF pages 19 and 21.
 const angle = section("ea", "100 x 100 x 10 EA");
