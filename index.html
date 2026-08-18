@@ -141,13 +141,13 @@
                   <div class="form-grid two">
                     <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="plateThickness" type="number" min="0.1" step="0.1" value="10"><em>mm</em></span></label>
                     <label><span>f<sub>up</sub> <i>ply tensile strength</i></span><span class="unit"><input id="plateStrength" type="number" min="1" step="1" value="410"><em>MPa</em></span></label>
-                    <label><span>Edge condition</span><select id="edgeCondition"><option value="1.75">Sheared / hand flame-cut edge</option><option value="1.5">Machine-cut, sawn or planed edge</option><option value="1.25">Rolled edge of rolled flat bar / section</option></select></label>
+                    <label><span>Edge condition</span><select id="edgeCondition"><option value="1.75">Sheared / flame-cut · 1.75 d_f</option><option value="1.5">Machine-cut / sawn / planed · 1.50 d_f</option><option value="1.25">Rolled edge · 1.25 d_f</option></select></label>
                     <div class="detailing-input-field">
                       <div class="detailing-input-control">
                         <label class="detailing-input-label" for="edgeDistance">Edge distance, e</label>
                         <div class="input-check-row"><span class="unit"><input id="edgeDistance" type="number" min="0" step="1" value="42" aria-describedby="edgeDistanceRequirement"><em>mm</em></span><b id="edgeDistanceStatus" class="input-check-status pass" aria-live="polite">PASS</b></div>
                       </div>
-                      <p class="detailing-input-note" id="edgeDistanceRequirement"><output id="minimumEdgeDistance">42.0</output> mm minimum · standard hole: centre to edge</p>
+                      <p class="detailing-input-note" id="edgeDistanceRequirement">e<sub>min</sub> = 1.75d<sub>f</sub> = 42.0 mm · standard hole: centre to edge</p>
                     </div>
                   </div>
                   <div class="form-grid edge-ae-entry">
@@ -162,13 +162,13 @@
                   <div class="form-grid two">
                     <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="plateThickness2" type="number" min="0.1" step="0.1" value="8"><em>mm</em></span></label>
                     <label><span>f<sub>up</sub> <i>ply tensile strength</i></span><span class="unit"><input id="plateStrength2" type="number" min="1" step="1" value="410"><em>MPa</em></span></label>
-                    <label><span>Edge condition</span><select id="edgeCondition2"><option value="1.75">Sheared / hand flame-cut edge</option><option value="1.5">Machine-cut, sawn or planed edge</option><option value="1.25">Rolled edge of rolled flat bar / section</option></select></label>
+                    <label><span>Edge condition</span><select id="edgeCondition2"><option value="1.75">Sheared / flame-cut · 1.75 d_f</option><option value="1.5">Machine-cut / sawn / planed · 1.50 d_f</option><option value="1.25">Rolled edge · 1.25 d_f</option></select></label>
                     <div class="detailing-input-field">
                       <div class="detailing-input-control">
                         <label class="detailing-input-label" for="edgeDistance2">Edge distance, e</label>
                         <div class="input-check-row"><span class="unit"><input id="edgeDistance2" type="number" min="0" step="1" value="42" aria-describedby="edgeDistanceRequirement2"><em>mm</em></span><b id="edgeDistanceStatus2" class="input-check-status pass" aria-live="polite">PASS</b></div>
                       </div>
-                      <p class="detailing-input-note" id="edgeDistanceRequirement2"><output id="minimumEdgeDistance2">42.0</output> mm minimum · standard hole: centre to edge</p>
+                      <p class="detailing-input-note" id="edgeDistanceRequirement2">e<sub>min</sub> = 1.75d<sub>f</sub> = 42.0 mm · standard hole: centre to edge</p>
                     </div>
                   </div>
                   <div class="form-grid edge-ae-entry">
@@ -1939,10 +1939,10 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.52 &middot; technically reviewed 18 Aug 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.53 &middot; technically reviewed 18 Aug 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
-  <script src="bolt-capacity.js?v=20260803productflow36"></script>
+  <script src="bolt-capacity.js?v=20260818boltedge1"></script>
   <script src="bolt-integrity.js?v=20260803productflow36"></script>
   <script src="weld-capacity.js?v=20260809weldrepro1"></script>
   <script src="concrete-section-calculation.js?v=20260809shearaudit1"></script>
@@ -1958,7 +1958,7 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="monopole-capacity.js?v=20260814polygonflat1"></script>
-  <script src="app.js?v=20260818sectiondirectory2"></script>
+  <script src="app.js?v=20260818boltedge1"></script>
   <script src="monopole-app.js?v=20260814polygonflat1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>

@@ -2406,6 +2406,8 @@ Minimum edge distance, minimum pitch and connected-ply checks should reference A
 For the web bolt tab, separate the edge-distance terms visibly:
 
 - Input label: `e` = bolt-centre-to-edge distance for a standard hole. For an oversize or slotted hole, enter the distance from the nearer hole edge to the ply edge plus `d_f/2`.
+- Apply AS 4100 Table 9.5.2 directly: sheared or hand flame-cut edge `e_min = 1.75d_f`; rolled plate, flat bar or section with a machine-cut, sawn or planed edge `e_min = 1.50d_f`; rolled edge of a rolled flat bar or section `e_min = 1.25d_f`.
+- Keep the provided `e` as a drawing input when the edge category changes. Update only `e_min`, its formula substitution and PASS / FAIL status.
 - Input label: `p` = centre-to-centre bolt pitch used for detailing checks.
 - Input label: `a_e` = drawing-derived effective edge distance used for the edge-limited bearing expression.
 - Result label: `Minimum edge distance, e - AS 4100 Table 9.5.2`.

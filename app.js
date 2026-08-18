@@ -2606,7 +2606,11 @@ function markInputSources() {
 function calculateConnectedPly(config, bolt, count) {
   const actualEdge = numericValue($(config.edgeDistanceId).value);
   const effectiveEdge = numericValue($(config.effectiveEdgeInputId).value);
-  const minimumEdge = value(config.edgeConditionId) * bolt.d;
+  const edgeRequirement = BoltCapacity.minimumEdgeDistance({
+    diameter: bolt.d,
+    edgeFactor: value(config.edgeConditionId)
+  });
+  const minimumEdge = edgeRequirement.minimum;
   const plateStrength = numericValue($(config.plateStrengthId).value);
   const plateThickness = numericValue($(config.plateThicknessId).value);
   const valid = Number.isFinite(actualEdge) && actualEdge >= 0
@@ -2631,6 +2635,7 @@ function calculateConnectedPly(config, bolt, count) {
     ...config,
     actualEdge,
     effectiveEdge,
+    edgeFactor: edgeRequirement.factor,
     minimumEdge,
     edgeDistancePass,
     plateStrength,
@@ -2645,13 +2650,13 @@ function calculateConnectedPly(config, bolt, count) {
 }
 
 function updateConnectedPlyOutputs(ply, suffix = "") {
-  $(`minimumEdgeDistance${suffix}`).textContent = fixed(ply.minimumEdge);
   $(`edgeDistanceStatus${suffix}`).textContent = !ply.valid ? "INPUT" : ply.edgeDistancePass ? "PASS" : "FAIL";
   $(`edgeDistanceStatus${suffix}`).className = `input-check-status ${ply.valid && ply.edgeDistancePass ? "pass" : "fail"}`;
   const standardHole = value("holeFactor") === 1;
+  const edgeExpression = `e<sub>min</sub> = ${displayFixed(ply.edgeFactor, 2)}d<sub>f</sub> = ${fixed(ply.minimumEdge)} mm`;
   $(`edgeDistanceRequirement${suffix}`).innerHTML = standardHole
-    ? `<output id="minimumEdgeDistance${suffix}">${fixed(ply.minimumEdge)}</output> mm minimum &middot; standard hole: centre to edge`
-    : `<output id="minimumEdgeDistance${suffix}">${fixed(ply.minimumEdge)}</output> mm minimum &middot; enter e from nearer hole edge to ply edge + d<sub>f</sub>/2`;
+    ? `${edgeExpression} &middot; standard hole: centre to edge`
+    : `${edgeExpression} &middot; non-standard hole: nearer hole edge to ply edge + d<sub>f</sub>/2`;
 }
 
 function connectedPlyFormulaRows(ply, bolt, count) {
@@ -2685,7 +2690,7 @@ function connectedPlyFormulaRows(ply, bolt, count) {
       title: `${ply.label} minimum edge`,
       reference: "AS 4100 Table 9.5.2",
       lookup: "Minimum edge-distance multiplier for the selected edge condition.",
-      selection: `${displayFixed(value(ply.edgeConditionId), 2)}d<sub>f</sub>; d<sub>f</sub> = ${fixed(bolt.d)} mm`,
+      selection: `${displayFixed(ply.edgeFactor, 2)}d<sub>f</sub>; d<sub>f</sub> = ${fixed(bolt.d)} mm`,
       adopted: `e<sub>min</sub> = ${fixed(ply.minimumEdge)} mm; provided e = ${fixed(ply.actualEdge)} mm; ${ply.edgeDistancePass ? "PASS" : "FAIL"}`,
       applicability: value("holeFactor") === 1
         ? "Standard hole: e is measured from hole centre to ply edge."

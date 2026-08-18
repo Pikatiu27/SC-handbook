@@ -70,6 +70,10 @@ const closeTo = (actual, expected, tolerance = 1e-9) => {
     minimum: 60,
     maximum: 150
   });
+  assert.deepEqual(BoltCapacity.minimumEdgeDistance({ diameter: 24, edgeFactor: 1.75 }), { factor: 1.75, minimum: 42 });
+  assert.deepEqual(BoltCapacity.minimumEdgeDistance({ diameter: 24, edgeFactor: 1.5 }), { factor: 1.5, minimum: 36 });
+  assert.deepEqual(BoltCapacity.minimumEdgeDistance({ diameter: 24, edgeFactor: 1.25 }), { factor: 1.25, minimum: 30 });
+  assert.deepEqual(BoltCapacity.minimumEdgeDistance({ diameter: 16, edgeFactor: 1.75 }), { factor: 1.75, minimum: 28 });
 }
 
 {
@@ -157,6 +161,10 @@ const closeTo = (actual, expected, tolerance = 1e-9) => {
     preload: 210,
     holeFactor: 1
   }), /positive/);
+  assert.throws(() => BoltCapacity.minimumEdgeDistance({
+    diameter: 24,
+    edgeFactor: 1.4
+  }), /AS 4100 Table 9\.5\.2/);
 }
 
 {
