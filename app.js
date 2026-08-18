@@ -10300,7 +10300,11 @@ function initialise() {
   $("shearPlane").value = "N";
   populateConcreteBarOptions();
   populateReoData();
-  boltInputIds.forEach(id => $(id).addEventListener("input", calculateBolt));
+  boltInputIds.forEach(id => {
+    const element = $(id);
+    element.addEventListener("input", calculateBolt);
+    if (element.tagName === "SELECT") element.addEventListener("change", calculateBolt);
+  });
   weldInputIds.forEach(id => $(id).addEventListener("input", calculateWeld));
   concreteInputIds.forEach(id => {
     const depthMatch = id.match(/^layer([1-4])Y$/);
@@ -10529,4 +10533,7 @@ function initialise() {
   syncResponsiveDefaults(true);
 }
 
-if (typeof document !== "undefined" && typeof window !== "undefined") initialise();
+if (typeof document !== "undefined" && typeof window !== "undefined") {
+  initialise();
+  window.addEventListener("pageshow", () => window.requestAnimationFrame(calculateBolt));
+}
