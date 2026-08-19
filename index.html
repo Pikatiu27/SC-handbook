@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260818sectiondirectory1">
+  <link rel="stylesheet" href="styles.css?v=20260819plylayout1">
 </head>
 <body>
   <header class="topbar">
@@ -189,28 +189,54 @@
               <div><span>Second ply</span><strong id="secondPlyCapacity">242.1 kN</strong><small id="secondPlyControl">Edge-distance limit</small></div>
             </div>
             <details class="integrity-check" id="connectedPlyIntegrity">
-              <summary><span><b>Optional ply rupture checks</b><small id="integritySummaryStatus">Not evaluated · manual areas required</small></span><i>+</i></summary>
+              <summary><span><b>Optional ply rupture checks</b><small id="integritySummaryStatus">Not evaluated</small></span><i>+</i></summary>
               <div class="integrity-body">
                 <div class="form-grid two">
-                  <label><span>Assessment basis</span><select id="integrityMode"><option value="none">Not evaluated</option><option value="manual">Manual critical areas</option></select></label>
+                  <label><span>Assessment basis</span><select id="integrityMode"><option value="none">Not evaluated</option><option value="manual">Evaluate ply rupture</option></select></label>
                   <label><span>Checked component</span><select id="integrityComponent"><option value="primary">Primary ply</option><option value="second">Second ply</option></select></label>
                 </div>
-                <p class="ply-basis-note" id="integrityMaterialBasis">Primary ply · f<sub>uc</sub> = 410 MPa</p>
                 <div id="integrityInputs" class="integrity-inputs" hidden>
-                  <div class="ply-section-heading"><div><b>Net-section tension</b><small>AS 4100 Cl. 9.1.9(b) and AS 4100 Cl. 7.2</small></div></div>
-                  <div class="form-grid four">
-                    <label><span>f<sub>yc</sub> <i>yield stress</i></span><span class="unit"><input id="integrityFy" type="number" min="1" step="1" value="320"><em>MPa</em></span></label>
-                    <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="integrityAg" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
-                    <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="integrityAn" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
+                  <section class="integrity-input-section integrity-ply-section">
+                    <div class="ply-section-heading"><div><b>Selected ply inputs</b><small>Geometry and material for the checked component</small></div></div>
+                    <div class="form-grid four integrity-ply-geometry" id="integrityStraightGeometry">
+                      <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="integrityThickness" type="number" readonly value="10"><em>mm</em></span></label>
+                      <label><span>b <i>plate width</i></span><span class="unit"><input id="integrityPlateWidth" type="number" min="0.1" step="1" placeholder="Required"><em>mm</em></span></label>
+                      <label><span>n<sub>h</sub> <i>holes on critical section</i></span><input id="integrityHoleCount" type="number" min="0" max="20" step="1" value="1"></label>
+                      <label><span>d<sub>h</sub> <i>hole deduction diameter</i></span><span class="unit"><input id="integrityHoleDiameter" type="number" min="0" step="0.1" value="26"><em>mm</em></span></label>
+                    </div>
+                    <div class="form-grid two integrity-ply-material">
+                      <label><span>f<sub>yc</sub> <i>yield stress</i></span><span class="unit"><input id="integrityFy" type="number" min="1" step="1" value="320"><em>MPa</em></span></label>
+                      <label><span>f<sub>uc</sub> <i>tensile strength</i></span><span class="unit"><input id="integrityFu" type="number" readonly value="410"><em>MPa</em></span></label>
+                    </div>
+                    <p class="ply-basis-note" id="integrityGeometryNote">Straight transverse section only · n<sub>h</sub> is the number of holes crossed by the critical section, not the total bolt count.</p>
+                  </section>
+
+                  <section class="integrity-input-section">
+                  <div class="ply-section-heading"><div><b>Net-section tension</b><small>AS 4100 Cls 7.2, 9.1.9(b) and 9.1.10</small></div></div>
+                  <div class="form-grid two integrity-net-controls">
+                    <label><span>Area basis</span><select id="integrityAreaMode"><option value="straight">Straight section</option><option value="manual">Manual areas</option></select></label>
                     <label><span>k<sub>t</sub> <i>force distribution</i></span><input id="integrityKt" type="number" min="0.01" max="1" step="0.05" value="1"></label>
                   </div>
+                  <div class="form-grid two integrity-net-areas">
+                    <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="integrityAg" type="number" min="0.1" step="1" placeholder="Calculated" readonly><em>mm²</em></span></label>
+                    <label><span>A<sub>n</sub> <i>net area</i></span><span class="unit"><input id="integrityAn" type="number" min="0.1" step="1" placeholder="Calculated" readonly><em>mm²</em></span></label>
+                  </div>
+                  <p class="ply-basis-note" id="integrityNetAreaNote">Enter b to calculate A<sub>g</sub> and the straight-line deduction A<sub>n</sub> = (b - n<sub>h</sub>d<sub>h</sub>)t<sub>p</sub>.</p>
+                  </section>
+
+                  <section class="integrity-input-section">
                   <div class="ply-section-heading"><div><b>Block shear · governing path</b><small>AS 4100 Cl. 9.1.9(e)</small></div></div>
-                  <div class="form-grid four">
+                  <div class="form-grid three integrity-block-areas">
                     <label><span>A<sub>gv</sub> <i>gross shear area</i></span><span class="unit"><input id="integrityAgv" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
                     <label><span>A<sub>nv</sub> <i>net shear area</i></span><span class="unit"><input id="integrityAnv" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
                     <label><span>A<sub>nt</sub> <i>net tension area</i></span><span class="unit"><input id="integrityAnt" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
-                    <label><span>k<sub>bs</sub> <i>tension stress</i></span><select id="integrityKbs"><option value="1">1.0 · uniform</option><option value="0.5">0.5 · non-uniform</option></select></label>
                   </div>
+                  <div class="integrity-kbs-control">
+                    <label><span>k<sub>bs</sub> <i>tension-stress distribution</i></span><select id="integrityKbs"><option value="1">1.0 · Uniform</option><option value="0.5">0.5 · Non-uniform</option></select></label>
+                    <p>Adopt for the reviewed block-shear path.</p>
+                  </div>
+                  </section>
+
                   <div class="integrity-results" aria-live="polite">
                     <div><span>Design section tension capacity, &phi;N<sub>t</sub></span><strong id="integrityNetCapacity">Incomplete</strong><small id="integrityNetBasis">Enter A<sub>g</sub> and A<sub>n</sub></small></div>
                     <div><span>Design block shear capacity, &phi;R<sub>bs</sub></span><strong id="integrityBlockCapacity">Incomplete</strong><small id="integrityBlockBasis">Enter the governing path areas</small></div>
@@ -239,7 +265,7 @@
           <div id="formulaSteps" class="formula-list"></div>
           <div class="source-notes">
             <p><b>Issue status</b> · For Review. Clause pages for AS 4100 bolt strength, connected-ply bearing, section tension, block shear and lightweight detailing checks have been visually checked against the local reference PDF; product table values still require project-specific source-register traceability before `Checked` release.</p>
-            <p><b>Primary basis</b> · AS 4100 Table 3.4, AS 4100 Table 9.2.2.1 and AS 4100 Table 15.2.2.2; AS 4100 Cl. 7.2, AS 4100 Cl. 9.1.8, AS 4100 Cl. 9.1.9, AS 4100 Cl. 9.2.2, AS 4100 Cl. 9.2.3 and AS 4100 Cl. 9.5.1 to AS 4100 Cl. 9.5.3.</p>
+            <p><b>Primary basis</b> · AS 4100 Table 3.4, AS 4100 Table 9.2.2.1 and AS 4100 Table 15.2.2.2; AS 4100 Cls 7.2, 9.1.8-9.1.10, 9.2.2, 9.2.3 and 9.5.1-9.5.3.</p>
             <p><b>Material standards</b> · Connected ply strengths should be verified against AS/NZS 3678 or AS/NZS 3679.1 as applicable. The default f<sub>up</sub> = 410 MPa is for AS/NZS 3678 Grade 250 plate from ASI Simple Connections 2020 Table 2.15; use 440 MPa only for a verified AS/NZS 3679.1 Grade 300 flat bar/section or equivalent source. Fastener property class and structural bolt assemblies should be verified against AS 1110 and AS/NZS 1252 as applicable.</p>
             <p><b>Symbols</b> · d<sub>f</sub> is the nominal bolt diameter. For a standard hole, e is measured from hole centre to ply edge; for a non-standard hole, e is measured from the nearer hole edge to the ply edge plus d<sub>f</sub>/2. The drawing-derived a<sub>e</sub> is used for AS 4100 Cl. 9.2.2.4. V<sub>sf</sub><sup>*</sup> and N<sub>tf</sub><sup>*</sup> are total bolt-group serviceability actions.</p>
             <p><b>N/X and category</b> · `/S`, `/TB` and `/TF` identify installation and connection category. N or X identifies the shear-plane condition and is selected separately; TB is not inherently N or X.</p>
@@ -1939,11 +1965,11 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.54 &middot; technically reviewed 18 Aug 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.55 &middot; technically reviewed 19 Aug 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>
-  <script src="bolt-integrity.js?v=20260803productflow36"></script>
+  <script src="bolt-integrity.js?v=20260819plyarea1"></script>
   <script src="weld-capacity.js?v=20260809weldrepro1"></script>
   <script src="concrete-section-calculation.js?v=20260809shearaudit1"></script>
   <script src="section-geometry.js?v=20260807sectionfamily2"></script>
@@ -1958,7 +1984,7 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="monopole-capacity.js?v=20260814polygonflat1"></script>
-  <script src="app.js?v=20260818boltedge2"></script>
+  <script src="app.js?v=20260819plyarea1"></script>
   <script src="monopole-app.js?v=20260814polygonflat1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>

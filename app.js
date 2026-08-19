@@ -2394,7 +2394,7 @@ const reoExistingTransverseLocationResetIds = new Set(reoExistingLengthChangingI
 const reoTerminationDetailingResetIds = new Set(reoExistingLengthChangingIds);
 
 const $ = id => document.getElementById(id);
-const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand"];
+const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityAreaMode", "integrityPlateWidth", "integrityHoleCount", "integrityHoleDiameter", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand"];
 const beamDimensionInputIds = [
   "beamDimID", "beamDimIBf", "beamDimITw", "beamDimITf",
   "beamDimPfcD", "beamDimPfcBf", "beamDimPfcTw", "beamDimPfcTf",
@@ -2427,8 +2427,9 @@ const MEMBER_TYPE_LABELS = Object.freeze({
 });
 let reoPreviousRouteKey = "";
 let mobileLayoutActive = typeof window !== "undefined" && window.matchMedia("(max-width: 500px)").matches;
+let integrityHoleDiameterTracksBolt = true;
 const manualInputIds = [
-  "boltCount", "threadPlanes", "shankPlanes", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "interfaces", "slipFactor",
+  "boltCount", "threadPlanes", "shankPlanes", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityPlateWidth", "integrityHoleCount", "integrityHoleDiameter", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
   "concreteWidth", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
   "reoConcreteStrength", "reoCover", "reoClearSpacing", "reoBarGap", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoPressureReference", "reoSteelStress",
@@ -2443,7 +2444,7 @@ const manualInputIds = [
   "memberCustomArea", "memberCustomRx", "memberCustomRy", "memberCustomKf", "memberCustomAlphaBx", "memberCustomAlphaBy", "memberCustomLex", "memberCustomLey"
 ];
 const referenceInputIds = [
-  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeCondition2", "holeFactor",
+  "boltSize", "category", "shearPlane", "kr", "edgeCondition", "edgeCondition2", "holeFactor", "integrityThickness", "integrityFu",
   "uBoltRodSize", "uBoltMemberGeometry", "uBoltFinish", "uBoltManufacturer", "uBoltProduct",
   "blindBoltSize", "blindBoltGrip", "blindBoltHead", "blindBoltFinish", "blindBoltManufacturer", "blindBoltProduct",
   "weldType", "weldSize", "weldCategory", "weldStrength", "weldLapConnection", "weldParentGrade",
@@ -2713,25 +2714,62 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck)
   if (!separatePlyCheck && componentSelect.value !== "primary") componentSelect.value = "primary";
   const checkedPly = separatePlyCheck && componentSelect.value === "second" ? secondPly : primaryPly;
   const enabled = mode === "manual";
+  const areaMode = $("integrityAreaMode").value;
+  const automaticAreas = areaMode === "straight";
   $("integrityInputs").hidden = !enabled;
-  $("integrityMaterialBasis").innerHTML = `${checkedPly.label} &middot; f<sub>uc</sub> = ${displayFixed(checkedPly.plateStrength, 0)} MPa`;
+  $("integrityThickness").value = displayFixed(checkedPly.plateThickness, 1);
+  $("integrityFu").value = displayFixed(checkedPly.plateStrength, 0);
+  ["integrityPlateWidth", "integrityHoleCount", "integrityHoleDiameter"].forEach(id => {
+    $(id).disabled = !automaticAreas;
+  });
+  $("integrityAg").readOnly = automaticAreas;
+  $("integrityAn").readOnly = automaticAreas;
+  $("integrityAg").placeholder = automaticAreas ? "Calculated" : "Required";
+  $("integrityAn").placeholder = automaticAreas ? "Calculated" : "Required";
+  $("integrityGeometryNote").innerHTML = value("holeFactor") === 1
+    ? `Straight transverse section only &middot; n<sub>h</sub> is holes crossed, not total bolts &middot; d<sub>h</sub> defaults to d<sub>f</sub> + 2 mm and remains editable.`
+    : `Non-standard hole selected &middot; enter the project deduction dimension d<sub>h</sub>; use Manual areas for slots, staggered holes or non-straight paths.`;
 
   const empty = {
     enabled: false,
     complete: false,
     checkedPly,
+    areaMode,
+    areas: null,
     net: null,
     block: null,
     error: ""
   };
   if (!enabled) {
-    $("integritySummaryStatus").textContent = "Not evaluated · manual areas required";
+    $("integritySummaryStatus").textContent = "Not evaluated";
     return empty;
   }
 
+  let areas = null;
   let net = null;
   let block = null;
   const errors = [];
+  if (automaticAreas) {
+    try {
+      areas = BoltIntegrity.straightLineNetArea({
+        width: numericValue($("integrityPlateWidth").value),
+        thickness: checkedPly.plateThickness,
+        holeCount: numericValue($("integrityHoleCount").value),
+        holeDiameter: numericValue($("integrityHoleDiameter").value)
+      });
+      $("integrityAg").value = displayFixed(areas.grossArea, 1);
+      $("integrityAn").value = displayFixed(areas.netArea, 1);
+      $("integrityNetAreaNote").innerHTML = `A<sub>g</sub> = bt<sub>p</sub> = ${displayFixed(areas.grossArea, 1)} mm&sup2; &middot; A<sub>n</sub> = A<sub>g</sub> - n<sub>h</sub>d<sub>h</sub>t<sub>p</sub> = ${displayFixed(areas.netArea, 1)} mm&sup2;.`;
+    } catch (error) {
+      $("integrityAg").value = "";
+      $("integrityAn").value = "";
+      $("integrityNetAreaNote").textContent = `Input required · ${error.message}`;
+      errors.push(error.message);
+    }
+  } else {
+    $("integrityNetAreaNote").textContent = "Enter project-verified gross and net areas for the governing critical section.";
+  }
+
   try {
     net = BoltIntegrity.netSectionTension({
       Ag: value("integrityAg"),
@@ -2779,6 +2817,8 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck)
     enabled,
     complete,
     checkedPly,
+    areaMode,
+    areas,
     net,
     block,
     error: [...new Set(errors)].join(" ")
@@ -3063,7 +3103,7 @@ function calculateBolt() {
     ? calculationTraceRow({
         title: "Optional ply rupture checks",
         result: "Not evaluated",
-        applicability: "Net-section tension and block shear require manual critical areas."
+        applicability: "Net-section tension uses a straight-section calculation or manual areas; block shear requires manual governing-path areas."
       })
     : !integrity.complete
       ? calculationTraceRow({
@@ -3075,11 +3115,13 @@ function calculateBolt() {
       : [
           calculationTraceRow({
             title: `${integrity.checkedPly.label} section tension`,
-            reference: "AS 4100 Cl. 9.1.9(b) and AS 4100 Cl. 7.2",
+            reference: "AS 4100 Cls 7.2, 9.1.9(b) and 9.1.10",
             formula: `&phi;N<sub>t</sub> = 0.90min(A<sub>g</sub>f<sub>yc</sub>, 0.85k<sub>t</sub>A<sub>n</sub>f<sub>uc</sub>)`,
             substitution: `0.90min(${fixed(integrity.net.grossYield)}, ${fixed(integrity.net.netFracture)}) kN`,
             result: `Design capacity = ${fixed(integrity.net.design)} kN`,
-            applicability: "Manual gross and net critical areas; checked connected ply only."
+            applicability: integrity.areaMode === "straight"
+              ? "Straight transverse section only; checked connected ply only."
+              : "Manual project-verified gross and net areas; checked connected ply only."
           }),
           calculationTraceRow({
             title: `${integrity.checkedPly.label} block shear`,
@@ -7820,6 +7862,9 @@ function populateBoltCategories() {
 
 function setBoltSize() {
   populateBoltCategories();
+  if (integrityHoleDiameterTracksBolt) {
+    $("integrityHoleDiameter").value = displayFixed(boltData[$("boltSize").value].d + 2, 1);
+  }
   calculateBolt();
 }
 
@@ -10300,6 +10345,19 @@ function initialise() {
   $("shearPlane").value = "N";
   populateConcreteBarOptions();
   populateReoData();
+  $("integrityHoleDiameter").addEventListener("input", () => {
+    integrityHoleDiameterTracksBolt = false;
+  });
+  $("holeFactor").addEventListener("change", () => {
+    if (value("holeFactor") === 1) {
+      integrityHoleDiameterTracksBolt = true;
+      $("integrityHoleDiameter").value = displayFixed(boltData[$("boltSize").value].d + 2, 1);
+    } else {
+      integrityHoleDiameterTracksBolt = false;
+      $("integrityHoleDiameter").value = "";
+    }
+    calculateBolt();
+  });
   boltInputIds.forEach(id => {
     const element = $(id);
     element.addEventListener("input", calculateBolt);

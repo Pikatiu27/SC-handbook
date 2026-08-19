@@ -1389,6 +1389,16 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .integrity-body { padding: 2px 2px 12px; }
 .integrity-inputs { margin-top: 10px; }
 .integrity-inputs[hidden] { display: none; }
+.integrity-input-section { padding: 0 0 13px; }
+.integrity-input-section + .integrity-input-section { padding-top: 13px; border-top: 1px solid var(--line); }
+.integrity-input-section .ply-section-heading { margin-top: 0; padding-top: 0; border-top: 0; }
+.integrity-ply-geometry, .integrity-ply-material, .integrity-net-areas, .integrity-block-areas { margin-top: 9px; }
+.integrity-net-controls { margin-top: 9px; }
+.integrity-kbs-control { margin-top: 9px; display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr); align-items: end; gap: 12px; }
+.integrity-kbs-control label > span { display: block; margin-bottom: 4px; color: var(--muted); font-size: var(--fs-xs); }
+.integrity-kbs-control label i { font-style: normal; }
+.integrity-kbs-control select { width: 100%; min-height: 39px; border: 1px solid #ccd5ce; border-radius: var(--control-radius); background: #fbfcfa; padding: 8px 9px; outline: none; font-size: var(--fs-sm); }
+.integrity-kbs-control p { margin: 0 0 9px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
 .integrity-results { margin-top: 12px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .integrity-results > div { min-height: 46px; padding: 8px 2px; display: grid; grid-template-columns: minmax(220px, 1fr) auto minmax(160px, auto); align-items: center; gap: 10px 14px; }
 .integrity-results > div + div { border-top: 1px solid var(--line); }
@@ -2149,6 +2159,8 @@ footer b { white-space: nowrap; }
   .compact-result strong { margin-left: 0; }
   .integrity-results > div { grid-template-columns: minmax(0, 1fr) auto; }
   .integrity-results small { grid-column: 1 / -1; text-align: left; }
+  .integrity-kbs-control { grid-template-columns: 1fr; gap: 3px; }
+  .integrity-kbs-control p { margin: 0; }
   .interaction-result { grid-template-columns: 1fr auto; }
   .interaction-result b { grid-column: 1 / -1; }
   footer { display: block; }

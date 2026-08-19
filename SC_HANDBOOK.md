@@ -2417,7 +2417,8 @@ For the web bolt tab, separate the edge-distance terms visibly:
 - Keep the lightweight connected-ply capacity on a critical-hole basis. Assume concentric action and equal shear per bolt, and derive the group capacity from the critical-hole capacity.
 - Under that equal-action premise, use `phi Vb,group = n * MIN(phi Vb,full, phi Vb,edge)` for the critical bolt hole. Do not add a separate `Bolts on edge line` input.
 - Present `n` times the critical-hole capacity as the equal-share connected-ply group capacity; keep the single-hole values in Calculation steps.
-- Do not infer net-section or block-shear paths from the lightweight bolt geometry. These checks may be added only as a separate, optional manual-area assessment with explicit AS 4100 equations and limitations.
+- Do not infer net-section or block-shear paths from bolt count, edge distance or pitch. The optional rupture assessment may calculate only a user-defined straight transverse section: `A_g = bt_p` and `A_n = A_g - n_h d_h t_p`, where `n_h` is the number of holes crossed by that critical section, not the total bolt count.
+- Keep manual `A_g` / `A_n` available for staggered holes, slots, angles, channels, multiple candidate sections and other non-straight topology. Block-shear `A_gv`, `A_nv` and `A_nt` remain manual governing-path inputs.
 
 #### 15.10.1 Detailed Connection Input Structure
 
@@ -2425,7 +2426,7 @@ Keep the detailed connection input in this order:
 
 1. `Bolt group` - bolt count, shear-plane condition and k<sub>r</sub>.
 2. `Connected plies and detailing` - shared hole geometry and an explicit connected-ply basis.
-3. `Optional ply rupture checks` - optional manual critical areas for net-section tension and block shear.
+3. `Optional ply rupture checks` - selected-ply geometry and material first, then net-section / block-shear calculations and results.
 4. `TF slip check` - TF only, including separate serviceability slip actions.
 
 The connected-ply section should use one shared detailing row:
@@ -2479,15 +2480,17 @@ Show that concise local-bearing scope note once in the detailed-check workflow. 
 
 #### 15.10.3 Optional Connected-Ply Integrity
 
-Keep this workflow collapsed by default and place it after local hole bearing and detailing. Use the title `Optional ply rupture checks`; use `Not evaluated - manual areas required` as the default summary status. Default the assessment basis to `Not evaluated`.
+Keep this workflow collapsed by default and place it after local hole bearing and detailing. Use the title `Optional ply rupture checks`; use `Not evaluated` as the default summary status. Default the assessment basis to `Not evaluated`.
 
-When `Manual critical areas` is selected:
+When `Evaluate ply rupture` is selected:
 
-- Check one identified critical connection component at a time. Use the selected active ply value as `f_uc` and require a user-entered `f_yc`.
-- `BOLT-PLY-TENSION-01` - For section tension use AS 4100 Cl. 9.1.9(b) and Cl. 7.2: `phi Nt = 0.90 MIN(Ag fyc, 0.85 kt An fuc)`.
+- Check one identified critical connection component at a time. Put all selected-ply inputs first. Keep geometry together in one row as inherited `t_p`, `b`, `n_h` and `d_h`; put editable `f_yc` and inherited `f_uc` in the material row below. Calculations and results follow these inputs.
+- Provide `Straight section` and `Manual areas` net-section bases. For `Straight section`, calculate read-only `Ag = bt_p` and `An = Ag - n_h d_h t_p`; require `b`, use the active-ply `t_p`, and keep `n_h` and `d_h` editable. State that `n_h` counts holes crossed by the critical section, not total bolts.
+- Default `d_h` to `d_f + 2 mm` for the selected standard-hole bolt as a user-editable starting value. Non-standard, slotted, staggered and topology-dependent paths require a project-verified deduction or `Manual areas`.
+- `BOLT-PLY-TENSION-01` - For section tension use AS 4100 Cl. 7.2 and Cl. 9.1.9(b), with the straight-line hole deduction bounded to Cl. 9.1.10: `phi Nt = 0.90 MIN(Ag fyc, 0.85 kt An fuc)`.
 - `BOLT-BLOCK-SHEAR-01` - For block shear use AS 4100 Cl. 9.1.9(e): `phi Rbs = 0.75 MIN(0.6 fuc Anv + kbs fuc Ant, 0.6 fyc Agv + kbs fuc Ant)`.
-- Allow `kbs = 1.0` for uniform tension stress or `kbs = 0.5` for non-uniform tension stress.
-- Require manual `Ag`, `An`, `Agv`, `Anv` and `Ant`. Do not derive these areas from bolt count, pitch, edge distance or a schematic.
+- Keep `kbs` as a normal full-width control within one aligned field below the three block-shear area inputs. Allow `kbs = 1.0` for uniform tension stress or `kbs = 0.5` for non-uniform tension stress; do not present it as a free numeric input.
+- Require manual `Agv`, `Anv` and `Ant`. Do not derive block-shear areas from bolt count, pitch, edge distance or a schematic.
 - Treat the entered block-shear areas as the governing path only after the user has reviewed every plausible failure path. State that the check must be repeated for any other critical component.
 - When the manual assessment is complete, display `phi Nt` and `phi Rbs` as capacities only. Do not compare them with project actions or include them in an overall governing ratio.
 - If the manual assessment is selected but incomplete, show `Incomplete` within the collapsed integrity workflow. Do not issue a connection status.
