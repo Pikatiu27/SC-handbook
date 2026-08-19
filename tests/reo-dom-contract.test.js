@@ -7,6 +7,7 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const completeApp = fs.readFileSync(path.join(root, "app.js"), "utf8");
+const stateContract = fs.readFileSync(path.join(root, "reo-state.js"), "utf8");
 const app = completeApp.slice(
   completeApp.indexOf("function readReoOptions("),
   completeApp.indexOf("function setMemberType(")
@@ -32,9 +33,12 @@ assert.doesNotMatch(html, /id="reoProfisDetails"/);
 assert.doesNotMatch(html, /id="reoAvailableDepth"/);
 assert.doesNotMatch(html, /id="reoExtensionRecord"|Extension design paths|REFERENCE SUMMARY/);
 assert.doesNotMatch(app, /Project context|updateReoConnectionStatus/);
-assert.match(completeApp, /const reoTransverseLocationResetIds = new Set\(reoLapLengthChangingIds\.filter\(id => id !== "reoTransverseLocationConfirmed"\)\);/);
-assert.match(completeApp, /const reoExistingTransverseLocationResetIds = new Set\(reoExistingLengthChangingIds\.filter\(id => id !== "reoExistingTransverseLocationConfirmed"\)\);/);
-assert.match(completeApp, /if \(reoTransverseLocationResetIds\.has\(id\)\) \$\("reoTransverseLocationConfirmed"\)\.checked = false;/);
-assert.match(completeApp, /if \(reoExistingTransverseLocationResetIds\.has\(id\)\) \$\("reoExistingTransverseLocationConfirmed"\)\.checked = false;/);
+assert.match(html, /<script src="reo-state\.js\?v=[^"]+"><\/script>/);
+assert.match(html, /id="reoExistingMethodField"><span>Calculation method<\/span>/);
+assert.match(html, /id="reoAnchorageResultTitle">Development reference length<\/h2>/);
+assert.doesNotMatch(html, /Required development length/);
+assert.match(completeApp, /globalThis\.reoState\.confirmationResetsForInput\(id\)/);
+assert.doesNotMatch(completeApp, /const reoLapQualificationResetIds|const reoTransverseLocationResetIds/);
+assert.match(stateContract, /function confirmationResetsForInput\(id\)/);
 
 console.log("Reo DOM contract tests passed.");

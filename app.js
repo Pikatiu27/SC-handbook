@@ -2368,30 +2368,7 @@ const reoInputIds = [
   "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference", "reoExistingPressureBasisConfirmed", "reoExistingTransverseLocationConfirmed", "reoExistingAtrCountConfirmed"
 ];
 
-const reoLapLengthChangingIds = [
-  "reoRebarPath", "reoBar", "reoMemberRole", "reoMemberType", "reoLapType", "reoMethod", "reoConcreteStrength",
-  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap", "reoDoubleArea", "reoHalfSpliced",
-  "reoRefinedArrangement", "reoAtrMinBasis", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoPressureReference", "reoTransverseLocationConfirmed"
-];
-const reoExistingLengthChangingIds = [
-  "reoRebarPath", "reoBar", "reoExistingBarOrigin", "reoAnchorageBasis", "reoSteelStress", "reoReducedLengthRefinedConfirmed", "reoCastInTermination",
-  "reoExistingMemberType", "reoExistingConcreteStrength", "reoExistingCastingPosition", "reoExistingMaterialCondition", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingMethod",
-  "reoExistingRefinedArrangement", "reoExistingAtrMinBasis", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference", "reoExistingTransverseLocationConfirmed"
-];
-const reoLapCountResetIds = new Set(reoLapLengthChangingIds);
-const reoExistingCountResetIds = new Set(reoExistingLengthChangingIds);
-const reoReducedLengthResetIds = new Set([
-  ...reoExistingLengthChangingIds.filter(id => id !== "reoReducedLengthRefinedConfirmed"), "reoExistingAtrCountConfirmed", "reoExistingPressureBasisConfirmed"
-]);
-const reoLapQualificationResetIds = new Set([
-  "reoRebarPath", "reoBar", "reoMemberRole", "reoMemberType", "reoLapType", "reoConcreteStrength",
-  "reoCastingPosition", "reoMaterialCondition", "reoCover", "reoClearSpacing", "reoBarGap"
-]);
-const reoPressureBasisResetIds = new Set(reoLapLengthChangingIds.filter(id => id !== "reoPressureBasisConfirmed"));
-const reoExistingPressureBasisResetIds = new Set(reoExistingLengthChangingIds.filter(id => id !== "reoExistingPressureBasisConfirmed"));
-const reoTransverseLocationResetIds = new Set(reoLapLengthChangingIds.filter(id => id !== "reoTransverseLocationConfirmed"));
-const reoExistingTransverseLocationResetIds = new Set(reoExistingLengthChangingIds.filter(id => id !== "reoExistingTransverseLocationConfirmed"));
-const reoTerminationDetailingResetIds = new Set(reoExistingLengthChangingIds);
+if (!globalThis.reoState?.confirmationResetsForInput) throw new Error("Reinforcement state contract is required.");
 
 const $ = id => document.getElementById(id);
 const boltInputIds = ["boltSize", "category", "boltCount", "threadPlanes", "shankPlanes", "kr", "boltPitch", "connectedPlyBasis", "plateThickness", "plateStrength", "edgeCondition", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeCondition2", "edgeDistance2", "effectiveEdgeInput2", "integrityMode", "integrityComponent", "integrityAreaMode", "integrityPlateWidth", "integrityHoleCount", "integrityHoleDiameter", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor", "holeFactor", "slipShearDemand", "slipTensionDemand"];
@@ -9538,7 +9515,7 @@ function updateReoConditionalFields(options) {
     ? "AS 3600 reference depth"
     : standardTerminationSelected
       ? `Standard ${$("reoCastInTermination").value} anchorage reference`
-      : "Required development length";
+      : "Development reference length";
 
   const showGap = path.requiresLap && options.memberType === "narrow" && options.lapType === "noncontact";
   $("reoBarGapField").hidden = !showGap;
@@ -9978,7 +9955,7 @@ function updateReoAnchorage(options, selectedBar, developmentResult, development
     $("reoAnchorageResultStatus").textContent = "AS 3600 REFERENCE";
     $("reoRequiredEmbedmentLabel").innerHTML = anchorage.terminationFactor === 0.5
       ? `Standard ${anchorage.terminationType} anchorage <b>L<sub>e,AS</sub></b>`
-      : "Required development length <b>L<sub>sy.t</sub></b>";
+      : "Development reference length <b>L<sub>sy.t</sub></b>";
   }
 
   const basisNotes = [];
@@ -10515,18 +10492,19 @@ function initialise() {
   reoInputIds.forEach(id => {
     const element = $(id);
     const handleReoInput = () => {
-      if (reoLapCountResetIds.has(id)) $("reoAtrCountConfirmed").checked = false;
-      if (reoExistingCountResetIds.has(id)) $("reoExistingAtrCountConfirmed").checked = false;
-      if (reoReducedLengthResetIds.has(id)) $("reoReducedLengthRefinedConfirmed").checked = false;
-      if (reoLapQualificationResetIds.has(id)) {
+      const resets = globalThis.reoState.confirmationResetsForInput(id);
+      if (resets.lapCandidateCount) $("reoAtrCountConfirmed").checked = false;
+      if (resets.developmentCandidateCount) $("reoExistingAtrCountConfirmed").checked = false;
+      if (resets.reducedDevelopmentBasis) $("reoReducedLengthRefinedConfirmed").checked = false;
+      if (resets.lapQualification) {
         $("reoDoubleArea").checked = false;
         $("reoHalfSpliced").checked = false;
       }
-      if (reoPressureBasisResetIds.has(id)) $("reoPressureBasisConfirmed").checked = false;
-      if (reoExistingPressureBasisResetIds.has(id)) $("reoExistingPressureBasisConfirmed").checked = false;
-      if (reoTransverseLocationResetIds.has(id)) $("reoTransverseLocationConfirmed").checked = false;
-      if (reoExistingTransverseLocationResetIds.has(id)) $("reoExistingTransverseLocationConfirmed").checked = false;
-      if (reoTerminationDetailingResetIds.has(id)) $("reoCastInTerminationConfirmed").checked = false;
+      if (resets.lapPressureBasis) $("reoPressureBasisConfirmed").checked = false;
+      if (resets.developmentPressureBasis) $("reoExistingPressureBasisConfirmed").checked = false;
+      if (resets.lapTransverseLocation) $("reoTransverseLocationConfirmed").checked = false;
+      if (resets.developmentTransverseLocation) $("reoExistingTransverseLocationConfirmed").checked = false;
+      if (resets.terminationDetailing) $("reoCastInTerminationConfirmed").checked = false;
       calculateReo();
     };
     element.addEventListener("input", handleReoInput);

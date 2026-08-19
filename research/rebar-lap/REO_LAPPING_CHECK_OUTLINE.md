@@ -2,9 +2,9 @@
 
 Status: vNext implementation contract. Module issue status remains `For Review` until every release gate in Part B is complete.
 
-Last updated: 2026-07-24
+Last updated: 2026-08-19
 
-The 2026-07-24 terminology and flow revision separates global navigation, design check, bar installation and anchorage method. The lightweight page review moves the reference result ahead of optional refinements, consolidates common assumptions and removes scenario selectors that do not change the calculation. These changes affect presentation and state routing only; they do not change the verified AS 3600 lap/development equations or their clause sequence.
+The current terminology and flow separate global navigation, design check, bar installation and anchorage method. The lightweight page places the reference result ahead of optional refinements, consolidates common assumptions and removes scenario selectors that do not change the calculation. `Calculation method` distinguishes Basic from Refined without duplicating the development-basis heading. Cast-in straight development is reported as a `Development reference length`; PIR remains an `AS 3600 reference depth`. These presentation and state-routing rules do not change the verified AS 3600 lap/development equations or their clause sequence.
 
 The visible page must follow Part A in the stated order. Equations, state rules and release gates belong to Part B and must not interrupt the primary lookup workflow.
 
@@ -354,7 +354,7 @@ The state model is:
 | Effective case | Active calculation | Secondary output |
 | --- | --- | --- |
 | Lap splice | AS 3600 lap | Schedule only for Basic/default `k7` |
-| Development at termination - cast-in straight | AS 3600 development reference | None |
+| Development at termination - cast-in straight | AS 3600 `Development reference length` | None |
 | Development at termination - cast-in hook/cog | Independent hook/cog reference and detailing gate | No lap reduction |
 | Development at termination - PIR | AS 3600 reference depth | External product-design warning |
 
@@ -362,11 +362,23 @@ Use:
 
 - `CALCULATION AVAILABLE`, `ADDITIONAL DESIGN REQUIRED`, `LAP SPLICE NOT PERMITTED` or `INVALID INPUT` for primary case status;
 - `AS 3600 REFERENCE` for a valid lap lookup, accompanied by the Cl. 13.2.1(a) project-use note;
-- `REFERENCE CALCULATED` for a valid AS 3600 development reference;
+- `AS 3600 REFERENCE` for a valid cast-in development reference;
 - `REFERENCE UNAVAILABLE - SIGMA REQUIRED` when the reduced-stress method lacks a valid `sigma_st`;
 - `HOOK / COG DETAILING REQUIRED` where standard geometry eligibility is not confirmed.
 
 Do not use a general `PASS`, `PROFIS VERIFIED`, `Saving` or `Depth reduction`. Clear all inapplicable outputs and reset dependent confirmations on invalid input and every case change, except for the explicitly labelled Basic reference retained while Refined-only inputs are incomplete.
+
+Apply this fail-closed invalidation matrix. Lap and development confirmations are independent; a change in one path must not preserve a hidden confirmation for a different candidate:
+
+| Changed basis | Confirmations cleared |
+| --- | --- |
+| Design check or bar size | All lap, development, hook/cog and reduced-length confirmations |
+| Lap member, arrangement, method, material, strength or geometry | `k7`, effective transverse location, candidate-length transverse-reinforcement count and lap pressure basis |
+| Lap Refined input that changes the candidate length | `k7`, candidate-length transverse-reinforcement count and all affected confinement / pressure confirmations |
+| Development installation, anchorage, stress, method, material, strength or geometry | development effective transverse location, candidate-length count, pressure basis, reduced-length Refined basis and hook/cog detailing |
+| Development Refined input that changes the candidate length | candidate-length count, pressure basis, reduced-length Refined basis and all affected confinement confirmations |
+
+Do not clear `k7` merely because the user checks or clears one of its two qualification controls. Do clear both `k7` qualifications when the lap method or a candidate-length input changes. Checking the final reduced-length Refined confirmation must not clear the upstream location, count or pressure evidence that it is confirming. Returning from Basic to Refined must not reuse evidence confirmed for an earlier candidate or hidden mode. Implement this contract in one auditable state function used by the page and by automated tests; do not duplicate reset lists in event handlers.
 
 ### 12. Responsive behaviour
 
@@ -396,7 +408,7 @@ Before the module can move beyond `For Review`, verify:
 14. Same-condition schedule available only for Basic/default `k7`, and unavailable for Refined or qualified `k7`.
 15. Reduction comparison for cases where `k7` governs, the lap lower limit governs and the narrow-gap candidate governs.
 16. Every design-check and installation branch, without an extension summary or interface-design workflow.
-17. Invalid-input and path-switch stale-result clearing, including dependent confirmation resets and the Refined-only Basic reference exception.
+17. Invalid-input and path-switch stale-result clearing, including executable tests for the full confirmation-reset matrix and the Refined-only Basic reference exception.
 18. PIR routes stop at an expressly labelled AS 3600 reference depth and external-design warning; no product, report, site-fit, available-depth or TN08 workflow is shown.
 19. Formula trails match every visible primary result.
 20. Default Basic lap shows only quick setup, `f'c`, `c`, `a`, derived `cd` and the primary result before optional adjustments.

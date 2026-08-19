@@ -91,7 +91,7 @@ This is a section-capacity view, not a full footing or slab design check. It doe
 
 Concrete pad capacity factor `phi` is shown for the current pure-bending quick-screen assumption using AS 3600 Table 2.2.2 `k_uo` notation for N-class reinforcement. Legacy Y bars use a conservative review value until the actual bar grade and ductility equivalence are verified. One-way shear uses the AS 3600 Cl. 8.2.4 simplified method only for normal-weight, non-prestressed concrete without axial tension or torsion, with `f'c <= 65 MPa`, reinforcement `fsy <= 500 MPa` and maximum aggregate size at least 10 mm. Detectable out-of-scope inputs return `Not evaluated`. Under AS 3600 Table 2.2.2, shear uses `phi = 0.75` only with verified minimum Class N fitments and no web-crushing limit; otherwise `phi = 0.70`. This remains a one-way shear screen, not a complete concrete shear design.
 
-### Rebar Connection Check
+### Reinforcement Development & Lap Lengths
 
 The Reinforcement Development & Lap Lengths page is a `For Review` length aid for N10 to N40 500N bars in tension. It separates `Lap splice` from `Development at termination`. Calculations use AS 3600:2018 incorporating Amendments 1 and 2, Section 13, with AS/NZS 4671:2019 nominal bar data. AS 4100, AS 5216, interface design and proprietary product-capacity design remain outside the page.
 
