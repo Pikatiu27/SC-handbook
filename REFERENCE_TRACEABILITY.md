@@ -1422,3 +1422,13 @@ The local follow-up defaults to `Two-way reinforcement` and assumes each mat use
 The visible `Include` and `Auto depth` controls are removed. `None / plain concrete` in the mat bar selector excludes that mat, while `f_sy` is set from the selected N or legacy Y designation and remains editable. Source details, capacity-factor notes and shear-derived values are retained in the folded calculation evidence rather than repeated on the main page. The AS 3600 flexure and one-way shear calculation modules are unchanged by these interface simplifications.
 
 All 40 local regression files and the JavaScript syntax check pass. Browser checks at desktop and 390 x 844 px reproduce the default `phi Muo = 287.1 kN.m` and `phi Vu = 194.2 kN`, show no document-level horizontal overflow or console warning/error, and confirm that a manual bottom-pad layer depth survives a `D_bot = 300 -> 0 -> 300 mm` transition.
+
+## 2026-08-20 Build 0.7.59 Steel Monopole Page Hierarchy
+
+Build 0.7.59 keeps the accepted circular AS 4100 and regular-polygon ASCE/SEI 48-19 calculation paths unchanged. The visible Monopole workflow is reduced to `Input data`, `Derived shaft properties` and `Capacity results`. Geometry, the active profile or physical-section schedule, and material/resistance inputs are peer groups under the single input stage. The result disclosures remain `Moment capacity` and the circular `Compression and bending capacities`; the latter reports section-capacity intercepts only and does not accept actions or calculate utilisation.
+
+The AS 4100 circular fabrication selector is now explicitly labelled `AS 4100 CHS category`. `CF` is identified as the Table 5.2 category adopted for the verified AS/NZS 1163 cold-formed CHS example and is not inferred from ordinary cold-forming of a fabricated plate shell. The page states that AS/NZS 4600 is not evaluated. Polygon combined stress remains `Not evaluated`.
+
+Monopole typography now uses the shared 15 px stage/disclosure, 13 px group/field and 12 px helper/source scale. Background colour is reserved for the geometry-mode selector, editable schedule header, derived shaft summary, expanded capacity disclosure and warning states. Ordinary stage headings and input groups are unfilled; the editable schedule retains its restrained frame.
+
+All 40 local regression files, 20 root JavaScript syntax checks and `git diff --check` pass. Browser checks at 1440 x 1000 px and 390 x 844 px show no document-level horizontal overflow. Circular, polygon, continuous-taper and fabricated-section state changes recalculate correctly; the default circular fabricated-section example retains `Base phi Ms = 407.9 kN.m` and `Base phi Ns = 2,723.3 kN`.
