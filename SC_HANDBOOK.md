@@ -3780,6 +3780,8 @@ Use these checked AS 4100 Table 5.2 CHS limits:
 
 Here `LW` means lightly welded longitudinally and `HW` means heavily welded longitudinally. Do not describe `HW` as helically welded.
 
+Treat `CF` as an AS 4100 Table 5.2 fabrication/residual-stress category, not as an AS/NZS 4600 design method. Preselect `CF` only for the verified AS/NZS 1163 cold-formed CHS product example. Do not infer `CF` solely because a fabricated plate shell is cold-formed during manufacture; require the project-confirmed AS 4100 category for that shell. AS/NZS 4600 section resistance is not implemented or evaluated by this page.
+
 Use `Z_e = min(S, 1.5Z)` for compact sections, the AS 4100 interpolation for non-compact sections, and the lesser applicable AS 4100 CHS expression for slender sections.
 
 Distinguish nominal wall thickness `t_nom` from design wall thickness `t_d`. Default `t_d = t_nom`; when a project deduction applies, allow a separate `t_d` and require `0 < t_d <= t_nom`. Use `t_nom` for the AS/NZS 3678 thickness-dependent `f_y` lookup and theoretical steel mass. Use `t_d` for section properties, slenderness and resistance.

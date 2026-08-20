@@ -243,12 +243,15 @@
   function syncYieldStressInputs(sections) {
     const lookup = plateLookupActive();
     const selection = sectionSelection();
+    const fabricationCategory = $("monopoleFabrication").value;
     $("monopolePlateGradeField").hidden = !lookup;
     const grade = $("monopolePlateGrade").value;
     const materialNote = lookup
-      ? `AS/NZS 3678:2016 Grade ${escapeHtml(grade)}; f<sub>y</sub> uses t<sub>nom</sub>.`
+      ? `AS/NZS 3678:2016 Grade ${escapeHtml(grade)}; f<sub>y</sub> uses t<sub>nom</sub>. Confirm the AS 4100 category; CF is not inferred from plate cold-forming.`
       : selection.form === "circular"
-        ? "Initial circular-section example: Austube C350L0; adopted f<sub>y</sub> = 350 MPa. Verify current inputs and project data."
+        ? fabricationCategory === "CF"
+          ? "Initial example: Austube AS/NZS 1163 C350L0 CHS; CF category; adopted f<sub>y</sub> = 350 MPa. Verify product data."
+          : `Manual f<sub>y</sub>; ${escapeHtml(fabricationCategory)} is a user-selected AS 4100 category. Verify fabrication data.`
         : "Enter the verified product or project f<sub>y</sub>.";
     const sectionNote = selection.form === "polygon"
       ? `ASCE/SEI 48-19 regular ${selection.sideCount}-sided method. Fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5; replace with verified project or manufacturer data. ${polygonBendRadiusSummary(sections)}`
