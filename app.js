@@ -2722,8 +2722,15 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck)
   };
   if (!enabled) {
     $("integritySummaryStatus").textContent = "Not evaluated";
+    $("integrityNetCapacity").textContent = "Not evaluated";
+    $("integrityNetBasis").textContent = "Enable the ply rupture assessment";
+    $("integrityBlockCapacity").textContent = "Not evaluated";
+    $("integrityBlockBasis").textContent = "Enable the ply rupture assessment";
+    $("integrityCheckNote").hidden = true;
     return empty;
   }
+
+  $("integrityCheckNote").hidden = false;
 
   let areas = null;
   let net = null;
@@ -2762,7 +2769,7 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck)
     $("integrityNetBasis").textContent = net.control;
   } catch (error) {
     errors.push(error.message);
-    $("integrityNetCapacity").textContent = "Incomplete";
+    $("integrityNetCapacity").textContent = "Input required";
     $("integrityNetBasis").textContent = "Enter valid Ag, An, fyc and kt";
   }
 
@@ -2779,18 +2786,18 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck)
     $("integrityBlockBasis").textContent = block.control;
   } catch (error) {
     errors.push(error.message);
-    $("integrityBlockCapacity").textContent = "Incomplete";
+    $("integrityBlockCapacity").textContent = "Input required";
     $("integrityBlockBasis").textContent = "Enter valid Agv, Anv, Ant, fyc and kbs";
   }
 
   const complete = Boolean(net && block);
   $("integritySummaryStatus").textContent = complete
-    ? `φNt ${fixed(net.design)} kN · φRbs ${fixed(block.design)} kN`
-    : "Incomplete · enter critical areas";
+    ? "Complete"
+    : "Input required";
   if (complete) {
-    $("integrityCheckNote").textContent = "Review all plausible failure paths and enter the governing path areas for the selected component.";
+    $("integrityCheckNote").textContent = "Review all plausible failure paths for the checked ply.";
   } else {
-    $("integrityCheckNote").textContent = `Complete the manual-area check. ${[...new Set(errors)].join(" ")}`;
+    $("integrityCheckNote").textContent = `Complete the required areas. ${[...new Set(errors)].join(" ")}`;
   }
 
   return {
@@ -2918,6 +2925,20 @@ function calculateBolt() {
   const governingEdgePlyLabel = !separatePlyCheck ? "Both plies identical" : edgeCapacitiesEqual ? "Both plies equal" : governingEdgePly.label;
   const fullBearingGroupCapacity = connectedPlyInputsValid ? count * governingFullPly.bearingFull : null;
   const edgeTearoutGroupCapacity = connectedPlyInputsValid ? count * governingEdgePly.bearingEdge : null;
+  const bearingLimitsEqual = connectedPlyInputsValid
+    && Math.abs(fullBearingGroupCapacity - edgeTearoutGroupCapacity) < 0.05;
+  const fullBearingGoverns = connectedPlyInputsValid
+    && (bearingLimitsEqual || fullBearingGroupCapacity < edgeTearoutGroupCapacity);
+  const edgeBearingGoverns = connectedPlyInputsValid
+    && (bearingLimitsEqual || edgeTearoutGroupCapacity < fullBearingGroupCapacity);
+  const governingBearingGroupCapacity = countValid && connectedPlyInputsValid ? governingPly.groupCapacity : null;
+  const evaluatedConnectionShearValid = groupShearInputsValid && Number.isFinite(governingBearingGroupCapacity);
+  const connectionShearControlsEqual = evaluatedConnectionShearValid
+    && Math.abs(groupShear - governingBearingGroupCapacity) < 0.05;
+  const groupShearGoverns = evaluatedConnectionShearValid
+    && (connectionShearControlsEqual || groupShear < governingBearingGroupCapacity);
+  const connectedPlyBearingGoverns = evaluatedConnectionShearValid
+    && (connectionShearControlsEqual || governingBearingGroupCapacity < groupShear);
   const governingPlyLabel = !separatePlyCheck
     ? "Both plies identical"
     : capacitiesEqual
@@ -3012,7 +3033,7 @@ function calculateBolt() {
     : "Invalid bolt-group input: enter a whole-number bolt count from 1 to 100.";
   $("groupShearCapacity").textContent = groupShearInputsValid ? `${fixed(groupShear)} kN` : "Not evaluated";
   $("groupShearBasis").textContent = groupShearInputsValid
-    ? `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal shear per bolt assumed`
+    ? `${count} bolt${count === 1 ? "" : "s"} · ${nThread} N + ${nShank} X shear planes per bolt · equal shear per bolt assumed${groupShearGoverns ? connectionShearControlsEqual ? " · Governs jointly" : " · Governs" : ""}${detailingCompliant ? "" : " · detailing check failed"}`
     : countValid && krValid
       ? "Enter whole-number N/X shear-plane counts with at least one shear plane."
       : !countValid
@@ -3024,15 +3045,20 @@ function calculateBolt() {
   $("secondPlyControl").textContent = secondPly.valid ? secondPly.controlLabel : "Input required";
   $("bearingGroupCapacity").textContent = countValid && connectedPlyInputsValid ? `${fixed(fullBearingGroupCapacity)} kN` : "Not evaluated";
   $("bearingGroupBasis").textContent = countValid && connectedPlyInputsValid
-    ? `Bolt group · ${governingFullPlyLabel.toLowerCase()} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`
+    ? `${governingFullPlyLabel} · ${fixed(governingFullPly.bearingFull)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}${fullBearingGoverns ? bearingLimitsEqual ? " · Controls bearing jointly" : " · Controls bearing" : ""}`
     : countValid ? "Complete the connected-ply inputs." : "Enter a valid bolt count.";
   $("tearoutGroupCapacity").textContent = countValid && connectedPlyInputsValid ? `${fixed(edgeTearoutGroupCapacity)} kN` : "Not evaluated";
   $("tearoutGroupBasis").textContent = countValid && connectedPlyInputsValid
-    ? `Bolt group · ${governingEdgePlyLabel.toLowerCase()} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}`
+    ? `${governingEdgePlyLabel} · ${fixed(governingEdgePly.bearingEdge)} kN per bolt × ${count} bolt${count === 1 ? "" : "s"}${edgeBearingGoverns ? bearingLimitsEqual ? " · Controls bearing jointly" : " · Controls bearing" : ""}`
     : countValid ? "Complete the connected-ply inputs." : "Enter a valid bolt count.";
-  $("connectedPlyGoverningBasis").textContent = countValid && connectedPlyInputsValid
-    ? `Design bearing capacity governed by ${governingPly.controlLabel.toLowerCase()} · ${governingPlyLabel.toLowerCase()}`
-    : "Connected-ply group capacity not evaluated · input required.";
+  $("governingBearingCapacity").textContent = Number.isFinite(governingBearingGroupCapacity)
+    ? `${fixed(governingBearingGroupCapacity)} kN`
+    : "Not evaluated";
+  $("governingBearingBasis").textContent = Number.isFinite(governingBearingGroupCapacity)
+    ? `${governingPly.controlLabel} controls bearing · ${governingPlyLabel.toLowerCase()}${connectedPlyBearingGoverns ? connectionShearControlsEqual ? " · Governs jointly" : " · Governs" : ""}${detailingCompliant ? "" : " · detailing check failed"}`
+    : countValid ? "Complete the connected-ply inputs" : "Enter a valid bolt count";
+  $("groupShearResultRow").classList.toggle("governing", groupShearGoverns);
+  $("bearingResultRow").classList.toggle("governing", connectedPlyBearingGoverns);
   updateConnectedPlyOutputs(primaryPly);
   updateConnectedPlyOutputs(secondPly, "2");
   const pitchCompliant = connectedPlyInputsValid && pitchPass && maximumPitchPass;
@@ -3081,13 +3107,13 @@ function calculateBolt() {
       });
   const integrityFormulaRows = !integrity.enabled
     ? calculationTraceRow({
-        title: "Optional ply rupture checks",
+        title: "Ply rupture assessment",
         result: "Not evaluated",
         applicability: "Net-section tension uses a straight-section calculation or manual areas; block shear requires manual governing-path areas."
       })
     : !integrity.complete
       ? calculationTraceRow({
-          title: "Optional ply rupture checks",
+          title: "Ply rupture assessment",
           result: "Input required",
           applicability: integrity.error,
           state: "warning"

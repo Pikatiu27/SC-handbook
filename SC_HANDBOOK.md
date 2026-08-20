@@ -2448,16 +2448,25 @@ For the web bolt tab, separate the edge-distance terms visibly:
 
 #### 15.10.1 Detailed Connection Input Structure
 
-Keep the detailed connection input in this order:
+Keep the detailed connection workflow in this order:
 
-1. `Bolt group` - bolt count, shear-plane condition and k<sub>r</sub>.
-2. `Connected plies and detailing` - shared hole geometry and an explicit connected-ply basis.
-3. `Optional ply rupture checks` - selected-ply geometry and material first, then net-section / block-shear calculations and results.
+1. `Connection inputs` - bolt group, hole and spacing, then connected-ply properties.
+2. `Ply rupture assessment` - optional selected-ply geometry and material inputs.
+3. `Connection capacity summary` - bolt-group shear, connected-ply bearing and direct highlighting of the controlling main result.
 4. `TF slip check` - TF only, including separate serviceability slip actions.
+
+Keep all standard connection inputs ahead of the first capacity output. Do not place a bolt-group result between the bolt-group and connected-ply inputs.
+
+Use two visible heading levels inside `Detailed connection checks`:
+
+- Main section headings: `Connection inputs`, `Ply rupture assessment` and `Connection capacity summary`.
+- Group headings: `Bolt group`, `Hole and spacing`, `Connected plies`, `Checked ply inputs` and `Ply rupture`. Use concise bold text with a short accent rule and restrained spacing.
+- Remove explanatory subtitles where the fields already make the scope clear. Retain only source references or scope notes that affect engineering interpretation.
+- Do not repeat `Bolt group` beside `Connection capacity summary`, and do not repeat that ply-rupture capacities are separate when their own result group already establishes that distinction.
 
 The connected-ply section should use one shared detailing row:
 
-- Use the heading `Hole geometry and spacing` with the support line `Hole type and pitch detailing`.
+- Use the heading `Hole and spacing` with the support line `Hole type and pitch`.
 - `p` = centre-to-centre bolt pitch.
 - Disable `p` only for a one-bolt connection.
 - Label `k_r` as `bolted-lap reduction`; do not use `default 1.0` as its visible definition.
@@ -2506,20 +2515,20 @@ Show that concise local-bearing scope note once in the detailed-check workflow. 
 
 #### 15.10.3 Optional Connected-Ply Integrity
 
-Keep this workflow collapsed by default and place it after local hole bearing and detailing. Use the title `Optional ply rupture checks`; use `Not evaluated` as the default summary status. Default the assessment basis to `Not evaluated`.
+Place `Ply rupture assessment` after the standard connection inputs and before the capacity summary. Keep it at the same hierarchy as the input and result sections; do not nest another disclosure inside `Detailed connection checks`. Use `Not evaluated` as the default status and assessment basis.
 
-When `Evaluate ply rupture` is selected:
+When `Evaluate` is selected:
 
 - Check one identified critical connection component at a time. Put all selected-ply inputs first. Keep geometry together in one row as inherited `t_p`, `b`, `n_h` and `d_h`; put editable `f_yc` and inherited `f_uc` in the material row below. Calculations and results follow these inputs.
 - Provide `Straight section` and `Manual areas` net-section bases. For `Straight section`, calculate read-only `Ag = bt_p` and `An = Ag - n_h d_h t_p`; require `b`, use the active-ply `t_p`, and keep `n_h` and `d_h` editable. State that `n_h` counts holes crossed by the critical section, not total bolts.
 - Default `d_h` to `d_f + 2 mm` for the selected standard-hole bolt as a user-editable starting value. Non-standard, slotted, staggered and topology-dependent paths require a project-verified deduction or `Manual areas`.
 - `BOLT-PLY-TENSION-01` - For section tension use AS 4100 Cl. 7.2 and Cl. 9.1.9(b), with the straight-line hole deduction bounded to Cl. 9.1.10: `phi Nt = 0.90 MIN(Ag fyc, 0.85 kt An fuc)`.
 - `BOLT-BLOCK-SHEAR-01` - For block shear use AS 4100 Cl. 9.1.9(e): `phi Rbs = 0.75 MIN(0.6 fuc Anv + kbs fuc Ant, 0.6 fyc Agv + kbs fuc Ant)`.
-- Keep `kbs` as a normal full-width control within one aligned field below the three block-shear area inputs. Allow `kbs = 1.0` for uniform tension stress or `kbs = 0.5` for non-uniform tension stress; do not present it as a free numeric input.
+- Keep `kbs` in the same aligned input row as `Agv`, `Anv` and `Ant`. Allow `kbs = 1.0` for uniform tension stress or `kbs = 0.5` for non-uniform tension stress; do not present it as a free numeric input.
 - Require manual `Agv`, `Anv` and `Ant`. Do not derive block-shear areas from bolt count, pitch, edge distance or a schematic.
 - Treat the entered block-shear areas as the governing path only after the user has reviewed every plausible failure path. State that the check must be repeated for any other critical component.
 - When the manual assessment is complete, display `phi Nt` and `phi Rbs` as capacities only. Do not compare them with project actions or include them in an overall governing ratio.
-- If the manual assessment is selected but incomplete, show `Incomplete` within the collapsed integrity workflow. Do not issue a connection status.
+- If the assessment is selected but incomplete, show `Input required` beside the assessment heading. Do not issue a connection status.
 - State that the assessment covers only the selected component and entered path; it must not imply that every connected component or plausible path has been checked.
 
 Keep plate bending, connection-component compression or buckling, welds, supporting-member local effects, eccentric reactions and geometry-derived failure paths outside this optional check.
@@ -2550,17 +2559,18 @@ Pitch and edge-distance checks are detailing-compliance checks, not design capac
 
 #### 15.10.5 Result Hierarchy
 
-Keep the connected-ply result hierarchy concise:
+Keep the result hierarchy concise:
 
-1. Show `Design shear capacity - bolt group` as one compact result row.
-2. Show one matching compact connected-ply result block with two rows: `Design bearing capacity - full-bearing limit` and `Design bearing capacity - edge-distance limit`. Put `Bolt group` in each supporting basis line.
-3. Give each bearing card its own controlling-ply basis. Follow the two capacities with one concise line identifying the overall governing condition and ply.
-4. Inline detailing statuses at the `p` and active-ply `e` inputs; do not repeat them as a result table.
-5. One collapsed `Optional ply rupture checks` section with two compact result rows when the manual assessment is active.
-6. Single-hole capacities, the entered `a_e` value and equations remain in `Calculation steps`.
-7. Do not show project strength actions or strength utilisation. Show `TF slip utilisation ratio` only for `/TF`.
+1. Use one `Connection capacity summary` after all standard and optional inputs.
+2. Show `Design shear capacity, phi Vf - bolt group` and `Design bearing capacity, phi Vb - bolt group` as matching result rows.
+3. Compare the evaluated bolt-group shear and connected-ply bearing capacities, then highlight the lower existing result row and append `Governs`. Do not add a separate governing-capacity row. If the capacities are equal, highlight both and append `Governs jointly`. Net-section tension and block shear do not participate in this comparison.
+4. Report `Design section tension capacity, phi Nt` and `Design block shear capacity, phi Rbs` separately under `Ply rupture`; show `Not evaluated` until the optional assessment is complete.
+5. Show the full-bearing and edge-distance bearing limits directly below `Design bearing capacity`. Use smaller neutral secondary rows and give each limit its controlling-ply basis. Identify the controlling internal limit with `Controls bearing`; do not highlight these internal rows. Reserve governing highlight and `Governs` for the final comparison between bolt-group shear and connected-ply bearing. Do not place the bearing limits in a separate disclosure.
+6. Keep detailing statuses at the `p` and active-ply `e` inputs; do not repeat them as a result table.
+7. Single-hole capacities, the entered `a_e` value and equations remain in `Calculation steps`.
+8. Do not show project strength actions or strength utilisation. Show `TF slip utilisation ratio` only for `/TF`.
 
-The governing line should identify the governing ply and local condition, for example `Design bearing capacity governed by edge-distance limit - second ply`. If both plies are identical or equal, state that basis. Use `kN per bolt` consistently for both branches; describe the second branch as the AS 4100 Cl. 9.2.2.4 edge-distance bearing limit so that it is not confused with block shear.
+The `Design bearing capacity` basis should identify the controlling internal limit and ply, for example `Edge-distance limit controls bearing - second ply`. If both plies are identical or equal, state that basis. Use `kN per bolt` consistently for both internal limits; describe the second as the AS 4100 Cl. 9.2.2.4 edge-distance bearing limit so that it is not confused with block shear.
 
 #### 15.10.6 Scope Boundary
 
