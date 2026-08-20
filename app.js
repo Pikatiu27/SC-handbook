@@ -9520,40 +9520,34 @@ function updateReoConditionalFields(options) {
   $("reoLapResultSection").hidden = !path.requiresLap;
   $("reoScheduleDetails").hidden = !path.requiresLap || options.method !== "basic" || (options.doubleArea && options.halfSpliced);
   $("reoAnchorageResultSection").hidden = !path.requiresDevelopment;
+  $("reoLapKeyConditions").hidden = !path.requiresLap;
   $("reoAssumptionsDetails").hidden = !path.requiresLap;
   const lapAssumptionFields = [
     "reoMemberRoleField", "reoMemberTypeField", "reoLapTypeField", "reoMethodField",
     "reoCastingPositionField", "reoMaterialConditionField"
   ];
   lapAssumptionFields.forEach(id => { $(id).hidden = !path.requiresLap; });
-  $("reoAssumptionsTitle").textContent = "Common assumptions";
+  $("reoAssumptionsTitle").textContent = "Additional conditions";
 
   const assumptionParts = path.requiresLap
     ? [
-      options.memberRole === "tension-tie" ? "tension-tie" : "not a tension-tie",
-      options.memberType === "narrow" ? "narrow member" : "wide member",
-      options.lapType === "noncontact" ? "non-contact lap" : "contact lap",
-      options.method === "refined" ? "Refined" : "Basic",
-      options.castingPosition === "top" ? "top-cast bar" : "other casting position",
-      options.materialCondition === "standard" ? "normal-weight, uncoated" : $("reoMaterialCondition").selectedOptions[0].textContent.trim()
+      options.memberRole === "tension-tie" ? "Tension-tie" : "Not a tension-tie",
+      options.lapType === "noncontact" ? "Non-contact lap" : "Contact lap",
+      options.method === "refined" ? "Refined method" : "Basic method",
+      $("reoMaterialCondition").selectedOptions[0].textContent.trim()
     ]
     : [];
   $("reoAssumptionSummary").textContent = assumptionParts.join(" · ");
   if (pirOrigin && routeChanged) $("reoExistingMethod").value = "basic";
   $("reoAnchorageBasisField").hidden = false;
   $("reoExistingMethodField").hidden = pirOrigin;
-  $("reoAnchorageStressNote").hidden = false;
-  $("reoAnchorageStressNote").innerHTML = "Full yield is the default. A lower project stress retains the 12d<sub>b</sub> minimum.";
-  $("reoReferenceBasisHeading").textContent = pirOrigin ? "AS 3600 reference basis" : "Cast-in development basis";
-  $("reoReferenceBasisHelp").textContent = pirOrigin
-    ? "Select the stress basis for the AS 3600 reference."
-    : "Select the anchorage, stress and development basis.";
-  $("reoExistingCastingPositionLabel").textContent = pirOrigin ? "AS 3600 casting-position assumption" : "Casting position";
-  $("reoExistingMaterialConditionLabel").textContent = pirOrigin ? "AS 3600 material condition" : "Material condition";
-  $("reoAnchoragePathTitle").textContent = pirOrigin ? "Post-installed bar termination" : "Development at bar termination";
-  $("reoAnchoragePathNote").textContent = pirOrigin
-    ? "Reference calculation only."
-    : "Straight, hook or cog development.";
+  $("reoAnchorageStressNote").hidden = !projectStressSelected;
+  $("reoAnchorageStressNote").innerHTML = "Project stress basis; 12d<sub>b</sub> minimum retained.";
+  $("reoReferenceBasisHeading").textContent = pirOrigin ? "Reference basis" : "Anchorage basis";
+  $("reoConcreteConditionsHeading").textContent = pirOrigin ? "Existing concrete" : "Concrete and reinforcement";
+  $("reoExistingCastingPositionLabel").textContent = "Casting position";
+  $("reoExistingMaterialConditionLabel").textContent = "Material condition";
+  $("reoAnchoragePathTitle").textContent = pirOrigin ? "PIR development reference" : "Cast-in termination";
   $("reoCalculationDetailsSummary").textContent = path.requiresLap
     ? "Factors, clauses and Basic schedule."
     : "Factors and clauses.";
@@ -9592,13 +9586,13 @@ function updateReoConditionalFields(options) {
   const developmentOptions = readReoDevelopmentOptions();
   const hookedOrCoggedDevelopment = developmentOptions.barOrigin !== "pir"
     && ["hook", "cog"].includes(developmentOptions.terminationType);
-  $("reoExistingGeometryHelp").innerHTML = hookedOrCoggedDevelopment
+  $("reoExistingCdBasis").innerHTML = hookedOrCoggedDevelopment
     ? developmentOptions.memberType === "narrow"
-      ? "Hook / cog: c<sub>d</sub> = min(a/2, c<sub>1</sub>). Clear cover remains a detailing check."
-      : "Hook / cog: c<sub>d</sub> = a/2. Clear cover remains a detailing check."
+      ? "c<sub>d</sub> = min(a/2, c<sub>1</sub>); cover checked separately"
+      : "c<sub>d</sub> = a/2; cover checked separately"
     : developmentOptions.memberType === "narrow"
-      ? "Straight bar: c<sub>d</sub> = min(a/2, c<sub>1</sub>, c). Use the actual bar position."
-      : "Straight bar: c<sub>d</sub> = min(a/2, c). Use the actual bar position.";
+      ? "c<sub>d</sub> = min(a/2, c<sub>1</sub>, c)"
+      : "c<sub>d</sub> = min(a/2, c)";
   $("reoExistingC1Field").hidden = developmentOptions.memberType !== "narrow";
   $("reoExistingGeometryFields").classList.toggle("is-narrow", developmentOptions.memberType === "narrow");
   $("reoExistingRefinedDetails").hidden = !path.requiresDevelopment || developmentOptions.method !== "refined";
@@ -9648,14 +9642,14 @@ function updateReoReductionAssessment(options, result, basicReference) {
   const qualificationCount = Number(options.doubleArea) + Number(options.halfSpliced);
 
   if (qualificationCount === 2) {
-    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.00 &middot; adopted reduction ${displayFixed(reduction, 0)} mm`;
+    $("reoK7SummaryValue").innerHTML = `Reduced lap factor &middot; k<sub>7</sub> = 1.00 &middot; ${displayFixed(reduction, 0)} mm shorter`;
   } else if (qualificationCount === 1) {
-    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; one condition pending &middot; potential ${displayFixed(reduction, 0)} mm`;
+    $("reoK7SummaryValue").innerHTML = `No reduction &middot; one condition remains &middot; potential ${displayFixed(reduction, 0)} mm`;
   } else {
-    $("reoK7SummaryValue").innerHTML = `k<sub>7</sub> = 1.25 &middot; potential reduction ${displayFixed(reduction, 0)} mm`;
+    $("reoK7SummaryValue").innerHTML = `No reduction &middot; k<sub>7</sub> = 1.25 &middot; potential ${displayFixed(reduction, 0)} mm`;
   }
 
-  $("reoK7ReductionNote").textContent = "Both conditions are required for k7 = 1.00.";
+  $("reoK7ReductionNote").textContent = "Confirm both conditions to use k7 = 1.00.";
 }
 function updateReoSchedule(options, selectedDesignation) {
   const diameterSpecificBasis = options.method === "refined" || options.k7Basis === "qualified";
@@ -9985,9 +9979,9 @@ function updateReoAnchorage(options, selectedBar, developmentResult, development
     $("reoAnchorageResultStatus").textContent = !anchorage.benchmarkAvailable
       ? "INPUT REQUIRED"
       : anchorage.actualStressApplied
-        ? "STRESS-BASED REFERENCE"
-        : "FULL-YIELD REFERENCE";
-    $("reoRequiredEmbedmentLabel").innerHTML = "AS 3600 reference depth <b>L<sub>e,AS</sub></b>";
+        ? "PROJECT STRESS"
+        : "FULL YIELD";
+    $("reoRequiredEmbedmentLabel").innerHTML = "Reference depth <b>L<sub>e,AS</sub></b>";
   } else if (anchorage.terminationDetailingConfirmationMissing) {
     $("reoAnchorageResultStatus").textContent = `${anchorage.terminationType.toUpperCase()} DETAILING REQUIRED`;
     $("reoRequiredEmbedmentLabel").innerHTML = "Anchorage reference <b>L<sub>e,AS</sub></b>";
@@ -9998,7 +9992,7 @@ function updateReoAnchorage(options, selectedBar, developmentResult, development
     $("reoAnchorageResultStatus").textContent = "REVIEW REQUIRED";
     $("reoRequiredEmbedmentLabel").innerHTML = "Development reference <b>L<sub>sy.t</sub></b>";
   } else {
-    $("reoAnchorageResultStatus").textContent = "AS 3600 REFERENCE";
+    $("reoAnchorageResultStatus").textContent = anchorage.actualStressApplied ? "PROJECT STRESS" : "FULL YIELD";
     $("reoRequiredEmbedmentLabel").innerHTML = anchorage.terminationFactor === 0.5
       ? `Standard ${anchorage.terminationType} anchorage <b>L<sub>e,AS</sub></b>`
       : "Development reference length <b>L<sub>sy.t</sub></b>";
@@ -10020,12 +10014,12 @@ function updateReoAnchorage(options, selectedBar, developmentResult, development
     basisNotes.push(`Standard ${anchorage.terminationType} anchorage confirmed; no lap-splice reduction applies.`);
   }
   $("reoSaving").textContent = pirOrigin
-    ? (anchorage.actualStressApplied ? "Stress-based AS 3600 reference depth." : "Full-yield AS 3600 reference depth.")
+    ? (anchorage.actualStressApplied ? "Project-stress basis." : "Full-yield basis.")
     : anchorage.terminationFactor === 0.5
-      ? `AS 3600 standard ${anchorage.terminationType} end anchorage.`
+      ? `Standard ${anchorage.terminationType} end anchorage.`
       : anchorage.actualStressApplied
-        ? "Project-stress AS 3600 development reference."
-        : "AS 3600 straight development reference.";
+        ? "Project-stress basis."
+        : "Straight development basis.";
   if (refinedFallback) basisNotes.unshift(`Refined result unavailable; Basic reference retained. ${developmentResult?.issues?.join(" ") || "Complete the highlighted Refined input."}`);
   const notes = [...basisNotes, ...(adoptedDevelopmentResult?.notices || []), ...(anchorage.issues || [])];
   notes.push(pirOrigin
