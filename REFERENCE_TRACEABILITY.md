@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-08-11
+Last updated: 2026-08-20
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -1412,3 +1412,25 @@ Build 0.7.57 aligns the Concrete Pad Section page with the canonical outline wit
 Visible wording now uses plain engineering terms including `Two-way reinforcement`, `Direction to check`, `perpendicular bars`, `inner layer` and `outer layer`. N-bar calculation areas are aligned with AS/NZS 4671:2019 Table 7.5(A), including N10 = 78.5 mm2, N36 = 1020 mm2 and N40 = 1260 mm2. InfraBuild remains the supporting source for current product availability and the N40 on-request status; supplier mass and ordering tables do not replace the Standard calculation areas.
 
 The full 40-file Node regression suite, JavaScript syntax check and `git diff --check` pass after integration with the latest `main`. Local browser verification reproduces the default `phi Muo = 287.1 kN.m` and `phi Vu = 194.2 kN`, with no console warnings or errors. A narrow-viewport footer nowrap rule was removed so the public build line wraps instead of creating document-level horizontal overflow.
+
+## 2026-08-20 Build 0.7.58 Concrete Pad One-Metre Strip Simplification
+
+The local Concrete Pad page fixes `b = 1000 mm` and removes the X/Y reinforcement selector and duplicated hidden direction state. The entered reinforcement is the longitudinal reinforcement parallel to bending for the one-metre strip. Where the other pad direction differs, the inputs are changed and the check is repeated; the page does not compare or declare a governing direction without compatible design actions.
+
+The local follow-up defaults to `Two-way reinforcement` and assumes each mat uses one bar size in both directions. Automatic depth therefore uses `c_nom + 1.5d_b`; the one-way option uses `c_nom + 0.5d_b`. The perpendicular reinforcement area is not included in flexure, `Ast`, `d` or `dv`. Each displayed depth remains directly editable; a compact `Auto` action appears only after an override and restores the derived value.
+
+The visible `Include` and `Auto depth` controls are removed. `None / plain concrete` in the mat bar selector excludes that mat, while `f_sy` is set from the selected N or legacy Y designation and remains editable. Source details, capacity-factor notes and shear-derived values are retained in the folded calculation evidence rather than repeated on the main page. The AS 3600 flexure and one-way shear calculation modules are unchanged by these interface simplifications.
+
+All 40 local regression files and the JavaScript syntax check pass. Browser checks at desktop and 390 x 844 px reproduce the default `phi Muo = 287.1 kN.m` and `phi Vu = 194.2 kN`, show no document-level horizontal overflow or console warning/error, and confirm that a manual bottom-pad layer depth survives a `D_bot = 300 -> 0 -> 300 mm` transition.
+
+## 2026-08-20 Build 0.7.59 Steel Monopole Page Hierarchy
+
+Build 0.7.59 keeps the accepted circular AS 4100 and regular-polygon ASCE/SEI 48-19 calculation paths unchanged. The visible Monopole workflow is reduced to `Input data`, `Derived shaft properties` and `Capacity results`. Geometry, the active profile or physical-section schedule, and material/resistance inputs are peer groups under the single input stage. The result disclosures remain `Moment capacity` and the circular `Compression and bending capacities`; the latter reports section-capacity intercepts only and does not accept actions or calculate utilisation.
+
+The AS 4100 circular fabrication selector is now explicitly labelled `AS 4100 CHS category`. `CF` is identified as the Table 5.2 category adopted for the verified AS/NZS 1163 cold-formed CHS example and is not inferred from ordinary cold-forming of a fabricated plate shell. The page states that AS/NZS 4600 is not evaluated. Polygon combined stress remains `Not evaluated`.
+
+Monopole typography now uses the shared 15 px stage/disclosure, 13 px group/field and 12 px helper/source scale. Background colour is reserved for the geometry-mode selector, editable schedule header, derived shaft summary, expanded capacity disclosure and warning states. Ordinary stage headings and input groups are unfilled; the editable schedule retains its restrained frame.
+
+All 40 local regression files, 20 root JavaScript syntax checks and `git diff --check` pass. Browser checks at 1440 x 1000 px and 390 x 844 px show no document-level horizontal overflow. Circular, polygon, continuous-taper and fabricated-section state changes recalculate correctly; the default circular fabricated-section example retains `Base phi Ms = 407.9 kN.m` and `Base phi Ns = 2,723.3 kN`.
+
+The implementation release was committed as `fac0d34` and pushed by fast-forward to remote `main`. GitHub Pages workflow `32375114084` completed verification and deployment successfully. A cache-busted public browser check returned Build 0.7.59 with `styles.css?v=20260820monopolelayout1` and `monopole-app.js?v=20260820monopolelayout1`, reproduced the two default base capacities, and showed no document-level horizontal overflow at desktop or 390 x 844 px.
