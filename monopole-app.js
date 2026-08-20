@@ -76,10 +76,10 @@
     $("monopoleCombinedCapacityContent").hidden = polygon;
     $("monopoleCombinedUnavailable").hidden = !polygon;
     $("monopoleMomentBasis").innerHTML = `0.5 m stations &middot; ${resistanceBasisHtml()}`;
-    $("monopoleCombinedCapacityTitle").textContent = polygon ? "Combined polygon stress" : "Section capacity intercepts";
+    $("monopoleCombinedCapacityTitle").textContent = polygon ? "Combined polygon stress" : "Compression and bending capacities";
     $("monopoleCombinedCapacityBasis").innerHTML = polygon
       ? "ASCE/SEI 48-19 &middot; combined polygon stress not evaluated"
-      : "Compression and bending &middot; 0.5 m stations &middot; AS 4100 Cl. 5.2; AS 4100 Cl. 6.2; AS 4100 Cl. 8.3.2";
+      : "Design intercepts &middot; 0.5 m stations &middot; AS 4100:2020";
     if (polygon) $("monopoleCombinedCapacitySummary").textContent = "Not evaluated";
     $("monopoleStationResistanceHeading").innerHTML = polygon ? "M" : "&phi;M<sub>s</sub>";
     $("monopoleChart").setAttribute(
@@ -317,7 +317,7 @@
     $("monopoleFabricationField").hidden = polygon;
     $("monopoleScheduleBasis").textContent = polygon
       ? "Physical sections, base to top. Enter project or manufacturer geometry."
-      : "Physical sections, base to top. Default: Austube 508.0 × 6.4 CHS C350L0.";
+      : "Base to top. Default: Austube 508.0 × 6.4 CHS C350L0.";
     document.querySelector(".monopole-dimension-bottom").innerHTML = polygon
       ? "Bottom outside across-flats, D<sub>o,b</sub>"
       : "Bottom outside diameter, D<sub>b</sub>";

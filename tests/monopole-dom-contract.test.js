@@ -27,8 +27,8 @@ assert.match(app, /if \(open\) window\.requestAnimationFrame\(centreActiveToolNa
 assert.match(html, /data-tool="monopole"[^>]*>Steel Monopole Section Capacity</);
 assert.match(panel, /data-monopole-mode="overall"[^>]*>Continuous taper<\/button>/);
 assert.match(panel, /data-monopole-mode="schedule"[^>]*>Fabricated sections<\/button>/);
-assert.match(panel, /<b>Continuous taper geometry<\/b>/);
-assert.match(panel, /<b>Fabricated section schedule<\/b>/);
+assert.match(panel, /<b>Profile geometry<\/b>/);
+assert.match(panel, /<b>Physical section schedule<\/b>/);
 assert.doesNotMatch(panel, />Overall profile<\/button>/i);
 assert.doesNotMatch(panel, />Section schedule<\/button>/i);
 assert.match(html, /id="monopoleStationBody"/);
@@ -67,26 +67,29 @@ assert.match(styles, /\.monopole-schedule-panel\s*\{[^}]*padding:\s*12px;[^}]*bo
 assert.match(styles, /#monopoleOverallInputs:not\(\[hidden\]\)\s*\{[^}]*display:\s*grid;[^}]*gap:\s*14px;/);
 assert.match(styles, /\.monopole-thickness-table\s*\{[^}]*min-width:\s*590px;/);
 assert.match(styles, /\.monopole-card \.table-scroll\s*\{[^}]*max-width:\s*100%;[^}]*overflow-x:\s*auto;[^}]*contain:\s*inline-size paint;/);
-assert.match(panel, /Shaft properties/);
+assert.match(panel, /Derived shaft properties/);
 assert.match(panel, /physical shell geometry/);
 assert.match(panel, /section only/);
-assert.match(panel, /id="monopoleSectionDefinitionHeading" class="monopole-stage-heading">[\s\S]*?<b>Section definition<\/b>/);
-assert.match(panel, /id="monopoleMaterialHeading" class="monopole-stage-heading">[\s\S]*?<b>Material and fabrication<\/b>/);
-assert.match(panel, /id="monopoleCapacityHeading" class="monopole-stage-heading">[\s\S]*?<b>Section capacity<\/b>/);
-assert.doesNotMatch(panel, /<b>Input data<\/b>/);
+assert.match(panel, /id="monopoleSectionDefinitionHeading" class="monopole-stage-heading">[\s\S]*?<b>Input data<\/b>/);
+assert.match(panel, /<b>Geometry<\/b><small>Section form and profile definition<\/small>/);
+assert.match(panel, /id="monopoleMaterialHeading" class="input-group-heading"><b>Material and resistance basis<\/b>/);
+assert.match(panel, /id="monopoleCapacityHeading" class="monopole-stage-heading">[\s\S]*?<b>Capacity results<\/b>/);
+assert.doesNotMatch(panel, /<b>Section definition<\/b>|<b>Section form<\/b>|<b>Material properties<\/b>|<b>Section capacity<\/b>/);
 assert.match(panel, /id="monopoleMomentSection"[\s\S]*?<b>Moment capacity<\/b>/);
-assert.match(panel, /id="monopoleCombinedSection"[\s\S]*?<b id="monopoleCombinedCapacityTitle">Section capacity intercepts<\/b>/);
+assert.match(panel, /id="monopoleCombinedSection"[\s\S]*?<b id="monopoleCombinedCapacityTitle">Compression and bending capacities<\/b>/);
 assert.doesNotMatch(panel, /monopole-stage-index|>01<|>02<|>03</);
 assert.match(panel, /0\.5 m stations/);
 assert.match(panel, /id="monopoleCombinedSection"/);
 assert.match(panel, /Compression and bending/);
-assert.match(panel, /AS 4100 Cl\. 5\.2; AS 4100 Cl\. 6\.2; AS 4100 Cl\. 8\.3\.2/);
+assert.match(panel, /AS 4100 Cl\. 5\.2/);
+assert.match(panel, /AS 4100 Cl\. 6\.2/);
+assert.match(panel, /AS 4100 Cl\. 8\.3\.2/);
 assert.match(panel, /id="monopoleCombinedCapacitySummary"/);
 assert.match(panel, /id="monopoleCombinedCapacityTitle"/);
 assert.match(panel, /id="monopoleCombinedCapacityBasis"/);
 assert.match(panel, /id="monopoleCombinedCapacityBody"/);
 assert.match(panel, /id="monopoleCombinedCapacityCount"/);
-assert.match(panel, /Section capacity intercepts/);
+assert.match(panel, /Compression and bending capacities/);
 assert.match(panel, /design section capacity intercepts used in the AS 4100 Cl\. 8\.3\.2 interaction expression/);
 assert.match(panel, /id="monopoleCombinedCapacityCount">0 rows &middot; top to base/);
 assert.match(panel, /Combined polygon stress is not evaluated/);
@@ -120,7 +123,7 @@ assert.match(monopoleApp, /effectiveBendRadius: Math\.min\(section\.insideBendRa
 assert.match(monopoleApp, /r<sub>i<\/sub> = .* &times; .* = .* mm; BR = min/);
 assert.match(panel, /Actual r<sub>i<\/sub> is derived by section/);
 assert.match(panel, /Combined polygon stress is not evaluated/);
-assert.match(monopoleApp, /monopoleCombinedCapacityTitle"\)\.textContent = polygon \? "Combined polygon stress" : "Section capacity intercepts"/);
+assert.match(monopoleApp, /monopoleCombinedCapacityTitle"\)\.textContent = polygon \? "Combined polygon stress" : "Compression and bending capacities"/);
 assert.match(monopoleApp, /monopoleCombinedCapacitySummary"\)\.textContent = "Not evaluated"/);
 assert.doesNotMatch(monopoleApp, /Not checked/);
 assert.match(monopoleApp, /ASCE\/SEI 48-19 &middot; combined polygon stress not evaluated/);
@@ -197,27 +200,25 @@ assert.match(panel, /largest circle inscribed within the outside profiles/i);
 assert.doesNotMatch(panel, /D<sub>i,max<\/sub>/);
 
 const sectionDefinitionPosition = panel.indexOf('id="monopoleSectionDefinitionHeading"');
-const sectionFormPosition = panel.indexOf("<b>Section form</b>");
+const geometryPosition = panel.indexOf("<b>Geometry</b>");
 const overallPosition = panel.indexOf('id="monopoleOverallInputs"');
 const schedulePosition = panel.indexOf('id="monopoleScheduleInputs"');
 const materialHeadingPosition = panel.indexOf('id="monopoleMaterialHeading"');
-const materialPosition = panel.indexOf("<b>Material properties</b>");
 const shaftPosition = panel.indexOf("monopole-shaft-summary");
 const capacityHeadingPosition = panel.indexOf('id="monopoleCapacityHeading"');
 const momentPosition = panel.indexOf('id="monopoleMomentSection"');
 const combinedPosition = panel.indexOf('id="monopoleCombinedSection"');
 assert.ok(
   sectionDefinitionPosition >= 0
-    && sectionDefinitionPosition < sectionFormPosition
-    && sectionFormPosition < overallPosition
+    && sectionDefinitionPosition < geometryPosition
+    && geometryPosition < overallPosition
     && overallPosition < schedulePosition
     && schedulePosition < materialHeadingPosition
-    && materialHeadingPosition < materialPosition
-    && materialPosition < shaftPosition
+    && materialHeadingPosition < shaftPosition
     && shaftPosition < capacityHeadingPosition
     && capacityHeadingPosition < momentPosition
     && momentPosition < combinedPosition,
-  "Visible monopole order must be section definition, material and fabrication, shaft properties, then section capacity."
+  "Visible monopole order must be input data, derived shaft properties, then capacity results."
 );
 
 const capacityScript = html.indexOf('src="monopole-capacity.js');
@@ -241,10 +242,14 @@ assert.match(monopoleApp, /const width = compact \? 360 : 840/);
 assert.doesNotMatch(styles, /\.monopole-chart svg\s*\{[^}]*width:\s*640px/);
 assert.doesNotMatch(panel, /class="monopole-check-metrics"/);
 assert.match(styles, /\.monopole-stage-heading\s*\{/);
-assert.match(styles, /\.monopole-stage-heading b\s*\{[^}]*font-size:\s*18px;/);
-assert.match(styles, /#monopolePanel \.monopole-moment-section > summary b, #monopolePanel \.monopole-combined-section > summary b\s*\{[^}]*font-size:\s*18px;/);
-assert.match(styles, /#monopolePanel \.monopole-moment-section > summary > strong, #monopolePanel \.monopole-combined-section > summary > strong\s*\{[^}]*font-size:\s*15px;/);
-assert.match(styles, /#monopolePanel \.input-group-heading b,[^}]*font-size:\s*14px;/);
+assert.match(styles, /\.monopole-stage-heading b\s*\{[^}]*font-size:\s*var\(--fs-md\);/);
+assert.match(styles, /#monopolePanel \.monopole-moment-section > summary b, #monopolePanel \.monopole-combined-section > summary b\s*\{[^}]*font-size:\s*var\(--fs-md\);/);
+assert.match(styles, /#monopolePanel \.monopole-moment-section > summary > strong, #monopolePanel \.monopole-combined-section > summary > strong\s*\{[^}]*font-size:\s*var\(--fs-sm\);/);
+assert.match(styles, /#monopolePanel \.input-group-heading b,[^}]*font-size:\s*var\(--fs-sm\);/);
+assert.match(styles, /\.monopole-section-form-group, \.monopole-material-group\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;/);
+assert.match(styles, /\.monopole-shaft-summary\s*\{[^}]*background:\s*var\(--monopole-soft\);/);
+assert.match(styles, /\.monopole-design-thickness-toggle small\s*\{[^}]*font-size:\s*var\(--fs-xs\);/);
+assert.doesNotMatch(styles, /\.monopole-stage-heading b\s*\{[^}]*font-size:\s*(?:17|18)px;/);
 assert.match(styles, /\.monopole-combined-capacity-table\s*\{[^}]*min-width:\s*780px;/);
 assert.match(styles, /\.monopole-moment-section > summary, \.monopole-combined-section > summary\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0, 1fr\) 24px;/);
 assert.match(monopoleApp, /Design section moment capacity, &phi;M&#x209B; \(kN&middot;m\)/);

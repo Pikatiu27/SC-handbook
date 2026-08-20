@@ -3662,6 +3662,10 @@ Do not show design actions, demand, utilisation, `PASS`, `FAIL`, a governing loa
 
 The ASCE/SEI 48-19 polygon path is a separate foreign-standard `For Review` method. User-provided readable excerpts cover Chapter 5 pp. 9-11, Appendix A p. 59, Appendix B pp. 61-62 and Commentary C5 pp. 33-37. These excerpts support the displayed pure-bending formula path, but they do not establish complete ASCE 48 compliance, Australian adoption, load basis, fabrication acceptance or whole-member design.
 
+Keep the visible page order as `Input data`, `Derived shaft properties`, `Capacity results`, then folded calculation details and sources / limitations. Within `Input data`, use three peer groups only: `Geometry`, the active profile or physical-section schedule, and `Material and resistance basis`. Do not retain duplicate stage/group pairs such as `Section definition` plus `Section form`, or `Material and fabrication` plus `Material properties`. Use the canonical shared typography tokens: `--fs-md` for stage and result-disclosure headings, `--fs-sm` for input-group headings, labels, values and compact result labels, and `--fs-xs` for helper, source and limitation text. Do not use Monopole-specific 17 px or 18 px heading sizes.
+
+Use background colour only where it communicates function or state: the geometry-mode segmented control, manual/automatic input state, schedule table headers, the derived shaft-property summary, an expanded capacity disclosure and warning/unavailable states. Stage headings and ordinary Geometry or Material groups remain unfilled and use spacing or one subtle divider. A physical-section or wall-thickness schedule may retain a restrained frame because it is a distinct editable table. Do not nest decorative cards inside the main calculator card.
+
 #### 15.17A.1 Supported Geometry and Input Modes
 
 Support two explicit geometry modes:
@@ -3734,7 +3738,7 @@ The station table is ordered from pole top to pole base so `z = 0` is the final 
 
 Use a compact `Moment capacity` disclosure as the primary result. Its summary reports the governing evaluated base-station value: `Base phi Ms` for the AS 4100 circular path or `Base M` for the ASCE polygon path. At an exact base boundary, evaluate every active section state and report the lower available value. If any station is outside the implemented method range, report `Moment profile not checked` rather than presenting an isolated base value. Retain every regular and exact boundary result in the top-to-base station table; the station set is not a continuous numerical optimisation.
 
-For circular sections, add a separate `Section capacity intercepts` disclosure using the same station set and top-to-base order. At every active shell state report `phi Ns`, `phi Ms` and `kf`; these are the design section capacity intercepts used in the AS 4100 Cl. 8.3.2 interaction expression, not a scalar combined-capacity result. The summary reports the lower evaluated base `phi Ns` and base `phi Ms`. Preserve both adjacent states at an exact thickness or section boundary. Do not provide action inputs or calculate an interaction ratio.
+For circular sections, add a separate `Compression and bending capacities` disclosure using the same station set and top-to-base order. At every active shell state report `phi Ns`, `phi Ms` and `kf`; these are the design section capacity intercepts used in the AS 4100 Cl. 8.3.2 interaction expression, not a scalar combined-capacity result. The summary reports the lower evaluated base `phi Ns` and base `phi Ms`. Preserve both adjacent states at an exact thickness or section boundary. Do not provide action inputs or calculate an interaction ratio.
 
 #### 15.17A.4 Source and Method Isolation
 
@@ -3823,7 +3827,7 @@ Use `phi = 0.90` for the AS 4100 section capacities. Determine `kf = Ae/Ag` in a
 
 The available ASCE/SEI 48-19 excerpts include axial-plus-bending normal stress in Cl. 5.2.6 Eqs. (5.2-20) and (5.2-21). This is a point-stress check, not a generic capacity-ratio equation. A polygon implementation therefore requires signed `Mx*` and `My*`, a visible section-axis and polygon-orientation convention, and evaluation at every critical perimeter point. With shear and torsion excluded, evaluate the signed normal stress from `P/A + Mx cy/Ix + My cx/Iy`; compare tensile points with the applicable tensile limit and compressive points with the applicable `Fa` branch. Do not reduce this to one scalar `M*` or use `M = Fa Zmin` once axial force is present.
 
-For polygon forms, change the third disclosure title from `Section capacity intercepts` to `Combined polygon stress` and show `Not evaluated`. Keep that state until the axis convention, pointwise geometry routine, ASCE material acceptance and independent sign/rotation tests are complete. Retain its foreign-standard `For Review` status; the supplied excerpts do not establish Australian adoption or complete ASCE 48 compliance.
+For polygon forms, change the circular disclosure title from `Compression and bending capacities` to `Combined polygon stress` and show `Not evaluated`. Keep that state until the axis convention, pointwise geometry routine, ASCE material acceptance and independent sign/rotation tests are complete. Retain its foreign-standard `For Review` status; the supplied excerpts do not establish Australian adoption or complete ASCE 48 compliance.
 
 Retain traceability and independent tests for the `kf` branches, the two capacity intercepts, station order and thickness transitions. Polygon combined stress remains unavailable.
 
@@ -3906,13 +3910,13 @@ Report `Total steel mass`, `Self-weight`, `Assembled centre of gravity`, and opt
 
 #### 15.17A.10 Page Structure and Figure Rules
 
-Use the shared static-app tab system, not a standalone page or framework rewrite. Use three aligned primary headings without numeric stage badges:
+Use the shared static-app tab system, not a standalone page or framework rewrite. Use this compact hierarchy without numeric stage badges:
 
-- `Section definition`: geometry mode, section form and either the continuous-taper definition or fabricated-section schedule;
-- `Material and fabrication`: yield-strength basis, fabrication category, design-thickness option and source-status note;
-- `Section capacity`: two adjacent disclosures for `Moment capacity` and the circular `Section capacity intercepts` or polygon `Combined polygon stress` state.
+- `Input data`: one Geometry group, the active profile definition or physical-section schedule, then one Material and resistance basis group;
+- `Derived shaft properties`: one compact read-only summary for mass, self-weight and centre of gravity;
+- `Capacity results`: two adjacent disclosures for `Moment capacity` and the circular `Compression and bending capacities` or polygon `Combined polygon stress` state.
 
-Place the compact `Shaft properties` summary between material inputs and section capacity. It reports mass, self-weight, assembled centre of gravity and installed height; it is not a capacity result. Place prescribed slip-overlap screening after section capacity, followed by calculation details, sources and limitations. Do not use a generic `Results` heading or a result-card grid.
+Place the compact `Derived shaft properties` summary between material inputs and capacity results. It reports mass, self-weight, assembled centre of gravity and installed height; it is not a capacity result. Place prescribed slip-overlap screening after capacity results, followed by calculation details, sources and limitations. Do not use a generic `Results` heading or a result-card grid.
 Keep both capacity disclosures collapsed by default so their base summaries can be compared directly. Each disclosure uses the common 0.5 m station basis. Hide the prescribed slip-overlap section when no positive overlap is entered.
 
 Initial values are visible, editable examples rather than hidden design assumptions. The initial fabricated circular row uses the cited Austube 508.0 x 6.4 CHS C350L0 geometry and `f_y = 350 MPa`; `CF` is the editable initial fabrication category. Plate grade 350 is the initial value when the plate lookup is selected. Design thickness defaults to `t_d = t_nom` and may be enabled as a section-by-section project input. For regular polygons, `r_i/t_nom = 1.5` is an editable fabrication estimate, not a Standard or product value. New section identifiers and zero overlap remain editable.
@@ -3926,9 +3930,9 @@ The station table is collapsed by default and shows its row count in the summary
 
 Keep the chart wider than it is tall so the profile remains an engineering plot rather than a dominant page illustration. On phone layouts, place the method or scope note below the section heading, keep the physical-section identifier visible while the schedule scrolls horizontally, and render a compact chart viewBox that fits the content width without horizontal chart scrolling. Technical tables may scroll within their own contained regions; no technical region may create page-level horizontal overflow.
 
-Limit common material and overall-profile input groups to three columns on wide desktop, two columns on narrow desktop and one column on phone layouts. Keep both groups inside the same bordered input-group treatment. Do not use automatic column expansion that compresses long engineering labels or selected material and fabrication values.
+Limit common material and overall-profile input groups to three columns on wide desktop, two columns on narrow desktop and one column on phone layouts. Keep ordinary input groups unfilled and unframed; reserve the restrained border for the editable schedule. Do not use automatic column expansion that compresses long engineering labels or selected material and fabrication values.
 
-Use one spacing layer between monopole workflow sections; do not combine lookup-card grid gaps with child margins. Keep `Section form`, the active geometry definition and `Material properties` as visually equivalent engineering input bands beneath their parent headings. On desktop, use bounded control tracks that stop expanding once labels and selected values are comfortably readable. Place the polygon method note with `Section form`, the material provenance note with `Material properties`, and keep the design-thickness override in the active material-control grid instead of forcing an otherwise empty row. At every viewport, constrain schedule, station and overlap tables to their own paint-contained horizontal-scroll regions so a table cannot create page-level overflow. On phone, stack the same controls and notes in the same engineering order.
+Use one spacing layer between monopole workflow sections; do not combine lookup-card grid gaps with child margins. Keep Geometry, the active profile definition and Material and resistance basis as peer engineering groups under `Input data`; do not add a second stage heading for material. On desktop, use bounded control tracks that stop expanding once labels and selected values are comfortably readable. Place the polygon method note with Geometry, the material provenance note with Material and resistance basis, and keep the design-thickness override in the active material-control grid instead of forcing an otherwise empty row. At every viewport, constrain schedule, station and overlap tables to their own paint-contained horizontal-scroll regions so a table cannot create page-level overflow. On phone, stack the same controls and notes in the same engineering order.
 
 #### 15.17A.11 Result States and Exclusions
 

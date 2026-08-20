@@ -1684,16 +1684,18 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 
 .monopole-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .monopole-card > .input-cluster { margin: 0; }
-.monopole-stage-heading { min-height: 58px; display: flex; align-items: center; padding: 8px 2px 12px; border-bottom: 1px solid var(--line); }
+.monopole-stage-heading { display: flex; align-items: center; padding: 4px 2px 10px; border-bottom: 1px solid var(--line); }
 .monopole-stage-heading b, .monopole-stage-heading small { display: block; }
-.monopole-stage-heading b { color: var(--ink); font-size: 18px; line-height: 1.15; }
+.monopole-stage-heading b { color: var(--ink); font-size: var(--fs-md); line-height: 1.2; font-weight: 850; }
 .monopole-stage-heading small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.3; }
 .monopole-mode-switch { display: flex; width: fit-content; padding: 4px; border: 1px solid var(--line); border-radius: 9px; background: #edf2ef; }
+.monopole-section-form-group .monopole-mode-switch { margin-bottom: 12px; }
 .monopole-mode { min-height: 38px; padding: 8px 13px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; font-weight: 800; }
 .monopole-mode.active { border-color: rgba(40, 79, 67, .20); background: #fff; color: var(--monopole-dark); box-shadow: 0 1px 5px rgba(47, 59, 54, .10); }
 .monopole-mode:focus-visible, .monopole-add-section:focus-visible, .monopole-remove-section:focus-visible { outline: 3px solid rgba(40,79,67,.22); outline-offset: 2px; }
 .monopole-input-panel { padding: 0; border: 0; background: transparent; }
 .monopole-input-panel .input-group { margin: 0; border: 0; padding: 0; background: transparent; }
+.monopole-section-form-group, .monopole-material-group { padding: 0; border: 0; background: transparent; }
 #monopoleOverallInputs { padding: 0; }
 #monopoleOverallInputs:not([hidden]) { display: grid; gap: 14px; }
 #monopoleOverallInputs .input-group { padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.78); }
@@ -1724,15 +1726,15 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .monopole-design-thickness-field { min-width: 0; }
 .monopole-field-label { display: block; margin-bottom: 6px; color: #45534c; font-size: var(--fs-sm); line-height: 1.2; font-weight: 700; }
 .monopole-design-thickness-toggle { width: 100%; }
-.monopole-design-thickness-toggle small { display: block; min-width: 0; color: var(--muted); font-size: 10px; font-weight: 500; line-height: 1.25; }
+.monopole-design-thickness-toggle small { display: block; min-width: 0; color: var(--muted); font-size: var(--fs-xs); font-weight: 500; line-height: 1.25; }
 .monopole-card .input-group-fields.six { grid-template-columns: repeat(3, minmax(220px, 320px)); justify-content: start; }
 .monopole-card .monopole-form-fields { grid-template-columns: repeat(2, minmax(220px, 320px)); justify-content: start; align-items: start; }
 .monopole-card .monopole-form-fields:has(#monopoleBendRadiusField[hidden]) { grid-template-columns: minmax(220px, 360px); }
 .monopole-material-fields { grid-template-columns: repeat(auto-fit, minmax(220px, 320px)); justify-content: start; align-items: start; }
 .monopole-material-fields .field-help { font-weight: 500; }
-.monopole-shaft-summary { display: flex; align-items: center; gap: 10px 20px; padding: 10px 2px; border-top: 1px solid var(--line); color: var(--muted); font-size: var(--fs-xs); }
+.monopole-shaft-summary { display: flex; align-items: center; gap: 10px 20px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--monopole-soft); color: var(--muted); font-size: var(--fs-xs); }
 .monopole-shaft-summary > b { color: var(--ink); font-size: var(--fs-sm); white-space: nowrap; }
-.monopole-shaft-summary > small { margin-left: auto; color: var(--muted); font-size: 10px; white-space: nowrap; }
+.monopole-shaft-summary > small { margin-left: auto; color: var(--muted); font-size: var(--fs-xs); white-space: nowrap; }
 .monopole-inline-metrics { margin: 0; display: flex; align-items: baseline; gap: 10px 22px; }
 .monopole-inline-metrics > div { display: flex; align-items: baseline; gap: 5px; min-width: 0; }
 .monopole-inline-metrics dt { color: var(--muted); font-size: var(--fs-xs); font-weight: 650; }
@@ -1763,10 +1765,10 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .monopole-chart-point { fill: #fff; stroke: var(--section-colour); stroke-width: 2; vector-effect: non-scaling-stroke; }
 .monopole-chart-boundary { stroke: #68756f; stroke-width: 1.5; stroke-dasharray: 5 4; vector-effect: non-scaling-stroke; }
 .monopole-chart-boundary-point { fill: #fff; stroke: var(--section-colour); stroke-width: 2; vector-effect: non-scaling-stroke; }
-.monopole-chart-y-label, .monopole-chart-x-label, .monopole-chart-value, .monopole-chart-axis-title { fill: #4d5953; font-family: var(--font); font-size: 11px; letter-spacing: 0; }
+.monopole-chart-y-label, .monopole-chart-x-label, .monopole-chart-value, .monopole-chart-axis-title { fill: #4d5953; font-family: var(--font); font-size: var(--fs-xs); letter-spacing: 0; }
 .monopole-chart-y-label { text-anchor: end; font-weight: 800; }
 .monopole-chart-x-label { text-anchor: middle; }
-.monopole-chart-value { fill: var(--section-colour); font-size: 10px; font-weight: 900; paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; }
+.monopole-chart-value { fill: var(--section-colour); font-weight: 900; paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; }
 .monopole-chart-axis-title { text-anchor: middle; font-size: 12px; font-weight: 850; }
 .monopole-chart-empty { margin: 0; padding: 18px 20px; color: var(--muted); font-size: var(--fs-sm); line-height: 1.45; }
 .monopole-chart-empty b, .monopole-chart-empty span { display: block; }
@@ -1784,7 +1786,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .monopole-overlap-state.meets { color: var(--monopole-dark); }
 .monopole-overlap-state.below { color: #963e35; }
 .monopole-section-key { display: inline-block; width: 10px; height: 10px; margin-right: 6px; background: var(--section-colour); vertical-align: -1px; }
-.monopole-repeat-elevation { color: var(--muted); font-size: 10px; }
+.monopole-repeat-elevation { color: var(--muted); font-size: var(--fs-xs); }
 .monopole-station-details { border-top: 1px solid var(--line); }
 .monopole-station-details > summary { min-height: 54px; padding: 10px 2px; display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none; }
 .monopole-station-details > summary::-webkit-details-marker { display: none; }
@@ -1796,9 +1798,10 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .monopole-station-details > summary > i { width: 24px; color: var(--monopole-dark); font-size: 18px; font-style: normal; text-align: center; transition: transform .18s ease; }
 .monopole-station-details[open] > summary > i { transform: rotate(45deg); }
 .monopole-station-details > summary:focus-visible { outline: 3px solid rgba(40,79,67,.22); outline-offset: 2px; }
-#monopolePanel .monopole-moment-section > summary b, #monopolePanel .monopole-combined-section > summary b { color: var(--monopole-dark); font-size: 18px; line-height: 1.2; }
-#monopolePanel .monopole-moment-section > summary > strong, #monopolePanel .monopole-combined-section > summary > strong { font-size: 15px; line-height: 1.25; font-weight: 850; }
-#monopolePanel .input-group-heading b, #monopolePanel .monopole-schedule-heading b, #monopolePanel .monopole-subsection-heading b, #monopolePanel .monopole-shaft-summary > b { font-size: 14px; }
+#monopolePanel .monopole-moment-section > summary b, #monopolePanel .monopole-combined-section > summary b { color: var(--monopole-dark); font-size: var(--fs-md); line-height: 1.2; }
+#monopolePanel .monopole-moment-section > summary > strong, #monopolePanel .monopole-combined-section > summary > strong { font-size: var(--fs-sm); line-height: 1.25; font-weight: 850; }
+#monopolePanel .input-group-heading b, #monopolePanel .monopole-schedule-heading b, #monopolePanel .monopole-subsection-heading b, #monopolePanel .monopole-shaft-summary > b { font-size: var(--fs-sm); }
+#monopolePanel .monopole-moment-section[open] > summary, #monopolePanel .monopole-combined-section[open] > summary { border-radius: 6px; background: var(--monopole-soft); }
 #monopolePanel .capacity-card p output { color: var(--ink); font-weight: 850; font-variant-numeric: tabular-nums; }
 #monopolePanel .formula-list b { color: var(--monopole-dark); }
 #monopolePanel .result-note.is-warning { margin: 0; padding: 10px 12px; border-left: 3px solid var(--amber); background: #fff8ea; color: #6e5739; font-size: var(--fs-xs); line-height: 1.45; }
@@ -1836,10 +1839,7 @@ footer b { white-space: nowrap; }
   .monopole-card .input-group-fields.six { grid-template-columns: minmax(0, 1fr); }
   .monopole-card .monopole-form-fields { grid-template-columns: minmax(0, 1fr); }
   .monopole-material-fields { grid-template-columns: minmax(0, 1fr); }
-  .monopole-stage-heading b { font-size: 17px; }
   .monopole-moment-section > summary, .monopole-combined-section > summary { display: grid; grid-template-columns: minmax(0, 1fr) 24px; align-items: start; gap: 6px 10px; padding-top: 12px; padding-bottom: 12px; }
-  #monopolePanel .monopole-moment-section > summary b, #monopolePanel .monopole-combined-section > summary b { font-size: 17px; }
-  #monopolePanel .monopole-moment-section > summary > strong, #monopolePanel .monopole-combined-section > summary > strong { font-size: 13px; }
   .monopole-moment-section > summary > span, .monopole-combined-section > summary > span { grid-column: 1; grid-row: 1; }
   .monopole-moment-section > summary > strong, .monopole-combined-section > summary > strong { grid-column: 1; grid-row: 2; width: auto; margin: 0; }
   .monopole-moment-section > summary > i, .monopole-combined-section > summary > i { grid-column: 2; grid-row: 1 / span 2; align-self: center; }

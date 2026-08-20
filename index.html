@@ -1014,16 +1014,16 @@
 
       <section class="lookup-card monopole-card">
         <div id="monopoleSectionDefinitionHeading" class="monopole-stage-heading">
-          <div><b>Section definition</b><small>Section form and installed profile geometry</small></div>
-        </div>
-        <div class="monopole-mode-switch" role="group" aria-label="Monopole geometry definition">
-          <button class="monopole-mode" type="button" data-monopole-mode="overall" aria-pressed="false">Continuous taper</button>
-          <button class="monopole-mode active" type="button" data-monopole-mode="schedule" aria-pressed="true">Fabricated sections</button>
+          <div><b>Input data</b><small>Geometry, material and resistance basis</small></div>
         </div>
 
         <div class="input-cluster">
           <section class="input-group input-group-section monopole-section-form-group">
-            <span class="input-group-heading"><b>Section form</b></span>
+            <span class="input-group-heading"><b>Geometry</b><small>Section form and profile definition</small></span>
+            <div class="monopole-mode-switch" role="group" aria-label="Monopole geometry definition">
+              <button class="monopole-mode" type="button" data-monopole-mode="overall" aria-pressed="false">Continuous taper</button>
+              <button class="monopole-mode active" type="button" data-monopole-mode="schedule" aria-pressed="true">Fabricated sections</button>
+            </div>
             <div class="input-group-fields six monopole-form-fields">
               <label><span>Cross-section</span><select id="monopoleSectionForm"><option value="circular" selected>Circular tubular</option><option value="polygon-4">4-sided regular polygon</option><option value="polygon-6">6-sided regular polygon</option><option value="polygon-8">8-sided regular polygon</option><option value="polygon-12">12-sided regular polygon</option><option value="polygon-16">16-sided regular polygon</option></select></label>
               <label id="monopoleBendRadiusField" hidden><span>Inside bend-radius ratio, r<sub>i</sub>/t<sub>nom</sub></span><span class="unit"><input id="monopoleBendRadiusRatio" type="number" min="0.1" step="0.1" value="1.5" aria-describedby="monopoleSectionNote"><em>ratio</em></span></label>
@@ -1034,7 +1034,7 @@
 
         <section id="monopoleOverallInputs" class="monopole-input-panel" hidden>
           <div class="input-group input-group-section">
-            <span class="input-group-heading"><b>Continuous taper geometry</b><small>One global taper; no fabricated joints or overlaps.</small></span>
+            <span class="input-group-heading"><b>Profile geometry</b><small>One continuous taper; no fabricated joints or overlaps.</small></span>
             <div class="input-group-fields six">
               <label><span>Overall height, H</span><span class="unit"><input id="monopoleHeight" type="number" min="0.5" step="0.5" value="12"><em>m</em></span></label>
               <label><span class="monopole-dimension-bottom">Bottom outside diameter, D<sub>b</sub></span><span class="unit"><input id="monopoleBottomDimension" type="number" min="1" step="10" value="240"><em>mm</em></span></label>
@@ -1066,7 +1066,7 @@
 
         <section id="monopoleScheduleInputs" class="monopole-input-panel monopole-schedule-panel">
           <div class="monopole-schedule-heading">
-            <div><b>Fabricated section schedule</b><small id="monopoleScheduleBasis">Physical sections, base to top. Default: Austube 508.0 &times; 6.4 CHS C350L0.</small></div>
+            <div><b>Physical section schedule</b><small id="monopoleScheduleBasis">Base to top. Default: Austube 508.0 &times; 6.4 CHS C350L0.</small></div>
             <button id="monopoleAddSection" class="monopole-add-section" type="button">Add section</button>
           </div>
           <div class="table-scroll monopole-schedule-scroll">
@@ -1089,13 +1089,9 @@
           </div>
         </section>
 
-        <div id="monopoleMaterialHeading" class="monopole-stage-heading">
-          <div><b>Material and fabrication</b><small>Strength basis, fabrication category and design thickness</small></div>
-        </div>
-
         <div class="input-cluster">
           <section class="input-group input-group-section monopole-material-group">
-            <span class="input-group-heading"><b>Material properties</b></span>
+            <span id="monopoleMaterialHeading" class="input-group-heading"><b>Material and resistance basis</b><small>Yield strength, AS 4100 CHS category and design thickness</small></span>
             <div class="input-group-fields monopole-material-fields">
               <label><span>Yield-strength basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual" selected>Manual yield stress</option></select></label>
               <label id="monopolePlateGradeField"><span>Plate grade</span><select id="monopolePlateGrade"><option value="200">200</option><option value="250">250</option><option value="300">300</option><option value="350" selected>350</option><option value="400">400</option><option value="450">450</option><option value="WR350">WR350</option></select></label>
@@ -1109,7 +1105,7 @@
         <p id="monopoleInputStatus" class="result-note" aria-live="polite" hidden></p>
 
         <section class="monopole-shaft-summary" aria-live="polite">
-          <b>Shaft properties</b>
+          <b>Derived shaft properties</b>
           <dl class="monopole-inline-metrics">
             <div><dt>Mass</dt><dd><output id="monopoleMass">-</output> kg</dd></div>
             <div><dt>Self-weight</dt><dd><output id="monopoleSelfWeight">-</output> kN</dd></div>
@@ -1120,7 +1116,7 @@
         </section>
 
         <div id="monopoleCapacityHeading" class="monopole-stage-heading">
-          <div><b>Section capacity</b><small>Capacity profiles at 0.5 m stations</small></div>
+          <div><b>Capacity results</b><small>Section resistance at 0.5 m stations</small></div>
         </div>
 
         <details id="monopoleMomentSection" class="monopole-moment-section monopole-station-details">
@@ -1145,7 +1141,7 @@
         </details>
 
         <details id="monopoleCombinedSection" class="monopole-combined-section monopole-station-details">
-          <summary><span><b id="monopoleCombinedCapacityTitle">Section capacity intercepts</b><small id="monopoleCombinedCapacityBasis">Compression and bending &middot; 0.5 m stations &middot; AS 4100 Cl. 5.2; AS 4100 Cl. 6.2; AS 4100 Cl. 8.3.2</small></span><strong id="monopoleCombinedCapacitySummary">Base capacity = -</strong><i>+</i></summary>
+          <summary><span><b id="monopoleCombinedCapacityTitle">Compression and bending capacities</b><small id="monopoleCombinedCapacityBasis">Design intercepts &middot; 0.5 m stations &middot; AS 4100:2020</small></span><strong id="monopoleCombinedCapacitySummary">Base capacity = -</strong><i>+</i></summary>
           <div class="monopole-combined-capacity-body">
             <div id="monopoleCombinedCapacityContent">
               <div class="monopole-subsection-heading"><b>Capacity by elevation</b><small id="monopoleCombinedCapacityCount">0 rows &middot; top to base</small></div>
