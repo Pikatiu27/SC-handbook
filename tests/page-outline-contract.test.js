@@ -17,20 +17,24 @@ assert.match(outline, /#### 15\.19\.17 Audit Completion Gate/);
 assert.doesNotMatch(outline, /#### 15\.18\.\d+ Audit/);
 assert.doesNotMatch(outline, /audit protocol in Section 15\.18\b/);
 
-assert.match(html, /<b>Two-way reinforcement<\/b><small>X and Y bars are entered separately\./);
-assert.match(html, /<span>Bar position for this check<\/span><select id="concreteDepthBasis"><option value="inside">Inner layer \(default\)<\/option>/);
+assert.match(html, /<b>Reinforcement layout<\/b><small>Two-way assumes the same bar size in both directions\./);
+assert.match(html, /<span>Reinforcement arrangement<\/span><select id="concreteReinforcementLayout"><option value="two-way">Two-way reinforcement<\/option>/);
 assert.match(html, /class="concrete-input-row concrete-row-reinforcement"/);
 assert.match(styles, /\.concrete-row-reinforcement \{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
-assert.match(html, /<span>Direction to check<\/span><select id="concreteReoDirection"/);
-assert.match(html, /aria-label="Directional reinforcement layers"/);
-assert.match(script, /concreteDirectionalReinforcement = \{ x: clone\(initial\), y: clone\(initial\) \}/);
-assert.match(script, /function switchConcreteDirection\(\)/);
-assert.doesNotMatch(html, /id="concreteCrossingBar"/);
-assert.match(html, /<b>Material properties<\/b><small>One f'<sub>c<\/sub> for the checked section\.<\/small>[\s\S]*?id="concreteFc"/);
-assert.doesNotMatch(
-  html,
-  /<b>Material properties<\/b><small>One f'<sub>c<\/sub> for the checked section\.<\/small>[\s\S]*?id="concreteCover"[\s\S]*?<\/section>/
-);
+assert.doesNotMatch(html, /id="concreteCrossingBar"|Perpendicular bar size/);
+assert.match(html, /aria-label="Reinforcement mats parallel to bending"/);
+assert.match(script, /<option value="none">None \/ plain concrete<\/option>/);
+assert.match(script, /twoWayReinforcement \? bar : 0/);
+assert.match(html, /id="layer1AutoReset" class="layer-depth-reset"[^>]*hidden>Auto<\/button>/);
+assert.match(script, /function restoreConcreteLayerAutoDepth\(index\)/);
+assert.match(script, /function initializeConcreteLayerState\(\)/);
+assert.match(script, /const width = 1000/);
+assert.doesNotMatch(html, /id="concreteReoDirection"|id="concreteWidth"/);
+assert.doesNotMatch(script, /concreteDirectionalReinforcement|switchConcreteDirection/);
+assert.match(html, /<b>Material properties<\/b>[\s\S]*?id="concreteFc"/);
+assert.doesNotMatch(html, /One f'<sub>c<\/sub> for the checked section/);
+assert.doesNotMatch(html, /id="concreteModeValue"|id="concreteWidthValue"|id="concreteDepthValue"|id="concreteStatusValue"/);
+assert.doesNotMatch(html, /id="concretePhiNote"|id="concreteShearNote"|concrete-reo-source/);
 
 const productDataTags = html.match(/<span class="section-tag">PRODUCT DATA<\/span>/g) || [];
 assert.ok(productDataTags.length >= 4, "Expected PRODUCT DATA tags for bolt lookups and both foundation selectors.");

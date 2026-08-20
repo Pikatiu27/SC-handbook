@@ -24,15 +24,15 @@ const publicDocumentation = [
 assert.match(html, /<b>Public beta<\/b>/, "The public-beta boundary must be visible before the calculators");
 assert.match(html, /Not certified design software/, "The visible notice must state the software boundary");
 assert.match(html, /github\.com\/Pikatiu27\/SC-handbook\/issues\/new/, "A public issue-reporting route is required");
-assert.match(html, /Build 0\.7\.57/, "The visible public build must match this release");
-assert.match(html, /styles\.css\?v=20260820padmerge1/, "The current shared layout stylesheet must be cache-busted");
+assert.match(html, /Build 0\.7\.58/, "The visible public build must match this release");
+assert.match(html, /styles\.css\?v=20260820padrelease1/, "The current shared layout stylesheet must be cache-busted");
 assert.match(html, /monopole-capacity\.js\?v=20260814polygonflat1/, "The corrected Monopole calculation module must be cache-busted");
 assert.match(html, /monopole-app\.js\?v=20260814polygonflat1/, "The corrected Monopole display module must be cache-busted");
 assert.match(html, /section-catalogue\.js\?v=20260818sectiondirectory2/, "The checked-design-row catalogue helper must be cache-busted");
 assert.match(html, /bolt-capacity\.js\?v=20260818boltedge1/, "The AS 4100 bolt edge-distance helper must be cache-busted");
 assert.match(html, /bolt-integrity\.js\?v=20260819plyarea1/, "The straight-section net-area helper must be cache-busted");
 assert.match(html, /reo-state\.js\?v=20260819reostate1/, "The Reinforcement state contract must be cache-busted");
-assert.match(html, /app\.js\?v=20260820padmerge1/, "The current shared display path must be cache-busted");
+assert.match(html, /app\.js\?v=20260820padrelease1/, "The current shared display path must be cache-busted");
 assert.match(app, /element\.tagName === "SELECT"[^\n]+addEventListener\("change", calculateBolt\)/, "Bolt selects must recalculate on change");
 assert.match(app, /window\.addEventListener\("pageshow", \(\) => window\.requestAnimationFrame\(calculateBolt\)\)/, "Restored bolt inputs must recalculate on pageshow");
 assert.match(html, /id="integrityPlateWidth"/);
