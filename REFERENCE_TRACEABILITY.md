@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-08-11
+Last updated: 2026-08-20
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -1405,34 +1405,42 @@ Reinforcement confirmation invalidation is now defined once in `reo-state.js` an
 
 `tests/reo-state.test.js` executes the route, method, candidate-input and final-confirmation matrix. The DOM contract locks the state-module load order and revised professional labels. All 40 local test files, all root JavaScript syntax checks and `git diff --check` pass. Fresh rendered desktop and phone screenshots were not captured in this run because the local in-app browser connection was unavailable; no CSS or layout structure changed, and the module remains `For Review` until that visual release evidence is refreshed.
 
-## 2026-08-20 Build 0.7.57 Reinforcement Query Language
+## 2026-08-20 Build 0.7.57 Concrete Pad Directional Reinforcement
 
-Build 0.7.57 simplifies the Reinforcement interaction text without changing the AS 3600 equations, input dependencies, qualification gates or result hierarchy. The default path now describes the selected conditions as `Design assumptions`; `Wide member` and `Narrow member` are explained through familiar member locations under `Member geometry`; clear spacing and the cover / spacing parameter are named before their symbols; and the `k7` panel states the two qualifying conditions in concise engineering language.
+Build 0.7.57 aligns the Concrete Pad Section page with the canonical outline without changing the verified AS 3600 flexure or one-way shear equations. X- and Y-direction reinforcement states are stored independently, the compact table shows one checked direction at a time, and the default `Inner layer` depth reads the matching perpendicular bar diameter at each reinforcement location. The page states that this is a conservative directional screen rather than a physically simultaneous stacking order; drawing-derived manual depths remain available.
 
-## 2026-08-20 Build 0.7.58 Reinforcement Input Hierarchy
+Visible wording now uses plain engineering terms including `Two-way reinforcement`, `Direction to check`, `perpendicular bars`, `inner layer` and `outer layer`. N-bar calculation areas are aligned with AS/NZS 4671:2019 Table 7.5(A), including N10 = 78.5 mm2, N36 = 1020 mm2 and N40 = 1260 mm2. InfraBuild remains the supporting source for current product availability and the N40 on-request status; supplier mass and ordering tables do not replace the Standard calculation areas.
 
-Build 0.7.58 reorganises the Reinforcement query without changing the AS 3600 calculation functions or qualification gates. The lap path keeps `Member geometry` and `Casting position` visible because they select material calculation branches. Common but editable conditions are consolidated under `Editable defaults`: tension-tie classification, lap arrangement, Basic / Refined method and material condition. The folded summary exposes every active default. Mobile validation at 390 px also removed page-level horizontal overflow and constrained long controls to the available width.
+The full 40-file Node regression suite, JavaScript syntax check and `git diff --check` pass after integration with the latest `main`. Local browser verification reproduces the default `phi Muo = 287.1 kN.m` and `phi Vu = 194.2 kN`, with no console warnings or errors. A narrow-viewport footer nowrap rule was removed so the public build line wraps instead of creating document-level horizontal overflow.
 
-## 2026-08-20 Build 0.7.59 Development Conditions Layout
+## 2026-08-20 Build 0.7.58 Concrete Pad One-Metre Strip Simplification
 
-Build 0.7.59 changes presentation only. Development-at-termination concrete and bar conditions use two desktop rows in engineering order: geometry with casting position, then concrete strength with material condition. Phone presentation remains a single-column stack. The development calculation, route selection, defaults and confirmation gates are unchanged.
+The local Concrete Pad page fixes `b = 1000 mm` and removes the X/Y reinforcement selector and duplicated hidden direction state. The entered reinforcement is the longitudinal reinforcement parallel to bending for the one-metre strip. Where the other pad direction differs, the inputs are changed and the check is repeated; the page does not compare or declare a governing direction without compatible design actions.
 
-## 2026-08-20 Build 0.7.60 Development Geometry Layout
+The local follow-up defaults to `Two-way reinforcement` and assumes each mat uses one bar size in both directions. Automatic depth therefore uses `c_nom + 1.5d_b`; the one-way option uses `c_nom + 0.5d_b`. The perpendicular reinforcement area is not included in flexure, `Ast`, `d` or `dv`. Each displayed depth remains directly editable; a compact `Auto` action appears only after an override and restores the derived value.
 
-Build 0.7.60 aligns the development cover-and-spacing block with the two-column condition grid. Cover and spacing form the first row; conditional `c1` and calculated `cd` form the second row. When `c1` is not applicable, `cd` becomes a full-width calculated strip. No calculation or visibility rule changed.
+The visible `Include` and `Auto depth` controls are removed. `None / plain concrete` in the mat bar selector excludes that mat, while `f_sy` is set from the selected N or legacy Y designation and remains editable. Source details, capacity-factor notes and shear-derived values are retained in the folded calculation evidence rather than repeated on the main page. The AS 3600 flexure and one-way shear calculation modules are unchanged by these interface simplifications.
 
-## 2026-08-20 Build 0.7.61 Input and Derived-Output Separation
+All 40 local regression files and the JavaScript syntax check pass. Browser checks at desktop and 390 x 844 px reproduce the default `phi Muo = 287.1 kN.m` and `phi Vu = 194.2 kN`, show no document-level horizontal overflow or console warning/error, and confirm that a manual bottom-pad layer depth survives a `D_bot = 300 -> 0 -> 300 mm` transition.
 
-Build 0.7.61 removes calculated `cd` from the editable-input visual class on both lap and development paths. Concrete strength, cover, spacing, gap and conditional `c1` remain input controls. `cd` now appears immediately below its source values in a neutral `Calculated basis` strip before the primary length result. The underlying outputs retain their IDs and calculation bindings; no formula, default or state gate changed.
+## 2026-08-20 Build 0.7.59 Steel Monopole Page Hierarchy
 
-## 2026-08-20 Build 0.7.62 Concise Engineering Language
+Build 0.7.59 keeps the accepted circular AS 4100 and regular-polygon ASCE/SEI 48-19 calculation paths unchanged. The visible Monopole workflow is reduced to `Input data`, `Derived shaft properties` and `Capacity results`. Geometry, the active profile or physical-section schedule, and material/resistance inputs are peer groups under the single input stage. The result disclosures remain `Moment capacity` and the circular `Compression and bending capacities`; the latter reports section-capacity intercepts only and does not accept actions or calculate utilisation.
 
-Build 0.7.62 applies the page hierarchy `Check selection`, `Design conditions`, `Inputs`, calculated basis, primary result and optional adjustments. Redundant choose/enter helper sentences and repeated AS 3600 child labels are removed. Development uses `Reference basis` or `Anchorage basis`, `Bar stress`, `Existing concrete` or `Concrete and reinforcement`, and `Geometry`. The `cd` formula sits with the calculated output and updates with the selected straight/hook/cog and wide/narrow branch. Default stress notes stay hidden until project stress is selected. Result-basis states use `FULL YIELD` or `PROJECT STRESS`; calculation and confirmation rules are unchanged.
+The AS 4100 circular fabrication selector is now explicitly labelled `AS 4100 CHS category`. `CF` is identified as the Table 5.2 category adopted for the verified AS/NZS 1163 cold-formed CHS example and is not inferred from ordinary cold-forming of a fabricated plate shell. The page states that AS/NZS 4600 is not evaluated. Polygon combined stress remains `Not evaluated`.
 
-## 2026-08-21 Build 0.7.63 Reinforcement Heading Hierarchy
+Monopole typography now uses the shared 15 px stage/disclosure, 13 px group/field and 12 px helper/source scale. Background colour is reserved for the geometry-mode selector, editable schedule header, derived shaft summary, expanded capacity disclosure and warning states. Ordinary stage headings and input groups are unfilled; the editable schedule retains its restrained frame.
 
-Build 0.7.63 makes the accepted page structure easier to scan without adding text or changing any calculation, qualification or state rule. The active path title is visually distinct from its compact tag. The six primary input-group headings share one restrained accent rule and stronger 14 px type, while field labels retain the shared form treatment. `Calculated cd`, result cards and optional disclosures remain separate output or secondary-content patterns rather than receiving another heading treatment.
+All 40 local regression files, 20 root JavaScript syntax checks and `git diff --check` pass. Browser checks at 1440 x 1000 px and 390 x 844 px show no document-level horizontal overflow. Circular, polygon, continuous-taper and fabricated-section state changes recalculate correctly; the default circular fabricated-section example retains `Base phi Ms = 407.9 kN.m` and `Base phi Ns = 2,723.3 kN`.
 
-The optional path is titled `Refined development method` and retains `nf`, `nbs`, `Sigma Atr`, `k4`, `k5` and `rho_p` for traceability. Field text distinguishes the splitting plane, effective transverse-bar area and candidate-length confirmations. Development dynamically distinguishes `Concrete and bar conditions` for cast-in reinforcement from `Existing concrete conditions` for PIR. PIR remains an AS 3600 reference depth only and no product-design workflow has been added.
+The implementation release was committed as `fac0d34` and pushed by fast-forward to remote `main`. GitHub Pages workflow `32375114084` completed verification and deployment successfully. A cache-busted public browser check returned Build 0.7.59 with `styles.css?v=20260820monopolelayout1` and `monopole-app.js?v=20260820monopolelayout1`, reproduced the two default base capacities, and showed no document-level horizontal overflow at desktop or 390 x 844 px.
 
-All 40 local test files pass, including the Reinforcement calculation, state-invalidation and updated plain-language DOM contracts. All root JavaScript syntax checks and `git diff --check` pass. The locally served cache-busted page was checked at 1440 px and 390 px: the active path and group hierarchy rendered at the specified levels, there was no document-level horizontal overflow, and the browser console reported no warnings or errors. Public deployment remains to be verified after push. The module remains `For Review`.
+## 2026-08-21 Build 0.7.63 Reinforcement Query Hierarchy
+
+Build 0.7.63 consolidates the Reinforcement query refinements into the current shared application without changing the verified AS 3600 equations, result values, qualification gates or confirmation-invalidation contract. The main order is `Check selection`, `Design conditions`, `Inputs`, calculated basis, primary result and optional adjustments. Common but editable lap conditions remain in one collapsed `Additional conditions` summary; development keeps its reference basis, concrete conditions and geometry in engineering order. Calculated `c_d` remains a derived output rather than an editable-looking field.
+
+Visible text uses concise Australian engineering terms. The optional path remains `Refined development method` and retains `n_f`, `n_bs`, `Sigma A_tr`, `k_4`, `k_5` and `rho_p` for traceability. Development dynamically distinguishes the cast-in and PIR concrete context. PIR remains an `AS 3600 reference depth`, not a product installation depth, and the page adds no product-capacity, interface or foundation-design workflow.
+
+The active path title is visually distinct from its compact tag. The six primary input-group headings share one restrained accent rule and stronger 14 px type, while field labels retain the shared form treatment. `Calculated c_d`, result cards and optional disclosures remain separate output or secondary-content patterns. The merged cache keys include the current remote Bolt and Monopole updates as well as the Reinforcement presentation change.
+
+After integration with remote `main`, all 40 local test files, all 20 root JavaScript syntax checks and `git diff --check` pass. The locally served Build 0.7.63 page was rechecked at 1440 px and 390 px on both lap and PIR development routes: the specified heading levels rendered, the combined style/app cache keys loaded, there was no document-level horizontal overflow, and the browser console reported no warnings or errors. The module remains `For Review` pending the normal public deployment verification.

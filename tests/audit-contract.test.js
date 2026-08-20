@@ -25,7 +25,7 @@ const calculateConcreteSource = script.slice(
   script.indexOf("const screwPileData")
 );
 
-assert.match(html, /Concrete Pad Section<\/h2><\/div><span class="tool-status">For Review · section resistance only<\/span>/);
+assert.match(html, /Concrete Pad Section<\/h2><\/div><span class="tool-status">For Review · section capacity only<\/span>/);
 assert.match(html, /round-bar strengths follow AS\/NZS 3679\.1 Table 15 using diameter/);
 assert.match(html, /AS 4100 Table 6\.3\.3\(B\) when k<sub>f<\/sub> &lt; 1\.0/);
 assert.match(html, /Table 38 for diameter-dependent Grade 300 \(300PLUS\) and Grade 350 strengths/);
@@ -42,7 +42,7 @@ assert.match(traceability, /InfraBuild Table 7 `Rods and Light Billets`[^\n]*sep
 
 assert.match(script, /Design &phi;M<sub>uo<\/sub> = &phi; &times; M<sub>uo<\/sub>/);
 assert.match(script, /design capacity = &phi; &times; V<sub>u<\/sub>/);
-assert.match(script, /mm<sup>2<\/sup> per strip/);
+assert.match(script, /mm<sup>2<\/sup>\/m/);
 assert.match(script, /reference: "Derived rigid-cap equilibrium model"/);
 assert.match(html, /<script src="member-capacity\.js\?v=[^"]+"><\/script>/);
 assert.match(html, /<script src="screw-demand\.js\?v=[^"]+"><\/script>/);
@@ -71,7 +71,8 @@ assert.match(calculateBoltSource, /title: "Bolt group shear capacity"[\s\S]*?res
 assert.doesNotMatch(calculateBoltSource, /Math\.round\(value\("(?:threadPlanes|shankPlanes|interfaces)"\)\)/);
 assert.match(html, /Simultaneous bolt shear and tension require the squared interaction check in AS 4100 Cl\. 9\.2\.2\.3/);
 assert.match(calculateConcreteSource, /fcInput >= 20 && fcInput <= 120/);
-assert.match(calculateConcreteSource, /concreteStatusValue"\)\.textContent = fcValid \? "Review required" : "Invalid input"/);
+assert.doesNotMatch(html, /id="concreteStatusValue"/);
+assert.match(calculateConcreteSource, /Section capacities only; no design actions are checked/);
 assert.match(script, /ConcreteSectionCalculation\.oneWayShear\(/);
 assert.match(concreteCalculation, /function oneWayShear\(data\)/);
 assert.match(script, /function catalogueDerivedTraceRows\(/);

@@ -76,10 +76,10 @@
     $("monopoleCombinedCapacityContent").hidden = polygon;
     $("monopoleCombinedUnavailable").hidden = !polygon;
     $("monopoleMomentBasis").innerHTML = `0.5 m stations &middot; ${resistanceBasisHtml()}`;
-    $("monopoleCombinedCapacityTitle").textContent = polygon ? "Combined polygon stress" : "Section capacity intercepts";
+    $("monopoleCombinedCapacityTitle").textContent = polygon ? "Combined polygon stress" : "Compression and bending capacities";
     $("monopoleCombinedCapacityBasis").innerHTML = polygon
       ? "ASCE/SEI 48-19 &middot; combined polygon stress not evaluated"
-      : "Compression and bending &middot; 0.5 m stations &middot; AS 4100 Cl. 5.2; AS 4100 Cl. 6.2; AS 4100 Cl. 8.3.2";
+      : "Design intercepts &middot; 0.5 m stations &middot; AS 4100:2020";
     if (polygon) $("monopoleCombinedCapacitySummary").textContent = "Not evaluated";
     $("monopoleStationResistanceHeading").innerHTML = polygon ? "M" : "&phi;M<sub>s</sub>";
     $("monopoleChart").setAttribute(
@@ -243,12 +243,15 @@
   function syncYieldStressInputs(sections) {
     const lookup = plateLookupActive();
     const selection = sectionSelection();
+    const fabricationCategory = $("monopoleFabrication").value;
     $("monopolePlateGradeField").hidden = !lookup;
     const grade = $("monopolePlateGrade").value;
     const materialNote = lookup
-      ? `AS/NZS 3678:2016 Grade ${escapeHtml(grade)}; f<sub>y</sub> uses t<sub>nom</sub>.`
+      ? `AS/NZS 3678:2016 Grade ${escapeHtml(grade)}; f<sub>y</sub> uses t<sub>nom</sub>. Confirm the AS 4100 category; CF is not inferred from plate cold-forming.`
       : selection.form === "circular"
-        ? "Initial circular-section example: Austube C350L0; adopted f<sub>y</sub> = 350 MPa. Verify current inputs and project data."
+        ? fabricationCategory === "CF"
+          ? "Initial example: Austube AS/NZS 1163 C350L0 CHS; CF category; adopted f<sub>y</sub> = 350 MPa. Verify product data."
+          : `Manual f<sub>y</sub>; ${escapeHtml(fabricationCategory)} is a user-selected AS 4100 category. Verify fabrication data.`
         : "Enter the verified product or project f<sub>y</sub>.";
     const sectionNote = selection.form === "polygon"
       ? `ASCE/SEI 48-19 regular ${selection.sideCount}-sided method. Fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5; replace with verified project or manufacturer data. ${polygonBendRadiusSummary(sections)}`
@@ -314,7 +317,7 @@
     $("monopoleFabricationField").hidden = polygon;
     $("monopoleScheduleBasis").textContent = polygon
       ? "Physical sections, base to top. Enter project or manufacturer geometry."
-      : "Physical sections, base to top. Default: Austube 508.0 × 6.4 CHS C350L0.";
+      : "Base to top. Default: Austube 508.0 × 6.4 CHS C350L0.";
     document.querySelector(".monopole-dimension-bottom").innerHTML = polygon
       ? "Bottom outside across-flats, D<sub>o,b</sub>"
       : "Bottom outside diameter, D<sub>b</sub>";

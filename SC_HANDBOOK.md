@@ -1726,7 +1726,7 @@ Responsive acceptance rules:
 
 ### 15.6 Web Colour System
 
-Use a restrained pastel technical palette. Colour identifies the active tool and data responsibility; it must not decorate every surface or imply engineering acceptance.
+Use a restrained technical palette with a distinct identity colour for every accepted tool. The shared neutral structure makes the tools one product; the stronger tool identity makes a page change immediately visible. Colour identifies the active tool and data responsibility, but it must not decorate every surface or imply engineering acceptance.
 
 #### 15.6.1 Base and Tab Theme Tokens
 
@@ -1734,11 +1734,14 @@ Base neutral tokens:
 
 | Role | Canonical value | Use |
 | --- | --- | --- |
-| `--ink` | `#2f3b36` | Primary text and strong neutral controls |
-| `--muted` | `#5d6b64` | Helper, metadata and secondary text |
-| `--paper` | `#fbf7f0` | Page background |
+| `--ink` | `#24312b` | Primary text and strong neutral controls |
+| `--muted` | `#5f6b65` | Helper, metadata and secondary text |
+| `--paper` | `#f7f6f2` | Page background |
 | `--card` | `#ffffff` | Main cards and control surfaces |
-| Base `--line` | `#dfe8e1` | Neutral separators and unthemed borders |
+| Base `--line` | `#d5ddd8` | Neutral separators and unthemed borders |
+| `--brand` | `#315f4b` | Fixed handbook brand mark; it does not change with the active tool |
+| `--link` | `#1a65a6` | Shared inline-link colour across every tool |
+| `--focus` | `#ffdd00` | Shared high-visibility keyboard focus highlight |
 
 Each tab theme has four required roles:
 
@@ -1751,14 +1754,16 @@ Current canonical themes:
 
 | Tool | Accent | Dark | Soft | Panel |
 | --- | --- | --- | --- | --- |
-| Bolt Capacity | `#5fb98a` | `#2f7b57` | `#e7f7ed` | `#f4fbf6` |
-| Axial Member Capacity | `#76a9dc` | `#416f9e` | `#e7f2fc` | `#f4f9fe` |
-| Beam Section Capacity | `#b39ad8` | `#6f5798` | `#f0eafb` | `#faf7ff` |
-| Section Properties | `#6faea4` | `#356f68` | `#e4f5f2` | `#f4fbfa` |
-| Weld Capacity | `#e3a05f` | `#9c5d22` | `#fff0df` | `#fff8ef` |
-| Concrete Pad Section | `#6fb7b0` | `#2f746f` | `#e2f6f4` | `#f3fbfa` |
-| Screw Piles Selector | `#8fa96a` | `#587235` | `#edf5e4` | `#f8fcf1` |
-| Rock Anchor Selector | `#8299aa` | `#4d6576` | `#eaf0f4` | `#f7fafc` |
+| Bolt Capacity | `#5fb98a` | `#2f7b57` | `#e7f7ed` | `#eef8f2` |
+| Weld Capacity | `#e3a05f` | `#9c5d22` | `#fff0df` | `#fff3e6` |
+| Section Properties | `#6faea4` | `#356f68` | `#e4f5f2` | `#edf8f6` |
+| Axial Member Capacity | `#76a9dc` | `#416f9e` | `#e7f2fc` | `#edf5fb` |
+| Beam Section Capacity | `#b39ad8` | `#6f5798` | `#f0eafb` | `#f4effb` |
+| Steel Monopole Section Capacity | `#467d69` | `#284f43` | `#e7f1ed` | `#edf5f1` |
+| Concrete Pad Section | `#55a9b7` | `#247785` | `#e4f4f6` | `#eef8f9` |
+| Reinforcement Development & Lap Lengths | `#b47762` | `#7f4938` | `#f5e7e1` | `#faf0ec` |
+| Screw Piles Selector | `#8fa96a` | `#587235` | `#edf5e4` | `#f3f8eb` |
+| Rock Anchor Selector | `#8299aa` | `#4d6576` | `#eaf0f4` | `#f0f4f7` |
 | Wind Site Draft | `#6aa7c8` | `#31667f` | `#e5f4fb` | `#f4fbfe` |
 
 Theme rules:
@@ -1769,6 +1774,27 @@ Theme rules:
 - Use one tab accent at a time. Do not mix another tab's accent into controls, results or figures.
 - Category navigation remains neutral because it groups disciplines; the tool-level active state uses the current tab theme.
 - Do not use decorative gradients, colour blobs or saturated full-card fills. A subtle existing panel wash may remain, but the hierarchy must still work with flat fills.
+
+Page identity and navigation rules:
+
+- Every accepted tool uses one recognisably different hue. Do not collapse the tools to one colour per engineering category when that makes page changes feel visually unchanged.
+- Keep the handbook shell stable: brand, body text, ordinary cards, form controls, links and semantic status colours remain shared neutrals or shared functional colours.
+- On desktop, the active tool button uses the tool `dark` colour as a filled background with readable inverse text. Inactive tools remain neutral; do not show a permanent rainbow row.
+- The tool heading is the principal page-identity moment. Use the tool `dark` colour for the title and left marker, with the `soft` colour as a compact heading background. The kicker may use `dark`; ordinary body copy remains `--ink` or `--muted`.
+- Main result values remain strong neutral text. Use the tool theme for the result top rule, selected basis and compact section labels rather than colouring every result value.
+- The compact phone tool bar inherits the active tool `dark` and `soft` colours and shows the full tool name. Its `Tools` control remains a neutral control.
+- The opened phone tool menu may show a small destination-colour marker beside each visible tool because the menu is temporary. The closed navigation must show only the active tool colour.
+- Switching tools must update the active navigation fill, phone identity bar, tool heading and panel wash together. A theme transition may be brief, but it must not delay content or create motion that obscures the engineering state.
+- Keep `RESULTS`, `PRODUCT DATA` and similar section labels as dark theme text on a soft fill. Do not use white text on a pastel accent without a verified contrast result.
+- `For Review`, `Draft`, source status, `PASS`, `FAIL`, warnings and invalid states never inherit the tool identity colour; Section 15.6.3 always controls them.
+
+Text-colour hierarchy:
+
+- Tool title: tool `dark`, `--fs-lg`, `900` weight on desktop; the compact phone bar carries this identity at `--fs-sm`.
+- Section titles and governing values: `--ink`; a theme marker or top rule provides emphasis.
+- Body copy and ordinary labels: `--ink`; do not colour paragraphs with the tool theme.
+- Helper text, units, source metadata and limitations: `--muted`, without reduced opacity.
+- Inline links: shared `--link` with a visible underline or established link treatment; do not make link colour change by tool.
 
 #### 15.6.2 Input Responsibility and Interaction Colours
 
@@ -2422,16 +2448,25 @@ For the web bolt tab, separate the edge-distance terms visibly:
 
 #### 15.10.1 Detailed Connection Input Structure
 
-Keep the detailed connection input in this order:
+Keep the detailed connection workflow in this order:
 
-1. `Bolt group` - bolt count, shear-plane condition and k<sub>r</sub>.
-2. `Connected plies and detailing` - shared hole geometry and an explicit connected-ply basis.
-3. `Optional ply rupture checks` - selected-ply geometry and material first, then net-section / block-shear calculations and results.
+1. `Connection inputs` - bolt group, hole and spacing, then connected-ply properties.
+2. `Ply rupture assessment` - optional selected-ply geometry and material inputs.
+3. `Connection capacity summary` - bolt-group shear, connected-ply bearing and direct highlighting of the controlling main result.
 4. `TF slip check` - TF only, including separate serviceability slip actions.
+
+Keep all standard connection inputs ahead of the first capacity output. Do not place a bolt-group result between the bolt-group and connected-ply inputs.
+
+Use two visible heading levels inside `Detailed connection checks`:
+
+- Main section headings: `Connection inputs`, `Ply rupture assessment` and `Connection capacity summary`.
+- Group headings: `Bolt group`, `Hole and spacing`, `Connected plies`, `Checked ply inputs` and `Ply rupture`. Use concise bold text with a short accent rule and restrained spacing.
+- Remove explanatory subtitles where the fields already make the scope clear. Retain only source references or scope notes that affect engineering interpretation.
+- Do not repeat `Bolt group` beside `Connection capacity summary`, and do not repeat that ply-rupture capacities are separate when their own result group already establishes that distinction.
 
 The connected-ply section should use one shared detailing row:
 
-- Use the heading `Hole geometry and spacing` with the support line `Hole type and pitch detailing`.
+- Use the heading `Hole and spacing` with the support line `Hole type and pitch`.
 - `p` = centre-to-centre bolt pitch.
 - Disable `p` only for a one-bolt connection.
 - Label `k_r` as `bolted-lap reduction`; do not use `default 1.0` as its visible definition.
@@ -2480,20 +2515,20 @@ Show that concise local-bearing scope note once in the detailed-check workflow. 
 
 #### 15.10.3 Optional Connected-Ply Integrity
 
-Keep this workflow collapsed by default and place it after local hole bearing and detailing. Use the title `Optional ply rupture checks`; use `Not evaluated` as the default summary status. Default the assessment basis to `Not evaluated`.
+Place `Ply rupture assessment` after the standard connection inputs and before the capacity summary. Keep it at the same hierarchy as the input and result sections; do not nest another disclosure inside `Detailed connection checks`. Use `Not evaluated` as the default status and assessment basis.
 
-When `Evaluate ply rupture` is selected:
+When `Evaluate` is selected:
 
 - Check one identified critical connection component at a time. Put all selected-ply inputs first. Keep geometry together in one row as inherited `t_p`, `b`, `n_h` and `d_h`; put editable `f_yc` and inherited `f_uc` in the material row below. Calculations and results follow these inputs.
 - Provide `Straight section` and `Manual areas` net-section bases. For `Straight section`, calculate read-only `Ag = bt_p` and `An = Ag - n_h d_h t_p`; require `b`, use the active-ply `t_p`, and keep `n_h` and `d_h` editable. State that `n_h` counts holes crossed by the critical section, not total bolts.
 - Default `d_h` to `d_f + 2 mm` for the selected standard-hole bolt as a user-editable starting value. Non-standard, slotted, staggered and topology-dependent paths require a project-verified deduction or `Manual areas`.
 - `BOLT-PLY-TENSION-01` - For section tension use AS 4100 Cl. 7.2 and Cl. 9.1.9(b), with the straight-line hole deduction bounded to Cl. 9.1.10: `phi Nt = 0.90 MIN(Ag fyc, 0.85 kt An fuc)`.
 - `BOLT-BLOCK-SHEAR-01` - For block shear use AS 4100 Cl. 9.1.9(e): `phi Rbs = 0.75 MIN(0.6 fuc Anv + kbs fuc Ant, 0.6 fyc Agv + kbs fuc Ant)`.
-- Keep `kbs` as a normal full-width control within one aligned field below the three block-shear area inputs. Allow `kbs = 1.0` for uniform tension stress or `kbs = 0.5` for non-uniform tension stress; do not present it as a free numeric input.
+- Keep `kbs` in the same aligned input row as `Agv`, `Anv` and `Ant`. Allow `kbs = 1.0` for uniform tension stress or `kbs = 0.5` for non-uniform tension stress; do not present it as a free numeric input.
 - Require manual `Agv`, `Anv` and `Ant`. Do not derive block-shear areas from bolt count, pitch, edge distance or a schematic.
 - Treat the entered block-shear areas as the governing path only after the user has reviewed every plausible failure path. State that the check must be repeated for any other critical component.
 - When the manual assessment is complete, display `phi Nt` and `phi Rbs` as capacities only. Do not compare them with project actions or include them in an overall governing ratio.
-- If the manual assessment is selected but incomplete, show `Incomplete` within the collapsed integrity workflow. Do not issue a connection status.
+- If the assessment is selected but incomplete, show `Input required` beside the assessment heading. Do not issue a connection status.
 - State that the assessment covers only the selected component and entered path; it must not imply that every connected component or plausible path has been checked.
 
 Keep plate bending, connection-component compression or buckling, welds, supporting-member local effects, eccentric reactions and geometry-derived failure paths outside this optional check.
@@ -2524,17 +2559,18 @@ Pitch and edge-distance checks are detailing-compliance checks, not design capac
 
 #### 15.10.5 Result Hierarchy
 
-Keep the connected-ply result hierarchy concise:
+Keep the result hierarchy concise:
 
-1. Show `Design shear capacity - bolt group` as one compact result row.
-2. Show one matching compact connected-ply result block with two rows: `Design bearing capacity - full-bearing limit` and `Design bearing capacity - edge-distance limit`. Put `Bolt group` in each supporting basis line.
-3. Give each bearing card its own controlling-ply basis. Follow the two capacities with one concise line identifying the overall governing condition and ply.
-4. Inline detailing statuses at the `p` and active-ply `e` inputs; do not repeat them as a result table.
-5. One collapsed `Optional ply rupture checks` section with two compact result rows when the manual assessment is active.
-6. Single-hole capacities, the entered `a_e` value and equations remain in `Calculation steps`.
-7. Do not show project strength actions or strength utilisation. Show `TF slip utilisation ratio` only for `/TF`.
+1. Use one `Connection capacity summary` after all standard and optional inputs.
+2. Show `Design shear capacity, phi Vf - bolt group` and `Design bearing capacity, phi Vb - bolt group` as matching result rows.
+3. Compare the evaluated bolt-group shear and connected-ply bearing capacities, then highlight the lower existing result row and append `Governs`. Do not add a separate governing-capacity row. If the capacities are equal, highlight both and append `Governs jointly`. Net-section tension and block shear do not participate in this comparison.
+4. Report `Design section tension capacity, phi Nt` and `Design block shear capacity, phi Rbs` separately under `Ply rupture`; show `Not evaluated` until the optional assessment is complete.
+5. Show the full-bearing and edge-distance bearing limits directly below `Design bearing capacity`. Use smaller neutral secondary rows and give each limit its controlling-ply basis. Identify the controlling internal limit with `Controls bearing`; do not highlight these internal rows. Reserve governing highlight and `Governs` for the final comparison between bolt-group shear and connected-ply bearing. Do not place the bearing limits in a separate disclosure.
+6. Keep detailing statuses at the `p` and active-ply `e` inputs; do not repeat them as a result table.
+7. Single-hole capacities, the entered `a_e` value and equations remain in `Calculation steps`.
+8. Do not show project strength actions or strength utilisation. Show `TF slip utilisation ratio` only for `/TF`.
 
-The governing line should identify the governing ply and local condition, for example `Design bearing capacity governed by edge-distance limit - second ply`. If both plies are identical or equal, state that basis. Use `kN per bolt` consistently for both branches; describe the second branch as the AS 4100 Cl. 9.2.2.4 edge-distance bearing limit so that it is not confused with block shear.
+The `Design bearing capacity` basis should identify the controlling internal limit and ply, for example `Edge-distance limit controls bearing - second ply`. If both plies are identical or equal, state that basis. Use `kN per bolt` consistently for both internal limits; describe the second as the AS 4100 Cl. 9.2.2.4 edge-distance bearing limit so that it is not confused with block shear.
 
 #### 15.10.6 Scope Boundary
 
@@ -3365,21 +3401,21 @@ The concrete pad tab is a compact reinforced-concrete section-capacity view for 
 
 Use this scope:
 
-- Rectangular strip section only.
+- Rectangular 1000 mm strip section only; `b = 1000 mm` is fixed and not a user input.
 - Pure flexural section analysis with `N* = 0`.
 - User-selected compression face.
-- Current N-class and legacy Y-bar reinforcement mats.
+- Current N-class and legacy Y-bar reinforcement mats parallel to bending.
 - Neutral-axis solution, stress-block force, reinforcement force states, `Muo`, `phi Muo`, and `k_uo` warning status.
 - One-way shear capacity screen using AS 3600 Cl. 8.2.1.5, AS 3600 Cl. 8.2.1.9, AS 3600 Cl. 8.2.3.1, AS 3600 Cl. 8.2.4.1, AS 3600 Cl. 8.2.4.3 and AS 3600 Cl. 8.2.5.2. Evaluate it only for normal-weight, non-prestressed concrete without axial tension or torsion, with `f'c <= 65 MPa`, reinforcement `fsy <= 500 MPa` and maximum aggregate size at least 10 mm. Where detectable inputs are outside this scope, report `Not evaluated - outside simplified-method scope` and do not show a shear capacity. The remaining conditions are fixed project assumptions stated beside the result.
 - Current N-bar calculation areas must use AS/NZS 4671:2019 Table 7.5(A) nominal values: N10/N12/N16/N20/N24/N28/N32/N36/N40 = 78.5/113/201/314/452/616/804/1020/1260 mm2 per bar. Supplier tables control ordering mass and availability only. Treat N40 as an on-request product where applicable. Retain legacy Y-bar designations only for old drawings, use the matching nominal diameter area, default to the documented conservative legacy-grade assumption, and require project verification of the actual bar grade and condition.
-- Keep two-way reinforcement handling directional and lightweight. Calculate one strip direction at a time using only reinforcement parallel to the checked direction; provide `X` / `Y` as a scope label rather than combining orthogonal reinforcement in one section solution. Repeat the check for the other direction. Do not describe the lower directional capacity as governing unless compatible design actions are also compared.
-- Auto depth may place the checked-direction bars either closest to the concrete face or immediately inside one orthogonal crossing-bar layer. For the inside option, assume the orthogonal bars are in contact and offset the checked bar centre by the crossing-bar diameter; retain manual `y_i` override for actual layer gaps, unusual stacking or drawing-derived depths. Default to the inside option as a conservative critical-depth screen, but show the selected basis in the checked-section summary and calculation steps.
-- For one-way shear, derive `d` and `dv` from the checked-direction longitudinal tension reinforcement only. Do not use orthogonal distribution bars in `Ast`, `d` or `dv`. Punching shear remains excluded; a future punching check must use the AS 3600 Section 9.3 `dom` basis rather than reusing the minimum directional `d` or `dv`.
-- Use `N20` for the default flexural mats and orthogonal crossing bar, `c_nom = 75 mm`, and `No shear reinforcement` for the initial quick-screen state. When no shear reinforcement is selected, keep fitment bar, leg count, spacing and `fsy.f` hidden and inactive; reveal them only for the vertical-fitment branch.
-- Determine the concrete section automatically from the entered pad depths; do not ask the user to choose `Separate` or `Combined`. Where only `D_top` is positive, calculate the top pad with Mats 1 and 2. Where only `D_bot` is positive, calculate the bottom pad with Mats 3 and 4. Where both depths are positive, calculate one composite pad-on-pad strip with `D = D_top + D_bot` and all active mats. Where both depths are zero, do not calculate. For a composite pad-on-pad strip, state visibly that interface shear transfer, anchorage and composite action require separate verification.
+- Calculate one representative strip using only reinforcement parallel to bending. Do not provide an X/Y selector or store two hidden reinforcement sets. Default to `Two-way reinforcement` and assume each mat uses the selected bar size in both orthogonal directions. Place the checked bars immediately inside one contacting perpendicular layer of the same diameter, but never include the perpendicular reinforcement area in the section solution. `One-way reinforcement` removes that perpendicular depth offset. Where the two design directions use different reinforcement, the user changes the mat inputs and repeats the check.
+- Calculate each available mat depth automatically from cover, arrangement and bar diameter. For two-way reinforcement use `c_nom + 1.5d_b` from the relevant face; for one-way reinforcement use `c_nom + 0.5d_b`. Keep the displayed `y_i` directly editable for actual layer gaps, unusual stacking or drawing-derived depths. Editing creates a persistent manual override and reveals one compact `Auto` reset action beside that value; keep the action hidden for automatic values. Identify manual overrides in the calculation steps without adding a separate Auto-depth column or checkbox.
+- For one-way shear, derive `d` and `dv` from the entered longitudinal tension reinforcement only. Do not use perpendicular distribution bars in `Ast`, `d` or `dv`. Punching shear remains excluded; a future punching check must use the AS 3600 Section 9.3 `dom` basis rather than reusing `d` or `dv`.
+- Use `N20 @ 200 mm` for the default flexural reinforcement mats, `Two-way reinforcement`, `c_nom = 75 mm`, and `No shear reinforcement` for the initial quick-screen state. When no shear reinforcement is selected, keep fitment bar, leg count, spacing and `fsy.f` hidden and inactive; reveal them only for the vertical-fitment branch.
+- Determine the concrete section automatically from the entered pad depths; do not ask the user to choose `Separate` or `Combined`. Where only `D_top` is positive, calculate the top pad with Layers 1 and 2. Where only `D_bot` is positive, calculate the bottom pad with Layers 3 and 4. Where both depths are positive, calculate one composite pad-on-pad strip with `D = D_top + D_bot` and all active layers. Where both depths are zero, do not calculate. For a composite pad-on-pad strip, state visibly that interface shear transfer, anchorage and composite action require separate verification.
 - Use one adopted `f'c` for the full checked strip. Where pad-on-pad pours have different concrete strengths, use an appropriately conservative adopted strength in this lightweight model or perform a separate piecewise concrete-section analysis.
-- Keep concrete pad inputs lightweight and in dependency order: analysis basis; geometry; material; longitudinal reinforcement mats; optional shear reinforcement; checked-section summary; main capacities. Put `Compression face`, checked reinforcement direction, bar-stacking basis and orthogonal bar size in the first row. Keep per-mat `E_s` fixed at 200,000 MPa and out of the main table; retain `f_sy` only as the compact material override needed for legacy bars. Place the checked-section summary after every input. Do not place derived process values such as stress-block factors, calculated `phi`, `kv`, `theta_v`, `bv` or `dv` in editable-looking inputs on the main page; show them in the calculation steps and final result notes instead. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
-- When a pad depth is zero, disable that pad's two reinforcement rows, clear their displayed `y_i` to `N/A`, and exclude them from the section solution. If both bottom-pad mats are inactive while `D_bot = 0`, replace their rows with one concise not-applicable note; otherwise keep unavailable rows visible and visually muted. Preserve the previous active/material/manual-depth state and restore it if the pad depth becomes positive again. A defined pad may remain plain concrete by leaving its mats inactive; an RC capacity is still calculated when another active mat participates in the composite section.
+- Keep concrete pad inputs lightweight and in dependency order: compression face; pad depths; reinforcement arrangement and cover; concrete strength; reinforcement mats; optional shear reinforcement; one-line checked-section summary; main capacities. Fix `b = 1000 mm`. Do not ask for a separate perpendicular bar size under the default same-size two-way assumption. Keep per-mat `E_s` fixed at 200,000 MPa and out of the main table. Set `f_sy` from the selected bar designation by default, keep it editable, and reset it to the product default when the bar designation changes. Do not place derived process values such as stress-block factors, calculated `phi`, `kv`, `theta_v`, `bv` or `dv` in editable-looking inputs or main result notes; show them in the calculation steps instead. Reinforcement table inputs must use the shared form-control height, typography, rounded border and focus style even though the table is compact. On phone browsers, reinforcement-table numeric cells should use text inputs with numeric keyboard hints rather than native number controls, so they do not expose square number-input chrome or hard black inner outlines.
+- Replace separate `Include` controls with a `None / plain concrete` bar-size option for each mat. When a pad depth is zero, disable that pad's two mat rows, clear their displayed `y_i` to `N/A`, and exclude them from the section solution. Replace unavailable bottom-pad rows with one concise not-applicable note. Preserve each mat's bar/material/manual-depth state and restore it if the pad depth becomes positive again. A defined pad may remain plain concrete by selecting `None / plain concrete` for both mats; an RC capacity is still calculated when another reinforced mat participates in the composite section.
 
 Required exclusions:
 
@@ -3394,7 +3430,7 @@ Required exclusions:
 - Interface shear design for pad-on-pad strengthening.
 - Plain-concrete footing capacity.
 
-Concrete tab warnings must stay visible and concise. Use `Calculated` or `Review required` as calculation status, never `OK`, because the page does not compare design actions. The main warning should be a short section-capacity boundary plus brief review flags; keep detailed exclusions and derivations in folded panels. If no reinforcement mat is active, do not report a ductile reinforced-concrete `phi Muo` or reinforced-concrete `phi Vuc`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
+Concrete tab warnings must stay visible and concise. Use `Calculated` or `Review required` as calculation status, never `OK`, because the page does not compare design actions. The main warning should be a short section-capacity boundary plus brief review flags; keep detailed exclusions and derivations in folded panels. If no reinforcement layer is active, do not report a ductile reinforced-concrete `phi Muo` or reinforced-concrete `phi Vuc`; direct the user to a separate AS 3600 Section 20 plain-concrete footing check where applicable.
 
 Concrete `phi` must cite AS 3600 Table 2.2.2 when using the pure-bending `k_uo` expression for N-class reinforcement. If legacy Y bars are selected, describe `phi = 0.65` as a conservative quick-screen review value pending actual bar-grade and ductility verification, not as a universal Y-bar code rule.
 
@@ -3408,7 +3444,7 @@ Concrete section-analysis figure rules:
 
 - Treat the figure as a Level 2 calculation schematic. Keep the cross-section, linear strain distribution and equivalent rectangular stress block as three restrained panels with one consistent annotation size.
 - Measure neutral-axis depth `x` from the selected compression face. Define the equivalent stress-block depth as `a = gamma x`, stress intensity as `alpha_2 f'_c`, and locate `C_c` at `a/2 = gamma x/2` from the compression face. Never place a `gamma x/2` label between the stress-block base and the neutral axis, because that implies the wrong reference distance.
-- Where a representative single tension layer is shown, write `T = A_s f_s`; use `f_sy` only when yielding is explicitly assumed. State in the caption that the calculator uses every active reinforcement mat.
+- Where a representative single tension layer is shown, write `T = A_s f_s`; use `f_sy` only when yielding is explicitly assumed. State in the caption that the calculator uses every active layer parallel to bending.
 - Keep long equilibrium and capacity equations out of the image. Show only the symbols needed to identify geometry, strain and resultant location; leave full formulas in `Calculation steps`.
 - Keep the figure default-collapsed. On desktop, keep the expanded schematic compact at approximately `190 px` high and centred; on mobile, use the dedicated vertical asset at its natural responsive width. Use semibold notation at a source size that remains clear after responsive scaling, and preserve the source aspect ratio without crowding.
 - Keep `(a)`, `(b)` and `(c)` on one common caption baseline in the horizontal asset and at one consistent offset below each panel in the mobile asset. Dimension symbols such as `b` must have clear space from both the dimension arrow and the subfigure caption.
@@ -3416,9 +3452,10 @@ Concrete section-analysis figure rules:
 Concrete page copy and spacing rules:
 
 - Use one short helper sentence per input group. Do not repeat the same section type, direction, `b`, `D`, compression face or source statement in adjacent headings, summaries and result scopes.
-- The checked-section title should contain only section type, checked direction and compression face. Show `b`, `D`, depth basis and calculation status once in the summary metrics.
-- Keep the symbol key collapsed by default. Keep the visible reinforcement-source note to one line and move full manufacturer values and limitations to the folded basis panel.
-- Keep main result notes to one short standard/source statement plus the governing section-capacity limitation. Detailed derivations and solver evidence belong only in folded panels.
+- Use plain engineering English on the main page: `Concrete face in compression`, `Reinforcement layout`, `Two-way reinforcement`, `One-way reinforcement`, `None / plain concrete`, `Top pad only`, `Bottom pad only`, `Combined top and bottom pads`, and `Vertical shear fitments`. Keep compact symbols and formal terminology in the folded calculation steps. Where a method is not applicable, state the specific reason in the governing warning rather than relying on `outside scope` alone.
+- Keep the checked-section summary to one line containing section type, compression face and `1 m strip`. Show a second line only for a material composite-interface warning or an undefined section. Do not repeat fixed width, total depth, reinforcement position or software calculation status as summary metrics.
+- Keep the symbol key collapsed by default. Put reinforcement table values, supplier availability and legacy-bar limitations only in the folded basis panel.
+- Main result cards show only `phi Muo` and `phi Vu` with units. Put capacity-factor sources, `Vuc`, `Vus`, `dv`, solver evidence and other derived values in `Detailed section checks` or `Calculation steps`. Keep one concise section-capacity boundary below the cards.
 
 ### 15.15 Screw Piles Selector Web Tab Rules
 
@@ -3646,6 +3683,10 @@ Do not show design actions, demand, utilisation, `PASS`, `FAIL`, a governing loa
 
 The ASCE/SEI 48-19 polygon path is a separate foreign-standard `For Review` method. User-provided readable excerpts cover Chapter 5 pp. 9-11, Appendix A p. 59, Appendix B pp. 61-62 and Commentary C5 pp. 33-37. These excerpts support the displayed pure-bending formula path, but they do not establish complete ASCE 48 compliance, Australian adoption, load basis, fabrication acceptance or whole-member design.
 
+Keep the visible page order as `Input data`, `Derived shaft properties`, `Capacity results`, then folded calculation details and sources / limitations. Within `Input data`, use three peer groups only: `Geometry`, the active profile or physical-section schedule, and `Material and resistance basis`. Do not retain duplicate stage/group pairs such as `Section definition` plus `Section form`, or `Material and fabrication` plus `Material properties`. Use the canonical shared typography tokens: `--fs-md` for stage and result-disclosure headings, `--fs-sm` for input-group headings, labels, values and compact result labels, and `--fs-xs` for helper, source and limitation text. Do not use Monopole-specific 17 px or 18 px heading sizes.
+
+Use background colour only where it communicates function or state: the geometry-mode segmented control, manual/automatic input state, schedule table headers, the derived shaft-property summary, an expanded capacity disclosure and warning/unavailable states. Stage headings and ordinary Geometry or Material groups remain unfilled and use spacing or one subtle divider. A physical-section or wall-thickness schedule may retain a restrained frame because it is a distinct editable table. Do not nest decorative cards inside the main calculator card.
+
 #### 15.17A.1 Supported Geometry and Input Modes
 
 Support two explicit geometry modes:
@@ -3718,7 +3759,7 @@ The station table is ordered from pole top to pole base so `z = 0` is the final 
 
 Use a compact `Moment capacity` disclosure as the primary result. Its summary reports the governing evaluated base-station value: `Base phi Ms` for the AS 4100 circular path or `Base M` for the ASCE polygon path. At an exact base boundary, evaluate every active section state and report the lower available value. If any station is outside the implemented method range, report `Moment profile not checked` rather than presenting an isolated base value. Retain every regular and exact boundary result in the top-to-base station table; the station set is not a continuous numerical optimisation.
 
-For circular sections, add a separate `Section capacity intercepts` disclosure using the same station set and top-to-base order. At every active shell state report `phi Ns`, `phi Ms` and `kf`; these are the design section capacity intercepts used in the AS 4100 Cl. 8.3.2 interaction expression, not a scalar combined-capacity result. The summary reports the lower evaluated base `phi Ns` and base `phi Ms`. Preserve both adjacent states at an exact thickness or section boundary. Do not provide action inputs or calculate an interaction ratio.
+For circular sections, add a separate `Compression and bending capacities` disclosure using the same station set and top-to-base order. At every active shell state report `phi Ns`, `phi Ms` and `kf`; these are the design section capacity intercepts used in the AS 4100 Cl. 8.3.2 interaction expression, not a scalar combined-capacity result. The summary reports the lower evaluated base `phi Ns` and base `phi Ms`. Preserve both adjacent states at an exact thickness or section boundary. Do not provide action inputs or calculate an interaction ratio.
 
 #### 15.17A.4 Source and Method Isolation
 
@@ -3764,6 +3805,8 @@ Use these checked AS 4100 Table 5.2 CHS limits:
 
 Here `LW` means lightly welded longitudinally and `HW` means heavily welded longitudinally. Do not describe `HW` as helically welded.
 
+Treat `CF` as an AS 4100 Table 5.2 fabrication/residual-stress category, not as an AS/NZS 4600 design method. Preselect `CF` only for the verified AS/NZS 1163 cold-formed CHS product example. Do not infer `CF` solely because a fabricated plate shell is cold-formed during manufacture; require the project-confirmed AS 4100 category for that shell. AS/NZS 4600 section resistance is not implemented or evaluated by this page.
+
 Use `Z_e = min(S, 1.5Z)` for compact sections, the AS 4100 interpolation for non-compact sections, and the lesser applicable AS 4100 CHS expression for slender sections.
 
 Distinguish nominal wall thickness `t_nom` from design wall thickness `t_d`. Default `t_d = t_nom`; when a project deduction applies, allow a separate `t_d` and require `0 < t_d <= t_nom`. Use `t_nom` for the AS/NZS 3678 thickness-dependent `f_y` lookup and theoretical steel mass. Use `t_d` for section properties, slenderness and resistance.
@@ -3805,7 +3848,7 @@ Use `phi = 0.90` for the AS 4100 section capacities. Determine `kf = Ae/Ag` in a
 
 The available ASCE/SEI 48-19 excerpts include axial-plus-bending normal stress in Cl. 5.2.6 Eqs. (5.2-20) and (5.2-21). This is a point-stress check, not a generic capacity-ratio equation. A polygon implementation therefore requires signed `Mx*` and `My*`, a visible section-axis and polygon-orientation convention, and evaluation at every critical perimeter point. With shear and torsion excluded, evaluate the signed normal stress from `P/A + Mx cy/Ix + My cx/Iy`; compare tensile points with the applicable tensile limit and compressive points with the applicable `Fa` branch. Do not reduce this to one scalar `M*` or use `M = Fa Zmin` once axial force is present.
 
-For polygon forms, change the third disclosure title from `Section capacity intercepts` to `Combined polygon stress` and show `Not evaluated`. Keep that state until the axis convention, pointwise geometry routine, ASCE material acceptance and independent sign/rotation tests are complete. Retain its foreign-standard `For Review` status; the supplied excerpts do not establish Australian adoption or complete ASCE 48 compliance.
+For polygon forms, change the circular disclosure title from `Compression and bending capacities` to `Combined polygon stress` and show `Not evaluated`. Keep that state until the axis convention, pointwise geometry routine, ASCE material acceptance and independent sign/rotation tests are complete. Retain its foreign-standard `For Review` status; the supplied excerpts do not establish Australian adoption or complete ASCE 48 compliance.
 
 Retain traceability and independent tests for the `kf` branches, the two capacity intercepts, station order and thickness transitions. Polygon combined stress remains unavailable.
 
@@ -3888,13 +3931,13 @@ Report `Total steel mass`, `Self-weight`, `Assembled centre of gravity`, and opt
 
 #### 15.17A.10 Page Structure and Figure Rules
 
-Use the shared static-app tab system, not a standalone page or framework rewrite. Use three aligned primary headings without numeric stage badges:
+Use the shared static-app tab system, not a standalone page or framework rewrite. Use this compact hierarchy without numeric stage badges:
 
-- `Section definition`: geometry mode, section form and either the continuous-taper definition or fabricated-section schedule;
-- `Material and fabrication`: yield-strength basis, fabrication category, design-thickness option and source-status note;
-- `Section capacity`: two adjacent disclosures for `Moment capacity` and the circular `Section capacity intercepts` or polygon `Combined polygon stress` state.
+- `Input data`: one Geometry group, the active profile definition or physical-section schedule, then one Material and resistance basis group;
+- `Derived shaft properties`: one compact read-only summary for mass, self-weight and centre of gravity;
+- `Capacity results`: two adjacent disclosures for `Moment capacity` and the circular `Compression and bending capacities` or polygon `Combined polygon stress` state.
 
-Place the compact `Shaft properties` summary between material inputs and section capacity. It reports mass, self-weight, assembled centre of gravity and installed height; it is not a capacity result. Place prescribed slip-overlap screening after section capacity, followed by calculation details, sources and limitations. Do not use a generic `Results` heading or a result-card grid.
+Place the compact `Derived shaft properties` summary between material inputs and capacity results. It reports mass, self-weight, assembled centre of gravity and installed height; it is not a capacity result. Place prescribed slip-overlap screening after capacity results, followed by calculation details, sources and limitations. Do not use a generic `Results` heading or a result-card grid.
 Keep both capacity disclosures collapsed by default so their base summaries can be compared directly. Each disclosure uses the common 0.5 m station basis. Hide the prescribed slip-overlap section when no positive overlap is entered.
 
 Initial values are visible, editable examples rather than hidden design assumptions. The initial fabricated circular row uses the cited Austube 508.0 x 6.4 CHS C350L0 geometry and `f_y = 350 MPa`; `CF` is the editable initial fabrication category. Plate grade 350 is the initial value when the plate lookup is selected. Design thickness defaults to `t_d = t_nom` and may be enabled as a section-by-section project input. For regular polygons, `r_i/t_nom = 1.5` is an editable fabrication estimate, not a Standard or product value. New section identifiers and zero overlap remain editable.
@@ -3908,9 +3951,9 @@ The station table is collapsed by default and shows its row count in the summary
 
 Keep the chart wider than it is tall so the profile remains an engineering plot rather than a dominant page illustration. On phone layouts, place the method or scope note below the section heading, keep the physical-section identifier visible while the schedule scrolls horizontally, and render a compact chart viewBox that fits the content width without horizontal chart scrolling. Technical tables may scroll within their own contained regions; no technical region may create page-level horizontal overflow.
 
-Limit common material and overall-profile input groups to three columns on wide desktop, two columns on narrow desktop and one column on phone layouts. Keep both groups inside the same bordered input-group treatment. Do not use automatic column expansion that compresses long engineering labels or selected material and fabrication values.
+Limit common material and overall-profile input groups to three columns on wide desktop, two columns on narrow desktop and one column on phone layouts. Keep ordinary input groups unfilled and unframed; reserve the restrained border for the editable schedule. Do not use automatic column expansion that compresses long engineering labels or selected material and fabrication values.
 
-Use one spacing layer between monopole workflow sections; do not combine lookup-card grid gaps with child margins. Keep `Section form`, the active geometry definition and `Material properties` as visually equivalent engineering input bands beneath their parent headings. On desktop, use bounded control tracks that stop expanding once labels and selected values are comfortably readable. Place the polygon method note with `Section form`, the material provenance note with `Material properties`, and keep the design-thickness override in the active material-control grid instead of forcing an otherwise empty row. At every viewport, constrain schedule, station and overlap tables to their own paint-contained horizontal-scroll regions so a table cannot create page-level overflow. On phone, stack the same controls and notes in the same engineering order.
+Use one spacing layer between monopole workflow sections; do not combine lookup-card grid gaps with child margins. Keep Geometry, the active profile definition and Material and resistance basis as peer engineering groups under `Input data`; do not add a second stage heading for material. On desktop, use bounded control tracks that stop expanding once labels and selected values are comfortably readable. Place the polygon method note with Geometry, the material provenance note with Material and resistance basis, and keep the design-thickness override in the active material-control grid instead of forcing an otherwise empty row. At every viewport, constrain schedule, station and overlap tables to their own paint-contained horizontal-scroll regions so a table cannot create page-level overflow. On phone, stack the same controls and notes in the same engineering order.
 
 #### 15.17A.11 Result States and Exclusions
 

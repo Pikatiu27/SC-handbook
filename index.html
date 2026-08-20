@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260821reoheading1">
+  <link rel="stylesheet" href="styles.css?v=20260821reomerge1">
 </head>
 <body>
   <header class="topbar">
@@ -26,7 +26,7 @@
       <a href="https://github.com/Pikatiu27/SC-handbook/issues/new" target="_blank" rel="noopener noreferrer">Report an issue</a>
     </aside>
 
-    <section class="tool-navigation" aria-label="Engineering tool navigation">
+    <section class="tool-navigation" data-active-tool="bolt" aria-label="Engineering tool navigation">
       <div class="mobile-tool-bar">
         <span><small id="mobileToolCategory">Steel Connections</small><strong id="mobileToolName">Bolt Capacity</strong></span>
         <button id="mobileToolsToggle" class="mobile-tools-toggle" type="button" aria-expanded="false" aria-controls="toolNavigationMenu">Tools <span aria-hidden="true">+</span></button>
@@ -114,12 +114,11 @@
       </section>
 
       <details class="detail-card major-detail" id="connectionDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Bolt-group shear, ply bearing and detailing</small></span><i>+</i></summary>
+        <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Connection inputs, detailing and group capacities</small></span><i>+</i></summary>
         <div class="detail-body">
-          <section><h3>Bolt group and shear planes</h3><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="2"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>bolted-lap reduction</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div><div class="compact-result bolt-group-result"><span>Design shear capacity, &phi;V<sub>f</sub> · bolt group</span><strong id="groupShearCapacity">266.8 kN</strong><small id="groupShearBasis">2 bolts · 1 N + 0 X shear planes per bolt · equal shear per bolt assumed</small></div></section>
-          <section>
-            <h3>Connected plies and detailing</h3>
-            <div class="ply-section-heading"><div><b>Hole geometry and spacing</b><small>Hole type and pitch detailing.</small></div></div>
+          <section class="connection-inputs"><h3>Connection inputs</h3><div class="ply-section-heading connection-group-heading"><div><b>Bolt group</b></div></div><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="2"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>bolted-lap reduction</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div></section>
+          <section class="connected-ply-inputs">
+            <div class="ply-section-heading connection-group-heading"><div><b>Hole and spacing</b></div></div>
             <div class="form-grid two shared-ply-geometry">
               <div class="detailing-input-field edge-pitch-field">
                 <div class="detailing-input-control">
@@ -130,8 +129,9 @@
               </div>
               <label><span>Hole type</span><select id="holeFactor"><option value="1">Standard hole</option><option value="0.85">Oversize / short slot</option><option value="0.7">Long slot</option></select></label>
             </div>
+            <div class="ply-section-heading connection-group-heading connected-ply-heading"><div><b>Connected plies</b></div></div>
             <div class="ply-basis-control">
-              <label><span>Connected-ply basis</span><select id="connectedPlyBasis"><option value="identical">Both plies identical</option><option value="separate">Check plies separately</option></select></label>
+              <label><span>Ply basis</span><select id="connectedPlyBasis"><option value="identical">Both plies identical</option><option value="separate">Check plies separately</option></select></label>
               <p id="connectedPlyBasisNote">Primary ply properties apply to both connected plies.</p>
             </div>
             <div class="bolt-ply-grid" id="boltPlyGrid">
@@ -178,26 +178,18 @@
                 </div>
               </div>
             </div>
-            <div class="connected-ply-results" aria-live="polite">
-              <div><span>Design bearing capacity, &phi;V<sub>b</sub> · full-bearing limit</span><strong id="bearingGroupCapacity">566.8 kN</strong><small id="bearingGroupBasis">Bolt group · both plies identical · 283.4 kN per bolt × 2 bolts</small></div>
-              <div><span>Design bearing capacity, &phi;V<sub>b</sub> · edge-distance limit</span><strong id="tearoutGroupCapacity">302.6 kN</strong><small id="tearoutGroupBasis">Bolt group · both plies identical · 151.3 kN per bolt × 2 bolts</small></div>
-              <p id="connectedPlyGoverningBasis">Design bearing capacity governed by edge-distance limit · both plies identical</p>
-            </div>
-            <p class="local-bearing-scope">AS 4100 Cl. 9.2.2.4 local bearing limits only; net-section tension and block shear are assessed separately below.</p>
-            <div id="plyComparison" class="ply-comparison" hidden>
-              <div><span>Primary ply</span><strong id="primaryPlyCapacity">302.6 kN</strong><small id="primaryPlyControl">Edge-distance limit</small></div>
-              <div><span>Second ply</span><strong id="secondPlyCapacity">242.1 kN</strong><small id="secondPlyControl">Edge-distance limit</small></div>
-            </div>
-            <details class="integrity-check" id="connectedPlyIntegrity">
-              <summary><span><b>Optional ply rupture checks</b><small id="integritySummaryStatus">Not evaluated</small></span><i>+</i></summary>
+          </section>
+
+          <section class="ply-rupture-assessment" id="connectedPlyIntegrity">
+              <div class="assessment-heading"><div><h3>Ply rupture assessment</h3><small>Optional net-section and block-shear capacities</small></div><b id="integritySummaryStatus">Not evaluated</b></div>
               <div class="integrity-body">
                 <div class="form-grid two">
-                  <label><span>Assessment basis</span><select id="integrityMode"><option value="none">Not evaluated</option><option value="manual">Evaluate ply rupture</option></select></label>
-                  <label><span>Checked component</span><select id="integrityComponent"><option value="primary">Primary ply</option><option value="second">Second ply</option></select></label>
+                  <label><span>Assessment</span><select id="integrityMode"><option value="none">Not evaluated</option><option value="manual">Evaluate</option></select></label>
+                  <label><span>Checked ply</span><select id="integrityComponent"><option value="primary">Primary ply</option><option value="second">Second ply</option></select></label>
                 </div>
                 <div id="integrityInputs" class="integrity-inputs" hidden>
                   <section class="integrity-input-section integrity-ply-section">
-                    <div class="ply-section-heading"><div><b>Selected ply inputs</b><small>Geometry and material for the checked component</small></div></div>
+                    <div class="ply-section-heading connection-group-heading"><div><b>Checked ply inputs</b></div></div>
                     <div class="form-grid four integrity-ply-geometry" id="integrityStraightGeometry">
                       <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="integrityThickness" type="number" readonly value="10"><em>mm</em></span></label>
                       <label><span>b <i>plate width</i></span><span class="unit"><input id="integrityPlateWidth" type="number" min="0.1" step="1" placeholder="Required"><em>mm</em></span></label>
@@ -212,7 +204,7 @@
                   </section>
 
                   <section class="integrity-input-section">
-                  <div class="ply-section-heading"><div><b>Net-section tension</b><small>AS 4100 Cls 7.2, 9.1.9(b) and 9.1.10</small></div></div>
+                  <div class="ply-section-heading connection-group-heading"><div><b>Net-section tension</b><small>AS 4100 Cls 7.2, 9.1.9(b) and 9.1.10</small></div></div>
                   <div class="form-grid two integrity-net-controls">
                     <label><span>Area basis</span><select id="integrityAreaMode"><option value="straight">Straight section</option><option value="manual">Manual areas</option></select></label>
                     <label><span>k<sub>t</sub> <i>force distribution</i></span><input id="integrityKt" type="number" min="0.01" max="1" step="0.05" value="1"></label>
@@ -225,26 +217,38 @@
                   </section>
 
                   <section class="integrity-input-section">
-                  <div class="ply-section-heading"><div><b>Block shear · governing path</b><small>AS 4100 Cl. 9.1.9(e)</small></div></div>
-                  <div class="form-grid three integrity-block-areas">
+                  <div class="ply-section-heading connection-group-heading"><div><b>Block shear · governing path</b><small>AS 4100 Cl. 9.1.9(e)</small></div></div>
+                  <div class="form-grid four integrity-block-areas">
                     <label><span>A<sub>gv</sub> <i>gross shear area</i></span><span class="unit"><input id="integrityAgv" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
                     <label><span>A<sub>nv</sub> <i>net shear area</i></span><span class="unit"><input id="integrityAnv" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
                     <label><span>A<sub>nt</sub> <i>net tension area</i></span><span class="unit"><input id="integrityAnt" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
-                  </div>
-                  <div class="integrity-kbs-control">
                     <label><span>k<sub>bs</sub> <i>tension-stress distribution</i></span><select id="integrityKbs"><option value="1">1.0 · Uniform</option><option value="0.5">0.5 · Non-uniform</option></select></label>
-                    <p>Adopt for the reviewed block-shear path.</p>
                   </div>
+                  <p class="ply-basis-note">Use the areas and k<sub>bs</sub> for the reviewed block-shear path.</p>
                   </section>
-
-                  <div class="integrity-results" aria-live="polite">
-                    <div><span>Design section tension capacity, &phi;N<sub>t</sub></span><strong id="integrityNetCapacity">Incomplete</strong><small id="integrityNetBasis">Enter A<sub>g</sub> and A<sub>n</sub></small></div>
-                    <div><span>Design block shear capacity, &phi;R<sub>bs</sub></span><strong id="integrityBlockCapacity">Incomplete</strong><small id="integrityBlockBasis">Enter the governing path areas</small></div>
-                  </div>
-                  <p class="checklist-warning" id="integrityCheckNote">Review all plausible failure paths and enter the governing path areas for the selected component.</p>
                 </div>
               </div>
-            </details>
+          </section>
+
+          <section class="connection-capacity-section" aria-live="polite">
+            <div class="connection-results-heading"><div><span class="section-tag">RESULTS</span><h3>Connection capacity summary</h3></div></div>
+            <div class="connection-summary-list">
+              <div class="governing" id="groupShearResultRow"><span>Design shear capacity, &phi;V<sub>f</sub> · bolt group</span><strong id="groupShearCapacity">266.8 kN</strong><small id="groupShearBasis">2 bolts · 1 N + 0 X shear planes per bolt · equal shear per bolt assumed · Governs</small></div>
+              <div id="bearingResultRow"><span>Design bearing capacity, &phi;V<sub>b</sub> · bolt group</span><strong id="governingBearingCapacity">302.6 kN</strong><small id="governingBearingBasis">Edge-distance limit controls bearing · both plies identical</small></div>
+              <div class="bearing-limit-row" id="fullBearingLimitRow"><span>Full-bearing limit</span><strong id="bearingGroupCapacity">566.8 kN</strong><small id="bearingGroupBasis">Both plies identical · 283.4 kN per bolt × 2 bolts</small></div>
+              <div class="bearing-limit-row" id="edgeBearingLimitRow"><span>Edge-distance limit</span><strong id="tearoutGroupCapacity">302.6 kN</strong><small id="tearoutGroupBasis">Both plies identical · 151.3 kN per bolt × 2 bolts · Controls bearing</small></div>
+            </div>
+            <div id="plyComparison" class="ply-comparison" hidden>
+              <div><span>Primary ply</span><strong id="primaryPlyCapacity">302.6 kN</strong><small id="primaryPlyControl">Edge-distance limit</small></div>
+              <div><span>Second ply</span><strong id="secondPlyCapacity">242.1 kN</strong><small id="secondPlyControl">Edge-distance limit</small></div>
+            </div>
+            <p class="local-bearing-scope">AS 4100 Cl. 9.2.2.4 local bearing limits. Ply rupture capacities are reported separately.</p>
+            <div class="connection-result-subheading connection-group-heading"><b>Ply rupture</b></div>
+            <div class="integrity-results" id="integrityResults" aria-live="polite">
+              <div><span>Design section tension capacity, &phi;N<sub>t</sub></span><strong id="integrityNetCapacity">Not evaluated</strong><small id="integrityNetBasis">Enable the ply rupture assessment</small></div>
+              <div><span>Design block shear capacity, &phi;R<sub>bs</sub></span><strong id="integrityBlockCapacity">Not evaluated</strong><small id="integrityBlockBasis">Enable the ply rupture assessment</small></div>
+            </div>
+            <p class="checklist-warning" id="integrityCheckNote" hidden>Review all plausible failure paths and enter the governing path areas for the checked ply.</p>
           </section>
           <section id="tfSlipSection" hidden>
             <h3>TF slip check</h3>
@@ -632,38 +636,35 @@
     </section>
 
     <section id="concretePanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Concrete pads · AS 3600:2018 section theory</p><h2>Concrete Pad Section</h2></div><span class="tool-status">For Review · section resistance only</span></div>
+      <div class="tool-heading"><div><p class="kicker">Concrete pads · AS 3600:2018 section theory</p><h2>Concrete Pad Section</h2></div><span class="tool-status">For Review · section capacity only</span></div>
 
       <section class="lookup-card concrete-card">
         <div class="concrete-input-stack input-cluster">
           <section class="input-group input-group-factor">
-            <span class="input-group-heading"><b>Analysis basis</b><small>Compression face and checked direction.</small></span>
+            <span class="input-group-heading"><b>Analysis basis</b><small>Choose the concrete face in compression.</small></span>
             <div class="concrete-input-row concrete-row-analysis">
-              <label><span>Compression face</span><select id="concreteDirection" aria-label="Compression face"><option value="top">Top face</option><option value="bottom">Bottom face</option></select></label>
-              <label><span>Reinforcement direction</span><select id="concreteReoDirection"><option value="x">X direction</option><option value="y">Y direction</option></select></label>
+              <label><span>Concrete face in compression</span><select id="concreteDirection" aria-label="Concrete face in compression"><option value="top">Top face</option><option value="bottom">Bottom face</option></select></label>
             </div>
           </section>
 
           <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Section geometry</b><small>Positive pad depths define the section.</small></span>
+            <span class="input-group-heading"><b>Section geometry</b><small>Enter a depth greater than zero to include that pad.</small></span>
             <div class="concrete-input-row concrete-row-main">
-              <label><span>Section width, b</span><span class="unit"><input id="concreteWidth" type="number" min="100" step="50" value="1000"><em>mm</em></span></label>
               <label><span>Top pad depth, D<sub>top</sub></span><span class="unit"><input id="concreteTopDepth" type="number" min="0" step="10" value="500"><em>mm</em></span></label>
               <label><span>Bottom pad depth, D<sub>bot</sub></span><span class="unit"><input id="concreteBottomDepth" type="number" min="0" step="10" value="0"><em>mm</em></span></label>
             </div>
           </section>
 
-          <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Reinforcement geometry</b><small>Cover, stacking and crossing-bar geometry.</small></span>
+          <section class="input-group input-group-section concrete-reinforcement-group">
+            <span class="input-group-heading"><b>Reinforcement layout</b><small>Two-way assumes the same bar size in both directions. Bar depths are automatic and editable.</small></span>
             <div class="concrete-input-row concrete-row-reinforcement">
               <label><span>Nominal cover, c<sub>nom</sub></span><span class="unit"><input id="concreteCover" type="number" min="0" step="5" value="75"><em>mm</em></span></label>
-              <label><span>Bar stacking basis</span><select id="concreteDepthBasis"><option value="inside">Inside crossing bars</option><option value="closest">Closest to face</option></select></label>
-              <label><span>Orthogonal bar size, d<sub>b,&perp;</sub></span><select id="concreteCrossingBar" data-default-bar="N20" aria-label="Orthogonal bar size"></select></label>
+              <label><span>Reinforcement arrangement</span><select id="concreteReinforcementLayout"><option value="two-way">Two-way reinforcement</option><option value="one-way">One-way reinforcement</option></select></label>
             </div>
           </section>
 
           <section class="input-group input-group-material">
-            <span class="input-group-heading"><b>Material properties</b><small>One f'<sub>c</sub> for the checked section.</small></span>
+            <span class="input-group-heading"><b>Material properties</b></span>
             <div class="concrete-input-row concrete-row-material">
               <label><span>Adopted concrete strength, f'<sub>c</sub></span><span class="unit"><input id="concreteFc" type="number" min="20" max="120" step="1" value="32"><em>MPa</em></span></label>
             </div>
@@ -671,69 +672,67 @@
 
         </div>
 
-        <details class="concrete-symbol-details"><summary><span><b>Symbols</b><small>Geometry and reinforcement depth notation</small></span><i>+</i></summary><div class="symbol-key" aria-label="Concrete pad layout symbols"><span><b>b</b> strip width</span><span><b>D<sub>top</sub></b> top pad</span><span><b>D<sub>bot</sub></b> bottom pad</span><span><b>c<sub>nom</sub></b> nominal cover</span><span><b>y<sub>i</sub></b> mat depth from top</span><span><b>d<sub>b,&perp;</sub></b> crossing bar</span></div></details>
-        <p class="result-note concrete-reo-source">N-bar areas: <a href="https://www.infrabuild.com/resources/product-guides-resources/infrabuild-reinforcing-product-guide/" target="_blank" rel="noopener">InfraBuild 500PLUS</a>. Legacy Y bars require verification.</p>
+        <details class="concrete-symbol-details"><summary><span><b>Symbols</b><small>Section and reinforcement notation</small></span><i>+</i></summary><div class="symbol-key" aria-label="Concrete pad layout symbols"><span><b>b</b> 1000 mm strip</span><span><b>D<sub>top</sub></b> top pad</span><span><b>D<sub>bot</sub></b> bottom pad</span><span><b>c<sub>nom</sub></b> nominal cover</span><span><b>y<sub>i</sub></b> mat depth from top face</span><span><b>d<sub>b</sub></b> bar diameter</span></div></details>
 
-        <section class="concrete-layer-table" aria-label="Reinforcement mats">
-          <div class="layer-header"><span>Reinforcement mat</span><span>Active</span><span>Auto y<sub>i</sub></span><span>Depth y<sub>i</sub></span><span>Bar size</span><span>Spacing</span><span>f<sub>sy</sub></span></div>
-          <div class="layer-row"><strong>Top pad top mat</strong><label><input id="layer1Active" type="checkbox" checked><span>include</span></label><label><input id="layer1Auto" type="checkbox" checked><span>auto</span></label><label data-field="Depth y_i"><input id="layer1Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="105"><em>mm</em></label><label data-field="Bar size"><select id="layer1Bar" data-default-bar="N20" aria-label="Top pad top mat bar size"></select></label><label data-field="Spacing"><input id="layer1Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer1Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer1Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
-          <div class="layer-row"><strong>Top pad bottom mat</strong><label><input id="layer2Active" type="checkbox" checked><span>include</span></label><label><input id="layer2Auto" type="checkbox" checked><span>auto</span></label><label data-field="Depth y_i"><input id="layer2Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="395"><em>mm</em></label><label data-field="Bar size"><select id="layer2Bar" data-default-bar="N20" aria-label="Top pad bottom mat bar size"></select></label><label data-field="Spacing"><input id="layer2Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer2Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer2Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
-          <div id="layer3Row" class="layer-row"><strong>Bottom pad top mat</strong><label><input id="layer3Active" type="checkbox"><span>include</span></label><label><input id="layer3Auto" type="checkbox" checked><span>auto</span></label><label data-field="Depth y_i"><input id="layer3Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="605"><em>mm</em></label><label data-field="Bar size"><select id="layer3Bar" data-default-bar="N20" aria-label="Bottom pad top mat bar size"></select></label><label data-field="Spacing"><input id="layer3Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer3Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer3Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
-          <div id="layer4Row" class="layer-row"><strong>Bottom pad bottom mat</strong><label><input id="layer4Active" type="checkbox"><span>include</span></label><label><input id="layer4Auto" type="checkbox" checked><span>auto</span></label><label data-field="Depth y_i"><input id="layer4Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="605"><em>mm</em></label><label data-field="Bar size"><select id="layer4Bar" data-default-bar="N20" aria-label="Bottom pad bottom mat bar size"></select></label><label data-field="Spacing"><input id="layer4Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer4Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer4Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
-          <div id="bottomPadLayerNote" class="layer-inactive-note" hidden>Bottom pad mats are not applicable while D<sub>bot</sub> = 0.</div>
+        <section class="concrete-layer-table" aria-label="Reinforcement mats parallel to bending">
+          <div class="layer-header"><span>Reinforcement mat</span><span>Depth from top</span><span>Bar size</span><span>Spacing</span><span>f<sub>sy</sub></span></div>
+          <div class="layer-row"><strong>Top pad - top face</strong><input id="layer1Active" type="checkbox" checked hidden><input id="layer1Auto" type="checkbox" checked hidden><label data-field="Depth y_i"><input id="layer1Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="105" title="Edit to override the automatic depth"><em>mm</em><button id="layer1AutoReset" class="layer-depth-reset" type="button" aria-label="Restore automatic depth for top pad top-face reinforcement" hidden>Auto</button></label><label data-field="Bar size"><select id="layer1Bar" data-default-bar="N20" aria-label="Top pad top-face bar size"></select></label><label data-field="Spacing"><input id="layer1Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer1Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer1Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
+          <div class="layer-row"><strong>Top pad - bottom face</strong><input id="layer2Active" type="checkbox" checked hidden><input id="layer2Auto" type="checkbox" checked hidden><label data-field="Depth y_i"><input id="layer2Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="395" title="Edit to override the automatic depth"><em>mm</em><button id="layer2AutoReset" class="layer-depth-reset" type="button" aria-label="Restore automatic depth for top pad bottom-face reinforcement" hidden>Auto</button></label><label data-field="Bar size"><select id="layer2Bar" data-default-bar="N20" aria-label="Top pad bottom-face bar size"></select></label><label data-field="Spacing"><input id="layer2Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer2Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer2Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
+          <div id="layer3Row" class="layer-row"><strong>Bottom pad - top face</strong><input id="layer3Active" type="checkbox" checked hidden><input id="layer3Auto" type="checkbox" checked hidden><label data-field="Depth y_i"><input id="layer3Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="605" title="Edit to override the automatic depth"><em>mm</em><button id="layer3AutoReset" class="layer-depth-reset" type="button" aria-label="Restore automatic depth for bottom pad top-face reinforcement" hidden>Auto</button></label><label data-field="Bar size"><select id="layer3Bar" data-default-bar="N20" aria-label="Bottom pad top-face bar size"></select></label><label data-field="Spacing"><input id="layer3Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer3Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer3Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
+          <div id="layer4Row" class="layer-row"><strong>Bottom pad - bottom face</strong><input id="layer4Active" type="checkbox" checked hidden><input id="layer4Auto" type="checkbox" checked hidden><label data-field="Depth y_i"><input id="layer4Y" class="numeric-input" type="text" inputmode="decimal" data-min="0" value="605" title="Edit to override the automatic depth"><em>mm</em><button id="layer4AutoReset" class="layer-depth-reset" type="button" aria-label="Restore automatic depth for bottom pad bottom-face reinforcement" hidden>Auto</button></label><label data-field="Bar size"><select id="layer4Bar" data-default-bar="N20" aria-label="Bottom pad bottom-face bar size"></select></label><label data-field="Spacing"><input id="layer4Spacing" class="numeric-input" type="text" inputmode="decimal" data-min="50" value="200"><em>mm</em></label><label data-field="f_sy"><input id="layer4Fsy" class="numeric-input" type="text" inputmode="decimal" data-min="200" data-max="600" value="500"><em>MPa</em></label><label data-field="E_s"><input id="layer4Es" class="numeric-input" type="text" inputmode="decimal" data-min="100000" value="200000"><em>MPa</em></label></div>
+          <div id="bottomPadLayerNote" class="layer-inactive-note" hidden>Bottom-pad reinforcement is not applicable while D<sub>bot</sub> = 0.</div>
         </section>
 
         <section class="input-group input-group-factor concrete-shear-group">
           <span class="input-group-heading"><b>Shear reinforcement</b><small>Optional vertical fitments.</small></span>
           <div id="concreteShearInputs" class="concrete-input-row concrete-row-analysis concrete-row-assumptions concrete-row-shear">
-            <label><span>Shear reinforcement</span><select id="concreteShearReo"><option value="none">No shear reinforcement</option><option value="vertical">Vertical fitments</option></select></label>
+            <label><span>Shear reinforcement</span><select id="concreteShearReo"><option value="none">No shear reinforcement</option><option value="vertical">Vertical shear fitments</option></select></label>
             <label id="concreteShearBarField"><span>Fitment bar</span><select id="concreteShearBar" data-default-bar="N12" aria-label="Shear reinforcement bar size"></select></label>
-            <label id="concreteNsvField"><span>n<sub>sv</sub> legs</span><input id="concreteNsv" type="number" min="1" step="1" value="2"></label>
-            <label id="concreteSvField"><span>s<sub>v</sub> spacing</span><span class="unit"><input id="concreteSv" type="number" min="50" step="10" value="200"><em>mm</em></span></label>
-            <label id="concreteFsyfField"><span>f<sub>sy.f</sub></span><span class="unit"><input id="concreteFsyf" type="number" min="200" max="600" step="10" value="500"><em>MPa</em></span></label>
+            <label id="concreteNsvField"><span>Number of fitment legs, n<sub>sv</sub></span><input id="concreteNsv" type="number" min="1" step="1" value="2"></label>
+            <label id="concreteSvField"><span>Fitment spacing, s<sub>v</sub></span><span class="unit"><input id="concreteSv" type="number" min="50" step="10" value="200"><em>mm</em></span></label>
+            <label id="concreteFsyfField"><span>Fitment yield strength, f<sub>sy.f</sub></span><span class="unit"><input id="concreteFsyf" type="number" min="200" max="600" step="10" value="500"><em>MPa</em></span></label>
           </div>
         </section>
 
         <div class="concrete-summary">
-          <div><span>Checked section</span><strong id="concreteSummaryTitle">Single top-pad section · X direction · top compression</strong><small id="concreteSummaryNote">Directional strip capacity; repeat for Y direction.</small></div>
-          <dl><div><dt>bar basis</dt><dd id="concreteModeValue">-</dd></div><div><dt>b</dt><dd id="concreteWidthValue">-</dd></div><div><dt>D</dt><dd id="concreteDepthValue">-</dd></div><div><dt>calculation</dt><dd id="concreteStatusValue">-</dd></div></dl>
+          <div><span>Checked section</span><strong id="concreteSummaryTitle">Top pad only · top face in compression · 1 m strip</strong><small id="concreteSummaryNote"></small></div>
         </div>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div><span id="concreteResultScope">selected strip</span></div>
+          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div></div>
           <div class="capacity-grid concrete-results">
-            <article class="capacity-card selected-shear"><span class="capacity-label">Design flexural capacity <b>&phi;M<sub>uo</sub></b></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong><p id="concretePhiNote">&phi; from AS 3600 Table 2.2.2.</p></article>
-            <article class="capacity-card"><span class="capacity-label">One-way shear section capacity <b>&phi;V<sub>u</sub></b></span><strong><output id="concretePhiVu">-</output><small> kN</small></strong><p id="concreteShearNote">Concrete contribution only; no shear reinforcement included</p></article>
+            <article class="capacity-card selected-shear"><span class="capacity-label">Design flexural capacity <b>&phi;M<sub>uo</sub></b></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong></article>
+            <article class="capacity-card"><span class="capacity-label">One-way shear section capacity <b>&phi;V<sub>u</sub></b></span><strong><output id="concretePhiVu">-</output><small> kN</small></strong></article>
           </div>
           <p class="result-note" id="concreteWarningText">Section capacities only; design actions and excluded checks are not evaluated.</p>
         </section>
 
         <section class="concrete-visual-grid">
-          <details class="concrete-visual-card concrete-layout-details"><summary><div class="section-heading"><div><h2>Section analysis schematic</h2></div><span>strain and stress block</span></div><i>+</i></summary><div class="concrete-visual-body"><figure class="concrete-publication-figure"><picture><source media="(max-width: 760px)" srcset="assets/generated/concrete-pad-publication-style-mobile.svg?v=20260717stressblock7"><img src="assets/generated/concrete-pad-publication-style.svg?v=20260717stressblock7" alt="Concrete cross-section, linear strain distribution and equivalent rectangular stress block"></picture><figcaption>Notation schematic only: a = &gamma;x and C<sub>c</sub> acts at a/2; the calculation uses every active mat.</figcaption></figure></div></details>
+          <details class="concrete-visual-card concrete-layout-details"><summary><div class="section-heading"><div><h2>Section analysis schematic</h2></div><span>strain and stress block</span></div><i>+</i></summary><div class="concrete-visual-body"><figure class="concrete-publication-figure"><picture><source media="(max-width: 760px)" srcset="assets/generated/concrete-pad-publication-style-mobile.svg?v=20260717stressblock7"><img src="assets/generated/concrete-pad-publication-style.svg?v=20260717stressblock7" alt="Concrete cross-section, linear strain distribution and equivalent rectangular stress block"></picture><figcaption>Notation schematic only: a = &gamma;x and C<sub>c</sub> acts at a/2; the calculation uses every active layer parallel to bending.</figcaption></figure></div></details>
         </section>
       </section>
 
-      <details class="detail-card concrete-detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Detailed section checks</b></span><small>Neutral axis, forces and calculation steps</small></span><i>+</i></summary><div class="detail-body"><section><h3>Section conclusions</h3><div id="concreteSectionState" class="concrete-layer-results"></div></section><section><h3>Reinforcement force state</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation steps</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
+      <details class="detail-card concrete-detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Detailed section checks</b></span><small>Neutral axis, forces and calculation steps</small></span><i>+</i></summary><div class="detail-body"><section><h3>Capacity summary</h3><div id="concreteSectionState" class="concrete-layer-results"></div></section><section><h3>Reinforcement forces and strains</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation steps</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
 
       <details class="source-card">
         <summary><span><b>Calculation basis and limitations</b><small>AS 3600:2018 section capacity and stated design boundary</small></span><i>+</i></summary>
         <div class="source-body">
           <div class="source-notes">
             <p><b>Primary basis</b> - reinforced concrete ultimate flexural section analysis to AS 3600:2018 Section 8 within the stated scope. The rectangular stress block, linear strain compatibility, steel stress limits and flexural capacity factor are calculated rather than entered.</p>
-            <p><b>Two-way reinforcement</b> - this remains a directional strip check. Enter only bars parallel to the selected X or Y direction. The inside auto-depth option places those bars behind one contacting orthogonal crossing-bar layer; repeat the other direction separately or override y<sub>i</sub> from the reinforcement drawing.</p>
+            <p><b>Reinforcement arrangement</b> - two-way mats are assumed to use the selected bar size in both directions. The checked bars are placed inside one contacting perpendicular layer for automatic depth, while only their area parallel to bending is included. Select one-way reinforcement where no perpendicular layer is present. Repeat the calculation with changed reinforcement where the other pad direction differs.</p>
             <p><b>Stress block</b> - &alpha;<sub>2</sub> and &gamma; are calculated from f'<sub>c</sub> using &alpha;<sub>2</sub> = max(0.85 - 0.0015f'<sub>c</sub>, 0.67) and &gamma; = max(0.97 - 0.0025f'<sub>c</sub>, 0.67). The f'<sub>c</sub> input is limited to 20 to 120 MPa.</p>
             <p><b>Capacity factor</b> - for N-class reinforcement in pure bending, this tool calculates &phi; from k<sub>uo</sub> using the AS 3600 Table 2.2.2 expression &phi; = 1.24 - 13k<sub>uo</sub>/12, limited to 0.65 to 0.85. Legacy Y bars use conservative &phi; = 0.65 unless actual bar grade and N-class equivalence are verified. Compression-dominant axial-load cases are not implemented.</p>
             <p><b>One-way shear screen</b> - &phi;V<sub>u</sub> is shown using AS 3600 Cl. 8.2.3.1, AS 3600 Cl. 8.2.4.1 and AS 3600 Cl. 8.2.5.2 only when the simplified-method conditions are satisfied. The page detects f'<sub>c</sub> or reinforcement f<sub>sy</sub> outside its limits and then reports Not evaluated. Normal-weight concrete, no prestress, no axial tension, no torsion and maximum aggregate size &ge; 10 mm are fixed project assumptions. Where web crushing limits strength, &phi; = 0.70 under AS 3600 Table 2.2.2 even when minimum Class N fitments are present.</p>
             <p><b>Ductility limit</b> - where k<sub>uo</sub> exceeds 0.36, AS 3600 Cl. 8.1.5 imposes additional conditions on analysis, compression reinforcement and restraint; this tool flags the section for engineering review.</p>
-            <p><b>Reinforcement basis</b> - current N-bar nominal areas are taken from the <a href="https://www.infrabuild.com/resources/product-guides-resources/infrabuild-reinforcing-product-guide/" target="_blank" rel="noopener">InfraBuild Reinforcing Product Guide</a>: N10/N12/N16/N20/N24/N28/N32/N36/N40 = 79/113/201/314/452/616/804/1018/1257 mm<sup>2</sup> per bar. The current <a href="https://www.infrabuild.com/reinforcing/products/reinforcing-bar/deformed-reinforcing-bar-rebar-class-n/" target="_blank" rel="noopener">InfraBuild Class N product range</a> identifies 500 MPa N bars and lists N40 as available on request. Legacy Y bars are retained for old drawings with default f<sub>sy</sub> = 410 MPa; verify the actual grade, ductility and condition from project records. User-entered f<sub>sy</sub> above 600 MPa is capped at 600 MPa in the design model.</p>
+            <p><b>Reinforcement basis</b> - N-bar calculation areas follow AS/NZS 4671:2019 Table 7.5(A): N10/N12/N16/N20/N24/N28/N32/N36/N40 = 78.5/113/201/314/452/616/804/1020/1260 mm<sup>2</sup> per bar. The current <a href="https://www.infrabuild.com/reinforcing/products/reinforcing-bar/deformed-reinforcing-bar-rebar-class-n/" target="_blank" rel="noopener">InfraBuild Class N product range</a> supports product availability and identifies N40 as available on request; supplier mass tables do not replace the Standard calculation areas. Legacy Y bars are retained for old drawings with default f<sub>sy</sub> = 410 MPa; verify the actual grade, ductility and condition from project records. User-entered f<sub>sy</sub> above 600 MPa is capped at 600 MPa in the design model.</p>
             <p><b>Section theory</b> - plane sections remain plane; strain is linear; concrete tension is ignored at ultimate; ultimate concrete strain is fixed at &epsilon;<sub>cu</sub> = 0.0030; steel stress is calculated from strain and capped at yield.</p>
             <p><b>Neutral axis</b> - x is measured from the selected compression face and solved by axial force equilibrium for pure bending with N<sup>*</sup> = 0.</p>
           </div>
           <div class="source-notes">
-            <p><b>Scope</b> - rectangular pad strip only. Results are for the selected directional strip width b; use b = 1000 mm for the usual per-metre capacity. One adopted f'<sub>c</sub> applies to the whole checked section.</p>
-            <p><b>Plain concrete</b> - if no reinforcement mat is active, this tool does not calculate an RC ultimate moment or reinforced-concrete one-way shear capacity. Use a separate plain-concrete footing check to AS 3600 Section 20 where applicable.</p>
+            <p><b>Scope</b> - rectangular 1000 mm pad strip only. Results use the reinforcement entered parallel to bending. One adopted f'<sub>c</sub> applies to the whole checked section.</p>
+            <p><b>Plain concrete</b> - if no reinforcement layer is active, this tool does not calculate an RC ultimate moment or reinforced-concrete one-way shear capacity. Use a separate plain-concrete footing check to AS 3600 Section 20 where applicable.</p>
             <p><b>Excluded checks</b> - minimum flexural reinforcement, punching shear, base-plate or column bearing, soil bearing, development length, anchorage, bar spacing, crack control, deflection and load combinations.</p>
-            <p><b>Pad-on-pad</b> - the checked section is detected automatically. One positive pad depth gives a single-pad section; positive top and bottom pad depths give a composite section with D = D<sub>top</sub> + D<sub>bot</sub> and all active mats. Interface shear transfer, anchorage and composite action must be designed and documented separately.</p>
+            <p><b>Pad-on-pad</b> - the checked section is detected automatically. One positive pad depth gives a single-pad section; positive top and bottom pad depths give a composite section with D = D<sub>top</sub> + D<sub>bot</sub> and all active layers. Interface shear transfer, anchorage and composite action must be designed and documented separately.</p>
           </div>
         </div>
       </details>
@@ -1019,16 +1018,16 @@
 
       <section class="lookup-card monopole-card">
         <div id="monopoleSectionDefinitionHeading" class="monopole-stage-heading">
-          <div><b>Section definition</b><small>Section form and installed profile geometry</small></div>
-        </div>
-        <div class="monopole-mode-switch" role="group" aria-label="Monopole geometry definition">
-          <button class="monopole-mode" type="button" data-monopole-mode="overall" aria-pressed="false">Continuous taper</button>
-          <button class="monopole-mode active" type="button" data-monopole-mode="schedule" aria-pressed="true">Fabricated sections</button>
+          <div><b>Input data</b><small>Geometry, material and resistance basis</small></div>
         </div>
 
         <div class="input-cluster">
           <section class="input-group input-group-section monopole-section-form-group">
-            <span class="input-group-heading"><b>Section form</b></span>
+            <span class="input-group-heading"><b>Geometry</b><small>Section form and profile definition</small></span>
+            <div class="monopole-mode-switch" role="group" aria-label="Monopole geometry definition">
+              <button class="monopole-mode" type="button" data-monopole-mode="overall" aria-pressed="false">Continuous taper</button>
+              <button class="monopole-mode active" type="button" data-monopole-mode="schedule" aria-pressed="true">Fabricated sections</button>
+            </div>
             <div class="input-group-fields six monopole-form-fields">
               <label><span>Cross-section</span><select id="monopoleSectionForm"><option value="circular" selected>Circular tubular</option><option value="polygon-4">4-sided regular polygon</option><option value="polygon-6">6-sided regular polygon</option><option value="polygon-8">8-sided regular polygon</option><option value="polygon-12">12-sided regular polygon</option><option value="polygon-16">16-sided regular polygon</option></select></label>
               <label id="monopoleBendRadiusField" hidden><span>Inside bend-radius ratio, r<sub>i</sub>/t<sub>nom</sub></span><span class="unit"><input id="monopoleBendRadiusRatio" type="number" min="0.1" step="0.1" value="1.5" aria-describedby="monopoleSectionNote"><em>ratio</em></span></label>
@@ -1039,7 +1038,7 @@
 
         <section id="monopoleOverallInputs" class="monopole-input-panel" hidden>
           <div class="input-group input-group-section">
-            <span class="input-group-heading"><b>Continuous taper geometry</b><small>One global taper; no fabricated joints or overlaps.</small></span>
+            <span class="input-group-heading"><b>Profile geometry</b><small>One continuous taper; no fabricated joints or overlaps.</small></span>
             <div class="input-group-fields six">
               <label><span>Overall height, H</span><span class="unit"><input id="monopoleHeight" type="number" min="0.5" step="0.5" value="12"><em>m</em></span></label>
               <label><span class="monopole-dimension-bottom">Bottom outside diameter, D<sub>b</sub></span><span class="unit"><input id="monopoleBottomDimension" type="number" min="1" step="10" value="240"><em>mm</em></span></label>
@@ -1071,7 +1070,7 @@
 
         <section id="monopoleScheduleInputs" class="monopole-input-panel monopole-schedule-panel">
           <div class="monopole-schedule-heading">
-            <div><b>Fabricated section schedule</b><small id="monopoleScheduleBasis">Physical sections, base to top. Default: Austube 508.0 &times; 6.4 CHS C350L0.</small></div>
+            <div><b>Physical section schedule</b><small id="monopoleScheduleBasis">Base to top. Default: Austube 508.0 &times; 6.4 CHS C350L0.</small></div>
             <button id="monopoleAddSection" class="monopole-add-section" type="button">Add section</button>
           </div>
           <div class="table-scroll monopole-schedule-scroll">
@@ -1094,19 +1093,15 @@
           </div>
         </section>
 
-        <div id="monopoleMaterialHeading" class="monopole-stage-heading">
-          <div><b>Material and fabrication</b><small>Strength basis, fabrication category and design thickness</small></div>
-        </div>
-
         <div class="input-cluster">
           <section class="input-group input-group-section monopole-material-group">
-            <span class="input-group-heading"><b>Material properties</b></span>
+            <span id="monopoleMaterialHeading" class="input-group-heading"><b>Material and resistance basis</b><small>Yield strength, AS 4100 CHS category and design thickness</small></span>
             <div class="input-group-fields monopole-material-fields">
               <label><span>Yield-strength basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual" selected>Manual yield stress</option></select></label>
               <label id="monopolePlateGradeField"><span>Plate grade</span><select id="monopolePlateGrade"><option value="200">200</option><option value="250">250</option><option value="300">300</option><option value="350" selected>350</option><option value="400">400</option><option value="450">450</option><option value="WR350">WR350</option></select></label>
-              <label id="monopoleFabricationField"><span>AS 4100 fabrication category</span><select id="monopoleFabrication" aria-describedby="monopoleFabricationHelp"><option value="LW">Lightly welded longitudinally (LW)</option><option value="HW">Heavily welded longitudinally (HW)</option><option value="CF" selected>Cold-formed (CF)</option><option value="HR">Hot-rolled (HR)</option><option value="SR">Stress-relieved (SR)</option></select><small class="field-help" id="monopoleFabricationHelp">Circular only; selects AS 4100 Table 5.2 limits.</small></label>
+              <label id="monopoleFabricationField"><span>AS 4100 CHS category</span><select id="monopoleFabrication" aria-describedby="monopoleFabricationHelp"><option value="LW">Lightly welded longitudinally (LW)</option><option value="HW">Heavily welded longitudinally (HW)</option><option value="CF" selected>AS/NZS 1163 cold-formed CHS (CF)</option><option value="HR">Hot-rolled or hot-finished (HR)</option><option value="SR">Stress-relieved (SR)</option></select><small class="field-help" id="monopoleFabricationHelp">AS 4100 Table 5.2 classification; AS/NZS 4600 is not evaluated.</small></label>
               <div class="monopole-design-thickness-field"><span class="monopole-field-label">Design thickness override, t<sub>d</sub></span><label class="checkbox-field monopole-design-thickness-toggle"><small id="monopoleDesignThicknessState" aria-live="polite">Default t<sub>d</sub> = t<sub>nom</sub>.</small><input id="monopoleSeparateDesignThickness" type="checkbox" aria-label="Use a separate design thickness"></label></div>
-              <p id="monopoleMaterialNote" class="monopole-input-note">Initial circular-section example: Austube C350L0; adopted f<sub>y</sub> = 350 MPa. Verify current inputs and project data.</p>
+              <p id="monopoleMaterialNote" class="monopole-input-note">Initial example: Austube AS/NZS 1163 C350L0 CHS; CF category; adopted f<sub>y</sub> = 350 MPa. Verify product data.</p>
             </div>
           </section>
         </div>
@@ -1114,7 +1109,7 @@
         <p id="monopoleInputStatus" class="result-note" aria-live="polite" hidden></p>
 
         <section class="monopole-shaft-summary" aria-live="polite">
-          <b>Shaft properties</b>
+          <b>Derived shaft properties</b>
           <dl class="monopole-inline-metrics">
             <div><dt>Mass</dt><dd><output id="monopoleMass">-</output> kg</dd></div>
             <div><dt>Self-weight</dt><dd><output id="monopoleSelfWeight">-</output> kN</dd></div>
@@ -1125,7 +1120,7 @@
         </section>
 
         <div id="monopoleCapacityHeading" class="monopole-stage-heading">
-          <div><b>Section capacity</b><small>Capacity profiles at 0.5 m stations</small></div>
+          <div><b>Capacity results</b><small>Section resistance at 0.5 m stations</small></div>
         </div>
 
         <details id="monopoleMomentSection" class="monopole-moment-section monopole-station-details">
@@ -1150,7 +1145,7 @@
         </details>
 
         <details id="monopoleCombinedSection" class="monopole-combined-section monopole-station-details">
-          <summary><span><b id="monopoleCombinedCapacityTitle">Section capacity intercepts</b><small id="monopoleCombinedCapacityBasis">Compression and bending &middot; 0.5 m stations &middot; AS 4100 Cl. 5.2; AS 4100 Cl. 6.2; AS 4100 Cl. 8.3.2</small></span><strong id="monopoleCombinedCapacitySummary">Base capacity = -</strong><i>+</i></summary>
+          <summary><span><b id="monopoleCombinedCapacityTitle">Compression and bending capacities</b><small id="monopoleCombinedCapacityBasis">Design intercepts &middot; 0.5 m stations &middot; AS 4100:2020</small></span><strong id="monopoleCombinedCapacitySummary">Base capacity = -</strong><i>+</i></summary>
           <div class="monopole-combined-capacity-body">
             <div id="monopoleCombinedCapacityContent">
               <div class="monopole-subsection-heading"><b>Capacity by elevation</b><small id="monopoleCombinedCapacityCount">0 rows &middot; top to base</small></div>
@@ -1192,6 +1187,7 @@
               The 0.5 m compression-and-bending profile reports the AS 4100 Cl. 6.2 compression and AS 4100 Cl. 5.2 moment capacity intercepts. The interaction equation is AS 4100 Cl. 8.3.2; &phi; = 0.90.</p>
             <p><b>Regular polygon</b> &middot; ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5; P = 0 and M = F<sub>a</sub>I/c. BR = min(r<sub>i</sub>, 4t<sub>d</sub>); no AS 4100 &phi;. <a href="https://sp360.asce.org/personifyebusiness/Merchandise/Product-Details/productId/266165183" target="_blank" rel="noreferrer">Publication record</a>.</p>
             <p><b>Initial capacity example</b> &middot; Austube 508.0 &times; 6.4 CHS C350L0. The 12 m profile length is an editable calculation input, not a published product length. <a href="https://www.austubemills.com.au/resources/application-guide/design-capacity-tables-for-structural-steel-hollow/" target="_blank" rel="noopener noreferrer">Manufacturer capacity tables</a>.</p>
+            <p><b>CHS category</b> &middot; CF is the AS 4100 Table 5.2 category adopted for the verified AS/NZS 1163 CHS example; it is not an AS/NZS 4600 calculation. For a fabricated plate shell, use the project-confirmed AS 4100 category. AS/NZS 4600 is not evaluated.</p>
             <p><b>Product geometry reference</b> &middot; KISMAT KOP-1230: one 12 m, 8-sided section; D<sub>o,b</sub> = 240 mm A/F, D<sub>o,t</sub> = 90 mm A/F, t<sub>nom</sub> = 3 mm and E355BR. The adopted f<sub>y</sub> = 355 MPa and fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5 are not published product values. <a href="https://www.kismatengitech.com/octagonal-poles.html" target="_blank" rel="noreferrer">Manufacturer product table</a>.</p>
             <p><b>Material</b> &middot; AS/NZS 3678:2016 Table 8 f<sub>y</sub> uses t<sub>nom</sub>. Resistance uses t<sub>d</sub>; mass uses t<sub>nom</sub>. Confirm material equivalence and project acceptance for the ASCE method.</p>
             <p><b>Slip joints</b> &middot; AS/NZS 7000:2016 Appendix K9: L<sub>o</sub> &ge; 1.5D<sub>ins,max</sub>, where D<sub>ins,max</sub> is the largest circle inscribed within the outside profiles being joined. Joint resistance, fit-up, tolerances, jacking and installed overlap are not evaluated.</p>
@@ -1990,8 +1986,8 @@
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="reo-state.js?v=20260819reostate1"></script>
   <script src="monopole-capacity.js?v=20260814polygonflat1"></script>
-  <script src="app.js?v=20260820reolanguage1"></script>
-  <script src="monopole-app.js?v=20260814polygonflat1"></script>
+  <script src="app.js?v=20260821reomerge1"></script>
+  <script src="monopole-app.js?v=20260820monopolelayout1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>
 </html>
