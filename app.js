@@ -10239,6 +10239,8 @@ function setTool(tool, updateHash = true) {
   const validTool = toolNames.includes(resolvedTool);
   const selectedTool = validTool ? resolvedTool : "bolt";
   const selectedCategory = Object.keys(toolCategories).find(category => toolCategories[category].includes(selectedTool)) || "steel-connections";
+  const toolNavigation = document.querySelector(".tool-navigation");
+  if (toolNavigation) toolNavigation.dataset.activeTool = selectedTool;
   let activeButton = null;
   let activeCategoryButton = null;
   document.querySelectorAll(".tool-category").forEach(button => {
