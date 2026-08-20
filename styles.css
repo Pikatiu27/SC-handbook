@@ -1466,8 +1466,15 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .reo-card .input-group-fields > * { min-width: 0; }
 .reo-card .input-group-fields > label.input-manual,
 .reo-card .input-group-fields > label.input-reference { align-self: stretch; }
-#reoExistingGeometryFields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-#reoExistingGeometryFields.is-narrow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+#reoExistingGeometryFields,
+#reoExistingGeometryFields.is-narrow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.reo-lap-input-fields { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.reo-calculated-basis { min-width: 0; margin-top: 9px; padding: 9px 11px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; border: 1px solid #d7dfda; border-left: 3px solid var(--reo-accent); border-radius: 8px; background: #f3f6f4; }
+.reo-calculated-basis > span { min-width: 0; display: grid; gap: 2px; }
+.reo-calculated-basis > span small { color: var(--muted); font-size: 9px; font-weight: 900; letter-spacing: .07em; }
+.reo-calculated-basis > span b { color: var(--ink); font-size: var(--fs-xs); line-height: 1.3; }
+.reo-calculated-basis > strong { display: flex; align-items: baseline; justify-content: flex-end; gap: 5px; color: var(--reo-dark); font-size: 18px; font-variant-numeric: tabular-nums; }
+.reo-calculated-basis > strong em { color: var(--muted); font-size: 11px; font-style: normal; font-weight: 700; }
 #reoExistingBarOriginField { width: 100%; min-width: 0; }
 #reoExistingBarOriginField select { width: 100%; max-width: 100%; }
 .reo-origin-fields { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
@@ -1475,7 +1482,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .reo-path-stack { padding: 10px; display: grid; gap: 10px; border: 1px solid rgba(112,132,122,.22); border-radius: 10px; background: rgba(255,255,255,.38); }
 .reo-path-heading { padding: 2px 3px 8px; display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 3px 10px; border-bottom: 1px solid var(--line); }
 .reo-path-heading span { width: max-content; padding: 4px 7px; border-radius: 99px; background: var(--reo-soft); color: var(--reo-dark); font-size: 10px; line-height: 1; font-weight: 900; letter-spacing: .07em; }
-.reo-path-heading strong { color: var(--ink); font-size: var(--fs-sm); }
+.reo-path-heading strong { color: var(--ink); font-size: 16px; line-height: 1.25; font-weight: 850; }
 .reo-path-heading small { grid-column: 1 / -1; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
 .reo-existing-path { background: #f8faf9; }
 .reo-refined-card { margin: 0; box-shadow: none; background: #fffaf7; }
@@ -1565,6 +1572,16 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .reo-context-fields .reo-bar-field { order: 2; }
 .reo-context-fields #reoExistingBarOriginField { order: 3; grid-column: 1 / -1; }
 .reo-secondary-classification { padding-top: 8px; border-top: 1px solid rgba(112, 132, 122, .18); }
+.reo-key-conditions { min-width: 0; padding-top: 9px; display: grid; gap: 8px; border-top: 1px solid rgba(112,132,122,.18); }
+.reo-condition-heading { display: grid; gap: 2px; }
+.reo-condition-heading b { color: var(--reo-dark); font-size: var(--fs-sm); line-height: 1.2; }
+.reo-condition-heading small { color: var(--muted); font-size: 11px; line-height: 1.35; }
+.reo-group-heading { position: relative; min-height: 20px; margin-bottom: 8px; padding-left: 10px; align-content: center; }
+.reo-group-heading::before { content: ""; position: absolute; left: 0; top: 2px; bottom: 2px; width: 3px; border-radius: 99px; background: var(--reo-accent); }
+#reoPanel .reo-group-heading b { color: var(--reo-dark); font-size: 14px; line-height: 1.25; font-weight: 850; letter-spacing: .005em; }
+.reo-key-conditions > .reo-group-heading { margin-bottom: 0; }
+.reo-key-condition-fields { gap: 9px; }
+.reo-development-condition-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
 .reo-assumptions { grid-column: 1 / -1; overflow: hidden; border: 1px solid rgba(112,132,122,.22); border-radius: 9px; background: #fbfcfa; }
 .reo-assumptions > summary { list-style: none; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; }
 .reo-assumptions > summary::-webkit-details-marker { display: none; }
@@ -1636,9 +1653,6 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .reo-result-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
 .reo-result-meta > * { color: var(--muted); font-size: var(--fs-xs); }
 .reo-result-meta > span:first-child { color: var(--reo-dark); font-weight: 850; }
-.reo-derived-line { min-height: 46px; padding: 9px 11px; display: flex; align-items: baseline; justify-content: flex-end; gap: 6px; border: 1px solid #d7dfda; border-radius: var(--control-radius); background: rgba(255,255,255,.70); }
-.reo-derived-line output { color: var(--reo-dark); font-weight: 900; font-variant-numeric: tabular-nums; }
-.reo-derived-line em { position: static; color: var(--muted); font-style: normal; font-size: 12px; }
 .reo-refined-factor-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; background: #f6f8f7; }
 .reo-refined-factor-grid .reo-factor-output { min-width: 0; padding: 0; border: 0; background: transparent; }
 .reo-refined-factor-grid .reo-factor-output output { display: flex; align-items: baseline; gap: 4px; white-space: nowrap; }
@@ -2003,6 +2017,7 @@ footer b { white-space: nowrap; }
 @media (max-width: 500px) {
   :root { --fs-xl: 28px; --fs-lg: 19px; --fs-result: 24px; }
   main, footer { margin-left: 12px; margin-right: 12px; }
+  footer, footer b { min-width: 0; overflow-wrap: anywhere; white-space: normal; }
   .topbar { height: 54px; padding: 0 12px; }
   .brand { gap: 8px; }
   .brand-mark { width: 34px; height: 30px; border-radius: 7px 7px 7px 2px; }
@@ -2052,6 +2067,13 @@ footer b { white-space: nowrap; }
   .input-cluster { gap: 10px; margin-bottom: 13px; }
   .input-group { padding: 10px; }
   .input-group-heading small { display: none; }
+  #reoPanel, #reoPanel .lookup-card, #reoPanel .input-cluster, #reoPanel .input-group,
+  #reoPanel .input-group-fields, #reoPanel .reo-path-stack, #reoPanel details,
+  #reoPanel label, #reoPanel select, #reoPanel input { min-width: 0; max-width: 100%; }
+  #reoPanel select { width: 100%; text-overflow: ellipsis; }
+  .reo-development-condition-fields { grid-template-columns: 1fr; }
+  .reo-lap-input-fields { grid-template-columns: 1fr; }
+  .reo-calculated-basis { grid-template-columns: 1fr auto; }
   .reo-path-stack { padding: 9px; }
   .reo-path-heading { grid-template-columns: 1fr; }
   .reo-path-heading small { grid-column: auto; }
