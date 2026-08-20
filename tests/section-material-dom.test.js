@@ -25,6 +25,8 @@ const styles = fs.readFileSync(path.join(__dirname, "..", "styles.css"), "utf8")
   "sectionDesignCompactness",
   "sectionDesignZe"
 ].forEach(id => assert.ok(html.includes(`id="${id}"`), `Missing Section Properties material field ${id}`));
+assert.ok(html.includes('id="sectionCatalogueCoverage"'), "Section Properties must expose the active catalogue size range");
+assert.ok(html.includes('id="sectionCatalogueDirectoryList"'), "Section Properties must expose one folded all-family directory summary");
 
 assert.ok(
   html.indexOf("steel-materials.js") < html.indexOf("app.js"),
@@ -37,15 +39,19 @@ assert.ok(app.includes("Selected grade not listed for this section"), "Unavailab
 assert.ok(app.includes("Derived · catalogue Ze interval"), "Equal Angle compactness must identify its derived catalogue-Ze basis");
 assert.ok(app.includes('function beamPfcSection(section)'), "Section Properties must retain the shared PFC record builder");
 assert.ok(app.includes('BeamSectionReconciliation.reconcile(record, grade, key)'), "PFC and Equal Angle classifications must reuse the checked reconciliation layer");
-assert.ok(app.includes("maximumSignificantDigits: 3"), "Small catalogue Ze values must retain three significant digits");
+assert.ok(app.includes("displayGroupedSignificant(value, 3)"), "Catalogue Ze values must retain three decimal half-up significant digits");
 assert.ok(app.includes("sectionMaterialThicknessManual"), "Custom material thickness must expose a manual override state");
 assert.ok(app.includes("syncSectionMaterialControls(false, true)"), "Custom geometry edits must refresh linked material thickness");
 assert.ok(html.includes('<option value="">Select material basis</option>'), "Custom material selection must expose an unresolved initial basis");
+assert.ok(html.includes('<option value="round-bar">Round Bar</option>'), "Section Properties must use the canonical Round Bar family label");
 assert.ok(app.includes('"Select material basis"'), "Custom material controls must explain the unresolved basis");
 assert.ok(/sectionShape"\)\.addEventListener\("change", \(\) => \{\s+syncSectionMaterialControls\(true\);/.test(app), "Changing custom shape must reset the material basis");
 assert.ok(app.includes('closest(".section-properties-figure").hidden = true'), "Invalid geometry must hide the stale section figure");
 assert.ok(app.includes("zero by rotational symmetry"), "Circular zero warping must be interpreted");
 assert.ok(app.includes("n-n / p-p centroidal · x-x / y-y principal"), "Equal Angle captions must use full axis notation");
+assert.ok(app.includes("Catalogue mass + nominal D/t-derived properties"), "CHS summary must distinguish catalogue mass from D/t-derived properties");
+assert.ok(app.includes("Catalogue mass/diameter + geometry-derived properties"), "Round-bar summary must distinguish published inputs from derived properties");
+assert.ok(app.includes('`${directionLabel} · principal ${symbol}-${symbol}`'), "Beam Equal Angle summary must identify the selected principal axis");
 assert.ok(!styles.includes(".section-properties-figure { display: none; }"), "The Section Properties axis figure must remain available on phone");
 assert.ok(styles.includes("#propertiesPanel .section-properties-table .section-directional-value { display: block; }"), "Directional values must stack within narrow phone table cells");
 assert.ok(styles.includes(".input-group-fields.section-material-inputs { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }"), "Material controls must align by their top label rather than the lower status row");
@@ -53,6 +59,18 @@ assert.ok(styles.includes(".section-material-input-group > .input-group-heading 
 assert.ok(html.includes('id="sectionCatalogueFamilyTabs"'), "Section Properties must expose catalogue families as a visible category switch");
 assert.ok(html.includes('<label class="size-field" hidden><span>Product family</span><select id="sectionCatalogueFamily"></select></label>'), "The family select must remain as the calculation state control without duplicating the visible category UI");
 assert.ok(app.includes('class="section-catalogue-family-tab"'), "Catalogue family tabs must be generated from the accepted family directory");
+assert.ok(app.includes('rhs: Object.freeze(sortSectionCatalogueByPrimarySize(sectionHollowCatalogueSections("rhs")))'), "Section Properties must include the checked RHS catalogue directory in discoverable size order");
+assert.ok(app.includes('shs: Object.freeze(sortSectionCatalogueByPrimarySize(sectionHollowCatalogueSections("shs")))'), "Section Properties must include the checked SHS catalogue directory in discoverable size order");
+assert.ok(app.includes('sectionCatalogueChsSections()'), "Section Properties must merge the complete Austube CHS directory with checked geometry-only rows");
+assert.ok(app.includes('const sectionProductDirectory = Object.freeze({'), "Section Properties must own the canonical shared product directory");
+assert.ok(app.includes('SectionCatalogue.checkedDesignRows(family, sectionProductDirectory[family] || [])'), "Beam and Axial hollow-section selectors must filter the canonical directory to checked design rows");
+assert.ok(!app.includes('return sections.sort((a, b) =>'), "Axial hollow-section selectors must preserve canonical directory order");
+assert.ok(app.includes('const sections = sectionProductDirectory[memberType]'), "Axial Member rolled-section selectors must reuse the canonical product directory");
+assert.ok(app.includes('$("sectionCatalogueDirectoryList").innerHTML = sectionCatalogueFamilies'), "The folded coverage summary must be generated from the canonical family directory");
+assert.ok(app.includes('73 Austube design-table rows + 1 Orrcon geometry row'), "CHS coverage must distinguish design-table and geometry-only rows");
+assert.ok(app.includes('Published catalogue properties + derived circular references'), "Austube CHS rows must state their mixed catalogue and symmetry basis");
+assert.ok(html.includes('<option value="tee">T-section</option>'), "Custom geometry must include the reviewed ideal T-section");
+assert.ok(html.includes('data-section-shapes="i channel tee"'), "T-section must expose d, bf, tw and tf inputs");
 assert.ok(app.includes("data-section-category-custom"), "Custom geometry must remain available in the same visible category switch");
 assert.ok(app.includes('button.setAttribute("aria-pressed", String(active))'), "Catalogue family tabs must expose their selected state");
 assert.ok(html.includes('class="section-properties-mode-switch" role="group" aria-label="Section property source" hidden'), "The legacy source-mode control must not create a second visible tab row");

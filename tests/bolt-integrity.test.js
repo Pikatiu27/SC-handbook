@@ -7,6 +7,22 @@ const close = (actual, expected, tolerance = 1e-9) => {
   assert.ok(Math.abs(actual - expected) <= tolerance * Math.max(1, Math.abs(expected)), `${actual} != ${expected}`);
 };
 
+const straightAreas = integrity.straightLineNetArea({
+  width: 100,
+  thickness: 10,
+  holeCount: 1,
+  holeDiameter: 26
+});
+assert.deepEqual(straightAreas, { grossArea: 1000, holeDeduction: 260, netArea: 740 });
+assert.deepEqual(integrity.straightLineNetArea({
+  width: 100,
+  thickness: 10,
+  holeCount: 0,
+  holeDiameter: 0
+}), { grossArea: 1000, holeDeduction: 0, netArea: 1000 });
+assert.throws(() => integrity.straightLineNetArea({ width: 100, thickness: 10, holeCount: 1.5, holeDiameter: 26 }), /whole number/);
+assert.throws(() => integrity.straightLineNetArea({ width: 20, thickness: 10, holeCount: 1, holeDiameter: 26 }), /greater than zero/);
+
 const tn013 = integrity.blockShear({
   Agv: 1050,
   Anv: 720,

@@ -19,6 +19,24 @@
     return number;
   };
 
+  function straightLineNetArea(values) {
+    const width = positive(values.width, "width");
+    const thickness = positive(values.thickness, "thickness");
+    const holeCount = Number(values.holeCount);
+    const holeDiameter = Number(values.holeDiameter);
+    if (!Number.isInteger(holeCount) || holeCount < 0 || holeCount > 20) {
+      throw new RangeError("holeCount must be a whole number from 0 to 20.");
+    }
+    if (!Number.isFinite(holeDiameter) || holeDiameter < 0 || (holeCount > 0 && holeDiameter <= 0)) {
+      throw new RangeError("holeDiameter must be positive when the critical section crosses a hole.");
+    }
+    const grossArea = width * thickness;
+    const holeDeduction = holeCount * holeDiameter * thickness;
+    const netArea = grossArea - holeDeduction;
+    if (netArea <= 0) throw new RangeError("The straight-line net area must be greater than zero.");
+    return Object.freeze({ grossArea, holeDeduction, netArea });
+  }
+
   function netSectionTension(values) {
     const Ag = positive(values.Ag, "Ag");
     const An = positive(values.An, "An");
@@ -65,5 +83,5 @@
     });
   }
 
-  return Object.freeze({ netSectionTension, blockShear });
+  return Object.freeze({ straightLineNetArea, netSectionTension, blockShear });
 });

@@ -70,6 +70,10 @@ const closeTo = (actual, expected, tolerance = 1e-9) => {
     minimum: 60,
     maximum: 150
   });
+  assert.deepEqual(BoltCapacity.minimumEdgeDistance({ diameter: 24, edgeFactor: 1.75 }), { factor: 1.75, minimum: 42 });
+  assert.deepEqual(BoltCapacity.minimumEdgeDistance({ diameter: 24, edgeFactor: 1.5 }), { factor: 1.5, minimum: 36 });
+  assert.deepEqual(BoltCapacity.minimumEdgeDistance({ diameter: 24, edgeFactor: 1.25 }), { factor: 1.25, minimum: 30 });
+  assert.deepEqual(BoltCapacity.minimumEdgeDistance({ diameter: 16, edgeFactor: 1.75 }), { factor: 1.75, minimum: 28 });
 }
 
 {
@@ -89,6 +93,54 @@ const closeTo = (actual, expected, tolerance = 1e-9) => {
 }
 
 {
+  const count = 4;
+  const groupShear = BoltCapacity.designShear({
+    grade: "10.9",
+    fuf: 1040,
+    kr: 0.9,
+    threadPlanes: count,
+    shankPlanes: 0,
+    Ac: 324,
+    Ao: 452
+  });
+  const primary = BoltCapacity.designPlyBearing({
+    diameter: 24,
+    thickness: 10,
+    tensileStrength: 410,
+    effectiveEdge: 41
+  });
+  const secondary = BoltCapacity.designPlyBearing({
+    diameter: 24,
+    thickness: 8,
+    tensileStrength: 440,
+    effectiveEdge: 35
+  });
+  const groupSlip = count * BoltCapacity.designSlipResistance({
+    slipFactor: 0.35,
+    interfaces: 2,
+    preload: 295,
+    holeFactor: 0.85
+  });
+  const slipInteraction = BoltCapacity.slipInteraction({
+    shearAction: 250,
+    shearCapacity: groupSlip,
+    tensionAction: 300,
+    tensionCapacity: 0.7 * count * 295
+  });
+
+  assert.equal(groupShear.krd, 0.83);
+  closeTo(groupShear.design, 499.39089408);
+  closeTo(count * Math.min(primary.full, secondary.full), 973.2096);
+  closeTo(count * Math.min(primary.edge, secondary.edge), 443.52);
+  assert.deepEqual(BoltCapacity.pitchLimits({ diameter: 24, thinnerPlyThickness: 8 }), {
+    minimum: 60,
+    maximum: 120
+  });
+  closeTo(groupSlip, 491.47);
+  closeTo(slipInteraction, 0.871874173398173);
+}
+
+{
   assert.throws(() => BoltCapacity.designShear({
     grade: "8.8",
     fuf: 830,
@@ -103,6 +155,16 @@ const closeTo = (actual, expected, tolerance = 1e-9) => {
     preload: 210,
     holeFactor: 1
   }), /at least 1/);
+  assert.throws(() => BoltCapacity.designSlipResistance({
+    slipFactor: 0,
+    interfaces: 1,
+    preload: 210,
+    holeFactor: 1
+  }), /positive/);
+  assert.throws(() => BoltCapacity.minimumEdgeDistance({
+    diameter: 24,
+    edgeFactor: 1.4
+  }), /AS 4100 Table 9\.5\.2/);
 }
 
 {

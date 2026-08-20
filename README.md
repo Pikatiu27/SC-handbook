@@ -2,6 +2,12 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
+**Release status:** Public beta. This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+
+Public site: <https://pikatiu27.github.io/SC-handbook/>
+
+Report calculation, source, accessibility or publication issues through the [issue tracker](https://github.com/Pikatiu27/SC-handbook/issues/new). Do not include confidential project information.
+
 ## Tools
 
 ### Bolt Capacity
@@ -42,13 +48,21 @@ For Equal Angles, PFCs and Rods, `alpha_b` is deliberately an explicit design in
 
 The Beam tab uses UB, UC, PFC, CHS, RHS, SHS, Equal Angle and Rod family states. Each family opens with checked catalogue sections and provides an Axial-style `Custom dimensions` override inside Section selection. Users enter family dimensions only; gross ideal geometry and supporting properties are generated automatically.
 
-Numeric design capacity remains fail-closed. Checked InfraBuild rows now provide UB / UC moment about both principal axes, PFC moment about `x-x` and the manufacturer Load A / Load B directions, and the 13 adopted Equal Angle designations for Load A / B / C / D. PFC and Equal Angle retain the full manufacturer Load key beside `Ze`, `phi Ms`, the demand basis and calculation steps; the arrows define bending sign and compression side, not the force application point. PFC selected-section data includes catalogue `xL` and `xO`; Equal Angle selected-section data uses the Table 19 45-degree principal axes with direction-specific `I`, `Z` and `S`. Checked Austube Part 3 rows provide grade-specific CHS, RHS and SHS moment capacity. Rod moment uses checked catalogue diameter and diameter-dependent grade with solid-circle `Z`, `S` and `Ze = min(S, 1.5Z)`.
+Numeric design capacity remains fail-closed. Checked InfraBuild rows provide UB / UC moment about both principal axes, PFC moment about `x-x` and the manufacturer Load A / Load B directions, and all 46 Equal Angle designations for Load A / B / C / D. PFC and Equal Angle retain the full manufacturer Load key beside `Ze`, `phi Ms`, the demand basis and calculation steps; the arrows define bending sign and compression side, not the force application point. PFC selected-section data includes catalogue `xL` and `xO`; Equal Angle selected-section data uses the Table 19 45-degree principal axes with direction-specific `I`, `Z` and `S`. Checked Austube Part 3 rows provide grade-specific capacity for 73 CHS, 89 RHS and 88 SHS designations. The additional Orrcon CHS geometry-only row remains in Section Properties and is deliberately excluded from capacity selectors. Round Bar moment uses checked catalogue diameter and diameter-dependent grade with solid-circle `Z`, `S` and `Ze = min(S, 1.5Z)`.
 
 The governing equation basis is AS 4100:2020 Section 5. Moment capacity uses `Ms = fy,m Ze` and `phi = 0.90`. The selected grade supplies editable default strength values so project or legacy material records can be assessed without changing the catalogue geometry. UB, UC and PFC expose separate `fy,m` and `fy,w`; this matters because the product tables can assign different flange / member and web strengths. A `fy,m` override automatically regenerates section class, `Ze`, `kf` coordination and moment capacity where an independent geometry path exists. A `fy,w` override changes web slenderness and shear capacity without changing moment capacity. PFC Load A / Load B and Equal Angle Load A / B / C / D fail closed after a `fy,m` override because their asymmetric direction-specific `Ze` values are product-table results, not values reconstructed by the current lightweight geometry model.
 
-UB / UC / PFC `x-x` web shear uses the reviewed `Vw = 0.6 fy,w Aw` path with `dp = d1` and `Aw = dp tw`; CHS section shear uses AS 4100:2020 Cl. 5.11.4, `Vw = 0.36 fy Ae`, with `Ae = Ag` for the unperforated catalogue path. Catalogue and ideal RHS/SHS shear follow the reviewed direction-specific two-web method, including the Cl. 5.11.3 non-uniform shear-stress limit and Cl. 5.12.3 moment-shear interaction. The demand check fails immediately when `M* > phi Ms`; an unavailable reduced shear capacity cannot produce a passing status. Equal Angle and Rod shear remain `Not evaluated`. The catalogue reconciliation layer checks 717 family / grade / direction rows against AS 4100:2020 Cl. 5.2 and Cl. 6.2. Ordinary UB/UC, PFC major-axis and non-slender hollow rows use independent plate-element checks; Austube slender flat-element catalogue `Ze` retains the permitted effective-cross-section result; the project/custom-strength path uses the permitted simplified slender-section rule and labels it as independently derived. PFC asymmetric and Equal Angle catalogue load cases retain the published direction-specific `Ze` and infer class only from its AS 4100 elastic-to-compact interval. `kf` is recorded as the Cl. 6.2 axial-compression form factor and is not multiplied into beam moment capacity. Custom UB/UC, PFC x-x, CHS, RHS/SHS and Rod use entered ideal dimensions with family-specific derived section class and `Ze`; custom PFC Load A/B and Equal Angle Load A/B/C/D fail closed as `Not evaluated`. The tab remains `For Review` because it is a section-resistance quick reference with stated exclusions.
+UB / UC / PFC `x-x` web shear uses the reviewed `Vw = 0.6 fy,w Aw` path with `dp = d1` and `Aw = dp tw`; CHS section shear uses AS 4100:2020 Cl. 5.11.4, `Vw = 0.36 fy Ae`, with `Ae = Ag` for the unperforated catalogue path. Catalogue and ideal RHS/SHS shear follow the reviewed direction-specific two-web method, including the Cl. 5.11.3 non-uniform shear-stress limit and Cl. 5.12.3 moment-shear interaction. The demand check fails immediately when `M* > phi Ms`; an unavailable reduced shear capacity cannot produce a passing status. Equal Angle and Rod shear remain `Not evaluated`. The catalogue reconciliation layer checks 981 family / grade / direction rows against AS 4100:2020 Cl. 5.2 and Cl. 6.2. Ordinary UB/UC, PFC major-axis and non-slender hollow rows use independent plate-element checks; Austube slender flat-element catalogue `Ze` retains the permitted effective-cross-section result; the project/custom-strength path uses the permitted simplified slender-section rule and labels it as independently derived. PFC asymmetric and Equal Angle catalogue load cases retain the published direction-specific `Ze` and infer class only from its AS 4100 elastic-to-compact interval. `kf` is recorded as the Cl. 6.2 axial-compression form factor and is not multiplied into beam moment capacity. Custom UB/UC, PFC x-x, CHS, RHS/SHS and Rod use entered ideal dimensions with family-specific derived section class and `Ze`; custom PFC Load A/B and Equal Angle Load A/B/C/D fail closed as `Not evaluated`. The tab remains `For Review` because it is a section-resistance quick reference with stated exclusions.
 
 The tool is deliberately limited to section capacity. It does not check member moment capacity `Mb`, lateral-torsional buckling, restraint spacing, minor-axis bending, biaxial bending, axial interaction, web bearing, web buckling under concentrated forces, stiffeners, copes, holes, composite action, fire, deflection or vibration.
+
+### Steel Monopole Section Capacity
+
+The Steel Monopole tab calculates a section-resistance profile for entered tapered circular or regular polygonal fabricated steel sections. Users may enter one overall taper or a base-to-top physical section schedule with slip-joint overlaps. The page evaluates 0.5 m stations plus exact section and overlap boundaries, reports the minimum evaluated resistance, theoretical shaft mass, self-weight and assembled centre of gravity, and lists stations from top to base.
+
+Circular sections use AS 4100:2020 Cl. 5.2 with exact hollow-circle properties and `phi Ms = 0.90 fy Ze`. Regular 4-, 6-, 8-, 12- and 16-sided sections use the separate ASCE/SEI 48-19 pure-bending path `M = Fa I/c` with no AS 4100 capacity factor. The polygon method is a foreign-standard `For Review` path based on supplied readable excerpts; complete ASCE 48 compliance and Australian material or fabrication acceptance are not established. AS/NZS 3678 plate strength is resolved from nominal thickness, while an optional project design thickness affects resistance only. Slip joints receive the AS/NZS 7000 Appendix K prescribed geometric overlap screen; joint resistance is not calculated.
+
+This is not a whole-member or connection design. It excludes applied actions, utilisation, axial-bending interaction, member stability, fatigue, welds, openings, base plate, slip-joint resistance, foundation design and project acceptance.
 
 ### Section Properties
 
@@ -77,7 +91,7 @@ This is a section-capacity view, not a full footing or slab design check. It doe
 
 Concrete pad capacity factor `phi` is shown for the current pure-bending quick-screen assumption using AS 3600 Table 2.2.2 `k_uo` notation for N-class reinforcement. Legacy Y bars use a conservative review value until the actual bar grade and ductility equivalence are verified. One-way shear uses the AS 3600 Cl. 8.2.4 simplified method only for normal-weight, non-prestressed concrete without axial tension or torsion, with `f'c <= 65 MPa`, reinforcement `fsy <= 500 MPa` and maximum aggregate size at least 10 mm. Detectable out-of-scope inputs return `Not evaluated`. Under AS 3600 Table 2.2.2, shear uses `phi = 0.75` only with verified minimum Class N fitments and no web-crushing limit; otherwise `phi = 0.70`. This remains a one-way shear screen, not a complete concrete shear design.
 
-### Rebar Connection Check
+### Reinforcement Development & Lap Lengths
 
 The Reinforcement Development & Lap Lengths page is a `For Review` length aid for N10 to N40 500N bars in tension. It separates `Lap splice` from `Development at termination`. Calculations use AS 3600:2018 incorporating Amendments 1 and 2, Section 13, with AS/NZS 4671:2019 nominal bar data. AS 4100, AS 5216, interface design and proprietary product-capacity design remain outside the page.
 
@@ -132,7 +146,7 @@ The project documentation is split deliberately:
 
 The only working reference folder for this project is:
 
-`C:\Users\silin\Documents\Codex\Reference`
+`%USERPROFILE%\Documents\Codex\Reference`
 
 Do not keep duplicate source references in this repository. Relevant standards, manufacturer catalogues, ASI guides, converted Markdown references and technical sheets should all live in the Codex Reference folder.
 
@@ -149,3 +163,12 @@ See `REFERENCE_TRACEABILITY.md` for the current source matrix, readable-pack sta
 ## Verification boundary
 
 This is engineering quick-reference software, not certified design software. Confirm section availability, effective length, restraint, connection effects, actions and all governing limit states for the project before design issue.
+
+## Publication and repository terms
+
+- `PUBLICATION_NOTICE.md` states the public-beta engineering, Standards/copyright and privacy boundaries.
+- `LICENSE.md` states the repository use terms; public visibility is not an open-source licence.
+- `THIRD_PARTY_NOTICES.md` and `assets/fonts/OFL.txt` retain third-party font notices.
+- `.github/workflows/pages.yml` runs every calculation/contract test, production JavaScript syntax checks and diff-integrity checks before the verified artifact may deploy.
+
+The GitHub Pages source must be configured as **GitHub Actions**. Do not use the legacy direct-from-branch Pages build for a normal public release because it can publish `main` without first passing the repository verification workflow.

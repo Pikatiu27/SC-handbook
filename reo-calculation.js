@@ -1,6 +1,11 @@
 (function initialiseReoCalculation(globalScope) {
   "use strict";
 
+  const numberFormat = globalScope.EngineeringNumberFormat
+    || (typeof module !== "undefined" && module.exports ? require("./engineering-number-format.js") : null);
+  if (!numberFormat?.decimalHalfUp) throw new Error("Engineering number formatter is required.");
+  const displayFixed = (value, digits) => numberFormat.decimalHalfUp(value, digits);
+
   const reoBars = Object.freeze([
     { designation: "N10", diameter: 10, area: 78.5, standardMass: 0.617, supplierMass: 0.64, metresPerTonne: 1552, availability: "Current Class N range" },
     { designation: "N12", diameter: 12, area: 113, standardMass: 0.888, supplierMass: 0.93, metresPerTonne: 1077, availability: "Current Class N range" },
@@ -147,8 +152,8 @@
     const gapUsed = gapEntered <= 3 * db ? 0 : gapEntered;
     const narrowCandidate = developmentLength + 1.5 * gapUsed;
     const candidates = [
-      { key: "lower", value: lapLowerLimit, label: "Cl. 13.2.2 lap lower limit" },
-      { key: "k7", value: k7Candidate, label: `k7 Lsy.t (${k7.toFixed(2)} × Lsy.t)` }
+      { key: "lower", value: lapLowerLimit, label: "AS 3600 Cl. 13.2.2 lap lower limit" },
+      { key: "k7", value: k7Candidate, label: `k7 Lsy.t (${displayFixed(k7, 2)} × Lsy.t)` }
     ];
     if (options.memberType === "narrow") candidates.push({ key: "narrow", value: narrowCandidate, label: "Narrow-member Lsy.t + 1.5sb" });
     const governing = candidates.reduce((maximum, candidate) => candidate.value > maximum.value ? candidate : maximum, candidates[0]);
@@ -157,8 +162,8 @@
     const candidateK7Value = k7 * candidateDevelopmentLength;
     const candidateNarrowValue = candidateDevelopmentLength + 1.5 * gapUsed;
     const refinedCandidates = [
-      { key: "lower", value: lapLowerLimit, label: "Cl. 13.2.2 lap lower limit" },
-      { key: "k7", value: candidateK7Value, label: `k7 Lsy.t (${k7.toFixed(2)} × Lsy.t)` }
+      { key: "lower", value: lapLowerLimit, label: "AS 3600 Cl. 13.2.2 lap lower limit" },
+      { key: "k7", value: candidateK7Value, label: `k7 Lsy.t (${displayFixed(k7, 2)} × Lsy.t)` }
     ];
     if (options.memberType === "narrow") refinedCandidates.push({ key: "narrow", value: candidateNarrowValue, label: "Narrow-member Lsy.t + 1.5sb" });
     const refinedCandidateGoverning = refinedCandidates.reduce((maximum, candidate) => candidate.value > maximum.value ? candidate : maximum, refinedCandidates[0]);
@@ -170,7 +175,7 @@
     const notices = [];
     if (options.fc > 65) notices.push("f'c exceeds 65 MPa; 65 MPa is used in the development-length expression.");
     if ((options.doubleArea === true || options.halfSpliced === true) && !qualifiedK7) notices.push("Both reduced-k7 confirmations are required; k7 = 1.25 has been applied.");
-    if (options.memberType === "narrow" && gapEntered <= 3 * db) notices.push(`sb = ${gapEntered.toFixed(1)} mm <= 3db = ${(3 * db).toFixed(1)} mm; sb is taken as zero in the narrow-member candidate.`);
+    if (options.memberType === "narrow" && gapEntered <= 3 * db) notices.push(`sb = ${displayFixed(gapEntered, 1)} mm <= 3db = ${displayFixed(3 * db, 1)} mm; sb is taken as zero in the narrow-member candidate.`);
     if (factors.combinedFactorLimited) notices.push("The requested refined reduction was limited to maintain k3 k4 k5 >= 0.7.");
     if (options.method === "refined" && !factors.transverseArrangementConfirmed) notices.push("No verified custom transverse-reinforcement arrangement is selected; K = 0 and no k4 confinement credit is taken.");
     else if (options.method === "refined" && factors.lambda > 0 && !factors.transverseEffective) notices.push("Effective transverse-reinforcement location is not confirmed; K = 0 and no k4 confinement credit is taken.");
@@ -217,7 +222,7 @@
     const refinedCandidateAdoptedLength = Math.ceil(refinedCandidateRawLength / 10) * 10;
     const notices = [];
     if (options.fc > 65) notices.push("f'c exceeds 65 MPa; 65 MPa is used in the development-length expression.");
-    if (factors.basicLowerLimitApplied) notices.push("The Cl. 13.1.2.2 basic lower limit governs before the material-condition multiplier and refined factor are applied.");
+    if (factors.basicLowerLimitApplied) notices.push("The AS 3600 Cl. 13.1.2.2 basic lower limit governs before the material-condition multiplier and refined factor are applied.");
     if (factors.combinedFactorLimited) notices.push("The requested refined reduction was limited to maintain k3 k4 k5 >= 0.7.");
     if (options.method === "refined" && !factors.transverseArrangementConfirmed) notices.push("No verified custom transverse-reinforcement arrangement is selected; K = 0 and no k4 confinement credit is taken.");
     else if (options.method === "refined" && factors.lambda > 0 && !factors.transverseEffective) notices.push("Effective transverse-reinforcement location is not confirmed; K = 0 and no k4 confinement credit is taken.");
@@ -361,7 +366,7 @@
       issues.push("Enter a positive design tensile stress sigma_st; the selected stress-based reference remains unavailable.");
     }
     if (stressOverYield) {
-      issues.push(`Entered sigma_st = ${enteredStress.toFixed(1)} MPa exceeds fsy = ${fsy.toFixed(0)} MPa; review the bar design.`);
+      issues.push(`Entered sigma_st = ${displayFixed(enteredStress, 1)} MPa exceeds fsy = ${displayFixed(fsy, 0)} MPa; review the bar design.`);
     }
     if (refinedReducedLengthConfirmationMissing) {
       issues.push("Confirm that the Refined confinement and pressure evidence remains valid throughout the candidate Lst length before combining reductions.");

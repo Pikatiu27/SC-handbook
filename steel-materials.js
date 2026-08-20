@@ -25,7 +25,7 @@
       grades: Object.freeze(["300PLUS", "Grade 350"])
     }),
     "round-bar": Object.freeze({
-      label: "Round bar",
+      label: "Round Bar",
       standard: "AS/NZS 3679.1:2016",
       table: "Table 15",
       thicknessLabel: "Nominal diameter",
@@ -36,7 +36,7 @@
       standard: "AS/NZS 1163:2016",
       table: "AS/NZS 1163 grade basis",
       thicknessLabel: "Nominal wall thickness",
-      grades: Object.freeze(["C250L0", "C350L0"])
+      grades: Object.freeze(["C250L0", "C350L0", "C450L0"])
     }),
     project: Object.freeze({
       label: "Project-defined steel",
@@ -45,6 +45,12 @@
       thicknessLabel: "Governing thickness",
       grades: Object.freeze(["User input"])
     })
+  });
+
+  const GRADE_LABELS = Object.freeze({
+    "300PLUS": "Grade 300 (300PLUS)",
+    "Grade 350": "Grade 350",
+    "User input": "Project input"
   });
 
   const positive = value => Number.isFinite(Number(value)) && Number(value) > 0;
@@ -76,11 +82,16 @@
   function hollowStrength(grade) {
     if (grade === "C250L0") return { fy: 250, fu: 320 };
     if (grade === "C350L0") return { fy: 350, fu: 430 };
+    if (grade === "C450L0") return { fy: 450, fu: 500 };
     return null;
   }
 
   function gradeOptions(productForm) {
     return PRODUCT_FORMS[productForm]?.grades || PRODUCT_FORMS.project.grades;
+  }
+
+  function gradeLabel(grade) {
+    return GRADE_LABELS[grade] || String(grade || "");
   }
 
   function resolve(input = {}) {
@@ -152,7 +163,9 @@
   return Object.freeze({
     COMMON,
     PRODUCT_FORMS,
+    GRADE_LABELS,
     gradeOptions,
+    gradeLabel,
     resolve,
     hotRolledStrength,
     roundBarStrength,

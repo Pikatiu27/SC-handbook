@@ -51,10 +51,10 @@ Supplier cross-check: the current InfraBuild Class N product page lists N10 to N
 
 ### Local source locations
 
-- `C:\Users\silin\Documents\Codex\Reference\01_Standards\AS3600.pdf`
-- `C:\Users\silin\Documents\Codex\Reference\_codex_reference_packs\01-standards-as3600\sections.md`
-- `C:\Users\silin\Documents\Codex\Reference\02_Catalogues\005-application_attachment-a-2.9.2-onesteel_manufacturing_pty_ltd_0.pdf`
-- `C:\Users\silin\Documents\Codex\Reference\_codex_reference_packs\02-catalogues-005-application-attachment-a-2-9-2-onesteel-manufacturing-pty-ltd-0\sections.md`
+- `%USERPROFILE%\Documents\Codex\Reference\01_Standards\AS3600.pdf`
+- `%USERPROFILE%\Documents\Codex\Reference\_codex_reference_packs\01-standards-as3600\sections.md`
+- `%USERPROFILE%\Documents\Codex\Reference\02_Catalogues\005-application_attachment-a-2.9.2-onesteel_manufacturing_pty_ltd_0.pdf`
+- `%USERPROFILE%\Documents\Codex\Reference\_codex_reference_packs\02-catalogues-005-application-attachment-a-2-9-2-onesteel_manufacturing_pty_ltd_0\sections.md`
 
 ### Online primary sources
 

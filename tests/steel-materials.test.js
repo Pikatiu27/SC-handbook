@@ -14,6 +14,12 @@ assert.deepStrictEqual(materials.roundBarStrength("Grade 350", 100), { fy: 320, 
 
 assert.deepStrictEqual(materials.hollowStrength("C250L0"), { fy: 250, fu: 320 });
 assert.deepStrictEqual(materials.hollowStrength("C350L0"), { fy: 350, fu: 430 });
+assert.deepStrictEqual(materials.hollowStrength("C450L0"), { fy: 450, fu: 500 });
+assert.deepStrictEqual(materials.gradeOptions("hollow-section"), ["C250L0", "C350L0", "C450L0"]);
+assert.strictEqual(materials.gradeLabel("300PLUS"), "Grade 300 (300PLUS)");
+assert.strictEqual(materials.gradeLabel("Grade 350"), "Grade 350");
+assert.strictEqual(materials.gradeLabel("C350L0"), "C350L0");
+assert.strictEqual(materials.gradeLabel("User input"), "Project input");
 
 const project = materials.resolve({
   productForm: "project",

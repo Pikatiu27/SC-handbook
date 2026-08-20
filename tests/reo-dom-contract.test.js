@@ -7,6 +7,7 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const completeApp = fs.readFileSync(path.join(root, "app.js"), "utf8");
+const stateContract = fs.readFileSync(path.join(root, "reo-state.js"), "utf8");
 const app = completeApp.slice(
   completeApp.indexOf("function readReoOptions("),
   completeApp.indexOf("function setMemberType(")
@@ -25,10 +26,19 @@ assert.match(html, /id="reoExistingRefinedCandidateLength"/);
 assert.match(html, /id="reoPressureReference"[^>]*value="Structural analysis · governing ULS load combination"/);
 assert.match(html, /id="reoExistingPressureReference"[^>]*value="Structural analysis · governing ULS load combination"/);
 assert.match(html, /id="reoTerminationRequirements"/);
+assert.match(html, /Galvanized reinforcement bend geometry is not represented; verify AS 3600 Cl\. 17\.2\.3\.3\(d\) separately\./);
+assert.match(html, /galvanized reinforcement bend geometry, complete hook\/cog geometry and detailing design/);
 assert.doesNotMatch(html, /id="reoApplicationField"|id="reoApplicationNote"|Connection context/);
 assert.doesNotMatch(html, /id="reoProfisDetails"/);
 assert.doesNotMatch(html, /id="reoAvailableDepth"/);
 assert.doesNotMatch(html, /id="reoExtensionRecord"|Extension design paths|REFERENCE SUMMARY/);
 assert.doesNotMatch(app, /Project context|updateReoConnectionStatus/);
+assert.match(html, /<script src="reo-state\.js\?v=[^"]+"><\/script>/);
+assert.match(html, /id="reoExistingMethodField"><span>Calculation method<\/span>/);
+assert.match(html, /id="reoAnchorageResultTitle">Development reference length<\/h2>/);
+assert.doesNotMatch(html, /Required development length/);
+assert.match(completeApp, /globalThis\.reoState\.confirmationResetsForInput\(id\)/);
+assert.doesNotMatch(completeApp, /const reoLapQualificationResetIds|const reoTransverseLocationResetIds/);
+assert.match(stateContract, /function confirmationResetsForInput\(id\)/);
 
 console.log("Reo DOM contract tests passed.");

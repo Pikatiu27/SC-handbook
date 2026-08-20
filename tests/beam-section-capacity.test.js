@@ -10,15 +10,15 @@ const close = (actual, expected, tolerance = 1e-9) => {
 };
 
 close(capacity.sectionMoment(320, 633e3), 182.304);
-close(capacity.rolledWebShear(320, 283.6 * 6.1), 298.937088);
+close(capacity.rolledWebShear(320, 304 * 6.1), 320.44032);
 close(capacity.sectionMoment(300, 494e3), 133.38);
-close(capacity.rolledWebShear(300, 181.4 * 7.3), 214.52364);
+close(capacity.rolledWebShear(300, 203.4 * 7.3), 240.54084);
 close(capacity.circularHollowShear(250, 1550), 125.55);
 
 const pfc150 = hotRolled.pfc.find(section => section.designation === "150PFC");
 const pfc150Grade = pfc150.grades["300PLUS"];
 close(capacity.sectionMoment(pfc150Grade.fy, pfc150Grade.directions.x.Ze * 1000), 37.152);
-close(capacity.rolledWebShear(pfc150Grade.fyw, pfc150.d1 * pfc150.tw), 135.8208);
+close(capacity.rolledWebShear(pfc150Grade.fyw, pfc150.d * pfc150.tw), 155.52);
 
 const representativeHollowMoments = [
   ["114.3 x 4.5 CHS", "C250L0", "Ze", 12.2175],
@@ -83,6 +83,13 @@ const manualExampleInteraction = capacity.momentShearInteraction(232, 242, 0.9 *
 close(manualExampleInteraction.factor, 2.2 - 1.6 * 232 / 242);
 close(manualExampleInteraction.designShearCapacity, 299.1345768595042);
 assert.equal(manualExampleInteraction.withinMomentRange, true);
+
+// Steel Structures Design Manual to AS 4100: 360UB50.7 gross web area and interaction case.
+const manual360UbDesignShear = capacity.rolledWebShear(320, 355.6 * 7.3);
+close(manual360UbDesignShear, 448.568064);
+const manual360UbInteraction = capacity.momentShearInteraction(232, 0.9 * 300 * 897e3 / 1e6, manual360UbDesignShear);
+close(manual360UbInteraction.factor, 2.2 - 1.6 * 232 / 242.19);
+close(manual360UbInteraction.designShearCapacity, 299.33801299620956);
 
 const interactionBelowBoundary = capacity.momentShearInteraction(149.9998, 200, 300);
 const interactionAtBoundary = capacity.momentShearInteraction(150, 200, 300);

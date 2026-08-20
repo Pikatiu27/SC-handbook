@@ -36,12 +36,17 @@
     roundBar: Object.freeze({
       publisher: "InfraBuild",
       document: "Hot Rolled Steel Products Catalogue 2019",
-      status: "Round-bar diameter and linear-mass rows used by the selected directory"
+      status: "InfraBuild Table 3 Rounds diameter and linear-mass rows; confirm grade and diameter availability"
     }),
     chs: Object.freeze({
       publisher: "Orrcon Steel",
       document: "National Product Catalogue 2024, CHS tables pp. 10–12",
       status: "Nominal D/t and linear mass rows visually checked 2026-07-22"
+    }),
+    hollowSection: Object.freeze({
+      publisher: "Austube Mills",
+      document: "Design Capacity Tables for Structural Steel Hollow Sections 2013",
+      status: "CHS, RHS and SHS Tables 3.1-1 to 3.1-6 checked against the selected catalogue rows"
     })
   });
 
@@ -184,6 +189,38 @@
   }
 
   function chsRecord(section, geometry) {
+    const catalogueAxis = section.axes?.axis;
+    if (catalogueAxis && finite(section.area) && finite(catalogueAxis.I)) {
+      const ix = catalogueAxis.I;
+      const principal = derivedPrincipal(ix, ix, section.area);
+      return Object.freeze({
+        id: `chs-${section.designation}`,
+        family: "chs",
+        designation: section.designation,
+        mass: section.mass,
+        drawing: Object.freeze({ shape: "chs", D: section.D, t: section.t }),
+        dimensions: joinDimensions([dimension("D", section.D), dimension("t", section.t)]),
+        source: SOURCES.hollowSection,
+        ratios: ratioSet([ratio("D/t", section.D / section.t)]),
+        properties: propertySet({
+          area: available(section.area, "catalogue"),
+          cx: available(section.D / 2, "derived"),
+          cy: available(section.D / 2, "derived"),
+          ix: available(ix, "catalogue"),
+          iy: available(ix, "catalogue"),
+          zx: property(catalogueAxis.Z * 1e3, "catalogue"),
+          zy: property(catalogueAxis.Z * 1e3, "catalogue"),
+          sx: property(catalogueAxis.S * 1e3, "catalogue"),
+          sy: property(catalogueAxis.S * 1e3, "catalogue"),
+          rx: property(section.r, "catalogue"),
+          ry: property(section.r, "catalogue"),
+          j: available(2 * ix, "derived"),
+          iw: available(0, "derived"),
+          ...principal
+        }),
+        derivation: "Mass, Ag, I, Z, S and r are published Austube catalogue properties. Centroid coordinates, J = 2I, Iw = 0, the polar second moment Ix + Iy and equivalent principal values follow circular symmetry; principal orientation is indeterminate."
+      });
+    }
     const properties = geometry.circularHollow(section.D, section.t);
     return Object.freeze({
       id: `chs-${section.designation}`,
@@ -217,6 +254,51 @@
         thetaU: property(properties.thetaU, "derived")
       }),
       derivation: "Mass is published in the Orrcon catalogue. Centroid, Ag, I, Z, S, r, J, Iw, the polar second moment Ix + Iy and principal values are calculated from catalogue nominal D/t using ideal circular geometry. Principal orientation is indeterminate because the section is isotropic."
+    });
+  }
+
+  function rectangularHollowRecord(section, family) {
+    const square = family === "shs";
+    const x = square ? section.axes.xy : section.axes.x;
+    const y = square ? section.axes.xy : section.axes.y;
+    const width = section.b;
+    const depth = section.d || section.b;
+    const thickness = section.t;
+    const ix = x.I;
+    const iy = y.I;
+    const principal = derivedPrincipal(ix, iy, section.area);
+    const clearWidth = Math.max(0, width - 2 * thickness);
+    const clearDepth = Math.max(0, depth - 2 * thickness);
+    return Object.freeze({
+      id: `${family}-${section.designation}`,
+      family,
+      designation: section.designation,
+      mass: section.mass,
+      drawing: Object.freeze({ shape: "rhs", b: width, h: depth, t: thickness }),
+      dimensions: joinDimensions([dimension("d", depth), dimension("b", width), dimension("t", thickness)]),
+      source: SOURCES.hollowSection,
+      ratios: ratioSet([
+        ratio("d/t", depth / thickness),
+        ratio("b/t", width / thickness)
+      ]),
+      properties: propertySet({
+        area: property(section.area, "catalogue"),
+        cx: property(width / 2, "derived"),
+        cy: property(depth / 2, "derived"),
+        ix: property(ix, "catalogue"),
+        iy: property(iy, "catalogue"),
+        zx: property(x.Z * 1e3, "catalogue"),
+        zy: property(y.Z * 1e3, "catalogue"),
+        sx: property(x.S * 1e3, "catalogue"),
+        sy: property(y.S * 1e3, "catalogue"),
+        rx: property(section.rx, "catalogue"),
+        ry: property(section.ry, "catalogue"),
+        aw: property(2 * thickness * clearDepth, "derived"),
+        awx: property(2 * thickness * clearWidth, "derived"),
+        awy: property(2 * thickness * clearDepth, "derived"),
+        ...principal
+      }),
+      derivation: "Mass, Ag, I, Z, S and r are published Austube catalogue properties and retain the product corner geometry. Centroid coordinates, clear-wall references Awx/Awy, the polar second moment Ix + Iy and principal values are derived from nominal dimensions and double symmetry; Awx/Awy are geometric references, not AS 4100 effective shear areas."
     });
   }
 
@@ -303,19 +385,34 @@
     return Object.freeze({ key, label, sections: Object.freeze(sections) });
   }
 
+  function hasCheckedDesignRow(familyKey, section) {
+    if (!section || !section.grades || Object.keys(section.grades).length === 0 || !section.axes) return false;
+    if (familyKey === "chs") return Boolean(section.axes.axis);
+    if (familyKey === "rhs") return Boolean(section.axes.x && section.axes.y);
+    if (familyKey === "shs") return Boolean(section.axes.xy);
+    return true;
+  }
+
+  function checkedDesignRows(familyKey, sections) {
+    if (!Array.isArray(sections)) throw new TypeError("Section rows must be an array.");
+    return Object.freeze(sections.filter(section => hasCheckedDesignRow(familyKey, section)));
+  }
+
   function create(sources, geometry) {
     if (!sources || !geometry || typeof geometry.circularHollow !== "function") {
       throw new TypeError("Catalogue sources and the shared section geometry API are required.");
     }
     return Object.freeze([
-      family("pfc", "Parallel Flange Channel (PFC)", sources.pfc.map(pfcRecord)),
       family("ub", "Universal Beam (UB)", sources.ub.map(section => symmetricHotRolledRecord(section, "ub"))),
       family("uc", "Universal Column (UC)", sources.uc.map(section => symmetricHotRolledRecord(section, "uc"))),
+      family("pfc", "Parallel Flange Channel (PFC)", sources.pfc.map(pfcRecord)),
       family("chs", "Circular Hollow Section (CHS)", sources.chs.map(section => chsRecord(section, geometry))),
-      family("ea", "Equal Angle (EA)", sources.ea.map(angleRecord)),
-      family("rod", "Round Bar / Rod", sources.rod.map(rodRecord))
+      family("rhs", "Rectangular Hollow Section (RHS)", sources.rhs.map(section => rectangularHollowRecord(section, "rhs"))),
+      family("shs", "Square Hollow Section (SHS)", sources.shs.map(section => rectangularHollowRecord(section, "shs"))),
+      family("ea", "EA", sources.ea.map(angleRecord)),
+      family("rod", "Round Bar", sources.rod.map(rodRecord))
     ]);
   }
 
-  return Object.freeze({ BASIS, SOURCES, create });
+  return Object.freeze({ BASIS, SOURCES, create, checkedDesignRows });
 });

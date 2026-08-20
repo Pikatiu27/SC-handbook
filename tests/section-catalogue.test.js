@@ -8,19 +8,26 @@ const families = catalogue.create({
   pfc: [{ designation: "150PFC", mass: 17.7, area: 2250, rx: 60.8, ry: 23.9, ix: 8.34e6, iy: 1.29e6, d: 150, bf: 75, tw: 6, tf: 9.5, xl: 24.9, xo: 51, zx: 111e3, sx: 129e3, zyR: 25.7e3, zyL: 51.6e3, sy: 46e3, j: 56.6e3, iw: 4.59e9 }],
   ub: [{ designation: "200UB18.2", mass: 18.2, area: 2320, Sx: 180, Zx: 160, ix: 15.8e6, iy: 1.14e6, zy: 23e3, sy: 35.7e3, rx: 82.6, ry: 22.1, j: 38.6e3, iw: 10.4e9, d: 200, bf: 100, tw: 5, tf: 8, d1: 184, Aw: 920 }],
   uc: [],
-  chs: [{ designation: "114.3 x 4.5 CHS", D: 114.3, t: 4.5, mass: 12.19 }],
+  chs: [
+    { designation: "508 x 6.4 CHS", family: "chs", D: 508, t: 6.4, mass: 79.2, area: 10100, r: 177, axes: { axis: { I: 317e6, Z: 1250, S: 1610 } } },
+    { designation: "114.3 x 4.5 CHS", D: 114.3, t: 4.5, mass: 12.19 }
+  ],
+  rhs: [{ designation: "150 x 100 x 5 RHS", family: "rhs", d: 150, b: 100, t: 5, mass: 18, area: 2290, rx: 54, ry: 37, axes: { x: { I: 6.68e6, Z: 89.1, S: 105 }, y: { I: 3.08e6, Z: 61.6, S: 73.2 } } }],
+  shs: [{ designation: "100 x 100 x 5 SHS", family: "shs", d: 100, b: 100, t: 5, mass: 14.4, area: 1840, rx: 38.2, ry: 38.2, axes: { xy: { I: 2.68e6, Z: 53.6, S: 63.5 } } }],
   ea: [{ designation: "100 x 100 x 10 EA", mass: 14.2, area: 1810, b: 100, t: 10, actualT: 9.5, rootRadius: 8, toeRadius: 5, legRatio: 9.53, centroidNear: 28.2, centroidFar: 71.8, in: 1.70e6, ip: 1.70e6, znB: 60.1e3, znT: 23.6e3, zpL: 60.1e3, zpR: 23.6e3, sn: 42.9e3, sp: 42.9e3, rn: 30.6, rp: 30.6, inp: -1.00e6, principalIx: 2.70e6, principalIy: 0.695e6, principalZx: 38.2e3, principalZy3: 19.6e3, principalZy5: 17.4e3, principalSx: 60.4e3, principalSy: 30.7e3, principalRx: 38.6, principalRy: 19.6, j: 56.2e3 }],
-  rod: [{ designation: "Ø24 Rod", diameter: 24, mass: 3.55, area: Math.PI * 24 ** 2 / 4, ix: Math.PI * 24 ** 4 / 64, iy: Math.PI * 24 ** 4 / 64, rx: 6, ry: 6 }]
+  rod: [{ designation: "Ø24 Round Bar", diameter: 24, mass: 3.55, area: Math.PI * 24 ** 2 / 4, ix: Math.PI * 24 ** 4 / 64, iy: Math.PI * 24 ** 4 / 64, rx: 6, ry: 6 }]
 }, geometry);
 
-assert.deepEqual(families.map(item => item.key), ["pfc", "ub", "uc", "chs", "ea", "rod"]);
+assert.deepEqual(families.map(item => item.key), ["ub", "uc", "pfc", "chs", "rhs", "shs", "ea", "rod"]);
+assert.equal(families.find(item => item.key === "ea").label, "EA");
+assert.equal(families.find(item => item.key === "rod").label, "Round Bar");
 families.flatMap(family => family.sections).forEach(section => {
   assert.deepEqual(Object.keys(section.properties), ["area", "cx", "cy", "ix", "iy", "zx", "zxAlt", "zy", "zyAlt", "sx", "sy", "rx", "ry", "j", "iw", "xo", "aw", "awx", "awy", "jp", "ixy", "iu", "iv", "ru", "rv", "thetaU"]);
   assert.ok(Object.hasOwn(section, "mass"));
   assert.ok(section.drawing && section.drawing.shape);
 });
 
-const pfc = families[0].sections[0];
+const pfc = families.find(item => item.key === "pfc").sections[0];
 assert.equal(pfc.drawing.shape, "channel");
 assert.equal(pfc.properties.ix.basis, "catalogue");
 assert.equal(pfc.properties.zx.basis, "catalogue");
@@ -35,7 +42,7 @@ assert.equal(pfc.properties.ixy.value, 0);
 assert.equal(pfc.properties.iu.value, pfc.properties.ix.value);
 assert.equal(pfc.properties.thetaU.value, 0);
 
-const ub = families[1].sections[0];
+const ub = families.find(item => item.key === "ub").sections[0];
 assert.equal(ub.drawing.shape, "i");
 assert.equal(ub.properties.zx.value, 160e3);
 assert.equal(ub.properties.ix.value, 15.8e6);
@@ -48,7 +55,7 @@ assert.equal(ub.properties.jp.value, ub.properties.ix.value + ub.properties.iy.v
 assert.equal(ub.ratios[1].label, "(bf−tw)/2tf");
 assert.equal(ub.ratios[1].value, (100 - 5) / (2 * 8));
 
-const chs = families[3].sections[0];
+const chs = families.find(item => item.key === "chs").sections.find(item => item.designation === "114.3 x 4.5 CHS");
 assert.equal(chs.mass, 12.19);
 assert.equal(chs.properties.area.basis, "derived");
 assert.ok(chs.properties.area.value > 0);
@@ -60,7 +67,36 @@ assert.equal(chs.properties.thetaU.value, null);
 assert.equal(chs.properties.cx.value, 114.3 / 2);
 assert.equal(chs.properties.cy.value, 114.3 / 2);
 
-const angle = families[4].sections[0];
+const catalogueChs = families.find(item => item.key === "chs").sections.find(item => item.designation === "508 x 6.4 CHS");
+assert.equal(catalogueChs.source.publisher, "Austube Mills");
+assert.equal(catalogueChs.properties.area.basis, "catalogue");
+assert.equal(catalogueChs.properties.area.value, 10100);
+assert.equal(catalogueChs.properties.ix.value, 317e6);
+assert.equal(catalogueChs.properties.zx.value, 1250e3);
+assert.equal(catalogueChs.properties.sx.value, 1610e3);
+assert.equal(catalogueChs.properties.rx.value, 177);
+assert.equal(catalogueChs.properties.j.value, 634e6);
+assert.equal(catalogueChs.properties.iw.value, 0);
+
+const rhs = families.find(item => item.key === "rhs").sections[0];
+assert.equal(rhs.properties.area.value, 2290);
+assert.equal(rhs.properties.ix.value, 6.68e6);
+assert.equal(rhs.properties.iy.value, 3.08e6);
+assert.equal(rhs.properties.zx.value, 89.1e3);
+assert.equal(rhs.properties.zy.value, 61.6e3);
+assert.equal(rhs.properties.sx.value, 105e3);
+assert.equal(rhs.properties.sy.value, 73.2e3);
+assert.equal(rhs.properties.awx.value, 2 * 5 * 90);
+assert.equal(rhs.properties.awy.value, 2 * 5 * 140);
+assert.equal(rhs.properties.ixy.value, 0);
+
+const shs = families.find(item => item.key === "shs").sections[0];
+assert.equal(shs.properties.ix.value, shs.properties.iy.value);
+assert.equal(shs.properties.zx.value, shs.properties.zy.value);
+assert.equal(shs.properties.sx.value, shs.properties.sy.value);
+assert.equal(shs.properties.thetaU.value, null);
+
+const angle = families.find(item => item.key === "ea").sections[0];
 assert.equal(angle.properties.area.basis, "catalogue");
 assert.equal(angle.mass, 14.2);
 assert.equal(angle.properties.ix.value, 1.70e6);
@@ -77,11 +113,20 @@ assert.equal(angle.properties.j.value, 56.2e3);
 assert.equal(angle.auxiliary.principalZx.value, 38.2e3);
 assert.equal(angle.ratios[0].label, "(b1-t)/t");
 
-const rod = families[5].sections[0];
+const rod = families.find(item => item.key === "rod").sections[0];
 assert.equal(rod.properties.area.basis, "derived");
 assert.equal(rod.properties.zx.value, rod.properties.zy.value);
 assert.equal(rod.properties.iw.value, 0);
 assert.equal(rod.properties.jp.value, rod.properties.j.value);
+
+const checkedRows = catalogue.checkedDesignRows("chs", [
+  { designation: "508 x 6.4 CHS", axes: { axis: {} }, grades: { C350L0: {} } },
+  { designation: "114.3 x 4.5 CHS", axes: { axis: {} }, grades: { C350L0: {} } },
+  { designation: "60.3 x 3.5 CHS" }
+]);
+assert.deepEqual(checkedRows.map(section => section.designation), ["508 x 6.4 CHS", "114.3 x 4.5 CHS"]);
+assert.ok(Object.isFrozen(checkedRows));
+assert.throws(() => catalogue.checkedDesignRows("chs", null), /array/);
 
 assert.throws(() => catalogue.create({}, null), /required/);
 

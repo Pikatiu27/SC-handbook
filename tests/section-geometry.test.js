@@ -91,8 +91,20 @@ close(channel.plasticCy, 100);
 close(channel.sx, 191100);
 close(channel.sy, 50805);
 
+const tee = geometry.tee(200, 100, 8, 12);
+close(tee.area, 100 * 12 + 8 * 188);
+close(tee.cx, 50);
+close(tee.cy, (8 * 188 * 94 + 100 * 12 * 194) / tee.area);
+close(tee.ixy, 0);
+close(tee.aw, 8 * 188);
+assert.notEqual(tee.zxTop, tee.zxBottom);
+close(tee.zyRight, tee.zyLeft);
+assert.ok(tee.sx > 0);
+assert.ok(tee.sy > 0);
+
 assert.throws(() => geometry.circularHollow(100, 50), /less than half/);
 assert.throws(() => geometry.rectangularHollow(100, 80, 40), /less than half/);
 assert.throws(() => geometry.symmetricI(200, 100, 8, 100), /less than/);
+assert.throws(() => geometry.tee(200, 100, 8, 200), /less than/);
 
 console.log("section-geometry tests passed");

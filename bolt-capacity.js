@@ -77,11 +77,22 @@
     return Object.freeze({ minimum: 2.5 * d, maximum: Math.min(15 * t, 200) });
   }
 
+  function minimumEdgeDistance({ diameter, edgeFactor }) {
+    const d = positive(diameter, "diameter");
+    const factor = Number(edgeFactor);
+    if (![1.75, 1.5, 1.25].includes(factor)) {
+      throw new RangeError("edgeFactor must be an AS 4100 Table 9.5.2 value.");
+    }
+    return Object.freeze({ factor, minimum: factor * d });
+  }
+
   function designSlipResistance({ slipFactor, interfaces, preload, holeFactor, phi = 0.7 }) {
     const nei = nonNegativeInteger(interfaces, "interfaces");
     if (nei < 1) throw new RangeError("interfaces must be at least 1.");
+    const mu = positive(slipFactor, "slipFactor");
+    if (mu > 1) throw new RangeError("slipFactor must not exceed 1.");
     return bounded(phi, "phi", 0.01, 1)
-      * bounded(slipFactor, "slipFactor", 0, 1)
+      * mu
       * nei
       * positive(preload, "preload")
       * bounded(holeFactor, "holeFactor", 0.7, 1);
@@ -113,6 +124,7 @@
     designShear,
     designPlyBearing,
     pitchLimits,
+    minimumEdgeDistance,
     designSlipResistance,
     slipInteraction,
     formatDrawingCallout

@@ -7,16 +7,18 @@ const vm = require("node:vm");
 const SectionCatalogue = require("../section-catalogue.js");
 const SectionGeometry = require("../section-geometry.js");
 const SteelMaterials = require("../steel-materials.js");
+const BeamHotRolledData = require("../beam-hot-rolled-data.js");
+const BeamSectionData = require("../beam-section-data.js");
 
 const source = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
 const start = source.indexOf("const beamShearDimensions =");
 const end = source.indexOf("let sectionPropertiesMode =");
 assert.ok(start >= 0 && end > start, "Section source-data block must remain discoverable.");
 
-const context = { SectionCatalogue, SectionGeometry, SteelMaterials };
+const context = { SectionCatalogue, SectionGeometry, SteelMaterials, BeamHotRolledData, BeamSectionData };
 vm.runInNewContext(
   `${source.slice(start, end)}
-   this.auditData = { beamShearDimensions, sectionCatalogueFamilies };`,
+   this.auditData = { beamShearDimensions, sectionProductDirectory, sectionCatalogueFamilies };`,
   context
 );
 
@@ -28,6 +30,11 @@ const close = (actual, expected, tolerance = 1e-9) => {
     `${actual} != ${expected}`
   );
 };
+
+assert.deepEqual(
+  JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(context.auditData.sectionProductDirectory).map(([key, rows]) => [key, rows.length])))),
+  { ub: 28, uc: 13, pfc: 10, chs: 74, rhs: 89, shs: 88, ea: 46, rod: 26 }
+);
 
 // InfraBuild, Hot Rolled Steel Products Catalogue 2019, Table 9, PDF page 12.
 assert.deepEqual(
@@ -58,12 +65,58 @@ assert.equal(pfc.properties.zy.value, 25.7e3);
 assert.equal(pfc.properties.zyAlt.value, 51.6e3);
 assert.equal(pfc.properties.xo.value, 51);
 
-// Orrcon, National Product Catalogue 2024, CHS table, PDF page 10.
-const chs = section("chs", "114.3 x 4.5 CHS");
-assert.equal(chs.mass, 12.19);
-close(chs.properties.area.value, Math.PI * (114.3 ** 2 - 105.3 ** 2) / 4);
-close(chs.properties.ix.value, Math.PI * (114.3 ** 4 - 105.3 ** 4) / 64);
-assert.equal(chs.properties.area.basis, "derived");
+// Austube 2013, Table 3.1-2, PDF page 29.
+assert.equal(family("chs").sections.length, 74);
+assert.equal(family("chs").sections[0].designation, "508 x 12.7 CHS");
+const chs = section("chs", "508 x 6.4 CHS");
+assert.equal(chs.mass, 79.2);
+assert.equal(chs.properties.area.value, 10100);
+assert.equal(chs.properties.ix.value, 317e6);
+assert.equal(chs.properties.zx.value, 1250e3);
+assert.equal(chs.properties.sx.value, 1610e3);
+assert.equal(chs.properties.rx.value, 177);
+assert.equal(chs.properties.area.basis, "catalogue");
+
+// Orrcon, National Product Catalogue 2024, CHS table: geometry-only row not in Austube Tables 3.1-1/2.
+const geometryOnlyChs = section("chs", "60.3 x 3.5 CHS");
+assert.equal(geometryOnlyChs.mass, 4.9);
+close(geometryOnlyChs.properties.area.value, Math.PI * (60.3 ** 2 - 53.3 ** 2) / 4);
+assert.equal(geometryOnlyChs.properties.area.basis, "derived");
+const checkedChs = SectionCatalogue.checkedDesignRows("chs", context.auditData.sectionProductDirectory.chs);
+assert.equal(checkedChs.length, 73);
+assert.equal(checkedChs[0].designation, "508 x 12.7 CHS");
+assert.equal(checkedChs.at(-1).designation, "26.9 x 2 CHS");
+assert.ok(!checkedChs.some(item => item.designation === "60.3 x 3.5 CHS"));
+
+// Austube 2013, Table 3.1-3, PDF page 31.
+const rhs = section("rhs", "75 x 25 x 2.5 RHS");
+assert.equal(rhs.mass, 3.6);
+assert.equal(rhs.properties.area.value, 459);
+assert.equal(rhs.properties.ix.value, 0.285e6);
+assert.equal(rhs.properties.iy.value, 0.0487e6);
+assert.equal(rhs.properties.zx.value, 7.6e3);
+assert.equal(rhs.properties.zy.value, 3.89e3);
+assert.equal(rhs.properties.rx.value, 24.9);
+assert.equal(rhs.properties.ry.value, 10.3);
+
+// Austube 2013, Table 3.1-6, PDF page 36.
+const shs = section("shs", "200 x 200 x 6 SHS");
+assert.equal(shs.mass, 35.6);
+assert.equal(shs.properties.area.value, 4530);
+assert.equal(shs.properties.ix.value, 28e6);
+assert.equal(shs.properties.iy.value, 28e6);
+assert.equal(shs.properties.zx.value, 280e3);
+assert.equal(shs.properties.sy.value, 327e3);
+assert.equal(shs.properties.rx.value, 78.6);
+assert.equal(shs.properties.ry.value, 78.6);
+const checkedRhs = SectionCatalogue.checkedDesignRows("rhs", context.auditData.sectionProductDirectory.rhs);
+const checkedShs = SectionCatalogue.checkedDesignRows("shs", context.auditData.sectionProductDirectory.shs);
+assert.equal(checkedRhs.length, 89);
+assert.equal(checkedShs.length, 88);
+assert.equal(checkedRhs[0].designation, context.auditData.sectionProductDirectory.rhs[0].designation);
+assert.equal(checkedRhs.at(-1).designation, context.auditData.sectionProductDirectory.rhs.at(-1).designation);
+assert.equal(checkedShs[0].designation, context.auditData.sectionProductDirectory.shs[0].designation);
+assert.equal(checkedShs.at(-1).designation, context.auditData.sectionProductDirectory.shs.at(-1).designation);
 
 // InfraBuild 2019, Tables 19 and 21, PDF pages 19 and 21.
 const angle = section("ea", "100 x 100 x 10 EA");
@@ -75,7 +128,7 @@ assert.equal(angle.properties.iv.value, 0.695e6);
 assert.equal(angle.properties.thetaU.value, 45);
 
 // InfraBuild 2019 round-bar diameter and mass table; geometry is independently derived.
-const rod = section("rod", "Ø24 Rod");
+const rod = section("rod", "Ø24 Round Bar");
 assert.equal(rod.mass, 3.55);
 close(rod.properties.area.value, Math.PI * 24 ** 2 / 4);
 close(rod.properties.ix.value, Math.PI * 24 ** 4 / 64);

@@ -9,6 +9,7 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const script = fs.readFileSync(path.join(root, "app.js"), "utf8");
 const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"), "utf8");
+const concreteCalculation = fs.readFileSync(path.join(root, "concrete-section-calculation.js"), "utf8");
 const drawingAdoptionPath = path.join(root, "engineering", "drawing-standard-adoption.json");
 const drawingAdoption = JSON.parse(fs.readFileSync(drawingAdoptionPath, "utf8"));
 const calculateWeldSource = script.slice(
@@ -27,10 +28,17 @@ const calculateConcreteSource = script.slice(
 assert.match(html, /Concrete Pad Section<\/h2><\/div><span class="tool-status">For Review · section capacity only<\/span>/);
 assert.match(html, /round-bar strengths follow AS\/NZS 3679\.1 Table 15 using diameter/);
 assert.match(html, /AS 4100 Table 6\.3\.3\(B\) when k<sub>f<\/sub> &lt; 1\.0/);
-assert.match(html, /OneSteel \/ InfraBuild Table 38 for diameter-dependent/);
+assert.match(html, /Table 38 for diameter-dependent Grade 300 \(300PLUS\) and Grade 350 strengths/);
 assert.doesNotMatch(html, /round-bar strengths follow Table 15/);
 assert.doesNotMatch(html, /and Table 6\.3\.3\(B\) when/);
-assert.doesNotMatch(html, /; Table 38 for diameter-dependent/);
+assert.match(html, /data-beam-family="ea"[^>]*>EA<\/button>/);
+assert.match(html, /data-beam-family="rod"[^>]*>Round Bar<\/button>/);
+assert.match(html, /data-member-type="ea"[^>]*>EA<\/button>/);
+assert.match(html, /data-member-type="rod"[^>]*>Round Bar<\/button>/);
+assert.doesNotMatch(html, /data-(?:beam-family|member-type)="rod"[^>]*>ROD<\/button>/);
+assert.match(outline, /visible grade labels: `Grade 300 \(300PLUS\)` and `Grade 350`/);
+assert.match(outline, /Do not offer `Grade 250` for the adopted AS\/NZS 3679\.1 EA or Round Bar families/);
+assert.match(traceability, /InfraBuild Table 7 `Rods and Light Billets`[^\n]*separate product family/);
 
 assert.match(script, /Design &phi;M<sub>uo<\/sub> = &phi; &times; M<sub>uo<\/sub>/);
 assert.match(script, /design capacity = &phi; &times; V<sub>u<\/sub>/);
@@ -40,20 +48,32 @@ assert.match(html, /<script src="member-capacity\.js\?v=[^"]+"><\/script>/);
 assert.match(html, /<script src="screw-demand\.js\?v=[^"]+"><\/script>/);
 assert.match(script, /MemberCapacity\.calculate\(/);
 assert.match(script, /ScrewDemand\.distribute\(/);
+assert.match(script, /ScrewDemand\.validateLayout\(/);
+assert.match(script, /ScrewDemand\.rectangularCoordinates\(/);
+assert.match(script, /title: "Pile-group action distribution"[\s\S]*?result: "Not evaluated"/);
+assert.doesNotMatch(script, /Math\.round\(value\("screwPile(?:Columns|Rows)"\)/);
 assert.doesNotMatch(script, /function compressionReduction\(/);
 assert.match(script, /comparisonBasis === "project-source-missing"/);
 assert.match(script, /comparisonBasis === "project-basis-mismatch"/);
 assert.match(script, /Manufacturer values are not compared automatically/);
 assert.match(script, /type === "cpbw"[\s\S]*?"Not evaluated"/);
-assert.match(calculateWeldSource, /effective weld length l_w must be greater than zero/);
-assert.match(calculateWeldSource, /effective weld lines must be a positive whole number/);
+assert.match(calculateWeldSource, /Effective weld length l_w must be greater than zero/);
+assert.match(calculateWeldSource, /Effective weld lines must be a positive whole number/);
 assert.match(calculateWeldSource, /IPBW design throat a_w must be greater than zero/);
 assert.match(calculateWeldSource, /title: "Input validation"[\s\S]*?result: "Not evaluated"/);
 assert.match(calculateBoltSource, /Number\.isInteger\(countInput\) && countInput >= 1 && countInput <= 100/);
-assert.match(calculateBoltSource, /groupShearCapacity"\)\.textContent = countValid \?[\s\S]*?"Not evaluated"/);
-assert.match(calculateBoltSource, /title: "Bolt group shear capacity"[\s\S]*?result: countValid \?[\s\S]*?"Not evaluated"/);
+assert.match(calculateBoltSource, /const shearPlanesValid = Number\.isInteger\(nThread\)/);
+assert.match(calculateBoltSource, /const krValid = Number\.isFinite\(krInput\) && krInput >= 0\.75 && krInput <= 1/);
+assert.match(calculateBoltSource, /const connectedPlyInputsValid = primaryPly\.valid/);
+assert.match(calculateBoltSource, /const slipInputsValid = Number\.isInteger\(slipInterfaces\)/);
+assert.match(calculateBoltSource, /groupShearCapacity"\)\.textContent = groupShearInputsValid \?[\s\S]*?"Not evaluated"/);
+assert.match(calculateBoltSource, /title: "Bolt group shear capacity"[\s\S]*?result: groupShearInputsValid \?[\s\S]*?"Not evaluated"/);
+assert.doesNotMatch(calculateBoltSource, /Math\.round\(value\("(?:threadPlanes|shankPlanes|interfaces)"\)\)/);
+assert.match(html, /Simultaneous bolt shear and tension require the squared interaction check in AS 4100 Cl\. 9\.2\.2\.3/);
 assert.match(calculateConcreteSource, /fcInput >= 20 && fcInput <= 120/);
 assert.match(calculateConcreteSource, /concreteStatusValue"\)\.textContent = fcValid \? "Review required" : "Invalid input"/);
+assert.match(script, /ConcreteSectionCalculation\.oneWayShear\(/);
+assert.match(concreteCalculation, /function oneWayShear\(data\)/);
 assert.match(script, /function catalogueDerivedTraceRows\(/);
 assert.match(script, /title: "Circular hollow-section area"/);
 assert.match(script, /title: "Clear web reference area"/);
@@ -67,16 +87,28 @@ assert.doesNotMatch(script, /mm2\/mm/);
   "AXIAL-MEMBER-COMP-01",
   "AUD-AXIAL-COMP-02",
   "AUD-AXIAL-TENSION-02",
+  "AUD-AXIAL-NET-01",
   "AUD-AXIAL-INPUT-01",
   "AUD-AXIAL-DISPLAY-01",
+  "AUD-BOLT-DETAILED-01",
   "BEAM-MOMENT-01",
+  "MONO-ASSEMBLY-01",
+  "MONO-CHS-MOMENT-01",
+  "MONO-PLATE-FY-01",
+  "MONO-POLYGON-MOMENT-01",
+  "MONO-SLIP-OVERLAP-01",
+  "MONO-MASS-01",
   "CONCRETE-FLEXURE-01",
+  "AUD-CONCRETE-FLEXURE-BRANCH-01",
+  "AUD-CONCRETE-SHEAR-BOUNDARY-01",
+  "AUD-MONO-NM-INDEPENDENT-02",
   "REO-LAP-01",
   "SCREW-GROUP-ACTIONS-01",
   "ROCK-PRODUCT-LOOKUP-01"
 ].forEach(id => assert.match(traceability, new RegExp("`" + id + "`"), `Missing active register ID ${id}`));
 
-assert.match(traceability, /\| `6` \| Reinforcement \|/);
+assert.match(traceability, /\| `6` \| Steel Monopole Section Capacity \|/);
+assert.match(traceability, /\| `7` \| Reinforcement \|/);
 assert.match(traceability, /tests\/independent-reproductions\.test\.js/);
 assert.match(traceability, /`BEAM-EX-INT-01`/);
 assert.match(traceability, /`BEAM-REP-INT-01`/);
