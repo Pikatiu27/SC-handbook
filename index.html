@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260821plainheadings1">
+  <link rel="stylesheet" href="styles.css?v=20260821boltlocators1">
 </head>
 <body>
   <header class="topbar">
@@ -116,9 +116,9 @@
       <details class="detail-card major-detail" id="connectionDetails">
         <summary><span class="summary-copy"><span class="summary-heading"><b>Detailed connection checks</b></span><small>Connection inputs, detailing and group capacities</small></span><i>+</i></summary>
         <div class="detail-body">
-          <section class="connection-inputs"><h3>Connection inputs</h3><div class="ply-section-heading connection-group-heading"><div><b>Bolt group</b></div></div><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="2"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>bolted-lap reduction</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div></section>
+          <section class="connection-inputs"><h3 class="connection-section-title"><span class="connection-locator connection-locator-main">A</span><span>Connection inputs</span></h3><div class="ply-section-heading connection-group-heading"><span class="connection-locator connection-locator-sub">A1</span><div><b>Bolt group</b></div></div><div class="form-grid four"><label><span>Number of bolts</span><input id="boltCount" type="number" min="1" max="100" step="1" value="2"></label><label><span>N shear planes <i>per bolt</i></span><input id="threadPlanes" type="number" min="0" max="10" step="1" value="1"></label><label><span>X shear planes <i>per bolt</i></span><input id="shankPlanes" type="number" min="0" max="10" step="1" value="0"></label><label><span>k<sub>r</sub> <i>bolted-lap reduction</i></span><input id="kr" type="number" min="0.75" max="1" step="0.01" value="1"></label></div></section>
           <section class="connected-ply-inputs">
-            <div class="ply-section-heading connection-group-heading"><div><b>Hole and spacing</b></div></div>
+            <div class="ply-section-heading connection-group-heading"><span class="connection-locator connection-locator-sub">A2</span><div><b>Hole and spacing</b></div></div>
             <div class="form-grid two shared-ply-geometry">
               <div class="detailing-input-field edge-pitch-field">
                 <div class="detailing-input-control">
@@ -129,7 +129,7 @@
               </div>
               <label><span>Hole type</span><select id="holeFactor"><option value="1">Standard hole</option><option value="0.85">Oversize / short slot</option><option value="0.7">Long slot</option></select></label>
             </div>
-            <div class="ply-section-heading connection-group-heading connected-ply-heading"><div><b>Connected plies</b></div></div>
+            <div class="ply-section-heading connection-group-heading connected-ply-heading"><span class="connection-locator connection-locator-sub">A3</span><div><b>Connected plies</b></div></div>
             <div class="ply-basis-control">
               <label><span>Ply basis</span><select id="connectedPlyBasis"><option value="identical">Both plies identical</option><option value="separate">Check plies separately</option></select></label>
               <p id="connectedPlyBasisNote">Primary ply properties apply to both connected plies.</p>
@@ -181,7 +181,7 @@
           </section>
 
           <section class="ply-rupture-assessment" id="connectedPlyIntegrity">
-              <div class="assessment-heading"><div><h3>Ply rupture assessment</h3><small>Optional net-section and block-shear capacities</small></div><b id="integritySummaryStatus">Not evaluated</b></div>
+              <div class="assessment-heading"><div><h3 class="connection-section-title"><span class="connection-locator connection-locator-main">B</span><span>Ply rupture assessment</span></h3><small>Optional net-section and block-shear capacities</small></div><b id="integritySummaryStatus">Not evaluated</b></div>
               <div class="integrity-body">
                 <div class="form-grid two">
                   <label><span>Assessment</span><select id="integrityMode"><option value="none">Not evaluated</option><option value="manual">Evaluate</option></select></label>
@@ -189,7 +189,7 @@
                 </div>
                 <div id="integrityInputs" class="integrity-inputs" hidden>
                   <section class="integrity-input-section integrity-ply-section">
-                    <div class="ply-section-heading connection-group-heading"><div><b>Checked ply inputs</b></div></div>
+                    <div class="ply-section-heading connection-group-heading"><span class="connection-locator connection-locator-sub">B1</span><div><b>Checked ply inputs</b></div></div>
                     <div class="form-grid four integrity-ply-geometry" id="integrityStraightGeometry">
                       <label><span>t<sub>p</sub> <i>ply thickness</i></span><span class="unit"><input id="integrityThickness" type="number" readonly value="10"><em>mm</em></span></label>
                       <label><span>b <i>plate width</i></span><span class="unit"><input id="integrityPlateWidth" type="number" min="0.1" step="1" placeholder="Required"><em>mm</em></span></label>
@@ -204,7 +204,7 @@
                   </section>
 
                   <section class="integrity-input-section">
-                  <div class="ply-section-heading connection-group-heading"><div><b>Net-section tension</b><small>AS 4100 Cls 7.2, 9.1.9(b) and 9.1.10</small></div></div>
+                  <div class="ply-section-heading connection-group-heading"><span class="connection-locator connection-locator-sub">B2</span><div><b>Net-section tension</b><small>AS 4100 Cls 7.2, 9.1.9(b) and 9.1.10</small></div></div>
                   <div class="form-grid two integrity-net-controls">
                     <label><span>Area basis</span><select id="integrityAreaMode"><option value="straight">Straight section</option><option value="manual">Manual areas</option></select></label>
                     <label><span>k<sub>t</sub> <i>force distribution</i></span><input id="integrityKt" type="number" min="0.01" max="1" step="0.05" value="1"></label>
@@ -217,7 +217,7 @@
                   </section>
 
                   <section class="integrity-input-section">
-                  <div class="ply-section-heading connection-group-heading"><div><b>Block shear · governing path</b><small>AS 4100 Cl. 9.1.9(e)</small></div></div>
+                  <div class="ply-section-heading connection-group-heading"><span class="connection-locator connection-locator-sub">B3</span><div><b>Block shear path</b><small>AS 4100 Cl. 9.1.9(e)</small></div></div>
                   <div class="form-grid four integrity-block-areas">
                     <label><span>A<sub>gv</sub> <i>gross shear area</i></span><span class="unit"><input id="integrityAgv" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
                     <label><span>A<sub>nv</sub> <i>net shear area</i></span><span class="unit"><input id="integrityAnv" type="number" min="0.1" step="1" placeholder="Required"><em>mm²</em></span></label>
@@ -231,7 +231,7 @@
           </section>
 
           <section class="connection-capacity-section" aria-live="polite">
-            <div class="connection-results-heading"><div><h3>Connection capacity summary</h3></div></div>
+            <div class="connection-results-heading"><div><h3 class="connection-section-title"><span class="connection-locator connection-locator-main">C</span><span>Connection capacity summary</span></h3></div></div>
             <div class="connection-summary-list">
               <div class="governing" id="groupShearResultRow"><span>Design shear capacity, &phi;V<sub>f</sub> · bolt group</span><strong id="groupShearCapacity">266.8 kN</strong><small id="groupShearBasis">2 bolts · 1 N + 0 X shear planes per bolt · equal shear per bolt assumed · Governs</small></div>
               <div id="bearingResultRow"><span>Design bearing capacity, &phi;V<sub>b</sub> · bolt group</span><strong id="governingBearingCapacity">302.6 kN</strong><small id="governingBearingBasis">Edge-distance limit controls bearing · both plies identical</small></div>
@@ -243,7 +243,7 @@
               <div><span>Second ply</span><strong id="secondPlyCapacity">242.1 kN</strong><small id="secondPlyControl">Edge-distance limit</small></div>
             </div>
             <p class="local-bearing-scope">AS 4100 Cl. 9.2.2.4 local bearing limits. Ply rupture capacities are reported separately.</p>
-            <div class="connection-result-subheading connection-group-heading"><b>Ply rupture</b></div>
+            <div class="connection-result-subheading connection-group-heading"><span class="connection-locator connection-locator-sub">C1</span><b>Ply rupture</b></div>
             <div class="integrity-results" id="integrityResults" aria-live="polite">
               <div><span>Design section tension capacity, &phi;N<sub>t</sub></span><strong id="integrityNetCapacity">Not evaluated</strong><small id="integrityNetBasis">Enable the ply rupture assessment</small></div>
               <div><span>Design block shear capacity, &phi;R<sub>bs</sub></span><strong id="integrityBlockCapacity">Not evaluated</strong><small id="integrityBlockBasis">Enable the ply rupture assessment</small></div>
@@ -1964,7 +1964,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.63 &middot; technically reviewed 21 Aug 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.64 &middot; technically reviewed 21 Aug 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>

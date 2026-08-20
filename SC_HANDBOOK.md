@@ -2471,10 +2471,14 @@ Keep the detailed connection workflow in this order:
 
 Keep all standard connection inputs ahead of the first capacity output. Do not place a bolt-group result between the bolt-group and connected-ply inputs.
 
-Use two visible heading levels inside `Detailed connection checks`:
+Use two visible heading levels inside `Detailed connection checks`. Prefix headings with stable letter locators so they cannot be mistaken for AS clause numbers:
 
-- Main section headings: `Connection inputs`, `Ply rupture assessment` and `Connection capacity summary`.
-- Group headings: `Bolt group`, `Hole and spacing`, `Connected plies`, `Checked ply inputs` and `Ply rupture`. Use concise bold text with a short accent rule and restrained spacing.
+- Main sections: `A Connection inputs`, `B Ply rupture assessment` and `C Connection capacity summary`.
+- Input groups: `A1 Bolt group`, `A2 Hole and spacing` and `A3 Connected plies`.
+- Optional rupture groups: `B1 Checked ply inputs`, `B2 Net-section tension` and `B3 Block shear path`.
+- Result group: `C1 Ply rupture`.
+- Place each locator directly before its heading as plain text, without a badge, box or accent rule. Use a compact bold green locator and keep the heading itself in the standard heading style.
+- Keep these locators stable when optional content is hidden. Do not number fields, capacity rows, status labels or AS clause subtitles.
 - Remove explanatory subtitles where the fields already make the scope clear. Retain only source references or scope notes that affect engineering interpretation.
 - Do not repeat `Bolt group` beside `Connection capacity summary`, and do not repeat that ply-rupture capacities are separate when their own result group already establishes that distinction.
 

@@ -1385,8 +1385,13 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .connection-inputs { padding-bottom: 0 !important; border-bottom: 0 !important; }
 .connected-ply-inputs { padding-top: 4px !important; }
 .connected-ply-heading { margin-top: 15px; }
-.connection-group-heading { min-height: 22px; margin: 15px 0 8px; padding: 1px 0 1px 9px; align-items: center; border-top: 0; border-left: 3px solid var(--green); }
-.connection-group-heading:first-of-type { margin-top: 9px; padding-top: 1px; border-left: 3px solid var(--green); }
+.connection-section-title { display: flex; align-items: center; gap: 9px; margin: 0; }
+.connection-locator { flex: 0 0 24px; width: 24px; color: var(--green-dark); font-size: 11px; font-weight: 800; line-height: 1; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.connection-locator-main { font-size: 12px; }
+.connection-locator-sub { color: var(--green); font-size: 11px; }
+.connection-group-heading { min-height: 22px; margin: 15px 0 8px; padding: 1px 0; align-items: flex-start; justify-content: flex-start; gap: 7px; border-top: 0; border-left: 0; }
+.connection-group-heading:first-of-type { margin-top: 9px; padding-top: 1px; border-left: 0; }
+.connection-group-heading > div { min-width: 0; }
 .connection-group-heading b { font-size: 14px; font-weight: 800; line-height: 1.25; }
 .connection-group-heading small { margin-top: 1px; font-size: 11px; }
 .ply-rupture-assessment { padding-top: 14px !important; }
