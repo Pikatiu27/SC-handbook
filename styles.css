@@ -614,10 +614,8 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .section-heading > div { display: flex; align-items: center; gap: 8px; }
 .section-heading h2 { margin: 0; font-size: var(--fs-md); line-height: 1.2; font-weight: 800; }
 .section-heading > span { color: var(--muted); font-size: var(--fs-xs); font-weight: 650; text-transform: none; letter-spacing: 0; }
-.section-tag { padding: 4px 7px; border: 1px solid var(--line); border-radius: 4px; color: var(--green-dark); background: var(--green-soft); font-size: var(--fs-xs); line-height: 1; font-weight: 900; letter-spacing: 0; }
 #propertiesPanel .section-heading h2 { font-size: 16px; font-weight: 700; }
 #propertiesPanel .section-heading > span { font-size: 12px; font-weight: 400; }
-#propertiesPanel .section-tag { padding: 4px 6px; font-size: 10px; font-weight: 700; letter-spacing: .04em; }
 .capacity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .bolt-capacity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .member-results { grid-template-columns: repeat(2, 1fr); }
@@ -1292,7 +1290,6 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .detail-card > summary::-webkit-details-marker, .source-card > summary::-webkit-details-marker { display: none; }
 .detail-card > summary span b, .detail-card > summary span small, .source-card > summary span b, .source-card > summary span small { display: block; }
 .summary-heading { display: flex !important; align-items: center; gap: 8px; }
-.summary-heading .section-tag { display: inline-block; flex: 0 0 auto; }
 .detail-card > summary b, .source-card > summary b { font-size: var(--fs-md); line-height: 1.2; font-weight: 800; }
 .detail-card.major-detail > summary b { font-size: var(--fs-md); line-height: 1.2; font-weight: 800; }
 .detail-card.major-detail > summary { padding: 15px 16px; }
@@ -1495,10 +1492,9 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .reo-origin-fields { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 .reo-origin-fields.is-pir:not(.has-stress) { grid-template-columns: minmax(0, 1fr) !important; }
 .reo-path-stack { padding: 10px; display: grid; gap: 10px; border: 1px solid rgba(112,132,122,.22); border-radius: 10px; background: rgba(255,255,255,.38); }
-.reo-path-heading { padding: 2px 3px 8px; display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 3px 10px; border-bottom: 1px solid var(--line); }
-.reo-path-heading span { width: max-content; padding: 4px 7px; border-radius: 99px; background: var(--reo-soft); color: var(--reo-dark); font-size: 10px; line-height: 1; font-weight: 900; letter-spacing: .07em; }
+.reo-path-heading { padding: 2px 3px 8px; display: grid; grid-template-columns: 1fr; align-items: baseline; gap: 3px; border-bottom: 1px solid var(--line); }
 .reo-path-heading strong { color: var(--ink); font-size: var(--fs-sm); }
-.reo-path-heading small { grid-column: 1 / -1; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
+.reo-path-heading small { color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
 .reo-existing-path { background: #f8faf9; }
 .reo-refined-card { margin: 0; box-shadow: none; background: #fffaf7; }
 .reo-refined-card .detail-body { padding-top: 14px; }

@@ -1241,7 +1241,7 @@ For a formal page or calculation audit, this short implementation checklist is o
 4. If the governing source cannot be found or read, tell the user and mark the item `Source_Not_Verified`; do not present it as checked.
 5. Keep the web page a quick-reference handbook, not a full design engine. Add clear limitations instead of forcing complex topology into the page.
 6. Use the standard web order: primary inputs, adopted-basis summary, workflow-specific primary answer, supporting checks/data, then calculation/source basis and limitations.
-7. Primary calculation or quick-check titles may use the `RESULTS` tag. Published product lookups use `PRODUCT DATA`. Supporting headings should not repeat the tag when it makes the hierarchy noisy.
+7. Primary calculations, quick checks and published-product lookups use plain descriptive titles without locator or category badges. State the published-data basis in the title or supporting copy.
 8. Keep phone layout readable: wrap rows, avoid horizontal overflow, and collapse secondary material where practical.
 9. Run basic checks before commit: `git status --short`, `git diff --stat`, JavaScript syntax check, and a DOM id reference check where JavaScript ids changed.
 10. Push only reviewed, accepted tab changes and accepted global framework changes.
@@ -1466,7 +1466,7 @@ Page-logic acceptance test:
 
 Every web tab should use the same result hierarchy while adapting the primary label to its workflow:
 
-1. `RESULTS <Primary answer>` for calculations/checks, or `PRODUCT DATA <Selected item>` for published product lookup.
+1. `<Primary answer>` for calculations/checks, or `<Selected item>` for published product lookup.
 2. `<Supporting capacities / detailed checks / selected data>`.
 3. `Calculation basis and limitations` for calculations/checks, or `Source basis and limitations` for pure lookup/product data.
 
@@ -1479,17 +1479,17 @@ The primary answer must show, where applicable:
 - honest result status from Section 6.2.8;
 - one short scope or next-action note when the answer remains partial.
 
-Use title hierarchy, spacing and panel weight to show importance. Keep `RESULTS` on the primary calculation/check title when it helps identify the output block, but do not repeat the badge in front of every detailed-check title. A detailed-check block may be collapsible, but a check needed to interpret the primary answer must remain easy to reach and must not be visually presented as optional evidence.
+Use title hierarchy, spacing and panel weight to show importance without locator badges. A detailed-check block may be collapsible, but a check needed to interpret the primary answer must remain easy to reach and must not be visually presented as optional evidence.
 
 For bolt capacity:
 
-- `RESULTS Bolt capacities`
+- `Bolt capacities`
 - `Detailed connection checks`
 - `Calculation basis and limitations`
 
 For member capacity:
 
-- `RESULTS Member capacity`
+- `Member capacity`
 - `Detailed member checks`
 - `Calculation basis and limitations`
 
@@ -1538,7 +1538,7 @@ Practical rules:
 - Keep member-page typography aligned with bolt-page typography.
 - Input controls such as `Bolt Size M24` and `Bolt Category` should use the same size and weight.
 - Do not create a new font scale for every tab.
-- Avoid all-caps except for small tags such as `RESULTS`.
+- Avoid all-caps except for genuine status tags.
 - If helper text is important enough to show, it must be readable on phone.
 - Summary strips such as `Selected member` should use clear stacked rows when the label/value block and metric block would otherwise stretch to opposite sides of a wide web card.
 - Cards should represent real workflow groups or repeated results, not general page decoration. Do not put cards inside cards unless the inner item is a collapsed details panel, repeated result card, or compact table row that has a distinct purpose.
@@ -1785,7 +1785,7 @@ Page identity and navigation rules:
 - The compact phone tool bar inherits the active tool `dark` and `soft` colours and shows the full tool name. Its `Tools` control remains a neutral control.
 - The opened phone tool menu may show a small destination-colour marker beside each visible tool because the menu is temporary. The closed navigation must show only the active tool colour.
 - Switching tools must update the active navigation fill, phone identity bar, tool heading and panel wash together. A theme transition may be brief, but it must not delay content or create motion that obscures the engineering state.
-- Keep `RESULTS`, `PRODUCT DATA` and similar section labels as dark theme text on a soft fill. Do not use white text on a pastel accent without a verified contrast result.
+- Do not add decorative category pills before section or product titles. Genuine state labels use the semantic status colours in Section 15.6.3.
 - `For Review`, `Draft`, source status, `PASS`, `FAIL`, warnings and invalid states never inherit the tool identity colour; Section 15.6.3 always controls them.
 
 Text-colour hierarchy:
@@ -1854,6 +1854,20 @@ Colour acceptance checklist:
 4. Long labels and wrapped helper text remain readable on the lightest theme fills.
 5. No tab reads as a saturated one-colour surface; white, neutral and theme layers remain balanced.
 6. Desktop and phone use the same colour meaning, contrast and state priority.
+
+#### 15.6.5 Heading Hierarchy Without Locator Codes
+
+Improve scanning without adding a new navigation layer, locator badges, moving cards or renumbering the page:
+
+- Keep the existing page title, input order, result order and disclosure structure. Do not add an anchor bar, side navigation or numbered workflow merely to make headings look different.
+- Do not use `RE`, `CK`, `SP`, `RF`, `IN`, local letters, section numbers or similar locator badges on page headings, disclosure titles or internal groups.
+- Keep page headings at three visual levels: tool title, main section/disclosure title and internal group title. Field labels, table captions and helper text must not imitate a section heading.
+- Align headings from the same left origin. Put the full descriptive title first and its helper text directly below or beside it according to the shared responsive layout.
+- Use font size, weight, spacing, dividers, panel background and disclosure boundaries to distinguish hierarchy. Do not encode hierarchy through abbreviated badges.
+- `Calculation details`, `Detailed calculation`, `Calculation steps`, `Derivations`, calculation basis, references, sources and limitations retain plain descriptive titles without locator codes.
+- Use one consistent disclosure control within each established component family. Do not use `x` for collapse because it implies close or delete.
+- `PASS`, `FAIL` and review/source status retain their independent semantic meaning; they are not navigation or hierarchy locators. Product-data basis belongs in the descriptive title or supporting copy, not a decorative badge.
+- Phone layouts keep the same full titles and hierarchy, with helper text wrapping under the existing responsive rules.
 
 ### 15.7 Web Symbols, Formulas, and References
 
@@ -2332,7 +2346,7 @@ Display logic:
 - Do not list M10 or M12 `Nti` values because AS 4100 Table 15.2.2.2 does not tabulate them. These sizes remain available for `/S` only.
 - State explicitly that `Nti` is an installation preload, not the design tensile capacity `phi Ntf`. Do not subtract `Nti` from `phi Ntf` and do not present it as a competing capacity result.
 - Keep the primary page sequence as `Inputs -> Selected bolt -> optional Nti lookup -> Results`. Place symbol definitions and `/S`, `/TB`, `/TF` explanations in `Calculation basis and limitations`; do not add separate legend bands before Results.
-- In `RESULTS Bolt capacities`, show the design shear capacity for the selected N/X shear-plane condition and the design tensile capacity. Keep the unselected N/X shear-plane capacity in `Calculation steps`; it must not compete as another primary result card.
+- In `Bolt capacities`, show the design shear capacity for the selected N/X shear-plane condition and the design tensile capacity. Keep the unselected N/X shear-plane capacity in `Calculation steps`; it must not compete as another primary result card.
 - Use formal visible labels `Design shear capacity, phi Vf` and `Design tensile capacity, phi Ntf`. Keep the selected N/X condition in the shear-capacity label.
 - Show the `TF slip check` only for `/TF` categories. Keep its slip parameters, serviceability slip actions and utilisation status together. For `/S` and `/TB`, hide the complete section.
 - Do not show a persistent `/TF` reminder in `/S` or `/TB` states. The separate serviceability slip reminder appears only with the active `/TF` workflow.
@@ -2365,7 +2379,7 @@ Manufacturer product lookup branches:
 - `Catalogue product / family` or `Catalogue entry` belongs to a separate `Product selection` group and is the final confirmation control. Matching-entry counts belong to this group, not to `Catalogue filters`.
 - The `Selected product` strip confirms product identity and concise ordering information; do not repeat the same values in a second descriptive panel.
 - Show the minimum selection parameters once within `Selected product`. Put secondary installation, spacing, edge and ply requirements in one collapsed disclosure where required; do not repeat them elsewhere.
-- Use `PRODUCT DATA`, not `RESULTS`, for manufacturer values. Do not label a value as `Design capacity` unless the source itself publishes that basis and the governing jurisdiction is stated.
+- Describe manufacturer values as published data in the title or supporting copy. Do not add a separate category badge, and do not label a value as `Design capacity` unless the source itself publishes that basis and the governing jurisdiction is stated.
 - Keep catalogue brands separate from supply channels in the underlying data. Do not show an unverified supplier as a primary selection parameter.
 - Retain manufacturer, supplier, product family, product code, nominal size, fit or grip range, material/finish, published value and basis, source document, revision/date, URL and source status in the underlying record.
 - Preserve the manufacturer's published terminology and basis, including `Working load`, `Safe working load`, `Characteristic resistance`, `ASD allowable load` or `LRFD design strength`. Do not silently convert or compare unlike bases.
@@ -3191,7 +3205,7 @@ Selected section
   Capacity-basis summary + compact value-driven section guide
   Section details [collapsed]
 
-RESULTS Section capacity
+Section capacity
   Primary: design section moment capacity, phi Ms
   Secondary: design section shear capacity, phi Vv, only when evaluated
 
@@ -3522,7 +3536,7 @@ Report maximum compression action, tension action and resultant horizontal actio
 
 The page does not calculate AS 2159 design geotechnical or structural strength. A project-value comparison relies entirely on the entered project source and basis, and does not assess combined axial-horizontal interaction.
 
-Use the `PRODUCT DATA` tag above the selected product name. `Selected product` describes the adopted item in helper text or accessible labels; it is not a calculation result-state tag.
+Show the selected product name directly. State that values are manufacturer-published in the supporting copy or source/status area; do not add a category tag above the name.
 
 Required AS 2159 boundaries:
 
@@ -3569,7 +3583,7 @@ Use `Not published` rather than zero or an inferred value. Manufacturer tendon v
 
 Where two rows in the same governing manufacturer source publish conflicting values for one product property, fail closed for that property. Show `Source conflict`, state both published values in the supporting note and require manufacturer confirmation; do not silently select either value. Other non-conflicting properties for that product may remain visible.
 
-Use the `PRODUCT DATA` tag above the selected product name. `Selected product` describes the adopted item in helper text or accessible labels; it is not a calculation result-state tag.
+Show the selected product name directly. State that values are manufacturer-published in the supporting copy or source/status area; do not add a category tag above the name.
 
 Keep the selector scope narrow:
 
@@ -4304,7 +4318,7 @@ Review all visible text and generated text:
 - no raw variable names such as `alpha_b`, `A_n` or `V*` in final visible text where formatted notation is intended;
 - standard references use the complete pattern `[source] [reference type] [number]`, for example `AS 4100 Cl. 9.2.2.1`;
 - clause, table, figure, section, catalogue and handbook references are not mixed or abbreviated inconsistently;
-- headings, labels, warnings and captions use sentence case except deliberate tags such as `RESULTS`;
+- headings, labels, warnings and captions use sentence case except deliberate published-data or status tags;
 - helper text is reduced where it repeats the heading, selected summary or result note.
 
 #### 15.19.12 Page Logic, Layout and Typography Audit

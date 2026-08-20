@@ -36,9 +36,25 @@ assert.doesNotMatch(html, /One f'<sub>c<\/sub> for the checked section/);
 assert.doesNotMatch(html, /id="concreteModeValue"|id="concreteWidthValue"|id="concreteDepthValue"|id="concreteStatusValue"/);
 assert.doesNotMatch(html, /id="concretePhiNote"|id="concreteShearNote"|concrete-reo-source/);
 
-const productDataTags = html.match(/<span class="section-tag">PRODUCT DATA<\/span>/g) || [];
-assert.ok(productDataTags.length >= 4, "Expected PRODUCT DATA tags for bolt lookups and both foundation selectors.");
-assert.doesNotMatch(html, /<span class="section-tag">SELECTED PRODUCT<\/span>/);
+assert.doesNotMatch(html, /class="section-tag"/);
+assert.doesNotMatch(styles, /\.section-tag\b/);
+assert.doesNotMatch(html, /id="reoAnchoragePathTag"|id="reoAnchorageResultTag"/);
+assert.doesNotMatch(script, /reoAnchoragePathTag|reoAnchorageResultTag/);
+
+assert.match(outline, /#### 15\.6\.5 Heading Hierarchy Without Locator Codes/);
+assert.match(html, /id="connectionDetails">/);
+assert.match(html, /id="monopoleMomentSection"[^>]*>/);
+assert.match(html, /id="reoAssumptionsDetails">/);
+assert.match(html, /id="screwDemandDetails">/);
+assert.match(html, /class="section-heading"><div><h2>Bolt capacities<\/h2>/);
+assert.match(html, /class="section-heading"><div><h2>Section properties<\/h2>/);
+assert.match(html, /class="section-heading section-material-category-heading">\s*<div><h2>Material properties<\/h2>/);
+assert.doesNotMatch(html, /data-locator=|data-section-code=/);
+assert.doesNotMatch(styles, /data-locator|data-section-code/);
+const reoCalculationDisclosure = html.match(/<details[^>]*id="reoCalculationDetails"[^>]*>/)?.[0] || "";
+const sectionDerivationDisclosure = html.match(/<details[^>]*id="sectionDerivationsCard"[^>]*>/)?.[0] || "";
+assert.doesNotMatch(reoCalculationDisclosure, /data-locator=/);
+assert.doesNotMatch(sectionDerivationDisclosure, /data-locator=/);
 
 const incompleteReference = /AS(?:\/NZS)? \d+[^\r\n"]*(?:;|,|and|to) Cl\./;
 assert.doesNotMatch(html, incompleteReference);

@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260820boltflow6">
+  <link rel="stylesheet" href="styles.css?v=20260821hierarchy2">
 </head>
 <body>
   <header class="topbar">
@@ -102,7 +102,7 @@
         </details>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Bolt capacities</h2></div><span>design capacities per bolt</span></div>
+          <div class="section-heading"><div><h2>Bolt capacities</h2></div><span>design capacities per bolt</span></div>
           <div class="capacity-grid bolt-capacity-grid">
             <article class="capacity-card selected-shear"><span id="selectedShearLabel">Design shear capacity, φV<sub>f</sub> · N-plane</span><strong><output id="selectedShearCapacity">133.4</output><small> kN</small></strong><p id="selectedShearNote">Threads intercept shear plane · AS 4100 Cl. 9.2.2.1</p></article>
             <article class="capacity-card tension"><span>Design tensile capacity, φN<sub>tf</sub></span><strong><output id="tensionCapacity">234.4</output><small> kN</small></strong><p>AS 4100 Cl. 9.2.2.2</p></article>
@@ -231,7 +231,7 @@
           </section>
 
           <section class="connection-capacity-section" aria-live="polite">
-            <div class="connection-results-heading"><div><span class="section-tag">RESULTS</span><h3>Connection capacity summary</h3></div></div>
+            <div class="connection-results-heading"><div><h3>Connection capacity summary</h3></div></div>
             <div class="connection-summary-list">
               <div class="governing" id="groupShearResultRow"><span>Design shear capacity, &phi;V<sub>f</sub> · bolt group</span><strong id="groupShearCapacity">266.8 kN</strong><small id="groupShearBasis">2 bolts · 1 N + 0 X shear planes per bolt · equal shear per bolt assumed · Governs</small></div>
               <div id="bearingResultRow"><span>Design bearing capacity, &phi;V<sub>b</sub> · bolt group</span><strong id="governingBearingCapacity">302.6 kN</strong><small id="governingBearingBasis">Edge-distance limit controls bearing · both plies identical</small></div>
@@ -327,7 +327,7 @@
         </div>
 
         <section id="uBoltPublishedSection" class="capacity-section" aria-live="polite" hidden>
-          <div class="section-heading"><div><span class="section-tag">PRODUCT DATA</span><h2>Manufacturer-published data</h2></div><span id="uBoltSourceStatus" class="ubolt-source-state">Source not selected</span></div>
+          <div class="section-heading"><div><h2>Manufacturer-published data</h2></div><span id="uBoltSourceStatus" class="ubolt-source-state">Source not selected</span></div>
           <div class="capacity-grid ubolt-results ubolt-results-single">
             <article id="uBoltPublishedCard" class="capacity-card selected-shear"><span id="uBoltPublishedLoadLabel">Rated load</span><strong><output id="uBoltPublishedCapacity">No rated load published</output></strong><p id="uBoltCapacityBasis">No manufacturer-rated load is published for the selected entry.</p></article>
           </div>
@@ -408,7 +408,7 @@
         </div>
 
         <section id="blindBoltPublishedSection" class="capacity-section" aria-live="polite" hidden>
-          <div class="section-heading"><div><span class="section-tag">PRODUCT DATA</span><h2>Manufacturer-published values</h2></div><span id="blindBoltSourceStatus" class="ubolt-source-state">Source not verified</span></div>
+          <div class="section-heading"><div><h2>Manufacturer-published values</h2></div><span id="blindBoltSourceStatus" class="ubolt-source-state">Source not verified</span></div>
           <div id="blindBoltPublishedValues" class="capacity-grid blind-bolt-results">
             <article class="capacity-card selected-shear"><span id="blindBoltTensionLabel">Published tension value</span><strong><output id="blindBoltTension">-</output><small> kN</small></strong></article>
             <article class="capacity-card tension"><span id="blindBoltShearLabel">Published shear value</span><strong><output id="blindBoltShear">-</output><small> kN</small></strong></article>
@@ -586,7 +586,7 @@
         </details>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Weld capacity</h2></div><span>per effective weld line</span></div>
+          <div class="section-heading"><div><h2>Weld capacity</h2></div><span>per effective weld line</span></div>
           <div class="capacity-grid weld-results">
             <article class="capacity-card selected-shear"><span id="weldCapacityLabel">Design capacity per unit effective length</span><strong><output id="weldCapacityPerMm">1.00</output><small id="weldCapacityUnit"> kN/mm</small></strong><p id="weldCapacityBasis">&phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub></p></article>
             <article class="capacity-card alternate-shear"><span>Indicative parent-metal screen</span><strong><output id="parentGoverningPerMm">2.21</output><small> kN/mm</small></strong><p id="parentGoverningNote">Advisory screening result</p></article>
@@ -699,7 +699,7 @@
         </div>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div></div>
+          <div class="section-heading"><div><h2>Section capacity</h2></div></div>
           <div class="capacity-grid concrete-results">
             <article class="capacity-card selected-shear"><span class="capacity-label">Design flexural capacity <b>&phi;M<sub>uo</sub></b></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong></article>
             <article class="capacity-card"><span class="capacity-label">One-way shear section capacity <b>&phi;V<sub>u</sub></b></span><strong><output id="concretePhiVu">-</output><small> kN</small></strong></article>
@@ -805,7 +805,7 @@
         </div>
 
         <section class="capacity-section section-properties-results" id="sectionPropertyResults" aria-live="polite" data-section-layout="orthogonal">
-          <div class="section-heading"><div><span class="section-tag">SECTION</span><h2>Section properties</h2></div><span id="sectionResultContext">Selected section &middot; mm units</span></div>
+          <div class="section-heading"><div><h2>Section properties</h2></div><span id="sectionResultContext">Selected section &middot; mm units</span></div>
           <div class="section-properties-group-heading">
             <div><span>Section basis</span><h3 id="sectionCoreHeading">Gross section and centroid</h3></div>
             <p id="sectionCoreDescription">Identity, mass, gross area and centroid coordinates.</p>
@@ -865,7 +865,7 @@
           </div>
           <p class="section-property-ratios" id="sectionGeometricRatios"><b>Geometric ratios</b> &mdash; (d−2t<sub>f</sub>)/t<sub>w</sub> = 34.5; (b<sub>f</sub>−t<sub>w</sub>)/t<sub>f</sub> = 5.14. No section classification is assigned.</p>
           <div class="section-heading section-material-category-heading">
-            <div><span class="section-tag">MATERIAL</span><h2>Material properties</h2></div>
+            <div><h2>Material properties</h2></div>
             <span id="sectionMaterialDescription">Strength and common steel constants for the selected material basis.</span>
           </div>
           <div class="section-properties-material" id="sectionMaterialProperties">
@@ -966,7 +966,7 @@
         </div>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Section capacity</h2></div><span>&phi; = 0.90</span></div>
+          <div class="section-heading"><div><h2>Section capacity</h2></div><span>&phi; = 0.90</span></div>
           <div class="capacity-grid beam-results" id="beamResultsGrid">
             <article class="capacity-card selected-shear"><span id="beamMomentResultLabel">Design section moment capacity &phi;M<sub>sx</sub></span><strong><output id="beamSectionCapacity">182.3</output><small> kN·m</small></strong><p id="beamMomentResultBasis">Catalogue Z<sub>ex</sub> · AS 4100 Cl. 5.2</p></article>
             <article class="capacity-card" id="beamShearCard"><span id="beamShearResultLabel">Design section shear capacity &phi;V<sub>v</sub></span><strong><output id="beamShearCapacity">298.9</output><small> kN</small></strong><p id="beamShearResultBasis">AS 4100 Cl. 5.11 · web shear</p></article>
@@ -1163,7 +1163,7 @@
         </details>
 
         <section id="monopoleOverlapSection" class="monopole-overlap-section" hidden>
-          <div class="section-heading"><div><span class="section-tag">SLIP JOINTS</span><h2>Prescribed overlap screen</h2></div><span>Geometry only &middot; joint resistance not evaluated</span></div>
+          <div class="section-heading"><div><h2>Prescribed overlap screen</h2></div><span>Geometry only &middot; joint resistance not evaluated</span></div>
           <div class="table-scroll">
             <table class="monopole-result-table monopole-overlap-table">
               <thead><tr><th scope="col">Joint</th><th scope="col">Entered overlap, L<sub>o</sub></th><th scope="col">Required overlap, 1.5D<sub>ins,max</sub></th><th scope="col">Status</th></tr></thead>
@@ -1312,7 +1312,7 @@
         </div>
 
         <section class="capacity-section" aria-live="polite">
-          <div class="section-heading"><div><span class="section-tag">RESULTS</span><h2>Member capacity</h2></div><span>capacity factor &phi; = 0.90</span></div>
+          <div class="section-heading"><div><h2>Member capacity</h2></div><span>capacity factor &phi; = 0.90</span></div>
           <div class="capacity-grid member-results">
             <article class="capacity-card selected-shear"><span class="capacity-label">Design compression capacity <b>&phi;N<sub>c</sub></b></span><strong><output id="memberCompression">—</output><small> kN</small></strong><p>AS 4100 Cl. 6.3 &middot; flexural buckling only; flexural-torsional buckling not evaluated</p></article>
             <article class="capacity-card alternate-shear"><span class="capacity-label">Design tension capacity <b>&phi;N<sub>t</sub></b></span><strong><output id="memberTension">—</output><small> kN</small></strong><p id="memberTensionBasis">Governing tension limit state · AS 4100 Cl. 7.2</p></article>
@@ -1479,7 +1479,7 @@
           </section>
 
           <div class="reo-path-stack" id="reoLapPathInputs">
-            <div class="reo-path-heading"><span>LAP SPLICE</span><strong>Lap design basis</strong><small>Straight 500N deformed bars.</small></div>
+            <div class="reo-path-heading"><strong>Lap design basis</strong><small>Straight 500N deformed bars.</small></div>
 
             <section class="input-group input-group-section" id="reoLapGeometryGroup">
               <span class="input-group-heading"><b>Required inputs</b><small>Straight 500N bar; f'<sub>c</sub> capped at 65 MPa; c<sub>d</sub> = min(a/2, c).</small></span>
@@ -1493,7 +1493,7 @@
             </section>
 
             <section class="capacity-section reo-result-section" id="reoLapResultSection">
-              <div class="section-heading"><div><span class="section-tag">RESULT</span><h2>Required lap length</h2></div><span id="reoResultStatus" role="status" aria-live="polite">AS 3600 REFERENCE</span></div>
+              <div class="section-heading"><div><h2>Required lap length</h2></div><span id="reoResultStatus" role="status" aria-live="polite">AS 3600 REFERENCE</span></div>
               <div class="capacity-grid reo-results">
                 <article class="capacity-card reo-primary-result"><span class="capacity-label"><span id="reoPrimaryResultLabel">Adopted lap length</span> <b>L<sub>lap,adopted</sub></b></span><strong aria-live="polite" aria-atomic="true"><output id="reoRequiredLength">-</output><small> mm</small></strong><p class="reo-result-meta"><span><output id="reoLapRatio">-</output>d<sub>b</sub></span><span id="reoGoverning">Governing expression not calculated.</span><small id="reoDevelopmentLength">L<sub>sy.t</sub> = -</small><small>Rounded up to the next 10 mm.</small></p></article>
               </div>
@@ -1549,7 +1549,7 @@
           </div>
 
           <div class="reo-path-stack reo-existing-path" id="reoAnchorageInputs" hidden>
-            <div class="reo-path-heading"><span id="reoAnchoragePathTag">DEVELOPMENT</span><strong id="reoAnchoragePathTitle">Development at bar termination</strong><small id="reoAnchoragePathNote">Determine the development required before the bar terminates.</small></div>
+            <div class="reo-path-heading"><strong id="reoAnchoragePathTitle">Development at bar termination</strong><small id="reoAnchoragePathNote">Determine the development required before the bar terminates.</small></div>
 
             <section class="input-group input-group-action">
               <span class="input-group-heading"><b id="reoReferenceBasisHeading">Development basis</b><small id="reoReferenceBasisHelp">Post-installed reinforcement requires a qualified project design report.</small></span>
@@ -1621,7 +1621,7 @@
         </div>
 
         <section class="capacity-section reo-result-section reo-anchorage-result" id="reoAnchorageResultSection" hidden>
-          <div class="section-heading"><div><span class="section-tag" id="reoAnchorageResultTag">DEVELOPMENT</span><h2 id="reoAnchorageResultTitle">Development reference length</h2></div><span id="reoAnchorageResultStatus" role="status" aria-live="polite">INPUT REQUIRED</span></div>
+          <div class="section-heading"><div><h2 id="reoAnchorageResultTitle">Development reference length</h2></div><span id="reoAnchorageResultStatus" role="status" aria-live="polite">INPUT REQUIRED</span></div>
           <div class="capacity-grid reo-reference-results">
             <article class="capacity-card reo-primary-result"><span class="capacity-label" id="reoRequiredEmbedmentLabel">Development reference length <b>L<sub>sy.t</sub></b></span><strong aria-live="polite" aria-atomic="true"><output id="reoAnchoragePrimaryResult">-</output><small> mm</small></strong><p id="reoSaving">AS 3600 development reference.</p></article>
           </div>
@@ -1707,7 +1707,6 @@
         <section class="screw-selected-card" aria-live="polite">
           <div class="screw-selected-header">
             <div>
-              <span class="section-tag">PRODUCT DATA</span>
               <h2 id="screwDesignation">Katana 80 kN series</h2>
               <p id="screwAssumption" hidden>Supply basis to be confirmed.</p>
             </div>
@@ -1798,7 +1797,7 @@
       </section>
 
       <details class="detail-card" id="screwDemandDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><span class="section-tag">OPTIONAL CHECK</span><b>Preliminary Pile-Group Action Distribution</b></span><small>Rectangular rigid-pad model; project design values required for comparison.</small></span><i>+</i></summary>
+        <summary><span class="summary-copy"><span class="summary-heading"><b>Preliminary Pile-Group Action Distribution</b></span><small>Rectangular rigid-pad model; project design values required for comparison.</small></span><i>+</i></summary>
         <div class="detail-body">
           <section>
             <h3>Design action effects at pile-group centroid</h3>
@@ -1893,7 +1892,6 @@
         <section class="rock-selected-card" id="selectedProductCard">
           <div class="rock-selected-header" aria-live="polite">
             <div>
-              <span class="section-tag">PRODUCT DATA</span>
               <h2 id="selectedName">Freyssibar 32 mm</h2>
               <p id="selectedSummary">Prestressed bar tendon for active foundation anchoring.</p>
             </div>
@@ -1981,7 +1979,7 @@
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="reo-state.js?v=20260819reostate1"></script>
   <script src="monopole-capacity.js?v=20260814polygonflat1"></script>
-  <script src="app.js?v=20260820boltflow6"></script>
+  <script src="app.js?v=20260821hierarchy1"></script>
   <script src="monopole-app.js?v=20260820monopolelayout1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>

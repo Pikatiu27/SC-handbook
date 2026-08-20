@@ -9550,7 +9550,6 @@ function updateReoConditionalFields(options) {
     : "Select the anchorage, stress and development basis.";
   $("reoExistingCastingPositionLabel").textContent = pirOrigin ? "AS 3600 casting-position assumption" : "Casting position";
   $("reoExistingMaterialConditionLabel").textContent = pirOrigin ? "AS 3600 material condition" : "Material condition";
-  $("reoAnchoragePathTag").textContent = "DEVELOPMENT";
   $("reoAnchoragePathTitle").textContent = pirOrigin ? "Post-installed bar termination" : "Development at bar termination";
   $("reoAnchoragePathNote").textContent = pirOrigin
     ? "Reference calculation only."
@@ -9558,11 +9557,6 @@ function updateReoConditionalFields(options) {
   $("reoCalculationDetailsSummary").textContent = path.requiresLap
     ? "Factors, clauses and Basic schedule."
     : "Factors and clauses.";
-  $("reoAnchorageResultTag").textContent = pirOrigin
-    ? "AS 3600 REFERENCE"
-    : standardTerminationSelected
-      ? `${$("reoCastInTermination").value.toUpperCase()} ANCHORAGE`
-      : "DEVELOPMENT";
   $("reoAnchorageResultTitle").textContent = pirOrigin
     ? "AS 3600 reference depth"
     : standardTerminationSelected
