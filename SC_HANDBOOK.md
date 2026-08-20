@@ -1726,7 +1726,7 @@ Responsive acceptance rules:
 
 ### 15.6 Web Colour System
 
-Use a restrained pastel technical palette. Colour identifies the active tool and data responsibility; it must not decorate every surface or imply engineering acceptance.
+Use a restrained technical palette with a distinct identity colour for every accepted tool. The shared neutral structure makes the tools one product; the stronger tool identity makes a page change immediately visible. Colour identifies the active tool and data responsibility, but it must not decorate every surface or imply engineering acceptance.
 
 #### 15.6.1 Base and Tab Theme Tokens
 
@@ -1734,11 +1734,14 @@ Base neutral tokens:
 
 | Role | Canonical value | Use |
 | --- | --- | --- |
-| `--ink` | `#2f3b36` | Primary text and strong neutral controls |
-| `--muted` | `#5d6b64` | Helper, metadata and secondary text |
-| `--paper` | `#fbf7f0` | Page background |
+| `--ink` | `#24312b` | Primary text and strong neutral controls |
+| `--muted` | `#5f6b65` | Helper, metadata and secondary text |
+| `--paper` | `#f7f6f2` | Page background |
 | `--card` | `#ffffff` | Main cards and control surfaces |
-| Base `--line` | `#dfe8e1` | Neutral separators and unthemed borders |
+| Base `--line` | `#d5ddd8` | Neutral separators and unthemed borders |
+| `--brand` | `#315f4b` | Fixed handbook brand mark; it does not change with the active tool |
+| `--link` | `#1a65a6` | Shared inline-link colour across every tool |
+| `--focus` | `#ffdd00` | Shared high-visibility keyboard focus highlight |
 
 Each tab theme has four required roles:
 
@@ -1751,14 +1754,16 @@ Current canonical themes:
 
 | Tool | Accent | Dark | Soft | Panel |
 | --- | --- | --- | --- | --- |
-| Bolt Capacity | `#5fb98a` | `#2f7b57` | `#e7f7ed` | `#f4fbf6` |
-| Axial Member Capacity | `#76a9dc` | `#416f9e` | `#e7f2fc` | `#f4f9fe` |
-| Beam Section Capacity | `#b39ad8` | `#6f5798` | `#f0eafb` | `#faf7ff` |
-| Section Properties | `#6faea4` | `#356f68` | `#e4f5f2` | `#f4fbfa` |
-| Weld Capacity | `#e3a05f` | `#9c5d22` | `#fff0df` | `#fff8ef` |
-| Concrete Pad Section | `#6fb7b0` | `#2f746f` | `#e2f6f4` | `#f3fbfa` |
-| Screw Piles Selector | `#8fa96a` | `#587235` | `#edf5e4` | `#f8fcf1` |
-| Rock Anchor Selector | `#8299aa` | `#4d6576` | `#eaf0f4` | `#f7fafc` |
+| Bolt Capacity | `#5fb98a` | `#2f7b57` | `#e7f7ed` | `#eef8f2` |
+| Weld Capacity | `#e3a05f` | `#9c5d22` | `#fff0df` | `#fff3e6` |
+| Section Properties | `#6faea4` | `#356f68` | `#e4f5f2` | `#edf8f6` |
+| Axial Member Capacity | `#76a9dc` | `#416f9e` | `#e7f2fc` | `#edf5fb` |
+| Beam Section Capacity | `#b39ad8` | `#6f5798` | `#f0eafb` | `#f4effb` |
+| Steel Monopole Section Capacity | `#467d69` | `#284f43` | `#e7f1ed` | `#edf5f1` |
+| Concrete Pad Section | `#55a9b7` | `#247785` | `#e4f4f6` | `#eef8f9` |
+| Reinforcement Development & Lap Lengths | `#b47762` | `#7f4938` | `#f5e7e1` | `#faf0ec` |
+| Screw Piles Selector | `#8fa96a` | `#587235` | `#edf5e4` | `#f3f8eb` |
+| Rock Anchor Selector | `#8299aa` | `#4d6576` | `#eaf0f4` | `#f0f4f7` |
 | Wind Site Draft | `#6aa7c8` | `#31667f` | `#e5f4fb` | `#f4fbfe` |
 
 Theme rules:
@@ -1769,6 +1774,27 @@ Theme rules:
 - Use one tab accent at a time. Do not mix another tab's accent into controls, results or figures.
 - Category navigation remains neutral because it groups disciplines; the tool-level active state uses the current tab theme.
 - Do not use decorative gradients, colour blobs or saturated full-card fills. A subtle existing panel wash may remain, but the hierarchy must still work with flat fills.
+
+Page identity and navigation rules:
+
+- Every accepted tool uses one recognisably different hue. Do not collapse the tools to one colour per engineering category when that makes page changes feel visually unchanged.
+- Keep the handbook shell stable: brand, body text, ordinary cards, form controls, links and semantic status colours remain shared neutrals or shared functional colours.
+- On desktop, the active tool button uses the tool `dark` colour as a filled background with readable inverse text. Inactive tools remain neutral; do not show a permanent rainbow row.
+- The tool heading is the principal page-identity moment. Use the tool `dark` colour for the title and left marker, with the `soft` colour as a compact heading background. The kicker may use `dark`; ordinary body copy remains `--ink` or `--muted`.
+- Main result values remain strong neutral text. Use the tool theme for the result top rule, selected basis and compact section labels rather than colouring every result value.
+- The compact phone tool bar inherits the active tool `dark` and `soft` colours and shows the full tool name. Its `Tools` control remains a neutral control.
+- The opened phone tool menu may show a small destination-colour marker beside each visible tool because the menu is temporary. The closed navigation must show only the active tool colour.
+- Switching tools must update the active navigation fill, phone identity bar, tool heading and panel wash together. A theme transition may be brief, but it must not delay content or create motion that obscures the engineering state.
+- Keep `RESULTS`, `PRODUCT DATA` and similar section labels as dark theme text on a soft fill. Do not use white text on a pastel accent without a verified contrast result.
+- `For Review`, `Draft`, source status, `PASS`, `FAIL`, warnings and invalid states never inherit the tool identity colour; Section 15.6.3 always controls them.
+
+Text-colour hierarchy:
+
+- Tool title: tool `dark`, `--fs-lg`, `900` weight on desktop; the compact phone bar carries this identity at `--fs-sm`.
+- Section titles and governing values: `--ink`; a theme marker or top rule provides emphasis.
+- Body copy and ordinary labels: `--ink`; do not colour paragraphs with the tool theme.
+- Helper text, units, source metadata and limitations: `--muted`, without reduced opacity.
+- Inline links: shared `--link` with a visible underline or established link treatment; do not make link colour change by tool.
 
 #### 15.6.2 Input Responsibility and Interaction Colours
 
