@@ -24,7 +24,7 @@ const calculateConcreteSource = script.slice(
   script.indexOf("const screwPileData")
 );
 
-assert.match(html, /Concrete Pad Section<\/h2><\/div><span class="tool-status">For Review · section resistance only<\/span>/);
+assert.match(html, /Concrete Pad Section<\/h2><\/div><span class="tool-status">For Review · section capacity only<\/span>/);
 assert.match(html, /round-bar strengths follow AS\/NZS 3679\.1 Table 15 using diameter/);
 assert.match(html, /AS 4100 Table 6\.3\.3\(B\) when k<sub>f<\/sub> &lt; 1\.0/);
 assert.match(html, /OneSteel \/ InfraBuild Table 38 for diameter-dependent/);

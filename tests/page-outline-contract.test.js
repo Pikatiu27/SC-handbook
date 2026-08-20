@@ -17,9 +17,15 @@ assert.match(outline, /#### 15\.19\.17 Audit Completion Gate/);
 assert.doesNotMatch(outline, /#### 15\.18\.\d+ Audit/);
 assert.doesNotMatch(outline, /audit protocol in Section 15\.18\b/);
 
-assert.match(html, /<b>Reinforcement geometry<\/b><small>Cover, stacking and crossing-bar geometry\.<\/small>/);
+assert.match(html, /<b>Two-way reinforcement<\/b><small>X and Y bars are entered separately\./);
+assert.match(html, /<span>Bar position for this check<\/span><select id="concreteDepthBasis"><option value="inside">Inner layer \(default\)<\/option>/);
 assert.match(html, /class="concrete-input-row concrete-row-reinforcement"/);
-assert.match(styles, /\.concrete-row-reinforcement \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
+assert.match(styles, /\.concrete-row-reinforcement \{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+assert.match(html, /<span>Direction to check<\/span><select id="concreteReoDirection"/);
+assert.match(html, /aria-label="Directional reinforcement layers"/);
+assert.match(script, /concreteDirectionalReinforcement = \{ x: clone\(initial\), y: clone\(initial\) \}/);
+assert.match(script, /function switchConcreteDirection\(\)/);
+assert.doesNotMatch(html, /id="concreteCrossingBar"/);
 assert.match(html, /<b>Material properties<\/b><small>One f'<sub>c<\/sub> for the checked section\.<\/small>[\s\S]*?id="concreteFc"/);
 assert.doesNotMatch(
   html,
