@@ -1957,7 +1957,7 @@ Standard, clause, table, figure and section references:
   - `AS 4100 Cl. 9.2.2.1`
   - `AS 4100 Table 9.5.2`
   - `AS 3600 Cl. 8.1.5`
-  - `AS 1101.3 Fig. 2.1`
+  - `AS 1101.3 Fig. 5.1`
   - `OneSteel / InfraBuild Table 15`
   - `Austube / ASI Part 6`
   - `AS/NZS 1554.1`
@@ -2198,8 +2198,8 @@ Project drawing contract:
 - Source-based SVG redraws are acceptable when they follow a documented standard or drawing convention and include a visible source-basis note.
 - For section-shape guide figures, use deterministic Python-generated SVG assets in a product-catalogue style: simple cross-section geometry, symbolic dimension labels, and a short source-basis note. Do not copy catalogue artwork or use the sketch as the source of numeric properties.
 - For tab-dependent section guide figures, show only the currently selected section family. Do not display all guide figures at once. CSS rules must respect the HTML `hidden` attribute, and generated section-guide images must be constrained by explicit web display sizing rather than the raw SVG viewBox. Avoid duplicate labels inside the image when the card title already identifies the section.
-- Weld-symbol diagrams must explicitly show and label the reference line, arrow line, and the symbol position relative to the reference line. State the AS 1101.3 convention in the legend: arrow-side welds are shown by placing the weld symbol on the side of the reference line towards the reader; other-side welds are shown on the side away from the reader; both-side welds use symbols on both sides of the reference line.
-- Weld-symbol diagrams must keep the basic symbol geometry consistent with AS 1101.3 Fig. 2.1 and the application convention in AS 1101.3 Figs. 2.8 to 2.10. Do not redraw a fillet, butt/groove, plug/slot, spot/projection, seam, surfacing or supplementary symbol from memory.
+- Weld-symbol diagrams must explicitly show and label the reference line, arrow line, and the symbol position relative to the reference line. State the AS 1101.3:2026 convention in the legend: arrow-side welds are shown below the reference line, other-side welds above the reference line, and both-side welds above and below the reference line.
+- Weld-symbol diagrams must keep the basic symbol geometry consistent with AS 1101.3:2026 Fig. 5.1 and the application convention in AS 1101.3:2026 Figs. 5.8 to 5.10. Do not redraw a fillet, butt/groove or supplementary symbol from memory.
 - Butt/groove, plug/slot, spot/projection, seam, surfacing and supplementary symbols must be explained with a short use note and a source-basis note. Do not rely on the SVG shape alone to communicate preparation, penetration, contour, finish, weld category, WPS or inspection requirements.
 - If a standard figure cannot be reproduced because of copyright or licensing, use a clearly attributed public reference image from a credible technical source, and state that the formal symbol or detail remains governed by the standard and project drawings.
 - If an online image is used, include the source page link, image source where practical, publisher/author where available, and a short note explaining whether it is a visual guide or a governing reference.
@@ -3383,7 +3383,8 @@ Use this scope:
 
 - Ordinary equal-leg fillet weld throat capacity.
 - IPBW capacity using a project-specified design throat and the fillet-weld method required by AS 4100 Cl. 9.6.2.7.
-- CPBW and compound weld selections as reference-only terminology / detailing views with no capacity or PASS/FAIL output.
+- CPBW as a common main-selector type with reference-only terminology / detailing output and no capacity or PASS/FAIL result from the limited weld-metal inputs.
+- Compound, plug and slot welds in a folded `Other AS 4100 weld types` reference list, each marked `Reference only` and `Not evaluated`; do not include them as selectable calculation paths.
 - Weld category `SP` / `GP`.
 - Nominal weld metal tensile strength `f_uw`.
 - Effective length `l_w`.
@@ -3397,7 +3398,7 @@ Required AS 4100 and reference basis:
 - Fillet weld capacity must follow AS 4100 Cl. 9.6.3.10: `v_w = 0.6 f_uw t_t k_r`, reported as `phi R / l_w = phi 0.6 f_uw t_t k_r`.
 - Use `t_t = 0.707s` for an ordinary equal-leg fillet weld.
 - Require the entered fillet-weld effective length to satisfy `l_w >= 4s` in accordance with AS 4100 Cl. 9.6.3.5. Keep the quick calculator lightweight by failing closed below this limit rather than automatically applying the reduced design-size alternative.
-- For IPBW, use the project-specified design throat and calculate capacity by the fillet-weld method in accordance with AS 4100 Cl. 9.6.2.7.
+- For IPBW, use the project-specified design throat `t_t` and calculate capacity by the fillet-weld method in accordance with AS 4100 Cl. 9.6.2.7. Do not introduce a second butt-weld throat symbol in the quick calculator unless it is explicitly mapped to the governing Standard notation.
 - For CPBW, do not calculate weld-metal throat capacity. AS 4100 Cl. 9.6.2.7 takes design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor; report `Not evaluated` until that joined-part limit state is defined.
 - For compound welds, do not use `a_w + 0.707s`. AS 4100 Cl. 9.6.5.2 requires the design throat to be determined from the actual total weld cross-section; report `Not evaluated` when that geometry is not defined.
 - Use AS 4100 Table 3.4 for weld capacity factors: `phi = 0.90` for SP CPBW, `phi = 0.80` for SP other fillet weld / IPBW, and `phi = 0.60` for GP welds in the current web scope.
@@ -3406,18 +3407,26 @@ Required AS 4100 and reference basis:
 - Use AS 4100 Table 9.6.3.10(B) for `k_r`; the table length `l_w` is in metres. Convert the user-entered millimetre length before applying the table formula.
 - For all non-welded-lap connection types, keep `k_r = 1.0`.
 - Use ASI Simple Connections 2020 Tables 2.15 and 2.16 only for the warning-only parent-metal screen. Do not let the parent screen change PASS / FAIL unless a full connected-part check is added.
+- The current quick calculator does not contain the thickest-part and thinner-edge geometry needed to evaluate AS 4100 Cls. 9.6.3.2 and 9.6.3.3. State visibly that minimum and maximum fillet-weld size requirements are not evaluated; do not imply that a calculated throat capacity confirms the selected weld size is detail-compliant.
 
 Display and limitation rules:
 
 - For fillet weld and IPBW, the main quick result should remain `kN/mm per effective weld line`; total capacity is secondary.
+- Keep the welded-lap condition, parent-metal screen and optional direct action in one folded `Optional design checks` panel. Present `k_r` first because it modifies the primary capacity; require explicit user enablement before evaluating the advisory parent-metal screen; and show total capacity with utilisation beside the optional direct action.
+- Do not pre-populate an enabled-looking parent-metal result from an assumed ply thickness. When the screen is not enabled, report `Not enabled`; when it is enabled without a positive thickness, report `Not evaluated`. Neither state nor the parent-metal value may control the weld-throat PASS / FAIL result.
 - Use formal resistance terminology throughout the page. Prefer `Design capacity per unit effective length`, `Total design weld capacity`, `Indicative parent-metal screen`, `No design action`, and `Not evaluated`. Do not use conversational or software-internal wording such as `usual detail`, `warning only`, `fails closed`, or `capacity view only` in visible copy.
 - Separate three claim levels explicitly: calculated weld-throat resistance, advisory screening information, and project-specific detailing or fabrication requirements. Application notes may identify a potential or typical configuration, but must not present a generic weld detail as a design selection.
 - Use `Applicable`, `Not applicable`, `Required`, `Not evaluated`, and `Verify separately` for conditions and boundaries. Expand specialist abbreviations such as heat-affected zone on first visible use; retain standard weld abbreviations such as CPBW and IPBW only where the full weld type is also available in the selector or nearby text.
 - State that effective weld lines are not welding passes.
-- Accept only positive whole numbers of identical effective weld lines. Never round, clamp or infer a line count inside the calculation module.
-- CPBW, IPBW and compound welds require project-confirmed joint preparation, WPS, inspection and acceptance criteria. IPBW additionally requires a specified design throat. CPBW and compound selections must not display a numeric capacity from the limited weld-metal inputs.
-- Keep plug / slot welds, weld groups, longitudinal RHS fillet welds where `t < 3 mm`, parent-metal rupture, HAZ, block shear, net-section rupture, eccentric weld groups, intermittent weld rules, fatigue, seismic detailing, lamellar tearing, fabrication access and inspection acceptance outside the quick calculator unless they are deliberately added as separate sourced checks.
-- Weld symbols are visual guides only and must continue to follow AS 1101.3 Fig. 2.1 and AS 1101.3 Figs. 2.8 to 2.10 conventions.
+- Accept only positive whole numbers of identical effective weld lines. Never round, clamp or infer a line count inside the calculation module, and do not impose an arbitrary maximum without a sourced engineering reason.
+- A blank optional design action means `No design action`. Zero may remain a no-demand state. A negative or non-numeric completed action is invalid and must clear utilisation and PASS / FAIL rather than being interpreted as blank or zero.
+- CPBW and IPBW require project-confirmed joint preparation, WPS, inspection and acceptance criteria. IPBW additionally requires a specified design throat. CPBW must not display a numeric capacity from the limited weld-metal inputs.
+- Keep compound, plug and slot weld capacity calculations, weld groups, longitudinal RHS fillet welds where `t < 3 mm`, parent-metal rupture, HAZ, block shear, net-section rupture, eccentric weld groups, intermittent weld rules, fatigue, seismic detailing, lamellar tearing, fabrication access and inspection acceptance outside the quick calculator unless they are deliberately added as separate sourced checks.
+- Keep joint preparation forms such as square, V, bevel, J and U in the symbol/detailing guide rather than the weld-type selector. Treat both-side, all-around and intermittent welding as extent or arrangement, not weld types. Treat SMAW, GMAW, FCAW and SAW as WPS-controlled welding processes, not weld types.
+- Weld symbols are visual guides only and must continue to follow AS 1101.3:2026 Figs. 5.1, 5.2, 5.8 to 5.14, 6.1 to 6.3, 7.5 and 7.27 as applicable. Label the legend `Schematic only, not to scale`; describe the SVGs as source-based redraws, not exact reproductions of the Standard figures.
+- The square butt-weld basic symbol uses two parallel short lines. A backing-run or backing-weld symbol placed above the reference line is an unfilled arch with its ends at the reference line and must remain opposite the applicable butt-weld symbol. Keep the complete-penetration-from-one-side supplementary symbol filled and opposite the basic weld symbol.
+- Do not present `CFW`, `FPBW`, `IPBW` / `PPBW`, `TYP` or other project abbreviations as AS 1101.3 basic symbols. Where retained in a project example, define them in the drawing legend, specification or WPS; the default calculator designation should use the full weld type.
+- Keep the folded symbol legend to approximately 12 high-frequency structural-steel drawing examples. Prioritise weld-side convention, fillet dimensions, common square / V / bevel butt preparations and routinely used supplementary symbols; omit specialist process symbols from the quick-reference set.
 
 ### 15.14 Concrete Pad Section Web Tab Rules
 

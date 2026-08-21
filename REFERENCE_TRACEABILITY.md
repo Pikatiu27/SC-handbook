@@ -1,13 +1,22 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-08-20
+Last updated: 2026-08-21
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
 `%USERPROFILE%\Documents\Codex\Reference`
 
 Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md` before treating any source item as checked. Generated reference packs are search aids only; final equations, tables, and values must be visually checked against the source PDF page.
+
+## Build 0.7.68 - Weld symbol and calculation-flow correction - 2026-08-21
+
+- Updated the Weld tab and canonical outline to AS 1101.3:2026 source-based symbol conventions, including the two-line square butt-weld symbol and the backing-run arch opposite the butt-weld symbol.
+- Kept the legend to 12 common examples and labelled all SVGs as schematic, not-to-scale redraws rather than exact reproductions of the Standard figures.
+- Standardised the IPBW input to specified design throat `t_t`, removed the project abbreviation `CFW` from the default designation and removed the unsourced maximum on effective weld lines.
+- Negative direct design action now reports `Invalid design action`, clears utilisation and cannot produce PASS / FAIL.
+- The result boundary now states that AS 4100 Cls. 9.6.3.2 and 9.6.3.3 minimum and maximum fillet-weld size requirements are not evaluated by the current input set.
+- Full local regression, JavaScript syntax, desktop rendering and 390 px / 320 px responsive checks passed before release.
 
 ## Document Hygiene
 
@@ -675,7 +684,7 @@ Verification cases:
 | AS/NZS 1170.2:2021 | `AS11702-2021.pdf` | 131 pages, 128 text pages, 98% coverage | Wind Site Draft exposure suggestions |
 | AS 2159:2009 | `AS2159_2009.pdf` | 97 pages, 97 text pages, 100% coverage | Screw Piles Selector design, installation, serviceability, durability and testing boundary |
 | AS 1726:2017 | `AS1726_2017.pdf` | 81 pages, 81 text pages, 100% coverage | Screw Piles Selector geotechnical investigation and ground-model context |
-| AS 1101.3:2005 | `11013-2005-pdf.pdf` | 121 pages, 121 text pages, 100% coverage | Weld symbol legend |
+| AS 1101.3:2026 | `AS 11013-2026.pdf` | 101 image pages; visually accessible licensed copy | Current weld symbol legend; source-redrawn schematic geometry checked against Figs. 5.1, 5.2, 5.8-5.14, 6.1-6.3, 7.5 and 7.27 |
 | AS/NZS 1554.1:2014 | `4.1a+AS1554-1-2014.pdf` | 125 pages, 125 text pages, 100% coverage | Weld category / WPS / inspection context |
 | AS/NZS 1554.3:2014 | `4.2+AS1554-3-2014.pdf` | 78 pages, 0 text pages, OCR needed | Do not use as searchable source until OCR/visual check |
 | ASI Simple Connections 2020 | `5+SSC 2020.pdf` | 103 pages, 102 text pages, 99% coverage | Weld metal and parent metal summary tables |
@@ -712,7 +721,7 @@ Verification cases:
 | Weld | Welded lap reduction `k_r` | `AS4100.pdf` | AS 4100 Table 9.6.3.10(B) visually checked on PDF page 148; table length `l_w` is in metres | Visual checked |
 | Weld | Weld metal strengths `f_uw` | `AS4100.pdf`; `5+SSC 2020.pdf` | AS 4100 Table 9.6.3.10(A) visually checked on PDF pages 147-148; ASI Simple Connections 2020 Table 2.14 visually checked on PDF page 19 | Visual checked |
 | Weld | Parent metal screen values | `5+SSC 2020.pdf` | ASI Simple Connections 2020 Tables 2.15 and 2.16 visually checked on PDF pages 20-21; Grade 300 flat bar / sections use `f_up = 440 MPa` | Visual checked |
-| Weld | Weld symbols arrow side / other side / both sides | `11013-2005-pdf.pdf` | AS 1101.3 Fig. 2.1 visually checked on PDF page 9; AS 1101.3 Cl. 2.3.2.1 to AS 1101.3 Cl. 2.3.2.3 and AS 1101.3 Figs. 2.8 to 2.10 visually checked on PDF pages 14-15 | Visual checked |
+| Weld | Common weld and supplementary symbols | `AS 11013-2026.pdf` | AS 1101.3:2026 Figs. 5.1-5.2 visually checked on PDF page 14; arrow / other / both-side placement, tail, site weld and complete-penetration symbols checked on PDF pages 18-21; backing-weld application checked on PDF page 56 | Visual checked against current edition |
 | Steel Monopole | Circular section moment capacity, `phi Ms` | `AS4100.pdf` | AS 4100:2020 Cl. 5.2 and Table 5.2 visually checked on PDF pages 67-69; exact hollow-circle geometry is derived from entered `D` and design thickness `t_d` | For Review; pure calculations, branch boundaries, invalid input and default browser result checked 2026-07-27 |
 | Steel Monopole | Circular compression and bending capacity intercepts | `AS4100.pdf`; Austube DCT Hollow Sections 2013 | AS 4100:2020 Cl. 5.2, Cl. 6.2 and Cl. 8.3.2 visually checked; Austube 508.0 x 6.4 CHS published `Ag`, `kf` and `phi Ms` reproduced | For Review; section-capacity intercepts only; no actions, utilisation, `Nc`, second-order or load-combination calculation |
 | Steel Monopole | Regular polygonal permitted bending moment, `M` | ASCE/SEI 48-19 excerpts | Cl. 5.2.3.2.1, Table 5-1, Cl. 5.2.5 and Appendix B screenshots visually checked; exact sharp-corner geometry and project `r_i/t_nom` input used | For Review foreign-standard path; isolated from the AS 4100 circular result |
