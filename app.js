@@ -6072,12 +6072,12 @@ function renderBeamSectionDiagram(section) {
       : "Value-driven section schematic showing centroidal x-x and y-y axes and the selected bending direction.";
   svg.innerHTML = `<title id="beamSectionDiagramTitle">${safeText(title)} and selected bending direction</title><desc id="beamSectionDiagramDescription">${description}</desc><defs><marker id="beamAxisArrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z"></path></marker><marker id="beamLoadArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 0 0 L 8 4 L 0 8 Z"></path></marker></defs>${geometry}${axisMarkup}${auxiliaryMarkup}<circle class="section-properties-centroid" cx="${line(axisX)}" cy="${line(axisY)}" r="3.4" />${loadMarkup}`;
   $("beamSectionDiagramCaption").textContent = custom
-    ? "Entered ideal dimensions · selected direction"
+    ? "Entered geometry · active direction"
     : shape === "angle"
-      ? "Catalogue principal axes · selected load direction"
+      ? "Principal axes · active load case"
       : shape === "channel"
-        ? "Catalogue centroid and shear centre · selected direction"
-        : "Catalogue geometry · selected direction";
+        ? "Centroid and shear centre"
+        : "Geometry · active direction";
 }
 
 function setBeamOutput(id, value, available) {

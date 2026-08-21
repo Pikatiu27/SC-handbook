@@ -36,6 +36,12 @@ assert.doesNotMatch(html, /One f'<sub>c<\/sub> for the checked section/);
 assert.doesNotMatch(html, /id="concreteModeValue"|id="concreteWidthValue"|id="concreteDepthValue"|id="concreteStatusValue"/);
 assert.doesNotMatch(html, /id="concretePhiNote"|id="concreteShearNote"|concrete-reo-source/);
 
+assert.match(styles, /\.beam-section-figure \{[^}]*width: 180px;[^}]*min-width: 180px;[^}]*grid-template-rows: minmax\(108px, 1fr\) auto;/);
+assert.match(styles, /\.beam-summary\.beam-selected-section \{[^}]*grid-template-columns: minmax\(0, 1fr\) 180px;/);
+assert.match(script, /Entered geometry · active direction/);
+assert.match(script, /Principal axes · active load case/);
+assert.match(outline, /desktop section-guide column secondary at approximately `180 px`/);
+
 assert.doesNotMatch(html, /class="section-tag"/);
 assert.doesNotMatch(styles, /\.section-tag\b/);
 assert.doesNotMatch(html, /id="reoAnchoragePathTag"|id="reoAnchorageResultTag"/);
