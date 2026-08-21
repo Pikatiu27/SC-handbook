@@ -89,10 +89,28 @@
 
     const reinforcement = data.shearReinforcement || {};
     const shearReoMode = reinforcement.mode === "vertical" ? "vertical" : "none";
-    const shearBarArea = Math.max(0, Number(reinforcement.barArea) || 0);
-    const nsv = Math.max(0, Number(reinforcement.legs) || 0);
-    const sv = Math.max(1, Number(reinforcement.spacing) || 1);
-    const fsyf = Math.max(1, Math.min(600, Number(reinforcement.yieldStress) || 1));
+    const shearBarAreaInput = Number(reinforcement.barArea);
+    const nsvInput = Number(reinforcement.legs);
+    const svInput = Number(reinforcement.spacing);
+    const fsyfInput = Number(reinforcement.yieldStress);
+    if (shearReoMode === "vertical") {
+      if (!Number.isFinite(shearBarAreaInput) || shearBarAreaInput <= 0) {
+        throw new RangeError("Shear reinforcement bar area must be a positive finite value");
+      }
+      if (!Number.isInteger(nsvInput) || nsvInput < 1) {
+        throw new RangeError("Shear reinforcement leg count must be a positive whole number");
+      }
+      if (!Number.isFinite(svInput) || svInput <= 0) {
+        throw new RangeError("Shear reinforcement spacing must be a positive finite value");
+      }
+      if (!Number.isFinite(fsyfInput) || fsyfInput <= 0 || fsyfInput > 600) {
+        throw new RangeError("Shear reinforcement yield stress must be greater than zero and no more than 600 MPa");
+      }
+    }
+    const shearBarArea = shearReoMode === "vertical" ? shearBarAreaInput : 0;
+    const nsv = shearReoMode === "vertical" ? nsvInput : 0;
+    const sv = shearReoMode === "vertical" ? svInput : 1;
+    const fsyf = shearReoMode === "vertical" ? fsyfInput : 1;
     const tensionLayers = data.layers.filter(layer =>
       Number(layer.d) >= depth / 2 && Number(layer.strain) < -0.00005 && Number(layer.area) > 0
     );

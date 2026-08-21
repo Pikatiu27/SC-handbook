@@ -10,6 +10,8 @@ const script = fs.readFileSync(path.join(root, "app.js"), "utf8");
 const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"), "utf8");
 const concreteCalculation = fs.readFileSync(path.join(root, "concrete-section-calculation.js"), "utf8");
+const pagesWorkflow = fs.readFileSync(path.join(root, ".github", "workflows", "pages.yml"), "utf8");
+const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
 const drawingAdoptionPath = path.join(root, "engineering", "drawing-standard-adoption.json");
 const drawingAdoption = JSON.parse(fs.readFileSync(drawingAdoptionPath, "utf8"));
 const calculateWeldSource = script.slice(
@@ -75,6 +77,8 @@ assert.doesNotMatch(html, /id="concreteStatusValue"/);
 assert.match(calculateConcreteSource, /Section capacities only; no design actions are checked/);
 assert.match(script, /ConcreteSectionCalculation\.oneWayShear\(/);
 assert.match(concreteCalculation, /function oneWayShear\(data\)/);
+assert.match(pagesWorkflow, /git ls-files '\*\.js'/);
+assert.doesNotMatch(gitignore, /^tools\/$/m);
 assert.match(script, /function catalogueDerivedTraceRows\(/);
 assert.match(script, /title: "Circular hollow-section area"/);
 assert.match(script, /title: "Clear web reference area"/);

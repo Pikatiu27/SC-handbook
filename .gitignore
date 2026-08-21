@@ -11,7 +11,5 @@ output/
 tmp/
 tmp-*/
 tmp_*/
-tools/
-
 *.log
 *.tmp

@@ -15,6 +15,7 @@ assert.match(app, /\$\("weldCallout"\)\.innerHTML = callouts\[type\] \|\| callou
 assert.match(html, /Design capacity per unit effective length/);
 assert.match(html, /Indicative parent-metal screen/);
 assert.match(html, /Weld-throat resistance only/);
+assert.match(html, /Longitudinal fillet welds in RHS with wall thickness below 3 mm are not evaluated/);
 assert.match(html, /RHS \/ SHS connection plate/);
 assert.match(app, /No design action entered/);
 assert.match(app, /Total design weld capacity/);

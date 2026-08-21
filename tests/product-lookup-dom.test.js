@@ -104,7 +104,7 @@ assert.match(script, /loads: \[9\.8, 14\.6\]/);
 assert.match(script, /loads: \[174\.5, 224\.0\]/);
 assert.match(script, /gripSourceConflict/);
 assert.match(script, /torqueSourceConflict/);
-assert.match(html, /app\.js\?v=20260821plainheadings1/);
+assert.match(html, /app\.js\?v=20260821concretesafety1/);
 assert.doesNotMatch(script, /renderUBoltProductFigure\(product\);/);
 assert.doesNotMatch(script, /renderBlindBoltProductFigure\(product\);/);
 

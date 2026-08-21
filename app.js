@@ -7420,6 +7420,52 @@ function updateConcreteShearInputVisibility() {
   $("concreteShearInputs").classList.toggle("is-none", !hasShearReinforcement);
 }
 
+function concreteShearInputState() {
+  const active = $("concreteShearReo").value === "vertical";
+  const shearProduct = concreteShearBarProduct();
+  const legs = numericValue($("concreteNsv").value);
+  const spacing = numericValue($("concreteSv").value);
+  const yieldStress = numericValue($("concreteFsyf").value);
+  const fields = [
+    {
+      id: "concreteNsv",
+      errorId: "concreteNsvError",
+      valid: Number.isInteger(legs) && legs >= 1,
+      message: "Fitment legs must be a positive whole number"
+    },
+    {
+      id: "concreteSv",
+      errorId: "concreteSvError",
+      valid: Number.isFinite(spacing) && spacing >= 50,
+      message: "Fitment spacing must be at least 50 mm"
+    },
+    {
+      id: "concreteFsyf",
+      errorId: "concreteFsyfError",
+      valid: Number.isFinite(yieldStress) && yieldStress >= 200 && yieldStress <= 600,
+      message: "Fitment yield strength must be between 200 MPa and 600 MPa"
+    }
+  ];
+  fields.forEach(field => {
+    const invalid = active && !field.valid;
+    if (invalid) $(field.id).setAttribute("aria-invalid", "true");
+    else $(field.id).removeAttribute("aria-invalid");
+    $(field.errorId).hidden = !invalid;
+  });
+  const errors = active ? fields.filter(field => !field.valid).map(field => field.message) : [];
+  return {
+    active,
+    valid: errors.length === 0,
+    errors,
+    mode: active ? "vertical" : "none",
+    designation: shearProduct.designation,
+    barArea: shearProduct.area || Math.PI * shearProduct.diameter ** 2 / 4,
+    legs,
+    spacing,
+    yieldStress
+  };
+}
+
 function populateConcreteBarOptions() {
   const groups = [
     ["N", concreteNBarDiameters],
@@ -7522,13 +7568,7 @@ function solveConcreteSection(data) {
   return ConcreteSectionCalculation.solveSection(data);
 }
 
-function concreteOneWayShear(data, result) {
-  const shearReoMode = $("concreteShearReo").value;
-  const shearProduct = concreteShearBarProduct();
-  const fsyf = Math.max(1, Math.min(600, value("concreteFsyf")));
-  const sv = Math.max(1, value("concreteSv"));
-  const nsv = Math.max(0, value("concreteNsv"));
-  const shearBarArea = shearProduct.area || Math.PI * shearProduct.diameter ** 2 / 4;
+function concreteOneWayShear(data, result, shearInput) {
   const shear = ConcreteSectionCalculation.oneWayShear({
     depth: data.depth,
     width: data.width,
@@ -7536,12 +7576,12 @@ function concreteOneWayShear(data, result) {
     layers: result.layers,
     d0: result.d0,
     shearReinforcement: {
-      mode: shearReoMode,
-      designation: shearProduct.designation,
-      barArea: shearBarArea,
-      legs: nsv,
-      spacing: sv,
-      yieldStress: fsyf
+      mode: shearInput.mode,
+      designation: shearInput.designation,
+      barArea: shearInput.barArea,
+      legs: shearInput.legs,
+      spacing: shearInput.spacing,
+      yieldStress: shearInput.yieldStress
     }
   });
   const dBasis = shear.centroidArea > 0
@@ -7550,13 +7590,14 @@ function concreteOneWayShear(data, result) {
   return {
     ...shear,
     dBasis,
-    shearDesignation: shearProduct.designation
+    shearDesignation: shearInput.designation
   };
 }
 
 function calculateConcrete() {
   saveConcreteLayerState();
   updateConcreteShearInputVisibility();
+  const shearInput = concreteShearInputState();
   const topDepth = value("concreteTopDepth");
   const bottomDepth = value("concreteBottomDepth");
   const hideInactiveBottomMats = bottomDepth <= 0;
@@ -7602,11 +7643,13 @@ function calculateConcrete() {
     ok: false,
     message: !fcValid
       ? "Concrete strength must be between 20 MPa and 120 MPa"
+      : !shearInput.valid
+        ? `Invalid shear reinforcement input: ${shearInput.errors.join("; ")}`
       : depth <= 0
         ? "No concrete pad depth is defined"
         : "Plain concrete section: no RC ultimate flexural capacity is calculated without active reinforcement layers"
   };
-  if (fcValid && data.width > 0 && data.depth > 0 && data.ecu > 0 && data.layers.length) {
+  if (fcValid && shearInput.valid && data.width > 0 && data.depth > 0 && data.ecu > 0 && data.layers.length) {
     result = solveConcreteSection(data);
   }
 
@@ -7629,14 +7672,19 @@ function calculateConcrete() {
 
   if (!result.ok) {
     ["concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
-    $("concreteWarningText").textContent = fcValid
-      ? "Section capacity is unavailable for the current depth and active reinforcement."
-      : result.message;
+    $("concreteWarningText").textContent = result.message;
     $("concreteSectionState").innerHTML = "";
     $("concreteLayerResults").innerHTML = "";
     $("concreteFormulaSteps").innerHTML = !fcValid
       ? calculationTraceRow({
           title: "Concrete strength input",
+          result: "Not evaluated",
+          applicability: `${result.message}. No flexural or shear capacity is reported.`,
+          state: "warning"
+        })
+      : !shearInput.valid
+        ? calculationTraceRow({
+          title: "Shear reinforcement input",
           result: "Not evaluated",
           applicability: `${result.message}. No flexural or shear capacity is reported.`,
           state: "warning"
@@ -7666,7 +7714,7 @@ function calculateConcrete() {
   }
 
   const residual = result.axial / 1000;
-  const shear = concreteOneWayShear(data, result);
+  const shear = concreteOneWayShear(data, result, shearInput);
   const coverWarnings = result.layers.filter(layer => layer.yTop < data.cover + layer.bar / 2 || data.depth - layer.yTop < data.cover + layer.bar / 2);
   const reviewFlags = [];
   if (!shear.withinSimplifiedScope) reviewFlags.push(`one-way shear not evaluated outside AS 3600 Cl. 8.2.4 simplified-method scope (${shear.scopeFailures.join("; ")})`);

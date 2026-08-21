@@ -1446,3 +1446,15 @@ The active path title is visually distinct from its compact tag. The six primary
 After integration with remote `main`, all 40 local test files, all 20 root JavaScript syntax checks and `git diff --check` pass. The locally served Build 0.7.63 page was rechecked at 1440 px and 390 px on both lap and PIR development routes: the specified heading levels rendered, the combined style/app cache keys loaded, there was no document-level horizontal overflow, and the browser console reported no warnings or errors. The module remains `For Review` pending the normal public deployment verification.
 
 The integrated release was committed as `920e52e` and pushed to remote `main`. GitHub Pages workflow `32379820550` completed verification and deployment successfully. A cache-busted public browser check returned Build 0.7.63 with `styles.css?v=20260821reomerge1` and `app.js?v=20260821reomerge1`, opened the Reinforcement route directly, showed the accepted heading hierarchy, and reported no document-level horizontal overflow or console warning/error at desktop and 390 px. The public module remains `For Review` within the visible public-beta boundary.
+
+## 2026-08-21 Build 0.7.64 Concrete Shear Input Safety
+
+Build 0.7.64 closes a fail-open Concrete Pad input path without changing the accepted AS 3600 one-way shear equations. When vertical shear fitments are selected, the page now requires a positive whole-number leg count, spacing of at least 50 mm and yield strength from 200 MPa to 600 MPa. Blank, zero, negative, non-numeric or out-of-range values are marked invalid and suppress both flexural and shear capacity so that a partially valid section cannot be mistaken for a complete result.
+
+`concrete-section-calculation.js` independently rejects non-positive or non-finite bar area, leg count, spacing and yield strength on the vertical-fitment path. It no longer replaces missing spacing with 1 mm or silently caps an invalid yield-stress input. The no-shear-reinforcement path remains independent of the disabled fitment controls.
+
+The Weld result boundary now states beside the result that longitudinal fillet welds in RHS with wall thickness below 3 mm are not evaluated. This makes the existing folded exclusion visible without adding an unsupported ply-type calculation branch or changing the verified ordinary fillet-weld result.
+
+The regression contract includes invalid-input matrices for blank, zero, negative, non-numeric, fractional and out-of-range shear-fitment inputs. Public deployment verification remains pending until this local candidate is accepted and pushed.
+
+The Pages verification job now runs `node --check` against every tracked JavaScript file returned by Git rather than a five-file hand-maintained list. The blanket `tools/` ignore rule is removed so new source-controlled maintenance scripts cannot be silently omitted; generated output directories remain ignored separately.

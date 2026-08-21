@@ -136,4 +136,36 @@ assert.ok(Number.isNaN(outsideScope.phiVu));
 assert.throws(() => ConcreteSectionCalculation.oneWayShear(caseData({ depth: 0 })), RangeError);
 assert.throws(() => ConcreteSectionCalculation.oneWayShear(caseData({ layers: null })), TypeError);
 
+const validVerticalReinforcement = minimumReoInput.shearReinforcement;
+for (const spacing of [undefined, null, "", 0, -10, Number.NaN]) {
+  assert.throws(() => ConcreteSectionCalculation.oneWayShear(caseData({
+    shearReinforcement: { ...validVerticalReinforcement, spacing }
+  })), /spacing must be a positive finite value/);
+}
+for (const legs of [undefined, null, "", 0, -1, 1.5, Number.NaN]) {
+  assert.throws(() => ConcreteSectionCalculation.oneWayShear(caseData({
+    shearReinforcement: { ...validVerticalReinforcement, legs }
+  })), /leg count must be a positive whole number/);
+}
+for (const yieldStress of [undefined, null, "", 0, -1, 601, Number.NaN]) {
+  assert.throws(() => ConcreteSectionCalculation.oneWayShear(caseData({
+    shearReinforcement: { ...validVerticalReinforcement, yieldStress }
+  })), /yield stress must be greater than zero and no more than 600 MPa/);
+}
+for (const barArea of [undefined, null, "", 0, -1, Number.NaN]) {
+  assert.throws(() => ConcreteSectionCalculation.oneWayShear(caseData({
+    shearReinforcement: { ...validVerticalReinforcement, barArea }
+  })), /bar area must be a positive finite value/);
+}
+
+assert.doesNotThrow(() => ConcreteSectionCalculation.oneWayShear(caseData({
+  shearReinforcement: {
+    mode: "none",
+    barArea: Number.NaN,
+    legs: Number.NaN,
+    spacing: Number.NaN,
+    yieldStress: Number.NaN
+  }
+})));
+
 console.log("Concrete simplified-shear independent cases passed");

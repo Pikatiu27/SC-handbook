@@ -36,14 +36,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for script_file in \
-            app.js \
-            engineering-number-format.js \
-            monopole-app.js \
-            reo-calculation.js \
-            rock-anchor-selector/app.js; do
+          while IFS= read -r script_file; do
             node --check "$script_file"
-          done
+          done < <(git ls-files '*.js')
       - name: Check repository diff integrity
         run: git diff --check
       - uses: actions/upload-pages-artifact@v3

@@ -26,6 +26,10 @@ assert.match(concreteRegion, /const layerStateSubstitution/);
 assert.match(concreteRegion, /substitution: `\|\$\{momentTerms\}\| \/ 1000`/);
 assert.match(concreteRegion, /displayFixed\(shear\.kv, 6\)/);
 assert.match(concreteRegion, /displayFixed\(shear\.rootFc, 5\)/);
+assert.match(concreteRegion, /Invalid shear reinforcement input/);
+assert.match(concreteRegion, /No flexural or shear capacity is reported/);
+assert.doesNotMatch(concreteRegion, /Math\.max\(1, value\("concreteSv"\)\)/);
+assert.match(html, /id="concreteSvError" hidden>Enter a spacing of at least 50 mm/);
 assert.doesNotMatch(concreteRegion, /\.toFixed\(/);
 
 assert.match(reoRegion, /function reoBasicFormulaSubstitution/);
