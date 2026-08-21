@@ -394,6 +394,43 @@
     return Object.freeze(common);
   }
 
+  function nominalSlipFit(lowerSection, upperSection, overlapLength) {
+    const overlap = positive(overlapLength, "Entered overlap");
+    if (lowerSection.form !== upperSection.form) {
+      throw new RangeError("Connected slip-joint segments must use the same cross-section form.");
+    }
+    if (lowerSection.form === "polygon" && lowerSection.sideCount !== upperSection.sideCount) {
+      throw new RangeError("Connected polygon slip-joint segments must use the same number of sides.");
+    }
+    const checks = [
+      { location: "overlap bottom", lowerLocal: lowerSection.length - overlap, upperLocal: 0 },
+      { location: "overlap top", lowerLocal: lowerSection.length, upperLocal: overlap }
+    ].map(check => {
+      const lower = sectionPropertiesAtThickness(lowerSection, check.lowerLocal, lowerSection.nominalThickness);
+      const upper = sectionPropertiesAtThickness(upperSection, check.upperLocal, upperSection.nominalThickness);
+      const lowerOutside = lower.form === "polygon" ? lower.outsideAcrossFlats : lower.outsideDimension;
+      const upperInside = upper.insideAcrossFlats;
+      return Object.freeze({
+        ...check,
+        lowerOutside,
+        upperInside,
+        nominalClearance: upperInside - lowerOutside
+      });
+    });
+    const governing = checks.slice().sort((a, b) => a.nominalClearance - b.nominalClearance)[0];
+    if (governing.nominalClearance < -EPSILON) {
+      throw new RangeError(
+        `Nominal slip-joint geometry is incompatible at the ${governing.location}: `
+        + `${upperSection.id} cannot fit outside ${lowerSection.id}.`
+      );
+    }
+    return Object.freeze({
+      checks: Object.freeze(checks),
+      minimumNominalClearance: governing.nominalClearance,
+      governingLocation: governing.location
+    });
+  }
+
   function assembleSections(sections) {
     if (!Array.isArray(sections) || sections.length === 0) throw new RangeError("At least one profile segment is required.");
     const normalised = sections.map(normaliseSection);
@@ -407,6 +444,7 @@
         if (section.overlap >= section.length || section.overlap >= lower.section.length) {
           throw new RangeError(`Segment ${index + 1} overlap must be shorter than both connected segments.`);
         }
+        if (section.overlap > 0) nominalSlipFit(lower.section, section, section.overlap);
       }
       const start = index === 0 ? 0 : assembled[index - 1].end - section.overlap;
       const end = start + section.length;
@@ -545,6 +583,7 @@
     if (lowerOverlapStart < -EPSILON) {
       throw new RangeError("Design overlap must not exceed the lower section length.");
     }
+    const nominalFit = nominalSlipFit(lowerItem.section, upperItem.section, overlapLength);
     const lowerProperties = sectionPropertiesAt(lowerItem.section, Math.max(0, lowerOverlapStart));
     const upperProperties = sectionPropertiesAt(upperItem.section, 0);
     const lowerInscribedDiameter = lowerProperties.form === "polygon"
@@ -573,6 +612,7 @@
       requiredDesignOverlap,
       minimumConstructedOverlap,
       designRatio: designOverlap / requiredDesignOverlap,
+      minimumNominalClearance: nominalFit.minimumNominalClearance,
       designState: designOverlap + EPSILON >= requiredDesignOverlap
         ? "Meets prescribed design overlap"
         : "Below prescribed design overlap",
@@ -600,6 +640,7 @@
     circularCompressionSectionCapacity,
     polygonStressLimit,
     polygonMomentCapacity,
+    nominalSlipFit,
     assembleSections,
     localDimension,
     sectionPropertiesAt,

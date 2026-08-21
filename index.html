@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260821monopolestage1">
+  <link rel="stylesheet" href="styles.css?v=20260821monopoleflow1">
 </head>
 <body>
   <header class="topbar">
@@ -1023,7 +1023,7 @@
 
         <div class="input-cluster">
           <section class="input-group input-group-section monopole-section-form-group">
-            <span class="input-group-heading"><b>Geometry</b></span>
+            <span class="input-group-heading"><b>Geometry</b><small>Section form applies to all segments.</small></span>
             <div class="input-group-fields six monopole-form-fields">
               <label><span>Cross-section</span><select id="monopoleSectionForm"><option value="circular" selected>Circular tubular</option><option value="polygon-4">4-sided regular polygon</option><option value="polygon-6">6-sided regular polygon</option><option value="polygon-8">8-sided regular polygon</option><option value="polygon-12">12-sided regular polygon</option><option value="polygon-16">16-sided regular polygon</option></select></label>
               <label id="monopoleBendRadiusField" hidden><span>Inside bend-radius ratio, r<sub>i</sub>/t<sub>nom</sub></span><span class="unit"><input id="monopoleBendRadiusRatio" type="number" min="0.1" step="0.1" value="1.5" aria-describedby="monopoleSectionNote"><em>ratio</em></span></label>
@@ -1060,7 +1060,7 @@
 
         <div class="input-cluster">
           <section class="input-group input-group-section monopole-material-group">
-            <span id="monopoleMaterialHeading" class="input-group-heading"><b>Material and resistance basis</b></span>
+            <span id="monopoleMaterialHeading" class="input-group-heading"><b>Material and resistance basis</b><small>Basis and AS 4100 category apply to all segments.</small></span>
             <div class="input-group-fields monopole-material-fields">
               <label><span>Yield-strength basis</span><select id="monopoleMaterialMode"><option value="plate">AS/NZS 3678:2016 plate</option><option value="manual" selected>Manual yield stress</option></select></label>
               <label id="monopolePlateGradeField"><span>Plate grade</span><select id="monopolePlateGrade"><option value="200">200</option><option value="250">250</option><option value="300">300</option><option value="350" selected>350</option><option value="400">400</option><option value="450">450</option><option value="WR350">WR350</option></select></label>
@@ -1092,7 +1092,7 @@
           <summary><span><b>Moment capacity</b><small id="monopoleMomentBasis">AS 4100:2020 &middot; 0.5 m stations &middot; &phi; = 0.90</small></span><strong id="monopoleMomentSummary">Base &phi;M<sub>s</sub> = -</strong><i>+</i></summary>
           <div class="monopole-moment-body">
             <section class="monopole-chart-section">
-              <div class="monopole-subsection-heading"><b>Capacity by elevation</b><small>5 m guides</small></div>
+              <div class="monopole-subsection-heading"><b>Capacity by elevation</b><small id="monopoleMomentMinimum">5 m guides</small></div>
               <div id="monopoleChart" class="monopole-chart" role="img" aria-label="Design section moment capacity plotted against pole elevation"></div>
               <div id="monopoleChartLegend" class="monopole-chart-legend"></div>
             </section>
@@ -1929,7 +1929,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.70 &middot; technically reviewed 21 Aug 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.71 &middot; technically reviewed 21 Aug 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>
@@ -1948,9 +1948,9 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="reo-state.js?v=20260819reostate1"></script>
-  <script src="monopole-capacity.js?v=20260821monopolesegments1"></script>
+  <script src="monopole-capacity.js?v=20260821monopoleflow1"></script>
   <script src="app.js?v=20260821beamrelease1"></script>
-  <script src="monopole-app.js?v=20260821monopolesegments1"></script>
+  <script src="monopole-app.js?v=20260821monopoleflow1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>
 </html>

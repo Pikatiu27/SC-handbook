@@ -103,6 +103,8 @@
     const separate = separateDesignThickness();
     schedule = [...$("monopoleScheduleBody").querySelectorAll("tr")].map((row, index) => {
       const nominalThickness = number(row.querySelector('[data-field="nominalThickness"]').value);
+      const designThicknessInput = row.querySelector('[data-field="designThickness"]');
+      if (!separate) designThicknessInput.value = String(nominalThickness);
       return {
         id: row.querySelector('[data-field="id"]').value.trim() || `S${index + 1}`,
         length: number(row.querySelector('[data-field="length"]').value),
@@ -110,7 +112,7 @@
         topDimension: number(row.querySelector('[data-field="topDimension"]').value),
         nominalThickness,
         designThickness: separate
-          ? number(row.querySelector('[data-field="designThickness"]').value)
+          ? number(designThicknessInput.value)
           : nominalThickness,
         yieldStress: number(row.querySelector('[data-field="yieldStress"]').value),
         overlap: index === 0 ? 0 : number(row.querySelector('[data-field="overlap"]').value)
@@ -264,6 +266,7 @@
       $(id).textContent = "-";
     });
     $("monopoleMomentSummary").textContent = "Not evaluated";
+    $("monopoleMomentMinimum").textContent = "5 m guides";
     $("monopoleAssembledHeight").textContent = "-";
     $("monopoleSectionCount").textContent = "-";
     $("monopoleChart").classList.add("is-unavailable");
@@ -555,6 +558,7 @@
       })));
       const unavailable = activeResults.some(result => !Number.isFinite(result.value));
       const available = activeResults.filter(result => Number.isFinite(result.value));
+      const minimum = available.slice().sort((a, b) => a.value - b.value)[0];
       const base = available
         .filter(result => Math.abs(result.elevation) < 1e-7)
         .sort((a, b) => a.value - b.value)[0];
@@ -567,6 +571,11 @@
         : polygon
           ? `Base M = ${fixed(base.value, 1)} kN&middot;m`
           : `Base &phi;M<sub>s</sub> = ${fixed(base.value, 1)} kN&middot;m`;
+      $("monopoleMomentMinimum").innerHTML = unavailable || !minimum
+        ? "5 m guides"
+        : polygon
+          ? `Minimum evaluated station: M = ${fixed(minimum.value, 1)} kN&middot;m at z = ${fixed(minimum.elevation, 1)} m &middot; 5 m guides`
+          : `Minimum evaluated station: &phi;M<sub>s</sub> = ${fixed(minimum.value, 1)} kN&middot;m at z = ${fixed(minimum.elevation, 1)} m &middot; 5 m guides`;
       $("monopoleMass").textContent = fixed(mass.mass, 0);
       $("monopoleSelfWeight").textContent = fixed(mass.selfWeight, 1);
       $("monopoleCentreOfGravity").textContent = fixed(mass.centreOfGravity, 2);

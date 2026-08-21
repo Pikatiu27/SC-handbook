@@ -217,7 +217,7 @@ const assembly = monopole.assembleSections([
     form: "circular",
     length: 10,
     overlap: 1.5,
-    bottomDimension: 960,
+    bottomDimension: 970,
     topDimension: 650,
     thickness: 8,
     yieldStress: 350,
@@ -225,16 +225,13 @@ const assembly = monopole.assembleSections([
   },
   {
     id: "S3",
-    form: "polygon",
-    sideCount: 12,
-    dimensionBasis: "across-flats",
+    form: "circular",
     length: 9,
     overlap: 1,
-    bottomDimension: 700,
+    bottomDimension: 720,
     topDimension: 350,
     thickness: 6,
-    yieldStress: 350,
-    insideBendRadius: 18
+    yieldStress: 350
   }
 ]);
 close(assembly.sections[0].start, 0);
@@ -243,7 +240,7 @@ close(assembly.sections[1].start, 10.5);
 close(assembly.sections[1].end, 20.5);
 close(assembly.sections[2].start, 19.5);
 close(assembly.height, 28.5);
-close(monopole.localDimension(assembly.sections[1].section, 1.5), 913.5);
+close(monopole.localDimension(assembly.sections[1].section, 1.5), 922);
 
 const zeroOverlapAssembly = monopole.assembleSections([
   { id: "B1", length: 10, bottomDimension: 1200, topDimension: 900, thickness: 12, yieldStress: 350 },
@@ -280,7 +277,7 @@ const floatingBoundaryAssembly = monopole.assembleSections([
     form: "circular",
     length: 1,
     overlap: 0.1,
-    bottomDimension: 480,
+    bottomDimension: 515,
     topDimension: 400,
     thickness: 5,
     yieldStress: 350
@@ -374,6 +371,7 @@ assert.equal(slip.lowerSegmentId, "L");
 assert.equal(slip.designState, "Meets prescribed design overlap");
 assert.equal(slip.constructedState, "Drawing value - installation not verified");
 assert.equal(slip.jointCapacityState, "Not evaluated");
+close(slip.minimumNominalClearance, 5);
 
 const taperedSlipAssembly = monopole.assembleSections([
   {
@@ -443,6 +441,36 @@ assert.equal(
   monopole.slipOverlapScreen(polygonSlipAssembly.sections[0], polygonSlipAssembly.sections[1], 1.35 * 980 / 1000 - 1e-5).constructedState,
   "Below minimum constructed overlap"
 );
+
+assert.throws(() => monopole.assembleSections([
+  {
+    id: "N1",
+    form: "circular",
+    length: 10,
+    bottomDimension: 500,
+    topDimension: 400,
+    thickness: 6,
+    yieldStress: 350
+  },
+  {
+    id: "N2",
+    form: "circular",
+    length: 8,
+    overlap: 1.5,
+    bottomDimension: 300,
+    topDimension: 200,
+    thickness: 6,
+    yieldStress: 350
+  }
+]), /Nominal slip-joint geometry is incompatible.*N2 cannot fit outside N1/);
+
+const nominalFit = monopole.nominalSlipFit(
+  overlappedAssembly.sections[0].section,
+  overlappedAssembly.sections[1].section,
+  overlappedAssembly.sections[1].section.overlap
+);
+close(nominalFit.minimumNominalClearance, 5);
+assert.equal(nominalFit.governingLocation, "overlap bottom");
 
 assert.throws(() => monopole.circularProperties(100, 50), /less than half/);
 assert.throws(() => monopole.polygonProperties(8, 100, 50, "across-flats"), /less than the outside apothem/);
