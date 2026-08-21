@@ -3356,6 +3356,8 @@ Current local implementation follows that order:
 | 8 Custom dimensions | UB / UC, PFC x-x, CHS, RHS / SHS and Round Bar reviewed paths are enabled from entered ideal geometry and an explicit compatible material basis | Catalogue designation is removed from active custom state; PFC Load A/B is hidden and EA Custom dimensions is unavailable |
 | 9 Shear / interaction expansion | UB / UC / PFC `x-x`, CHS shear and RHS / SHS direction-specific shear are complete; Cl. 5.12.3 interaction is enabled for the reviewed flat-web paths | CHS has no flat-web interaction; EA and Round Bar shear / interaction remain excluded |
 
+For release classification, treat the calculation as complete only within the reviewed section-resistance paths in Sections 15.12.3 to 15.12.5. This means every enabled family / grade / direction resolves a checked material basis, section class, `Ze`, `phi Ms` and, where supported, `phi Vv` and Cl. 5.12.3 interaction; unsupported paths return `Not evaluated` without a numeric fallback or stale result. Do not describe this scoped completeness as complete AS 4100 beam design. The exclusions in Section 15.12.13 remain separate member, stability, connection, local-force and serviceability checks.
+
 #### 15.12.13 Required Exclusions
 
 - Member moment capacity `Mb`.
