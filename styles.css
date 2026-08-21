@@ -1703,7 +1703,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 
 .monopole-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .monopole-card > .input-cluster { margin: 0; }
-.monopole-stage-heading { display: flex; align-items: center; padding: 2px; }
+.monopole-stage-heading { min-height: 36px; display: flex; align-items: center; padding: 8px 10px; border-left: 3px solid var(--monopole-accent); border-radius: 5px; background: #f3f7f5; }
 .monopole-stage-heading b, .monopole-stage-heading small { display: block; }
 .monopole-stage-heading b { color: var(--ink); font-size: var(--fs-md); line-height: 1.2; font-weight: 850; }
 .monopole-stage-heading small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.3; }
