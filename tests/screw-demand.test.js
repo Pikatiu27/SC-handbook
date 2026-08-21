@@ -23,6 +23,10 @@ approximately(result.reactions.reduce((sum, pile) => sum + pile.x * pile.lateral
 approximately(result.maxCompression, 115, 1e-9, "maximum compression reproduction");
 approximately(result.maxUplift, 0, 1e-9, "maximum uplift reproduction");
 approximately(result.maxLateral, 13.437096247164249, 1e-12, "maximum horizontal reaction reproduction");
+assert.equal(ScrewDemand.simultaneousAxialHorizontalPiles(result.reactions).length, 8);
+assert.deepEqual(ScrewDemand.simultaneousAxialHorizontalPiles(result.reactions, 20), []);
+assert.throws(() => ScrewDemand.simultaneousAxialHorizontalPiles(null), /array/);
+assert.throws(() => ScrewDemand.simultaneousAxialHorizontalPiles(result.reactions, -1), /cannot be negative/);
 
 assert.throws(() => ScrewDemand.distribute({ coordinates: [{ x: 0, y: 0 }, { x: 2, y: 0 }], axial: 10 }), /group centroid/);
 assert.throws(() => ScrewDemand.distribute({ coordinates: [{ x: -1, y: -1 }, { x: 1, y: 1 }], momentX: 10 }), /axes must be uncoupled/);
@@ -45,6 +49,21 @@ for (let columns = 2; columns <= 8; columns += 1) {
       approximately(layoutCoordinates.reduce((sum, point) => sum + point.x, 0), 0, 1e-9, `${layout} centroid x`);
       approximately(layoutCoordinates.reduce((sum, point) => sum + point.y, 0), 0, 1e-9, `${layout} centroid y`);
       approximately(layoutCoordinates.reduce((sum, point) => sum + point.x * point.y, 0), 0, 1e-9, `${layout} uncoupled axes`);
+    }
+  }
+}
+
+for (let columns = 2; columns <= 4; columns += 1) {
+  for (let rows = 2; rows <= 4; rows += 1) {
+    for (const layout of ["rect-perimeter", "rect-grid"]) {
+      const layoutCoordinates = ScrewDemand.rectangularCoordinates({ layout, columns, rows, lengthX: 4.2, lengthY: 3.6 });
+      const distributed = ScrewDemand.distribute({ coordinates: layoutCoordinates, ...actions });
+      approximately(distributed.reactions.reduce((sum, pile) => sum + pile.axial, 0), actions.axial, 1e-8, `${layout} ${columns}x${rows} axial`);
+      approximately(distributed.reactions.reduce((sum, pile) => sum + pile.axial * pile.y, 0), actions.momentX, 1e-8, `${layout} ${columns}x${rows} Mx`);
+      approximately(distributed.reactions.reduce((sum, pile) => sum + pile.axial * pile.x, 0), actions.momentY, 1e-8, `${layout} ${columns}x${rows} My`);
+      approximately(distributed.reactions.reduce((sum, pile) => sum + pile.lateralX, 0), actions.shearX, 1e-8, `${layout} ${columns}x${rows} Vx`);
+      approximately(distributed.reactions.reduce((sum, pile) => sum + pile.lateralY, 0), actions.shearY, 1e-8, `${layout} ${columns}x${rows} Vy`);
+      approximately(distributed.reactions.reduce((sum, pile) => sum + pile.x * pile.lateralY - pile.y * pile.lateralX, 0), actions.torsion, 1e-8, `${layout} ${columns}x${rows} torsion`);
     }
   }
 }

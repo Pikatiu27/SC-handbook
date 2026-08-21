@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260821axialmonopolesource1">
+  <link rel="stylesheet" href="styles.css?v=20260821scope1">
 </head>
 <body>
   <header class="topbar">
@@ -51,6 +51,33 @@
           <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-pressed="false" hidden>Rock Anchor Selector</button>
         </nav>
       </div>
+    </section>
+
+    <section class="category-scope" aria-label="Category design scope">
+      <details data-category-scope="steel-connections">
+        <summary><span><b>Design scope · Steel Connections</b><small>Coverage and exclusions for connection design</small></span><i>+</i></summary>
+        <div class="category-scope-grid">
+          <section><h2>Complete design includes</h2><p>Design actions and load path; component and group limit states; interaction, detailing, stiffness and ductility; fabrication, inspection, durability and serviceability.</p></section>
+          <section><h2>Handbook scope</h2><p>Bolt tension, shear, slip and selected connected-ply checks; weld throat capacities; source-labelled fastener data.</p></section>
+          <section><h2>Not evaluated</h2><p>Complete joint behaviour; eccentric distribution, prying, plate bending and supporting-member effects; fatigue, fire, WPS qualification, inspection acceptance and project compliance.</p></section>
+        </div>
+      </details>
+      <details data-category-scope="steel-members" hidden>
+        <summary><span><b>Design scope · Steel Members</b><small>Coverage and exclusions for member and structural design</small></span><i>+</i></summary>
+        <div class="category-scope-grid">
+          <section><h2>Complete design includes</h2><p>Actions and combinations; section and member resistance; stability and restraint; load introduction and connections; serviceability, fatigue, fire, durability and system behaviour.</p></section>
+          <section><h2>Handbook scope</h2><p>Section properties; selected axial-member, section bending, shear and interaction checks; monopole section resistance, geometry and mass.</p></section>
+          <section><h2>Not evaluated</h2><p>Complete beam or monopole member design; unimplemented buckling and interaction paths; global analysis, connections, load generation, vibration, fatigue, fire and issued-design verification.</p></section>
+        </div>
+      </details>
+      <details data-category-scope="foundations" hidden>
+        <summary><span><b>Design scope · Foundations</b><small>Coverage and exclusions for foundation design</small></span><i>+</i></summary>
+        <div class="category-scope-grid">
+          <section><h2>Complete design includes</h2><p>Design actions; site-specific ground model; bearing, settlement and stability; structural limit states and interfaces; durability, construction, testing and acceptance.</p></section>
+          <section><h2>Handbook scope</h2><p>Pad-strip flexure and simplified one-way shear; reinforcement development and lap references; simplified screw-pile action distribution; source-labelled pile and anchor data.</p></section>
+          <section><h2>Not evaluated</h2><p>Complete footing, pile or anchor design; punching, foundation bearing, settlement and stability; pile and group resistance or movement; anchor resistance, connections and installation acceptance.</p></section>
+        </div>
+      </details>
     </section>
 
     <section id="boltPanel" class="tool-panel active">
@@ -1869,6 +1896,7 @@
             </div>
             <p class="result-note" id="screwLayoutNote">Counts include corner piles. L<sub>x</sub> and L<sub>y</sub> are centre-to-centre spans between outer piles.</p>
             <div class="interaction-result screw-demand-result"><span id="screwDemandComparisonLabel">Action distribution only</span><strong id="screwDemandRatio">Not assessed</strong><b id="screwDemandStatus">No demand entered</b></div>
+            <p id="screwDemandInteractionWarning" class="result-note screw-demand-interaction-warning" hidden></p>
           </section>
           <section>
             <h3>Pile reactions</h3>
@@ -1991,7 +2019,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.74 &middot; technically reviewed 21 Aug 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.76 &middot; technically reviewed 21 Aug 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>
@@ -2008,11 +2036,11 @@
   <script src="beam-custom-section.js?v=20260811beammaterial1"></script>
   <script src="member-capacity.js?v=20260811axialnet1"></script>
   <script src="member-form-factor.js?v=20260821axialrelease1"></script>
-  <script src="screw-demand.js?v=20260809coordinates1"></script>
+  <script src="screw-demand.js?v=20260821foundationaudit1"></script>
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="reo-state.js?v=20260819reostate1"></script>
   <script src="monopole-capacity.js?v=20260821monopoleflow1"></script>
-  <script src="app.js?v=20260821safetymerge1"></script>
+  <script src="app.js?v=20260821scope1"></script>
   <script src="monopole-app.js?v=20260821monopoleaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>

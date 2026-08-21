@@ -54,6 +54,17 @@
     return Object.freeze(coordinates.map((point, index) => Object.freeze({ id: index + 1, ...point })));
   }
 
+  function simultaneousAxialHorizontalPiles(reactions, tolerance = 0.05) {
+    if (!Array.isArray(reactions)) throw new TypeError("Pile reactions must be an array.");
+    const checkedTolerance = finite(tolerance, "Simultaneous-action tolerance");
+    if (checkedTolerance < 0) throw new RangeError("Simultaneous-action tolerance cannot be negative.");
+    return Object.freeze(reactions.filter((reaction, index) => {
+      const axial = finite(reaction?.axial, `Pile ${index + 1} axial reaction`);
+      const lateral = finite(reaction?.lateral, `Pile ${index + 1} horizontal reaction`);
+      return Math.abs(axial) > checkedTolerance && lateral > checkedTolerance;
+    }));
+  }
+
   function distribute({ coordinates, axial = 0, shearX = 0, shearY = 0, momentX = 0, momentY = 0, torsion = 0 }) {
     if (!Array.isArray(coordinates) || coordinates.length === 0) {
       throw new RangeError("At least one pile coordinate is required.");
@@ -126,5 +137,5 @@
     });
   }
 
-  return Object.freeze({ distribute, validateLayout, rectangularCoordinates });
+  return Object.freeze({ distribute, validateLayout, rectangularCoordinates, simultaneousAxialHorizontalPiles });
 });

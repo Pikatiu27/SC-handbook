@@ -48,6 +48,21 @@ for (const [id, yieldLoad, ultimateLoad] of expectedRows) {
   assert.equal(product.ultimateLoad, ultimateLoad, `${id} ultimate load`);
 }
 
+const freyssibarAudit = [
+  ["frey-bar-26-5", 552], ["frey-bar-32", 804], ["frey-bar-36", 1018],
+  ["frey-bar-40", 1257], ["frey-bar-50", 1964]
+];
+for (const [id, area] of freyssibarAudit) {
+  const product = products.find(item => item.id === id);
+  assert.ok(Math.abs(product.yieldLoad * 1000 / area - 835) < 1.5, `${id} implied yield strength`);
+  assert.ok(Math.abs(product.ultimateLoad * 1000 / area - 1030) < 1.5, `${id} implied ultimate strength`);
+}
+for (let count = 2; count <= 13; count += 1) {
+  const product = products.find(item => item.id === `frey-strand-${count}`);
+  assert.equal(product.yieldLoad / count, 246, `${count}T15.7 proof load per strand`);
+  assert.equal(product.ultimateLoad / count, 279, `${count}T15.7 ultimate load per strand`);
+}
+
 const sas65 = products.find(product => product.id === "sas-65");
 assert.deepEqual(sas65.yieldConflict, [2780, 2790]);
 assert.deepEqual(loadDisplay(sas65, "yield"), {

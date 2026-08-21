@@ -12,6 +12,7 @@ const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"
 const concreteCalculation = fs.readFileSync(path.join(root, "concrete-section-calculation.js"), "utf8");
 const pagesWorkflow = fs.readFileSync(path.join(root, ".github", "workflows", "pages.yml"), "utf8");
 const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
+const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
 const drawingAdoptionPath = path.join(root, "engineering", "drawing-standard-adoption.json");
 const drawingAdoption = JSON.parse(fs.readFileSync(drawingAdoptionPath, "utf8"));
 const calculateWeldSource = script.slice(
@@ -44,6 +45,17 @@ assert.match(traceability, /InfraBuild Table 7 `Rods and Light Billets`[^\n]*sep
 assert.match(html, /Austube shear-table reconciliation/);
 assert.match(html, /150 &times; 50 &times; 2\.0 RHS C450L0[\s\S]*?&phi;V<sub>v<\/sub> = 92\.5 kN/);
 assert.match(traceability, /apparent published-table inconsistency, not a confirmed manufacturer erratum/);
+assert.match(readme, /### Screw Piles Selector[\s\S]*?maximum independent directional ratio/);
+assert.match(readme, /### Rock Anchor Selector[\s\S]*?manufacturer tendon values/);
+assert.match(html, /id="screwDemandInteractionWarning"[^>]*hidden/);
+assert.match(script, /ScrewDemand\.simultaneousAxialHorizontalPiles\(reactions\)/);
+assert.match(script, /combined axial&ndash;horizontal interaction is not evaluated/);
+assert.match(traceability, /### Standard Currency and Independent Review Control/);
+assert.match(traceability, /The footer technical-review date identifies the public build review only/);
+assert.match(traceability, /A local author check, regression pass or browser reproduction does not close `Independent review`/);
+assert.match(traceability, /New Standard edition or Amendment, erratum, catalogue\/product revision/);
+assert.match(traceability, /Legal, registration, insurance and publication-framing advice remains external professional evidence/);
+assert.match(outline, /invalid-input regression proving that blank, non-finite, out-of-range or branch-incompatible required values cannot leave a normal-looking result/);
 
 assert.match(script, /Design &phi;M<sub>uo<\/sub> = &phi; &times; M<sub>uo<\/sub>/);
 assert.match(script, /design capacity = &phi; &times; V<sub>u<\/sub>/);

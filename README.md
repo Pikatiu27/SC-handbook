@@ -8,6 +8,8 @@ Public site: <https://pikatiu27.github.io/SC-handbook/>
 
 Report calculation, source, accessibility or publication issues through the [issue tracker](https://github.com/Pikatiu27/SC-handbook/issues/new). Do not include confidential project information.
 
+The web handbook groups tools under Steel Connections, Steel Members and Foundations. Each category includes a folded `Design scope` map stating the complete-design context, handbook scope and principal exclusions. It does not combine tab results or imply a complete project design.
+
 ## Tools
 
 ### Bolt Capacity
@@ -105,6 +107,20 @@ A same-condition N10 to N40 schedule is available only for the Basic method with
 This is not a complete reinforced-concrete member, post-installed reinforcement, interface, pad, pedestal or foundation design. It excludes bars larger than 40 mm, tension-tie and compression laps, mesh, bundled bars, welded or mechanical splices, proprietary high-strength systems, seismic and bridge-specific requirements, complete cover/spacing/crack-control/member-capacity review, interface transfer, adhesive failure modes, installation, anchor-cage coordination and foundation capacity.
 
 The Reo calculation core is isolated in `reo-calculation.js`. Run `node tests/reo-lapping.test.js` and `node tests/reo-dom-contract.test.js`; the module remains `For Review` until the source, calculation, state-clearing and desktop/phone release gates in `research/rebar-lap/REO_LAPPING_CHECK_OUTLINE.md` are complete.
+
+### Screw Piles Selector
+
+The Screw Piles Selector combines a source-labelled product/system lookup with an optional rigid-pad pile-group action-distribution aid. Supplier ratings, system SWL or `up to` values remain published reference loads unless the source separately establishes compression, tension or horizontal values. Missing directional data is shown as `Not published` and is never inferred from a product name or rating.
+
+The optional group model distributes entered `N*`, `Vx*`, `Vy*`, `Mx*`, `My*` and `T*` to symmetric rectangular perimeter or full-grid layouts using equal axial and lateral stiffness. It reports pile action effects only. Project directional comparisons require entered project design values, a source reference and a value basis matching the selected action basis. The displayed `eta_proj` is the maximum independent directional ratio; combined axial-horizontal interaction is not evaluated and is called out whenever both actions occur on the same pile.
+
+This is not an AS 2159 geotechnical or structural resistance calculation. It excludes soil-pile resistance, group/block failure, movement, pile bending, head connection, durability, installation torque acceptance and load-testing acceptance.
+
+### Rock Anchor Selector
+
+The Rock Anchor Selector is a source-labelled `Supplier -> Product / system` lookup for active post-tensioned foundation anchor products. Published loads remain manufacturer tendon values and are explicitly not anchor resistance. Rows retain their source status and checked date; unavailable row-level values remain `Not published`.
+
+The page does not calculate design actions, free or bond length, steel resistance, grout-to-ground bond, rock-mass or concrete anchorage failure, governing resistance, utilisation or `PASS / FAIL`. Complete product, corrosion-protection, stressing, execution, testing and acceptance schedules remain project requirements.
 
 ### Weld Capacity
 

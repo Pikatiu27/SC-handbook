@@ -9264,6 +9264,7 @@ function calculateScrewDemand(comparison) {
     $("screwReactionRows").innerHTML = "";
     $("screwDemandRatio").textContent = "Not assessed";
     $("screwDemandStatus").textContent = "Input required";
+    $("screwDemandInteractionWarning").hidden = true;
     setStatusClass($("screwDemandStatus"), "check");
     const reason = layoutInputs.valid ? "Enter a finite value for every group action." : layoutInputs.error;
     $("screwDemandFormulaSteps").innerHTML = calculationTraceRow({
@@ -9296,6 +9297,12 @@ function calculateScrewDemand(comparison) {
     maxLateralPile
   } = distribution;
   const { sumX2, sumY2, sumXY, sumR2 } = distribution.sums;
+  const simultaneousPiles = ScrewDemand.simultaneousAxialHorizontalPiles(reactions);
+  const interactionWarning = $("screwDemandInteractionWarning");
+  interactionWarning.hidden = simultaneousPiles.length === 0;
+  interactionWarning.innerHTML = simultaneousPiles.length
+    ? `<b>Interaction review required</b> &middot; ${simultaneousPiles.length} pile${simultaneousPiles.length === 1 ? "" : "s"} carr${simultaneousPiles.length === 1 ? "ies" : "y"} simultaneous axial and horizontal action. The optional project comparison evaluates directions independently; combined axial&ndash;horizontal interaction is not evaluated.`
+    : "";
   $("screwDemandPileCount").textContent = String(n);
   $("screwDemandCompression").textContent = `${fixed(maxCompression)} kN`;
   $("screwDemandUplift").textContent = `${fixed(maxUplift)} kN`;
@@ -9349,7 +9356,7 @@ function calculateScrewDemand(comparison) {
     $("screwDemandStatus").textContent = `Project design value required for ${missingDirections.join(" / ")}`;
     setStatusClass($("screwDemandStatus"), "check");
   } else if (utilisation <= 1) {
-    $("screwDemandStatus").textContent = `Does not exceed entered project value · Pile ${governing.pile.id} / ${governing.direction}`;
+    $("screwDemandStatus").textContent = `${simultaneousPiles.length ? "Independent directional ratios do not exceed entered project values" : "Does not exceed entered project value"} · Pile ${governing.pile.id} / ${governing.direction}`;
     setStatusClass($("screwDemandStatus"), "check");
   } else {
     $("screwDemandStatus").textContent = `Exceeds entered project value · Pile ${governing.pile.id} / ${governing.direction}`;
@@ -10367,6 +10374,9 @@ function setTool(tool, updateHash = true) {
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", String(active));
     if (active) activeCategoryButton = button;
+  });
+  document.querySelectorAll("[data-category-scope]").forEach(scope => {
+    scope.hidden = scope.dataset.categoryScope !== selectedCategory;
   });
   document.querySelectorAll(".tool-tab").forEach(button => {
     const active = button.dataset.tool === selectedTool;

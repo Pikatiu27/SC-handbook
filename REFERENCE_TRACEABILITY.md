@@ -58,7 +58,9 @@ Required calculation record:
 | Implementation owner | File and function/module responsible for the calculation |
 | Verification evidence | Test IDs, independent method, result difference, tolerance and browser/build checked |
 | Status | `Draft`, `For Review`, `Checked`, `Superseded`, `Do_Not_Use`, or `Source_Not_Verified` |
-| Checked record | Checked date, reviewer status and unresolved source or interpretation gap |
+| Basis checked record | Checked date, reviewer, edition/amendment status and unresolved source or interpretation gap |
+| Independent review | Independent reviewer status and evidence; use `Pending` until a competent reviewer reproduces the governing interpretation without relying on the production code |
+| Review control | Review owner, currency trigger and `Current`, `Review_Due`, `Blocked` or `Source_Not_Verified` state |
 
 Required verification-case record:
 
@@ -82,7 +84,33 @@ Calculation-record rules:
 - Governing comparisons use unrounded values. Display rounding is checked separately and must not change the selected branch or result status.
 - Record every active formula branch and the relevant threshold cases, not only the default page state.
 - A source edition, formula, factor, default or branch change triggers reverification of every affected `Calculation_ID`.
+- A local author check, regression pass or browser reproduction does not close `Independent review`. Retain `For Review` until the recorded independent-review requirement is satisfied.
+- Every materially changed calculation must include an invalid-input case demonstrating that blank, non-finite, out-of-range or branch-incompatible required values suppress the affected result and scoped status.
 - Detailed evidence stays in this file. The visible page retains only the concise basis, critical assumption, status and limitation required for quick engineering use.
+
+### Standard Currency and Independent Review Control
+
+The footer technical-review date identifies the public build review only. It is not evidence that every governing Standard, Amendment, catalogue or manufacturer document remains current. Each `Calculation_ID` must retain its own edition/amendment basis and review control.
+
+Use the following minimum currency record when a calculation family is next materially reviewed:
+
+| Field | Required content |
+| --- | --- |
+| Basis checked date | Date the named edition, amendment and cited clause/table were checked |
+| Review owner | Person responsible for checking source currency; this does not imply independent engineering approval |
+| Currency trigger | New Standard edition or Amendment, erratum, catalogue/product revision, material implementation change, or credible reported discrepancy |
+| Review state | `Current`, `Review_Due`, `Blocked` or `Source_Not_Verified` |
+| Independent review | `Pending`, `In progress`, `Accepted` or `Issues raised`, with reviewer and evidence reference |
+| Disposition | Affected calculations/tests, required warning or release block, and closure evidence |
+
+Currency-control rules:
+
+- Treat a detected source revision as `Review_Due`; do not imply that the prior calculation is current until its applicability has been checked.
+- Record the exact edition, amendment, revision and source location. A generic site-wide review date is insufficient.
+- Prefer event-driven review triggers over an arbitrary date roll-forward. A periodic review date may be added as a backstop but must not replace amendment and source-revision monitoring.
+- Preserve disagreements with published sources as structured exception records containing source row, handbook result, difference, interpretation and disposition. Do not repeatedly rediscover or silently remove a known divergence.
+- Select governing calculations for independent review by consequence and reuse, not by test count. The reviewer should work from the governing source and complete inputs before reading the production implementation.
+- Legal, registration, insurance and publication-framing advice remains external professional evidence. Record advice obtained and resulting publication actions; do not represent repository wording or automated tests as legal or insurer approval.
 
 ## Verification and Worked-Example Reproduction Procedure
 
@@ -1494,3 +1522,25 @@ Independent Austube DCT 2013 reconciliation found the repository catalogue rows 
 The Weld result boundary states that longitudinal fillet welds in RHS below 3 mm wall thickness and AS 4100 minimum or maximum fillet-weld size requirements are not evaluated. The Pages verification job runs `node --check` against every tracked JavaScript file, and the blanket `tools/` ignore rule is removed so new maintenance scripts cannot be silently omitted.
 
 The integrated release was committed as `c37c569` and pushed to remote `main`. GitHub Pages workflow `32440475565` completed all 41 test files, tracked-JavaScript syntax checks, diff integrity verification and deployment successfully. Cache-busted public checks returned Build 0.7.74 with `app.js?v=20260821safetymerge1`, `monopole-app.js?v=20260821monopoleaudit1` and `concrete-section-calculation.js?v=20260821concretesafety1`. The public Monopole note changed from the initial ratio to `r_i/t_nom = 2.00` after editing the live input; the Concrete Pad page suppressed both displayed capacities for invalid active fitment spacing. Both checked routes had no document-level horizontal overflow or console errors.
+
+## 2026-08-21 Build 0.7.75 Foundations Audit Disposition
+
+The Foundations audit was reconciled against Build 0.7.74 before implementation. Its former high-severity Concrete Pad blank-spacing finding is closed: the page and calculation module now reject invalid active fitment legs, spacing, bar area and yield strength and suppress both displayed capacities. The audit wording that described the defect as open, or described active fitment yield stress as silently clamped to 1 MPa, is stale and must not be repeated as the current project state.
+
+The public README now includes the live Screw Piles Selector and Rock Anchor Selector with their calculation and product-data boundaries. Screw Piles displays a separate `Interaction review required` advisory whenever one or more piles carry simultaneous axial and horizontal action. The advisory does not change the independent maximum directional ratio, does not introduce an unverified threshold or interaction equation, and does not imply a complete pile or foundation check.
+
+The published Reinforcement benchmark is recorded with its correct source identity: Scott Munter and Mark Patrick, *New Design Rules and Tables for Development and Lap Splice Lengths to AS 3600-2009*, Concrete 2011, SRIA. It is a historical published numerical benchmark for the shared equation path, not by itself evidence of complete compliance with the page's governing AS 3600:2018 incorporating Amendments 1 and 2 basis. `tests/foundations-published-audit.test.js` preserves all 153 rounded Table 1 `(k4 k5)min` cells and all 24 Table 5 development/lap values. The separate four Concrete flexure examples in the prose audit were not imported as fixed cases because their complete layer depths, cover and input schedules were not supplied.
+
+The Screw Piles regression now applies simultaneous `N*`, `Vx*`, `Vy*`, `Mx*`, `My*` and `T*` to every 2 x 2 through 4 x 4 perimeter and full-grid layout and recovers all six equilibrium quantities within `1e-8`. The Rock Anchor regression independently checks the five Freyssibar rows against their published area-implied approximately 835 MPa yield and 1030 MPa ultimate strengths, and confirms the 2T to 13T strand rows retain 246 kN proof and 279 kN ultimate load per strand. These checks verify source-row consistency only; manufacturer tendon values remain distinct from complete anchor resistance.
+
+Build 0.7.75 passes all 42 local test files, the full JavaScript syntax check and `git diff --check`. A cache-busted local browser check loaded the new shared style, Screw Demand and application keys, showed and cleared the interaction advisory as simultaneous action was added and removed, reported no console errors, and found no document-level horizontal overflow at 390 x 844 px. No governing capacity equation or product value changes in this audit disposition. The candidate remains local and unpublished.
+
+## 2026-08-21 Build 0.7.76 Category Design Scope and Review Governance
+
+Build 0.7.76 adds one compact folded category-level scope map between the grouped navigation and active tool panel. Steel Connections, Steel Members and Foundations each state `Complete design includes`, `Handbook scope` and `Not evaluated`. The map does not add a navigation level, combine tab outputs, create a whole-category status or replace the detailed limitations in each tool. It remains closed by default and stacks the same three sections on narrow screens.
+
+The canonical outline now treats this map as a safety boundary that must be updated when a tool or calculation scope changes. The calculation contract also requires materially changed paths to retain invalid-input evidence showing that blank, non-finite, out-of-range or branch-incompatible values cannot leave a normal-looking result or scoped status visible. Shared validation primitives may be extracted incrementally; branch-specific, optional and disabled inputs must retain their distinct meanings.
+
+The traceability register separates a public-build technical-review date from source currency and independent engineering review. New calculation-family records require a basis checked date, review owner, currency trigger and review state, plus a separate independent-review status. A local author check, regression suite or browser reproduction does not close that independent review. Source revision, amendment, erratum, implementation change or credible discrepancy triggers review; legal, registration, insurance and publication advice remains external professional evidence rather than a repository-generated status.
+
+Build 0.7.76 passes all 42 local test files, the full JavaScript syntax check and `git diff --check`. A cache-busted local browser check confirmed Build 0.7.76 and the new shared style/application keys, showed exactly one closed scope disclosure for the active category, switched each category to its matching scope and first tool, and rendered the expanded three-part Foundations map as one column at 390 x 844 px without document-level horizontal overflow or console errors. No calculation equation, product value, result state or tab-specific engineering scope changes in this governance release. The candidate remains local and unpublished.

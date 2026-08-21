@@ -1337,9 +1337,30 @@ Page-level layout order:
 
 1. Compact header with brand only.
 2. Grouped engineering navigation: category row, then full-name tool row.
-3. Active tool panel.
+3. One compact folded category `Design scope` disclosure.
+4. Active tool panel.
 
 Do not place a generic `Engineering quick reference` title or descriptive subtitle between the brand and navigation. The active tool heading provides the page title and scope; a visually hidden document heading may preserve semantic structure.
+
+#### 15.2.0 Category Design-Scope Map
+
+Place one folded `Design scope · <category>` disclosure immediately below the grouped navigation and above the active tool panel. This is a safety boundary, not a fourth navigation level, workflow number, marketing introduction or substitute for tab-specific limitations. Switching tools within a category retains the same disclosure; switching category replaces it with the matching scope. Keep it closed by default and concise enough to scan without leaving the active page.
+
+Use the same three headings for every category:
+
+1. `Complete design includes` - the major project-level engineering tasks that define the complete decision.
+2. `Handbook scope` - only the calculations, lookups or derived aids implemented by the tools in that category.
+3. `Not evaluated` - the material omitted checks most likely to be mistaken as completed.
+
+Scope-map rules:
+
+- Describe engineering tasks, not every clause or formula. Keep detailed assumptions and page-specific exclusions in the applicable tab's folded basis and limitations.
+- Do not show `PASS`, `Checked` or a whole-category status. The disclosure explains coverage; it does not certify a project or combine independent tab results.
+- Do not imply that using all tools in a category completes the design. Product selectors remain source-labelled lookups unless a separately verified resistance path is implemented.
+- Do not add locator letters, numbers, icons, coloured badges or a side/anchor navigation. Use the existing disclosure chevron and typography hierarchy.
+- Desktop may use three restrained columns. At `500 px` and below, stack the same three sections in reading order with no horizontal overflow.
+- A new tool or materially changed calculation scope must update both its tab limitation and the applicable category map in the same release.
+- Category-map content is an engineering scope statement. A claim about what constitutes complete design must be source- and discipline-reviewed; unresolved items remain conservatively broad rather than silently omitted.
 
 Per-tab layout order:
 
@@ -1374,6 +1395,7 @@ Interaction contract:
 - Auto/manual and override controls must have one obvious state. Returning to auto mode must restore the current source-derived value rather than a stale historical value.
 - Do not overwrite a focused editable value during recalculation. Accept temporary typing states and validate or clamp only at the defined commit point.
 - Invalid, incomplete, incompatible or out-of-scope states must suppress or clearly invalidate dependent results. Never leave a stale capacity, utilisation or green status visible as if it were current.
+- Every materially changed calculation path must retain an invalid-input regression proving that blank, non-finite, out-of-range or branch-incompatible required values cannot leave a normal-looking result or scoped `PASS` visible. Shared validation primitives may be extracted incrementally, but one generic DOM helper must not erase differences between required, optional, disabled and branch-specific inputs.
 - Every visible input must change a result, source selection, applicability state, summary or actionable warning. Otherwise remove it from the primary page or move it into a justified advanced panel.
 - Preserve the same calculation state, result meaning and source basis at desktop and phone widths. Responsive layout may reorder presentation within the same engineering sequence, but it must not fork calculation logic.
 - Make the active workflow evident from the result language: `Capacity only`, `Quick check`, `Preliminary selection`, `Published product data` or `Derived aid`. Do not require the user to infer the claim from which inputs happen to be populated.
@@ -3557,7 +3579,7 @@ Report maximum compression action, tension action and resultant horizontal actio
 - indicative system ratings and typical technique benchmarks must not be used in the ratio;
 - where a demanded direction has no qualifying value, report the missing direction rather than a complete ratio.
 
-The page does not calculate AS 2159 design geotechnical or structural strength. A project-value comparison relies entirely on the entered project source and basis, and does not assess combined axial-horizontal interaction.
+The page does not calculate AS 2159 design geotechnical or structural strength. A project-value comparison relies entirely on the entered project source and basis, and does not assess combined axial-horizontal interaction. When any pile carries simultaneous non-trivial axial and resultant horizontal action, show one visible `Interaction review required` advisory beside the independent directional comparison. Do not invent an interaction equation or warning threshold, do not alter `eta_proj`, and do not convert the advisory into a whole-pile `PASS / FAIL` state.
 
 Show the selected product name directly. State that values are manufacturer-published in the supporting copy or source/status area; do not add a category tag above the name.
 
@@ -3571,7 +3593,7 @@ Required AS 2159 boundaries:
 
 Durability remains a selected-product limitation; this selector does not perform the AS 2159 exposure classification or corrosion design. If a future exposure input is added, use `Non-aggressive`, `Mild`, `Moderate`, `Severe` and `Very severe`, plus `Not assessed`, rather than informal labels. Also exclude pile-head and splice design, cyclic/dynamic response, liquefaction, pile-position tolerance analysis, installation refusal and load-test acceptance. Ground/application filters may change the selection guidance, but must not alter published product values.
 
-Validation must include supplier/product selection states; equilibrium checks for axial force, biaxial moment, direct horizontal action and torsion; perimeter and full-grid pile counts; compression/tension sign convention; manufacturer-value exclusion; missing project direction values; project source missing; project/action basis mismatch; and a valid same-basis project comparison.
+Validation must include supplier/product selection states; equilibrium checks for axial force, biaxial moment, direct horizontal action and torsion; perimeter and full-grid pile counts; compression/tension sign convention; manufacturer-value exclusion; missing project direction values; project source missing; project/action basis mismatch; a valid same-basis project comparison; and visible/hidden transitions of the simultaneous axial-horizontal advisory.
 
 ### 15.16 Rock Anchor Selector Web Tab Rules
 

@@ -62,6 +62,24 @@ const sectionDerivationDisclosure = html.match(/<details[^>]*id="sectionDerivati
 assert.doesNotMatch(reoCalculationDisclosure, /data-locator=/);
 assert.doesNotMatch(sectionDerivationDisclosure, /data-locator=/);
 
+const categoryScopes = [...html.matchAll(/<details data-category-scope="([^"]+)"([^>]*)>/g)];
+assert.deepEqual(categoryScopes.map(match => match[1]), ["steel-connections", "steel-members", "foundations"]);
+assert.equal(categoryScopes[0][2].includes("hidden"), false, "The default Steel Connections scope must be available");
+assert.equal(categoryScopes[1][2].includes("hidden"), true, "Inactive Steel Members scope must start hidden");
+assert.equal(categoryScopes[2][2].includes("hidden"), true, "Inactive Foundations scope must start hidden");
+for (const category of ["Steel Connections", "Steel Members", "Foundations"]) {
+  assert.match(html, new RegExp(`Design scope · ${category}`));
+}
+for (const heading of ["Complete design includes", "Handbook scope", "Not evaluated"]) {
+  assert.equal((html.match(new RegExp(`<h2>${heading}<\\/h2>`, "g")) || []).length, 3, `${heading} must appear once per category`);
+}
+assert.match(script, /document\.querySelectorAll\("\[data-category-scope\]"\)[\s\S]*?scope\.hidden = scope\.dataset\.categoryScope !== selectedCategory/);
+assert.match(styles, /\.category-scope-grid \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
+assert.match(styles, /@media \(max-width: 500px\)[\s\S]*?\.category-scope-grid \{ grid-template-columns: 1fr;/);
+assert.match(outline, /#### 15\.2\.0 Category Design-Scope Map/);
+assert.match(outline, /safety boundary, not a fourth navigation level/);
+assert.match(outline, /A new tool or materially changed calculation scope must update both its tab limitation and the applicable category map/);
+
 const incompleteReference = /AS(?:\/NZS)? \d+[^\r\n"]*(?:;|,|and|to) Cl\./;
 assert.doesNotMatch(html, incompleteReference);
 assert.doesNotMatch(script, incompleteReference);
