@@ -17,7 +17,7 @@ assert.doesNotMatch(app, /weldStatus"\)\.textContent[\s\S]{0,240}\?\s*"PASS"\s*:
 assert.doesNotMatch(app, /beamStatus"\)\.textContent[\s\S]{0,320}\?\s*"FAIL"\s*:\s*"PASS"/);
 assert.doesNotMatch(app, /memberUtilisationStatus\.textContent[\s\S]{0,180}\?\s*"PASS"\s*:\s*"FAIL"/);
 
-assert.match(app, /parentGoverningNote"\)\.className = parentCheckActive \? "check" : ""/);
+assert.match(app, /parentGoverningNote"\)\.className = parentCheckEnabled \? "check" : ""/);
 assert.match(app, /function updateScrewRisk[\s\S]*setStatusClass\(status, "check"\)/);
 assert.match(app, /title: "Optional weld throat utilisation"/);
 assert.match(app, /Partial result · shear calculated; moment not evaluated/);
