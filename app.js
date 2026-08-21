@@ -1021,10 +1021,14 @@ function sectionCatalogueChsSections() {
 }
 
 function sectionCataloguePfcSections() {
-  return pfcSections.map(section => ({
-    ...section,
-    ...(BeamHotRolledData.pfc.find(item => item.designation === section.designation) || {})
-  }));
+  return pfcSections.map(section => {
+    const catalogue = BeamHotRolledData.pfc.find(item => item.designation === section.designation) || {};
+    return {
+      ...section,
+      ...catalogue,
+      grades: section.grades
+    };
+  });
 }
 
 const sectionProductDirectory = Object.freeze({
@@ -6625,16 +6629,32 @@ function memberProperties(section) {
   };
 }
 
-function memberCompressionDefaults(grade, section) {
+function memberCompressionDefaults(grade, section, properties, fy) {
   if (memberType === "custom") {
-    return { kf: signedValue("memberCustomKf", NaN), alphaB: alphaBInput("memberCustomAlphaBx") };
+    return {
+      kf: signedValue("memberCustomKf", NaN),
+      alphaB: alphaBInput("memberCustomAlphaBx"),
+      formFactorBasis: "project-input",
+      formFactor: null
+    };
   }
-  return MemberCapacity.catalogueCompressionDefaults({
+  const formFactor = MemberFormFactor.calculate({ family: memberType, section: properties, yieldStress: fy });
+  const catalogueDefault = !properties.customGeometry && Math.abs(fy - grade.fy) <= 0.01;
+  if (catalogueDefault && Math.abs(formFactor.formFactor - grade.kf) > 0.002) {
+    throw new RangeError("Calculated form factor does not reconcile with the selected catalogue row.");
+  }
+  const kf = catalogueDefault ? grade.kf : formFactor.formFactor;
+  const defaults = MemberCapacity.catalogueCompressionDefaults({
     family: memberType,
-    catalogueKf: grade.kf,
+    catalogueKf: kf,
     flangeThickness: section?.tf,
-    dimensionOverride: memberDimensionOverrideActive()
+    dimensionOverride: false
   });
+  return {
+    ...defaults,
+    formFactorBasis: catalogueDefault ? "catalogue" : "calculated",
+    formFactor
+  };
 }
 
 function memberAlphaBBasis(kf, section) {
@@ -6659,14 +6679,41 @@ function memberAlphaBBasis(kf, section) {
   return "AS 4100 Table 6.3.3(A), other sections not listed in the table";
 }
 
-function memberKfBasisText(kf) {
+function memberKfBasisText(compressionDefaults) {
+  const { kf, formFactorBasis, formFactor } = compressionDefaults;
   if (memberType === "custom") return "custom member input";
-  if (memberDimensionOverrideActive()) {
-    if (memberType === "chs" || memberType === "rod") {
-      return `ideal circular geometry override; k<sub>f</sub> = ${displayFixed(kf, 3)}`;
-    }
+  if (formFactorBasis === "calculated") {
+    return `AS 4100 Cl. 6.2.2 to AS 4100 Cl. 6.2.4; A<sub>e</sub> = ${displayFixed(formFactor.effectiveArea, 0)} mm²; k<sub>f</sub> = ${displayFixed(kf, 3)} for the adopted f<sub>y</sub>`;
   }
-  return "selected section basis";
+  return `selected catalogue section and grade; k<sub>f</sub> = ${displayFixed(kf, 3)}`;
+}
+
+function memberFormFactorTrace(compressionDefaults) {
+  const { kf, formFactorBasis, formFactor } = compressionDefaults;
+  if (memberType === "custom") {
+    return calculationTraceRow({
+      title: "Section form factor",
+      reference: "AS 4100 Cl. 6.2.2",
+      selection: `Project input k<sub>f</sub> = ${displayFixed(kf, 3)}`,
+      result: `Adopted k<sub>f</sub> = ${displayFixed(kf, 3)}`,
+      applicability: "Effective-area derivation is outside the Custom / Built-up property check."
+    });
+  }
+  const calculation = formFactor.method === "circular-hollow"
+    ? `&lambda;<sub>e</sub> = ${displayFixed(formFactor.slenderness, 1)}; &lambda;<sub>ey</sub> = ${displayFixed(formFactor.yieldSlendernessLimit, 0)}; d<sub>e</sub> = ${displayFixed(formFactor.effectiveDiameter, 1)} mm`
+    : formFactor.method === "flat-elements"
+      ? formFactor.elements.map(element => `${element.label}: &lambda;<sub>e</sub> = ${displayFixed(element.slenderness, 1)}, &lambda;<sub>ey</sub> = ${displayFixed(element.yieldSlendernessLimit, 0)}, b<sub>e</sub> = ${displayFixed(element.effectiveWidth, 1)} mm`).join("; ")
+      : "Solid section; A<sub>e</sub> = A<sub>g</sub>";
+  return calculationTraceRow({
+    title: "Section form factor",
+    reference: "AS 4100 Cl. 6.2.2 to AS 4100 Cl. 6.2.4 and AS 4100 Table 6.2.4",
+    formula: `k<sub>f</sub> = A<sub>e</sub>/A<sub>g</sub>`,
+    substitution: `${calculation}; A<sub>e</sub>/A<sub>g</sub> = ${displayFixed(formFactor.effectiveArea, 0)} / ${displayFixed(formFactor.grossArea, 0)}`,
+    result: `Adopted k<sub>f</sub> = ${displayFixed(kf, 3)}`,
+    applicability: formFactorBasis === "catalogue"
+      ? `Selected-grade catalogue value; independent AS 4100 calculation = ${displayFixed(formFactor.formFactor, 3)}.`
+      : "Calculated for the adopted yield strength and active section geometry."
+  });
 }
 
 function memberRadiusBasis(defaultR) {
@@ -6951,14 +6998,6 @@ function calculateMember() {
   const properties = memberProperties(section);
   syncMemberManualNetAreaToGross(properties);
   updateMemberDimensionUi(properties);
-  const compressionDefaults = memberCompressionDefaults(grade, section);
-  const kf = compressionDefaults.kf;
-  const kfBasis = memberKfBasisText(kf);
-  const alphaB = compressionDefaults.alphaB;
-  const alphaBBasis = memberAlphaBBasis(kf, section);
-  if (memberType !== "custom") {
-    $("memberAlphaB").value = String(alphaB);
-  }
   const designR = memberDesignRadius(properties.r);
   const fy = signedValue("memberFyInput", NaN);
   const fu = signedValue("memberFuInput", NaN);
@@ -6966,6 +7005,20 @@ function calculateMember() {
   const designation = memberType === "custom"
     ? section.designation
     : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeDisplayName}`;
+  let compressionDefaults = { kf: NaN, alphaB: NaN, formFactorBasis: "invalid", formFactor: null };
+  let formFactorError = "";
+  try {
+    compressionDefaults = memberCompressionDefaults(grade, section, properties, fy);
+  } catch (error) {
+    formFactorError = error instanceof Error ? error.message : "Form factor could not be calculated.";
+  }
+  const kf = compressionDefaults.kf;
+  const kfBasis = formFactorError ? "form factor not established" : memberKfBasisText(compressionDefaults);
+  const alphaB = compressionDefaults.alphaB;
+  const alphaBBasis = memberAlphaBBasis(kf, section);
+  if (memberType !== "custom" && Number.isFinite(alphaB)) {
+    $("memberAlphaB").value = String(alphaB);
+  }
   const customLex = memberType === "custom" ? signedValue("memberCustomLex", NaN) : NaN;
   const customLey = memberType === "custom" ? signedValue("memberCustomLey", NaN) : NaN;
   const preliminaryErrors = [];
@@ -6978,6 +7031,7 @@ function calculateMember() {
   if (!Number.isFinite(fy) || fy <= 0) preliminaryErrors.push("f_y must be greater than zero");
   if (!Number.isFinite(fu) || fu <= 0) preliminaryErrors.push("f_u must be greater than zero");
   if (Number.isFinite(fy) && Number.isFinite(fu) && fu < fy) preliminaryErrors.push("f_u must not be less than f_y");
+  if (formFactorError && Number.isFinite(fy) && fy > 0) preliminaryErrors.push(formFactorError);
   setMemberFieldValidity("memberRadiusInput", Number.isFinite(designR) && designR > 0);
   setMemberFieldValidity("memberFyInput", Number.isFinite(fy) && fy > 0);
   setMemberFieldValidity("memberFuInput", Number.isFinite(fu) && fu > 0 && (!Number.isFinite(fy) || fu >= fy));
@@ -7267,6 +7321,7 @@ function calculateMember() {
       result: `A<sub>n</sub> = ${displayFixed(netArea, 0)} mm<sup>2</sup>`,
       applicability: netInput.mode === "auto" ? "Straight-line quick deduction only; use manual A<sub>n</sub> for staggered or non-straight critical paths." : "Project-entered or unperforated gross-area basis."
     }),
+    memberFormFactorTrace(compressionDefaults),
     sectionCompressionTrace,
     compressionTraceRows,
     memberCompressionTrace,
@@ -10304,7 +10359,10 @@ function setMemberType(type) {
   const isCustom = type === "custom";
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
   const selectedMember = document.querySelector(".member-selected-section");
-  if (selectedMember) selectedMember.classList.toggle("member-selected-custom", isCustom);
+  if (selectedMember) {
+    selectedMember.classList.toggle("member-selected-custom", isCustom);
+    selectedMember.dataset.memberGuide = type;
+  }
   $("memberRadiusSource").textContent = isCustom
     ? "User-entered section properties · verification required."
     : "Catalogue section and effective length.";
@@ -10325,15 +10383,15 @@ function setMemberType(type) {
   $("memberLengthField").hidden = isCustom;
   $("memberRadiusField").hidden = isCustom;
   $("memberFactorHelp").innerHTML = type === "chs"
-    ? "Catalogue k<sub>f</sub>, or k<sub>f</sub> = 1.000 for an ideal circular dimension override; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+    ? "Selected-grade catalogue k<sub>f</sub>; strength or geometry overrides recalculate k<sub>f</sub>; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
     : type === "ub" || type === "uc"
-      ? "Catalogue k<sub>f</sub>; hot-rolled UB / UC &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+      ? "Selected-grade catalogue k<sub>f</sub>; an f<sub>y</sub> override recalculates k<sub>f</sub>; hot-rolled UB / UC &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
     : type === "rhs" || type === "shs"
-      ? "Catalogue k<sub>f</sub>; cold-formed non-stress-relieved hollow-section &alpha;<sub>b</sub>."
+      ? "Selected-grade catalogue k<sub>f</sub>; an f<sub>y</sub> override recalculates k<sub>f</sub>; cold-formed non-stress-relieved hollow-section &alpha;<sub>b</sub>."
     : type === "ea"
-      ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
+      ? "Selected-grade catalogue k<sub>f</sub>; an f<sub>y</sub> override recalculates k<sub>f</sub>; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B)."
     : type === "pfc"
-      ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
+      ? "Selected-grade catalogue k<sub>f</sub>; an f<sub>y</sub> override recalculates k<sub>f</sub>; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B)."
       : type === "custom"
         ? "Custom / Built-up: user-entered section properties; k<sub>f</sub> and &alpha;<sub>b</sub> require project verification."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";

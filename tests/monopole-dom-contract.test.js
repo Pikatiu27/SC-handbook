@@ -227,7 +227,7 @@ const monopoleAppScript = html.indexOf('src="monopole-app.js');
 assert.ok(capacityScript >= 0 && capacityScript < sharedAppScript && sharedAppScript < monopoleAppScript);
 assert.match(html, /src="monopole-capacity\.js\?v=20260814polygonflat1"/);
 assert.match(html, /src="monopole-app\.js\?v=20260820monopolelayout1"/);
-assert.match(html, /href="styles\.css\?v=20260821boltlocators2"/);
+assert.match(html, /href="styles\.css\?v=20260821memberfigurelayout1"/);
 assert.match(html, /SC Handbook &middot; Public beta &middot; Build 0\.7\.65/);
 assert.doesNotMatch(panel, /id="monopoleMomentSection"[^>]*open/);
 assert.doesNotMatch(panel, /id="monopoleCombinedSection"[^>]*open/);

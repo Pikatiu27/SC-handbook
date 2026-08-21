@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260821boltlocators2">
+  <link rel="stylesheet" href="styles.css?v=20260821memberfigurelayout1">
 </head>
 <body>
   <header class="topbar">
@@ -1276,8 +1276,8 @@
         <div class="member-summary member-selected-section">
           <div class="member-summary-visual" aria-label="Selected member section guide">
             <div class="section-guide diagram-guide">
-              <article class="manual-section-card" data-member-guide="ub" hidden><img class="section-diagram" src="assets/generated/beam-section-ub.svg" alt="Universal beam section diagram"><div><strong>UB</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub> · InfraBuild Tables 9-10</small></div></article>
-              <article class="manual-section-card" data-member-guide="uc" hidden><img class="section-diagram" src="assets/generated/beam-section-uc.svg" alt="Universal column section diagram"><div><strong>UC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub> · InfraBuild Tables 11-12</small></div></article>
+              <article class="manual-section-card" data-member-guide="ub" hidden><img class="section-diagram" src="assets/generated/beam-section-ub.svg?v=20260821memberfigurelabels2" alt="Universal beam section diagram"><div><strong>UB</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub> · InfraBuild Tables 9-10</small></div></article>
+              <article class="manual-section-card" data-member-guide="uc" hidden><img class="section-diagram" src="assets/generated/beam-section-uc.svg?v=20260821memberfigurelabels2" alt="Universal column section diagram"><div><strong>UC</strong><small>d, b<sub>f</sub>, t<sub>w</sub>, t<sub>f</sub> · InfraBuild Tables 11-12</small></div></article>
               <article class="manual-section-card" data-member-guide="chs"><img class="section-diagram" src="assets/generated/member-section-chs.svg" alt="CHS section diagram showing D and t dimensions"><div><strong>CHS</strong><small>D, t · Austube Tables 3.1-1 and 3.1-2</small></div></article>
               <article class="manual-section-card" data-member-guide="rhs" hidden><img class="section-diagram" src="assets/generated/member-section-rhs.svg" alt="RHS section diagram showing d, b and t dimensions"><div><strong>RHS</strong><small>d, b, t · Austube Tables 3.1-3 and 3.1-4</small></div></article>
               <article class="manual-section-card" data-member-guide="shs" hidden><img class="section-diagram" src="assets/generated/member-section-shs.svg" alt="SHS section diagram showing b and t dimensions"><div><strong>SHS</strong><small>b, t · Austube Tables 3.1-5 and 3.1-6</small></div></article>
@@ -1397,12 +1397,10 @@
               <table class="compact-lookup-table">
                 <thead><tr><th>Member case</th><th>Form factor k<sub>f</sub></th><th>Source basis</th></tr></thead>
                 <tbody>
-                  <tr><td>CHS</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, A<sub>e</sub> = A<sub>g</sub> for this quick CHS geometry screen.</td></tr>
-                  <tr><td>RHS / SHS</td><td>catalogue value</td><td>Austube Tables 3.1-3 to 3.1-6; some slender hollow sections are below 1.0.</td></tr>
-                  <tr><td>UB / UC</td><td>catalogue value</td><td>InfraBuild Tables 9-12; the selected section and grade determine k<sub>f</sub>.</td></tr>
-                  <tr><td>PFC</td><td>1.000</td><td>OneSteel / InfraBuild Tables 15–16, form factor row.</td></tr>
-                  <tr><td>EA</td><td>catalogue value</td><td>OneSteel / InfraBuild Tables 19–21, form factor row; some thin angles are below 1.0.</td></tr>
-                  <tr><td>Round Bar</td><td>1.000</td><td>AS 4100 Cl. 6.2.2, solid round geometry with A<sub>e</sub> = A<sub>g</sub>.</td></tr>
+                  <tr><td>Catalogue section</td><td>Selected-grade value</td><td>Published product row, reconciled against AS 4100 Cl. 6.2.2 to AS 4100 Cl. 6.2.4.</td></tr>
+                  <tr><td>Strength / geometry override</td><td>Calculated</td><td>k<sub>f</sub> = A<sub>e</sub>/A<sub>g</sub> for the adopted f<sub>y</sub> and active catalogue-family geometry.</td></tr>
+                  <tr><td>Round Bar</td><td>1.000</td><td>Solid section; A<sub>e</sub> = A<sub>g</sub>.</td></tr>
+                  <tr><td>Custom / Built-up</td><td>Project input</td><td>Effective-area derivation requires the component plate geometry and remains outside this property-input mode.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1442,9 +1440,9 @@
           </div>
           <div class="source-notes">
             <p><b>Scope</b> &middot; Centroidally loaded axial compression and axial tension only.</p>
-            <p><b>Project inputs</b> &middot; Editable: f<sub>y</sub>, f<sub>u</sub> and the governing r where an override is required. Project-defined: A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub>. CHS and Round Bar are symmetric; catalogue EA and PFC checks adopt the minor principal and minor y-y axes respectively; Custom checks both entered axes. k<sub>t</sub> = 1.00 requires AS 4100 Cl. 7.3.1; eccentric cases use AS 4100 Table 7.3.2.</p>
-            <p><b>Source status</b> &middot; CHS, RHS, SHS, UB, UC, EA and PFC values are catalogue-derived. Round Bar uses listed diameter and mass with circular geometry. AS 4100 Cl. 6.2 uses A<sub>n</sub>; for an unperforated section, A<sub>n</sub> = A<sub>g</sub>.</p>
-            <p><b>Excluded</b> &middot; Flexural-torsional buckling, connection eccentricity, bending, shear, combined actions, connection capacity, built-up connector spacing and local buckling.</p>
+            <p><b>Project inputs</b> &middot; Editable: f<sub>y</sub>, f<sub>u</sub> and the governing r where an override is required. A catalogue f<sub>y</sub> override recalculates k<sub>f</sub> and the applicable &alpha;<sub>b</sub> branch. Project-defined: A<sub>n</sub>, k<sub>t</sub> and L<sub>e</sub>. CHS and Round Bar are symmetric; catalogue EA and PFC checks adopt the minor principal and minor y-y axes respectively; Custom checks both entered axes.</p>
+            <p><b>Source status</b> &middot; Catalogue k<sub>f</sub> values are reconciled against AS 4100 Cl. 6.2.2 to AS 4100 Cl. 6.2.4. Strength or supported geometry overrides use the active section dimensions and adopted f<sub>y</sub>. AS 4100 Cl. 6.2 uses A<sub>n</sub>; for an unperforated section, A<sub>n</sub> = A<sub>g</sub>.</p>
+            <p><b>Excluded</b> &middot; Flexural-torsional buckling, connection eccentricity, bending, shear, combined actions, connection capacity, built-up connector spacing and Custom / Built-up local-buckling derivation.</p>
           </div>
         </div>
       </details>
@@ -1980,11 +1978,12 @@
   <script src="beam-section-reconciliation.js?v=20260803productflow36"></script>
   <script src="beam-custom-section.js?v=20260811beammaterial1"></script>
   <script src="member-capacity.js?v=20260811axialnet1"></script>
+  <script src="member-form-factor.js?v=20260821memberkf1"></script>
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="reo-state.js?v=20260819reostate1"></script>
   <script src="monopole-capacity.js?v=20260814polygonflat1"></script>
-  <script src="app.js?v=20260821plainheadings1"></script>
+  <script src="app.js?v=20260821memberkf1"></script>
   <script src="monopole-app.js?v=20260820monopolelayout1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>

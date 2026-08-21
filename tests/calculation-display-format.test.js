@@ -41,7 +41,8 @@ assert.doesNotMatch(monopoleFixed, /\.toFixed\(|\.toLocaleString\(/);
 assert.match(monopoleFixed, /decimalHalfUp/);
 
 assert.match(html, /reo-calculation\.js\?v=20260812displaycontract1/);
-assert.match(html, /app\.js\?v=20260821plainheadings1/);
+assert.match(html, /member-form-factor\.js\?v=20260821memberkf1/);
+assert.match(html, /app\.js\?v=20260821memberkf1/);
 assert.match(html, /monopole-app\.js\?v=20260820monopolelayout1/);
 
 console.log("Calculation display-format contract tests passed.");

@@ -8,11 +8,15 @@ const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const script = fs.readFileSync(path.join(root, "app.js"), "utf8");
 const memberCapacityScript = fs.readFileSync(path.join(root, "member-capacity.js"), "utf8");
+const memberFormFactorScript = fs.readFileSync(path.join(root, "member-form-factor.js"), "utf8");
 const styles = fs.readFileSync(path.join(root, "styles.css"), "utf8");
+const ubGuide = fs.readFileSync(path.join(root, "assets/generated/beam-section-ub.svg"), "utf8");
+const ucGuide = fs.readFileSync(path.join(root, "assets/generated/beam-section-uc.svg"), "utf8");
 const outline = fs.readFileSync(path.join(root, "SC_HANDBOOK.md"), "utf8");
 const traceability = fs.readFileSync(path.join(root, "REFERENCE_TRACEABILITY.md"), "utf8");
 const hollowRows = require(path.join(root, "beam-section-data.js"));
 const hotRolledRows = require(path.join(root, "beam-hot-rolled-data.js"));
+const steelMaterials = require(path.join(root, "steel-materials.js"));
 
 [
   "memberSummaryAxis",
@@ -52,9 +56,10 @@ assert.deepEqual(
 ["ub", "uc", "rhs", "shs"].forEach(family => assert.match(html, new RegExp(`data-member-guide="${family}"`)));
 assert.match(html, /id="memberFactorHelp"/);
 assert.match(script, /MemberCapacity\.catalogueCompressionDefaults\(\{/);
-assert.match(script, /dimensionOverride: memberDimensionOverrideActive\(\)/);
+assert.match(script, /formFactorBasis: catalogueDefault \? "catalogue" : "calculated"/);
+assert.match(script, /dimensionOverride: false/);
 assert.doesNotMatch(script, /CHS basis: k<sub>f<\/sub> = 1\.000/);
-assert.match(script, /Catalogue k<sub>f<\/sub>, or k<sub>f<\/sub> = 1\.000 for an ideal circular dimension override/);
+assert.match(script, /strength or geometry overrides recalculate k<sub>f<\/sub>/);
 [
   "memberCustomArea",
   "memberCustomRx",
@@ -78,6 +83,18 @@ assert.match(styles, /\.member-check-grid-compression \{ grid-template-columns: 
 assert.match(styles, /\.member-check-grid-tension \{ grid-template-columns: repeat\(3/);
 assert.doesNotMatch(html, /id="memberActionGroup"[^>]*\sopen(?:\s|>)/);
 assert.match(styles, /\.member-summary-primary \{[^}]*grid-template-columns: minmax\(170px, 1\.25fr\)/);
+assert.match(script, /selectedMember\.dataset\.memberGuide = type/);
+assert.match(styles, /\.member-selected-section\[data-member-guide="ub"\],[\s\S]*?\.member-selected-section\[data-member-guide="uc"\] \{ grid-template-columns: minmax\(0, 1fr\) 196px; \}/);
+assert.match(styles, /\.member-selected-section\[data-member-guide="ub"\] \.section-diagram,[\s\S]*?\.member-selected-section\[data-member-guide="uc"\] \.section-diagram \{ height: 112px; max-height: 112px; \}/);
+assert.match(ubGuide, /viewBox="20 0 320 240"/);
+assert.match(ucGuide, /viewBox="20 0 320 240"/);
+assert.match(ubGuide, /class="axis-label" x="103\.0" y="139\.0"[^>]*>x<\/text>/);
+assert.match(ubGuide, /class="dim-label" x="180\.0" y="20\.0"[^>]*>b/);
+assert.match(ucGuide, /class="axis-label" x="89\.0" y="137\.0"[^>]*>x<\/text>/);
+assert.match(ucGuide, /class="dim-label" x="180\.0" y="22\.0"[^>]*>b/);
+assert.match(html, /beam-section-ub\.svg\?v=20260821memberfigurelabels2/);
+assert.match(html, /beam-section-uc\.svg\?v=20260821memberfigurelabels2/);
+assert.match(outline, /Size the selected-family guide by annotation density/);
 assert.match(styles, /\.member-section-details \{[^}]*grid-column: 1 \/ -1/);
 assert.match(outline, /same hierarchy and visual structure as Beam `Selected section`/);
 assert.match(outline, /four always-visible primary metrics/);
@@ -138,11 +155,22 @@ assert.match(script, /const validArea = Number\.isFinite\(properties\.area\) && 
 assert.match(script, /Flexural buckling about the entered axes only\. Built-up action, local buckling, shear deformation and torsional buckling are not evaluated\./);
 assert.match(script, /BeamHotRolledData\.equalAngle\[section\.designation\]/);
 assert.match(script, /BeamHotRolledData\.pfc\.find\(section => section\.designation === `\$\{depth\}PFC`\)/);
+assert.match(script, /const catalogue = BeamHotRolledData\.pfc\.find\(item => item\.designation === section\.designation\) \|\| \{\};[\s\S]*?grades: section\.grades/);
+assert.equal(steelMaterials.hotRolledStrength("300PLUS", 9.5).fu, 440);
+assert.equal(steelMaterials.hotRolledStrength("Grade 350", 9.5).fu, 480);
+assert.match(outline, /raw PFC grade object must not overwrite the resolved `f_u`/);
 assert.doesNotMatch(script, /const eaAxialGrades/);
 assert.doesNotMatch(script, /const chsGrades/);
 assert.match(memberCapacityScript, /alphaB = tf > 40 \? 1 : 0/);
 assert.match(memberCapacityScript, /alphaB = -0\.5/);
 assert.match(script, /"User override" : "Catalogue default"/);
+assert.match(html, /member-form-factor\.js\?v=20260821memberkf1/);
+assert.match(script, /MemberFormFactor\.calculate\(\{ family: memberType, section: properties, yieldStress: fy \}\)/);
+assert.match(script, /formFactorBasis === "catalogue"/);
+assert.match(memberFormFactorScript, /hotRolledOutstand: 16/);
+assert.match(memberFormFactorScript, /hotRolledSupported: 45/);
+assert.match(memberFormFactorScript, /coldFormedSupported: 40/);
+assert.match(memberFormFactorScript, /circularHollow: 82/);
 assert.match(script, /let memberNetAreaTracksGross = true/);
 assert.match(script, /function syncMemberManualNetAreaToGross\(properties\)/);
 assert.match(script, /memberType === "custom" \|\| automaticHolePath \|\| !memberNetAreaTracksGross/);
@@ -183,7 +211,7 @@ assert.equal(Object.keys(hotRolledRows.equalAngle).length, 46);
 assert.equal(hotRolledRows.pfc.length, 10);
 assert.ok(hotRolledRows.pfc.every(section => Object.keys(section.grades).length === 2));
 assert.match(outline, /all 73 Austube CHS grade-specific rows/);
-assert.match(outline, /must not inherit `k_f` from the catalogue row used to initialise its dimensions/);
+assert.match(outline, /Neither override may inherit `k_f` from the catalogue row used to initialise its dimensions/);
 assert.match(traceability, /all 46 InfraBuild EA geometry\/design rows/);
 
 const defaultAngleRow = script.match(/\[100,10,14\.2,9\.5,8,5,9\.53,1810,[^\]]+\]/);
