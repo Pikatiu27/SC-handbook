@@ -36,17 +36,13 @@
   function catalogueCompressionDefaults({
     family,
     catalogueKf,
-    flangeThickness,
-    dimensionOverride = false
+    flangeThickness
   }) {
     const sectionFamily = String(family || "").toLowerCase();
     const supported = ["ub", "uc", "chs", "rhs", "shs", "ea", "pfc", "rod"];
     if (!supported.includes(sectionFamily)) throw new RangeError("A supported catalogue member family is required.");
 
-    const idealCircularOverride = dimensionOverride && (sectionFamily === "chs" || sectionFamily === "rod");
-    const kf = idealCircularOverride
-      ? 1
-      : bounded(catalogueKf, "Catalogue form factor k_f", Number.EPSILON, 1);
+    const kf = bounded(catalogueKf, "Catalogue form factor k_f", Number.EPSILON, 1);
 
     let alphaB;
     if (["chs", "rhs", "shs"].includes(sectionFamily)) {

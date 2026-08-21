@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="29 24 302 205" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="20 0 320 240" role="img" aria-labelledby="title desc">
   <title id="title">UB section guide</title>
   <desc id="desc">Symbolic Universal Beam section guide generated for SC Handbook; not a source of numeric section properties.</desc>
   <defs>
@@ -18,11 +18,11 @@
   <polygon class="section" points="119.0,66.0 241.0,66.0 241.0,86.0 192.0,86.0 192.0,182.0 241.0,182.0 241.0,202.0 119.0,202.0 119.0,182.0 168.0,182.0 168.0,86.0 119.0,86.0" />
 
   <line class="axis" x1="93.0" y1="134.0" x2="267.0" y2="134.0" />
-  <line class="axis" x1="180.0" y1="56.0" x2="180.0" y2="212.0" />
-  <text class="axis-label" x="84.0" y="139.0" text-anchor="middle">x</text>
-  <text class="axis-label" x="276.0" y="139.0" text-anchor="middle">x</text>
-  <text class="axis-label" x="180.0" y="49.0" text-anchor="middle">y</text>
-  <text class="axis-label" x="180.0" y="229.0" text-anchor="middle">y</text>
+  <line class="axis" x1="180.0" y1="62.0" x2="180.0" y2="208.0" />
+  <text class="axis-label" x="103.0" y="139.0" text-anchor="middle">x</text>
+  <text class="axis-label" x="257.0" y="139.0" text-anchor="middle">x</text>
+  <text class="axis-label" x="180.0" y="56.0" text-anchor="middle">y</text>
+  <text class="axis-label" x="180.0" y="226.0" text-anchor="middle">y</text>
 
   <line class="dim" x1="81.0" y1="66.0" x2="81.0" y2="202.0" />
   <path class="arrow" d="M 81.0 66 L 77.5 73 L 84.5 73 Z" />
@@ -36,7 +36,7 @@
   <path class="arrow" d="M 241.0 36 L 234.0 32.5 L 234.0 39.5 Z" />
   <line class="guide" x1="119.0" y1="62.0" x2="119.0" y2="30.0" />
   <line class="guide" x1="241.0" y1="62.0" x2="241.0" y2="30.0" />
-  <text class="dim-label" x="180.0" y="28.0" text-anchor="middle">b<tspan baseline-shift="sub" font-size="75%">f</tspan></text>
+  <text class="dim-label" x="180.0" y="20.0" text-anchor="middle">b<tspan baseline-shift="sub" font-size="75%">f</tspan></text>
 
   <line class="dim" x1="168.0" y1="116.0" x2="192.0" y2="116.0" />
   <path class="arrow" d="M 168.0 116 L 175.0 112.5 L 175.0 119.5 Z" />
