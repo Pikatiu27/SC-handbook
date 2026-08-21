@@ -50,8 +50,8 @@
 
   function resistanceBasisHtml() {
     const method = polygonActive()
-      ? `ASCE/SEI 48-19 &middot; P = 0 &middot; M = F<sub>a</sub>I/c &middot; r<sub>i</sub>/t<sub>nom</sub> = ${fixed(number($("monopoleBendRadiusRatio").value), 2)} estimate &middot; no AS 4100 &phi;`
-      : "AS 4100:2020 &middot; &phi;M<sub>s</sub> &middot; &phi; = 0.90";
+      ? "ASCE/SEI 48-19 &middot; P = 0 &middot; M = F<sub>a</sub>I/c &middot; no AS 4100 &phi;"
+      : "AS 4100:2020 &middot; &phi; = 0.90";
     return separateDesignThickness() ? `${method} &middot; User override: t<sub>d</sub>` : method;
   }
 
@@ -59,11 +59,11 @@
     const polygon = polygonActive();
     $("monopoleCombinedCapacityContent").hidden = polygon;
     $("monopoleCombinedUnavailable").hidden = !polygon;
-    $("monopoleMomentBasis").innerHTML = `0.5 m stations &middot; ${resistanceBasisHtml()}`;
+    $("monopoleMomentBasis").innerHTML = `${resistanceBasisHtml()} &middot; 0.5 m stations`;
     $("monopoleCombinedCapacityTitle").textContent = polygon ? "Combined polygon stress" : "Compression and bending capacities";
     $("monopoleCombinedCapacityBasis").innerHTML = polygon
       ? "ASCE/SEI 48-19 &middot; combined polygon stress not evaluated"
-      : "Design intercepts &middot; 0.5 m stations &middot; AS 4100:2020";
+      : "AS 4100:2020 &middot; 0.5 m stations &middot; capacity intercepts";
     if (polygon) $("monopoleCombinedCapacitySummary").textContent = "Not evaluated";
     $("monopoleStationResistanceHeading").innerHTML = polygon ? "M" : "&phi;M<sub>s</sub>";
     $("monopoleChart").setAttribute(
@@ -186,7 +186,7 @@
         : "Enter the verified product or project f<sub>y</sub>.";
     const sectionNote = selection.form === "polygon"
       ? `ASCE/SEI 48-19 regular ${selection.sideCount}-sided method. Fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5; replace with verified project or manufacturer data. ${polygonBendRadiusSummary(sections)}`
-      : "AS 4100 circular-section method; bend-radius input is not required.";
+      : "AS 4100 circular section; bend radius not required.";
     $("monopoleMaterialNote").innerHTML = materialNote;
     $("monopoleSectionNote").innerHTML = sectionNote;
     const inputs = [...$("monopoleScheduleBody").querySelectorAll('[data-field="yieldStress"]')];

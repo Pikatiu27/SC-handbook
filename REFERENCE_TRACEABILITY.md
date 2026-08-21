@@ -1447,9 +1447,11 @@ After integration with remote `main`, all 40 local test files, all 20 root JavaS
 
 The integrated release was committed as `920e52e` and pushed to remote `main`. GitHub Pages workflow `32379820550` completed verification and deployment successfully. A cache-busted public browser check returned Build 0.7.63 with `styles.css?v=20260821reomerge1` and `app.js?v=20260821reomerge1`, opened the Reinforcement route directly, showed the accepted heading hierarchy, and reported no document-level horizontal overflow or console warning/error at desktop and 390 px. The public module remains `For Review` within the visible public-beta boundary.
 
-## 2026-08-21 Build 0.7.68 Steel Monopole Segment Model
+## 2026-08-21 Build 0.7.69 Steel Monopole Segment Model
 
-Build 0.7.68 integrates the latest Beam summary update and replaces the separate continuous-taper and fabricated-section inputs with one `Profile segment schedule`. One row represents a continuous constant or tapered shell. Additional rows with `L_o,i = 0` represent calculation boundaries for geometry, thickness or material changes without implying a joint. A positive `L_o,i` represents the length over which upper segment `S_i` extends downward outside lower segment `S_i-1`.
+Build 0.7.69 integrates the latest Beam release update and replaces the separate continuous-taper and fabricated-section inputs with one `Profile segment schedule`. One row represents a continuous constant or tapered shell. Additional rows with `L_o,i = 0` represent calculation boundaries for geometry, thickness or material changes without implying a joint. A positive `L_o,i` represents the length over which upper segment `S_i` extends downward outside lower segment `S_i-1`.
+
+The Monopole page now uses one visible calculation sequence: `Input data`, compact `Derived properties`, then `Capacity results`. Redundant stage subtitles were removed because the Geometry, Profile segment schedule, and Material and resistance basis groups already identify the inputs. The shared 15 px, 13 px, and 12 px type levels distinguish stages and capacity disclosures, input groups and values, and supporting method or scope text respectively; control and table dimensions were not reduced.
 
 The installed-coordinate equation remains `H = sum(L_i) - sum(L_o,i)`. Both parent shells remain active and contribute steel mass in an overlap. The prescribed AS/NZS 7000 Appendix K9 screen continues to use the maximum circle inscribed within the two outside profiles; the result is displayed as `S_i over S_i-1`. Nominal geometry does not verify fit-up, tolerance, clearance, seam geometry, ovalisation, jacking force or joint resistance, and those states remain explicitly outside scope.
 
