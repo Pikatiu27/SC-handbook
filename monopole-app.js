@@ -228,12 +228,6 @@
     $("monopoleScheduleBasis").textContent = polygon
       ? "Segments run base to top. Enter verified project or manufacturer geometry."
       : "Base to top. Default: Austube 508.0 × 6.4 CHS C350L0.";
-    document.querySelector(".monopole-dimension-bottom").innerHTML = polygon
-      ? "Bottom outside across-flats, D<sub>o,b</sub>"
-      : "Bottom outside diameter, D<sub>b</sub>";
-    document.querySelector(".monopole-dimension-top").innerHTML = polygon
-      ? "Top outside across-flats, D<sub>o,t</sub>"
-      : "Top outside diameter, D<sub>t</sub>";
     document.querySelector(".monopole-bottom-dimension-heading").innerHTML = polygon
       ? "D<sub>o,b</sub> (mm)"
       : "D<sub>b</sub> (mm)";

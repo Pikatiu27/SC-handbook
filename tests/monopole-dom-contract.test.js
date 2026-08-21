@@ -137,6 +137,7 @@ assert.match(panel, /Product geometry reference/);
 assert.match(panel, /fabrication estimate r<sub>i<\/sub>\/t<sub>nom<\/sub> = 1\.5 are not published product values/);
 assert.match(monopoleApp, /\{ id: "S1", length: 12, bottomDimension: 508, topDimension: 508, nominalThickness: 6\.4, designThickness: 6\.4, yieldStress: 350, overlap: 0 \}/);
 assert.doesNotMatch(monopoleApp, /overallProfileSections|overallThicknessBands|\bmode\b/);
+assert.doesNotMatch(monopoleApp, /monopole-dimension-bottom|monopole-dimension-top/);
 assert.doesNotMatch(monopoleCapacity, /function overallProfileSections\(profile, thicknessBands\)/);
 assert.match(monopoleApp, /class="monopole-chart-boundary"/);
 assert.match(monopoleApp, />Segment boundary<\/span>/);
