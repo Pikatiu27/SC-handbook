@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260821boltlocators2">
+  <link rel="stylesheet" href="styles.css?v=20260821monopolesegments1">
 </head>
 <body>
   <header class="topbar">
@@ -1024,10 +1024,6 @@
         <div class="input-cluster">
           <section class="input-group input-group-section monopole-section-form-group">
             <span class="input-group-heading"><b>Geometry</b><small>Section form and profile definition</small></span>
-            <div class="monopole-mode-switch" role="group" aria-label="Monopole geometry definition">
-              <button class="monopole-mode" type="button" data-monopole-mode="overall" aria-pressed="false">Continuous taper</button>
-              <button class="monopole-mode active" type="button" data-monopole-mode="schedule" aria-pressed="true">Fabricated sections</button>
-            </div>
             <div class="input-group-fields six monopole-form-fields">
               <label><span>Cross-section</span><select id="monopoleSectionForm"><option value="circular" selected>Circular tubular</option><option value="polygon-4">4-sided regular polygon</option><option value="polygon-6">6-sided regular polygon</option><option value="polygon-8">8-sided regular polygon</option><option value="polygon-12">12-sided regular polygon</option><option value="polygon-16">16-sided regular polygon</option></select></label>
               <label id="monopoleBendRadiusField" hidden><span>Inside bend-radius ratio, r<sub>i</sub>/t<sub>nom</sub></span><span class="unit"><input id="monopoleBendRadiusRatio" type="number" min="0.1" step="0.1" value="1.5" aria-describedby="monopoleSectionNote"><em>ratio</em></span></label>
@@ -1036,61 +1032,30 @@
           </section>
         </div>
 
-        <section id="monopoleOverallInputs" class="monopole-input-panel" hidden>
-          <div class="input-group input-group-section">
-            <span class="input-group-heading"><b>Profile geometry</b><small>One continuous taper; no fabricated joints or overlaps.</small></span>
-            <div class="input-group-fields six">
-              <label><span>Overall height, H</span><span class="unit"><input id="monopoleHeight" type="number" min="0.5" step="0.5" value="12"><em>m</em></span></label>
-              <label><span class="monopole-dimension-bottom">Bottom outside diameter, D<sub>b</sub></span><span class="unit"><input id="monopoleBottomDimension" type="number" min="1" step="10" value="240"><em>mm</em></span></label>
-              <label><span class="monopole-dimension-top">Top outside diameter, D<sub>t</sub></span><span class="unit"><input id="monopoleTopDimension" type="number" min="1" step="10" value="90"><em>mm</em></span></label>
-            </div>
-          </div>
-          <div class="monopole-schedule-panel monopole-thickness-panel">
-            <div class="monopole-schedule-heading">
-              <div><b>Wall thickness schedule</b><small>Base to top; final elevation follows H.</small></div>
-              <button id="monopoleAddThicknessBand" class="monopole-add-section" type="button">Add band</button>
-            </div>
-            <div class="table-scroll monopole-schedule-scroll">
-              <table class="monopole-schedule-table monopole-thickness-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Band</th>
-                    <th scope="col">Top elevation, z<sub>top</sub> (m)</th>
-                    <th scope="col">t<sub>nom</sub> (mm)</th>
-                    <th scope="col" class="monopole-design-thickness-column" hidden>t<sub>d</sub> (mm)</th>
-                    <th scope="col">f<sub>y</sub> (MPa)</th>
-                    <th scope="col"><span class="visually-hidden">Remove</span></th>
-                  </tr>
-                </thead>
-                <tbody id="monopoleOverallThicknessBody"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
         <section id="monopoleScheduleInputs" class="monopole-input-panel monopole-schedule-panel">
           <div class="monopole-schedule-heading">
-            <div><b>Physical section schedule</b><small id="monopoleScheduleBasis">Base to top. Default: Austube 508.0 &times; 6.4 CHS C350L0.</small></div>
-            <button id="monopoleAddSection" class="monopole-add-section" type="button">Add section</button>
+            <div><b>Profile segment schedule</b><small id="monopoleScheduleBasis">Base to top. Default: Austube 508.0 &times; 6.4 CHS C350L0.</small></div>
+            <button id="monopoleAddSection" class="monopole-add-section" type="button">Add segment</button>
           </div>
           <div class="table-scroll monopole-schedule-scroll">
             <table class="monopole-schedule-table">
               <thead>
                 <tr>
-                  <th scope="col">Section</th>
+                  <th scope="col">Segment, S<sub>i</sub></th>
                   <th scope="col">L<sub>i</sub> (m)</th>
                   <th scope="col" class="monopole-bottom-dimension-heading">D<sub>b</sub> (mm)</th>
                   <th scope="col" class="monopole-top-dimension-heading">D<sub>t</sub> (mm)</th>
                   <th scope="col">t<sub>nom</sub> (mm)</th>
                   <th scope="col" class="monopole-design-thickness-column" hidden>t<sub>d</sub> (mm)</th>
                   <th scope="col">f<sub>y</sub> (MPa)</th>
-                  <th scope="col">Overlap, L<sub>o</sub> (m)</th>
+                  <th scope="col">Upper overlap, L<sub>o,i</sub> (m)</th>
                   <th scope="col"><span class="visually-hidden">Remove</span></th>
                 </tr>
               </thead>
               <tbody id="monopoleScheduleBody"></tbody>
             </table>
           </div>
+          <p class="monopole-schedule-note">For i &ge; 2, upper segment S<sub>i</sub> extends downward outside S<sub>i-1</sub> by L<sub>o,i</sub>. L<sub>o,i</sub> = 0 defines a calculation boundary only; fit-up and joint resistance are not evaluated.</p>
         </section>
 
         <div class="input-cluster">
@@ -1116,7 +1081,7 @@
             <div><dt>z<sub>cg</sub></dt><dd><output id="monopoleCentreOfGravity">-</output> m</dd></div>
             <div><dt>H</dt><dd><output id="monopoleAssembledHeight">-</output></dd></div>
           </dl>
-          <small><span id="monopoleMassBasis">physical shell geometry</span> &middot; <output id="monopoleSectionCount">-</output> <span id="monopoleCountLabel">sections</span></small>
+          <small><span id="monopoleMassBasis">physical shell geometry</span> &middot; <output id="monopoleSectionCount">-</output> <span id="monopoleCountLabel">segments</span></small>
         </section>
 
         <div id="monopoleCapacityHeading" class="monopole-stage-heading">
@@ -1136,7 +1101,7 @@
               <summary><span><b>Station results</b><small>0.5 m stations &middot; top to base</small></span><strong id="monopoleStationCount">0 rows</strong><i>+</i></summary>
               <div class="table-scroll monopole-station-scroll">
                 <table class="monopole-result-table monopole-station-table">
-                  <thead><tr><th scope="col">Elevation, z</th><th scope="col">Physical section</th><th scope="col" id="monopoleStationDimensionHeading">D</th><th scope="col">t<sub>d</sub></th><th scope="col">f<sub>y</sub></th><th scope="col">Section state</th><th scope="col" id="monopoleStationResistanceHeading">&phi;M<sub>s</sub></th></tr></thead>
+                  <thead><tr><th scope="col">Elevation, z</th><th scope="col">Segment</th><th scope="col" id="monopoleStationDimensionHeading">D</th><th scope="col">t<sub>d</sub></th><th scope="col">f<sub>y</sub></th><th scope="col">Section state</th><th scope="col" id="monopoleStationResistanceHeading">&phi;M<sub>s</sub></th></tr></thead>
                   <tbody id="monopoleStationBody"></tbody>
                 </table>
               </div>
@@ -1153,7 +1118,7 @@
               <p id="monopoleCombinedCapacityStatus" class="result-note" aria-live="polite" hidden></p>
               <div class="table-scroll monopole-combined-capacity-scroll">
                 <table class="monopole-result-table monopole-combined-capacity-table">
-                  <thead><tr><th scope="col">Elevation, z (m)</th><th scope="col">Physical section</th><th scope="col">D (mm)</th><th scope="col">t<sub>d</sub> (mm)</th><th scope="col">k<sub>f</sub></th><th scope="col">&phi;N<sub>s</sub> (kN)</th><th scope="col">&phi;M<sub>s</sub> (kN&middot;m)</th></tr></thead>
+                  <thead><tr><th scope="col">Elevation, z (m)</th><th scope="col">Segment</th><th scope="col">D (mm)</th><th scope="col">t<sub>d</sub> (mm)</th><th scope="col">k<sub>f</sub></th><th scope="col">&phi;N<sub>s</sub> (kN)</th><th scope="col">&phi;M<sub>s</sub> (kN&middot;m)</th></tr></thead>
                   <tbody id="monopoleCombinedCapacityBody"></tbody>
                 </table>
               </div>
@@ -1166,7 +1131,7 @@
           <div class="section-heading"><div><h2>Prescribed overlap screen</h2></div><span>Geometry only &middot; joint resistance not evaluated</span></div>
           <div class="table-scroll">
             <table class="monopole-result-table monopole-overlap-table">
-              <thead><tr><th scope="col">Joint</th><th scope="col">Entered overlap, L<sub>o</sub></th><th scope="col">Required overlap, 1.5D<sub>ins,max</sub></th><th scope="col">Status</th></tr></thead>
+              <thead><tr><th scope="col">Assembly</th><th scope="col">Entered overlap, L<sub>o,i</sub></th><th scope="col">Required overlap, 1.5D<sub>ins,max</sub></th><th scope="col">Status</th></tr></thead>
               <tbody id="monopoleOverlapBody"></tbody>
             </table>
           </div>
@@ -1190,7 +1155,7 @@
             <p><b>CHS category</b> &middot; CF is the AS 4100 Table 5.2 category adopted for the verified AS/NZS 1163 CHS example; it is not an AS/NZS 4600 calculation. For a fabricated plate shell, use the project-confirmed AS 4100 category. AS/NZS 4600 is not evaluated.</p>
             <p><b>Product geometry reference</b> &middot; KISMAT KOP-1230: one 12 m, 8-sided section; D<sub>o,b</sub> = 240 mm A/F, D<sub>o,t</sub> = 90 mm A/F, t<sub>nom</sub> = 3 mm and E355BR. The adopted f<sub>y</sub> = 355 MPa and fabrication estimate r<sub>i</sub>/t<sub>nom</sub> = 1.5 are not published product values. <a href="https://www.kismatengitech.com/octagonal-poles.html" target="_blank" rel="noreferrer">Manufacturer product table</a>.</p>
             <p><b>Material</b> &middot; AS/NZS 3678:2016 Table 8 f<sub>y</sub> uses t<sub>nom</sub>. Resistance uses t<sub>d</sub>; mass uses t<sub>nom</sub>. Confirm material equivalence and project acceptance for the ASCE method.</p>
-            <p><b>Slip joints</b> &middot; AS/NZS 7000:2016 Appendix K9: L<sub>o</sub> &ge; 1.5D<sub>ins,max</sub>, where D<sub>ins,max</sub> is the largest circle inscribed within the outside profiles being joined. Joint resistance, fit-up, tolerances, jacking and installed overlap are not evaluated.</p>
+            <p><b>Slip joints</b> &middot; For i &ge; 2, upper S<sub>i</sub> is outside lower S<sub>i-1</sub>. AS/NZS 7000:2016 Appendix K9: L<sub>o,i</sub> &ge; 1.5D<sub>ins,max</sub>, where D<sub>ins,max</sub> is the largest circle inscribed within the outside profiles being joined. Joint resistance, fit-up, tolerances, jacking and installed overlap are not evaluated.</p>
             <p><b>Stations</b> &middot; 0.5 m spacing plus exact section boundaries. The summary reports the governing base-station value; the full station set is not a continuous numerical optimisation.</p>
             <p><b>Excluded</b> &middot; Action derivation and load combinations; member compression capacity, global stability and second-order analysis; polygon combined stress; shear and torsion; slip-joint strength; openings, reinforcement and seams; fatigue, fracture and vortex shedding; durability and serviceability; base plates, foundations, appurtenances, erection, fire and seismic design.</p>
           </div>
@@ -1964,7 +1929,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.65 &middot; technically reviewed 21 Aug 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.66 &middot; technically reviewed 21 Aug 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>
@@ -1983,9 +1948,9 @@
   <script src="screw-demand.js?v=20260809coordinates1"></script>
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="reo-state.js?v=20260819reostate1"></script>
-  <script src="monopole-capacity.js?v=20260814polygonflat1"></script>
+  <script src="monopole-capacity.js?v=20260821monopolesegments1"></script>
   <script src="app.js?v=20260821plainheadings1"></script>
-  <script src="monopole-app.js?v=20260820monopolelayout1"></script>
+  <script src="monopole-app.js?v=20260821monopolesegments1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>
 </html>
