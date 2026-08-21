@@ -347,28 +347,28 @@
 
   function normaliseSection(section, index) {
     if (!section || typeof section !== "object") {
-      throw new RangeError(`Section ${index + 1} data are required.`);
+      throw new RangeError(`Segment ${index + 1} data are required.`);
     }
     const form = section.form === undefined ? "circular" : String(section.form);
     if (!["circular", "polygon"].includes(form)) {
-      throw new RangeError(`Section ${index + 1} form must be circular or polygon.`);
+      throw new RangeError(`Segment ${index + 1} form must be circular or polygon.`);
     }
-    const length = positive(section.length, `Section ${index + 1} fabricated length`);
-    const overlap = index === 0 ? 0 : nonNegative(section.overlap, `Section ${index + 1} overlap`);
-    const bottomDimension = positive(section.bottomDimension, `Section ${index + 1} bottom dimension`);
-    const topDimension = positive(section.topDimension, `Section ${index + 1} top dimension`);
+    const length = positive(section.length, `Segment ${index + 1} length`);
+    const overlap = index === 0 ? 0 : nonNegative(section.overlap, `Segment ${index + 1} upper overlap`);
+    const bottomDimension = positive(section.bottomDimension, `Segment ${index + 1} bottom dimension`);
+    const topDimension = positive(section.topDimension, `Segment ${index + 1} top dimension`);
     if (topDimension > bottomDimension) {
-      throw new RangeError(`Section ${index + 1} top dimension must not exceed its bottom dimension.`);
+      throw new RangeError(`Segment ${index + 1} top dimension must not exceed its bottom dimension.`);
     }
     const nominalThickness = positive(
       section.nominalThickness === undefined ? section.thickness : section.nominalThickness,
-      `Section ${index + 1} nominal wall thickness`
+      `Segment ${index + 1} nominal wall thickness`
     );
-    const thickness = positive(section.thickness, `Section ${index + 1} design wall thickness`);
+    const thickness = positive(section.thickness, `Segment ${index + 1} design wall thickness`);
     if (thickness > nominalThickness + EPSILON) {
-      throw new RangeError(`Section ${index + 1} design wall thickness must not exceed its nominal wall thickness.`);
+      throw new RangeError(`Segment ${index + 1} design wall thickness must not exceed its nominal wall thickness.`);
     }
-    const yieldStress = positive(section.yieldStress, `Section ${index + 1} yield stress`);
+    const yieldStress = positive(section.yieldStress, `Segment ${index + 1} yield stress`);
     const common = {
       id: String(section.id || `S${index + 1}`),
       form,
@@ -394,19 +394,57 @@
     return Object.freeze(common);
   }
 
+  function nominalSlipFit(lowerSection, upperSection, overlapLength) {
+    const overlap = positive(overlapLength, "Entered overlap");
+    if (lowerSection.form !== upperSection.form) {
+      throw new RangeError("Connected slip-joint segments must use the same cross-section form.");
+    }
+    if (lowerSection.form === "polygon" && lowerSection.sideCount !== upperSection.sideCount) {
+      throw new RangeError("Connected polygon slip-joint segments must use the same number of sides.");
+    }
+    const checks = [
+      { location: "overlap bottom", lowerLocal: lowerSection.length - overlap, upperLocal: 0 },
+      { location: "overlap top", lowerLocal: lowerSection.length, upperLocal: overlap }
+    ].map(check => {
+      const lower = sectionPropertiesAtThickness(lowerSection, check.lowerLocal, lowerSection.nominalThickness);
+      const upper = sectionPropertiesAtThickness(upperSection, check.upperLocal, upperSection.nominalThickness);
+      const lowerOutside = lower.form === "polygon" ? lower.outsideAcrossFlats : lower.outsideDimension;
+      const upperInside = upper.insideAcrossFlats;
+      return Object.freeze({
+        ...check,
+        lowerOutside,
+        upperInside,
+        nominalClearance: upperInside - lowerOutside
+      });
+    });
+    const governing = checks.slice().sort((a, b) => a.nominalClearance - b.nominalClearance)[0];
+    if (governing.nominalClearance < -EPSILON) {
+      throw new RangeError(
+        `Nominal slip-joint geometry is incompatible at the ${governing.location}: `
+        + `${upperSection.id} cannot fit outside ${lowerSection.id}.`
+      );
+    }
+    return Object.freeze({
+      checks: Object.freeze(checks),
+      minimumNominalClearance: governing.nominalClearance,
+      governingLocation: governing.location
+    });
+  }
+
   function assembleSections(sections) {
-    if (!Array.isArray(sections) || sections.length === 0) throw new RangeError("At least one physical section is required.");
+    if (!Array.isArray(sections) || sections.length === 0) throw new RangeError("At least one profile segment is required.");
     const normalised = sections.map(normaliseSection);
     if (new Set(normalised.map(section => section.id)).size !== normalised.length) {
-      throw new RangeError("Physical section identifiers must be unique.");
+      throw new RangeError("Profile segment identifiers must be unique.");
     }
     const assembled = [];
     normalised.forEach((section, index) => {
       if (index > 0) {
         const lower = assembled[index - 1];
         if (section.overlap >= section.length || section.overlap >= lower.section.length) {
-          throw new RangeError(`Section ${index + 1} overlap must be shorter than both connected sections.`);
+          throw new RangeError(`Segment ${index + 1} overlap must be shorter than both connected segments.`);
         }
+        if (section.overlap > 0) nominalSlipFit(lower.section, section, section.overlap);
       }
       const start = index === 0 ? 0 : assembled[index - 1].end - section.overlap;
       const end = start + section.length;
@@ -416,45 +454,6 @@
       height: assembled[assembled.length - 1].end,
       sections: Object.freeze(assembled)
     });
-  }
-
-  function overallProfileSections(profile, thicknessBands) {
-    const height = positive(profile && profile.height, "Overall height");
-    const bottomDimension = positive(profile && profile.bottomDimension, "Bottom outside dimension");
-    const topDimension = positive(profile && profile.topDimension, "Top outside dimension");
-    if (topDimension > bottomDimension + EPSILON) {
-      throw new RangeError("Top outside dimension must not exceed bottom outside dimension.");
-    }
-    if (!Array.isArray(thicknessBands) || thicknessBands.length === 0) {
-      throw new RangeError("At least one wall-thickness band is required.");
-    }
-
-    const dimensionAt = elevation => bottomDimension
-      + (topDimension - bottomDimension) * elevation / height;
-    let previousTop = 0;
-    const sections = thicknessBands.map((band, index) => {
-      const topElevation = positive(band.topElevation, `Thickness band ${index + 1} top elevation`);
-      if (topElevation <= previousTop + EPSILON) {
-        throw new RangeError("Wall-thickness band top elevations must increase from base to top.");
-      }
-      if (topElevation > height + EPSILON) {
-        throw new RangeError("A wall-thickness band top elevation must not exceed the overall height.");
-      }
-      const section = Object.freeze({
-        ...band,
-        id: String(band.id || `T${index + 1}`),
-        length: topElevation - previousTop,
-        bottomDimension: dimensionAt(previousTop),
-        topDimension: dimensionAt(topElevation),
-        overlap: 0
-      });
-      previousTop = topElevation;
-      return section;
-    });
-    if (Math.abs(previousTop - height) > EPSILON) {
-      throw new RangeError("The final wall-thickness band must terminate at the overall height.");
-    }
-    return Object.freeze(sections);
   }
 
   function localDimension(section, localElevation) {
@@ -578,12 +577,13 @@
   }
 
   function slipOverlapScreen(lowerItem, upperItem, actualInstalledOverlap) {
-    if (!lowerItem || !upperItem) throw new RangeError("Lower and upper sections are required.");
+    if (!lowerItem || !upperItem) throw new RangeError("Lower and upper segments are required.");
     const overlapLength = positive(upperItem.section.overlap, "Design overlap");
     const lowerOverlapStart = lowerItem.section.length - overlapLength;
     if (lowerOverlapStart < -EPSILON) {
       throw new RangeError("Design overlap must not exceed the lower section length.");
     }
+    const nominalFit = nominalSlipFit(lowerItem.section, upperItem.section, overlapLength);
     const lowerProperties = sectionPropertiesAt(lowerItem.section, Math.max(0, lowerOverlapStart));
     const upperProperties = sectionPropertiesAt(upperItem.section, 0);
     const lowerInscribedDiameter = lowerProperties.form === "polygon"
@@ -603,6 +603,8 @@
       ? null
       : nonNegative(actualInput, "Actual installed overlap");
     return Object.freeze({
+      lowerSegmentId: lowerItem.section.id,
+      outerSegmentId: upperItem.section.id,
       inscribedDiameter,
       lowerOverlapStartInscribedDiameter: lowerInscribedDiameter,
       upperOverlapStartInscribedDiameter: upperInscribedDiameter,
@@ -610,6 +612,7 @@
       requiredDesignOverlap,
       minimumConstructedOverlap,
       designRatio: designOverlap / requiredDesignOverlap,
+      minimumNominalClearance: nominalFit.minimumNominalClearance,
       designState: designOverlap + EPSILON >= requiredDesignOverlap
         ? "Meets prescribed design overlap"
         : "Below prescribed design overlap",
@@ -637,7 +640,7 @@
     circularCompressionSectionCapacity,
     polygonStressLimit,
     polygonMomentCapacity,
-    overallProfileSections,
+    nominalSlipFit,
     assembleSections,
     localDimension,
     sectionPropertiesAt,

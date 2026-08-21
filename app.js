@@ -597,17 +597,11 @@ const weldTypeData = {
   ipbw: {
     label: "IPBW",
     note: "project-specified design throat required",
-    throatNote: "incomplete penetration: use specified a_w",
+    throatNote: "incomplete penetration: use specified t_t",
     scope: "incomplete-penetration butt-weld throat resistance"
-  },
-  compound: {
-    label: "Compound",
-    note: "project-defined total design throat required",
-    throatNote: "do not add a_w and 0.707s automatically",
-    scope: "compound-weld reference"
   }
 };
-const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentThickness", "weldParentGrade"];
+const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentCheckEnabled", "weldParentThickness", "weldParentGrade"];
 const concreteInputIds = [
   "concreteDirection", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc",
   "concreteReinforcementLayout",
@@ -1021,10 +1015,14 @@ function sectionCatalogueChsSections() {
 }
 
 function sectionCataloguePfcSections() {
-  return pfcSections.map(section => ({
-    ...section,
-    ...(BeamHotRolledData.pfc.find(item => item.designation === section.designation) || {})
-  }));
+  return pfcSections.map(section => {
+    const catalogue = BeamHotRolledData.pfc.find(item => item.designation === section.designation) || {};
+    return {
+      ...section,
+      ...catalogue,
+      grades: section.grades
+    };
+  });
 }
 
 const sectionProductDirectory = Object.freeze({
@@ -4027,7 +4025,8 @@ function calculateWeld() {
   const runs = Number.isFinite(runsValue) ? Math.round(runsValue) : NaN;
   const effectiveThroat = numericValue($("weldEffectiveThroat").value);
   const lapReductionActive = $("weldLapConnection").value === "yes" && type === "fillet";
-  const parentThickness = value("weldParentThickness");
+  const parentCheckEnabled = $("weldParentCheckEnabled").checked;
+  const parentThickness = numericValue($("weldParentThickness").value);
   const parentGrade = parentMetalGrades[$("weldParentGrade").value] || parentMetalGrades["Grade 250 plate"];
   const parentPhi = 0.9;
   const weldMethodAvailable = type === "fillet" || type === "ipbw";
@@ -4035,7 +4034,7 @@ function calculateWeld() {
   if (weldMethodAvailable && !(length > 0)) inputErrors.push("Effective weld length l_w must be greater than zero");
   if (type === "fillet" && length > 0 && length < 4 * size) inputErrors.push("Fillet-weld effective length l_w must be at least 4s");
   if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("Effective weld lines must be a positive whole number");
-  if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW design throat a_w must be greater than zero");
+  if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW design throat t_t must be greater than zero");
   [
     ["weldLength", length > 0 && (type !== "fillet" || length >= 4 * size)],
     ["weldRuns", runsValue >= 1 && Number.isInteger(runsValue)],
@@ -4064,30 +4063,35 @@ function calculateWeld() {
       capacity: NaN
     };
   const { calculationAvailable, throat, phi, kr, capacityPerMm, capacity } = weldResult;
-  const parentCheckActive = parentThickness > 0;
+  const parentCheckActive = parentCheckEnabled && parentThickness > 0;
   const parentPerMm = parentCheckActive
     ? WeldCapacity.parentMetalScreen({ fup: parentGrade.fup, thickness: parentThickness, phi: parentPhi })
     : NaN;
   const parentGoverns = calculationAvailable && parentCheckActive && parentPerMm < capacityPerMm;
-  const demand = value("weldDemand");
+  const demand = numericValue($("weldDemand").value);
+  const demandInvalid = Number.isFinite(demand) && demand < 0;
   const utilisation = calculationAvailable && capacity > 0 ? demand / capacity : Infinity;
-  const hasDemand = demand > 0;
+  const hasDemand = !demandInvalid && demand > 0;
+  if (demandInvalid) $("weldDemand").setAttribute("aria-invalid", "true");
+  else $("weldDemand").removeAttribute("aria-invalid");
   const callouts = {
-    fillet: `${size} mm CFW, category ${category}, f<sub>uw</sub> ${fuw} MPa`,
+    fillet: `${size} mm fillet weld, category ${category}, f<sub>uw</sub> ${fuw} MPa`,
     cpbw: `CPBW, category ${category}; resistance governed by the weaker joined part`,
-    ipbw: `IPBW, a<sub>w</sub> ${displayFixed(effectiveThroat, 1)} mm, category ${category}, f<sub>uw</sub> ${fuw} MPa`,
-    compound: `Compound weld; total design throat to be project-defined`
+    ipbw: `IPBW, t<sub>t</sub> ${displayFixed(effectiveThroat, 1)} mm, category ${category}, f<sub>uw</sub> ${fuw} MPa`
   };
 
   $("weldSizeField").hidden = type !== "fillet";
   $("weldThroatField").hidden = type !== "ipbw";
+  $("weldParentFields").hidden = !parentCheckEnabled;
+  $("weldParentThickness").disabled = !parentCheckEnabled;
+  $("weldParentGrade").disabled = !parentCheckEnabled;
 
   $("weldCallout").innerHTML = callouts[type] || callouts.fillet;
   $("weldTypeValue").textContent = typeData.label;
   $("weldThroatValue").textContent = calculationAvailable ? `${fixed2(throat)} mm` : inputErrors.length ? "\u2014" : "Project-defined";
   $("weldLengthValue").textContent = length > 0 ? `${fixed(length)} mm` : "\u2014";
   $("weldRunsValue").textContent = runsValue >= 1 && Number.isInteger(runsValue) ? String(runs) : "\u2014";
-  $("weldPhiValue").textContent = type === "compound" ? "-" : displayFixed(phi, 2);
+  $("weldPhiValue").textContent = displayFixed(phi, 2);
   $("weldCapacityLabel").textContent = calculationAvailable
       ? "Design capacity per unit effective length"
     : type === "cpbw"
@@ -4097,24 +4101,28 @@ function calculateWeld() {
     ? `${typeData.scope}; ${category}; &phi; = ${displayFixed(phi, 2)} from AS 4100 Table 3.4`
     : inputErrors.length
       ? "Not evaluated; valid weld geometry is required"
-    : type === "cpbw"
-      ? "AS 4100 Cl. 9.6.2.7; joined-part resistance is not defined by this weld-metal input set"
-      : "AS 4100 Cl. 9.6.5.2; total design throat requires the actual compound-weld geometry";
+    : "AS 4100 Cl. 9.6.2.7; joined-part resistance is not defined by this weld-metal input set";
   $("weldCapacity").textContent = calculationAvailable ? fixed(capacity) : "Not evaluated";
   $("weldCapacityPerMm").textContent = calculationAvailable ? displayFixed(capacityPerMm, 2) : "Not evaluated";
   $("weldCapacityUnit").hidden = !calculationAvailable;
   $("weldTotalCapacityUnit").hidden = !calculationAvailable;
-  $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : "-";
-  $("parentGoverningNote").textContent = !parentCheckActive
-    ? "Positive ply thickness required"
+  $("weldKrValue").textContent = displayFixed(kr, 2);
+  $("weldActionCapacity").textContent = calculationAvailable ? fixed(capacity) : "Not evaluated";
+  $("weldActionCapacityUnit").hidden = !calculationAvailable;
+  $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : parentCheckEnabled ? "Not evaluated" : "Not enabled";
+  $("parentGoverningUnit").hidden = !parentCheckActive;
+  $("parentGoverningNote").textContent = !parentCheckEnabled
+    ? "Enable and define the parent-metal screen below"
+    : !parentCheckActive
+      ? "Enter a positive ply thickness"
     : !calculationAvailable
       ? "Advisory only; joined-part resistance not evaluated"
     : parentGoverns
       ? `Advisory screen lower; f_up ${parentGrade.fup} MPa`
       : "Advisory screen does not govern weld-throat resistance";
-  $("parentGoverningNote").className = parentCheckActive ? "check" : "";
+  $("parentGoverningNote").className = parentCheckEnabled ? "check" : "";
   $("weldUtilisation").textContent = !calculationAvailable || !hasDemand ? "\u2014" : displayFixed(utilisation, 2);
-  $("weldStatus").textContent = !calculationAvailable ? "Not evaluated" : !hasDemand ? "No design action" : utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL";
+  $("weldStatus").textContent = !calculationAvailable ? "Not evaluated" : demandInvalid ? "Invalid design action" : !hasDemand ? "No design action" : utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL";
   $("weldStatus").className = !calculationAvailable || !hasDemand ? "check" : utilisation <= 1 ? "pass" : "fail";
 
   if (calculationAvailable) {
@@ -4129,7 +4137,7 @@ function calculateWeld() {
       calculationTraceRow({
         title: "Design throat thickness",
         reference: type === "fillet" ? "AS 4100 Cl. 9.6.3.4" : "AS 4100 Cl. 9.6.2.7",
-        formula: type === "fillet" ? `t<sub>t</sub> = 0.707s` : `t<sub>t</sub> = a<sub>w</sub>`,
+        formula: type === "fillet" ? `t<sub>t</sub> = 0.707s` : `t<sub>t</sub> = t<sub>t,specified</sub>`,
         substitution: type === "fillet" ? `0.707 &times; ${displayFixed(size, 0)} mm` : `${displayFixed(effectiveThroat, 1)} mm`,
         result: `Design throat thickness = ${fixed2(throat)} mm`,
         applicability: type === "fillet" ? "Equal-leg fillet weld; entered effective length satisfies AS 4100 Cl. 9.6.3.5 minimum 4s." : "Incomplete-penetration butt weld with project-specified design throat."
@@ -4161,7 +4169,7 @@ function calculateWeld() {
         title: "Optional weld throat utilisation",
         formula: hasDemand ? `&eta;<sub>w</sub> = V<sub>w</sub><sup>*</sup>/&phi;R<sub>total</sub>` : "",
         substitution: hasDemand ? `${fixed(demand)} kN / ${fixed(capacity)} kN` : "",
-        result: hasDemand ? `&eta;<sub>w</sub> = ${displayFixed(utilisation, 2)}; ${utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL"}` : "No design action entered",
+        result: demandInvalid ? "Invalid design action" : hasDemand ? `&eta;<sub>w</sub> = ${displayFixed(utilisation, 2)}; ${utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL"}` : "No design action entered",
         applicability: "Direct action against the calculated throat resistance only; weld group effects, eccentricity and connected-part limit states remain excluded."
       }),
       calculationTraceRow({
@@ -4169,7 +4177,7 @@ function calculateWeld() {
         formula: parentCheckActive ? `&phi;R<sub>p</sub>/l = 0.90(0.6f<sub>up</sub>t)` : "",
         substitution: parentCheckActive ? `0.90 &times; 0.6 &times; ${parentGrade.fup} MPa &times; ${fixed2(parentThickness)} mm / 1000` : "",
         result: parentCheckActive ? `Indicative resistance per unit length = ${fixed2(parentPerMm)} kN/mm` : "Not evaluated",
-        applicability: parentCheckActive ? `Advisory screening result; ${parentGrade.standard}. This is not the weaker-joined-part CPBW resistance.` : "A positive ply thickness is required to display this optional screening result."
+        applicability: parentCheckActive ? `Advisory screening result; ${parentGrade.standard}. This is not the weaker-joined-part CPBW resistance.` : parentCheckEnabled ? "A positive ply thickness is required to display this optional screening result." : "Optional screen not enabled."
       }),
       calculationTraceRow({
         title: "Design boundary",
@@ -4186,14 +4194,12 @@ function calculateWeld() {
       state: "warning"
     });
   } else {
-    const capacityRule = type === "cpbw"
-      ? `AS 4100 Cl. 9.6.2.7 takes CPBW design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. The resistance of that joined part is not defined by weld-metal strength and throat alone.`
-      : `AS 4100 Cl. 9.6.5.2 defines compound-weld throat from the actual total weld cross-section. It is not a<sub>w</sub> + 0.707s; the present inputs cannot establish that geometry.`;
+    const capacityRule = `AS 4100 Cl. 9.6.2.7 takes CPBW design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. The resistance of that joined part is not defined by weld-metal strength and throat alone.`;
     $("weldFormulaSteps").innerHTML = calculationTraceRow({
       title: typeData.label,
-      reference: type === "cpbw" ? "AS 4100 Cl. 9.6.2.7" : "AS 4100 Cl. 9.6.5.2",
+      reference: "AS 4100 Cl. 9.6.2.7",
       result: "Not evaluated",
-      applicability: `${capacityRule} ${type === "cpbw" ? "Define the weaker joined part, applicable limit state, material strength, net/gross section and capacity factor." : "Define the prepared joint and total weld cross-section before determining the design throat."} The welding procedure specification, preparation, inspection, fatigue, heat-affected-zone requirements and connected-part limit states remain project-specific.`,
+      applicability: `${capacityRule} Define the weaker joined part, applicable limit state, material strength, net/gross section and capacity factor. The welding procedure specification, preparation, inspection, fatigue, heat-affected-zone requirements and connected-part limit states remain project-specific.`,
       state: "warning"
     });
   }
@@ -6072,12 +6078,12 @@ function renderBeamSectionDiagram(section) {
       : "Value-driven section schematic showing centroidal x-x and y-y axes and the selected bending direction.";
   svg.innerHTML = `<title id="beamSectionDiagramTitle">${safeText(title)} and selected bending direction</title><desc id="beamSectionDiagramDescription">${description}</desc><defs><marker id="beamAxisArrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z"></path></marker><marker id="beamLoadArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 0 0 L 8 4 L 0 8 Z"></path></marker></defs>${geometry}${axisMarkup}${auxiliaryMarkup}<circle class="section-properties-centroid" cx="${line(axisX)}" cy="${line(axisY)}" r="3.4" />${loadMarkup}`;
   $("beamSectionDiagramCaption").textContent = custom
-    ? "Entered ideal dimensions · selected direction"
+    ? "Entered geometry · active direction"
     : shape === "angle"
-      ? "Catalogue principal axes · selected load direction"
+      ? "Principal axes · active load case"
       : shape === "channel"
-        ? "Catalogue centroid and shear centre · selected direction"
-        : "Catalogue geometry · selected direction";
+        ? "Centroid and shear centre"
+        : "Geometry · active direction";
 }
 
 function setBeamOutput(id, value, available) {
@@ -6625,16 +6631,32 @@ function memberProperties(section) {
   };
 }
 
-function memberCompressionDefaults(grade, section) {
+function memberCompressionDefaults(grade, section, properties, fy) {
   if (memberType === "custom") {
-    return { kf: signedValue("memberCustomKf", NaN), alphaB: alphaBInput("memberCustomAlphaBx") };
+    return {
+      kf: signedValue("memberCustomKf", NaN),
+      alphaB: alphaBInput("memberCustomAlphaBx"),
+      formFactorBasis: "project-input",
+      formFactor: null
+    };
   }
-  return MemberCapacity.catalogueCompressionDefaults({
+  const formFactor = MemberFormFactor.calculate({ family: memberType, section: properties, yieldStress: fy });
+  const catalogueDefault = !properties.customGeometry && Math.abs(fy - grade.fy) <= 0.01;
+  if (catalogueDefault && Math.abs(formFactor.formFactor - grade.kf) > 0.002) {
+    throw new RangeError("Calculated form factor does not reconcile with the selected catalogue row.");
+  }
+  const kf = catalogueDefault ? grade.kf : formFactor.formFactor;
+  const defaults = MemberCapacity.catalogueCompressionDefaults({
     family: memberType,
-    catalogueKf: grade.kf,
+    catalogueKf: kf,
     flangeThickness: section?.tf,
-    dimensionOverride: memberDimensionOverrideActive()
+    dimensionOverride: false
   });
+  return {
+    ...defaults,
+    formFactorBasis: catalogueDefault ? "catalogue" : "calculated",
+    formFactor
+  };
 }
 
 function memberAlphaBBasis(kf, section) {
@@ -6659,14 +6681,41 @@ function memberAlphaBBasis(kf, section) {
   return "AS 4100 Table 6.3.3(A), other sections not listed in the table";
 }
 
-function memberKfBasisText(kf) {
+function memberKfBasisText(compressionDefaults) {
+  const { kf, formFactorBasis, formFactor } = compressionDefaults;
   if (memberType === "custom") return "custom member input";
-  if (memberDimensionOverrideActive()) {
-    if (memberType === "chs" || memberType === "rod") {
-      return `ideal circular geometry override; k<sub>f</sub> = ${displayFixed(kf, 3)}`;
-    }
+  if (formFactorBasis === "calculated") {
+    return `AS 4100 Cl. 6.2.2 to AS 4100 Cl. 6.2.4; A<sub>e</sub> = ${displayFixed(formFactor.effectiveArea, 0)} mm²; k<sub>f</sub> = ${displayFixed(kf, 3)} for the adopted f<sub>y</sub>`;
   }
-  return "selected section basis";
+  return `selected catalogue section and grade; k<sub>f</sub> = ${displayFixed(kf, 3)}`;
+}
+
+function memberFormFactorTrace(compressionDefaults) {
+  const { kf, formFactorBasis, formFactor } = compressionDefaults;
+  if (memberType === "custom") {
+    return calculationTraceRow({
+      title: "Section form factor",
+      reference: "AS 4100 Cl. 6.2.2",
+      selection: `Project input k<sub>f</sub> = ${displayFixed(kf, 3)}`,
+      result: `Adopted k<sub>f</sub> = ${displayFixed(kf, 3)}`,
+      applicability: "Effective-area derivation is outside the Custom / Built-up property check."
+    });
+  }
+  const calculation = formFactor.method === "circular-hollow"
+    ? `&lambda;<sub>e</sub> = ${displayFixed(formFactor.slenderness, 1)}; &lambda;<sub>ey</sub> = ${displayFixed(formFactor.yieldSlendernessLimit, 0)}; d<sub>e</sub> = ${displayFixed(formFactor.effectiveDiameter, 1)} mm`
+    : formFactor.method === "flat-elements"
+      ? formFactor.elements.map(element => `${element.label}: &lambda;<sub>e</sub> = ${displayFixed(element.slenderness, 1)}, &lambda;<sub>ey</sub> = ${displayFixed(element.yieldSlendernessLimit, 0)}, b<sub>e</sub> = ${displayFixed(element.effectiveWidth, 1)} mm`).join("; ")
+      : "Solid section; A<sub>e</sub> = A<sub>g</sub>";
+  return calculationTraceRow({
+    title: "Section form factor",
+    reference: "AS 4100 Cl. 6.2.2 to AS 4100 Cl. 6.2.4 and AS 4100 Table 6.2.4",
+    formula: `k<sub>f</sub> = A<sub>e</sub>/A<sub>g</sub>`,
+    substitution: `${calculation}; A<sub>e</sub>/A<sub>g</sub> = ${displayFixed(formFactor.effectiveArea, 0)} / ${displayFixed(formFactor.grossArea, 0)}`,
+    result: `Adopted k<sub>f</sub> = ${displayFixed(kf, 3)}`,
+    applicability: formFactorBasis === "catalogue"
+      ? `Selected-grade catalogue value; independent AS 4100 calculation = ${displayFixed(formFactor.formFactor, 3)}.`
+      : "Calculated for the adopted yield strength and active section geometry."
+  });
 }
 
 function memberRadiusBasis(defaultR) {
@@ -6951,14 +7000,6 @@ function calculateMember() {
   const properties = memberProperties(section);
   syncMemberManualNetAreaToGross(properties);
   updateMemberDimensionUi(properties);
-  const compressionDefaults = memberCompressionDefaults(grade, section);
-  const kf = compressionDefaults.kf;
-  const kfBasis = memberKfBasisText(kf);
-  const alphaB = compressionDefaults.alphaB;
-  const alphaBBasis = memberAlphaBBasis(kf, section);
-  if (memberType !== "custom") {
-    $("memberAlphaB").value = String(alphaB);
-  }
   const designR = memberDesignRadius(properties.r);
   const fy = signedValue("memberFyInput", NaN);
   const fu = signedValue("memberFuInput", NaN);
@@ -6966,6 +7007,20 @@ function calculateMember() {
   const designation = memberType === "custom"
     ? section.designation
     : `${properties.customGeometry ? properties.designation : section.designation} - ${gradeDisplayName}`;
+  let compressionDefaults = { kf: NaN, alphaB: NaN, formFactorBasis: "invalid", formFactor: null };
+  let formFactorError = "";
+  try {
+    compressionDefaults = memberCompressionDefaults(grade, section, properties, fy);
+  } catch (error) {
+    formFactorError = error instanceof Error ? error.message : "Form factor could not be calculated.";
+  }
+  const kf = compressionDefaults.kf;
+  const kfBasis = formFactorError ? "form factor not established" : memberKfBasisText(compressionDefaults);
+  const alphaB = compressionDefaults.alphaB;
+  const alphaBBasis = memberAlphaBBasis(kf, section);
+  if (memberType !== "custom" && Number.isFinite(alphaB)) {
+    $("memberAlphaB").value = String(alphaB);
+  }
   const customLex = memberType === "custom" ? signedValue("memberCustomLex", NaN) : NaN;
   const customLey = memberType === "custom" ? signedValue("memberCustomLey", NaN) : NaN;
   const preliminaryErrors = [];
@@ -6978,6 +7033,7 @@ function calculateMember() {
   if (!Number.isFinite(fy) || fy <= 0) preliminaryErrors.push("f_y must be greater than zero");
   if (!Number.isFinite(fu) || fu <= 0) preliminaryErrors.push("f_u must be greater than zero");
   if (Number.isFinite(fy) && Number.isFinite(fu) && fu < fy) preliminaryErrors.push("f_u must not be less than f_y");
+  if (formFactorError && Number.isFinite(fy) && fy > 0) preliminaryErrors.push(formFactorError);
   setMemberFieldValidity("memberRadiusInput", Number.isFinite(designR) && designR > 0);
   setMemberFieldValidity("memberFyInput", Number.isFinite(fy) && fy > 0);
   setMemberFieldValidity("memberFuInput", Number.isFinite(fu) && fu > 0 && (!Number.isFinite(fy) || fu >= fy));
@@ -7267,6 +7323,7 @@ function calculateMember() {
       result: `A<sub>n</sub> = ${displayFixed(netArea, 0)} mm<sup>2</sup>`,
       applicability: netInput.mode === "auto" ? "Straight-line quick deduction only; use manual A<sub>n</sub> for staggered or non-straight critical paths." : "Project-entered or unperforated gross-area basis."
     }),
+    memberFormFactorTrace(compressionDefaults),
     sectionCompressionTrace,
     compressionTraceRows,
     memberCompressionTrace,
@@ -10352,7 +10409,10 @@ function setMemberType(type) {
   const isCustom = type === "custom";
   document.querySelectorAll(".member-type").forEach(button => button.classList.toggle("active", button.dataset.memberType === type));
   const selectedMember = document.querySelector(".member-selected-section");
-  if (selectedMember) selectedMember.classList.toggle("member-selected-custom", isCustom);
+  if (selectedMember) {
+    selectedMember.classList.toggle("member-selected-custom", isCustom);
+    selectedMember.dataset.memberGuide = type;
+  }
   $("memberRadiusSource").textContent = isCustom
     ? "User-entered section properties · verification required."
     : "Catalogue section and effective length.";
@@ -10373,15 +10433,15 @@ function setMemberType(type) {
   $("memberLengthField").hidden = isCustom;
   $("memberRadiusField").hidden = isCustom;
   $("memberFactorHelp").innerHTML = type === "chs"
-    ? "Catalogue k<sub>f</sub>, or k<sub>f</sub> = 1.000 for an ideal circular dimension override; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+    ? "Selected-grade catalogue k<sub>f</sub>; strength or geometry overrides recalculate k<sub>f</sub>; &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
     : type === "ub" || type === "uc"
-      ? "Catalogue k<sub>f</sub>; hot-rolled UB / UC &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
+      ? "Selected-grade catalogue k<sub>f</sub>; an f<sub>y</sub> override recalculates k<sub>f</sub>; hot-rolled UB / UC &alpha;<sub>b</sub> from AS 4100 Table 6.3.3."
     : type === "rhs" || type === "shs"
-      ? "Catalogue k<sub>f</sub>; cold-formed non-stress-relieved hollow-section &alpha;<sub>b</sub>."
+      ? "Selected-grade catalogue k<sub>f</sub>; an f<sub>y</sub> override recalculates k<sub>f</sub>; cold-formed non-stress-relieved hollow-section &alpha;<sub>b</sub>."
     : type === "ea"
-      ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
+      ? "Selected-grade catalogue k<sub>f</sub>; an f<sub>y</sub> override recalculates k<sub>f</sub>; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B)."
     : type === "pfc"
-      ? "k<sub>f</sub> is catalogue-derived; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B) from the selected k<sub>f</sub>."
+      ? "Selected-grade catalogue k<sub>f</sub>; an f<sub>y</sub> override recalculates k<sub>f</sub>; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A/B)."
       : type === "custom"
         ? "Custom / Built-up: user-entered section properties; k<sub>f</sub> and &alpha;<sub>b</sub> require project verification."
         : "k<sub>f</sub> = 1.0 for solid round geometry; &alpha;<sub>b</sub> follows AS 4100 Table 6.3.3(A).";

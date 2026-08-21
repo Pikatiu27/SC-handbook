@@ -63,14 +63,10 @@ close(austubeCompression.effectiveDiameter, austubeEffectiveDiameter);
 close(austubeCompression.formFactor, austubeEffectiveArea / austubeCompression.properties.area);
 close(austubeCompression.formFactor, 0.857, 0.001);
 
-const capacityProfileSections = monopole.overallProfileSections({
-  height: 12,
-  bottomDimension: 500,
-  topDimension: 250
-}, [
-  { id: "T1", topElevation: 6, form: "circular", dimensionBasis: "diameter", nominalThickness: 10, thickness: 10, yieldStress: 350, fabricationCategory: "LW" },
-  { id: "T2", topElevation: 12, form: "circular", dimensionBasis: "diameter", nominalThickness: 8, thickness: 8, yieldStress: 350, fabricationCategory: "LW" }
-]);
+const capacityProfileSections = [
+  { id: "S1", length: 6, overlap: 0, bottomDimension: 500, topDimension: 375, form: "circular", dimensionBasis: "diameter", nominalThickness: 10, thickness: 10, yieldStress: 350, fabricationCategory: "LW" },
+  { id: "S2", length: 6, overlap: 0, bottomDimension: 375, topDimension: 250, form: "circular", dimensionBasis: "diameter", nominalThickness: 8, thickness: 8, yieldStress: 350, fabricationCategory: "LW" }
+];
 const capacityProfileStations = monopole.buildStations(monopole.assembleSections(capacityProfileSections), 0.5);
 assert.equal(capacityProfileStations.length, 25);
 assert.equal(capacityProfileStations[0].elevation, 12);
@@ -221,24 +217,21 @@ const assembly = monopole.assembleSections([
     form: "circular",
     length: 10,
     overlap: 1.5,
-    bottomDimension: 880,
-    topDimension: 600,
+    bottomDimension: 970,
+    topDimension: 650,
     thickness: 8,
     yieldStress: 350,
     fabricationCategory: "LW"
   },
   {
     id: "S3",
-    form: "polygon",
-    sideCount: 12,
-    dimensionBasis: "across-flats",
+    form: "circular",
     length: 9,
     overlap: 1,
-    bottomDimension: 580,
+    bottomDimension: 720,
     topDimension: 350,
     thickness: 6,
-    yieldStress: 350,
-    insideBendRadius: 18
+    yieldStress: 350
   }
 ]);
 close(assembly.sections[0].start, 0);
@@ -247,37 +240,20 @@ close(assembly.sections[1].start, 10.5);
 close(assembly.sections[1].end, 20.5);
 close(assembly.sections[2].start, 19.5);
 close(assembly.height, 28.5);
-close(monopole.localDimension(assembly.sections[1].section, 1.5), 838);
+close(monopole.localDimension(assembly.sections[1].section, 1.5), 922);
 
-const overallBands = monopole.overallProfileSections({
-  height: 30,
-  bottomDimension: 1200,
-  topDimension: 300
-}, [
-  { topElevation: 10, nominalThickness: 12, thickness: 12, yieldStress: 350 },
-  { topElevation: 20, nominalThickness: 10, thickness: 10, yieldStress: 350 },
-  { topElevation: 30, nominalThickness: 8, thickness: 8, yieldStress: 350 }
+const zeroOverlapAssembly = monopole.assembleSections([
+  { id: "B1", length: 10, bottomDimension: 1200, topDimension: 900, thickness: 12, yieldStress: 350 },
+  { id: "B2", length: 10, overlap: 0, bottomDimension: 900, topDimension: 600, thickness: 10, yieldStress: 350 },
+  { id: "B3", length: 10, overlap: 0, bottomDimension: 600, topDimension: 300, thickness: 8, yieldStress: 350 }
 ]);
-assert.deepEqual(overallBands.map(band => band.id), ["T1", "T2", "T3"]);
-assert.deepEqual(overallBands.map(band => band.length), [10, 10, 10]);
-assert.deepEqual(overallBands.map(band => band.bottomDimension), [1200, 900, 600]);
-assert.deepEqual(overallBands.map(band => band.topDimension), [900, 600, 300]);
-const overallAssembly = monopole.assembleSections(overallBands);
-close(overallAssembly.height, 30);
-assert.equal(monopole.sectionStatesAtElevation(overallAssembly, 10).length, 2);
-assert.equal(monopole.sectionStatesAtElevation(overallAssembly, 20).length, 2);
-assert.equal(monopole.sectionStatesAtElevation(overallAssembly, 10.25).length, 1);
-assert.throws(() => monopole.sectionStatesAtElevation(overallAssembly, 30.001), /must not exceed/);
-assert.equal(monopole.buildStations(overallAssembly, 0.5).find(station => station.elevation === 10).active.length, 2);
-assert.equal(monopole.buildStations(overallAssembly, 0.5).find(station => station.elevation === 20).active.length, 2);
-assert.throws(() => monopole.overallProfileSections(
-  { height: 30, bottomDimension: 1200, topDimension: 300 },
-  [{ topElevation: 20 }, { topElevation: 10 }, { topElevation: 30 }]
-), /must increase/);
-assert.throws(() => monopole.overallProfileSections(
-  { height: 30, bottomDimension: 1200, topDimension: 300 },
-  [{ topElevation: 20 }]
-), /must terminate/);
+close(zeroOverlapAssembly.height, 30);
+assert.equal(monopole.sectionStatesAtElevation(zeroOverlapAssembly, 10).length, 2);
+assert.equal(monopole.sectionStatesAtElevation(zeroOverlapAssembly, 20).length, 2);
+assert.equal(monopole.sectionStatesAtElevation(zeroOverlapAssembly, 10.25).length, 1);
+assert.throws(() => monopole.sectionStatesAtElevation(zeroOverlapAssembly, 30.001), /must not exceed/);
+assert.equal(monopole.buildStations(zeroOverlapAssembly, 0.5).find(station => station.elevation === 10).active.length, 2);
+assert.equal(monopole.buildStations(zeroOverlapAssembly, 0.5).find(station => station.elevation === 20).active.length, 2);
 
 const stations = monopole.buildStations(assembly, 0.5);
 assert.equal(stations[0].elevation, 28.5);
@@ -301,7 +277,7 @@ const floatingBoundaryAssembly = monopole.assembleSections([
     form: "circular",
     length: 1,
     overlap: 0.1,
-    bottomDimension: 480,
+    bottomDimension: 515,
     topDimension: 400,
     thickness: 5,
     yieldStress: 350
@@ -374,25 +350,28 @@ const overlappedAssembly = monopole.assembleSections([
     form: "circular",
     length: 10,
     overlap: 2,
-    bottomDimension: 950,
-    topDimension: 950,
+    bottomDimension: 1025,
+    topDimension: 1025,
     thickness: 10,
     yieldStress: 350
   }
 ]);
 const overlapMass = monopole.assemblyMassProperties(overlappedAssembly);
-const expectedUpperArea = monopole.circularProperties(950, 10).area;
+const expectedUpperArea = monopole.circularProperties(1025, 10).area;
 close(overlapMass.mass, monopole.STEEL_DENSITY * (circle.area + expectedUpperArea) * 10000 / 1e9);
 
 const slip = monopole.slipOverlapScreen(overlappedAssembly.sections[0], overlappedAssembly.sections[1]);
-close(slip.inscribedDiameter, 1000);
+close(slip.inscribedDiameter, 1025);
 close(slip.lowerOverlapStartInscribedDiameter, 1000);
-close(slip.upperOverlapStartInscribedDiameter, 950);
-close(slip.requiredDesignOverlap, 1.5);
-close(slip.minimumConstructedOverlap, 1.35);
+close(slip.upperOverlapStartInscribedDiameter, 1025);
+close(slip.requiredDesignOverlap, 1.5375);
+close(slip.minimumConstructedOverlap, 1.38375);
+assert.equal(slip.outerSegmentId, "U");
+assert.equal(slip.lowerSegmentId, "L");
 assert.equal(slip.designState, "Meets prescribed design overlap");
 assert.equal(slip.constructedState, "Drawing value - installation not verified");
 assert.equal(slip.jointCapacityState, "Not evaluated");
+close(slip.minimumNominalClearance, 5);
 
 const taperedSlipAssembly = monopole.assembleSections([
   {
@@ -409,8 +388,8 @@ const taperedSlipAssembly = monopole.assembleSections([
     form: "circular",
     length: 8,
     overlap: 2,
-    bottomDimension: 850,
-    topDimension: 600,
+    bottomDimension: 1020,
+    topDimension: 700,
     thickness: 10,
     yieldStress: 350
   }
@@ -420,9 +399,9 @@ const taperedSlip = monopole.slipOverlapScreen(
   taperedSlipAssembly.sections[1]
 );
 close(taperedSlip.lowerOverlapStartInscribedDiameter, 960);
-close(taperedSlip.upperOverlapStartInscribedDiameter, 850);
-close(taperedSlip.inscribedDiameter, 960);
-close(taperedSlip.requiredDesignOverlap, 1.44);
+close(taperedSlip.upperOverlapStartInscribedDiameter, 1020);
+close(taperedSlip.inscribedDiameter, 1020);
+close(taperedSlip.requiredDesignOverlap, 1.53);
 
 const polygonSlipAssembly = monopole.assembleSections([
   {
@@ -444,24 +423,54 @@ const polygonSlipAssembly = monopole.assembleSections([
     dimensionBasis: "across-flats",
     length: 10,
     overlap: 2,
-    bottomDimension: 950,
+    bottomDimension: 980,
     topDimension: 700,
     thickness: 10,
     yieldStress: 350,
     insideBendRadius: 30,
-    actualOverlap: 1.35 * 950 / 1000
+    actualOverlap: 1.35 * 980 / 1000
   }
 ]);
 const polygonSlipBoundary = monopole.slipOverlapScreen(
   polygonSlipAssembly.sections[0],
   polygonSlipAssembly.sections[1]
 );
-close(polygonSlipBoundary.inscribedDiameter, 950);
+close(polygonSlipBoundary.inscribedDiameter, 980);
 assert.equal(polygonSlipBoundary.constructedState, "Meets minimum constructed overlap");
 assert.equal(
-  monopole.slipOverlapScreen(polygonSlipAssembly.sections[0], polygonSlipAssembly.sections[1], 1.35 * 950 / 1000 - 1e-5).constructedState,
+  monopole.slipOverlapScreen(polygonSlipAssembly.sections[0], polygonSlipAssembly.sections[1], 1.35 * 980 / 1000 - 1e-5).constructedState,
   "Below minimum constructed overlap"
 );
+
+assert.throws(() => monopole.assembleSections([
+  {
+    id: "N1",
+    form: "circular",
+    length: 10,
+    bottomDimension: 500,
+    topDimension: 400,
+    thickness: 6,
+    yieldStress: 350
+  },
+  {
+    id: "N2",
+    form: "circular",
+    length: 8,
+    overlap: 1.5,
+    bottomDimension: 300,
+    topDimension: 200,
+    thickness: 6,
+    yieldStress: 350
+  }
+]), /Nominal slip-joint geometry is incompatible.*N2 cannot fit outside N1/);
+
+const nominalFit = monopole.nominalSlipFit(
+  overlappedAssembly.sections[0].section,
+  overlappedAssembly.sections[1].section,
+  overlappedAssembly.sections[1].section.overlap
+);
+close(nominalFit.minimumNominalClearance, 5);
+assert.equal(nominalFit.governingLocation, "overlap bottom");
 
 assert.throws(() => monopole.circularProperties(100, 50), /less than half/);
 assert.throws(() => monopole.polygonProperties(8, 100, 50, "across-flats"), /less than the outside apothem/);
@@ -480,7 +489,7 @@ assert.throws(() => monopole.assembleSections([
 assert.throws(() => monopole.assembleSections([
   { length: 10, bottomDimension: 500, topDimension: 400, thickness: 5, yieldStress: 350 },
   { length: 10, bottomDimension: 450, topDimension: 300, thickness: 5, yieldStress: 350 }
-]), /Section 2 overlap/);
+]), /Segment 2 upper overlap/);
 assert.throws(() => monopole.assembleSections([
   { form: "triangle", length: 10, bottomDimension: 500, topDimension: 400, thickness: 5, yieldStress: 350 }
 ]), /form must be circular or polygon/);

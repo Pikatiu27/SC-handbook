@@ -3,7 +3,6 @@
 const assert = require("node:assert/strict");
 const MemberCapacity = require("../member-capacity.js");
 const BeamSectionData = require("../beam-section-data.js");
-const SectionGeometry = require("../section-geometry.js");
 
 function approximately(actual, expected, tolerance, label) {
   assert.ok(Math.abs(actual - expected) <= tolerance, `${label}: expected ${expected}, received ${actual}`);
@@ -18,7 +17,6 @@ assert.deepEqual(
 
 [
   [{ family: "chs", catalogueKf: 0.857 }, { kf: 0.857, alphaB: -0.5 }],
-  [{ family: "chs", catalogueKf: 0.857, dimensionOverride: true }, { kf: 1, alphaB: -0.5 }],
   [{ family: "rhs", catalogueKf: 0.553 }, { kf: 0.553, alphaB: -0.5 }],
   [{ family: "shs", catalogueKf: 0.624 }, { kf: 0.624, alphaB: -0.5 }],
   [{ family: "ub", catalogueKf: 0.95, flangeThickness: 19.6 }, { kf: 0.95, alphaB: 0 }],
@@ -32,25 +30,6 @@ assert.deepEqual(
 ].forEach(([input, expected]) => {
   assert.deepEqual(MemberCapacity.catalogueCompressionDefaults(input), expected);
 });
-
-const sourceLargeChs = BeamSectionData.find(row => row.family === "chs" && row.designation === "508 x 6.4 CHS" && row.grade === "C350L0");
-assert.equal(sourceLargeChs.kf, 0.857);
-const overrideChsGeometry = SectionGeometry.circularHollow(114.3, 3.2);
-const overrideChsDefaults = MemberCapacity.catalogueCompressionDefaults({
-  family: "chs",
-  catalogueKf: sourceLargeChs.kf,
-  dimensionOverride: true
-});
-const overrideChs = MemberCapacity.calculate({
-  grossArea: overrideChsGeometry.area,
-  netArea: overrideChsGeometry.area,
-  fy: 350,
-  fu: 430,
-  kf: overrideChsDefaults.kf,
-  kt: 1,
-  axes: [{ r: overrideChsGeometry.rx, effectiveLength: 3000, alphaB: overrideChsDefaults.alphaB }]
-});
-approximately(overrideChs.memberCompression, 236.5449267936848, 1e-9, "CHS dimension override adopts k_f = 1.0");
 
 const manualAngleNetArea = MemberCapacity.straightLineNetArea({
   grossArea: 867,

@@ -41,6 +41,9 @@ assert.doesNotMatch(html, /data-(?:beam-family|member-type)="rod"[^>]*>ROD<\/but
 assert.match(outline, /visible grade labels: `Grade 300 \(300PLUS\)` and `Grade 350`/);
 assert.match(outline, /Do not offer `Grade 250` for the adopted AS\/NZS 3679\.1 EA or Round Bar families/);
 assert.match(traceability, /InfraBuild Table 7 `Rods and Light Billets`[^\n]*separate product family/);
+assert.match(html, /Austube shear-table reconciliation/);
+assert.match(html, /150 &times; 50 &times; 2\.0 RHS C450L0[\s\S]*?&phi;V<sub>v<\/sub> = 92\.5 kN/);
+assert.match(traceability, /apparent published-table inconsistency, not a confirmed manufacturer erratum/);
 
 assert.match(script, /Design &phi;M<sub>uo<\/sub> = &phi; &times; M<sub>uo<\/sub>/);
 assert.match(script, /design capacity = &phi; &times; V<sub>u<\/sub>/);
@@ -61,7 +64,9 @@ assert.match(script, /Manufacturer values are not compared automatically/);
 assert.match(script, /type === "cpbw"[\s\S]*?"Not evaluated"/);
 assert.match(calculateWeldSource, /Effective weld length l_w must be greater than zero/);
 assert.match(calculateWeldSource, /Effective weld lines must be a positive whole number/);
-assert.match(calculateWeldSource, /IPBW design throat a_w must be greater than zero/);
+assert.match(calculateWeldSource, /IPBW design throat t_t must be greater than zero/);
+assert.match(calculateWeldSource, /const demandInvalid = Number\.isFinite\(demand\) && demand < 0/);
+assert.match(calculateWeldSource, /demandInvalid \? "Invalid design action"/);
 assert.match(calculateWeldSource, /title: "Input validation"[\s\S]*?result: "Not evaluated"/);
 assert.match(calculateBoltSource, /Number\.isInteger\(countInput\) && countInput >= 1 && countInput <= 100/);
 assert.match(calculateBoltSource, /const shearPlanesValid = Number\.isInteger\(nThread\)/);
