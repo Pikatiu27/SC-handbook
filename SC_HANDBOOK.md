@@ -3227,6 +3227,8 @@ Desktop layout:
 - do not allow the two controls to fall below the left explanation column or leave an unused blank field row; collapse the whole group in engineering order only at the responsive breakpoint;
 - place a short conditional direction row below selection rather than mixing direction with material values;
 - use a two-part selected-section summary: compact properties on the left and the section guide on the right;
+- keep the desktop section-guide column secondary at approximately `180 px`, with the visible SVG approximately `108 to 120 px` high; the key capacity-basis values must remain the dominant content;
+- make the summary height content-driven: shorten the figure caption to one line, keep only deliberate spacing between the identity, primary metrics and drawing note, and use a compact full-width `Section details` row so the figure does not create unused vertical space;
 - use one full-width moment result when shear is unavailable; do not leave an empty second card.
 
 Phone layout:
@@ -3265,6 +3267,8 @@ Use one deterministic value-driven SVG for the selected family. It must:
 - avoid crossing labels and dimension lines;
 - state `Drawn from selected catalogue data` or `Drawn from entered ideal dimensions`;
 - remain a visual check, not a source of numeric properties.
+
+On desktop, use a concise one-line figure caption such as `Geometry · active direction`, `Principal axes · active load case` or `Centroid and shear centre`. Do not repeat the catalogue source, designation or calculation scope below the figure when those items already appear in the selected-section copy or folded details. At intermediate and phone breakpoints, preserve the existing compact or hidden-figure behaviour rather than allowing the illustration to force a tall summary.
 
 #### 15.12.10 Results, Utilisation and Calculation Steps
 
