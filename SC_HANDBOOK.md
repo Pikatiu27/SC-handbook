@@ -2477,7 +2477,7 @@ Use two visible heading levels inside `Detailed connection checks`. Prefix headi
 - Input groups: `A1 Bolt group`, `A2 Hole and spacing` and `A3 Connected plies`.
 - Optional rupture groups: `B1 Checked ply inputs`, `B2 Net-section tension` and `B3 Block shear path`.
 - Result group: `C1 Ply rupture`.
-- Place each locator directly before its heading as plain text, without a badge, box or accent rule. Use a compact bold green locator and keep the heading itself in the standard heading style.
+- Place each locator directly before its heading as plain text, without a badge, box or accent rule. Use a compact bold green locator and keep the heading itself in the standard heading style. Align every locator in one 24 px column and every heading on one common text line, using a consistent 9 px gap and baseline alignment at both heading levels.
 - Keep these locators stable when optional content is hidden. Do not number fields, capacity rows, status labels or AS clause subtitles.
 - Remove explanatory subtitles where the fields already make the scope clear. Retain only source references or scope notes that affect engineering interpretation.
 - Do not repeat `Bolt group` beside `Connection capacity summary`, and do not repeat that ply-rupture capacities are separate when their own result group already establishes that distinction.

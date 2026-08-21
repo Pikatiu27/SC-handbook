@@ -1385,11 +1385,11 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .connection-inputs { padding-bottom: 0 !important; border-bottom: 0 !important; }
 .connected-ply-inputs { padding-top: 4px !important; }
 .connected-ply-heading { margin-top: 15px; }
-.connection-section-title { display: flex; align-items: center; gap: 9px; margin: 0; }
+.connection-section-title { display: flex; align-items: baseline; gap: 9px; margin: 0; }
 .connection-locator { flex: 0 0 24px; width: 24px; color: var(--green-dark); font-size: 11px; font-weight: 800; line-height: 1; letter-spacing: 0; font-variant-numeric: tabular-nums; }
 .connection-locator-main { font-size: 12px; }
 .connection-locator-sub { color: var(--green); font-size: 11px; }
-.connection-group-heading { min-height: 22px; margin: 15px 0 8px; padding: 1px 0; align-items: flex-start; justify-content: flex-start; gap: 7px; border-top: 0; border-left: 0; }
+.connection-group-heading { min-height: 22px; margin: 15px 0 8px; padding: 1px 0; align-items: baseline; justify-content: flex-start; gap: 9px; border-top: 0; border-left: 0; }
 .connection-group-heading:first-of-type { margin-top: 9px; padding-top: 1px; border-left: 0; }
 .connection-group-heading > div { min-width: 0; }
 .connection-group-heading b { font-size: 14px; font-weight: 800; line-height: 1.25; }
@@ -1412,7 +1412,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .connection-summary-list > .bearing-limit-row { min-height: 44px; padding-left: 28px; background: #f6f8f6; }
 .connection-summary-list > .bearing-limit-row span { color: var(--muted); font-weight: 700; }
 .connection-summary-list > .bearing-limit-row strong { font-size: var(--fs-sm); }
-.connection-result-subheading { display: flex; align-items: center; justify-content: flex-start; gap: 12px; margin-top: 16px; }
+.connection-result-subheading { display: flex; align-items: baseline; justify-content: flex-start; gap: 9px; margin-top: 16px; }
 .connection-result-subheading b { color: var(--ink); }
 .local-bearing-scope { margin: 6px 2px 0; color: var(--muted); font-size: 11px; line-height: 1.4; }
 .integrity-body { padding: 8px 0 0; }

@@ -9,6 +9,7 @@ const read = relativePath => fs.readFileSync(path.join(root, relativePath), "utf
 
 const html = read("index.html");
 const app = read("app.js");
+const styles = read("styles.css");
 const workflow = read(".github/workflows/pages.yml");
 const publication = read("PUBLICATION_NOTICE.md");
 const repositoryTerms = read("LICENSE.md");
@@ -24,8 +25,8 @@ const publicDocumentation = [
 assert.match(html, /<b>Public beta<\/b>/, "The public-beta boundary must be visible before the calculators");
 assert.match(html, /Not certified design software/, "The visible notice must state the software boundary");
 assert.match(html, /github\.com\/Pikatiu27\/SC-handbook\/issues\/new/, "A public issue-reporting route is required");
-assert.match(html, /Build 0\.7\.64/, "The visible public build must match this release");
-assert.match(html, /styles\.css\?v=20260821boltlocators1/, "The current shared layout stylesheet must be cache-busted");
+assert.match(html, /Build 0\.7\.65/, "The visible public build must match this release");
+assert.match(html, /styles\.css\?v=20260821boltlocators2/, "The current shared layout stylesheet must be cache-busted");
 assert.match(html, /monopole-capacity\.js\?v=20260814polygonflat1/, "The corrected Monopole calculation module must be cache-busted");
 assert.match(html, /monopole-app\.js\?v=20260820monopolelayout1/, "The corrected Monopole display module must be cache-busted");
 assert.match(html, /section-catalogue\.js\?v=20260818sectiondirectory2/, "The checked-design-row catalogue helper must be cache-busted");
@@ -59,6 +60,10 @@ assert.match(html, /connection-locator connection-locator-sub">B3<\/span>[\s\S]*
 assert.match(html, /connection-locator connection-locator-main">C<\/span><span>Connection capacity summary<\/span>/);
 assert.match(html, /connection-locator connection-locator-sub">C1<\/span><b>Ply rupture<\/b>/);
 assert.doesNotMatch(html, /Block shear · governing path/);
+assert.match(styles, /\.connection-section-title \{[^}]*align-items: baseline;[^}]*gap: 9px;/);
+assert.match(styles, /\.connection-locator \{[^}]*flex: 0 0 24px;[^}]*width: 24px;/);
+assert.match(styles, /\.connection-group-heading \{[^}]*align-items: baseline;[^}]*gap: 9px;/);
+assert.match(styles, /\.connection-result-subheading \{[^}]*align-items: baseline;[^}]*gap: 9px;/);
 assert.doesNotMatch(html, /Group size and shear planes per bolt|Hole type and pitch<\/small>|Material and edge geometry|Reported separately from the shear-capacity summary/);
 assert.match(html, /id="governingBearingCapacity"/);
 assert.match(html, /id="groupShearResultRow"/);
