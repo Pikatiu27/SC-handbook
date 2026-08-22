@@ -28,6 +28,7 @@ assert.match(app, /if \(open\) window\.requestAnimationFrame\(centreActiveToolNa
 assert.match(html, /data-tool="monopole"[^>]*>Steel Monopole Section Capacity</);
 assert.doesNotMatch(panel, /data-monopole-mode|Continuous taper|Fabricated sections/);
 assert.match(panel, /<b>Profile segment schedule<\/b>/);
+assert.match(panel, /class="monopole-scroll-hint">Scroll table horizontally/);
 assert.match(readme, /one base-to-top `Profile segment schedule`/);
 assert.doesNotMatch(readme, /one overall taper or a base-to-top physical section schedule/);
 assert.match(panel, /Segment, S<sub>i<\/sub>/);
@@ -70,6 +71,8 @@ assert.match(styles, /\.monopole-moment-section, \.monopole-moment-body, \.monop
 assert.match(styles, /\.monopole-schedule-panel\s*\{[^}]*padding:\s*12px;[^}]*border:/);
 assert.doesNotMatch(styles, /#monopoleOverallInputs|\.monopole-thickness-table|\.monopole-mode/);
 assert.match(styles, /\.monopole-card \.table-scroll\s*\{[^}]*max-width:\s*100%;[^}]*overflow-x:\s*auto;[^}]*contain:\s*inline-size paint;/);
+assert.match(styles, /\.monopole-scroll-hint\s*\{[^}]*display:\s*none\s*!important;/);
+assert.match(styles, /\.monopole-schedule-heading \.monopole-scroll-hint\s*\{[^}]*display:\s*block\s*!important;[^}]*font-weight:\s*800;/);
 assert.match(panel, /Derived properties/);
 assert.match(panel, /physical shell geometry/);
 assert.match(panel, /section only/);
@@ -231,8 +234,8 @@ const monopoleAppScript = html.indexOf('src="monopole-app.js');
 assert.ok(capacityScript >= 0 && capacityScript < sharedAppScript && sharedAppScript < monopoleAppScript);
 assert.match(html, /src="monopole-capacity\.js\?v=20260821monopoleflow1"/);
 assert.match(html, /src="monopole-app\.js\?v=20260821monopoleaudit1"/);
-assert.match(html, /href="styles\.css\?v=20260823weldsymbols1"/);
-assert.match(html, /SC Handbook &middot; Public beta &middot; Build 0\.7\.77/);
+assert.match(html, /href="styles\.css\?v=20260823visualaudit1"/);
+assert.match(html, /SC Handbook &middot; Public beta &middot; Build 0\.7\.78/);
 assert.match(panel, /id="monopoleMomentMinimum">5 m guides/);
 assert.match(monopoleApp, /Minimum evaluated station:/);
 assert.doesNotMatch(panel, /id="monopoleMomentSection"[^>]*open/);

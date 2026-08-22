@@ -9,6 +9,14 @@ This file is the project source-traceability register for the static web handboo
 
 Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md` before treating any source item as checked. Generated reference packs are search aids only; final equations, tables, and values must be visually checked against the source PDF page.
 
+## Build 0.7.78 - Per-item visual audit and mobile table location cue - 2026-08-23
+
+- Added `VISUAL_PAGE_AUDIT.md` as the durable full-handbook visual evidence register, with one audit row for every reviewed figure and every bounded or functionally independent card.
+- Prohibited range-only figure/card conclusions and kept all `FIG-*`, `CARD-*` and `SHOT-*` identifiers out of the public interface.
+- Reviewed all 10 current tools at 1440 x 1000 and 390 x 844, including expanded Weld symbols, Concrete Pad schematic and Monopole capacity chart states.
+- Added a restrained phone-only horizontal-scroll cue to the Monopole segment schedule; page structure and engineering logic are unchanged.
+- The complete 43-file regression suite, production JavaScript syntax checks and repository diff check passed before release.
+
 ## Build 0.7.69 - Axial catalogue and material-flow completion - 2026-08-21
 
 - Expanded Axial Member to the accepted shared UB, UC, PFC, CHS, RHS, SHS, Equal Angle and Round Bar catalogue directory while retaining `Custom / Built-up` as a verified-property path.
@@ -30,6 +38,7 @@ Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md`
 ## Document Hygiene
 
 - `SC_HANDBOOK.md` remains the only canonical outline and rule file.
+- `VISUAL_PAGE_AUDIT.md` is the durable per-figure and per-card visual evidence register; it does not replace engineering source traceability or calculation verification.
 - Source-reference files remain outside this workspace in `%USERPROFILE%\Documents\Codex\Reference`.
 - 2026-07-02 local text audit checked `SC_HANDBOOK.md`, `REFERENCE_TRACEABILITY.md`, `README.md`, `index.html`, `app.js` and `styles.css` for common mojibake markers; no active mojibake remains in tracked handbook files.
 - `wind-region-workpack/` is not present in the current detached audit worktree and is not part of the checked source-traceability register unless explicitly promoted later.

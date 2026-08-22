@@ -4413,7 +4413,25 @@ At each relevant width confirm:
 - focus indication, keyboard navigation, labels, `aria-pressed` or valid tab-specific `aria-selected` states, `aria-live`, disabled states and contrast remain meaningful;
 - phone mode hides or folds only secondary content and never changes calculation logic.
 
-#### 15.19.14 Figure and Engineering Drawing Audit
+#### 15.19.14 Figure, Card and Engineering Drawing Audit
+
+Visual audit evidence is itemised, not range-based. Assign a separate audit ID to every reviewed figure and every visible card or bounded panel. Use `FIG-<tool>-NN` for figures and engineering drawings, `CARD-<tool>-NN` for cards/panels, and `SHOT-<tool>-<viewport>-NN` for screenshots. These IDs belong in the audit record only; do not add them to the visible web page as locator badges, headings or decorative labels.
+
+Do not record a range such as `FIG-BOLT-01 to FIG-BOLT-08 checked`, `all cards pass`, or one generic page-level visual result. Each item requires its own row containing:
+
+- audit ID and page/tool;
+- stable DOM id, selector, heading or unique visible label;
+- item type and current state, including collapsed/expanded or active mode where relevant;
+- viewport and screenshot evidence ID;
+- checks performed and specific result;
+- linked finding ID, or `Verified - no change`;
+- reviewer/date and any evidence limit.
+
+Record full-handbook passes in `VISUAL_PAGE_AUDIT.md`. The register must cover every current tool page and preserve one row per `FIG-*` or `CARD-*` item; page summaries may introduce the rows but never replace them.
+
+A screenshot may contain several items, but every item shown in it must still receive an independent audit row. A figure or card that cannot be seen clearly in the captured evidence is not visually checked. Capture another screenshot or mark the item blocked.
+
+For card inventory, count each visually bounded or functionally independent content unit: lookup/input card, selected-summary card, capacity/result card, warning/adoption card, disclosure card, source/limitations card, product card, table card and chart card. Do not create a separate card ID for every field inside one shared input group unless it has its own border, background, heading or independent interaction state.
 
 Apply the figure rules and CAD-style acceptance checklist in Section 15.8. For each displayed asset confirm:
 
@@ -4427,6 +4445,16 @@ Apply the figure rules and CAD-style acceptance checklist in Section 15.8. For e
 - no use of the illustration as a numeric source unless it is explicitly value-driven and verified;
 - separate mobile asset only where responsive scaling cannot preserve legibility;
 - deterministic regeneration when a generator script owns the asset.
+
+For each card or bounded panel confirm:
+
+- one clear purpose and heading or accessible label;
+- correct hierarchy relative to the primary result and surrounding cards;
+- consistent padding, alignment, border, radius, fill and internal spacing;
+- readable labels, values, units, warnings and status at the captured viewport;
+- no clipping, collision, accidental empty space or page-level overflow;
+- no duplicated scope text, competing primary result or misleading success emphasis;
+- correct default, expanded, disabled, empty, warning or error state where that state is part of the page workflow.
 
 #### 15.19.15 Technical, Regression and Deployment Audit
 
@@ -4481,6 +4509,8 @@ The audit response must contain these sections, even when a section has no findi
 9. `Test matrix and evidence` - cases run, independent calculations, browser widths and source pages checked.
 10. `Residual limitations` - remaining project checks and risks after accepted corrections.
 
+For a full-page or full-handbook visual audit, append an item register with one row per `FIG-*` and `CARD-*` ID. Never replace this register with figure/card number ranges or aggregate pass counts.
+
 Each actionable finding should state:
 
 `ID | Severity | Tab/location | Current behaviour | Evidence/requirement | Engineering or user impact | Recommended action`
@@ -4499,6 +4529,7 @@ An audit may be described as complete only when:
 - input dependencies and invalid states have been exercised;
 - result/status semantics and limitations match the implemented scope;
 - desktop and phone workflows have been checked;
+- every visible figure and bounded card in the audited states has its own `FIG-*` or `CARD-*` audit row linked to current screenshot evidence; no range-only visual conclusion remains;
 - findings are classified into modify, add, delete/simplify, unclear and verified-no-change;
 - unresolved source gaps and residual limitations are stated explicitly;
 - no modification or deployment is claimed unless its separate verification has succeeded.

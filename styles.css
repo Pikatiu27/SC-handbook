@@ -1772,6 +1772,7 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .monopole-schedule-heading b, .monopole-schedule-heading small { display: block; }
 .monopole-schedule-heading b { color: var(--monopole-dark); font-size: var(--fs-sm); }
 .monopole-schedule-heading small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); }
+.monopole-scroll-hint { display: none !important; }
 .monopole-add-section { min-height: 36px; padding: 7px 12px; border: 1px solid var(--monopole-dark); border-radius: 6px; background: var(--monopole-dark); color: #fff; cursor: pointer; font-size: var(--fs-xs); font-weight: 850; white-space: nowrap; }
 .monopole-schedule-table, .monopole-result-table { width: 100%; border-collapse: collapse; font-size: var(--fs-xs); }
 .monopole-schedule-table { min-width: 780px; }
@@ -1921,6 +1922,7 @@ footer b { white-space: nowrap; }
   .monopole-chart { min-height: 0; overflow: hidden; }
   .monopole-chart svg { width: 100%; height: auto; min-height: 0; }
   .monopole-schedule-heading { align-items: flex-start; }
+  .monopole-schedule-heading .monopole-scroll-hint { display: block !important; margin-top: 5px; color: var(--monopole-dark); font-weight: 800; }
   .monopole-card .table-scroll { width: 100%; max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; contain: inline-size paint; }
   .monopole-schedule-table th:first-child,
   .monopole-schedule-table td:first-child { position: sticky; left: 0; z-index: 1; box-shadow: 8px 0 10px -10px rgba(40, 79, 67, .55); }

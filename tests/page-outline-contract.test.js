@@ -79,6 +79,12 @@ assert.match(styles, /@media \(max-width: 500px\)[\s\S]*?\.category-scope-grid \
 assert.match(outline, /#### 15\.2\.0 Category Design-Scope Map/);
 assert.match(outline, /safety boundary, not a fourth navigation level/);
 assert.match(outline, /A new tool or materially changed calculation scope must update both its tab limitation and the applicable category map/);
+assert.match(outline, /#### 15\.19\.14 Figure, Card and Engineering Drawing Audit/);
+assert.match(outline, /Use `FIG-<tool>-NN` for figures and engineering drawings, `CARD-<tool>-NN` for cards\/panels, and `SHOT-<tool>-<viewport>-NN` for screenshots/);
+assert.match(outline, /Record full-handbook passes in `VISUAL_PAGE_AUDIT\.md`/);
+assert.match(outline, /Do not record a range such as `FIG-BOLT-01 to FIG-BOLT-08 checked`, `all cards pass`, or one generic page-level visual result/);
+assert.match(outline, /These IDs belong in the audit record only; do not add them to the visible web page as locator badges/);
+assert.match(outline, /append an item register with one row per `FIG-\*` and `CARD-\*` ID/);
 
 const incompleteReference = /AS(?:\/NZS)? \d+[^\r\n"]*(?:;|,|and|to) Cl\./;
 assert.doesNotMatch(html, incompleteReference);
