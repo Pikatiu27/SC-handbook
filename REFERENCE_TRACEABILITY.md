@@ -1,7 +1,7 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-08-21
+Last updated: 2026-08-23
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -19,11 +19,12 @@ Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md`
 
 ## Build 0.7.68 - Weld symbol and calculation-flow correction - 2026-08-21
 
-- Updated the Weld tab and canonical outline to AS 1101.3:2026 source-based symbol conventions, including the two-line square butt-weld symbol and the backing-run arch opposite the butt-weld symbol.
+- Updated the Weld tab and canonical outline to AS 1101.3:2026 source-based symbol conventions, including square-butt and backing-run symbol placement. The square-butt geometry was subsequently corrected in Build 0.7.77.
 - Kept the legend to 12 common examples and labelled all SVGs as schematic, not-to-scale redraws rather than exact reproductions of the Standard figures.
 - Standardised the IPBW input to specified design throat `t_t`, removed the project abbreviation `CFW` from the default designation and removed the unsourced maximum on effective weld lines.
 - Negative direct design action now reports `Invalid design action`, clears utilisation and cannot produce PASS / FAIL.
 - The result boundary now states that AS 4100 Cls. 9.6.3.2 and 9.6.3.3 minimum and maximum fillet-weld size requirements are not evaluated by the current input set.
+
 - Full local regression, JavaScript syntax, desktop rendering and 390 px / 320 px responsive checks passed before release.
 
 ## Document Hygiene
@@ -1546,3 +1547,11 @@ The traceability register separates a public-build technical-review date from so
 Build 0.7.76 passes all 42 local test files, the full tracked-JavaScript syntax check and `git diff --check`. Local browser checks confirmed the new shared style/application keys, showed exactly one closed scope disclosure for the active category, switched each category to its matching scope and first tool, and rendered the expanded Foundations map as one column at 390 x 844 px without document-level horizontal overflow or console errors. No calculation equation, product value, result state or tab-specific engineering scope changes in this governance release.
 
 The release was committed as `cdd98b0` and pushed by fast-forward to remote `main`. GitHub Pages workflow `32448263158` completed verification and deployment successfully. A cache-busted public browser check returned Build 0.7.76 with `styles.css?v=20260821scope1`, `app.js?v=20260821scope1` and `screw-demand.js?v=20260821foundationaudit1`, displayed the concise `Complete design includes`, `Handbook scope` and `Not evaluated` Foundations text, and reported no document-level horizontal overflow or console errors at 390 x 844 px.
+
+## 2026-08-23 Build 0.7.77 Weld Symbol Figure Traceability
+
+Build 0.7.77 corrects the arrow-side square-butt symbol after visual review of the licensed local AS 1101.3:2026 source PDF. Figure 5.1 and Appendix B Figure B.2 show one perpendicular short line extending from the reference line towards the applicable weld side; two parallel short lines on the same side are not the applicable basic symbol. Weld capacity equations, inputs and result states are unchanged.
+
+Each of the 12 common Weld symbol cards now identifies its specific governing AS 1101.3:2026 figure or figures. The canonical outline requires figure-level visual verification and same-card attribution rather than an undifferentiated source range. Public linework remains a concise SVG quick-reference redraw labelled `Schematic only, not to scale`; Standards screenshots or copied figures are excluded unless reproduction permission is recorded.
+
+The release retains the Build 0.7.76 category-scope map and all later Axial, Monopole, Concrete and Foundations corrections. The shared stylesheet receives a new Weld-symbol cache key; unchanged calculation and application modules retain their existing verified keys.

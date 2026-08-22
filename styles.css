@@ -852,8 +852,9 @@ input[readonly], input:disabled, select:disabled { background: #eef1ef !importan
 .weld-figure-section { margin: 0; padding: 0 11px 11px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .weld-figure-group-title { grid-column: 1 / -1; margin: 5px 1px -1px; color: var(--weld-dark); font-size: var(--fs-sm); line-height: 1.25; font-weight: 900; }
 .weld-figure-card { min-width: 0; padding: 11px; display: grid; grid-template-columns: minmax(150px, .9fr) minmax(0, 1fr); gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 9px; background: #fffaf4; }
-.weld-figure-card strong, .weld-figure-card small { display: block; }
+.weld-figure-card strong, .weld-figure-card small, .weld-figure-ref { display: block; }
 .weld-figure-card strong { color: var(--ink); font-size: var(--fs-sm); line-height: 1.2; font-weight: 900; }
+.weld-figure-ref { margin-top: 3px; color: var(--weld-dark); font-size: var(--fs-xs); line-height: 1.25; font-weight: 800; }
 .weld-figure-card small { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.35; }
 .weld-symbol-svg { display: block; width: 100%; min-width: 0; aspect-ratio: 220 / 112; border: 1px solid #ead4bc; border-radius: 8px; background: #fff; }
 .weld-symbol-svg .svg-line, .weld-symbol-svg .svg-tail, .weld-symbol-svg .svg-groove-mark { fill: none; stroke: #34423b; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }

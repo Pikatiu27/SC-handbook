@@ -25,8 +25,8 @@ const publicDocumentation = [
 assert.match(html, /<b>Public beta<\/b>/, "The public-beta boundary must be visible before the calculators");
 assert.match(html, /Not certified design software/, "The visible notice must state the software boundary");
 assert.match(html, /github\.com\/Pikatiu27\/SC-handbook\/issues\/new/, "A public issue-reporting route is required");
-assert.match(html, /Build 0\.7\.76/, "The visible public build must match this release");
-assert.match(html, /styles\.css\?v=20260821scope1/, "The current shared layout stylesheet must be cache-busted");
+assert.match(html, /Build 0\.7\.77/, "The visible public build must match this release");
+assert.match(html, /styles\.css\?v=20260823weldsymbols1/, "The current shared layout stylesheet must be cache-busted");
 assert.match(html, /monopole-capacity\.js\?v=20260821monopoleflow1/, "The corrected Monopole calculation module must be cache-busted");
 assert.match(html, /monopole-app\.js\?v=20260821monopoleaudit1/, "The corrected Monopole display module must be cache-busted");
 assert.match(html, /concrete-section-calculation\.js\?v=20260821concretesafety1/, "The corrected Concrete shear module must be cache-busted");
