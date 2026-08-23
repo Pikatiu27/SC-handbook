@@ -16,6 +16,8 @@ Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md`
 - Reviewed all 10 current tools at 1440 x 1000 and 390 x 844, including expanded Weld symbols, Concrete Pad schematic and Monopole capacity chart states.
 - Added a restrained phone-only horizontal-scroll cue to the Monopole segment schedule; page structure and engineering logic are unchanged.
 - The complete 43-file regression suite, production JavaScript syntax checks and repository diff check passed before release.
+- Release commit `42aefe4` was fast-forwarded to `main`; GitHub Pages workflow run `32606711056` completed successfully.
+- Cache-busted public verification confirmed Build 0.7.78, `styles.css?v=20260823visualaudit1`, the phone-only Monopole scroll cue, zero page-level horizontal overflow and a `200` response for the published `VISUAL_PAGE_AUDIT.md` register.
 
 ## Build 0.7.69 - Axial catalogue and material-flow completion - 2026-08-21
 

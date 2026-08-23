@@ -2,7 +2,7 @@
 
 ## Audit basis
 
-- **Release reviewed:** public Build 0.7.77, commit `54f33b6`, 23 August 2026; finding `V-01` corrected for Build 0.7.78.
+- **Release reviewed:** public Build 0.7.77 baseline at commit `54f33b6`, 23 August 2026; finding `V-01` corrected and released in Build 0.7.78 at commit `42aefe4`.
 - **Pages reviewed:** Bolt Capacity, Weld Capacity, Section Properties, Axial Member Capacity, Beam Section Capacity, Steel Monopole Section Capacity, Concrete Pad Section, Reinforcement, Screw Piles Selector and Rock Anchor Selector.
 - **Viewports:** desktop `1440 x 1000`; phone `390 x 844`.
 - **Evidence rule:** every visible engineering figure and every bounded or functionally independent card has its own audit ID and row. Range-only statements such as “all figures” or “cards 1-8 pass” are not acceptable.
