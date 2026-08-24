@@ -66,6 +66,44 @@ Optional workbook deliverables remain available when explicitly requested and mu
 
 All project files, worksheet names, headings, field names, notes and formulas must be written in English.
 
+### 1.5 Development and Publication Model
+
+The current repository, handbook content and unauthenticated website are approved as the `Public` baseline. They may remain publicly accessible. The allowlisted build controls what is deployed without requiring the current project to move to a private repository.
+
+- existing files and modules already accepted in `public-build-manifest.json` form the approved public deployment baseline;
+- corrections, audits and maintenance of that accepted scope may follow the normal governed release process;
+- a new tool, tab, dataset, generated asset or materially expanded capability is not automatically public merely because it is developed in this repository;
+- every such addition must be discussed and receive an explicit publication decision before it is added to the public allowlist or deployed;
+- a future private-source/public-site repository split remains optional and requires a separate decision; it is not the current project target.
+
+The allowlisted build is implemented by `public-build-manifest.json` and `scripts/build-public-site.js`. It produces the untracked `dist/` directory and a hash inventory in `dist/PUBLIC_BUILD_MANIFEST.json`. The governed Pages workflow must build this artifact before testing and upload `dist/` only.
+
+Every new tool, tab, dataset, generated asset or materially expanded capability starts as `Unreleased`. It may be developed and reviewed locally, but it must receive an explicit publication decision before release:
+
+| Publication class | Permitted content | Deployment boundary |
+| --- | --- | --- |
+| `Unreleased` | New or materially expanded content awaiting a publication discussion and decision | Must not enter the public allowlist or public deployment |
+| `Public` | General quick-reference tools, calculations, product data and assets approved for unrestricted web access | May enter the allowlisted public deployment package |
+| `Restricted` | Internal trial tools, commercially sensitive datasets or controlled calculations | Must use a separately authenticated application; must not enter the public package |
+| `Private` | Project information, audit working material, research records, licensed source documents and non-public methods | Private repository or approved private storage only |
+
+Each new module outline must state:
+
+- `Publication class` - initially `Unreleased`, then `Public`, `Restricted` or `Private` after the publication decision;
+- `Public result` - the exact result or information an unauthenticated user may receive;
+- `Protected content` - the code, data, evidence or project information that must remain outside the public package;
+- `Deployment target` - public Pages, separately authenticated application or private repository only.
+
+Hiding a tab, route, control or HTML element is not access control. Any HTML, JavaScript, source map, image or dataset delivered to a public browser must be treated as publicly retrievable. Do not place passwords, access tokens, confidential project information, licensed source documents or proprietary methods in the public client bundle.
+
+Public browser calculations may remain client-side where transparency, speed and offline use are part of the accepted product role. A method or dataset that must not be retrieved by a public user must be moved to an authenticated service or excluded from the public product; minification, obfuscation, disabled context menus and `robots.txt` are not security controls.
+
+The controlled publication chain for new or materially expanded content is:
+
+`development -> source and calculation review -> automated tests -> visual audit -> explicit publication decision -> allowlisted public build -> public deployment verification`
+
+Public deployment does not imply engineering certification, open-source licensing or permission to redistribute the software, data or generated assets.
+
 ## 2. Core Operating Rule
 
 ### 2.1 Module Admission Gate
@@ -88,13 +126,14 @@ Every new or materially changed lookup or calculation module must follow this se
 1. Define the engineering question, result type and intended decision.
 2. State the method boundary, prerequisites and excluded checks.
 3. Identify the governing Standard, catalogue or accepted reference.
-4. Classify every value as manual input, cited lookup, editable override, assumption or read-only derived value.
-5. Record the governing formulas, symbols, units, branches and result states.
-6. Build the page in the canonical task order: orient, define, confirm, evaluate, review and trace.
-7. Record detailed evidence in `REFERENCE_TRACEABILITY.md` or the workbook `References` sheet.
-8. Verify independent numerical cases, branches, boundaries and invalid states.
-9. Complete the applicable professional page and calculation audit.
-10. Release only the reviewed scope and verify local and published states separately.
+4. Record the provisional `Unreleased` class, public result, protected content and proposed deployment target under Section 1.5; obtain the final publication decision before release.
+5. Classify every value as manual input, cited lookup, editable override, assumption or read-only derived value.
+6. Record the governing formulas, symbols, units, branches and result states.
+7. Build the page in the canonical task order: orient, define, confirm, evaluate, review and trace.
+8. Record detailed evidence in `REFERENCE_TRACEABILITY.md` or the workbook `References` sheet.
+9. Verify independent numerical cases, branches, boundaries and invalid states.
+10. Complete the applicable professional page and calculation audit.
+11. Release only the reviewed scope and verify local and published states separately.
 
 No formula or input should be added only because it is convenient or technically possible. Each one must have a traceable source or a clearly stated derived basis and must affect a visible engineering decision.
 
@@ -4476,6 +4515,9 @@ For the public GitHub Pages release:
 
 - use the governed `.github/workflows/pages.yml` workflow as the Pages source;
 - require the complete `tests/*.test.js` suite, production JavaScript syntax checks and `git diff --check` to pass before artifact upload;
+- generate the allowlisted public artifact and publish that artifact only; do not upload the repository root;
+- do not add a new tool, tab, dataset, generated asset or materially expanded capability to `public-build-manifest.json` without the explicit Section 1.5 publication decision;
+- reject any public artifact containing tests, audit evidence, research records, engineering working files, source documents, secrets, source maps not approved for release, or `Restricted` / `Private` modules;
 - deploy the exact artifact produced after verification; do not rebuild or edit it between verification and deployment;
 - do not use the legacy direct-from-branch Pages build for a normal public release because it can publish an unverified `main` commit;
 - keep the visible `Public beta` state until Standards-content publication rights, repository terms, third-party notices, public limitations and feedback routing are all reviewed;

@@ -22,6 +22,10 @@ Product names and trademarks belong to their respective owners. Product data are
 
 The published site is a static client-side application. It does not require an account and does not intentionally collect, transmit or store calculator inputs. External source and feedback links are governed by the destination site's own terms and privacy practices.
 
+The browser must retrieve the public HTML, JavaScript, data and assets required to operate the site. Public access must therefore be treated as technical access to those deployed files even where repository development material is separately restricted. The public site must not contain passwords, access tokens, confidential project information, licensed source documents or content classified as `Restricted` or `Private` under the controlling project outline.
+
+Public access does not make the software open source and does not grant permission to reproduce, modify, redistribute or commercially exploit project code, data or generated assets. The repository terms and applicable third-party rights remain controlling.
+
 ## Reporting
 
 Report calculation, source, accessibility or publication issues through the [SC Handbook issue tracker](https://github.com/Pikatiu27/SC-handbook/issues/new). Include the tool name, selected mode, inputs, displayed result, expected basis and browser where practical. Do not include confidential project information.

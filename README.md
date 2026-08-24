@@ -4,6 +4,12 @@ Static, English-language engineering lookup handbook with traceable quick-refere
 
 **Release status:** Public beta. This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
+**Publication baseline:** The current repository, handbook content and public website are approved for public access. A private-source/public-site repository split is optional and is not the current project target.
+
+Every new tool, tab, dataset, generated asset or materially expanded capability starts as `Unreleased`. It must be discussed and receive an explicit `Public`, `Restricted` or `Private` publication decision before release. Only explicitly approved `Public` additions may enter the unauthenticated website. A hidden tab is not private: any code, data or asset delivered to a browser must be treated as publicly retrievable.
+
+The governed Pages workflow builds the website from the explicit file allowlist in `public-build-manifest.json` and uploads `dist/` only. Run `node scripts/build-public-site.js` to reproduce that artifact locally. `dist/` is generated and untracked; changes must be made in the controlling source files and then rebuilt. Adding a new file to the allowlist is a publication decision, not a routine build step.
+
 Public site: <https://pikatiu27.github.io/SC-handbook/>
 
 Report calculation, source, accessibility or publication issues through the [issue tracker](https://github.com/Pikatiu27/SC-handbook/issues/new). Do not include confidential project information.

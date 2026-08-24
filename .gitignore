@@ -8,6 +8,7 @@ reference/
 Tech sheet/
 outputs/
 output/
+dist/
 tmp/
 tmp-*/
 tmp_*/
