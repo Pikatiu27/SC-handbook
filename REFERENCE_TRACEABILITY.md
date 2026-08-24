@@ -1,13 +1,22 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-08-23
+Last updated: 2026-08-24
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
 `%USERPROFILE%\Documents\Codex\Reference`
 
 Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md` before treating any source item as checked. Generated reference packs are search aids only; final equations, tables, and values must be visually checked against the source PDF page.
+
+## Public artifact allowlist and publication gate - 2026-08-24
+
+- Confirmed the current repository, existing handbook modules and unauthenticated website as the approved `Public` baseline. New tools, tabs, datasets, generated assets and materially expanded capabilities start as `Unreleased` and require an explicit publication decision before entering the public allowlist.
+- Added `public-build-manifest.json`, `scripts/build-public-site.js` and `tests/public-build.test.js`. The deterministic build copies 43 approved source files, adds `.nojekyll` and writes a SHA-256 inventory as `PUBLIC_BUILD_MANIFEST.json`.
+- Changed the governed Pages workflow to build before testing and upload `dist/` only. The repository root is no longer the Pages artifact.
+- All 44 test files, 68 JavaScript syntax checks and `git diff --check` passed before release. Release commit `8867dad` was fast-forwarded to `main`; GitHub Pages workflow run `32689870272` completed successfully.
+- Cache-busted public verification returned the 44-entry artifact inventory and the existing Build 0.7.78 page with all 22 production scripts. All ten public hash routes opened the correct active panel, all checked images loaded and the browser reported no warning or error.
+- `SC_HANDBOOK.md`, `REFERENCE_TRACEABILITY.md`, `tests/public-build.test.js` and the previously published visual-audit screenshot path returned HTTP 404. This supersedes the Build 0.7.78 record that reported a public `VISUAL_PAGE_AUDIT.md`; audit evidence now remains outside the public Pages artifact.
 
 ## Build 0.7.78 - Per-item visual audit and mobile table location cue - 2026-08-23
 
