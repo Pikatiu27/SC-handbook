@@ -35,6 +35,13 @@ assert.match(html, /<b>Material properties<\/b>[\s\S]*?id="concreteFc"/);
 assert.doesNotMatch(html, /One f'<sub>c<\/sub> for the checked section/);
 assert.doesNotMatch(html, /id="concreteModeValue"|id="concreteWidthValue"|id="concreteDepthValue"|id="concreteStatusValue"/);
 assert.doesNotMatch(html, /id="concretePhiNote"|id="concreteShearNote"|concrete-reo-source/);
+assert.match(html, /id="concreteFootingProjection"[^>]*placeholder="Optional"/);
+assert.match(html, /Footing projection, l<sub>v<\/sub>/);
+assert.match(script, /ConcreteSectionCalculation\.footingProjectionScreen/);
+assert.match(script, /Section 12 proportion criterion applies/);
+assert.match(script, /Proportion criterion not triggered/);
+assert.match(outline, /Use it only to screen the AS 3600 Cl\. 12\.1\.1 footing proportion criterion `l_v\/D < 1\.5`/);
+assert.match(outline, /Do not calculate struts, ties, nodes or anchorage/);
 
 assert.match(styles, /\.beam-section-figure \{[^}]*width: 180px;[^}]*min-width: 180px;[^}]*grid-template-rows: minmax\(108px, 1fr\) auto;/);
 assert.match(styles, /\.beam-summary\.beam-selected-section \{[^}]*grid-template-columns: minmax\(0, 1fr\) 180px;/);

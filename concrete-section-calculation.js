@@ -181,10 +181,28 @@
     });
   }
 
+  function footingProjectionScreen(data) {
+    const projection = Number(data.projection);
+    const depth = Number(data.depth);
+    if (![projection, depth].every(Number.isFinite) || projection <= 0 || depth <= 0) {
+      throw new RangeError("Footing projection and overall depth must be positive finite values");
+    }
+    const limit = 1.5;
+    const ratio = projection / depth;
+    return Object.freeze({
+      projection,
+      depth,
+      ratio,
+      limit,
+      nonFlexuralProportion: ratio < limit
+    });
+  }
+
   return Object.freeze({
     stressBlockFactors,
     forcesAtNeutralAxis,
     solveSection,
-    oneWayShear
+    oneWayShear,
+    footingProjectionScreen
   });
 });

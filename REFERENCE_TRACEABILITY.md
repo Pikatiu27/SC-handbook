@@ -1,13 +1,21 @@
 # SC Handbook Reference Traceability
 
 Generated: 2026-06-29
-Last updated: 2026-08-24
+Last updated: 2026-08-28
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
 `%USERPROFILE%\Documents\Codex\Reference`
 
 Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md` before treating any source item as checked. Generated reference packs are search aids only; final equations, tables, and values must be visually checked against the source PDF page.
+
+## Build 0.7.79 - Concrete Pad non-flexural region screen - 2026-08-28
+
+- Added a lightweight AS 3600 Section 12 applicability screen to the existing public Concrete Pad Section tool. The user may enter footing projection `l_v`, measured from the loaded face to the pad edge; the page reports `l_v/D` and flags a non-flexural region review where the footing proportion is below 1.5 in accordance with AS 3600 Cl. 12.1.1.
+- A blank projection leaves the screen `Not assessed` without blocking the existing section capacities; a non-positive completed value is invalid. At or above the boundary, the page states only that the proportion criterion is not triggered and retains a separate local D-region review.
+- The screen does not calculate struts, ties, nodes, anchorage or strut-and-tie capacity. For a combined pad-on-pad depth, the displayed applicability note states that the total depth assumes effective composite action between the pours.
+- The flexural neutral-axis solution, reinforcement force model, `phi Muo` result and one-way shear equations are unchanged. `tests/concrete-non-flexural-screen.test.js` independently checks ratios below, at and above 1.5 and rejects invalid dimensions.
+- Publication class: `Public`, accepted as a scoped maintenance addition to the existing allowlisted Concrete Pad calculator. No new public file or source document is added to `public-build-manifest.json`.
 
 ## Public artifact allowlist and publication gate - 2026-08-24
 

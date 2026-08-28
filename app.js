@@ -603,7 +603,7 @@ const weldTypeData = {
 };
 const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentCheckEnabled", "weldParentThickness", "weldParentGrade"];
 const concreteInputIds = [
-  "concreteDirection", "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc",
+  "concreteDirection", "concreteTopDepth", "concreteBottomDepth", "concreteFootingProjection", "concreteCover", "concreteFc",
   "concreteReinforcementLayout",
   "concreteShearReo", "concreteShearBar", "concreteNsv", "concreteSv", "concreteFsyf",
   "layer1Active", "layer1Auto", "layer1Y", "layer1Bar", "layer1Spacing", "layer1Fsy", "layer1Es",
@@ -2409,7 +2409,7 @@ let integrityHoleDiameterTracksBolt = true;
 const manualInputIds = [
   "boltCount", "threadPlanes", "shankPlanes", "boltPitch", "plateThickness", "plateStrength", "edgeDistance", "effectiveEdgeInput", "plateThickness2", "plateStrength2", "edgeDistance2", "effectiveEdgeInput2", "integrityPlateWidth", "integrityHoleCount", "integrityHoleDiameter", "integrityFy", "integrityAg", "integrityAn", "integrityKt", "integrityAgv", "integrityAnv", "integrityAnt", "integrityKbs", "interfaces", "slipFactor",
   "weldLength", "weldRuns", "weldEffectiveThroat", "weldParentThickness", "weldDemand",
-  "concreteTopDepth", "concreteBottomDepth", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
+  "concreteTopDepth", "concreteBottomDepth", "concreteFootingProjection", "concreteCover", "concreteFc", "concreteNsv", "concreteSv", "concreteFsyf",
   "reoConcreteStrength", "reoCover", "reoClearSpacing", "reoBarGap", "reoNf", "reoNbs", "reoAtrTotal", "reoPressure", "reoPressureReference", "reoSteelStress",
   "reoExistingConcreteStrength", "reoExistingCover", "reoExistingClearSpacing", "reoExistingC1", "reoExistingNf", "reoExistingNbs", "reoExistingAtrTotal", "reoExistingPressure", "reoExistingPressureReference",
   "layer1Y", "layer1Spacing", "layer1Fsy", "layer1Es", "layer2Y", "layer2Spacing", "layer2Fsy", "layer2Es",
@@ -7651,6 +7651,10 @@ function concreteOneWayShear(data, result, shearInput) {
   };
 }
 
+function concreteFootingProjectionScreen(projection, depth) {
+  return ConcreteSectionCalculation.footingProjectionScreen({ projection, depth });
+}
+
 function calculateConcrete() {
   saveConcreteLayerState();
   updateConcreteShearInputVisibility();
@@ -7661,6 +7665,12 @@ function calculateConcrete() {
   [$("layer3Row"), $("layer4Row")].forEach(row => { row.hidden = hideInactiveBottomMats; });
   $("bottomPadLayerNote").hidden = !hideInactiveBottomMats;
   const totalDepth = topDepth + bottomDepth;
+  const projectionInput = $("concreteFootingProjection").value.trim();
+  const projectionEntered = projectionInput !== "";
+  const projection = numericValue(projectionInput);
+  const projectionValid = !projectionEntered || Number.isFinite(projection) && projection > 0;
+  $("concreteFootingProjection").setAttribute("aria-invalid", String(!projectionValid));
+  $("concreteFootingProjectionError").hidden = projectionValid;
   const direction = $("concreteDirection").value;
   const reinforcementLayout = $("concreteReinforcementLayout").value;
   const hasTopPad = topDepth > 0;
@@ -7668,6 +7678,9 @@ function calculateConcrete() {
   const compositeSection = hasTopPad && hasBottomPad;
   const sectionKind = compositeSection ? "composite" : hasTopPad ? "top" : hasBottomPad ? "bottom" : "none";
   const depth = totalDepth;
+  const projectionScreen = projectionValid && projectionEntered && depth > 0
+    ? concreteFootingProjectionScreen(projection, depth)
+    : null;
   const layerIndices = compositeSection ? [1, 2, 3, 4] : hasTopPad ? [1, 2] : hasBottomPad ? [3, 4] : [];
   const cover = value("concreteCover");
   const width = 1000;
@@ -7726,13 +7739,42 @@ function calculateConcrete() {
       : "";
   const legacyLayers = data.layers.filter(layer => layer.legacy);
   const fsyCappedLayers = data.layers.filter(layer => layer.fsyInput > 600);
+  const compositeProjectionNote = compositeSection
+    ? " Overall depth assumes effective composite action between the two pads."
+    : "";
+  const nonFlexuralState = !projectionValid
+    ? `<article><b>Non-flexural region applicability</b><span>Not evaluated</span><small>Enter a positive footing projection or leave the optional input blank.</small></article>`
+    : !projectionScreen
+      ? `<article><b>Non-flexural region applicability</b><span>Not assessed</span><small>Enter footing projection l<sub>v</sub> to screen the AS 3600 Section 12 footing proportion criterion. Local D-regions still require project review.</small></article>`
+      : projectionScreen.nonFlexuralProportion
+        ? `<article><b>Non-flexural region applicability</b><span>Section 12 proportion criterion applies</span><small>l<sub>v</sub>/D = ${displayFixed(projectionScreen.ratio, 3)} &lt; ${displayFixed(projectionScreen.limit, 1)}. Use an applicable non-flexural design method; strut-and-tie capacity is not calculated here.${compositeProjectionNote}</small></article>`
+        : `<article><b>Non-flexural region applicability</b><span>Proportion criterion not triggered</span><small>l<sub>v</sub>/D = ${displayFixed(projectionScreen.ratio, 3)} &ge; ${displayFixed(projectionScreen.limit, 1)}. Local D-regions near concentrated loads, supports or discontinuities still require separate review.${compositeProjectionNote}</small></article>`;
+  const nonFlexuralFormulaStep = calculationTraceRow({
+    title: "Non-flexural region screen",
+    reference: "AS 3600 Cl. 12.1.1",
+    formula: projectionScreen ? `l<sub>v</sub>/D` : "",
+    substitution: projectionScreen ? `${fixed(projectionScreen.projection)}/${fixed(projectionScreen.depth)}` : "",
+    result: !projectionValid
+      ? "Not evaluated - invalid optional input"
+      : !projectionScreen
+        ? "Not assessed"
+        : projectionScreen.nonFlexuralProportion
+          ? `${displayFixed(projectionScreen.ratio, 3)} < ${displayFixed(projectionScreen.limit, 1)} - non-flexural review required`
+          : `${displayFixed(projectionScreen.ratio, 3)} >= ${displayFixed(projectionScreen.limit, 1)} - proportion criterion not triggered`,
+    applicability: !projectionValid
+      ? "Enter a positive projection or leave the optional input blank."
+      : !projectionScreen
+        ? "No footing projection entered. This does not confirm that the section is a flexural region."
+        : `Footing projection is measured from the loaded face to the pad edge.${compositeProjectionNote} Strut-and-tie, linear elastic stress and non-linear stress analyses are outside this section-capacity check.`,
+    state: projectionScreen?.nonFlexuralProportion || !projectionValid ? "warning" : ""
+  });
 
   if (!result.ok) {
     ["concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
     $("concreteWarningText").textContent = result.message;
-    $("concreteSectionState").innerHTML = "";
+    $("concreteSectionState").innerHTML = nonFlexuralState;
     $("concreteLayerResults").innerHTML = "";
-    $("concreteFormulaSteps").innerHTML = !fcValid
+    const failureSteps = !fcValid
       ? calculationTraceRow({
           title: "Concrete strength input",
           result: "Not evaluated",
@@ -7767,6 +7809,7 @@ function calculateConcrete() {
             applicability: "Do not report ductile reinforced-concrete &phi;M<sub>uo</sub>. The separate method uses a linear stress-strain bending model and a footing strength depth based on nominal depth minus 50 mm."
           })
         ].join("");
+    $("concreteFormulaSteps").innerHTML = `${failureSteps}${nonFlexuralFormulaStep}`;
     return;
   }
 
@@ -7782,6 +7825,8 @@ function calculateConcrete() {
   if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `layer ${layer.index}`).join(", ")}`);
   if (fsyCappedLayers.length) reviewFlags.push(`f<sub>sy</sub> capped at 600 MPa for ${fsyCappedLayers.map(layer => `layer ${layer.index}`).join(", ")}`);
   if (result.kuo > 0.36) reviewFlags.push(`k<sub>uo</sub> = ${displayFixed(result.kuo, 3)} > 0.36; check AS 3600 Cl. 8.1.5`);
+  if (!projectionValid) reviewFlags.push("footing projection input is invalid");
+  if (projectionScreen?.nonFlexuralProportion) reviewFlags.push(`AS 3600 Section 12 non-flexural region review (l<sub>v</sub>/D = ${displayFixed(projectionScreen.ratio, 3)} &lt; ${displayFixed(projectionScreen.limit, 1)})`);
   const compositeBoundary = compositeSection
     ? " Verify interface transfer, anchorage and composite action."
     : "";
@@ -7796,7 +7841,8 @@ function calculateConcrete() {
     : `<article><b>One-way shear check</b><span>Shear capacity not calculated.</span><small>${shear.scopeFailures.join("; ")}. Use the applicable general shear method for the project.</small></article>`;
   $("concreteSectionState").innerHTML = `
     <article><b>Flexural capacity details</b><span>Neutral axis depth x = ${fixed(result.x)} mm from the selected compression face; d<sub>o</sub> = ${fixed(result.d0)} mm; k<sub>uo</sub> = ${displayFixed(result.kuo, 3)}; M<sub>uo</sub> = ${fixed(result.muo)} kNm</span><small>C<sub>c</sub> = ${fixed(result.cc / 1000)} kN; &phi; = ${displayFixed(result.phi, 2)}; &phi;M<sub>uo</sub> = ${fixed(result.phiMuo)} kNm</small></article>
-    ${shearState}`;
+    ${shearState}
+    ${nonFlexuralState}`;
 
   $("concreteLayerResults").innerHTML = result.layers.map(layer => {
     const status = Math.abs(layer.strain) < 0.00005 ? "near neutral axis" : layer.force > 0 ? "compression" : "tension";
@@ -7897,6 +7943,7 @@ function calculateConcrete() {
       adopted: compositeSection ? `D = ${fixed(data.topDepth)} + ${fixed(data.bottomDepth)} = ${fixed(data.depth)} mm` : `D = ${fixed(data.depth)} mm`,
       applicability: compositeSection ? "All active layers parallel to bending may participate; interface transfer, anchorage and composite action require separate verification." : "Only active layers parallel to bending in the selected pad section participate."
     }),
+    nonFlexuralFormulaStep,
     calculationTraceRow({
       title: "Reinforcement depth",
       formula: reinforcementLayout === "two-way" ? `d<sub>i,face</sub> = c<sub>nom</sub> + 1.5d<sub>b</sub>` : `d<sub>i,face</sub> = c<sub>nom</sub> + 0.5d<sub>b</sub>`,
