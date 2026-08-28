@@ -16,6 +16,7 @@ Use `%USERPROFILE%\Documents\Codex\Reference\AGENTS.md` and `REFERENCE_INDEX.md`
 - The screen does not calculate struts, ties, nodes, anchorage or strut-and-tie capacity. For a combined pad-on-pad depth, the displayed applicability note states that the total depth assumes effective composite action between the pours.
 - The flexural neutral-axis solution, reinforcement force model, `phi Muo` result and one-way shear equations are unchanged. `tests/concrete-non-flexural-screen.test.js` independently checks ratios below, at and above 1.5 and rejects invalid dimensions.
 - Publication class: `Public`, accepted as a scoped maintenance addition to the existing allowlisted Concrete Pad calculator. No new public file or source document is added to `public-build-manifest.json`.
+- Release commit `49413ae`; GitHub Actions workflow `33148171801` completed successfully. The cache-busted public route `https://pikatiu27.github.io/SC-handbook/?v=20260828padstm1#pad` was verified with Build `0.7.79`, default capacities `phi Muo = 287.1 kNm` and `phi Vu = 194.2 kN`, no browser console errors, and the expected Section 12 review at `l_v/D = 1.400`.
 
 ## Public artifact allowlist and publication gate - 2026-08-24
 
