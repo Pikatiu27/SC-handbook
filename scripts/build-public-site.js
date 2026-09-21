@@ -29,6 +29,16 @@ function sha256(filePath) {
   return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
 }
 
+function stripUnreleasedBlocks(content, relativePath) {
+  let publicContent = content
+    .replace(/<!--\s*UNRELEASED:([a-z0-9-]+):START\s*-->[\s\S]*?<!--\s*UNRELEASED:\1:END\s*-->/gi, "")
+    .replace(/\/\*\s*UNRELEASED:([a-z0-9-]+):START\s*\*\/[\s\S]*?\/\*\s*UNRELEASED:\1:END\s*\*\//gi, "");
+  if (/UNRELEASED:[a-z0-9-]+:(?:START|END)/i.test(publicContent)) {
+    throw new Error(`Unmatched unreleased block marker in ${relativePath}.`);
+  }
+  return publicContent;
+}
+
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 if (manifest.schemaVersion !== 1 || manifest.publicationClass !== "Public") {
   throw new Error("Unsupported or non-public build manifest.");
@@ -52,7 +62,11 @@ for (const relativePath of files) {
     throw new Error(`Missing allowlisted public file: ${relativePath}`);
   }
   fs.mkdirSync(path.dirname(destinationPath), { recursive: true });
-  fs.copyFileSync(sourcePath, destinationPath);
+  if ([".html", ".css", ".js"].includes(path.extname(relativePath).toLowerCase())) {
+    fs.writeFileSync(destinationPath, stripUnreleasedBlocks(fs.readFileSync(sourcePath, "utf8"), relativePath), "utf8");
+  } else {
+    fs.copyFileSync(sourcePath, destinationPath);
+  }
 }
 
 fs.writeFileSync(path.join(outputRoot, ".nojekyll"), "", "utf8");

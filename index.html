@@ -12,6 +12,10 @@
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=20260828padstm1">
+  <!-- UNRELEASED:geo:START -->
+  <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo75">
+  <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo75">
+  <!-- UNRELEASED:geo:END -->
 </head>
 <body>
   <header class="topbar">
@@ -45,6 +49,9 @@
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-pressed="false" hidden>Steel Monopole Section Capacity</button>
+          <!-- UNRELEASED:geo:START -->
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="geo" aria-controls="geoPanel" aria-pressed="false" hidden>Ground Parameters</button>
+          <!-- UNRELEASED:geo:END -->
           <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-pressed="false" hidden>Concrete Pad Section</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-pressed="false" hidden>Reinforcement</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-pressed="false" hidden>Screw Piles Selector</button>
@@ -1935,6 +1942,81 @@
       </details>
     </section>
 
+    <!-- UNRELEASED:geo:START -->
+    <section id="geoPanel" class="tool-panel geo-guide" hidden>
+      <div class="tool-heading">
+        <div><p class="kicker">Foundations &middot; ground description lookup</p><h2>Ground Parameters</h2></div>
+        <span class="tool-status">For Review &middot; Unreleased local reference aid</span>
+      </div>
+      <p class="geo-boundary"><b>Quick ranges only.</b> Confirm project values before design.</p>
+      <section class="geo-overview" aria-labelledby="geoOverviewHeading">
+        <h3 id="geoOverviewHeading" class="geo-sr-only">Ground ranges</h3>
+        <p class="geo-lead">Compare key ranges. Select a reported state for the full parameter table.</p>
+        <details class="geo-help geo-reading-guide"><summary>Parameter guide</summary>
+          <dl class="geo-definitions">
+            <div><dt>Bearing, q<sub>a</sub></dt><dd>Foundation pressure reference.</dd></div>
+            <div><dt>Strength, s<sub>u</sub> / φ′ / UCS</dt><dd>Soil or intact-rock strength; not bearing pressure.</dd></div>
+            <div><dt>Modulus, E</dt><dd>Stiffness for deformation analysis.</dd></div>
+            <div><dt>Unit weight, γ</dt><dd>Weight per volume; not mass density.</dd></div>
+          </dl>
+          <p>Dry/saturated and source short/long-term labels identify different conditions. Ranges show variation. Classification bands describe reported state; typical ranges are preliminary references. Project values require site evidence.</p>
+        </details>
+        <p class="geo-reading-note">Material lookup only. Silt is not assigned a generic range; assess plasticity, grading and test data. Fill, organic, sensitive or expansive ground and weak layers need separate assessment.</p>
+        <div id="geoMaterialTabs" class="geo-material-tabs" role="tablist" aria-label="Ground material"></div>
+        <div id="rangeOverview" class="range-grid"></div>
+      </section>
+      <p id="selectionStatus" class="geo-sr-only" role="status" aria-live="polite"></p>
+      <div id="selectionParking">
+        <section id="selectedGround" class="geo-selection" hidden aria-labelledby="resultHeading">
+          <h4 id="resultHeading" tabindex="-1">Selected ground</h4>
+          <details id="groundRefinement" class="geo-inputs geo-refine">
+          <summary><span><b>Refine selected ground</b><small>Reported material and condition</small></span><i>+</i></summary>
+          <div class="geo-refine-body"><div class="geo-fields">
+            <input id="family" type="hidden" value="cohesive">
+            <label id="materialField"><span id="materialLabel">Clay subtype</span><select id="material"></select></label>
+            <label id="gradingField" hidden><span>Sand grading</span><select id="grading"><option value="unknown">Not specified</option><option value="uniform">Uniformly graded</option><option value="well">Well graded</option></select><small>Refines φ′ only; overview ranges remain grading-unspecified.</small></label>
+            <label id="conditionField"><span id="conditionLabel">Consistency</span><select id="condition"></select></label>
+            <label id="weatheringField" hidden><span>Weathering</span><select id="weathering"></select></label>
+          </div>
+            <details id="optionalRefinement" class="geo-optional"><summary><span><b>Optional classification</b><small>Only if reported</small></span><i>+</i></summary><div class="geo-fields"><label id="plasticityField"><span>PI band (Look)</span><select id="plasticity"></select><small>Source bands, not AS plasticity classes.</small></label><label id="uscsField"><span>USCS group</span><select id="uscs"></select><small>Permeability lookup only; separate from AS 1726 terminology.</small></label></div></details></div>
+        </details>
+
+
+
+          <table class="geo-detail-table"><thead><tr><th scope="col">Parameter</th><th scope="col">Reference value / range</th><th scope="col">Conditions</th></tr></thead><tbody id="selectedRangeRows"></tbody></table>
+        </section>
+      </div>
+      <div id="parameterReferenceParking" hidden>
+
+        <details id="anchorReference" class="foundation-topic"><summary>Anchor bond — source tables</summary><div id="anchorReferenceTables"></div></details>
+        <details id="bearingReference" class="foundation-topic"><summary><span><b>Bearing basis and reference tables</b><small>Allowable pressure, ultimate screening and rock quality</small></span><i aria-hidden="true">+</i></summary>
+          <div class="geo-topic-intro"><p><b>Allowable q<sub>a</sub></b> · a pressure limit with stated safety and settlement conditions. <b>Ultimate q<sub>ult</sub></b> · a bearing-failure limit, not a settlement check. Do not convert between them using a universal factor.</p><div id="selectedBearing"></div></div>
+          <details class="geo-help geo-bearing-basis"><summary>Soil bearing conditions and source modifiers</summary><p>Look Table 21.4 gives presumed allowable bearing pressure for natural ground, based on B &gt; 1 m and 25 mm settlement. B is footing width in metres. Sand assumes groundwater more than B below the base; halve the source value for saturated/submerged sand. This groundwater modifier is not applied automatically to clay.</p><p>The source divides by 1.2 for strip footings and reduces in ratio B for B &lt; 1 m. No modifiers are calculated here. Gross/net basis is not stated in the soil table. The 25 mm basis is not a differential-settlement limit.</p></details>
+          <div id="ultimateBearingTable"></div><div id="rockBearingTable"></div>
+          <p class="foundation-note">Sand, gravel and other ultimate-bearing cases need footing geometry, groundwater and a justified strength model; no generic ultimate range is inferred.</p>
+        </details>
+        <details id="settlementReference" class="foundation-topic"><summary><span><b>Deformation parameters and movement criteria</b><small>Stiffness, compression and differences between supports</small></span><i aria-hidden="true">+</i></summary>
+          <div class="geo-topic-intro"><p><b>Total settlement</b> · movement of one support. <b>Differential settlement</b> · movement difference between supports. E and ν are analysis inputs, not settlement limits.</p></div>
+          <div id="settlementReferenceTable"></div>
+          <details class="geo-help geo-movement"><summary>Differential movement and project criteria</summary><p>Δs = |s<sub>A</sub> − s<sub>B</sub>|; L is the distance between supports. Δs/L indicates relative support rotation. Compare movements at the same time and separate overall tilt where relevant.</p><p>Acceptable movement depends on the structure and finishes. Include service loads, layer thickness, groundwater, stress history and construction sequence. The bearing table's 25 mm basis is not a differential-settlement limit.</p></details>
+        </details>
+        <details id="baseInterfaceReference" class="foundation-topic"><summary><span><b>Concrete–ground interface: μ and δ</b><small>Concrete–ground friction and interface angle</small></span><i aria-hidden="true">+</i></summary>
+          <p class="geo-topic-intro">Match the supporting material and contact condition. Interface δ differs from soil φ′.</p>
+          <div id="baseInterfaceTable"></div>
+          <p class="foundation-note"><b>Undrained adhesion, c<sub>a</sub> (kPa)</b> needs a project interface value. GEC 6 discusses c<sub>a</sub> ≈ s<sub>u</sub> as an idealisation; it is not adopted here. Do not add undrained adhesion to drained friction. No sliding resistance is calculated.</p>
+        </details>
+        <details id="interfaceReferences" class="foundation-topic"><summary><span><b>Pile shaft resistance — source factors</b><small>Estimation factors (dimensionless)</small></span><i aria-hidden="true">+</i></summary>
+          <div class="geo-topic-intro"><p><b>Pile shaft</b> · load transferred along the side. <b>Pile base</b> · load transferred at the toe. <b>Anchor bond</b> · load transferred over the fixed grout–ground length.</p><p>α and K<sub>s</sub> tan δ below are dimensionless factors, not shaft-resistance values. Project shaft resistance f<sub>m,s</sub> and base pressure f<sub>b</sub> need installation, founding and compression/uplift conditions; no generic base resistance is inferred.</p></div>
+          <div id="interfaceReferenceTables"></div>
+        </details>
+      </div>
+      <details id="projectRequirements" class="geo-help geo-project-card"><summary>Before design · what is still needed from the project?</summary>
+        <ul id="projectChecklist" class="project-checklist"><li>Ground profile, weak layers and groundwater</li><li>Loads, footing size, founding level and structural tolerance</li><li>Adopted strengths, bearing basis and settlement assessment</li><li>Sliding, uplift, overall stability and scour where relevant</li><li>Pile/anchor installation, group effects and verification testing</li></ul>
+      </details>
+      <details class="source-card geo-sources"><summary><span><b>Sources and limitations</b><small>Check before use</small></span><i>+</i></summary><div class="source-body"><div class="geo-source-grid"><article><b>FHWA GEC 6 (2002) · For Review</b><p>Eq. (5-4) and Table 5-1: ultimate bearing example. Table 5-15: base friction. Sections 5.3–5.4: settlement and sliding. Historical US guidance, not Australian design values.</p></article><article><b>AS 1726:2017 · Classification tables checked</b><p>Tables 11, 12, 19 and 20: classification terminology and bands. Official store: Current, checked 21 Sep 2026. Confirm project adoption.</p></article><article><b>Look (2014) · For Review</b><p>Selected tables supply typical unit weight, SPT/DCP correlations, strength, permeability, stiffness, Poisson ratio and preliminary bearing ranges.</p></article><article><b>Application standards · Route only</b><p>Use the project-nominated editions of AS 2159 for piling, AS 5100.3 or AS 2870 where applicable, AS 4678 for retaining structures, and the nominated ground-anchor standard. No design values are reproduced from these routes.</p></article><article><b>Internal borehole-log table · Reference only</b><p>Used to shape the practical inventory. It is not a standard or formal design document and does not control numerical outputs.</p></article><article><b>Government borehole portals · Context only</b><p><a href="https://georesglobe.information.qld.gov.au/" target="_blank" rel="noopener">QLD GeoResGlobe</a> · <a href="https://www.resources.nsw.gov.au/geological-survey/minview" target="_blank" rel="noopener">NSW MinView</a> · <a href="https://resources.vic.gov.au/geology-and-data/geological-survey-victoria" target="_blank" rel="noopener">VIC GeoVic</a> · <a href="https://geoview.dmp.wa.gov.au/GeoView/?Module=Drillholes&amp;Viewer=GeoVIEW&amp;layerTheme=Drillholes" target="_blank" rel="noopener">WA GeoVIEW</a> · <a href="https://www.energymining.sa.gov.au/industry/energy-resources/data-centre/online-databases/sarig" target="_blank" rel="noopener">SA SARIG</a> · <a href="https://strike.nt.gov.au/" target="_blank" rel="noopener">NT STRIKE</a> · <a href="https://www.mrt.tas.gov.au/products/digital_data/data_downloads/boreholes_drill_holes_data" target="_blank" rel="noopener">TAS MRT</a>. Use to locate logs, tests and reports; regional geology is not a design parameter.</p></article><article><b>Public report spot checks · Site-specific</b><p><a href="https://www.statedevelopment.qld.gov.au/__data/assets/pdf_file/0031/99814/planning-report.pdf" target="_blank" rel="noopener">QLD</a> project drawing, p. 24 F3: 150 kPa safe working pressure in natural stiff clay; project founding conditions apply. <a href="https://apps.planningportal.nsw.gov.au/prweb/PRRestService/DocMgmt/v1/PublicDocuments/DATA-WORKATTACH-FILE%20PEC-DPE-EP-WORK%20PPSHCC-167%2120230510T021559.944%20GMT" target="_blank" rel="noopener">NSW</a> assessment, Table 8 (PDF p. 23): site-specific allowable pressures of 100, 150, 1000 and 2500 kPa by founding material; excavation inspection and settlement confirmation required. These cases do not set the generic ranges above.</p></article></div><div class="source-notes"><p><b>Before use</b> &middot; Confirm project ground model, tests, groundwater, design parameters, geometry and verification.</p></div></div></details>
+    </section>
+    <!-- UNRELEASED:geo:END -->
+
     <section id="rockPanel" class="tool-panel" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Foundation anchors &middot; product selector</p><h2>Rock Anchor Selector</h2></div>
@@ -2041,7 +2123,14 @@
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="reo-state.js?v=20260819reostate1"></script>
   <script src="monopole-capacity.js?v=20260821monopoleflow1"></script>
+  <!-- UNRELEASED:geo:START -->
+      <script src="geo-parameters/geo-parameters-data.js?v=20260921geo75"></script>
+      <script src="geo-parameters/geo-parameters.js?v=20260921geo75"></script>
+  <!-- UNRELEASED:geo:END -->
   <script src="app.js?v=20260828padstm1"></script>
+  <!-- UNRELEASED:geo:START -->
+      <script src="geo-parameters/app.js?v=20260921geo75"></script>
+  <!-- UNRELEASED:geo:END -->
   <script src="monopole-app.js?v=20260821monopoleaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>

@@ -2378,11 +2378,11 @@ const beamDimensionInputIds = [
   "beamDimShsB", "beamDimShsT", "beamDimEaB", "beamDimEaT", "beamDimRodD"
 ];
 const sectionPropertyInputIds = ["sectionWidth", "sectionHeight", "sectionThickness", "sectionDiameter", "sectionDepth", "sectionFlangeWidth", "sectionWebThickness", "sectionFlangeThickness", "sectionLeg", "sectionAngleThickness"];
-const toolNames = ["bolt", "member", "beam", "monopole", "properties", "weld", "concrete", "reo", "screw", "rock"];
+const toolNames = ["bolt", "member", "beam", "monopole", "properties", "weld", /* UNRELEASED:geo:START */ "geo", /* UNRELEASED:geo:END */ "concrete", "reo", "screw", "rock"];
 const toolCategories = {
   "steel-connections": ["bolt", "weld"],
   "steel-members": ["properties", "member", "beam", "monopole"],
-  foundations: ["concrete", "reo", "screw", "rock"]
+  foundations: [/* UNRELEASED:geo:START */ "geo", /* UNRELEASED:geo:END */ "concrete", "reo", "screw", "rock"]
 };
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };

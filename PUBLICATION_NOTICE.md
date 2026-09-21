@@ -2,7 +2,7 @@
 
 ## Status
 
-SC Handbook is released as a **public beta engineering quick-reference handbook**. Build 0.7.47 was technically reviewed on 13 August 2026. The issue status and limitations displayed within each tool remain controlling; public availability does not promote a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result to checked or issue-ready status.
+SC Handbook is released as a **public beta engineering quick-reference handbook**. Build 0.7.79 was technically reviewed on 28 August 2026. The issue status and limitations displayed within each tool remain controlling; public availability does not promote a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result to checked or issue-ready status.
 
 ## Engineering boundary
 
@@ -14,7 +14,9 @@ No page establishes that a complete component, connection, member, foundation or
 
 Australian Standards, international Standards and manufacturer publications remain the property of their respective copyright holders. Clause and table references identify the calculation basis; users must obtain and use appropriately licensed current source documents. This repository does not distribute the governing Standards.
 
-Public availability of a source does not grant permission to reproduce it. Any suspected extract, figure, table or wording that requires additional permission must be reported and reviewed before the affected content is promoted beyond public beta.
+Common engineering parameter names, conventional symbols, units, general concepts and independently stated factual information are not treated by this project as source extracts merely because the same terms appear in a Standard or handbook. Technical citation and verification remain required where those sources establish the adopted engineering basis.
+
+Public availability of a source does not grant permission to reproduce its protected expression. Any suspected source-specific extract, figure, copied table structure, close paraphrase or substantial selection or arrangement that may require permission must be reported and reviewed before the affected content is promoted beyond public beta.
 
 Product names and trademarks belong to their respective owners. Product data are provided only with the source status and limitations shown on the page and do not imply manufacturer endorsement.
 

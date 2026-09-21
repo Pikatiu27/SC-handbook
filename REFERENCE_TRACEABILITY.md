@@ -1,7 +1,36 @@
 # SC Handbook Reference Traceability
 
+## Ground Parameters — Geo48 terminology consistency
+
+5 September 2026; `20260905geo48`. Implements two accepted P2 findings under SC_HANDBOOK 15.16A: explicitly define sand-pile K_s/δ and retain the non-organic soft-clay condition in both guide and full source inventory. No new source extraction, empirical value or classification. Fifty test files passed, including new cross-display condition assertions. Current scoped record: `geo-parameters/PREPUBLICATION_REVIEW.md`; prior source/accessibility/release limitations remain open.
+
+## Ground Parameters — Geo47 scoped source follow-up
+
+5 September 2026; `20260905geo47`. `geo-parameters/GEO47_FOLLOWUP.md` records QLD PDF page 24 F3 as a project safe-working-pressure note (150 kPa), not a government generic range. Text/locator checked; current visual retrieval blocked. NSW/WA source rechecks are explicitly pending in the source card. Publisher currency endpoint remained unreadable. Earlier accepted Look/AS/FHWA transcription is unchanged; no new empirical lookup range or release approval.
+
+## Ground Parameters — Geo46 current author evidence
+
+5 September 2026; cache 20260905geo46. Current scope, source-page ledger and residual gates: `geo-parameters/GEO46_ACCEPTANCE.md`, indexed by `geo-parameters/PREPUBLICATION_REVIEW.md`. Twenty-two original Look/AS/FHWA pages were visually checked. Corrected gravel DCP applicability, medium/coarse-sand modulus scope, compacted permeability basis, dry rock weight, non-organic soft-clay guidance and source-specific PI/SPT wording. No empirical numeric source range was added. Fifty test files passed, including 608 controlled selections. Public-report examples have not received complete fresh source-page acceptance; AS currency and independent/publication decisions remain open. Geo stays Unreleased. Earlier sections below are historical snapshots.
+
+## Ground Parameters — Geo44b historical prepublication status
+
+5 September 2026, author verification; base 853e863, cache 20260905geo44b. Current detailed evidence and outstanding gates are in `geo-parameters/PREPUBLICATION_REVIEW.md`; prior Geo sections below are historical snapshots, not cumulative current approvals. Look Tables 21.4/22.1/22.2, AS 1726 Table 11 and FHWA GEC 6 Eq. (5-4)/Table 5-1 were visually rechecked. The dedicated coefficient-source and unrounded-boundary evidence gap is closed at author level; independent professional acceptance is still open. All numerical source values remain unchanged. Narrow-screen table semantics and source-link contrast were corrected. 49 test files and the 43-file public build passed; Geo remains excluded and Unreleased.
+
+## Ground Parameters — Geo43 corrective verification, 5 September 2026
+
+- Scope/version: local dirty worktree based on 853e863; cache 20260905geo43. Corrections to the Geo42 reading flow only; no new source extraction or numerical ranges.
+- Verdict: local quick-reference use with existing limitations; not released or independently accepted.
+- Must modify: resolved inherited UCS/point-load bands for RS/XW selections; rock bearing remains suppressed. Soil strength/stiffness require soil description and project evidence. Matching weathering/lithology unit weight is not a soil-strength classification.
+- Should modify: resolved missing weathering heading, clay-only copy in granular notes, rock modulus time-label copy and misleading same-row expansion behaviour.
+- Add: regression coverage for soil-like branches, return to rock state, keyboard collapse/reopen, retained refinements and formal subscripts.
+- Delete/simplify: removed incompatible rock-classification outputs and control from soil-like selected states; retained compact source-qualified numeric ranges elsewhere.
+- Unclear/source gap: inherited coefficient/source acceptance, source currency and source-specific publication review remain open. Gravel access remains via material refinement; no gravel bearing range is inferred.
+- Verified/no change: original numerical source fixtures, all 17 overview state rows, ultimate/RQD/interface datasets and public-build exclusion. This is regression evidence, not independent source acceptance.
+- Test evidence: 48 test files passed; audit/geo-state-copy-review.js passed browser state/notation checks, main widths 1440/1040/768/500/390/320 and standalone 1440/768/390/320; no page exceptions.
+- Residual limitations: no design adoption, full accessibility certification, native zoom acceptance or public deployment. Visual evidence and its capture limits are recorded in VISUAL_PAGE_AUDIT.md.
+
 Generated: 2026-06-29
-Last updated: 2026-08-28
+Last updated: 2026-09-05
 
 This file is the project source-traceability register for the static web handbook. It is not a duplicate reference library. Source PDFs remain only in:
 
@@ -201,6 +230,15 @@ This register is the authoritative ID map. It identifies the claim and evidence 
 | `SCREW-PROJECT-COMPARE-01` | Screw Piles / directional comparison with entered project values | Derived ratio using user-sourced project design values | `app.js` `calculateScrewDemand()` | Source/basis gating regression required; For Review |
 | `SCREW-PRODUCT-LOOKUP-01` | Screw Piles / published product selection | Exact manufacturer document row | `app.js` product data | Selector only; Draft where source is pending |
 | `ROCK-PRODUCT-LOOKUP-01` | Rock Anchor / published product selection | Exact manufacturer document row | `rock-anchor-selector/app.js`; `tests/rock-anchor-dom-contract.test.js`; local browser supplier/product/custom-state reproduction | Selector only; For Review and no inferred resistance |
+| `GEO-AS1726-CLASS-01` | Ground Parameters / cohesive, granular and rock descriptions | AS 1726:2017 Tables 11, 12, 19 and 20 | `geo-parameters/geo-parameters-data.js`; `tests/geo-parameters-data.test.js` | Checked classification bands only; not design parameters |
+| `GEO-LOOK-INTERPRET-01` | Ground Parameters / unit weight, SPT/DCP indications, effective strength, permeability, modulus and Poisson ratio | Look (2014) Tables 5.3, 5.5, 5.11, 7.3, 7.8, 7.9, 8.5, 9.2, 11.7 and 11.17 | `geo-parameters/geo-parameters-data.js`; `geo-parameters/geo-parameters.js`; `tests/geo-parameters-data.test.js`; `tests/geo-parameters-query.test.js` | Interpretive first-check ranges; field/corrected SPT values remain distinct; optional-classification defaults are labelled material-family envelopes; exact row match and project evidence required |
+| `GEO-LOOK-FOUNDATION-01` | Retired application prototype / DCP, pile and anchor references | Look (2014) Tables 5.15, 20.22 and 21.17 | `archive/geo-application-prototype.md` | Superseded runtime scope; retained as local evidence only; not an active page contract |
+| `GEO-LOOK-SOIL-BEARING-01` | Ground Parameters / presumed allowable soil bearing pressure | Look (2014) Table 21.4 | `geo-parameters/geo-parameters-data.js`; `geo-parameters/geo-parameters.js` | For Review; natural clay/sand, B > 1 m and 25 mm settlement; groundwater/geometry modifiers; no transfer to gravel |
+| `GEO-LOOK-ROCK-BEARING-01` | Ground Parameters / preliminary rock bearing and RQD table | Look (2014) Tables 22.1 and 22.2 | `geo-parameters/geo-parameters-data.js`; `geo-parameters/app.js` | For Review; strength and RQD references remain separate; lower applicable limit and rock-mass evidence required |
+| `GEO-DERIVED-UNDRAINED-01` | Ground Parameters / surface-strip ultimate screen | Derived q_ult = 5.14s_u; AS 1726 Table 11 supplies classification limits only | `geo-parameters/geo-parameters-data.js`; `geo-parameters/geo-parameters.js` | For Review; independently reproduce coefficient, assumptions, rounded limits and open-ended bands; not an AS 1726 bearing rule |
+| `GEO-INTERNAL-REFERENCE-01` | Ground Parameters / practical content inventory | `Reference parameters for interpretation of borehole logs 1` | Page source disclosure and module rules | Internal reference only; not a standard or formal design document |
+| `GEO-PROJECT-REPORT-01` | Ground Parameters / ground model, parameter-selection basis, common physical, field-test, reactivity/special-ground, groundwater, consolidation, earth-pressure, cyclic and durability fields | Project geotechnical report and applicable project testing | `geo-parameters/geo-parameters.js`; grouped UI state | No generic project value inferred; displays `Project report value required` |
+| `GEO-PROJECT-FOUNDATION-01` | Ground Parameters / bearing, settlement, subgrade reaction, base interface, pile resistance/lateral/group and anchor design inputs | Project geotechnical design report, foundation geometry and verification requirements | `geo-parameters/geo-parameters.js` `foundationDesignRows()`; `tests/geo-parameters-query.test.js` | Current compact project-input checklist; bearing lookup/screen contracts are separate; all adopted foundation values require project evidence |
 
 ### Standard Execution Sequence
 
@@ -1396,6 +1434,179 @@ Build 0.7.47 extends the stale-result review from single invalid inputs to compl
 The audit identified and corrected two dependency defects. First, the CHS/Round Bar initial unperforated `A_n` retained an earlier gross area after a dimension override; it now follows current geometry until directly edited. Second, the Reinforcement effective transverse-location confirmation survived a Refined-to-Basic transition; both lap and development paths now clear that confirmation whenever a candidate-length or evidence input changes. Static state-contract tests lock both reset rules.
 
 All 37 local regression files, JavaScript syntax checks and `git diff --check` pass. Axial Member, Reinforcement, Concrete Pad, Screw Piles and Steel Monopole were reloaded at 1440 x 900 px and 390 x 844 px with no document-level horizontal overflow. A missing favicon was the only initial console error; the empty data favicon removes that unrelated request, and the final phone-width route sweep reports zero browser warnings or errors.
+
+## Geo history — supersession notice
+
+The dated entries below retain the evidence available at the time. Descriptions of four application modes and an automatically selected cohesive result were superseded by the compare-first workflow in SC_HANDBOOK.md Section 15.16A. Historical screenshots, test counts and source checks are not current release acceptance. The 5 September 2026 matrix identifies the remaining current evidence.
+
+## 2026-09-05 Geo Reading-flow Update — geo42
+
+### Audit scope and version
+
+Local worktree 5bee, base commit 853e863 plus existing uncommitted user work, asset revision 20260905geo42. Ground Parameters / #geo and standalone review harness only; no publication. Governing rules: SC_HANDBOOK.md Geo section and Section 15.19. Matrix: geo-parameters/CONTENT_PLAN.md.
+
+### Executive verdict
+
+Implemented the accepted compare -> understand -> investigate -> confirm-project workflow. Suitable for local author review as a reference aid, not independently accepted engineering software. Numeric source data is unchanged. Source checks recorded in geo39–41 remain historical evidence, not newly repeated PDF/source-currency checks.
+
+### Must modify / dispositions
+
+| ID / stage | Finding | Disposition and evidence |
+| --- | --- | --- |
+| GEO42-STATE-01 / E | Sand row could appear selected while refinement had changed material to gravel | Corrected: sand highlighting requires sand material; gravel bearing remains unavailable. Browser transition passed. |
+| GEO42-STATE-02 / C,E | A selected RS/XW soil-like weathering class could retain rock bearing | Corrected: selected rock-bearing and RQD-derived rows suppressed; use soil description/project assessment. Pure and browser tests passed. Independent rock-applicability acceptance remains Pending. |
+| GEO42-NAV-01 / F | Section hash links could route away from Geo; CSS 200% reflow exposed navigation overflow | Corrected within Geo: section links preserve #geo and focus target; nav wraps inside available width. Browser checks passed. Native browser zoom remains a separate check. |
+
+### Should modify / completed
+
+- Replaced six-column entry tables with five purpose-labelled columns; retained all 17 ground-state rows and existing ranges.
+- Moved one shared selected-detail table beneath its material group; no duplicate quick-card grid or distant results.
+- Source short/long-term and dry/saturated values are individually labelled; uppercase source C_a and q_ult formula notes render subscripts.
+- Default generic clay/rock avoids assumed silty-clay/sandstone. Optional USCS lists are family-compatible; row changes clear refinements.
+
+### Add / delete or simplify
+
+Added direct Bearing, Settlement, Sliding and Piles/anchors question disclosures. All six ultimate clay screens, five RQD rows, seven base-interface rows and fifteen pile/anchor rows remain available without selection. Removed the outer Foundation disclosure, redundant result-card grid and top-level parameter-detail entry; the full parameter inventory is inside selected details. No loads, geometry or required numeric inputs were added.
+
+### Unclear / source gap
+
+The inherited source register still requires independent acceptance, currency and publication-rights review. Gravel allowable bearing, rock-mass modulus, consolidation/subgrade reaction, generic pile base/shaft stress and unmodelled ultimate bearing have no newly admitted general range. Display remains project-required or conditional; no values were invented. The existing derived 5.14s_u coefficient/method independent acceptance gate is not closed by this display change.
+
+### Verified — no numerical change
+
+Existing data fixtures passed, including source interface tables and bearing/strength bands. Guide tests visit all clay/sand/gravel/rock states, compare displayed source ranges and split pairs without altering values. Query mode rejection and project-only boundaries remain tested. This is regression/source-data preservation, not a claim of new independent geotechnical reproduction.
+
+### Test matrix and evidence
+
+- 48 test files passed; production JS syntax and diff-whitespace checks passed.
+- Public build contains 43 allowlisted files and excludes Geo, including guide.css. No push or deployment.
+- audit/geo-reading-flow-review.js passed: 17 default states, no selected default, nearby single panel, keyboard selection/focus/closure, generic defaults, family/USCS reset, gravel missing bearing, exact fresh-sandstone unit weight, RS/XW safeguard, unique IDs, main-app hash retention and zero captured page/console issues.
+- No page overflow at 1440/1040/768/500/390/320 px; standalone checks at 1440/768/600/390/320 px. CSS 200% enlargement/reflow passed after the scoped nav correction; this is not native-browser-zoom or assistive-technology certification.
+- Current screenshots: output/playwright/geo42-{comparison,selected,questions,bearing,settlement,sliding,piles}-{1440,390}.png. Desktop topic captures use 1440 × 1600 and mobile 390 × 2400 viewports; tall element captures may exceed the viewport. Item-level limits are in VISUAL_PAGE_AUDIT.md.
+
+### Residual limitations
+
+Expanded-detail supplement: audit/geo-reading-detail-review.js captured and author-inspected sand, rock, reading help, refinement/classification, bearing modifiers, differential movement, pile source symbols, project checklist and source panels at 1440 px. The upper full inventory was inspected; lower inventory/phone expanded-detail review remains Pending. Six changed text-style samples met 4.5:1 contrast against their solid backgrounds; this does not cover every hover/focus/source-link state. No raw tested engineering subscripts remained in selected/pile rendered text. The source panel's inherited side-by-side warning layout was changed to a full-width section and passed a 320 px overflow check.
+
+Independent engineering acceptance and full accessibility review remain Pending. User task checks are author walkthroughs, not a usability study with unfamiliar engineers. Native browser zoom, complete assistive-technology traversal and full all-state measured contrast need separate evidence. Existing unrelated worktree changes were preserved.
+
+## 2026-09-05 Foundation References Update — geo41
+
+Local author-review revision `20260905geo41`; supersedes geo40 layout, not its source qualifications. No publication or independent engineering acceptance is claimed.
+
+| Reference ID | Source and location | Implementation / boundary |
+| --- | --- | --- |
+| GEO-FHWA-BASE-INTERFACE-01 | FHWA GEC 6, Shallow Foundations (2002), Table 5-15 and Section 5.4; PDF pp. 105–106, printed pp. 99–100 | Seven mass-concrete rows visually checked against the local PDF. Ultimate friction factors and separately rounded interface angles; historical US estimate, not allowable resistance or automatic AS 1726 mapping. Undrained adhesion remains a project input and is not added to drained friction. |
+| GEO-SETTLEMENT-REFERENCE-01 | Look (2014), Tables 11.7 / 11.17, existing source-backed modulus and Poisson rows; FHWA GEC 6 Section 5.3.1, PDF p. 79 / printed p. 73 | Reuses selected ranges without midpoint inference. Consolidation and subgrade reaction remain project inputs. Differential movement is an assessment concept, not a universal permissible value or calculated outcome. FHWA page visually checked. |
+
+UX: full-width comparison first, selected ranges before optional refinement; Foundation references and its three topics are closed by default. Family changes reset optional plasticity/USCS values. The seven base rows and existing fifteen pile/anchor rows are independent reference tables.
+
+Verification: 48 test files passed; public build retained 43 allowlisted files and excluded Geo. `audit/geo-foundation-review.js` passed selection linkage, unselected state, stale-plasticity reset, row counts, keyboard closure and zero page/console errors. No document overflow at 1440/1040/768/500/390/320 px. Four desktop/mobile topic screenshots were visually inspected; full accessibility and independent technical acceptance remain Pending. Source PDFs were not modified or included in public output.
+
+## 2026-09-05 Ground Parameters Interface Reference Update — geo40
+
+Revision `20260905geo40` supersedes the geo39 runtime inventory below. Author visually rechecked Look (2014), Table 20.22, PDF page 331 / printed page 306; Table 21.4, PDF page 337 / printed page 312; and Table 21.17, PDF page 345 / printed page 320. The source PDF remains local and unchanged.
+
+- Corrected the clay bearing note: Table 21.4 starred groundwater notes belong to sand. The main description now identifies the sand water-table assumption and the unresolved gross/net designation. Presumed bearing numbers are unchanged.
+- Marked displayed undrained ultimate band limits Approx.; the rounded stored values are unchanged. Independent validation of the method remains Pending.
+- Added a closed, no-input Pile and anchor references disclosure containing 5 clay-factor rows, 4 sand-factor rows and 6 intact-rock bond rows. This is a general comparison; no selected material automatically adopts a factor, bond stress or design resistance.
+- Sand factors retain the driven-displacement condition and the source's 50% reduction note for low-displacement piles. Clay retains overlapping driven very-stiff bands and the bored adhesion cap. No very-soft or very-loose row is invented. Anchor rows retain soft/hard shale and limestone separately; values are ultimate, not allowable. Source FS and intact/weathered/fractured applicability are visible, with no automatic factor applied.
+- The old application-mode dispatch remains retired. New interfaces are carried by the following active records, not by reviving the archived mode contract.
+
+| Contract ID | Basis / implementation | Evidence and status |
+| --- | --- | --- |
+| `GEO-LOOK-PILE-FACTORS-01` | Look Table 21.17; `interfaceReferences` in Geo data; folded shared renderer | 9 rows visually source-checked and covered by exact-row regression. Interpretive / For Review; independent acceptance and publication-expression review Pending. |
+| `GEO-LOOK-ANCHOR-BOND-01` | Look Table 20.22; `interfaceReferences` in Geo data; folded shared renderer | 6 rows visually source-checked and covered by exact-row regression. Interpretive / For Review; source intact-rock assumption and FS retained; independent acceptance and publication-expression review Pending. |
+
+Validation: 48 test files passed after the 43-file public build; Geo remains excluded. `audit/geo-interface-review.js` verified closed-by-default behavior, all 15 rendered source rows, six widths (1440/1040/768/500/390/320), keyboard closure and no page exceptions. Screenshots `output/playwright/geo40-interface-{1440,390}-{0,1,2}.png` cover the three tables. Sticky navigation obscures the clay heading in the initial capture; no complete visual acceptance is claimed for that heading. See the visual register for item-level limits. No public deployment performed.
+
+## 2026-09-05 Ground Parameters Review Matrix — geo39 historical baseline
+
+Scope: local `codex/geo-parameters` working tree, asset revision `20260905geo39`; compare-first Ground Parameters only. This is an author implementation review, not independent engineering acceptance. Source-page checks dated 4 September remain historical source evidence; no new PDF check is claimed on 5 September.
+
+| Item | Current evidence | Status / next action |
+| --- | --- | --- |
+| Active scope | Comparison tables, optional refinement, selected ranges, project checklist and folded details | Implemented; old application dispatch removed. Retired DCP, pile and anchor source fragments are recoverable in `archive/geo-application-prototype.md` and excluded from the public artifact. |
+| `GEO-AS1726-CLASS-01` | Prior exact classification-row checks; current data regression | Source-row check retained. Independent interpretation review Pending; record reviewer, edition/amendment, date and acceptance evidence before promoting the page. |
+| `GEO-LOOK-INTERPRET-01` | Current data and query regression; prior source-page checks | For Review. Register all unit-weight sources, including Table 9.2 for rock, and verify applicability independently. |
+| `GEO-LOOK-SOIL-BEARING-01` | Table 21.4; current clay/sand values preserved; browser confirms stiff clay 100–200 kPa and dense sand 275–450 kPa; gravel remains unavailable | For Review. Independent review of exact rows and natural-ground, groundwater, width, strip-footing and settlement conditions Pending. |
+| `GEO-LOOK-ROCK-BEARING-01` | Tables 22.1 / 22.2 retained; browser confirms medium-strength rock 2–12 MPa and unknown weathering | For Review. Independent rock-mass applicability and lower-limit interpretation Pending. |
+| `GEO-DERIVED-UNDRAINED-01` | Existing displayed `5.14s_u` screening bands retained | For Review. Dedicated independent coefficient/method reference, unrounded limits and rounding acceptance Pending; AS 1726 class bands do not establish a bearing method. |
+| Unsupported old modes | Updated query regression rejects shallow/pile/anchor/invalid mode without ground or application output | Pass; legacy mode code and fixtures no longer run as active page behavior. |
+| Browser behavior | `audit/geo-browser-review.js`: unselected default, keyboard Enter on stiff clay, dense sand, gravel and rock transition; widths 1440/1040/768/500/390/320 | Pass for these checks; zero document overflow and captured page errors/console warnings. This does not constitute a full accessibility audit. |
+| Visual evidence | `VISUAL_PAGE_AUDIT.md` Geo section; `output/playwright/geo39-*.png` | Partial current evidence. Expanded details/sources, complete keyboard traversal, measured contrast, assistive-technology output and actual 200% browser zoom remain Pending. |
+| Automated checks | 48 `tests/*.test.js` files run after public build; Geo source/query/DOM checks included; 43-file public artifact excludes Geo | Pass on 5 September. Test count is regression evidence, not independent technical approval. |
+| Source currency | AS 1726:2017 remains the adopted classification edition; previous official-store retrieval did not expose status metadata | Review_Due. Record official edition/amendment status and date; do not claim current edition solely from the year or successful local tests. |
+| Publication | Geo remains Unreleased; no allowlist admission, release commit or public deployment in this change | Pending explicit publication decision and applicable evidence closure. Public beta and Checked status are separate decisions. |
+
+Item-level publication-expression review (technical citation remains separate):
+
+| Content | Review disposition | Remaining evidence |
+| --- | --- | --- |
+| Conventional parameter names, symbols and units | Not treated as source extracts merely because they occur in a reference | No blanket source-entitlement blocker for these terms |
+| Original controls, page layout, compact labels and project checklist | Independently authored interface expression | Retain source attribution where a statement depends on a technical reference |
+| AS 1726 classification wording and compiled bands | Candidate source-specific expression/selection | Item-level entitlement review Pending; no permission or legal approval inferred |
+| Look range selection and comparison-table arrangement | Candidate source-specific selection/arrangement | Item-level entitlement review Pending; assess actual displayed content, not simply whether the book is cited |
+| Private PDFs, rendered source pages and retired source fragments | Excluded from public build | Preserve exclusion; technical review alone does not authorize redistribution |
+
+## 2026-08-28 Ground Parameters Local Prototype
+
+The `Ground Parameters` page is an `Unreleased` local-only reference aid. AS 1726:2017 Tables 11, 12, 19 and 20 were visually checked at PDF pages 33, 34, 46 and 47 for cohesive consistency, non-cohesive relative density, rock material strength and weathering terminology. Look (2014) Tables 5.11, 5.15, 7.8, 11.7, 20.22 and 21.17 were visually checked at PDF pages 89, 92, 115, 174, 331 and 345 for interpretive DCP, friction-angle, foundation modulus, shallow-bearing, rock-anchor-bond and pile-interface rows.
+
+`Reference parameters for interpretation of borehole logs 1` remains an internal practical reference only. It informed the useful content groups but is not a standard or formal design document; its unverified and directionally suspect numerical rows do not control the page dataset.
+
+The source-row, pure-query and DOM/public-boundary tests pass with the complete existing local suite. Desktop 1440 x 1000 and phone 390 x 844 browser checks confirm the default cohesive result, four mode controls, DCP shallow reference, bored-clay pile factor, sandstone anchor bond range, intact-rock warning, zero document-level horizontal overflow and zero final console warnings or errors. The `geo-parameters/` folder remains absent from `public-build-manifest.json`, and the public build allowlist/dependency test continues to pass.
+
+## 2026-08-29 Ground Parameters Main-tab and Parameter-group Expansion
+
+The local module is now integrated as the first `Foundations` tab at `index.html#geo`. It remains `Unreleased`: matched `UNRELEASED:geo` source blocks are removed by the public build, `geo-parameters/` is not allowlisted, and the public-build test rejects any Geo marker, label or dependency in `dist`.
+
+The result table now uses seven groups: `Classification`, `Ground model`, `Physical / state`, `Strength`, `Deformation / compressibility`, `Hydraulic / durability` and `Foundation / interface`. Checked Look (2014) rows add dry/saturated unit weight, effective cohesion/friction, first-check permeability, Poisson ratio and intact-rock unit weight. Common geotechnical-report fields without a defensible description-only correlation display `Project report value required`, including water content and index properties, groundwater, consolidation/OCR, earth-pressure and chemical/aggressivity values.
+
+The rock-anchor path now fails closed for a bond-table material mismatch and for every weathering state other than fresh rock. The standalone page remains only as an isolated review harness; it is not the intended SC Handbook navigation route.
+
+The foundation-design expansion makes bearing capacity and the other commonly required design inputs visible in the grouped table. Ground-description mode presents the missing-input inventory; Shallow foundation adds the cited DCP-based indicative allowable bearing range plus project-only ultimate/design bearing, settlement, `kv`, interface and founding requirements; Pile foundation adds project shaft, toe, lateral, downdrag, group and testing rows; Rock anchor adds project bond, fixed/free length, ground-mass and acceptance-test rows. No description-only design resistance is synthesized.
+
+## 2026-08-30 Ground Parameters Low-input Range Overview
+
+The local `#geo` tab now keeps the default description path to ground family, material and descriptive state, with weathering added only for rock. A clickable same-material overview shows all AS 1726 descriptive states at once and updates the detailed table without adding another input. Missing optional plasticity and USCS selections show broad, labelled Look (2014) material-family envelopes rather than an unexplained blank project value.
+
+Shallow-foundation DCP now defaults to `Not selected`, so no bearing range is implied from the soil description. Rock-anchor mode uses the selected rock family directly and removes the duplicate bond-table rock selector; shale and limestone show the combined soft-to-hard source envelope only for fresh rock. These remain interpretive references and do not generate adopted project parameters or design resistance.
+
+## 2026-08-31 Ground Parameters Source-language and Field-test Completion
+
+Direct review of the readable Look (2014) source confirms Table 7.3 as representative dry/saturated unit weight, Table 7.9 as typical peak effective strength with long-term softening and cohesion-loss warnings, Table 5.15 as DCP allowable bearing capacity with FS = 3 and soil/plasticity dependence, Table 20.22 as intact-rock grout-rock bond stress, and Table 21.17 as approximate pile shaft factors. The visible terminology and limitations now follow those source conditions.
+
+The quick state overview and detailed table now include Look Table 5.3 clay SPT indications and Table 5.5 clean-medium-sand field/corrected SPT indications without adding inputs. Gravel remains project-only for SPT correlation. Project-report inventory now also exposes bulk/natural unit weight, reactivity/volume change, raw field-test records and corrections, `mv`/`Cα`, and liquefaction/cyclic-softening inputs.
+
+Direct visual re-review identified that Look Table 21.17 overlaps `Very stiff` across the adjacent driven-clay rows: `α = 0.75` for `Stiff to very stiff` and `α = 0.25` for `Very stiff to hard`. The page therefore displays `Source overlap: 0.25-0.75` and requires project selection instead of silently assigning one factor. `Soft to firm`, `Stiff` and `Hard` retain the unambiguous source rows. Application-standard names are shown as routing references only and do not supply design values.
+
+The same re-review restored the AS 1726:2017 Table 20 weathering logic. `Highly weathered` now states that rock strength is significantly changed; `Moderately weathered` states little or no strength change; `Distinctly weathered` remains the permitted combined term only where HW and MW cannot practicably be distinguished. Older percentage-decomposition wording has been removed.
+
+The project-required inventory now adds stratum levels and thicknesses, origin and variability, the adopted ground model, characteristic/moderately-conservative/design parameter sets, relevant collapsibility/dispersivity/slaking risks, and expanded rock-mass evidence. Rock output lists measured UCS / point-load correlation, TCR / RQD, fracture frequency, controlling defect descriptions and the nominated GSI / RMR / Q or other project model without generating default values. The internal borehole-log PDF remains a content checklist only and does not control any number.
+
+The main-app parameter table now converts to labelled vertical records at 760 px and below, keeping parameter, range/status and basis/limitation in reading order without internal horizontal scrolling. Browser checks at 1040, 768, 500, 390 and 320 px report zero document and table overflow; cohesive, granular, rock, shallow-foundation, driven-pile overlap and fresh-rock anchor states reproduce the expected outputs with zero console warnings or errors. The complete local suite passes 48/48 test files, and the 43-file public build continues to exclude the Unreleased Geo module.
+
+## 2026-08-31 Ground Parameters Basic-judgement Layer
+
+The selected result now brings the usable comparison logic above the long parameter inventory without adding inputs. Cohesive soil shows short-term `su`, drained/long-term `c′ / φ′` status, representative `γd / γsat`, short/long-term foundation modulus, SPT/DCP indications and the permeability first check. Granular soil shows relative-density state, `φ′`, representative weight, foundation modulus, field indications and permeability. Rock shows intact UCS / Is(50), weathering, exact intact-unit-weight status and the separate rock-mass evidence requirement.
+
+The same-material state cards now expose the same comparison dimensions instead of only three headline values. Look (2014) Table 11.7 gravel secant-modulus rows are included for loose, medium and dense source states; the source term `Medium` is explicitly aligned to the AS 1726 `Medium dense` class for comparison only, while very loose and very dense gravel remain without a matching row. The visible groundwater logic reproduces `γ′ = γsat - 9.81 kN/m³` as a transparent relation, not an adopted value. Classification, interpretive and project-required roles remain separate, and no midpoint, bearing value or interface resistance is inferred from the selected description.
+
+## 2026-08-31 Ground Parameters Symbol and Design-use Normalisation
+
+The visible parameter notation now follows common Australian geotechnical forms with rendered subscripts: `s_u`, `I_D`, `I_s(50)`, `γ_d / γ_sat`, `E_s`, consolidation indices, earth-pressure coefficients and bearing/subgrade symbols. Pile project rows use AS 2159 `f_m,s` and `f_b` first, retaining `q_s / q_b` only as common report aliases. Look Table 21.17 clay adhesion is displayed as the unambiguous modern relation `c_a = αs_u`, with the source `C_a = αC_u` wording disclosed, and granular `K_s` is explicitly distinguished from subgrade modulus.
+
+The no-extra-input quick ranges now carry use-context tags for total/effective stress, short/drained conditions, SLS settlement, groundwater, evidence and classification. The project-required inventory adds `N_60 / (N_1)_60`, CPT channels, sensitivity and remoulded/residual strength, `k_h / k_v`, conditional dynamic stiffness/damping, joint shear strength, shallow-foundation sliding/uplift/global-stability/scour checks and pile `t-z / q-z / p-y` models. These additions improve design-input completeness without generating adopted values.
+
+## 2026-09-04 Ground Parameters Source-page and Release-boundary Recheck
+
+The readable Look (2014) source was visually rechecked at PDF pages 85, 86, 89, 92, 112, 115, 128, 174, 179, 331, 337, 345 and 356. These pages cover clay and clean-sand SPT indications, DCP indications and allowable-bearing screening, representative dry/saturated unit weight, granular and cohesive effective strength, classification-based permeability, foundation secant modulus, Poisson ratio, rock-anchor ultimate bond stress, presumed shallow bearing, pile-interface factors, and the RQD/rock-strength bearing references. The displayed numeric ranges remain consistent with the cited rows.
+
+The visible shallow-bearing basis now states the source condition directly: natural ground, `B > 1 m` and `25 mm` settlement, with groundwater and footing modifiers. The RQD note now identifies the source method as a first approximation and exposes the lower-applicable-limit rule together with UCS, allowable concrete stress, defects and weathering. Stale instructions to select removed Shallow/Pile application modes were deleted from the detailed project-input inventory; the compact checklist now includes anchor grout-ground bond/fixed-length input as a project requirement.
+
+Copyright and source entitlement are reviewed item by item. Common parameter names, conventional symbols, units, general engineering concepts and independently written factual explanations are not classified as extracts merely because they also occur in a Standard or handbook. Source-specific wording, figures, copied table structures and any substantial selection or arrangement remain subject to rights review. This boundary does not change the engineering status: AS 1726 rows are classification-only, Look rows remain interpretive `For Review`, and project adoption still requires a project geotechnical report and competent review.
+
 ## 2026-08-12 Rock Anchor Catalogue and Selection-flow Update
 
 The selector remains a two-level `Supplier` to `Product / system` workflow. The product list uses only four broad evidence/procurement groups: `Published products`, `System families`, `Australian pathways` and `Project schedule`. These are not subdivided again by tendon form. No third selector, product-results table, design resistance or utilisation has been added.
@@ -1584,3 +1795,8 @@ Build 0.7.77 corrects the arrow-side square-butt symbol after visual review of t
 Each of the 12 common Weld symbol cards now identifies its specific governing AS 1101.3:2026 figure or figures. The canonical outline requires figure-level visual verification and same-card attribution rather than an undifferentiated source range. Public linework remains a concise SVG quick-reference redraw labelled `Schematic only, not to scale`; Standards screenshots or copied figures are excluded unless reproduction permission is recorded.
 
 The release retains the Build 0.7.76 category-scope map and all later Axial, Monopole, Concrete and Foundations corrections. The shared stylesheet receives a new Weld-symbol cache key; unchanged calculation and application modules retain their existing verified keys.
+
+
+## 2026-09-21 Geo75 consolidation
+
+Ground Parameters now has material-specific Clay, Sand, Gravel and Rock overviews, one selected-detail table, source-qualified foundation references and concise applicability notes. The original parameter ranges are preserved; shaft stresses are explicitly conditional calculations. Official AS1726:2017 catalogue status verified Current on 21 September 2026. Geo72/74 external checks and Geo75 item-specific publication review are indexed in `geo-parameters/PREPUBLICATION_REVIEW.md`. Manual professional/accessibility acceptance is deferred, not approved. No engineering certification is implied by tests or repository synchronization.

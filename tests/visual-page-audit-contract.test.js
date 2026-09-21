@@ -40,6 +40,11 @@ assert.doesNotMatch(audit, /FIG-[A-Z]+-\d{2}\s+(?:to|through|-)\s+FIG-[A-Z]+-\d{
 assert.doesNotMatch(audit, /CARD-[A-Z]+-\d{2}\s+(?:to|through|-)\s+CARD-[A-Z]+-\d{2}/i);
 
 for (const match of rows) {
+  if (match[2] === "GEO") {
+    assert.match(match[0], /\| Partial — /, "Local Geo review must not imply completed visual acceptance");
+    assert.match(match[0], /Pending|requires separate evidence/, "Partial Geo review must identify outstanding evidence");
+    continue;
+  }
   assert.match(match[0], /(Verified|Finding `V-\d{2}`)/, `Audit row lacks an item-specific result: ${match[0]}`);
 }
 

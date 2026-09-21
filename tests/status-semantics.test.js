@@ -31,7 +31,7 @@ assert.doesNotMatch(html, /tool-status[^>]*>Checked/);
 
 const issueStatuses = [...html.matchAll(/<span[^>]*class="tool-status"[^>]*>([^<]+)<\/span>/g)]
   .map(match => match[1].replace(/&middot;/g, "·").trim());
-assert.equal(issueStatuses.length, 10, "Every current tool must expose one issue status.");
+assert.equal(issueStatuses.length, 11, "Every current local tool must expose one issue status.");
 issueStatuses.forEach(status => {
   assert.match(status, /^(Draft|For Review|Checked|Superseded|Do_Not_Use)(?:\b|\s|·)/);
 });

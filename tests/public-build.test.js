@@ -48,6 +48,16 @@ function sha256(filePath) {
   return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
 }
 
+function sha256Text(value) {
+  return crypto.createHash("sha256").update(value).digest("hex");
+}
+
+function publicSourceContent(filePath) {
+  return fs.readFileSync(filePath, "utf8")
+    .replace(/<!--\s*UNRELEASED:([a-z0-9-]+):START\s*-->[\s\S]*?<!--\s*UNRELEASED:\1:END\s*-->/gi, "")
+    .replace(/\/\*\s*UNRELEASED:([a-z0-9-]+):START\s*\*\/[\s\S]*?\/\*\s*UNRELEASED:\1:END\s*\*\//gi, "");
+}
+
 for (const entry of manifest.files) {
   assert.equal(typeof entry.path, "string");
   assert.match(entry.sha256, /^[a-f0-9]{64}$/);
@@ -58,7 +68,9 @@ for (const entry of manifest.files) {
   assert.ok(fs.existsSync(filePath) && fs.statSync(filePath).isFile(), `Manifest file missing: ${entry.path}`);
   assert.equal(sha256(filePath), entry.sha256, `Hash mismatch: ${entry.path}`);
   if (entry.path !== ".nojekyll") {
-    assert.equal(sha256(path.join(root, entry.path)), entry.sha256, `Built file is stale: ${entry.path}`);
+    const sourcePath = path.join(root, entry.path);
+    const expectedHash = [".html", ".css", ".js"].includes(path.extname(entry.path).toLowerCase()) ? sha256Text(publicSourceContent(sourcePath)) : sha256(sourcePath);
+    assert.equal(expectedHash, entry.sha256, `Built file is stale: ${entry.path}`);
   }
 }
 
@@ -72,6 +84,10 @@ function localReference(value) {
 
 const html = fs.readFileSync(path.join(outputRoot, "index.html"), "utf8");
 const styles = fs.readFileSync(path.join(outputRoot, "styles.css"), "utf8");
+const app = fs.readFileSync(path.join(outputRoot, "app.js"), "utf8");
+for (const publicText of [html, styles, app]) {
+  assert.doesNotMatch(publicText, /UNRELEASED:geo|Ground Parameters|geo-parameters\//, "Unreleased Geo content entered the public artifact.");
+}
 const references = [];
 
 for (const match of html.matchAll(/(?:src|href|srcset)="([^"]+)"/g)) {
