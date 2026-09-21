@@ -202,13 +202,3 @@ All 22 named bearing reference rows/mappings and the five finite derived boundar
 ## 10. Residual limits and release decision
 
 Remain local and Unreleased. Native zoom, screen-reader speech, complete visual evidence and independent professional/publication acceptance still need closure. No commit, merge, push, allowlist admission or deployment was performed. The next release decision must name the reviewer and the intended publication scope; no geotechnical design approval is implied.
-
-
-
-
-
-
-
-
-
-

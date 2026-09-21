@@ -118,4 +118,3 @@ Geo46 applicability corrections: no sand DCP bands for gravel; sand modulus rest
 Historical release-gate evidence: `PREPUBLICATION_REVIEW.md`. Geo45 removes repeated selected bearing/E/ν values from Foundation questions, separates rock E_rm and ν, distinguishes the two k_v quantities by name/unit, and adds the hydrostatic submerged-weight relation. Existing source ranges, ultimate examples and release boundaries are unchanged. The folded full inventory remains intentionally complete for traceability.
 
 Status: For Review / local only. Governing rules: SC_HANDBOOK.md Geo section and Section 15.19. This is an implementation record, not a second master outline.
-
