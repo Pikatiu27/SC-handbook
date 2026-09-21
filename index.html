@@ -11,11 +11,11 @@
   <meta property="og:url" content="https://pikatiu27.github.io/SC-handbook/">
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260828padstm1">
-  <!-- UNRELEASED:geo:START -->
-  <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo75">
-  <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo75">
-  <!-- UNRELEASED:geo:END -->
+  <link rel="stylesheet" href="styles.css?v=20260921geo76">
+
+  <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo76">
+  <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo76">
+
 </head>
 <body>
   <header class="topbar">
@@ -49,9 +49,9 @@
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-pressed="false" hidden>Steel Monopole Section Capacity</button>
-          <!-- UNRELEASED:geo:START -->
+
           <button class="tool-tab" type="button" data-category="foundations" data-tool="geo" aria-controls="geoPanel" aria-pressed="false" hidden>Ground Parameters</button>
-          <!-- UNRELEASED:geo:END -->
+
           <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-pressed="false" hidden>Concrete Pad Section</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-pressed="false" hidden>Reinforcement</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-pressed="false" hidden>Screw Piles Selector</button>
@@ -1942,11 +1942,11 @@
       </details>
     </section>
 
-    <!-- UNRELEASED:geo:START -->
+
     <section id="geoPanel" class="tool-panel geo-guide" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Foundations &middot; ground description lookup</p><h2>Ground Parameters</h2></div>
-        <span class="tool-status">For Review &middot; Unreleased local reference aid</span>
+        <span class="tool-status">For Review &middot; Quick reference</span>
       </div>
       <p class="geo-boundary"><b>Quick ranges only.</b> Confirm project values before design.</p>
       <section class="geo-overview" aria-labelledby="geoOverviewHeading">
@@ -2015,7 +2015,7 @@
       </details>
       <details class="source-card geo-sources"><summary><span><b>Sources and limitations</b><small>Check before use</small></span><i>+</i></summary><div class="source-body"><div class="geo-source-grid"><article><b>FHWA GEC 6 (2002) · For Review</b><p>Eq. (5-4) and Table 5-1: ultimate bearing example. Table 5-15: base friction. Sections 5.3–5.4: settlement and sliding. Historical US guidance, not Australian design values.</p></article><article><b>AS 1726:2017 · Classification tables checked</b><p>Tables 11, 12, 19 and 20: classification terminology and bands. Official store: Current, checked 21 Sep 2026. Confirm project adoption.</p></article><article><b>Look (2014) · For Review</b><p>Selected tables supply typical unit weight, SPT/DCP correlations, strength, permeability, stiffness, Poisson ratio and preliminary bearing ranges.</p></article><article><b>Application standards · Route only</b><p>Use the project-nominated editions of AS 2159 for piling, AS 5100.3 or AS 2870 where applicable, AS 4678 for retaining structures, and the nominated ground-anchor standard. No design values are reproduced from these routes.</p></article><article><b>Internal borehole-log table · Reference only</b><p>Used to shape the practical inventory. It is not a standard or formal design document and does not control numerical outputs.</p></article><article><b>Government borehole portals · Context only</b><p><a href="https://georesglobe.information.qld.gov.au/" target="_blank" rel="noopener">QLD GeoResGlobe</a> · <a href="https://www.resources.nsw.gov.au/geological-survey/minview" target="_blank" rel="noopener">NSW MinView</a> · <a href="https://resources.vic.gov.au/geology-and-data/geological-survey-victoria" target="_blank" rel="noopener">VIC GeoVic</a> · <a href="https://geoview.dmp.wa.gov.au/GeoView/?Module=Drillholes&amp;Viewer=GeoVIEW&amp;layerTheme=Drillholes" target="_blank" rel="noopener">WA GeoVIEW</a> · <a href="https://www.energymining.sa.gov.au/industry/energy-resources/data-centre/online-databases/sarig" target="_blank" rel="noopener">SA SARIG</a> · <a href="https://strike.nt.gov.au/" target="_blank" rel="noopener">NT STRIKE</a> · <a href="https://www.mrt.tas.gov.au/products/digital_data/data_downloads/boreholes_drill_holes_data" target="_blank" rel="noopener">TAS MRT</a>. Use to locate logs, tests and reports; regional geology is not a design parameter.</p></article><article><b>Public report spot checks · Site-specific</b><p><a href="https://www.statedevelopment.qld.gov.au/__data/assets/pdf_file/0031/99814/planning-report.pdf" target="_blank" rel="noopener">QLD</a> project drawing, p. 24 F3: 150 kPa safe working pressure in natural stiff clay; project founding conditions apply. <a href="https://apps.planningportal.nsw.gov.au/prweb/PRRestService/DocMgmt/v1/PublicDocuments/DATA-WORKATTACH-FILE%20PEC-DPE-EP-WORK%20PPSHCC-167%2120230510T021559.944%20GMT" target="_blank" rel="noopener">NSW</a> assessment, Table 8 (PDF p. 23): site-specific allowable pressures of 100, 150, 1000 and 2500 kPa by founding material; excavation inspection and settlement confirmation required. These cases do not set the generic ranges above.</p></article></div><div class="source-notes"><p><b>Before use</b> &middot; Confirm project ground model, tests, groundwater, design parameters, geometry and verification.</p></div></div></details>
     </section>
-    <!-- UNRELEASED:geo:END -->
+
 
     <section id="rockPanel" class="tool-panel" hidden>
       <div class="tool-heading">
@@ -2102,7 +2102,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.79 &middot; technically reviewed 28 Aug 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.80 &middot; updated 21 Sep 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>
@@ -2123,14 +2123,14 @@
   <script src="reo-calculation.js?v=20260812displaycontract1"></script>
   <script src="reo-state.js?v=20260819reostate1"></script>
   <script src="monopole-capacity.js?v=20260821monopoleflow1"></script>
-  <!-- UNRELEASED:geo:START -->
-      <script src="geo-parameters/geo-parameters-data.js?v=20260921geo75"></script>
-      <script src="geo-parameters/geo-parameters.js?v=20260921geo75"></script>
-  <!-- UNRELEASED:geo:END -->
-  <script src="app.js?v=20260828padstm1"></script>
-  <!-- UNRELEASED:geo:START -->
-      <script src="geo-parameters/app.js?v=20260921geo75"></script>
-  <!-- UNRELEASED:geo:END -->
+
+      <script src="geo-parameters/geo-parameters-data.js?v=20260921geo76"></script>
+      <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
+
+  <script src="app.js?v=20260921geo76"></script>
+
+      <script src="geo-parameters/app.js?v=20260921geo76"></script>
+
   <script src="monopole-app.js?v=20260821monopoleaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
 </body>

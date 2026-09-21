@@ -3700,6 +3700,9 @@ Validation must include supplier/product selection, broad grouped product option
 
 ### 15.16A Ground Parameters Web Page Rules
 
+**Geo76 / Build 0.7.80 publication update:** the user explicitly authorised enabling Ground Parameters on the public website, superseding the source-only scope below. Seven Geo runtime files are allowlisted; source PDFs, audits and review Markdown remain excluded from the deployed artifact. Show For Review / Quick reference, retain all engineering conditions, and do not mark deferred professional/accessibility acceptance or unresolved source-use entitlement as passed. Earlier release-exclusion instructions below are historical.
+
+
 Current implementation: **Geo75 / 20260921geo75**. User-approved repository scope: synchronize the outline and Geo source; keep Geo disabled in the deployed website. The integrated and standalone entries share four material tabs and material-specific first-look tables. Retain the concise Geo73 scope notes, medium–coarse sand modulus heading, stated shaft-stress scenario, separate uplift assessment and Geo74 method-specific anchor factor. The unverified WA example is omitted. AS 1726:2017 is listed Current in the official store, checked 21 September 2026; project adoption is separate.
 
 Current evidence and publication disposition: `geo-parameters/CONTENT_PLAN.md`, `geo-parameters/PREPUBLICATION_REVIEW.md` and `geo-parameters/GEO75_SOURCE_PUBLICATION_REVIEW.md`. Manual engineering/accessibility acceptance is deferred at user request, not passed. Earlier Geo records below are historical decisions retained where not superseded. The public-build exclusion remains controlling until the publication scope is explicitly changed.

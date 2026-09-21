@@ -86,8 +86,11 @@ const html = fs.readFileSync(path.join(outputRoot, "index.html"), "utf8");
 const styles = fs.readFileSync(path.join(outputRoot, "styles.css"), "utf8");
 const app = fs.readFileSync(path.join(outputRoot, "app.js"), "utf8");
 for (const publicText of [html, styles, app]) {
-  assert.doesNotMatch(publicText, /UNRELEASED:geo|Ground Parameters|geo-parameters\//, "Unreleased Geo content entered the public artifact.");
+  assert.doesNotMatch(publicText, /UNRELEASED:geo/, "Stale Geo release markers in public artifact.");
 }
+assert.match(html, /id="geoPanel"/);
+assert.match(html, /geo-parameters\/app.js/);
+assert.ok(!manifest.files.some(entry=>entry.path.startsWith("geo-parameters/") && entry.path.endsWith(".md")), "Geo review documents remain excluded");
 const references = [];
 
 for (const match of html.matchAll(/(?:src|href|srcset)="([^"]+)"/g)) {

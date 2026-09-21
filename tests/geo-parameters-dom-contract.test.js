@@ -17,7 +17,7 @@ for(const document of [html,shell]){
   assert.match(document,/<div id="selectionParking">/);
   assert.ok(document.indexOf('id="resultHeading"')<document.indexOf('id="groundRefinement"'));
   assert.match(document,/role="status" aria-live="polite"/);
-  assert.match(document,/guide.css\?v=20260921geo75/);
+  assert.match(document,/guide.css\?v=20260921geo76/);
   assert.match(document,/FHWA GEC 6 \(2002\)/);
   assert.match(document,/Historical US guidance, not Australian design values\./);
   assert.match(document,/PI band \(Look\)/);
@@ -48,8 +48,9 @@ assert.match(css,/prefers-reduced-motion/);
 assert.match(css,/thead\{display:table-header-group;position:absolute/,"Mobile retains semantic table headers");
 assert.doesNotMatch(css,/thead\{display:none\}/);
 assert.match(css,/font-size:var\(--fs-sm\)/,"Shared typography tokens");
-assert.ok(!manifest.files.some(file=>file.startsWith("geo-parameters/")));
-assert.ok(shell.includes("UNRELEASED:geo:START"));
+assert.ok(manifest.files.includes("geo-parameters/app.js"));
+assert.ok(!manifest.files.some(file=>file.startsWith("geo-parameters/") && file.endsWith(".md")));
+assert.ok(!shell.includes("UNRELEASED:geo:START"));
 console.log("Geo42 reading-flow, DOM and public-boundary contracts passed.");
 
 for(const document of [html,shell]) {

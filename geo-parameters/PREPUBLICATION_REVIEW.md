@@ -1,5 +1,7 @@
 # Ground Parameters — prepublication review
 
+Current: Geo76 / Build 0.7.80. User explicitly authorised public website enablement, superseding source-only synchronization. Runtime only is allowlisted; review documents and source files are excluded from the web artifact. For Review status and numerical conditions retained. Professional/manual accessibility acceptance is deferred; source-use entitlement remains unresolved, not approved by deployment.
+
 ## Current status — Geo75, 21 September 2026
 
 Repository synchronization authorised: the user approved publishing the outline and Geo source to the public repository while keeping Geo disabled in the deployed website. This authorization does not constitute technical acceptance or a third-party licence. Earlier “local only / no push authorised” statements describe prior stages; Geo remains Unreleased as a website feature.

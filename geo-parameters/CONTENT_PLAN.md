@@ -1,5 +1,7 @@
 # Ground Parameters — current implementation plan
 
+Current: Geo76 / Build 0.7.80. User explicitly authorised public website enablement, superseding source-only synchronization. Runtime only is allowlisted; review documents and source files are excluded from the web artifact. For Review status and numerical conditions retained. Professional/manual accessibility acceptance is deferred; source-use entitlement remains unresolved, not approved by deployment.
+
 Current scope incorporates Geo73 findings: medium–coarse sand scope in the modulus header; concise exclusions for residual/fines-bearing/cemented/crushable sand; separate uplift assessment for shaft estimates; shorter material notes. Numerical ranges, equations, typography and responsive layout unchanged. Local / Unreleased.
 
 Current: Geo75 / 20260921geo75. Local / Unreleased.

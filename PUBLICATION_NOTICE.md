@@ -2,7 +2,7 @@
 
 ## Status
 
-SC Handbook is released as a **public beta engineering quick-reference handbook**. Build 0.7.79 was technically reviewed on 28 August 2026. The issue status and limitations displayed within each tool remain controlling; public availability does not promote a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result to checked or issue-ready status.
+SC Handbook is released as a **public beta engineering quick-reference handbook**. Build 0.7.80 adds Ground Parameters on 21 September 2026 as a For Review quick reference. Its independent engineering and manual accessibility acceptance remain deferred; publication does not imply completion of those reviews. The issue status and limitations displayed within each tool remain controlling; public availability does not promote a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result to checked or issue-ready status.
 
 ## Engineering boundary
 

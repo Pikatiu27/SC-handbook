@@ -44,6 +44,13 @@
     "README.md",
     "PUBLICATION_NOTICE.md",
     "LICENSE.md",
-    "THIRD_PARTY_NOTICES.md"
+    "THIRD_PARTY_NOTICES.md",
+    "geo-parameters/index.html",
+    "geo-parameters/geo-parameters.css",
+    "geo-parameters/tab.css",
+    "geo-parameters/guide.css",
+    "geo-parameters/geo-parameters-data.js",
+    "geo-parameters/geo-parameters.js",
+    "geo-parameters/app.js"
   ]
 }
