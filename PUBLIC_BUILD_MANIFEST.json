@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "publicationClass": "Public",
+  "files": [
+    {
+      "path": ".nojekyll",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "LICENSE.md",
+      "sha256": "8ff93c9cf098320c9213b1cd0f08e9b1d3bee7580c6815ac537373fbc1ca7281"
+    },
+    {
+      "path": "PUBLICATION_NOTICE.md",
+      "sha256": "6bd90b56a5aa6d87d21904988d0329f44e2a102b7cfcd22353cd28df362cf7e5"
+    },
+    {
+      "path": "README.md",
+      "sha256": "a7ba7afdd38c10166314ba03d773d4db6289693893d77c21fbf6faa929218d11"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "b03bd77fc9ebd072e54431cf62ab394ae329e6920baa1acadef54c5d146da1ad"
+    },
+    {
+      "path": "app.js",
+      "sha256": "3ba4b1e279b7b6e5a600cca02b1bfc3e23db5f06372c6ccfbe07d8b01c941328"
+    },
+    {
+      "path": "assets/fonts/Lato-Black.ttf",
+      "sha256": "7a41ff951f1a5b19346850801deb745ab4c4921d7a320dc05da80845086a78a5"
+    },
+    {
+      "path": "assets/fonts/Lato-Bold.ttf",
+      "sha256": "02e8f4be57ddc47cb7882c41b60216b6085b1ceaf717514be2b88fa15396238d"
+    },
+    {
+      "path": "assets/fonts/Lato-Regular.ttf",
+      "sha256": "f43f1c7780d69792278f04b136c934a0298fc66f2e974bac13dd2e53adc52bde"
+    },
+    {
+      "path": "assets/fonts/OFL.txt",
+      "sha256": "662c37f121a993aff89dbead6df94713a8bfa9cb3a50d340eaf067aba3bc46d6"
+    },
+    {
+      "path": "assets/generated/beam-section-ub.svg",
+      "sha256": "7455ac6a7ad680737ba45897c63b71f8cf8dc608fa691cd0b05d701e085a619b"
+    },
+    {
+      "path": "assets/generated/beam-section-uc.svg",
+      "sha256": "8a9c3883c36722812f74dd2e74579a806c54707a58f1bd9344ec9249eaa2848c"
+    },
+    {
+      "path": "assets/generated/concrete-pad-publication-style-mobile.svg",
+      "sha256": "0f281b4249d1edbc14e06657db8ddbbdad0302c3bae55f0fc0755f197038a9a7"
+    },
+    {
+      "path": "assets/generated/concrete-pad-publication-style.svg",
+      "sha256": "443a77135084624c6b85c7d8d9b2610920c8cc2cfd2bd63d3b80988f5e383016"
+    },
+    {
+      "path": "assets/generated/member-section-chs.svg",
+      "sha256": "e0f48cd3c200d1453e1e4a18b849cf494d7f854c18f2406fcf2b4c9cce704a11"
+    },
+    {
+      "path": "assets/generated/member-section-equal-angle.svg",
+      "sha256": "788ec703c94adf5b513f1e07c98674fa8a65acd0da8ab6b048abfc66d8fe75d8"
+    },
+    {
+      "path": "assets/generated/member-section-pfc.svg",
+      "sha256": "2cb1a2a96a94c64d5e31c99b649bbc02c3ee704b6b087f4e06f9c91d257330e4"
+    },
+    {
+      "path": "assets/generated/member-section-rhs.svg",
+      "sha256": "b8b538282f288c81730827ad1a3da85046c3e60663017b87c893329a2a5a97c5"
+    },
+    {
+      "path": "assets/generated/member-section-rod.svg",
+      "sha256": "5c9996c45ae3802ea2770353442b7980b349991fefe4d67c38fbb1d61dce2131"
+    },
+    {
+      "path": "assets/generated/member-section-shs.svg",
+      "sha256": "2a53f789cc90c072a6ccc785d4e095efb42fcaecbc0604d8f35b622032711c2e"
+    },
+    {
+      "path": "assets/sc-handbook-icon.svg",
+      "sha256": "219013038c6c61f219be18e188a82de38c4bd04a609726a35d7ad2264aca93fc"
+    },
+    {
+      "path": "beam-custom-section.js",
+      "sha256": "da72eb1b35b1080560642d7d87a83f25bb9e251962e1efa90d63cdfe979ab053"
+    },
+    {
+      "path": "beam-hot-rolled-data.js",
+      "sha256": "55ca29984ba4a82efa940f8189bf475a632e6f4ad7573a7df68b605e87d45d27"
+    },
+    {
+      "path": "beam-section-capacity.js",
+      "sha256": "67c9498bc14b98145ab6f036c070c26173edb82d5cee05b011aea5041cab14ac"
+    },
+    {
+      "path": "beam-section-data.js",
+      "sha256": "ed0fd3c9f03f33269095321d93f7ae8575f56264cfa8a4704c3e80c9d30aeab1"
+    },
+    {
+      "path": "beam-section-reconciliation.js",
+      "sha256": "2f4a45c7adcb9eb5bffecc601195a48aff3a7890c901cc2ecdc1e05e5284d8ed"
+    },
+    {
+      "path": "bolt-capacity.js",
+      "sha256": "e463e1fe4fc9651c258091d92fce8d7c04867f22e30818b96993558e0393dcf4"
+    },
+    {
+      "path": "bolt-integrity.js",
+      "sha256": "94c1d8fe0ab5ee46db52e94186d7ef3f7848c515cfafe61ace3388fd3eeb7f47"
+    },
+    {
+      "path": "concrete-section-calculation.js",
+      "sha256": "49406eaafc5e4a15e1c4dd6f109ef874d51a674c422f3e730e24141352aeb795"
+    },
+    {
+      "path": "engineering-number-format.js",
+      "sha256": "22d2bef7e9b2e4814e56870e5be309f2af2b62d151de4fd012e4e1682c8848be"
+    },
+    {
+      "path": "geo-parameters/app.js",
+      "sha256": "09fae6c8f03ce03541861382fda71eaa6e836c3d3bb791cb4e447441871b5901"
+    },
+    {
+      "path": "geo-parameters/geo-parameters-data.js",
+      "sha256": "794c8511349736b22c4f4892490aaa1f338e263c374016102ed9ff2454e60c63"
+    },
+    {
+      "path": "geo-parameters/geo-parameters.css",
+      "sha256": "29b5e1c5f397cb6f6e45fa37adf69d50ea3de7cd287cfe97a49fd7526bcaa859"
+    },
+    {
+      "path": "geo-parameters/geo-parameters.js",
+      "sha256": "97506dd801e25e9528953b48678940b9e6756da412700099e8a096794dd970cb"
+    },
+    {
+      "path": "geo-parameters/guide.css",
+      "sha256": "6581b496e162cab9b7764d02d981b3660bc708e72926b79c2b291dbba95f04bb"
+    },
+    {
+      "path": "geo-parameters/index.html",
+      "sha256": "70218a04c7218e02a16794ccb91316541be227e364e30518871b95d2acf5084d"
+    },
+    {
+      "path": "geo-parameters/tab.css",
+      "sha256": "df40d18f5a3dd72b0cc11a3d2498c4c26c8b0da5eb6b7d92067bb1eb35f54348"
+    },
+    {
+      "path": "index.html",
+      "sha256": "734328bb105bf129e54a28a566cc81d95ca81a6c5bfc990e8ef5982c9f397fd7"
+    },
+    {
+      "path": "member-capacity.js",
+      "sha256": "ef3876291f804606467e458c74e9b96f92e5414c925e3a38402a7d41903b43a3"
+    },
+    {
+      "path": "member-form-factor.js",
+      "sha256": "a5975afb6bb9aa5da248a2df42dcc530ac14959be4459189529e2029f7747f29"
+    },
+    {
+      "path": "monopole-app.js",
+      "sha256": "a20cf5d72f2778d9f72293ce7595fd0ccecdb90457426c712d8509f83e77c8b4"
+    },
+    {
+      "path": "monopole-capacity.js",
+      "sha256": "4c14ae063ed7b81f95198db395a7cd4bb2ce4f45591577551e97a61bb4158577"
+    },
+    {
+      "path": "reo-calculation.js",
+      "sha256": "600641c13c47e667de6c4f5061fa2d8e19784fb528bd8fbd1423d2e2c0983029"
+    },
+    {
+      "path": "reo-state.js",
+      "sha256": "84b46b1ed0e8247ec2a5830dbabe43917b420c1b424cf4fb5e7acfd297167236"
+    },
+    {
+      "path": "rock-anchor-selector/app.js",
+      "sha256": "b5a4445ab80a117f58c4270c34e9bd8ab205d577d984c3c600634d80d1afca48"
+    },
+    {
+      "path": "screw-demand.js",
+      "sha256": "70623a8fd6a173ed7af8c1909a642fb8e9c177fc6af1bf33b825d2997979ee83"
+    },
+    {
+      "path": "section-catalogue.js",
+      "sha256": "ac44531675a2137dede8563114d9dbeb67dc46659754c0cd16cdb4e19e50b495"
+    },
+    {
+      "path": "section-geometry.js",
+      "sha256": "5cb1860d3d4c212e93219e9f88ea60eef3cc41581acd6fa08ce6e65f4218f1bb"
+    },
+    {
+      "path": "steel-materials.js",
+      "sha256": "68954279f1c0dcbfa00509fad8a6f3091e7804c0fecd69c44f562c8dcd219df7"
+    },
+    {
+      "path": "styles.css",
+      "sha256": "34f9b3c95f6adafa501a83ee4d255a2c3dec4262541c09bf0a9ec6aa209ddca4"
+    },
+    {
+      "path": "weld-capacity.js",
+      "sha256": "85f8dfc746dfe6fea6c4a2347dc3db1771be61629776c986476de7885ff1547f"
+    }
+  ]
+}
