@@ -4,11 +4,11 @@ Static, English-language engineering lookup handbook with traceable quick-refere
 
 **Release status:** Public beta. This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
-**Repository direction:** Preserve the complete current project and future development in a private source repository. Keep `Pikatiu27/SC-handbook` as the public Pages repository for the existing website URL, containing only the approved site artifact and minimum deployment files after migration. The split is not yet complete; the current public repository still exposes its source and history, and past public copies cannot be made private retroactively. Do not push new work to the current public remote during the transition.
+**Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
 Every new tool, tab, dataset, generated asset or materially expanded capability starts as `Unreleased`. It must be discussed and receive an explicit `Public`, `Restricted` or `Private` publication decision before release. Only explicitly approved `Public` additions may enter the unauthenticated website. A hidden tab is not private: any code, data or asset delivered to a browser must be treated as publicly retrievable.
 
-The governed build uses the explicit file allowlist in `public-build-manifest.json`. Run `node scripts/build-public-site.js` to reproduce `dist/` locally. After the repository split, the private source release workflow must verify and transfer only that artifact to the public Pages repository. Adding a new file to the allowlist is a publication decision, not a routine build step.
+The governed build uses the explicit file allowlist in `public-build-manifest.json`. Run `node scripts/build-public-site.js` in the private source repository to reproduce `dist/` locally. For an approved public release, verify and transfer only that artifact to the public Pages repository. Adding a new file to the allowlist is a publication decision, not a routine build step.
 
 Public site: <https://pikatiu27.github.io/SC-handbook/>
 
@@ -186,6 +186,6 @@ This is engineering quick-reference software, not certified design software. Con
 - `PUBLICATION_NOTICE.md` states the public-beta engineering, Standards/copyright and privacy boundaries.
 - `LICENSE.md` states the repository use terms; public visibility is not an open-source licence.
 - `THIRD_PARTY_NOTICES.md` and `assets/fonts/OFL.txt` retain third-party font notices.
-- The private source `.github/workflows/source-checks.yml` runs the calculation/contract tests, production JavaScript syntax checks and diff-integrity checks. The existing public `.github/workflows/pages.yml` still governs the live site until the artifact-only cutover; after cutover its public replacement must deploy only the verified artifact.
+- The private source `.github/workflows/source-checks.yml` runs the calculation/contract tests, production JavaScript syntax checks and diff-integrity checks. The public `.github/workflows/pages.yml` verifies the artifact inventory and deploys only that artifact after a separate release.
 
 The GitHub Pages source must be configured as **GitHub Actions**. Do not use the legacy direct-from-branch Pages build for a normal public release because it can publish `main` without first passing the repository verification workflow.
