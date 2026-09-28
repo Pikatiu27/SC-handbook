@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo76">
   <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo76">
 
+    <link rel="stylesheet" href="guy-lookup/guy.css?v=20260928public1">
 </head>
 <body>
   <header class="topbar">
@@ -45,6 +46,9 @@
         <nav class="tool-tabs" aria-label="SC Handbook tools">
           <button class="tool-tab active" type="button" data-category="steel-connections" data-tool="bolt" aria-controls="boltPanel" aria-pressed="true">Bolt Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-connections" data-tool="weld" aria-controls="weldPanel" aria-pressed="false">Weld Capacity</button>
+
+          <button class="tool-tab" type="button" data-category="steel-connections" data-tool="guy" aria-controls="guyPanel" aria-pressed="false">Guy &amp; Fittings</button>
+
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
@@ -86,6 +90,50 @@
         </div>
       </details>
     </section>
+
+        <!-- PUBLIC:GUY_PANEL:START -->
+    <section id="guyPanel" class="tool-panel" hidden>
+      <div class="tool-heading"><div><p class="kicker">Catalogue lookup · Public beta</p><h2>Guy &amp; Fittings</h2><p>Compare published strand and fitting specifications. Select a row for its published rating, dimensions and source notes.</p></div><span class="guy-review">Public beta · For Review</span></div>
+      <nav id="guyFamilies" class="guy-families" aria-label="Component family"></nav>
+      <select id="guyFamily" hidden aria-label="Component"></select>
+      <section class="lookup-card guy-catalogue" aria-labelledby="guyCatalogueTitle">
+        <div class="guy-section-heading"><div><h3 id="guyCatalogueTitle">Catalogue comparison</h3><span id="guyCount" role="status" aria-live="polite" aria-atomic="true"></span></div><span class="guy-all-label">All parameters · key values first</span></div>
+        <div class="guy-toolbar"><label><span class="sr-only">Search size, grade, supplier or part number</span><input id="guySearch" type="search" placeholder="Search size, grade, supplier or part number" autocomplete="off"></label><button type="button" id="guyReset">Reset</button></div>
+        <details class="guy-filters"><summary>Optional filters <span id="guyFilterCount"></span></summary>
+        <div class="guy-extra-filters"><label><span id="guyDiameterLabel">Overall strand diameter (mm)</span><input id="guyDiameter" type="text" inputmode="decimal" placeholder="Nearby sizes · optional" aria-describedby="guyNearbyNote guyTableNote"></label><label id="guyMinimumField"><span id="guyMinimumLabel">Minimum MBF (kN)</span><input id="guyMinimum" type="text" inputmode="decimal" placeholder="Published rating · optional" aria-describedby="guyMinimumNote"></label></div>
+        <button type="button" id="guyBrowseAll" hidden>Show all sizes</button>
+<div class="input-group-fields four">
+          <label><span>Supplier</span><select id="guyMaker"></select></label>
+          <label><span>Construction / end form</span><select id="guySeries"></select></label>
+          <label><span>Grade</span><select id="guyGrade"></select></label>
+          <label><span>Sort by</span><select id="guySort"><option value="size">Size: smallest first</option><option value="rating">Published force: lowest first</option><option value="maker">Supplier / part number</option></select></label>
+        </div></details><select id="guyProduct" hidden aria-label="Selected catalogue product"></select>
+        <p id="guyNearbyNote" role="status" class="guy-nearby-note" hidden></p><p id="guyMinimumNote" role="status" hidden></p>
+        <p id="guyTableNote" class="result-note"></p>
+        <div class="guy-table-wrap" role="region" aria-label="Product comparison; scroll for more parameters" tabindex="0"><table id="guyTable" class="guy-table"><caption id="guyCaption"></caption><thead id="guyHead"></thead><tbody id="guyRows"></tbody></table></div>
+        <p id="guyEmpty" hidden>No matching products. Clear the search or change the filters.</p>
+      </section>
+      <details id="guySelection" class="detail-card guy-details"><summary id="guySelectionTitle">Product record</summary><div class="guy-detail-body">
+        <p id="guySelected" class="guy-selected"></p>
+        <div class="guy-record-head"><h3>Published specification</h3><button type="button" id="guyExport">Export record</button><span id="guyExportStatus" role="status"></span></div>
+        <section class="capacity-section" aria-labelledby="guyRatingHeading">
+          <div class="capacity-card guy-rating"><h3 id="guyRatingHeading">Published rating</h3><p class="guy-big"><output id="guyRating">—</output><span id="guyRatingUnit"></span></p><p id="guyOriginal"></p><p id="guyRatingSource" class="result-note"></p></div>
+          <p id="guyWarning" class="guy-warning"></p>
+        </section>
+        <dl id="guyProperties" class="guy-properties"></dl>
+        <div class="guy-source-note"><h3>Source drawing and application notes</h3><div id="guySource"></div></div>
+      </div></details>
+      <details class="source-card guy-details"><summary>How to use these catalogue values</summary><div class="guy-detail-body">
+        <h3>Ratings and units</h3><p>MBF = minimum breaking force. WLL = working load limit. RHS = rated holding strength for the manufacturer's specified strand and grip. These are different quantities; none is automatically a project design resistance. Proof load is a test level.</p>
+        <p>Values in kN are unit conversions only: 1 tonne-force = 9.80665 kN; 1 lbf = 0.0044482216152605 kN. Original values and units remain visible. Minimum-rating filters compare the stated rating type within the selected family.</p>
+        <h3>Source scope</h3><p>This is a bounded catalogue snapshot, not a stock list or confirmation of current manufacture. Each product record gives the source edition, page and review date. Canadian Bekaert grades are not Australian grade equivalents. Manufacturer standard statements do not establish clause compliance or certification of a supplied item.</p>
+        <h3>Limits</h3><p>Similar diameter does not establish interchangeability. No capacity checks, automatic fitting compatibility, whole-assembly rating, mast/pole analysis, pretension, fatigue or anchor checks are provided. Temporary rope grips must not be treated as permanent dynamically loaded mast terminations. Confirm the exact supplied product and installation instructions with the manufacturer.</p>
+        <h3>Missing data</h3><p>A dash means not recorded, never zero. E/EA, prestretch and elongation are not inferred. Area and mass are available for selected strand series only. Twelve records with unresolved ratings are excluded from this lookup.</p>
+        <p>Names and catalogue material belong to their respective owners. No manufacturer endorsement is implied. <a href="guy-lookup/notices.html">Source attribution</a>.</p>
+      </div></details>
+    </section>
+
+    <!-- PUBLIC:GUY_PANEL:END -->
 
     <section id="boltPanel" class="tool-panel active">
       <div class="tool-heading">
@@ -2133,5 +2181,9 @@
 
   <script src="monopole-app.js?v=20260821monopoleaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
+    <script src="guy-lookup/data.js?v=20260928public1"></script>
+  <script src="guy-lookup/units.js?v=20260928public1"></script>
+  <script src="guy-lookup/lookup.js?v=20260928public1"></script>
+  <script src="guy-lookup/app.js?v=20260928public1"></script>
 </body>
 </html>

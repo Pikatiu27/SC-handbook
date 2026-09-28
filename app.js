@@ -2384,6 +2384,10 @@ const toolCategories = {
   "steel-members": ["properties", "member", "beam", "monopole"],
   foundations: [ "geo",  "concrete", "reo", "screw", "rock"]
 };
+
+toolNames.push("guy");
+toolCategories["steel-connections"].push("guy");
+
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };
 const concreteLayerFieldSuffixes = ["Active", "Auto", "Y", "Bar", "Spacing", "Fsy", "Es"];

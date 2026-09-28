@@ -16,7 +16,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "1c45dd3fc0cc49567002081ec718d4871a1471770154f7721f8f09a07ddd4ab1"
+      "sha256": "8b8cebe7764d16387ae12e80fa5a8a23d7a5c0c6dd3e1139fe2f7d7696c34a47"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -24,7 +24,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "3ba4b1e279b7b6e5a600cca02b1bfc3e23db5f06372c6ccfbe07d8b01c941328"
+      "sha256": "45e0cfd632f8c2ac0ca2c9ec590507b142bbab2528bc31e81e8b5c9cb98dac2e"
     },
     {
       "path": "assets/fonts/Lato-Black.ttf",
@@ -151,8 +151,36 @@
       "sha256": "df40d18f5a3dd72b0cc11a3d2498c4c26c8b0da5eb6b7d92067bb1eb35f54348"
     },
     {
+      "path": "guy-lookup/app.js",
+      "sha256": "3e0270240c5da95b2884b5b1c96ba4bb2dd747f6747159748adc8fedeb748b6c"
+    },
+    {
+      "path": "guy-lookup/data.js",
+      "sha256": "bad9e9ad0341a4b4db44ae5778a5b5b877010c7b02472ccf7de961347108a699"
+    },
+    {
+      "path": "guy-lookup/guy.css",
+      "sha256": "f1b7bd07b4631767f3eb27c8b1d9cf1b58a17ade4da16a1f62c5ae5ad9ea2172"
+    },
+    {
+      "path": "guy-lookup/index.html",
+      "sha256": "3e9208bc9b55f1e6dd3d0dbe75658091432bc991ef07a88b42530d81765e6cd6"
+    },
+    {
+      "path": "guy-lookup/lookup.js",
+      "sha256": "c2193f00111c7caeb49c3a8df14ae0b2b0adc0a07c8821ec849bbcacb9224e45"
+    },
+    {
+      "path": "guy-lookup/notices.html",
+      "sha256": "8d523a9f5cfbad767dded405e040e837bec02e152bbc87e894dff7815e592d0b"
+    },
+    {
+      "path": "guy-lookup/units.js",
+      "sha256": "b0f6dc7229f569920e945876119eaa97c23f5efa27d6f509aab781c365b6b285"
+    },
+    {
       "path": "index.html",
-      "sha256": "734328bb105bf129e54a28a566cc81d95ca81a6c5bfc990e8ef5982c9f397fd7"
+      "sha256": "fdd02d76ca52144dd3ed769bf80e589055f56ef1e2274e2ab89c2bfcfe2bab40"
     },
     {
       "path": "member-capacity.js",
