@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo76">
   <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo76">
 
-    <link rel="stylesheet" href="guy-lookup/guy.css?v=20261002public1">
+    <link rel="stylesheet" href="guy-lookup/guy.css?v=20261003detail1">
 </head>
 <body>
   <header class="topbar">
@@ -115,13 +115,13 @@
       </section>
       <details id="guySelection" class="detail-card guy-details"><summary id="guySelectionTitle">Product record</summary><div class="guy-detail-body">
         <p id="guySelected" class="guy-selected"></p>
-        <div class="guy-record-head"><h3>Published specification</h3><button type="button" id="guyExport">Export record</button><span id="guyExportStatus" role="status"></span></div>
+        <div class="guy-detail-actions"><button type="button" data-back-table>← Back to table</button><a id="guyPrimarySource" href="#" target="_blank" rel="noopener noreferrer">Source / drawing ↗</a></div><h3>Key specifications</h3>
         <section class="capacity-section" aria-labelledby="guyRatingHeading">
           <div class="capacity-card guy-rating"><h3 id="guyRatingHeading">Published rating</h3><p class="guy-big"><output id="guyRating">—</output><span id="guyRatingUnit"></span></p><p id="guyOriginal"></p><p id="guyRatingSource" class="result-note"></p></div>
           <p id="guyWarning" class="guy-warning"></p>
         </section>
-        <div id="guyRelated"></div><dl id="guyProperties" class="guy-properties"></dl>
-        <div id="guyFieldIssues" class="guy-field-issues" hidden></div><div id="guyMarketEvidence"></div><div id="guyUseNotes" class="guy-use-notes"></div><div class="guy-source-note"><h3>Source drawing and application notes</h3><div id="guySource"></div></div>
+        <dl id="guyKeyProperties" class="guy-properties"></dl><details id="guyRelatedDetails" class="guy-detail-extra" hidden><summary id="guyRelatedLabel">Related parts</summary><div id="guyRelated"></div></details><details id="guyAllParameters" class="guy-detail-extra"><summary>All recorded parameters</summary><dl id="guyProperties" class="guy-properties"></dl></details>
+        <div id="guyFieldIssues" class="guy-field-issues" hidden></div><p id="guyEvidenceSummary" class="result-note"></p><details id="guyDetailNotes" class="guy-detail-extra"><summary>Source &amp; application notes</summary><div id="guyConflictDetails" class="guy-field-issues" hidden></div><div id="guyMarketEvidence"></div><div id="guyUseNotes" class="guy-use-notes"></div><div class="guy-source-note"><div id="guySource"></div></div></details><div class="guy-detail-actions guy-detail-footer"><button type="button" data-back-table>← Back to table</button><button type="button" id="guyExport">Export record</button><span id="guyExportStatus" role="status"></span></div>
       </div></details>
       <details class="source-card guy-details"><summary>How to use these catalogue values</summary><div class="guy-detail-body">
         <h3>Ratings and units</h3><p>MBL = minimum breaking load (original supplier label). MBF = minimum breaking force. WLL = working load limit. RHS = rated holding strength for the manufacturer's specified strand and grip. These are different quantities; none is automatically a project design resistance. MFL and Tension Rating retain the original manufacturer labels. Efficiency (%) is a separate termination claim. Proof load is a test level.</p>
@@ -2150,7 +2150,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.81 &middot; updated 2 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.82 &middot; updated 3 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>
@@ -2181,10 +2181,10 @@
 
   <script src="monopole-app.js?v=20260821monopoleaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
-    <script src="guy-lookup/data.js?v=20261002public1"></script>
-  <script src="guy-lookup/units.js?v=20261002public1"></script>
-  <script src="guy-lookup/lookup.js?v=20261002public1"></script>
-  <script src="guy-lookup/related.js?v=20261002public1"></script>
-  <script src="guy-lookup/app.js?v=20261002public1"></script>
+    <script src="guy-lookup/data.js?v=20261003detail1"></script>
+  <script src="guy-lookup/units.js?v=20261003detail1"></script>
+  <script src="guy-lookup/lookup.js?v=20261003detail1"></script>
+  <script src="guy-lookup/related.js?v=20261003detail1"></script>
+  <script src="guy-lookup/app.js?v=20261003detail1"></script>
 </body>
 </html>

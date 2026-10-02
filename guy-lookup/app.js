@@ -66,17 +66,18 @@
   }
   function renderProduct() {
     const p = selected;
+    $("AllParameters").open=false;$("DetailNotes").open=false;
     $("SelectionTitle").textContent=p?`Product record · ${p.code}`:"Product record";
     $("Export").disabled = !p;
     renderTable();
     if (!p) {
       $("Selected").textContent = "No matching product. Clear the search or change the filters.";
       $("RatingHeading").textContent = "Published rating"; $("Rating").textContent = "—"; $("RatingUnit").textContent = "";
-      ["Original","RatingSource","Warning","Properties","Source","Related","UseNotes","MarketEvidence","FieldIssues"].forEach(id => $(id).replaceChildren());
+      ["Original","RatingSource","Warning","Properties","Source","Related","UseNotes","MarketEvidence","FieldIssues","KeyProperties","EvidenceSummary","ConflictDetails"].forEach(id => $(id).replaceChildren());
       return;
     }
     const s = sources[p.source], kn = calc.ratingKN(p);
-    $("Selected").textContent = `${p.manufacturer} · ${p.series} · ${p.size} · ${p.grade} · ${p.code}`;
+    $("Selected").textContent = `${p.manufacturer} · ${p.series} · ${p.size}`;
     $("RatingHeading").textContent = labels[p.rating?.type] || "Dimensional product data";
     $("Rating").textContent = kn === null ? "Not published" : fmt(kn,2);
     $("RatingUnit").textContent = kn === null ? "No standalone force rating" : "kN";
@@ -90,6 +91,9 @@
     $("UseNotes").innerHTML=(p.useNotes||[]).map(n=>'<p>'+escape(n)+'</p>').join('');
     renderRelated(p);
     renderMarketEvidence(p);
+    renderKeyProperties(p);
+    $("RatingSource").textContent=(s.shortLabel||s.edition)+" · "+referenceLocator(p.source,p.page);
+    $("PrimarySource").href=sourceLink(p);
     const pageLink = sourceLink(p);
     $("Source").innerHTML = `<p><a href="${escape(pageLink)}" target="_blank" rel="noopener noreferrer">${escape(s.title)} · ${referenceLocator(p.source,p.page)}</a></p><p>${escape(s.edition)}<br>Table: ${escape(p.table)} · Row: ${escape(p.code)} ${escape(p.size)}<br>Checked: ${escape(p.reviewedDate||s.checkedDate)} · Catalogue evidence · ${escape(p.sourceStatus)}</p><p>${escape(s.currency)}</p>${s.currentLanding?`<p>${escape(s.linkNote||"Current official catalogue index.")} <a href="${escape(s.currentLanding)}" target="_blank" rel="noopener noreferrer">${s.linkNote?"Manufacturer product page":"Official catalogue index"}</a></p>`:""}<p>${escape(p.note)}</p>${(p.additionalSources||[]).map(ref=>`<p><a href="${escape(referenceLink(ref.source||p.source,ref.page))}" target="_blank" rel="noopener noreferrer">${escape(ref.table)} · ${escape(referenceLocator(ref.source||p.source,ref.page,ref.printedPage))} · ${escape(ref.row)}</a></p>`).join("")}<p>${p.publicationClass==="Unreleased"?"Public beta · For Review. ":""}Catalogue source checked; named carrier / owner adoption not verified.</p>`;
   }
@@ -110,11 +114,45 @@
       return '<dt>'+title+'</dt><dd><strong>'+escape(v.status)+'</strong> · '+escape(v.note)+(url?' <a target="_blank" rel="noopener noreferrer" href="'+escape(url)+'">Source</a>':'')+'</dd>';
     }).join('')+'</dl>':'';
     $("FieldIssues").hidden=!p.fieldIssues?.length;
-    $("FieldIssues").innerHTML=(p.fieldIssues||[]).map(v=>'<p><strong>'+escape(v.state)+' · '+escape(v.field)+'</strong><br>'+escape(v.note)+'</p>').join('');
+    $("FieldIssues").innerHTML=p.fieldIssues?.length?'<p><strong>Source conflict · '+escape([...new Set(p.fieldIssues.map(v=>v.field))].join(', '))+'</strong><br>Affected values are withheld. See source notes for the conflicting values.</p>':'';
+    $("ConflictDetails").hidden=!p.fieldIssues?.length;
+    $("ConflictDetails").innerHTML=(p.fieldIssues||[]).map(v=>'<p><strong>'+escape(v.state)+' · '+escape(v.field)+'</strong><br>'+escape(v.note)+'</p>').join('');
     if(p.fieldIssues?.some(v=>v.field==="WLL")){
       $("RatingHeading").textContent="WLL source conflict";$("Rating").textContent="Not verified";$("RatingUnit").textContent="Excluded from force comparison";$("Original").textContent="Conflicting published values are recorded below; no WLL selected.";
     }
   }
+
+  function renderKeyProperties(p){
+    const keys={
+      "Guy strand":["Construction","Nominal overall diameter (mm)","Nominal strand diameter (mm)","Metallic area (mm²)","Linear mass (kg/m)","Lay","Finish"],
+      "Guy wire rope":["Construction","Nominal rope diameter (mm)","Core","Lay","Linear mass (kg/m)","Finish"],
+      "Turnbuckle":["Closed length (mm)","Open length (mm)","Length range (derived mm)","Mass (kg)","Finish"],
+      "Rigging screw":["Closed length (mm)","Open length (mm)","Length range (derived mm)","Mass (kg)","Finish"],
+      "Shackle":["Source dimension d (mm)","Source dimension D (mm)","Source dimension W (mm)","Mass (kg)","Finish"],
+      "Dead-end":["Matching diameter (mm)","Strand construction","Colour code","Actual strand diameter (in)","Lay"],
+      "Thimble":["Suits rope diameter (mm)","Bend radius (mm)","Seat width (mm)","Opened width (mm)","Finish"],
+      "Wire rope grip":["Suits rope diameter (mm)","Grips per termination","Finish"],
+      "Accessories":["Component type","Rope diameter min (mm)","Rope diameter max (mm)","Catalogue efficiency (% of rope catalogue strength)","Thread size (source)","Bolt size (source)","Overall length (mm)","Thread length (mm)","Mass (kg)"]
+    };
+    const pairs=[];
+    if(p.grade!=="Not stated"&&!p.grade.startsWith("Match "))pairs.push(["Grade",p.grade]);
+    const candidates=keys[p.family]||[];
+    for(const k of candidates)if(p.properties[k]!==undefined)pairs.push([k,p.properties[k]]);
+    if(pairs.length<3)for(const [k,v]of Object.entries(p.properties)){
+      if(!pairs.some(([key])=>key===k)&&!['Data completeness','Fitting evidence','Source material statement'].includes(k))pairs.push([k,v]);
+      if(pairs.length>=3)break;
+    }
+    const label=k=>k.replace('Source dimension ','Drawing ').replace('Linear mass','Mass');
+    $("KeyProperties").innerHTML=pairs.slice(0,6).map(([k,v])=>'<dt>'+escape(label(k))+'</dt><dd>'+escape(v)+'</dd>').join('');
+    $("EvidenceSummary").textContent=evidenceSummary(p)+" · Owner: "+(p.marketEvidence?.owner?.status||"Not verified");
+  }
+  function backToTable(){
+    $("Selection").open=false;renderTable();
+    const target=[...$("Rows").querySelectorAll('button[data-product]')].find(b=>b.dataset.product===selected?.id)||$("Search");
+    const wrap=$("Table").closest('.guy-table-wrap'),left=wrap.scrollLeft;
+    target.focus({preventScroll:true});target.scrollIntoView({block:"center",inline:"nearest"});wrap.scrollLeft=left;
+  }
+  $("Selection").addEventListener("click",e=>{if(e.target.closest('[data-back-table]'))backToTable();});
   function sourceLink(p) {const s=sources[p.source];return p.source==="bullivants4"?`https://app.nexuspublications.com.au/a10/publications/bullivants-product-catalogue-edition-4-1/${p.page}`:referenceLink(p.source,p.page);}
   function renderTable() {
     const family=$("Family").value, prop=k=>p=>p.properties[k] ?? "—";
@@ -191,6 +229,8 @@
   }
   function renderRelated(p){
     const refs=GuyFittingsRelated.related(p,products);
+    $("RelatedDetails").hidden=!(refs.length||relatedBack);$("RelatedDetails").open=Boolean(relatedBack);
+    $("RelatedLabel").textContent="Related parts"+(refs.length?" ("+refs.length+")":"");
     $("Related").innerHTML=(relatedBack?'<p><button type="button" data-back="'+escape(relatedBack)+'">Back to previous record</button></p>':'')+(refs.length?'<h3>'+(p.family==="Dead-end"?'Manufacturer-listed fittings':'Manufacturer-listed dead-ends')+'</h3><p class="result-note">PLP selection chart, printed p.155. Listed alternatives are not one complete assembly. Confirm the selected combination and supplied variant.</p><dl class="guy-related-list">'+refs.map(r=>'<dt>'+escape(r.label)+'</dt><dd>'+(r.target?'<button type="button" data-related="'+escape(r.target.id)+'">'+escape(r.code)+'</button>':'<span>'+escape(r.code)+' · detailed record not verified</span>')+'</dd>').join('')+'</dl>':'');
   }
   $("Related").addEventListener("click",e=>{const b=e.target.closest("button");if(b?.dataset.related)showRecord(b.dataset.related,selected.id);else if(b?.dataset.back)showRecord(b.dataset.back);});
@@ -206,7 +246,10 @@
   $("Families").addEventListener("click",e=>{const b=e.target.closest("button[data-family]");if(b){$("Family").value=b.dataset.family;$("Search").value="";filter("family");}});
   $("Grade").addEventListener("change",()=>filter("grade"));
   $("Sort").addEventListener("change",()=>filter("grade"));
-  $("Selection").addEventListener("toggle",renderTable);
+  $("Selection").addEventListener("toggle",()=>{
+    const id=document.activeElement?.dataset.product;renderTable();
+    if(id)[...$("Rows").querySelectorAll('button[data-product]')].find(b=>b.dataset.product===id)?.focus({preventScroll:true});
+  });
   $("Product").addEventListener("change",choose);
   $("Rows").addEventListener("click",e=>{const b=e.target.closest("button[data-product]");if(b){$("Product").value=b.dataset.product;choose();$("Selection").hidden=false;$("Selection").hidden=false;$("Selection").open=true;renderTable();$("SelectionTitle").focus();$("Selection").scrollIntoView({block:"start"});}});
   $("Reset").addEventListener("click",()=>{$("Family").value="Guy strand";$("Sort").value="size";$("Search").value="";filter("family");});
