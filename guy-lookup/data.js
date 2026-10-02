@@ -30,6 +30,93 @@ globalThis.GuyFittingsData={
       "url": "https://www.bekaert.com/content/dam/corporate/en/product-catalog/pdfs/Guy%20Strand%20Datasheet%20%28Canada%29%20.pdf",
       "currency": "Canadian market series. Datasheet is general product information; confirm current supply, specified grade and coating. No Australian grade equivalence.",
       "checkedDate": "2026-09-25"
+    },
+    "noblesStrand2018": {
+      "title": "Nobles Wire Rope & Strand",
+      "edition": "May 2018; product table printed 7 March 2018",
+      "url": "https://www.nobles.com.au/wp-content/uploads/2023/11/1-Wire-Rope-Strand.pdf",
+      "currency": "Historical Australian supplier catalogue; current availability and supplied certificates require confirmation.",
+      "checkedDate": "2026-10-02"
+    },
+    "plpAU2025": {
+      "title": "PLP Australia Distribution Catalogue",
+      "edition": "2025 in official filename; printed revision not stated; GFG printed p.19 and thimble selection printed p.155",
+      "url": "https://plp.com/au/images/catalogue/PDFs/PLP%20Australia_Distribution%20Catalogue%202025%20-%20Hyperlinks.pdf",
+      "currency": "Australian distribution/stay series; mast-specific adoption, supplied strand grade/lay and installation procedures require confirmation.",
+      "checkedDate": "2026-10-02"
+    },
+    "noblesRopeLinked": {
+      "title": "Nobles Wire Rope & Strand (current catalogue link)",
+      "edition": "Current official link checked 2 October 2026; relevant tables still printed 7 March 2018",
+      "url": "https://cdnm.heyzine.com/flip-book/pdf/70e1d5e67a1e7acd42eadef0a2658ba628039caa.pdf",
+      "currency": "Supplier catalogue values only. Confirm supplied variant and certificate; no carrier approval established.",
+      "checkedDate": "2026-10-02",
+      "kind": "pdf",
+      "shortLabel": "2018 · rechecked",
+      "currentLanding": "https://nobles.com.au/product-catalogue/"
+    },
+    "noblesHardwareLinked": {
+      "title": "Nobles Lifting & Rigging Hardware (current catalogue link)",
+      "edition": "Current official link checked 2 October 2026; relevant tables still printed 9 March 2018",
+      "url": "https://cdnm.heyzine.com/flip-book/pdf/4c9efa0075c099bd8d0566352ff71509e5c790ce.pdf",
+      "currency": "Supplier catalogue values only. Confirm supplied variant and certificate; no carrier approval established.",
+      "checkedDate": "2026-10-02",
+      "kind": "pdf",
+      "shortLabel": "2018 · rechecked"
+    },
+    "noblesTermLinked": {
+      "title": "Nobles Wire Rope & Strand Terminations",
+      "edition": "Current official catalogue link; printed revision not established",
+      "url": "https://cdnm.heyzine.com/flip-book/pdf/3961f64ee6720ff6645dd017ef418f6d6bf4e1c4.pdf",
+      "currency": "Supplier catalogue values only. Confirm supplied variant and certificate; no carrier approval established.",
+      "checkedDate": "2026-10-02",
+      "kind": "pdf",
+      "shortLabel": "Linked catalogue"
+    },
+    "townleyWeb": {
+      "title": "Townley Eye & Eye Rigging Screws",
+      "edition": "Live specification table; revision not stated",
+      "url": "https://www.townleydropforge.com.au/catalogue/eye-eye-rigging-screws/",
+      "currency": "Supplier catalogue values only. Confirm supplied variant and certificate; no carrier approval established.",
+      "checkedDate": "2026-10-02",
+      "kind": "web",
+      "shortLabel": "Live · Oct 2026"
+    },
+    "townleyV2": {
+      "title": "Townley Eye & Eye Rigging Screws Datasheet V2",
+      "edition": "V2 in official filename; printed revision not stated; printed p.40",
+      "url": "https://www.townleydropforge.com.au/wp-content/uploads/2025/04/Townley-Eye-Eye-Rigging-Screws-Datasheet_V2.pdf",
+      "currency": "Supplier catalogue values only. Confirm supplied variant and certificate; no carrier approval established.",
+      "checkedDate": "2026-10-02",
+      "kind": "pdf",
+      "shortLabel": "V2"
+    },
+    "townleyGuide": {
+      "title": "Townley Rigging Screws User Guide",
+      "edition": "Printed p.42; revision not stated",
+      "url": "https://www.townleydropforge.com.au/wp-content/uploads/2023/09/Townley-Rigging-Screws-User-Guide.pdf",
+      "currency": "Supplier catalogue values only. Confirm supplied variant and certificate; no carrier approval established.",
+      "checkedDate": "2026-10-02",
+      "kind": "pdf",
+      "shortLabel": "User guide"
+    },
+    "telcoMast": {
+      "title": "Telco Antennas TF-RM-HDALT mast specification",
+      "edition": "Live product page; revision not stated",
+      "url": "https://www.telcoantennas.com.au/heavy-duty-serviceable-aluminium-guyed-lattice-tower-400mm-face-up-to-30m",
+      "currency": "Supplier catalogue values only. Confirm supplied variant and certificate; no carrier approval established.",
+      "checkedDate": "2026-10-02",
+      "kind": "web",
+      "shortLabel": "Mast example"
+    },
+    "apacKit": {
+      "title": "APAC AL220 Guy Wire Kit",
+      "edition": "Web catalogue snapshot; revision not stated; individual component sheets not retrieved",
+      "url": "https://apacinfrastructure.com.au/product-catalogue/supports-stabilisers/al220-guy-wire-kit",
+      "currency": "Supplier catalogue values only. Confirm supplied variant and certificate; no carrier approval established.",
+      "checkedDate": "2026-10-02",
+      "kind": "web",
+      "shortLabel": "Kit reference"
     }
   },
   "products": [
@@ -57,7 +144,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x7 galvanised strand"
+      "table": "1x7 galvanised strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -83,7 +191,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x7 galvanised strand"
+      "table": "1x7 galvanised strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -109,7 +238,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x7 galvanised strand"
+      "table": "1x7 galvanised strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -135,7 +285,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x7 galvanised strand"
+      "table": "1x7 galvanised strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -161,7 +332,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x19 galvanised strand"
+      "table": "1x19 galvanised strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -187,7 +379,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x19 galvanised strand"
+      "table": "1x19 galvanised strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -213,7 +426,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x19 galvanised strand"
+      "table": "1x19 galvanised strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -239,7 +473,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x19 galvanised spiral strand"
+      "table": "1x19 galvanised spiral strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -265,7 +520,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x19 galvanised spiral strand"
+      "table": "1x19 galvanised spiral strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -291,7 +567,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x19 galvanised spiral strand"
+      "table": "1x19 galvanised spiral strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -317,7 +614,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x19 galvanised spiral strand"
+      "table": "1x19 galvanised spiral strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -343,7 +661,28 @@ globalThis.GuyFittingsData={
       "standard": "Product table does not state a strand standard; obtain AS 2841 certification where required",
       "source": "bullivants4",
       "page": 43,
-      "table": "1x19 galvanised spiral strand"
+      "table": "1x19 galvanised spiral strand",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "bullivants4",
+          "page": 43
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -360,7 +699,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 30,
         "Source dimension F (mm)": 150,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 110
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-JJ-G-GDEL",
@@ -373,7 +713,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -390,7 +757,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 30,
         "Source dimension F (mm)": 150,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 110
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-JJ-G-GDEP",
@@ -403,7 +771,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -420,7 +815,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 30,
         "Source dimension F (mm)": 150,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 110
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-JJ-G-GDES",
@@ -433,7 +829,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -450,7 +873,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 35,
         "Source dimension F (mm)": 190,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-JJ-G-GDEL",
@@ -463,7 +887,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -480,7 +931,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 35,
         "Source dimension F (mm)": 190,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-JJ-G-GDEP",
@@ -493,7 +945,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -510,7 +989,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 35,
         "Source dimension F (mm)": 190,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-JJ-G-GDES",
@@ -523,7 +1003,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -540,7 +1047,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 40,
         "Source dimension F (mm)": 204,
         "Source dimension K (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-JJ-G-GDEL",
@@ -553,7 +1061,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -570,7 +1105,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 40,
         "Source dimension F (mm)": 204,
         "Source dimension K (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-JJ-G-GDEP",
@@ -583,7 +1119,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -600,7 +1163,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 40,
         "Source dimension F (mm)": 204,
         "Source dimension K (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-JJ-G-GDES",
@@ -613,7 +1177,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -630,7 +1221,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 46,
         "Source dimension F (mm)": 216.5,
         "Source dimension K (mm)": 16,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-JJ-G-GDEL",
@@ -643,7 +1235,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -660,7 +1279,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 46,
         "Source dimension F (mm)": 216.5,
         "Source dimension K (mm)": 16,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-JJ-G-GDEP",
@@ -673,7 +1293,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -690,7 +1337,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 46,
         "Source dimension F (mm)": 216.5,
         "Source dimension K (mm)": 16,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-JJ-G-GDES",
@@ -703,7 +1351,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -720,7 +1395,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 58,
         "Source dimension F (mm)": 232,
         "Source dimension K (mm)": 20,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 145
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-JJ-G-GDEL",
@@ -733,7 +1409,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -750,7 +1453,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 58,
         "Source dimension F (mm)": 232,
         "Source dimension K (mm)": 20,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 145
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-JJ-G-GDEP",
@@ -763,7 +1467,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -780,7 +1511,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 58,
         "Source dimension F (mm)": 232,
         "Source dimension K (mm)": 20,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 145
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-JJ-G-GDES",
@@ -793,7 +1525,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -810,7 +1569,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 76,
         "Source dimension F (mm)": 252,
         "Source dimension K (mm)": 27,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-JJ-G-GDEL",
@@ -823,7 +1583,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -840,7 +1627,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 76,
         "Source dimension F (mm)": 252,
         "Source dimension K (mm)": 27,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-JJ-G-GDEP",
@@ -853,7 +1641,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -870,7 +1685,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 76,
         "Source dimension F (mm)": 252,
         "Source dimension K (mm)": 27,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-JJ-G-GDES",
@@ -883,7 +1699,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Jaw Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -903,7 +1746,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 105
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-JE-G-GDEL",
@@ -916,7 +1760,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -936,7 +1807,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 105
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-JE-G-GDEP",
@@ -949,7 +1821,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -969,7 +1868,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 105
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-JE-G-GDES",
@@ -982,7 +1882,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1002,7 +1929,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-JE-G-GDEL",
@@ -1015,7 +1943,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1035,7 +1990,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-JE-G-GDEP",
@@ -1048,7 +2004,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1068,7 +2051,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
         "Source dimension K (mm)": 10,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-JE-G-GDES",
@@ -1081,7 +2065,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1101,7 +2112,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
         "Source dimension K (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-JE-G-GDEL",
@@ -1114,7 +2126,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1134,7 +2173,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
         "Source dimension K (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-JE-G-GDEP",
@@ -1147,7 +2187,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1167,7 +2234,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
         "Source dimension K (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-JE-G-GDES",
@@ -1180,7 +2248,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1200,7 +2295,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
         "Source dimension K (mm)": 16,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-JE-G-GDEL",
@@ -1213,7 +2309,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1233,7 +2356,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
         "Source dimension K (mm)": 16,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-JE-G-GDEP",
@@ -1246,7 +2370,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1266,7 +2417,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
         "Source dimension K (mm)": 16,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-JE-G-GDES",
@@ -1279,7 +2431,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1299,7 +2478,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 51,
         "Source dimension J (mm)": 17,
         "Source dimension K (mm)": 20,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-JE-G-GDEL",
@@ -1312,7 +2492,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1332,7 +2539,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 51,
         "Source dimension J (mm)": 17,
         "Source dimension K (mm)": 20,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-JE-G-GDEP",
@@ -1345,7 +2553,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1365,7 +2600,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 51,
         "Source dimension J (mm)": 17,
         "Source dimension K (mm)": 20,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-JE-G-GDES",
@@ -1378,7 +2614,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1398,7 +2661,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 70,
         "Source dimension J (mm)": 24,
         "Source dimension K (mm)": 27,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-JE-G-GDEL",
@@ -1411,7 +2675,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1431,7 +2722,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 70,
         "Source dimension J (mm)": 24,
         "Source dimension K (mm)": 27,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-JE-G-GDEP",
@@ -1444,7 +2736,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1464,7 +2783,8 @@ globalThis.GuyFittingsData={
         "Source dimension H (mm)": 70,
         "Source dimension J (mm)": 24,
         "Source dimension K (mm)": 27,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-JE-G-GDES",
@@ -1477,7 +2797,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Jaw & Eye Turnbuckle - Grades L, P & S"
+      "table": "Jaw & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1493,7 +2840,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 11,
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 105
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-EE-G-GDEL",
@@ -1506,7 +2854,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1522,7 +2897,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 11,
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 105
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-EE-G-GDEP",
@@ -1535,7 +2911,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1551,7 +2954,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 11,
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 105
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-100-EE-G-GDES",
@@ -1564,7 +2968,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1580,7 +3011,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 15,
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-EE-G-GDEL",
@@ -1593,7 +3025,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1609,7 +3068,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 15,
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-EE-G-GDEP",
@@ -1622,7 +3082,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1638,7 +3125,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 15,
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 140
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-120-EE-G-GDES",
@@ -1651,7 +3139,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1667,7 +3182,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-EE-G-GDEL",
@@ -1680,7 +3196,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1696,7 +3239,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-EE-G-GDEP",
@@ -1709,7 +3253,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1725,7 +3296,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 135
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-160-EE-G-GDES",
@@ -1738,7 +3310,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1754,7 +3353,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-EE-G-GDEL",
@@ -1767,7 +3367,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1783,7 +3410,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-EE-G-GDEP",
@@ -1796,7 +3424,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1812,7 +3467,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-200-EE-G-GDES",
@@ -1825,7 +3481,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1841,7 +3524,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 25,
         "Source dimension H (mm)": 51,
         "Source dimension J (mm)": 17,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-EE-G-GDEL",
@@ -1854,7 +3538,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1870,7 +3581,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 25,
         "Source dimension H (mm)": 51,
         "Source dimension J (mm)": 17,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-EE-G-GDEP",
@@ -1883,7 +3595,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1899,7 +3638,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 25,
         "Source dimension H (mm)": 51,
         "Source dimension J (mm)": 17,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-240-EE-G-GDES",
@@ -1912,7 +3652,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1928,7 +3695,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 33,
         "Source dimension H (mm)": 70,
         "Source dimension J (mm)": 24,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-EE-G-GDEL",
@@ -1941,7 +3709,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1957,7 +3752,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 33,
         "Source dimension H (mm)": 70,
         "Source dimension J (mm)": 24,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-EE-G-GDEP",
@@ -1970,7 +3766,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -1986,7 +3809,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 33,
         "Source dimension H (mm)": 70,
         "Source dimension J (mm)": 24,
-        "Published safety factor": 6
+        "Published safety factor": 6,
+        "Length range (derived mm)": 150
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WTB-T-330-EE-G-GDES",
@@ -1999,7 +3823,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 79,
-      "table": "Eye & Eye Turnbuckle - Grades L, P & S"
+      "table": "Eye & Eye Turnbuckle - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2016,7 +3867,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 30,
         "Source dimension E (mm)": 8.5,
         "Source dimension F (mm)": 180,
-        "Source dimension K (mm)": 10
+        "Source dimension K (mm)": 10,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-100-JJ-L-G-T",
@@ -2029,7 +3881,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2046,7 +3925,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 37,
         "Source dimension E (mm)": 9,
         "Source dimension F (mm)": 229,
-        "Source dimension K (mm)": 10
+        "Source dimension K (mm)": 10,
+        "Length range (derived mm)": 170
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-120-JJ-S-G-T",
@@ -2059,7 +3939,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2076,7 +3983,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 40,
         "Source dimension E (mm)": 9,
         "Source dimension F (mm)": 230,
-        "Source dimension K (mm)": 12
+        "Source dimension K (mm)": 12,
+        "Length range (derived mm)": 175
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-JJ-L-G-T",
@@ -2089,7 +3997,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2106,7 +4041,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 40,
         "Source dimension E (mm)": 9,
         "Source dimension F (mm)": 230,
-        "Source dimension K (mm)": 12
+        "Source dimension K (mm)": 12,
+        "Length range (derived mm)": 175
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-JJ-P-G-A",
@@ -2119,7 +4055,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2136,7 +4099,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 40,
         "Source dimension E (mm)": 9,
         "Source dimension F (mm)": 230,
-        "Source dimension K (mm)": 12
+        "Source dimension K (mm)": 12,
+        "Length range (derived mm)": 175
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-JJ-S-G-A",
@@ -2149,7 +4113,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2166,7 +4157,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 44,
         "Source dimension E (mm)": 11,
         "Source dimension F (mm)": 229,
-        "Source dimension K (mm)": 16
+        "Source dimension K (mm)": 16,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-JJ-L-G-T",
@@ -2179,7 +4171,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2196,7 +4215,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 44,
         "Source dimension E (mm)": 11,
         "Source dimension F (mm)": 229,
-        "Source dimension K (mm)": 16
+        "Source dimension K (mm)": 16,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-JJ-P-G-A",
@@ -2209,7 +4229,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2226,7 +4273,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 44,
         "Source dimension E (mm)": 11,
         "Source dimension F (mm)": 229,
-        "Source dimension K (mm)": 16
+        "Source dimension K (mm)": 16,
+        "Length range (derived mm)": 130
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-JJ-S-G-A",
@@ -2239,7 +4287,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2256,7 +4331,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 60,
         "Source dimension E (mm)": 13,
         "Source dimension F (mm)": 356,
-        "Source dimension K (mm)": 22
+        "Source dimension K (mm)": 22,
+        "Length range (derived mm)": 250
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-240-JJ-P-G-A",
@@ -2269,7 +4345,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2286,7 +4389,8 @@ globalThis.GuyFittingsData={
         "Source dimension D (mm)": 60,
         "Source dimension E (mm)": 13,
         "Source dimension F (mm)": 356,
-        "Source dimension K (mm)": 22
+        "Source dimension K (mm)": 22,
+        "Length range (derived mm)": 250
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-240-JJ-S-G-A",
@@ -2299,7 +4403,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Jaw Rigging screw - Grades L, P & S"
+      "table": "Jaw & Jaw Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2319,7 +4450,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 11,
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
-        "Source dimension K (mm)": 10
+        "Source dimension K (mm)": 10,
+        "Length range (derived mm)": 125
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-100-JE-L-G-T",
@@ -2332,7 +4464,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2352,7 +4511,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 11,
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
-        "Source dimension K (mm)": 10
+        "Source dimension K (mm)": 10,
+        "Length range (derived mm)": 125
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-100-JE-P-G-T",
@@ -2365,7 +4525,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2385,7 +4572,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 11,
         "Source dimension H (mm)": 21,
         "Source dimension J (mm)": 7,
-        "Source dimension K (mm)": 10
+        "Source dimension K (mm)": 10,
+        "Length range (derived mm)": 125
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-100-JE-S-G-T",
@@ -2398,7 +4586,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2418,7 +4633,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 14,
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
-        "Source dimension K (mm)": 10
+        "Source dimension K (mm)": 10,
+        "Length range (derived mm)": 190
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-120-JE-L-G-T",
@@ -2431,7 +4647,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2451,7 +4694,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 14,
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
-        "Source dimension K (mm)": 10
+        "Source dimension K (mm)": 10,
+        "Length range (derived mm)": 190
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-120-JE-P-G-T",
@@ -2464,7 +4708,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2484,7 +4755,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 14,
         "Source dimension H (mm)": 30,
         "Source dimension J (mm)": 9,
-        "Source dimension K (mm)": 10
+        "Source dimension K (mm)": 10,
+        "Length range (derived mm)": 190
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-120-JE-S-G-A",
@@ -2497,7 +4769,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2517,7 +4816,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
-        "Source dimension K (mm)": 12
+        "Source dimension K (mm)": 12,
+        "Length range (derived mm)": 180
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-JE-L-G-T",
@@ -2530,7 +4830,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2550,7 +4877,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
-        "Source dimension K (mm)": 12
+        "Source dimension K (mm)": 12,
+        "Length range (derived mm)": 180
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-JE-P-G-T",
@@ -2563,7 +4891,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2583,7 +4938,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
         "Source dimension J (mm)": 12,
-        "Source dimension K (mm)": 12
+        "Source dimension K (mm)": 12,
+        "Length range (derived mm)": 180
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-JE-S-G-A",
@@ -2596,7 +4952,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2616,7 +4999,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
-        "Source dimension K (mm)": 16
+        "Source dimension K (mm)": 16,
+        "Length range (derived mm)": 165
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-JE-L-G-T",
@@ -2629,7 +5013,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2649,7 +5060,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
-        "Source dimension K (mm)": 16
+        "Source dimension K (mm)": 16,
+        "Length range (derived mm)": 165
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-JE-P-G-T",
@@ -2662,7 +5074,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2682,7 +5121,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
         "Source dimension J (mm)": 14,
-        "Source dimension K (mm)": 16
+        "Source dimension K (mm)": 16,
+        "Length range (derived mm)": 165
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-JE-S-G-A",
@@ -2695,7 +5135,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2715,7 +5182,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 25,
         "Source dimension H (mm)": 51,
         "Source dimension J (mm)": 17,
-        "Source dimension K (mm)": 20
+        "Source dimension K (mm)": 20,
+        "Length range (derived mm)": 180
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-240-JE-P-G-T",
@@ -2728,7 +5196,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2748,7 +5243,8 @@ globalThis.GuyFittingsData={
         "Source dimension G (mm)": 25,
         "Source dimension H (mm)": 51,
         "Source dimension J (mm)": 17,
-        "Source dimension K (mm)": 20
+        "Source dimension K (mm)": 20,
+        "Length range (derived mm)": 180
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-240-JE-S-G-A",
@@ -2761,7 +5257,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Jaw & Eye Rigging screw - Grades L, P & S"
+      "table": "Jaw & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2777,7 +5300,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 180,
         "Source dimension G (mm)": 12,
         "Source dimension H (mm)": 21,
-        "Source dimension J (mm)": 7
+        "Source dimension J (mm)": 7,
+        "Length range (derived mm)": 120
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-100-EE-L-G-T",
@@ -2790,7 +5314,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2806,7 +5357,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 180,
         "Source dimension G (mm)": 12,
         "Source dimension H (mm)": 21,
-        "Source dimension J (mm)": 7
+        "Source dimension J (mm)": 7,
+        "Length range (derived mm)": 120
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-100-EE-P-G-T",
@@ -2819,7 +5371,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2835,7 +5414,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 180,
         "Source dimension G (mm)": 12,
         "Source dimension H (mm)": 21,
-        "Source dimension J (mm)": 7
+        "Source dimension J (mm)": 7,
+        "Length range (derived mm)": 120
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-100-EE-S-G-T",
@@ -2848,7 +5428,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2864,7 +5471,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 230,
         "Source dimension G (mm)": 15,
         "Source dimension H (mm)": 30,
-        "Source dimension J (mm)": 9
+        "Source dimension J (mm)": 9,
+        "Length range (derived mm)": 180
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-120-EE-P-G-T",
@@ -2877,7 +5485,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2893,7 +5528,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 230,
         "Source dimension G (mm)": 15,
         "Source dimension H (mm)": 30,
-        "Source dimension J (mm)": 9
+        "Source dimension J (mm)": 9,
+        "Length range (derived mm)": 180
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-120-EE-S-G-A",
@@ -2906,7 +5542,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2922,7 +5585,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 230,
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
-        "Source dimension J (mm)": 12
+        "Source dimension J (mm)": 12,
+        "Length range (derived mm)": 175
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-M-EE-L-G",
@@ -2935,7 +5599,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2951,7 +5642,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 230,
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
-        "Source dimension J (mm)": 12
+        "Source dimension J (mm)": 12,
+        "Length range (derived mm)": 175
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-EE-P-G-T",
@@ -2964,7 +5656,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -2980,7 +5699,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 230,
         "Source dimension G (mm)": 17,
         "Source dimension H (mm)": 36,
-        "Source dimension J (mm)": 12
+        "Source dimension J (mm)": 12,
+        "Length range (derived mm)": 175
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-160-EE-S-G-A",
@@ -2993,7 +5713,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3009,7 +5756,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 230,
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
-        "Source dimension J (mm)": 12
+        "Source dimension J (mm)": 12,
+        "Length range (derived mm)": 165
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-M-EE-L-G",
@@ -3022,7 +5770,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3038,7 +5813,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 230,
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
-        "Source dimension J (mm)": 12
+        "Source dimension J (mm)": 12,
+        "Length range (derived mm)": 165
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-EE-P-G-T",
@@ -3051,7 +5827,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3067,7 +5870,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 230,
         "Source dimension G (mm)": 21,
         "Source dimension H (mm)": 42,
-        "Source dimension J (mm)": 12
+        "Source dimension J (mm)": 12,
+        "Length range (derived mm)": 165
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-200-EE-S-G-A",
@@ -3080,7 +5884,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3096,7 +5927,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 360,
         "Source dimension G (mm)": 25,
         "Source dimension H (mm)": 51,
-        "Source dimension J (mm)": 17
+        "Source dimension J (mm)": 17,
+        "Length range (derived mm)": 185
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-240-EE-P-G-T",
@@ -3109,7 +5941,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3125,7 +5984,8 @@ globalThis.GuyFittingsData={
         "Source dimension F (mm)": 360,
         "Source dimension G (mm)": 25,
         "Source dimension H (mm)": 51,
-        "Source dimension J (mm)": 17
+        "Source dimension J (mm)": 17,
+        "Length range (derived mm)": 185
       },
       "note": "Axial tension only. Verify thread engagement, locking, corrosion protection and mating hardware against the source drawing. Do not infer a design resistance or proof load from the WLL.",
       "id": "bull-WRSC-240-EE-S-G-A",
@@ -3138,7 +5998,34 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer statement; supplied edition to be confirmed",
       "source": "bullivants4",
       "page": 82,
-      "table": "Eye & Eye Rigging screw - Grades L, P & S"
+      "table": "Eye & Eye Rigging screw - Grades L, P & S",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 82
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3159,7 +6046,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3180,7 +6086,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3201,7 +6126,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3222,7 +6166,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3243,7 +6206,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3264,7 +6246,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3285,7 +6286,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3306,7 +6326,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3327,7 +6366,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Heavy duty galvanised"
+      "table": "Thimbles - Heavy duty galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3348,7 +6406,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Open galvanised"
+      "table": "Thimbles - Open galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3369,7 +6446,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 1138 - manufacturer statement",
       "source": "bullivants4",
       "page": 50,
-      "table": "Thimbles - Open galvanised"
+      "table": "Thimbles - Open galvanised",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3390,7 +6486,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3411,7 +6526,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3432,7 +6566,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3453,7 +6606,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3474,7 +6646,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3495,7 +6686,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3516,7 +6726,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3537,7 +6766,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3558,7 +6806,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3579,7 +6846,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3600,7 +6886,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3621,7 +6926,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3642,7 +6966,26 @@ globalThis.GuyFittingsData={
       "standard": "AS 2076 - manufacturer statement; installation clauses require source review",
       "source": "bullivants4",
       "page": 50,
-      "table": "Heavy-duty wire rope grips"
+      "table": "Heavy-duty wire rope grips",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3670,7 +7013,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3698,7 +7075,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3726,7 +7137,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3754,7 +7199,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3782,7 +7261,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3810,7 +7323,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3838,7 +7385,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3866,7 +7447,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3894,7 +7509,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3922,7 +7571,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3950,7 +7633,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -3978,7 +7695,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4006,7 +7757,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4034,7 +7819,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4062,7 +7881,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin bow - Alloy Grade S"
+      "table": "Safety pin bow - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4089,7 +7942,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4116,7 +8003,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4143,7 +8064,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4170,7 +8125,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4197,7 +8186,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4224,7 +8247,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4251,7 +8308,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4278,7 +8369,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4305,7 +8430,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4332,7 +8491,41 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer statement",
       "source": "bullivants4",
       "page": 75,
-      "table": "Safety pin dee - Alloy Grade S"
+      "table": "Safety pin dee - Alloy Grade S",
+      "useNotes": [
+        "Bullivants p.75 advises securing the pin or using a safety type shackle when left loaded or where a pin may dislodge. Pin replacement and mixing shackle components are prohibited."
+      ],
+      "additionalSources": [
+        {
+          "source": "bullivants4",
+          "page": 75,
+          "printedPage": "75",
+          "table": "Shackles / Handy Hint",
+          "row": "Pin retention and component matching"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 75
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4348,7 +8541,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 36,
         "Open length (mm)": 516,
         "Closed length (mm)": 335,
-        "Mass (kg)": 0.85
+        "Mass (kg)": 0.85,
+        "Length range (derived mm)": 181
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25014",
@@ -4361,7 +8555,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25014"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4377,7 +8625,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 51,
         "Open length (mm)": 544,
         "Closed length (mm)": 380,
-        "Mass (kg)": 1.51
+        "Mass (kg)": 1.51,
+        "Length range (derived mm)": 164
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25088",
@@ -4390,7 +8639,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25088"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4406,7 +8709,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 52,
         "Open length (mm)": 550,
         "Closed length (mm)": 384,
-        "Mass (kg)": 2.62
+        "Mass (kg)": 2.62,
+        "Length range (derived mm)": 166
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25121",
@@ -4419,7 +8723,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25121"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4435,7 +8793,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 60,
         "Open length (mm)": 761,
         "Closed length (mm)": 521,
-        "Mass (kg)": 5.16
+        "Mass (kg)": 5.16,
+        "Length range (derived mm)": 240
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25190",
@@ -4448,7 +8807,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25190"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4464,7 +8877,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 73,
         "Open length (mm)": 788,
         "Closed length (mm)": 562,
-        "Mass (kg)": 8.8
+        "Mass (kg)": 8.8,
+        "Length range (derived mm)": 226
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25030",
@@ -4477,7 +8891,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25030"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4493,7 +8961,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 73,
         "Open length (mm)": 813,
         "Closed length (mm)": 590,
-        "Mass (kg)": 11.6
+        "Mass (kg)": 11.6,
+        "Length range (derived mm)": 223
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25080",
@@ -4506,7 +8975,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25080"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4522,7 +9045,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 96,
         "Open length (mm)": 906,
         "Closed length (mm)": 682,
-        "Mass (kg)": 14.2
+        "Mass (kg)": 14.2,
+        "Length range (derived mm)": 224
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25036",
@@ -4535,7 +9059,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25036"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4551,7 +9129,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 112,
         "Open length (mm)": 925,
         "Closed length (mm)": 702,
-        "Mass (kg)": 20.8
+        "Mass (kg)": 20.8,
+        "Length range (derived mm)": 223
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25095",
@@ -4564,7 +9143,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25095"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4580,7 +9213,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 127,
         "Open length (mm)": 944,
         "Closed length (mm)": 755,
-        "Mass (kg)": 24
+        "Mass (kg)": 24,
+        "Length range (derived mm)": 189
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25195",
@@ -4593,7 +9227,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25195"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4609,7 +9297,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 144,
         "Open length (mm)": 1005,
         "Closed length (mm)": 800,
-        "Mass (kg)": 34.5
+        "Mass (kg)": 34.5,
+        "Length range (derived mm)": 205
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25198",
@@ -4622,7 +9311,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25198"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4638,7 +9381,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 140,
         "Open length (mm)": 940,
         "Closed length (mm)": 800,
-        "Mass (kg)": 41.3
+        "Mass (kg)": 41.3,
+        "Length range (derived mm)": 140
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25073",
@@ -4651,7 +9395,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 60,
-      "table": "Rigging screw Jaw & Jaw"
+      "table": "Rigging screw Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 41,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25073"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 60
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4668,7 +9466,8 @@ globalThis.GuyFittingsData={
         "Source dimension M (mm)": 26,
         "Open length (mm)": 651,
         "Closed length (mm)": 481,
-        "Mass (kg)": 14.2
+        "Mass (kg)": 14.2,
+        "Length range (derived mm)": 170
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-24979",
@@ -4681,7 +9480,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 61,
-      "table": "Turnbuckle Eye & Eye"
+      "table": "Turnbuckle Eye & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 42,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "24979"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 61
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4698,7 +9551,8 @@ globalThis.GuyFittingsData={
         "Source dimension M (mm)": 19,
         "Open length (mm)": 645,
         "Closed length (mm)": 491,
-        "Mass (kg)": 9.28
+        "Mass (kg)": 9.28,
+        "Length range (derived mm)": 154
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25114",
@@ -4711,7 +9565,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 61,
-      "table": "Turnbuckle Eye & Eye"
+      "table": "Turnbuckle Eye & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 42,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25114"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 61
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4728,7 +9636,8 @@ globalThis.GuyFittingsData={
         "Source dimension M (mm)": 19,
         "Open length (mm)": 573,
         "Closed length (mm)": 418,
-        "Mass (kg)": 4.35
+        "Mass (kg)": 4.35,
+        "Length range (derived mm)": 155
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25058",
@@ -4741,7 +9650,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 61,
-      "table": "Turnbuckle Eye & Eye"
+      "table": "Turnbuckle Eye & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 42,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25058"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 61
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4758,7 +9721,8 @@ globalThis.GuyFittingsData={
         "Source dimension M (mm)": 16,
         "Open length (mm)": 528,
         "Closed length (mm)": 383,
-        "Mass (kg)": 4.31
+        "Mass (kg)": 4.31,
+        "Length range (derived mm)": 145
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-24995",
@@ -4771,7 +9735,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 61,
-      "table": "Turnbuckle Eye & Eye"
+      "table": "Turnbuckle Eye & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 42,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "24995"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 61
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4788,7 +9806,8 @@ globalThis.GuyFittingsData={
         "Source dimension M (mm)": 14,
         "Open length (mm)": 520,
         "Closed length (mm)": 368,
-        "Mass (kg)": 2.03
+        "Mass (kg)": 2.03,
+        "Length range (derived mm)": 152
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25182",
@@ -4801,7 +9820,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 61,
-      "table": "Turnbuckle Eye & Eye"
+      "table": "Turnbuckle Eye & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 42,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25182"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 61
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4818,7 +9891,8 @@ globalThis.GuyFittingsData={
         "Source dimension M (mm)": 11,
         "Open length (mm)": 474,
         "Closed length (mm)": 329,
-        "Mass (kg)": 0.81
+        "Mass (kg)": 0.81,
+        "Length range (derived mm)": 145
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25113",
@@ -4831,7 +9905,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 61,
-      "table": "Turnbuckle Eye & Eye"
+      "table": "Turnbuckle Eye & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 42,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25113"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 61
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4850,7 +9978,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 78,
         "Open length (mm)": 659,
         "Closed length (mm)": 497,
-        "Mass (kg)": 13.1
+        "Mass (kg)": 13.1,
+        "Length range (derived mm)": 162
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25188",
@@ -4863,7 +9992,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 62,
-      "table": "Turnbuckle Jaw & Eye"
+      "table": "Turnbuckle Jaw & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 43,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25188"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 62
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4882,7 +10065,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 73,
         "Open length (mm)": 631,
         "Closed length (mm)": 468,
-        "Mass (kg)": 10.4
+        "Mass (kg)": 10.4,
+        "Length range (derived mm)": 163
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25039",
@@ -4895,7 +10079,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 62,
-      "table": "Turnbuckle Jaw & Eye"
+      "table": "Turnbuckle Jaw & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 43,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25039"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 62
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4914,7 +10152,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 60,
         "Open length (mm)": 557,
         "Closed length (mm)": 405,
-        "Mass (kg)": 4.66
+        "Mass (kg)": 4.66,
+        "Length range (derived mm)": 152
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25123",
@@ -4927,7 +10166,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 62,
-      "table": "Turnbuckle Jaw & Eye"
+      "table": "Turnbuckle Jaw & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 43,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25123"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 62
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4946,7 +10239,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 52,
         "Open length (mm)": 527,
         "Closed length (mm)": 383,
-        "Mass (kg)": 4.35
+        "Mass (kg)": 4.35,
+        "Length range (derived mm)": 144
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25175",
@@ -4959,7 +10253,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 62,
-      "table": "Turnbuckle Jaw & Eye"
+      "table": "Turnbuckle Jaw & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 43,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25175"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 62
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -4978,7 +10326,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 51,
         "Open length (mm)": 527,
         "Closed length (mm)": 377,
-        "Mass (kg)": 2.28
+        "Mass (kg)": 2.28,
+        "Length range (derived mm)": 150
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25016",
@@ -4991,7 +10340,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 62,
-      "table": "Turnbuckle Jaw & Eye"
+      "table": "Turnbuckle Jaw & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 43,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25016"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 62
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5010,7 +10413,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 39,
         "Open length (mm)": 479,
         "Closed length (mm)": 337,
-        "Mass (kg)": 0.88
+        "Mass (kg)": 0.88,
+        "Length range (derived mm)": 142
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-24967",
@@ -5023,7 +10427,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 62,
-      "table": "Turnbuckle Jaw & Eye"
+      "table": "Turnbuckle Jaw & Eye",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 43,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "24967"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 62
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5039,7 +10497,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 36,
         "Open length (mm)": 479,
         "Closed length (mm)": 334,
-        "Mass (kg)": 1.5
+        "Mass (kg)": 1.5,
+        "Length range (derived mm)": 145
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25011",
@@ -5052,7 +10511,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 63,
-      "table": "Turnbuckle Jaw & Jaw"
+      "table": "Turnbuckle Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 44,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25011"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 63
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5068,7 +10581,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 51,
         "Open length (mm)": 525,
         "Closed length (mm)": 380,
-        "Mass (kg)": 2.32
+        "Mass (kg)": 2.32,
+        "Length range (derived mm)": 145
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25168",
@@ -5081,7 +10595,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 63,
-      "table": "Turnbuckle Jaw & Jaw"
+      "table": "Turnbuckle Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 44,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25168"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 63
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5097,7 +10665,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 52,
         "Open length (mm)": 530,
         "Closed length (mm)": 384,
-        "Mass (kg)": 4.57
+        "Mass (kg)": 4.57,
+        "Length range (derived mm)": 146
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25004",
@@ -5110,7 +10679,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 63,
-      "table": "Turnbuckle Jaw & Jaw"
+      "table": "Turnbuckle Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 44,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25004"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 63
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5126,7 +10749,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 60,
         "Open length (mm)": 545,
         "Closed length (mm)": 397,
-        "Mass (kg)": 8.4
+        "Mass (kg)": 8.4,
+        "Length range (derived mm)": 148
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25075",
@@ -5139,7 +10763,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 63,
-      "table": "Turnbuckle Jaw & Jaw"
+      "table": "Turnbuckle Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 44,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25075"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 63
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5155,7 +10833,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 73,
         "Open length (mm)": 626,
         "Closed length (mm)": 464,
-        "Mass (kg)": 9.2
+        "Mass (kg)": 9.2,
+        "Length range (derived mm)": 162
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25111",
@@ -5168,7 +10847,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 63,
-      "table": "Turnbuckle Jaw & Jaw"
+      "table": "Turnbuckle Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 44,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25111"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 63
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5184,7 +10917,8 @@ globalThis.GuyFittingsData={
         "Source dimension Z (mm)": 78,
         "Open length (mm)": 663,
         "Closed length (mm)": 497,
-        "Mass (kg)": 13.6
+        "Mass (kg)": 13.6,
+        "Length range (derived mm)": 166
       },
       "note": "Straight axial tension only. Check thread engagement, locking and pin/eye fit against the source drawing. No proof load or MBF inferred from WLL.",
       "id": "nobles-25083",
@@ -5197,7 +10931,61 @@ globalThis.GuyFittingsData={
       "standard": "AS 2319 - manufacturer family statement; edition not stated on row",
       "source": "nobles2018",
       "page": 63,
-      "table": "Turnbuckle Jaw & Jaw"
+      "table": "Turnbuckle Jaw & Jaw",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Nobles describes cross-holes for observing the maximum extended position. No numeric minimum engagement is provided in these pages.",
+        "Nobles offers locknuts to order; they increase minimum length and reduce available thread. The catalogue discusses locknuts, plates and wire; significant rope torque requires the manufacturer locking detail.",
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "printedPage": "Not stated",
+          "table": "Rigging screw application and extension indicator",
+          "row": "Nobles rigging screw family"
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "printedPage": "Not stated",
+          "table": "Locking / barrel sizes / load rating",
+          "row": "Nobles rigging screw and turnbuckle family"
+        },
+        {
+          "source": "noblesHardwareLinked",
+          "page": 44,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "25083"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 63
+        },
+        "mast": {
+          "status": "Mast/tower family stated",
+          "note": "Family-level manufacturer application; no named owner approval.",
+          "source": "nobles2018",
+          "page": 55
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5231,7 +11019,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "13896"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5265,7 +11088,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "16786"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5299,7 +11157,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "17428"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5333,7 +11226,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "14357"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5367,7 +11295,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "15608"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5401,7 +11364,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "18196"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5435,7 +11433,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "11346"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5469,7 +11502,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "15616"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5503,7 +11571,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "13499"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5537,7 +11640,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "24736"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5571,7 +11709,42 @@ globalThis.GuyFittingsData={
       "standard": "AS 2741 - manufacturer family statement",
       "source": "nobles2018",
       "page": 8,
-      "table": "Grade S Safety Pin Bow Shackles"
+      "table": "Grade S Safety Pin Bow Shackles",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesHardwareLinked",
+          "page": 6,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "12252"
+        }
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "reviewedDate": "2026-10-02",
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "nobles2018",
+          "page": 8
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5599,7 +11772,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5627,7 +11819,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5655,7 +11866,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5683,7 +11913,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5711,7 +11960,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5739,7 +12007,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5767,7 +12054,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5795,7 +12101,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5823,7 +12148,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5851,7 +12195,26 @@ globalThis.GuyFittingsData={
       "standard": "Manufacturer-rated combination; no Australian design resistance",
       "source": "plp2016",
       "page": 3,
-      "table": "Galvanized Strand; printed page 7-4"
+      "table": "Galvanized Strand; printed page 7-4",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian family only",
+          "note": "Australian BIG-GRIP landing page supports the family. Supply of the exact historical regional part is not established.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "mast": {
+          "status": "Communications family stated",
+          "note": "Manufacturer includes antenna/communications guyed structures; exact variant adoption remains unverified.",
+          "url": "https://plp.com/au/energy/transmission/guying-products/big-grip-dead-end"
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5885,7 +12248,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5919,7 +12299,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5953,7 +12350,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -5987,7 +12401,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6021,7 +12452,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6055,7 +12503,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6089,7 +12554,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6123,7 +12605,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6157,7 +12656,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6191,7 +12707,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6225,7 +12758,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6259,7 +12809,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6293,7 +12860,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6327,7 +12911,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6361,7 +12962,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6395,7 +13013,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6429,7 +13064,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6463,7 +13115,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6497,7 +13166,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6531,7 +13217,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6565,7 +13268,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6599,7 +13319,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6633,7 +13370,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6667,7 +13421,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6701,7 +13472,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6735,7 +13523,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6769,7 +13574,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6803,7 +13625,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6837,7 +13676,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6871,7 +13727,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6905,7 +13778,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6939,7 +13829,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -6973,7 +13880,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7007,7 +13931,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7041,7 +13982,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7075,7 +14033,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7109,7 +14084,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7143,7 +14135,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7177,7 +14186,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7211,7 +14237,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7245,7 +14288,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7279,7 +14339,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7313,7 +14390,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7347,7 +14441,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7381,7 +14492,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7415,7 +14543,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7449,7 +14594,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7483,7 +14645,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7517,7 +14696,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7551,7 +14747,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7585,7 +14798,24 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
     },
     {
       "sourceStatus": "Checked",
@@ -7619,7 +14849,8667 @@ globalThis.GuyFittingsData={
       "standard": "CAN/CSA-G12 - manufacturer statement; adopted edition and Australian project applicability require confirmation",
       "source": "bekaertCA",
       "page": 2,
-      "table": "SI specifications; designated size and grade (not manufacturer SKU)"
+      "table": "SI specifications; designated size and grade (not manufacturer SKU)",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Not verified",
+          "note": "No Australian supply evidence established for this exact part."
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      },
+      "publicationClass": "Public beta"
+    },
+    {
+      "id": "nobles-au-strand-18094",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Nobles",
+      "family": "Guy strand",
+      "series": "1x19 galvanised strand - Gr1570",
+      "code": "18094",
+      "size": "10 mm",
+      "grade": "1570 (catalogue Gr1570)",
+      "standard": "No product-standard compliance stated in this table; obtain supplied strand certificate",
+      "source": "noblesStrand2018",
+      "page": 68,
+      "table": "Galvanised Strand / Product Specifications",
+      "rating": {
+        "type": "MBL",
+        "value": 88,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "1x19",
+        "Nominal strand diameter (mm)": 10,
+        "Linear mass (kg/m)": 0.504,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Australian supplier explicitly describes communication/broadcasting tower and power-pole guy applications (PDF p.67). MBL is the original table heading. E/EA, metallic area, lay and prestretch are not published in this table. No carrier approval is established.",
+      "reviewedDate": "2026-10-02",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesRopeLinked",
+          "page": 60,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "18094"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesStrand2018",
+          "page": 68
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "noblesStrand2018",
+          "page": 67
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "nobles-au-strand-12172",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Nobles",
+      "family": "Guy strand",
+      "series": "1x19 galvanised strand - Gr1570",
+      "code": "12172",
+      "size": "12 mm",
+      "grade": "1570 (catalogue Gr1570)",
+      "standard": "No product-standard compliance stated in this table; obtain supplied strand certificate",
+      "source": "noblesStrand2018",
+      "page": 68,
+      "table": "Galvanised Strand / Product Specifications",
+      "rating": {
+        "type": "MBL",
+        "value": 126,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "1x19",
+        "Nominal strand diameter (mm)": 12,
+        "Linear mass (kg/m)": 0.726,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Australian supplier explicitly describes communication/broadcasting tower and power-pole guy applications (PDF p.67). MBL is the original table heading. E/EA, metallic area, lay and prestretch are not published in this table. No carrier approval is established.",
+      "reviewedDate": "2026-10-02",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesRopeLinked",
+          "page": 60,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "12172"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesStrand2018",
+          "page": 68
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "noblesStrand2018",
+          "page": 67
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "nobles-au-strand-16157",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Nobles",
+      "family": "Guy strand",
+      "series": "1x19 galvanised strand - Gr1570",
+      "code": "16157",
+      "size": "14 mm",
+      "grade": "1570 (catalogue Gr1570)",
+      "standard": "No product-standard compliance stated in this table; obtain supplied strand certificate",
+      "source": "noblesStrand2018",
+      "page": 68,
+      "table": "Galvanised Strand / Product Specifications",
+      "rating": {
+        "type": "MBL",
+        "value": 172,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "1x19",
+        "Nominal strand diameter (mm)": 14,
+        "Linear mass (kg/m)": 0.988,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Australian supplier explicitly describes communication/broadcasting tower and power-pole guy applications (PDF p.67). MBL is the original table heading. E/EA, metallic area, lay and prestretch are not published in this table. No carrier approval is established.",
+      "reviewedDate": "2026-10-02",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesRopeLinked",
+          "page": 60,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "16157"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesStrand2018",
+          "page": 68
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "noblesStrand2018",
+          "page": 67
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "nobles-au-strand-15896",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Nobles",
+      "family": "Guy strand",
+      "series": "1x19 galvanised strand - Gr1570",
+      "code": "15896",
+      "size": "16 mm",
+      "grade": "1570 (catalogue Gr1570)",
+      "standard": "No product-standard compliance stated in this table; obtain supplied strand certificate",
+      "source": "noblesStrand2018",
+      "page": 68,
+      "table": "Galvanised Strand / Product Specifications",
+      "rating": {
+        "type": "MBL",
+        "value": 210,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "1x19",
+        "Nominal strand diameter (mm)": 16,
+        "Linear mass (kg/m)": 1.29,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Australian supplier explicitly describes communication/broadcasting tower and power-pole guy applications (PDF p.67). MBL is the original table heading. E/EA, metallic area, lay and prestretch are not published in this table. No carrier approval is established.",
+      "reviewedDate": "2026-10-02",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesRopeLinked",
+          "page": 60,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "15896"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesStrand2018",
+          "page": 68
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "noblesStrand2018",
+          "page": 67
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "nobles-au-strand-15732",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Nobles",
+      "family": "Guy strand",
+      "series": "1x19 galvanised strand - Gr1570",
+      "code": "15732",
+      "size": "18 mm",
+      "grade": "1570 (catalogue Gr1570)",
+      "standard": "No product-standard compliance stated in this table; obtain supplied strand certificate",
+      "source": "noblesStrand2018",
+      "page": 68,
+      "table": "Galvanised Strand / Product Specifications",
+      "rating": {
+        "type": "MBL",
+        "value": 265,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "1x19",
+        "Nominal strand diameter (mm)": 18,
+        "Linear mass (kg/m)": 1.63,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Australian supplier explicitly describes communication/broadcasting tower and power-pole guy applications (PDF p.67). MBL is the original table heading. E/EA, metallic area, lay and prestretch are not published in this table. No carrier approval is established.",
+      "reviewedDate": "2026-10-02",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesRopeLinked",
+          "page": 60,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "15732"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesStrand2018",
+          "page": 68
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "noblesStrand2018",
+          "page": 67
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "nobles-au-strand-13421",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Nobles",
+      "family": "Guy strand",
+      "series": "1x19 galvanised strand - Gr1570",
+      "code": "13421",
+      "size": "20 mm",
+      "grade": "1570 (catalogue Gr1570)",
+      "standard": "No product-standard compliance stated in this table; obtain supplied strand certificate",
+      "source": "noblesStrand2018",
+      "page": 68,
+      "table": "Galvanised Strand / Product Specifications",
+      "rating": {
+        "type": "MBL",
+        "value": 368,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "1x19",
+        "Nominal strand diameter (mm)": 20,
+        "Linear mass (kg/m)": 2.12,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Australian supplier explicitly describes communication/broadcasting tower and power-pole guy applications (PDF p.67). MBL is the original table heading. E/EA, metallic area, lay and prestretch are not published in this table. No carrier approval is established.",
+      "reviewedDate": "2026-10-02",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesRopeLinked",
+          "page": 60,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "13421"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesStrand2018",
+          "page": 68
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "noblesStrand2018",
+          "page": 67
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "nobles-au-strand-13322",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Nobles",
+      "family": "Guy strand",
+      "series": "1x19 galvanised strand - Gr1570",
+      "code": "13322",
+      "size": "22 mm",
+      "grade": "1570 (catalogue Gr1570)",
+      "standard": "No product-standard compliance stated in this table; obtain supplied strand certificate",
+      "source": "noblesStrand2018",
+      "page": 68,
+      "table": "Galvanised Strand / Product Specifications",
+      "rating": {
+        "type": "MBL",
+        "value": 442,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "1x19",
+        "Nominal strand diameter (mm)": 22,
+        "Linear mass (kg/m)": 2.55,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Australian supplier explicitly describes communication/broadcasting tower and power-pole guy applications (PDF p.67). MBL is the original table heading. E/EA, metallic area, lay and prestretch are not published in this table. No carrier approval is established.",
+      "reviewedDate": "2026-10-02",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesRopeLinked",
+          "page": 60,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "13322"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesStrand2018",
+          "page": 68
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "noblesStrand2018",
+          "page": 67
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "nobles-au-strand-16918",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Nobles",
+      "family": "Guy strand",
+      "series": "1x19 galvanised strand - Gr1570",
+      "code": "16918",
+      "size": "24 mm",
+      "grade": "1570 (catalogue Gr1570)",
+      "standard": "No product-standard compliance stated in this table; obtain supplied strand certificate",
+      "source": "noblesStrand2018",
+      "page": 68,
+      "table": "Galvanised Strand / Product Specifications",
+      "rating": {
+        "type": "MBL",
+        "value": 518,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "1x19",
+        "Nominal strand diameter (mm)": 24,
+        "Linear mass (kg/m)": 3.99,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Australian supplier explicitly describes communication/broadcasting tower and power-pole guy applications (PDF p.67). MBL is the original table heading. E/EA, metallic area, lay and prestretch are not published in this table. The 24 mm mass of 3.99 kg/m is reproduced exactly and needs supplier confirmation; no correction inferred. No carrier approval is established.",
+      "reviewedDate": "2026-10-02",
+      "useNotes": [
+        "Current official catalogue link rechecked on 2 October 2026: original row values agree; the table retains its 2018 footer. This does not confirm current supplied certification."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesRopeLinked",
+          "page": 60,
+          "printedPage": "See PDF footer",
+          "table": "Current official linked catalogue — exact row rechecked",
+          "row": "16918"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesStrand2018",
+          "page": 68
+        },
+        "mast": {
+          "status": "Tower guy family stated",
+          "note": "Supplier describes tower guy use for this strand family; confirm the exact supplied product.",
+          "source": "noblesStrand2018",
+          "page": 67
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-025-CL-1-2.50",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-025-CL",
+      "size": "2.5 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "1/2.50",
+        "Matching diameter (mm)": 2.5,
+        "Colour code": "Blue",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-10",
+        "Open thimble code": "THWO-10",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-16"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-025-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-031-CL-1-3.15",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-031-CL",
+      "size": "3.15 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "1/3.15",
+        "Matching diameter (mm)": 3.15,
+        "Colour code": "Red/Orange",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-10",
+        "Open thimble code": "THWO-10",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-16"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-031-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-031-CL-1-3.25",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-031-CL",
+      "size": "3.24 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "1/3.25",
+        "Matching diameter (mm)": 3.24,
+        "Colour code": "Red/Orange",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-10",
+        "Open thimble code": "THWO-10",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-16"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. The printed diameter is 3.24 mm for designation 1/3.25; both are retained without correction. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-031-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-038-CL-7-1.25",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-038-CL",
+      "size": "3.75 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/1.25",
+        "Matching diameter (mm)": 3.75,
+        "Colour code": "Black",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-10",
+        "Open thimble code": "THWO-10",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-16"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-038-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-043-CL-3-2.00",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-043-CL",
+      "size": "4.25 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "3/2.00",
+        "Matching diameter (mm)": 4.25,
+        "Colour code": "Brown",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-10",
+        "Open thimble code": "THWO-10",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-16"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-043-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-048-CL-7-1.60",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-048-CL",
+      "size": "4.8 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/1.60",
+        "Matching diameter (mm)": 4.8,
+        "Colour code": "Black",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-10",
+        "Open thimble code": "THWO-10",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-16"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-048-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-055-3-2.75",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-055",
+      "size": "5.5 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "3/2.75",
+        "Matching diameter (mm)": 5.5,
+        "Colour code": "White/Green",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-12",
+        "Open thimble code": "THWO-12",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-16"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-055"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-060-CL-7-2.00",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-060-CL",
+      "size": "6 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/2.00",
+        "Matching diameter (mm)": 6,
+        "Colour code": "Yellow",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-12",
+        "Open thimble code": "THWO-12",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-16"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-060-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-069-7-2.30",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-069",
+      "size": "6.9 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/2.30",
+        "Matching diameter (mm)": 6.9,
+        "Colour code": "Brown",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Fitting evidence": "Not mapped: catalogue p.19 GFG-069 differs from p.155 GFG-069-CL"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting mapping suppressed pending confirmation of GFG-069 versus GFG-069-CL. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-075-7-2.75",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-075",
+      "size": "8.25 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/2.75",
+        "Matching diameter (mm)": 8.25,
+        "Colour code": "Blue",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-12",
+        "Open thimble code": "THWO-12",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-20 / THEN-24"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-075"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-083-CL-7-2.75",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-083-CL",
+      "size": "8.25 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/2.75",
+        "Matching diameter (mm)": 8.25,
+        "Colour code": "White",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-12",
+        "Open thimble code": "THWO-12",
+        "Cast iron sheave code": "THGR-57",
+        "Clevis thimble code": "CTH-070-MCI",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-20 / THEN-24",
+        "Guy insulator code": "I-GY2"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-083-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-090-7-3.00",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-090",
+      "size": "9 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/3.00",
+        "Matching diameter (mm)": 9,
+        "Colour code": "Red",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-16",
+        "Open thimble code": "THWO-16",
+        "Cast iron sheave code": "THGR-75",
+        "Clevis thimble code": "GCT-120-TC5F",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-20 / THEN-24",
+        "Guy insulator code": "I-GY2"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-090"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-100-7-3.25",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-100",
+      "size": "9.75 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/3.25",
+        "Matching diameter (mm)": 9.75,
+        "Colour code": "Orange/Yellow",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-16",
+        "Open thimble code": "THWO-16",
+        "Cast iron sheave code": "THGR-75",
+        "Clevis thimble code": "GCT-120-TC5F",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-20 / THEN-24",
+        "Guy insulator code": "I-GY2"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-100"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-100-19-2.00",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-100",
+      "size": "10 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "19/2.00",
+        "Matching diameter (mm)": 10,
+        "Colour code": "Orange/Yellow",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-16",
+        "Open thimble code": "THWO-16",
+        "Cast iron sheave code": "THGR-75",
+        "Clevis thimble code": "GCT-120-TC5F",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-20 / THEN-24",
+        "Guy insulator code": "I-GY2"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-100"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-113-CL-7-3.75",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-113-CL",
+      "size": "11.25 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/3.75",
+        "Matching diameter (mm)": 11.25,
+        "Colour code": "Black",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-16",
+        "Open thimble code": "THWO-16",
+        "Cast iron sheave code": "THGR-75",
+        "Clevis thimble code": "GCT-120-TC5F",
+        "Socket thimble code": "STH-070-1",
+        "Thimble eye nut code": "THEN-20 / THEN-24",
+        "Guy insulator code": "I-GY2"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-113-CL"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-120-7-4.00",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-120",
+      "size": "12 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "7/4.00",
+        "Matching diameter (mm)": 12,
+        "Colour code": "Black",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-20",
+        "Open thimble code": "THWO-20",
+        "Cast iron sheave code": "THGR-75",
+        "Clevis thimble code": "GCT-120-TC5F",
+        "Guy insulator code": "I-GY3"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-120"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-138-19-2.75",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-138",
+      "size": "13.75 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "19/2.75",
+        "Matching diameter (mm)": 13.75,
+        "Colour code": "White",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-20",
+        "Open thimble code": "THWO-22",
+        "Cast iron sheave code": "THGR-75",
+        "Clevis thimble code": "GCT-120-TC5F",
+        "Guy insulator code": "I-GY3"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-138"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-150-19-3.00",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-150",
+      "size": "15 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "19/3.00",
+        "Matching diameter (mm)": 15,
+        "Colour code": "Red",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-22",
+        "Open thimble code": "THWO-22",
+        "Cast iron sheave code": "THGR-75",
+        "Clevis thimble code": "GCT-120-TC5F",
+        "Guy insulator code": "I-GY3"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-150"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-163-19-3.25",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-163",
+      "size": "16.25 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "19/3.25",
+        "Matching diameter (mm)": 16.25,
+        "Colour code": "Orange",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-22",
+        "Open thimble code": "THWO-22",
+        "Cast iron sheave code": "THGR-75",
+        "Clevis thimble code": "GCT-120-TC5F",
+        "Guy insulator code": "I-GY3"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-163"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-188-19-3.75",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Galvanised conductor/stay SC/GZ",
+      "code": "GFG-188",
+      "size": "18.8 mm",
+      "grade": "Match specified SC/GZ",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Galvanised Conductor and Stays SC/GZ",
+      "rating": null,
+      "properties": {
+        "Strand construction": "19/3.75",
+        "Matching diameter (mm)": 18.8,
+        "Colour code": "Black",
+        "Application": "Galvanised conductor and stays SC/GZ",
+        "Closed thimble code": "THWC-22",
+        "Open thimble code": "THWO-22",
+        "Cast iron sheave code": "THGR-75",
+        "Guy insulator code": "I-GY4"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Fitting codes are reproduced from the manufacturer selection chart, not an assembly capacity approval. Blank chart entries remain unrecorded. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 78,
+          "printedPage": "155",
+          "table": "Thimble Selection Chart / Galvanised Steel Formed Grip",
+          "row": "GFG-188"
+        },
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-090-WR",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Wire rope",
+      "code": "GFG-090-WR",
+      "size": "9 mm",
+      "grade": "Match specified wire rope",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Wire Rope",
+      "rating": null,
+      "properties": {
+        "Strand construction": "Not stated for this wire-rope series",
+        "Matching diameter (mm)": 9,
+        "Colour code": "Green",
+        "Application": "Wire rope",
+        "Fitting evidence": "No WR-series matching hardware chart admitted"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-100-WR",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Wire rope",
+      "code": "GFG-100-WR",
+      "size": "10 mm",
+      "grade": "Match specified wire rope",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Wire Rope",
+      "rating": null,
+      "properties": {
+        "Strand construction": "Not stated for this wire-rope series",
+        "Matching diameter (mm)": 10,
+        "Colour code": "Yellow",
+        "Application": "Wire rope",
+        "Fitting evidence": "No WR-series matching hardware chart admitted"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-120-WR",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Wire rope",
+      "code": "GFG-120-WR",
+      "size": "12 mm",
+      "grade": "Match specified wire rope",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Wire Rope",
+      "rating": null,
+      "properties": {
+        "Strand construction": "Not stated for this wire-rope series",
+        "Matching diameter (mm)": 12,
+        "Colour code": "Black",
+        "Application": "Wire rope",
+        "Fitting evidence": "No WR-series matching hardware chart admitted"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-130-WR",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Wire rope",
+      "code": "GFG-130-WR",
+      "size": "13 mm",
+      "grade": "Match specified wire rope",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Wire Rope",
+      "rating": null,
+      "properties": {
+        "Strand construction": "Not stated for this wire-rope series",
+        "Matching diameter (mm)": 13,
+        "Colour code": "Green",
+        "Application": "Wire rope",
+        "Fitting evidence": "No WR-series matching hardware chart admitted"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-140-WR",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Wire rope",
+      "code": "GFG-140-WR",
+      "size": "14 mm",
+      "grade": "Match specified wire rope",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Wire Rope",
+      "rating": null,
+      "properties": {
+        "Strand construction": "Not stated for this wire-rope series",
+        "Matching diameter (mm)": 14,
+        "Colour code": "Yellow",
+        "Application": "Wire rope",
+        "Fitting evidence": "No WR-series matching hardware chart admitted"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-160-WR",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Wire rope",
+      "code": "GFG-160-WR",
+      "size": "16 mm",
+      "grade": "Match specified wire rope",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Wire Rope",
+      "rating": null,
+      "properties": {
+        "Strand construction": "Not stated for this wire-rope series",
+        "Matching diameter (mm)": 16,
+        "Colour code": "White",
+        "Application": "Wire rope",
+        "Fitting evidence": "No WR-series matching hardware chart admitted"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-180-WR",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Wire rope",
+      "code": "GFG-180-WR",
+      "size": "18 mm",
+      "grade": "Match specified wire rope",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Wire Rope",
+      "rating": null,
+      "properties": {
+        "Strand construction": "Not stated for this wire-rope series",
+        "Matching diameter (mm)": 18,
+        "Colour code": "Blue",
+        "Application": "Wire rope",
+        "Fitting evidence": "No WR-series matching hardware chart admitted"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-au-GFG-190-WR",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Dead-end",
+      "series": "GFG - Wire rope",
+      "code": "GFG-190-WR",
+      "size": "19 mm",
+      "grade": "Match specified wire rope",
+      "standard": "Manufacturer catalogue matching table; no strand grade, certification or holding-force basis established",
+      "source": "plpAU2025",
+      "page": 10,
+      "printedPage": "19",
+      "table": "PREFORMED Deadend Grip / For Wire Rope",
+      "rating": null,
+      "properties": {
+        "Strand construction": "Not stated for this wire-rope series",
+        "Matching diameter (mm)": 19,
+        "Colour code": "Black",
+        "Application": "Wire rope",
+        "Fitting evidence": "No WR-series matching hardware chart admitted"
+      },
+      "note": "Dimensional matching data only; no force/holding rating is published on the reviewed GFG page. Do not transfer BIG-GRIP or GUY-GRIP holding percentages. Verify supplied strand construction, grade, coating, lay and manufacturer installation procedure; same diameter alone does not establish compatibility. CL means Cable Loop. No carrier approval is established. Manufacturer general instructions (printed p.16) require the correct size/type and the same lay as the conductor; single use, with up to two retensioning reapplications within 90 days. Do not modify the grip.",
+      "additionalSources": [
+        {
+          "page": 9,
+          "printedPage": "16",
+          "table": "PREFORMED Deadend Grip / General Information and Safety Considerations",
+          "row": "All deadend grips"
+        }
+      ],
+      "useNotes": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 10
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWC-10",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - closed",
+      "code": "THWC-10",
+      "size": "THWC-10",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - closed",
+      "rating": null,
+      "properties": {
+        "Component type": "Closed wire rope thimble",
+        "Bend radius (mm)": 12.5,
+        "Seat width (mm)": 11,
+        "Source threaded length (mm)": 150
+      },
+      "note": "No standalone force rating. Source column is labelled Threaded Length; 150 mm retained as printed. Confirm its meaning with PLP.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWC-12",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - closed",
+      "code": "THWC-12",
+      "size": "THWC-12",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - closed",
+      "rating": null,
+      "properties": {
+        "Component type": "Closed wire rope thimble",
+        "Bend radius (mm)": 15,
+        "Seat width (mm)": 13,
+        "Source threaded length (mm)": 150
+      },
+      "note": "No standalone force rating. Source column is labelled Threaded Length; 150 mm retained as printed. Confirm its meaning with PLP.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWC-16",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - closed",
+      "code": "THWC-16",
+      "size": "THWC-16",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - closed",
+      "rating": null,
+      "properties": {
+        "Component type": "Closed wire rope thimble",
+        "Bend radius (mm)": 20,
+        "Seat width (mm)": 18,
+        "Source threaded length (mm)": 150
+      },
+      "note": "No standalone force rating. Source column is labelled Threaded Length; 150 mm retained as printed. Confirm its meaning with PLP.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWC-20",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - closed",
+      "code": "THWC-20",
+      "size": "THWC-20",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - closed",
+      "rating": null,
+      "properties": {
+        "Component type": "Closed wire rope thimble",
+        "Bend radius (mm)": 25,
+        "Seat width (mm)": 22,
+        "Source threaded length (mm)": 150
+      },
+      "note": "No standalone force rating. Source column is labelled Threaded Length; 150 mm retained as printed. Confirm its meaning with PLP.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWO-10",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - open",
+      "code": "THWO-10",
+      "size": "THWO-10",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - open",
+      "rating": null,
+      "properties": {
+        "Component type": "Open wire rope thimble",
+        "Bend radius (mm)": 12.5,
+        "Seat width (mm)": 11,
+        "Opened width (mm)": 14
+      },
+      "note": "No standalone force rating. Source asterisk: bend radius will be slightly larger on open thimbles. THWO-20-4 is not silently equated to chart code THWO-20.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWO-12",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - open",
+      "code": "THWO-12",
+      "size": "THWO-12",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - open",
+      "rating": null,
+      "properties": {
+        "Component type": "Open wire rope thimble",
+        "Bend radius (mm)": 15,
+        "Seat width (mm)": 13,
+        "Opened width (mm)": 17
+      },
+      "note": "No standalone force rating. Source asterisk: bend radius will be slightly larger on open thimbles. THWO-20-4 is not silently equated to chart code THWO-20.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWO-16",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - open",
+      "code": "THWO-16",
+      "size": "THWO-16",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - open",
+      "rating": null,
+      "properties": {
+        "Component type": "Open wire rope thimble",
+        "Bend radius (mm)": 20,
+        "Seat width (mm)": 18,
+        "Opened width (mm)": 21
+      },
+      "note": "No standalone force rating. Source asterisk: bend radius will be slightly larger on open thimbles. THWO-20-4 is not silently equated to chart code THWO-20.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWO-20-4",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - open",
+      "code": "THWO-20-4",
+      "size": "THWO-20-4",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - open",
+      "rating": null,
+      "properties": {
+        "Component type": "Open wire rope thimble",
+        "Bend radius (mm)": 25,
+        "Seat width (mm)": 22,
+        "Opened width (mm)": 24
+      },
+      "note": "No standalone force rating. Source asterisk: bend radius will be slightly larger on open thimbles. THWO-20-4 is not silently equated to chart code THWO-20.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWO-22",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Wire rope thimble - open",
+      "code": "THWO-22",
+      "size": "THWO-22",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 65,
+      "printedPage": "128",
+      "table": "Wire rope thimble - open",
+      "rating": null,
+      "properties": {
+        "Component type": "Open wire rope thimble",
+        "Bend radius (mm)": 27.5,
+        "Seat width (mm)": 24,
+        "Opened width (mm)": 28
+      },
+      "note": "No standalone force rating. Source asterisk: bend radius will be slightly larger on open thimbles. THWO-20-4 is not silently equated to chart code THWO-20.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 65
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-CTH-070-MCI",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Clevis thimble - galvanised cast iron",
+      "code": "CTH-070-MCI",
+      "size": "CTH-070-MCI",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "127",
+      "table": "Clevis thimble - galvanised cast iron",
+      "rating": {
+        "type": "MFL",
+        "value": 70,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Clevis thimble",
+        "Bend radius (mm)": 20,
+        "Maximum grip size (source)": "GFG-083; CFG-100-CL",
+        "Material / finish": "Galvanised cast iron"
+      },
+      "note": "Source label MFL retained without expanding it to a different rating basis. Maximum grip codes are as printed; use the separate selection chart for exact variants. MFL is not WLL or design resistance.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-GCT-120-TC5F",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Clevis thimble - galvanised cast iron",
+      "code": "GCT-120-TC5F",
+      "size": "GCT-120-TC5F",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "127",
+      "table": "Clevis thimble - galvanised cast iron",
+      "rating": {
+        "type": "MFL",
+        "value": 120,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Clevis thimble",
+        "Bend radius (mm)": 28.5,
+        "Maximum grip size (source)": "GFG-163; CFG-260-LT-CL",
+        "Material / finish": "Galvanised cast iron"
+      },
+      "note": "Source label MFL retained without expanding it to a different rating basis. Maximum grip codes are as printed; use the separate selection chart for exact variants. MFL is not WLL or design resistance.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-STH-070-1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Socket thimble - galvanised cast iron",
+      "code": "STH-070-1",
+      "size": "STH-070-1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 66,
+      "printedPage": "130",
+      "table": "Socket thimble - galvanised cast iron",
+      "rating": {
+        "type": "Tension rating",
+        "value": 70,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Socket thimble",
+        "Bend radius (mm)": 20,
+        "Material / finish": "Galvanised cast iron",
+        "Pin retention": "W clip security pin"
+      },
+      "note": "Catalogue component data only. Confirm exact supplied part, mating geometry and installation. No mast adoption or assembly resistance established.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 66
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWC-22",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Thimble - matching chart only",
+      "code": "THWC-22",
+      "size": "THWC-22",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 78,
+      "printedPage": "155",
+      "table": "Thimble - matching chart only",
+      "rating": null,
+      "properties": {
+        "Component type": "Wire rope thimble",
+        "Data completeness": "Matching chart only; dimensions and force not verified"
+      },
+      "note": "Listed in selection chart but absent from the standalone closed-thimble dimension table. No dimensions inferred from the code.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 78
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THWO-20",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Thimble",
+      "series": "Thimble - matching chart only",
+      "code": "THWO-20",
+      "size": "THWO-20",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 78,
+      "printedPage": "155",
+      "table": "Thimble - matching chart only",
+      "rating": null,
+      "properties": {
+        "Component type": "Wire rope thimble",
+        "Data completeness": "Matching chart only; dimensions and force not verified"
+      },
+      "note": "Selection chart uses THWO-20; dimension table uses THWO-20-4. Equivalence requires PLP confirmation; no dimensions transferred.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 78
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-S-070-1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Shackle",
+      "series": "Shackle - galvanised forged steel",
+      "code": "S-070-1",
+      "size": "S-070-1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "126",
+      "table": "Shackle - galvanised forged steel",
+      "rating": {
+        "type": "Tension rating",
+        "value": 70,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Shackle",
+        "Bolt size (source)": "M16",
+        "Material / finish": "Galvanised forged steel"
+      },
+      "note": "Source Tension Rating retained; not a lifting WLL or proof load. Bore, jaw opening, bolt grade and pin retention are not stated in this table.",
+      "useNotes": [],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-S-120-1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Shackle",
+      "series": "Shackle - galvanised forged steel",
+      "code": "S-120-1",
+      "size": "S-120-1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "126",
+      "table": "Shackle - galvanised forged steel",
+      "rating": {
+        "type": "Tension rating",
+        "value": 120,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Shackle",
+        "Bolt size (source)": "M16",
+        "Material / finish": "Galvanised forged steel"
+      },
+      "note": "Source Tension Rating retained; not a lifting WLL or proof load. Bore, jaw opening, bolt grade and pin retention are not stated in this table.",
+      "useNotes": [],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-S-160-1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Shackle",
+      "series": "Shackle - galvanised forged steel",
+      "code": "S-160-1",
+      "size": "S-160-1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "126",
+      "table": "Shackle - galvanised forged steel",
+      "rating": {
+        "type": "Tension rating",
+        "value": 160,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Shackle",
+        "Bolt size (source)": "M20",
+        "Material / finish": "Galvanised forged steel"
+      },
+      "note": "Source Tension Rating retained; not a lifting WLL or proof load. Bore, jaw opening, bolt grade and pin retention are not stated in this table.",
+      "useNotes": [],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-S-210-1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Shackle",
+      "series": "Shackle - galvanised forged steel",
+      "code": "S-210-1",
+      "size": "S-210-1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "126",
+      "table": "Shackle - galvanised forged steel",
+      "rating": {
+        "type": "Tension rating",
+        "value": 210,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Shackle",
+        "Bolt size (source)": "M20",
+        "Material / finish": "Galvanised forged steel"
+      },
+      "note": "Source Tension Rating retained; not a lifting WLL or proof load. Bore, jaw opening, bolt grade and pin retention are not stated in this table.",
+      "useNotes": [],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-TS-070-1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Shackle",
+      "series": "Twisted shackle",
+      "code": "TS-070-1",
+      "size": "TS-070-1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "126",
+      "table": "Twisted shackle",
+      "rating": {
+        "type": "Tension rating",
+        "value": 70,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Twisted shackle",
+        "Bolt size (source)": "M16",
+        "Material / finish": "Galvanised forged steel"
+      },
+      "note": "Source Tension Rating retained; not a lifting WLL or proof load. Bore, jaw opening, bolt grade and pin retention are not stated in this table.",
+      "useNotes": [],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THEN-16",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Thimble eyenut",
+      "code": "THEN-16",
+      "size": "THEN-16",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "137",
+      "table": "Thimble eyenut",
+      "rating": {
+        "type": "Tension rating",
+        "value": 30,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Thimble eyenut",
+        "Bend radius (mm)": 20,
+        "Thread size (source)": "M16"
+      },
+      "note": "Catalogue component data only. Confirm exact supplied part, mating geometry and installation. No mast adoption or assembly resistance established.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THEN-20",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Thimble eyenut",
+      "code": "THEN-20",
+      "size": "THEN-20",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "137",
+      "table": "Thimble eyenut",
+      "rating": {
+        "type": "Tension rating",
+        "value": 144,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Thimble eyenut",
+        "Bend radius (mm)": 30,
+        "Thread size (source)": "M20"
+      },
+      "note": "Catalogue component data only. Confirm exact supplied part, mating geometry and installation. No mast adoption or assembly resistance established.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THEN-24",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Thimble eyenut",
+      "code": "THEN-24",
+      "size": "THEN-24",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "137",
+      "table": "Thimble eyenut",
+      "rating": {
+        "type": "Tension rating",
+        "value": 144,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Thimble eyenut",
+        "Bend radius (mm)": 30,
+        "Thread size (source)": "M24"
+      },
+      "note": "Catalogue component data only. Confirm exact supplied part, mating geometry and installation. No mast adoption or assembly resistance established.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THEN-UNC1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Thimble eyenut",
+      "code": "THEN-UNC1",
+      "size": "THEN-UNC1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "137",
+      "table": "Thimble eyenut",
+      "rating": {
+        "type": "Tension rating",
+        "value": 144,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Thimble eyenut",
+        "Bend radius (mm)": 30,
+        "Thread size (source)": "1 inch"
+      },
+      "note": "Catalogue component data only. Confirm exact supplied part, mating geometry and installation. No mast adoption or assembly resistance established.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-GADJ-144-350",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "U-bolt stay tensioner",
+      "code": "GADJ-144-350",
+      "size": "GADJ-144-350",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "137",
+      "table": "U-bolt stay tensioner",
+      "rating": {
+        "type": "Tension rating",
+        "value": 144,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Stay tensioner",
+        "Thread size (source)": "M24",
+        "Overall length (mm)": 320,
+        "Thread length (mm)": 240,
+        "U-bolt size (source)": "M20",
+        "Material / finish": "Galvanised steel"
+      },
+      "note": "Staywire/anchor application. GADJ-144-350 total length is 320 mm as printed; code suffix does not override the dimension. Confirm supplied drawing. No soil/anchor resistance provided.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-GADJ-308-530",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "U-bolt stay tensioner",
+      "code": "GADJ-308-530",
+      "size": "GADJ-308-530",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "137",
+      "table": "U-bolt stay tensioner",
+      "rating": {
+        "type": "Tension rating",
+        "value": 308,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Stay tensioner",
+        "Thread size (source)": "M30",
+        "Overall length (mm)": 530,
+        "Thread length (mm)": 250,
+        "U-bolt size (source)": "M30",
+        "Material / finish": "Galvanised steel"
+      },
+      "note": "Staywire/anchor application. GADJ-144-350 total length is 320 mm as printed; code suffix does not override the dimension. Confirm supplied drawing. No soil/anchor resistance provided.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-GADJ-320-530",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "U-bolt stay tensioner",
+      "code": "GADJ-320-530",
+      "size": "GADJ-320-530",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "137",
+      "table": "U-bolt stay tensioner",
+      "rating": {
+        "type": "Tension rating",
+        "value": 320,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Stay tensioner",
+        "Thread size (source)": "M36",
+        "Overall length (mm)": 530,
+        "Thread length (mm)": 250,
+        "U-bolt size (source)": "M30",
+        "Material / finish": "Galvanised steel"
+      },
+      "note": "Staywire/anchor application. GADJ-144-350 total length is 320 mm as printed; code suffix does not override the dimension. Confirm supplied drawing. No soil/anchor resistance provided.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-ANCHOR-ROD-20A",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Screw anchor rod",
+      "code": "ANCHOR-ROD-20A",
+      "size": "ANCHOR-ROD-20A",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "136",
+      "table": "Screw anchor rod",
+      "rating": null,
+      "properties": {
+        "Component type": "Anchor rod",
+        "Thread size (source)": "M20",
+        "Overall length (mm)": 2140,
+        "Thread length (mm)": 60,
+        "Supplied assembly": "Assembly includes 2 x M20 nuts"
+      },
+      "note": "Source says use with stay tensioner or thimble eyenut, without an exact part-pair table. No automatic pairing or rod/soil resistance; thread length is not minimum required engagement.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-ANCHOR-ROD-20BLA",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Screw anchor rod",
+      "code": "ANCHOR-ROD-20BLA",
+      "size": "ANCHOR-ROD-20BLA",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "136",
+      "table": "Screw anchor rod",
+      "rating": null,
+      "properties": {
+        "Component type": "Anchor rod",
+        "Thread size (source)": "M20",
+        "Overall length (mm)": 2140,
+        "Thread length (mm)": 60,
+        "Supplied assembly": "Assembled for buried log applications"
+      },
+      "note": "Source says use with stay tensioner or thimble eyenut, without an exact part-pair table. No automatic pairing or rod/soil resistance; thread length is not minimum required engagement.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-ANCHOR-ROD-24A",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Screw anchor rod",
+      "code": "ANCHOR-ROD-24A",
+      "size": "ANCHOR-ROD-24A",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "136",
+      "table": "Screw anchor rod",
+      "rating": null,
+      "properties": {
+        "Component type": "Anchor rod",
+        "Thread size (source)": "M24",
+        "Overall length (mm)": 2140,
+        "Thread length (mm)": 60,
+        "Supplied assembly": "Assembly includes 2 x M24 nuts"
+      },
+      "note": "Source says use with stay tensioner or thimble eyenut, without an exact part-pair table. No automatic pairing or rod/soil resistance; thread length is not minimum required engagement.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-ANCHOR-ROD-24BLA",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Screw anchor rod",
+      "code": "ANCHOR-ROD-24BLA",
+      "size": "ANCHOR-ROD-24BLA",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "136",
+      "table": "Screw anchor rod",
+      "rating": null,
+      "properties": {
+        "Component type": "Anchor rod",
+        "Thread size (source)": "M24",
+        "Overall length (mm)": 2140,
+        "Thread length (mm)": 60,
+        "Supplied assembly": "Assembled for buried log applications"
+      },
+      "note": "Source says use with stay tensioner or thimble eyenut, without an exact part-pair table. No automatic pairing or rod/soil resistance; thread length is not minimum required engagement.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-ANCHOR-ROD-F-2133-M24",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Screw anchor rod",
+      "code": "ANCHOR-ROD-F-2133-M24",
+      "size": "ANCHOR-ROD-F-2133-M24",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "136",
+      "table": "Screw anchor rod",
+      "rating": null,
+      "properties": {
+        "Component type": "Anchor rod",
+        "Thread size (source)": "M24",
+        "Overall length (mm)": 2133,
+        "Thread length (mm)": 30,
+        "Supplied assembly": "Complete with forged nut"
+      },
+      "note": "Source says use with stay tensioner or thimble eyenut, without an exact part-pair table. No automatic pairing or rod/soil resistance; thread length is not minimum required engagement.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-ANCHOR-ROD-F-2133-1”",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Screw anchor rod",
+      "code": "ANCHOR-ROD-F-2133-1”",
+      "size": "ANCHOR-ROD-F-2133-1”",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 69,
+      "printedPage": "136",
+      "table": "Screw anchor rod",
+      "rating": null,
+      "properties": {
+        "Component type": "Anchor rod",
+        "Thread size (source)": "1 inch",
+        "Overall length (mm)": 2133,
+        "Thread length (mm)": 30,
+        "Supplied assembly": "Complete with forged nut"
+      },
+      "note": "Source says use with stay tensioner or thimble eyenut, without an exact part-pair table. No automatic pairing or rod/soil resistance; thread length is not minimum required engagement.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 69
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THGR-57",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Sheave",
+      "code": "THGR-57",
+      "size": "THGR-57",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "126",
+      "table": "Sheave",
+      "rating": null,
+      "properties": {
+        "Component type": "Sheave",
+        "Hole diameter (mm)": 21,
+        "Sheave diameter (mm)": 57
+      },
+      "note": "Dimension page heading: Sheave - Machined Steel; selection chart calls this Cast Iron Sheave. Material description conflict retained; obtain current material/drawing confirmation. No force rating.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-THGR-75",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Sheave",
+      "code": "THGR-75",
+      "size": "THGR-75",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 64,
+      "printedPage": "126",
+      "table": "Sheave",
+      "rating": null,
+      "properties": {
+        "Component type": "Sheave",
+        "Hole diameter (mm)": 26,
+        "Sheave diameter (mm)": 75
+      },
+      "note": "Dimension page heading: Sheave - Machined Steel; selection chart calls this Cast Iron Sheave. Material description conflict retained; obtain current material/drawing confirmation. No force rating.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 64
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-TC-070-1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Tongue clevis",
+      "code": "TC-070-1",
+      "size": "TC-070-1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 66,
+      "printedPage": "131",
+      "table": "Tongue clevis",
+      "rating": {
+        "type": "Tension rating",
+        "value": 70,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Tongue clevis",
+        "Bolt size (source)": "M16",
+        "Material / finish": "Galvanised cast iron"
+      },
+      "note": "Catalogue component data only. Confirm exact supplied part, mating geometry and installation. No mast adoption or assembly resistance established.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 66
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-TC-120-1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Tongue clevis",
+      "code": "TC-120-1",
+      "size": "TC-120-1",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 66,
+      "printedPage": "131",
+      "table": "Tongue clevis",
+      "rating": {
+        "type": "Tension rating",
+        "value": 120,
+        "unit": "kN"
+      },
+      "properties": {
+        "Component type": "Tongue clevis",
+        "Bolt size (source)": "M16",
+        "Material / finish": "Galvanised cast iron"
+      },
+      "note": "Catalogue component data only. Confirm exact supplied part, mating geometry and installation. No mast adoption or assembly resistance established.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 66
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-I-GY2",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Guy strain insulator - matching chart only",
+      "code": "I-GY2",
+      "size": "I-GY2",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 78,
+      "printedPage": "155",
+      "table": "Guy strain insulator - matching chart only",
+      "rating": null,
+      "properties": {
+        "Component type": "Guy strain insulator",
+        "Data completeness": "Matching chart only; mechanical and electrical ratings not verified"
+      },
+      "note": "Identity appears in PLP selection chart. Independent dimensions, mechanical strength, voltage/creepage and mast suitability were not found in the reviewed official catalogue. Obtain a current product datasheet; no capacity inferred.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 78
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-I-GY3",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Guy strain insulator - matching chart only",
+      "code": "I-GY3",
+      "size": "I-GY3",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 78,
+      "printedPage": "155",
+      "table": "Guy strain insulator - matching chart only",
+      "rating": null,
+      "properties": {
+        "Component type": "Guy strain insulator",
+        "Data completeness": "Matching chart only; mechanical and electrical ratings not verified"
+      },
+      "note": "Identity appears in PLP selection chart. Independent dimensions, mechanical strength, voltage/creepage and mast suitability were not found in the reviewed official catalogue. Obtain a current product datasheet; no capacity inferred.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 78
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "plp-fitting-I-GY4",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "PLP Australia",
+      "family": "Accessories",
+      "series": "Guy strain insulator - matching chart only",
+      "code": "I-GY4",
+      "size": "I-GY4",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "plpAU2025",
+      "page": 78,
+      "printedPage": "155",
+      "table": "Guy strain insulator - matching chart only",
+      "rating": null,
+      "properties": {
+        "Component type": "Guy strain insulator",
+        "Data completeness": "Matching chart only; mechanical and electrical ratings not verified"
+      },
+      "note": "Identity appears in PLP selection chart. Independent dimensions, mechanical strength, voltage/creepage and mast suitability were not found in the reviewed official catalogue. Obtain a current product datasheet; no capacity inferred.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian catalogue",
+          "note": "Australian distribution catalogue; supplied variant and availability require confirmation.",
+          "source": "plpAU2025",
+          "page": 78
+        },
+        "mast": {
+          "status": "Mast adoption not verified",
+          "note": "Distribution/stay hardware is not a carrier-approved mast kit."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-WE-O-127-G-NR1",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open wedge socket",
+      "code": "WSOC-WE-O-127-G-NR1",
+      "size": "11–13 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open wedge socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Wedge socket",
+        "Rope diameter min (mm)": 11,
+        "Rope diameter max (mm)": 13,
+        "Catalogue efficiency (% of rope catalogue strength)": 80
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-WE-O-158-G-NR2",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open wedge socket",
+      "code": "WSOC-WE-O-158-G-NR2",
+      "size": "14–16 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open wedge socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Wedge socket",
+        "Rope diameter min (mm)": 14,
+        "Rope diameter max (mm)": 16,
+        "Catalogue efficiency (% of rope catalogue strength)": 80
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-WE-O-190-G-NR3",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open wedge socket",
+      "code": "WSOC-WE-O-190-G-NR3",
+      "size": "18–19 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open wedge socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Wedge socket",
+        "Rope diameter min (mm)": 18,
+        "Rope diameter max (mm)": 19,
+        "Catalogue efficiency (% of rope catalogue strength)": 80
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-WE-O-222-G-NR4",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open wedge socket",
+      "code": "WSOC-WE-O-222-G-NR4",
+      "size": "20–22 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open wedge socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Wedge socket",
+        "Rope diameter min (mm)": 20,
+        "Rope diameter max (mm)": 22,
+        "Catalogue efficiency (% of rope catalogue strength)": 80
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-WE-O-254-G-NR5",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open wedge socket",
+      "code": "WSOC-WE-O-254-G-NR5",
+      "size": "23–26 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open wedge socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Wedge socket",
+        "Rope diameter min (mm)": 23,
+        "Rope diameter max (mm)": 26,
+        "Catalogue efficiency (% of rope catalogue strength)": 80
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-WE-O-285-G-NR6",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open wedge socket",
+      "code": "WSOC-WE-O-285-G-NR6",
+      "size": "27–29 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open wedge socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Wedge socket",
+        "Rope diameter min (mm)": 27,
+        "Rope diameter max (mm)": 29,
+        "Catalogue efficiency (% of rope catalogue strength)": 80
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-WE-O-317-G-NR7",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open wedge socket",
+      "code": "WSOC-WE-O-317-G-NR7",
+      "size": "30–32 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open wedge socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Wedge socket",
+        "Rope diameter min (mm)": 30,
+        "Rope diameter max (mm)": 32,
+        "Catalogue efficiency (% of rope catalogue strength)": 80
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-127-G-NR198",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket",
+      "code": "WSOC-ME-O-127-G-NR198",
+      "size": "11–13 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 11,
+        "Rope diameter max (mm)": 13,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-158-G-NR199",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket",
+      "code": "WSOC-ME-O-158-G-NR199",
+      "size": "14–16 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 14,
+        "Rope diameter max (mm)": 16,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-222-G-NR104",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket",
+      "code": "WSOC-ME-O-222-G-NR104",
+      "size": "20–22 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 20,
+        "Rope diameter max (mm)": 22,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-254-G-NR108",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket",
+      "code": "WSOC-ME-O-254-G-NR108",
+      "size": "23–26 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 23,
+        "Rope diameter max (mm)": 26,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-285-G-NR111",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket",
+      "code": "WSOC-ME-O-285-G-NR111",
+      "size": "27–30 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 27,
+        "Rope diameter max (mm)": 30,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-158-G-G416",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket G-416",
+      "code": "WSOC-ME-O-158-G-G416",
+      "size": "14–16 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket G-416",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 14,
+        "Rope diameter max (mm)": 16,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-190-G-G416",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket G-416",
+      "code": "WSOC-ME-O-190-G-G416",
+      "size": "18–19 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket G-416",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 18,
+        "Rope diameter max (mm)": 19,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-222-G-G416",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket G-416",
+      "code": "WSOC-ME-O-222-G-G416",
+      "size": "20–22 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket G-416",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 20,
+        "Rope diameter max (mm)": 22,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-254-G-G416",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket G-416",
+      "code": "WSOC-ME-O-254-G-G416",
+      "size": "24–26 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket G-416",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 24,
+        "Rope diameter max (mm)": 26,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-285-G-G416",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket G-416",
+      "code": "WSOC-ME-O-285-G-G416",
+      "size": "28–30 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket G-416",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 28,
+        "Rope diameter max (mm)": 30,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-O-349-G-G416",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open spelter socket G-416",
+      "code": "WSOC-ME-O-349-G-G416",
+      "size": "32–35 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open spelter socket G-416",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 32,
+        "Rope diameter max (mm)": 35,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-C-158-G-G417",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed spelter socket G-417",
+      "code": "WSOC-ME-C-158-G-G417",
+      "size": "14–16 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed spelter socket G-417",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 14,
+        "Rope diameter max (mm)": 16,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-C-190-G-G417",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed spelter socket G-417",
+      "code": "WSOC-ME-C-190-G-G417",
+      "size": "18 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed spelter socket G-417",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 18,
+        "Rope diameter max (mm)": 18,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-C-222-G-G417",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed spelter socket G-417",
+      "code": "WSOC-ME-C-222-G-G417",
+      "size": "20–22 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed spelter socket G-417",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 20,
+        "Rope diameter max (mm)": 22,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-C-254-G-G417",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed spelter socket G-417",
+      "code": "WSOC-ME-C-254-G-G417",
+      "size": "24–26 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed spelter socket G-417",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 24,
+        "Rope diameter max (mm)": 26,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-ME-C-285-G-G417",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed spelter socket G-417",
+      "code": "WSOC-ME-C-285-G-G417",
+      "size": "28–30 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed spelter socket G-417",
+      "rating": null,
+      "properties": {
+        "Component type": "Spelter socket",
+        "Rope diameter min (mm)": 28,
+        "Rope diameter max (mm)": 30,
+        "Catalogue efficiency (% of rope catalogue strength)": 100
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-130-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket",
+      "code": "WSOC-SW-O-130-B",
+      "size": "11–13 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 11,
+        "Rope diameter max (mm)": 13,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-158-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket",
+      "code": "WSOC-SW-O-158-B",
+      "size": "14–16 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 14,
+        "Rope diameter max (mm)": 16,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-254-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket",
+      "code": "WSOC-SW-O-254-B",
+      "size": "24–26 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 24,
+        "Rope diameter max (mm)": 26,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-285-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket",
+      "code": "WSOC-SW-O-285-B",
+      "size": "28 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 28,
+        "Rope diameter max (mm)": 28,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-095-B-S501",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket S-501",
+      "code": "WSOC-SW-O-095-B-S501",
+      "size": "9–10 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket S-501",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 9,
+        "Rope diameter max (mm)": 10,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-111-B-S501",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket S-501",
+      "code": "WSOC-SW-O-111-B-S501",
+      "size": "11–12 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket S-501",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 11,
+        "Rope diameter max (mm)": 12,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-127-B-S501",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket S-501",
+      "code": "WSOC-SW-O-127-B-S501",
+      "size": "13 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket S-501",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 13,
+        "Rope diameter max (mm)": 13,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-158-B-S501",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket S-501",
+      "code": "WSOC-SW-O-158-B-S501",
+      "size": "16 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket S-501",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 16,
+        "Rope diameter max (mm)": 16,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-190-B-S501",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket S-501",
+      "code": "WSOC-SW-O-190-B-S501",
+      "size": "18–20 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket S-501",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 18,
+        "Rope diameter max (mm)": 20,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-222-B-S501",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket S-501",
+      "code": "WSOC-SW-O-222-B-S501",
+      "size": "22 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket S-501",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 22,
+        "Rope diameter max (mm)": 22,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-254-B-S501",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket S-501",
+      "code": "WSOC-SW-O-254-B-S501",
+      "size": "24–26 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket S-501",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 24,
+        "Rope diameter max (mm)": 26,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-O-285-B-S501",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Open swage socket S-501",
+      "code": "WSOC-SW-O-285-B-S501",
+      "size": "28 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Open swage socket S-501",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 28,
+        "Rope diameter max (mm)": 28,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-158-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket",
+      "code": "WSOC-SW-C-158-B",
+      "size": "16 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 16,
+        "Rope diameter max (mm)": 16,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-180-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket",
+      "code": "WSOC-SW-C-180-B",
+      "size": "18 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 18,
+        "Rope diameter max (mm)": 18,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-240-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket",
+      "code": "WSOC-SW-C-240-B",
+      "size": "24 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 24,
+        "Rope diameter max (mm)": 24,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-285-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket",
+      "code": "WSOC-SW-C-285-B",
+      "size": "28.5 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 28.5,
+        "Rope diameter max (mm)": 28.5,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-320-B",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket",
+      "code": "WSOC-SW-C-320-B",
+      "size": "32 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 32,
+        "Rope diameter max (mm)": 32,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-095-B-S502",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket S-502",
+      "code": "WSOC-SW-C-095-B-S502",
+      "size": "9–10 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket S-502",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 9,
+        "Rope diameter max (mm)": 10,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-127-B-S502",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket S-502",
+      "code": "WSOC-SW-C-127-B-S502",
+      "size": "13 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket S-502",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 13,
+        "Rope diameter max (mm)": 13,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-158-B-S502",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket S-502",
+      "code": "WSOC-SW-C-158-B-S502",
+      "size": "16 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket S-502",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 16,
+        "Rope diameter max (mm)": 16,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-190-B-S502",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket S-502",
+      "code": "WSOC-SW-C-190-B-S502",
+      "size": "18–20 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket S-502",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 18,
+        "Rope diameter max (mm)": 20,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-222-B-S502",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket S-502",
+      "code": "WSOC-SW-C-222-B-S502",
+      "size": "22 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket S-502",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 22,
+        "Rope diameter max (mm)": 22,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-254-B-S502",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket S-502",
+      "code": "WSOC-SW-C-254-B-S502",
+      "size": "24–26 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket S-502",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 24,
+        "Rope diameter max (mm)": 26,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-285-B-S502",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket S-502",
+      "code": "WSOC-SW-C-285-B-S502",
+      "size": "28 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket S-502",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 28,
+        "Rope diameter max (mm)": 28,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WSOC-SW-C-320-B-S502",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Accessories",
+      "series": "Closed swage socket S-502",
+      "code": "WSOC-SW-C-320-B-S502",
+      "size": "32 mm rope",
+      "grade": "Not stated",
+      "standard": "No product-standard compliance stated in this table",
+      "source": "bullivants4",
+      "page": 51,
+      "printedPage": "51",
+      "table": "Closed swage socket S-502",
+      "rating": null,
+      "properties": {
+        "Component type": "Swage socket",
+        "Rope diameter min (mm)": 32,
+        "Rope diameter max (mm)": 32,
+        "Catalogue efficiency (% of rope catalogue strength)": 100,
+        "Source rope construction": "6x19 Class, 6x37 Class and galvanised bridge rope",
+        "Source exclusions": "Not recommended with fibre core or Langs Lay ropes"
+      },
+      "note": "Efficiency is the supplier catalogue claim for the stated wire rope and termination process, not a force rating. Strand applicability, socketing/swaging method, material and supplied assembly certificate require confirmation. No automatic match to guy strand.",
+      "useNotes": [],
+      "additionalSources": [],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 51
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WTB-T-127-JJ-G-12INT",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Turnbuckle",
+      "series": "Jaw & Jaw Superbuckle - US Fed specification",
+      "code": "WTB-T-127-JJ-G-12INT",
+      "size": "1/2 x 12 in",
+      "grade": "Not stated",
+      "standard": "US Federal Specification FF-T-791B, Type 1, Form 1, Class 7 - manufacturer performance statement",
+      "source": "bullivants4",
+      "page": 79,
+      "printedPage": "79",
+      "table": "Jaw & Jaw Superbuckle - US Fed specification",
+      "rating": {
+        "type": "WLL",
+        "value": 1,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 482.6,
+        "Open length (mm)": 812.8,
+        "Source dimension BB (mm)": 304.8,
+        "Published proof load multiplier (x WLL)": 2.5,
+        "Published ultimate load multiplier (x WLL)": 5,
+        "Material / finish": "Hot-dip galvanised steel",
+        "Source dimension A (mm)": 12.7,
+        "Source dimension B (mm)": 16.51,
+        "Source dimension E (mm)": 69.85,
+        "Source dimension G (mm)": 26.92,
+        "Source dimension J (mm)": 774.7,
+        "Source dimension K (mm)": 444.5,
+        "Length range (derived mm)": 330.2
+      },
+      "note": "Straight in-line pull only. Proof/ultimate multipliers are directly stated for this Superbuckle series; they are not assigned to AS 2319 products or used to calculate design resistance. BB is retained as a drawing dimension, not re-labelled take-up.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WTB-T-158-JJ-G-12INT",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Turnbuckle",
+      "series": "Jaw & Jaw Superbuckle - US Fed specification",
+      "code": "WTB-T-158-JJ-G-12INT",
+      "size": "5/8 x 12 in",
+      "grade": "Not stated",
+      "standard": "US Federal Specification FF-T-791B, Type 1, Form 1, Class 7 - manufacturer performance statement",
+      "source": "bullivants4",
+      "page": 79,
+      "printedPage": "79",
+      "table": "Jaw & Jaw Superbuckle - US Fed specification",
+      "rating": {
+        "type": "WLL",
+        "value": 1.6,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 630.35,
+        "Open length (mm)": 866.9,
+        "Source dimension BB (mm)": 304.8,
+        "Published proof load multiplier (x WLL)": 2.5,
+        "Published ultimate load multiplier (x WLL)": 5,
+        "Material / finish": "Hot-dip galvanised steel",
+        "Source dimension A (mm)": 16,
+        "Source dimension B (mm)": 20.07,
+        "Source dimension E (mm)": 88.9,
+        "Source dimension G (mm)": 33.27,
+        "Source dimension J (mm)": 814.07,
+        "Source dimension K (mm)": 477.52,
+        "Length range (derived mm)": 236.55
+      },
+      "note": "Straight in-line pull only. Proof/ultimate multipliers are directly stated for this Superbuckle series; they are not assigned to AS 2319 products or used to calculate design resistance. BB is retained as a drawing dimension, not re-labelled take-up.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WTB-T-190-JJ-G-12INT",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Turnbuckle",
+      "series": "Jaw & Jaw Superbuckle - US Fed specification",
+      "code": "WTB-T-190-JJ-G-12INT",
+      "size": "3/4 x 12 in",
+      "grade": "Not stated",
+      "standard": "US Federal Specification FF-T-791B, Type 1, Form 1, Class 7 - manufacturer performance statement",
+      "source": "bullivants4",
+      "page": 79,
+      "printedPage": "79",
+      "table": "Jaw & Jaw Superbuckle - US Fed specification",
+      "rating": {
+        "type": "WLL",
+        "value": 2.36,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 574.04,
+        "Open length (mm)": 916.94,
+        "Source dimension BB (mm)": 304.8,
+        "Published proof load multiplier (x WLL)": 2.5,
+        "Published ultimate load multiplier (x WLL)": 5,
+        "Material / finish": "Hot-dip galvanised steel",
+        "Source dimension A (mm)": 19.05,
+        "Source dimension B (mm)": 23.88,
+        "Source dimension E (mm)": 106.17,
+        "Source dimension G (mm)": 38.1,
+        "Source dimension J (mm)": 850.9,
+        "Source dimension K (mm)": 508,
+        "Length range (derived mm)": 342.9
+      },
+      "note": "Straight in-line pull only. Proof/ultimate multipliers are directly stated for this Superbuckle series; they are not assigned to AS 2319 products or used to calculate design resistance. BB is retained as a drawing dimension, not re-labelled take-up.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WTB-T-222-JJ-G-12INT",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Turnbuckle",
+      "series": "Jaw & Jaw Superbuckle - US Fed specification",
+      "code": "WTB-T-222-JJ-G-12INT",
+      "size": "7/8 x 12 in",
+      "grade": "Not stated",
+      "standard": "US Federal Specification FF-T-791B, Type 1, Form 1, Class 7 - manufacturer performance statement",
+      "source": "bullivants4",
+      "page": 79,
+      "printedPage": "79",
+      "table": "Jaw & Jaw Superbuckle - US Fed specification",
+      "rating": {
+        "type": "WLL",
+        "value": 3.26,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 617.73,
+        "Open length (mm)": 966.98,
+        "Source dimension BB (mm)": 304.8,
+        "Published proof load multiplier (x WLL)": 2.5,
+        "Published ultimate load multiplier (x WLL)": 5,
+        "Material / finish": "Hot-dip galvanised steel",
+        "Source dimension A (mm)": 22.35,
+        "Source dimension B (mm)": 28.7,
+        "Source dimension E (mm)": 123.19,
+        "Source dimension G (mm)": 44.45,
+        "Source dimension J (mm)": 891.79,
+        "Source dimension K (mm)": 542.54,
+        "Length range (derived mm)": 349.25
+      },
+      "note": "Straight in-line pull only. Proof/ultimate multipliers are directly stated for this Superbuckle series; they are not assigned to AS 2319 products or used to calculate design resistance. BB is retained as a drawing dimension, not re-labelled take-up.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "id": "bull-fitting-WTB-T-254-JJ-G-12INT",
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "manufacturer": "Bullivants",
+      "family": "Turnbuckle",
+      "series": "Jaw & Jaw Superbuckle - US Fed specification",
+      "code": "WTB-T-254-JJ-G-12INT",
+      "size": "1 x 12 in",
+      "grade": "Not stated",
+      "standard": "US Federal Specification FF-T-791B, Type 1, Form 1, Class 7 - manufacturer performance statement",
+      "source": "bullivants4",
+      "page": 79,
+      "printedPage": "79",
+      "table": "Jaw & Jaw Superbuckle - US Fed specification",
+      "rating": {
+        "type": "WLL",
+        "value": 4.54,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 661.92,
+        "Open length (mm)": 1017.52,
+        "Source dimension BB (mm)": 304.8,
+        "Published proof load multiplier (x WLL)": 2.5,
+        "Published ultimate load multiplier (x WLL)": 5,
+        "Material / finish": "Hot-dip galvanised steel",
+        "Source dimension A (mm)": 25.4,
+        "Source dimension B (mm)": 30.04,
+        "Source dimension E (mm)": 140.46,
+        "Source dimension G (mm)": 52.32,
+        "Source dimension J (mm)": 932.69,
+        "Source dimension K (mm)": 577.09,
+        "Length range (derived mm)": 355.6
+      },
+      "note": "Straight in-line pull only. Proof/ultimate multipliers are directly stated for this Superbuckle series; they are not assigned to AS 2319 products or used to calculate design resistance. BB is retained as a drawing dimension, not re-labelled take-up.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Supplied pin/eye geometry, numeric minimum thread engagement and locking method require the exact product drawing or user guide. Drawing letters are retained without assigning unverified meanings."
+      ],
+      "additionalSources": [],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 79
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "bullivants-au-rope-w0030lj4k",
+      "manufacturer": "Bullivants",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised wire strand core",
+      "code": "W0030LJ4K",
+      "size": "3 mm",
+      "grade": "2070 (wire tensile grade)",
+      "standard": "AS 3569 — manufacturer statement; edition not specified in this table",
+      "source": "bullivants4",
+      "page": 44,
+      "table": "Small General Purpose Wire Rope / 7X19 Construction - Wire Strand Core",
+      "rating": {
+        "type": "MBF",
+        "value": 6.2,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 3,
+        "Core": "Wire strand core (WSC)",
+        "Lay": "RHOL",
+        "Finish": "Galvanised"
+      },
+      "note": "Supplier lists stay-wire use. This does not identify the rope supplied with another manufacturer's mast. Mass, metallic area, E/EA, prestretch and coating class are not published in this table.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "mast": {
+          "status": "Stay-wire use stated",
+          "note": "Stay-wire application is published; this exact part is not identified in another supplier's mast kit.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "bullivants-au-rope-w0032lj4k",
+      "manufacturer": "Bullivants",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised wire strand core",
+      "code": "W0032LJ4K",
+      "size": "3.2 mm",
+      "grade": "2070 (wire tensile grade)",
+      "standard": "AS 3569 — manufacturer statement; edition not specified in this table",
+      "source": "bullivants4",
+      "page": 44,
+      "table": "Small General Purpose Wire Rope / 7X19 Construction - Wire Strand Core",
+      "rating": {
+        "type": "MBF",
+        "value": 7.06,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 3.2,
+        "Core": "Wire strand core (WSC)",
+        "Lay": "RHOL",
+        "Finish": "Galvanised"
+      },
+      "note": "Supplier lists stay-wire use. This does not identify the rope supplied with another manufacturer's mast. Mass, metallic area, E/EA, prestretch and coating class are not published in this table.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "mast": {
+          "status": "Stay-wire use stated",
+          "note": "Stay-wire application is published; this exact part is not identified in another supplier's mast kit.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "bullivants-au-rope-w0040lj4k",
+      "manufacturer": "Bullivants",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised wire strand core",
+      "code": "W0040LJ4K",
+      "size": "4 mm",
+      "grade": "2070 (wire tensile grade)",
+      "standard": "AS 3569 — manufacturer statement; edition not specified in this table",
+      "source": "bullivants4",
+      "page": 44,
+      "table": "Small General Purpose Wire Rope / 7X19 Construction - Wire Strand Core",
+      "rating": {
+        "type": "MBF",
+        "value": 11.21,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 4,
+        "Core": "Wire strand core (WSC)",
+        "Lay": "RHOL",
+        "Finish": "Galvanised"
+      },
+      "note": "Supplier lists stay-wire use. This does not identify the rope supplied with another manufacturer's mast. Mass, metallic area, E/EA, prestretch and coating class are not published in this table.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "mast": {
+          "status": "Stay-wire use stated",
+          "note": "Stay-wire application is published; this exact part is not identified in another supplier's mast kit.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "bullivants-au-rope-w0050lj4k",
+      "manufacturer": "Bullivants",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised wire strand core",
+      "code": "W0050LJ4K",
+      "size": "5 mm",
+      "grade": "2070 (wire tensile grade)",
+      "standard": "AS 3569 — manufacturer statement; edition not specified in this table",
+      "source": "bullivants4",
+      "page": 44,
+      "table": "Small General Purpose Wire Rope / 7X19 Construction - Wire Strand Core",
+      "rating": {
+        "type": "MBF",
+        "value": 17.4,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 5,
+        "Core": "Wire strand core (WSC)",
+        "Lay": "RHOL",
+        "Finish": "Galvanised"
+      },
+      "note": "Supplier lists stay-wire use. This does not identify the rope supplied with another manufacturer's mast. Mass, metallic area, E/EA, prestretch and coating class are not published in this table.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "mast": {
+          "status": "Stay-wire use stated",
+          "note": "Stay-wire application is published; this exact part is not identified in another supplier's mast kit.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "bullivants-au-rope-w0060lj4k",
+      "manufacturer": "Bullivants",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised wire strand core",
+      "code": "W0060LJ4K",
+      "size": "6 mm",
+      "grade": "2070 (wire tensile grade)",
+      "standard": "AS 3569 — manufacturer statement; edition not specified in this table",
+      "source": "bullivants4",
+      "page": 44,
+      "table": "Small General Purpose Wire Rope / 7X19 Construction - Wire Strand Core",
+      "rating": {
+        "type": "MBF",
+        "value": 25.45,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 6,
+        "Core": "Wire strand core (WSC)",
+        "Lay": "RHOL",
+        "Finish": "Galvanised"
+      },
+      "note": "Supplier lists stay-wire use. This does not identify the rope supplied with another manufacturer's mast. Mass, metallic area, E/EA, prestretch and coating class are not published in this table.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "mast": {
+          "status": "Stay-wire use stated",
+          "note": "Stay-wire application is published; this exact part is not identified in another supplier's mast kit.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "bullivants-au-rope-w0070lj4k",
+      "manufacturer": "Bullivants",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised wire strand core",
+      "code": "W0070LJ4K",
+      "size": "7 mm",
+      "grade": "2070 (wire tensile grade)",
+      "standard": "AS 3569 — manufacturer statement; edition not specified in this table",
+      "source": "bullivants4",
+      "page": 44,
+      "table": "Small General Purpose Wire Rope / 7X19 Construction - Wire Strand Core",
+      "rating": {
+        "type": "MBF",
+        "value": 33.7,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 7,
+        "Core": "Wire strand core (WSC)",
+        "Lay": "RHOL",
+        "Finish": "Galvanised"
+      },
+      "note": "Supplier lists stay-wire use. This does not identify the rope supplied with another manufacturer's mast. Mass, metallic area, E/EA, prestretch and coating class are not published in this table.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "mast": {
+          "status": "Stay-wire use stated",
+          "note": "Stay-wire application is published; this exact part is not identified in another supplier's mast kit.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "bullivants-au-rope-w0080lj4k",
+      "manufacturer": "Bullivants",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised wire strand core",
+      "code": "W0080LJ4K",
+      "size": "8 mm",
+      "grade": "2070 (wire tensile grade)",
+      "standard": "AS 3569 — manufacturer statement; edition not specified in this table",
+      "source": "bullivants4",
+      "page": 44,
+      "table": "Small General Purpose Wire Rope / 7X19 Construction - Wire Strand Core",
+      "rating": {
+        "type": "MBF",
+        "value": 43.97,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 8,
+        "Core": "Wire strand core (WSC)",
+        "Lay": "RHOL",
+        "Finish": "Galvanised"
+      },
+      "note": "Supplier lists stay-wire use. This does not identify the rope supplied with another manufacturer's mast. Mass, metallic area, E/EA, prestretch and coating class are not published in this table.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "mast": {
+          "status": "Stay-wire use stated",
+          "note": "Stay-wire application is published; this exact part is not identified in another supplier's mast kit.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "bullivants-au-rope-w0100lj4k",
+      "manufacturer": "Bullivants",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised wire strand core",
+      "code": "W0100LJ4K",
+      "size": "10 mm",
+      "grade": "2070 (wire tensile grade)",
+      "standard": "AS 3569 — manufacturer statement; edition not specified in this table",
+      "source": "bullivants4",
+      "page": 44,
+      "table": "Small General Purpose Wire Rope / 7X19 Construction - Wire Strand Core",
+      "rating": {
+        "type": "MBF",
+        "value": 68.4,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 10,
+        "Core": "Wire strand core (WSC)",
+        "Lay": "RHOL",
+        "Finish": "Galvanised"
+      },
+      "note": "Supplier lists stay-wire use. This does not identify the rope supplied with another manufacturer's mast. Mass, metallic area, E/EA, prestretch and coating class are not published in this table.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "mast": {
+          "status": "Stay-wire use stated",
+          "note": "Stay-wire application is published; this exact part is not identified in another supplier's mast kit.",
+          "source": "bullivants4",
+          "page": 44
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "nobles-au-rope-18484",
+      "manufacturer": "Nobles",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised small general-purpose rope",
+      "code": "18484",
+      "size": "4 mm",
+      "grade": "2070 (catalogue grade)",
+      "standard": "No product-standard compliance stated in this table; supplied rope certificate required",
+      "source": "noblesRopeLinked",
+      "page": 50,
+      "table": "Small General Purpose Wire Ropes / Product Specifications, printed p.49",
+      "rating": {
+        "type": "MBL",
+        "value": 7.03,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 4,
+        "Core": "WSC",
+        "Linear mass (kg/m)": 0.061,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Original supplier MBL and mass retained. The published 4/5 mm grade and MBL values require supplier confirmation; do not replace them with another supplier's rating. Current official linked table still has a 2018 footer. Exact mast use, E/EA, prestretch and current supplied certificate are not established.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        },
+        {
+          "source": "telcoMast",
+          "page": null,
+          "table": "7x19 mast application example",
+          "row": "TF-RM-HDALT specifies Grade 2070; rope SKU not identified"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesRopeLinked",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "nobles-au-rope-16275",
+      "manufacturer": "Nobles",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised small general-purpose rope",
+      "code": "16275",
+      "size": "5 mm",
+      "grade": "2070 (catalogue grade)",
+      "standard": "No product-standard compliance stated in this table; supplied rope certificate required",
+      "source": "noblesRopeLinked",
+      "page": 50,
+      "table": "Small General Purpose Wire Ropes / Product Specifications, printed p.49",
+      "rating": {
+        "type": "MBL",
+        "value": 11.21,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 5,
+        "Core": "WSC",
+        "Linear mass (kg/m)": 0.095,
+        "Source finish notation": "B (as named; coating class not established)"
+      },
+      "note": "Original supplier MBL and mass retained. The published 4/5 mm grade and MBL values require supplier confirmation; do not replace them with another supplier's rating. Current official linked table still has a 2018 footer. Exact mast use, E/EA, prestretch and current supplied certificate are not established.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        },
+        {
+          "source": "telcoMast",
+          "page": null,
+          "table": "7x19 mast application example",
+          "row": "TF-RM-HDALT specifies Grade 2070; rope SKU not identified"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesRopeLinked",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "nobles-au-rope-13333",
+      "manufacturer": "Nobles",
+      "family": "Guy wire rope",
+      "series": "7x19 galvanised small general-purpose rope",
+      "code": "13333",
+      "size": "6 mm",
+      "grade": "2070 (catalogue grade)",
+      "standard": "No product-standard compliance stated in this table; supplied rope certificate required",
+      "source": "noblesRopeLinked",
+      "page": 50,
+      "table": "Small General Purpose Wire Ropes / Product Specifications, printed p.49",
+      "rating": {
+        "type": "MBL",
+        "value": 25.5,
+        "unit": "kN"
+      },
+      "properties": {
+        "Construction": "7x19",
+        "Nominal rope diameter (mm)": 6,
+        "Core": "WSC",
+        "Linear mass (kg/m)": 0.137,
+        "Source finish notation": "B (as named; coating class not established)",
+        "Lay": "sZ (as named)"
+      },
+      "note": "Original supplier MBL and mass retained. Current official linked table still has a 2018 footer. Exact mast use, E/EA, prestretch and current supplied certificate are not established.",
+      "useNotes": [
+        "Termination reference: match exact rope construction/core, diameter and fitting series; a competent supplier must specify the pressing equipment/dies and installation. Typical catalogue efficiency is not a verified force rating for this rope assembly.",
+        "7x19 mast application examples do not prove this rope SKU is used by that mast maker. No automatic link to a socket, formed grip or ferrule is made."
+      ],
+      "additionalSources": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "printedPage": "2",
+          "table": "Termination selection and installation guidance",
+          "row": "General reference only; not a pairing for this rope SKU"
+        },
+        {
+          "source": "telcoMast",
+          "page": null,
+          "table": "7x19 mast application example",
+          "row": "TF-RM-HDALT specifies Grade 2070; rope SKU not identified"
+        }
+      ],
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian supplier catalogue",
+          "note": "Catalogue presence is not current stock or owner approval.",
+          "source": "noblesRopeLinked",
+          "page": 50
+        },
+        "mast": {
+          "status": "Not verified",
+          "note": "No exact-part mast application established."
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rseel10",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEEL10",
+      "size": "M10",
+      "grade": "Grade L",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 0.3,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 260,
+        "Open length (mm)": 380,
+        "Source dimension E (mm)": 8.5,
+        "Source dimension F (mm)": 180,
+        "Source dimension G (mm)": 12,
+        "Source dimension H (mm)": 21,
+        "Source dimension J (mm)": 7,
+        "Mass (kg)": 0.34,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 120
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M10 Grade L"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rseel12",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEEL12",
+      "size": "M12",
+      "grade": "Grade L",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 0.5,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 340,
+        "Open length (mm)": 520,
+        "Source dimension E (mm)": 8.5,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 15,
+        "Source dimension H (mm)": 30,
+        "Source dimension J (mm)": 9,
+        "Mass (kg)": 0.79,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 180
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M12 Grade L"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rseel16",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEEL16",
+      "size": "M16",
+      "grade": "Grade L",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 0.75,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 350,
+        "Open length (mm)": 525,
+        "Source dimension E (mm)": 9,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 17,
+        "Source dimension H (mm)": 36,
+        "Source dimension J (mm)": 12,
+        "Mass (kg)": 1.09,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 175
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M16 Grade L"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rseel20",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEEL20",
+      "size": "M20",
+      "grade": "Grade L",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 1.25,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 380,
+        "Open length (mm)": 545,
+        "Source dimension E (mm)": 10.5,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 21,
+        "Source dimension H (mm)": 42,
+        "Source dimension J (mm)": 12,
+        "Mass (kg)": 1.72,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 165
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M20 Grade L"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rseel24",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEEL24",
+      "size": "M24",
+      "grade": "Grade L",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 2.5,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 540,
+        "Open length (mm)": 725,
+        "Source dimension E (mm)": 13,
+        "Source dimension F (mm)": 360,
+        "Source dimension G (mm)": 25,
+        "Source dimension H (mm)": 51,
+        "Source dimension J (mm)": 17,
+        "Mass (kg)": 3.2,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 185
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M24 Grade L"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rseel33",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEEL33",
+      "size": "M33",
+      "grade": "Grade L",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 5,
+        "unit": "t"
+      },
+      "properties": {
+        "Source dimension E (mm)": 14,
+        "Source dimension F (mm)": 380,
+        "Source dimension H (mm)": 70,
+        "Mass (kg)": 9.11,
+        "Finish": "Galvanised"
+      },
+      "fieldIssues": [
+        {
+          "field": "Dimensions",
+          "state": "Source conflict",
+          "note": "Web table: A closed/open 660/936, G 33, J 24 mm; V2 sheet: 656/932, G 34, J 24.5 mm. These fields are withheld pending exact supplied-variant confirmation."
+        }
+      ],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M33 Grade L"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rseel39",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEEL39",
+      "size": "M39",
+      "grade": "Grade L",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 6,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 664,
+        "Open length (mm)": 952,
+        "Source dimension E (mm)": 14,
+        "Source dimension F (mm)": 410,
+        "Source dimension G (mm)": 40,
+        "Source dimension H (mm)": 80,
+        "Source dimension J (mm)": 28,
+        "Mass (kg)": 16,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 288
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M39 Grade L"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee10p",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE10P",
+      "size": "M10",
+      "grade": "Grade P",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 0.6,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 260,
+        "Open length (mm)": 380,
+        "Source dimension E (mm)": 8.5,
+        "Source dimension F (mm)": 180,
+        "Source dimension G (mm)": 12,
+        "Source dimension H (mm)": 21,
+        "Source dimension J (mm)": 7,
+        "Mass (kg)": 0.34,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 120
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M10 Grade P"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee12p",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE12P",
+      "size": "M12",
+      "grade": "Grade P",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 1,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 340,
+        "Open length (mm)": 520,
+        "Source dimension E (mm)": 8.5,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 15,
+        "Source dimension H (mm)": 30,
+        "Source dimension J (mm)": 9,
+        "Mass (kg)": 0.79,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 180
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M12 Grade P"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee16p",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE16P",
+      "size": "M16",
+      "grade": "Grade P",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 1.6,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 350,
+        "Open length (mm)": 525,
+        "Source dimension E (mm)": 9,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 17,
+        "Source dimension H (mm)": 36,
+        "Source dimension J (mm)": 12,
+        "Mass (kg)": 1.09,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 175
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M16 Grade P"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee20p",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE20P",
+      "size": "M20",
+      "grade": "Grade P",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 2.5,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 380,
+        "Open length (mm)": 545,
+        "Source dimension E (mm)": 10.5,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 21,
+        "Source dimension H (mm)": 42,
+        "Source dimension J (mm)": 12,
+        "Mass (kg)": 1.72,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 165
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M20 Grade P"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee24p",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE24P",
+      "size": "M24",
+      "grade": "Grade P",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 4,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 540,
+        "Open length (mm)": 725,
+        "Source dimension E (mm)": 13,
+        "Source dimension F (mm)": 360,
+        "Source dimension G (mm)": 25,
+        "Source dimension H (mm)": 51,
+        "Source dimension J (mm)": 17,
+        "Mass (kg)": 3.2,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 185
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M24 Grade P"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee33p",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE33P",
+      "size": "M33",
+      "grade": "Grade P",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 8,
+        "unit": "t"
+      },
+      "properties": {
+        "Source dimension E (mm)": 14,
+        "Source dimension F (mm)": 380,
+        "Source dimension H (mm)": 70,
+        "Mass (kg)": 9.11,
+        "Finish": "Galvanised"
+      },
+      "fieldIssues": [
+        {
+          "field": "Dimensions",
+          "state": "Source conflict",
+          "note": "Web table: A closed/open 660/936, G 33, J 24 mm; V2 sheet: 656/932, G 34, J 24.5 mm. These fields are withheld pending exact supplied-variant confirmation."
+        }
+      ],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M33 Grade P"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee39p",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE39P",
+      "size": "M39",
+      "grade": "Grade P",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 10,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 664,
+        "Open length (mm)": 952,
+        "Source dimension E (mm)": 14,
+        "Source dimension F (mm)": 410,
+        "Source dimension G (mm)": 40,
+        "Source dimension H (mm)": 80,
+        "Source dimension J (mm)": 28,
+        "Mass (kg)": 16,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 288
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M39 Grade P"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee48p",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE48P",
+      "size": "M48",
+      "grade": "Grade P",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 16,
+        "unit": "t"
+      },
+      "properties": {
+        "Source dimension E (mm)": 18,
+        "Mass (kg)": 25,
+        "Finish": "Galvanised"
+      },
+      "fieldIssues": [
+        {
+          "field": "Dimensions",
+          "state": "Source conflict",
+          "note": "Captured web table: A closed/open 750/1000, F 420, G 44, H 91, J 38 mm; V2 sheet: 734/995, F 410, G 49, H 98, J 33 mm. These fields are withheld pending exact supplied-variant confirmation."
+        }
+      ],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M48 Grade P"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee10s",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE10S",
+      "size": "M10",
+      "grade": "Grade S",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 0.8,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 260,
+        "Open length (mm)": 380,
+        "Source dimension E (mm)": 8.5,
+        "Source dimension F (mm)": 180,
+        "Source dimension G (mm)": 12,
+        "Source dimension H (mm)": 21,
+        "Source dimension J (mm)": 7,
+        "Mass (kg)": 0.34,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 120
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M10 Grade S"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee12s",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE12S",
+      "size": "M12",
+      "grade": "Grade S",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 1.2,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 340,
+        "Open length (mm)": 520,
+        "Source dimension E (mm)": 8.5,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 15,
+        "Source dimension H (mm)": 30,
+        "Source dimension J (mm)": 9,
+        "Mass (kg)": 0.79,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 180
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M12 Grade S"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee16s",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE16S",
+      "size": "M16",
+      "grade": "Grade S",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 2,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 350,
+        "Open length (mm)": 525,
+        "Source dimension E (mm)": 9,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 17,
+        "Source dimension H (mm)": 36,
+        "Source dimension J (mm)": 12,
+        "Mass (kg)": 1.09,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 175
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M16 Grade S"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee20s",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE20S",
+      "size": "M20",
+      "grade": "Grade S",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 3.2,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 380,
+        "Open length (mm)": 545,
+        "Source dimension E (mm)": 10.5,
+        "Source dimension F (mm)": 230,
+        "Source dimension G (mm)": 21,
+        "Source dimension H (mm)": 42,
+        "Source dimension J (mm)": 12,
+        "Mass (kg)": 1.72,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 165
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M20 Grade S"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee24s",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE24S",
+      "size": "M24",
+      "grade": "Grade S",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": null,
+      "properties": {
+        "Closed length (mm)": 540,
+        "Open length (mm)": 725,
+        "Source dimension E (mm)": 13,
+        "Source dimension F (mm)": 360,
+        "Source dimension G (mm)": 25,
+        "Source dimension H (mm)": 51,
+        "Source dimension J (mm)": 17,
+        "Mass (kg)": 3.2,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 185
+      },
+      "fieldIssues": [
+        {
+          "field": "WLL",
+          "state": "Source conflict",
+          "note": "Web RSEE24S row states 2.5 t; V2 family sheet Grade S M24 states 5 t. WLL is withheld from force sorting/filtering pending manufacturer confirmation."
+        }
+      ],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M24 Grade S"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee33s",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE33S",
+      "size": "M33",
+      "grade": "Grade S",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 10,
+        "unit": "t"
+      },
+      "properties": {
+        "Source dimension E (mm)": 14,
+        "Source dimension F (mm)": 380,
+        "Source dimension H (mm)": 70,
+        "Mass (kg)": 9.11,
+        "Finish": "Galvanised"
+      },
+      "fieldIssues": [
+        {
+          "field": "Dimensions",
+          "state": "Source conflict",
+          "note": "Web table: A closed/open 660/936, G 33, J 24 mm; V2 sheet: 656/932, G 34, J 24.5 mm. These fields are withheld pending exact supplied-variant confirmation."
+        }
+      ],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M33 Grade S"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee39s",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE39S",
+      "size": "M39",
+      "grade": "Grade S",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 12,
+        "unit": "t"
+      },
+      "properties": {
+        "Closed length (mm)": 664,
+        "Open length (mm)": 952,
+        "Source dimension E (mm)": 14,
+        "Source dimension F (mm)": 410,
+        "Source dimension G (mm)": 40,
+        "Source dimension H (mm)": 80,
+        "Source dimension J (mm)": 28,
+        "Mass (kg)": 16,
+        "Finish": "Galvanised",
+        "Length range (derived mm)": 288
+      },
+      "fieldIssues": [],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M39 Grade S"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
+    },
+    {
+      "publicationClass": "Public beta",
+      "sourceStatus": "Checked",
+      "reviewedDate": "2026-10-02",
+      "id": "townley-rsee48s",
+      "manufacturer": "Townley Drop Forge",
+      "family": "Rigging screw",
+      "series": "Eye & Eye (manufacturer code)",
+      "code": "RSEE48S",
+      "size": "M48",
+      "grade": "Grade S",
+      "standard": "AS 2319:2001 — manufacturer statement; supplied certificate required",
+      "source": "townleyWeb",
+      "page": null,
+      "table": "Eye & Eye Rigging Screws / Specification, exact code row",
+      "rating": {
+        "type": "WLL",
+        "value": 20,
+        "unit": "t"
+      },
+      "properties": {
+        "Source dimension E (mm)": 18,
+        "Mass (kg)": 25,
+        "Finish": "Galvanised"
+      },
+      "fieldIssues": [
+        {
+          "field": "Dimensions",
+          "state": "Source conflict",
+          "note": "Captured web table: A closed/open 750/1000, F 420, G 44, H 91, J 38 mm; V2 sheet: 734/995, F 410, G 49, H 98, J 33 mm. These fields are withheld pending exact supplied-variant confirmation."
+        }
+      ],
+      "additionalSources": [
+        {
+          "source": "townleyV2",
+          "page": 1,
+          "printedPage": "40",
+          "table": "Metric dimensions and WLL",
+          "row": "M48 Grade S"
+        },
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "printedPage": "42",
+          "table": "Rigging Screws User Guide",
+          "row": "Manufacturer family installation guidance"
+        }
+      ],
+      "note": "Manufacturer code retained separately from distributor codes; equal size and WLL do not establish an alias. Mass is the web-row value. Minimum thread engagement and tightening torque are not numerically stated.",
+      "useNotes": [
+        "Length range = catalogue open length minus closed length. It is not a certified usable take-up or minimum thread engagement. Locknuts and supplied end fittings may change the available adjustment.",
+        "Manufacturer guidance: connections must articulate under tensile loading. Prevent thread unwinding where permanent guys experience vibration or rope spin; locknuts alone may be unreliable. Match the part marking to its test certificate.",
+        "Protect and inspect threads; damaged, distorted or corroded parts require removal from service. Numeric engagement and torque are not supplied. The guide omits the 300–400 °C band; no complete temperature rule or generic capacity factor is implemented."
+      ],
+      "localReview": {
+        "date": "2026-10-02",
+        "status": "For Review",
+        "scope": "Supplemental notes and labelled dimensional subtraction; original rating and source edition retained"
+      },
+      "marketEvidence": {
+        "supply": {
+          "status": "Australian manufacturer catalogue",
+          "note": "Explicit manufacturer code in its Australian catalogue; current stock is not confirmed.",
+          "source": "townleyWeb"
+        },
+        "mast": {
+          "status": "Guy-use guidance stated",
+          "note": "Manufacturer guide addresses permanently adjusted guys. Confirm exact mast application and locking detail.",
+          "source": "townleyGuide",
+          "page": 1
+        },
+        "owner": {
+          "status": "Not verified",
+          "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
+        }
+      }
     }
   ]
 };

@@ -1,9 +1,11 @@
 "use strict";
 (function(root){
- const labels={"Guy strand":"Overall strand diameter (mm)","Turnbuckle":"Thread diameter (mm)","Rigging screw":"Thread diameter (mm)","Shackle":"Catalogue nominal size (mm)","Dead-end":"Matching strand diameter (mm)","Thimble":"Matching rope diameter (mm)","Wire rope grip":"Matching rope diameter (mm)"};
+ const labels={"Guy wire rope":"Overall rope diameter (mm)","Accessories":"Use accessory type or part number","Guy strand":"Overall strand diameter (mm)","Turnbuckle":"Thread diameter (mm)","Rigging screw":"Thread diameter (mm)","Shackle":"Catalogue nominal size (mm)","Dead-end":"Matching strand diameter (mm)","Thimble":"Matching rope diameter (mm)","Wire rope grip":"Matching rope diameter (mm)"};
  function diameter(p){
   const v=p.properties||{};
+  if(p.family==='Guy wire rope')return v['Nominal rope diameter (mm)']??null;
   if(p.family==='Guy strand')return v['Nominal strand diameter (mm)']??null;
+  if(p.family==='Dead-end'&&typeof v['Matching diameter (mm)']==='number')return v['Matching diameter (mm)'];
   if(p.family==='Dead-end')return typeof v['Actual strand diameter (in)']==='number'?v['Actual strand diameter (in)']*25.4:null;
   if(['Thimble','Wire rope grip'].includes(p.family))return v['Suits rope diameter (mm)']??null;
   const m=p.family==='Shackle'?p.size.match(/^(\d+(?:\.\d+)?) mm$/):p.size.match(/^M(\d+(?:\.\d+)?)$/);

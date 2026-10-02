@@ -12,7 +12,7 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "6bd90b56a5aa6d87d21904988d0329f44e2a102b7cfcd22353cd28df362cf7e5"
+      "sha256": "678901fa57884ebb2aec9e2ff92c907477852ef8a79132ace03047c5a1612217"
     },
     {
       "path": "README.md",
@@ -20,7 +20,7 @@
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
-      "sha256": "b03bd77fc9ebd072e54431cf62ab394ae329e6920baa1acadef54c5d146da1ad"
+      "sha256": "806d3238bea30c0aa9d0f6f63290c2586121b22af4bff88acf1c1c6e663a5b2b"
     },
     {
       "path": "app.js",
@@ -152,27 +152,31 @@
     },
     {
       "path": "guy-lookup/app.js",
-      "sha256": "3e0270240c5da95b2884b5b1c96ba4bb2dd747f6747159748adc8fedeb748b6c"
+      "sha256": "1b64b93be9cf5722b8f1db3e9b70289d0dc8f70d02e2838d81b4ed5bcef581b6"
     },
     {
       "path": "guy-lookup/data.js",
-      "sha256": "bad9e9ad0341a4b4db44ae5778a5b5b877010c7b02472ccf7de961347108a699"
+      "sha256": "a9625cc5e995de13e672a90af8e08228c222f39076b9213fc31896424ac491d2"
     },
     {
       "path": "guy-lookup/guy.css",
-      "sha256": "f1b7bd07b4631767f3eb27c8b1d9cf1b58a17ade4da16a1f62c5ae5ad9ea2172"
+      "sha256": "2295bb2fda71e10a6059162d4d9576f49b9f9c001cbfb67b53e2473b92304aec"
     },
     {
       "path": "guy-lookup/index.html",
-      "sha256": "3e9208bc9b55f1e6dd3d0dbe75658091432bc991ef07a88b42530d81765e6cd6"
+      "sha256": "a60a6b2bf6886b2401a8b5fafa2ef4858400165aad4a0f5399c29dcbfef15cc4"
     },
     {
       "path": "guy-lookup/lookup.js",
-      "sha256": "c2193f00111c7caeb49c3a8df14ae0b2b0adc0a07c8821ec849bbcacb9224e45"
+      "sha256": "4791a1d53d5750fa63674da8d4e180c6e479d3349fc1f67fdda973cb1bf86b18"
     },
     {
       "path": "guy-lookup/notices.html",
-      "sha256": "8d523a9f5cfbad767dded405e040e837bec02e152bbc87e894dff7815e592d0b"
+      "sha256": "4afeab7eb5d9c018bc8c8b748a43d21ff23b14443ea66e6c039a7db6a6a6a2df"
+    },
+    {
+      "path": "guy-lookup/related.js",
+      "sha256": "a240ae751c3ba785aef6c653a7415d293bae0842f57ff892bb1e3f1f35f43bb0"
     },
     {
       "path": "guy-lookup/units.js",
@@ -180,7 +184,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "fdd02d76ca52144dd3ed769bf80e589055f56ef1e2274e2ab89c2bfcfe2bab40"
+      "sha256": "b12570805fc90880f154d75ed26f7d81b6dd965368d987f538afec4da8098a92"
     },
     {
       "path": "member-capacity.js",

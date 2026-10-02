@@ -160,3 +160,14 @@
 #guyPanel .guy-th-unit { display:block; height:15px; margin-top:2px; white-space:nowrap; font-size:var(--fs-xs); font-weight:400; line-height:15px; }
 #guyPanel .guy-table .guy-row-identity, #guyPanel .guy-table .guy-row-supplier { white-space:normal; overflow-wrap:normal; color:var(--ink); font-size:var(--fs-xs); font-weight:400; margin:0; }
 #guyPanel .guy-table .guy-review-badge { display:block; margin-top:3px; padding:2px 3px; border-left:3px solid var(--status-review); color:var(--status-review); background:var(--status-review-soft); font-size:var(--fs-xs); font-weight:700; white-space:normal; }
+
+/* Local AU catalogue columns. Keep full facts inside the scrolling table. */
+#guyPanel .guy-th-label span{overflow-wrap:anywhere}#guyPanel td{overflow-wrap:anywhere}
+
+#guyPanel .guy-th-label span,#guyPanel .guy-th-unit{white-space:normal;overflow-wrap:anywhere}#guyPanel .guy-th-label{height:auto;min-height:28px}#guyPanel .guy-th-unit{height:auto;min-height:15px}#guyPanel .guy-toolbar>label:first-child{flex:1;min-width:120px}#guyPanel .guy-toolbar{flex-wrap:wrap}#guyPanel #guyAccessoryField{flex:0 1 270px}#guyPanel #guyAccessoryType{width:100%}#guyPanel .guy-related-list{display:grid;grid-template-columns:minmax(100px,1fr) minmax(100px,2fr);gap:5px 12px;margin:8px 0 16px}#guyPanel .guy-related-list dt,#guyPanel .guy-related-list dd{margin:0;align-self:center;overflow-wrap:anywhere}#guyPanel .guy-related-list button{padding:5px 9px;font-size:13px}#guyPanel .guy-use-notes{font-size:13px;color:#475569}
+
+#guyPanel .guy-size-label{max-width:100%;white-space:normal;overflow-wrap:anywhere}#guyPanel .guy-table tbody td:not(.guy-number),#guyPanel .guy-source-cell .guy-token{white-space:normal;overflow-wrap:anywhere}
+
+#guyPanel #guyAccessoryType{box-sizing:border-box;min-height:44px;border:1px solid #647d89;border-radius:8px;background:#fff;color:var(--ink);padding:8px 10px;font:inherit;font-size:var(--fs-sm)}#guyPanel .guy-row-identity:empty{display:none}
+
+#guyPanel .guy-market-list{display:grid;grid-template-columns:145px minmax(0,1fr);gap:6px 12px;font-size:13px}#guyPanel .guy-market-list dt,#guyPanel .guy-market-list dd{margin:0;overflow-wrap:anywhere}#guyPanel .guy-field-issues{border-left:3px solid #b45309;background:#fff7ed;padding:4px 12px;margin:10px 0;font-size:13px}@media(max-width:480px){#guyPanel .guy-market-list{grid-template-columns:1fr;gap:3px}#guyPanel .guy-market-list dd{margin-bottom:6px}}
