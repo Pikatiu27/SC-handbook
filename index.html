@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo76">
   <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo76">
 
-    <link rel="stylesheet" href="guy-lookup/guy.css?v=20261003detail1">
+    <link rel="stylesheet" href="guy-lookup/guy.css?v=20261003guide1">
 </head>
 <body>
   <header class="topbar">
@@ -123,13 +123,10 @@
         <dl id="guyKeyProperties" class="guy-properties"></dl><details id="guyRelatedDetails" class="guy-detail-extra" hidden><summary id="guyRelatedLabel">Related parts</summary><div id="guyRelated"></div></details><details id="guyAllParameters" class="guy-detail-extra"><summary>All recorded parameters</summary><dl id="guyProperties" class="guy-properties"></dl></details>
         <div id="guyFieldIssues" class="guy-field-issues" hidden></div><p id="guyEvidenceSummary" class="result-note"></p><details id="guyDetailNotes" class="guy-detail-extra"><summary>Source &amp; application notes</summary><div id="guyConflictDetails" class="guy-field-issues" hidden></div><div id="guyMarketEvidence"></div><div id="guyUseNotes" class="guy-use-notes"></div><div class="guy-source-note"><div id="guySource"></div></div></details><div class="guy-detail-actions guy-detail-footer"><button type="button" data-back-table>← Back to table</button><button type="button" id="guyExport">Export record</button><span id="guyExportStatus" role="status"></span></div>
       </div></details>
-      <details class="source-card guy-details"><summary>How to use these catalogue values</summary><div class="guy-detail-body">
-        <h3>Ratings and units</h3><p>MBL = minimum breaking load (original supplier label). MBF = minimum breaking force. WLL = working load limit. RHS = rated holding strength for the manufacturer's specified strand and grip. These are different quantities; none is automatically a project design resistance. MFL and Tension Rating retain the original manufacturer labels. Efficiency (%) is a separate termination claim. Proof load is a test level.</p>
-        <p>Values in kN are unit conversions only: 1 tonne-force = 9.80665 kN; 1 lbf = 0.0044482216152605 kN. Original values and units remain visible. Minimum-rating filtering and force sorting are available only when the filtered records have one rating basis.</p>
-        <h3>Source scope</h3><p>This is a bounded catalogue snapshot, not a stock list or confirmation of current manufacture. Each product record gives the source edition, page and review date. Canadian Bekaert grades are not Australian grade equivalents. Manufacturer standard statements do not establish clause compliance or certification of a supplied item.</p>
-        <h3>Limits</h3><p>Similar diameter does not establish interchangeability. Manufacturer-listed links provide reference navigation only. No capacity checks, automatic fitting compatibility, whole-assembly rating, mast/pole analysis, pretension, fatigue or anchor checks are provided. Temporary rope grips must not be treated as permanent dynamically loaded mast terminations. Confirm the exact supplied product and installation instructions with the manufacturer.</p>
-        <h3>Australian application evidence</h3><p>AU catalogue = Australian supplier/manufacturer listing; Mast family, Stay use and Guy guidance retain different application evidence. Named owner adoption is not verified. Select a record for the three separate evidence fields. Canadian-source records are not labelled Australian products.</p><p>Wire rope and strand remain separate constructions. Similar diameter / grade does not establish equal breaking force, stiffness or termination fit. Current-linked Nobles rows retain their original 2018 dates. Townley web/PDF discrepancies are flagged and affected values withheld.</p><h3>Fitting coverage</h3><ul><li>Turnbuckles, rigging screws and shackles: original dimensions, ratings and source notes; labelled open-minus-closed length range.</li><li>PLP thimbles: bend radius, seat / opened width, original MFL or tension rating where published.</li><li>Accessories: wire-rope wedge / spelter / swage sockets, tongue clevis, eyenuts, stay tensioners, anchor rods, sheaves and guy insulator identities. Use the type selector to narrow the table.</li><li>THWC-22, THWO-20 and I-GY2/3/4: matching-chart identities only. Dimensions / force remain unverified; THWO-20 is not equated to THWO-20-4.</li><li>Swage studs, mast-specific eye rods / links, numeric engagement, torque and complete electrical insulator data still require exact product sheets. Distribution hardware is not a carrier-approved mast kit.</li></ul><h3>Missing data</h3><p>A dash means not recorded, never zero. E/EA, prestretch and elongation are not inferred. Area and mass are available for selected strand / rope series only. Australian supplier GFG matching tables publish dimensions and fitting codes, not holding capacity. GFG-069 / GFG-069-CL mapping remains unresolved. Twelve records with unresolved ratings are excluded from this lookup.</p>
-        <p>Names and catalogue material belong to their respective owners. No manufacturer endorsement is implied. <a href="guy-lookup/notices.html">Source attribution</a>.</p>
+      <details class="source-card guy-details"><summary>How to use</summary><div class="guy-detail-body">
+        <ol><li><strong>Find:</strong> choose a family; search size, grade, supplier or part number. Accessories has a type filter.</li><li><strong>Compare:</strong> optionally filter nearby sizes or minimum rating. Compare one rating basis at a time.</li><li><strong>Inspect:</strong> select a model for key data and source/drawing; expand for more. Back to table keeps your filters.</li></ol>
+        <ul><li><strong>Ratings:</strong> MBF/MBL = breaking force/load; WLL = working load limit; RHS = rated holding strength. MFL/tension rating keep manufacturer labels. Ratings, proof loads and efficiency are not design resistance; kN is a unit conversion.</li><li><strong>Gaps:</strong> — means missing, not zero. Conflicts are withheld; E/EA is not inferred.</li><li><strong>Before use:</strong> check edition, region, supplied product and installation. AU listing is not owner approval; similar size is not verified fit or assembly capacity. Temporary grips are not permanent mast terminations.</li></ul>
+        <p><a href="guy-lookup/notices.html">Catalogue sources</a></p>
       </div></details>
     </section>
 
@@ -2150,7 +2147,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.82 &middot; updated 3 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.83 &middot; updated 3 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>
@@ -2181,10 +2178,10 @@
 
   <script src="monopole-app.js?v=20260821monopoleaudit1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20260812rockrelease1"></script>
-    <script src="guy-lookup/data.js?v=20261003detail1"></script>
-  <script src="guy-lookup/units.js?v=20261003detail1"></script>
-  <script src="guy-lookup/lookup.js?v=20261003detail1"></script>
-  <script src="guy-lookup/related.js?v=20261003detail1"></script>
-  <script src="guy-lookup/app.js?v=20261003detail1"></script>
+    <script src="guy-lookup/data.js?v=20261003guide1"></script>
+  <script src="guy-lookup/units.js?v=20261003guide1"></script>
+  <script src="guy-lookup/lookup.js?v=20261003guide1"></script>
+  <script src="guy-lookup/related.js?v=20261003guide1"></script>
+  <script src="guy-lookup/app.js?v=20261003guide1"></script>
 </body>
 </html>

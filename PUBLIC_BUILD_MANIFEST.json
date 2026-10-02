@@ -12,7 +12,7 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "124c83aec68f70af7eecb281e80f363fa7d17addb8e82fc5d2b4600d432937c7"
+      "sha256": "2c606a7114698e68a1b574746144c067903f79e1de87daf62a31b189cf9905de"
     },
     {
       "path": "README.md",
@@ -164,7 +164,7 @@
     },
     {
       "path": "guy-lookup/index.html",
-      "sha256": "9f0cda8ebf72d619f6fa2bf6dcd7cf6358f0ddd390d00a36bac5eb0fc1ca4757"
+      "sha256": "7c41b355b391be8c1d06795ec3876a7384cf21a66c77021f03c5c882b01c8d4d"
     },
     {
       "path": "guy-lookup/lookup.js",
@@ -184,7 +184,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "45ca131f7fc2cde1de7b30370d019c742b6410fef76519812bd99915598173d3"
+      "sha256": "578da3dd13bd6c8992ec8e52049069491f4ca82dbc59d9ea07e321746a68d65e"
     },
     {
       "path": "member-capacity.js",
