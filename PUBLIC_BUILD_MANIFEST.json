@@ -12,7 +12,7 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "2c606a7114698e68a1b574746144c067903f79e1de87daf62a31b189cf9905de"
+      "sha256": "3139d23c264f7e522d606ae78eca4fdd08d53acb55b82a18b93b9df7270b5e59"
     },
     {
       "path": "README.md",
@@ -152,19 +152,19 @@
     },
     {
       "path": "guy-lookup/app.js",
-      "sha256": "28c8903a875f34b98762be90ab64042864f57e8b7bed35b69098a29ff7aed76d"
+      "sha256": "bcc532b6b6c3a5902e2ce2ed9f1516754643490545a201d39ab2cb9387d01653"
     },
     {
       "path": "guy-lookup/data.js",
-      "sha256": "a9625cc5e995de13e672a90af8e08228c222f39076b9213fc31896424ac491d2"
+      "sha256": "7b7dac4233934da99dba043c4a59584c8ee56bc083093fb799190c29fb7fb195"
     },
     {
       "path": "guy-lookup/guy.css",
-      "sha256": "75abc54298ef597e43fd90c55abc1a647ccf764a68d138a8829c88709eced6af"
+      "sha256": "801533e2d85c06284585e216582ceefee79ab930748c5dcaf362c87171b3faa7"
     },
     {
       "path": "guy-lookup/index.html",
-      "sha256": "7c41b355b391be8c1d06795ec3876a7384cf21a66c77021f03c5c882b01c8d4d"
+      "sha256": "649d9d207c887426654d2dea3cf0b14f5c575941485fbb22d92e6f70cf144573"
     },
     {
       "path": "guy-lookup/lookup.js",
@@ -184,7 +184,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "578da3dd13bd6c8992ec8e52049069491f4ca82dbc59d9ea07e321746a68d65e"
+      "sha256": "4146d74d948e36fecdd16ac19b65bcc24b9c17d2ce0eb023508f8601fb49a5b7"
     },
     {
       "path": "member-capacity.js",

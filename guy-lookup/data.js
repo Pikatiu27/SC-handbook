@@ -165,6 +165,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -212,6 +213,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -259,6 +261,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -306,6 +309,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -353,6 +357,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -400,6 +405,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -447,6 +453,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -494,6 +501,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -541,6 +549,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -588,6 +597,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -635,6 +645,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -682,6 +693,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -740,6 +752,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -798,6 +811,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -856,6 +870,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -914,6 +929,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -972,6 +988,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1030,6 +1047,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1088,6 +1106,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1146,6 +1165,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1204,6 +1224,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1262,6 +1283,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1320,6 +1342,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1378,6 +1401,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1436,6 +1460,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1494,6 +1519,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1552,6 +1578,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1610,6 +1637,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1668,6 +1696,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1726,6 +1755,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1787,6 +1817,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1848,6 +1879,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1909,6 +1941,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -1970,6 +2003,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2031,6 +2065,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2092,6 +2127,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2153,6 +2189,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2214,6 +2251,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2275,6 +2313,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2336,6 +2375,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2397,6 +2437,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2458,6 +2499,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2519,6 +2561,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2580,6 +2623,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2641,6 +2685,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2702,6 +2747,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2763,6 +2809,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2824,6 +2871,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2881,6 +2929,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2938,6 +2987,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -2995,6 +3045,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3052,6 +3103,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3109,6 +3161,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3166,6 +3219,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3223,6 +3277,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3280,6 +3335,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3337,6 +3393,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3394,6 +3451,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3451,6 +3509,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3508,6 +3567,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3565,6 +3625,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3622,6 +3683,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3679,6 +3741,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3736,6 +3799,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3793,6 +3857,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3850,6 +3915,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3908,6 +3974,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -3966,6 +4033,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4024,6 +4092,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4082,6 +4151,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4140,6 +4210,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4198,6 +4269,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4256,6 +4328,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4314,6 +4387,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4372,6 +4446,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4430,6 +4505,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4491,6 +4567,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4552,6 +4629,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4613,6 +4691,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4674,6 +4753,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4735,6 +4815,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4796,6 +4877,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4857,6 +4939,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4918,6 +5001,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -4979,6 +5063,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5040,6 +5125,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5101,6 +5187,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5162,6 +5249,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5223,6 +5311,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5284,6 +5373,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5341,6 +5431,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5398,6 +5489,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5455,6 +5547,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5512,6 +5605,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5569,6 +5663,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5626,6 +5721,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5683,6 +5779,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5740,6 +5837,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5797,6 +5895,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5854,6 +5953,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5911,6 +6011,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -5968,6 +6069,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6025,6 +6127,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6065,6 +6168,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6105,6 +6209,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6145,6 +6250,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6185,6 +6291,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6225,6 +6332,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6265,6 +6373,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6305,6 +6414,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6345,6 +6455,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6385,6 +6496,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6425,6 +6537,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6465,6 +6578,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6505,6 +6619,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6545,6 +6660,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6585,6 +6701,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6625,6 +6742,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6665,6 +6783,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6705,6 +6824,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6745,6 +6865,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6785,6 +6906,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6825,6 +6947,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6865,6 +6988,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6905,6 +7029,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6945,6 +7070,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -6985,6 +7111,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7047,6 +7174,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7109,6 +7237,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7171,6 +7300,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7233,6 +7363,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7295,6 +7426,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7357,6 +7489,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7419,6 +7552,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7481,6 +7615,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7543,6 +7678,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7605,6 +7741,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7667,6 +7804,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7729,6 +7867,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7791,6 +7930,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7853,6 +7993,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7915,6 +8056,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -7976,6 +8118,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8037,6 +8180,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8098,6 +8242,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8159,6 +8304,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8220,6 +8366,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8281,6 +8428,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8342,6 +8490,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8403,6 +8552,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8464,6 +8614,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8525,6 +8676,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -8609,6 +8761,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -8693,6 +8859,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -8777,6 +8957,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -8861,6 +9055,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -8945,6 +9153,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9029,6 +9251,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9113,6 +9349,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9197,6 +9447,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9281,6 +9545,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9365,6 +9643,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9449,6 +9741,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9534,6 +9840,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9619,6 +9939,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9704,6 +10038,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9789,6 +10137,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9874,6 +10236,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -9959,6 +10335,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10046,6 +10436,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10133,6 +10537,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10220,6 +10638,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10307,6 +10739,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10394,6 +10840,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10481,6 +10941,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10565,6 +11039,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10649,6 +11137,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10733,6 +11235,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10817,6 +11333,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10901,6 +11431,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -10985,6 +11529,20 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [
+        {
+          "source": "nobles2018",
+          "page": 55,
+          "label": "Extension / application notes",
+          "scope": "Historical family guidance; no numeric minimum engagement."
+        },
+        {
+          "source": "nobles2018",
+          "page": 65,
+          "label": "Thread locking notes",
+          "scope": "Historical family guidance; confirm exact locking detail."
+        }
+      ],
       "publicationClass": "Public beta"
     },
     {
@@ -11054,6 +11612,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11123,6 +11682,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11192,6 +11752,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11261,6 +11822,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11330,6 +11892,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11399,6 +11962,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11468,6 +12032,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11537,6 +12102,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11606,6 +12172,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11675,6 +12242,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11744,6 +12312,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11791,6 +12360,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11838,6 +12408,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11885,6 +12456,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11932,6 +12504,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -11979,6 +12552,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12026,6 +12600,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12073,6 +12648,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12120,6 +12696,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12167,6 +12744,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12214,6 +12792,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12265,6 +12844,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12316,6 +12896,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12367,6 +12948,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12418,6 +13000,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12469,6 +13052,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12520,6 +13104,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12571,6 +13156,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12622,6 +13208,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12673,6 +13260,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12724,6 +13312,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12775,6 +13364,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12826,6 +13416,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12877,6 +13468,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12928,6 +13520,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -12979,6 +13572,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13030,6 +13624,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13081,6 +13676,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13132,6 +13728,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13183,6 +13780,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13234,6 +13832,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13285,6 +13884,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13336,6 +13936,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13387,6 +13988,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13438,6 +14040,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13489,6 +14092,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13540,6 +14144,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13591,6 +14196,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13642,6 +14248,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13693,6 +14300,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13744,6 +14352,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13795,6 +14404,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13846,6 +14456,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13897,6 +14508,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13948,6 +14560,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -13999,6 +14612,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14050,6 +14664,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14101,6 +14716,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14152,6 +14768,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14203,6 +14820,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14254,6 +14872,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14305,6 +14924,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14356,6 +14976,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14407,6 +15028,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14458,6 +15080,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14509,6 +15132,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14560,6 +15184,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14611,6 +15236,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14662,6 +15288,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14713,6 +15340,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14764,6 +15392,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14815,6 +15444,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14866,6 +15496,7 @@ globalThis.GuyFittingsData={
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
       },
+      "installationReferences": [],
       "publicationClass": "Public beta"
     },
     {
@@ -14924,7 +15555,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "nobles-au-strand-12172",
@@ -14982,7 +15614,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "nobles-au-strand-16157",
@@ -15040,7 +15673,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "nobles-au-strand-15896",
@@ -15098,7 +15732,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "nobles-au-strand-15732",
@@ -15156,7 +15791,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "nobles-au-strand-13421",
@@ -15214,7 +15850,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "nobles-au-strand-13322",
@@ -15272,7 +15909,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "nobles-au-strand-16918",
@@ -15330,7 +15968,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-au-GFG-025-CL-1-2.50",
@@ -15391,7 +16030,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-031-CL-1-3.15",
@@ -15452,7 +16099,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-031-CL-1-3.25",
@@ -15513,7 +16168,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-038-CL-7-1.25",
@@ -15574,7 +16237,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-043-CL-3-2.00",
@@ -15635,7 +16306,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-048-CL-7-1.60",
@@ -15696,7 +16375,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-055-3-2.75",
@@ -15757,7 +16444,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-060-CL-7-2.00",
@@ -15818,7 +16513,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-069-7-2.30",
@@ -15868,7 +16571,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-075-7-2.75",
@@ -15929,7 +16640,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-083-CL-7-2.75",
@@ -15991,7 +16710,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-090-7-3.00",
@@ -16053,7 +16780,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-100-7-3.25",
@@ -16115,7 +16850,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-100-19-2.00",
@@ -16177,7 +16920,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-113-CL-7-3.75",
@@ -16239,7 +16990,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-120-7-4.00",
@@ -16299,7 +17058,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-138-19-2.75",
@@ -16359,7 +17126,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-150-19-3.00",
@@ -16419,7 +17194,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-163-19-3.25",
@@ -16479,7 +17262,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-188-19-3.75",
@@ -16538,7 +17329,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-090-WR",
@@ -16588,7 +17387,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-100-WR",
@@ -16638,7 +17445,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-120-WR",
@@ -16688,7 +17503,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-130-WR",
@@ -16738,7 +17561,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-140-WR",
@@ -16788,7 +17619,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-160-WR",
@@ -16838,7 +17677,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-180-WR",
@@ -16888,7 +17735,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-au-GFG-190-WR",
@@ -16938,7 +17793,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "plpAU2025",
+          "page": 9,
+          "label": "PLP use limits",
+          "scope": "2025 catalogue general instructions: same lay, single use, limited retensioning."
+        }
+      ]
     },
     {
       "id": "plp-fitting-THWC-10",
@@ -16980,7 +17843,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWC-12",
@@ -17022,7 +17886,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWC-16",
@@ -17064,7 +17929,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWC-20",
@@ -17106,7 +17972,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWO-10",
@@ -17148,7 +18015,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWO-12",
@@ -17190,7 +18058,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWO-16",
@@ -17232,7 +18101,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWO-20-4",
@@ -17274,7 +18144,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWO-22",
@@ -17316,7 +18187,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-CTH-070-MCI",
@@ -17362,7 +18234,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-GCT-120-TC5F",
@@ -17408,7 +18281,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-STH-070-1",
@@ -17454,7 +18328,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWC-22",
@@ -17494,7 +18369,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THWO-20",
@@ -17534,7 +18410,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-S-070-1",
@@ -17584,7 +18461,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-S-120-1",
@@ -17634,7 +18512,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-S-160-1",
@@ -17684,7 +18563,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-S-210-1",
@@ -17734,7 +18614,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-TS-070-1",
@@ -17784,7 +18665,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THEN-16",
@@ -17829,7 +18711,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THEN-20",
@@ -17874,7 +18757,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THEN-24",
@@ -17919,7 +18803,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THEN-UNC1",
@@ -17964,7 +18849,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-GADJ-144-350",
@@ -18012,7 +18898,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-GADJ-308-530",
@@ -18060,7 +18947,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-GADJ-320-530",
@@ -18108,7 +18996,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-ANCHOR-ROD-20A",
@@ -18151,7 +19040,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-ANCHOR-ROD-20BLA",
@@ -18194,7 +19084,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-ANCHOR-ROD-24A",
@@ -18237,7 +19128,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-ANCHOR-ROD-24BLA",
@@ -18280,7 +19172,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-ANCHOR-ROD-F-2133-M24",
@@ -18323,7 +19216,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-ANCHOR-ROD-F-2133-1”",
@@ -18366,7 +19260,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THGR-57",
@@ -18407,7 +19302,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-THGR-75",
@@ -18448,7 +19344,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-TC-070-1",
@@ -18493,7 +19390,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-TC-120-1",
@@ -18538,7 +19436,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-I-GY2",
@@ -18578,7 +19477,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-I-GY3",
@@ -18618,7 +19518,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "plp-fitting-I-GY4",
@@ -18658,7 +19559,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-WE-O-127-G-NR1",
@@ -18700,7 +19602,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-WE-O-158-G-NR2",
@@ -18742,7 +19645,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-WE-O-190-G-NR3",
@@ -18784,7 +19688,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-WE-O-222-G-NR4",
@@ -18826,7 +19731,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-WE-O-254-G-NR5",
@@ -18868,7 +19774,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-WE-O-285-G-NR6",
@@ -18910,7 +19817,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-WE-O-317-G-NR7",
@@ -18952,7 +19860,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-127-G-NR198",
@@ -18994,7 +19903,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-158-G-NR199",
@@ -19036,7 +19946,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-222-G-NR104",
@@ -19078,7 +19989,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-254-G-NR108",
@@ -19120,7 +20032,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-285-G-NR111",
@@ -19162,7 +20075,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-158-G-G416",
@@ -19204,7 +20118,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-190-G-G416",
@@ -19246,7 +20161,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-222-G-G416",
@@ -19288,7 +20204,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-254-G-G416",
@@ -19330,7 +20247,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-285-G-G416",
@@ -19372,7 +20290,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-O-349-G-G416",
@@ -19414,7 +20333,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-C-158-G-G417",
@@ -19456,7 +20376,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-C-190-G-G417",
@@ -19498,7 +20419,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-C-222-G-G417",
@@ -19540,7 +20462,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-C-254-G-G417",
@@ -19582,7 +20505,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-ME-C-285-G-G417",
@@ -19624,7 +20548,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-130-B",
@@ -19668,7 +20593,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-158-B",
@@ -19712,7 +20638,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-254-B",
@@ -19756,7 +20683,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-285-B",
@@ -19800,7 +20728,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-095-B-S501",
@@ -19844,7 +20773,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-111-B-S501",
@@ -19888,7 +20818,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-127-B-S501",
@@ -19932,7 +20863,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-158-B-S501",
@@ -19976,7 +20908,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-190-B-S501",
@@ -20020,7 +20953,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-222-B-S501",
@@ -20064,7 +20998,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-254-B-S501",
@@ -20108,7 +21043,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-O-285-B-S501",
@@ -20152,7 +21088,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-158-B",
@@ -20196,7 +21133,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-180-B",
@@ -20240,7 +21178,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-240-B",
@@ -20284,7 +21223,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-285-B",
@@ -20328,7 +21268,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-320-B",
@@ -20372,7 +21313,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-095-B-S502",
@@ -20416,7 +21358,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-127-B-S502",
@@ -20460,7 +21403,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-158-B-S502",
@@ -20504,7 +21448,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-190-B-S502",
@@ -20548,7 +21493,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-222-B-S502",
@@ -20592,7 +21538,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-254-B-S502",
@@ -20636,7 +21583,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-285-B-S502",
@@ -20680,7 +21628,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WSOC-SW-C-320-B-S502",
@@ -20724,7 +21673,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WTB-T-127-JJ-G-12INT",
@@ -20787,7 +21737,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WTB-T-158-JJ-G-12INT",
@@ -20850,7 +21801,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WTB-T-190-JJ-G-12INT",
@@ -20913,7 +21865,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WTB-T-222-JJ-G-12INT",
@@ -20976,7 +21929,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "id": "bull-fitting-WTB-T-254-JJ-G-12INT",
@@ -21039,7 +21993,8 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": []
     },
     {
       "publicationClass": "Public beta",
@@ -21099,7 +22054,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21159,7 +22122,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21219,7 +22190,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21279,7 +22258,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21339,7 +22326,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21399,7 +22394,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21459,7 +22462,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21519,7 +22530,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21583,7 +22602,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21647,7 +22674,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21712,7 +22747,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "noblesTermLinked",
+          "page": 3,
+          "label": "Termination selection guide",
+          "scope": "General guidance only; no exact rope-to-fitting pairing."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21790,7 +22833,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21868,7 +22919,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -21946,7 +23005,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22024,7 +23091,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22102,7 +23177,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22181,7 +23264,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22259,7 +23350,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22337,7 +23436,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22415,7 +23522,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22493,7 +23608,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22571,7 +23694,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22649,7 +23780,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22728,7 +23867,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22806,7 +23953,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22883,7 +24038,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -22961,7 +24124,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -23039,7 +24210,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -23117,7 +24296,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -23195,7 +24382,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -23275,7 +24470,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -23354,7 +24557,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -23432,7 +24643,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     },
     {
       "publicationClass": "Public beta",
@@ -23509,7 +24728,15 @@ globalThis.GuyFittingsData={
           "status": "Not verified",
           "note": "No product-specific Telstra, Amplitel or Indara adoption/approved part schedule established; absence from this search does not prove non-use."
         }
-      }
+      },
+      "installationReferences": [
+        {
+          "source": "townleyGuide",
+          "page": 1,
+          "label": "Townley installation guide",
+          "scope": "Family guidance; numeric minimum engagement and torque are not published."
+        }
+      ]
     }
   ]
 };

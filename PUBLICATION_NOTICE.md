@@ -2,7 +2,7 @@
 
 ## Status
 
-SC Handbook is released as a **public beta engineering quick-reference handbook**. Build 0.7.83 shortens the Guy & Fittings usage guide and retains compact product details with return-to-table navigation on 3 October 2026. The lookup retains 416 catalogue records. Ground Parameters remains a For Review quick reference. Its independent engineering and manual accessibility acceptance remain deferred; publication does not imply completion of those reviews. The issue status and limitations displayed within each tool remain controlling; public availability does not promote a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result to checked or issue-ready status.
+SC Handbook is released as a **public beta engineering quick-reference handbook**. Build 0.7.84 adds Guy & Fittings data-gap labels, existing-source installation links and diameter-query recovery hints on 3 October 2026. The lookup retains 416 catalogue records. Ground Parameters remains a For Review quick reference. Its independent engineering and manual accessibility acceptance remain deferred; publication does not imply completion of those reviews. The issue status and limitations displayed within each tool remain controlling; public availability does not promote a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result to checked or issue-ready status.
 
 ## Engineering boundary
 

@@ -1,4 +1,24 @@
 "use strict";
+(function(root){
+ function status(p,diameter){
+  const v=p.properties||{},missing=[];
+  const chartOnly=/matching chart only/i.test(v['Data completeness']||'');
+  const conflict=Boolean(p.fieldIssues?.length);
+  if(p.family!=='Accessories'&&!Number.isFinite(diameter(p)))missing.push(['Guy strand','Guy wire rope'].includes(p.family)?'overall diameter':'comparable size');
+  if(['Guy strand','Guy wire rope','Turnbuckle','Rigging screw','Shackle','Dead-end'].includes(p.family)&&!p.rating&&!p.fieldIssues?.some(i=>i.field==='WLL'))missing.push('published rating');
+  const comparison=[...missing];
+  if(['Guy strand','Guy wire rope'].includes(p.family)){
+   if(v['Metallic area (mm²)']===undefined)missing.push('metallic area');
+   if(v['Linear mass (kg/m)']===undefined)missing.push('linear mass');
+   if(v['Axial stiffness EA (kN)']===undefined)missing.push('E/EA');
+   if(v['Prestretch']===undefined)missing.push('prestretch');
+  }
+  return {label:conflict?'Source conflict':chartOnly?'Chart only':comparison.includes('overall diameter')||comparison.includes('comparable size')?'Size gap':comparison.includes('published rating')?'Rating gap':'',missing,chartOnly,conflict};
+ }
+ const api={status};if(typeof module!=='undefined'&&module.exports)module.exports=api;root.GuyCatalogueStatus=api;
+})(globalThis);
+
+"use strict";
 (function () {
   const panel = document.getElementById("guyPanel");
   if (!panel) return;
@@ -49,7 +69,7 @@
     matching=near.rows;
     $("NearbyNote").hidden=!near.active;
     $("Diameter").setAttribute("aria-invalid",String(near.invalid));
-    const omitted=`${near.omitted} records without a verified comparable diameter excluded.`;
+    const omitted=`${near.omitted} records without a verified comparable diameter excluded.${near.omitted?" Clear diameter to include them; search by part number or construction.":""}`;
     $("NearbyNote").textContent=near.invalid?"Enter a positive diameter in mm, for example 12 or 12.5.":near.unavailable?`No verified comparable diameters in the filtered results. ${omitted}`:near.outOfRange?`Outside the filtered catalogue range (${fmt(near.range[0],3)}–${fmt(near.range[1],3)} mm). No nearby sizes shown. Clear the diameter or change the filters. ${omitted}`:near.active?`Closest recorded sizes: ${near.sizes.map(n=>fmt(n,3)).join(", ")} mm. ${omitted} Dimensional comparison only; not suitability or interchangeability.`:"";
 
     options($("Product"),matching.map(p=>({value:p.id,label:p.code})), $("Product").value);
@@ -73,7 +93,7 @@
     if (!p) {
       $("Selected").textContent = "No matching product. Clear the search or change the filters.";
       $("RatingHeading").textContent = "Published rating"; $("Rating").textContent = "—"; $("RatingUnit").textContent = "";
-      ["Original","RatingSource","Warning","Properties","Source","Related","UseNotes","MarketEvidence","FieldIssues","KeyProperties","EvidenceSummary","ConflictDetails"].forEach(id => $(id).replaceChildren());
+      ["Original","RatingSource","Warning","Properties","Source","Related","UseNotes","MarketEvidence","FieldIssues","KeyProperties","EvidenceSummary","ConflictDetails","DataGaps","InstallationLinks"].forEach(id => $(id).replaceChildren());
       return;
     }
     const s = sources[p.source], kn = calc.ratingKN(p);
@@ -91,7 +111,7 @@
     $("UseNotes").innerHTML=(p.useNotes||[]).map(n=>'<p>'+escape(n)+'</p>').join('');
     renderRelated(p);
     renderMarketEvidence(p);
-    renderKeyProperties(p);
+    renderKeyProperties(p);renderReadiness(p);
     $("RatingSource").textContent=(s.shortLabel||s.edition)+" · "+referenceLocator(p.source,p.page);
     $("PrimarySource").href=sourceLink(p);
     const pageLink = sourceLink(p);
@@ -153,6 +173,16 @@
     target.focus({preventScroll:true});target.scrollIntoView({block:"center",inline:"nearest"});wrap.scrollLeft=left;
   }
   $("Selection").addEventListener("click",e=>{if(e.target.closest('[data-back-table]'))backToTable();});
+
+  function renderReadiness(p){
+    const s=GuyCatalogueStatus.status(p,GuyFittingsLookup.diameter);
+    const gaps=s.missing.filter(k=>k!=="published rating");
+    $("DataGaps").hidden=!(gaps.length||s.chartOnly);
+    $("DataGaps").textContent=s.chartOnly?"Chart identity only · numeric dimensions and force not verified.":"Not recorded: "+gaps.join(", ")+".";
+    $("InstallationLinks").innerHTML=(p.installationReferences||[]).map(r=>'<a target="_blank" rel="noopener noreferrer" href="'+escape(referenceLink(r.source,r.page))+'" title="'+escape(r.scope)+'">'+escape(r.label)+' ↗</a>').join(' · ');
+    $("InstallationLinks").hidden=!p.installationReferences?.length;
+    if(p.source==="plpAU2025"&&p.family==="Dead-end")$("Warning").textContent+=" Single use; at most two retensioning reapplications within 90 days (2025 catalogue).";
+  }
   function sourceLink(p) {const s=sources[p.source];return p.source==="bullivants4"?`https://app.nexuspublications.com.au/a10/publications/bullivants-product-catalogue-edition-4-1/${p.page}`:referenceLink(p.source,p.page);}
   function renderTable() {
     const family=$("Family").value, prop=k=>p=>p.properties[k] ?? "—";
@@ -189,7 +219,7 @@
     $("AccessoryField").hidden=family!=="Accessories";
     if(family==="Accessories")options($("AccessoryType"),["All accessory types",...new Set(products.filter(p=>p.family===family).map(p=>p.series))],$("Series").value==="All constructions / end forms"?"All accessory types":$("Series").value);
     $("Caption").textContent=`${family} · ${matching.length} products`;
-    $("TableNote").textContent=force?`Published ratings are not design resistance. Compare only identical rating bases. — = not recorded. All recorded parameters; key values first. Scroll right for dimensions and source data. Drawing letters refer to each manufacturer’s source diagram.`:"Dimensional comparison only. — = not recorded. All recorded parameters; key values first. Scroll right for dimensions and source data. Drawing letters refer to each manufacturer’s source diagram.";
+    $("TableNote").textContent=force?`Published ratings are not design resistance. Compare only identical rating bases. — = not recorded. All recorded parameters; key values first. Scroll right for dimensions and source data. Drawing letters refer to each manufacturer’s source diagram. Badges name data gaps, not product approval.`:"Dimensional comparison only. — = not recorded. All recorded parameters; key values first. Scroll right for dimensions and source data. Drawing letters refer to each manufacturer’s source diagram. Badges name data gaps, not product approval.";
 
     const numeric=h=>/\(kN\)|\(mm|\(kg|\(in\)|\(g\/|Difference|Holding|Grips|factor/.test(h);
     const header=h=>{
@@ -215,7 +245,7 @@
     const widths=[124,...columns.map(([h])=>columnWidth(h)),176,96];
     const cg=document.createElement('colgroup');cg.innerHTML=widths.map(w=>`<col style="width:${w}px">`).join('');$("Table").prepend(cg);$("Table").style.width=widths.reduce((a,b)=>a+b,0)+'px';
     $("Head").innerHTML=`<tr><th scope="col">${header("Size")}</th>${columns.map(([h],i)=>`<th scope="col" class="${numeric(h)?"guy-number":""} ${i===keyColumnCount?"guy-secondary-start":""}">${header(h)}</th>`).join("")}<th scope="col">${header("Product / supplier")}</th><th scope="col">${header("Source / page")}</th></tr>`;
-    $("Rows").innerHTML=matching.map((r,i)=>`<tr class="${i>0&&r.size!==matching[i-1].size?"guy-size-start":""}" data-selected="${!$("Selection").hidden&&r.id===selected?.id}"><th scope="row"><button type="button" data-product="${escape(r.id)}" aria-label="View ${escape(r.manufacturer)} ${escape(r.code)} ${escape(r.size)} ${escape(r.grade)} ${escape(r.series)}"><span class="guy-size-label">${escape(r.size)}</span><small class="guy-row-identity" title="${escape(r.code+' · '+r.series)}">${escape(['Accessories','Thimble'].includes(r.family)&&r.grade==='Not stated'?'':r.grade.startsWith('Match ')?r.properties['Strand construction']||'See record':r.grade.replace(' (wire tensile grade)',''))}${['Turnbuckle','Rigging screw'].includes(r.family)?` · ${escape(r.series.split(' - ')[0].replaceAll('Jaw','J').replaceAll('Eye','E').replaceAll(' & ','/'))}`:r.family==='Shackle'?` · ${escape(r.series)}`:''}</small><small class="guy-row-supplier">${escape(r.manufacturer.split(' / ')[0])}</small></button>${r.sourceStatus!=="Checked"?`<span class="guy-review-badge" title="${escape(r.note)}">${r.sourceStatus==="Source conflict"?'Source conflict':'Rating unverified'}</span>`:''}</th>${columns.map(([h,v],i)=>`<td class="${numeric(h)?"guy-number":""} ${h==="Grade"?"guy-grade":""} ${i===keyColumnCount?"guy-secondary-start":""}">${cell(h,v(r))}</td>`).join("")}<td class="guy-product-cell"><span class="guy-token">${escape(r.code)}</span><small>${escape(r.manufacturer)}</small></td><td class="guy-source-cell"><a href="${escape(sourceLink(r))}" target="_blank" rel="noopener noreferrer"><span class="guy-token">${escape(sources[r.source].shortLabel||(r.source==="bullivants4"?"Edition 4":r.source==="nobles2018"?"2018":r.source==="bekaertCA"?"Canada · 2022":r.source==="noblesStrand2018"?"2018":r.source==="plpAU2025"?"AU · 2025 file":"2016"))}</span><span class="guy-source-page">${sources[r.source].kind==="web"?"Specification":`p. ${r.page}`}</span></a>${r.sourceStatus!=="Checked"?`<small class="guy-conflict">${escape(r.sourceStatus)}</small>`:""}${r.fieldIssues?.length?`<small class="guy-conflict">Source conflict</small>`:""}</td></tr>`).join("");
+    $("Rows").innerHTML=matching.map((r,i)=>`<tr class="${i>0&&r.size!==matching[i-1].size?"guy-size-start":""}" data-selected="${!$("Selection").hidden&&r.id===selected?.id}"><th scope="row"><button type="button" data-product="${escape(r.id)}" aria-label="View ${escape(r.manufacturer)} ${escape(r.code)} ${escape(r.size)} ${escape(r.grade)} ${escape(r.series)}"><span class="guy-size-label">${escape(r.size)}</span><small class="guy-row-identity" title="${escape(r.code+' · '+r.series)}">${escape(['Accessories','Thimble'].includes(r.family)&&r.grade==='Not stated'?'':r.grade.startsWith('Match ')?r.properties['Strand construction']||'See record':r.grade.replace(' (wire tensile grade)',''))}${['Turnbuckle','Rigging screw'].includes(r.family)?` · ${escape(r.series.split(' - ')[0].replaceAll('Jaw','J').replaceAll('Eye','E').replaceAll(' & ','/'))}`:r.family==='Shackle'?` · ${escape(r.series)}`:''}</small><small class="guy-row-supplier">${escape(r.manufacturer.split(' / ')[0])}</small>${GuyCatalogueStatus.status(r,GuyFittingsLookup.diameter).label?`<small class="guy-data-tag">${escape(GuyCatalogueStatus.status(r,GuyFittingsLookup.diameter).label)}</small>`:""}</button>${r.sourceStatus!=="Checked"?`<span class="guy-review-badge" title="${escape(r.note)}">${r.sourceStatus==="Source conflict"?'Source conflict':'Rating unverified'}</span>`:''}</th>${columns.map(([h,v],i)=>`<td class="${numeric(h)?"guy-number":""} ${h==="Grade"?"guy-grade":""} ${i===keyColumnCount?"guy-secondary-start":""}">${cell(h,v(r))}</td>`).join("")}<td class="guy-product-cell"><span class="guy-token">${escape(r.code)}</span><small>${escape(r.manufacturer)}</small></td><td class="guy-source-cell"><a href="${escape(sourceLink(r))}" target="_blank" rel="noopener noreferrer"><span class="guy-token">${escape(sources[r.source].shortLabel||(r.source==="bullivants4"?"Edition 4":r.source==="nobles2018"?"2018":r.source==="bekaertCA"?"Canada · 2022":r.source==="noblesStrand2018"?"2018":r.source==="plpAU2025"?"AU · 2025 file":"2016"))}</span><span class="guy-source-page">${sources[r.source].kind==="web"?"Specification":`p. ${r.page}`}</span></a>${r.sourceStatus!=="Checked"?`<small class="guy-conflict">${escape(r.sourceStatus)}</small>`:""}</td></tr>`).join("");
     $("Empty").hidden=matching.length>0;
     $("Table").closest('.guy-table-wrap').hidden=matching.length===0;
     $("Selection").hidden=!selected || $("Selection").hidden;
