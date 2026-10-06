@@ -168,7 +168,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "97844f61afbf234a85d87ceff76d73ec3aa9f19481e075ed1a734c3ab126323d"
+      "sha256": "045f71d20d4431c1fffe2379b5f4f30272fa6e2a462346a03951fe4017f4385f"
     },
     {
       "path": "LICENSE.md",
@@ -192,7 +192,7 @@
     },
     {
       "path": "panel-antennas/app.js",
-      "sha256": "2acb756dd9f840daeed0f9d4710678b4cbae051b907f3dfe36039a47f663241f"
+      "sha256": "29c7420293d1755a15c5c5e89c7618400e244a6b77032362b30a277bd3e562fa"
     },
     {
       "path": "panel-antennas/data.js",
@@ -200,7 +200,7 @@
     },
     {
       "path": "panel-antennas/index.html",
-      "sha256": "0df5322134eb9a685215259b8a76af4a1de1e3f2521bd88f73bcb908bb644684"
+      "sha256": "51e8b58e6a1404179625fec7767d36735279fa767f77300cb77122a94c7176c7"
     },
     {
       "path": "panel-antennas/lookup.js",
@@ -216,11 +216,11 @@
     },
     {
       "path": "panel-antennas/panel.css",
-      "sha256": "5cae0b3d3239f7f489e93ae0c03961f0bab8f5763dd280a8c4344541f6b0506b"
+      "sha256": "39007713c9e77d0d5a6fd0ed67ac540a41e55a80b6d0f0a041e07a078b42b558"
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "95d9e18ef73e814771f49dd1b14b79ed3b9a4cdc1dbcde6926a52b65e7b61985"
+      "sha256": "4f58cdd96a2d9977534cfacb9285669ea54b12a8c9c31054cbe6affd24ff879b"
     },
     {
       "path": "README.md",
