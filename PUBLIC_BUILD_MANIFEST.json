@@ -7,24 +7,8 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "path": "LICENSE.md",
-      "sha256": "8ff93c9cf098320c9213b1cd0f08e9b1d3bee7580c6815ac537373fbc1ca7281"
-    },
-    {
-      "path": "PUBLICATION_NOTICE.md",
-      "sha256": "3139d23c264f7e522d606ae78eca4fdd08d53acb55b82a18b93b9df7270b5e59"
-    },
-    {
-      "path": "README.md",
-      "sha256": "8b8cebe7764d16387ae12e80fa5a8a23d7a5c0c6dd3e1139fe2f7d7696c34a47"
-    },
-    {
-      "path": "THIRD_PARTY_NOTICES.md",
-      "sha256": "806d3238bea30c0aa9d0f6f63290c2586121b22af4bff88acf1c1c6e663a5b2b"
-    },
-    {
       "path": "app.js",
-      "sha256": "45e0cfd632f8c2ac0ca2c9ec590507b142bbab2528bc31e81e8b5c9cb98dac2e"
+      "sha256": "63835818a55d8382e628b2d5f845f8bec2b593ee1bab13dd5945c3f8ab2f3402"
     },
     {
       "path": "assets/fonts/Lato-Black.ttf",
@@ -184,7 +168,11 @@
     },
     {
       "path": "index.html",
-      "sha256": "4146d74d948e36fecdd16ac19b65bcc24b9c17d2ce0eb023508f8601fb49a5b7"
+      "sha256": "7b5e12ab5bbb83f573c3a54c9879d37555703a546939a01510b97ba5b423d1df"
+    },
+    {
+      "path": "LICENSE.md",
+      "sha256": "8ff93c9cf098320c9213b1cd0f08e9b1d3bee7580c6815ac537373fbc1ca7281"
     },
     {
       "path": "member-capacity.js",
@@ -201,6 +189,42 @@
     {
       "path": "monopole-capacity.js",
       "sha256": "4c14ae063ed7b81f95198db395a7cd4bb2ce4f45591577551e97a61bb4158577"
+    },
+    {
+      "path": "panel-antennas/app.js",
+      "sha256": "e73116f4b141d222eea016df645fa669219537661443a6fbc76d0c44a94499a6"
+    },
+    {
+      "path": "panel-antennas/data.js",
+      "sha256": "b503a52c0cbc7eb9db5ea4ff1fd146063b3c12192dd09e63460b6463f7f899d4"
+    },
+    {
+      "path": "panel-antennas/index.html",
+      "sha256": "53b87d62d583fcb6a558e9772a1ab89284d886dff247ca6303bc7fbe66cc3527"
+    },
+    {
+      "path": "panel-antennas/lookup.js",
+      "sha256": "76e502730bc2dd47469246bfae212cf00dc9e578716846334ce9e0bc46600ec1"
+    },
+    {
+      "path": "panel-antennas/panel-antenna-specs-2026-10-02.csv",
+      "sha256": "c624f303a2fc1acfeb5591b5b1ffdac34c4f2a118d82418208b25286eb66de08"
+    },
+    {
+      "path": "panel-antennas/panel-antenna-specs-2026-10-03.csv",
+      "sha256": "7580efe77259c26f5fe4d6dff84e94194d081ca9456551e2672edfc4f9ecd1d5"
+    },
+    {
+      "path": "panel-antennas/panel.css",
+      "sha256": "5cae0b3d3239f7f489e93ae0c03961f0bab8f5763dd280a8c4344541f6b0506b"
+    },
+    {
+      "path": "PUBLICATION_NOTICE.md",
+      "sha256": "3e0eef44b9535db00891d0e0cbd16f8348aa24b581ade4f5cddde89978ea1159"
+    },
+    {
+      "path": "README.md",
+      "sha256": "8b8cebe7764d16387ae12e80fa5a8a23d7a5c0c6dd3e1139fe2f7d7696c34a47"
     },
     {
       "path": "reo-calculation.js",
@@ -233,6 +257,10 @@
     {
       "path": "styles.css",
       "sha256": "34f9b3c95f6adafa501a83ee4d255a2c3dec4262541c09bf0a9ec6aa209ddca4"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "806d3238bea30c0aa9d0f6f63290c2586121b22af4bff88acf1c1c6e663a5b2b"
     },
     {
       "path": "weld-capacity.js",

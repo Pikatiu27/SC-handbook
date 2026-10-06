@@ -2385,8 +2385,8 @@ const toolCategories = {
   foundations: [ "geo",  "concrete", "reo", "screw", "rock"]
 };
 
-toolNames.push("guy");
-toolCategories["steel-connections"].push("guy");
+toolNames.push("guy", "antenna");
+toolCategories["product-lookup"] = ["guy", "antenna"];
 
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };

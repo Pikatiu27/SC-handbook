@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo76">
 
     <link rel="stylesheet" href="guy-lookup/guy.css?v=20261003gaps1">
+<link rel="stylesheet" href="panel-antennas/panel.css?v=20261004panel20">
 </head>
 <body>
   <header class="topbar">
@@ -41,13 +42,15 @@
           <button class="tool-category active" type="button" data-category="steel-connections" aria-pressed="true">Steel Connections</button>
           <button class="tool-category" type="button" data-category="steel-members" aria-pressed="false">Steel Members</button>
           <button class="tool-category" type="button" data-category="foundations" aria-pressed="false">Foundations</button>
+<button class="tool-category" type="button" data-category="product-lookup" aria-pressed="false">Product Lookup</button>
         </nav>
 
         <nav class="tool-tabs" aria-label="SC Handbook tools">
           <button class="tool-tab active" type="button" data-category="steel-connections" data-tool="bolt" aria-controls="boltPanel" aria-pressed="true">Bolt Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-connections" data-tool="weld" aria-controls="weldPanel" aria-pressed="false">Weld Capacity</button>
 
-          <button class="tool-tab" type="button" data-category="steel-connections" data-tool="guy" aria-controls="guyPanel" aria-pressed="false">Guy &amp; Fittings</button>
+          <button class="tool-tab" type="button" data-category="product-lookup" data-tool="guy" aria-controls="guyPanel" aria-pressed="false" hidden>Guy &amp; Fittings</button>
+<button class="tool-tab" type="button" data-category="product-lookup" data-tool="antenna" aria-controls="antennaPanel" aria-pressed="false" hidden>Panel Antenna Specs</button>
 
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
@@ -65,6 +68,14 @@
     </section>
 
     <section class="category-scope" aria-label="Category design scope">
+<details data-category-scope="product-lookup" hidden>
+        <summary><span><b>Design scope · Product Lookup</b><small>Published product specifications and source documents</small></span><i>+</i></summary>
+        <div class="category-scope-grid">
+          <section><h2>Complete design includes</h2><p>Verified equipment identity and source revisions; project actions, suitability, installation and interface checks.</p></section>
+          <section><h2>Handbook scope</h2><p>Published antenna and guy/fitting specifications, with source status and unavailable values identified.</p></section>
+          <section><h2>Not evaluated</h2><p>Product suitability, operator approval, current supply, site loads, resistance or whole-system design.</p></section>
+        </div>
+      </details>
       <details data-category-scope="steel-connections">
         <summary><span><b>Design scope · Steel Connections</b><small>Coverage and exclusions for connection design</small></span><i>+</i></summary>
         <div class="category-scope-grid">
@@ -132,7 +143,114 @@
 
     <!-- PUBLIC:GUY_PANEL:END -->
 
-    <section id="boltPanel" class="tool-panel active">
+    <section id="antennaPanel" class="tool-panel" hidden>
+<div id="antennaLookup" class="antenna-lookup">
+  <div class="tool-heading"><div><h2>Panel Antenna Specs</h2></div><span class="tool-status">Public beta · For Review</span></div>
+  <p class="antenna-public-source"><b>Public sources only.</b> Linked publicly available manufacturer pages/PDFs and released site/planning documents. No internal or confidential documents. Coverage is non-exhaustive.</p>
+  <div class="lookup-card">
+  <div class="input-group antenna-filter" role="search" aria-label="Find antenna specifications">
+    <div class="input-group-heading"><b>Find a model</b></div>
+    <div class="input-group-fields antenna-query-fields">
+    <label for="antennaSearch">Model or keyword<input id="antennaSearch" type="search" placeholder="e.g. RV4-65D-R5-V6, AIR 6419"></label>
+    <label for="antennaBrand">Brand<select id="antennaBrand"><option value="">All brands</option><option value="Kaelus">Kaelus</option><option value="Nokia">Nokia</option><option value="Ericsson">Ericsson</option><option value="CommScope / ANDREW">CommScope / ANDREW</option><option value="RFS">RFS</option><option value="Argus">Argus</option><option value="MatSing">MatSing</option><option value="Alpha Wireless">Alpha Wireless</option><option value="Amphenol Antenna Solutions">Amphenol</option><option value="Kathrein">Kathrein</option><option value="CCI">CCI</option><option value="Tongyu">Tongyu</option><option value="Huawei">Huawei</option></select></label>
+    <label for="antennaStatus">Documents<select id="antennaStatus"><option value="">All entries</option><option value="datasheet">Checked spec sheets only</option><option value="sheet-pending">Public PDF · review needed</option><option value="site-record">Site record · sheet needed</option><option value="catalogue">Catalogue · sheet needed</option><option value="family">Variant sheet needed</option><option value="conflict">Source conflict</option></select></label>
+    </div>
+  </div>
+    <details class="antenna-extra-filters detail-card"><summary id="antennaExtraSummary">More filters</summary><div class="antenna-extra-content">
+      <div class="input-group"><div class="input-group-heading"><b>Australian site evidence</b><small>Operator, technology and evidence must match one record.</small></div><div class="input-group-fields three">
+      <label for="antennaOperator">Australian operator<select id="antennaOperator"><option value="">All catalogue entries</option><option>Telstra</option><option>Optus</option><option value="Vodafone / TPG">Vodafone / TPG</option></select></label>
+      <label for="antennaGeneration">Documented technology<select id="antennaGeneration"><option value="">All technologies</option><option value="4G">4G (LTE site evidence)</option><option value="5G">5G (NR / deployment evidence)</option></select></label>
+      <label for="antennaEvidence">Evidence type<select id="antennaEvidence"><option value="">Any / not established</option><option value="any">Has Australian evidence</option><option value="deployed">Commercial deployment</option><option value="existing">Existing site record</option><option value="planned">Planned installation</option><option value="reserved">Reserved position</option><option value="demonstration">Live-site demonstration</option></select></label>
+      </div></div>
+      <div class="input-group"><div class="input-group-heading"><b>Radio properties</b><small id="antennaFrequencyNote">Checked operating ranges only.</small></div><div class="input-group-fields two">
+      <label for="antennaKind">Antenna type<select id="antennaKind"><option value="">All types</option><option>Passive</option><option>Hybrid</option><option>Active</option></select></label>
+      <label for="antennaFrequency">Required frequency (MHz)<input id="antennaFrequency" type="number" min="1" step="any" placeholder="e.g. 3500" aria-describedby="antennaFrequencyNote"></label>
+      </div></div>
+    </div></details>
+  <div class="antenna-toolbar">
+    <label for="antennaSort"><span>Order by</span><select id="antennaSort"><option value="documents">Checked spec sheets first</option><option value="model">Model A–Z</option><option value="height">Height: low to high</option><option value="mass">Antenna weight: low to high</option></select></label>
+    <div class="antenna-actions"><button id="antennaReset" type="button">Reset</button><button id="antennaExport" type="button" aria-label="Export filtered results as CSV">Export CSV</button></div>
+  </div>
+  <div class="antenna-result-summary">
+    <p id="antennaCount" class="visually-hidden" role="status" aria-live="polite">Loading catalogue…</p>
+    <div class="antenna-result-overview">
+      <dl class="antenna-result-stats" aria-label="Filtered results">
+        <div><dt>Matching entries</dt><dd><b id="antennaShown">—</b><small>of <span id="antennaTotal">—</span></small></dd></div>
+        <div><dt>Checked PDF records</dt><dd><b id="antennaPDFCount">—</b></dd></div>
+        <div><dt>Australian evidence</dt><dd><b id="antennaAUCount">—</b></dd></div>
+      </dl>
+      <details class="antenna-table-guide"><summary>Table guide</summary><div class="antenna-guide-content">
+        <p id="antennaTableHelp">Select a model for details; match its full suffix and document revision.</p>
+        <p>25 records per page. CSV exports all filtered matches. Desktop: scroll the table. Mobile: labelled records.</p>
+        <dl id="antennaTableKey" class="antenna-table-key" aria-label="Table notation">
+          <div><dt>Size · mm</dt><dd>H / W / D = height / width / depth.<br>L / Ø = canister length / diameter.</dd></div>
+          <div><dt>Wind · N</dt><dd>F / S / R = front / side / rear.<br>Max = published maximum direction.</dd></div>
+          <div><dt>Missing values</dt><dd>— = not reported, never zero.<br>Unverified values remain labelled.</dd></div>
+        </dl>
+        <div class="antenna-guide-notes">
+          <section><h3>Wind and mass</h3><p>Wind: source speed, not site design loads. Mass: antenna and kit separately.</p></section>
+          <section><h3>Records and sources</h3><p id="antennaChecked" class="antenna-checked"></p><p>Counts are records, not PDFs, sites or market share. Shared sheets cover multiple order codes; Argus / CommScope / ANDREW entries overlap.</p><p>Catalogue: not a complete Australian equipment inventory. Intake dates do not re-date older records.</p></section>
+          <section><h3>Brand directory</h3><p>Brand name: filter. Official source: catalogue. Coverage and gaps: scope notes.</p><p>For Nokia / AIR, match band, order code and revision. Ericsson passive catalogues may require an account or request.</p></section>
+        </div>
+      </div></details>
+    </div>
+  </div>
+  <p id="antennaMessage" class="antenna-result-message" role="alert" hidden></p>
+  <div id="antennaResults" class="antenna-table-wrap" role="region" aria-label="Antenna specifications" aria-describedby="antennaTableHelp antennaTableKey" tabindex="0">
+    <table class="antenna-table">
+      <caption class="visually-hidden">Mechanical comparison · published values and document status</caption>
+      <colgroup><col class="antenna-col-model"><col class="antenna-col-size"><col class="antenna-col-mass"><col class="antenna-col-wind"><col class="antenna-col-source"></colgroup>
+      <thead><tr><th scope="col">Model / brand</th><th scope="col">Size<span class="antenna-unit">H / W / D or L / Ø · mm</span></th><th scope="col">Mass<span class="antenna-unit">kg</span></th><th scope="col">Wind force<span class="antenna-unit">N · source speed</span></th><th scope="col">Documents</th></tr></thead>
+      <tbody id="antennaRows"></tbody>
+    </table>
+  </div>
+  <nav id="antennaPagination" class="antenna-pagination" aria-label="Antenna result pages" hidden><p id="antennaPageInfo" role="status" aria-live="polite"></p><div><button id="antennaPrevious" type="button" aria-label="Previous result page">Previous</button><button id="antennaNext" type="button" aria-label="Next result page">Next</button></div></nav>
+  <p id="antennaEmpty" class="antenna-empty" hidden>No matches. Broaden filters or check a manufacturer source. Unlisted models have no verified values.</p>
+  </div>
+  <section id="antennaSelection" class="antenna-selection detail-card" aria-labelledby="antennaSelectionTitle" hidden>
+    <div class="antenna-selection-heading"><div><p class="kicker">Selected model</p><h3 id="antennaSelectionTitle" tabindex="-1">Model details</h3><p id="antennaSelectionMeta"></p></div><button id="antennaBack" type="button">Back to results</button></div>
+    <div id="antennaSelectionDocs" class="antenna-selection-documents"></div>
+    <div id="antennaSelectionBody"></div>
+  </section>
+  <details class="antenna-basis detail-card antenna-operator-overview"><summary>Australian operator evidence</summary><p>Dated 4G / 5G examples, not national market share or full equipment approval. Check passive, active and hybrid specifications separately.</p><div id="antennaOperators" class="antenna-operators"></div></details>
+  <details class="antenna-basis source-card antenna-brands"><summary>Brands · coverage and sources</summary><div id="antennaDirectories" class="antenna-directories" role="region" aria-label="Brand coverage and original sources" tabindex="0"></div></details>
+  <details class="antenna-basis source-card"><summary>Sources and limitations</summary><p id="antennaCoverage"></p>
+    <div class="antenna-reference-grid">
+      <section><h3>Document status</h3><ul>
+        <li><b>PDF checked:</b> original pages checked; missing values stay unavailable.</li>
+        <li><b>Public PDF · review needed:</b> original pages not yet checked; no mechanical values.</li>
+        <li><b>Catalogue / variant sheet needed:</b> identity only; use Product page for the exact sheet. Active mechanics need a checked variant sheet.</li>
+        <li><b>Site record:</b> identification from a released site document, not a manufacturer sheet.</li>
+        <li><b>Source conflict:</b> affected fields withheld. Details retain pre-release, preliminary and archived status; archived models aid existing-site review.</li>
+      </ul></section>
+      <section><h3>Size, mass and mounting</h3><ul>
+        <li>H: antenna height/length, excluding packaging.</li>
+        <li>Keep stated antenna/net/shipping/kit bases. Some CCI masses exclude RET; check it separately.</li>
+        <li>Pipe OD: only where published.</li>
+      </ul></section>
+      <section><h3>Wind forces and areas</h3><ul>
+        <li>Use published direction and speed; Max is a separate maximum-direction force.</li>
+        <li>EPA and equivalent flat plate area are distinct; neither comes from H × W. Conflicting areas stay unavailable.</li>
+        <li>Published force/survival ratings do not establish site loads or pole/mount capacity.</li>
+      </ul></section>
+      <section><h3>RF and Australian evidence</h3><ul>
+        <li>4G / 5G uses documented AU site technology. Frequency alone establishes neither operator approval nor RF compatibility.</li>
+        <li>Gain, HPBW, PIM and power vary by frequency, array and beam mode; check the exact PDF.</li>
+        <li>Nokia/Ericsson active variants and legacy passive suffixes remain incomplete. CCI includes the earlier 252-code macro snapshot and superseded sheet, plus Small Cell / Outdoor DAS and Specialty.</li>
+      </ul></section>
+      <section><h3>Wind coefficient interpretation</h3><p>Three categories: <b>Published Cd</b>, <b>Derived Cd</b> and <b>Equivalent force coefficient</b>.</p><p>Conditional estimates use C = F / (0.5 × ρ × V² × A), assuming ρ = 1.225 kg/m³ and nominal H × W front/rear or H × D side areas. These dimensionless comparison values are not manufacturer Cd.</p><p>Test density, true projected area, drag/resultant components and pole/bracket contribution remain unconfirmed. No maximum-direction coefficient, EPA/EFPA conversion or site-design coefficient is inferred; missing inputs stay unavailable.</p></section>
+      <section><h3>Source dates and access</h3><ul>
+        <li>Per-record check dates are retained; latest intake does not mean older links were rechecked.</li>
+        <li>Links/revisions can change; PDF page jumps depend on the viewer.</li>
+        <li>Original documents are linked, not redistributed.</li>
+      </ul><p>Publication class: Public.</p></section>
+    </div>
+  </details>
+  <noscript>JavaScript is required to load the catalogue.</noscript>
+</div>
+
+</section>
+<section id="boltPanel" class="tool-panel active">
       <div class="tool-heading">
         <div><p id="boltToolKicker" class="kicker">Bolted connections · AS 4100 Cl. 9.2</p><h2 id="boltToolTitle">Bolt Capacity</h2></div>
         <span id="boltToolStatus" class="tool-status">For Review · AS 4100:2020</span>
@@ -2147,7 +2265,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.84 &middot; updated 3 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.85 &middot; updated 4 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20260818boltedge1"></script>
@@ -2172,7 +2290,7 @@
       <script src="geo-parameters/geo-parameters-data.js?v=20260921geo76"></script>
       <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
 
-  <script src="app.js?v=20260921geo76"></script>
+  <script src="app.js?v=20261004panel20"></script>
 
       <script src="geo-parameters/app.js?v=20260921geo76"></script>
 
@@ -2183,5 +2301,8 @@
   <script src="guy-lookup/lookup.js?v=20261003gaps1"></script>
   <script src="guy-lookup/related.js?v=20261003gaps1"></script>
   <script src="guy-lookup/app.js?v=20261003gaps1"></script>
+<script src="panel-antennas/data.js?v=20261004panel20"></script>
+<script src="panel-antennas/lookup.js?v=20261004panel20"></script>
+<script src="panel-antennas/app.js?v=20261004panel20"></script>
 </body>
 </html>
