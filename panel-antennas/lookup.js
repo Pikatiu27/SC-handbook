@@ -7,7 +7,7 @@
     if (frequency !== null && (!Number.isFinite(frequency) || frequency <= 0)) return [];
     return records.filter(row => {
       const evidence = row.deployments || [];
-      const searchable = normalise([row.model, row.brand, ...row.aliases, row.bandSummary, ...row.frequenciesMHz.flat(), ...evidence.map(e => [e.operator,e.site,e.technology].join(' '))].join(' '));
+      const searchable = normalise([row.model, row.brand, ...row.aliases, ...(row.orderingVariants || []).map(v=>v.code), row.bandSummary, ...row.frequenciesMHz.flat(), ...evidence.map(e => [e.operator,e.site,e.technology].join(' '))].join(' '));
       return terms.every(term => searchable.includes(term)) &&
         (!options.brand || row.brand === options.brand || row.aliases.includes(options.brand)) &&
         (!options.kind || row.kind === options.kind) &&
@@ -93,6 +93,7 @@
   function csv(records) {
     const headings = ['Ref_ID','Brand','Model','Type','Document_status','H_mm','W_mm','D_mm','Antenna_mass_kg','Mass_basis','Kit_mass_kg','Kit_mass_basis','Mounting_kit','Mounting_pipe_min_mm','Mounting_pipe_max_mm','EPA_front_m2','EPA_side_m2','RF_ports','Connector_basis','Frequency','Wind_front_N','Wind_side_N','Wind_rear_N','Wind_max_N','Wind_reference_kmh','Survival_speed_kmh','Revision','Checked','Spec_PDF_URL','Unreviewed_public_PDF_URL','Mechanical_PDF_page','Wind_PDF_page','Source_URL','Source_SHA256','Field_locators','Notes','Australian_operator_evidence','Length_mm','Diameter_mm','Size_description','Published_survival_speed','Field_issues','Form_factor','Product_page_URL','Published_EFPA_m2'];
     headings.push('Published_Cd','Published_Cd_basis','Derived_Cd','Derived_Cd_basis','Equivalent_force_coefficient_front','Equivalent_force_coefficient_side','Equivalent_force_coefficient_rear','Coefficient_assumed_density_kg_m3','Coefficient_reference_front_m2','Coefficient_reference_side_m2','Coefficient_reference_rear_m2','Coefficient_reference_speed_kmh','Coefficient_status','Coefficient_assumptions','Coefficient_unavailable_reasons');
+    headings.push('Listed_ordering_codes','Ordering_code_basis');
     const quote = value => '"' + String(value ?? '').replace(/^[=+@]/, "'$&").replaceAll('"', '""') + '"';
     const values = records.map(r => [r.id,r.brand,r.model,r.kind,r.status,...(r.dimensionsMm || [null,null,null]),r.massKg,r.massBasis,r.kitMassKg,r.kitMassBasis,r.mountingKit,...(r.mountingPipeMm || [null,null]),r.epaM2?.front,r.epaM2?.side,r.ports,r.connector,bands(r),r.windN?.front,r.windN?.side,r.windN?.rear,r.windN?.max,r.windSpeedKmh,r.survivalSpeedKmh,r.revision,r.checked,r.specUrl,r.publicSpecUrl,r.mechanicalPage,r.windPage,r.sourceUrl,r.sourceHash,Object.entries(r.locators).map(([k,v])=>`${k}: ${v}`).join('; '),r.notes,(r.deployments||[]).map(e=>`${e.operator} | ${e.type} | ${e.date} | ${e.site} | ${e.technology} | ${e.locator} | ${e.url}`).join('; '),r.lengthMm,r.diameterMm,r.sizeDescription,r.survivalSpeedText,Object.entries(r.fieldIssues||{}).map(([k,v])=>k+': '+v).join('; '),r.formFactor,r.productUrl,r.equivalentFlatPlateAreaM2]);
     records.forEach((record,index)=>{
@@ -102,6 +103,7 @@
       values[index].push(json(c.published.map(({direction,value})=>({direction,value}))),json(c.published),json(c.derived.map(({direction,value})=>({direction,value}))),json(c.derived),
         ...windDirections.map(direction=>equivalents[direction]?.value),c.equivalent.length?1.225:null,
         ...windDirections.map(direction=>equivalents[direction]?.referenceAreaM2),c.equivalent.length?record.windSpeedKmh:null,c.status,c.assumptions,JSON.stringify(c.unavailable));
+      values[index].push(record.orderingVariants?.length ? JSON.stringify(record.orderingVariants) : '',record.orderingVariants?.length ? 'Listed identities only. Table values describe the base model; verify the exact order, connector and bracket in the cited source.' : '');
     });
     return '\uFEFF' + [headings,...values].map(row => row.map(quote).join(',')).join('\r\n') + '\r\n';
   }
