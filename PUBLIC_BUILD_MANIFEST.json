@@ -168,7 +168,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "04fb5118a815377a57c65ca670e9c81290948ec13f7eb076b0e27557f62231e2"
+      "sha256": "dd53bce25d64088cd45e9ff41e1d23e3457c459660237cbcdaafb300bf25cfd2"
     },
     {
       "path": "LICENSE.md",
@@ -192,15 +192,15 @@
     },
     {
       "path": "panel-antennas/app.js",
-      "sha256": "f2479c25148861462a8d728fc740423f3488fe63901078de0a93a25f7f032324"
+      "sha256": "e8cec825fcb2c8599f60bccb4a5f1d9b985d2d77d46923ff1a0436d78927e62f"
     },
     {
       "path": "panel-antennas/data.js",
-      "sha256": "f2f7f8a9c945e605284ae3655cb16ce72cc2895733576b1088c32bbcc0da3415"
+      "sha256": "0b2c4542859d5614b3563cdaa0843b98100b22f1ef2df7c9d63f1aa221c2e530"
     },
     {
       "path": "panel-antennas/index.html",
-      "sha256": "65d56d2145a9d90b15c2a00d916fea9cc11110a81a72238b5127feac41e1a1e1"
+      "sha256": "f36d5323d852aa26eacd08b5eab8b9ad5c6641226b82471de47ad4c72917a361"
     },
     {
       "path": "panel-antennas/lookup.js",
@@ -224,7 +224,7 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "2b1da4bf739078d421ede40b209cc893482fb3a1dd6bb7e59ade5eea009372c4"
+      "sha256": "f2c498930113cbaacca29e906de0937d63df4a92a99160190d7fbcf1264ee240"
     },
     {
       "path": "README.md",

@@ -1,7 +1,7 @@
 /* Catalogue lookup only. Public sources; see REFERENCE_TRACEABILITY.md. Publication class Public. */
 (function(root){
   const data = {
-  "version": "20261007panel26",
+  "version": "20261007panel27",
   "publicationClass": "Public",
   "checked": "2026-10-07",
   "records": [
