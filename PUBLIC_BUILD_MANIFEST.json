@@ -168,7 +168,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "db19f92081368ff91b7e26a897f88441b932808d60ed124c07f6e8fd508df096"
+      "sha256": "540b8619d4f4d1cd2034df4e02651e9fcad2c77bc294d7ceacf57dc6937530aa"
     },
     {
       "path": "LICENSE.md",
@@ -192,15 +192,15 @@
     },
     {
       "path": "panel-antennas/app.js",
-      "sha256": "e8cec825fcb2c8599f60bccb4a5f1d9b985d2d77d46923ff1a0436d78927e62f"
+      "sha256": "ee379866f040023870b5ba86cc84e5225c92c019b716403c2256fd7f6c023a71"
     },
     {
       "path": "panel-antennas/data.js",
-      "sha256": "101a4439ddbc269764e4ce85b19b4aa9dd0fa3fe5eca6b020c8d0ddce36e5eb0"
+      "sha256": "63aee79ea9df7f4c5f0615e02cd02141531c96b9ce471d82e7057c4101a39431"
     },
     {
       "path": "panel-antennas/index.html",
-      "sha256": "ae41d4e3cb913883d06c17521fa7dfcc8a8ea13ba465623fd145352f72837b4d"
+      "sha256": "b7c5c3ba63af7b6ef0872ef70b4601f4796a34dd5b0ad7d59abef8077f136225"
     },
     {
       "path": "panel-antennas/lookup.js",
@@ -216,7 +216,7 @@
     },
     {
       "path": "panel-antennas/panel-antenna-specs-2026-10-07.csv",
-      "sha256": "6d8a58c63bbd830384e22ad3e319146fc341be0432c0f7816d1d66a876377939"
+      "sha256": "df881eddb2705b90c52b75680911f06f92a814f7e492bf7c545f8ec97cc0a5f9"
     },
     {
       "path": "panel-antennas/panel.css",
@@ -224,7 +224,7 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "3f255b8f4e2dfffc088789ef3fdbe7e8d3b48c099fa9dae3d29193e7b4c628d2"
+      "sha256": "42096082e1bb0e32d5c9c279cfa622fdd76e04050692fe62f440df9ae61c754c"
     },
     {
       "path": "README.md",
