@@ -1,7 +1,7 @@
 /* Catalogue lookup only. Public sources; see REFERENCE_TRACEABILITY.md. Publication class Public. */
 (function(root){
   const data = {
-  "version": "20261007panel29",
+  "version": "20261007panel30",
   "publicationClass": "Public",
   "checked": "2026-10-07",
   "records": [
@@ -745,9 +745,11 @@
       "locators": {
         "identity": "PDF p. 17, Telstra AIR6488 rows"
       },
-      "notes": "Telstra and Optus site records confirm AIR6488. Published planning dimensions differ between sources; no family mechanical value is adopted.",
+      "notes": "Telstra and Optus site records confirm AIR6488. Published planning dimensions differ between sources; no family mechanical value is adopted. Eight historical band-specific AIR 6488 records are separately searchable. The site base code does not identify the band/order/revision; confirm the supplied variant before applying its mechanical values.",
       "lifecycle": "Supply status not checked",
-      "relatedSources": [],
+      "relatedSources": [
+        "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18"
+      ],
       "deployments": [
         {
           "operator": "Telstra",
@@ -78233,6 +78235,566 @@
       },
       "notes": "Historical 2021 original; exact P6BPMU01 title governs, not a similar code in an older indexed copy. Antenna dimensions and net mass exclude packing/shipping values. Ordering patterns are not expanded.",
       "relatedSources": []
+    },
+    {
+      "id": "PANEL-ACTIVE-20261007-B41",
+      "model": "AIR 6488 B41",
+      "brand": "Ericsson",
+      "aliases": [
+        "AIR6488 B41"
+      ],
+      "kind": "Active",
+      "status": "datasheet",
+      "formFactor": "Antenna integrated radio",
+      "dimensionsMm": [
+        893,
+        520,
+        238
+      ],
+      "massKg": 61.4,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": null,
+      "kitMassBasis": "Individual kit mass not stated; alternative installed totals in source notes",
+      "ports": null,
+      "connector": "Integrated antenna; eCPRI optical interfaces are not RF antenna ports",
+      "frequenciesMHz": [
+        [
+          2496,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 692,
+        "side": 151,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 151.2,
+      "windReferenceMps": 42,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": null,
+      "revision": "213/1551-LZA 701 6001/1 Uen M; 4 June 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18",
+      "sourceType": "Manufacturer datasheet in public filing",
+      "sourceHash": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+      "specUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+      "mechanicalPage": 18,
+      "windPage": 24,
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public filing original and matching public-hosted manufacturer manual read; cited pages visually checked"
+      },
+      "locators": {
+        "identity": "PDF pp.6–7 / 18, AIR 6488 original Rev M and exact frequency-band suffix",
+        "dimensions": "PDF p.18, Table 5, printed p.9, AIR unit H × W × D",
+        "mass": "PDF p.19, Table 6, printed p.10, Weight without Mounting Kit",
+        "rf": "PDF p.15, Table 2, printed p.6, exact band operating range; pp.31–34, integrated antenna / optical interfaces",
+        "wind": "PDF p.24, Section 3.7.1, printed p.15, Maximum wind load at 42 m/s, pole installed AIR unit",
+        "mounting": "PDF p.14, Table 1, printed p.5, alternative swivel / tilt-and-swivel mounting kits",
+        "kitMass": "PDF p.19, Table 6, installed totals for alternative kits; no separate kit mass"
+      },
+      "mountingKit": "SXK 109 2064/1 (swivel) or SXK 109 2065/1 (tilt and swivel)",
+      "mountingPipeMm": null,
+      "epaM2": null,
+      "equivalentFlatPlateAreaM2": null,
+      "lifecycle": "Historical 2019 manufacturer original; current supply status not established",
+      "deployments": [],
+      "relatedSources": [
+        "https://www.1com.net/wp-content/uploads/2019/09/sales%401com.com-Ericsson-AIR-6488-Integrated-Radio-Unit-Datasheet.pdf"
+      ],
+      "notes": "Historical band-specific original in a public Montgomery County filing. Australian AIR 6488 base-code site records do not identify this band or installed revision; no Australian deployment evidence is assigned to this variant. Wind speed 42 m/s is converted exactly to 151.2 km/h; the printed front and side forces apply to a pole-installed AIR unit. Rear force, maximum-direction force and survival speed are not stated. Total weight with alternative kits: 65.8 kg with SXK 109 2064/1; 67.1 kg with SXK 109 2065/1 (PDF p.19). No kit-only mass is inferred by subtraction. Active 64TX/64RX paths and optical interfaces are not external RF antenna port counts. This AIR-unit geometry has no verified nominal panel reference area; no equivalent force coefficient is inferred."
+    },
+    {
+      "id": "PANEL-ACTIVE-20261007-B41K",
+      "model": "AIR 6488 B41K",
+      "brand": "Ericsson",
+      "aliases": [
+        "AIR6488 B41K"
+      ],
+      "kind": "Active",
+      "status": "datasheet",
+      "formFactor": "Antenna integrated radio",
+      "dimensionsMm": [
+        893,
+        520,
+        238
+      ],
+      "massKg": 61.4,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": null,
+      "kitMassBasis": "Individual kit mass not stated; alternative installed totals in source notes",
+      "ports": null,
+      "connector": "Integrated antenna; eCPRI optical interfaces are not RF antenna ports",
+      "frequenciesMHz": [
+        [
+          2515,
+          2675
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 692,
+        "side": 151,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 151.2,
+      "windReferenceMps": 42,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": null,
+      "revision": "213/1551-LZA 701 6001/1 Uen M; 4 June 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18",
+      "sourceType": "Manufacturer datasheet in public filing",
+      "sourceHash": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+      "specUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+      "mechanicalPage": 18,
+      "windPage": 24,
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public filing original and matching public-hosted manufacturer manual read; cited pages visually checked"
+      },
+      "locators": {
+        "identity": "PDF pp.6–7 / 18, AIR 6488 original Rev M and exact frequency-band suffix",
+        "dimensions": "PDF p.18, Table 5, printed p.9, AIR unit H × W × D",
+        "mass": "PDF p.19, Table 6, printed p.10, Weight without Mounting Kit",
+        "rf": "PDF p.15, Table 2, printed p.6, exact band operating range; pp.31–34, integrated antenna / optical interfaces",
+        "wind": "PDF p.24, Section 3.7.1, printed p.15, Maximum wind load at 42 m/s, pole installed AIR unit",
+        "mounting": "PDF p.14, Table 1, printed p.5, alternative swivel / tilt-and-swivel mounting kits",
+        "kitMass": "PDF p.19, Table 6, installed totals for alternative kits; no separate kit mass"
+      },
+      "mountingKit": "SXK 109 2064/1 (swivel) or SXK 109 2065/1 (tilt and swivel)",
+      "mountingPipeMm": null,
+      "epaM2": null,
+      "equivalentFlatPlateAreaM2": null,
+      "lifecycle": "Historical 2019 manufacturer original; current supply status not established",
+      "deployments": [],
+      "relatedSources": [
+        "https://www.1com.net/wp-content/uploads/2019/09/sales%401com.com-Ericsson-AIR-6488-Integrated-Radio-Unit-Datasheet.pdf"
+      ],
+      "notes": "Historical band-specific original in a public Montgomery County filing. Australian AIR 6488 base-code site records do not identify this band or installed revision; no Australian deployment evidence is assigned to this variant. Wind speed 42 m/s is converted exactly to 151.2 km/h; the printed front and side forces apply to a pole-installed AIR unit. Rear force, maximum-direction force and survival speed are not stated. Total weight with alternative kits: 65.8 kg with SXK 109 2064/1; 67.1 kg with SXK 109 2065/1 (PDF p.19). No kit-only mass is inferred by subtraction. Active 64TX/64RX paths and optical interfaces are not external RF antenna port counts. This AIR-unit geometry has no verified nominal panel reference area; no equivalent force coefficient is inferred."
+    },
+    {
+      "id": "PANEL-ACTIVE-20261007-B42",
+      "model": "AIR 6488 B42",
+      "brand": "Ericsson",
+      "aliases": [
+        "AIR6488 B42"
+      ],
+      "kind": "Active",
+      "status": "datasheet",
+      "formFactor": "Antenna integrated radio",
+      "dimensionsMm": [
+        819,
+        400,
+        272
+      ],
+      "massKg": 45,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": null,
+      "kitMassBasis": "Individual kit mass not stated; alternative installed totals in source notes",
+      "ports": null,
+      "connector": "Integrated antenna; eCPRI optical interfaces are not RF antenna ports",
+      "frequenciesMHz": [
+        [
+          3400,
+          3600
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 533,
+        "side": 278,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 151.2,
+      "windReferenceMps": 42,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": null,
+      "revision": "213/1551-LZA 701 6001/1 Uen M; 4 June 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18",
+      "sourceType": "Manufacturer datasheet in public filing",
+      "sourceHash": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+      "specUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+      "mechanicalPage": 18,
+      "windPage": 24,
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public filing original and matching public-hosted manufacturer manual read; cited pages visually checked"
+      },
+      "locators": {
+        "identity": "PDF pp.6–7 / 18, AIR 6488 original Rev M and exact frequency-band suffix",
+        "dimensions": "PDF p.18, Table 5, printed p.9, AIR unit H × W × D",
+        "mass": "PDF p.19, Table 6, printed p.10, Weight without Mounting Kit",
+        "rf": "PDF p.15, Table 2, printed p.6, exact band operating range; pp.31–34, integrated antenna / optical interfaces",
+        "wind": "PDF p.24, Section 3.7.1, printed p.15, Maximum wind load at 42 m/s, pole installed AIR unit",
+        "mounting": "PDF p.14, Table 1, printed p.5, alternative swivel / tilt-and-swivel mounting kits",
+        "kitMass": "PDF p.19, Table 6, installed totals for alternative kits; no separate kit mass"
+      },
+      "mountingKit": "SXK 109 2064/1 (swivel) or SXK 109 2065/1 (tilt and swivel)",
+      "mountingPipeMm": null,
+      "epaM2": null,
+      "equivalentFlatPlateAreaM2": null,
+      "lifecycle": "Historical 2019 manufacturer original; current supply status not established",
+      "deployments": [],
+      "relatedSources": [
+        "https://www.1com.net/wp-content/uploads/2019/09/sales%401com.com-Ericsson-AIR-6488-Integrated-Radio-Unit-Datasheet.pdf"
+      ],
+      "notes": "Historical band-specific original in a public Montgomery County filing. Australian AIR 6488 base-code site records do not identify this band or installed revision; no Australian deployment evidence is assigned to this variant. Wind speed 42 m/s is converted exactly to 151.2 km/h; the printed front and side forces apply to a pole-installed AIR unit. Rear force, maximum-direction force and survival speed are not stated. Total weight with alternative kits: 49.4 kg with SXK 109 2064/1; 50.7 kg with SXK 109 2065/1 (PDF p.19). No kit-only mass is inferred by subtraction. Active 64TX/64RX paths and optical interfaces are not external RF antenna port counts. This AIR-unit geometry has no verified nominal panel reference area; no equivalent force coefficient is inferred."
+    },
+    {
+      "id": "PANEL-ACTIVE-20261007-B42F",
+      "model": "AIR 6488 B42F",
+      "brand": "Ericsson",
+      "aliases": [
+        "AIR6488 B42F"
+      ],
+      "kind": "Active",
+      "status": "datasheet",
+      "formFactor": "Antenna integrated radio",
+      "dimensionsMm": [
+        819,
+        400,
+        256
+      ],
+      "massKg": 44,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": null,
+      "kitMassBasis": "Individual kit mass not stated; alternative installed totals in source notes",
+      "ports": null,
+      "connector": "Integrated antenna; eCPRI optical interfaces are not RF antenna ports",
+      "frequenciesMHz": [
+        [
+          3420,
+          3600
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 506,
+        "side": 171,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 151.2,
+      "windReferenceMps": 42,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": null,
+      "revision": "213/1551-LZA 701 6001/1 Uen M; 4 June 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18",
+      "sourceType": "Manufacturer datasheet in public filing",
+      "sourceHash": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+      "specUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+      "mechanicalPage": 18,
+      "windPage": 24,
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public filing original and matching public-hosted manufacturer manual read; cited pages visually checked"
+      },
+      "locators": {
+        "identity": "PDF pp.6–7 / 18, AIR 6488 original Rev M and exact frequency-band suffix",
+        "dimensions": "PDF p.18, Table 5, printed p.9, AIR unit H × W × D",
+        "mass": "PDF p.19, Table 6, printed p.10, Weight without Mounting Kit",
+        "rf": "PDF p.15, Table 2, printed p.6, exact band operating range; pp.31–34, integrated antenna / optical interfaces",
+        "wind": "PDF p.24, Section 3.7.1, printed p.15, Maximum wind load at 42 m/s, pole installed AIR unit",
+        "mounting": "PDF p.14, Table 1, printed p.5, alternative swivel / tilt-and-swivel mounting kits",
+        "kitMass": "PDF p.19, Table 6, installed totals for alternative kits; no separate kit mass"
+      },
+      "mountingKit": "SXK 109 2064/1 (swivel) or SXK 109 2065/1 (tilt and swivel)",
+      "mountingPipeMm": null,
+      "epaM2": null,
+      "equivalentFlatPlateAreaM2": null,
+      "lifecycle": "Historical 2019 manufacturer original; current supply status not established",
+      "deployments": [],
+      "relatedSources": [
+        "https://www.1com.net/wp-content/uploads/2019/09/sales%401com.com-Ericsson-AIR-6488-Integrated-Radio-Unit-Datasheet.pdf"
+      ],
+      "notes": "Historical band-specific original in a public Montgomery County filing. Australian AIR 6488 base-code site records do not identify this band or installed revision; no Australian deployment evidence is assigned to this variant. Wind speed 42 m/s is converted exactly to 151.2 km/h; the printed front and side forces apply to a pole-installed AIR unit. Rear force, maximum-direction force and survival speed are not stated. Total weight with alternative kits: 48.4 kg with SXK 109 2064/1; 49.7 kg with SXK 109 2065/1 (PDF p.19). No kit-only mass is inferred by subtraction. Active 64TX/64RX paths and optical interfaces are not external RF antenna port counts. This AIR-unit geometry has no verified nominal panel reference area; no equivalent force coefficient is inferred."
+    },
+    {
+      "id": "PANEL-ACTIVE-20261007-B42G",
+      "model": "AIR 6488 B42G",
+      "brand": "Ericsson",
+      "aliases": [
+        "AIR6488 B42G"
+      ],
+      "kind": "Active",
+      "status": "datasheet",
+      "formFactor": "Antenna integrated radio",
+      "dimensionsMm": [
+        819,
+        400,
+        256
+      ],
+      "massKg": 44,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": null,
+      "kitMassBasis": "Individual kit mass not stated; alternative installed totals in source notes",
+      "ports": null,
+      "connector": "Integrated antenna; eCPRI optical interfaces are not RF antenna ports",
+      "frequenciesMHz": [
+        [
+          3410,
+          3600
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 506,
+        "side": 171,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 151.2,
+      "windReferenceMps": 42,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": null,
+      "revision": "213/1551-LZA 701 6001/1 Uen M; 4 June 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18",
+      "sourceType": "Manufacturer datasheet in public filing",
+      "sourceHash": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+      "specUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+      "mechanicalPage": 18,
+      "windPage": 24,
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public filing original and matching public-hosted manufacturer manual read; cited pages visually checked"
+      },
+      "locators": {
+        "identity": "PDF pp.6–7 / 18, AIR 6488 original Rev M and exact frequency-band suffix",
+        "dimensions": "PDF p.18, Table 5, printed p.9, AIR unit H × W × D",
+        "mass": "PDF p.19, Table 6, printed p.10, Weight without Mounting Kit",
+        "rf": "PDF p.15, Table 2, printed p.6, exact band operating range; pp.31–34, integrated antenna / optical interfaces",
+        "wind": "PDF p.24, Section 3.7.1, printed p.15, Maximum wind load at 42 m/s, pole installed AIR unit",
+        "mounting": "PDF p.14, Table 1, printed p.5, alternative swivel / tilt-and-swivel mounting kits",
+        "kitMass": "PDF p.19, Table 6, installed totals for alternative kits; no separate kit mass"
+      },
+      "mountingKit": "SXK 109 2064/1 (swivel) or SXK 109 2065/1 (tilt and swivel)",
+      "mountingPipeMm": null,
+      "epaM2": null,
+      "equivalentFlatPlateAreaM2": null,
+      "lifecycle": "Historical 2019 manufacturer original; current supply status not established",
+      "deployments": [],
+      "relatedSources": [
+        "https://www.1com.net/wp-content/uploads/2019/09/sales%401com.com-Ericsson-AIR-6488-Integrated-Radio-Unit-Datasheet.pdf"
+      ],
+      "notes": "Historical band-specific original in a public Montgomery County filing. Australian AIR 6488 base-code site records do not identify this band or installed revision; no Australian deployment evidence is assigned to this variant. Wind speed 42 m/s is converted exactly to 151.2 km/h; the printed front and side forces apply to a pole-installed AIR unit. Rear force, maximum-direction force and survival speed are not stated. Total weight with alternative kits: 48.4 kg with SXK 109 2064/1; 49.7 kg with SXK 109 2065/1 (PDF p.19). No kit-only mass is inferred by subtraction. Active 64TX/64RX paths and optical interfaces are not external RF antenna port counts. This AIR-unit geometry has no verified nominal panel reference area; no equivalent force coefficient is inferred."
+    },
+    {
+      "id": "PANEL-ACTIVE-20261007-B43",
+      "model": "AIR 6488 B43",
+      "brand": "Ericsson",
+      "aliases": [
+        "AIR6488 B43"
+      ],
+      "kind": "Active",
+      "status": "datasheet",
+      "formFactor": "Antenna integrated radio",
+      "dimensionsMm": [
+        819,
+        400,
+        256
+      ],
+      "massKg": 45.5,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": null,
+      "kitMassBasis": "Individual kit mass not stated; alternative installed totals in source notes",
+      "ports": null,
+      "connector": "Integrated antenna; eCPRI optical interfaces are not RF antenna ports",
+      "frequenciesMHz": [
+        [
+          3600,
+          3800
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 506,
+        "side": 171,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 151.2,
+      "windReferenceMps": 42,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": null,
+      "revision": "213/1551-LZA 701 6001/1 Uen M; 4 June 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18",
+      "sourceType": "Manufacturer datasheet in public filing",
+      "sourceHash": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+      "specUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+      "mechanicalPage": 18,
+      "windPage": 24,
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public filing original and matching public-hosted manufacturer manual read; cited pages visually checked"
+      },
+      "locators": {
+        "identity": "PDF pp.6–7 / 18, AIR 6488 original Rev M and exact frequency-band suffix",
+        "dimensions": "PDF p.18, Table 5, printed p.9, AIR unit H × W × D",
+        "mass": "PDF p.19, Table 6, printed p.10, Weight without Mounting Kit",
+        "rf": "PDF p.15, Table 2, printed p.6, exact band operating range; pp.31–34, integrated antenna / optical interfaces",
+        "wind": "PDF p.24, Section 3.7.1, printed p.15, Maximum wind load at 42 m/s, pole installed AIR unit",
+        "mounting": "PDF p.14, Table 1, printed p.5, alternative swivel / tilt-and-swivel mounting kits",
+        "kitMass": "PDF p.19, Table 6, installed totals for alternative kits; no separate kit mass"
+      },
+      "mountingKit": "SXK 109 2064/1 (swivel) or SXK 109 2065/1 (tilt and swivel)",
+      "mountingPipeMm": null,
+      "epaM2": null,
+      "equivalentFlatPlateAreaM2": null,
+      "lifecycle": "Historical 2019 manufacturer original; current supply status not established",
+      "deployments": [],
+      "relatedSources": [
+        "https://www.1com.net/wp-content/uploads/2019/09/sales%401com.com-Ericsson-AIR-6488-Integrated-Radio-Unit-Datasheet.pdf"
+      ],
+      "notes": "Historical band-specific original in a public Montgomery County filing. Australian AIR 6488 base-code site records do not identify this band or installed revision; no Australian deployment evidence is assigned to this variant. Wind speed 42 m/s is converted exactly to 151.2 km/h; the printed front and side forces apply to a pole-installed AIR unit. Rear force, maximum-direction force and survival speed are not stated. Total weight with alternative kits: 49.9 kg with SXK 109 2064/1; 51.2 kg with SXK 109 2065/1 (PDF p.19). No kit-only mass is inferred by subtraction. Active 64TX/64RX paths and optical interfaces are not external RF antenna port counts. This AIR-unit geometry has no verified nominal panel reference area; no equivalent force coefficient is inferred."
+    },
+    {
+      "id": "PANEL-ACTIVE-20261007-B78B",
+      "model": "AIR 6488 B78B",
+      "brand": "Ericsson",
+      "aliases": [
+        "AIR6488 B78B"
+      ],
+      "kind": "Active",
+      "status": "datasheet",
+      "formFactor": "Antenna integrated radio",
+      "dimensionsMm": [
+        819,
+        400,
+        256
+      ],
+      "massKg": 44,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": null,
+      "kitMassBasis": "Individual kit mass not stated; alternative installed totals in source notes",
+      "ports": null,
+      "connector": "Integrated antenna; eCPRI optical interfaces are not RF antenna ports",
+      "frequenciesMHz": [
+        [
+          3500,
+          3600
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 506,
+        "side": 171,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 151.2,
+      "windReferenceMps": 42,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": null,
+      "revision": "213/1551-LZA 701 6001/1 Uen M; 4 June 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18",
+      "sourceType": "Manufacturer datasheet in public filing",
+      "sourceHash": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+      "specUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+      "mechanicalPage": 18,
+      "windPage": 24,
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public filing original and matching public-hosted manufacturer manual read; cited pages visually checked"
+      },
+      "locators": {
+        "identity": "PDF pp.6–7 / 18, AIR 6488 original Rev M and exact frequency-band suffix",
+        "dimensions": "PDF p.18, Table 5, printed p.9, AIR unit H × W × D",
+        "mass": "PDF p.19, Table 6, printed p.10, Weight without Mounting Kit",
+        "rf": "PDF p.15, Table 2, printed p.6, exact band operating range; pp.31–34, integrated antenna / optical interfaces",
+        "wind": "PDF p.24, Section 3.7.1, printed p.15, Maximum wind load at 42 m/s, pole installed AIR unit",
+        "mounting": "PDF p.14, Table 1, printed p.5, alternative swivel / tilt-and-swivel mounting kits",
+        "kitMass": "PDF p.19, Table 6, installed totals for alternative kits; no separate kit mass"
+      },
+      "mountingKit": "SXK 109 2064/1 (swivel) or SXK 109 2065/1 (tilt and swivel)",
+      "mountingPipeMm": null,
+      "epaM2": null,
+      "equivalentFlatPlateAreaM2": null,
+      "lifecycle": "Historical 2019 manufacturer original; current supply status not established",
+      "deployments": [],
+      "relatedSources": [
+        "https://www.1com.net/wp-content/uploads/2019/09/sales%401com.com-Ericsson-AIR-6488-Integrated-Radio-Unit-Datasheet.pdf"
+      ],
+      "notes": "Historical band-specific original in a public Montgomery County filing. Australian AIR 6488 base-code site records do not identify this band or installed revision; no Australian deployment evidence is assigned to this variant. Wind speed 42 m/s is converted exactly to 151.2 km/h; the printed front and side forces apply to a pole-installed AIR unit. Rear force, maximum-direction force and survival speed are not stated. Total weight with alternative kits: 48.4 kg with SXK 109 2064/1; 49.7 kg with SXK 109 2065/1 (PDF p.19). No kit-only mass is inferred by subtraction. Active 64TX/64RX paths and optical interfaces are not external RF antenna port counts. This AIR-unit geometry has no verified nominal panel reference area; no equivalent force coefficient is inferred."
+    },
+    {
+      "id": "PANEL-ACTIVE-20261007-B78H",
+      "model": "AIR 6488 B78H",
+      "brand": "Ericsson",
+      "aliases": [
+        "AIR6488 B78H"
+      ],
+      "kind": "Active",
+      "status": "datasheet",
+      "formFactor": "Antenna integrated radio",
+      "dimensionsMm": [
+        819,
+        400,
+        256
+      ],
+      "massKg": 44,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": null,
+      "kitMassBasis": "Individual kit mass not stated; alternative installed totals in source notes",
+      "ports": null,
+      "connector": "Integrated antenna; eCPRI optical interfaces are not RF antenna ports",
+      "frequenciesMHz": [
+        [
+          3542,
+          3700
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 506,
+        "side": 171,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 151.2,
+      "windReferenceMps": 42,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": null,
+      "revision": "213/1551-LZA 701 6001/1 Uen M; 4 June 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf#page=18",
+      "sourceType": "Manufacturer datasheet in public filing",
+      "sourceHash": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+      "specUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+      "mechanicalPage": 18,
+      "windPage": 24,
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public filing original and matching public-hosted manufacturer manual read; cited pages visually checked"
+      },
+      "locators": {
+        "identity": "PDF pp.6–7 / 18, AIR 6488 original Rev M and exact frequency-band suffix",
+        "dimensions": "PDF p.18, Table 5, printed p.9, AIR unit H × W × D",
+        "mass": "PDF p.19, Table 6, printed p.10, Weight without Mounting Kit",
+        "rf": "PDF p.15, Table 2, printed p.6, exact band operating range; pp.31–34, integrated antenna / optical interfaces",
+        "wind": "PDF p.24, Section 3.7.1, printed p.15, Maximum wind load at 42 m/s, pole installed AIR unit",
+        "mounting": "PDF p.14, Table 1, printed p.5, alternative swivel / tilt-and-swivel mounting kits",
+        "kitMass": "PDF p.19, Table 6, installed totals for alternative kits; no separate kit mass"
+      },
+      "mountingKit": "SXK 109 2064/1 (swivel) or SXK 109 2065/1 (tilt and swivel)",
+      "mountingPipeMm": null,
+      "epaM2": null,
+      "equivalentFlatPlateAreaM2": null,
+      "lifecycle": "Historical 2019 manufacturer original; current supply status not established",
+      "deployments": [],
+      "relatedSources": [
+        "https://www.1com.net/wp-content/uploads/2019/09/sales%401com.com-Ericsson-AIR-6488-Integrated-Radio-Unit-Datasheet.pdf"
+      ],
+      "notes": "Historical band-specific original in a public Montgomery County filing. Australian AIR 6488 base-code site records do not identify this band or installed revision; no Australian deployment evidence is assigned to this variant. Wind speed 42 m/s is converted exactly to 151.2 km/h; the printed front and side forces apply to a pole-installed AIR unit. Rear force, maximum-direction force and survival speed are not stated. Total weight with alternative kits: 48.4 kg with SXK 109 2064/1; 49.7 kg with SXK 109 2065/1 (PDF p.19). No kit-only mass is inferred by subtraction. Active 64TX/64RX paths and optical interfaces are not external RF antenna port counts. This AIR-unit geometry has no verified nominal panel reference area; no equivalent force coefficient is inferred."
     }
   ],
   "directories": [
@@ -78245,13 +78807,13 @@
     {
       "brand": "Nokia",
       "url": "https://www.nokia.com/radio-access/macro-radios/massive-mimo/",
-      "note": "Public exact AEQP / AEQE sheet search rechecked. Family names and dated site identities retained; confidential indexed copies and unverified mechanics excluded.",
+      "note": "AEQP / AQQY / AEQE public primary paths rechecked. Dated site identities retained; complete unrestricted exact-variant sheets remain unverified. Family and incomplete or confidential copies do not supply mechanical comparison values.",
       "filterBrand": "Nokia"
     },
     {
       "brand": "Ericsson",
       "url": "https://www.ericsson.com/en/ran/massive-mimo/solutions",
-      "note": "Public AIR sheet and antenna-catalogue access rechecked. Exact AIR mechanics remain unavailable; internal/confidential copies excluded. Manufacturer catalogue requests remain external links.",
+      "note": "Eight historical AIR 6488 band variants have original manufacturer mechanics in a public filing. Unsuffixed site records do not establish a band or installed revision. Other exact AIR sheets remain unavailable; internal/confidential sources excluded.",
       "filterBrand": "Ericsson"
     },
     {
@@ -79753,6 +80315,289 @@
       "APXVL14B_43-C-I20 and APXVR14B_43-C-I20 RFS endpoint returns generic HTML"
     ],
     "publicationAuthorisation": "User authorized continued public-source completion and release; 好的继续 (7 October 2026)"
+  },
+  "activeReview20261007": {
+    "date": "2026-10-07",
+    "question": "Which exact publicly released active antenna variant supports mechanical lookup without assigning unverified Australian deployment or reference geometry?",
+    "basis": "Eight band-specific historical Ericsson AIR 6488 records; original public-file pages, exact units and alternative installed-weight totals kept separate",
+    "reviewed": [
+      {
+        "id": "PANEL-ACTIVE-20261007-B41",
+        "model": "AIR 6488 B41",
+        "brand": "Ericsson",
+        "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+        "sha256": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+        "pages": {
+          "identity": 6,
+          "dimensions": 18,
+          "mass": 19,
+          "rf": 15,
+          "wind": 24,
+          "mounting": 14
+        },
+        "facts": {
+          "dimensionsMm": [
+            893,
+            520,
+            238
+          ],
+          "massKg": 61.4,
+          "band": [
+            2496,
+            2690
+          ],
+          "front": 692,
+          "side": 151,
+          "referenceMps": 42,
+          "referenceKmh": 151.2,
+          "totalSwivel": 65.8,
+          "totalTilt": 67.1
+        }
+      },
+      {
+        "id": "PANEL-ACTIVE-20261007-B41K",
+        "model": "AIR 6488 B41K",
+        "brand": "Ericsson",
+        "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+        "sha256": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+        "pages": {
+          "identity": 6,
+          "dimensions": 18,
+          "mass": 19,
+          "rf": 15,
+          "wind": 24,
+          "mounting": 14
+        },
+        "facts": {
+          "dimensionsMm": [
+            893,
+            520,
+            238
+          ],
+          "massKg": 61.4,
+          "band": [
+            2515,
+            2675
+          ],
+          "front": 692,
+          "side": 151,
+          "referenceMps": 42,
+          "referenceKmh": 151.2,
+          "totalSwivel": 65.8,
+          "totalTilt": 67.1
+        }
+      },
+      {
+        "id": "PANEL-ACTIVE-20261007-B42",
+        "model": "AIR 6488 B42",
+        "brand": "Ericsson",
+        "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+        "sha256": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+        "pages": {
+          "identity": 6,
+          "dimensions": 18,
+          "mass": 19,
+          "rf": 15,
+          "wind": 24,
+          "mounting": 14
+        },
+        "facts": {
+          "dimensionsMm": [
+            819,
+            400,
+            272
+          ],
+          "massKg": 45,
+          "band": [
+            3400,
+            3600
+          ],
+          "front": 533,
+          "side": 278,
+          "referenceMps": 42,
+          "referenceKmh": 151.2,
+          "totalSwivel": 49.4,
+          "totalTilt": 50.7
+        }
+      },
+      {
+        "id": "PANEL-ACTIVE-20261007-B42F",
+        "model": "AIR 6488 B42F",
+        "brand": "Ericsson",
+        "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+        "sha256": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+        "pages": {
+          "identity": 6,
+          "dimensions": 18,
+          "mass": 19,
+          "rf": 15,
+          "wind": 24,
+          "mounting": 14
+        },
+        "facts": {
+          "dimensionsMm": [
+            819,
+            400,
+            256
+          ],
+          "massKg": 44,
+          "band": [
+            3420,
+            3600
+          ],
+          "front": 506,
+          "side": 171,
+          "referenceMps": 42,
+          "referenceKmh": 151.2,
+          "totalSwivel": 48.4,
+          "totalTilt": 49.7
+        }
+      },
+      {
+        "id": "PANEL-ACTIVE-20261007-B42G",
+        "model": "AIR 6488 B42G",
+        "brand": "Ericsson",
+        "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+        "sha256": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+        "pages": {
+          "identity": 6,
+          "dimensions": 18,
+          "mass": 19,
+          "rf": 15,
+          "wind": 24,
+          "mounting": 14
+        },
+        "facts": {
+          "dimensionsMm": [
+            819,
+            400,
+            256
+          ],
+          "massKg": 44,
+          "band": [
+            3410,
+            3600
+          ],
+          "front": 506,
+          "side": 171,
+          "referenceMps": 42,
+          "referenceKmh": 151.2,
+          "totalSwivel": 48.4,
+          "totalTilt": 49.7
+        }
+      },
+      {
+        "id": "PANEL-ACTIVE-20261007-B43",
+        "model": "AIR 6488 B43",
+        "brand": "Ericsson",
+        "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+        "sha256": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+        "pages": {
+          "identity": 6,
+          "dimensions": 18,
+          "mass": 19,
+          "rf": 15,
+          "wind": 24,
+          "mounting": 14
+        },
+        "facts": {
+          "dimensionsMm": [
+            819,
+            400,
+            256
+          ],
+          "massKg": 45.5,
+          "band": [
+            3600,
+            3800
+          ],
+          "front": 506,
+          "side": 171,
+          "referenceMps": 42,
+          "referenceKmh": 151.2,
+          "totalSwivel": 49.9,
+          "totalTilt": 51.2
+        }
+      },
+      {
+        "id": "PANEL-ACTIVE-20261007-B78B",
+        "model": "AIR 6488 B78B",
+        "brand": "Ericsson",
+        "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+        "sha256": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+        "pages": {
+          "identity": 6,
+          "dimensions": 18,
+          "mass": 19,
+          "rf": 15,
+          "wind": 24,
+          "mounting": 14
+        },
+        "facts": {
+          "dimensionsMm": [
+            819,
+            400,
+            256
+          ],
+          "massKg": 44,
+          "band": [
+            3500,
+            3600
+          ],
+          "front": 506,
+          "side": 171,
+          "referenceMps": 42,
+          "referenceKmh": 151.2,
+          "totalSwivel": 48.4,
+          "totalTilt": 49.7
+        }
+      },
+      {
+        "id": "PANEL-ACTIVE-20261007-B78H",
+        "model": "AIR 6488 B78H",
+        "brand": "Ericsson",
+        "sourceUrl": "https://montgomerycountytfcg.s3.amazonaws.com/Applications/MC2019080952.pdf",
+        "sha256": "810fd6c9ec34d5ac4b1010ab170bbfa293e9a9fd0d9a521ce6fa412c8e34ad39",
+        "pages": {
+          "identity": 6,
+          "dimensions": 18,
+          "mass": 19,
+          "rf": 15,
+          "wind": 24,
+          "mounting": 14
+        },
+        "facts": {
+          "dimensionsMm": [
+            819,
+            400,
+            256
+          ],
+          "massKg": 44,
+          "band": [
+            3542,
+            3700
+          ],
+          "front": 506,
+          "side": 171,
+          "referenceMps": 42,
+          "referenceKmh": 151.2,
+          "totalSwivel": 48.4,
+          "totalTilt": 49.7
+        }
+      }
+    ],
+    "existingRowsChanged": [
+      "PANEL-DISC-002"
+    ],
+    "remaining": [
+      "Nokia AEQP/AQQY/AEQE complete unrestricted exact sheets unavailable; Cervo attachment only contains manufacturer pp.2–3 with no cover/version and an indexed matching preliminary cover is marked confidential; no mechanical facts admitted",
+      "ParcoNord Nokia appendix contains confidential marked originals; excluded",
+      "AIR6419 MC2024092338 / MC2024102350 filing packages contain confidential/proprietary project pages; not linked or admitted",
+      "AIR3258 indexed preliminary maximum estimates are not exact established variant values; no mechanics admitted",
+      "Mendocino/Australian CentralDarling/FCC original access returned403; no claim of broken links",
+      "P6BTEU02/MBMQBF01, unsuffixed Argus and previous field conflicts unchanged"
+    ],
+    "publicationAuthorisation": "User authorized continued public research and publication; 继续 (7 October 2026)"
   }
 };
   if (typeof module === "object" && module.exports) module.exports = data;
