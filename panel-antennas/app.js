@@ -8,7 +8,7 @@
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const label = {datasheet:'','sheet-pending':'PDF needs review',catalogue:'Catalogue · sheet needed',family:'Variant sheet needed',conflict:'Document conflict','site-record':'Site record · sheet needed'};
   const statusBadge = row => label[row.status] ? `<span class="antenna-status antenna-status-${esc(row.status)}">${esc(label[row.status])}</span>` : '';
-  const conflictNames = {mass:'Mass',rf:'Frequency',epa:'EPA',cd:'Cd',ports:'Ports',windSpeed:'Wind speed','wind.side':'Side force',dimensions:'Size'};
+  const conflictNames = {mass:'Mass',rf:'Frequency',epa:'EPA',cd:'Cd',ports:'Ports',tilt:'Tilt',windSpeed:'Wind speed','wind.side':'Side force',dimensions:'Size'};
   const fieldBadges = row => Object.entries(row.fieldIssues || {}).filter(([field,issue])=>issue && field!=='mass').map(([field])=>`<span class="antenna-status antenna-status-conflict">${esc(conflictNames[field] || field)} conflict</span>`).join('');
   const evidenceLabel = {deployed:'Commercial deployment',existing:'Existing site record',planned:'Planned installation',reserved:'Reserved position',demonstration:'Live-site demonstration'};
   const sourceLink = row => `<a href="${esc(row.sourceUrl)}" target="_blank" rel="noopener noreferrer">${row.sourceType === 'Manufacturer datasheet in public filing' ? 'Manufacturer sheet · public filing' : row.specUrl ? 'Original manufacturer PDF' : row.sourceType === 'Official ACMA antenna register' ? 'ACMA antenna register' : row.status === 'site-record' ? 'Site document' : row.status === 'catalogue' ? 'Manufacturer catalogue' : 'Manufacturer source'}</a>${row.productUrl ? ` · <a href="${esc(row.productUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${esc('Open product page for '+row.model)}">Product page ↗</a>` : ''}`;
@@ -61,7 +61,8 @@
       + (row.fieldIssues?.rf ? datum('Frequency conflict',row.fieldIssues.rf,row.locators.rf,true) : '')
       + datum('RF connections',row.ports == null ? row.connector : row.ports+' ports'+(row.connector ? '; '+row.connector : ''),row.locators.rf)
       + (row.fieldIssues?.ports ? datum('Ports conflict',row.fieldIssues.ports,row.locators.rf,true) : '')
-      + datum('Electrical tilt',row.tiltDegrees == null ? null : row.tiltDegrees+'°',row.locators.rf);
+      + datum('Electrical tilt',row.tiltDegrees == null ? null : row.tiltDegrees+'°',row.locators.rf)
+      + (row.fieldIssues?.tilt ? datum('Tilt conflict',row.fieldIssues.tilt,row.locators.rf,true) : '');
     const documents = (row.aliases.length ? datum('Search aliases',row.aliases.join(', ')) : '')
       + (row.orderingVariants?.length ? datum('Listed order codes',row.orderingVariants.map(v=>v.code+' ('+v.locator+')').join('; ')+'. Base-model values; verify the exact order, connector and bracket.') : '')
       + datum('Product status',row.lifecycle)

@@ -1,7 +1,7 @@
 /* Catalogue lookup only. Public sources; see REFERENCE_TRACEABILITY.md. Publication class Public. */
 (function(root){
   const data = {
-  "version": "20261007panel30",
+  "version": "20261007panel31",
   "publicationClass": "Public",
   "checked": "2026-10-07",
   "records": [
@@ -1747,28 +1747,52 @@
         "Argus"
       ],
       "kind": "Passive",
-      "status": "site-record",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
-      "kitMassKg": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "See exact variant sheet",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "See source date / revision",
-      "checked": "2026-10-01",
-      "sourceUrl": "https://www.blacktown.nsw.gov.au/files/assets/public/v/1/planning-neighbour-notifications-2024/da-24-00164/amended-design-plans-14-june-rfi-morgan-power-reserve-kings-langley_2.pdf",
-      "sourceType": "Australian site record",
-      "sourceHash": null,
-      "locators": {
-        "identity": "PDF p. 2, drawing 1673-G2 revision 08, 26 August 2024"
+      "status": "datasheet",
+      "dimensionsMm": [
+        2533,
+        353,
+        209
+      ],
+      "massKg": 37,
+      "massBasis": "Net weight; mounting-kit inclusion not stated",
+      "kitMassKg": 6,
+      "ports": 10,
+      "connector": "7-16 DIN Female",
+      "frequenciesMHz": [
+        [
+          698,
+          960
+        ],
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": null,
+        "side": null,
+        "rear": null,
+        "max": 1320
       },
-      "notes": "Unsuffixed Argus designation in existing-site plan; not merged with RV4PX310R-V2H.",
+      "windSpeedKmh": 160,
+      "survivalSpeedKmh": 200,
+      "tiltDegrees": "0–10",
+      "revision": "20 March 2014 (antenna); 17 January 2014 (kit); generated 8 May 2014",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://resources.tessco.com/attachments/517697_RV4PX310R.pdf",
+      "sourceType": "Original historical CommScope/Argus PDF hosted publicly by Tessco",
+      "sourceHash": "9efde9391942cf8e71e05c2a57e819718242e3126a30fb696bc78507ecff043e",
+      "locators": {
+        "identity": "PDF p.1, exact printed model RV4PX310R",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF p.1, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.1, printed force directions, maximum and original rating basis",
+        "mounting": "PDF pp.2/5, included T-029-GL-E, two clamp sets, pipe 75–115 mm",
+        "kitMass": "PDF p.5, T-029-GL-E net 6 kg"
+      },
+      "notes": "Exact historical unsuffixed original; RV4PX310R-V2H remains separate. Net antenna-row kit inclusion is unstated; the included T-029-GL-E kit has its own 6 kg net weight. Only maximum wind loading is published, at 160 km/h; no front/side/rear allocation or directional coefficient is inferred. Maximum stated wind speed is 200 km/h. Dated Australian site evidence identifies the base code but does not verify this as-installed 2014 revision. Confirm the supplied original before applying these historical values; current supply is not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [
         {
@@ -1794,17 +1818,31 @@
           "checked": "2026-10-01"
         }
       ],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "specUrl": "https://resources.tessco.com/attachments/517697_RV4PX310R.pdf",
+      "mechanicalPage": 2,
+      "windPage": 1,
+      "kitMassBasis": "Net mounting-kit mass; separate from antenna",
+      "mountingKit": "T-029-GL-E; included",
+      "mountingPipeMm": [
+        75,
+        115
+      ],
       "epaM2": null,
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Fetch blocked (HTTP 403); earlier source evidence retained"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "equivalentFlatPlateAreaM2": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://www.blacktown.nsw.gov.au/files/assets/public/v/1/planning-neighbour-notifications-2024/da-24-00164/amended-design-plans-14-june-rfi-morgan-power-reserve-kings-langley_2.pdf"
+      ]
     },
     {
       "id": "PANEL-EXT-012",
@@ -7332,45 +7370,84 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        1808,
+        525,
+        247
+      ],
+      "massKg": 43.3,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
-      "epaM2": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
+      "epaM2": {
+        "front": 0.7,
+        "side": null
+      },
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "ports": 14,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          698,
+          896
+        ],
+        [
+          1695,
+          2400
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 888,
+        "side": 316,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=20",
+      "revision": "Rev 1.4; 16 May 2022",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-fpa65rbu6d-v1_4-220516.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/1422",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "8dfc2b89445258dc3a2ffc7958226671da661e9be6d16ed8da3b60e658f9d5ff",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-fpa65rbu6d-v1_4-220516.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "a86e126a02f0e1ac575e42375e022d994bb71ada13ae20479ca4a90d788a393f",
+      "mechanicalPage": 3,
+      "windPage": 3,
       "locators": {
-        "identity": "Public multiport listing: exact visible model FPA65R-BU6D"
+        "identity": "PDF p.1, exact printed model FPA65R-BU6D",
+        "dimensions": "PDF p.3, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.3, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.3, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "epa": "PDF p.3, original EPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Published front EPA; forces are labelled as calculated using CFD. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=20"
+      ]
     },
     {
       "id": "PANEL-CCI-1460",
@@ -7380,45 +7457,84 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        2438,
+        525,
+        247
+      ],
+      "massKg": 51.9,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
-      "epaM2": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
+      "epaM2": {
+        "front": 0.9,
+        "side": null
+      },
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "ports": 14,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          698,
+          896
+        ],
+        [
+          1695,
+          2400
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1139,
+        "side": 459,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=20",
+      "revision": "Rev 1.1; 1 November 2022",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-fpa65rbu8d-v1_1-221101.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/1460",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "8dfc2b89445258dc3a2ffc7958226671da661e9be6d16ed8da3b60e658f9d5ff",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-fpa65rbu8d-v1_1-221101.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "eab570e982805e99b29f8e2f77ccb2d48c88b8d46245b1cde58fae0a79fe89ef",
+      "mechanicalPage": 3,
+      "windPage": 3,
       "locators": {
-        "identity": "Public multiport listing: exact visible model FPA65R-BU8D"
+        "identity": "PDF p.1, exact printed model FPA65R-BU8D",
+        "dimensions": "PDF p.3, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.3, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.3, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "epa": "PDF p.3, original EPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Published front EPA; forces are labelled as calculated using CFD. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=20"
+      ]
     },
     {
       "id": "PANEL-CCI-432",
@@ -7428,45 +7544,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        1283,
+        587,
+        224
+      ],
+      "massKg": 23.7,
+      "massBasis": "Without mounting and RET",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "equivalentFlatPlateAreaM2": 0.9,
+      "ports": 6,
+      "connector": "7-16 DIN Female long neck",
+      "frequenciesMHz": [
+        [
+          698,
+          896
+        ],
+        [
+          1695,
+          2180
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1108,
+        "side": 473,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25",
+      "revision": "Rev 1.0; 11 February 2016",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rbwwh4-v1_0-160211.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/432",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "e791d2ef1a212e281cc4d1ac595a52757bb56a0e47b613dd6f4117d1a3900a65",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa33rbwwh4-v1_0-160211.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "a77c5a5e9ca041bb8dd8af13012040585fe4e444815548a603b2cf3cea0694e5",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "Public multiport listing: exact visible model HPA-33R-BWW-H4"
+        "identity": "PDF p.1, exact printed model HPA-33R-BWW-H4",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.2, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.2, original EFPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >201 km/h, not an equality. Separate RET system 2.3 kg. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">201 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25"
+      ]
     },
     {
       "id": "PANEL-CCI-254",
@@ -7476,45 +7628,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        1841,
+        587,
+        224
+      ],
+      "massKg": 30.2,
+      "massBasis": "Without mounting and RET",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "equivalentFlatPlateAreaM2": 1.3,
+      "ports": 6,
+      "connector": "7-16 DIN Female long neck",
+      "frequenciesMHz": [
+        [
+          698,
+          896
+        ],
+        [
+          1695,
+          2180
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1627,
+        "side": 728,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25",
+      "revision": "Rev 1.0; 11 February 2016",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rbwwh6-v1_0-160211.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/254",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "e791d2ef1a212e281cc4d1ac595a52757bb56a0e47b613dd6f4117d1a3900a65",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa33rbwwh6-v1_0-160211.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "d89002a80a654098c9cd5e7ab901ad3d3bd557214996db18697e179180fd17aa",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "Public multiport listing: exact visible model HPA-33R-BWW-H6"
+        "identity": "PDF p.1, exact printed model HPA-33R-BWW-H6",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.2, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.2, original EFPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >201 km/h, not an equality. Separate RET system 2.3 kg. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">201 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25"
+      ]
     },
     {
       "id": "PANEL-CCI-359",
@@ -7524,45 +7712,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        1841,
+        587,
+        224
+      ],
+      "massKg": 30.2,
+      "massBasis": "Without mounting and RET",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "equivalentFlatPlateAreaM2": 1.3,
+      "ports": 6,
+      "connector": "7-16 DIN Female long neck",
+      "frequenciesMHz": [
+        [
+          790,
+          960
+        ],
+        [
+          1710,
+          2360
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1627,
+        "side": 728,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25",
+      "revision": "Rev 1.0; 11 February 2016",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rduuh6-v1_0-160211.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/359",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "e791d2ef1a212e281cc4d1ac595a52757bb56a0e47b613dd6f4117d1a3900a65",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa33rduuh6-v1_0-160211.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "3000f106a92261e8abef46cee79b638bbebbc6fe03f74426cf7f0383bb2ebd23",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "Public multiport listing: exact visible model HPA-33R-DUU-H6"
+        "identity": "PDF p.1, exact printed model HPA-33R-DUU-H6",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.2, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.2, original EFPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >201 km/h, not an equality. Separate RET system 2.3 kg. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">201 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25"
+      ]
     },
     {
       "id": "PANEL-CCI-590",
@@ -7572,45 +7796,85 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        1208,
+        463,
+        216
+      ],
+      "massKg": 17.1,
+      "massBasis": "Without mounting and RET",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "equivalentFlatPlateAreaM2": 0.7,
+      "ports": 6,
+      "connector": "7-16 DIN Female long neck",
+      "frequenciesMHz": [
+        [
+          817,
+          869
+        ],
+        [
+          1850,
+          1995
+        ],
+        [
+          2496,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 826,
+        "side": 427,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25",
+      "revision": "Rev 1.1; 27 June 2016",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rcs4a-v1_1-160627.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/590",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "e791d2ef1a212e281cc4d1ac595a52757bb56a0e47b613dd6f4117d1a3900a65",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa33rcs4a-v1_1-160627.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "d50538c3d68354f3059c6c58f9d5a9de95a67ed99d194adffa91158907a2844d",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "Public multiport listing: exact visible model HPA33R-CS4A"
+        "identity": "PDF p.1, exact printed model HPA33R-CS4A",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.2, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.2, original EFPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Separate RET system 1.5 kg. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25"
+      ]
     },
     {
       "id": "PANEL-CCI-1708",
@@ -7620,45 +7884,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        1830,
+        636,
+        224
+      ],
+      "massKg": 40.1,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "equivalentFlatPlateAreaM2": 1.4,
+      "ports": 6,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          698,
+          960
+        ],
+        [
+          1695,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1736,
+        "side": 723,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25",
+      "revision": "Rev 1.1; 29 May 2025",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rke6c-v1_1-250529.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/1708",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "e791d2ef1a212e281cc4d1ac595a52757bb56a0e47b613dd6f4117d1a3900a65",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa33rke6c-v1_1-250529.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "aac0c10a3a375095f1cf3feb5c9cb13996013cdfd5ead933db36b4788e38fbc3",
+      "mechanicalPage": 4,
+      "windPage": 4,
       "locators": {
-        "identity": "Public multiport listing: exact visible model HPA33R-KE6C"
+        "identity": "PDF p.1, exact printed model HPA33R-KE6C",
+        "dimensions": "PDF p.4, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.4, original weight inclusion basis",
+        "rf": "PDF pp.1–4, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.4, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.4, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.4, original EFPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=25"
+      ]
     },
     {
       "id": "PANEL-CCI-1706",
@@ -7668,45 +7968,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        1830,
+        636,
+        224
+      ],
+      "massKg": 40.1,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "equivalentFlatPlateAreaM2": 1.4,
+      "ports": 6,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          614,
+          960
+        ],
+        [
+          1695,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1736,
+        "side": 723,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30",
+      "revision": "Rev 1.1; 29 May 2025",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rte6c-v1_1-250529.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/1706",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "d1c461a99845cbf42b91c7a396b41cd3704ea8620b053bd0842cd24add83c9cc",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa33rte6c-v1_1-250529.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "f8b02eb4a62ec659230f3530bbb236a39f6388be5efd6b847e28b627b47f09e6",
+      "mechanicalPage": 4,
+      "windPage": 4,
       "locators": {
-        "identity": "Public multiport listing: exact visible model HPA33R-TE6C"
+        "identity": "PDF p.1, exact printed model HPA33R-TE6C",
+        "dimensions": "PDF p.4, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.4, original weight inclusion basis",
+        "rf": "PDF pp.1–4, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.4, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.4, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.4, original EFPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30"
+      ]
     },
     {
       "id": "PANEL-CCI-992",
@@ -7716,45 +8052,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        618,
+        389,
+        208
+      ],
+      "massKg": 7.7,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30",
-      "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/992",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "d1c461a99845cbf42b91c7a396b41cd3704ea8620b053bd0842cd24add83c9cc",
-      "mechanicalPage": null,
-      "windPage": null,
-      "locators": {
-        "identity": "Public multiport listing: exact visible model HPA45F-BU2A"
+      "equivalentFlatPlateAreaM2": 0.3,
+      "ports": 6,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          698,
+          896
+        ],
+        [
+          1695,
+          2400
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 353,
+        "side": 192,
+        "rear": null,
+        "max": null
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "windSpeedKmh": 161,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": "4",
+      "revision": "Rev 1.0; 6 March 2019",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa45fbu2a-v1_0-190306.pdf",
+      "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/992",
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa45fbu2a-v1_0-190306.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "649d77e512cb1dc318f9cf4849b93623431cbdc48f1cea079a9c760291eb6f08",
+      "mechanicalPage": 3,
+      "windPage": 3,
+      "locators": {
+        "identity": "PDF p.1, exact printed model HPA45F-BU2A",
+        "dimensions": "PDF p.3, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.3, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.3, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.3, original EFPA in metric units"
+      },
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established. Electrical tilt is fixed at 4°, not a RET range.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30"
+      ]
     },
     {
       "id": "PANEL-CCI-991",
@@ -7764,45 +8136,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        618,
+        391,
+        208
+      ],
+      "massKg": 6.9,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30",
-      "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/991",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "d1c461a99845cbf42b91c7a396b41cd3704ea8620b053bd0842cd24add83c9cc",
-      "mechanicalPage": null,
-      "windPage": null,
-      "locators": {
-        "identity": "Public multiport listing: exact visible model HPA45F-KE2A"
+      "equivalentFlatPlateAreaM2": 0.3,
+      "ports": 6,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          698,
+          960
+        ],
+        [
+          1695,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 355,
+        "side": 192,
+        "rear": null,
+        "max": null
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "windSpeedKmh": 161,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": "4",
+      "revision": "Rev 1.0; 6 November 2018",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa45fke2a-v1_0-181106.pdf",
+      "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/991",
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa45fke2a-v1_0-181106.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "43e884900ba9afb790b359006a284e2355c3b3c000ff2b1ed0b6dbc353be26dd",
+      "mechanicalPage": 3,
+      "windPage": 3,
+      "locators": {
+        "identity": "PDF p.1, exact printed model HPA45F-KE2A",
+        "dimensions": "PDF p.3, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.3, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.3, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.3, original EFPA in metric units"
+      },
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established. Electrical tilt is fixed at 4°, not a RET range.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30"
+      ]
     },
     {
       "id": "PANEL-CCI-1393",
@@ -7812,45 +8220,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        658,
+        405,
+        205
+      ],
+      "massKg": 8.3,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30",
-      "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/1393",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "d1c461a99845cbf42b91c7a396b41cd3704ea8620b053bd0842cd24add83c9cc",
-      "mechanicalPage": null,
-      "windPage": null,
-      "locators": {
-        "identity": "Public multiport listing: exact visible model HPA45F-TE2A"
+      "equivalentFlatPlateAreaM2": 0.3,
+      "ports": 6,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          614,
+          960
+        ],
+        [
+          1695,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 391,
+        "side": 203,
+        "rear": null,
+        "max": null
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "windSpeedKmh": 161,
+      "survivalSpeedKmh": null,
+      "tiltDegrees": "4",
+      "revision": "Rev 1.1; 23 August 2024",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa45fte2a-v1_1-240823.pdf",
+      "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/1393",
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa45fte2a-v1_1-240823.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "cae74d241b3ed7859b61023a390f977f5baa0372c62c16d5fad1868752a6acff",
+      "mechanicalPage": 3,
+      "windPage": 3,
+      "locators": {
+        "identity": "PDF p.1, exact printed model HPA45F-TE2A",
+        "dimensions": "PDF p.3, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.3, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.3, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.3, original EFPA in metric units"
+      },
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established. Electrical tilt is fixed at 4°, not a RET range.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30"
+      ]
     },
     {
       "id": "PANEL-CCI-761",
@@ -7860,45 +8304,81 @@
         "Communication Components Inc."
       ],
       "kind": "Passive",
-      "formFactor": "Multi-port panel",
+      "formFactor": "Panel",
       "catalogueCategory": "multiport",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": null,
+      "status": "datasheet",
+      "dimensionsMm": [
+        1407,
+        391,
+        208
+      ],
+      "massKg": 21,
+      "massBasis": "Without mounting and RET",
       "kitMassKg": null,
-      "kitMassBasis": null,
+      "kitMassBasis": "Not stated",
       "mountingKit": null,
-      "mountingPipeMm": null,
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
-      "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Multi-port panel; operating ranges not verified",
-      "windN": null,
-      "windSpeedKmh": null,
+      "equivalentFlatPlateAreaM2": 0.7,
+      "ports": 6,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          698,
+          896
+        ],
+        [
+          1695,
+          2400
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 842,
+        "side": 498,
+        "rear": null,
+        "max": null
+      },
+      "windSpeedKmh": 161,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory snapshot; 2 October 2026",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30",
+      "revision": "Rev 1.0; 29 June 2017",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa45rbu5a-v1_0-170629.pdf",
       "productUrl": "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas/item/761",
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "d1c461a99845cbf42b91c7a396b41cd3704ea8620b053bd0842cd24add83c9cc",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://cciproducts.com/DsPdf/ds-hpa45rbu5a-v1_0-170629.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "6b80cfeb4038eaa078695b3031849d07dfbb3176275d8eac06d88027b57a8bf3",
+      "mechanicalPage": 3,
+      "windPage": 3,
       "locators": {
-        "identity": "Public multiport listing: exact visible model HPA45R-BU5A"
+        "identity": "PDF p.1, exact printed model HPA45R-BU5A",
+        "dimensions": "PDF p.3, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.3, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.3, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, printed mounting pole 5–12 cm converted to 50–120 mm",
+        "efpa": "PDF p.3, original EFPA in metric units"
       },
-      "notes": "Exact model identity indexed from the public CCI directory. Open Product page for its documents; individual spec sheet and mechanical/RF parameters remain unverified. Directory inclusion does not establish current supply or Australian operator use.",
+      "notes": "Published metric antenna values; original 161 km/h force basis retained. Survival is a strict >241 km/h, not an equality. Alternative two-RET and three-RET systems are 1.5 and 2.3 kg; no configuration is selected. Published EFPA is distinct from EPA. Kit and packaged masses are not added to antenna mass. RF ranges use the source overview, not selected performance columns. Printed base-model sheet only; ordering suffixes require their own verification. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-02",
-        "result": "Public source read"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": ">241 km/h",
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "relatedSources": [
+        "https://cciproducts.com/index.php/products/antennas/single-sector-multi-port-antennas?start=30"
+      ]
     },
     {
       "id": "PANEL-CCI-841",
@@ -21923,39 +22403,110 @@
       "brand": "CommScope / ANDREW",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
+      "status": "datasheet",
+      "dimensionsMm": [
+        2769,
+        430,
+        197
+      ],
+      "massKg": 53.3,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Exact variant sheet needed",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "CO-200332.2-EN.GB (08/26)",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf",
-      "sourceType": "Official manufacturer catalogue",
-      "sourceHash": "736b61a56824c7d9f9e07be0119aa31dd1b0c504060c0907b8441a37ad9a99c3",
-      "locators": {
-        "identity": "PDF p. 34, exact visible linked model EGRZVS4-65D-R6N43"
+      "kitMassBasis": "Multiple included kits; individual masses in source notes",
+      "mountingKit": "BSAMNT-4 + BSAMNT-M4; included",
+      "mountingPipeMm": [
+        60,
+        115
+      ],
+      "ports": 18,
+      "connector": "4.3-10 Female / MQ4 / MQ5",
+      "frequenciesMHz": [
+        [
+          694,
+          862
+        ],
+        [
+          880,
+          960
+        ],
+        [
+          694,
+          960
+        ],
+        [
+          1427,
+          2690
+        ],
+        [
+          1695,
+          2690
+        ],
+        [
+          3300,
+          3800
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 680,
+        "side": 347,
+        "rear": 434,
+        "max": 1020
       },
-      "notes": "Identity-only entry from the ANDREW EMEA selection guide. Individual product URL is observed in the PDF annotation; its current availability is not guaranteed. Numerical mechanics / RF await exact-model sheet review. Regional catalogue inclusion does not establish Australian use or current supply.",
-      "lifecycle": "Supply status not checked",
+      "windSpeedKmh": 150,
+      "survivalSpeedKmh": 241,
+      "tiltDegrees": null,
+      "revision": "July 22, 2025 (antenna); kit revisions are separate",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.andrew.com/globalassets/digizuite/899275-p360-egrzvs4-65d-r6n43-comprehensiveexternal.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "02e0096da9645f52edfd2d42d8dca09189a8ae8fd9bd7bf109a730eeb9de18e6",
+      "locators": {
+        "identity": "PDF p.1, exact printed model EGRZVS4-65D-R6N43",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.5, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.7, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.8, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm",
+        "kitMass": "PDF p.7, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.8, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm"
+      },
+      "notes": "Exact printed model and revision. RF connector total excludes calibration and AISG paths. Antenna, included kit components and packed gross mass remain separate. Included kits: BSAMNT-4 6.5 kg net (PDF p.7); BSAMNT-M4 4.6 kg net (PDF p.8). No single component is labelled as the whole kit mass. Discontinued 31 December 2025; original PDF p.1",
+      "lifecycle": "Discontinued 31 December 2025; original PDF p.1",
       "deployments": [],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.andrew.com/globalassets/digizuite/899275-p360-egrzvs4-65d-r6n43-comprehensiveexternal.pdf",
+      "mechanicalPage": 2,
+      "windPage": 5,
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemegrzvs4-65d-r6n43/"
+      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemegrzvs4-65d-r6n43/",
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "mountingKitComponents": [
+        {
+          "code": "BSAMNT-4",
+          "netMassKg": 6.5,
+          "quantity": 1,
+          "locator": "PDF p.7"
+        },
+        {
+          "code": "BSAMNT-M4",
+          "netMassKg": 4.6,
+          "quantity": 1,
+          "locator": "PDF p.8"
+        }
+      ],
+      "relatedSources": [
+        "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf"
+      ]
     },
     {
       "id": "PANEL-RECHECK-035",
@@ -22349,39 +22900,100 @@
       "brand": "CommScope / ANDREW",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
-      "kitMassKg": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Exact variant sheet needed",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "CO-200332.2-EN.GB (08/26)",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf",
-      "sourceType": "Official manufacturer catalogue",
-      "sourceHash": "736b61a56824c7d9f9e07be0119aa31dd1b0c504060c0907b8441a37ad9a99c3",
-      "locators": {
-        "identity": "PDF p. 35, exact visible linked model RRZZHHTTS4-65B-R8N"
+      "status": "datasheet",
+      "dimensionsMm": [
+        2100,
+        430,
+        197
+      ],
+      "massKg": 41.2,
+      "massBasis": "Antenna only",
+      "kitMassKg": 6.2,
+      "kitMassBasis": "Net mounting-kit mass; separate from antenna",
+      "mountingKit": "BSAMNT-3; included",
+      "mountingPipeMm": [
+        60,
+        115
+      ],
+      "ports": 24,
+      "connector": "4.3-10 Female / M-LOC",
+      "frequenciesMHz": [
+        [
+          694,
+          960
+        ],
+        [
+          1427,
+          2690
+        ],
+        [
+          1695,
+          2180
+        ],
+        [
+          2490,
+          2690
+        ],
+        [
+          3300,
+          3800
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 495,
+        "side": 253,
+        "rear": 316,
+        "max": 745
       },
-      "notes": "Identity-only entry from the ANDREW EMEA selection guide. Individual product URL is observed in the PDF annotation; its current availability is not guaranteed. Numerical mechanics / RF await exact-model sheet review. Regional catalogue inclusion does not establish Australian use or current supply.",
+      "windSpeedKmh": 150,
+      "survivalSpeedKmh": 241,
+      "tiltDegrees": null,
+      "revision": "May 28, 2026 (antenna); kit revisions are separate",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.andrew.com/globalassets/digizuite/469388-p360-rrzzhhtts4-65b-r8n-comprehensiveexternal.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "1bd8ce2c83df02ec6b3cb7f446f43848c770268c323a1b93e075fc3ff4f673e0",
+      "locators": {
+        "identity": "PDF p.1, exact printed model RRZZHHTTS4-65B-R8N",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.5, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.7, BSAMNT-3, net 6.2 kg, pipe 60–115 mm",
+        "kitMass": "PDF p.7, BSAMNT-3, net 6.2 kg, pipe 60–115 mm"
+      },
+      "notes": "Exact printed model and revision. RF connector total excludes calibration and AISG paths. Antenna, included kit components and packed gross mass remain separate. Included kits: BSAMNT-3 6.2 kg net (PDF p.7). Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.andrew.com/globalassets/digizuite/469388-p360-rrzzhhtts4-65b-r8n-comprehensiveexternal.pdf",
+      "mechanicalPage": 2,
+      "windPage": 5,
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzhhtts4-65b-r8n/"
+      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzhhtts4-65b-r8n/",
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "mountingKitComponents": [
+        {
+          "code": "BSAMNT-3",
+          "netMassKg": 6.2,
+          "quantity": 1,
+          "locator": "PDF p.7"
+        }
+      ],
+      "relatedSources": [
+        "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf"
+      ]
     },
     {
       "id": "PANEL-RECHECK-040",
@@ -22389,39 +23001,100 @@
       "brand": "CommScope / ANDREW",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
-      "kitMassKg": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Exact variant sheet needed",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "CO-200332.2-EN.GB (08/26)",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf",
-      "sourceType": "Official manufacturer catalogue",
-      "sourceHash": "736b61a56824c7d9f9e07be0119aa31dd1b0c504060c0907b8441a37ad9a99c3",
-      "locators": {
-        "identity": "PDF p. 35, exact visible linked model RRZZHHTTS4-65BR8V2"
+      "status": "datasheet",
+      "dimensionsMm": [
+        2100,
+        430,
+        197
+      ],
+      "massKg": 41.2,
+      "massBasis": "Antenna only",
+      "kitMassKg": 6.2,
+      "kitMassBasis": "Net mounting-kit mass; separate from antenna",
+      "mountingKit": "BSAMNT-3; included",
+      "mountingPipeMm": [
+        60,
+        115
+      ],
+      "ports": 24,
+      "connector": "4.3-10 Female / MQ4 / MQ5",
+      "frequenciesMHz": [
+        [
+          694,
+          960
+        ],
+        [
+          1427,
+          2690
+        ],
+        [
+          1695,
+          2180
+        ],
+        [
+          2490,
+          2690
+        ],
+        [
+          3300,
+          3800
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 494,
+        "side": 266,
+        "rear": 319,
+        "max": 780
       },
-      "notes": "Identity-only entry from the ANDREW EMEA selection guide. Individual product URL is observed in the PDF annotation; its current availability is not guaranteed. Numerical mechanics / RF await exact-model sheet review. Regional catalogue inclusion does not establish Australian use or current supply.",
+      "windSpeedKmh": 150,
+      "survivalSpeedKmh": 241,
+      "tiltDegrees": null,
+      "revision": "May 28, 2026 (antenna); kit revisions are separate",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.andrew.com/globalassets/digizuite/784027-p360-rrzzhhtts4-65br8v2-comprehensiveexternal.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "9b985013534ba7154a29f5ab87af4662dc235c6c336cf5b3ec13c395f3841102",
+      "locators": {
+        "identity": "PDF p.1, exact printed model RRZZHHTTS4-65BR8V2",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.5, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.7, BSAMNT-3, net 6.2 kg, pipe 60–115 mm",
+        "kitMass": "PDF p.7, BSAMNT-3, net 6.2 kg, pipe 60–115 mm"
+      },
+      "notes": "Exact printed model and revision. RF connector total excludes calibration and AISG paths. Antenna, included kit components and packed gross mass remain separate. Included kits: BSAMNT-3 6.2 kg net (PDF p.7). Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.andrew.com/globalassets/digizuite/784027-p360-rrzzhhtts4-65br8v2-comprehensiveexternal.pdf",
+      "mechanicalPage": 2,
+      "windPage": 5,
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzhhtts4-65br8v2/"
+      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzhhtts4-65br8v2/",
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "mountingKitComponents": [
+        {
+          "code": "BSAMNT-3",
+          "netMassKg": 6.2,
+          "quantity": 1,
+          "locator": "PDF p.7"
+        }
+      ],
+      "relatedSources": [
+        "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf"
+      ]
     },
     {
       "id": "PANEL-RECHECK-041",
@@ -22429,39 +23102,102 @@
       "brand": "CommScope / ANDREW",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
+      "status": "datasheet",
+      "dimensionsMm": [
+        2769,
+        430,
+        197
+      ],
+      "massKg": 53.8,
+      "massBasis": "Weight, net; mounting-kit inclusion not stated in this row",
       "kitMassKg": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Exact variant sheet needed",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "CO-200332.2-EN.GB (08/26)",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf",
-      "sourceType": "Official manufacturer catalogue",
-      "sourceHash": "736b61a56824c7d9f9e07be0119aa31dd1b0c504060c0907b8441a37ad9a99c3",
-      "locators": {
-        "identity": "PDF p. 35, exact visible linked model RRZZV4S4-65D-R9N43"
+      "kitMassBasis": "Multiple included kits; individual masses in source notes",
+      "mountingKit": "BSAMNT-4 + BSAMNT-M4; included",
+      "mountingPipeMm": [
+        60,
+        115
+      ],
+      "ports": 24,
+      "connector": "4.3-10 Female / M-LOC",
+      "frequenciesMHz": [
+        [
+          694,
+          960
+        ],
+        [
+          1427,
+          2690
+        ],
+        [
+          1695,
+          2690
+        ],
+        [
+          3300,
+          3800
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 651,
+        "side": 351,
+        "rear": 421,
+        "max": 1028
       },
-      "notes": "Identity-only entry from the ANDREW EMEA selection guide. Individual product URL is observed in the PDF annotation; its current availability is not guaranteed. Numerical mechanics / RF await exact-model sheet review. Regional catalogue inclusion does not establish Australian use or current supply.",
-      "lifecycle": "Supply status not checked",
+      "windSpeedKmh": 150,
+      "survivalSpeedKmh": 241,
+      "tiltDegrees": null,
+      "revision": "May 28, 2026 (antenna); kit revisions are separate",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.andrew.com/globalassets/digizuite/923107-p360-rrzzv4s4-65d-r9n43-comprehensiveexternal.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "1ae984eedb7153e3fd9e053936b562c1bc2d0f37bbe7b9196726e6a0d1b22509",
+      "locators": {
+        "identity": "PDF p.1, exact printed model RRZZV4S4-65D-R9N43",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.5, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.5, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.7, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.8, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm",
+        "kitMass": "PDF p.7, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.8, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm"
+      },
+      "notes": "Exact printed model and revision. RF connector total excludes calibration and AISG paths. Antenna, included kit components and packed gross mass remain separate. The net-weight row does not state kit inclusion. Included kits: BSAMNT-4 6.5 kg net (PDF p.7); BSAMNT-M4 4.6 kg net (PDF p.8). No single component is labelled as the whole kit mass. Discontinued 31 December 2025; original PDF p.1",
+      "lifecycle": "Discontinued 31 December 2025; original PDF p.1",
       "deployments": [],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.andrew.com/globalassets/digizuite/923107-p360-rrzzv4s4-65d-r9n43-comprehensiveexternal.pdf",
+      "mechanicalPage": 2,
+      "windPage": 5,
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzv4s4-65d-r9n43/"
+      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzv4s4-65d-r9n43/",
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "mountingKitComponents": [
+        {
+          "code": "BSAMNT-4",
+          "netMassKg": 6.5,
+          "quantity": 1,
+          "locator": "PDF p.7"
+        },
+        {
+          "code": "BSAMNT-M4",
+          "netMassKg": 4.6,
+          "quantity": 1,
+          "locator": "PDF p.8"
+        }
+      ],
+      "relatedSources": [
+        "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf"
+      ]
     },
     {
       "id": "PANEL-RECHECK-042",
@@ -22469,39 +23205,102 @@
       "brand": "CommScope / ANDREW",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
+      "status": "datasheet",
+      "dimensionsMm": [
+        2769,
+        430,
+        197
+      ],
+      "massKg": 53.8,
+      "massBasis": "Weight, net; mounting-kit inclusion not stated in this row",
       "kitMassKg": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Exact variant sheet needed",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "CO-200332.2-EN.GB (08/26)",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf",
-      "sourceType": "Official manufacturer catalogue",
-      "sourceHash": "736b61a56824c7d9f9e07be0119aa31dd1b0c504060c0907b8441a37ad9a99c3",
-      "locators": {
-        "identity": "PDF p. 35, exact visible linked model RRZZV4S4-65DR9NV4"
+      "kitMassBasis": "Multiple included kits; individual masses in source notes",
+      "mountingKit": "BSAMNT-4 + BSAMNT-M4; included",
+      "mountingPipeMm": [
+        60,
+        115
+      ],
+      "ports": 24,
+      "connector": "4.3-10 Female / MQ4 / MQ5",
+      "frequenciesMHz": [
+        [
+          694,
+          960
+        ],
+        [
+          1427,
+          2690
+        ],
+        [
+          1695,
+          2690
+        ],
+        [
+          3300,
+          3800
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 651,
+        "side": 351,
+        "rear": 421,
+        "max": 1028
       },
-      "notes": "Identity-only entry from the ANDREW EMEA selection guide. Individual product URL is observed in the PDF annotation; its current availability is not guaranteed. Numerical mechanics / RF await exact-model sheet review. Regional catalogue inclusion does not establish Australian use or current supply.",
+      "windSpeedKmh": 150,
+      "survivalSpeedKmh": 241,
+      "tiltDegrees": null,
+      "revision": "May 28, 2026 (antenna); kit revisions are separate",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.andrew.com/globalassets/digizuite/922495-p360-rrzzv4s4-65dr9nv4-comprehensiveexternal.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "92b1ca701d0475d2db4f6eb466f2371894b24f3a10bd499dadc451e8a46513f7",
+      "locators": {
+        "identity": "PDF p.1, exact printed model RRZZV4S4-65DR9NV4",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.5, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.5, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.6, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.7, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm",
+        "kitMass": "PDF p.6, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.7, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm"
+      },
+      "notes": "Exact printed model and revision. RF connector total excludes calibration and AISG paths. Antenna, included kit components and packed gross mass remain separate. The net-weight row does not state kit inclusion. Included kits: BSAMNT-4 6.5 kg net (PDF p.6); BSAMNT-M4 4.6 kg net (PDF p.7). No single component is labelled as the whole kit mass. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.andrew.com/globalassets/digizuite/922495-p360-rrzzv4s4-65dr9nv4-comprehensiveexternal.pdf",
+      "mechanicalPage": 2,
+      "windPage": 5,
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzv4s4-65dr9nv4/"
+      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzv4s4-65dr9nv4/",
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "mountingKitComponents": [
+        {
+          "code": "BSAMNT-4",
+          "netMassKg": 6.5,
+          "quantity": 1,
+          "locator": "PDF p.6"
+        },
+        {
+          "code": "BSAMNT-M4",
+          "netMassKg": 4.6,
+          "quantity": 1,
+          "locator": "PDF p.7"
+        }
+      ],
+      "relatedSources": [
+        "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf"
+      ]
     },
     {
       "id": "PANEL-RECHECK-043",
@@ -22509,39 +23308,110 @@
       "brand": "CommScope / ANDREW",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
+      "status": "datasheet",
+      "dimensionsMm": [
+        2769,
+        430,
+        197
+      ],
+      "massKg": 59,
+      "massBasis": "Antenna only",
       "kitMassKg": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Exact variant sheet needed",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "CO-200332.2-EN.GB (08/26)",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf",
-      "sourceType": "Official manufacturer catalogue",
-      "sourceHash": "736b61a56824c7d9f9e07be0119aa31dd1b0c504060c0907b8441a37ad9a99c3",
-      "locators": {
-        "identity": "PDF p. 35, exact visible linked model EGRZV4S4-65D-R9N43"
+      "kitMassBasis": "Multiple included kits; individual masses in source notes",
+      "mountingKit": "BSAMNT-4 + BSAMNT-M4; included",
+      "mountingPipeMm": [
+        60,
+        115
+      ],
+      "ports": 24,
+      "connector": "4.3-10 Female / MQ4 / MQ5",
+      "frequenciesMHz": [
+        [
+          694,
+          862
+        ],
+        [
+          880,
+          960
+        ],
+        [
+          694,
+          960
+        ],
+        [
+          1427,
+          2690
+        ],
+        [
+          1695,
+          2690
+        ],
+        [
+          3300,
+          3800
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 651,
+        "side": 351,
+        "rear": 421,
+        "max": 1028
       },
-      "notes": "Identity-only entry from the ANDREW EMEA selection guide. Individual product URL is observed in the PDF annotation; its current availability is not guaranteed. Numerical mechanics / RF await exact-model sheet review. Regional catalogue inclusion does not establish Australian use or current supply.",
-      "lifecycle": "Supply status not checked",
+      "windSpeedKmh": 150,
+      "survivalSpeedKmh": 241,
+      "tiltDegrees": null,
+      "revision": "May 28, 2026 (antenna); kit revisions are separate",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.andrew.com/globalassets/digizuite/326113-p360-egrzv4s4-65d-r9n43-comprehensiveexternal.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "dfbfe362cce7bb237c598646a22c83ae9659f8deed932fbdb349891512fcf8a7",
+      "locators": {
+        "identity": "PDF p.1, exact printed model EGRZV4S4-65D-R9N43",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.5, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.7, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.8, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm",
+        "kitMass": "PDF p.7, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.8, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm"
+      },
+      "notes": "Exact printed model and revision. RF connector total excludes calibration and AISG paths. Antenna, included kit components and packed gross mass remain separate. Included kits: BSAMNT-4 6.5 kg net (PDF p.7); BSAMNT-M4 4.6 kg net (PDF p.8). No single component is labelled as the whole kit mass. Discontinued 31 December 2025; original PDF p.1",
+      "lifecycle": "Discontinued 31 December 2025; original PDF p.1",
       "deployments": [],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.andrew.com/globalassets/digizuite/326113-p360-egrzv4s4-65d-r9n43-comprehensiveexternal.pdf",
+      "mechanicalPage": 2,
+      "windPage": 5,
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemegrzv4s4-65d-r9n43/"
+      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemegrzv4s4-65d-r9n43/",
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "mountingKitComponents": [
+        {
+          "code": "BSAMNT-4",
+          "netMassKg": 6.5,
+          "quantity": 1,
+          "locator": "PDF p.7"
+        },
+        {
+          "code": "BSAMNT-M4",
+          "netMassKg": 4.6,
+          "quantity": 1,
+          "locator": "PDF p.8"
+        }
+      ],
+      "relatedSources": [
+        "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf"
+      ]
     },
     {
       "id": "PANEL-RECHECK-044",
@@ -22549,39 +23419,98 @@
       "brand": "CommScope / ANDREW",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
+      "status": "datasheet",
+      "dimensionsMm": [
+        2688,
+        498,
+        197
+      ],
+      "massKg": 47,
+      "massBasis": "Without mounting kit",
       "kitMassKg": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Exact variant sheet needed",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "CO-200332.2-EN.GB (08/26)",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf",
-      "sourceType": "Official manufacturer catalogue",
-      "sourceHash": "736b61a56824c7d9f9e07be0119aa31dd1b0c504060c0907b8441a37ad9a99c3",
-      "locators": {
-        "identity": "PDF p. 36, exact visible linked model RRZZS4-65D-R5"
+      "kitMassBasis": "Multiple included kits; individual masses in source notes",
+      "mountingKit": "BSAMNT-4 + BSAMNT-M4; included",
+      "mountingPipeMm": [
+        60,
+        115
+      ],
+      "ports": 16,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          694,
+          960
+        ],
+        [
+          1427,
+          2690
+        ],
+        [
+          3300,
+          3800
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1070,
+        "side": 375,
+        "rear": 880,
+        "max": 1385
       },
-      "notes": "Identity-only entry from the ANDREW EMEA selection guide. Individual product URL is observed in the PDF annotation; its current availability is not guaranteed. Numerical mechanics / RF await exact-model sheet review. Regional catalogue inclusion does not establish Australian use or current supply.",
+      "windSpeedKmh": 150,
+      "survivalSpeedKmh": 241,
+      "tiltDegrees": null,
+      "revision": "March 12, 2025 (antenna); kit revisions are separate",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.andrew.com/globalassets/digizuite/263278-p360-rrzzs4-65d-r5-comprehensiveexternal.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "7ebeed74a64015962a3a2b915d4405f371c0c33e9ef23b34b3a5f35959cde326",
+      "locators": {
+        "identity": "PDF p.1, exact printed model RRZZS4-65D-R5",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.5, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.6, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.7, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm",
+        "kitMass": "PDF p.6, BSAMNT-4, net 6.5 kg, pipe 60–115 mm; PDF p.7, BSAMNT-M4, net 4.6 kg, pipe 60–115 mm"
+      },
+      "notes": "Exact printed model and revision. RF connector total excludes calibration and AISG paths. Antenna, included kit components and packed gross mass remain separate. Included kits: BSAMNT-4 6.5 kg net (PDF p.6); BSAMNT-M4 4.6 kg net (PDF p.7). No single component is labelled as the whole kit mass. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.andrew.com/globalassets/digizuite/263278-p360-rrzzs4-65d-r5-comprehensiveexternal.pdf",
+      "mechanicalPage": 2,
+      "windPage": 5,
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzs4-65d-r5/"
+      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzs4-65d-r5/",
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "mountingKitComponents": [
+        {
+          "code": "BSAMNT-4",
+          "netMassKg": 6.5,
+          "quantity": 1,
+          "locator": "PDF p.6"
+        },
+        {
+          "code": "BSAMNT-M4",
+          "netMassKg": 4.6,
+          "quantity": 1,
+          "locator": "PDF p.7"
+        }
+      ],
+      "relatedSources": [
+        "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf"
+      ]
     },
     {
       "id": "PANEL-RECHECK-045",
@@ -22589,39 +23518,92 @@
       "brand": "CommScope / ANDREW",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "dimensionsMm": null,
-      "massKg": null,
-      "massBasis": "Exact variant not verified",
-      "kitMassKg": null,
-      "kitMassBasis": "",
-      "mountingKit": null,
-      "mountingPipeMm": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Exact variant sheet needed",
-      "windN": null,
-      "windSpeedKmh": null,
-      "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "CO-200332.2-EN.GB (08/26)",
-      "checked": "2026-10-02",
-      "sourceUrl": "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf",
-      "sourceType": "Official manufacturer catalogue",
-      "sourceHash": "736b61a56824c7d9f9e07be0119aa31dd1b0c504060c0907b8441a37ad9a99c3",
-      "locators": {
-        "identity": "PDF p. 36, exact visible linked model RRZZT4-65A-R5"
+      "status": "datasheet",
+      "dimensionsMm": [
+        1499,
+        498,
+        197
+      ],
+      "massKg": 36.5,
+      "massBasis": "Without mounting kit",
+      "kitMassKg": 6.2,
+      "kitMassBasis": "Net mounting-kit mass; separate from antenna",
+      "mountingKit": "BSAMNT-3; included",
+      "mountingPipeMm": [
+        60,
+        115
+      ],
+      "ports": 16,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          694,
+          960
+        ],
+        [
+          1427,
+          2690
+        ],
+        [
+          2300,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 549,
+        "side": 183,
+        "rear": 452,
+        "max": 712
       },
-      "notes": "Identity-only entry from the ANDREW EMEA selection guide. Individual product URL is observed in the PDF annotation; its current availability is not guaranteed. Numerical mechanics / RF await exact-model sheet review. Regional catalogue inclusion does not establish Australian use or current supply.",
+      "windSpeedKmh": 150,
+      "survivalSpeedKmh": 241,
+      "tiltDegrees": null,
+      "revision": "March 12, 2025 (antenna); kit revisions are separate",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.andrew.com/globalassets/digizuite/398867-p360-rrzzt4-65a-r5-comprehensiveexternal.pdf",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "efcba0bdf17fde51d17b06b0ac3af49dbe99bbc79ba56cc61855ea38e50bb33e",
+      "locators": {
+        "identity": "PDF p.1, exact printed model RRZZT4-65A-R5",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.5, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.6, BSAMNT-3, net 6.2 kg, pipe 60–115 mm",
+        "kitMass": "PDF p.6, BSAMNT-3, net 6.2 kg, pipe 60–115 mm"
+      },
+      "notes": "Exact printed model and revision. RF connector total excludes calibration and AISG paths. Antenna, included kit components and packed gross mass remain separate. Included kits: BSAMNT-3 6.2 kg net (PDF p.6). Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
-      "specUrl": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.andrew.com/globalassets/digizuite/398867-p360-rrzzt4-65a-r5-comprehensiveexternal.pdf",
+      "mechanicalPage": 2,
+      "windPage": 5,
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzt4-65a-r5/"
+      "productUrl": "https://www.andrew.com/products/base-station-antennas/antennas/itemrrzzt4-65a-r5/",
+      "formFactor": "Panel",
+      "lengthMm": null,
+      "diameterMm": null,
+      "sizeDescription": null,
+      "survivalSpeedText": null,
+      "publicSpecUrl": null,
+      "fieldIssues": {},
+      "sourceAccess": {
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "mountingKitComponents": [
+        {
+          "code": "BSAMNT-3",
+          "netMassKg": 6.2,
+          "quantity": 1,
+          "locator": "PDF p.6"
+        }
+      ],
+      "relatedSources": [
+        "https://de.andrew.com/globalassets/digizuite/1019112-bsa-product-guide-emea-co-200332-engb.pdf"
+      ]
     },
     {
       "id": "PANEL-RECHECK-046",
@@ -64860,48 +65842,78 @@
       "model": "APXVLLLL21B_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        2085,
+        499,
+        199
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 35,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 8,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1281,
+        "side": 438,
+        "rear": 1352,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Public directory observation; 3 October 2026",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/5/",
+      "tiltDegrees": "0–6",
+      "revision": "Rev B; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL21B_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL21B_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "0b5c2d095431bb18df3142f1577b38b2252c40000a8b50ae35953b77228753f5",
+      "mechanicalPage": 4,
+      "windPage": 4,
       "locators": {
-        "identity": "Official Base Station Antennas listing heading APXVLLLL21B_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVLLLL21B_43-C-I20",
+        "dimensions": "PDF p.4, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.4, original weight inclusion basis",
+        "rf": "PDF pp.1–4, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.4, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.5, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.4, mounting hardware only"
       },
-      "notes": "Complete first model code observed in the official Base Station Antennas listing. Abbreviated suffix options in the grouped heading are not expanded: APXVLLLL21B_43-C-I20. Physical/RF values await individual source review. Current supply and AU use are not established.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.4 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/5/"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0623",
@@ -64909,48 +65921,78 @@
       "model": "APXVLLLL15B2_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1485,
+        499,
+        199
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 24.1,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 8,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 494,
+        "side": 430,
+        "rear": 573,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Public directory observation; 3 October 2026",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/5/",
+      "tiltDegrees": "2–12",
+      "revision": "Rev C; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL15B2_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL15B2_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "8d8068d20494029b6d46e9c41b54b7891e407c1cf7d6a8c1d591b77825a4f188",
+      "mechanicalPage": 4,
+      "windPage": 4,
       "locators": {
-        "identity": "Official Base Station Antennas listing heading APXVLLLL15B2_43-C-I20, -C-I20S"
+        "identity": "PDF p.1, exact printed model APXVLLLL15B2_43-C-I20",
+        "dimensions": "PDF p.4, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.4, original weight inclusion basis",
+        "rf": "PDF pp.1–4, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.4, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.5, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.4, mounting hardware only"
       },
-      "notes": "Complete first model code observed in the official Base Station Antennas listing. Abbreviated suffix options in the grouped heading are not expanded: APXVLLLL15B2_43-C-I20, -C-I20S. Physical/RF values await individual source review. Current supply and AU use are not established.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.4 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/5/"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0624",
@@ -64958,48 +66000,78 @@
       "model": "APXVLLL15B_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1485,
+        428,
+        145
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 21.9,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 6,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 783,
+        "side": 265,
+        "rear": 822,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Public directory observation; 3 October 2026",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/5/",
+      "tiltDegrees": "2–12",
+      "revision": "Rev K; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLL15B_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLL15B_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "abde40e0d0fffca45dd613db7215207c8d4f152d579c11ae71adb4088211f1e4",
+      "mechanicalPage": 3,
+      "windPage": 3,
       "locators": {
-        "identity": "Official Base Station Antennas listing heading APXVLLL15B_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVLLL15B_43-C-I20",
+        "dimensions": "PDF p.3, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.3, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.3, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.4, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.3, mounting hardware only"
       },
-      "notes": "Complete first model code observed in the official Base Station Antennas listing. Abbreviated suffix options in the grouped heading are not expanded: APXVLLL15B_43-C-I20. Physical/RF values await individual source review. Current supply and AU use are not established.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.3 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/5/"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0625",
@@ -66085,48 +67157,78 @@
       "model": "APXVLL15V_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1495,
+        320,
+        123
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 15.3,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 4,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 588,
+        "side": 226,
+        "rear": 700,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Public directory observation; 3 October 2026",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/8/",
+      "tiltDegrees": "0–10",
+      "revision": "Rev D; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL15V_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL15V_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "adb680ccfe01604d6c1be55f1d429b1317235dfdf3af846a73dee9bda7cc8783",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "Official Base Station Antennas listing heading APXVLL15V_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVLL15V_43-C-I20",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.2, mounting hardware only"
       },
-      "notes": "Complete first model code observed in the official Base Station Antennas listing. Abbreviated suffix options in the grouped heading are not expanded: APXVLL15V_43-C-I20. Physical/RF values await individual source review. Current supply and AU use are not established.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Shipping mass differs between mechanical (22.7 kg) and ordering (24.4 kg) tables; neither enters antenna or kit mass. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.2 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/8/"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0648",
@@ -67332,48 +68434,81 @@
       "model": "APXVBL15B_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1500,
+        350,
+        200
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
+      "massKg": 16.2,
+      "massBasis": "Antenna only",
       "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "kitMassBasis": "Not stated",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 4,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          698,
+          960
+        ],
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 683,
+        "side": 331,
+        "rear": 789,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Public directory observation; 3 October 2026",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/10/",
+      "tiltDegrees": "2–15 low band; 2–10 high band",
+      "revision": "Rev C; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVBL15B_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVBL15B_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "8aa396e549fbc96a0fd25c7d638b8737303640c4cb1074f3f0c3551fb62f579c",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "Official Base Station Antennas listing heading APXVBL15B_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVBL15B_43-C-I20",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, APM50-B1, printed pipe range"
       },
-      "notes": "Complete first model code observed in the official Base Station Antennas listing. Abbreviated suffix options in the grouped heading are not expanded: APXVBL15B_43-C-I20. Physical/RF values await individual source review. Current supply and AU use are not established.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.2 prints Survival/Rated Wind Velocity 220 (160) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/10/"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0670",
@@ -67557,48 +68692,79 @@
       "model": "APXVLL19P_43-C-A20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1925,
+        288,
+        118
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 19.5,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM40-2 + APM40-E10; included",
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 4,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1695,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1000,
+        "side": 420,
+        "rear": 1100,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Public directory observation; 3 October 2026",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/10/",
+      "revision": "Rev H; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL19P_43-C-A20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": null,
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL19P_43-C-A20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "15a259890060191584d9448bd859867c6314c7a2e3a200833f8444808906bcc6",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "Official Base Station Antennas listing heading APXVLL19P_43-C-A20"
+        "identity": "PDF p.1, exact printed model APXVLL19P_43-C-A20",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.2, APM40-2 + APM40-E10; included, printed pipe range",
+        "kitMass": "PDF p.2, mounting hardware only"
       },
-      "notes": "Complete first model code observed in the official Base Station Antennas listing. Abbreviated suffix options in the grouped heading are not expanded: APXVLL19P_43-C-A20. Physical/RF values await individual source review. Current supply and AU use are not established.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Supply status not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.2 prints Survival/Rated Wind Velocity 241 (160) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld.",
+        "tilt": "PDF p.1 title states 0–12°, but the electrical table states 2–12°. One common tilt range is withheld."
+      },
+      "relatedSources": [
+        "https://amphenol-antennas.com/product-category/base-station/bs-antennas/page/10/"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0674",
@@ -70497,48 +71663,79 @@
       "model": "APXVE26B_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        2495,
+        320,
+        140
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 28.5,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 2,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          790,
+          960
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 785,
+        "side": 1122,
+        "rear": 1275,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Edition 1; March 2021",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
+      "tiltDegrees": "2–12",
+      "revision": "Rev C; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVE26B_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "aff8b5a5d10e6f308480e6ef05ea20ce50b5c5f0d25e7a013a7ecb3bce28fc18",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVE26B_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "5acfbc6050534ff6e3c6c6d875169c0969128478bc9837c09b04da6ec94d984f",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "PDF pp. 29, exact printed catalogue code APXVE26B_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVE26B_43-C-I20",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.2, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.2, mounting hardware only"
       },
-      "notes": "Historical RFS EMEA/APAC guide identity only. Wrapped / incomplete codes and shortened suffixes are excluded. Match exact suffix and revision against an individual sheet; no parameters transferred from Amphenol successors.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Historical catalogue; March 2021; current supply not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.2 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld.",
+        "rf": "PDF p.1 low-band array heading says 698–960 MHz, while the exact title, features, measured bands and connector drawing identify 790–960 MHz. The unsupported 698–790 range is excluded from frequency filtering."
+      },
+      "relatedSources": [
+        "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0734",
@@ -71321,48 +72518,78 @@
       "model": "APXVLL15V_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1495,
+        320,
+        123
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 15.3,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 4,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 588,
+        "side": 226,
+        "rear": 700,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Edition 1; March 2021",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
+      "tiltDegrees": "0–10",
+      "revision": "Rev D; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL15V_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "aff8b5a5d10e6f308480e6ef05ea20ce50b5c5f0d25e7a013a7ecb3bce28fc18",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL15V_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "adb680ccfe01604d6c1be55f1d429b1317235dfdf3af846a73dee9bda7cc8783",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "PDF pp. 30, exact printed catalogue code APXVLL15V_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVLL15V_43-C-I20",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.2, mounting hardware only"
       },
-      "notes": "Historical RFS EMEA/APAC guide identity only. Wrapped / incomplete codes and shortened suffixes are excluded. Match exact suffix and revision against an individual sheet; no parameters transferred from Amphenol successors.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Shipping mass differs between mechanical (22.7 kg) and ordering (24.4 kg) tables; neither enters antenna or kit mass. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Historical catalogue; March 2021; current supply not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.2 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0748",
@@ -71419,48 +72646,79 @@
       "model": "APXVLL19P_43-C-A20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1925,
+        288,
+        118
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 19.5,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM40-2 + APM40-E10; included",
+      "mountingPipeMm": [
+        50,
+        120
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 4,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1695,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1000,
+        "side": 420,
+        "rear": 1100,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
       "tiltDegrees": null,
-      "revision": "Edition 1; March 2021",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
+      "revision": "Rev H; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL19P_43-C-A20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "aff8b5a5d10e6f308480e6ef05ea20ce50b5c5f0d25e7a013a7ecb3bce28fc18",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL19P_43-C-A20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "15a259890060191584d9448bd859867c6314c7a2e3a200833f8444808906bcc6",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "PDF pp. 30, exact printed catalogue code APXVLL19P_43-C-A20"
+        "identity": "PDF p.1, exact printed model APXVLL19P_43-C-A20",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.2, APM40-2 + APM40-E10; included, printed pipe range",
+        "kitMass": "PDF p.2, mounting hardware only"
       },
-      "notes": "Historical RFS EMEA/APAC guide identity only. Wrapped / incomplete codes and shortened suffixes are excluded. Match exact suffix and revision against an individual sheet; no parameters transferred from Amphenol successors.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Historical catalogue; March 2021; current supply not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.2 prints Survival/Rated Wind Velocity 241 (160) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld.",
+        "tilt": "PDF p.1 title states 0–12°, but the electrical table states 2–12°. One common tilt range is withheld."
+      },
+      "relatedSources": [
+        "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0750",
@@ -71468,48 +72726,78 @@
       "model": "APXVLL21B_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1900,
+        320,
+        123
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 22.3,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 4,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 821,
+        "side": 271,
+        "rear": 1066,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Edition 1; March 2021",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
+      "tiltDegrees": "2–10",
+      "revision": "Rev B; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL21B_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "aff8b5a5d10e6f308480e6ef05ea20ce50b5c5f0d25e7a013a7ecb3bce28fc18",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL21B_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "909b8917008b23a78cacee9c95dbe913d8e83229d3a5e3fa4794cd0f78e181e2",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "PDF pp. 30, exact printed catalogue code APXVLL21B_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVLL21B_43-C-I20",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.2, mounting hardware only"
       },
-      "notes": "Historical RFS EMEA/APAC guide identity only. Wrapped / incomplete codes and shortened suffixes are excluded. Match exact suffix and revision against an individual sheet; no parameters transferred from Amphenol successors.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Historical catalogue; March 2021; current supply not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.2 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0751",
@@ -71664,48 +72952,78 @@
       "model": "APXVLLL15B_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1485,
+        428,
+        145
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 21.9,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 6,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 783,
+        "side": 265,
+        "rear": 822,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Edition 1; March 2021",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
+      "tiltDegrees": "2–12",
+      "revision": "Rev K; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLL15B_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "aff8b5a5d10e6f308480e6ef05ea20ce50b5c5f0d25e7a013a7ecb3bce28fc18",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLL15B_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "abde40e0d0fffca45dd613db7215207c8d4f152d579c11ae71adb4088211f1e4",
+      "mechanicalPage": 3,
+      "windPage": 3,
       "locators": {
-        "identity": "PDF pp. 31, exact printed catalogue code APXVLLL15B_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVLLL15B_43-C-I20",
+        "dimensions": "PDF p.3, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.3, original weight inclusion basis",
+        "rf": "PDF pp.1–3, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.3, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.4, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.3, mounting hardware only"
       },
-      "notes": "Historical RFS EMEA/APAC guide identity only. Wrapped / incomplete codes and shortened suffixes are excluded. Match exact suffix and revision against an individual sheet; no parameters transferred from Amphenol successors.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Historical catalogue; March 2021; current supply not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.3 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0755",
@@ -71762,48 +73080,78 @@
       "model": "APXVLLLL15B2_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1485,
+        499,
+        199
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 24.1,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 8,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 494,
+        "side": 430,
+        "rear": 573,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Edition 1; March 2021",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
+      "tiltDegrees": "2–12",
+      "revision": "Rev C; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL15B2_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "aff8b5a5d10e6f308480e6ef05ea20ce50b5c5f0d25e7a013a7ecb3bce28fc18",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL15B2_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "8d8068d20494029b6d46e9c41b54b7891e407c1cf7d6a8c1d591b77825a4f188",
+      "mechanicalPage": 4,
+      "windPage": 4,
       "locators": {
-        "identity": "PDF pp. 31, exact printed catalogue code APXVLLLL15B2_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVLLLL15B2_43-C-I20",
+        "dimensions": "PDF p.4, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.4, original weight inclusion basis",
+        "rf": "PDF pp.1–4, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.4, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.5, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.4, mounting hardware only"
       },
-      "notes": "Historical RFS EMEA/APAC guide identity only. Wrapped / incomplete codes and shortened suffixes are excluded. Match exact suffix and revision against an individual sheet; no parameters transferred from Amphenol successors.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Historical catalogue; March 2021; current supply not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.4 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0757",
@@ -71811,48 +73159,78 @@
       "model": "APXVLLLL21B_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        2085,
+        499,
+        199
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
-      "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "massKg": 35,
+      "massBasis": "Antenna only",
+      "kitMassKg": 4.5,
+      "kitMassBasis": "Mounting hardware only",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 8,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 1281,
+        "side": 438,
+        "rear": 1352,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Edition 1; March 2021",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
+      "tiltDegrees": "0–6",
+      "revision": "Rev B; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL21B_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "aff8b5a5d10e6f308480e6ef05ea20ce50b5c5f0d25e7a013a7ecb3bce28fc18",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL21B_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "0b5c2d095431bb18df3142f1577b38b2252c40000a8b50ae35953b77228753f5",
+      "mechanicalPage": 4,
+      "windPage": 4,
       "locators": {
-        "identity": "PDF pp. 31, exact printed catalogue code APXVLLLL21B_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVLLLL21B_43-C-I20",
+        "dimensions": "PDF p.4, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.4, original weight inclusion basis",
+        "rf": "PDF pp.1–4, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.4, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.5, APM50-B1, printed pipe range",
+        "kitMass": "PDF p.4, mounting hardware only"
       },
-      "notes": "Historical RFS EMEA/APAC guide identity only. Wrapped / incomplete codes and shortened suffixes are excluded. Match exact suffix and revision against an individual sheet; no parameters transferred from Amphenol successors.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Historical catalogue; March 2021; current supply not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.4 prints Survival/Rated Wind Velocity 200 (150) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0758",
@@ -72007,48 +73385,81 @@
       "model": "APXVBL15B_43-C-I20",
       "aliases": [],
       "kind": "Passive",
-      "status": "catalogue",
-      "formFactor": null,
-      "dimensionsMm": null,
+      "status": "datasheet",
+      "formFactor": "Panel",
+      "dimensionsMm": [
+        1500,
+        350,
+        200
+      ],
       "lengthMm": null,
       "diameterMm": null,
       "sizeDescription": null,
-      "massKg": null,
-      "massBasis": null,
+      "massKg": 16.2,
+      "massBasis": "Antenna only",
       "kitMassKg": null,
-      "kitMassBasis": null,
-      "mountingKit": null,
-      "mountingPipeMm": null,
+      "kitMassBasis": "Not stated",
+      "mountingKit": "APM50-B1",
+      "mountingPipeMm": [
+        50,
+        110
+      ],
       "epaM2": null,
       "equivalentFlatPlateAreaM2": null,
-      "ports": null,
-      "connector": null,
-      "frequenciesMHz": [],
-      "bandSummary": "Operating ranges not verified",
-      "windN": null,
+      "ports": 4,
+      "connector": "4.3-10 Female",
+      "frequenciesMHz": [
+        [
+          698,
+          960
+        ],
+        [
+          1710,
+          2690
+        ]
+      ],
+      "bandSummary": "",
+      "windN": {
+        "front": 683,
+        "side": 331,
+        "rear": 789,
+        "max": null
+      },
       "windSpeedKmh": null,
       "survivalSpeedKmh": null,
-      "tiltDegrees": null,
-      "revision": "Edition 1; March 2021",
-      "checked": "2026-10-03",
-      "sourceUrl": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
+      "tiltDegrees": "2–15 low band; 2–10 high band",
+      "revision": "Rev C; date not printed",
+      "checked": "2026-10-07",
+      "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVBL15B_43-C-I20",
       "productUrl": null,
       "publicSpecUrl": null,
-      "specUrl": null,
-      "sourceType": "Official manufacturer catalogue identity",
-      "sourceHash": "aff8b5a5d10e6f308480e6ef05ea20ce50b5c5f0d25e7a013a7ecb3bce28fc18",
-      "mechanicalPage": null,
-      "windPage": null,
+      "specUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVBL15B_43-C-I20",
+      "sourceType": "Original manufacturer PDF; exact-model pages visually checked",
+      "sourceHash": "8aa396e549fbc96a0fd25c7d638b8737303640c4cb1074f3f0c3551fb62f579c",
+      "mechanicalPage": 2,
+      "windPage": 2,
       "locators": {
-        "identity": "PDF pp. 32, exact printed catalogue code APXVBL15B_43-C-I20"
+        "identity": "PDF p.1, exact printed model APXVBL15B_43-C-I20",
+        "dimensions": "PDF p.2, antenna H/L × W × D; packing and mounting projections excluded",
+        "mass": "PDF p.2, original weight inclusion basis",
+        "rf": "PDF pp.1–2, published operating ranges and external RF connectors; AISG and calibration excluded",
+        "wind": "PDF p.2, printed force directions, maximum and original rating basis",
+        "mounting": "PDF p.3, APM50-B1, printed pipe range"
       },
-      "notes": "Historical RFS EMEA/APAC guide identity only. Wrapped / incomplete codes and shortened suffixes are excluded. Match exact suffix and revision against an individual sheet; no parameters transferred from Amphenol successors.",
+      "notes": "Exact Amphenol original retrieved from the public RFS endpoint. Overlapping RFS/Amphenol directory identities retain their own IDs and share this exact sheet. Antenna, mounting hardware and shipping values remain separate. AISG connectors are excluded from RF count. Printed directional forces retain an unresolved speed basis. Historical guide envelopes do not override the individual sheet. Current supply and Australian operator use are not established.",
       "lifecycle": "Historical catalogue; March 2021; current supply not checked",
       "deployments": [],
       "sourceAccess": {
-        "date": "2026-10-03",
-        "result": "Public manufacturer source read; identity only"
-      }
+        "date": "2026-10-07",
+        "result": "Public original downloaded, hashed and cited pages visually checked"
+      },
+      "survivalSpeedText": null,
+      "fieldIssues": {
+        "windSpeed": "PDF p.2 prints Survival/Rated Wind Velocity 220 (160) km/h without an independently confirmed definition. Numerical wind/survival speeds and dependent coefficients are withheld."
+      },
+      "relatedSources": [
+        "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions"
+      ]
     },
     {
       "id": "PANEL-RECHECK15-0762",
@@ -78819,13 +80230,13 @@
     {
       "brand": "CommScope / ANDREW",
       "url": "https://www.andrew.com/products/base-station-antennas/antennas/",
-      "note": "Ten additional exact originals now provide antenna size, mass, wind forces and RF paths. Included mounting kits are listed individually; stopped products retain their published lifecycle. Unsuffixed Argus site identifiers remain separate.",
+      "note": "Eight further exact ANDREW originals and the historical unsuffixed Argus RV4PX310R sheet provide mechanical values. Exact suffixes, kit components and stopped products remain separate; site evidence does not verify installed revisions.",
       "filterBrand": "CommScope / ANDREW"
     },
     {
       "brand": "RFS",
       "url": "https://www.rfstechnologies.com/articles/brochure/download/base-station-antenna-selection-guide-for-emea-and-apac-regions",
-      "note": "Four more exact Amphenol originals recovered via public RFS endpoints. Existing overlapping brand identities retained; historical guide dimensions may differ. Ambiguous rating speeds and absent force values remain unavailable.",
+      "note": "Eight further exact Amphenol originals recovered via public RFS endpoints. Overlapping directory IDs remain traceable to their shared sheet. Original antenna/kit weights are separate; ambiguous speeds and affected RF/tilt discrepancies remain labelled.",
       "filterBrand": "RFS"
     },
     {
@@ -78849,7 +80260,7 @@
     {
       "brand": "Amphenol",
       "url": "https://amphenol-antennas.com/product-category/base-station/bs-antennas/",
-      "note": "Four more exact model sheets recovered via the public RFS endpoint. Original antenna and kit weights kept separate; rating-speed ambiguities remain labelled. Directory overlap is retained.",
+      "note": "Eight further exact Amphenol originals recovered via public RFS endpoints. Overlapping directory IDs remain traceable to their shared sheet. Original antenna/kit weights are separate; ambiguous speeds and affected RF/tilt discrepancies remain labelled.",
       "filterBrand": "Amphenol Antenna Solutions"
     },
     {
@@ -78861,7 +80272,7 @@
     {
       "brand": "CCI",
       "url": "https://cciproducts.com/index.php/products/antennas",
-      "note": "297 entries. Ten further exact originals supply size, antenna mass, wind force, external RF connectors and bands. RET, mounting, EFPA/EPA and shipping bases remain separate. No Australian use inferred.",
+      "note": "Twelve further exact originals provide size, original antenna mass, directional wind forces and separately named EPA/EFPA. Strict survival limits and RET/mounting exclusions remain explicit; catalogue inclusion does not establish Australian use.",
       "filterBrand": "CCI"
     },
     {
@@ -80598,6 +82009,503 @@
       "P6BTEU02/MBMQBF01, unsuffixed Argus and previous field conflicts unchanged"
     ],
     "publicationAuthorisation": "User authorized continued public research and publication; 继续 (7 October 2026)"
+  },
+  "threeBrandReview20261007": {
+    "date": "2026-10-07",
+    "basis": "Fill existing exact-model records from publicly accessible original PDFs; no model-suffix, revision or operator-use inheritance",
+    "reviewed": [
+      {
+        "id": "PANEL-CCI-1422",
+        "model": "FPA65R-BU6D",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-fpa65rbu6d-v1_4-220516.pdf",
+        "sha256": "a86e126a02f0e1ac575e42375e022d994bb71ada13ae20479ca4a90d788a393f",
+        "pages": {
+          "mechanical": 3,
+          "wind": 3,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-CCI-1460",
+        "model": "FPA65R-BU8D",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-fpa65rbu8d-v1_1-221101.pdf",
+        "sha256": "eab570e982805e99b29f8e2f77ccb2d48c88b8d46245b1cde58fae0a79fe89ef",
+        "pages": {
+          "mechanical": 3,
+          "wind": 3,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-CCI-432",
+        "model": "HPA-33R-BWW-H4",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rbwwh4-v1_0-160211.pdf",
+        "sha256": "a77c5a5e9ca041bb8dd8af13012040585fe4e444815548a603b2cf3cea0694e5",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2"
+        }
+      },
+      {
+        "id": "PANEL-CCI-254",
+        "model": "HPA-33R-BWW-H6",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rbwwh6-v1_0-160211.pdf",
+        "sha256": "d89002a80a654098c9cd5e7ab901ad3d3bd557214996db18697e179180fd17aa",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2"
+        }
+      },
+      {
+        "id": "PANEL-CCI-359",
+        "model": "HPA-33R-DUU-H6",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rduuh6-v1_0-160211.pdf",
+        "sha256": "3000f106a92261e8abef46cee79b638bbebbc6fe03f74426cf7f0383bb2ebd23",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2"
+        }
+      },
+      {
+        "id": "PANEL-CCI-590",
+        "model": "HPA33R-CS4A",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rcs4a-v1_1-160627.pdf",
+        "sha256": "d50538c3d68354f3059c6c58f9d5a9de95a67ed99d194adffa91158907a2844d",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2"
+        }
+      },
+      {
+        "id": "PANEL-CCI-1708",
+        "model": "HPA33R-KE6C",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rke6c-v1_1-250529.pdf",
+        "sha256": "aac0c10a3a375095f1cf3feb5c9cb13996013cdfd5ead933db36b4788e38fbc3",
+        "pages": {
+          "mechanical": 4,
+          "wind": 4,
+          "rf": "pp.1–4"
+        }
+      },
+      {
+        "id": "PANEL-CCI-1706",
+        "model": "HPA33R-TE6C",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa33rte6c-v1_1-250529.pdf",
+        "sha256": "f8b02eb4a62ec659230f3530bbb236a39f6388be5efd6b847e28b627b47f09e6",
+        "pages": {
+          "mechanical": 4,
+          "wind": 4,
+          "rf": "pp.1–4"
+        }
+      },
+      {
+        "id": "PANEL-CCI-992",
+        "model": "HPA45F-BU2A",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa45fbu2a-v1_0-190306.pdf",
+        "sha256": "649d77e512cb1dc318f9cf4849b93623431cbdc48f1cea079a9c760291eb6f08",
+        "pages": {
+          "mechanical": 3,
+          "wind": 3,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-CCI-991",
+        "model": "HPA45F-KE2A",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa45fke2a-v1_0-181106.pdf",
+        "sha256": "43e884900ba9afb790b359006a284e2355c3b3c000ff2b1ed0b6dbc353be26dd",
+        "pages": {
+          "mechanical": 3,
+          "wind": 3,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-CCI-1393",
+        "model": "HPA45F-TE2A",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa45fte2a-v1_1-240823.pdf",
+        "sha256": "cae74d241b3ed7859b61023a390f977f5baa0372c62c16d5fad1868752a6acff",
+        "pages": {
+          "mechanical": 3,
+          "wind": 3,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-CCI-761",
+        "model": "HPA45R-BU5A",
+        "brand": "CCI",
+        "sourceUrl": "https://cciproducts.com/DsPdf/ds-hpa45rbu5a-v1_0-170629.pdf",
+        "sha256": "6b80cfeb4038eaa078695b3031849d07dfbb3176275d8eac06d88027b57a8bf3",
+        "pages": {
+          "mechanical": 3,
+          "wind": 3,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK-034",
+        "model": "EGRZVS4-65D-R6N43",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://www.andrew.com/globalassets/digizuite/899275-p360-egrzvs4-65d-r6n43-comprehensiveexternal.pdf",
+        "sha256": "02e0096da9645f52edfd2d42d8dca09189a8ae8fd9bd7bf109a730eeb9de18e6",
+        "pages": {
+          "mechanical": 2,
+          "mass": 2,
+          "wind": 5,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK-039",
+        "model": "RRZZHHTTS4-65B-R8N",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://www.andrew.com/globalassets/digizuite/469388-p360-rrzzhhtts4-65b-r8n-comprehensiveexternal.pdf",
+        "sha256": "1bd8ce2c83df02ec6b3cb7f446f43848c770268c323a1b93e075fc3ff4f673e0",
+        "pages": {
+          "mechanical": 2,
+          "mass": 2,
+          "wind": 5,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK-040",
+        "model": "RRZZHHTTS4-65BR8V2",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://www.andrew.com/globalassets/digizuite/784027-p360-rrzzhhtts4-65br8v2-comprehensiveexternal.pdf",
+        "sha256": "9b985013534ba7154a29f5ab87af4662dc235c6c336cf5b3ec13c395f3841102",
+        "pages": {
+          "mechanical": 2,
+          "mass": 2,
+          "wind": 5,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK-041",
+        "model": "RRZZV4S4-65D-R9N43",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://www.andrew.com/globalassets/digizuite/923107-p360-rrzzv4s4-65d-r9n43-comprehensiveexternal.pdf",
+        "sha256": "1ae984eedb7153e3fd9e053936b562c1bc2d0f37bbe7b9196726e6a0d1b22509",
+        "pages": {
+          "mechanical": 2,
+          "mass": 5,
+          "wind": 5,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK-042",
+        "model": "RRZZV4S4-65DR9NV4",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://www.andrew.com/globalassets/digizuite/922495-p360-rrzzv4s4-65dr9nv4-comprehensiveexternal.pdf",
+        "sha256": "92b1ca701d0475d2db4f6eb466f2371894b24f3a10bd499dadc451e8a46513f7",
+        "pages": {
+          "mechanical": 2,
+          "mass": 5,
+          "wind": 5,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK-043",
+        "model": "EGRZV4S4-65D-R9N43",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://www.andrew.com/globalassets/digizuite/326113-p360-egrzv4s4-65d-r9n43-comprehensiveexternal.pdf",
+        "sha256": "dfbfe362cce7bb237c598646a22c83ae9659f8deed932fbdb349891512fcf8a7",
+        "pages": {
+          "mechanical": 2,
+          "mass": 2,
+          "wind": 5,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK-044",
+        "model": "RRZZS4-65D-R5",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://www.andrew.com/globalassets/digizuite/263278-p360-rrzzs4-65d-r5-comprehensiveexternal.pdf",
+        "sha256": "7ebeed74a64015962a3a2b915d4405f371c0c33e9ef23b34b3a5f35959cde326",
+        "pages": {
+          "mechanical": 2,
+          "mass": 2,
+          "wind": 5,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK-045",
+        "model": "RRZZT4-65A-R5",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://www.andrew.com/globalassets/digizuite/398867-p360-rrzzt4-65a-r5-comprehensiveexternal.pdf",
+        "sha256": "efcba0bdf17fde51d17b06b0ac3af49dbe99bbc79ba56cc61855ea38e50bb33e",
+        "pages": {
+          "mechanical": 2,
+          "mass": 2,
+          "wind": 5,
+          "rf": "pp.1–3"
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0733",
+        "model": "APXVE26B_43-C-I20",
+        "brand": "RFS",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVE26B_43-C-I20",
+        "sha256": "5acfbc6050534ff6e3c6c6d875169c0969128478bc9837c09b04da6ec94d984f",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2",
+          "ordering": 2
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0647",
+        "model": "APXVLL15V_43-C-I20",
+        "brand": "Amphenol Antenna Solutions",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL15V_43-C-I20",
+        "sha256": "adb680ccfe01604d6c1be55f1d429b1317235dfdf3af846a73dee9bda7cc8783",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2",
+          "ordering": 3
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0747",
+        "model": "APXVLL15V_43-C-I20",
+        "brand": "RFS",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL15V_43-C-I20",
+        "sha256": "adb680ccfe01604d6c1be55f1d429b1317235dfdf3af846a73dee9bda7cc8783",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2",
+          "ordering": 3
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0750",
+        "model": "APXVLL21B_43-C-I20",
+        "brand": "RFS",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL21B_43-C-I20",
+        "sha256": "909b8917008b23a78cacee9c95dbe913d8e83229d3a5e3fa4794cd0f78e181e2",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2",
+          "ordering": 3
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0624",
+        "model": "APXVLLL15B_43-C-I20",
+        "brand": "Amphenol Antenna Solutions",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLL15B_43-C-I20",
+        "sha256": "abde40e0d0fffca45dd613db7215207c8d4f152d579c11ae71adb4088211f1e4",
+        "pages": {
+          "mechanical": 3,
+          "wind": 3,
+          "rf": "pp.1–3",
+          "ordering": 4
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0754",
+        "model": "APXVLLL15B_43-C-I20",
+        "brand": "RFS",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLL15B_43-C-I20",
+        "sha256": "abde40e0d0fffca45dd613db7215207c8d4f152d579c11ae71adb4088211f1e4",
+        "pages": {
+          "mechanical": 3,
+          "wind": 3,
+          "rf": "pp.1–3",
+          "ordering": 4
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0623",
+        "model": "APXVLLLL15B2_43-C-I20",
+        "brand": "Amphenol Antenna Solutions",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL15B2_43-C-I20",
+        "sha256": "8d8068d20494029b6d46e9c41b54b7891e407c1cf7d6a8c1d591b77825a4f188",
+        "pages": {
+          "mechanical": 4,
+          "wind": 4,
+          "rf": "pp.1–4",
+          "ordering": 5
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0756",
+        "model": "APXVLLLL15B2_43-C-I20",
+        "brand": "RFS",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL15B2_43-C-I20",
+        "sha256": "8d8068d20494029b6d46e9c41b54b7891e407c1cf7d6a8c1d591b77825a4f188",
+        "pages": {
+          "mechanical": 4,
+          "wind": 4,
+          "rf": "pp.1–4",
+          "ordering": 5
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0622",
+        "model": "APXVLLLL21B_43-C-I20",
+        "brand": "Amphenol Antenna Solutions",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL21B_43-C-I20",
+        "sha256": "0b5c2d095431bb18df3142f1577b38b2252c40000a8b50ae35953b77228753f5",
+        "pages": {
+          "mechanical": 4,
+          "wind": 4,
+          "rf": "pp.1–4",
+          "ordering": 5
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0757",
+        "model": "APXVLLLL21B_43-C-I20",
+        "brand": "RFS",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLLLL21B_43-C-I20",
+        "sha256": "0b5c2d095431bb18df3142f1577b38b2252c40000a8b50ae35953b77228753f5",
+        "pages": {
+          "mechanical": 4,
+          "wind": 4,
+          "rf": "pp.1–4",
+          "ordering": 5
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0669",
+        "model": "APXVBL15B_43-C-I20",
+        "brand": "Amphenol Antenna Solutions",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVBL15B_43-C-I20",
+        "sha256": "8aa396e549fbc96a0fd25c7d638b8737303640c4cb1074f3f0c3551fb62f579c",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2",
+          "ordering": 3
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0761",
+        "model": "APXVBL15B_43-C-I20",
+        "brand": "RFS",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVBL15B_43-C-I20",
+        "sha256": "8aa396e549fbc96a0fd25c7d638b8737303640c4cb1074f3f0c3551fb62f579c",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2",
+          "ordering": 3
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0673",
+        "model": "APXVLL19P_43-C-A20",
+        "brand": "Amphenol Antenna Solutions",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL19P_43-C-A20",
+        "sha256": "15a259890060191584d9448bd859867c6314c7a2e3a200833f8444808906bcc6",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2",
+          "ordering": 2
+        }
+      },
+      {
+        "id": "PANEL-RECHECK15-0749",
+        "model": "APXVLL19P_43-C-A20",
+        "brand": "RFS",
+        "sourceUrl": "https://www.rfstechnologies.com/pim/product/pdf/APXVLL19P_43-C-A20",
+        "sha256": "15a259890060191584d9448bd859867c6314c7a2e3a200833f8444808906bcc6",
+        "pages": {
+          "mechanical": 2,
+          "wind": 2,
+          "rf": "pp.1–2",
+          "ordering": 2
+        }
+      },
+      {
+        "id": "PANEL-EXT-011",
+        "model": "RV4PX310R",
+        "brand": "CommScope / ANDREW",
+        "sourceUrl": "https://resources.tessco.com/attachments/517697_RV4PX310R.pdf",
+        "sha256": "9efde9391942cf8e71e05c2a57e819718242e3126a30fb696bc78507ecff043e",
+        "pages": {
+          "mechanical": 2,
+          "wind": 1,
+          "rf": "p.1",
+          "ordering": 5
+        }
+      }
+    ],
+    "remaining": [
+      {
+        "model": "APXVB15B-C-I20",
+        "url": "https://www.rfstechnologies.com/pim/product/pdf/APXVB15B-C-I20",
+        "result": "Generic HTML, not an exact sheet"
+      },
+      {
+        "model": "APXVB20B-C-I20",
+        "url": "https://www.rfstechnologies.com/pim/product/pdf/APXVB20B-C-I20",
+        "result": "Generic HTML, not an exact sheet"
+      },
+      {
+        "model": "APXVB26B_43-C-I20",
+        "url": "https://www.rfstechnologies.com/pim/product/pdf/APXVB26B_43-C-I20",
+        "result": "Generic HTML, not an exact sheet"
+      },
+      {
+        "model": "APXVBB15B_43-C-I20",
+        "url": "https://www.rfstechnologies.com/pim/product/pdf/APXVBB15B_43-C-I20",
+        "result": "Generic HTML, not an exact sheet"
+      },
+      {
+        "model": "APXVBB20B-C-I20",
+        "url": "https://www.rfstechnologies.com/pim/product/pdf/APXVBB20B-C-I20",
+        "result": "Generic HTML, not an exact sheet"
+      },
+      {
+        "model": "RVVPX308.11B-T2",
+        "url": "https://www.datasheets360.com/pdf/5349393086694429186",
+        "result": "HTTP Error 403: Forbidden"
+      },
+      {
+        "model": "APXVRRMM15B_43-C-I20",
+        "url": "https://www.rfstechnologies.com/pim/product/pdf/APXVRRMM15B_43-C-I20",
+        "result": "Generic HTML, not an exact sheet"
+      },
+      {
+        "model": "APXVRRMM15H_43-C-I20",
+        "url": "https://www.rfstechnologies.com/pim/product/pdf/APXVRRMM15H_43-C-I20",
+        "result": "Generic HTML, not an exact sheet"
+      },
+      {
+        "model": "APXVRR14H_43-C-I20",
+        "url": "https://www.rfstechnologies.com/pim/product/pdf/APXVRR14H_43-C-I20",
+        "result": "Generic HTML, not an exact sheet"
+      }
+    ],
+    "publicationAuthorisation": "User: 都执行; prior explicit continued research and public publication authorization"
   }
 };
   if (typeof module === "object" && module.exports) module.exports = data;
