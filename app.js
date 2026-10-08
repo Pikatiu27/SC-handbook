@@ -2546,19 +2546,18 @@ function calculationTraceRow({
 }
 
 function clampNumericInput(input) {
-  // These controllers validate the entered value; blur must not replace it with a code limit.
+  // Controllers validate entered values; blur must not replace rejected engineering input.
   if (input.dataset.preserveInvalid === "true") return;
   if (!String(input.value ?? "").trim()) return;
   const current = numericValue(input.value);
   if (!Number.isFinite(current)) return;
   const min = input.getAttribute("min") ?? input.dataset.min;
   const max = input.getAttribute("max") ?? input.dataset.max;
-  let next = current;
   const minimum = numericValue(min);
   const maximum = numericValue(max);
-  if (Number.isFinite(minimum)) next = Math.max(next, minimum);
-  if (Number.isFinite(maximum)) next = Math.min(next, maximum);
-  input.value = String(next);
+  if (Number.isFinite(minimum) && current < minimum) return;
+  if (Number.isFinite(maximum) && current > maximum) return;
+  input.value = String(current);
 }
 
 function enhanceNumberInputs() {
@@ -4084,8 +4083,9 @@ function calculateWeld() {
     ? WeldCapacity.parentMetalScreen({ fup: parentGrade.fup, thickness: parentThickness, phi: parentPhi })
     : NaN;
   const parentGoverns = calculationAvailable && parentCheckActive && parentPerMm < capacityPerMm;
-  const demand = numericValue($("weldDemand").value);
-  const demandInvalid = Number.isFinite(demand) && demand < 0;
+  const demandRaw = String($("weldDemand").value).trim();
+  const demand = numericValue(demandRaw);
+  const demandInvalid = demandRaw !== "" && (!Number.isFinite(demand) || demand < 0);
   const utilisation = calculationAvailable && capacity > 0 ? demand / capacity : Infinity;
   const hasDemand = !demandInvalid && demand > 0;
   if (demandInvalid) $("weldDemand").setAttribute("aria-invalid", "true");

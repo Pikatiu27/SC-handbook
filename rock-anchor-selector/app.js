@@ -22,7 +22,7 @@ const freyssinetBars = makeRows("freyssinet", "Freyssinet", [
   protection: "Temporary and permanent anchor systems",
   hardware: "Nut, plate, coupler, protective cap and trumpet",
   sourceKind: "archived-global-row",
-  source: "Freyssinet anchoring systems brochure, C IX 0 - 01/14, p.10",
+  source: "Freyssinet anchoring systems brochure, C IX 0 - 01/14, PDF / printed p.11",
   sourceNote: "Official 2014 global tendon table; confirm current Australian supply.",
   summary: "Prestressed bar tendon for active foundation anchoring."
 });
@@ -36,6 +36,13 @@ const freyssinetStrands = makeRows("freyssinet", "Freyssinet", [
   id: `frey-strand-${count}`,
   name: `${count}T15.7 strand anchor`,
   tendon: `${count} × 15.7 mm strands; ${area.toLocaleString("en-AU")} mm²`,
+  derivedRow: ![4, 7, 9, 13].includes(count),
+  loadLabels: [4, 7, 9, 13].includes(count)
+    ? { yield: "Published elastic limit", ultimate: "Published ultimate load" }
+    : { yield: "Derived elastic limit", ultimate: "Derived ultimate load" },
+  sourceNote: [4, 7, 9, 13].includes(count)
+    ? "Original 15.7 mm table row. Elastic limit is retained as named; service limits need the adopted project standard."
+    : "Intermediate tendon row derived linearly from the original 4 / 7 / 9 / 13-strand units (246 / 279 kN per strand). Not an individually published row or anchor design resistance.",
   yieldLoad,
   ultimateLoad
 })), {
@@ -47,7 +54,7 @@ const freyssinetStrands = makeRows("freyssinet", "Freyssinet", [
   protection: "Permanent sheathed systems available",
   hardware: "Multi-hole head, bearing plate and corrosion-protection assembly",
   sourceKind: "archived-global-row",
-  source: "Freyssinet anchoring systems brochure, C IX 0 - 01/14, p.8",
+  source: "Freyssinet anchoring systems brochure, C IX 0 - 01/14, PDF / printed p.9, 15.7 mm strand table",
   sourceNote: "Official 2014 global tendon table; service limits depend on the adopted project standard.",
   summary: "Multi-strand tendon for active foundation anchoring."
 });
@@ -468,6 +475,7 @@ function sourceMeta(product) {
 }
 
 function dataMeta(product) {
+  if (product.derivedRow) return { label: "Derived tendon row", className: "status-row" };
   if (Number.isFinite(product.ultimateLoad) || Number.isFinite(product.yieldLoad) || product.yieldConflict || product.ultimateConflict) {
     return { label: "Published product row", className: "status-row" };
   }
@@ -607,7 +615,7 @@ function loadDisplay(product, kind) {
     return {
       value: value.toLocaleString("en-AU"),
       unit: " kN",
-      note: "Manufacturer tendon value; not anchor resistance."
+      note: product.derivedRow ? "Derived tendon value; not anchor resistance." : "Manufacturer tendon value; not anchor resistance."
     };
   }
   return {

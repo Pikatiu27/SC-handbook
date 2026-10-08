@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "27a493a7674832e568ff2172a6fc3328f9e5edf1be2ca520090aa9d458324c7d"
+      "sha256": "bc485bfca39b3426f3034cd94cdd0ae01f609c8634eed1991df1afb04157e592"
     },
     {
       "path": "assets/fonts/Lato-Black.ttf",
@@ -72,7 +72,7 @@
     },
     {
       "path": "beam-custom-section.js",
-      "sha256": "da72eb1b35b1080560642d7d87a83f25bb9e251962e1efa90d63cdfe979ab053"
+      "sha256": "725123387352894c9caa477e9bd18d18a2879a6730827e99b4569e9f1af9739c"
     },
     {
       "path": "beam-hot-rolled-data.js",
@@ -80,7 +80,7 @@
     },
     {
       "path": "beam-section-capacity.js",
-      "sha256": "67c9498bc14b98145ab6f036c070c26173edb82d5cee05b011aea5041cab14ac"
+      "sha256": "321c6d7db0bba58efe2bb945971c5f801fcde22627ae9d2f967e25da21a952ba"
     },
     {
       "path": "beam-section-data.js",
@@ -92,7 +92,7 @@
     },
     {
       "path": "bolt-capacity.js",
-      "sha256": "e463e1fe4fc9651c258091d92fce8d7c04867f22e30818b96993558e0393dcf4"
+      "sha256": "189a0ad54e6b75c602c315fecb2f7933497914d9b4cdfd86eab2a459f37c2a52"
     },
     {
       "path": "bolt-integrity.js",
@@ -168,7 +168,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "0094a464bbee0fb1d37ecb25e7b24c7922774f54dc0bcec1bf9d2752aac5db50"
+      "sha256": "c2e7b7b3c06cc21ec4be12151bb756e918390e19e00b8ae7b71438be59d9c569"
     },
     {
       "path": "LICENSE.md",
@@ -224,11 +224,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "5d9bd4d6a4289b017675038cdd8f2e9350e82e82045455ebd3bd8edb8c0861b5"
+      "sha256": "fb6156d46bfc2d950f62178989880f43fd4baceab4c78d599653ee4232af10a6"
     },
     {
       "path": "README.md",
-      "sha256": "6d66c79d36d617e17c868bba3dd9a5040e91397b7ac263dc61e464a78973ca5e"
+      "sha256": "4028657fbca460d0c8ef9ac8aba548cc4c2f1855c820833a2957c70c347a6fef"
     },
     {
       "path": "reo-calculation.js",
@@ -240,7 +240,7 @@
     },
     {
       "path": "rock-anchor-selector/app.js",
-      "sha256": "b5a4445ab80a117f58c4270c34e9bd8ab205d577d984c3c600634d80d1afca48"
+      "sha256": "68a057ec5c3079b6b133af66a229706aa4235fa2800e02c8da097d18963c0892"
     },
     {
       "path": "screw-demand.js",
@@ -260,7 +260,7 @@
     },
     {
       "path": "styles.css",
-      "sha256": "34f9b3c95f6adafa501a83ee4d255a2c3dec4262541c09bf0a9ec6aa209ddca4"
+      "sha256": "47c95f42a4941c66281f24fa625af751933344eef006fe0686d1572c2a20d774"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",

@@ -188,7 +188,8 @@
       const momentStrength = Number(fy);
       const webStrength = separateWebStrength ? Number(fyw) : momentStrength;
       const tensileStrength = Number(fu);
-      const valid = momentStrength > 0 && webStrength > 0 && tensileStrength >= Math.max(momentStrength, webStrength);
+      const valid = [momentStrength, webStrength, tensileStrength].every(Number.isFinite)
+        && momentStrength > 0 && webStrength > 0 && tensileStrength >= Math.max(momentStrength, webStrength);
       return Object.freeze({
         status: valid ? "resolved" : "not-verified",
         grade: "User input",

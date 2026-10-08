@@ -2301,3 +2301,9 @@ footer b { white-space: nowrap; }
   .product-reference-row { align-items: stretch; flex-direction: column; gap: 10px; }
   .product-reference-link { justify-content: center; width: 100%; }
 }
+/* Keyboard focus must remain visible when reference-input inset fills replace
+   the ordinary focus shadow. The offset separates the ring from status fills. */
+body :is(button, input, select, textarea, a[href], summary, [tabindex]):focus-visible {
+  outline: 3px solid #24312b !important;
+  outline-offset: 2px !important;
+}

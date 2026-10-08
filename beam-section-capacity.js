@@ -6,6 +6,14 @@
   "use strict";
 
   const PHI = 0.9;
+  const nonNegativeAction = (raw, name) => {
+    if (raw === null || raw === undefined || typeof raw === "boolean" || String(raw).trim() === "") {
+      throw new RangeError(`${name} must be an explicitly supplied non-negative finite action.`);
+    }
+    const number = Number(raw);
+    if (!Number.isFinite(number) || number < 0) throw new RangeError(`${name} must be a non-negative finite action.`);
+    return number;
+  };
   const positive = (value, name) => {
     const number = Number(value);
     if (!Number.isFinite(number) || number <= 0) throw new RangeError(`${name} must be greater than zero.`);
@@ -76,7 +84,7 @@
   }
 
   function momentShearInteraction(momentDemand, designMomentCapacity, designShearCapacity) {
-    const M = Math.max(0, Number(momentDemand) || 0);
+    const M = nonNegativeAction(momentDemand, "Moment action");
     const phiMs = positive(designMomentCapacity, "Design moment capacity");
     const phiVv = positive(designShearCapacity, "Design shear capacity");
     const momentRatio = M / phiMs;
@@ -85,8 +93,8 @@
   }
 
   function momentShearDemandCheck(momentDemand, designMomentCapacity, shearDemand, designShearCapacity) {
-    const M = Math.max(0, Number(momentDemand) || 0);
-    const V = Math.max(0, Number(shearDemand) || 0);
+    const M = nonNegativeAction(momentDemand, "Moment action");
+    const V = nonNegativeAction(shearDemand, "Shear action");
     const interaction = momentShearInteraction(M, designMomentCapacity, designShearCapacity);
     if (!interaction.withinMomentRange) {
       return Object.freeze({

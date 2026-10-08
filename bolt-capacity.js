@@ -99,8 +99,16 @@
   }
 
   function slipInteraction({ shearAction, shearCapacity, tensionAction, tensionCapacity }) {
-    const shear = Math.max(0, Number(shearAction) || 0);
-    const tension = Math.max(0, Number(tensionAction) || 0);
+    const action = (raw, name) => {
+      if (raw === null || raw === undefined || typeof raw === "boolean" || String(raw).trim() === "") {
+        throw new RangeError(`${name} must be an explicitly supplied non-negative finite action.`);
+      }
+      const number = Number(raw);
+      if (!Number.isFinite(number) || number < 0) throw new RangeError(`${name} must be a non-negative finite action.`);
+      return number;
+    };
+    const shear = action(shearAction, "Shear action");
+    const tension = action(tensionAction, "Tension action");
     return shear / positive(shearCapacity, "shearCapacity")
       + tension / positive(tensionCapacity, "tensionCapacity");
   }
