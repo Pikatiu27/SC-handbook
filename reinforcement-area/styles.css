@@ -1,0 +1,62 @@
+.reo-area-view { display: grid; gap: 16px; }
+.reo-area-card { display: grid; gap: 17px; }
+.reo-area-card .branch-tabs { margin: 0; }
+.reo-area-inputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.reo-area-arrangement-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.reo-area-arrangement-fields.is-count { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.reo-area-inputs label { min-width: 0; }
+.reo-area-inputs label > span:first-child { display: block; margin-bottom: 6px; font-weight: 750; font-size: 13px; }
+.reo-area-inputs input, .reo-area-inputs select { width: 100%; font-family: var(--font); }
+.reo-area-inputs .unit { width: 100%; display: block; }
+.reo-area-inputs .unit input { padding-right: 70px; }
+.reo-area-inputs .unit input { min-width: 0; }
+.reo-area-results { display: grid; grid-template-columns: 1.25fr 1fr; gap: 12px; }
+.reo-area-results .capacity-card { margin: 0; }
+.reo-area-results .capacity-card p { margin-bottom: 0; }
+.reo-area-basis-strip { display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--reo-soft); font-size: 12px; }
+.reo-area-basis-strip b { color: var(--reo-dark); font-variant-numeric: tabular-nums; }
+.reo-area-caption { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.reo-area-view .section-heading { margin: 0; }
+.reo-area-view .section-heading h3 { margin: 0; font-size: 16px; color: var(--reo-dark); }
+.reo-area-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 9px; }
+.reo-area-scroll:focus-visible { outline: 3px solid var(--reo-accent); outline-offset: 2px; }
+.reo-area-table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.reo-area-table th, .reo-area-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: right; }
+.reo-area-table thead th { background: #f6f1ee; color: var(--reo-dark); font-size: 12px; }
+.reo-area-table th:first-child { text-align: left; }
+.reo-area-table tbody th { color: var(--ink); background: #fff; }
+.reo-area-table tbody tr:last-child > * { border-bottom: 0; }
+.reo-area-table tr.is-selected > * { background: #faf1eb; }
+.reo-area-table .is-chosen { background: var(--reo-soft) !important; color: var(--reo-dark); font-weight: 900; box-shadow: inset 0 0 0 2px var(--reo-accent); }
+.reo-area-table button { border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; background: #fff; color: var(--reo-dark); font: inherit; font-size: 12px; font-weight: 750; cursor: pointer; }
+.reo-area-table button:hover { background: var(--reo-soft); }
+.reo-area-table button:focus-visible { outline: 3px solid var(--reo-accent); outline-offset: 2px; }
+.reo-area-view .field-error { margin: 0; }
+.reo-area-status { color: var(--muted); font-size: 11px; font-weight: 800; }
+.reo-area-status.is-invalid { color: #9a433d; }
+.reo-area-find-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.reo-area-mobile-unit { display: none; }
+.reo-area-view details > summary small { display: block; }
+.reo-area-view .detail-body p { font-size: 13px; line-height: 1.6; }
+.reo-area-view .detail-body a { color: var(--reo-dark); }
+@media (max-width: 600px) {
+  .reo-area-inputs, .reo-area-arrangement-fields.is-count { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reo-area-inputs #reoAreaLengthField { grid-column: 1 / -1; }
+  .reo-area-results { grid-template-columns: 1fr; }
+  .reo-area-card { padding: 14px; gap: 14px; }
+  .reo-area-table th, .reo-area-table td { padding: 9px 10px; }
+  .reo-area-candidates-table th, .reo-area-candidates-table td { padding: 9px 7px; font-size: 12px; }
+  .reo-area-candidates-table, .reo-area-candidates-table tbody { display: block; white-space: normal; }
+  .reo-area-candidates-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .reo-area-candidates-table tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; padding: 11px; border-bottom: 1px solid var(--line); }
+  .reo-area-candidates-table tr:last-child { border-bottom: 0; }
+  .reo-area-candidates-table th, .reo-area-candidates-table td { grid-column: 1; padding: 0; border: 0; text-align: left; }
+  .reo-area-candidates-table td:nth-child(3)::before { content: "Excess: "; color: var(--muted); }
+  .reo-area-candidates-table td:last-child { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+  .reo-area-candidates-table button { min-height: 44px; padding: 9px 14px; }
+  .reo-area-mobile-unit { display: inline; color: var(--muted); }
+  .reo-area-view .section-heading { align-items: start; gap: 8px; }
+  .reo-area-find-fields { grid-template-columns: 1fr; }
+  #reoAreaNav { width: 100%; }
+  #reoAreaNav .branch-tab { flex: 1; padding: 9px 7px; font-size: 12px; }
+}

@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.97 adds Reinforcement Area & Spacing as a nominal-data lookup and derived area/mass aid. It remains Public beta / For Review. Numerical area matching is not reinforcement design acceptance. Standard nominal mass is separate from supplier ordering mass. Existing published calculations and product data are preserved.
+
 SC Handbook is released as a **public beta engineering quick-reference handbook**. Build 0.7.96, updated 9 October 2026, publishes six corrections from the scoped correctness review: rejected numeric input is preserved rather than silently clamped; malformed Weld actions suppress utilisation; Bolt/Beam action APIs reject invalid actions; custom Beam material strengths must be finite; Freyssinet tendon locators and derived-row/load-basis labels are corrected; and keyboard focus has an explicit visible outline. Valid capacity equations and numerical product force values are unchanged.
 
 The existing Panel Antenna Specs and Guy lookup data, unknowns, conflicts and design exclusions are retained. Freyssinet bars reference PDF / printed p.11, and 15.7 mm strands p.9. Four published strand configurations retain the source elastic-limit basis; eight intermediate configurations are labelled derived from 246 / 279 kN per strand, not individually published anchor capacities.

@@ -168,7 +168,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "c2e7b7b3c06cc21ec4be12151bb756e918390e19e00b8ae7b71438be59d9c569"
+      "sha256": "d8b4782a02224cd650f2b648d5b5b6de9f5c2a56e19f2b171c3eb9a688b3d101"
     },
     {
       "path": "LICENSE.md",
@@ -224,11 +224,23 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "fb6156d46bfc2d950f62178989880f43fd4baceab4c78d599653ee4232af10a6"
+      "sha256": "7306e848c7816fa0fe188198742645f631deca9dd146d7e07f778f5da87178bf"
     },
     {
       "path": "README.md",
-      "sha256": "4028657fbca460d0c8ef9ac8aba548cc4c2f1855c820833a2957c70c347a6fef"
+      "sha256": "c4ed7d91dfb9ddfa64589758d6fe4c6fee01824c4f4a15cef3793e1d6b6f5dc6"
+    },
+    {
+      "path": "reinforcement-area/app.js",
+      "sha256": "056382bc8e7e365780efee3023efce43548446159f43104d04f1e82c945f5896"
+    },
+    {
+      "path": "reinforcement-area/calculation.js",
+      "sha256": "baf42767b994fde8a9965e39bcab83bb62f31febc488047de669bd9251653fa9"
+    },
+    {
+      "path": "reinforcement-area/styles.css",
+      "sha256": "fec5b39a790143ee6bb398271dbfb98ef3c07f64acf35d75019bea90cc207475"
     },
     {
       "path": "reo-calculation.js",
