@@ -2546,6 +2546,8 @@ function calculationTraceRow({
 }
 
 function clampNumericInput(input) {
+  // These controllers validate the entered value; blur must not replace it with a code limit.
+  if (input.dataset.preserveInvalid === "true") return;
   if (!String(input.value ?? "").trim()) return;
   const current = numericValue(input.value);
   if (!Number.isFinite(current)) return;
@@ -2962,10 +2964,16 @@ function calculateBolt() {
     : null;
   const slipGroupCapacity = slip === null ? null : count * slip;
   const slipTensionCapacity = preload > 0 ? 0.7 * count * preload : null;
-  const slipShearDemand = value("slipShearDemand");
-  const slipTensionDemand = value("slipTensionDemand");
+  const slipShearDemand = numericValue($("slipShearDemand").value);
+  const slipTensionDemand = numericValue($("slipTensionDemand").value);
+  const slipActionsValid = [slipShearDemand, slipTensionDemand].every(action => Number.isFinite(action) && action >= 0);
+  ["slipShearDemand", "slipTensionDemand"].forEach(id => {
+    const action = numericValue($(id).value);
+    $(id).setAttribute("aria-invalid", String(category.type === "friction" && (!Number.isFinite(action) || action < 0)));
+  });
+  const slipActionNote = "Enter both serviceability action magnitudes as finite, non-negative values; enter 0 explicitly for an action that does not apply.";
   const integrity = calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck);
-  const slipRatio = slipGroupCapacity && slipTensionCapacity
+  const slipRatio = slipActionsValid && countValid && slipGroupCapacity && slipTensionCapacity
     ? BoltCapacity.slipInteraction({
         shearAction: slipShearDemand,
         shearCapacity: slipGroupCapacity,
@@ -2973,7 +2981,7 @@ function calculateBolt() {
         tensionCapacity: slipTensionCapacity
       })
     : Infinity;
-  const hasSlipDemand = slipShearDemand > 0 || slipTensionDemand > 0;
+  const hasSlipDemand = slipActionsValid && (slipShearDemand > 0 || slipTensionDemand > 0);
   const detailingFailures = [];
   if (!krValid) detailingFailures.push("bolted-lap reduction factor");
   if (!shearPlanesValid) detailingFailures.push("shear-plane counts");
@@ -2988,6 +2996,8 @@ function calculateBolt() {
     : `Detailing non-compliant: ${detailingFailures.join(", ")}. Do not adopt the displayed capacities.`;
   const slipDisplayNote = category.type === "friction" && !slipInputsValid
     ? "Input required: enter a positive slip factor and a whole-number interface count from 1 to 10."
+    : !slipActionsValid
+    ? slipActionNote
     : !detailingCompliant
     ? detailingFailureNote
     : !hasSlipDemand
@@ -3086,6 +3096,8 @@ function calculateBolt() {
     ? "Invalid bolt count"
     : category.type === "friction" && !slipInputsValid
     ? "Input required"
+    : category.type === "friction" && !slipActionsValid
+    ? "Invalid slip actions"
     : !detailingCompliant
     ? "NON-COMPLIANT"
     : !hasSlipDemand
@@ -3093,7 +3105,7 @@ function calculateBolt() {
       : slipRatio <= 1
         ? "TF slip PASS"
         : "TF slip FAIL";
-  $("slipGoverningStatus").className = !countValid || !detailingCompliant || (category.type === "friction" && !slipInputsValid) ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
+  $("slipGoverningStatus").className = !countValid || !detailingCompliant || (category.type === "friction" && (!slipInputsValid || !slipActionsValid)) ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
   $("slipGoverningNote").textContent = countValid
     ? slipDisplayNote
     : "Bolt-group slip interaction is not evaluated until a valid bolt count is entered.";
@@ -3227,10 +3239,10 @@ function calculateBolt() {
       title: "TF combined slip",
       reference: "AS 4100 Cl. 9.2.3.3",
       formula: slip === null ? "" : `V<sub>sf</sub><sup>*</sup>/&phi;V<sub>sf</sub> + N<sub>tf</sub><sup>*</sup>/&phi;N<sub>tf</sub> &le; 1.0`,
-      substitution: slip === null ? "" : `${fixed(slipShearDemand)}/${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)}/${fixed(slipTensionCapacity)}`,
-      result: category.type !== "friction" ? "Not applicable" : !slipInputsValid ? "Input required" : `Interaction = ${Number.isFinite(slipRatio) ? displayFixed(slipRatio, 2) : "-"}`,
-      applicability: category.type !== "friction" ? "Friction-type categories where serviceability slip is limited." : !slipInputsValid ? "Complete the TF slip inputs before evaluating interaction." : "Entered actions are total bolt-group serviceability actions with equal action per identical bolt; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70.",
-      state: category.type === "friction" && !slipInputsValid ? "warning" : ""
+      substitution: slip === null || !slipActionsValid || !countValid ? "" : `${fixed(slipShearDemand)}/${fixed(slipGroupCapacity)} + ${fixed(slipTensionDemand)}/${fixed(slipTensionCapacity)}`,
+      result: category.type !== "friction" ? "Not applicable" : !countValid || !slipInputsValid ? "Input required" : !slipActionsValid ? "Invalid slip actions" : `Interaction = ${Number.isFinite(slipRatio) ? displayFixed(slipRatio, 2) : "-"}`,
+      applicability: category.type !== "friction" ? "Friction-type categories where serviceability slip is limited." : !countValid || !slipInputsValid ? "Complete the TF slip inputs before evaluating interaction." : !slipActionsValid ? slipActionNote : "Entered actions are total bolt-group serviceability actions with equal action per identical bolt; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70.",
+      state: category.type === "friction" && (!countValid || !slipInputsValid || !slipActionsValid) ? "warning" : ""
     }),
     calculationTraceRow({
       title: "Capacity-only boundary",
@@ -6209,20 +6221,28 @@ function calculateBeam() {
     : chsSectionShear
       ? BeamSectionCapacity.circularHollowShear(grade.fy, section.area, phi)
       : hollowWeb?.designCapacity ?? NaN;
-  const momentDemand = value("beamMomentDemand");
-  const shearDemand = value("beamShearDemand");
+  const momentDemand = numericValue($("beamMomentDemand").value);
+  const shearDemand = numericValue($("beamShearDemand").value);
+  const momentActionValid = Number.isFinite(momentDemand) && momentDemand >= 0;
+  const shearActionValid = !shearAvailable || Number.isFinite(shearDemand) && shearDemand >= 0;
+  const demandInputsValid = momentActionValid && shearActionValid;
+  $("beamMomentDemand").setAttribute("aria-invalid", String(!momentActionValid));
+  $("beamShearDemand").setAttribute("aria-invalid", String(!shearActionValid));
+  const demandInputNote = shearAvailable
+    ? "Enter both M* and V* as finite, non-negative action magnitudes; enter 0 explicitly for an action that does not apply."
+    : "Enter M* as a finite, non-negative action magnitude; enter 0 explicitly for no moment action.";
   const momentRatio = momentAvailable && momentCapacity > 0 ? momentDemand / momentCapacity : NaN;
-  const interactionDemand = interactionAvailable
+  const interactionDemand = interactionAvailable && demandInputsValid
     ? BeamSectionCapacity.momentShearDemandCheck(momentDemand, momentCapacity, shearDemand, shearCapacity)
     : null;
   const interaction = interactionDemand?.interaction || null;
-  const interactionShearCapacity = interactionAvailable ? interaction.designShearCapacity : shearAvailable ? shearCapacity : NaN;
-  const shearRatio = interactionAvailable
+  const interactionShearCapacity = interaction ? interaction.designShearCapacity : shearAvailable ? shearCapacity : NaN;
+  const shearRatio = interactionDemand
     ? interactionDemand.shearRatio
     : shearAvailable && interactionShearCapacity > 0 ? shearDemand / interactionShearCapacity : NaN;
-  const hasDemand = momentDemand > 0 || (shearAvailable && shearDemand > 0);
+  const hasDemand = demandInputsValid && (momentDemand > 0 || (shearAvailable && shearDemand > 0));
   const combinedDemand = momentDemand > 0 && shearAvailable && shearDemand > 0;
-  const allDemandPathsAvailable = momentAvailable && (!combinedDemand || interactionAvailable);
+  const allDemandPathsAvailable = demandInputsValid && momentAvailable && (!combinedDemand || interactionAvailable);
   const utilisation = allDemandPathsAvailable
     ? interactionAvailable
       ? interactionDemand.utilisation
@@ -6295,9 +6315,12 @@ function calculateBeam() {
     : momentAvailable
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml}; shear and combined action are not evaluated.`
       : "No utilisation is reported until the selected moment-capacity path is available.";
+  if (!demandInputsValid) $("beamDemandBasis").textContent = demandInputNote;
   $("beamUtilisation").textContent = !hasDemand ? "—" : formatBeamUtilisation(utilisation);
   $("beamStatus").textContent = !momentAvailable
     ? "Not evaluated"
+    : !demandInputsValid
+      ? "Invalid design actions"
     : !hasDemand
       ? "No design action"
       : !allDemandPathsAvailable
@@ -6363,7 +6386,7 @@ function calculateBeam() {
   const classStep = ["reconciled", "derived"].includes(coordination.status)
     ? `${compactnessText(grade?.compactness)}; ${coordination.classMethod === "published-ze-interval" ? "class inferred from the published load-case Z<sub>e</sub> position between the AS 4100 elastic and compact bounds" : `governing plate element = ${coordination.governing?.name || "solid section"}`}.`
     : "Not reconciled.";
-  const demandStep = !hasDemand ? "No design action entered."
+  const demandStep = !demandInputsValid ? demandInputNote : !hasDemand ? "No design action entered."
     : interactionDemand?.failureMode === "moment"
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${displayFixed(momentRatio, 2)} &gt; 1.00; section moment FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
     : Number.isFinite(utilisation) ? `Governing section utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "section check FAIL" : "section check PASS"}.`
@@ -6477,7 +6500,7 @@ function calculateBeam() {
       reference: interactionAvailable ? "AS 4100 Cl. 5.12.3" : "",
       formula: hasDemand ? utilisationFormula : "",
       substitution: utilisationSubstitution,
-      result: !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "Section check FAIL" : "Section check PASS"}` : "Not evaluated",
+      result: !demandInputsValid ? "Invalid design actions" : !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "Section check FAIL" : "Section check PASS"}` : "Not evaluated",
       applicability: demandStep
     }),
     calculationTraceRow({
@@ -7397,13 +7420,13 @@ function initializeConcreteLayerState() {
 
 function concreteLayer(index, depth, direction, width) {
   const active = $(`layer${index}Active`).checked;
-  const yTop = value(`layer${index}Y`);
+  const yTop = numericValue($(`layer${index}Y`).value);
   const product = concreteBarProduct(index);
   const bar = product.diameter;
-  const spacing = value(`layer${index}Spacing`);
-  const fsyInput = value(`layer${index}Fsy`) || product.fsy;
+  const spacing = numericValue($(`layer${index}Spacing`).value);
+  const fsyInput = numericValue($(`layer${index}Fsy`).value);
   const fsy = Math.min(600, fsyInput);
-  const es = value(`layer${index}Es`);
+  const es = numericValue($(`layer${index}Es`).value);
   const barArea = product.area || Math.PI * bar ** 2 / 4;
   const areaPerMetre = spacing > 0 ? barArea * 1000 / spacing : 0;
   const area = spacing > 0 ? barArea * width / spacing : 0;
@@ -7556,9 +7579,9 @@ function concreteAutoDepth(index, topDepth, bottomDepth, cover, bar, crossingOff
   if (index <= 2 && topDepth <= 0) return NaN;
   if (index >= 3 && bottomDepth <= 0) return NaN;
   if (index === 1) return faceOffset;
-  if (index === 2) return Math.max(0, topDepth - faceOffset);
+  if (index === 2) return topDepth - faceOffset;
   if (index === 3) return topDepth + faceOffset;
-  return Math.max(0, totalDepth - faceOffset);
+  return totalDepth - faceOffset;
 }
 
 function updateConcreteMatAvailability(topDepth, bottomDepth) {
@@ -7601,7 +7624,7 @@ function updateConcreteMatDepths(topDepth, bottomDepth, cover) {
     const bar = concreteBarProduct(index).diameter;
     const crossingOffset = twoWayReinforcement ? bar : 0;
     const y = concreteAutoDepth(index, topDepth, bottomDepth, cover, bar, crossingOffset);
-    yInput.value = Number.isFinite(y) ? fixed(Math.max(0, y)) : "";
+    yInput.value = Number.isFinite(y) ? fixed(y) : "";
   });
 }
 
@@ -7663,8 +7686,14 @@ function calculateConcrete() {
   saveConcreteLayerState();
   updateConcreteShearInputVisibility();
   const shearInput = concreteShearInputState();
-  const topDepth = value("concreteTopDepth");
-  const bottomDepth = value("concreteBottomDepth");
+  const topDepth = numericValue($("concreteTopDepth").value);
+  const bottomDepth = numericValue($("concreteBottomDepth").value);
+  const geometryErrors = [];
+  [["concreteTopDepth", topDepth, "Top pad depth"], ["concreteBottomDepth", bottomDepth, "Bottom pad depth"]].forEach(([id, entered, label]) => {
+    const valid = Number.isFinite(entered) && entered >= 0;
+    $(id).setAttribute("aria-invalid", String(!valid));
+    if (!valid) geometryErrors.push(`${label} must be finite and non-negative; enter 0 explicitly for an absent pad`);
+  });
   const hideInactiveBottomMats = bottomDepth <= 0;
   [$("layer3Row"), $("layer4Row")].forEach(row => { row.hidden = hideInactiveBottomMats; });
   $("bottomPadLayerNote").hidden = !hideInactiveBottomMats;
@@ -7682,20 +7711,29 @@ function calculateConcrete() {
   const compositeSection = hasTopPad && hasBottomPad;
   const sectionKind = compositeSection ? "composite" : hasTopPad ? "top" : hasBottomPad ? "bottom" : "none";
   const depth = totalDepth;
-  const projectionScreen = projectionValid && projectionEntered && depth > 0
+  const projectionScreen = geometryErrors.length === 0 && projectionValid && projectionEntered && depth > 0
     ? concreteFootingProjectionScreen(projection, depth)
     : null;
   const layerIndices = compositeSection ? [1, 2, 3, 4] : hasTopPad ? [1, 2] : hasBottomPad ? [3, 4] : [];
-  const cover = value("concreteCover");
+  const cover = numericValue($("concreteCover").value);
+  const coverValid = Number.isFinite(cover) && cover >= 0;
+  $("concreteCover").setAttribute("aria-invalid", String(!coverValid));
+  if (!coverValid) geometryErrors.push("Nominal cover must be finite and non-negative");
   const width = 1000;
-  const fcInput = value("concreteFc");
+  const fcInput = numericValue($("concreteFc").value);
   const fcValid = Number.isFinite(fcInput) && fcInput >= 20 && fcInput <= 120;
   $("concreteFc").setAttribute("aria-invalid", String(!fcValid));
   const fc = fcValid ? fcInput : NaN;
   const stressBlock = fcValid ? concreteStressBlockFactors(fc) : { alpha2: NaN, gamma: NaN };
   const ecu = 0.003;
   updateConcreteMatAvailability(topDepth, bottomDepth);
-  updateConcreteMatDepths(topDepth, bottomDepth, cover);
+  if (geometryErrors.length === 0) {
+    updateConcreteMatDepths(topDepth, bottomDepth, cover);
+  } else {
+    [1, 2, 3, 4].forEach(index => {
+      if ($(`layer${index}Auto`).checked) $(`layer${index}Y`).value = "";
+    });
+  }
   const data = {
     direction,
     width,
@@ -7710,12 +7748,31 @@ function calculateConcrete() {
     reinforcementLayout,
     compositeSection,
     sectionKind,
-    layers: layerIndices.map(index => concreteLayer(index, depth, direction, width)).filter(layer => layer.active && layer.area > 0 && layer.yTop >= 0 && layer.yTop <= depth)
+    layers: layerIndices.map(index => concreteLayer(index, depth, direction, width)).filter(layer => layer.active)
   };
+  [1, 2, 3, 4].forEach(index => {
+    ["Y", "Spacing", "Fsy", "Es"].forEach(suffix => $(`layer${index}${suffix}`).setAttribute("aria-invalid", "false"));
+  });
+  if (geometryErrors.length === 0) data.layers.forEach(layer => {
+    const padStart = layer.index <= 2 ? 0 : topDepth;
+    const padEnd = layer.index <= 2 ? topDepth : depth;
+    const checks = [
+      ["Y", Number.isFinite(layer.yTop) && layer.yTop >= padStart + layer.bar / 2 && layer.yTop <= padEnd - layer.bar / 2, "bar centre must lie inside its pad with the bar diameter accommodated"],
+      ["Spacing", Number.isFinite(layer.spacing) && layer.spacing >= 50, "spacing must be finite and at least 50 mm"],
+      ["Fsy", Number.isFinite(layer.fsyInput) && layer.fsyInput >= 200, "yield strength must be finite and at least 200 MPa"],
+      ["Es", Number.isFinite(layer.es) && layer.es >= 100000, "elastic modulus must be finite and at least 100000 MPa"]
+    ];
+    checks.forEach(([suffix, valid, note]) => {
+      $(`layer${layer.index}${suffix}`).setAttribute("aria-invalid", String(!valid));
+      if (!valid) geometryErrors.push(`${layer.name}: ${note}`);
+    });
+  });
 
   let result = {
     ok: false,
-    message: !fcValid
+    message: geometryErrors.length
+      ? `Invalid concrete input: ${geometryErrors.join("; ")}`
+      : !fcValid
       ? "Concrete strength must be between 20 MPa and 120 MPa"
       : !shearInput.valid
         ? `Invalid shear reinforcement input: ${shearInput.errors.join("; ")}`
@@ -7723,7 +7780,7 @@ function calculateConcrete() {
         ? "No concrete pad depth is defined"
         : "Plain concrete section: no RC ultimate flexural capacity is calculated without active reinforcement layers"
   };
-  if (fcValid && shearInput.valid && data.width > 0 && data.depth > 0 && data.ecu > 0 && data.layers.length) {
+  if (!geometryErrors.length && fcValid && shearInput.valid && data.width > 0 && data.depth > 0 && data.ecu > 0 && data.layers.length) {
     result = solveConcreteSection(data);
   }
 
@@ -7778,7 +7835,14 @@ function calculateConcrete() {
     $("concreteWarningText").textContent = result.message;
     $("concreteSectionState").innerHTML = nonFlexuralState;
     $("concreteLayerResults").innerHTML = "";
-    const failureSteps = !fcValid
+    const failureSteps = geometryErrors.length
+      ? calculationTraceRow({
+          title: "Concrete geometry and reinforcement inputs",
+          result: "Not evaluated",
+          applicability: `${result.message}. No flexural or shear capacity is reported.`,
+          state: "warning"
+        })
+      : !fcValid
       ? calculationTraceRow({
           title: "Concrete strength input",
           result: "Not evaluated",

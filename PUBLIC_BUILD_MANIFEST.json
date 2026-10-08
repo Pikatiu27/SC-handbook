@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "63835818a55d8382e628b2d5f845f8bec2b593ee1bab13dd5945c3f8ab2f3402"
+      "sha256": "27a493a7674832e568ff2172a6fc3328f9e5edf1be2ca520090aa9d458324c7d"
     },
     {
       "path": "assets/fonts/Lato-Black.ttf",
@@ -168,7 +168,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "acc2d524b99be1e9607b424ddf61e4d522f461445acb664f6c8a3e2f09c583e5"
+      "sha256": "0094a464bbee0fb1d37ecb25e7b24c7922774f54dc0bcec1bf9d2752aac5db50"
     },
     {
       "path": "LICENSE.md",
@@ -224,11 +224,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "2b67e445468fdef7bc1625853b397daa6efeb77334c9d2007e6cd8d769cd6d56"
+      "sha256": "5d9bd4d6a4289b017675038cdd8f2e9350e82e82045455ebd3bd8edb8c0861b5"
     },
     {
       "path": "README.md",
-      "sha256": "8b8cebe7764d16387ae12e80fa5a8a23d7a5c0c6dd3e1139fe2f7d7696c34a47"
+      "sha256": "6d66c79d36d617e17c868bba3dd9a5040e91397b7ac263dc61e464a78973ca5e"
     },
     {
       "path": "reo-calculation.js",
