@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.101, updated 9 October 2026, adds a For Review AS/NZS 4600:2018 cold-formed CHS pure-bending quick reference under Steel Members. Manual D, t and fy inputs are primary, with optional Orrcon catalogue inputs, explicit grade selection, visible D/t limits and a short copyable result. It does not accept project actions or check axial/shear interaction, taper applicability, openings, joints or complete monopole design. Source formulae were checked against licensed clauses; independent engineer review was waived by the user and is not recorded as passed.
+
 Build 0.7.100, updated 9 October 2026, adds the approved Fastener Tables within Bolt Capacity. Public beta / For Review continues. The independently arranged factual dimensions, derived hole geometry, exact product identities and external document links do not establish hole-use approval, supplier/batch compliance, product interchangeability or connection capacity. Pending and conflicted fields remain unavailable. Working, design and characteristic loads retain their own source bases.
 
 Build 0.7.99, updated 9 October 2026, publishes the approved compact Guy & Fittings tables across all nine families. Column widths, row spacing and headers are refined; repeated product identities and all-empty dimension columns are reduced. Published rating bases and source units remain explicit, with source conflicts withheld. All 416 product records, source values and restrictions remain unchanged. Public beta / For Review continues.

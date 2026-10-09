@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.100 (9 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.101 (9 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -201,3 +201,7 @@ Guy & Fittings compact tables cover all nine component families: duplicate produ
 ### Fastener Tables
 
 Public beta / For Review: structural bolt, nut, washer and hole dimensions; 68 U-bolt/clamp/custom entries and 90 blind-bolt entries in compact comparison tables, with manufacturer documents and distinct published-load bases. Pending dimensions and source-conflicted fields are withheld. Catalogue coverage is partial; installation, Australian project adoption, connected material and complete design acceptance remain separate. Existing U-bolt/blind-bolt links open the corresponding family.
+
+## Cold-formed CHS Bending
+
+The Steel Members tab includes a For Review AS/NZS 4600:2018 pure-bending quick reference for circular hollow sections. Confirm supplied dimensions, grade and design basis before use. Axial force and combined actions require separate checks. The result is not a manufacturer rating or complete design.

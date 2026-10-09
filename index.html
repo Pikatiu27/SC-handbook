@@ -12,6 +12,7 @@
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=20261009correctness1">
+  <link rel="stylesheet" href="as4600-chs/panel.css?v=20261009chs4600release1">
 
   <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo76">
   <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo76">
@@ -57,6 +58,7 @@
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel-members" data-tool="chs4600" aria-controls="chs4600Panel" aria-pressed="false" hidden>Cold-formed CHS Bending</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-pressed="false" hidden>Steel Monopole Section Capacity</button>
 
           <button class="tool-tab" type="button" data-category="foundations" data-tool="geo" aria-controls="geoPanel" aria-pressed="false" hidden>Ground Parameters</button>
@@ -1265,6 +1267,64 @@
       </details>
     </section>
 
+<section id="chs4600Panel" class="tool-panel" hidden>
+      <div class="tool-heading"><div><p class="kicker">AS/NZS 4600:2018 Cl. 3.6.2</p><h2>Cold-formed CHS Bending Capacity</h2></div><span class="tool-status">For Review</span></div>
+      <p class="chs4600-intro">Pure bending capacity of a cylindrical CHS section. Tapers, polygonal sections, openings and joints require separate assessment.</p>
+      <section class="lookup-card chs4600-card">
+        <div class="input-cluster">
+          <section class="input-group input-group-section">
+            <span class="input-group-heading"><b>Section dimensions</b><small>Use the diameter and base steel thickness at the section checked.</small></span>
+            <div class="input-group-fields two">
+              <label><span>Outside diameter D</span><span class="unit"><input id="chs4600Diameter" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 114.3"><em>mm</em></span></label>
+              <label><span>Base steel wall thickness t</span><span class="unit"><input id="chs4600Thickness" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 4.5"><em>mm</em></span></label>
+            </div>
+            <p id="chs4600InputMode" class="result-note">Manual inputs · catalogue available below.</p>
+          </section>
+          <section class="input-group input-group-material">
+            <span class="input-group-heading"><b>Material and method</b><small>Use the confirmed material yield stress.</small></span>
+            <div class="input-group-fields three">
+              <label><span>Yield stress f<sub>y</sub></span><span class="unit"><input id="chs4600Fy" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 350" aria-describedby="chs4600FyNote"><em>MPa</em></span></label>
+              <div class="chs4600-fixed"><span>Elastic modulus E</span><strong>200,000 MPa</strong></div>
+              <div class="chs4600-fixed"><span>Bending factor &phi;<sub>b</sub></span><strong>0.95</strong></div>
+            </div>
+            <p id="chs4600FyNote" class="result-note chs4600-material-note"><b>f<sub>y</sub> depends on grade.</b> C250L0: 250 MPa · C350L0: 350 MPa (AS/NZS 1163:2016 Table 7).</p>
+          </section>
+          <details class="input-group chs4600-catalogue">
+            <summary><span><b>Catalogue inputs</b><small>Optional · six Orrcon 2024 CHS sizes</small></span><i>+</i></summary>
+            <div class="input-group-fields two">
+              <label><span>CHS size</span><select id="chs4600Product"><option value="">Manual inputs</option></select></label>
+              <label><span>AS/NZS 1163 grade</span><select id="chs4600Grade" aria-describedby="chs4600GradeNote" disabled><option value="">Select size first</option></select></label>
+            </div>
+            <p id="chs4600GradeNote" class="result-note chs4600-material-note"><b>C350L0:</b> C = cold-formed CHS; 350 = minimum f<sub>y</sub> (MPa); L0 = specified impact toughness at 0°C. Select the supplied grade.</p>
+            <p id="chs4600ProductSource" class="result-note chs4600-product-source">Nominal dimensions and listed grades only. Confirm the supplied product.</p>
+          </details>
+          <section class="input-group input-group-warning chs4600-basis-group">
+            <span class="input-group-heading"><b>Confirm design basis</b><small>Required to calculate.</small></span>
+            <label class="checkbox-field"><span>Dimensions and grade confirmed; cold-formed CHS; AS/NZS 4600 design basis.</span><input id="chs4600BasisConfirmed" type="checkbox"></label>
+          </section>
+        </div>
+        <div class="chs4600-actions"><button id="chs4600Calculate" type="button">Calculate capacity</button><p id="chs4600Status" class="result-note chs4600-status" role="status" aria-live="polite">Enter D, t and f<sub>y</sub>, then confirm the design basis.</p></div>
+        <div id="chs4600Issues" class="chs4600-issues" hidden></div>
+      </section>
+      <section class="capacity-section chs4600-result-card" aria-live="polite">
+        <div class="section-heading"><div><h2>Bending capacity</h2></div><span>Pure bending</span></div>
+        <div class="capacity-grid chs4600-results">
+          <article class="capacity-card selected-shear"><span>Design bending capacity &phi;<sub>b</sub>M<sub>b</sub></span><strong><output id="chs4600Design">Not evaluated</output><small id="chs4600DesignUnit" hidden> kN·m</small></strong><p>AS/NZS 4600:2018 Cl. 3.6.2 · compare M* separately</p></article>
+        </div>
+        <dl class="chs4600-summary">
+          <div><dt>Nominal moment capacity M<sub>b</sub></dt><dd><output id="chs4600Nominal">—</output><span id="chs4600NominalUnit" hidden> kN·m</span></dd></div>
+          <div><dt>Diameter ratio D/t</dt><dd id="chs4600Ratio">—</dd></div>
+          <div><dt>Maximum D/t · 0.441E/f<sub>y</sub></dt><dd id="chs4600RatioLimit">—</dd></div>
+          <div><dt>Governing branch</dt><dd id="chs4600Branch">—</dd></div>
+        </dl>
+        <div class="chs4600-copy-actions"><button id="chs4600Copy" type="button" disabled>Copy result</button><p id="chs4600CopyStatus" class="result-note" role="status" aria-live="polite"></p></div>
+        <label id="chs4600CopyFallback" class="chs4600-copy-fallback" hidden><span>Result text · select and copy</span><textarea id="chs4600CopyText" rows="6" readonly></textarea></label>
+        <p class="chs4600-axial-note"><b>With axial force N<sup>*</sup>:</b> check axial resistance and N<sup>*</sup>–M<sup>*</sup> interaction separately under AS/NZS 4600.</p>
+      </section>
+      <details class="detail-card"><summary><span><b>Calculation steps</b><small>Equations and substitution</small></span><i>+</i></summary><div class="detail-body"><section><h3>Current inputs</h3><dl id="chs4600Trace" class="chs4600-trace"></dl></section></div></details>
+      <details class="source-card"><summary><span><b>Sources and limits</b><small>Design basis and scope</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Design</b> — AS/NZS 4600:2018 Cl. 1.1, 3.6.1–3.6.2; Tables 1.4 and 1.6.3. The AS 4100 CHS “CF” category does not establish this design basis.</p><p><b>Catalogue</b> — <a href="https://orrconmanufacturing.com.au/app/uploads/2024/07/Orrcon-National-Product-Catalogue-Man-LR.pdf" target="_blank" rel="noopener noreferrer">Orrcon, July 2024</a>, §1.1.4, pp. 10–11: nominal D, t, mass and grades. Grade f<sub>y</sub>: AS/NZS 1163:2016 Table 7. Confirm supply and material certificate; no live stock or manufacturer capacity is provided.</p></div><div class="source-notes"><p><b>Inputs</b> — Manual or catalogue dimensions; ideal annular geometry. Adopt thickness allowances separately. For plate-fabricated shafts, use f<sub>y</sub> for the confirmed plate grade and thickness under the applicable material Standard.</p><p><b>Limits</b> — Cold-formed steel within Cl. 1.1; t &le; 25 mm; D &gt; 2t; D/t &le; 0.441E/f<sub>y</sub>. Allow for dynamic effects in non-building applications. Axial load, shear, concentrated actions, connections, serviceability and brittle fracture require separate checks. This is a section capacity, not a complete monopole design.</p></div></div></details>
+    </section>
+
     <section id="monopolePanel" class="tool-panel" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Steel monopole</p><h2>Steel Monopole Section Capacity</h2></div>
@@ -2258,7 +2318,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.100 &middot; updated 9 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.101 &middot; updated 9 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20261009correctness1"></script>
@@ -2283,11 +2343,14 @@
       <script src="geo-parameters/geo-parameters-data.js?v=20260921geo76"></script>
       <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
 
-  <script src="app.js?v=20261009fasteners1"></script>
+  <script src="app.js?v=20261009chs4600release1"></script>
 
       <script src="geo-parameters/app.js?v=20260921geo76"></script>
 
   <script src="monopole-app.js?v=20260821monopoleaudit1"></script>
+  <script src="as4600-chs/bending.js?v=20261009chs4600release1"></script>
+  <script src="as4600-chs/orrcon-products.js?v=20261009chs4600release1"></script>
+  <script src="as4600-chs/panel.js?v=20261009chs4600release1"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20261009correctness1"></script>
     <script src="guy-lookup/data.js?v=20261003gaps1"></script>
   <script src="guy-lookup/units.js?v=20261003gaps1"></script>

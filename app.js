@@ -2388,6 +2388,8 @@ const toolCategories = {
 
 toolNames.push("guy", "antenna");
 toolCategories["product-lookup"] = ["guy", "antenna"];
+toolNames.push("chs4600");
+toolCategories["steel-members"].splice(3, 0, "chs4600");
 
 const toolAliases = { pad: "concrete", axial: "member" };
 const publicToolHashes = { concrete: "pad" };

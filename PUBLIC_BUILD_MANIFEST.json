@@ -8,7 +8,23 @@
     },
     {
       "path": "app.js",
-      "sha256": "7657b832e57b94a8af1b9228c1a6843ba35779e8bf210b6cdaad306f2e54abc1"
+      "sha256": "bf3965c725b28b8b4277e774c7ea5a4fab61c46e39a0d4a35177ec11575c50a6"
+    },
+    {
+      "path": "as4600-chs/bending.js",
+      "sha256": "c7b2df6d07dafe966f242e6901f228d34d4b17e71744637a9bda6aacdf838481"
+    },
+    {
+      "path": "as4600-chs/orrcon-products.js",
+      "sha256": "634da37e1bc437abbfafe78f41232eff9878945cbf8c6b54da897d86fc581787"
+    },
+    {
+      "path": "as4600-chs/panel.css",
+      "sha256": "f8b73cf29056cd41f69e0d0ee0223c11eddaff85032304d9360ea8e010aed646"
+    },
+    {
+      "path": "as4600-chs/panel.js",
+      "sha256": "3b784e989ea9c8ea21c0fb4881123843ff168c615426a2ea354496c6528ff913"
     },
     {
       "path": "assets/fonts/Lato-Black.ttf",
@@ -192,7 +208,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "e8bc40afd30e3dd5854f5450698f6a77c23bf78189649969e20b4961f83b48f3"
+      "sha256": "3f4bbc69e2ff06aa436eb80366211b729fda87883db0d8f99f56c2bd8da75f3c"
     },
     {
       "path": "LICENSE.md",
@@ -248,11 +264,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "05b83193ad50f1d80340d2ff696fc03f41c72e5ecde057efcd9edcea1aad5a37"
+      "sha256": "2a87beb8df59c956086fe9a8c8375e69a2748a75192e07001c469b816d6a7629"
     },
     {
       "path": "README.md",
-      "sha256": "cdb5d1d851825705b6d73b6e643ac16069dc58ca4a6f7085b65954bb1ce842cb"
+      "sha256": "620457902cbfe3f0b4c8fdf564b92daaa3af97a69de3c6a902a7b87bf1db0eb2"
     },
     {
       "path": "reinforcement-area/app.js",
