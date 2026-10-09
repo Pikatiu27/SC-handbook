@@ -175,3 +175,42 @@
 #guyPanel .guy-detail-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:4px 0 12px}#guyPanel .guy-detail-actions button{min-height:44px;padding:8px 12px}#guyPanel .guy-detail-actions a{font-size:var(--fs-sm)}#guyPanel .guy-detail-extra{border-top:1px solid var(--line);margin-top:8px}#guyPanel .guy-detail-extra>summary{padding:12px 0;font-size:var(--fs-sm)}#guyPanel .guy-detail-extra>.guy-properties{margin-top:0}#guyPanel .guy-detail-footer{margin:12px 0 0}#guyPanel .guy-detail-body .guy-properties :is(dt,dd){padding:6px 8px}#guyPanel .guy-detail-body .guy-selected{padding:10px 0;font-size:var(--fs-sm)}#guyPanel .guy-detail-body .guy-properties{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}#guyPanel .guy-detail-body .guy-properties :is(dt,dd){overflow-wrap:anywhere}
 
 #guyPanel .guy-data-tag{display:block;font-size:11px;line-height:1.3;color:#8b4a0a;margin-top:2px}#guyPanel #guyDataGaps{margin:8px 0;font-size:12px}#guyPanel #guyInstallationLinks{font-size:12px;line-height:1.6}
+
+/* Accepted fixed identity and side details, 9 October 2026. */
+/* Unreleased review candidate. Keep the complete catalogue table. */
+#guyPanel .guy-table tbody th button { align-items:flex-start; text-align:left; gap:3px; padding:6px; }
+#guyPanel .guy-table .guy-model-code { width:100%; white-space:normal; overflow-wrap:anywhere; text-decoration:underline; font-weight:700; }
+#guyPanel .guy-table .guy-model-brand { font-weight:400; }
+#guyPanel .guy-table .guy-model-size { font-size:var(--fs-xs); font-weight:400; color:var(--ink); white-space:normal; }
+#guyPanel .guy-table .guy-row-supplier { text-align:left; overflow-wrap:anywhere; }
+#guyPanel .guy-table tr[data-selected="true"] th:first-child { box-shadow:inset 3px 0 var(--wind-dark); }
+#guyPanel #guyDrawer { position:fixed; inset:72px 12px 12px auto; margin:0; width:440px; max-width:calc(100% - 24px); height:calc(100dvh - 84px); max-height:none; padding:0; box-sizing:border-box; border:1px solid #91aebc; border-radius:12px; background:white; color:var(--ink); box-shadow:-8px 4px 32px #19364440; z-index:20; overflow:hidden; }
+#guyPanel #guyDrawer[open] { display:flex; flex-direction:column; }
+#guyPanel #guyDrawer::backdrop { background:#19364455; }
+body:has(#guyDrawer[open][aria-modal="true"]) { overflow:hidden; }
+#guyPanel .guy-drawer-header { display:flex; flex:none; justify-content:space-between; align-items:flex-start; gap:12px; padding:16px; background:var(--wind-soft); border-bottom:1px solid var(--line); }
+#guyPanel .guy-drawer-header .kicker { margin:0 0 4px; }
+#guyPanel .guy-drawer-header h3 { margin:0; font-size:var(--fs-lg); color:var(--wind-dark); overflow-wrap:anywhere; }
+#guyPanel .guy-drawer-header button { flex:none; min-height:44px; }
+#guyPanel .guy-drawer-scroll { overflow:auto; min-height:0; overscroll-behavior:contain; padding:0 16px 16px; }
+#guyPanel #guySelection { border:0; margin:0; padding:0; box-shadow:none; }
+#guyPanel #guySelection > summary { display:none; }
+#guyPanel #guySelection .guy-detail-body { padding:0; }
+#guyPanel #guySelection .guy-detail-body .guy-properties { grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+#guyPanel #guySelection .guy-big output { font-size:28px; }
+#guyPanel #guySelection .guy-selected { font-size:var(--fs-sm); line-height:1.5; }
+#guyPanel #guySelection .guy-detail-meta { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:4px 0 10px; }
+#guyPanel #guySelection .guy-detail-meta .guy-detail-actions { flex:none; margin:0; }
+#guyPanel #guySelection .capacity-card h3 { margin:0 0 8px; }
+#guyPanel #guySelection .guy-market-list { grid-template-columns:minmax(0,1fr); }
+#guyPanel #guySelection .guy-market-list dd { margin-bottom:10px; }
+#guyPanel #guySelection .guy-warning { font-size:var(--fs-sm); line-height:1.5; }
+#guyPanel #guyDrawerTitle:focus { outline:0; }
+@media(max-width:899px) {
+  #guyPanel #guyDrawer { inset:64px 12px 12px 12px; width:calc(100% - 24px); height:calc(100dvh - 76px); }
+}
+@media(max-width:500px) {
+  #guyPanel .guy-drawer-header { padding:12px; }
+  #guyPanel .guy-drawer-scroll { padding:0 12px 12px; }
+  #guyPanel #guySelection .guy-detail-body .guy-properties { grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); }
+}
