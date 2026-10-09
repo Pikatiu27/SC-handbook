@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.102 (9 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.103 (9 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -209,3 +209,7 @@ The Steel Members tab includes a For Review AS/NZS 4600:2018 pure-bending quick 
 ### Bolt Capacity comparison
 
 Compare sizes or categories, select N/X shear directly in the table, and read selected properties below the quick selectors. Nine coarse-thread sizes include M22/M27 derived geometry, marked For Review. M12/M22/M27 class8.8 TB/TF installation preload is a separate Hobson K0 lookup; manufacturer-path TF slip is not evaluated. Existing strength formulas and the five Standard preload paths are retained. Public beta / For Review continues.
+
+### Concrete Anchor Products
+
+Foundations installation lookup, Public beta / For Review: 33 selected profiles across six Ramset/Hilti families. Compact mechanical and chemical comparison, conditional layout minima, torque bases and official documents. Partial AU coverage; dated HST3 source remains explicit. No resistance, full design, stock, installation acceptance or automatic AS 5216 compliance result.

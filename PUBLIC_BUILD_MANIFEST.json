@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "b99533d3dc9d7a26f8264883c89400a478ec302d39cde12e0dbd5b6ea08267a9"
+      "sha256": "8e45b2a751535f7a562f3d1efb31ca40cdb28a68996fe4fca30d741016bdeabf"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -143,6 +143,22 @@
       "sha256": "94c1d8fe0ab5ee46db52e94186d7ef3f7848c515cfafe61ace3388fd3eeb7f47"
     },
     {
+      "path": "concrete-anchors/app.js",
+      "sha256": "402815ec01ab30772b7632f4af0d886ee66ba47afd46e1a77381547a1990de53"
+    },
+    {
+      "path": "concrete-anchors/data.js",
+      "sha256": "2a6187ba0fbb1b31f28fd4e77a7eb141937540ba4cf4c6fabc7f91b1ce5740fc"
+    },
+    {
+      "path": "concrete-anchors/lookup.js",
+      "sha256": "77433f750f76351f1b11faf7d0d129d192fdb0d50a2cf78f4a4c0595b4f6206f"
+    },
+    {
+      "path": "concrete-anchors/styles.css",
+      "sha256": "e12bc28874d480a170152f9a3b15bb646bd45a59495b00df31ebd14598dd6480"
+    },
+    {
       "path": "concrete-section-calculation.js",
       "sha256": "49406eaafc5e4a15e1c4dd6f109ef874d51a674c422f3e730e24141352aeb795"
     },
@@ -216,7 +232,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "0408c2f2e205512960f5698aa1448baa572730054ea312a5d5079676f6f28e64"
+      "sha256": "df38b220a48fe00cdfdffa37cc860452e99bbb81898682b2e258f94993f91ee8"
     },
     {
       "path": "LICENSE.md",
@@ -272,11 +288,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "561b0346f72619e6ddc31e9f39b288a255598c83eb4866b2a65b9c0b041e3972"
+      "sha256": "5889dcd45386563ed1ed1793a6b8f3dfec5a92d3ba0bfb14e3e0d0f89d5b7c85"
     },
     {
       "path": "README.md",
-      "sha256": "b125d001c94e515327221768f610bc3c7ad436f61a6aa8bd7afd600fa8b94d76"
+      "sha256": "fe43317e8ad75bdbc8874dfffb1d33868631235d0004b40ef9256ad21a123f37"
     },
     {
       "path": "reinforcement-area/app.js",

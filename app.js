@@ -2427,6 +2427,8 @@ toolNames.push("chs4600");
 toolCategories["steel-members"].splice(3, 0, "chs4600");
 
 const toolAliases = { pad: "concrete", axial: "member" };
+toolNames.push("anchors");
+toolCategories.foundations.push("anchors");
 const publicToolHashes = { concrete: "pad" };
 const concreteLayerFieldSuffixes = ["Active", "Auto", "Y", "Bar", "Spacing", "Fsy", "Es"];
 let concreteLayerState = null;

@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.103 adds selected concrete-anchor installation profiles in Foundations. Public beta / For Review. Independently arranged factual parameters, identifiers, conventional symbols and short project-written conditions link to the manufacturer documents. No source PDFs, original figures or catalogue layouts are redistributed. Conditional minima do not establish resistance or Australian project adoption. Necessary browser code and lookup data are publicly retrievable.
+
 Build 0.7.102, updated 9 October 2026, publishes the approved Bolt Capacity comparison table and fixed selected-property bar. Original strength equations remain unchanged. M22/M27 core areas derive from nominal supplier thread geometry and remain For Review; AS 1275 original verification is not claimed. M12/M22/M27 class8.8 preloaded entries identify Hobson K0 installation values separately from AS 4100 table values. Project installation adoption is required and their TF slip resistance, interaction and PASS/FAIL are withheld. Public availability does not establish independent engineering acceptance, batch conformity or complete connection design.
 
 Build 0.7.101, updated 9 October 2026, adds a For Review AS/NZS 4600:2018 cold-formed CHS pure-bending quick reference under Steel Members. Manual D, t and fy inputs are primary, with optional Orrcon catalogue inputs, explicit grade selection, visible D/t limits and a short copyable result. It does not accept project actions or check axial/shear interaction, taper applicability, openings, joints or complete monopole design. Source formulae were checked against licensed clauses; independent engineer review was waived by the user and is not recorded as passed.

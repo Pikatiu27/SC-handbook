@@ -1,0 +1,57 @@
+/* Scoped local module: shared handbook typography and compact table contract. */
+.tool-navigation[data-active-tool="anchors"], #anchorsPanel { --green: var(--concrete-accent); --green-dark: var(--concrete-dark); --green-soft: var(--concrete-soft); --panel-bg: var(--concrete-panel); --line: #cde6e9; --input-manual-bg: #ecfaf8; --input-auto-bg: #f1f5f4; --input-auto-border: rgba(47,116,111,.24); }
+.tool-tab[data-tool="anchors"] { --tool-marker: var(--concrete-dark); }
+.tool-tab[data-tool="anchors"].active { background: var(--concrete-dark); color: #fff; border-color: var(--concrete-dark); }
+#anchorsPanel { min-width: 0; }
+.ca-card { min-width: 0; }
+.ca-types { margin-bottom: 12px; }
+.ca-intro, .ca-help, .ca-boundary, .ca-scroll-hint { color: var(--muted); font-size: var(--fs-xs); line-height: 1.5; }
+.ca-intro { margin: 0 0 16px; }
+.ca-filter-group { display: block; }
+.ca-filters { grid-template-columns: 1fr .75fr 1.3fr auto; }
+.ca-filters label { min-width: 0; color: var(--muted); font-size: var(--fs-sm); font-weight: 700; }
+.ca-filters input:focus-visible, .ca-filters select:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.ca-reset { min-height: 46px; padding: 10px 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--control-radius); font: inherit; font-size: var(--fs-sm); color: var(--green-dark); cursor: pointer; }
+.ca-table-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin: 20px 0 6px; }
+.ca-table-heading h3 { margin: 0; font-size: var(--fs-md); }
+#caCount { font-size: var(--fs-xs); color: var(--muted); }
+.ca-help { margin: 0 0 12px; }
+.ca-table-wrap { max-width: 100%; max-height: 68vh; overflow: auto; border: 1px solid var(--line); border-radius: 10px; isolation: isolate; container-type: inline-size; }
+.ca-table-wrap:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+#caTable { width: 100%; border-collapse: separate; border-spacing: 0; font-family: var(--font); font-size: var(--fs-sm); line-height: 1.4; font-variant-numeric: tabular-nums; }
+#caTable th, #caTable td { padding: 7px 8px; vertical-align: top; border-bottom: 1px solid var(--line); text-align: left; font-size: inherit; line-height: inherit; }
+#caTable thead th { position: sticky; top: 0; z-index: 2; background: var(--green-soft); font-weight: 700; white-space: nowrap; }
+#caTable thead small { display: block; margin-top: 3px; font-size: var(--fs-xs); line-height: 1.4; font-weight: 400; color: var(--muted); text-align: inherit; }
+#caTable tbody th { position: sticky; left: 0; z-index: 1; background: var(--card); font-weight: 700; border-right: 1px solid var(--line); }
+#caTable thead th:first-child { left: 0; z-index: 3; border-right: 1px solid var(--line); }
+#caTable .ca-product { width: 145px; min-width: 145px; max-width: 145px; white-space: normal; }
+#caTable .ca-number { text-align: right; white-space: nowrap; }
+#caTable .ca-size { white-space: nowrap; }
+#caTable .ca-finish { min-width: 85px; max-width: 105px; }
+.ca-cell-note { display: block; margin-top: 3px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; font-weight: 400; text-align: inherit; }
+#caTable .ca-product .ca-cell-note { white-space: normal; }
+#caTable .ca-number .ca-cell-note { white-space: normal; max-width: 100px; margin-left: auto; }
+#caTable .ca-number { min-width: 60px; }
+#caTable .ca-group-start > * { border-top: 2px solid var(--line); }
+#caTable .ca-stripe > * { background: #f5fafb; }
+#caTable .ca-data-row:hover > * { background: var(--green-soft); }
+.ca-documents { min-width: 100px; white-space: nowrap; }
+.ca-document-links { display: flex; align-items: center; gap: 10px; }
+.ca-documents a { color: var(--link); }
+.ca-detail-toggle { display: block; padding: 4px 0; min-height: 28px; border: 0; background: transparent; border-radius: 3px; font: inherit; color: var(--link); text-decoration: underline; cursor: pointer; }
+.ca-detail-toggle:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+#caTable .ca-detail-row td { padding: 16px; background: var(--green-soft); white-space: normal; }
+.ca-detail-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; max-width: 940px; }
+.ca-detail-grid h4 { margin: 0 0 8px; font-size: var(--fs-sm); }
+.ca-detail-grid p { margin: 0 0 8px; font-size: var(--fs-xs); line-height: 1.6; overflow-wrap: anywhere; }
+.ca-empty { padding: 20px !important; color: var(--muted); }
+.ca-missing { color: var(--muted); }
+.ca-scroll-hint { margin: 8px 0 0; }
+.ca-scroll-hint:empty { display: none; }
+.ca-boundary { margin: 12px 0 0; }
+.ca-coverage-body { padding: 0 16px 16px; font-size: var(--fs-xs); line-height: 1.6; overflow-wrap: anywhere; }
+.ca-coverage-body ul { padding-left: 18px; }
+.ca-coverage-body li { margin-bottom: 8px; }
+.ca-coverage-body h4 { font-size: var(--fs-sm); margin: 18px 0 8px; }
+@media (max-width: 760px) { .ca-filters { grid-template-columns: 1fr 1fr; } .ca-filters label:nth-child(3) { grid-column: 1 / -1; } .ca-reset { justify-self: start; } }
+@media (max-width: 500px) { .ca-filters { grid-template-columns: 1fr; } .ca-types .branch-tab { min-height: 44px; } .ca-card { padding: 14px; } #caTable .ca-product { width: 125px; min-width: 125px; max-width: 125px; } .ca-detail-grid { grid-template-columns: 1fr; max-width: min(240px, calc(100cqw - 34px)); gap: 12px; } .ca-documents a, .ca-detail-toggle { min-height: 44px; display: flex; align-items: center; } .ca-documents a { min-width: 44px; } }

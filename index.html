@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="panel-antennas/panel.css?v=20261007panel31">
 <link rel="stylesheet" href="reinforcement-area/styles.css?v=20261009reoarea1">
 <link rel="stylesheet" href="bolt-dimensions/styles.css?v=20261009fasteners1">
+<link rel="stylesheet" href="concrete-anchors/styles.css?v=20261009anchors3">
 </head>
 <body>
   <header class="topbar">
@@ -68,6 +69,7 @@
           <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-pressed="false" hidden>Reinforcement</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-pressed="false" hidden>Screw Piles Selector</button>
           <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-pressed="false" hidden>Rock Anchor Selector</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="anchors" aria-controls="anchorsPanel" aria-pressed="false" hidden>Concrete Anchor Products</button>
         </nav>
       </div>
     </section>
@@ -101,7 +103,7 @@
         <summary><span><b>Design scope · Foundations</b><small>Coverage and exclusions for foundation design</small></span><i>+</i></summary>
         <div class="category-scope-grid">
           <section><h2>Complete design includes</h2><p>Design actions; site-specific ground model; bearing, settlement and stability; structural limit states and interfaces; durability, construction, testing and acceptance.</p></section>
-          <section><h2>Handbook scope</h2><p>Pad-strip flexure and simplified one-way shear; reinforcement development and lap references; simplified screw-pile action distribution; source-labelled pile and anchor data.</p></section>
+          <section><h2>Handbook scope</h2><p>Pad-strip flexure and simplified one-way shear; reinforcement development and lap references; simplified screw-pile action distribution; source-labelled pile and anchor data, including selected concrete-anchor installation profiles.</p></section>
           <section><h2>Not evaluated</h2><p>Complete footing, pile or anchor design; punching, foundation bearing, settlement and stability; pile and group resistance or movement; anchor resistance, connections and installation acceptance.</p></section>
         </div>
       </details>
@@ -2308,11 +2310,15 @@
       </details>
     </section>
 
+  <section id="anchorsPanel" class="tool-panel" hidden>
+      <div class="tool-heading"><div><p class="kicker">Concrete anchorage · installation lookup</p><h2>Concrete Anchor Products</h2></div><span class="tool-status">For Review · Public beta</span></div>
+      <div id="concreteAnchorMount"></div>
+    </section>
   </main>
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.102 &middot; updated 9 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.103 &middot; updated 9 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20261009correctness1"></script>
@@ -2338,7 +2344,7 @@
       <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
 
   <script src="bolt-comparison/comparison.js?v=20261009bolttable1"></script>
-<script src="app.js?v=20261009bolttable1"></script>
+<script src="app.js?v=20261009anchors3"></script>
 
       <script src="geo-parameters/app.js?v=20260921geo76"></script>
 
@@ -2361,5 +2367,8 @@
 <script src="bolt-dimensions/data.js?v=20261009fasteners1"></script>
 <script src="bolt-dimensions/lookup.js?v=20261009fasteners1"></script>
 <script src="bolt-dimensions/app.js?v=20261009fasteners1"></script>
+<script src="concrete-anchors/data.js?v=20261009anchors3"></script>
+<script src="concrete-anchors/lookup.js?v=20261009anchors3"></script>
+<script src="concrete-anchors/app.js?v=20261009anchors3"></script>
 </body>
 </html>
