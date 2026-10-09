@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.106 (9 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.107 (9 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -223,3 +223,7 @@ Compact inputs and geometry on the left, section capacities on the right, with m
 ### Foundations product tables
 
 Screw Piles Selector (63 records) and Rock Anchor Selector (72 records, eight derived tendon rows) use Compact comparison tables with manufacturer/type/basis filters, official document links and expandable source conditions. Current Katana specifications remain Pending; SAS65 proof-force and Solidity273/273.1 mm OD conflicts are withheld. Ultimate maximum loads, SWL, tendon values and technique benchmarks retain their original bases; none is project anchor/pile resistance. Selected coverage, Public beta / For Review.
+
+### Section Properties comparison tables
+
+Eight Compact family tables compare 374 existing sections under Steel Members. Column headers provide keyword/checklist filters, numeric ranges in displayed units and sorting; source labels and derived/unavailable values remain explicit. Details retain the existing source, geometry and material workflow. No catalogue values or engineering calculations changed. Selected coverage, Public beta / For Review.

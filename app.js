@@ -11372,3 +11372,6 @@ if (typeof document !== "undefined" && typeof window !== "undefined") {
   initialise();
   window.addEventListener("pageshow", () => window.requestAnimationFrame(calculateBolt));
 }
+
+// Local presentation adapter; catalogue and calculation functions remain unchanged.
+globalThis.SCSectionTableBridge = { families: sectionCatalogueFamilies, names: sectionCatalogueFamilyNames, mode: () => sectionPropertiesMode, family: selectedSectionCatalogueFamily, record: selectedSectionCatalogueRecord };

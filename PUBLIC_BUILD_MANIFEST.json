@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "1326bef91590bb92043049871d81833d3d202d7da122ebb50d08707868a7bdbe"
+      "sha256": "2e4372455e6022f9a5b8699e0fcedb6a197cf1ab8f132c1440b79eb74181fb71"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -256,7 +256,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "24a14aa3f3eb2b21240e7bc5dbe3a18c02ae3ef4916ceabf31aa6ae260c1ebce"
+      "sha256": "84112c164374eca44e1305d82c0c37391d21b17681616de2b84897c81a3ecd30"
     },
     {
       "path": "LICENSE.md",
@@ -312,11 +312,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "fcdfd3ffa978aec7954259a2fc9f5dac778523991f981e7854faf4ed2545b5de"
+      "sha256": "8b62343dda28146b48fce7e420fb1b4ed3d7673974a5552083436222547789ed"
     },
     {
       "path": "README.md",
-      "sha256": "9a3951a90b541e6ce8556f25ab02d1256465479a6f3949fea30ccc898acfeb7b"
+      "sha256": "e40f0a0c06c203c9defbdb4ae1dbdb3f38ed13148564c4b00b135c976f1d9323"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -353,6 +353,22 @@
     {
       "path": "section-geometry.js",
       "sha256": "5cb1860d3d4c212e93219e9f88ea60eef3cc41581acd6fa08ce6e65f4218f1bb"
+    },
+    {
+      "path": "section-tables/header-filters.js",
+      "sha256": "9bdc4802719e1510e06d74ccfbed7aec90fc886f17cd3ed6d58be58b9e060280"
+    },
+    {
+      "path": "section-tables/lookup.js",
+      "sha256": "e6b2e0471e40ccbd08b9ca69ddf21d17a2124d335440fdb456b045847d5622f1"
+    },
+    {
+      "path": "section-tables/model.js",
+      "sha256": "896b23f541214bb75e933afb3a6fc3dd809ec82134ebd292ea340f039b6bbc42"
+    },
+    {
+      "path": "section-tables/styles.css",
+      "sha256": "7d3c7d236272fe51256c2cba07b95aaa5365bcb551e35e30efb23b88171f258d"
     },
     {
       "path": "steel-materials.js",
