@@ -1,0 +1,61 @@
+/* Scoped local table presentation. Shared font sizes and 44 px controls remain. */
+#boltPanel .bolt-quick-selection { display:block; width:100%; margin:0; padding:0; border:0; background:none; }
+#boltPanel [data-bolt-mode-panel="standard"] > .input-cluster { margin-bottom:10px; }
+#boltPanel .bolt-quick-selection .input-group-heading { display:none; }
+#boltPanel .bolt-quick-fields { display:grid; grid-template-columns:minmax(130px,1fr) minmax(220px,2fr); gap:12px; }
+#boltPanel .bolt-quick-fields label { margin:0; }
+#boltPanel .bolt-compare-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:4px 0 8px; }
+#boltPanel .bolt-compare-heading h3 { font-size:var(--fs-md); margin:0; }
+#boltPanel .bolt-compare-context { display:block; margin-top:3px; font-size:var(--fs-xs); color:var(--muted); }
+#boltPanel .bolt-compare-modes { display:flex; gap:4px; }
+#boltPanel .bolt-compare-modes button { min-height:44px; padding:7px 10px; border:1px solid var(--line); border-radius:7px; background:white; font:inherit; font-size:var(--fs-sm); cursor:pointer; }
+#boltPanel .bolt-compare-modes button[aria-pressed="true"] { background:var(--green-dark); color:white; border-color:var(--green-dark); }
+#boltPanel .bolt-compare-wrap { overflow:auto; border:1px solid var(--line); border-radius:8px; }
+#boltPanel .bolt-compare-table { width:100%; min-width:510px; border-collapse:collapse; table-layout:fixed; font-size:var(--fs-sm); font-variant-numeric:tabular-nums; }
+#boltPanel .bolt-compare-table[data-mode="category"] { min-width:600px; }
+#boltPanel .bolt-compare-table caption { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip-path:inset(50%); }
+#boltPanel .bolt-compare-table :is(th,td) { text-align:center; padding:3px 6px; border-bottom:1px solid var(--line); vertical-align:middle; }
+#boltPanel .bolt-compare-table thead th { background:var(--green-soft); padding:7px 6px; font-size:var(--fs-sm); }
+#boltPanel .bolt-compare-table thead :is(span,small) { display:block; font-size:var(--fs-xs); font-weight:400; }
+#boltPanel .bolt-compare-table tbody th { text-align:left; width:110px; }
+#boltPanel .bolt-compare-table th:first-child { position:sticky; left:0; z-index:1; background:inherit; }
+#boltPanel .bolt-compare-table thead th:first-child { background:var(--green-soft); }
+#boltPanel .bolt-compare-table tbody tr { background:#fff; }
+#boltPanel .bolt-compare-table button { min-height:44px; width:100%; padding:4px; border:0; background:transparent; color:var(--link); font:inherit; font-weight:700; cursor:pointer; border-radius:4px; }
+#boltPanel .bolt-compare-table button:hover { text-decoration:underline; background:var(--green-soft); }
+#boltPanel .bolt-compare-table button:focus-visible { outline:3px solid var(--green-dark); outline-offset:-3px; }
+#boltPanel .bolt-compare-table tr:nth-child(even) { background:#f5faf7; }
+#boltPanel .bolt-compare-table tr[data-current="true"] { background:#e2f1e8; }
+#boltPanel .bolt-compare-table .bolt-compare-active { background:#c9e5d5; box-shadow:inset 0 -3px var(--green-dark); }
+#boltPanel .bolt-compare-description { display:block; font-size:var(--fs-xs); font-weight:400; padding:0 4px 4px; line-height:1.25; }
+#boltPanel .bolt-compare-identity { display:flex; align-items:center; gap:4px; }
+#boltPanel .bolt-compare-table[data-mode="category"] .bolt-compare-identity button { width:62px; flex:0 0 62px; }
+#boltPanel .bolt-compare-description { flex:1; padding:0; }
+#boltPanel .bolt-compare-unavailable { color:var(--status-review); }
+#boltPanel .bolt-compare-note { margin:7px 0; font-size:var(--fs-xs); }
+#boltPanel .bolt-basis-fold { margin-top:10px; border:1px solid var(--line); border-radius:8px; }
+#boltPanel .bolt-basis-fold .bolt-summary { margin:0; border:0; padding:8px 12px; }
+#boltPanel .bolt-basis-fold .bolt-preload-lookup { margin:0 12px 10px; }
+#boltPanel .bolt-query-row { display:grid; grid-template-columns:minmax(0,1fr); align-items:end; gap:12px; }
+#boltPanel #boltProperties .bolt-summary dl { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); width:100%; gap:10px; }
+#boltPanel #boltProperties .bolt-summary dl div { text-align:left; min-width:0; }
+#boltPanel #boltProperties .bolt-summary dd { overflow-wrap:anywhere; white-space:normal; }
+#boltPanel .bolt-capacity-grid[hidden] { display:none; }
+#boltPanel [data-bolt-mode-panel="standard"] > .capacity-section > .section-heading { display:none; }
+#boltPanel [data-bolt-mode-panel="standard"] > .capacity-section { margin-top:8px; padding-top:0; }
+#boltPanel .bolt-coverage-note { padding:0 12px 10px; margin:0; font-size:var(--fs-xs); color:var(--muted); }
+@media(max-width:760px) {
+ #boltPanel .bolt-query-row { grid-template-columns:minmax(0,1fr); gap:7px; }
+ #boltPanel #boltProperties .bolt-summary dl { grid-template-columns:repeat(3,minmax(0,1fr)); }
+ #boltPanel #boltProperties .bolt-preload-current { border:0; padding-left:0; }
+ #boltPanel .bolt-compare-heading { align-items:flex-start; flex-direction:column; gap:6px; }
+ #boltPanel .bolt-quick-fields { grid-template-columns:minmax(0,1fr); gap:7px; }
+ #boltPanel .bolt-compare-table { min-width:470px; }
+}
+@media(max-width:500px) {
+ #boltPanel .bolt-quick-fields select { font-size:16px; min-height:44px; }
+ #boltPanel .bolt-compare-table { --bolt-category-column:150px; }
+ #boltPanel [data-bolt-mode-panel="standard"] { padding:10px; }
+ #boltPanel .bolt-compare-table :is(th,td) { padding:2px 4px; }
+}
+.bolt-compare-source{display:block;font-size:10px;color:var(--muted,#52645e);line-height:1.3;margin-top:2px}

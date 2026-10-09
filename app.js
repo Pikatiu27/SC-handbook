@@ -1,11 +1,46 @@
 "use strict";
+// Runs with the existing application data and calculations; changes no formula.
+let boltCompareMode="size";
+function renderBoltComparison(){
+ const body=document.getElementById("boltCompareRows");if(!body)return;
+ const size=document.getElementById("boltSize").value,category=document.getElementById("category").value,plane=document.getElementById("shearPlane").value,kr=numericValue(document.getElementById("kr").value);
+ const rows=BoltCapacityComparison.rows({data:boltData,categories,size,category,mode:boltCompareMode,kr,api:BoltCapacity});
+ const showPreload=boltCompareMode==="category"||Boolean(categories[category].preload),esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const table=body.closest("table");table.dataset.mode=boltCompareMode;table.querySelector("colgroup")?.remove();const cols=document.createElement("colgroup");cols.innerHTML=`<col style="width:${boltCompareMode==="category"?"var(--bolt-category-column,190px)":"100px"}">`+"<col>".repeat(showPreload?4:3);table.prepend(cols);
+ document.getElementById("boltCompareTitle").textContent=boltCompareMode==="category"?`Compare categories · ${size}`:`Compare sizes · ${category}`;
+ document.getElementById("boltCompareContext").textContent=`${rows.length} options · per bolt · one shear plane · kᵣ = ${Number.isFinite(kr)&&kr>=0.75&&kr<=1?displayFixed(kr,2):"input required"}`;
+ const scope=document.getElementById("boltCategoryScope");scope.hidden=size!=="M10";scope.textContent="M10: /S only in this lookup.";
+ const manufacturer=categories[category].preload&&boltData[size][`${categories[category].preload}Basis`]==="hobson-k0";
+ document.getElementById("boltManufacturerPreload").textContent="Hobson K0 installation lookup · project adoption required."+(category.endsWith("/TF")?" TF slip not evaluated.":"");
+ document.getElementById("boltAreaReview").hidden=!boltData[size].areaBasis;
+ document.querySelectorAll("[data-bolt-compare-mode]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.boltCompareMode===boltCompareMode)));
+ document.getElementById("boltCompareHead").innerHTML=`<tr><th scope="col">${boltCompareMode==="category"?"Category":"Bolt size"}</th><th scope="col">Design shear φV<sub>f</sub><span>N · threads intercept</span><small>kN</small></th><th scope="col">Design shear φV<sub>f</sub><span>X · threads clear</span><small>kN</small></th><th scope="col">Design tension φN<sub>tf</sub><small>kN</small></th>${showPreload?'<th scope="col">Installed tension N<sub>ti</sub><small>kN · preload</small></th>':""}</tr>`;
+ body.innerHTML=rows.map(r=>{const selected=r.size===size&&r.category===category;
+  const use=(v,p)=>v===null?'<span class="bolt-compare-unavailable">Not evaluated</span>':`<button type="button" data-compare-size="${r.size}" data-compare-category="${r.category}" data-compare-plane="${p}" aria-label="Select ${r.size} ${r.category}, ${p} shear plane"${selected&&p===plane?' aria-current="true"':""}>${fixed(v)}</button>`;
+  return `<tr data-current="${selected}"><th scope="row"><span class="bolt-compare-identity"><button type="button" data-compare-size="${r.size}" data-compare-category="${r.category}" aria-label="Select ${r.size} ${r.category}"${selected?' aria-current="true"':""}>${esc(r.label)}${r.areaBasis&&boltCompareMode==="size"?' <sup>†</sup>':""}</button>${boltCompareMode==="category"?`<span class="bolt-compare-description">${esc(r.description)}</span>`:""}</span></th><td class="${selected&&plane==="N"?"bolt-compare-active":""}">${use(r.n,"N")}</td><td class="${selected&&plane==="X"?"bolt-compare-active":""}">${use(r.x,"X")}</td><td>${fixed(r.tension)}</td>${showPreload?`<td>${typeof r.preload==="number"?displayFixed(r.preload,0):r.preload??"Not tabulated"}${r.preloadBasis==="hobson-k0"?'<small class="bolt-compare-source">Hobson K0</small>':""}</td>`:""}</tr>`;
+ }).join("");
+ document.getElementById("boltCompareNote").textContent=(boltCompareMode==="category"?"Nti = installation preload; not tensile capacity.":"Click an N/X value to select its shear plane."+(rows.some(r=>r.areaBasis)?" † Derived Ac · For Review.":""))+(rows.some(r=>r.preloadBasis==="hobson-k0")&&!manufacturer?" Hobson K0: installation lookup only; TF slip not evaluated.":"");
+}
+document.addEventListener("click",e=>{
+ const mode=e.target.closest("[data-bolt-compare-mode]");if(mode){boltCompareMode=mode.dataset.boltCompareMode;renderBoltComparison();return;}
+ const row=e.target.closest("[data-compare-size]");if(!row)return;
+ const currentFocus={size:row.dataset.compareSize,category:row.dataset.compareCategory,plane:row.dataset.comparePlane},scroll=window.scrollY;
+ document.getElementById("boltSize").value=currentFocus.size;document.getElementById("boltSize").dispatchEvent(new Event("change",{bubbles:true}));
+ document.getElementById("category").value=currentFocus.category;document.getElementById("category").dispatchEvent(new Event("change",{bubbles:true}));
+ if(currentFocus.plane){document.getElementById("shearPlane").value=currentFocus.plane;document.getElementById("shearPlane").dispatchEvent(new Event("input",{bubbles:true}));}
+ requestAnimationFrame(()=>{const selector=`[data-compare-size="${currentFocus.size}"][data-compare-category="${currentFocus.category}"]${currentFocus.plane?`[data-compare-plane="${currentFocus.plane}"]`:':not([data-compare-plane])'}`;document.querySelector(selector)?.focus({preventScroll:true});window.scrollTo({top:scroll});});
+});
+
+"use strict";
 
 const boltData = {
   M10: { d: 10, Ao: 78.5, As: 58.0, Ac: 52.3 },
-  M12: { d: 12, Ao: 113, As: 84.3, Ac: 76.2 },
+  M12: { d: 12, Ao: 113, As: 84.3, Ac: 76.2, preload88: 51, preload88Basis: "hobson-k0" },
   M16: { d: 16, Ao: 201, As: 157, Ac: 144, preload88: 95, preload109: 130 },
   M20: { d: 20, Ao: 314, As: 245, Ac: 225, preload88: 145, preload109: 205 },
+  M22: { d: 22, Ao: 380, As: 303, Ac: 282, rootDiameter: 18.933, preload88: 182, preload88Basis: "hobson-k0", areaBasis: "derived-tr" },
   M24: { d: 24, Ao: 452, As: 353, Ac: 324, preload88: 210, preload109: 295 },
+  M27: { d: 27, Ao: 573, As: 459, Ac: 427, rootDiameter: 23.319, preload88: 275, preload88Basis: "hobson-k0", areaBasis: "derived-tr" },
   M30: { d: 30, Ao: 707, As: 561, Ac: 519, preload88: 335, preload109: 465 },
   M36: { d: 36, Ao: 1018, As: 817, Ac: 759, preload88: 490, preload109: 680 }
 };
@@ -2819,6 +2854,7 @@ function calculateConnectedPlyIntegrity(primaryPly, secondPly, separatePlyCheck)
 }
 
 function calculateBolt() {
+  if (!categories[$("category").value] || !BoltCapacityComparison.allowed(boltData[$("boltSize").value], categories[$("category").value])) populateBoltCategories();
   const size = $("boltSize").value;
   const categoryKey = $("category").value;
   const plane = $("shearPlane").value;
@@ -2951,12 +2987,14 @@ function calculateBolt() {
       ? "Both plies equal"
       : governingPly.label;
   const preload = category.preload ? bolt[category.preload] : 0;
+  const manufacturerPreload = Boolean(category.preload && bolt[`${category.preload}Basis`] === "hobson-k0");
+  const preloadReviewNote = "Hobson K0 installation lookup; project adoption required." + (category.type === "friction" ? " TF slip not evaluated." : "");
   const slipInterfaces = numericValue($("interfaces").value);
   const holeFactor = value("holeFactor");
   const slipFactor = numericValue($("slipFactor").value);
   const slipInputsValid = Number.isInteger(slipInterfaces) && slipInterfaces >= 1 && slipInterfaces <= 10
     && Number.isFinite(slipFactor) && slipFactor > 0 && slipFactor <= 1;
-  const slip = category.type === "friction" && slipInputsValid
+  const slip = category.type === "friction" && !manufacturerPreload && slipInputsValid
     ? BoltCapacity.designSlipResistance({
         slipFactor,
         interfaces: slipInterfaces,
@@ -2965,7 +3003,7 @@ function calculateBolt() {
       })
     : null;
   const slipGroupCapacity = slip === null ? null : count * slip;
-  const slipTensionCapacity = preload > 0 ? 0.7 * count * preload : null;
+  const slipTensionCapacity = !manufacturerPreload && preload > 0 ? 0.7 * count * preload : null;
   const slipShearDemand = numericValue($("slipShearDemand").value);
   const slipTensionDemand = numericValue($("slipTensionDemand").value);
   const slipActionsValid = [slipShearDemand, slipTensionDemand].every(action => Number.isFinite(action) && action >= 0);
@@ -2996,7 +3034,7 @@ function calculateBolt() {
   const detailingFailureNote = detailingCompliant
     ? ""
     : `Detailing non-compliant: ${detailingFailures.join(", ")}. Do not adopt the displayed capacities.`;
-  const slipDisplayNote = category.type === "friction" && !slipInputsValid
+  const slipDisplayNote = manufacturerPreload ? preloadReviewNote : category.type === "friction" && !slipInputsValid
     ? "Input required: enter a positive slip factor and a whole-number interface count from 1 to 10."
     : !slipActionsValid
     ? slipActionNote
@@ -3021,8 +3059,9 @@ function calculateBolt() {
   $("shankAreaValue").textContent = `${bolt.Ao} mm²`;
   $("strengthValue").textContent = `${fuf} MPa`;
   const hasInstalledTension = Boolean(category.preload && Number.isFinite(preload));
-  $("installedTensionValue").textContent = hasInstalledTension ? `${displayFixed(preload, 0)} kN` : "Not required";
-  $("boltPreloadLookup").hidden = !hasInstalledTension;
+  $("installedTensionValue").textContent = hasInstalledTension ? `${displayFixed(preload, 0)} kN${manufacturerPreload ? " · Hobson K0" : ""}` : "Not required";
+  $("boltPreloadLookup").hidden = !hasInstalledTension || manufacturerPreload;
+  $("boltManufacturerPreload").hidden = !manufacturerPreload;
   if (!hasInstalledTension) $("boltPreloadLookup").open = false;
   $("tfSlipSection").hidden = category.type !== "friction";
   document.querySelectorAll(".bolt-preload-table tbody tr").forEach(row => {
@@ -3038,6 +3077,7 @@ function calculateBolt() {
     ? "Threads intercept shear plane &middot; AS 4100 Cl. 9.2.2.1"
     : "Threads clear of shear plane &middot; AS 4100 Cl. 9.2.2.1";
   $("tensionCapacity").textContent = fixed(tension);
+  renderBoltComparison();
   $("boltResultNote").innerHTML = krValid
     ? `Selected ${plane}-plane capacity &middot; k<sub>rd</sub> = ${displayFixed(plane === "N" ? threadKrd : shankKrd, 2)} &middot; k<sub>r</sub> = ${displayFixed(kr, 2)}.`
     : "Input required &middot; enter k<sub>r</sub> from 0.75 to 1.00.";
@@ -3085,8 +3125,8 @@ function calculateBolt() {
     : "Not applicable to a single-bolt connection";
   $("pitchStatus").textContent = !countValid || !connectedPlyInputsValid ? "INPUT" : pitchApplicable ? (pitchCompliant ? "PASS" : "FAIL") : "N/A";
   $("pitchStatus").className = `input-check-status ${!countValid || !connectedPlyInputsValid ? "fail" : pitchApplicable ? (pitchCompliant ? "pass" : "fail") : "neutral"}`;
-  $("slipCapacity").textContent = category.type !== "friction" ? "Not applicable" : !slipInputsValid ? "Input required" : `${fixed(slip)} kN`;
-  $("slipCapacityBasis").innerHTML = !countValid
+  $("slipCapacity").textContent = manufacturerPreload ? "Not evaluated" : category.type !== "friction" ? "Not applicable" : !slipInputsValid ? "Input required" : `${fixed(slip)} kN`;
+  $("slipCapacityBasis").innerHTML = manufacturerPreload ? preloadReviewNote : !countValid
     ? "Per-bolt resistance shown; group resistance not evaluated until bolt count is valid"
     : category.type !== "friction"
     ? "TF categories only"
@@ -3094,7 +3134,7 @@ function calculateBolt() {
     ? "Enter a positive slip factor and a whole-number interface count from 1 to 10"
     : `Per bolt &middot; k<sub>h</sub> = ${displayFixed(holeFactor, 2)} &middot; ${count}-bolt group = ${fixed(slipGroupCapacity)} kN`;
   $("slipGoverningRatio").textContent = Number.isFinite(slipRatio) && hasSlipDemand ? displayFixed(slipRatio, 2) : "—";
-  $("slipGoverningStatus").textContent = !countValid
+  $("slipGoverningStatus").textContent = manufacturerPreload ? "Not evaluated" : !countValid
     ? "Invalid bolt count"
     : category.type === "friction" && !slipInputsValid
     ? "Input required"
@@ -3107,7 +3147,7 @@ function calculateBolt() {
       : slipRatio <= 1
         ? "TF slip PASS"
         : "TF slip FAIL";
-  $("slipGoverningStatus").className = !countValid || !detailingCompliant || (category.type === "friction" && (!slipInputsValid || !slipActionsValid)) ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
+  $("slipGoverningStatus").className = manufacturerPreload ? "" : !countValid || !detailingCompliant || (category.type === "friction" && (!slipInputsValid || !slipActionsValid)) ? "fail" : !hasSlipDemand ? "" : slipRatio <= 1 ? "pass" : "fail";
   $("slipGoverningNote").textContent = countValid
     ? slipDisplayNote
     : "Bolt-group slip interaction is not evaluated until a valid bolt count is entered.";
@@ -3165,11 +3205,11 @@ function calculateBolt() {
     }),
     calculationTraceRow({
       title: "Minimum installed bolt tension",
-      reference: "AS 4100 Table 15.2.2.2",
+      reference: manufacturerPreload ? "Hobson 210520TA p.1 Table 2 · manufacturer installation basis" : "AS 4100 Table 15.2.2.2",
       lookup: "Minimum installed bolt tension by bolt size and property class.",
       selection: `${size}; property class ${category.grade}; category ${categoryKey}`,
       adopted: hasInstalledTension ? `N<sub>ti</sub> = ${displayFixed(preload, 0)} kN` : "Not required",
-      applicability: hasInstalledTension ? "Installed preload; this is not the bolt tensile design capacity." : "Snug-tight category; no specified minimum installed bolt tension."
+      applicability: manufacturerPreload ? preloadReviewNote : hasInstalledTension ? "Installed preload; this is not the bolt tensile design capacity." : "Snug-tight category; no specified minimum installed bolt tension."
     }),
     calculationTraceRow({
       title: "Bolt shear capacity, N-plane",
@@ -3177,7 +3217,7 @@ function calculateBolt() {
       formula: krValid ? `&phi;V<sub>f,N</sub> = &phi;0.62f<sub>uf</sub>k<sub>rd,N</sub>k<sub>r</sub>A<sub>c</sub>` : "",
       substitution: krValid ? `0.80 &times; 0.62 &times; ${fuf} MPa &times; ${displayFixed(threadKrd, 2)} &times; ${displayFixed(kr, 2)} &times; ${bolt.Ac} mm<sup>2</sup> / 1000` : "",
       result: krValid ? `Design capacity per shear plane = ${fixed(threadShear)} kN` : "Not evaluated",
-      applicability: krValid ? "Threads intercept the shear plane." : "Enter k_r from 0.75 to 1.00.",
+      applicability: krValid ? `Threads intercept the shear plane.${bolt.areaBasis ? " Ac derived from TR nominal male root diameter; AS 1275 original not inspected. Derived geometry · For Review." : ""}` : "Enter k_r from 0.75 to 1.00.",
       state: krValid ? "" : "warning"
     }),
     calculationTraceRow({
@@ -3228,7 +3268,8 @@ function calculateBolt() {
           : detailingFailureNote,
       state: countValid && detailingCompliant ? "" : "warning"
     }),
-    calculationTraceRow({
+    ...(manufacturerPreload && category.type === "friction" ? [calculationTraceRow({title: "TF slip resistance and interaction", reference: "Hobson 210520TA installation lookup; project TF basis pending", result: "Not evaluated", applicability: preloadReviewNote, state: "warning"})] : [
+calculationTraceRow({
       title: "TF slip resistance",
       reference: "AS 4100 Cl. 9.2.3.1",
       formula: slip === null ? "" : `&phi;V<sub>sf</sub> = 0.70&mu;n<sub>ei</sub>N<sub>ti</sub>k<sub>h</sub>`,
@@ -3245,7 +3286,8 @@ function calculateBolt() {
       result: category.type !== "friction" ? "Not applicable" : !countValid || !slipInputsValid ? "Input required" : !slipActionsValid ? "Invalid slip actions" : `Interaction = ${Number.isFinite(slipRatio) ? displayFixed(slipRatio, 2) : "-"}`,
       applicability: category.type !== "friction" ? "Friction-type categories where serviceability slip is limited." : !countValid || !slipInputsValid ? "Complete the TF slip inputs before evaluating interaction." : !slipActionsValid ? slipActionNote : "Entered actions are total bolt-group serviceability actions with equal action per identical bolt; N<sub>tf</sub> = N<sub>ti</sub> and &phi; = 0.70.",
       state: category.type === "friction" && (!countValid || !slipInputsValid || !slipActionsValid) ? "warning" : ""
-    }),
+    })
+    ]),
     calculationTraceRow({
       title: "Capacity-only boundary",
       result: "Project strength actions and utilisation are not evaluated",
@@ -8107,8 +8149,8 @@ function setPrimaryPlane() {
 function populateBoltCategories() {
   const size = $("boltSize").value;
   const previous = $("category").value;
-  const entries = Object.entries(categories).filter(([key]) => boltData[size].d >= 16 || key.endsWith("/S"));
-  $("category").innerHTML = entries.map(([key, item]) => `<option value="${key}">${key} - ${item.description}</option>`).join("");
+  const entries = Object.entries(categories).filter(([key]) => BoltCapacityComparison.allowed(boltData[size], categories[key]));
+  $("category").innerHTML = entries.map(([key, item]) => `<option value="${key}">${key} - ${item.description}${item.preload && boltData[size][`${item.preload}Basis`] === "hobson-k0" ? " · Hobson K0" : ""}</option>`).join("");
   $("category").value = entries.some(([key]) => key === previous) ? previous : "8.8/S";
 }
 

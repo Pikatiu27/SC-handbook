@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "bf3965c725b28b8b4277e774c7ea5a4fab61c46e39a0d4a35177ec11575c50a6"
+      "sha256": "b99533d3dc9d7a26f8264883c89400a478ec302d39cde12e0dbd5b6ea08267a9"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -111,6 +111,14 @@
       "sha256": "189a0ad54e6b75c602c315fecb2f7933497914d9b4cdfd86eab2a459f37c2a52"
     },
     {
+      "path": "bolt-comparison/compact.css",
+      "sha256": "e29e017e3e2b7beed96523fb49d846c5fccceeb359c70df32b20cd43220bb08f"
+    },
+    {
+      "path": "bolt-comparison/comparison.js",
+      "sha256": "5a7c63a6b8f3e86bb6c19912405b3b371fde7712a2362e27ec4495632cd33a8d"
+    },
+    {
       "path": "bolt-dimensions/app.js",
       "sha256": "f9c2f3d33685d684154ebc6e14ac3d4e3fc79464b1d8aa22f3bf9b6dd4540aa8"
     },
@@ -208,7 +216,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "3f4bbc69e2ff06aa436eb80366211b729fda87883db0d8f99f56c2bd8da75f3c"
+      "sha256": "0408c2f2e205512960f5698aa1448baa572730054ea312a5d5079676f6f28e64"
     },
     {
       "path": "LICENSE.md",
@@ -264,11 +272,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "2a87beb8df59c956086fe9a8c8375e69a2748a75192e07001c469b816d6a7629"
+      "sha256": "561b0346f72619e6ddc31e9f39b288a255598c83eb4866b2a65b9c0b041e3972"
     },
     {
       "path": "README.md",
-      "sha256": "620457902cbfe3f0b4c8fdf564b92daaa3af97a69de3c6a902a7b87bf1db0eb2"
+      "sha256": "b125d001c94e515327221768f610bc3c7ad436f61a6aa8bd7afd600fa8b94d76"
     },
     {
       "path": "reinforcement-area/app.js",
