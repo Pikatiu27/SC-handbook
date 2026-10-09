@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.100, updated 9 October 2026, adds the approved Fastener Tables within Bolt Capacity. Public beta / For Review continues. The independently arranged factual dimensions, derived hole geometry, exact product identities and external document links do not establish hole-use approval, supplier/batch compliance, product interchangeability or connection capacity. Pending and conflicted fields remain unavailable. Working, design and characteristic loads retain their own source bases.
+
 Build 0.7.99, updated 9 October 2026, publishes the approved compact Guy & Fittings tables across all nine families. Column widths, row spacing and headers are refined; repeated product identities and all-empty dimension columns are reduced. Published rating bases and source units remain explicit, with source conflicts withheld. All 416 product records, source values and restrictions remain unchanged. Public beta / For Review continues.
 
 Build 0.7.98, updated 9 October 2026, publishes the accepted Guy & Fittings fixed identity column and side details, with concise copy and no record export button. Original ratings, all 416 admitted records, missing values, conflicts and use restrictions remain. Public beta / For Review continues; no assembly or design capacity is established.

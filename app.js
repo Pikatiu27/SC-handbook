@@ -385,7 +385,7 @@ const blindBoltProducts = [
     sourceUrl: "https://content.hobson.com.au/category/high-tensile/hsd-hbs-bolt-data-sheet.pdf"
   }))),
   ...[
-    { size: "M8", hole: 14, centres: 35, edge: "B + wall thickness", outer: "Not stated", torque: 23, loads: [23.1, 29.1], grips: [[5, 26, "UNIBH-M08050G", 50], [26, 46, "UNIBH-M08070G", 70], [46, 66, "UNIBH-M08090G", 90]] },
+    { size: "M8", hole: 14, centres: 35, edge: "B + wall thickness", outer: "Not stated", torque: 25, loads: [23.1, 29.1], grips: [[5, 26, "UNIBH-M08050G", 50], [26, 46, "UNIBH-M08070G", 70], [46, 66, "UNIBH-M08090G", 90]] },
     { size: "M10", hole: 18, centres: 40, edge: "B + wall thickness", outer: "Not stated", torque: 45, loads: [35.8, 47.4], grips: [[5, 22, "UNIBH-M10050G", 50], [22, 42, "UNIBH-M10070G", 70], [42, 62, "UNIBH-M10090G", 90]] },
     { size: "M12", hole: 20, centres: 50, edge: "B + wall thickness", outer: "Not stated", torque: 80, loads: [41.1, 64.2], grips: [[5, 25, "UNIBH-M12055G", 55], [23, 50, "UNIBH-M12080G", 80], [48, 70, "UNIBH-M12100G", 100]] },
     { size: "M16", hole: 26, centres: 55, edge: "B + wall thickness", outer: "Not stated", torque: 190, loads: [81.2, 116.5], grips: [[8, 35, "UNIBH-M16075G", 75], [35, 60, "UNIBH-M16100G", 100], [60, 80, "UNIBH-M16120G", 120]] },
@@ -406,7 +406,7 @@ const blindBoltProducts = [
     centres: `${row.centres} mm`,
     edge: row.edge,
     outerPly: row.outer,
-    torque: `${row.torque} Nm`,
+    torque: row.size === "M8" ? "Source conflict: 25 Nm (TDS p.3) / 23 Nm (p.4); confirm with ICCONS" : `${row.torque} Nm`,
     tools: "Spanner and torque wrench",
     tension: row.loads[0],
     shear: row.loads[1],
@@ -493,9 +493,10 @@ const blindBoltProducts = [
     sourceUrl: "https://www.blindbolt.co.uk/wp-content/uploads/2023/01/Blind-Bolt-Tech-Data-Metric.pdf"
   }))),
   ...[
-    [15.9, 22.2, "2NG2060", 60], [15.9, 34.9, "2NG2032", 75], [23.8, 36.5, "2NG2036", 95],
-    [36.5, 47.6, "2NG2048", 95], [47.6, 54.0, "2NG2057", 95], [54.0, 68.3, "2NG2068", 135],
-    [68.3, 95.3, "2NG2096", 135], [95.3, 131.8, "2NG2127", 175], [127.0, 211.1, "2NG2212", 250]
+    // PDF p.5 standard grip in inches, converted exactly using 25.4 mm/in.
+    [15.875, 22.225, "2NG2060", 60], [15.875, 34.925, "2NG2032", 75], [23.8125, 36.5125, "2NG2036", 95],
+    [36.5125, 47.625, "2NG2048", 95], [47.625, 53.975, "2NG2057", 95], [53.975, 68.2625, "2NG2068", 135],
+    [68.2625, 95.25, "2NG2096", 135], [95.25, 130.175, "2NG2127", 175], [127, 211.1375, "2NG2212", 250]
   ].map(([gripMin, gripMax, code, length]) => ({
     id: `allfasteners-${code.toLowerCase()}`,
     manufacturer: "Allfasteners",
@@ -519,7 +520,7 @@ const blindBoltProducts = [
     tensionLabel: "TIA-222-G design strength - tension",
     shearLabel: "TIA-222-G design strength - shear, threads included",
     valueLabel: "TIA-222-G design strength",
-    valueBasis: "M20 TIA-222-G design strength; resistance factors are already included. ICC-ES / AISC basis, not an AS 4100 design capacity.",
+    valueBasis: "M20 TIA-222-G design strength; resistance factors are already included. ICC-ES / AISC basis, not an AS 4100 design capacity. Grip is converted from published inches at 25.4 mm/in; M20 x 60 uses the standard washer configuration.",
     sourceStatus: "Source_Online_Checked",
     sourceName: "Allfasteners NexGen2 Blind Bolt TDS, July 2019",
     sourceUrl: "https://www.allfasteners.com.au/pub/media/ResourceGallery/n/e/nexgen2_tds_allfasteners_.pdf"

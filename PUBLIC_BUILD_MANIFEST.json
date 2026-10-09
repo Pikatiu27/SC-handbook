@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "bc485bfca39b3426f3034cd94cdd0ae01f609c8634eed1991df1afb04157e592"
+      "sha256": "7657b832e57b94a8af1b9228c1a6843ba35779e8bf210b6cdaad306f2e54abc1"
     },
     {
       "path": "assets/fonts/Lato-Black.ttf",
@@ -95,6 +95,26 @@
       "sha256": "189a0ad54e6b75c602c315fecb2f7933497914d9b4cdfd86eab2a459f37c2a52"
     },
     {
+      "path": "bolt-dimensions/app.js",
+      "sha256": "f9c2f3d33685d684154ebc6e14ac3d4e3fc79464b1d8aa22f3bf9b6dd4540aa8"
+    },
+    {
+      "path": "bolt-dimensions/data.js",
+      "sha256": "86102a3bb204860cecb959cd581ffd718b1d8ae79ee9130af1ca0bd8d0e9630a"
+    },
+    {
+      "path": "bolt-dimensions/index.html",
+      "sha256": "39cbb7309762e9129823891f0af4339b5676f56f234afba2abd883529e174293"
+    },
+    {
+      "path": "bolt-dimensions/lookup.js",
+      "sha256": "19294cef578747390a23b6a7408454df48fffb0880958e7ec85d72c8b271d36d"
+    },
+    {
+      "path": "bolt-dimensions/styles.css",
+      "sha256": "3f5954dc4c57d9988b0ac5ce5d76f1e2e74c4775b2bc47a7d6eb9d18d6ec80a1"
+    },
+    {
       "path": "bolt-integrity.js",
       "sha256": "94c1d8fe0ab5ee46db52e94186d7ef3f7848c515cfafe61ace3388fd3eeb7f47"
     },
@@ -172,7 +192,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "b896381f835dbfc1f774518781112cba09b91f581afe0b2fffe4573635e5ef36"
+      "sha256": "e8bc40afd30e3dd5854f5450698f6a77c23bf78189649969e20b4961f83b48f3"
     },
     {
       "path": "LICENSE.md",
@@ -228,11 +248,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "3e80f29d828196abcb5f16d5b2ef895698d9c0daa09da05ecd01b8fc8f018586"
+      "sha256": "05b83193ad50f1d80340d2ff696fc03f41c72e5ecde057efcd9edcea1aad5a37"
     },
     {
       "path": "README.md",
-      "sha256": "18e94e6a26d8dd5e61f65be725955b8411e3a70c47f4f80b4f51375dcbf2f855"
+      "sha256": "cdb5d1d851825705b6d73b6e643ac16069dc58ca4a6f7085b65954bb1ce842cb"
     },
     {
       "path": "reinforcement-area/app.js",
