@@ -4,6 +4,15 @@
   root.SCSectionTables = api;
 })(globalThis, function () {
   'use strict';
+  // Official PDFs matching the accepted catalogue editions, verified 10 October 2026.
+  const documents = [
+    { publisher: 'InfraBuild', document: 'Hot Rolled Steel Products Catalogue 2019', title: 'Hot Rolled and Structural Steel Products — Ninth Edition, October 2019', url: 'https://www.infrabuild.com/wp-content/uploads/sites/8/2022/02/Hot20Rolled20Cat_Edition9_2019.pdf' },
+    { publisher: 'Austube Mills', document: 'Design Capacity Tables for Structural Steel Hollow Sections 2013', title: 'Design Capacity Tables for Structural Steel Hollow Sections — August 2013', url: 'https://www.austubemills.com.au/wp-content/uploads/sites/9/2022/02/atm_dct_sshs_aug13_new-1.pdf' },
+    { publisher: 'Orrcon Steel', document: 'National Product Catalogue 2024, CHS tables pp. 10–12', title: 'Orrcon Steel Manufacturing — Pipe & Tube Product Catalogue, July 2024', url: 'https://orrconmanufacturing.com.au/app/uploads/2024/07/Orrcon-National-Product-Catalogue-Man-LR.pdf#page=10' }
+  ].map(Object.freeze);
+  function documentLink(source) {
+    return documents.find(doc => doc.publisher === source?.publisher && doc.document === source?.document) || null;
+  }
   const dimension = (key, label) => ({ key, label, unit: 'mm', value: s => ({ value: s.drawing[key], basis: 'catalogue' }) });
   const property = (key, label, unit, scale = 1, auxiliary = false) => ({ key, label, unit, scale, value: s => (auxiliary ? s.auxiliary : s.properties)?.[key] });
   function columns(family) {
@@ -87,5 +96,5 @@
       order(key, direction) { if (direction && (!spec(key) || !['asc', 'desc'].includes(direction))) throw Error('Invalid sort'); sort = direction ? { key, direction } : null; },
       clear(key) { filters.delete(key); if (sort?.key === key) sort = null; }, reset() { filters.clear(); sort = null; } };
   }
-  return { columns, format, rows, keywordMatch, specs, engine };
+  return { columns, format, rows, keywordMatch, specs, engine, documentLink };
 });

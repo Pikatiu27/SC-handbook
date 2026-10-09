@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.108, 10 October 2026: Section Properties presentation maintenance restores the material/reference fold and adds official adopted-edition catalogue links. Existing catalogue and engineering calculations are unchanged. Public beta / For Review.
+
 Build 0.7.107, updated 10 October 2026, publishes the approved Section Properties comparison-table presentation. It uses existing accepted section records and calculations, with Compact family tables, column-header filters, source labels and expanded details. New source documents, research, test and audit records are excluded. Necessary browser presentation code is public runtime. Public beta / For Review continues.
 
 Build 0.7.106, updated 9 October 2026, publishes the approved Foundations product-table revision. Independently arranged selected factual parameters and official links support comparison; source conditions, unavailable values, derived tendon rows and conflicts remain explicit. Restricted Surefoot ratings/geometry and stale Katana numerical schedules are excluded. Original PDFs, figures, source layouts, research and audit records are not redistributed. Necessary browser code and displayed lookup data are public runtime assets. Existing calculation methods remain unchanged. Public beta / For Review continues.

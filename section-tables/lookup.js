@@ -14,7 +14,13 @@
   const materialDetails = document.createElement('details'); materialDetails.className = 'detail-card st-material-details';
   materialDetails.innerHTML = '<summary><span><b>Material &amp; reference values</b><small>Grade, strength and checked section attributes</small></span><i>+</i></summary><div class="detail-body"></div>';
   const materialBody = materialDetails.querySelector('.detail-body');
-  materialBody.append(body.querySelector('.section-material-input-group'), body.querySelector('.section-material-category-heading'), $('sectionMaterialProperties'), $('sectionDesignAttributeHeading'), $('sectionDesignAttributes'));
+  // The workspace is detached here: resolve every material node within it.
+  const materialNodes = ['.section-material-input-group', '.section-material-category-heading', '#sectionMaterialProperties', '#sectionDesignAttributeHeading', '#sectionDesignAttributes'].map(selector => {
+    const node = body.querySelector(selector);
+    if (!node) throw Error(`Missing section material node: ${selector}`);
+    return node;
+  });
+  materialBody.append(...materialNodes);
   body.querySelector('#sectionPropertyResults').after(materialDetails);
   catalogue.classList.add('st-legacy-selector'); catalogue.setAttribute('aria-hidden', 'true');
   card.append(workspace);
@@ -23,6 +29,10 @@
   cluster.append(tableArea);
   document.getElementById('stDirectory').append(document.getElementById('sectionCatalogueDirectoryList'));
   function $(id) { return document.getElementById(id); }
+  function catalogueLink(row) {
+    const document = model.documentLink(row.source);
+    return document ? `<a class="st-document-link" href="${esc(document.url)}" target="_blank" rel="noopener noreferrer" aria-label="Catalogue PDF for ${esc(row.designation)}: ${esc(document.title)} (opens in new tab)" title="${esc(document.title)}">Catalogue <span aria-hidden="true">↗</span></a>` : '';
+  }
   const states = new Map();
   let activeFamily = '', selected = '', origin = null;
   const state = () => { if (!states.has(activeFamily)) states.set(activeFamily, { engine: model.engine(activeFamily), top: 0, left: 0 }); return states.get(activeFamily); };
@@ -44,7 +54,7 @@
     $('stRows').innerHTML = rows.length ? rows.map(row => `<tr><th scope="row" class="st-identity">${esc(row.designation)}</th>${cols.map(c => {
       const item = c.value(row), derived = item?.basis === 'derived';
       return `<td class="st-num${item?.value == null ? ' st-unavailable' : ''}"><span>${esc(model.format(item, c.scale))}</span>${derived ? '<small>Derived</small>' : ''}</td>`;
-    }).join('')}<td class="st-source-col"><span>${esc(row.source.publisher)}</span><small>${esc(row.source.document.match(/\b\d{4}\b/)?.[0] || 'Catalogue')}</small></td><td class="st-action-col"><button type="button" data-st-details="${esc(row.id)}" aria-controls="stWorkspace" aria-expanded="false" aria-label="Details for ${esc(row.designation)}">Details</button></td></tr>`).join('') : `<tr><td colspan="${cols.length + 3}" class="st-empty">No matching sections. <button type="button" data-st-clear>Clear filters</button></td></tr>`;
+    }).join('')}<td class="st-source-col"><span>${esc(row.source.publisher)}</span><small>${esc(row.source.document.match(/\b\d{4}\b/)?.[0] || 'Catalogue')} · ${catalogueLink(row)}</small></td><td class="st-action-col"><button type="button" data-st-details="${esc(row.id)}" aria-controls="stWorkspace" aria-expanded="false" aria-label="Details for ${esc(row.designation)}">Details</button></td></tr>`).join('') : `<tr><td colspan="${cols.length + 3}" class="st-empty">No matching sections. <button type="button" data-st-clear>Clear filters</button></td></tr>`;
     if (selected && !rows.some(r => r.id === selected)) closeDetails();
     updateDetailsButtons(); headerMenus.decorate(); setOverflow();
   }
