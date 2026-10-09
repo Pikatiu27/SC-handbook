@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "8e45b2a751535f7a562f3d1efb31ca40cdb28a68996fe4fca30d741016bdeabf"
+      "sha256": "55c1ec70123837d6d4e213d6424cbc5367f0617648d0d7d0f26308d5e0a2d8fa"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -85,6 +85,10 @@
     {
       "path": "assets/sc-handbook-icon.svg",
       "sha256": "219013038c6c61f219be18e188a82de38c4bd04a609726a35d7ad2264aca93fc"
+    },
+    {
+      "path": "beam-capacity/layout.css",
+      "sha256": "49532fa975f8cb758357b0beb5c19dc89479ee1414421dd37344e9c824a52b74"
     },
     {
       "path": "beam-custom-section.js",
@@ -236,7 +240,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "23ac5356489ae1e3776b21656ae1152c5cc060301e38cf968932249173d1d432"
+      "sha256": "a9ea0311624a5bd5f0434f64a987148965116757fa4fddf97685232a0fc32070"
     },
     {
       "path": "LICENSE.md",
@@ -292,11 +296,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "c52ecc490db34267bea5cd383333240bba6e6d8a9f18f8f18b11d25975d7c0f4"
+      "sha256": "144f9b0b2dc6e758e5e831ce2856e5f5195e8c6aeb7c9b1e744b9cace6b75210"
     },
     {
       "path": "README.md",
-      "sha256": "4a5c1397bdc359cf789a52ed249b41986be38d0938eaa2cd4af88c441a55eeba"
+      "sha256": "b5d6d736afc5594f96ba5c8c695b54dc5340bcdbf68afb73e5c57f8c425df3c1"
     },
     {
       "path": "reinforcement-area/app.js",

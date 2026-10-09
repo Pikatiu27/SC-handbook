@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.105, updated 9 October 2026, publishes the approved Beam Section Capacity presentation. Inputs, live geometry and capacities follow a compact reading order; supporting properties and calculations remain available in disclosures. The original strength-validity rules, equations, source data and family-specific limits are unchanged. This remains a section-resistance quick reference, with member checks excluded and Public beta / For Review status retained.
+
 Build 0.7.104, updated 9 October 2026, publishes the approved Guy & Fittings column-header filters and revised How to use. Header arrows align with column names; units, filter tags and help spacing are consistent. Searchable multi-selection, numeric ranges, sorting and nearby-size queries form one shortlist workflow. MBF, MBL, WLL and other original rating bases remain separate; mixed-basis numerical sorting is blocked and conflicts remain withheld. All 416 catalogue records and engineering exclusions are unchanged. Public beta / For Review continues.
 
 Build 0.7.103 adds selected concrete-anchor installation profiles in Foundations. Public beta / For Review. Independently arranged factual parameters, identifiers, conventional symbols and short project-written conditions link to the manufacturer documents. No source PDFs, original figures or catalogue layouts are redistributed. Conditional minima do not establish resistance or Australian project adoption. Necessary browser code and lookup data are publicly retrievable.

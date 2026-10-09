@@ -5833,7 +5833,10 @@ function populateBeamDirections() {
   const directions = beamDirections();
   if (!directions.length) {
     $("beamDirection").innerHTML = "";
-    $("beamDirectionGroup").hidden = true;
+    $("beamDirectionGroup").hidden = false;
+    $("beamDirectionField").hidden = true;
+    $("beamDirectionHelp").hidden = true;
+    $("beamDirectionHeading").textContent = "Section geometry";
     return;
   }
   const previous = beamDirectionMemory[beamFamily];
@@ -5841,8 +5844,10 @@ function populateBeamDirections() {
   const catalogueCase = !beamDimensionOverrideActive() && (beamFamily === "pfc" || beamFamily === "ea");
   $("beamDirection").innerHTML = directions.map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
   $("beamDirection").value = selected;
-  $("beamDirectionGroup").hidden = directions.length === 1;
-  $("beamDirectionHeading").textContent = catalogueCase ? "Catalogue bending case" : "Bending direction";
+  $("beamDirectionGroup").hidden = false;
+  $("beamDirectionField").hidden = directions.length === 1;
+  $("beamDirectionHelp").hidden = directions.length === 1;
+  $("beamDirectionHeading").textContent = directions.length === 1 ? "Section geometry" : catalogueCase ? "Catalogue bending case" : "Bending direction";
   $("beamDirectionFieldLabel").textContent = catalogueCase ? "Catalogue case" : "Direction";
   $("beamDirection").setAttribute("aria-label", catalogueCase ? "Catalogue bending case" : "Bending direction");
   $("beamDirectionHelp").textContent = beamDimensionOverrideActive()
@@ -5852,9 +5857,9 @@ function populateBeamDirections() {
         ? "Custom angle geometry is generated, but Load A/B/C/D capacity remains Not evaluated without a reviewed direction-specific effective modulus."
         : "Select the bending direction used for the derived ideal-section properties."
     : beamFamily === "pfc"
-      ? "Load A is toward the web; Load B is toward the flange tips. The arrows define bending sign, not the load application point."
+      ? "Load A: toward web; B: toward flange tips. Arrows show bending sign, not load position."
       : beamFamily === "ea"
-        ? "Load A/B/C/D defines the catalogue principal-axis bending sign and compression side shown in the section figure."
+        ? "Load A/B/C/D sets bending sign and compression side about the principal axes."
         : "Select the catalogue load direction used for the effective section modulus.";
   beamDirectionMemory[beamFamily] = selected;
 }
@@ -6202,10 +6207,24 @@ function calculateBeam() {
   $("beamFyInput").setAttribute("aria-invalid", String(!(fyInput > 0) || (fuInput > 0 && fuInput < fyInput)));
   $("beamFywInput").setAttribute("aria-invalid", String(separateWebStrength && (!(fywInput > 0) || (fuInput > 0 && fuInput < fywInput))));
   $("beamFuInput").setAttribute("aria-invalid", String(!(fuInput > 0) || fuInput < maximumYield));
+  const materialMessages = [];
+  if (!(customDimensions && !customMaterialForm)) {
+    if (!(fyInput > 0)) materialMessages.push("Enter member fy > 0 MPa.");
+    if (separateWebStrength && !(fywInput > 0)) materialMessages.push("Enter web fy > 0 MPa.");
+    if (!(fuInput > 0)) materialMessages.push("Enter fu > 0 MPa.");
+    else if (fuInput < maximumYield) materialMessages.push(`fu must be ≥ ${formatBeamNumber(maximumYield, 1)} MPa (highest fy).`);
+  }
+  const materialMessage = materialMessages.join(" ");
+  $("beamMaterialValidation").textContent = materialMessage;
+  $("beamMaterialValidation").hidden = !materialMessage;
+  for (const id of ["beamFyInput", "beamFywInput", "beamFuInput"]) {
+    if (materialMessage && $(id).getAttribute("aria-invalid") === "true") $(id).setAttribute("aria-describedby", "beamMaterialValidation");
+    else $(id).removeAttribute("aria-describedby");
+  }
   $("beamMaterialStatus").textContent = customDimensions && !customMaterialForm
     ? "Select material basis"
     : !materialValid
-      ? "Check fy / fu values"
+      ? "Check material values"
       : customProjectMaterial
         ? "Project / legacy material"
     : materialOverride
@@ -6298,13 +6317,7 @@ function calculateBeam() {
 
   const displayedGrade = customProjectMaterial ? "Project-defined steel" : SteelMaterials.gradeLabel(gradeName) || "material unresolved";
   $("beamDesignation").textContent = section ? `${section.designation} · ${displayedGrade}` : `${beamFamilyDefinitions[beamFamily].label} · no checked Beam row`;
-  $("beamAssumption").textContent = momentAvailable
-    ? `${directionLabel} section moment${rolledWebShear || hollowWeb ? " and web shear" : chsSectionShear ? " and CHS shear" : ""}${customDimensions ? "; ideal custom geometry" : materialOverride ? "; project strength override" : ""}; member checks excluded.`
-    : customDimensions
-      ? `${directionLabel}; custom geometry generated, capacity path not established.`
-      : materialOverride
-      ? `${directionLabel}; project strength path not evaluated.`
-      : `${directionLabel}; reviewed capacity row unavailable.`;
+  $("beamAssumption").textContent = `${directionLabel}${customDimensions ? " · ideal custom geometry" : materialOverride ? " · project strength override" : ""}`;
   updateBeamSummaryDimensions(section || {});
   if (hollowWeb) setBeamSummaryCell("beamDimD1", formatBeamDimension(hollowWeb.clearWebDepth), false);
   setBeamSummaryCell("beamMass", formatBeamOptional(section?.mass, "kg/m", 1), !(section?.mass > 0));
@@ -6381,23 +6394,27 @@ function calculateBeam() {
     : shearOnlyAvailable
       ? "Partial result · shear calculated; moment not evaluated"
     : momentAvailable
-      ? `For Review · ${directionLabel}${shearAvailable ? " moment and shear calculated" : " moment calculated"}`
+      ? "For Review"
       : customDimensions
         ? "Geometry complete · design capacity not evaluated for this direction"
         : materialOverride
         ? "Not evaluated · project strength path unavailable"
         : "Not evaluated · reviewed capacity row unavailable";
   resultStatus.className = `beam-result-status${momentAvailable || shearOnlyAvailable ? " is-review" : " is-unavailable"}`;
-  $("beamWarning").textContent = shearOnlyAvailable
-    ? "Shear section resistance is calculated from the valid web-strength path. Moment and combined action remain not evaluated until the member-strength path is valid."
+  $("beamWarning").textContent = section?.invalidReason
+    ? section.invalidReason
+    : materialMessage
+      ? "Correct the highlighted material values."
+    : shearOnlyAvailable
+    ? "Shear calculated; moment not evaluated. Check the member material values and capacity basis."
     : !momentAvailable
     ? (section?.invalidReason || coordination.reason || "The selected family, grade or direction does not have a reconciled effective section modulus. No capacity or PASS / FAIL is reported.")
     : shearAvailable
-      ? "Section resistance only. Member capacity, lateral restraint, web bearing, concentrated loads and serviceability remain excluded."
-      : "Moment section capacity only. Shear, combined action and member checks are not evaluated for this family.";
+      ? "Section resistance only; member checks excluded. See Sources & scope."
+      : "Moment only; shear and member checks excluded. See Sources & scope.";
   $("beamDrawingNote").textContent = customDimensions
-    ? "Diagram and gross properties follow entered ideal dimensions; product radii are omitted."
-    : "Diagram follows selected catalogue dimensions; properties come from the cited table.";
+    ? "Ideal geometry; product radii omitted."
+    : "Catalogue geometry.";
   $("beamSectionDetailsLabel").textContent = customDimensions
     ? "Entered dimensions and automatically derived properties"
     : "Dimensions and supplementary catalogue properties";
@@ -6438,7 +6455,7 @@ function calculateBeam() {
       ? `M* / &phi;M<sub>s${symbol}</sub>${loadCaseHtml} = ${displayFixed(momentRatio, 2)} &gt; 1.00; section moment FAIL. Reduced shear capacity is not applicable because the design moment already exceeds &phi;M<sub>s${symbol}</sub>.`
     : Number.isFinite(utilisation) ? `Governing section utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "section check FAIL" : "section check PASS"}.`
       : "Combined action not evaluated because one or more required capacity paths are unavailable.";
-  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; f<sub>u</sub> = ${fuInput > 0 ? `${formatBeamNumber(fuInput, 0)} MPa` : "invalid"}. ${customProjectMaterial ? "Project / legacy material values" : materialOverride ? `User override; standard defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} / ${formatBeamNumber(defaults.fu, 0)} MPa` : customDimensions ? "Explicit standard material lookup for entered geometry" : "Catalogue default"}. f<sub>u</sub> confirms the material record and is not used in the current section moment or shear equations.`;
+  const materialStep = `f<sub>y,m</sub> = ${fyInput > 0 ? `${formatBeamNumber(fyInput, 0)} MPa` : "invalid"}${separateWebStrength ? `; f<sub>y,w</sub> = ${fywInput > 0 ? `${formatBeamNumber(fywInput, 0)} MPa` : "invalid"}` : ""}; f<sub>u</sub> = ${fuInput > 0 ? `${formatBeamNumber(fuInput, 0)} MPa` : "invalid"}. ${customProjectMaterial ? "Project / legacy material values" : materialOverride ? `User override; standard defaults ${formatBeamNumber(defaults.fy, 0)}${separateWebStrength ? ` / ${formatBeamNumber(defaults.fyw, 0)}` : ""} / ${formatBeamNumber(defaults.fu, 0)} MPa` : customDimensions ? "Explicit standard material lookup for entered geometry" : "Catalogue default"}. f<sub>u</sub> validates material consistency (positive and at least the highest f<sub>y</sub>); capacity equations use f<sub>y</sub>.`;
   const zeBasis = coordination.status === "derived"
     ? customDimensions ? "derived from entered geometry and adopted strength" : "independently regenerated from the entered project strength"
     : beamFamily === "rod"
@@ -6541,14 +6558,6 @@ function calculateBeam() {
             ? "Unperforated catalogue CHS with A<sub>e</sub> = A<sub>g</sub> for this quick check."
             : `Two resisting webs; non-uniform shear-stress ratio = ${displayFixed(hollowWeb.stressRatio, 3)}.`
         : "No reviewed shear-capacity path for the selected family / direction."
-    }),
-    calculationTraceRow({
-      title: "Design-action utilisation",
-      reference: interactionAvailable ? "AS 4100 Cl. 5.12.3" : "",
-      formula: hasDemand ? utilisationFormula : "",
-      substitution: utilisationSubstitution,
-      result: !demandInputsValid ? "Invalid design actions" : !hasDemand ? "No design action entered" : Number.isFinite(utilisation) ? `Governing utilisation = ${formatBeamUtilisation(utilisation)}; ${utilisation > 1 ? "Section check FAIL" : "Section check PASS"}` : "Not evaluated",
-      applicability: demandStep
     }),
     calculationTraceRow({
       title: "Design boundary",

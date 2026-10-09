@@ -1,0 +1,173 @@
+/* Approved Beam capacity presentation. Capacity mathematics and source data are unchanged. */
+#beamPanel .beam-card { padding: 16px; }
+#beamPanel .beam-family-switch { margin-bottom: 14px; }
+#beamPanel .beam-workspace { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+#beamPanel .beam-input-pane, #beamPanel .beam-result-pane { min-width: 0; }
+#beamPanel .beam-selection-inputs { margin: 0; gap: 10px; }
+#beamPanel .beam-input-pane .input-group { padding: 12px; display: block; }
+#beamPanel .beam-input-pane .input-group-heading { margin: 0 0 8px; }
+#beamPanel .beam-input-pane .input-group-fields { gap: 9px; }
+#beamPanel #beamSectionGroup { display: block; }
+#beamPanel #beamSectionGroup > .beam-selection-fields { display: grid; grid-template-columns: minmax(0, 1fr); justify-content: stretch; }
+#beamPanel .beam-dimension-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#beamPanel #beamGradeField, #beamPanel #beamCustomMaterialField { grid-column: 1 / -1; }
+#beamPanel .beam-material-fields > label > span:first-child { min-height: 18px; display: block; line-height: 1.3; }
+#beamPanel #beamGradeField > span:first-child, #beamPanel #beamCustomMaterialField > span:first-child { min-height: 0; }
+#beamPanel .beam-material-note { margin: 8px 0 0; }
+#beamPanel .beam-material-heading { align-items: center; }
+#beamPanel .beam-direction-group { margin-top: 0; }
+#beamPanel .beam-material-reset { margin-left: auto; }
+#beamPanel .beam-direction-group .input-group-fields { max-width: none; }
+#beamPanel .beam-material-reset { width: 44px; height: 44px; flex-basis: 44px; }
+#beamPanel .beam-result-pane { margin: 0; padding: 12px; border: 1px solid #d6c9e9; border-radius: 10px; background: #faf7fe; }
+#beamPanel .beam-result-pane > .section-heading { margin: 0 0 9px; }
+#beamPanel .beam-result-pane .section-heading h2 { font-size: var(--fs-md); }
+#beamPanel .beam-result-basis { margin: 0 0 12px; }
+#beamPanel .beam-result-basis > span { display: block; color: var(--muted); font-size: var(--fs-xs); }
+#beamPanel .beam-result-basis > strong { display: block; margin-top: 3px; color: var(--beam-dark); font-size: var(--fs-md); line-height: 1.3; overflow-wrap: anywhere; }
+#beamPanel .beam-result-basis > small { display: block; margin-top: 4px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
+#beamPanel .beam-results { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+#beamPanel .beam-result-pane .capacity-card { padding: 12px; border-radius: 8px; }
+#beamPanel .beam-result-pane .capacity-card > span { display: block; line-height: 1.35; }
+#beamPanel .beam-result-pane .capacity-card strong { margin: 7px 0 5px; }
+#beamPanel .beam-result-pane .capacity-card p { line-height: 1.4; }
+#beamPanel #beamWarning { margin: 10px 0 0; font-size: var(--fs-xs); line-height: 1.4; }
+#beamPanel .beam-summary.beam-selected-section { margin: 16px 0 0; }
+#beamPanel .beam-drawing-note, #beamPanel .beam-section-details > summary small { font-size: var(--fs-xs); }
+@media (min-width: 961px) and (min-height: 650px) {
+  #beamPanel .beam-result-pane { position: sticky; top: 74px; }
+}
+@media (max-width: 960px) {
+  #beamPanel .beam-workspace { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  #beamPanel .beam-result-pane { position: static; }
+  #beamPanel .beam-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #beamPanel .beam-results.is-single { grid-template-columns: minmax(0, 1fr); }
+  #beamPanel .beam-result-pane .capacity-card > span { min-height: 36px; }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  body:has(#beamPanel:not([hidden])) .tool-navigation-menu { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+  body:has(#beamPanel:not([hidden])) .tool-tabs { flex-wrap: wrap; overflow: visible; }
+}
+@media (max-width: 600px) {
+  #beamPanel .beam-card { padding: 12px; }
+  #beamPanel .beam-workspace { gap: 12px; }
+  #beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #beamPanel .beam-material-fields > label > span:first-child { min-height: 32px; }
+  #beamPanel #beamFuField { grid-column: 1 / -1; }
+  #beamPanel .beam-results { grid-template-columns: minmax(0, 1fr); }
+  #beamPanel .beam-input-pane input, #beamPanel .beam-input-pane select { font-size: 16px; min-height: 44px; }
+  #beamPanel .beam-input-pane input[type="checkbox"] { min-height: 20px; }
+  #beamPanel .beam-summary-primary { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #beamPanel .beam-summary-metrics dd { white-space: normal; }
+}
+@media (max-width: 420px) {
+  #beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom, #beamPanel .beam-dimension-fields { grid-template-columns: minmax(0, 1fr); }
+  #beamPanel .beam-material-fields > label > span:first-child { min-height: 0; }
+  #beamPanel .beam-result-pane .capacity-card > span { min-height: 0; }
+}
+
+/* Compact input presentation: retain full-size controls, remove nested field cards. */
+#beamPanel .beam-input-pane .input-group { padding: 10px; }
+#beamPanel .beam-input-pane .input-group-fields > label:not(.checkbox-field) { padding: 0; border: 0; background: transparent; border-radius: 0; }
+#beamPanel #beamSectionGroup > .beam-selection-fields { grid-template-columns: minmax(0, 1fr) 164px; align-items: end; gap: 10px; }
+#beamPanel #beamSectionGroup .member-dimension-toggle { grid-template-columns: minmax(0, 1fr); margin: 0; }
+#beamPanel #beamSectionGroup .checkbox-field { min-height: 46px; padding: 8px; gap: 8px; }
+#beamPanel #beamDimensionCard { margin: 0; padding: 0; border: 0; }
+#beamPanel #beamDimensionCard:has(#beamDimensionFields[hidden]) { display: none; }
+#beamPanel #beamDimensionFields { margin-top: 10px; }
+#beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom { grid-template-columns: minmax(175px, 1.8fr) repeat(3, minmax(0, 1fr)); gap: 8px; }
+#beamPanel #beamGradeField { grid-column: auto; }
+#beamPanel #beamCustomMaterialField { grid-column: 1 / -1; display: grid; grid-template-columns: 100px minmax(0, 1fr); align-items: center; gap: 8px; }
+#beamPanel #beamCustomMaterialField[hidden] { display: none; }
+#beamPanel .beam-material-fields > label > span:first-child { min-height: 18px; margin: 0 0 4px; }
+#beamPanel .beam-material-note { margin-top: 6px; }
+#beamPanel #beamDirectionGroup { display: grid; grid-template-columns: minmax(0, 1fr) 150px; align-items: center; gap: 10px; }
+#beamPanel #beamDirectionGroup .input-group-heading { margin: 0; }
+#beamPanel #beamDirectionField > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (max-width: 600px) {
+  #beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #beamPanel #beamGradeField, #beamPanel #beamFuField { grid-column: auto; }
+  #beamPanel #beamGradeField { grid-column: 1 / -1; display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 8px; align-items: center; }
+  #beamPanel #beamSectionGroup > .beam-selection-fields { grid-template-columns: minmax(0, 1fr); }
+  #beamPanel #beamSectionGroup .member-dimension-toggle { justify-self: start; width: 164px; }
+  #beamPanel #beamDirectionGroup { grid-template-columns: minmax(0, 1fr) 90px; }
+}
+@media (max-width: 420px) {
+  #beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom { grid-template-columns: minmax(0, 1fr); }
+  #beamPanel .beam-material-fields > label:not([hidden]), #beamPanel #beamGradeField, #beamPanel #beamCustomMaterialField { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 8px; align-items: center; }
+  #beamPanel .beam-material-fields > label > span:first-child { margin: 0; min-height: 0; }
+  #beamPanel #beamGradeField, #beamPanel #beamCustomMaterialField { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  #beamPanel #beamDirectionGroup { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Input/geometry and capacity/evidence are peer panels with matching boundaries. */
+#beamPanel .beam-workspace { align-items: stretch; }
+#beamPanel .beam-input-pane { padding: 12px; border: 1px solid #d6c9e9; border-radius: 10px; background: #fff; }
+#beamPanel .beam-input-pane > .section-heading { margin: 0 0 12px; }
+#beamPanel .beam-input-pane > .section-heading h2 { font-size: var(--fs-md); }
+#beamPanel .beam-result-pane { position: static; display: flex; flex-direction: column; }
+#beamPanel #beamSectionGroup > .beam-selection-fields { grid-template-columns: minmax(0, 1fr) 164px; }
+#beamPanel #beamSectionGroup .member-dimension-toggle { width: 164px; }
+#beamPanel #beamSectionGroup > .beam-selection-fields:has(#beamSectionField[hidden]) { grid-template-columns: minmax(0, 1fr); }
+#beamPanel #beamSectionGroup > .beam-selection-fields:has(#beamSectionField[hidden]) .member-dimension-toggle { justify-self: start; }
+#beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom { grid-template-columns: minmax(185px, 1.8fr) repeat(3, minmax(0, 1fr)); }
+#beamPanel .beam-material-fields:has(#beamFywField[hidden]), #beamPanel .beam-material-fields.is-custom:has(#beamFywField[hidden]) { grid-template-columns: minmax(185px, 1.8fr) repeat(2, minmax(0, 1fr)); }
+#beamPanel #beamDirectionGroup { grid-template-columns: minmax(0, 1fr) 130px; gap: 8px 12px; }
+#beamPanel .beam-direction-controls { min-width: 0; }
+#beamPanel .beam-direction-controls .input-group-fields { margin-top: 8px; }
+#beamPanel .beam-section-figure { display: grid; order: initial; width: 130px; min-width: 0; padding: 0; border: 0; background: transparent; grid-template-rows: 104px auto; align-self: center; }
+#beamPanel .beam-section-figure svg { height: 104px; min-height: 104px; width: 100%; }
+#beamPanel .beam-section-figure figcaption { display: block; font-size: var(--fs-xs); }
+#beamPanel .beam-drawing-note { display: block; grid-column: 1 / -1; margin: 0; font-size: var(--fs-xs); line-height: 1.4; }
+#beamPanel .beam-capacity-basis { border-top: 1px solid #e2d9ed; margin-top: 10px; padding-top: 10px; }
+#beamPanel .beam-capacity-basis .beam-summary-primary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 8px 12px !important; margin: 0 !important; }
+#beamPanel .beam-capacity-basis .beam-summary-primary [data-beam-summary-cell="class"] { grid-column: 1 / -1; }
+#beamPanel .beam-capacity-basis dt, #beamPanel .beam-summary-secondary dt { color: var(--muted); font-size: var(--fs-xs); }
+#beamPanel .beam-capacity-basis dd, #beamPanel .beam-summary-secondary dd { white-space: normal; }
+#beamPanel .beam-result-pane .beam-section-details { margin-top: auto; padding-top: 12px; border: 0; background: transparent; }
+#beamPanel .beam-section-details > summary { min-height: 44px; padding: 8px 0; border-top: 1px solid #d6c9e9; }
+#beamPanel .beam-section-details > summary b { font-size: var(--fs-sm); }
+#beamPanel .beam-section-details .beam-summary-secondary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px 14px; margin: 0; padding: 8px 0 0; }
+#beamPanel .beam-summary-secondary [data-beam-summary-cell="source"] { grid-column: 1 / -1; }
+#beamPanel > .detail-card, #beamPanel > .source-card { margin-top: 12px; }
+#beamPanel > .detail-card > summary, #beamPanel > .source-card > summary { padding-top: 12px; padding-bottom: 12px; }
+@media (max-width: 600px) {
+  #beamPanel .beam-input-pane, #beamPanel .beam-result-pane { padding: 10px; }
+  #beamPanel #beamSectionGroup > .beam-selection-fields { grid-template-columns: minmax(0,1fr); }
+  #beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom, #beamPanel .beam-material-fields:has(#beamFywField[hidden]), #beamPanel .beam-material-fields.is-custom:has(#beamFywField[hidden]) { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  #beamPanel #beamGradeField { grid-column: 1 / -1; }
+  #beamPanel #beamDirectionGroup { grid-template-columns: minmax(0,1fr) 104px; }
+  #beamPanel .beam-section-figure { width: 104px; grid-template-rows: 90px auto; }
+  #beamPanel .beam-section-figure svg { height: 90px; min-height: 90px; }
+}
+@media (max-width: 420px) {
+  #beamPanel .beam-material-fields, #beamPanel .beam-material-fields.is-custom, #beamPanel .beam-material-fields:has(#beamFywField[hidden]), #beamPanel .beam-material-fields.is-custom:has(#beamFywField[hidden]) { grid-template-columns: minmax(0,1fr); }
+  #beamPanel #beamDirectionGroup { grid-template-columns: minmax(0,1fr); }
+  #beamPanel .beam-section-figure { width: 130px; justify-self: center; }
+}
+
+/* Keep one left-aligned copy column; the figure has its accessible title/description. */
+#beamPanel #beamDirectionGroup { align-items: start; }
+#beamPanel .beam-direction-controls { align-self: start; }
+#beamPanel .beam-section-figure { align-self: start; grid-template-rows: 104px; }
+#beamPanel .beam-section-figure figcaption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0; }
+#beamPanel .beam-drawing-note { margin-top: 6px; }
+#beamPanel:has([data-beam-family="ub"][aria-pressed="true"]) #beamDirectionHelp,
+#beamPanel:has([data-beam-family="uc"][aria-pressed="true"]) #beamDirectionHelp,
+#beamPanel:has([data-beam-family="chs"][aria-pressed="true"]) #beamDirectionHelp,
+#beamPanel:has([data-beam-family="rhs"][aria-pressed="true"]) #beamDirectionHelp,
+#beamPanel:has([data-beam-family="shs"][aria-pressed="true"]) #beamDirectionHelp,
+#beamPanel:has([data-beam-family="rod"][aria-pressed="true"]) #beamDirectionHelp { display: none; }
+#beamPanel .beam-section-details > summary small { display: none; }
+#beamPanel .beam-property-group { margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2d9ed; }
+#beamPanel .beam-property-group h3 { margin: 0 0 8px; font-size: var(--fs-sm); color: var(--beam-dark); }
+#beamPanel .beam-property-group .beam-capacity-basis { border: 0; margin: 0; padding: 0; }
+#beamPanel .beam-section-details .beam-summary-secondary { padding-top: 0; }
+@media (max-width: 600px) {
+  #beamPanel .beam-section-figure { grid-template-rows: 90px; }
+}
+
+/* Geometry stays visible when the family needs no direction selector. */
+#beamPanel .beam-material-validation { margin: 6px 0 0; color: #9b352c; font-size: var(--fs-xs); line-height: 1.4; }
+#beamPanel .beam-result-pane .capacity-card > p { display: none; }
