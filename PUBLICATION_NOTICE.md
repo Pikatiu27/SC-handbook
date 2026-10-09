@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.99, updated 9 October 2026, publishes the approved compact Guy & Fittings tables across all nine families. Column widths, row spacing and headers are refined; repeated product identities and all-empty dimension columns are reduced. Published rating bases and source units remain explicit, with source conflicts withheld. All 416 product records, source values and restrictions remain unchanged. Public beta / For Review continues.
+
 Build 0.7.98, updated 9 October 2026, publishes the accepted Guy & Fittings fixed identity column and side details, with concise copy and no record export button. Original ratings, all 416 admitted records, missing values, conflicts and use restrictions remain. Public beta / For Review continues; no assembly or design capacity is established.
 
 Build 0.7.97 adds Reinforcement Area & Spacing as a nominal-data lookup and derived area/mass aid. It remains Public beta / For Review. Numerical area matching is not reinforcement design acceptance. Standard nominal mass is separate from supplier ordering mass. Existing published calculations and product data are preserved.

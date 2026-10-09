@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo76">
   <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo76">
 
-    <link rel="stylesheet" href="guy-lookup/guy.css?v=20261009guyside1">
+    <link rel="stylesheet" href="guy-lookup/guy.css?v=20261009guycompact1">
 <link rel="stylesheet" href="panel-antennas/panel.css?v=20261007panel31">
 <link rel="stylesheet" href="reinforcement-area/styles.css?v=20261009reoarea1">
 </head>
@@ -109,7 +109,7 @@
       <nav id="guyFamilies" class="guy-families" aria-label="Component family"></nav>
       <select id="guyFamily" hidden aria-label="Component"></select>
       <section class="lookup-card guy-catalogue" aria-labelledby="guyCatalogueTitle">
-        <div class="guy-section-heading"><div><h3 id="guyCatalogueTitle">Catalogue comparison</h3><span id="guyCount" role="status" aria-live="polite" aria-atomic="true"></span></div><span class="guy-all-label">All parameters · key values first</span></div>
+        <div class="guy-section-heading"><div><h3 id="guyCatalogueTitle">Catalogue comparison</h3><span id="guyCount" role="status" aria-live="polite" aria-atomic="true"></span></div><span class="guy-all-label">Compact table · full records in details</span></div>
         <div class="guy-toolbar"><label><span class="sr-only">Search size, grade, supplier or part number</span><input id="guySearch" type="search" placeholder="Search size, grade, supplier or part number" autocomplete="off"></label><label id="guyAccessoryField" hidden><span class="sr-only">Accessory type</span><select id="guyAccessoryType" aria-label="Accessory type"></select></label><button type="button" id="guyReset">Reset</button></div>
         <details class="guy-filters"><summary>Optional filters <span id="guyFilterCount"></span></summary>
         <div class="guy-extra-filters"><label><span id="guyDiameterLabel">Overall strand diameter (mm)</span><input id="guyDiameter" type="text" inputmode="decimal" placeholder="Nearby sizes · optional" aria-describedby="guyNearbyNote guyTableNote"></label><label id="guyMinimumField"><span id="guyMinimumLabel">Minimum MBF (kN)</span><input id="guyMinimum" type="text" inputmode="decimal" placeholder="Published rating · optional" aria-describedby="guyMinimumNote"></label></div>
@@ -2257,7 +2257,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.98 &middot; updated 9 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.99 &middot; updated 9 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20261009correctness1"></script>
@@ -2282,7 +2282,7 @@
       <script src="geo-parameters/geo-parameters-data.js?v=20260921geo76"></script>
       <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
 
-  <script src="app.js?v=20261009correctness1"></script>
+  <script src="app.js?v=20261009guycompact1"></script>
 
       <script src="geo-parameters/app.js?v=20260921geo76"></script>
 
@@ -2292,7 +2292,8 @@
   <script src="guy-lookup/units.js?v=20261003gaps1"></script>
   <script src="guy-lookup/lookup.js?v=20261003gaps1"></script>
   <script src="guy-lookup/related.js?v=20261003gaps1"></script>
-  <script src="guy-lookup/app.js?v=20261009guyside1"></script>
+  <script src="guy-lookup/table-layout.js?v=20261009guycompact1"></script>
+  <script src="guy-lookup/app.js?v=20261009guycompact1"></script>
 <script src="panel-antennas/data.js?v=20261007panel31"></script>
 <script src="panel-antennas/lookup.js?v=20261007panel31"></script>
 <script src="panel-antennas/app.js?v=20261007panel31"></script>

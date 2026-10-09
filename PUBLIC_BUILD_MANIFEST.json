@@ -136,7 +136,7 @@
     },
     {
       "path": "guy-lookup/app.js",
-      "sha256": "b5046d96a4c3073e733e5185ffe9b9cda3985e72cab6fbd951b2b1e1bd73afde"
+      "sha256": "8cf14d0d965da454a7512262cd4451b8f93c0957127f3e1b3e2d39298e80cbd6"
     },
     {
       "path": "guy-lookup/data.js",
@@ -144,11 +144,11 @@
     },
     {
       "path": "guy-lookup/guy.css",
-      "sha256": "b2aaa6f6583c3a8275cd65436e1fe1ec49df924a0915c0aa73e868fcc8fcfd34"
+      "sha256": "2e9ec4f841ce8443c22bc667c5ff157e884f02e6e1c8b1d01c351375ac859cb9"
     },
     {
       "path": "guy-lookup/index.html",
-      "sha256": "1e5e91a424f112cb5b3a3911b6d1607ae29cb8fa95dae344551d0e0177598565"
+      "sha256": "dec7c7493032b8eb812b813408eed8ded6e65a29052ef3882ea198471da6c7ce"
     },
     {
       "path": "guy-lookup/lookup.js",
@@ -163,12 +163,16 @@
       "sha256": "a240ae751c3ba785aef6c653a7415d293bae0842f57ff892bb1e3f1f35f43bb0"
     },
     {
+      "path": "guy-lookup/table-layout.js",
+      "sha256": "ef809e0fe8ed3a13721697473fd90e98002ec7e692bd26159bc314021bc8134a"
+    },
+    {
       "path": "guy-lookup/units.js",
       "sha256": "b0f6dc7229f569920e945876119eaa97c23f5efa27d6f509aab781c365b6b285"
     },
     {
       "path": "index.html",
-      "sha256": "84d5028def2f4a6ea5ab5b104d37f88c1dc71c9460b6355a58b712554e717daa"
+      "sha256": "b896381f835dbfc1f774518781112cba09b91f581afe0b2fffe4573635e5ef36"
     },
     {
       "path": "LICENSE.md",
@@ -224,11 +228,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "1ef1954c661dafd141e011385dee8fbd8d05104e1f42beb0f9548e656a5516d0"
+      "sha256": "3e80f29d828196abcb5f16d5b2ef895698d9c0daa09da05ecd01b8fc8f018586"
     },
     {
       "path": "README.md",
-      "sha256": "f0ef317a0c9afe315766623fb91e87e13395e3de56a97a85ef8874b0eda89dd9"
+      "sha256": "18e94e6a26d8dd5e61f65be725955b8411e3a70c47f4f80b4f51375dcbf2f855"
     },
     {
       "path": "reinforcement-area/app.js",

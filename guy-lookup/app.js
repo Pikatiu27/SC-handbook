@@ -230,84 +230,62 @@
   }
   function sourceLink(p) {const s=sources[p.source];return p.source==="bullivants4"?`https://app.nexuspublications.com.au/a10/publications/bullivants-product-catalogue-edition-4-1/${p.page}`:referenceLink(p.source,p.page);}
   function renderTable() {
-    const view=viewPosition();
-    const family=$("Family").value, prop=k=>p=>p.properties[k] ?? "—";
-    const basis=["Guy strand","Guy wire rope"].includes(family)?"MBF / MBL":family==="Dead-end"?"RHS":"WLL";
-    const force=family!=="Wire rope grip"&&(!["Thimble","Accessories"].includes(family)||matching.some(p=>p.rating));
-    const primaryKeys={
-      "Guy wire rope":["Construction","Nominal rope diameter (mm)","Core","Lay","Linear mass (kg/m)"],"Guy strand":["Construction","Nominal strand diameter (mm)","Metallic area (mm²)","Linear mass (kg/m)"],
-      "Turnbuckle":["Closed length (mm)","Open length (mm)","Length range (derived mm)","Mass (kg)"],
-      "Rigging screw":["Closed length (mm)","Open length (mm)","Length range (derived mm)","Mass (kg)"],
-      "Shackle":["Source dimension d (mm)","Source dimension D (mm)","Source dimension W (mm)","Mass (kg)"],
-      "Dead-end":["Matching diameter (mm)","Strand construction","Colour code","Closed thimble code","Open thimble code","Actual strand diameter (in)","Holding strength (% of RBS)","Lay"],
-      "Thimble":["Component type","Suits rope diameter (mm)","Bend radius (mm)","Seat width (mm)","Opened width (mm)","Finish"],
-      "Accessories":["Component type","Rope diameter min (mm)","Rope diameter max (mm)","Catalogue efficiency (% of rope catalogue strength)","Thread size (source)","Bolt size (source)","Bend radius (mm)","Overall length (mm)","Thread length (mm)"],"Wire rope grip":["Suits rope diameter (mm)","Grips per termination","Finish"]
-    }[family];
-    const aliases={"Nominal strand diameter (mm)":"Strand diameter (mm)","Linear mass (kg/m)":"Mass (kg/m)","Suits rope diameter (mm)":"Rope diameter (mm)","Actual strand diameter (in)":"Strand diameter (in)","Holding strength (% of RBS)":"Holding (% RBS)","Approx. mass (kg/1000 m)":"Source mass (kg/1000 m)","Source construction designation":"Source designation","Source nominal rope size (in)":"Source rope size (in)"};
-    const heading=k=>aliases[k]||k.replace('Source dimension ','Drawing ').replace('Min. zinc coating Class ','Zinc min. Class ');
-    const keys=[...new Set((family==="Accessories"?matching:products.filter(p=>p.family===family)).flatMap(p=>Object.keys(p.properties)))].filter(k=>k!=="Record identity");
-    const primary=primaryKeys.filter(k=>keys.includes(k)),secondary=keys.filter(k=>!primary.includes(k));
-    let columns=[["Grade",p=>p.grade.replace(" (wire tensile grade)","")],...(force?[["Rating basis",p=>p.rating?.type||"—"],[`${["Guy strand","Guy wire rope"].includes(family)?basis:family==="Dead-end"?"RHS":"Published force"} (kN)`,p=>calc.ratingKN(p)===null?"—":fmt(calc.ratingKN(p),2)]]:[]),...(["Turnbuckle","Rigging screw","Shackle"].includes(family)?[["Form / connection",p=>p.series]]:[]),...primary.map(k=>[heading(k),prop(k)])];
-    if(family==="Dead-end"){const order=["Matching diameter (mm)","Strand construction","Colour code","Closed thimble code","Open thimble code","RHS (kN)","Grade"];const rank=h=>order.includes(h)?order.indexOf(h):order.length;columns.sort((a,b)=>rank(a[0])-rank(b[0]));}
-    if(["Thimble","Accessories"].includes(family)){
-      columns=columns.filter(([h])=>h!=="Grade"&&(h!=="Component type"||family!=="Accessories"||$("Series").value==="All constructions / end forms"));
-      const preferred=["Component type","Rope diameter min (mm)","Rope diameter max (mm)","Catalogue efficiency (% of rope catalogue strength)","Rope diameter (mm)","Bend radius (mm)","Seat width (mm)","Opened width (mm)","Thread size (source)","Bolt size (source)","Overall length (mm)","Thread length (mm)"];
-      const rank=h=>preferred.includes(h)?preferred.indexOf(h):preferred.length;columns.sort((a,b)=>rank(a[0])-rank(b[0]));
-    }
-    const keyColumnCount=columns.length;
-    columns.push(...secondary.map(k=>[heading(k),prop(k)]));
-    columns.push(["AU / mast evidence",p=>evidenceSummary(p)]);
-    if(force)columns.push(["Original rating",p=>p.rating?`${p.rating.value} ${p.rating.unit} ${p.rating.type}`:"—"]);
-    if($("Diameter").value.trim())columns.push(["Compared diameter (mm)",p=>{const n=GuyFittingsLookup.diameter(p);return n===null?"—":fmt(n,3);}],["Difference (mm)",p=>{const n=GuyFittingsLookup.diameter(p),d=n-Number($("Diameter").value);return n===null?"—":`${d>0?"+":""}${fmt(d,3)}`;}]);
+    const view=viewPosition(),family=$("Family").value;
+    const layout=GuyCompactTable.columns(family,matching,products,$("Series").value),columns=layout.columns;
+    if($("Diameter").value.trim())columns.push({key:"$diameter",label:"Compared diameter (mm)",numeric:true,secondary:true},{key:"$difference",label:"Difference (mm)",numeric:true,secondary:true});
+    const secondary=columns.findIndex(c=>c.secondary);
+    const header=c=>{
+      const full=c.label,m=full.match(/^(.*) (\([^()]+\))$/),name=m?m[1]:full,unit=m?m[2]:"";
+      const breaks={"Published rating":["Published","rating"],"Form / connection":["Form /","connection"],"Matching requirement":["Matching","requirement"],"Strand diameter":["Strand","diameter"],"Nominal rope diameter":["Nominal rope","diameter"],"Matching diameter":["Matching","diameter"],"Strand construction":["Strand","construction"],"Metallic area":["Metallic","area"],"Closed length":["Closed","length"],"Open length":["Open","length"],"Length range":["Length range"],"Grips per termination":["Grips per","termination"],"AU / mast evidence":["AU / mast","evidence"],"Source / page":["Source /","page"],"Model / size":["Model / size"],"Nominal wire diameter":["Nominal wire","diameter"]};
+      const lines=breaks[name]||(name.startsWith("Zinc min. ")?["Zinc minimum",name.slice(10)]:[name]);
+      const title=c.key==="Catalogue efficiency (% of rope catalogue strength)"?"Efficiency (% of catalogue rope strength)":full;
+      return `<span class="guy-th-label" title="${escape(title)}">${lines.map(l=>`<span>${escape(l)}</span>`).join("")}</span><span class="guy-th-unit">${escape(unit)||"&nbsp;"}</span>`;
+    };
+    const cell=(c,p)=>{
+      if(c.key==="$rating"){
+        const r=GuyCompactTable.rating(p,calc.ratingKN(p),fmt);
+        return `<span class="guy-rating-value ${r.unavailable?"guy-unavailable":""}"><b>${escape(r.value)}</b>${r.basis?`<span class="guy-rating-basis">${escape(r.basis)}</span>`:""}</span>${r.original?`<small class="guy-rating-original">Source: ${escape(r.original)}</small>`:""}`;
+      }
+      let value=c.key==="$grade"?GuyCompactTable.grade(p):c.key==="$form"?p.series:c.key==="$evidence"?evidenceSummary(p):c.key==="$diameter"?(()=>{const d=GuyFittingsLookup.diameter(p);return d===null?"—":fmt(d,3);})():c.key==="$difference"?(()=>{const d=GuyFittingsLookup.diameter(p);if(d===null)return "—";const delta=d-Number($("Diameter").value);return `${delta>0?"+":""}${fmt(delta,3)}`;})():p.properties[c.key]??"—";
+      const text=String(value);
+      if(c.key==="$grade"){
+        const match=text.match(/^(.*?) \((.*)\)$/);
+        return match?`<span>${escape(match[1])}</span><small>${escape(match[2])}</small>`:escape(text);
+      }
+      if(c.numeric)return escape(text);
+      if(c.key==="$evidence")return text.split(" · ").map(t=>`<span class="guy-evidence-line">${escape(t)}</span>`).join("");
+      if(["Source exclusions","Data completeness","Fitting evidence","Pin retention"].includes(c.key))return escape(text);
+      // Short summary; the exact full text is available by keyboard, hover and record details.
+      return `<span class="guy-cell-text" title="${escape(c.key==="$grade"?p.grade:text)}">${escape(text)}</span>`;
+    };
     $("CatalogueTitle").textContent=family;
-    $("FilterCount").textContent=[$("Maker").value!=="All suppliers",$("Series").value!=="All constructions / end forms",$("Grade").value!=="All grades"].filter(Boolean).length?"· active":"";
+    $("Count").textContent=`${matching.length} matching / ${products.length} catalogue rows · 12 unresolved records excluded${matching.some(p=>p.sourceStatus!=="Checked")?` · ${matching.filter(p=>p.sourceStatus!=="Checked").length} require source review`:""}`;
+    $("FilterCount").textContent=[$("Maker").value!=="All suppliers",$("Series").value!=="All constructions / end forms",$("Grade").value!=="All grades"].some(Boolean)?"· active":"";
     $("Families").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.family===family)));
     $("AccessoryField").hidden=family!=="Accessories";
     if(family==="Accessories")options($("AccessoryType"),["All accessory types",...new Set(products.filter(p=>p.family===family).map(p=>p.series))],$("Series").value==="All constructions / end forms"?"All accessory types":$("Series").value);
     $("Caption").textContent=`${family} · ${matching.length} products`;
-    $("TableNote").textContent=force?`Published ratings are not design resistance. Compare only identical rating bases. — = not recorded. All recorded parameters; key values first. Scroll right for dimensions and source data. Drawing letters refer to each manufacturer’s source diagram. Badges name data gaps, not product approval.`:"Dimensional comparison only. — = not recorded. All recorded parameters; key values first. Scroll right for dimensions and source data. Drawing letters refer to each manufacturer’s source diagram. Badges name data gaps, not product approval.";
-
-    const numeric=h=>/\(kN\)|\(mm|\(kg|\(in\)|\(g\/|Difference|Holding|Grips|factor/.test(h);
-    const header=h=>{
-      const m=h.match(/^(.*) (\([^()]+\))$/), name=m?m[1]:h,unit=m?m[2]:"";
-      const breaks={"Size":["Size /","identity"],"Grade":["Grade"],"Strand diameter":["Strand","diameter"],"Metallic area":["Metallic","area"],"Approximate length":["Approximate","length"],"Closed length":["Closed","length"],"Open length":["Open","length"],"Nominal wire diameter":["Nominal wire","diameter"],"Designated size":["Designated","size"],"Source designation":["Source","designation"],"Source rope size":["Source rope","size"],"Strand construction":["Strand","construction"],"Published safety factor":["Published","safety factor"],"Grips per termination":["Grips per","termination"],"Form / connection":["Form /","connection"],"AU / mast evidence":["AU / mast","evidence"],"Published force":["Published","force"],"Published proof load multiplier":["Proof load","multiplier"],"Published ultimate load multiplier":["Ultimate load","multiplier"],"Length range":["Length range"],"Catalogue efficiency":["Catalogue","efficiency"],"Original rating":["Original","rating"],"MBF / MBL":["MBF / MBL"],"Matching diameter":["Matching","diameter"],"Colour code":["Colour","code"],"Closed thimble code":["Closed thimble","code"],"Open thimble code":["Open thimble","code"],"Cast iron sheave code":["Cast iron sheave","code"],"Clevis thimble code":["Clevis thimble","code"],"Socket thimble code":["Socket thimble","code"],"Thimble eye nut code":["Thimble eye nut","code"],"Guy insulator code":["Guy insulator","code"],"Source finish notation":["Source finish","notation"],"Fitting evidence":["Fitting","evidence"],"Compared diameter":["Compared","diameter"],"Product / supplier":["Product /","supplier"],"Source / page":["Source /","page"]};
-      const lines=name.startsWith("Zinc min. Class ")?["Zinc minimum",name.replace("Zinc min. ","")]:breaks[name]||[name];
-      return `<span class="guy-th-label" title="${escape(h)}">${lines.map(t=>`<span>${escape(t)}</span>`).join("")}</span><span class="guy-th-unit">${escape(unit)||'&nbsp;'}</span>`;
-    };
-    const cell=(h,value)=>{const t=String(value);if(h==="Grade"){const m=t.match(/^(.*?) \((.*)\)$/);if(m)return `<span class="guy-token">${escape(m[1])}</span><small class="guy-token">${escape(m[2])}</small>`;}if(h==="Finish"&&t.includes('; '))return t.split('; ').map(escape).join('<br>');return escape(t);};
+    const notes=[layout.force?"Published ratings ≠ design resistance; compare the same basis.":"Dimensions only; no design capacity.","— = not recorded. Drawing letters follow each supplier's diagram."];
+    if(family==="Dead-end")notes.push("Match exact strand / lay; no grade equivalence.");
+    if(family==="Wire rope grip")notes.push("Temporary use only; not permanent dynamically loaded mast terminations.");
+    if(columns.some(c=>c.key==="Catalogue efficiency (% of rope catalogue strength)"))notes.push("Efficiency is % of catalogue rope strength.");
+    if(matching.some(p=>p.rating?.unit==="t"))notes.push("Source t = tonne-force.");
+    if(layout.omitted.length)notes.push(`${layout.omitted.length} unrecorded dimension columns omitted; full records remain in details.`);
+    $("TableNote").textContent=notes.join(" ");
     $("Table").querySelector("colgroup")?.remove();
-    // Stable widths by parameter, independent of the current filtered rows.
-    const columnWidth=h=>{
-      const named={"Grade":92,"Construction":86,"Strand construction":100,"Form / connection":158,"Finish":154,"Lay":84,"Original rating":120,"Rating basis":100,"Published force (kN)":80,"Component type":140,"Data completeness":180,"AU / mast evidence":170,"Source designation":104,"Source rope size (in)":94,"Published safety factor":106,"Grips per termination":100};
-      if(named[h])return named[h];
-      if(/^Drawing /.test(h))return 76;
-      if(/^(MBF|WLL|RHS) /.test(h))return 80;
-      if(/^Mass /.test(h))return 76;
-      if(/^Zinc min\./.test(h))return 108;
-      if(/^Nominal wire diameter/.test(h))return 104;
-      if(numeric(h))return 92;
-      return 128;
-    };
-    const widths=[phoneDrawer.matches?150:190,...columns.map(([h])=>columnWidth(h)),176,96];
-    const cg=document.createElement('colgroup');cg.innerHTML=widths.map(w=>`<col style="width:${w}px">`).join('');$("Table").prepend(cg);$("Table").style.width=widths.reduce((a,b)=>a+b,0)+'px';
-    $("Head").innerHTML=`<tr><th scope="col">${header("Size")}</th>${columns.map(([h],i)=>`<th scope="col" class="${numeric(h)?"guy-number":""} ${i===keyColumnCount?"guy-secondary-start":""}">${header(h)}</th>`).join("")}<th scope="col">${header("Product / supplier")}</th><th scope="col">${header("Source / page")}</th></tr>`;
-    $("Rows").innerHTML=matching.map((r,i)=>`<tr class="${i>0&&r.size!==matching[i-1].size?"guy-size-start":""}" data-selected="${!$("Selection").hidden&&r.id===selected?.id}"><th scope="row"><button type="button" data-product="${escape(r.id)}" aria-label="View ${escape(r.manufacturer)} ${escape(r.code)} ${escape(r.size)} ${escape(r.grade)} ${escape(r.series)}"><span class="guy-size-label">${escape(r.size)}</span><small class="guy-row-identity" title="${escape(r.code+' · '+r.series)}">${escape(['Accessories','Thimble'].includes(r.family)&&r.grade==='Not stated'?'':r.grade.startsWith('Match ')?r.properties['Strand construction']||'See record':r.grade.replace(' (wire tensile grade)',''))}${['Turnbuckle','Rigging screw'].includes(r.family)?` · ${escape(r.series.split(' - ')[0].replaceAll('Jaw','J').replaceAll('Eye','E').replaceAll(' & ','/'))}`:r.family==='Shackle'?` · ${escape(r.series)}`:''}</small><small class="guy-row-supplier">${escape(r.manufacturer.split(' / ')[0])}</small>${GuyCatalogueStatus.status(r,GuyFittingsLookup.diameter).label?`<small class="guy-data-tag">${escape(GuyCatalogueStatus.status(r,GuyFittingsLookup.diameter).label)}</small>`:""}</button>${r.sourceStatus!=="Checked"?`<span class="guy-review-badge" title="${escape(r.note)}">${r.sourceStatus==="Source conflict"?'Source conflict':'Rating unverified'}</span>`:''}</th>${columns.map(([h,v],i)=>`<td class="${numeric(h)?"guy-number":""} ${h==="Grade"?"guy-grade":""} ${i===keyColumnCount?"guy-secondary-start":""}">${cell(h,v(r))}</td>`).join("")}<td class="guy-product-cell"><span class="guy-token">${escape(r.code)}</span><small>${escape(r.manufacturer)}</small></td><td class="guy-source-cell"><a href="${escape(sourceLink(r))}" target="_blank" rel="noopener noreferrer"><span class="guy-token">${escape(sources[r.source].shortLabel||(r.source==="bullivants4"?"Edition 4":r.source==="nobles2018"?"2018":r.source==="bekaertCA"?"Canada · 2022":r.source==="noblesStrand2018"?"2018":r.source==="plpAU2025"?"AU · 2025 file":"2016"))}</span><span class="guy-source-page">${sources[r.source].kind==="web"?"Specification":`p. ${r.page}`}</span></a>${r.sourceStatus!=="Checked"?`<small class="guy-conflict">${escape(r.sourceStatus)}</small>`:""}</td></tr>`).join("");
-    $("Empty").hidden=matching.length>0;
-    $("Table").closest('.guy-table-wrap').hidden=matching.length===0;
-    $("Selection").hidden=!selected || $("Selection").hidden;
-    $("Head").querySelector('th').innerHTML=header("Model / size");
-    $("Rows").querySelectorAll('button[data-product]').forEach(button=>{
-      const p=matching.find(p=>p.id===button.dataset.product),status=GuyCatalogueStatus.status(p,GuyFittingsLookup.diameter);
-      const code=p.code.toLowerCase().replace(/\s+/g,""),size=p.size.toLowerCase().replace(/\s+/g,"");
-      const sizeInCode=code===size||code.startsWith(size+"/")||code.startsWith(size+"(");
-      button.innerHTML=`<span class="guy-model-code">${escape(p.code)} <span class="guy-model-brand">(${escape(p.manufacturer)})</span></span>${sizeInCode?"":`<span class="guy-model-size">${escape(p.size)}</span>`}${status.label?`<small class="guy-data-tag">${escape(status.label)}</small>`:""}`;
-      const active=drawer.open&&(drawerOrigin||selected?.id)===p.id;
-      button.closest('tr').dataset.selected=String(active);
-      button.setAttribute("aria-haspopup","dialog");button.setAttribute("aria-controls","guyDrawer");button.setAttribute("aria-expanded",String(active));
-    });
+    const widths=[...columns.map(GuyCompactTable.width),94];
+    const group=document.createElement("colgroup");group.innerHTML='<col style="width:var(--guy-identity-width)">'+widths.map(w=>`<col style="width:${w}px">`).join("");$("Table").prepend(group);$("Table").style.width=`calc(var(--guy-identity-width) + ${widths.reduce((a,b)=>a+b,0)}px)`;
+    $("Head").innerHTML=`<tr><th scope="col">${header({label:"Model / size"})}</th>${columns.map((c,i)=>`<th scope="col" class="${c.numeric?"guy-number":""} ${i===secondary?"guy-secondary-start":""}">${header(c)}</th>`).join("")}<th scope="col">${header({label:"Source / page"})}</th></tr>`;
+    $("Rows").innerHTML=matching.map((p,i)=>{
+      const code=p.code.toLowerCase().replace(/\s+/g,""),size=p.size.toLowerCase().replace(/\s+/g,""),inCode=code===size||code.startsWith(size+"/")||code.startsWith(size+"(");
+      const status=GuyCatalogueStatus.status(p,GuyFittingsLookup.diameter),active=drawer.open&&(drawerOrigin||selected?.id)===p.id,s=sources[p.source];
+      const source=s.shortLabel||({bullivants4:"Edition 4",nobles2018:"2018",bekaertCA:"Canada · 2022",noblesStrand2018:"2018",plpAU2025:"AU · 2025 file"}[p.source])||"2016";
+      const tag=status.label||(p.sourceStatus!=="Checked"?p.sourceStatus:"");
+      return `<tr class="${i&&p.size!==matching[i-1].size?"guy-size-start":""}" data-selected="${active}"><th scope="row"><button type="button" data-product="${escape(p.id)}" aria-label="View ${escape(p.manufacturer)} ${escape(p.code)} ${escape(p.size)} ${escape(p.grade)} ${escape(p.series)}" aria-haspopup="dialog" aria-controls="guyDrawer" aria-expanded="${active}"><span class="guy-model-code">${escape(p.code).replaceAll("-","-<wbr>")} <span class="guy-model-brand">(${escape(p.manufacturer)})</span></span>${inCode?"":`<span class="guy-model-size">${escape(p.size)}</span>`}${tag?`<small class="guy-data-tag">${escape(tag)}</small>`:""}</button></th>${columns.map((c,j)=>`<td class="${c.numeric?"guy-number":""} ${c.key==="$rating"?"guy-rating-cell":""} ${c.key==="$grade"?"guy-grade":""} ${j===secondary?"guy-secondary-start":""}"${c.key==="$grade"?` title="${escape(p.grade)}"`:""}>${cell(c,p)}</td>`).join("")}<td class="guy-source-cell"><a href="${escape(sourceLink(p))}" target="_blank" rel="noopener noreferrer"><span>${escape(source)}</span><span class="guy-source-page">${s.kind==="web"?"Specification":`p. ${p.page}`}</span></a></td></tr>`;
+    }).join("");
+    $("Empty").hidden=matching.length>0;$("Table").closest(".guy-table-wrap").hidden=matching.length===0;
     restorePosition(view);
   }
-
   function showRecord(id,back=null){
     const p=products.find(r=>r.id===id);if(!p)return;
     const view=viewPosition();
