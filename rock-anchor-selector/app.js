@@ -754,3 +754,6 @@ if (typeof module !== "undefined" && module.exports) {
     productConstraint, productGroup, selectorName, australiaPathway, australiaRecord
   };
 }
+
+// Presentation bridge; original catalogue and load helpers retained.
+globalThis.SCFoundationRock = { products, sourceMeta, dataMeta, supplyMeta, sourceRecord, loadLabels, loadDisplay, productConstraint, productGroup, australiaPathway, australiaRecord };

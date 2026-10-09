@@ -12,6 +12,7 @@
   <title>SC Handbook · Engineering Lookup</title>
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=20261009correctness1">
+<link rel="stylesheet" href="foundation-products/styles.css?v=20261009foundations1">
 <link rel="stylesheet" href="beam-capacity/layout.css?v=20261009beam1">
 <link rel="stylesheet" href="bolt-comparison/compact.css?v=20261009bolttable1">
   <link rel="stylesheet" href="as4600-chs/panel.css?v=20261009chs4600release1">
@@ -1960,10 +1961,10 @@
     <section id="screwPanel" class="tool-panel" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Screw piles &middot; product selector</p><h2>Screw Piles Selector</h2></div>
-        <span class="tool-status">For Review &middot; product data &middot; limitations</span>
+        <span class="tool-status">For Review &middot; Public beta</span>
       </div>
 
-      <section class="lookup-card screw-card">
+      <section class="lookup-card fp-card" id="fp-screw" aria-label="Screw pile comparison"></section><div hidden aria-hidden="true" class="fp-legacy-state"><section class="lookup-card screw-card">
         <section class="input-group input-group-section screw-selection-panel" aria-label="Screw pile product selection">
           <span class="input-group-heading"><b>Product selection</b><small>Select a supplier and product or system.</small></span>
           <div class="input-group-fields two">
@@ -2069,7 +2070,7 @@
           </details>
 
         </section>
-      </section>
+      </section></div>
 
       <details class="detail-card" id="screwDemandDetails">
         <summary><span class="summary-copy"><span class="summary-heading"><b>Preliminary Pile-Group Action Distribution</b></span><small>Rectangular rigid-pad model; project design values required for comparison.</small></span><i>+</i></summary>
@@ -2228,10 +2229,10 @@
     <section id="rockPanel" class="tool-panel" hidden>
       <div class="tool-heading">
         <div><p class="kicker">Foundation anchors &middot; product selector</p><h2>Rock Anchor Selector</h2></div>
-        <span class="tool-status">For Review &middot; product data &middot; source status</span>
+        <span class="tool-status">For Review &middot; Public beta</span>
       </div>
 
-      <section class="lookup-card rock-card">
+      <section class="lookup-card fp-card" id="fp-rock" aria-label="Rock anchor comparison"></section><div hidden aria-hidden="true" class="fp-legacy-state"><section class="lookup-card rock-card">
         <section class="input-group input-group-section rock-selection-panel" aria-label="Rock anchor product selection">
           <span class="input-group-heading"><b>Product selection</b><small>Choose a supplier, then a product or system.</small></span>
           <div class="input-group-fields two">
@@ -2280,7 +2281,7 @@
             <strong id="selectionConstraint">Confirm Australian supply, anchor assembly, design resistance, corrosion protection and testing.</strong>
           </div>
         </section>
-      </section>
+      </section></div>
 
       <details class="source-card">
         <summary><span><b>Product basis and limitations</b><small>Product-data scope and source status.</small></span><i>+</i></summary>
@@ -2314,7 +2315,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.105 &middot; updated 9 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.106 &middot; updated 9 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20261009correctness1"></script>
@@ -2340,7 +2341,7 @@
       <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
 
   <script src="bolt-comparison/comparison.js?v=20261009bolttable1"></script>
-<script src="app.js?v=20261009beam1"></script>
+<script src="app.js?v=20261009foundations1"></script>
 
       <script src="geo-parameters/app.js?v=20260921geo76"></script>
 
@@ -2348,7 +2349,7 @@
   <script src="as4600-chs/bending.js?v=20261009chs4600release1"></script>
   <script src="as4600-chs/orrcon-products.js?v=20261009chs4600release1"></script>
   <script src="as4600-chs/panel.js?v=20261009chs4600release1"></script>
-  <script type="module" src="rock-anchor-selector/app.js?v=20261009correctness1"></script>
+  <script type="module" src="rock-anchor-selector/app.js?v=20261009foundations1"></script>
     <script src="guy-lookup/data.js?v=20261003gaps1"></script>
   <script src="guy-lookup/units.js?v=20261003gaps1"></script>
   <script src="guy-lookup/lookup.js?v=20261003gaps1"></script>
@@ -2367,5 +2368,8 @@
 <script src="concrete-anchors/data.js?v=20261009anchors3"></script>
 <script src="concrete-anchors/lookup.js?v=20261009anchors3"></script>
 <script src="concrete-anchors/app.js?v=20261009anchors3"></script>
+<script src="foundation-products/models.js?v=20261009foundations1"></script>
+<script src="foundation-products/research.js?v=20261009foundations1"></script>
+<script src="foundation-products/lookup.js?v=20261009foundations1"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "55c1ec70123837d6d4e213d6424cbc5367f0617648d0d7d0f26308d5e0a2d8fa"
+      "sha256": "1326bef91590bb92043049871d81833d3d202d7da122ebb50d08707868a7bdbe"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -171,6 +171,22 @@
       "sha256": "22d2bef7e9b2e4814e56870e5be309f2af2b62d151de4fd012e4e1682c8848be"
     },
     {
+      "path": "foundation-products/lookup.js",
+      "sha256": "f323d53271b7f191066b79a3a2964af7298e071b00990258e2de2956d9a2de39"
+    },
+    {
+      "path": "foundation-products/models.js",
+      "sha256": "43486215c24124a427fc0616261a644af6a450afda929b4c385ca47afffd027c"
+    },
+    {
+      "path": "foundation-products/research.js",
+      "sha256": "b9a5aa75fa5667ea6d457746bf6fc3135b05edc46a8302a21cb5247f792d9145"
+    },
+    {
+      "path": "foundation-products/styles.css",
+      "sha256": "04961c39f8aa06e9a5a366e1f59ff55c1f3128a2e57f69290061301b2db55cce"
+    },
+    {
       "path": "geo-parameters/app.js",
       "sha256": "09fae6c8f03ce03541861382fda71eaa6e836c3d3bb791cb4e447441871b5901"
     },
@@ -240,7 +256,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "a9ea0311624a5bd5f0434f64a987148965116757fa4fddf97685232a0fc32070"
+      "sha256": "24a14aa3f3eb2b21240e7bc5dbe3a18c02ae3ef4916ceabf31aa6ae260c1ebce"
     },
     {
       "path": "LICENSE.md",
@@ -296,11 +312,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "144f9b0b2dc6e758e5e831ce2856e5f5195e8c6aeb7c9b1e744b9cace6b75210"
+      "sha256": "fcdfd3ffa978aec7954259a2fc9f5dac778523991f981e7854faf4ed2545b5de"
     },
     {
       "path": "README.md",
-      "sha256": "b5d6d736afc5594f96ba5c8c695b54dc5340bcdbf68afb73e5c57f8c425df3c1"
+      "sha256": "9a3951a90b541e6ce8556f25ab02d1256465479a6f3949fea30ccc898acfeb7b"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -324,7 +340,7 @@
     },
     {
       "path": "rock-anchor-selector/app.js",
-      "sha256": "68a057ec5c3079b6b133af66a229706aa4235fa2800e02c8da097d18963c0892"
+      "sha256": "0488ba45c5a87dcd8b489d50bb5e2bd0f30f1334a5c73fe45aee1f7bfdf45f00"
     },
     {
       "path": "screw-demand.js",

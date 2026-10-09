@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.106, updated 9 October 2026, publishes the approved Foundations product-table revision. Independently arranged selected factual parameters and official links support comparison; source conditions, unavailable values, derived tendon rows and conflicts remain explicit. Restricted Surefoot ratings/geometry and stale Katana numerical schedules are excluded. Original PDFs, figures, source layouts, research and audit records are not redistributed. Necessary browser code and displayed lookup data are public runtime assets. Existing calculation methods remain unchanged. Public beta / For Review continues.
+
 Build 0.7.105, updated 9 October 2026, publishes the approved Beam Section Capacity presentation. Inputs, live geometry and capacities follow a compact reading order; supporting properties and calculations remain available in disclosures. The original strength-validity rules, equations, source data and family-specific limits are unchanged. This remains a section-resistance quick reference, with member checks excluded and Public beta / For Review status retained.
 
 Build 0.7.104, updated 9 October 2026, publishes the approved Guy & Fittings column-header filters and revised How to use. Header arrows align with column names; units, filter tags and help spacing are consistent. Searchable multi-selection, numeric ranges, sorting and nearby-size queries form one shortlist workflow. MBF, MBL, WLL and other original rating bases remain separate; mixed-basis numerical sorting is blocked and conflicts remain withheld. All 416 catalogue records and engineering exclusions are unchanged. Public beta / For Review continues.

@@ -1,0 +1,62 @@
+/* SC_HANDBOOK 15.4.4: Compact engineering comparison tables. */
+.fp-card { min-width: 0; }
+.fp-card [hidden], .fp-legacy-state[hidden] { display: none !important; }
+.fp-intro, .fp-boundary, .fp-hint { color: var(--muted); font-size: 12px; line-height: 1.5; margin: 0 0 12px; }
+.fp-types { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.fp-types button, .fp-reset { border: 1px solid var(--line); border-radius: var(--control-radius); background: var(--card); font: inherit; font-size: 13px; color: var(--green-dark); cursor: pointer; padding: 8px 12px; min-height: 46px; }
+.fp-types button[aria-pressed="true"] { background: var(--green-soft); border-color: var(--green); font-weight: 700; }
+.fp-filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 12px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; }
+.fp-filters .fp-query { grid-column: span 3; }
+#fp-rock .fp-filters { grid-template-columns: 1fr 1fr 1.3fr auto; }
+#fp-rock .fp-query { grid-column: auto; }
+.fp-filters label { display: flex; flex-direction: column; gap: 6px; min-width: 0; font-size: 13px; font-weight: 700; }
+.fp-filters input, .fp-filters select { box-sizing: border-box; width: 100%; min-height: 46px; border: 1px solid #c5cec8; border-radius: var(--control-radius); background: var(--card); color: var(--ink); padding: 10px 12px; font: inherit; font-size: 13px; font-weight: 700; }
+.fp-reset { align-self: end; }
+.fp-table-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin: 18px 0 6px; }
+.fp-table-heading h3 { margin: 0; font-size: 15px; }
+.fp-count { color: var(--muted); font-size: 12px; }
+.fp-scroll { max-width: 100%; max-height: 65vh; overflow: auto; border: 1px solid var(--line); border-radius: 10px; isolation: isolate; container-type: inline-size; }
+.fp-table { width: 100%; min-width: 1190px; border-collapse: separate; border-spacing: 0; table-layout: fixed; font-family: var(--font); font-size: 13px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.fp-table th, .fp-table td { padding: 7px 8px; font-size: inherit; line-height: inherit; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+.fp-table thead th { position: sticky; top: 0; z-index: 2; background: var(--green-soft); font-weight: 700; }
+.fp-table tbody th { font-weight: 700; position: sticky; left: 0; z-index: 1; background: var(--card); border-right: 1px solid var(--line); }
+.fp-table thead th:first-child { left: 0; z-index: 3; border-right: 1px solid var(--line); }
+.fp-table .fp-number { text-align: right; }
+.fp-table .fp-number > div:not(.fp-number) { text-align: left; }
+.fp-note { display: block; margin-top: 3px; font-size: 12px; font-weight: 400; color: var(--muted); line-height: 1.4; text-align: inherit; }
+.fp-inline-label { font-size: 12px; color: var(--muted); margin-right: 6px; }
+.fp-table .fp-number > div + div { margin-top: 3px; }
+.fp-table .fp-stripe > * { background: var(--panel-bg, var(--paper)); }
+.fp-table .fp-row:hover > *, .fp-table .fp-selected > * { background: var(--green-soft); }
+.fp-table .fp-load-value { display: block; white-space: nowrap; }
+.fp-table .fp-doc { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.fp-doc-links { display: flex; flex-wrap: wrap; gap: 3px 10px; }
+.fp-table a, .fp-detail-button { color: var(--link); }
+.fp-detail-button { min-height: 28px; padding: 3px 0; border: 0; border-radius: 3px; background: transparent; font: inherit; text-decoration: underline; cursor: pointer; }
+.fp-table .fp-detail-cell { background: var(--green-soft); padding: 16px; }
+.fp-detail-row { scroll-margin-top: 80px; }
+.fp-detail-close { float: right; min-height: 32px; }
+.fp-detail-body { width: min(920px, calc(100cqw - 34px)); }
+.fp-detail-body h4 { font-size: 15px; margin: 0 0 12px; }
+.fp-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin: 0; }
+.fp-detail-grid div { min-width: 0; }
+.fp-detail-grid dt { font-weight: 700; font-size: 13px; }
+.fp-detail-grid dd { margin: 3px 0 0; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.fp-detail-grid dd a { display: block; width: fit-content; margin-top: 4px; }
+.fp-use { margin: 14px 0 0; min-height: 44px; padding: 8px 12px; font: inherit; font-size: 13px; color: var(--green-dark); background: var(--card); border: 1px solid var(--green); border-radius: var(--control-radius); cursor: pointer; }
+.fp-selected-notice { font-size: 13px; line-height: 1.5; margin: 0 0 14px; padding: 12px 14px; background: var(--green-soft); border: 1px solid var(--line); border-radius: 10px; }
+.fp-selected-notice small { display: block; font-size: 12px; color: var(--muted); margin-top: 3px; }
+.fp-empty { padding: 20px !important; color: var(--muted); }
+.fp-hint { margin: 8px 0 0; }
+.fp-overflow { margin: -4px 0 8px; }
+.fp-review { margin-top: 16px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+.fp-review summary { cursor: pointer; min-height: 44px; display: list-item; align-content: center; font-size: 13px; font-weight: 700; color: var(--ink); }
+.fp-review p { line-height: 1.5; }
+.fp-review dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+.fp-review dt { font-weight: 700; color: var(--ink); }
+.fp-review dd { margin: 4px 0 0; line-height: 1.5; }
+.fp-boundary { margin: 12px 0 0; }
+.fp-sr-only { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
+.fp-card :is(button, input, select):focus-visible, .fp-scroll:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+@media (max-width: 760px) { .fp-filters, #fp-rock .fp-filters { grid-template-columns: 1fr 1fr; } .fp-filters .fp-query, #fp-rock .fp-query { grid-column: 1 / -1; } .fp-reset { justify-self: start; } }
+@media (max-width: 500px) { .fp-card { padding: 14px; } .fp-filters, #fp-rock .fp-filters { grid-template-columns: 1fr; padding: 12px; } .fp-filters .fp-query, #fp-rock .fp-query { grid-column: auto; } .fp-filters input, .fp-filters select { font-size: 16px; } .fp-types button { min-height: 44px; } .fp-table col:first-child { width: 130px !important; } .fp-detail-grid, .fp-review dl { grid-template-columns: 1fr; } .fp-detail-button, .fp-doc a { min-height: 44px; display: flex; align-items: center; } }
