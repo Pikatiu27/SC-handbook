@@ -196,7 +196,7 @@
     },
     {
       "path": "guy-lookup/app.js",
-      "sha256": "8cf14d0d965da454a7512262cd4451b8f93c0957127f3e1b3e2d39298e80cbd6"
+      "sha256": "84799890385b3b2e3e6e654b63a8be7d5481a5fbdb5e439f47531ebf6ec92082"
     },
     {
       "path": "guy-lookup/data.js",
@@ -204,11 +204,15 @@
     },
     {
       "path": "guy-lookup/guy.css",
-      "sha256": "2e9ec4f841ce8443c22bc667c5ff157e884f02e6e1c8b1d01c351375ac859cb9"
+      "sha256": "d0729237316f84817fbfa6acbb9bcb480c2c131696e5af6b11b9448f957419df"
+    },
+    {
+      "path": "guy-lookup/header-filters.js",
+      "sha256": "88368094a067d058fded50d175fe72fc9c5fe8b6fb39b66f662362bb1e890bee"
     },
     {
       "path": "guy-lookup/index.html",
-      "sha256": "dec7c7493032b8eb812b813408eed8ded6e65a29052ef3882ea198471da6c7ce"
+      "sha256": "1c45548dcf8825370f921deb684bf5c14c23a049fb62b119987a00a1c3e111a8"
     },
     {
       "path": "guy-lookup/lookup.js",
@@ -232,7 +236,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "df38b220a48fe00cdfdffa37cc860452e99bbb81898682b2e258f94993f91ee8"
+      "sha256": "23ac5356489ae1e3776b21656ae1152c5cc060301e38cf968932249173d1d432"
     },
     {
       "path": "LICENSE.md",
@@ -288,11 +292,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "5889dcd45386563ed1ed1793a6b8f3dfec5a92d3ba0bfb14e3e0d0f89d5b7c85"
+      "sha256": "c52ecc490db34267bea5cd383333240bba6e6d8a9f18f8f18b11d25975d7c0f4"
     },
     {
       "path": "README.md",
-      "sha256": "fe43317e8ad75bdbc8874dfffb1d33868631235d0004b40ef9256ad21a123f37"
+      "sha256": "4a5c1397bdc359cf789a52ed249b41986be38d0938eaa2cd4af88c441a55eeba"
     },
     {
       "path": "reinforcement-area/app.js",

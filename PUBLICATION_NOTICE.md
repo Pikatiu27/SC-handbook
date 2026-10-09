@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.104, updated 9 October 2026, publishes the approved Guy & Fittings column-header filters and revised How to use. Header arrows align with column names; units, filter tags and help spacing are consistent. Searchable multi-selection, numeric ranges, sorting and nearby-size queries form one shortlist workflow. MBF, MBL, WLL and other original rating bases remain separate; mixed-basis numerical sorting is blocked and conflicts remain withheld. All 416 catalogue records and engineering exclusions are unchanged. Public beta / For Review continues.
+
 Build 0.7.103 adds selected concrete-anchor installation profiles in Foundations. Public beta / For Review. Independently arranged factual parameters, identifiers, conventional symbols and short project-written conditions link to the manufacturer documents. No source PDFs, original figures or catalogue layouts are redistributed. Conditional minima do not establish resistance or Australian project adoption. Necessary browser code and lookup data are publicly retrievable.
 
 Build 0.7.102, updated 9 October 2026, publishes the approved Bolt Capacity comparison table and fixed selected-property bar. Original strength equations remain unchanged. M22/M27 core areas derive from nominal supplier thread geometry and remain For Review; AS 1275 original verification is not claimed. M12/M22/M27 class8.8 preloaded entries identify Hobson K0 installation values separately from AS 4100 table values. Project installation adoption is required and their TF slip resistance, interaction and PASS/FAIL are withheld. Public availability does not establish independent engineering acceptance, batch conformity or complete connection design.
