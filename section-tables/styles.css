@@ -21,7 +21,13 @@
 .section-table-preview .st-table small { display: block; font-size: var(--fs-xs); font-weight: 400; color: var(--muted); line-height: 1.4; margin-top: 3px; }
 .section-table-preview .st-table tbody th { font-weight: 700; }
 .section-table-preview .st-table tbody :is(th, td) { vertical-align: middle; }
-.section-table-preview .st-table .st-identity { position: sticky; left: 0; z-index: 2; width: 1%; min-width: 0; white-space: nowrap; border-right: 1px solid var(--line); }
+.section-table-preview .st-table { --st-identity-width: 104px; }
+.section-table-preview .st-table[data-family="pfc"] { --st-identity-width: 100px; }
+.section-table-preview .st-table[data-family="rhs"] { --st-identity-width: 152px; }
+.section-table-preview .st-table[data-family="ea"] { --st-identity-width: 136px; }
+.section-table-preview .st-table:is([data-family="chs"], [data-family="rod"]) { --st-identity-width: 144px; }
+.section-table-preview .st-table[data-family="shs"] { --st-identity-width: 160px; }
+.section-table-preview .st-table .st-identity { position: sticky; left: 0; z-index: 2; width: 1%; min-width: var(--st-identity-width); white-space: nowrap; border-right: 1px solid var(--line); }
 .section-table-preview .st-table thead .st-identity { z-index: 4; }
 .section-table-preview .st-table .st-source-col { min-width: 96px; }
 .section-table-preview .st-document-link { display: inline-flex; align-items: center; min-height: 30px; color: var(--green-dark); font-size: var(--fs-sm); line-height: 1.4; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
@@ -92,6 +98,11 @@
   body:has(#propertiesPanel:not([hidden])) .tool-tabs { min-width: 0; max-width: 100%; overflow-x: auto; }
 }
 @media (max-width: 760px) {
+  .section-table-preview .st-table { --st-identity-width: 96px; }
+  .section-table-preview .st-table[data-family="pfc"] { --st-identity-width: 96px; }
+  .section-table-preview .st-table[data-family="ea"] { --st-identity-width: 116px; }
+  .section-table-preview .st-table:is([data-family="chs"], [data-family="rod"]) { --st-identity-width: 112px; }
+  .section-table-preview .st-table:is([data-family="rhs"], [data-family="shs"]) { --st-identity-width: 132px; }
   .section-table-preview .st-table-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; row-gap: 4px; }
   .section-table-preview .st-heading-copy { display: contents; }
   .section-table-preview .st-heading-copy h3 { grid-column: 1; grid-row: 1; }

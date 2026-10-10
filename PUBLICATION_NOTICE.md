@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.111, 10 October 2026: Section Properties family-specific column proportions for dense and compact tables. Existing reference editions, material data and engineering calculations remain unchanged. Public beta / For Review.
+
 Build 0.7.110, 10 October 2026: Section Properties content-sized Section column with more space for parameter columns. Existing reference editions, material data and engineering calculations remain unchanged. Public beta / For Review.
 
 Build 0.7.109, 10 October 2026: Section Properties Compact spacing and single-line publisher/year catalogue links. Existing reference editions, material data and engineering calculations remain unchanged. Public beta / For Review.

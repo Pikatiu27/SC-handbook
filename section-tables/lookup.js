@@ -48,6 +48,7 @@
   }
   function drawRows() {
     const family = bridge.family(), cols = model.columns(family.key), rows = state().engine.apply(family.sections);
+    tableArea.querySelector('.st-table').dataset.family = family.key;
     $('stCount').textContent = `${rows.length} / ${family.sections.length} sections`;
     $('stCaption').textContent = `${bridge.names[family.key]} catalogue dimensions, mass and section properties. ${$('stAxes').textContent}`;
     const control = (key, label, unit = '') => `<button type="button" class="st-header-control" data-st-column="${key}" aria-haspopup="dialog" aria-controls="stColumnFilter" aria-expanded="false"><span class="st-header-name"><span>${label}</span><span class="st-filter-icon" aria-hidden="true">▾</span></span>${unit ? `<small>${unit}</small>` : '<small aria-hidden="true">&nbsp;</small>'}</button>`;

@@ -256,7 +256,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "c5758e80f169d6b80f2987c40323e5924eb4d31dd1cba93983316029d7e5abe7"
+      "sha256": "665ed72a9bae221c752a7a3e9e85997240c1f52249cf89663b88e2515ee30929"
     },
     {
       "path": "LICENSE.md",
@@ -312,11 +312,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "338fe31271ca32ce1ebae2e20a4247d87d28712828f2c02ff877076a480f3ad0"
+      "sha256": "e86079f5b928a1d7f70172fb2e300193096a90cdc72ba80beac2e5ddbbc360d6"
     },
     {
       "path": "README.md",
-      "sha256": "bd9d77db1fc169f1ab89a6b8c5fb5f486a8a01a9b8cd5fd7f830623417bada95"
+      "sha256": "c6c69f7ba95348d6f9aad6b27a02a80d2f36d8cd02351222d33e875ab7e9e4b6"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -360,7 +360,7 @@
     },
     {
       "path": "section-tables/lookup.js",
-      "sha256": "b3e5390fabbdc408c49cd8a02ee161756f78ff29ae5a10972dd6a307c2513e0a"
+      "sha256": "44fe2e3bd030e7b237c4b2a8ca6233bce1448038c7d38e14df16028d2ff9251e"
     },
     {
       "path": "section-tables/model.js",
@@ -368,7 +368,7 @@
     },
     {
       "path": "section-tables/styles.css",
-      "sha256": "6e26d84d2debda833654239104a4652422715faa25324bd3d87d7b75fd9cb63c"
+      "sha256": "340be6279747ccc14d2d5c5d4e16fa4cc4712547c3596983670e37f013631fcf"
     },
     {
       "path": "steel-materials.js",
