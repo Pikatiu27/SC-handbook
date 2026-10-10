@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.109, 10 October 2026: Section Properties Compact spacing and single-line publisher/year catalogue links. Existing reference editions, material data and engineering calculations remain unchanged. Public beta / For Review.
+
 Build 0.7.108, 10 October 2026: Section Properties presentation maintenance restores the material/reference fold and adds official adopted-edition catalogue links. Existing catalogue and engineering calculations are unchanged. Public beta / For Review.
 
 Build 0.7.107, updated 10 October 2026, publishes the approved Section Properties comparison-table presentation. It uses existing accepted section records and calculations, with Compact family tables, column-header filters, source labels and expanded details. New source documents, research, test and audit records are excluded. Necessary browser presentation code is public runtime. Public beta / For Review continues.

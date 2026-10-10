@@ -1,13 +1,17 @@
 .section-table-preview { min-width: 0; }
 .section-table-preview .lookup-card, .section-table-preview .input-cluster { min-width: 0; }
+.section-table-preview .input-cluster { gap: 8px; }
+.section-table-preview .section-catalogue-family-switch { margin-bottom: 0; }
 .section-table-preview .st-legacy-selector { display: none !important; }
 .section-table-preview .st-catalogue { min-width: 0; }
 .section-table-preview button { font-family: var(--font); }
 .section-table-preview #stReset, .section-table-preview #stBack { min-height: 46px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--green-dark); font-size: var(--fs-sm); font-weight: 700; cursor: pointer; }
 .section-table-preview .st-table-heading, .section-table-preview .st-detail-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
 .section-table-preview .st-table-heading h3, .section-table-preview .st-detail-heading h3 { font-size: var(--fs-md); margin: 0; }
+.section-table-preview .st-table-heading { align-items: flex-start; margin-bottom: 4px; }
+.section-table-preview .st-heading-copy { flex: 1 1 240px; min-width: 0; }
 .section-table-preview #stCount, .section-table-preview .st-axis-note, .section-table-preview .st-scroll-cue, .section-table-preview .st-legend { font-size: var(--fs-xs); color: var(--muted); line-height: 1.4; }
-.section-table-preview .st-axis-note { margin: 0 0 12px; }
+.section-table-preview .st-axis-note { margin: 4px 0 0; }
 .section-table-preview .st-scroll { max-height: 560px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; isolation: isolate; }
 .section-table-preview .st-table { width: 100%; border-spacing: 0; border-collapse: separate; font-family: var(--font); font-size: var(--fs-sm); line-height: 1.4; letter-spacing: 0; }
 .section-table-preview .st-table th, .section-table-preview .st-table td { padding: 7px 8px; vertical-align: top; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: white; font-weight: 400; }
@@ -16,10 +20,11 @@
 .section-table-preview .st-table .st-num small { text-align: right; }
 .section-table-preview .st-table small { display: block; font-size: var(--fs-xs); font-weight: 400; color: var(--muted); line-height: 1.4; margin-top: 3px; }
 .section-table-preview .st-table tbody th { font-weight: 700; }
+.section-table-preview .st-table tbody :is(th, td) { vertical-align: middle; }
 .section-table-preview .st-table .st-identity { position: sticky; left: 0; z-index: 2; min-width: 140px; max-width: 160px; border-right: 1px solid var(--line); }
 .section-table-preview .st-table thead .st-identity { z-index: 4; }
 .section-table-preview .st-table .st-source-col { min-width: 96px; }
-.section-table-preview .st-document-link { display: inline-flex; align-items: center; min-height: 30px; color: var(--green-dark); font-size: var(--fs-xs); line-height: 1.4; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.section-table-preview .st-document-link { display: inline-flex; align-items: center; min-height: 30px; color: var(--green-dark); font-size: var(--fs-sm); line-height: 1.4; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 .section-table-preview .st-document-link:focus-visible { outline: 2px solid var(--green-dark); outline-offset: 3px; }
 .section-table-preview .st-table .st-action-col { min-width: 68px; }
 .section-table-preview .st-table tbody tr:nth-child(even) > * { background: var(--panel-bg); }
@@ -35,7 +40,7 @@
 .section-table-preview .st-header-control:hover, .section-table-preview .st-header-control[data-active="true"], .section-table-preview .st-header-control[data-sorted="true"] { color: var(--green-dark); }
 .section-table-preview .st-header-control[data-active="true"] .st-filter-icon { color: var(--green-dark); background: white; border-radius: 3px; padding: 0 3px; }
 .section-table-preview .st-heading-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
-.section-table-preview .st-filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 10px; font-size: var(--fs-xs); color: var(--muted); }
+.section-table-preview .st-filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 6px; font-size: var(--fs-xs); color: var(--muted); }
 .section-table-preview .st-filter-bar button { min-height: 32px; padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--green-soft); color: var(--green-dark); font-size: var(--fs-xs); line-height: 1.4; text-align: left; cursor: pointer; }
 .section-table-preview .st-filter-bar [data-clear-all] { background: white; }
 .section-table-preview .st-column-filter { position: fixed; margin: 0; box-sizing: border-box; max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); overflow: auto; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: white; color: var(--ink); font-family: var(--font); font-size: var(--fs-sm); line-height: 1.4; box-shadow: 0 8px 28px #163b2f25; }
@@ -87,6 +92,11 @@
   body:has(#propertiesPanel:not([hidden])) .tool-tabs { min-width: 0; max-width: 100%; overflow-x: auto; }
 }
 @media (max-width: 760px) {
+  .section-table-preview .st-table-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; row-gap: 4px; }
+  .section-table-preview .st-heading-copy { display: contents; }
+  .section-table-preview .st-heading-copy h3 { grid-column: 1; grid-row: 1; }
+  .section-table-preview .st-heading-actions { grid-column: 2; grid-row: 1; gap: 8px; }
+  .section-table-preview .st-axis-note { grid-column: 1 / -1; grid-row: 2; margin-top: 0; }
   .section-table-preview .section-catalogue-family-switch { display: flex; overflow-x: auto; flex-wrap: nowrap; gap: 6px; padding: 4px; }
   .section-table-preview .section-catalogue-family-tab { flex: 0 0 auto; min-width: 64px; min-height: 44px; padding: 8px 12px; }
   .section-table-preview .st-filter-bar button, .section-table-preview .st-filter-values label { min-height: 44px; }
