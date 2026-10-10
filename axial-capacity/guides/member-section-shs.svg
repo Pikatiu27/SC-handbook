@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="128" viewBox="0 0 160 128" role="img" aria-labelledby="title desc">
+<title id="title">SHS section guide</title><desc id="desc">Square hollow section with equal width and depth b = d and wall thickness t. Symbolic guide, not to scale; geometry values come from the selected section record.</desc>
+<defs><style>
+ .outline{fill:#f4f6f7;stroke:#263640;stroke-width:1.35;stroke-linejoin:round}
+ .void{fill:white;stroke:#263640;stroke-width:1.35}
+ .dim{fill:none;stroke:#4c5963;stroke-width:.8}
+ .extension{fill:none;stroke:#70808b;stroke-width:.65}
+ .axis{fill:none;stroke:#657581;stroke-width:.75;stroke-dasharray:6 2 1 2}
+ .arrow{fill:#4c5963;stroke:none}
+ text{fill:#263640;font:400 12px Arial,Helvetica,sans-serif;font-style:italic}
+ tspan{font-size:8.5px;font-style:normal}
+</style><marker id="leader" viewBox="0 0 4 2" refX="4" refY="1" markerWidth="3.2" markerHeight="1.6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L4 1 L0 2 Z" fill="#4c5963"/></marker></defs>
+<rect class="outline" x="47" y="30" width="64" height="64" rx="8"/><rect class="void" x="53" y="36" width="52" height="52" rx="3"/><line class="axis" x1="39" y1="62" x2="119" y2="62"/><line class="axis" x1="79" y1="22" x2="79" y2="101"/><line class="extension" x1="47" y1="97" x2="47" y2="112"/><line class="extension" x1="111" y1="97" x2="111" y2="112"/><line class="dim" x1="47" y1="108" x2="111" y2="108"/><path class="arrow" d="M47 108 L50.2 107.4 L50.2 108.6 Z"/><path class="arrow" d="M111 108 L107.8 108.6 L107.8 107.4 Z"/><text x="79" y="123" text-anchor="middle">b = d</text><line class="dim" x1="98" y1="50" x2="118" y2="50"/><path class="arrow" d="M105 50 L101.8 50.6 L101.8 49.4 Z"/><path class="arrow" d="M111 50 L114.2 49.4 L114.2 50.6 Z"/><text x="131" y="54" text-anchor="middle">t</text>
+</svg>

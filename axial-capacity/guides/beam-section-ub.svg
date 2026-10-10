@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="128" viewBox="0 0 160 128" role="img" aria-labelledby="title desc">
+<title id="title">UB section guide</title><desc id="desc">I section with d, bf, tw, tf and centroidal x-y axes. Symbolic guide, not to scale; geometry values come from the selected section record.</desc>
+<defs><style>
+ .outline{fill:#f4f6f7;stroke:#263640;stroke-width:1.35;stroke-linejoin:round}
+ .void{fill:white;stroke:#263640;stroke-width:1.35}
+ .dim{fill:none;stroke:#4c5963;stroke-width:.8}
+ .extension{fill:none;stroke:#70808b;stroke-width:.65}
+ .axis{fill:none;stroke:#657581;stroke-width:.75;stroke-dasharray:6 2 1 2}
+ .arrow{fill:#4c5963;stroke:none}
+ text{fill:#263640;font:400 12px Arial,Helvetica,sans-serif;font-style:italic}
+ tspan{font-size:8.5px;font-style:normal}
+</style><marker id="leader" viewBox="0 0 4 2" refX="4" refY="1" markerWidth="3.2" markerHeight="1.6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L4 1 L0 2 Z" fill="#4c5963"/></marker></defs>
+<path class="outline" d="M50 36 H108 V42 H81 V94 H108 V100 H50 V94 H77 V42 H50 Z"/><line class="axis" x1="42" y1="68" x2="119" y2="68"/><line class="axis" x1="79" y1="30" x2="79" y2="109"/><text x="125" y="72" text-anchor="middle">x</text><text x="79" y="122" text-anchor="middle">y</text><line class="extension" x1="50" y1="33" x2="50" y2="18"/><line class="extension" x1="108" y1="33" x2="108" y2="18"/><line class="dim" x1="50" y1="22" x2="108" y2="22"/><path class="arrow" d="M50 22 L53.2 21.4 L53.2 22.6 Z"/><path class="arrow" d="M108 22 L104.8 22.6 L104.8 21.4 Z"/><text x="79" y="16" text-anchor="middle">b<tspan dy="2.5">f</tspan></text><line class="extension" x1="47" y1="36" x2="21" y2="36"/><line class="extension" x1="47" y1="100" x2="21" y2="100"/><line class="dim" x1="25" y1="36" x2="25" y2="100"/><path class="arrow" d="M25 36 L25.6 39.2 L24.4 39.2 Z"/><path class="arrow" d="M25 100 L24.4 96.8 L25.6 96.8 Z"/><text x="13" y="72" text-anchor="middle">d</text><line class="extension" x1="111" y1="36" x2="134" y2="36"/><line class="extension" x1="111" y1="42" x2="134" y2="42"/><line class="dim" x1="130" y1="29" x2="130" y2="49"/><path class="arrow" d="M130 36 L129.4 32.8 L130.6 32.8 Z"/><path class="arrow" d="M130 42 L130.6 45.2 L129.4 45.2 Z"/><text x="142" y="43" text-anchor="middle">t<tspan dy="2.5">f</tspan></text><line class="extension" x1="77" y1="50" x2="77" y2="59"/><line class="extension" x1="81" y1="50" x2="81" y2="59"/><line class="dim" x1="69" y1="55" x2="89" y2="55"/><path class="arrow" d="M77 55 L73.8 55.6 L73.8 54.4 Z"/><path class="arrow" d="M81 55 L84.2 54.4 L84.2 55.6 Z"/><text x="96" y="58" text-anchor="middle">t<tspan dy="2.5">w</tspan></text>
+</svg>

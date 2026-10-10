@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="128" viewBox="0 0 160 128" role="img" aria-labelledby="title desc">
+<title id="title">PFC section guide</title><desc id="desc">Parallel flange channel with d, bf, tw, tf and root fillet radius r. Symbolic guide, not to scale; geometry values come from the selected section record.</desc>
+<defs><style>
+ .outline{fill:#f4f6f7;stroke:#263640;stroke-width:1.35;stroke-linejoin:round}
+ .void{fill:white;stroke:#263640;stroke-width:1.35}
+ .dim{fill:none;stroke:#4c5963;stroke-width:.8}
+ .extension{fill:none;stroke:#70808b;stroke-width:.65}
+ .axis{fill:none;stroke:#657581;stroke-width:.75;stroke-dasharray:6 2 1 2}
+ .arrow{fill:#4c5963;stroke:none}
+ text{fill:#263640;font:400 12px Arial,Helvetica,sans-serif;font-style:italic}
+ tspan{font-size:8.5px;font-style:normal}
+</style><marker id="leader" viewBox="0 0 4 2" refX="4" refY="1" markerWidth="3.2" markerHeight="1.6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L4 1 L0 2 Z" fill="#4c5963"/></marker></defs>
+<path class="outline" d="M48 32 H110 V39 H62 Q55 39 55 46 V80 Q55 87 62 87 H110 V94 H48 Z"/><line class="extension" x1="48" y1="29" x2="48" y2="16"/><line class="extension" x1="110" y1="29" x2="110" y2="16"/><line class="dim" x1="48" y1="20" x2="110" y2="20"/><path class="arrow" d="M48 20 L51.2 19.4 L51.2 20.6 Z"/><path class="arrow" d="M110 20 L106.8 20.6 L106.8 19.4 Z"/><text x="79" y="14" text-anchor="middle">b<tspan dy="2.5">f</tspan></text><line class="extension" x1="45" y1="32" x2="21" y2="32"/><line class="extension" x1="45" y1="94" x2="21" y2="94"/><line class="dim" x1="25" y1="32" x2="25" y2="94"/><path class="arrow" d="M25 32 L25.6 35.2 L24.4 35.2 Z"/><path class="arrow" d="M25 94 L24.4 90.8 L25.6 90.8 Z"/><text x="13" y="67" text-anchor="middle">d</text><line class="extension" x1="113" y1="32" x2="134" y2="32"/><line class="extension" x1="113" y1="39" x2="134" y2="39"/><line class="dim" x1="130" y1="25" x2="130" y2="46"/><path class="arrow" d="M130 32 L129.4 28.8 L130.6 28.8 Z"/><path class="arrow" d="M130 39 L130.6 42.2 L129.4 42.2 Z"/><text x="142" y="40" text-anchor="middle">t<tspan dy="2.5">f</tspan></text><line class="extension" x1="48" y1="97" x2="48" y2="112"/><line class="extension" x1="55" y1="97" x2="55" y2="112"/><line class="dim" x1="41" y1="108" x2="62" y2="108"/><path class="arrow" d="M48 108 L44.8 108.6 L44.8 107.4 Z"/><path class="arrow" d="M55 108 L58.2 107.4 L58.2 108.6 Z"/><text x="51.5" y="120" text-anchor="middle">t<tspan dy="2.5">w</tspan></text><path class="dim" d="M90 63 L68 49 L56.75 40.75" marker-end="url(#leader)"/><text x="97" y="69" text-anchor="middle">r</text>
+</svg>

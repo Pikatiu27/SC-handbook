@@ -7047,14 +7047,14 @@ function memberDimensionLabel(properties) {
 }
 
 function chsGeometry(D, t) {
-  const outsideDiameter = Math.max(0.2, D);
-  const wallThickness = Math.max(0.05, Math.min(t, outsideDiameter / 2 - 0.05));
+  const outsideDiameter = D;
+  const wallThickness = t;
   const properties = SectionGeometry.circularHollow(outsideDiameter, wallThickness);
   return { designation: `${outsideDiameter.toFixed(1)} x ${wallThickness.toFixed(1)} CHS`, area: properties.area, r: properties.rx, rx: properties.rx, ry: properties.ry, ix: properties.ix, iy: properties.iy, D: outsideDiameter, t: wallThickness, customGeometry: true };
 }
 
 function rodGeometry(diameter) {
-  const d = Math.max(0.1, diameter);
+  const d = diameter;
   const properties = SectionGeometry.circle(d);
   return { designation: `Round ${d.toFixed(1)}`, area: properties.area, r: properties.rx, rx: properties.rx, ry: properties.ry, ix: properties.ix, iy: properties.iy, diameter: d, customGeometry: true };
 }
@@ -7090,8 +7090,13 @@ function pfcGeometry(d, bf, tw, tf) {
 
 function memberDimensionProperties(section) {
   if (!memberDimensionOverrideActive()) return null;
-  if (memberType === "chs") return chsGeometry(value("memberDimChsD"), value("memberDimChsT"));
-  if (memberType === "rod") return rodGeometry(value("memberDimRodD"));
+  const D = signedValue(memberType === "chs" ? "memberDimChsD" : "memberDimRodD", NaN);
+  const t = memberType === "chs" ? signedValue("memberDimChsT", NaN) : NaN;
+  if (!Number.isFinite(D) || D <= 0 || (memberType === "chs" && (!Number.isFinite(t) || t <= 0 || 2 * t >= D))) {
+    return { area: NaN, r: NaN, rx: NaN, ry: NaN, ix: NaN, iy: NaN, D, t, diameter: D, customGeometry: true, designation: "INPUT REQUIRED" };
+  }
+  if (memberType === "chs") return chsGeometry(D, t);
+  if (memberType === "rod") return rodGeometry(D);
   return null;
 }
 
@@ -7357,6 +7362,7 @@ function setMemberInvalidState(message, designation) {
   ].forEach(id => { $(id).textContent = "\u2014"; });
   $("memberNetSectionSummary").textContent = "Input required";
   $("memberNetSectionBasis").textContent = "Connection basis not evaluated.";
+  $("memberNetAreaSource").textContent = "Enter valid section and connection inputs.";
   document.querySelectorAll("[data-member-summary='net'], [data-member-summary='kt']").forEach(cell => { cell.hidden = true; });
   ["memberCompression", "sectionCompression", "memberTension", "memberSlenderness", "memberLambdaN", "memberAlphaC", "memberUtilisation"]
     .forEach(id => { $(id).textContent = "\u2014"; });
@@ -7544,6 +7550,19 @@ function calculateMember() {
   }
   const { section, gradeName, grade } = selected;
   const gradeDisplayName = SteelMaterials.gradeLabel(gradeName);
+  if (memberDimensionOverrideActive()) {
+    const D = signedValue(memberType === "chs" ? "memberDimChsD" : "memberDimRodD", NaN);
+    const t = memberType === "chs" ? signedValue("memberDimChsT", NaN) : NaN;
+    const diameterValid = Number.isFinite(D) && D > 0;
+    const thicknessValid = memberType !== "chs" || (Number.isFinite(t) && t > 0 && 2 * t < D);
+    setMemberFieldValidity(memberType === "chs" ? "memberDimChsD" : "memberDimRodD", diameterValid);
+    if (memberType === "chs") setMemberFieldValidity("memberDimChsT", thicknessValid);
+    if (!diameterValid || !thicknessValid) {
+      updateMemberDimensionUi({ area: NaN, rx: NaN, ry: NaN });
+      setMemberInvalidState(memberType === "chs" ? "CHS dimensions must satisfy D > 0 and 0 < t < D/2" : "round-bar diameter must be greater than zero", section.designation);
+      return;
+    }
+  }
   const properties = memberProperties(section);
   syncMemberManualNetAreaToGross(properties);
   updateMemberDimensionUi(properties);

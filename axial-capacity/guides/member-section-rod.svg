@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="128" viewBox="0 0 160 128" role="img" aria-labelledby="title desc">
+<title id="title">Round bar section guide</title><desc id="desc">Solid round bar with diameter d. Symbolic guide, not to scale; geometry values come from the selected section record.</desc>
+<defs><style>
+ .outline{fill:#f4f6f7;stroke:#263640;stroke-width:1.35;stroke-linejoin:round}
+ .void{fill:white;stroke:#263640;stroke-width:1.35}
+ .dim{fill:none;stroke:#4c5963;stroke-width:.8}
+ .extension{fill:none;stroke:#70808b;stroke-width:.65}
+ .axis{fill:none;stroke:#657581;stroke-width:.75;stroke-dasharray:6 2 1 2}
+ .arrow{fill:#4c5963;stroke:none}
+ text{fill:#263640;font:400 12px Arial,Helvetica,sans-serif;font-style:italic}
+ tspan{font-size:8.5px;font-style:normal}
+</style><marker id="leader" viewBox="0 0 4 2" refX="4" refY="1" markerWidth="3.2" markerHeight="1.6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L4 1 L0 2 Z" fill="#4c5963"/></marker></defs>
+<circle class="outline" cx="80" cy="60" r="34"/><line class="axis" x1="38" y1="60" x2="122" y2="60"/><line class="axis" x1="80" y1="18" x2="80" y2="102"/><line class="extension" x1="46" y1="63" x2="46" y2="112"/><line class="extension" x1="114" y1="63" x2="114" y2="112"/><line class="dim" x1="46" y1="108" x2="114" y2="108"/><path class="arrow" d="M46 108 L49.2 107.4 L49.2 108.6 Z"/><path class="arrow" d="M114 108 L110.8 108.6 L110.8 107.4 Z"/><text x="80" y="123" text-anchor="middle">d</text>
+</svg>

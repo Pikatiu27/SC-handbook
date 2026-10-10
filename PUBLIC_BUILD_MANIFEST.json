@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "2e4372455e6022f9a5b8699e0fcedb6a197cf1ab8f132c1440b79eb74181fb71"
+      "sha256": "e1dba52c51c4b3fa62c3a1ecd03f572d8daff21bb1048c38adbbb61347f6c2e2"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -85,6 +85,46 @@
     {
       "path": "assets/sc-handbook-icon.svg",
       "sha256": "219013038c6c61f219be18e188a82de38c4bd04a609726a35d7ad2264aca93fc"
+    },
+    {
+      "path": "axial-capacity/guides/beam-section-ub.svg",
+      "sha256": "bebf61dff3d90af77ab490b6cdb30ec68fdad68ab4568652e513bf5a493032b7"
+    },
+    {
+      "path": "axial-capacity/guides/beam-section-uc.svg",
+      "sha256": "2b5e1e8ff22e69ec79e8d188cea552cb6652800ba8300484bfa6147324917e55"
+    },
+    {
+      "path": "axial-capacity/guides/member-section-chs.svg",
+      "sha256": "d125ec169b84a757f6d9988bc31660005731a4b493a515f600c6e67a08c05825"
+    },
+    {
+      "path": "axial-capacity/guides/member-section-equal-angle.svg",
+      "sha256": "6bbf899f0481cce172710510bf6cd7e58cc543eae1fe334cec529b5b23d263c7"
+    },
+    {
+      "path": "axial-capacity/guides/member-section-pfc.svg",
+      "sha256": "04bbf323d442608f873a640114909762c1f89e0efd01913241f2964a0f858e6d"
+    },
+    {
+      "path": "axial-capacity/guides/member-section-rhs.svg",
+      "sha256": "b0436f111234296ee22402b54f89416bdaf701086ecb50cff82bb076fbbaa4b8"
+    },
+    {
+      "path": "axial-capacity/guides/member-section-rod.svg",
+      "sha256": "8cd36646b8efd29357345ad6237790e65aeef13f922bd40614c8189cd41ed43d"
+    },
+    {
+      "path": "axial-capacity/guides/member-section-shs.svg",
+      "sha256": "5446a0767b6320ea7f4deb2ad3f34abdf5c821b041068003a04dcf451379e522"
+    },
+    {
+      "path": "axial-capacity/layout.css",
+      "sha256": "e98b7f201fa39f62332580ef620a2b44f3811933c02e26c68836c56389f7b493"
+    },
+    {
+      "path": "axial-capacity/presentation.js",
+      "sha256": "71dd8a46d790908de442351b3bb402ddab2b91d443fbd79eddc2d7179d6a0605"
     },
     {
       "path": "beam-capacity/layout.css",
@@ -256,7 +296,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "dd05bb656de82dfd1250605d258643e367c0fcf0b2c03eb548d4a1f411d35327"
+      "sha256": "b14e148c2b047209932a04d6b53bab5305382581867406637a0373c86e9aa8e8"
     },
     {
       "path": "LICENSE.md",
@@ -312,11 +352,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "96a82eb756adf8d70488e3592a4d8775eea87eb937056fc380ed47cb89424a6d"
+      "sha256": "f0f6b45559de64bae41945c179e0c493600931bf3e83564c376cb910d3fa1849"
     },
     {
       "path": "README.md",
-      "sha256": "a4832c1fa743223efc9978acdf4ca4e35e9a74049f5a48e5da80aa4f2e767a81"
+      "sha256": "6c97e62a86d85a38a7ab447f845d89dd7201263daa4d628817a960acf06e70d0"
     },
     {
       "path": "reinforcement-area/app.js",

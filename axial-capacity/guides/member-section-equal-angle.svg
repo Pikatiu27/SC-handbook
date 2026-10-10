@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="128" viewBox="0 0 160 128" role="img" aria-labelledby="title desc">
+<title id="title">EA section guide</title><desc id="desc">Equal angle with b, thickness t and root fillet radius r. Symbolic guide, not to scale; geometry values come from the selected section record.</desc>
+<defs><style>
+ .outline{fill:#f4f6f7;stroke:#263640;stroke-width:1.35;stroke-linejoin:round}
+ .void{fill:white;stroke:#263640;stroke-width:1.35}
+ .dim{fill:none;stroke:#4c5963;stroke-width:.8}
+ .extension{fill:none;stroke:#70808b;stroke-width:.65}
+ .axis{fill:none;stroke:#657581;stroke-width:.75;stroke-dasharray:6 2 1 2}
+ .arrow{fill:#4c5963;stroke:none}
+ text{fill:#263640;font:400 12px Arial,Helvetica,sans-serif;font-style:italic}
+ tspan{font-size:8.5px;font-style:normal}
+</style><marker id="leader" viewBox="0 0 4 2" refX="4" refY="1" markerWidth="3.2" markerHeight="1.6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L4 1 L0 2 Z" fill="#4c5963"/></marker></defs>
+<path class="outline" d="M49 36 H111 V43 H63 Q56 43 56 50 V98 H49 Z"/><line class="extension" x1="49" y1="33" x2="49" y2="18"/><line class="extension" x1="111" y1="33" x2="111" y2="18"/><line class="dim" x1="49" y1="22" x2="111" y2="22"/><path class="arrow" d="M49 22 L52.2 21.4 L52.2 22.6 Z"/><path class="arrow" d="M111 22 L107.8 22.6 L107.8 21.4 Z"/><text x="80" y="16" text-anchor="middle">b</text><line class="extension" x1="46" y1="36" x2="21" y2="36"/><line class="extension" x1="46" y1="98" x2="21" y2="98"/><line class="dim" x1="25" y1="36" x2="25" y2="98"/><path class="arrow" d="M25 36 L25.6 39.2 L24.4 39.2 Z"/><path class="arrow" d="M25 98 L24.4 94.8 L25.6 94.8 Z"/><text x="13" y="71" text-anchor="middle">b</text><line class="extension" x1="114" y1="36" x2="135" y2="36"/><line class="extension" x1="114" y1="43" x2="135" y2="43"/><line class="dim" x1="131" y1="29" x2="131" y2="50"/><path class="arrow" d="M131 36 L130.4 32.8 L131.6 32.8 Z"/><path class="arrow" d="M131 43 L131.6 46.2 L130.4 46.2 Z"/><text x="143" y="44" text-anchor="middle">t</text><path class="dim" d="M89 64 L70 53 L57.75 44.75" marker-end="url(#leader)"/><text x="95" y="69" text-anchor="middle">r</text>
+</svg>
