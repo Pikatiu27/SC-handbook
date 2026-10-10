@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.114, 11 October 2026: selected plain steel plate dimensions and theoretical mass lookup approved for public access. Manufacturer and catalogue references do not establish current stock, supplied brand or batch certification. AS/NZS 1594:2025 supersedes the edition cited by the linked 2024 BlueScope coil sheets; this difference is shown. Public beta / For Review.
+
 Build 0.7.113, 10 October 2026: the approved Axial Member Capacity presentation uses aligned input/result panes, compact parameter groups, redrawn symbolic guides and folded supporting properties. Compression/tension equations, catalogue data and scope limitations remain unchanged. Public beta / For Review.
 
 Build 0.7.112, 10 October 2026: Section Properties numeric/source search and ordered model-dimension matching corrected. Existing reference editions, material data and engineering calculations remain unchanged. Public beta / For Review.

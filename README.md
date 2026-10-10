@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.113 (10 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.114 (11 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -241,3 +241,5 @@ Section Properties filter maintenance: Search values applies to the table in eve
 ### Axial Member Capacity presentation
 
 Compact member inputs and a single dimension-labelled section guide sit beside compression/tension capacities. Desktop outer frames align; phones stack without reducing diagram labels. Supporting section properties are folded below both panes, with Calculation and Sources & scope separately available. This is a capacity lookup with no design-action comparison. Invalid CHS and round-bar dimensions clear capacities without silently replacing input. Catalogue material reset remains available for invalid strengths. Original capacity equations, catalogue records, input controls and qualifications remain unchanged. Public beta / For Review continues.
+
+Plain steel plates: 130 listed Australian size combinations in Section Properties → Plate, with nominal theoretical mass, header filters and official catalogue/grade-sheet links. Coverage and source-version differences are explicit.

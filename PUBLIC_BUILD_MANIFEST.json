@@ -296,7 +296,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "b14e148c2b047209932a04d6b53bab5305382581867406637a0373c86e9aa8e8"
+      "sha256": "ee82291de9267a53882d5fa7747ee05926caad06d2a738854a5ba341607ed1ed"
     },
     {
       "path": "LICENSE.md",
@@ -351,12 +351,28 @@
       "sha256": "39007713c9e77d0d5a6fd0ed67ac540a41e55a80b6d0f0a041e07a078b42b558"
     },
     {
+      "path": "plate-tables/app.js",
+      "sha256": "7c7b5b0b6f57b643063968edd066d3e18fb1200b6b245957045d7d2bae81b3ff"
+    },
+    {
+      "path": "plate-tables/catalogue.js",
+      "sha256": "32eebb64ad8a91ae6b729b9b04cd62a98efff87b6a24d1975a8a0f9fc8b205fd"
+    },
+    {
+      "path": "plate-tables/model.js",
+      "sha256": "be5a5117cdbcb2b31a5ce91ed1c961034ea443eb68e4f16d7600417e4ed7d87b"
+    },
+    {
+      "path": "plate-tables/styles.css",
+      "sha256": "08a3e97a93ee335710f14ad51d2d4d245c895cf8f80e6925bf8f63fabe6233c9"
+    },
+    {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "f0f6b45559de64bae41945c179e0c493600931bf3e83564c376cb910d3fa1849"
+      "sha256": "1e7fff435f76eb09cbfe6bdac4b40ec64f5f33304e95660ba600b8701c153daf"
     },
     {
       "path": "README.md",
-      "sha256": "6c97e62a86d85a38a7ab447f845d89dd7201263daa4d628817a960acf06e70d0"
+      "sha256": "529b6a3885a26149309a8133cf5b9e3a5f197f232520eed31d9bb9d00438bda3"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -396,15 +412,15 @@
     },
     {
       "path": "section-tables/header-filters.js",
-      "sha256": "89431967db59c135bc57719dec59ad4936031d571d396520ae75625f7ff76d5c"
+      "sha256": "e485a240346c6be5b1d3ba7e498bb1def7a7adb8c800749fc0cef73226613675"
     },
     {
       "path": "section-tables/lookup.js",
-      "sha256": "44fe2e3bd030e7b237c4b2a8ca6233bce1448038c7d38e14df16028d2ff9251e"
+      "sha256": "ed130505cb58fca9ab0fcb858490a475df2de8476f2f0a2ad291ed521884029c"
     },
     {
       "path": "section-tables/model.js",
-      "sha256": "2d753fce1d5b346e7041d390dd6285927ccc8bea0f968ef363f5f32d71c13735"
+      "sha256": "dd2a4627476c1230889270d00fb3dc467fd06c254f32c084a5a65576c8cf64a8"
     },
     {
       "path": "section-tables/styles.css",

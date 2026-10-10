@@ -6,9 +6,9 @@
     if (!/^(?:\d+(?:\.\d*)?|\.\d+|\d{1,3}(?:,\d{3})+(?:\.\d*)?)$/.test(text.trim())) return null;
     const value = Number(text.replaceAll(',', '')); return Number.isFinite(value) ? value : null;
   };
-  function mount({ panel, head, bar, getEngine, rows, onChange, onReset }) {
-    const dialog = document.createElement('dialog'); dialog.id = 'stColumnFilter'; dialog.className = 'st-column-filter';
-    dialog.setAttribute('aria-labelledby', 'stFilterTitle'); panel.append(dialog);
+  function mount({ panel, head, bar, getEngine, rows, onChange, onReset, idPrefix = 'st', resetButton }) {
+    const dialog = document.createElement('dialog'); dialog.id = `${idPrefix}ColumnFilter`; dialog.className = 'st-column-filter';
+    dialog.setAttribute('aria-labelledby', `${idPrefix}FilterTitle`); panel.append(dialog);
     let key = '', domain = [], checked = new Set(), search = '', anchor;
     const engine = () => getEngine(), definition = () => engine().definitions.find(c => c.key === key);
     const button = () => [...head.querySelectorAll('[data-st-column]')].find(b => b.dataset.stColumn === key);
@@ -37,10 +37,16 @@
     }
     function open(origin) {
       key = origin.dataset.stColumn; const col = definition(), draft = engine().filters.get(key) || {};
-      domain = [...new Set(rows().map(row => engine().text(row, key)))].sort((a, b) => a.localeCompare(b, 'en-AU', { numeric: true }));
+      domain = [...new Set(rows().map(row => engine().text(row, key)))].sort((a, b) => {
+        if (col.numeric) {
+          const av = Number(a.replaceAll(',', '')), bv = Number(b.replaceAll(',', ''));
+          if (Number.isFinite(av) || Number.isFinite(bv)) return !Number.isFinite(av) ? 1 : !Number.isFinite(bv) ? -1 : av - bv;
+        }
+        return a.localeCompare(b, 'en-AU', { numeric: true });
+      });
       checked = new Set(draft.values ?? domain); search = draft.query || '';
       const title = plainLabel(col);
-      dialog.innerHTML = `<div class="st-filter-heading"><div><h3 id="stFilterTitle">${esc(title)}</h3>${col.unit ? `<p>${esc(col.unit)}</p>` : ''}</div><button type="button" data-close aria-label="Close column filter">×</button></div><div class="st-filter-sort"><button type="button" data-sort="asc" aria-pressed="${engine().sort?.key === key && engine().sort.direction === 'asc'}">${col.numeric ? '↑ Smallest first' : '↑ A to Z'}</button><button type="button" data-sort="desc" aria-pressed="${engine().sort?.key === key && engine().sort.direction === 'desc'}">${col.numeric ? '↓ Largest first' : '↓ Z to A'}</button></div>${col.numeric ? `<fieldset class="st-filter-range"><legend>Range · ${esc(col.unit)}</legend><label>Minimum<input data-min inputmode="decimal" placeholder="No minimum" value="${esc(draft.min)}"></label><label>Maximum<input data-max inputmode="decimal" placeholder="No maximum" value="${esc(draft.max)}"></label></fieldset>` : ''}<label class="st-filter-field">${key === 'section' ? 'Keywords' : 'Search values'}<input type="search" data-search autocomplete="off" value="${esc(search)}" placeholder="${key === 'section' ? 'e.g. UB310, 60 CHS, 150 × 100' : 'Search values'}"></label>${key === 'section' ? '<p class="st-filter-note">Match model fragments. Dimension columns use actual tabulated dimensions.</p>' : ''}<div class="st-filter-select"><button type="button" data-select-all>Select all</button><button type="button" data-select-none>Select none</button></div><div class="st-filter-values" data-values role="group" aria-label="Column values"></div><p class="st-filter-note" data-selection></p><p class="st-filter-error" data-error role="alert" hidden></p><div class="st-filter-footer"><button type="button" data-clear>Clear column</button><button type="button" data-apply>Apply</button></div>`;
+      dialog.innerHTML = `<div class="st-filter-heading"><div><h3 id="${idPrefix}FilterTitle">${esc(title)}</h3>${col.unit ? `<p>${esc(col.unit)}</p>` : ''}</div><button type="button" data-close aria-label="Close column filter">×</button></div><div class="st-filter-sort"><button type="button" data-sort="asc" aria-pressed="${engine().sort?.key === key && engine().sort.direction === 'asc'}">${col.numeric ? '↑ Smallest first' : '↑ A to Z'}</button><button type="button" data-sort="desc" aria-pressed="${engine().sort?.key === key && engine().sort.direction === 'desc'}">${col.numeric ? '↓ Largest first' : '↓ Z to A'}</button></div>${col.numeric ? `<fieldset class="st-filter-range"><legend>Range · ${esc(col.unit)}</legend><label>Minimum<input data-min inputmode="decimal" placeholder="No minimum" value="${esc(draft.min)}"></label><label>Maximum<input data-max inputmode="decimal" placeholder="No maximum" value="${esc(draft.max)}"></label></fieldset>` : ''}<label class="st-filter-field">${key === 'section' ? 'Keywords' : 'Search values'}<input type="search" data-search autocomplete="off" value="${esc(search)}" placeholder="${key === 'section' ? 'e.g. UB310, 60 CHS, 150 × 100' : 'Search values'}"></label>${key === 'section' ? '<p class="st-filter-note">Match model fragments. Dimension columns use actual tabulated dimensions.</p>' : ''}<div class="st-filter-select"><button type="button" data-select-all>Select all</button><button type="button" data-select-none>Select none</button></div><div class="st-filter-values" data-values role="group" aria-label="Column values"></div><p class="st-filter-note" data-selection></p><p class="st-filter-error" data-error role="alert" hidden></p><div class="st-filter-footer"><button type="button" data-clear>Clear column</button><button type="button" data-apply>Apply</button></div>`;
       anchor = origin.getBoundingClientRect(); origin.setAttribute('aria-expanded', 'true');
       dialog.style.top = '12px'; dialog.style.left = '12px'; dialog.showModal(); updateList(); position();
       dialog.querySelector(col.numeric ? '[data-min]' : '[data-search]').focus({ preventScroll: true });
@@ -72,10 +78,10 @@
     });
     bar.addEventListener('click', event => {
       const target = event.target.closest('button'); if (!target) return;
-      if (target.hasAttribute('data-clear-all')) { onReset(); document.getElementById('stReset').focus({ preventScroll: true }); return; }
+      if (target.hasAttribute('data-clear-all')) { onReset(); (resetButton || document.getElementById('stReset')).focus({ preventScroll: true }); return; }
       if (target.hasAttribute('data-remove-filter')) engine().clear(target.dataset.removeFilter);
       if (target.hasAttribute('data-clear-sort')) engine().order(null, null);
-      onChange(); const recovery = bar.querySelector('button') || document.getElementById('stReset'); recovery.focus({ preventScroll: true });
+      onChange(); const recovery = bar.querySelector('button') || resetButton || document.getElementById('stReset'); recovery.focus({ preventScroll: true });
     });
     function decorate() {
       const state = engine();
@@ -83,7 +89,7 @@
         const col = state.definitions.find(c => c.key === control.dataset.stColumn), active = state.filters.has(col.key), sorted = state.sort?.key === col.key;
         control.dataset.active = String(active); control.dataset.sorted = String(sorted);
         control.querySelector('.st-filter-icon').textContent = sorted ? state.sort.direction === 'asc' ? '↑' : '↓' : '▾';
-        control.setAttribute('aria-label', `${plainLabel(col)}: filter and sort${active ? '; filter active' : ''}${sorted ? '; sorted ' + state.sort.direction : ''}`);
+        control.setAttribute('aria-label', `${plainLabel(col)}${col.unit ? ' (' + col.unit + ')' : ''}: filter and sort${active ? '; filter active' : ''}${sorted ? '; sorted ' + state.sort.direction : ''}`);
         control.closest('th').setAttribute('aria-sort', sorted ? state.sort.direction === 'asc' ? 'ascending' : 'descending' : 'none');
       });
       const items = [...state.filters].map(([filterKey, f]) => {

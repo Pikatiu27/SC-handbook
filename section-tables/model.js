@@ -4,6 +4,8 @@
   root.SCSectionTables = api;
 })(globalThis, function () {
   'use strict';
+  const familyNames = Object.freeze({ ub: 'Universal beams', uc: 'Universal columns', pfc: 'Parallel flange channels',
+    chs: 'Circular hollow sections', rhs: 'Rectangular hollow sections', shs: 'Square hollow sections', ea: 'Equal angles', rod: 'Round bars' });
   // Official PDFs matching the accepted catalogue editions, verified 10 October 2026.
   const documents = [
     { publisher: 'InfraBuild', document: 'Hot Rolled Steel Products Catalogue 2019', title: 'Hot Rolled and Structural Steel Products — Ninth Edition, October 2019', url: 'https://www.infrabuild.com/wp-content/uploads/sites/8/2022/02/Hot20Rolled20Cat_Edition9_2019.pdf' },
@@ -72,12 +74,12 @@
       ...columns(family).map(c => ({ ...c, numeric: true })),
       { key: 'source', label: 'Source', unit: '', value: s => `${s.source.publisher} · ${s.source.document.match(/\b\d{4}\b/)?.[0] || 'Catalogue'}` }];
   }
-  function engine(family) {
-    const filters = new Map(), definitions = specs(family);
+  function engine(family, customDefinitions) {
+    const filters = new Map(), definitions = customDefinitions || specs(family);
     let sort = null;
     const spec = key => definitions.find(c => c.key === key);
     const number = (row, key) => { const col = spec(key), p = col?.value(row); return col?.numeric && Number.isFinite(p?.value) ? p.value / (col.scale || 1) : null; };
-    const text = (row, key) => { const col = spec(key); return col?.numeric ? format(col.value(row), col.scale) : String(col?.value(row) ?? 'Not available'); };
+    const text = (row, key) => { const col = spec(key); return col?.numeric ? col.format ? col.format(number(row, key)) : format(col.value(row), col.scale) : String(col?.value(row) ?? 'Not available'); };
     function apply(sourceRows, except) {
       const result = sourceRows.filter(row => [...filters].every(([key, filter]) => {
         if (key === except) return true;
@@ -109,5 +111,5 @@
       order(key, direction) { if (direction && (!spec(key) || !['asc', 'desc'].includes(direction))) throw Error('Invalid sort'); sort = direction ? { key, direction } : null; },
       clear(key) { filters.delete(key); if (sort?.key === key) sort = null; }, reset() { filters.clear(); sort = null; } };
   }
-  return { columns, format, rows, keywordMatch, filterMatch, specs, engine, documentLink };
+  return { familyNames, columns, format, rows, keywordMatch, filterMatch, specs, engine, documentLink };
 });

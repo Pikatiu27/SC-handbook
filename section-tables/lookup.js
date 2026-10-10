@@ -4,6 +4,13 @@
   if (!bridge || !model) throw Error('Section table dependencies unavailable.');
   const panel = document.getElementById('propertiesPanel'), card = panel.querySelector('.lookup-card'), cluster = card.querySelector('.input-cluster');
   const tabs = document.getElementById('sectionCatalogueFamilyTabs'), catalogue = document.getElementById('sectionCatalogueGroup');
+  tabs.querySelectorAll('[data-section-catalogue-family]').forEach(button => {
+    const key = button.dataset.sectionCatalogueFamily, full = model.familyNames[key];
+    button.title = full; button.setAttribute('aria-label', key === 'rod' ? 'Round bars' : `${button.textContent} — ${full}`);
+    if (key === 'rod') button.textContent = 'Round bar';
+  });
+  const customTab = tabs.querySelector('[data-section-category-custom]');
+  customTab.textContent = 'Custom'; customTab.title = 'Custom geometry'; customTab.setAttribute('aria-label', 'Custom geometry');
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const workspace = document.createElement('section'); workspace.className = 'st-workspace'; workspace.hidden = true;
   workspace.innerHTML = '<div class="st-detail-heading"><h3 id="stDetailTitle">Section details</h3><button type="button" id="stBack">Back to table</button></div><div class="st-detail-body"></div>';
@@ -67,7 +74,7 @@
     if (custom) { $('stDetailTitle').textContent = 'Custom geometry'; $('stBack').hidden = true; return; }
     $('stBack').hidden = false;
     const family = bridge.family(); activeFamily = family.key; const s = state();
-    $('stTitle').textContent = `${bridge.names[family.key]} sections`;
+    $('stTitle').textContent = family.key === 'rod' ? model.familyNames.rod : `${model.familyNames[family.key]} (${bridge.names[family.key]})`;
     $('stAxes').innerHTML = family.key === 'ea' ? 'Principal x-x / y-y axes. Z<sub>y,3</sub> and Z<sub>y,5</sub> retain catalogue edge labels; n-n / p-p values are in Details.' : family.key === 'pfc' ? 'Centroidal x-x / y-y axes. Z<sub>y,R</sub> and Z<sub>y,L</sub> refer to the catalogue right and left edges.' : ['chs', 'shs', 'rod'].includes(family.key) ? 'Equal properties about both centroidal axes.' : 'Centroidal x-x / y-y axes.';
     const sources = [...new Map(family.sections.map(row => [row.source.document, row.source])).values()];
     $('stSource').textContent = sources.map(source => `${source.publisher} — ${source.document}. ${source.status}.`).join(' ');
@@ -78,7 +85,7 @@
   workspace.id = 'stWorkspace';
   tabs.addEventListener('click', event => {
     const button = event.target.closest('[data-section-catalogue-family]');
-    if (bridge.mode() === 'catalogue' && button?.dataset.sectionCatalogueFamily === bridge.family().key) {
+    if (!panel.classList.contains('plate-active') && bridge.mode() === 'catalogue' && button?.dataset.sectionCatalogueFamily === bridge.family().key) {
       event.preventDefault(); event.stopImmediatePropagation();
     }
   }, true);
