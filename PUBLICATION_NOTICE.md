@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.112, 10 October 2026: Section Properties numeric/source search and ordered model-dimension matching corrected. Existing reference editions, material data and engineering calculations remain unchanged. Public beta / For Review.
+
 Build 0.7.111, 10 October 2026: Section Properties family-specific column proportions for dense and compact tables. Existing reference editions, material data and engineering calculations remain unchanged. Public beta / For Review.
 
 Build 0.7.110, 10 October 2026: Section Properties content-sized Section column with more space for parameter columns. Existing reference editions, material data and engineering calculations remain unchanged. Public beta / For Review.

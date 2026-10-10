@@ -256,7 +256,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "665ed72a9bae221c752a7a3e9e85997240c1f52249cf89663b88e2515ee30929"
+      "sha256": "dd05bb656de82dfd1250605d258643e367c0fcf0b2c03eb548d4a1f411d35327"
     },
     {
       "path": "LICENSE.md",
@@ -312,11 +312,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "e86079f5b928a1d7f70172fb2e300193096a90cdc72ba80beac2e5ddbbc360d6"
+      "sha256": "96a82eb756adf8d70488e3592a4d8775eea87eb937056fc380ed47cb89424a6d"
     },
     {
       "path": "README.md",
-      "sha256": "c6c69f7ba95348d6f9aad6b27a02a80d2f36d8cd02351222d33e875ab7e9e4b6"
+      "sha256": "a4832c1fa743223efc9978acdf4ca4e35e9a74049f5a48e5da80aa4f2e767a81"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -356,7 +356,7 @@
     },
     {
       "path": "section-tables/header-filters.js",
-      "sha256": "9bdc4802719e1510e06d74ccfbed7aec90fc886f17cd3ed6d58be58b9e060280"
+      "sha256": "89431967db59c135bc57719dec59ad4936031d571d396520ae75625f7ff76d5c"
     },
     {
       "path": "section-tables/lookup.js",
@@ -364,7 +364,7 @@
     },
     {
       "path": "section-tables/model.js",
-      "sha256": "9efa59fc13dc8f2b5efc5c2fa21ad4a4d1ace722c53840d0d306cfd37c2d07e7"
+      "sha256": "2d753fce1d5b346e7041d390dd6285927ccc8bea0f968ef363f5f32d71c13735"
     },
     {
       "path": "section-tables/styles.css",

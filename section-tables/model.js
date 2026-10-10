@@ -52,7 +52,20 @@
   function keywordMatch(text, query) {
     const words = String(query).toLowerCase().match(/[a-z]+|\d+(?:\.\d+)?/g) || [];
     const tokens = String(text).toLowerCase().match(/[a-z]+|\d+(?:\.\d+)?/g) || [];
-    return words.filter(w => w !== 'x').every(w => tokens.some(token => /^\d/.test(w) ? token.startsWith(w) : token.includes(w)));
+    const terms = words.filter(w => w !== 'x');
+    if (!terms.length) return !String(query).trim();
+    const numbers = tokens.filter(token => /^\d/.test(token));
+    let position = 0;
+    return terms.every(word => {
+      if (!/^\d/.test(word)) return tokens.some(token => token.includes(word));
+      while (position < numbers.length) if (numbers[position++].startsWith(word)) return true;
+      return false;
+    });
+  }
+  function filterMatch(text, query, key) {
+    if (key === 'section') return keywordMatch(text, query);
+    const normalize = value => String(value).normalize('NFKC').toLowerCase().replaceAll(',', '').replace(/\s*·\s*/g, ' ').replace(/\s+/g, ' ').trim();
+    return normalize(text).includes(normalize(query));
   }
   function specs(family) {
     return [{ key: 'section', label: 'Section', unit: '', value: s => s.designation },
@@ -68,7 +81,7 @@
     function apply(sourceRows, except) {
       const result = sourceRows.filter(row => [...filters].every(([key, filter]) => {
         if (key === except) return true;
-        if (filter.query && !keywordMatch(text(row, key), filter.query)) return false;
+        if (filter.query && !filterMatch(text(row, key), filter.query, key)) return false;
         if (filter.values && !filter.values.includes(text(row, key))) return false;
         const n = number(row, key);
         if (filter.min !== undefined && (n === null || n < filter.min)) return false;
@@ -96,5 +109,5 @@
       order(key, direction) { if (direction && (!spec(key) || !['asc', 'desc'].includes(direction))) throw Error('Invalid sort'); sort = direction ? { key, direction } : null; },
       clear(key) { filters.delete(key); if (sort?.key === key) sort = null; }, reset() { filters.clear(); sort = null; } };
   }
-  return { columns, format, rows, keywordMatch, specs, engine, documentLink };
+  return { columns, format, rows, keywordMatch, filterMatch, specs, engine, documentLink };
 });
