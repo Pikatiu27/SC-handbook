@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "e1dba52c51c4b3fa62c3a1ecd03f572d8daff21bb1048c38adbbb61347f6c2e2"
+      "sha256": "08fc521ee90fd4a4e5b87937311c329a3ecdf30b32a905a87a8dd6631df1a870"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -137,6 +137,14 @@
     {
       "path": "beam-hot-rolled-data.js",
       "sha256": "55ca29984ba4a82efa940f8189bf475a632e6f4ad7573a7df68b605e87d45d27"
+    },
+    {
+      "path": "beam-presentation/layout.css",
+      "sha256": "33bfe558de6fca27c4435c2630618d5c4d4d3e54b12c73bfaac402e69e652840"
+    },
+    {
+      "path": "beam-presentation/presentation.js",
+      "sha256": "718b0785d2d6376761635325cfb0363ca8a782cfaf9c2d8fc255641bb5e8bca2"
     },
     {
       "path": "beam-section-capacity.js",
@@ -296,7 +304,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "ee82291de9267a53882d5fa7747ee05926caad06d2a738854a5ba341607ed1ed"
+      "sha256": "4819016309885c5f070ced8c66ed16ebf8e1a2f604d57268a0211b611456a338"
     },
     {
       "path": "LICENSE.md",
@@ -368,11 +376,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "1e7fff435f76eb09cbfe6bdac4b40ec64f5f33304e95660ba600b8701c153daf"
+      "sha256": "e576dd511ea419921a3e901299cb742f601b3d9cdd931c7972e7f2e3628a1527"
     },
     {
       "path": "README.md",
-      "sha256": "529b6a3885a26149309a8133cf5b9e3a5f197f232520eed31d9bb9d00438bda3"
+      "sha256": "f1b67eed883429f22940593e8c8a290f2de9cbd3497c64f26ce90462d79df484"
     },
     {
       "path": "reinforcement-area/app.js",

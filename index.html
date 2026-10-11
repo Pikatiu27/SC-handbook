@@ -29,6 +29,8 @@
 <link rel="stylesheet" href="axial-capacity/layout.css?v=e98b7f201fa3">
 <script defer src="axial-capacity/presentation.js?v=71dd8a46d790"></script>
 <link rel="stylesheet" href="plate-tables/styles.css?v=08a3e97a93ee">
+<link rel="stylesheet" href="beam-presentation/layout.css?v=33bfe558de6f">
+<script defer src="beam-presentation/presentation.js?v=718b0785d2d6"></script>
 </head>
 <body>
   <header class="topbar">
@@ -1163,12 +1165,12 @@
 
         <div class="beam-workspace"><section class="beam-input-pane" aria-label="Beam inputs"><div class="section-heading"><h2>Section inputs</h2></div><div class="input-cluster beam-selection-inputs">
           <section class="input-group input-group-section" id="beamSectionGroup">
-            <span class="input-group-heading"><b>Section selection</b><small id="beamSectionSource">Checked catalogue identity and Beam-specific capacity data.</small></span>
-            <div class="input-group-fields one beam-selection-fields">
+            <span class="input-group-heading"><b>Section</b></span>
+            <div class="beam-selection-with-figure"><div class="input-group-fields one beam-selection-fields">
               <label id="beamSectionField"><span>Catalogue section</span><select id="beamSection" aria-label="Catalogue beam section"></select></label>
             <div class="input-group-fields member-dimension-toggle">
                 <label class="checkbox-field"><span>Custom dimensions</span><input id="beamDimensionOverride" type="checkbox"></label>
-              </div></div>
+              </div></div><figure class="beam-section-figure"><svg id="beamSectionDiagram" viewBox="0 0 240 170" role="img" aria-labelledby="beamSectionDiagramTitle beamSectionDiagramDescription"></svg><figcaption id="beamSectionDiagramCaption">Geometry · active direction</figcaption></figure><small class="beam-selection-caption" id="beamSectionSource">Checked catalogue identity and Beam-specific capacity data.</small></div>
             <div class="member-dimension-panel beam-dimension-panel" id="beamDimensionCard">
 
               <div class="input-group-fields four member-dimension-fields beam-dimension-fields" id="beamDimensionFields" hidden>
@@ -1208,7 +1210,7 @@
           <section class="input-group beam-direction-group" id="beamDirectionGroup"><div class="beam-direction-controls">
             <span class="input-group-heading"><b id="beamDirectionHeading">Bending direction</b><small id="beamDirectionHelp">Select the catalogue load direction used for the effective section modulus.</small></span>
             <div class="input-group-fields"><label id="beamDirectionField"><span id="beamDirectionFieldLabel">Catalogue direction</span><select id="beamDirection" aria-label="Bending direction"></select></label></div>
-          <p class="beam-drawing-note" id="beamDrawingNote">Diagram follows selected catalogue dimensions; properties come from the cited table.</p></div><figure class="beam-section-figure"><svg id="beamSectionDiagram" viewBox="0 0 240 170" role="img" aria-labelledby="beamSectionDiagramTitle beamSectionDiagramDescription"></svg><figcaption id="beamSectionDiagramCaption">Geometry · active direction</figcaption></figure></section>
+          <div hidden aria-hidden="true"><p class="beam-drawing-note" id="beamDrawingNote">Diagram follows selected catalogue dimensions; properties come from the cited table.</p></div></div></section>
         </div><div hidden aria-hidden="true"><details class="member-demand-check beam-demand-check">
             <summary><span><b>Design actions and utilisation</b><small>Optional section demand review below the reported capacities.</small></span><i>+</i></summary>
             <div class="member-demand-body">
@@ -1227,10 +1229,11 @@
           <div class="capacity-grid beam-results" id="beamResultsGrid">
             <article class="capacity-card selected-shear"><span id="beamMomentResultLabel">Design section moment capacity &phi;M<sub>sx</sub></span><strong><output id="beamSectionCapacity">182.3</output><small> kN·m</small></strong><p id="beamMomentResultBasis">Catalogue Z<sub>ex</sub> · AS 4100 Cl. 5.2</p></article>
             <article class="capacity-card" id="beamShearCard"><span id="beamShearResultLabel">Design section shear capacity &phi;V<sub>v</sub></span><strong><output id="beamShearCapacity">298.9</output><small> kN</small></strong><p id="beamShearResultBasis">AS 4100 Cl. 5.11 · web shear</p></article>
-          </div>
+          </div><dl class="beam-quick-properties"><div><dt>Bending direction</dt><dd id="beam-preview-direction">—</dd></div><div><dt>Section class</dt><dd id="beam-preview-class">—</dd></div></dl>
           <p class="beam-result-status" id="beamResultStatus">Calculated · section resistance only</p>
 
-        <p class="result-note" id="beamWarning">Section capacity only. Member stability, restraint and serviceability are excluded.</p><details class="beam-section-details">
+        <p class="result-note" id="beamWarning">Section capacity only. Member stability, restraint and serviceability are excluded.</p>
+</section></div><details class="beam-section-details">
             <summary><span><b>Section properties</b><small id="beamSectionDetailsLabel">Dimensions and supplementary catalogue properties</small></span><i>+</i></summary>
             <section class="beam-property-group"><h3>Capacity basis</h3><div class="beam-capacity-basis"><dl class="beam-summary-metrics beam-summary-primary">
             <div data-beam-summary-cell="ze"><dt id="beamSummaryZeLabel">Z<sub>ex</sub></dt><dd id="beamZex">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="aw"><dt id="beamSummaryAreaLabel">A<sub>w</sub></dt><dd id="beamAw">1,730 mm&sup2;</dd></div><div data-beam-summary-cell="class"><dt>Section class</dt><dd id="beamCompactness">Compact</dd></div>
@@ -1239,7 +1242,6 @@
             <div data-beam-summary-cell="mass"><dt>Mass</dt><dd id="beamMass">40.4 kg/m</dd></div><div data-beam-summary-cell="area"><dt>A<sub>g</sub></dt><dd id="beamArea">5,210 mm&sup2;</dd></div><div data-beam-summary-cell="i"><dt id="beamSummaryILabel">I<sub>x</sub></dt><dd id="beamSummaryI">—</dd></div><div data-beam-summary-cell="z"><dt id="beamSummaryZLabel">Z<sub>x</sub></dt><dd id="beamSummaryZx">569 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="s"><dt id="beamSummarySLabel">S<sub>x</sub></dt><dd id="beamSummarySx">633 &times; 10<sup>3</sup> mm<sup>3</sup></dd></div><div data-beam-summary-cell="kf"><dt>k<sub>f</sub></dt><dd id="beamSummaryKf">0.952</dd></div><div data-beam-summary-cell="coordination"><dt>AS 4100 coordination</dt><dd id="beamCoordination">Reconciled</dd></div><div data-beam-summary-cell="source"><dt>Source</dt><dd id="beamSummarySource">InfraBuild Table 10</dd></div>
             </dl></section>
           </details>
-</section></div>
 </section>
 
       <details class="detail-card"><summary><span><b>Calculation</b><small>Current values and equations</small></span><i>+</i></summary><div class="detail-body"><section><h3>Calculation steps</h3><div id="beamFormulaSteps" class="formula-list"></div></section></div></details>
@@ -2301,7 +2303,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.114 &middot; updated 11 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.115 &middot; updated 11 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20261009correctness1"></script>
@@ -2327,7 +2329,7 @@
       <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
 
   <script src="bolt-comparison/comparison.js?v=20261009bolttable1"></script>
-<script src="app.js?v=20261010sections1"></script>
+<script src="app.js?v=20261011beam2"></script>
 
       <script src="geo-parameters/app.js?v=20260921geo76"></script>
 

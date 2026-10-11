@@ -1,0 +1,83 @@
+/* Local Beam presentation aligned with the accepted Axial reading order. */
+#beamPanel .beam-workspace { grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:18px; align-items:stretch; }
+#beamPanel .beam-input-pane,#beamPanel .beam-result-pane { padding:12px; min-width:0; }
+#beamPanel .beam-input-pane>.section-heading,#beamPanel .beam-result-pane>.section-heading { margin:0 0 12px; }
+#beamPanel .beam-input-pane .input-group { padding:10px; }
+#beamPanel .beam-selection-inputs { gap:10px; }
+#beamPanel .beam-selection-with-figure { display:grid; grid-template-columns:minmax(0,1fr) 200px; grid-template-rows:auto 1fr; gap:8px 12px; align-items:start; }
+#beamPanel #beamSectionGroup .beam-selection-fields { grid-column:1; grid-row:1; grid-template-columns:minmax(0,1fr); gap:8px; }
+#beamPanel #beamSectionGroup .member-dimension-toggle { width:auto; grid-template-columns:minmax(0,164px); }
+#beamPanel #beamSectionField>span:first-child { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+#beamPanel .beam-selection-with-figure .beam-section-figure { grid-column:2; grid-row:1/3; width:200px; margin:0; align-self:start; grid-template-rows:142px; }
+#beamPanel .beam-selection-with-figure #beamSectionDiagram { width:200px; height:142px; min-height:0; background:transparent; }
+#beamPanel #beamSectionDiagram text { font-family:Arial,Helvetica,sans-serif; font-size:14.4px; font-weight:400; }
+#beamPanel #beamSectionDiagram .section-properties-axis-label { fill:#657581; font-style:italic; }
+#beamPanel #beamSectionDiagram .section-properties-shape { fill:#f4f6f7; stroke:#263640; stroke-width:1.6; }
+#beamPanel #beamSectionDiagram .section-properties-void { fill:#fff; stroke:#263640; stroke-width:1.6; }
+#beamPanel #beamSectionDiagram .section-properties-axis { stroke:#657581; stroke-width:.9; stroke-dasharray:7.2 2.4 1.2 2.4; }
+#beamPanel #beamSectionDiagram .section-properties-axis.is-active { stroke:#6846a5; stroke-width:1.4; }
+#beamPanel #beamSectionDiagram .beam-load-arrow { stroke:#6846a5; stroke-width:1.6; }
+#beamPanel #beamSectionDiagram .beam-load-label { fill:#6846a5; font-style:normal; }
+#beamPanel #beamSectionDiagram .section-properties-centroid { stroke:#657581; stroke-width:1.2; }
+#beamPanel #beamSectionDiagram .beam-shear-centre-guide { stroke:#657581; stroke-width:.9; }
+#beamPanel #beamSectionDiagram .beam-shear-centre { stroke:#263640; stroke-width:1.2; }
+#beamPanel #beamSectionDiagram .beam-shear-centre-label { fill:#263640; font-style:normal; }
+#beamPanel #beamSectionDiagram #beamAxisArrow path { fill:#657581; }
+#beamPanel #beamSectionDiagram #beamActiveAxisArrow path,#beamPanel #beamSectionDiagram #beamLoadArrow path { fill:#6846a5; }
+#beamPanel .beam-selection-caption { grid-column:1; grid-row:2; display:block; font-size:var(--fs-xs); line-height:1.45; color:var(--muted); border-top:1px solid #e2d9ed; padding-top:8px; margin:0; overflow-wrap:anywhere; }
+#beamPanel .beam-material-fields,#beamPanel .beam-material-fields.is-custom,
+#beamPanel .beam-material-fields:has(#beamFywField[hidden]),#beamPanel .beam-material-fields.is-custom:has(#beamFywField[hidden]) { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+#beamPanel .beam-material-fields:has(#beamFywField[hidden]) { grid-template-columns:repeat(2,minmax(0,1fr)); }
+#beamPanel #beamGradeField,#beamPanel #beamCustomMaterialField { grid-column:1/-1; display:block; }
+#beamPanel .beam-material-fields>label:not([hidden]) { display:block; }
+#beamPanel .beam-material-fields>label>span:first-child { margin:0 0 4px; min-height:0; font-size:var(--fs-sm); }
+#beamPanel .beam-material-heading>span { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 8px; }
+#beamPanel .beam-material-heading small,#beamPanel .beam-material-heading em { font-weight:400; margin:0; }
+#beamPanel .beam-material-reset { width:36px; height:36px; flex-basis:36px; }
+#beamPanel #beamDirectionGroup { display:block; }
+#beamPanel .beam-direction-controls { display:grid; grid-template-columns:minmax(0,1fr) minmax(110px,1fr); gap:6px 12px; align-items:center; }
+#beamPanel .beam-direction-controls .input-group-heading { display:contents; }
+#beamPanel #beamDirectionHeading { grid-column:1; grid-row:1; }
+#beamPanel .beam-direction-controls>.input-group-fields { grid-column:2; grid-row:1; margin:0; }
+#beamPanel #beamDirectionHelp { grid-column:1/-1; grid-row:2; margin:0; font-size:var(--fs-xs); line-height:1.45; }
+#beamPanel #beamDirectionGroup:has(#beamDirectionField[hidden]):has(#beamDirectionHelp[hidden]) { display:none; }
+#beamPanel .beam-results { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+#beamPanel .beam-results.is-single { grid-template-columns:minmax(0,1fr); }
+#beamPanel .beam-results .capacity-card { padding:12px; }
+#beamPanel .beam-results .capacity-card>span { min-height:0; line-height:1.4; }
+#beamPanel .beam-results .capacity-card strong { margin:8px 0 5px; font-size:var(--fs-result); white-space:normal; }
+#beamPanel .beam-result-pane .capacity-card>p { display:block; margin:5px 0 0; font-size:var(--fs-xs); line-height:1.4; }
+#beamPanel .beam-result-basis>span,#beamPanel #beamAssumption { display:none; }
+#beamPanel .beam-result-basis { margin:0 0 12px; }
+#beamPanel .beam-result-basis>strong { margin:0; font-size:var(--fs-md); }
+#beamPanel .beam-quick-properties { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:12px 0 4px; padding:10px 0; border-top:1px solid #e2d9ed; border-bottom:1px solid #e2d9ed; }
+#beamPanel .beam-quick-properties dt,#beamPanel .beam-property-group dt { font-size:var(--fs-sm); font-weight:400; color:var(--muted); line-height:1.35; }
+#beamPanel .beam-quick-properties dd,#beamPanel .beam-property-group dd { margin:4px 0 0; font-size:var(--fs-sm); font-weight:700; color:var(--ink); line-height:1.4; font-variant-numeric:tabular-nums; }
+#beamPanel .beam-section-details { margin:12px 0 0; padding:0; background:#fff; border:1px solid #d6c9e9; border-radius:10px; }
+#beamPanel .beam-section-details>summary { padding:10px 12px; border:0; }
+#beamPanel .beam-section-details[open]>summary { border-bottom:1px solid #e2d9ed; }
+#beamPanel .beam-property-group { margin:0 12px; padding:10px 0; }
+#beamPanel .beam-property-group:first-of-type { border:0; }
+#beamPanel .beam-section-details .beam-summary-secondary,#beamPanel .beam-capacity-basis .beam-summary-primary { grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:8px 16px !important; padding:0; }
+#beamPanel .beam-capacity-basis [data-beam-summary-cell=class] { grid-column:auto !important; }
+#beamPanel .beam-property-group dd { white-space:normal; }
+#beamPanel #beamSectionDetailsLabel { display:none; }
+@media(max-width:960px) { #beamPanel .beam-workspace { grid-template-columns:minmax(0,1fr); gap:12px; } }
+@media(max-width:600px) {
+  #beamPanel #beamSectionDiagram .section-properties-axis-label:not(.is-active),
+  #beamPanel #beamSectionDiagram .beam-shear-centre-label,
+  #beamPanel #beamSectionDiagram .beam-shear-centre,
+  #beamPanel #beamSectionDiagram .beam-shear-centre-guide { display:none; }
+  #beamPanel .beam-input-pane,#beamPanel .beam-result-pane { padding:10px; }
+  #beamPanel .beam-selection-with-figure { grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto auto; gap:8px; }
+  #beamPanel .beam-selection-with-figure .beam-section-figure { grid-column:1; grid-row:2; justify-self:center; }
+  #beamPanel .beam-selection-caption { grid-column:1; grid-row:3; }
+  #beamPanel .beam-section-details .beam-summary-secondary,#beamPanel .beam-capacity-basis .beam-summary-primary { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px 12px !important; }
+  #beamPanel .beam-input-pane input,#beamPanel .beam-input-pane select { min-height:44px; font-size:16px; }
+  #beamPanel .beam-input-pane input[type=checkbox] { min-height:20px; }
+  #beamPanel .beam-material-fields,#beamPanel .beam-material-fields.is-custom { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  #beamPanel .beam-direction-controls { grid-template-columns:minmax(0,1fr); }
+  #beamPanel .beam-direction-controls>.input-group-fields { grid-column:1; grid-row:2; }
+  #beamPanel #beamDirectionHelp { grid-row:3; }
+}
+@media(max-width:360px) { #beamPanel .beam-results,#beamPanel .beam-material-fields,#beamPanel .beam-material-fields.is-custom { grid-template-columns:minmax(0,1fr); } }
