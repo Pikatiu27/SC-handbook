@@ -164,7 +164,7 @@
     },
     {
       "path": "bolt-comparison/compact.css",
-      "sha256": "e29e017e3e2b7beed96523fb49d846c5fccceeb359c70df32b20cd43220bb08f"
+      "sha256": "199d95521cbee3283a694d155fd6608377d657c87844d890e1718ffc33367cd3"
     },
     {
       "path": "bolt-comparison/comparison.js",
@@ -304,7 +304,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "4819016309885c5f070ced8c66ed16ebf8e1a2f604d57268a0211b611456a338"
+      "sha256": "acef79e6e8aad8dd4cd146ee1c62be050610909af7deab273f7156af77b3c36a"
     },
     {
       "path": "LICENSE.md",
@@ -376,11 +376,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "e576dd511ea419921a3e901299cb742f601b3d9cdd931c7972e7f2e3628a1527"
+      "sha256": "26cc8ab6de41ebf7d40e1a81fc0a20df4e1bbe4452893bb03f6a3afc6577becc"
     },
     {
       "path": "README.md",
-      "sha256": "f1b67eed883429f22940593e8c8a290f2de9cbd3497c64f26ce90462d79df484"
+      "sha256": "c8a0b236507de1db3e270ff644a32068e9ad399b3ad5aad87271faa028951936"
     },
     {
       "path": "reinforcement-area/app.js",

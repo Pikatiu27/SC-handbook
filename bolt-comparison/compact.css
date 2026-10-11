@@ -35,7 +35,13 @@
 #boltPanel .bolt-compare-note { margin:7px 0; font-size:var(--fs-xs); }
 #boltPanel .bolt-basis-fold { margin-top:10px; border:1px solid var(--line); border-radius:8px; }
 #boltPanel .bolt-basis-fold .bolt-summary { margin:0; border:0; padding:8px 12px; }
-#boltPanel .bolt-basis-fold .bolt-preload-lookup { margin:0 12px 10px; }
+#boltPanel .bolt-basis-fold .bolt-preload-lookup { margin:8px 12px 10px; }
+#boltPanel .bolt-preload-lookup > summary { box-sizing:border-box; min-height:44px; padding:8px 11px; gap:12px; }
+#boltPanel .bolt-preload-lookup > summary > span { display:flex; flex:1; min-width:0; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:3px 16px; }
+#boltPanel .bolt-preload-lookup > summary b { min-width:0; line-height:1.35; }
+#boltPanel .bolt-preload-lookup > summary small { margin:0; line-height:1.35; font-weight:400; }
+#boltPanel .bolt-preload-lookup > summary sub { line-height:0; }
+#boltPanel .bolt-preload-lookup > summary i { flex:0 0 14px; text-align:center; line-height:1; }
 #boltPanel .bolt-query-row { display:grid; grid-template-columns:minmax(0,1fr); align-items:end; gap:12px; }
 #boltPanel #boltProperties .bolt-summary dl { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); width:100%; gap:10px; }
 #boltPanel #boltProperties .bolt-summary dl div { text-align:left; min-width:0; }
@@ -45,6 +51,8 @@
 #boltPanel [data-bolt-mode-panel="standard"] > .capacity-section { margin-top:8px; padding-top:0; }
 #boltPanel .bolt-coverage-note { padding:0 12px 10px; margin:0; font-size:var(--fs-xs); color:var(--muted); }
 @media(max-width:760px) {
+ #boltPanel .bolt-preload-lookup > summary > span { justify-content:flex-start; gap:3px; }
+ #boltPanel .bolt-preload-lookup > summary small { flex-basis:100%; }
  #boltPanel .bolt-query-row { grid-template-columns:minmax(0,1fr); gap:7px; }
  #boltPanel #boltProperties .bolt-summary dl { grid-template-columns:repeat(3,minmax(0,1fr)); }
  #boltPanel #boltProperties .bolt-preload-current { border:0; padding-left:0; }

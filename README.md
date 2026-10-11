@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.115 (11 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.116 (11 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -245,3 +245,5 @@ Compact member inputs and a single dimension-labelled section guide sit beside c
 Plain steel plates: 130 listed Australian size combinations in Section Properties → Plate, with nominal theoretical mass, header filters and official catalogue/grade-sheet links. Coverage and source-version differences are explicit.
 
 Beam Section Capacity: aligned input/results panes, one active-direction diagram, bottom folded section properties and consistent screen typography/arrow sizes. Engineering calculations and current Plate/Axial content are preserved. Public beta / For Review.
+
+Bolt Capacity: installed bolt tension disclosure has an 8 px gap below the property strip, a compact desktop row and naturally wrapped narrow-screen text. Numerical values, calculations and other tools are unchanged.
