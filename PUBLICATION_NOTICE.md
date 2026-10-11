@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.117, 12 October 2026: user-approved Concrete Cover & Durability reference page. Selected factual references and summaries are presented in a custom lookup; original Standards, figures, page images, extraction files, research and verification evidence are excluded. AS 3600:2018 with Amendments 1 and 2 is the stated basis; project edition/adoption and final cover require separate confirmation. Public beta / For Review; independent engineering review remains open.
+
 Build 0.7.116, 12 October 2026: user-approved spacing and compact formatting of the installed bolt tension disclosure. Preload values, equations and catalogue data remain unchanged; Public beta / For Review continues.
 
 Build 0.7.115, 11 October 2026: Beam presentation and proportional direction schematics approved for public access. Calculations and published catalogue values are unchanged. Screen guides are not construction or fabrication drawings; existing engineering scope and For Review status remain.
