@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="beam-capacity/layout.css?v=20261009beam1">
 <link rel="stylesheet" href="bolt-comparison/compact.css?v=20261012preload1">
   <link rel="stylesheet" href="as4600-chs/panel.css?v=20261009chs4600release1">
+<link rel="stylesheet" href="chs-bending-comparison/layout.css?v=93c845b238dc">
 
   <link rel="stylesheet" href="geo-parameters/tab.css?v=20260921geo76">
   <link rel="stylesheet" href="geo-parameters/guide.css?v=20260921geo76">
@@ -1269,62 +1270,47 @@
     </section>
 
 <section id="chs4600Panel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">AS/NZS 4600:2018 Cl. 3.6.2</p><h2>Cold-formed CHS Bending Capacity</h2></div><span class="tool-status">For Review</span></div>
-      <p class="chs4600-intro">Pure bending capacity of a cylindrical CHS section. Tapers, polygonal sections, openings and joints require separate assessment.</p>
-      <section class="lookup-card chs4600-card">
-        <div class="input-cluster">
-          <section class="input-group input-group-section">
-            <span class="input-group-heading"><b>Section dimensions</b><small>Use the diameter and base steel thickness at the section checked.</small></span>
-            <div class="input-group-fields two">
-              <label><span>Outside diameter D</span><span class="unit"><input id="chs4600Diameter" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 114.3"><em>mm</em></span></label>
-              <label><span>Base steel wall thickness t</span><span class="unit"><input id="chs4600Thickness" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 4.5"><em>mm</em></span></label>
-            </div>
-            <p id="chs4600InputMode" class="result-note">Manual inputs · catalogue available below.</p>
-          </section>
-          <section class="input-group input-group-material">
-            <span class="input-group-heading"><b>Material and method</b><small>Use the confirmed material yield stress.</small></span>
-            <div class="input-group-fields three">
-              <label><span>Yield stress f<sub>y</sub></span><span class="unit"><input id="chs4600Fy" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 350" aria-describedby="chs4600FyNote"><em>MPa</em></span></label>
-              <div class="chs4600-fixed"><span>Elastic modulus E</span><strong>200,000 MPa</strong></div>
-              <div class="chs4600-fixed"><span>Bending factor &phi;<sub>b</sub></span><strong>0.95</strong></div>
-            </div>
-            <p id="chs4600FyNote" class="result-note chs4600-material-note"><b>f<sub>y</sub> depends on grade.</b> C250L0: 250 MPa · C350L0: 350 MPa (AS/NZS 1163:2016 Table 7).</p>
-          </section>
-          <details class="input-group chs4600-catalogue">
-            <summary><span><b>Catalogue inputs</b><small>Optional · six Orrcon 2024 CHS sizes</small></span><i>+</i></summary>
-            <div class="input-group-fields two">
-              <label><span>CHS size</span><select id="chs4600Product"><option value="">Manual inputs</option></select></label>
-              <label><span>AS/NZS 1163 grade</span><select id="chs4600Grade" aria-describedby="chs4600GradeNote" disabled><option value="">Select size first</option></select></label>
-            </div>
-            <p id="chs4600GradeNote" class="result-note chs4600-material-note"><b>C350L0:</b> C = cold-formed CHS; 350 = minimum f<sub>y</sub> (MPa); L0 = specified impact toughness at 0°C. Select the supplied grade.</p>
-            <p id="chs4600ProductSource" class="result-note chs4600-product-source">Nominal dimensions and listed grades only. Confirm the supplied product.</p>
-          </details>
-          <section class="input-group input-group-warning chs4600-basis-group">
-            <span class="input-group-heading"><b>Confirm design basis</b><small>Required to calculate.</small></span>
-            <label class="checkbox-field"><span>Dimensions and grade confirmed; cold-formed CHS; AS/NZS 4600 design basis.</span><input id="chs4600BasisConfirmed" type="checkbox"></label>
-          </section>
-        </div>
-        <div class="chs4600-actions"><button id="chs4600Calculate" type="button">Calculate capacity</button><p id="chs4600Status" class="result-note chs4600-status" role="status" aria-live="polite">Enter D, t and f<sub>y</sub>, then confirm the design basis.</p></div>
-        <div id="chs4600Issues" class="chs4600-issues" hidden></div>
-      </section>
-      <section class="capacity-section chs4600-result-card" aria-live="polite">
-        <div class="section-heading"><div><h2>Bending capacity</h2></div><span>Pure bending</span></div>
-        <div class="capacity-grid chs4600-results">
-          <article class="capacity-card selected-shear"><span>Design bending capacity &phi;<sub>b</sub>M<sub>b</sub></span><strong><output id="chs4600Design">Not evaluated</output><small id="chs4600DesignUnit" hidden> kN·m</small></strong><p>AS/NZS 4600:2018 Cl. 3.6.2 · compare M* separately</p></article>
-        </div>
-        <dl class="chs4600-summary">
-          <div><dt>Nominal moment capacity M<sub>b</sub></dt><dd><output id="chs4600Nominal">—</output><span id="chs4600NominalUnit" hidden> kN·m</span></dd></div>
-          <div><dt>Diameter ratio D/t</dt><dd id="chs4600Ratio">—</dd></div>
-          <div><dt>Maximum D/t · 0.441E/f<sub>y</sub></dt><dd id="chs4600RatioLimit">—</dd></div>
-          <div><dt>Governing branch</dt><dd id="chs4600Branch">—</dd></div>
-        </dl>
-        <div class="chs4600-copy-actions"><button id="chs4600Copy" type="button" disabled>Copy result</button><p id="chs4600CopyStatus" class="result-note" role="status" aria-live="polite"></p></div>
-        <label id="chs4600CopyFallback" class="chs4600-copy-fallback" hidden><span>Result text · select and copy</span><textarea id="chs4600CopyText" rows="6" readonly></textarea></label>
-        <p class="chs4600-axial-note"><b>With axial force N<sup>*</sup>:</b> check axial resistance and N<sup>*</sup>–M<sup>*</sup> interaction separately under AS/NZS 4600.</p>
-      </section>
-      <details class="detail-card"><summary><span><b>Calculation steps</b><small>Equations and substitution</small></span><i>+</i></summary><div class="detail-body"><section><h3>Current inputs</h3><dl id="chs4600Trace" class="chs4600-trace"></dl></section></div></details>
-      <details class="source-card"><summary><span><b>Sources and limits</b><small>Design basis and scope</small></span><i>+</i></summary><div class="source-body"><div class="source-notes"><p><b>Design</b> — AS/NZS 4600:2018 Cl. 1.1, 3.6.1–3.6.2; Tables 1.4 and 1.6.3. The AS 4100 CHS “CF” category does not establish this design basis.</p><p><b>Catalogue</b> — <a href="https://orrconmanufacturing.com.au/app/uploads/2024/07/Orrcon-National-Product-Catalogue-Man-LR.pdf" target="_blank" rel="noopener noreferrer">Orrcon, July 2024</a>, §1.1.4, pp. 10–11: nominal D, t, mass and grades. Grade f<sub>y</sub>: AS/NZS 1163:2016 Table 7. Confirm supply and material certificate; no live stock or manufacturer capacity is provided.</p></div><div class="source-notes"><p><b>Inputs</b> — Manual or catalogue dimensions; ideal annular geometry. Adopt thickness allowances separately. For plate-fabricated shafts, use f<sub>y</sub> for the confirmed plate grade and thickness under the applicable material Standard.</p><p><b>Limits</b> — Cold-formed steel within Cl. 1.1; t &le; 25 mm; D &gt; 2t; D/t &le; 0.441E/f<sub>y</sub>. Allow for dynamic effects in non-building applications. Axial load, shear, concentrated actions, connections, serviceability and brittle fracture require separate checks. This is a section capacity, not a complete monopole design.</p></div></div></details>
-    </section>
+ <div class="tool-heading"><div><p class="kicker">Shared D and t · separate f<sub>y</sub></p><h2>Cold-formed CHS Bending Capacity</h2><p class="chs-compare-intro">AS 4100 vs AS/NZS 4600 · hot-finished CHS comparison.</p></div><span class="tool-status">Public beta · For Review</span></div>
+ <section class="lookup-card chs-compare-workspace">
+  <section class="chs-compare-pane" aria-label="Shared CHS inputs">
+   <h3>Section inputs</h3>
+   <div class="chs-compare-choice"><label><span>Section</span><select id="chsCompareProduct" aria-label="CHS section"><option value="">Manual inputs</option></select></label><label id="chsCompareGradeField" hidden><span>Grade</span><select id="chsCompareGrade" aria-label="Catalogue grade"></select></label></div>
+   <div class="chs-compare-fields">
+    <label><span>Diameter D</span><span class="unit"><input id="chs4600Diameter" type="number" step="any" inputmode="decimal" value="500" aria-describedby="chsCompareProvenance"><em>mm</em></span></label>
+    <label><span>Thickness t</span><span class="unit"><input id="chs4600Thickness" type="number" step="any" inputmode="decimal" value="6" aria-describedby="chsCompareProvenance"><em>mm</em></span></label>
+    <label><span>Cold-formed f<sub>y</sub></span><span class="unit"><input id="chs4600Fy" type="number" step="any" inputmode="decimal" value="350" aria-describedby="chsCompareProvenance"><em>MPa</em></span></label>
+    <label><span>Hot-finished f<sub>y</sub></span><span class="unit"><input id="chsCompareHotFy" type="number" step="any" inputmode="decimal" value="350" aria-describedby="chsCompareProvenance"><em>MPa</em></span></label>
+   </div>
+   <p id="chsCompareProvenance" class="chs-compare-note">Demonstration inputs · not a catalogue product.</p>
+  </section>
+  <section class="chs-compare-pane chs-compare-output" aria-label="CHS bending capacity comparison" aria-live="polite">
+   <h3>Bending capacity <small>kN·m</small></h3>
+   <table class="chs-compare-table"><caption class="sr-only">Shared ideal CHS dimensions; cold-formed and hot-finished strengths and section moments</caption><colgroup><col class="chs-compare-label-col"></colgroup><colgroup span="2"></colgroup><colgroup span="1"></colgroup>
+    <thead><tr class="chs-compare-groups"><th scope="col" rowspan="2">Measure</th><th scope="colgroup" colspan="2">Cold-formed</th><th scope="col">Hot-finished</th></tr><tr><th scope="col">AS 4100<small>CF · φ 0.90</small></th><th scope="col">AS/NZS 4600<small>φ<sub>b</sub> 0.95</small></th><th scope="col">AS 4100<small>HR · φ 0.90</small></th></tr></thead>
+    <tbody><tr class="chs-compare-strength"><th scope="row">f<sub>y</sub> <small>MPa</small></th><td id="chsCompare4100Fy">—</td><td id="chsCompare4600Fy">—</td><td id="chsCompareHotFyReadout">—</td></tr>
+     <tr class="chs-compare-primary"><th scope="row">Design<small>φM · kN·m</small></th><td><output id="chsCompare4100Design">—</output></td><td><output id="chsCompare4600Design">—</output></td><td><output id="chsCompareHotDesign">—</output></td></tr>
+     <tr><th scope="row">Nominal<small>M<sub>s</sub> / M<sub>b</sub></small></th><td id="chsCompare4100Nominal">—</td><td id="chsCompare4600Nominal">—</td><td id="chsCompareHotNominal">—</td></tr>
+     <tr><th scope="row">Governs</th><td id="chsCompare4100Class">—</td><td id="chsCompare4600Branch">—</td><td id="chsCompareHotClass">—</td></tr>
+     <tr><th scope="row">Change<small>vs CF · AS 4100</small></th><td id="chsCompareBaseline">—</td><td id="chsCompareDifference">—</td><td id="chsCompareHotDifference">—</td></tr>
+    </tbody>
+   </table>
+   <div class="chs-compare-reading"><span>D/t <b id="chsCompareRatio">—</b></span></div>
+   <p id="chsCompareMessage" class="chs-compare-note">Section capacity only · confirm the applicable standard.</p>
+  </section>
+ </section>
+ <details class="detail-card chs-compare-details"><summary><span><b>Calculation details</b><small>Geometry, factors and governing branches</small></span><i>+</i></summary><div class="detail-body">
+  <dl class="chs-compare-geometry"><div><dt>Inside diameter</dt><dd id="chsCompareInside">—</dd></div><div><dt>I</dt><dd id="chsCompareI">—</dd></div><div><dt>Elastic Z</dt><dd id="chsCompareZ">—</dd></div><div><dt>Plastic S</dt><dd id="chsCompareS">—</dd></div></dl>
+  <div class="chs-compare-methods"><section><h3>Cold-formed · AS 4100</h3><p>M<sub>s</sub> = f<sub>y</sub>Z<sub>e</sub>; design moment = 0.90 M<sub>s</sub>.</p><p id="chsCompare4100Trace">Enter valid geometry and fy.</p><p>AS 4100:2020 Cl. 5.2.1–5.2.6, Table 5.2 CF; factor Table 3.4.</p></section><section><h3>Cold-formed · AS/NZS 4600</h3><p>M<sub>b</sub> uses the cylindrical-tube branch; design moment = 0.95 M<sub>b</sub>.</p><p id="chsCompare4600Trace">Enter valid geometry and fy.</p><p>AS/NZS 4600:2018 Cl. 3.6.1–3.6.2; factor Table 1.6.3(f). E = 200,000 MPa.</p></section><section><h3>Hot-finished · AS 4100</h3><p>M<sub>s</sub> = f<sub>y,HR</sub>Z<sub>e,HR</sub>; design moment = 0.90 M<sub>s</sub>.</p><p id="chsCompareHotTrace">Enter valid geometry and fy.</p><p>AS 4100:2020 Cl. 5.2.1–5.2.6, Table 5.2 HR; factor Table 3.4.</p></section></div>
+  <p>Differences use cold-formed AS 4100 as the baseline: (design moment ÷ baseline − 1) × 100. They are withheld when either result is unavailable. Different f<sub>y</sub> compares material strength as well as the stated method; it does not isolate manufacturing effects.</p>
+ </div></details>
+ <details class="source-card chs-compare-details"><summary><span><b>Sources and scope</b><small>Applicability, catalogue inputs and exclusions</small></span><i>+</i></summary><div class="source-body"><div class="source-notes">
+  <p>Shared D and base-steel t; ideal circular geometry without holes. Cold-formed uses one confirmed f<sub>y</sub> for both Standards; hot-finished uses a separate confirmed f<sub>y</sub>. HR means hot-rolled or hot-finished. AS 4100 Table 5.2 gives CF and HR the same CHS bending limits, 50 / 120; equal D, t and f<sub>y</sub> therefore give equal section moments.</p>
+  <p>AS/NZS 4600 requires t ≤ 25 mm and D/t ≤ 0.441E/f<sub>y</sub>. An unavailable side is withheld independently; a percentage comparison requires two valid results.</p>
+  <p>Optional cold-formed size/grade lookup: <a href="https://orrconmanufacturing.com.au/app/uploads/2024/07/Orrcon-National-Product-Catalogue-Man-LR.pdf" target="_blank" rel="noopener noreferrer">Orrcon July 2024, §1.1.4, pp. 10–11 ↗</a>; listed minimum f<sub>y</sub> follows AS/NZS 1163:2016 Table 7. Its dimensions are only a shared comparison geometry for the HR column; no hot-finished product or grade is supplied. Confirm the HR supply condition, applicable material Standard and thickness-dependent f<sub>y</sub> independently. No manufacturer capacity, stock or product equivalence is inferred. Adopt thickness allowances separately.</p>
+  <p>Pure section bending only. Axial force, shear, concentrated loads, stability, connections, serviceability, fatigue, fire and complete member design are excluded. Comparison does not establish project applicability or engineering acceptance. For Review.</p>
+ </div></div></details>
+</section>
+
 
     <section id="monopolePanel" class="tool-panel" hidden>
       <div class="tool-heading">
@@ -2306,7 +2292,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.117 &middot; updated 12 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.118 &middot; updated 12 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20261009correctness1"></script>
@@ -2339,7 +2325,8 @@
   <script src="monopole-app.js?v=20260821monopoleaudit1"></script>
   <script src="as4600-chs/bending.js?v=20261009chs4600release1"></script>
   <script src="as4600-chs/orrcon-products.js?v=20261009chs4600release1"></script>
-  <script src="as4600-chs/panel.js?v=20261009chs4600release1"></script>
+  <script src="chs-bending-comparison/model.js?v=48bf57e3d92f"></script>
+<script src="chs-bending-comparison/panel.js?v=7c64a9e8c3f4"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20261009foundations1"></script>
     <script src="guy-lookup/data.js?v=20261003gaps1"></script>
   <script src="guy-lookup/units.js?v=20261003gaps1"></script>
