@@ -7,8 +7,16 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
+      "path": "accessibility/repairs.css",
+      "sha256": "6d44975ed8af937bcf8f441b8d803df4156e1ff76bd4eadcd900e99d08ba2ce6"
+    },
+    {
+      "path": "accessibility/repairs.js",
+      "sha256": "505a54c15e75c003185f96d51d5176368e68544c0d15a37d11a2698411941a5d"
+    },
+    {
       "path": "app.js",
-      "sha256": "ceaf9e928778a2e23fd551d4f6d27144b58255db0042ef1a0a98f68512bedd10"
+      "sha256": "9cc674045a27aaecbcaea605eaf0b23a16678632c643a0cedc57adb256f0c857"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -344,7 +352,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "949a5ef8dd072ec21e44580c3737e713b98d2fcb1e494ee42afc5b6962aab165"
+      "sha256": "fba718e822d10334fdb775fd07db2d1461557d4bd4ddae978a6a25694b106016"
     },
     {
       "path": "LICENSE.md",
@@ -416,11 +424,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "8da371248e1e2e1a53f697bcbb8c2c04cf7f40e75cc3cca2e799d4a0cc1c3caf"
+      "sha256": "ac5495374766d2c5129dea2ad556ef2fe016ba56e4bbbaaa885be01b1a51ca8f"
     },
     {
       "path": "README.md",
-      "sha256": "eb31e8c57c19ed3439844033cebd41e295f33aec2085d4ddf590ac8f98c924d5"
+      "sha256": "bdc00a6087fc51e82f143afcdd071887b4e9d1de2bf6dd274e602b85e44122dc"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -508,11 +516,11 @@
     },
     {
       "path": "tool-directory/directory.js",
-      "sha256": "59670b0611c8bceddef408a64e121760c5a79fa5e8205e7009cf245e53fe41de"
+      "sha256": "03e05d63cb95f6bb24765800d3ddc5ff1393606480614f695a1a17f9153acfbf"
     },
     {
       "path": "tool-directory/registry.js",
-      "sha256": "eade9241545040250840686455f04abf7aee68605d7c552f8b57743b90164997"
+      "sha256": "c017ed7e51e3af44e2446a1250b749f54fddd007844c5e4f195b0e117f95332d"
     },
     {
       "path": "weld-capacity.js",

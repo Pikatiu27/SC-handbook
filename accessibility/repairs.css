@@ -1,0 +1,4 @@
+/* Local audit candidate: readable warning text and disclosure affordances. */
+#boltPanel .bolt-adoption-warning { color: #963f3b; }
+#boltPanel .connection-locator { color: var(--green-dark); fill: var(--green-dark); }
+.tool-panel summary i { color: var(--green-dark, var(--brand)); }

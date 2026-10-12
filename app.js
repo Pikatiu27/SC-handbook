@@ -6187,7 +6187,7 @@ function calculateCatalogueSectionProperties() {
 
   $("sectionPropertiesWarning").textContent = "Catalogue gaps remain unavailable. Capacity and member checks are excluded.";
   $("sectionSourceSummary").textContent = `${source.publisher} · ${source.status}`;
-  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. This lookup remains Draft.</p>`;
+  $("sectionSourceDetails").innerHTML = `<p><b>Source</b> &mdash; ${safeText(source.publisher)}, <i>${safeText(source.document)}</i>.</p><p><b>Verification</b> &mdash; ${safeText(source.status)}. Page review state &mdash; For Review; verify project adoption.</p>`;
   const derivedLabels = catalogueDerivedPropertyLabels(properties, angleAxes);
   const derivedTrace = catalogueDerivedTraceRows(section, properties, family.key);
   setSectionDerivations(
