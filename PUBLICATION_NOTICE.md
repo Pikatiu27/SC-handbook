@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.122, 12 October 2026: user-approved Steel Corrosion & Protection reference tables. Part 1 paint rows remain historical 2014-base draft facts; formal Amd 1:2017 text is unverified. HDG900/CX class is Not verified. Fastener thickness values are GAA/GANZ 2025 guidance, with Standard scope checked but normative thickness unverified. Source-specific categories, maintenance criteria and nominal/acceptance thickness bases stay separate. No protection-system approval or certification is provided. Public beta / For Review remains. Original Standards, private evidence, research, generators and tests are excluded.
+
 Build 0.7.121, 12 October 2026: user-approved Ground Parameters presentation maintenance. Common parameters remain visible; supplementary parameters and source details are initially folded. Duplicate reference tables are consolidated and critical source conditions remain accessible. No source values, equations or adopted design parameters change. Latest Home navigation and other tools are retained. Public beta / For Review and prior independent-review and source-use limitations remain. Original sources, private evidence, tests and release scripts are excluded.
 
 Build 0.7.120, 12 October 2026: Home tooltip focus correction. Keyboard-focused purpose text takes priority over a different label exposed under a stationary pointer. No navigation routes, calculation methods or data changed.

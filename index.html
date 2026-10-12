@@ -35,6 +35,7 @@
 <script defer src="beam-presentation/presentation.js?v=718b0785d2d6"></script>
 <link rel="stylesheet" href="concrete-cover/styles.css?v=59ab21935925">
 <link rel="stylesheet" href="tool-directory/directory.css?v=f9247c2f423a">
+<link rel="stylesheet" href="steel-corrosion/styles.css?v=241e31453e80">
 </head>
 <body>
   <header class="topbar">
@@ -71,6 +72,7 @@
 <button class="tool-tab" type="button" data-category="product-lookup" data-tool="antenna" aria-controls="antennaPanel" aria-pressed="false" hidden>Panel Antenna Specs</button>
 
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
+<button class="tool-tab" type="button" data-category="steel-members" data-tool="corrosion" aria-controls="corrosionPanel" aria-pressed="false" hidden>Steel Corrosion &amp; Protection</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
           <button class="tool-tab" type="button" data-category="steel-members" data-tool="chs4600" aria-controls="chs4600Panel" aria-pressed="false" hidden>Cold-formed CHS Bending</button>
@@ -2307,11 +2309,12 @@
       <div id="concreteAnchorMount"></div>
     </section>
   <section id="coverPanel" class="tool-panel section-table-preview" hidden></section>
+<section id="corrosionPanel" class="tool-panel section-table-preview" hidden></section>
 </main>
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.121 &middot; updated 12 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.122 &middot; updated 12 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20261009correctness1"></script>
@@ -2337,9 +2340,9 @@
       <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
 
   <script src="bolt-comparison/comparison.js?v=20261009bolttable1"></script>
-<script src="tool-directory/registry.js?v=77717a31b2c6"></script>
-<script src="tool-directory/directory.js?v=81a45d281dea"></script>
-<script src="app.js?v=88b4d4a3977b"></script>
+<script src="tool-directory/registry.js?v=eade92415450"></script>
+<script src="tool-directory/directory.js?v=59670b0611c8"></script>
+<script src="app.js?v=ceaf9e928778"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=92b714900fb3"></script>
 <script src="geo-parameters/detail-app.js?v=d289b11e98d7"></script>
@@ -2380,5 +2383,8 @@
 <script src="concrete-cover/data.js?v=28091395eb22"></script>
 <script src="concrete-cover/model.js?v=0da36b1e2bfb"></script>
 <script src="concrete-cover/app.js?v=c6b3ae5831c4"></script>
+<script src="steel-corrosion/data.js?v=d292c0c83ef3"></script>
+<script src="steel-corrosion/model.js?v=347dfcbd3a73"></script>
+<script src="steel-corrosion/app.js?v=7ed2fcca403a"></script>
 </body>
 </html>

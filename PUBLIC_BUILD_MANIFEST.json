@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "88b4d4a3977b78911573f13a23ac083d7aac92995f4438a227bd093ac822864b"
+      "sha256": "ceaf9e928778a2e23fd551d4f6d27144b58255db0042ef1a0a98f68512bedd10"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -344,7 +344,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "41c1ca393f9b5152c660c39bcd651ca8af9d048943bc1c4941f1e407f3c5cb1d"
+      "sha256": "949a5ef8dd072ec21e44580c3737e713b98d2fcb1e494ee42afc5b6962aab165"
     },
     {
       "path": "LICENSE.md",
@@ -416,11 +416,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "47f88fa761079e94f303d4de270a94d5d6214768eadb8fe8345b49176476c069"
+      "sha256": "8da371248e1e2e1a53f697bcbb8c2c04cf7f40e75cc3cca2e799d4a0cc1c3caf"
     },
     {
       "path": "README.md",
-      "sha256": "03ea0e55f2b91a114a945ca4d199f6fc93ead294ce360d5d3a3e6eb691d5a48c"
+      "sha256": "eb31e8c57c19ed3439844033cebd41e295f33aec2085d4ddf590ac8f98c924d5"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -475,6 +475,22 @@
       "sha256": "340be6279747ccc14d2d5c5d4e16fa4cc4712547c3596983670e37f013631fcf"
     },
     {
+      "path": "steel-corrosion/app.js",
+      "sha256": "7ed2fcca403a4846313c980fe94057c8ef84ec5f34ed51391ca1e29c6f49f825"
+    },
+    {
+      "path": "steel-corrosion/data.js",
+      "sha256": "d292c0c83ef30fc531b02d0627520629c028a6c4da3fdbea3ed7a4f601ac5271"
+    },
+    {
+      "path": "steel-corrosion/model.js",
+      "sha256": "347dfcbd3a738dfe81df0cabd2b89e3139d508511277751cd2f54ec6a52fae63"
+    },
+    {
+      "path": "steel-corrosion/styles.css",
+      "sha256": "241e31453e80c643e018e48f4e70e13532050582ace0e742a337ec1f63367ee9"
+    },
+    {
       "path": "steel-materials.js",
       "sha256": "68954279f1c0dcbfa00509fad8a6f3091e7804c0fecd69c44f562c8dcd219df7"
     },
@@ -492,11 +508,11 @@
     },
     {
       "path": "tool-directory/directory.js",
-      "sha256": "81a45d281deadd6f50f37c5f37479bcd6a95d68197ecb5df70d9e0e34b5b831b"
+      "sha256": "59670b0611c8bceddef408a64e121760c5a79fa5e8205e7009cf245e53fe41de"
     },
     {
       "path": "tool-directory/registry.js",
-      "sha256": "77717a31b2c6907d24ee35e42e79f8e986806007877d3e3ee385ccee654a996d"
+      "sha256": "eade9241545040250840686455f04abf7aee68605d7c552f8b57743b90164997"
     },
     {
       "path": "weld-capacity.js",

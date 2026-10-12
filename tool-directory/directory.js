@@ -8,7 +8,7 @@
   const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let scheduled=false,focusNextTool=false,toolOpened=false,descriptions=false;
   const helpText=new Map(tools.map(t=>[t.id,t.description]));
-  for(const [id,text] of Object.entries({home:'Browse all tools by category or search by name and purpose.','steel-connections':'Open bolt and weld capacity tools and fastener reference tables.','steel-members':'Open steel section properties and member or section capacity tools.',foundations:'Open ground and concrete references, reinforcement tools and foundation product data.','product-lookup':'Open manufacturer data for guy assemblies and panel antennas.',rod:'Round bar: a solid circular steel section.'}))helpText.set(id,text);
+  for(const [id,text] of Object.entries({home:'Browse all tools by category or search by name and purpose.','steel-connections':'Open bolt and weld capacity tools and fastener reference tables.','steel-members':'Open steel properties, corrosion references and member capacity tools.',foundations:'Open ground and concrete references, reinforcement tools and foundation product data.','product-lookup':'Open manufacturer data for guy assemblies and panel antennas.',rod:'Round bar: a solid circular steel section.'}))helpText.set(id,text);
   document.getElementById('directoryDescriptions').innerHTML=[...helpText].map(([id,text])=>`<div id="directory-help-${id}" class="directory-tooltip" role="tooltip" hidden>${escape(text)}</div>`).join('');
   let currentTrigger=null,currentTip=null,openTimer=null,closeTimer=null,pointerTrigger=null,focusTrigger=null,pointerTip=false,dismissedTrigger=null;
   function cancelTimers(){clearTimeout(openTimer);clearTimeout(closeTimer);}

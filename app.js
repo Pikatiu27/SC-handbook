@@ -2897,6 +2897,10 @@ toolCategories.foundations.push("anchors");
 toolNames.push("cover");
 toolCategories.foundations.splice(toolCategories.foundations.indexOf("concrete") + 1, 0, "cover");
 /* CONCRETE COVER REGISTRATION END */
+/* STEEL CORROSION REGISTRATION START */
+toolNames.push("corrosion");
+toolCategories["steel-members"].splice(1, 0, "corrosion");
+/* STEEL CORROSION REGISTRATION END */
 const publicToolHashes = { concrete: "pad" };
 const concreteLayerFieldSuffixes = ["Active", "Auto", "Y", "Bar", "Spacing", "Fsy", "Es"];
 let concreteLayerState = null;

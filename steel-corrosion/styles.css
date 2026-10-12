@@ -1,0 +1,58 @@
+#corrosionPanel { --st-identity-width: 78px; }
+#corrosionPanel .sc-view-tabs { margin: 0 0 12px; }
+#corrosionPanel .sc-view-tabs .active { color: var(--green-dark); }
+#corrosionPanel .sc-environment-table { --st-identity-width:74px; min-width:900px; }
+#corrosionPanel .sc-environment-table thead .st-identity .st-header-name > span:first-child { max-width:64px; white-space:normal; }
+#corrosionPanel .sc-environment-table thead .st-identity .st-header-control > small { display:none; }
+#corrosionPanel .sc-environment-table th:nth-child(2) { width: 26%; }
+#corrosionPanel .sc-environment-table th:nth-child(5) { width: 26%; }
+#corrosionPanel .sc-environment-table .st-num { min-width: 100px; }
+#corrosionPanel .sc-coating-table { --st-identity-width:88px; min-width:900px; }
+#corrosionPanel .sc-coating-table th:nth-child(2) { min-width: 110px; }
+#corrosionPanel .sc-coating-table th:nth-child(3) { min-width: 110px; }
+#corrosionPanel .sc-coating-table th:nth-child(4) { min-width: 115px; }
+#corrosionPanel .sc-paint-table { --st-identity-width:104px; min-width:930px; }
+#corrosionPanel .sc-paint-table th:nth-child(2) { min-width:100px; }
+#corrosionPanel .sc-paint-table th:nth-child(3) { min-width:92px; }
+#corrosionPanel .sc-paint-table th:nth-child(4) { min-width:114px; }
+#corrosionPanel .sc-paint-table th:nth-child(5) { min-width:100px; }
+#corrosionPanel .sc-paint-table th:nth-child(6) { width:14%; min-width:120px; }
+#corrosionPanel .sc-life-table { --st-identity-width:90px; min-width:930px; }
+#corrosionPanel .sc-life-table th:nth-child(6) { min-width:170px; }
+#corrosionPanel .sc-paint-table .st-header-control > .st-header-name > span:first-child { white-space:normal; }
+#corrosionPanel .sc-coating-catalogue { margin-top:12px; }
+#corrosionPanel .st-source-col { min-width: 130px; }
+#corrosionPanel .st-identity { white-space: normal; }
+#corrosionPanel .st-identity small { font-weight: 400; }
+#corrosionPanel .sc-maintenance-basis { display:block; font-size:var(--fs-xs); font-weight:400; color:var(--muted); line-height:1.4; }
+#corrosionPanel .st-unavailable { font-size: var(--fs-sm); }
+#corrosionPanel .st-heading-actions [role="status"] { color: var(--muted); font-size: var(--fs-xs); }
+#corrosionPanel :is(.st-heading-actions,.st-detail-heading) button { font: 700 var(--fs-sm) var(--font); min-height: 46px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--green-dark); cursor: pointer; }
+#corrosionPanel .sc-boundary { margin: 4px 0 8px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
+#corrosionPanel .sc-disclosure { margin-top: 12px; }
+#corrosionPanel .sc-source-body { padding: 0 16px 14px; font-size: var(--fs-sm); line-height: 1.4; }
+#corrosionPanel .sc-source-body p { margin: 10px 0; }
+#corrosionPanel .sc-review-notes { margin:0 0 10px; padding-left:18px; }
+#corrosionPanel .sc-review-notes li { margin:4px 0; }
+#corrosionPanel .sc-details { margin-top: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; scroll-margin-top: 80px; }
+#corrosionPanel .sc-details dl { margin: 8px 0; font-size: var(--fs-sm); line-height: 1.4; }
+#corrosionPanel .sc-details dl > div { display: grid; grid-template-columns: 154px minmax(0,1fr); gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+#corrosionPanel .sc-details dt { font-weight: 700; }
+#corrosionPanel .sc-details dd { margin: 0; }
+#corrosionPanel .sc-coat-list { padding-left:18px; margin:0 0 4px; }
+@media (min-width:761px) {
+ .tool-navigation:has(.tool-tab[data-tool="corrosion"]:not([hidden])), .tool-navigation-menu:has(.tool-tab[data-tool="corrosion"]:not([hidden])) { min-width:0; }
+ .tool-tabs:has(.tool-tab[data-tool="corrosion"]:not([hidden])) { width:100%; box-sizing:border-box; flex-wrap:wrap; }
+ .tool-tabs:has(.tool-tab[data-tool="corrosion"]:not([hidden])) .tool-tab { min-width:0; padding:10px; }
+}
+@media (max-width:760px) {
+ #corrosionPanel { --st-identity-width:64px; }
+ #corrosionPanel .sc-view-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; overflow:visible; box-sizing:border-box; }
+ #corrosionPanel .sc-view-tabs .section-catalogue-family-tab { min-width:0; padding:8px 4px; white-space:normal; line-height:1.4; }
+ #corrosionPanel .sc-environment-table { --st-identity-width:64px; }
+ #corrosionPanel .sc-coating-table { --st-identity-width:74px; }
+ #corrosionPanel .sc-paint-table { --st-identity-width:96px; }
+ #corrosionPanel .sc-life-table { --st-identity-width:84px; }
+ #corrosionPanel table button { min-height:44px; }
+ #corrosionPanel .sc-details dl > div { grid-template-columns:minmax(0,1fr); gap:4px; }
+}
