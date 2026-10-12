@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.120 (12 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.121 (12 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -255,3 +255,5 @@ Cold-formed CHS Bending: live comparison of CF AS 4100 / AS/NZS 4600 and HR AS 4
 Home: compact searchable tool directory with purpose hints, optional descriptions, and shared navigation. Confirmed short tool labels and Rod controls retain full scope explanations; existing tool hashes and standalone paths remain compatible. Latest CHS comparison and engineering modules are retained.
 
 Home purpose hints follow the visible keyboard focus when an existing popup exposes another label under a stationary pointer.
+
+Ground Parameters: compact common ranges, grouped supplementary project parameters and five single-level foundation-reference topics. Parameter meanings and project checks are consolidated under initially closed Sources and limitations. Existing numerical/query bases and latest Home navigation are retained.

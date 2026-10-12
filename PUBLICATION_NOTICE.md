@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.121, 12 October 2026: user-approved Ground Parameters presentation maintenance. Common parameters remain visible; supplementary parameters and source details are initially folded. Duplicate reference tables are consolidated and critical source conditions remain accessible. No source values, equations or adopted design parameters change. Latest Home navigation and other tools are retained. Public beta / For Review and prior independent-review and source-use limitations remain. Original sources, private evidence, tests and release scripts are excluded.
+
 Build 0.7.120, 12 October 2026: Home tooltip focus correction. Keyboard-focused purpose text takes priority over a different label exposed under a stationary pointer. No navigation routes, calculation methods or data changed.
 
 Build 0.7.119, 12 October 2026: user-approved Home directory and confirmed navigation names. Root/Home opens a compact directory; existing tool hashes, legacy mode parameters and standalone paths retain direct entry. Purpose hints and optional descriptions support navigation. Latest CHS comparison and all calculation/catalogue modules are retained. Public beta / For Review and prior engineering boundaries remain. Original sources, private evidence, previews and release scripts are excluded.
