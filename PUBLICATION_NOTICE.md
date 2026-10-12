@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.119, 12 October 2026: user-approved Home directory and confirmed navigation names. Root/Home opens a compact directory; existing tool hashes, legacy mode parameters and standalone paths retain direct entry. Purpose hints and optional descriptions support navigation. Latest CHS comparison and all calculation/catalogue modules are retained. Public beta / For Review and prior engineering boundaries remain. Original sources, private evidence, previews and release scripts are excluded.
+
 Build 0.7.118, 12 October 2026: user-approved Cold-formed CHS Bending comparison. Shared ideal geometry and separate cold-formed/hot-finished strengths feed independently labelled AS 4100 and AS/NZS 4600 section moments. Results update automatically; missing/out-of-scope results are withheld. A comparison does not select a governing method or establish product equivalence or member suitability. Public beta / For Review; independent engineering review remains open. Original licensed sources, page images, research, test oracles and audit evidence are excluded.
 
 Build 0.7.117, 12 October 2026: user-approved Concrete Cover & Durability reference page. Selected factual references and summaries are presented in a custom lookup; original Standards, figures, page images, extraction files, research and verification evidence are excluded. AS 3600:2018 with Amendments 1 and 2 is the stated basis; project edition/adoption and final cover require separate confirmation. Public beta / For Review; independent engineering review remains open.

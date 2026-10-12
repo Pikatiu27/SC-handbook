@@ -11019,6 +11019,7 @@ function syncResponsiveDefaults(force = false) {
 }
 
 function setTool(tool, updateHash = true) {
+  if (ToolDirectory.isHome(tool)) { ToolDirectory.showHome(updateHash); return; }
   const resolvedTool = toolAliases[tool] || tool;
   const validTool = toolNames.includes(resolvedTool);
   const selectedTool = validTool ? resolvedTool : "bolt";
@@ -11070,6 +11071,7 @@ function setTool(tool, updateHash = true) {
     calculateScrew();
     window.requestAnimationFrame(calculateScrew);
   }
+  ToolDirectory.showTool(selectedTool);
 }
 
 function setMemberType(type) {
@@ -11387,7 +11389,7 @@ function initialise() {
   calculateReo();
   calculateScrew();
   setBoltMode(initialBoltMode());
-  setTool(location.hash.slice(1) || "bolt", false);
+  setTool(ToolDirectory.initialRoute(), false);
   syncResponsiveDefaults(true);
 }
 

@@ -8,7 +8,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "13c0ca93d02b2e848faefd935aca668ea1c0cf0240bf229b0f9e4f2d3fbca1d3"
+      "sha256": "88b4d4a3977b78911573f13a23ac083d7aac92995f4438a227bd093ac822864b"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -284,7 +284,7 @@
     },
     {
       "path": "geo-parameters/index.html",
-      "sha256": "70218a04c7218e02a16794ccb91316541be227e364e30518871b95d2acf5084d"
+      "sha256": "3b39e62c4eeaec70b38168cc852e6ab867456299b9be8fa821c37ab49dccc16c"
     },
     {
       "path": "geo-parameters/tab.css",
@@ -332,7 +332,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "267b8bbdb58a896d42e022267f211ee6493c28b26b97db4d13918511267e8532"
+      "sha256": "c5b0925c95864dff1333003b5769582bd8df4bf7fd39a82463c0ce2016105400"
     },
     {
       "path": "LICENSE.md",
@@ -404,11 +404,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "56f5646d02097b4d7a84a81eb2b396a1d4f3e44d7ec1badaa81b08809a63e1b8"
+      "sha256": "213df5e0c30efeb140454c0df99391a88b60b7e9b06747802b19c420a2f6bc68"
     },
     {
       "path": "README.md",
-      "sha256": "a2a9bb4701b25ef8a85e3f557ada6d99fb3ea54602aab353ed47a3bde1493611"
+      "sha256": "938a709b9584a83a9ed9e5eed3d3113e0b545be4fb7cebbde4b0eaacbb2261e5"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -473,6 +473,18 @@
     {
       "path": "THIRD_PARTY_NOTICES.md",
       "sha256": "806d3238bea30c0aa9d0f6f63290c2586121b22af4bff88acf1c1c6e663a5b2b"
+    },
+    {
+      "path": "tool-directory/directory.css",
+      "sha256": "f9247c2f423a4cdb07ef025c6ee40af35bac8e958a29aee1b4b72a8351579363"
+    },
+    {
+      "path": "tool-directory/directory.js",
+      "sha256": "fadc9d24b0ead4ec6e467cf9babbd25145743052e829a5da2c8406fca911495f"
+    },
+    {
+      "path": "tool-directory/registry.js",
+      "sha256": "77717a31b2c6907d24ee35e42e79f8e986806007877d3e3ee385ccee654a996d"
     },
     {
       "path": "weld-capacity.js",

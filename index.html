@@ -33,10 +33,11 @@
 <link rel="stylesheet" href="beam-presentation/layout.css?v=33bfe558de6f">
 <script defer src="beam-presentation/presentation.js?v=718b0785d2d6"></script>
 <link rel="stylesheet" href="concrete-cover/styles.css?v=59ab21935925">
+<link rel="stylesheet" href="tool-directory/directory.css?v=f9247c2f423a">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#top"><span class="brand-mark">SC</span><span><strong>SC Handbook</strong><small>Engineering lookup handbook</small></span></a>
+    <a class="brand" href="#home"><span class="brand-mark">SC</span><span><strong>SC Handbook</strong><small>Engineering lookup handbook</small></span></a>
   </header>
 
   <main id="top">
@@ -54,6 +55,7 @@
       </div>
       <div id="toolNavigationMenu" class="tool-navigation-menu">
         <nav class="tool-categories" aria-label="Engineering categories">
+          <a id="directoryHomeLink" class="tool-category directory-home-link" href="#home" title="Tool directory">Home</a>
           <button class="tool-category active" type="button" data-category="steel-connections" aria-pressed="true">Steel Connections</button>
           <button class="tool-category" type="button" data-category="steel-members" aria-pressed="false">Steel Members</button>
           <button class="tool-category" type="button" data-category="foundations" aria-pressed="false">Foundations</button>
@@ -84,6 +86,21 @@
         </nav>
       </div>
     </section>
+
+    <section id="toolDirectory" class="directory-screen" aria-labelledby="directoryTitle">
+      <div class="directory-heading">
+        <h1 id="directoryTitle" tabindex="-1">Tools</h1>
+        <div class="directory-search-row">
+          <label class="visually-hidden" for="directorySearch">Find a tool</label><input id="directorySearch" type="search" placeholder="Search tools…" autocomplete="off" aria-controls="directoryGroups">
+          <button id="directoryClear" type="button" hidden>Clear</button>
+        </div>
+        <button id="directoryDescriptionsToggle" class="directory-descriptions-toggle" type="button" aria-expanded="false" aria-controls="directoryGroups">Descriptions</button>
+      </div>
+      <p id="directoryResultCount" class="visually-hidden" role="status" aria-live="polite"></p>
+      <div id="directoryGroups"></div>
+      <p id="directoryEmpty" class="directory-empty" hidden>No tools found.</p>
+    </section>
+    <div id="directoryDescriptions"></div>
 
     <section class="category-scope" aria-label="Category design scope">
 <details data-category-scope="product-lookup" hidden>
@@ -2292,7 +2309,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.118 &middot; updated 12 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.119 &middot; updated 12 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20260812sectionformat1"></script>
   <script src="bolt-capacity.js?v=20261009correctness1"></script>
@@ -2318,7 +2335,9 @@
       <script src="geo-parameters/geo-parameters.js?v=20260921geo76"></script>
 
   <script src="bolt-comparison/comparison.js?v=20261009bolttable1"></script>
-<script src="app.js?v=13c0ca93d02b"></script>
+<script src="tool-directory/registry.js?v=77717a31b2c6"></script>
+<script src="tool-directory/directory.js?v=fadc9d24b0ea"></script>
+<script src="app.js?v=88b4d4a3977b"></script>
 
       <script src="geo-parameters/app.js?v=20260921geo76"></script>
 
