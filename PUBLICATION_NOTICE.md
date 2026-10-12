@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.120, 12 October 2026: Home tooltip focus correction. Keyboard-focused purpose text takes priority over a different label exposed under a stationary pointer. No navigation routes, calculation methods or data changed.
+
 Build 0.7.119, 12 October 2026: user-approved Home directory and confirmed navigation names. Root/Home opens a compact directory; existing tool hashes, legacy mode parameters and standalone paths retain direct entry. Purpose hints and optional descriptions support navigation. Latest CHS comparison and all calculation/catalogue modules are retained. Public beta / For Review and prior engineering boundaries remain. Original sources, private evidence, previews and release scripts are excluded.
 
 Build 0.7.118, 12 October 2026: user-approved Cold-formed CHS Bending comparison. Shared ideal geometry and separate cold-formed/hot-finished strengths feed independently labelled AS 4100 and AS/NZS 4600 section moments. Results update automatically; missing/out-of-scope results are withheld. A comparison does not select a governing method or establish product equivalence or member suitability. Public beta / For Review; independent engineering review remains open. Original licensed sources, page images, research, test oracles and audit evidence are excluded.

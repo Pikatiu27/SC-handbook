@@ -38,7 +38,11 @@
   document.addEventListener('pointerover',event=>{
     if(event.pointerType==='touch')return;
     const trigger=helpTarget(event.target);if(!trigger||trigger.contains(event.relatedTarget))return;
-    pointerTrigger=trigger;dismissedTrigger=null;openTip(trigger,350);
+    pointerTrigger=trigger;
+    // Keep keyboard help tied to the visible focus, even when closing a popup
+    // exposes a different label under a stationary pointer.
+    if(focusTrigger&&focusTrigger!==trigger&&focusTrigger.matches(':focus-visible'))return;
+    dismissedTrigger=null;openTip(trigger,350);
   });
   document.addEventListener('pointerout',event=>{
     const trigger=helpTarget(event.target);if(!trigger||trigger.contains(event.relatedTarget))return;
