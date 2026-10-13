@@ -37,6 +37,7 @@
 <link rel="stylesheet" href="tool-directory/directory.css?v=f9247c2f423a">
 <link rel="stylesheet" href="steel-corrosion/styles.css?v=241e31453e80">
 <link rel="stylesheet" href="accessibility/repairs.css?v=6d44975ed8af">
+<link rel="stylesheet" href="bolt-details/layout.css?v=2ce9041e1aae">
 </head>
 <body>
   <header class="topbar">
@@ -421,7 +422,7 @@
                       <label><span>d<sub>h</sub> <i>hole deduction diameter</i></span><span class="unit"><input id="integrityHoleDiameter" type="number" min="0" step="0.1" value="26"><em>mm</em></span></label>
                     </div>
                     <div class="form-grid two integrity-ply-material">
-                      <label><span>f<sub>yc</sub> <i>yield stress</i></span><span class="unit"><input id="integrityFy" type="number" min="1" step="1" value="320"><em>MPa</em></span></label>
+                      <label><span>f<sub>yc</sub> <i>yield stress</i></span><span class="unit"><input id="integrityFy" type="number" min="1" step="1" value="" placeholder="Required"><em>MPa</em></span></label>
                       <label><span>f<sub>uc</sub> <i>tensile strength</i></span><span class="unit"><input id="integrityFu" type="number" readonly value="410"><em>MPa</em></span></label>
                     </div>
                     <p class="ply-basis-note" id="integrityGeometryNote">Straight section only · n<sub>h</sub> = holes crossed by the critical section, not total bolts.</p>
@@ -2315,7 +2316,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.123 &middot; updated 13 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.124 &middot; updated 13 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=22d2bef7e9b2"></script>
   <script src="bolt-capacity.js?v=189a0ad54e6b"></script>
@@ -2388,5 +2389,7 @@
 <script src="steel-corrosion/model.js?v=347dfcbd3a73"></script>
 <script src="steel-corrosion/app.js?v=7ed2fcca403a"></script>
 <script src="accessibility/repairs.js?v=505a54c15e75"></script>
+<script src="bolt-details/diagram.js?v=a4000b0ca5c6"></script>
+<script src="bolt-details/app.js?v=d48a2f70aeba"></script>
 </body>
 </html>

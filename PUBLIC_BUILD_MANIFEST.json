@@ -179,6 +179,18 @@
       "sha256": "5a7c63a6b8f3e86bb6c19912405b3b371fde7712a2362e27ec4495632cd33a8d"
     },
     {
+      "path": "bolt-details/app.js",
+      "sha256": "d48a2f70aebac39173d37da65ec40ab0294dced2feaf1afc08cc2f3f9d7a4a63"
+    },
+    {
+      "path": "bolt-details/diagram.js",
+      "sha256": "a4000b0ca5c60286f360783880c7b48bd24acf89a4340be8a09d67b91fefa692"
+    },
+    {
+      "path": "bolt-details/layout.css",
+      "sha256": "2ce9041e1aaee4133d02f9f3b9b460a0d13db72f875fec881710ee19cc2f23f7"
+    },
+    {
       "path": "bolt-dimensions/app.js",
       "sha256": "f9c2f3d33685d684154ebc6e14ac3d4e3fc79464b1d8aa22f3bf9b6dd4540aa8"
     },
@@ -352,7 +364,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "fba718e822d10334fdb775fd07db2d1461557d4bd4ddae978a6a25694b106016"
+      "sha256": "1d2a31fb321d724c2eeba7bf92789fd0695ad443d03759b52e9ead3050955ec2"
     },
     {
       "path": "LICENSE.md",
@@ -424,11 +436,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "ac5495374766d2c5129dea2ad556ef2fe016ba56e4bbbaaa885be01b1a51ca8f"
+      "sha256": "fbbd966bf5c1469e42b3d743ee31e26c6ad27ee74372986ad930f66c75442001"
     },
     {
       "path": "README.md",
-      "sha256": "bdc00a6087fc51e82f143afcdd071887b4e9d1de2bf6dd274e602b85e44122dc"
+      "sha256": "865670ec9068fc94801f555520905014202816ceb2df497d57606f189465bd5d"
     },
     {
       "path": "reinforcement-area/app.js",
