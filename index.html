@@ -34,10 +34,12 @@
 <link rel="stylesheet" href="beam-presentation/layout.css?v=33bfe558de6f">
 <script defer src="beam-presentation/presentation.js?v=718b0785d2d6"></script>
 <link rel="stylesheet" href="concrete-cover/styles.css?v=59ab21935925">
-<link rel="stylesheet" href="tool-directory/directory.css?v=f9247c2f423a">
+<link rel="stylesheet" href="tool-directory/directory.css?v=20261016homeanalysis1">
 <link rel="stylesheet" href="steel-corrosion/styles.css?v=241e31453e80">
 <link rel="stylesheet" href="accessibility/repairs.css?v=6d44975ed8af">
 <link rel="stylesheet" href="bolt-details/layout.css?v=2ce9041e1aae">
+<link rel="stylesheet" href="web-drawing/styles.css?v=20261016homeanalysis1">
+<link rel="stylesheet" href="beam-internal-forces/styles.css?v=20261016homeanalysis1">
 </head>
 <body>
   <header class="topbar">
@@ -54,40 +56,38 @@
 
     <section class="tool-navigation" data-active-tool="bolt" aria-label="Engineering tool navigation">
       <div class="mobile-tool-bar">
-        <span><small id="mobileToolCategory">Steel Connections</small><strong id="mobileToolName">Bolt Capacity</strong></span>
+        <span><small id="mobileToolCategory">Connections</small><strong id="mobileToolName">Bolt Capacity</strong></span>
         <button id="mobileToolsToggle" class="mobile-tools-toggle" type="button" aria-expanded="false" aria-controls="toolNavigationMenu">Tools <span aria-hidden="true">+</span></button>
       </div>
       <div id="toolNavigationMenu" class="tool-navigation-menu">
-        <nav class="tool-categories" aria-label="Engineering categories">
-          <a id="directoryHomeLink" class="tool-category directory-home-link" href="#home" title="Tool directory">Home</a>
-          <button class="tool-category active" type="button" data-category="steel-connections" aria-pressed="true">Steel Connections</button>
-          <button class="tool-category" type="button" data-category="steel-members" aria-pressed="false">Steel Members</button>
+        <div class="directory-navigation-row"><nav class="tool-categories" aria-label="Engineering categories">
+          <a id="directoryHomeLink" class="tool-category directory-home-link" href="#home">Home</a>
+          <button class="tool-category" type="button" data-category="analysis" aria-pressed="false">Analysis</button>
+          <button class="tool-category" type="button" data-category="steel" aria-pressed="false">Steel</button>
+          <button class="tool-category" type="button" data-category="concrete" aria-pressed="false">Concrete</button>
+          <button class="tool-category" type="button" data-category="connections" aria-pressed="false">Connections</button>
           <button class="tool-category" type="button" data-category="foundations" aria-pressed="false">Foundations</button>
-<button class="tool-category" type="button" data-category="product-lookup" aria-pressed="false">Product Lookup</button>
-        </nav>
+        </nav><a id="directoryProductsLink" class="directory-products-link" href="#products">Products</a></div>
 
         <nav class="tool-tabs" aria-label="SC Handbook tools">
-          <button class="tool-tab active" type="button" data-category="steel-connections" data-tool="bolt" aria-controls="boltPanel" aria-pressed="true">Bolt Capacity</button>
-          <button class="tool-tab" type="button" data-category="steel-connections" data-tool="weld" aria-controls="weldPanel" aria-pressed="false">Weld Capacity</button>
-
-          <button class="tool-tab" type="button" data-category="product-lookup" data-tool="guy" aria-controls="guyPanel" aria-pressed="false" hidden>Guy &amp; Fittings</button>
-<button class="tool-tab" type="button" data-category="product-lookup" data-tool="antenna" aria-controls="antennaPanel" aria-pressed="false" hidden>Panel Antenna Specs</button>
-
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
-<button class="tool-tab" type="button" data-category="steel-members" data-tool="corrosion" aria-controls="corrosionPanel" aria-pressed="false" hidden>Steel Corrosion &amp; Protection</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="member" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="beam" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="chs4600" aria-controls="chs4600Panel" aria-pressed="false" hidden>Cold-formed CHS Bending</button>
-          <button class="tool-tab" type="button" data-category="steel-members" data-tool="monopole" aria-controls="monopolePanel" aria-pressed="false" hidden>Steel Monopole Section Capacity</button>
-
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="geo" aria-controls="geoPanel" aria-pressed="false" hidden>Ground Parameters</button>
-
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" aria-controls="concretePanel" aria-pressed="false" hidden>Concrete Pad Section</button>
-<button class="tool-tab" type="button" data-category="foundations" data-tool="cover" aria-controls="coverPanel" aria-pressed="false" hidden>Concrete Cover &amp; Durability</button>
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="reo" aria-controls="reoPanel" aria-pressed="false" hidden>Reinforcement</button>
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" aria-controls="screwPanel" aria-pressed="false" hidden>Screw Piles Selector</button>
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" aria-controls="rockPanel" aria-pressed="false" hidden>Rock Anchor Selector</button>
-          <button class="tool-tab" type="button" data-category="foundations" data-tool="anchors" aria-controls="anchorsPanel" aria-pressed="false" hidden>Concrete Anchor Products</button>
+          <button class="tool-tab" type="button" data-category="analysis" data-tool="beamforces" data-legacy-name="Beam Internal Forces" aria-controls="beamforcesPanel" aria-pressed="false" hidden>Beam Internal Forces</button>
+          <button class="tool-tab" type="button" data-category="steel" data-tool="properties" data-legacy-name="Section Properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
+          <button class="tool-tab" type="button" data-category="steel" data-tool="corrosion" data-legacy-name="Steel Corrosion &amp; Protection" aria-controls="corrosionPanel" aria-pressed="false" hidden>Steel Corrosion &amp; Protection</button>
+          <button class="tool-tab" type="button" data-category="steel" data-tool="member" data-legacy-name="Axial Member Capacity" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel" data-tool="beam" data-legacy-name="Beam Section Capacity" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
+          <button class="tool-tab" type="button" data-category="steel" data-tool="chs4600" data-legacy-name="Cold-formed CHS Bending" aria-controls="chs4600Panel" aria-pressed="false" hidden>Cold-formed CHS Bending</button>
+          <button class="tool-tab" type="button" data-category="steel" data-tool="monopole" data-legacy-name="Steel Monopole Section Capacity" aria-controls="monopolePanel" aria-pressed="false" hidden>Monopole Section Capacity</button>
+          <button class="tool-tab" type="button" data-category="concrete" data-tool="cover" data-legacy-name="Concrete Cover &amp; Durability" aria-controls="coverPanel" aria-pressed="false" hidden>Concrete Cover &amp; Durability</button>
+          <button class="tool-tab" type="button" data-category="concrete" data-tool="reo" data-legacy-name="Reinforcement" aria-controls="reoPanel" aria-pressed="false" hidden>Reinforcement</button>
+          <button class="tool-tab" type="button" data-category="connections" data-tool="bolt" data-legacy-name="Bolt Capacity" aria-controls="boltPanel" aria-pressed="false" hidden>Bolt Capacity</button>
+          <button class="tool-tab" type="button" data-category="connections" data-tool="weld" data-legacy-name="Weld Capacity" aria-controls="weldPanel" aria-pressed="false" hidden>Weld Capacity</button>
+          <button class="tool-tab" type="button" data-category="connections" data-tool="anchors" data-legacy-name="Concrete Anchor Products" aria-controls="anchorsPanel" aria-pressed="false" hidden>Concrete Anchor Products</button>
+          <button class="tool-tab" type="button" data-category="connections" data-tool="guy" data-legacy-name="Guy &amp; Fittings" aria-controls="guyPanel" aria-pressed="false" hidden>Guy &amp; Fittings</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="geo" data-legacy-name="Ground Parameters" aria-controls="geoPanel" aria-pressed="false" hidden>Ground Reference</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="concrete" data-legacy-name="Concrete Pad Section" aria-controls="concretePanel" aria-pressed="false" hidden>Concrete Pad</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="screw" data-legacy-name="Screw Piles Selector" aria-controls="screwPanel" aria-pressed="false" hidden>Screw Pile Products</button>
+          <button class="tool-tab" type="button" data-category="foundations" data-tool="rock" data-legacy-name="Rock Anchor Selector" aria-controls="rockPanel" aria-pressed="false" hidden>Rock Anchor Products</button>
+          <button class="tool-tab" type="button" data-category="products" data-tool="antenna" data-legacy-name="Panel Antenna Specs" aria-controls="antennaPanel" aria-pressed="false" hidden>Panel Antenna Specs</button>
         </nav>
       </div>
     </section>
@@ -108,35 +108,52 @@
     <div id="directoryDescriptions"></div>
 
     <section class="category-scope" aria-label="Category design scope">
-<details data-category-scope="product-lookup" hidden>
-        <summary><span><b>Design scope · Product Lookup</b><small>Published product specifications and source documents</small></span><i>+</i></summary>
+      <details data-category-scope="analysis" hidden>
+        <summary><span><b>Design scope · Analysis</b><small>Entered actions and static internal forces</small></span><i>+</i></summary>
+        <div class="category-scope-grid">
+          <section><h2>Complete design includes</h2><p>Project actions and combinations; an adopted structural model, restraints and applicable response checks; separate member and connection verification.</p></section>
+          <section><h2>Handbook scope</h2><p>Six determinate straight-beam templates; entered vertical point forces, couples and linear distributed loads; reactions, shear and moment diagrams with section readings.</p></section>
+          <section><h2>Not evaluated</h2><p>Load generation or prescribed combinations, indeterminate analysis, axial force, torsion, deflection, dynamics, stability, resistance or complete structural design. Public beta / For Review.</p></section>
+        </div>
+      </details>
+
+<details data-category-scope="products" hidden>
+        <summary><span><b>Design scope · Products</b><small>Published product specifications and source documents</small></span><i>+</i></summary>
         <div class="category-scope-grid">
           <section><h2>Complete design includes</h2><p>Verified equipment identity and source revisions; project actions, suitability, installation and interface checks.</p></section>
           <section><h2>Handbook scope</h2><p>Published antenna and guy/fitting specifications, with source status and unavailable values identified.</p></section>
           <section><h2>Not evaluated</h2><p>Product suitability, operator approval, current supply, site loads, resistance or whole-system design.</p></section>
         </div>
       </details>
-      <details data-category-scope="steel-connections">
-        <summary><span><b>Design scope · Steel Connections</b><small>Coverage and exclusions for connection design</small></span><i>+</i></summary>
+      <details data-category-scope="connections">
+        <summary><span><b>Design scope · Connections</b><small>Coverage and exclusions for connection design</small></span><i>+</i></summary>
         <div class="category-scope-grid">
           <section><h2>Complete design includes</h2><p>Design actions and load path; component and group limit states; interaction, detailing, stiffness and ductility; fabrication, inspection, durability and serviceability.</p></section>
-          <section><h2>Handbook scope</h2><p>Bolt tension, shear, slip and selected connected-ply checks; weld throat capacities; source-labelled fastener data.</p></section>
+          <section><h2>Handbook scope</h2><p>Bolt tension, shear, slip and selected connected-ply checks; weld throat capacities; source-labelled fastener, concrete-anchor installation and guy/fitting data.</p></section>
           <section><h2>Not evaluated</h2><p>Complete joint behaviour; eccentric distribution, prying, plate bending and supporting-member effects; fatigue, fire, WPS qualification, inspection acceptance and project compliance.</p></section>
         </div>
       </details>
-      <details data-category-scope="steel-members" hidden>
-        <summary><span><b>Design scope · Steel Members</b><small>Coverage and exclusions for member and structural design</small></span><i>+</i></summary>
+      <details data-category-scope="steel" hidden>
+        <summary><span><b>Design scope · Steel</b><small>Coverage and exclusions for member and structural design</small></span><i>+</i></summary>
         <div class="category-scope-grid">
           <section><h2>Complete design includes</h2><p>Actions and combinations; section and member resistance; stability and restraint; load introduction and connections; serviceability, fatigue, fire, durability and system behaviour.</p></section>
-          <section><h2>Handbook scope</h2><p>Section properties; selected axial-member, section bending, shear and interaction checks; monopole section resistance, geometry and mass.</p></section>
+          <section><h2>Handbook scope</h2><p>Section properties; selected axial-member, section bending, shear and interaction checks; monopole section resistance, geometry and mass; steel-corrosion references.</p></section>
           <section><h2>Not evaluated</h2><p>Complete beam or monopole member design; unimplemented buckling and interaction paths; global analysis, connections, load generation, vibration, fatigue, fire and issued-design verification.</p></section>
+        </div>
+      </details>
+      <details data-category-scope="concrete" hidden>
+        <summary><span><b>Design scope · Concrete</b><small>Coverage and exclusions for concrete references</small></span><i>+</i></summary>
+        <div class="category-scope-grid">
+          <section><h2>Complete design includes</h2><p>Project actions, geometry and materials; resistance, serviceability, durability and reinforcement detailing; construction and acceptance.</p></section>
+          <section><h2>Handbook scope</h2><p>Concrete exposure, cover and selected curing references; reinforcement area and spacing; tension development and lap references.</p></section>
+          <section><h2>Not evaluated</h2><p>Complete concrete-member design; site exposure adoption, member resistance, deflection, cracking, shear, punching or complete detailing. Concrete pad checks remain under Foundations.</p></section>
         </div>
       </details>
       <details data-category-scope="foundations" hidden>
         <summary><span><b>Design scope · Foundations</b><small>Coverage and exclusions for foundation design</small></span><i>+</i></summary>
         <div class="category-scope-grid">
           <section><h2>Complete design includes</h2><p>Design actions; site-specific ground model; bearing, settlement and stability; structural limit states and interfaces; durability, construction, testing and acceptance.</p></section>
-          <section><h2>Handbook scope</h2><p>Pad-strip flexure and simplified one-way shear; reinforcement development and lap references; simplified screw-pile action distribution; source-labelled pile and anchor data, including selected concrete-anchor installation profiles.</p></section>
+          <section><h2>Handbook scope</h2><p>Ground-parameter references; pad-strip flexure and simplified one-way shear; simplified screw-pile action distribution; source-labelled screw-pile and rock-anchor data.</p></section>
           <section><h2>Not evaluated</h2><p>Complete footing, pile or anchor design; punching, foundation bearing, settlement and stability; pile and group resistance or movement; anchor resistance, connections and installation acceptance.</p></section>
         </div>
       </details>
@@ -1172,7 +1189,53 @@
       <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue, material-standard and derivation status</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Material</b> &mdash; hot-rolled section strengths follow AS/NZS 3679.1 Table 14 using controlling part thickness; round-bar strengths follow AS/NZS 3679.1 Table 15 using diameter. The adopted edition is AS/NZS 3679.1:2016. Hollow-section values require the selected checked AS/NZS 1163:2016 grade. Custom standard-material thickness is linked to the entered geometry unless the visible manual override is active. E, G, &nu; and &alpha;<sub>T</sub> follow AS 4100 Cl. 2.2.4; the adopted edition is AS 4100:2020. Confirm applicable amendments, supplied grade, thickness range, supply condition and test certificate before design issue.</p><p><b>Axes</b> &mdash; positive horizontal and vertical directions are right and up. Positive rotation is counter-clockwise. For equal angles, n-n is horizontal, p-p is vertical, and the catalogue x-x / y-y axes are principal axes at 45&deg;; other shapes use centroidal x-x / y-y axes parallel to the overall dimensions. Directional Z values retain the catalogue edge labels.</p><p><b>Shear reference</b> &mdash; A<sub>w</sub> is clear web area for I-sections and channels. A<sub>wx</sub> and A<sub>wy</sub> are the two-horizontal-wall and two-vertical-wall areas for ideal RHS/SHS. These are geometric reference areas, not design-standard effective shear area A<sub>v</sub>, and are not used for capacity.</p><p><b>Boundary</b> &mdash; checked k<sub>f</sub>, compactness and Z<sub>e</sub> are reference attributes reused only for exact section, grade and direction matches. Product availability, design capacity, member stability, actions and utilisation are excluded.</p></div></div></details>
     </section>
 
-    <section id="beamPanel" class="tool-panel" hidden>
+    <section id="beamforcesPanel" class="tool-panel" hidden>
+  <div class="tool-heading"><div><h2>Beam Internal Forces</h2></div><span class="tool-status">Public beta · For Review</span></div>
+  <section class="lookup-card bif-card"><div class="bif-workspace">
+    <section class="bif-inputs" aria-label="Beam and load inputs">
+      <div class="bif-input-heading"><h3>Beam</h3></div>
+      <section class="input-group"><div class="bif-fields bif-arrangement input-group-fields">
+        <label><span>Beam type</span><select id="bifType"><option value="simple">Simply supported</option><option value="cantilever-left">Cantilever · fixed left</option><option value="cantilever-right">Cantilever · fixed right</option><option value="overhang-left">Left overhang</option><option value="overhang-right">Right overhang</option><option value="overhang-both">Both-end overhangs</option></select></label>
+        <label><span>Total length, L</span><span class="unit"><input id="bifLength" type="number" min="0.1" max="100" step="0.1" value="6"><em>m</em></span></label>
+        <label id="bifAField" hidden><span>Support A, x<sub>A</sub></span><span class="unit"><input id="bifA" type="number" step="0.1" value="1.2"><em>m</em></span></label>
+        <label id="bifBField" hidden><span>Support B, x<sub>B</sub></span><span class="unit"><input id="bifB" type="number" step="0.1" value="4.8"><em>m</em></span></label>
+      </div></section>
+      <div class="bif-load-heading"><h3>Loads</h3><button id="bifAdd" type="button">Add load</button></div>
+      <div id="bifLoads"></div>
+    </section>
+    <section class="bif-output" aria-label="Beam analysis results">
+      <div class="section-heading"><h3>Internal forces</h3></div>
+      <div id="bifErrors" class="bif-errors" role="alert" hidden></div>
+      <div id="bifWarnings" class="bif-warning" role="status" hidden></div>
+      <div id="bifValid">
+        <figure class="engineering-figure bif-structure" data-figure-profile="SC-WEB-FIGURE-001"><div id="bifStructure" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption">x / m · entered positions; schematic symbols</figcaption></figure>
+        <p id="bifReadout" class="bif-readout"></p><span id="bifAnnounce" class="sr-only" aria-live="polite"></span>
+        <figure class="engineering-figure bif-chart" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Shear V / kN</b></div><div id="bifShear" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">x / m · positive ordinates above baseline</figcaption></figure>
+        <figure class="engineering-figure bif-chart" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Moment M / kN·m</b></div><div id="bifMoment" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">x / m · positive moment is sagging</figcaption></figure>
+        <p class="engineering-figure__key"><span><i class="engineering-figure__swatch engineering-figure__swatch--symbolic"></i>Reading section · move to read, click to pin</span></p>
+      </div>
+    </section>
+  </div></section>
+  <details id="bifInspection" class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Details &amp; controls</b></span></span><i aria-hidden="true">+</i></summary><div class="detail-body bif-details">
+    <div id="bifDetailResults" class="bif-detail-results"><section><h3>Section reading</h3><div class="bif-section-control form-grid"><label for="bifX">Read x / m<input id="bifX" type="number" min="0" max="6" step="0.01" value="3"></label><label id="bifSideField" for="bifSide" hidden>At jump<select id="bifSide"><option value="right">Right (+)</option><option value="left">Left (−)</option></select></label></div>
+      <p id="bifJump" class="bif-help"></p><label class="bif-snap-label form-grid" for="bifSnap">Jump to a key section<select id="bifSnap"></select></label>
+      <label class="bif-range-label" for="bifSectionRange">Read section<input id="bifSectionRange" type="range" min="0" max="6" step="0.001" value="3" aria-label="Reading section coordinate"></label>
+    </section>
+    <section><h3>Reactions &amp; extrema</h3><div id="bifReactions" class="bif-reactions" aria-live="polite"></div><div id="bifExtrema" class="bif-extrema"></div><p class="bif-help">Shear: <span id="bifVScale"></span> kN · Moment: <span id="bifMScale"></span> kN·m</p></section></div>
+    <section class="bif-translation"><h3>Load controls</h3><label id="bifMoveLabel" for="bifMove">Move selected load</label><input id="bifMove" type="range" min="0" max="6" step="0.001" value="2" aria-labelledby="bifMoveLabel"><p class="bif-help">+P, q downward · +C counterclockwise. Drag its arrow or shaded range to move a load. Positions are measured from the left end; negative loads reverse direction.</p><button id="bifReset" type="button">Reset example</button></section>
+  </div></details>
+  <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Calculation</b></span><small>Reactions, load resultants, equilibrium and section values</small></span><i>+</i></summary><div id="bifCalculation" class="detail-body"></div></details>
+  <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Sources &amp; scope</b></span><small>Static beam assumptions and sign convention</small></span><i>+</i></summary><div class="detail-body bif-sources">
+    <p>Derived statics aid: straight, stable, statically determinate beam with ideal supports; downward vertical point / distributed loads and counterclockwise applied couples taken as positive. Positive internal moment is sagging; dM/dx = V and dV/dx = −q between discontinuities. Diagram ordinate scales are independent of the beam length scale.</p>
+    <p>Exact reaction equilibrium and integration of linear distributed intensities; overlapping loads add algebraically. Point loads jump V and applied couples jump M. Left / right values are evaluated directly; extremum locations come from the segment equations, rather than plot sampling. At x = 0 or L the readout uses the beam-interior side.</p>
+    <p>Scope: six determinate templates, up to 24 simultaneous loads, 0.1–100 m total length, support spacing at least 0.1% of total length. Uniform, triangular and trapezoidal intensity profiles may occupy a partial span. Uplift reactions require separate restraint / bearing review; ideal supports can mathematically carry either sign.</p>
+    <p>Excludes axial loading, torsion, curved beams, internal hinges, continuous / fixed-fixed / propped beams, stiffness-dependent analysis, shear deformation, deflection, dynamics, stability, load-combination generation and resistance checks. Actions and their ULS / SLS basis are user inputs. No prescribed self-weight or design factors are added.</p>
+    <p>Basis: Felix Udoeyo, <a href="https://eng.libretexts.org/Bookshelves/Civil_Engineering/Structural_Analysis_(Udoeyo)/01:_Chapters/1.04:_Internal_Forces_in_Beams_and_Frames" target="_blank" rel="noopener noreferrer">Structural Analysis, Chapter 1.4</a>, Sections 4.3–4.4 and the equilibrium / internal-force examples. Conventional principles independently implemented; no textbook figure or table is reproduced. Source accessed 14 October 2026. BIF-STATICS-01 / BIF-SECTION-01.</p>
+    <p>Screen figure profile SC-WEB-FIGURE-001 / UWEDS 1.14.0; position-driven diagrams, schematic load/support symbols, not for fabrication. Author numerical and browser review; independent engineering acceptance remains open. Public beta / For Review.</p>
+  </div></details>
+</section>
+
+<section id="beamPanel" class="tool-panel" hidden>
       <div class="tool-heading"><div><p class="kicker">Beam sections · AS 4100 Section 5</p><h2>Beam Section Capacity</h2></div><span class="tool-status">For Review · section resistance only</span></div>
 
       <section class="lookup-card beam-card">
@@ -2316,7 +2379,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.124 &middot; updated 13 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.125 &middot; updated 16 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=22d2bef7e9b2"></script>
   <script src="bolt-capacity.js?v=189a0ad54e6b"></script>
@@ -2342,9 +2405,9 @@
       <script src="geo-parameters/geo-parameters.js?v=97506dd801e2"></script>
 
   <script src="bolt-comparison/comparison.js?v=5a7c63a6b8f3"></script>
-<script src="tool-directory/registry.js?v=c017ed7e51e3"></script>
-<script src="tool-directory/directory.js?v=03e05d63cb95"></script>
-<script src="app.js?v=9cc674045a27"></script>
+<script src="tool-directory/registry.js?v=20261016homeanalysis1"></script>
+<script src="tool-directory/directory.js?v=20261016homeanalysis1"></script>
+<script src="app.js?v=20261016homeanalysis1"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=92b714900fb3"></script>
 <script src="geo-parameters/detail-app.js?v=d289b11e98d7"></script>
@@ -2391,5 +2454,8 @@
 <script src="accessibility/repairs.js?v=505a54c15e75"></script>
 <script src="bolt-details/diagram.js?v=a4000b0ca5c6"></script>
 <script src="bolt-details/app.js?v=d48a2f70aeba"></script>
+<script src="beam-internal-forces/calculation.js?v=20261016homeanalysis1"></script>
+<script src="beam-internal-forces/drawing.js?v=20261016homeanalysis1"></script>
+<script src="beam-internal-forces/app.js?v=20261016homeanalysis1"></script>
 </body>
 </html>

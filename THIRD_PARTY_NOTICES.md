@@ -16,3 +16,8 @@ Australian Standards, international Standards, industry publications, manufactur
 ## Additional Guy catalogue references, 2 October 2026
 
 The expanded lookup includes selected factual product properties and author-written application notes referencing Bullivants Edition 4, Nobles linked catalogues, PLP distribution/BIG-GRIP documentation and Townley Drop Forge Eye & Eye Rigging Screws and User Guide. Each record links its source and retains published quantity labels, editions and limitations. Townley source: https://www.townleydropforge.com.au/catalogue/eye-eye-rigging-screws/ . Nobles catalogue index: https://nobles.com.au/product-catalogue/ . No original PDFs, catalogue page images, logos or captured HTML are distributed. Third-party rights are retained; repository terms do not license the original source materials. No supplier endorsement, exact assembly certification, current stock or named carrier approval is implied.
+
+
+## Beam Internal Forces reference
+
+Felix Udoeyo, Structural Analysis, Chapter 1.4, Sections 4.3–4.4: https://eng.libretexts.org/Bookshelves/Civil_Engineering/Structural_Analysis_(Udoeyo)/01:_Chapters/1.04:_Internal_Forces_in_Beams_and_Frames (accessed 14 October 2026). Reference for conventional equilibrium and sign conventions. Independently implemented calculations and original schematic figures; no source artwork, table or substantial text is reproduced. Reference access does not grant redistribution rights to source documents.

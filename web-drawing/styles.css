@@ -1,0 +1,22 @@
+/* SC Handbook screen figures; see SC_HANDBOOK.md 15.8.4. Not a paper/export profile. */
+.engineering-figure{--drawing-object:#374750;--drawing-secondary:#657581;--drawing-active:var(--green-dark,#6846a5);--drawing-text:#374750;margin:0;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.engineering-figure__plot{position:relative;flex:1;min-width:0;min-height:0;}
+.engineering-figure__plot>svg{position:absolute;inset:0;display:block;max-width:100%;}
+.engineering-figure__svg{font-family:Arial,Helvetica,sans-serif;font-size:12px;color:var(--drawing-text);}
+.engineering-figure__svg :is(path,line,rect,circle){vector-effect:non-scaling-stroke;}
+.engineering-drawing__outline{fill:#fff;stroke:var(--drawing-object);stroke-width:1.6;}
+.engineering-drawing__secondary{fill:none;stroke:var(--drawing-secondary);stroke-width:1.1;stroke-linejoin:miter;}
+.engineering-drawing__symbolic{stroke:var(--drawing-secondary);stroke-width:1.1;stroke-dasharray:4 3;}
+.engineering-drawing__bar{fill:var(--drawing-object);stroke:#fff;stroke-width:.45;}
+.engineering-drawing__active{stroke:var(--drawing-active);stroke-width:2.2;}
+.engineering-drawing__dimensions{fill:none;stroke:var(--drawing-secondary);stroke-width:.8;stroke-linejoin:miter;}
+.engineering-drawing__arrow{fill:var(--drawing-secondary);stroke:none;}
+.engineering-drawing__text{font-family:Arial,Helvetica,sans-serif;font-size:12px;fill:var(--drawing-text);}
+.engineering-drawing__symbol{font-style:italic;}
+.engineering-figure__caption{font-size:12px;line-height:1.4;color:var(--muted,#596a72);text-align:center;}
+.engineering-figure__key{display:flex;flex-wrap:wrap;gap:5px 14px;margin:0;color:var(--muted,#596a72);font-size:12px;line-height:1.4;}
+.engineering-figure__key>span{display:inline-flex;align-items:center;gap:5px;}
+.engineering-figure__swatch{display:inline-block;width:16px;flex:none;border-top:1.1px solid #657581;}
+.engineering-figure__swatch--bar{width:5px;height:5px;border:0;border-radius:50%;background:#374750;}
+.engineering-figure__swatch--active{border-top:2.2px solid var(--green-dark,#6846a5);}
+.engineering-figure__swatch--symbolic{border-top-style:dashed;}

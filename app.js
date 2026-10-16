@@ -2901,6 +2901,15 @@ toolCategories.foundations.splice(toolCategories.foundations.indexOf("concrete")
 toolNames.push("corrosion");
 toolCategories["steel-members"].splice(1, 0, "corrosion");
 /* STEEL CORROSION REGISTRATION END */
+/* APPROVED NAVIGATION CLASSIFICATION START */
+// The directory registry owns navigation only; tool IDs and engineering methods stay intact.
+toolNames.push("beamforces");
+toolAliases["beam-internal-forces"] = "beamforces";
+for (const category of Object.keys(toolCategories)) delete toolCategories[category];
+for (const tool of window.HandbookDirectoryRegistry) {
+  (toolCategories[tool.category] ||= []).push(tool.id);
+}
+/* APPROVED NAVIGATION CLASSIFICATION END */
 const publicToolHashes = { concrete: "pad" };
 const concreteLayerFieldSuffixes = ["Active", "Auto", "Y", "Bar", "Spacing", "Fsy", "Es"];
 let concreteLayerState = null;
@@ -11023,11 +11032,11 @@ function syncResponsiveDefaults(force = false) {
 }
 
 function setTool(tool, updateHash = true) {
-  if (ToolDirectory.isHome(tool)) { ToolDirectory.showHome(updateHash); return; }
+  if (ToolDirectory.isHome(tool)) { ToolDirectory.showHome(updateHash, tool); return; }
   const resolvedTool = toolAliases[tool] || tool;
   const validTool = toolNames.includes(resolvedTool);
   const selectedTool = validTool ? resolvedTool : "bolt";
-  const selectedCategory = Object.keys(toolCategories).find(category => toolCategories[category].includes(selectedTool)) || "steel-connections";
+  const selectedCategory = Object.keys(toolCategories).find(category => toolCategories[category].includes(selectedTool)) || "connections";
   const toolNavigation = document.querySelector(".tool-navigation");
   if (toolNavigation) toolNavigation.dataset.activeTool = selectedTool;
   let activeButton = null;

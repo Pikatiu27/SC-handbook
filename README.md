@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.124 (12 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.125 (12 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -264,3 +264,6 @@ Audit maintenance: concise phone navigation, bounded purpose text, accessible ta
 
 
 13 October 2026: approved Bolt Capacity presentation maintenance. Detailed connection inputs, schematic guides and capacities use a compact aligned layout. Selected-ply material, section tension and block shear are grouped; calculated areas and manual inputs are distinct. Ply yield strength requires user confirmation. TF resistance is per bolt; slip utilisation uses total group serviceability actions. Formula/data owners and other tools remain unchanged. Public beta / For Review; independent engineering/source-use limitations remain.
+
+
+16 October 2026: Home is a concise searchable tool directory. Primary navigation: Analysis, Steel, Concrete, Connections and Foundations; Products is an auxiliary product-data directory. Existing tool IDs, query modes and old links are retained. Analysis adds Beam Internal Forces for six determinate straight-beam templates with entered vertical actions, reactions, shear and moment. No prescribed loads/combinations, indeterminate analysis, deflection or resistance assessment. Public beta / For Review; independent engineering and full accessibility acceptance remain open.

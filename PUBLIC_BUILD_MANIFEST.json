@@ -16,7 +16,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "9cc674045a27aaecbcaea605eaf0b23a16678632c643a0cedc57adb256f0c857"
+      "sha256": "60dced80575a900aa994355296ab98df06bf0fe8e4a41a64d407274b117a6645"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -145,6 +145,22 @@
     {
       "path": "beam-hot-rolled-data.js",
       "sha256": "55ca29984ba4a82efa940f8189bf475a632e6f4ad7573a7df68b605e87d45d27"
+    },
+    {
+      "path": "beam-internal-forces/app.js",
+      "sha256": "0a62afb66d6dcb07e646692a75e0ddb009912b6731613bfaeb93f54b00a2148f"
+    },
+    {
+      "path": "beam-internal-forces/calculation.js",
+      "sha256": "80f2394405c7de5792b3f6f1cbb1d97484621602916ebe57a750e7d710603092"
+    },
+    {
+      "path": "beam-internal-forces/drawing.js",
+      "sha256": "2cf957338632d77d9747b8b8e95dd44a32cc9f86772117a3d26d851d139d7186"
+    },
+    {
+      "path": "beam-internal-forces/styles.css",
+      "sha256": "b291d3be6e2e63eeb5d0ade54a319c9db2d9d3786be5cb93118bee071aab205b"
     },
     {
       "path": "beam-presentation/layout.css",
@@ -364,7 +380,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "1d2a31fb321d724c2eeba7bf92789fd0695ad443d03759b52e9ead3050955ec2"
+      "sha256": "d1d3bb4097b4a02c802c159cf9c07ac74e4f9587a6e3bc602ef3e0ff66b92295"
     },
     {
       "path": "LICENSE.md",
@@ -436,11 +452,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "fbbd966bf5c1469e42b3d743ee31e26c6ad27ee74372986ad930f66c75442001"
+      "sha256": "988b3bd4a76af2491422101c2007f6c257f7eccfb183c846d260f1f0c86afce0"
     },
     {
       "path": "README.md",
-      "sha256": "865670ec9068fc94801f555520905014202816ceb2df497d57606f189465bd5d"
+      "sha256": "3bdd9b87541389449a0e3d474aedb6deadd9b0ec4fc37ccad3e02b7b351de492"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -520,19 +536,23 @@
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
-      "sha256": "806d3238bea30c0aa9d0f6f63290c2586121b22af4bff88acf1c1c6e663a5b2b"
+      "sha256": "5b6b7953e167387b5181124566723b1ebda7909ca99093f16201e6ce82a2715a"
     },
     {
       "path": "tool-directory/directory.css",
-      "sha256": "f9247c2f423a4cdb07ef025c6ee40af35bac8e958a29aee1b4b72a8351579363"
+      "sha256": "99621458d5cb2c955878feffa2be725cda31151a131b6620a976f218da65f7e9"
     },
     {
       "path": "tool-directory/directory.js",
-      "sha256": "03e05d63cb95f6bb24765800d3ddc5ff1393606480614f695a1a17f9153acfbf"
+      "sha256": "ce4ea69e81223c4ddd1fe5323225c27210ff69df08815747eb6415ca6d9d8fb3"
     },
     {
       "path": "tool-directory/registry.js",
-      "sha256": "c017ed7e51e3af44e2446a1250b749f54fddd007844c5e4f195b0e117f95332d"
+      "sha256": "2312026dd75ff7e7c3370931a6448eb40da3128e07c6549bb9fd2dc4f3c35f3c"
+    },
+    {
+      "path": "web-drawing/styles.css",
+      "sha256": "f35ec19742ea7262cc373e9f5bab161828d21d0eb42729b5a263ebf8d0971ce6"
     },
     {
       "path": "weld-capacity.js",
