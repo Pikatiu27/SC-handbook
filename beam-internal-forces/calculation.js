@@ -64,7 +64,9 @@
     }
     function intensity(station){return input.loads.filter(l=>["udl","linear"].includes(l.type)&&station>=l.start&&station<=l.end).reduce((sum,l)=>sum+l.q0+(l.q1-l.q0)*(station-l.start)/(l.end-l.start),0);}
     function roots(A,B,C,span){
-      const scale=Math.max(Math.abs(A)*span*span,Math.abs(B)*span,Math.abs(C),1),tol=1e-13*scale;
+      const scale=Math.max(Math.abs(A)*span*span,Math.abs(B)*span,Math.abs(C));
+      if(scale===0)return [];
+      const tol=1e-13*scale;
       if(Math.abs(A)*span*span<tol)return Math.abs(B)*span<tol?[]:[-C/B];
       const D=B*B-4*A*C;if(D<0)return [];
       const q=-.5*(B+(B>=0?1:-1)*Math.sqrt(D));return q===0?[-B/(2*A)]:[q/A,C/q];

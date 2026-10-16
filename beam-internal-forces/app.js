@@ -4,7 +4,16 @@
   const $=id=>document.getElementById("bif"+id),esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   let loads=C.defaults.loads.map(l=>({...l})),nextId=3,selected="L1",result=null,x=3,pinned=false,drag=null,coordinateValid=true;
   const fmt=D.format,pos=v=>Number.isFinite(v)?Number(v.toFixed(6)).toString():"—",number=e=>e.value.trim()===""?NaN:Number(e.value);
-  const typeNames={point:"Point force",moment:"Applied couple",udl:"Uniform load",linear:"Linear · triangle / trapezoid"};
+  const loadChoices={point:'Point force',moment:'Applied couple',udl:'Uniform load',triangle:'Triangular load',trapezoid:'Trapezoidal load',linear:'Linear distribution'},loadTools=$("LoadTools");
+  // General linear is an explicit editor choice and may include special shapes.
+  // Named shape presets otherwise follow the actual editable end intensities.
+  const loadKind=l=>l.type!=='linear'?l.type:l.profile==='linear'||![l.q0,l.q1].every(Number.isFinite)?'linear':l.q0===0&&l.q1===0&&['triangle','trapezoid'].includes(l.profile)?l.profile:l.q0!==l.q1&&(l.q0===0||l.q1===0)?'triangle':l.q0!==l.q1&&l.q0*l.q1>0?'trapezoid':'linear';
+  const loadTitle=l=>loadChoices[loadKind(l)];
+  function choiceButton(kind,name,attribute){return `<button type="button" ${attribute}="${kind}" aria-label="${esc(name)}"${attribute==='data-beam-type'?` aria-pressed="${kind===$("Type").value}"`:''}><span class="engineering-figure bif-choice-symbol" aria-hidden="true"><span class="engineering-figure__plot bif-choice-plot">${D.renderChoice(kind,{id:attribute+'-'+kind})}</span></span><span>${esc(name)}</span></button>`;}
+  $("TypeOptions").innerHTML=Object.entries(C.types).map(([kind,name])=>choiceButton(kind,name,'data-beam-type')).join('');
+  $("LoadOptions").innerHTML=['point','moment','udl','triangle','trapezoid','linear'].map(kind=>choiceButton(kind,loadChoices[kind],'data-add-type')).join('');
+  function closeLoadPicker(focus=false){$("LoadPicker").hidden=true;$("Add").setAttribute('aria-expanded','false');if(focus)$("Add").focus();}
+  function updateTypeChoice(){const type=$("Type").value;$("TypeName").textContent=C.types[type];$("TypePreview").innerHTML=`<span class="engineering-figure__plot bif-choice-plot">${D.renderChoice(type,{id:'selected-'+type})}</span>`;panel.querySelectorAll('[data-beam-type]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.beamType===type)));}
   function input(){return {type:$("Type").value,length:number($("Length")),a:number($("A")),b:number($("B")),loads};}
   function field(load,key,label,unit,value){return `<label><span>${label}</span><span class="unit"><input type="number" step="any" data-load-field="${key}" data-id="${esc(load.id)}" value="${Number.isFinite(value)?value:""}" aria-label="${esc(load.id+' '+label)}"><em>${unit}</em></span></label>`;}
   function loadSummary(l){
@@ -16,34 +25,50 @@
   function syncLoadSelection(closeOthers=false){
     panel.querySelectorAll('[data-load-row]').forEach(row=>{const active=row.dataset.loadRow===selected;row.setAttribute('aria-current',String(active));if(closeOthers&&!active)row.open=false;});
   }
-  function updateLoadSummaries(){for(const l of loads){const summary=panel.querySelector(`[data-load-summary="${l.id}"]`);if(summary)summary.textContent=loadSummary(l);}}
+  function updateLoadSummaries(){for(const l of loads){const summary=panel.querySelector(`[data-load-summary="${l.id}"]`),name=panel.querySelector(`[data-load-name="${l.id}"]`),select=panel.querySelector(`[data-load-type="${l.id}"]`);if(summary)summary.textContent=loadSummary(l);if(name)name.textContent=l.id+' · '+loadTitle(l);if(select)select.value=loadKind(l);}}
   function revealFirstLoadError(errors){const field=errors[0]?.field;if(!field?.startsWith('load:'))return;selected=field.slice(5);const row=panel.querySelector(`[data-load-row="${selected}"]`);if(row)row.open=true;syncLoadSelection(true);}
   function renderLoads(){
-    $("Loads").innerHTML=loads.map(l=>`<details class="bif-load" data-load-row="${esc(l.id)}" aria-current="${l.id===selected}" ${l.id===selected?'open':''}><summary><span class="bif-load-copy"><span class="bif-load-name">${esc(l.id)} · ${esc(typeNames[l.type])}</span><span class="bif-load-value" data-load-summary="${esc(l.id)}">${esc(loadSummary(l))}</span></span><i aria-hidden="true">+</i></summary><div class="bif-load-body"><div class="bif-fields input-group-fields"><label class="bif-full"><span>Load type</span><select data-load-type="${esc(l.id)}" aria-label="${esc(l.id)} load type">${Object.entries(typeNames).map(([k,t])=>`<option value="${k}" ${l.type===k?"selected":""}>${t}</option>`).join("")}</select></label>${field(l,"start",["point","moment"].includes(l.type)?"Position, x":"Start, x₀","m",l.start)}${["point","moment"].includes(l.type)?field(l,"p",l.type==="point"?"Force, P":"Couple, C",l.type==="point"?"kN":"kN·m",l.p):field(l,"end","End, x₁","m",l.end)+field(l,"q0",l.type==="udl"?"Intensity, q":"Start intensity, q₀","kN/m",l.q0)+(l.type==="linear"?field(l,"q1","End intensity, q₁","kN/m",l.q1):"")}</div><button type="button" data-remove="${esc(l.id)}" aria-label="Remove ${esc(l.id)}">Remove load</button></div></details>`).join("");
+    $("Loads").innerHTML=loads.map(l=>{
+      const point=['point','moment'].includes(l.type);
+      const fields=field(l,'start',point?'Position, x':'Start, x₀','m',l.start)+(point?field(l,'p',l.type==='point'?'Force, P':'Couple, C',l.type==='point'?'kN':'kN·m',l.p):field(l,'end','End, x₁','m',l.end)+field(l,'q0',l.type==='udl'?'Intensity, q':'Start intensity, q₀','kN/m',l.q0)+(l.type==='linear'?field(l,'q1','End intensity, q₁','kN/m',l.q1):''));
+      return `<details class="bif-load" data-load-row="${esc(l.id)}" aria-current="${l.id===selected}" ${l.id===selected?'open':''}><summary><span class="bif-load-copy"><span class="bif-load-name" data-load-name="${esc(l.id)}">${esc(l.id)} · ${esc(loadTitle(l))}</span><span class="bif-load-value" data-load-summary="${esc(l.id)}">${esc(loadSummary(l))}</span></span><i aria-hidden="true">+</i></summary><div class="bif-load-body"><div class="bif-fields input-group-fields">${fields}</div><div class="bif-load-actions"><details class="bif-change-type"><summary>Change type</summary><label>Load type<select data-load-type="${esc(l.id)}" aria-label="${esc(l.id)} load type">${Object.entries(loadChoices).map(([k,t])=>`<option value="${k}" ${loadKind(l)===k?'selected':''}>${t}</option>`).join('')}</select></label></details><button type="button" data-remove="${esc(l.id)}" aria-label="Remove ${esc(l.id)}">Remove load</button></div></div></details>`;
+    }).join('');
     if(!loads.length)$("Loads").innerHTML='<p class="bif-help">No loads · zero-force case. Add a load to continue.</p>';
     $("Add").disabled=loads.length>=24;moveControl();
   }
-  function arrangement(resetSupports=false){const t=$("Type").value,L=number($("Length"));$("AField").hidden=!['overhang-left','overhang-both'].includes(t);$("BField").hidden=!['overhang-right','overhang-both'].includes(t);if(resetSupports&&Number.isFinite(L)){$("A").value=Number((.2*L).toFixed(6));$("B").value=Number((.8*L).toFixed(6));}}
-  function moveControl(){const l=loads.find(l=>l.id===selected),L=number($("Length")),range=$("Move");range.disabled=!l||!Number.isFinite(L)||!result?.valid;const span=l&&["udl","linear"].includes(l.type)?l.end-l.start:0;range.max=Math.max(0,L-span)||0;range.step=Number.isFinite(L)?L/1000:.001;range.value=l?.start||0;$("MoveLabel").textContent=l?`Move ${l.id} · start ${pos(l.start)} m`:"Move selected load";}
+  function arrangement(resetSupports=false){const t=$("Type").value,L=number($("Length"));updateTypeChoice();$("AField").hidden=!['overhang-left','overhang-both'].includes(t);$("BField").hidden=!['overhang-right','overhang-both'].includes(t);if(resetSupports&&Number.isFinite(L)){$("A").value=Number((.2*L).toFixed(6));$("B").value=Number((.8*L).toFixed(6));}$("SupportSummary").textContent=Number.isFinite(L)?C.supports(input()).map(r=>`${r.id} · ${r.fixed?'Fixed':r.id==='A'?'Pin':'Roller'} · ${pos(r.x)} m`).join('  /  '):'Enter a beam length to locate supports.';}
+  function moveControl(){const l=loads.find(l=>l.id===selected),L=number($("Length")),body=panel.querySelector(`[data-load-row="${selected}"] .bif-load-body`);if(body&&loadTools.parentElement!==body){if(loadTools.dataset.loadId!==selected)loadTools.open=false;body.append(loadTools);}else if(!body)$("Loads").after(loadTools);loadTools.dataset.loadId=selected||'';loadTools.hidden=!l;const range=$("Move"),span=l&&["udl","linear"].includes(l.type)?l.end-l.start:0;range.max=Math.max(0,L-span)||0;range.disabled=!l||!Number.isFinite(L)||!result?.valid||Number(range.max)===0;range.step=Number(range.max)>0?Number(range.max)/1000:.001;range.value=l?.start||0;$("MoveLabel").textContent=l?`Move ${l.id} · start ${pos(l.start)} m`:"Move selected load";$("MoveHint").textContent=!result?.valid?'Complete the beam and load inputs to move this load.':Number(range.max)===0?'Full-span load · shorten its loaded interval to move it.':'Drag the action on the beam, or move it here.';}
   function side(){return x===0?"right":x===result?.input.length?"left":$("Side").value;}
   function read(){
     if(!result?.valid)return;
-    const r=result.at(x,side()),minus=result.at(x,"left"),plus=result.at(x,"right"),jump=Math.abs(minus.V-plus.V)>1e-8||Math.abs(minus.M-plus.M)>1e-8;
-    $("X").value=Number(x.toFixed(6));$("X").max=result.input.length;$("SectionRange").max=result.input.length;$("SectionRange").step=result.input.length/1000;$("SectionRange").value=x;
+    const r=result.at(x,side()),minus=result.at(x,"left"),plus=result.at(x,"right"),jump=minus.V!==plus.V||minus.M!==plus.M;
+    $("X").value=x;$("X").max=result.input.length;$("SectionRange").max=result.input.length;$("SectionRange").step=result.input.length/1000;$("SectionRange").value=x;
     $("Side").disabled=x===0||x===result.input.length;
-    $("Readout").textContent=`x = ${pos(x)} m${jump&&x>0&&x<result.input.length?` (${side()==='left'?'left −':'right +'})`:''} · V = ${fmt(r.V)} kN · M = ${fmt(r.M)} kN·m${pinned?" · Pinned":""}`;
-    if(pinned)$("Announce").textContent=$("Readout").textContent;
+    $("Readout").innerHTML=`<span>V = ${fmt(r.V)} <small>kN</small></span><span>M = ${fmt(r.M)} <small>kN·m</small></span>`;
+    $("Pin").disabled=false;$("Pin").setAttribute('aria-pressed',String(pinned));$("Pin").textContent=pinned?'Pinned':'Pin';$("Pin").title=pinned?'Click to follow the pointer':'Pin this section';
+    $("Announce").textContent=pinned?`x = ${pos(x)} m (${side()==='left'?'left':'right'}) · `+$("Readout").innerText:'';
+    $("Snap").value='';
     $("SideField").hidden=!(jump&&x>0&&x<result.input.length);
+    $("QuickExtrema").querySelectorAll('[data-extreme]').forEach(b=>{const [at,s]=b.dataset.extreme.split('|');b.setAttribute('aria-pressed',String(coordinateValid&&pinned&&Math.abs(Number(at)-x)<1e-8&&s===side()));});
     $("Jump").textContent=jump&&x>0&&x<result.input.length?`V− / V+ = ${fmt(minus.V)} / ${fmt(plus.V)} kN; M− / M+ = ${fmt(minus.M)} / ${fmt(plus.M)} kN·m.`:"";
+    trace();
   }
   function snapOptions(){
     const options=[{x:0,side:"right",name:"Left end"},{x:result.input.length,side:"left",name:"Right end"},...result.reactions.map(r=>({x:r.x,side:r.x===result.input.length?"left":"right",name:`Support ${r.id}`})),...loads.flatMap(l=>[{x:l.start,side:l.start===result.input.length?"left":"right",name:`${l.id} ${["udl","linear"].includes(l.type)?"start":"position"}`},...(["udl","linear"].includes(l.type)?[{x:l.end,side:l.end===result.input.length?"left":"right",name:l.id+" end"}]:[])]),...result.zeroShear.map(v=>({x:v,side:"right",name:"V = 0"}))];
     $("Snap").innerHTML='<option value="">Select a section…</option>'+options.map(o=>`<option value="${o.x}|${o.side}">${esc(o.name)} · ${pos(o.x)} m</option>`).join("");
     $("Extrema").innerHTML=["M","V"].flatMap(key=>["max","min"].map(kind=>{const e=result.extrema[key][kind];return `<button type="button" data-extreme="${e.x}|${e.side}">${key}${kind} = ${fmt(e[key])} ${key==="M"?"kN·m":"kN"}<br>at x = ${pos(e.x)} m (${e.side==="left"?"−":"+"})</button>`;})).join("");
+    const m=result.extrema.M,v=result.extrema.V,vPeak=Math.abs(v.max.V)>=Math.abs(v.min.V)?v.max:v.min,mNoise=Math.max(Math.abs(m.max.M),Math.abs(m.min.M))*1e-12;
+    // Keep roundoff at an unloaded/free end from becoming a phantom signed peak.
+    // The tolerance scales with this case, so small nonzero load cases still locate.
+    const peaks=[{label:'M max +',name:'Maximum positive moment',e:m.max,key:'M',show:m.max.M>mNoise},{label:'M min −',name:'Minimum negative moment',e:m.min,key:'M',show:m.min.M<-mNoise},{label:'|V| max',name:'Maximum absolute shear',e:vPeak,key:'V',show:Math.abs(vPeak.V)>0}].filter(p=>p.show);
+    $("QuickExtrema").innerHTML=peaks.map(p=>{const value=p.key==='V'?Math.abs(p.e.V):p.e.M,unit=p.key==='M'?'kN·m':'kN';return `<button type="button" data-extreme="${p.e.x}|${p.e.side}" aria-pressed="false" aria-label="${p.name}: ${fmt(value)} ${unit}${p.key==='V'?`, signed V = ${fmt(p.e.V)} kN`:''}, x = ${pos(p.e.x)} m, ${p.e.side} side"><span>${p.label}</span><b>${fmt(value)} <small>${unit}</small></b></button>`;}).join('')||'<span class="bif-help">Zero-force case · no nonzero extrema</span>';
   }
+  $("Calculation").classList.add('formula-list');
+  let lastTrace=null;
   function trace(){
-    const t=result.totals,r=result.reactions,L=result.input.length;
-    $("Calculation").innerHTML=`<p>ΣFᵧ = 0: ΣR = W = ${fmt(t.force)} kN. ΣM₀ = 0: Σ(Rx) + ΣCᵣ − J + ΣC = 0; J = ${fmt(t.firstMoment)} kN·m; ΣC = ${fmt(t.couple)} kN·m.</p><p>${r.length===2?`Rᵦ = (J − ΣC − W xₐ)/(xᵦ − xₐ) = ${fmt(r[1].force)} kN; Rₐ = W − Rᵦ = ${fmt(r[0].force)} kN.`:`Rₐ = W = ${fmt(r[0].force)} kN; Cₐ = J − ΣC − W xₐ = ${fmt(r[0].couple)} kN·m (counterclockwise positive).`}</p><p>For q(t) = q₀ + k(t − x₀), u = clamp(x − x₀, 0, x₁ − x₀): W(x) = q₀u + ku²/2; J(x) = x₀W(x) + q₀u²/2 + ku³/3. Each load contributes −W(x) to V and −[xW(x) − J(x)] to M. A positive applied couple contributes a −C jump to M. Point forces and reactions use their actual lever arms.</p><table class="bif-trace-table"><thead><tr><th>Load</th><th>W / kN</th><th>J / kN·m</th><th>C / kN·m</th></tr></thead><tbody>${loads.map(l=>{const v=C.resultant(l);return `<tr><td>${esc(l.id)}</td><td>${fmt(v.force)}</td><td>${fmt(v.firstMoment)}</td><td>${fmt(v.couple)}</td></tr>`;}).join("")}</tbody></table><p>Force residual ${result.checks.forceResidual.toExponential(2)} kN; moment residual ${result.checks.momentResidual.toExponential(2)} kN·m. Equilibrium checks do not establish member design acceptance.</p><p>Reference BIF-STATICS-01; exact segment evaluation and extrema BIF-SECTION-01. L = ${fmt(L)} m; no stiffness inputs or prescribed load factors.</p>`;
+    const s=result?.valid?side():'right';if(lastTrace&&lastTrace.result===result&&lastTrace.x===x&&lastTrace.side===s&&lastTrace.valid===coordinateValid)return;
+    lastTrace={result,x,side:s,valid:coordinateValid};
+    $("Calculation").innerHTML=HandbookNumericalTraces.html(HandbookNumericalTraces.bif(result,x,s,coordinateValid,C),calculationTraceRow);
   }
   function recalculate(){
     updateLoadSummaries();
@@ -51,12 +76,12 @@
     $("DetailResults").hidden=!result.valid;
     $("Warnings").hidden=true;$("Warnings").replaceChildren();
     panel.querySelectorAll('[aria-invalid]').forEach(e=>e.removeAttribute('aria-invalid'));
-    if(!result.valid){$("Errors").innerHTML='<b>Not evaluated</b><ul>'+result.errors.map(e=>`<li>${esc(e.message)}</li>`).join("")+'</ul>';for(const name of ["Structure","Shear","Moment","Reactions","Readout","Announce","Jump","Extrema","Calculation"])$(name).replaceChildren();revealFirstLoadError(result.errors);for(const e of result.errors){if(e.field==="length")$("Length").setAttribute("aria-invalid","true");if(e.field.startsWith("load:"))panel.querySelectorAll(`[data-id="${e.field.slice(5)}"]`).forEach(f=>f.setAttribute("aria-invalid","true"));}moveControl();return;}
+    if(!result.valid){$("Errors").innerHTML='<b>Not evaluated</b><ul>'+result.errors.map(e=>`<li>${esc(e.message)}</li>`).join("")+'</ul>';for(const name of ["Structure","Shear","Moment","Reactions","Readout","Announce","Jump","Extrema","QuickExtrema"])$(name).replaceChildren();trace();revealFirstLoadError(result.errors);for(const e of result.errors){if(e.field==="length")$("Length").setAttribute("aria-invalid","true");if(e.field.startsWith("load:"))panel.querySelectorAll(`[data-id="${e.field.slice(5)}"]`).forEach(f=>f.setAttribute("aria-invalid","true"));}moveControl();return;}
     coordinateValid=true;x=Math.max(0,Math.min(result.input.length,x));
     $("Reactions").innerHTML=result.reactions.map(r=>`<span class="${r.force<0?"bif-uplift":""}"><b>R${r.id} ${fmt(r.force)} kN</b> ${r.force<0?"↓ · uplift restraint required":"↑"}${r.fixed?` · C${r.id} ${fmt(r.couple)} kN·m`:""}</span>`).join("");
     const uplift=result.reactions.filter(r=>r.force<0);if(uplift.length){$("Warnings").hidden=false;$("Warnings").textContent=uplift.map(r=>`Support ${r.id}: ${fmt(r.force)} kN · uplift restraint required.`).join(' ');}
     const v=D.scale(result,"V"),m=D.scale(result,"M");$("VScale").textContent=`Range ${fmt(v.min)} to ${fmt(v.max)}`;$("MScale").textContent=`Range ${fmt(m.min)} to ${fmt(m.max)}`;
-    moveControl();snapOptions();trace();read();draw();
+    moveControl();snapOptions();read();draw();
   }
   function draw(){
     if(!result?.valid||panel.hidden)return;
@@ -70,30 +95,52 @@
   function coordinate(event,svg){return D.xFromSvg(svg,event.clientX,event.clientY,result.input.length,window.matchMedia('(max-width:500px)').matches);}
   function changeCoordinate(v,isPinned=true){if(!result?.valid||!Number.isFinite(v))return;coordinateValid=true;$("X").removeAttribute('aria-invalid');x=Math.max(0,Math.min(result.input.length,v));pinned=isPinned;read();draw();}
   function pick(value){if(!value)return;const [v,s]=value.split('|');$("Side").value=s;changeCoordinate(Number(v));}
-  function translate(start){const l=loads.find(v=>v.id===selected);if(!l||!result?.valid)return;const span=["udl","linear"].includes(l.type)?l.end-l.start:0;l.start=Number(Math.max(0,Math.min(result.input.length-span,start)).toFixed(6));if(span)l.end=Number((l.start+span).toFixed(6));const row=panel.querySelector(`[data-load-row="${l.id}"]`);for(const key of ['start','end']){const f=row?.querySelector(`[data-load-field="${key}"]`);if(f)f.value=l[key];}recalculate();}
+  function translate(start){const l=loads.find(v=>v.id===selected);if(!l||!result?.valid||!Number.isFinite(start))return;const L=result.input.length,span=["udl","linear"].includes(l.type)?l.end-l.start:0,limit=L-span;l.start=Math.max(0,Math.min(limit,start));if(span)l.end=l.start===limit?L:l.start+span;const row=panel.querySelector(`[data-load-row="${l.id}"]`);for(const key of ['start','end']){const f=row?.querySelector(`[data-load-field="${key}"]`);if(f)f.value=l[key];}recalculate();}
   $("Loads").addEventListener('change',e=>{
     const t=e.target;
-    if(t.dataset.loadType){const l=loads.find(l=>l.id===t.dataset.loadType),start=l.start,L=number($("Length"));Object.assign(l,{type:t.value,p:10,end:Math.max(start+.1,Math.min(L,start+L/3)),q0:t.value==='linear'?0:2,q1:t.value==='linear'?4:2});selected=l.id;renderLoads();recalculate();}
+    if(t.dataset.loadType){
+      const l=loads.find(l=>l.id===t.dataset.loadType),choice=t.value,wasDistributed=['udl','linear'].includes(l.type),distributed=['udl','triangle','trapezoid','linear'].includes(choice),L=number($("Length")),oldKind=loadKind(l);
+      if(distributed&&!wasDistributed){
+        l.end=Math.min(L,l.start+L/3);
+        // A concentrated load at/very near the right end needs a finite
+        // distributed interval ending at L. Invalid user geometry stays invalid.
+        if(Number.isFinite(L)&&L>=.1&&L<=100&&l.start>=0&&l.start<=L&&l.end-l.start<L*1e-6){l.end=L;l.start=L-L/3;}
+        l.q0=choice==='udl'?2:choice==='linear'?3:0;l.q1=choice==='udl'?2:choice==='linear'?-3:4;
+      }else if(!distributed&&wasDistributed)l.p=10;
+      const peak=Number.isFinite(l.q1)&&l.q1!==0?l.q1:Number.isFinite(l.q0)?l.q0:Number.isFinite(l.q1)?l.q1:4;
+      if(choice==='triangle'&&oldKind!=='triangle'){l.q0=0;l.q1=peak;}
+      if(choice==='trapezoid'&&oldKind!=='trapezoid'){l.q0=peak/2;l.q1=peak;}
+      if(choice==='udl'){if(l.q0===0&&Number.isFinite(l.q1))l.q0=l.q1;l.q1=l.q0;}
+      l.type=['triangle','trapezoid'].includes(choice)?'linear':choice;l.profile=choice;selected=l.id;renderLoads();recalculate();
+      const row=panel.querySelector(`[data-load-row="${l.id}"]`);if(row?.open){row.querySelector('.bif-change-type').open=true;row.querySelector('[data-load-type]').focus();}
+    }
   });
   $("Loads").addEventListener('toggle',e=>{const row=e.target;if(!row.matches('[data-load-row]')||!row.open)return;selected=row.dataset.loadRow;syncLoadSelection(true);moveControl();draw();},true);
   $("Loads").addEventListener('input',e=>{const t=e.target;if(!t.dataset.loadField)return;const l=loads.find(l=>l.id===t.dataset.id);l[t.dataset.loadField]=number(t);if(l.type==='udl'&&t.dataset.loadField==='q0')l.q1=l.q0;selected=l.id;syncLoadSelection();recalculate();});
-  $("Loads").addEventListener('click',e=>{const id=e.target.closest('[data-remove]')?.dataset.remove;if(!id)return;loads=loads.filter(l=>l.id!==id);if(selected===id)selected=loads[0]?.id||null;renderLoads();recalculate();});
-  $("Add").addEventListener('click',()=>{if(loads.length>=24)return;const L=number($("Length"));const l={id:'L'+nextId++,type:'point',start:Number.isFinite(L)?L/2:0,p:10};loads.push(l);selected=l.id;renderLoads();recalculate();panel.querySelector(`[data-load-type="${l.id}"]`).focus();});
+  $("Loads").addEventListener('click',e=>{const id=e.target.closest('[data-remove]')?.dataset.remove;if(!id)return;loads=loads.filter(l=>l.id!==id);if(selected===id)selected=loads[0]?.id||null;renderLoads();recalculate();(panel.querySelector(`[data-load-row="${selected}"]>summary`)||$("Add")).focus();});
+  $("Add").addEventListener('click',()=>{if(loads.length>=24)return;const open=$("LoadPicker").hidden;$("LoadPicker").hidden=!open;$("Add").setAttribute('aria-expanded',String(open));$("TypeChooser").open=false;if(open)$("LoadOptions").querySelector('button').focus();});
+  $("LoadOptions").addEventListener('click',e=>{const choice=e.target.closest('[data-add-type]')?.dataset.addType;if(!choice||loads.length>=24)return;const L=number($("Length")),length=Number.isFinite(L)&&L>=.1&&L<=100?L:6,type=['triangle','trapezoid'].includes(choice)?'linear':choice;const intensities={udl:[2,2],triangle:[0,4],trapezoid:[2,4],linear:[3,-3]};const l=['point','moment'].includes(type)?{id:'L'+nextId++,type,start:length/2,p:10}:{id:'L'+nextId++,type,profile:choice,start:0,end:length,q0:intensities[choice][0],q1:intensities[choice][1]};loads.push(l);selected=l.id;closeLoadPicker();renderLoads();recalculate();panel.querySelector(`[data-id="${l.id}"][data-load-field="start"]`).focus();});
+  $("TypeOptions").addEventListener('click',e=>{const type=e.target.closest('[data-beam-type]')?.dataset.beamType;if(!type)return;$("Type").value=type;$("TypeChooser").open=false;arrangement(true);recalculate();$("TypeChooser").querySelector('summary').focus();});
+  $("TypeChooser").addEventListener('toggle',()=>{if($("TypeChooser").open)closeLoadPicker();});
+  document.addEventListener('click',e=>{if(!e.target.closest('#bifTypeChooser'))$("TypeChooser").open=false;if(!e.target.closest('#bifLoadPicker,#bifAdd'))closeLoadPicker();});
+  panel.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$("LoadPicker").hidden){closeLoadPicker(true);e.preventDefault();}if($("TypeChooser").open){$("TypeChooser").open=false;$("TypeChooser").querySelector('summary').focus();e.preventDefault();}});
   $("Type").addEventListener('change',()=>{arrangement(true);recalculate();});
   for(const id of ['Length','A','B'])$(id).addEventListener('input',()=>{arrangement();recalculate();});
   $("Move").addEventListener('input',()=>translate(Number($("Move").value)));
-  function editCoordinate(){const v=number($("X"));if(!result?.valid)return;if(!Number.isFinite(v)||v<0||v>result.input.length){coordinateValid=false;$("X").setAttribute('aria-invalid','true');$("Readout").textContent=`Enter a section coordinate between 0 and ${fmt(result.input.length)} m.`;$("Jump").textContent='';draw();}else{const old=$("X").value;changeCoordinate(v);$("X").value=old;}}
+  function editCoordinate(){const v=number($("X"));if(!result?.valid)return;pinned=true;if(!Number.isFinite(v)||v<0||v>result.input.length){coordinateValid=false;$("X").setAttribute('aria-invalid','true');$("Readout").textContent=`Enter a section coordinate between 0 and ${fmt(result.input.length)} m.`;$("Jump").textContent='';$("Announce").textContent='';$("Snap").value='';$("SideField").hidden=true;$("Pin").disabled=true;$("QuickExtrema").querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','false'));trace();draw();}else{const old=$("X").value;changeCoordinate(v);$("X").value=old;}}
   $("X").addEventListener('input',editCoordinate);
   $("X").addEventListener('change',editCoordinate);
   $("SectionRange").addEventListener('input',()=>changeCoordinate(Number($("SectionRange").value)));
   $("Side").addEventListener('change',()=>{read();draw();});
+  $("Pin").addEventListener('click',()=>{if(!result?.valid||!coordinateValid)return;pinned=!pinned;read();});
   $("Snap").addEventListener('change',()=>pick($("Snap").value));
   $("Extrema").addEventListener('click',e=>pick(e.target.closest('[data-extreme]')?.dataset.extreme));
-  $("Reset").addEventListener('click',()=>{$("Type").value='simple';$("Length").value=6;arrangement(true);loads=C.defaults.loads.map(l=>({...l}));nextId=3;selected='L1';x=3;pinned=false;coordinateValid=true;$("Side").value='right';$("X").removeAttribute('aria-invalid');renderLoads();recalculate();});
+  $("QuickExtrema").addEventListener('click',e=>pick(e.target.closest('[data-extreme]')?.dataset.extreme));
+  $("Reset").addEventListener('click',()=>{$("Type").value='simple';$("Length").value=6;arrangement(true);loads=C.defaults.loads.map(l=>({...l}));nextId=3;selected='L1';x=3;pinned=false;coordinateValid=true;$("Side").value='right';$("X").removeAttribute('aria-invalid');closeLoadPicker();$("TypeChooser").open=false;$("ReadingTools").open=false;$("ReactionDetails").open=false;loadTools.open=false;renderLoads();recalculate();});
   // Delegation survives re-rendering and keeps the input source of truth in loads[].
   for(const host of [$("Structure"),$("Shear"),$("Moment")]){
     host.addEventListener('pointermove',e=>{if(!result?.valid||drag||pinned||e.pointerType==='touch')return;const svg=e.target.closest('svg');if(svg)changeCoordinate(coordinate(e,svg),false);});
-    host.addEventListener('pointerdown',e=>{if(!result?.valid)return;const svg=e.target.closest('svg');if(!svg)return;const hit=e.target.closest('[data-load-id]');if(hit){selected=hit.dataset.loadId;const l=loads.find(l=>l.id===selected);drag={host,offset:coordinate(e,svg)-l.start,pointerId:e.pointerId};host.setPointerCapture(e.pointerId);renderLoads();draw();e.preventDefault();}else{const v=coordinate(e,svg);pinned=!pinned;x=v;read();draw();}});
+    host.addEventListener('pointerdown',e=>{if(!result?.valid)return;const svg=e.target.closest('svg');if(!svg)return;const hit=e.target.closest('[data-load-id]');if(hit){selected=hit.dataset.loadId;const l=loads.find(l=>l.id===selected);drag={host,offset:coordinate(e,svg)-l.start,pointerId:e.pointerId};host.setPointerCapture(e.pointerId);renderLoads();draw();e.preventDefault();}else changeCoordinate(coordinate(e,svg),coordinateValid?!pinned:true);});
     host.addEventListener('pointerup',()=>{drag=null;});host.addEventListener('pointercancel',()=>{drag=null;});
   }
   window.addEventListener('pointermove',e=>{if(!drag||!result?.valid)return;const svg=drag.host.querySelector('svg');if(svg)translate(coordinate(e,svg)-drag.offset);});

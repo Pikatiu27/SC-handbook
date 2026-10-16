@@ -44,5 +44,45 @@
     out.push(`<rect class="bif-hit" data-layer="INTERACTION_HIT_AREA" ${interactive('plot-'+key,'x','DEFAULT')} data-section-hit="true" x="${v.left}" y="${top}" width="${width-v.left-v.right}" height="${bottom-top}"/>`,'</g></svg>');return out.join("");
   }
   function xFromSvg(svg,clientX,clientY,L,compact){const pt=svg.createSVGPoint();pt.x=clientX;pt.y=clientY;const matrix=svg.getScreenCTM();if(!matrix)return null;const p=pt.matrixTransform(matrix.inverse()),width=svg.viewBox.baseVal.width,left=compact?16:48;return Math.max(0,Math.min(L,(p.x-left)/(width-left-16)*L));}
-  return Object.freeze({renderStructure,renderChart,scale,xFromSvg,format:fmt});
+  // Type-selection cues share the model's ideal support/action symbols. Positions
+  // here are normalized, schematic choices; the main model owns actual geometry.
+  function renderChoice(kind,{id=kind,width=96}={}){
+    const layouts={simple:[0,1],"cantilever-left":[0],"cantilever-right":[1],"overhang-left":[.2,1],"overhang-right":[0,.8],"overhang-both":[.2,.8]};
+    if(!Object.hasOwn(layouts,kind)&&!["point","moment","udl","triangle","trapezoid","linear"].includes(kind))return "";
+    if(!Number.isFinite(width)||width<80)return "";
+    const height=48,y=22,X=t=>12+t*(width-24),safeId=String(id).replace(/[^a-zA-Z0-9_-]/g,'-');
+    let svg=header('choice-'+safeId,width,height,true)
+      .replace('Static internal-force and input-position inspection','Schematic beam or load type selection')
+      .replace('DERIVED_FROM_VALIDATED_INPUTS','SCHEMATIC_TYPE_SYMBOL')
+      .replace('data-derivative-revision="20261014bif1"','data-derivative-revision="20261016biflogic1"')
+      .replace(/<title([^>]*)>.*?<\/title>/,`<title$1>${escape(kind)} type symbol</title>`)
+      .replace(/<desc([^>]*)>.*?<\/desc>/,'<desc$1>Schematic selection symbol only, not to scale. Actual positions and values are shown in the linked beam model. Not for fabrication.</desc>');
+    const out=[svg,`<g data-choice-type="${escape(kind)}">`];
+    if(Object.hasOwn(layouts,kind)){
+      out.push(line(X(0),y,X(1),y,'engineering-drawing__outline'));
+      layouts[kind].forEach((p,i)=>{
+        const sx=X(p),fixed=kind.startsWith('cantilever');
+        out.push(`<g data-support="${i?'B':'A'}" data-normalized-x="${p}" data-fixed="${fixed}">`);
+        if(fixed){const dir=p===0?-1:1;out.push(line(sx,6,sx,40,'engineering-drawing__outline'));for(let k=-12;k<=16;k+=7)out.push(line(sx,y+k,sx+dir*7,y+k+5,'engineering-drawing__secondary'));}
+        else{out.push(`<path class="engineering-drawing__outline" d="M ${n(sx)} ${y} l -7 12 h 14 Z"/>`);if(i)out.push(`<circle cx="${n(sx-4)}" cy="38" r="2" class="engineering-drawing__secondary"/><circle cx="${n(sx+4)}" cy="38" r="2" class="engineering-drawing__secondary"/>`);}
+        out.push('</g>');
+      });
+    }else{
+      out.push(line(X(0),39,X(1),39,'engineering-drawing__outline'));
+      const mid=width/2;
+      if(kind==='point')out.push(arrow(mid,7,mid,35));
+      if(kind==='moment'){out.push(`<path class="engineering-drawing__secondary" fill="none" d="M ${n(mid+11)} 23 A 11 11 0 1 0 ${n(mid)} 34"/>`,arrow(mid-6,34,mid,34));}
+      if(['udl','triangle','trapezoid','linear'].includes(kind)){
+        const [q0,q1]={udl:[1,1],triangle:[0,1],trapezoid:[.5,1],linear:[1,-1]}[kind],base=kind==='linear'?20:35,amplitude=kind==='linear'?12:24;
+        const top=t=>base-amplitude*(q0+(q1-q0)*t);
+        out.push(`<g data-load-profile="${kind}" data-normalized-q0="${q0}" data-normalized-q1="${q1}">`);
+        if(kind==='linear')out.push(line(X(0),base,X(1),base,'engineering-drawing__dimensions'));
+        out.push(line(X(0),top(0),X(1),top(1),'engineering-drawing__secondary'));
+        for(let i=0;i<=4;i++){const t=i/4;out.push(arrow(X(t),top(t),X(t),base));}
+        out.push('</g>');
+      }
+    }
+    out.push('</g></svg>');return out.join('');
+  }
+  return Object.freeze({renderStructure,renderChart,renderChoice,scale,xFromSvg,format:fmt});
 });

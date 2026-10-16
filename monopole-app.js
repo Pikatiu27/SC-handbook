@@ -283,7 +283,7 @@
     $("monopoleCombinedCapacityStatus").hidden = false;
     $("monopoleOverlapBody").innerHTML = "";
     $("monopoleOverlapSection").hidden = true;
-    $("monopoleFormulaSteps").innerHTML = "";
+    $("monopoleFormulaSteps").innerHTML = HandbookNumericalTraces.html([{id:"pole-invalid",title:"Monopole calculation",reference:"MONO-ASSEMBLY-01; MONO-CHS-MOMENT-01; MONO-POLYGON-MOMENT-01",formula:"—",substitution:"—",result:"Not evaluated",applicability:escapeHtml(message)}],calculationTraceRow);
   }
 
   function capacityValue(active) {
@@ -353,7 +353,7 @@
           <td>${escapeHtml(upper.section.id)} over ${escapeHtml(lower.section.id)}</td>
           <td>${fixed(result.designOverlap, 2)} m</td>
           <td>${fixed(result.requiredDesignOverlap, 2)} m</td>
-          <td><span class="monopole-overlap-state ${stateClass}">${escapeHtml(result.designState)}</span><small>D<sub>ins,max</sub> = ${fixed(result.inscribedDiameter, 0)} mm &middot; minimum nominal clearance = ${fixed(result.minimumNominalClearance, 1)} mm &middot; project fit-up acceptance not evaluated</small></td>
+          <td><span class="monopole-overlap-state ${stateClass}">${escapeHtml(result.designRatio >= 1 ? "Meets Appendix K guidance" : "Below Appendix K guidance")}</span><small>D<sub>ins,max</sub> = ${fixed(result.inscribedDiameter, 0)} mm &middot; minimum nominal clearance = ${fixed(result.minimumNominalClearance, 1)} mm &middot; project fit-up acceptance not evaluated</small></td>
         </tr>`;
       });
     $("monopoleOverlapBody").innerHTML = rows.join("");
@@ -510,38 +510,12 @@
     }
   }
 
-  function renderFormulaSteps(assembly, mass) {
-    const assemblyExpression = assembly.sections.length === 1
-      ? `H = L<sub>1</sub> = ${fixed(assembly.height, 2)} m`
-      : `H = &Sigma;L<sub>i</sub> - &Sigma;L<sub>o,i</sub> = ${fixed(assembly.height, 2)} m; for i &ge; 2, S<sub>i</sub> extends downward outside S<sub>i-1</sub>.`;
-    const materialExpression = plateLookupActive()
-      ? `AS/NZS 3678:2016 Table 8, Grade ${escapeHtml($("monopolePlateGrade").value)}; f<sub>y</sub> selected from each t<sub>nom</sub>.`
-      : "Manual project f<sub>y</sub> for each profile segment.";
-    const thicknessExpression = separateDesignThickness()
-      ? "Capacity uses t<sub>d</sub>; material lookup and theoretical mass use t<sub>nom</sub>."
-      : "t<sub>d</sub> = t<sub>nom</sub>; one entered thickness is used for capacity, material lookup and theoretical mass.";
-    const selection = sectionSelection();
-    const polygon = selection.form === "polygon";
-    const propertyExpression = polygon
-      ? `Exact concentric sharp-corner ${selection.sideCount}-sided polygon; Z<sub>min</sub> = I/c<sub>max</sub>.`
-      : "D<sub>i</sub> = D - 2t<sub>d</sub>; A = &pi;(D<sup>2</sup> - D<sub>i</sub><sup>2</sup>)/4; I = &pi;(D<sup>4</sup> - D<sub>i</sub><sup>4</sup>)/64.";
-    const bendRadiusExpression = polygon
-      ? polygonBendRadiusRows(assembly.sections.map(item => item.section)).map(row =>
-          `${escapeHtml(row.id)}: r<sub>i</sub> = ${fixed(number($("monopoleBendRadiusRatio").value), 2)} &times; ${fixed(row.nominalThickness, 2)} = ${fixed(row.insideBendRadius, 2)} mm; BR = min(${fixed(row.insideBendRadius, 2)}, 4 &times; ${fixed(row.designThickness, 2)}) = ${fixed(row.effectiveBendRadius, 2)} mm.`
-        ).join(" ")
-      : "";
-    const resistanceExpression = polygon
-      ? `P = 0; w = tan(&pi;/${selection.sideCount})(D<sub>o</sub> - 2t<sub>d</sub> - 2BR); &lambda; = (w/t<sub>d</sub>)&radic;(f<sub>y</sub>/E); M = F<sub>a</sub>I/c<sub>max</sub> = F<sub>a</sub>Z<sub>min</sub>; AS 4100 &phi; is not applied. ASCE/SEI 48-19 Cl. 5.2.3.2.1; ASCE/SEI 48-19 Cl. 5.2.5.`
-      : "&lambda;<sub>s</sub> = (D/t<sub>d</sub>)(f<sub>y</sub>/250); &phi;M<sub>s</sub> = 0.90f<sub>y</sub>Z<sub>e</sub>; AS 4100 Cl. 5.2 and AS 4100 Table 5.2.";
-    $("monopoleFormulaSteps").innerHTML = `
-      <div><b>Assembly geometry</b><code>${assemblyExpression}; each taper uses its local segment coordinate.</code></div>
-      <div><b>Stations</b><code>0.5 m spacing plus exact base, top, segment and overlap boundaries; the summary reports the governing base-station value and the table retains all evaluated states.</code></div>
-      <div><b>Material</b><code>${materialExpression}</code></div>
-      <div><b>Thickness basis</b><code>${thicknessExpression}</code></div>
-      ${polygon ? `<div><b>Bend radius</b><code>${bendRadiusExpression}</code></div>` : ""}
-      <div><b>Section properties</b><code>${propertyExpression}</code></div>
-      <div><b>Section resistance</b><code>${resistanceExpression}</code></div>
-      <div><b>Mass</b><code>m = &rho;&int;A(t<sub>nom</sub>, s)ds = ${fixed(mass.mass, 1)} kg; both shells are included in each overlap.</code></div>`;
+  function renderFormulaSteps(assembly, mass, stations) {
+    const host=$("monopoleFormulaSteps"),opened=new Set([...host.querySelectorAll('details[open][data-nt-station]')].map(e=>e.dataset.ntStation));
+    const groups=HandbookNumericalTraces.monopole(assembly,mass,stations,{plate:plateLookupActive(),grade:$("monopolePlateGrade").value},capacity);
+    const render=rows=>HandbookNumericalTraces.html(rows,calculationTraceRow);
+    const folded=(items,prefix)=>items.map((s,i)=>'<details class="detail-card nt-station" data-nt-station="'+prefix+i+'"'+(opened.has(prefix+i)?' open':'')+'><summary><span><b>'+s.title+'</b></span><i aria-hidden="true">+</i></summary><div class="detail-body formula-list">'+render(s.rows)+'</div></details>').join('');
+    host.innerHTML='<section class="nt-monopole-common formula-list">'+render(groups.common)+'</section><section class="nt-monopole-moment formula-list"><h3>Base section calculation</h3>'+render(groups.moment)+'<h3>Station calculations</h3><p class="nt-note">One calculation per evaluated shell state; expand a station for its current geometry and resistance.</p>'+folded(groups.stations,'m')+'</section><section class="nt-monopole-compression formula-list"><h3>Section compression</h3>'+render(groups.compression)+folded(groups.compressionStations,'n')+'</section><section class="nt-monopole-mass formula-list"><h3>Shell mass and first moments</h3>'+render(groups.mass)+'</section><section class="nt-monopole-joints formula-list">'+(groups.joints.length?'<h3>Overlap geometry and guidance</h3>':'')+render(groups.joints)+'</section>';
   }
 
   function calculate() {
@@ -604,7 +578,7 @@
       } else {
         renderChart(assembly, stations);
       }
-      renderFormulaSteps(assembly, mass);
+      renderFormulaSteps(assembly, mass, stations);
     } catch (error) {
       clearResults(error instanceof Error ? error.message : "Invalid monopole input.");
     }

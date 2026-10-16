@@ -148,19 +148,19 @@
     },
     {
       "path": "beam-internal-forces/app.js",
-      "sha256": "0a62afb66d6dcb07e646692a75e0ddb009912b6731613bfaeb93f54b00a2148f"
+      "sha256": "0cbad813937e9a156c464648e032e3a703248dc0b610f6f0856ffc8d99a175a6"
     },
     {
       "path": "beam-internal-forces/calculation.js",
-      "sha256": "80f2394405c7de5792b3f6f1cbb1d97484621602916ebe57a750e7d710603092"
+      "sha256": "15779aac7e359995ef6e3a4a917045994fb8ae363910f4b2124425aa515bd980"
     },
     {
       "path": "beam-internal-forces/drawing.js",
-      "sha256": "2cf957338632d77d9747b8b8e95dd44a32cc9f86772117a3d26d851d139d7186"
+      "sha256": "e8b287b1cb6c95d188953d82513c425128cd9e3a272ddf45210466bef871712d"
     },
     {
       "path": "beam-internal-forces/styles.css",
-      "sha256": "b291d3be6e2e63eeb5d0ade54a319c9db2d9d3786be5cb93118bee071aab205b"
+      "sha256": "8f43b36f616ba975600bd279aac932f9de3c6ba42a29e9fde048bf16e779eded"
     },
     {
       "path": "beam-presentation/layout.css",
@@ -240,7 +240,7 @@
     },
     {
       "path": "chs-bending-comparison/panel.js",
-      "sha256": "7c64a9e8c3f489fe6d8b9fdba3c22febbc82c1b15ea56df8607714b51e9d28bf"
+      "sha256": "a9f17e6998e8d00ca8f6e7ab0ff252f67f48bdf0153ac93eb0dcfea7382cfafe"
     },
     {
       "path": "concrete-anchors/app.js",
@@ -380,7 +380,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "d1d3bb4097b4a02c802c159cf9c07ac74e4f9587a6e3bc602ef3e0ff66b92295"
+      "sha256": "b975074162b9227e04e432fa99a63b04a514320872d9c5fe4fb744979d2e774c"
     },
     {
       "path": "LICENSE.md",
@@ -396,7 +396,7 @@
     },
     {
       "path": "monopole-app.js",
-      "sha256": "a20cf5d72f2778d9f72293ce7595fd0ccecdb90457426c712d8509f83e77c8b4"
+      "sha256": "e12fc306eda0f45521d1bf8d19299f2dc7b8e51c81a92efec6a1a840b99fb4f0"
     },
     {
       "path": "monopole-capacity.js",
@@ -452,11 +452,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "988b3bd4a76af2491422101c2007f6c257f7eccfb183c846d260f1f0c86afce0"
+      "sha256": "ad1e97a4617f1e749656ea4457212a1091dddbb0008af56a6f8e298c95473401"
     },
     {
       "path": "README.md",
-      "sha256": "3bdd9b87541389449a0e3d474aedb6deadd9b0ec4fc37ccad3e02b7b351de492"
+      "sha256": "efc7f6625aef214d382e83f1e1ae9e2df45351ad055e6daaa7c11527f076f2ba"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -557,6 +557,22 @@
     {
       "path": "weld-capacity.js",
       "sha256": "85f8dfc746dfe6fea6c4a2347dc3db1771be61629776c986476de7885ff1547f"
+    },
+    {
+      "path": "workflow-review/app.js",
+      "sha256": "db079ebae4ca1729a24d48519f690b368839150792c47f35d7102d4cfbaca078"
+    },
+    {
+      "path": "workflow-review/config.js",
+      "sha256": "f81848578b963750bd38efd42d63740517e74f6fa992664d79d23c8a55feb7a7"
+    },
+    {
+      "path": "workflow-review/numerical-traces.js",
+      "sha256": "a35eb895cb7447117cc541764e72a8eaeb90016572a3a8cd7626b9b2614a0360"
+    },
+    {
+      "path": "workflow-review/styles.css",
+      "sha256": "c3fda8cb91685d4c534a83441bce031990665499b8eb4c715bbe5bbfe9499a72"
     }
   ]
 }

@@ -9,7 +9,7 @@
  function clear(message){
   outputIds.forEach(id=>text(id,'—'));designIds.forEach(id=>$(id).parentElement.classList.remove('is-unavailable'));
   text('chsCompareMessage',message);
-  traceIds.forEach(id=>text(id,'Enter valid geometry and fy.'));
+  traceIds.forEach((id,i)=>$(id).innerHTML=HandbookNumericalTraces.html(HandbookNumericalTraces.chs({issues:[message]},['as4100','as4600','hotAs4100'][i]),calculationTraceRow));
  }
  function provenance(){text('chsCompareProvenance',$('chsCompareProduct').value?'Cold-formed: Orrcon nominal size/grade · HR fy: manual.':'Manual geometry and fy · confirm both material bases.');}
  function selectProduct(){
@@ -40,6 +40,7 @@
   text('chsCompareRatio',format(result.ratio,2));text('chsCompareBaseline',a.status==='Calculated'?'Baseline':'—');text('chsCompareDifference',percent(result.differencePercent));text('chsCompareHotDifference',percent(result.hotDifferencePercent));
   text('chsCompareInside',format(result.insideDiameterMm,2)+' mm');text('chsCompareI',format(result.I/1e6,3)+' × 10⁶ mm⁴');text('chsCompareZ',format(result.Z/1000,3)+' × 10³ mm³');text('chsCompareS',format(result.S/1000,3)+' × 10³ mm³');
   text('chsCompare4600Trace',b.status==='Calculated'?'fy = '+format(result.yieldStressMpa,1)+' MPa; D/t = '+format(b.ratio,3)+'; limits '+[b.limits.compact,b.limits.intermediate,b.limits.applicability].map(v=>format(v,3)).join(' / ')+'. Cl. '+b.branch+': effective stress = '+format(b.nominalStressMpa,3)+' MPa. Mb = '+format(b.nominalMomentKNm)+' kN·m.':b.issues.join(' '));
+  ['as4100','as4600','hotAs4100'].forEach((key,i)=>$(traceIds[i]).innerHTML=HandbookNumericalTraces.html(HandbookNumericalTraces.chs(result,key),calculationTraceRow));
   text('chsCompareMessage',result.status!=='Calculated'?result.issues.join(' '):result.yieldStressMpa===result.hotYieldStressMpa?'Same fy · AS 4100 CF and HR match.':'Different fy · material strength also affects the comparison.');
  }
  products.rows.forEach(p=>$('chsCompareProduct').add(new Option(p.outsideDiameterMm+' × '+p.nominalThicknessMm+' CHS (Orrcon)',p.id)));
