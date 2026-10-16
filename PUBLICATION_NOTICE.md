@@ -2,6 +2,9 @@
 
 ## Status
 
+Build 0.7.127 (16 October 2026): compact Weld Capacity calculator, selected-size fillet capacity table, optional fillet size limits and selected AS 1101.3:2026 symbol guide. Direct throat resistance only; project joint design, material/consumable matching, fabrication and inspection remain separate. CPBW resistance is not evaluated. Public beta / For Review; source edition review and independent engineering acceptance remain open.
+
+
 Build 0.7.126 — 16 October 2026: user-approved result → calculation → return workflow, shared folded calculation/source presentation and complete numerical substitutions for CHS Bending, Monopole Section and Beam Internal Forces. Beam selection/load editing and exact current-section readings use the reviewed bounded determinate-analysis flow. All old URLs and query modes remain compatible. Appendix K overlap is informative geometric guidance; joint resistance is not evaluated. Public beta / For Review; independent engineering, project adoption, source-use and full accessibility acceptance remain open. Concrete Beam and private audit/source evidence are excluded.
 
 Build 0.7.125 — 16 October 2026: Home is a concise searchable tool directory. Primary navigation: Analysis, Steel, Concrete, Connections and Foundations; Products is an auxiliary product-data directory. Existing tool IDs, query modes and old links are retained. Analysis adds Beam Internal Forces for six determinate straight-beam templates with entered vertical actions, reactions, shear and moment. No prescribed loads/combinations, indeterminate analysis, deflection or resistance assessment. Public beta / For Review; independent engineering and full accessibility acceptance remain open.

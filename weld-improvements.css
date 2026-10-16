@@ -1,0 +1,56 @@
+/* Local Weld revision only. Preserve the other tools' layout and numerical methods. */
+#weldPanel .weld-check-row {grid-template-columns:1fr;gap:8px;padding:12px 0;}
+#weldPanel .weld-size-check {align-items:start;}
+#weldPanel [hidden] {display:none!important;}
+#weldPanel .weld-check-controls-two,#weldPanel .weld-action-controls {grid-template-columns:repeat(2,minmax(0,1fr));}
+#weldPanel .weld-action-controls>label {grid-column:1/-1;}
+#weldPanel .weld-check-controls>* {min-width:0;}
+#weldPanel .weld-check-controls input,#weldPanel .weld-check-controls select {max-width:100%;}
+#weldPanel .weld-check-output strong small {display:inline;}
+#weldPanel .weld-size-inputs,#weldPanel .weld-size-outputs {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+#weldPanel .weld-size-wide {grid-column:1/-1;}
+#weldPanel .weld-size-outputs {margin-top:8px;}
+#weldPanel .weld-size-outputs span {display:block;font-size:12px;color:var(--muted);margin-bottom:4px;}
+#weldPanel .weld-size-outputs strong {display:block;font-size:13px;padding:7px 8px;border:1px solid #ead4bc;border-radius:6px;background:#fff;line-height:1.4;}
+#weldPanel .weld-size-note,#weldPanel .weld-size-basis p {font-size:12px;line-height:1.5;margin:4px 0;}
+#weldPanel .weld-size-basis summary {font-size:13px;font-weight:700;cursor:pointer;}
+#weldPanel .weld-size-basis a {color:var(--weld-dark);text-decoration:underline;}
+#weldPanel .input-group-fields {align-items:start;}
+#weldPanel .input-group-fields input:not([type="checkbox"]),#weldPanel .input-group-fields select {height:46px;}
+#weldPanel .input-group-fields label>span:first-child {line-height:18px;min-height:18px;}
+#weldPanel .input-group-fields label>span:first-child sub {line-height:0;vertical-align:baseline;position:relative;bottom:-.2em;}
+#weldPanel [aria-label="Weld geometry inputs"] .input-group-fields {row-gap:6px;}
+#weldPanel .weld-geometry-note {grid-column:1/-1;margin:0;color:var(--muted);font-size:12px;line-height:1.4;}
+#weldPanel #weldParentResult {margin-top:8px;}
+#weldPanel #weldParentResult .capacity-card {padding:10px 12px;}
+#weldPanel #weldParentResult strong {font-size:20px;}
+#weldPanel .weld-size-outputs strong.check {color:var(--weld-dark);}
+#weldPanel label:has([aria-invalid="true"]) input {border-color:#a8462d;}
+#weldPanel .weld-check-controls :focus-visible,#weldPanel .weld-size-basis summary:focus-visible {outline:2px solid var(--weld-dark);outline-offset:2px;}
+#weldPanel .weld-symbol-intro {display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;margin:0 12px 4px;font-size:12px;line-height:1.4;color:var(--muted);}
+#weldPanel .weld-symbol-intro a,#weldPanel .weld-symbol-source a {color:var(--weld-dark);text-decoration:underline;}
+#weldPanel .weld-symbol-boundary {margin:4px 12px 8px;font-size:12px;line-height:1.4;color:var(--muted);}
+#weldPanel .weld-symbol-scroll {margin:0 12px 6px;max-height:480px;overflow:auto;border:1px solid #ead4bc;border-radius:6px;}
+#weldPanel .weld-symbol-scroll:focus-visible {outline:2px solid var(--weld-dark);outline-offset:2px;}
+#weldPanel .weld-symbol-table {width:100%;min-width:650px;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:13px;line-height:1.4;color:var(--ink);}
+#weldPanel .weld-symbol-col {width:236px;}
+#weldPanel .weld-source-col {width:182px;}
+#weldPanel .weld-symbol-table caption {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
+#weldPanel .weld-symbol-table th,#weldPanel .weld-symbol-table td {padding:7px 8px;text-align:left;vertical-align:middle;border-bottom:1px solid #ead4bc;}
+#weldPanel .weld-symbol-table thead th {position:sticky;top:0;z-index:2;background:#f5e7d7;color:var(--weld-dark);font-weight:700;}
+#weldPanel .weld-symbol-group th {background:#faf1e6;font-size:12px;font-weight:700;padding:5px 8px;}
+#weldPanel .weld-symbol-table th[scope="row"] {font-weight:400;background:#fff;}
+#weldPanel .weld-symbol-table th[scope="row"] strong {display:block;font-weight:700;line-height:1.4;}
+#weldPanel .weld-symbol-meaning {display:block;margin-top:3px;font-weight:400;}
+#weldPanel .weld-symbol-source a {white-space:nowrap;font-size:13px;}
+#weldPanel .weld-symbol-table td {background:#fff;}
+#weldPanel .weld-symbol-table tbody tr:not(.weld-symbol-group):nth-child(odd)>td,#weldPanel .weld-symbol-table tbody tr:not(.weld-symbol-group):nth-child(odd)>th {background:#fffaf4;}
+#weldPanel .weld-symbol-table .weld-symbol-svg {width:220px;height:96px;max-width:none;aspect-ratio:auto;border:0;border-radius:0;background:transparent;}
+#weldPanel .weld-symbol-table .svg-line,#weldPanel .weld-symbol-table .svg-tail,#weldPanel .weld-symbol-table .svg-groove-mark,#weldPanel .weld-symbol-table .svg-weld-mark {stroke-width:1.75;stroke-linecap:butt;stroke-linejoin:miter;}
+#weldPanel .weld-symbol-table .weld-symbol-svg text {font-size:12px;font-weight:600;}
+#weldPanel .weld-symbol-table .weld-symbol-svg .svg-caption {font-size:12px;font-weight:400;}
+#weldPanel .weld-symbol-basis {margin:6px 12px 10px;font-size:12px;line-height:1.4;}
+#weldPanel .weld-symbol-basis summary {font-size:13px;font-weight:700;cursor:pointer;}
+#weldPanel .weld-symbol-basis p {margin:5px 0;}
+@media(min-width:980px){#weldPanel .weld-check-row{grid-template-columns:minmax(180px,.55fr) minmax(0,1.45fr);gap:14px;}#weldPanel .weld-action-controls{grid-template-columns:repeat(3,minmax(0,1fr));}#weldPanel .weld-action-controls>label{grid-column:auto;}}
+@media(max-width:480px){#weldPanel .weld-check-controls-two,#weldPanel .weld-action-controls,#weldPanel .weld-size-inputs,#weldPanel .weld-size-outputs{grid-template-columns:1fr;}#weldPanel .weld-size-wide{grid-column:auto;}#weldPanel .weld-check-controls input:not([type="checkbox"]),#weldPanel .weld-check-controls select,#weldPanel .input-group-fields input:not([type="checkbox"]),#weldPanel .input-group-fields select{font-size:16px;}}

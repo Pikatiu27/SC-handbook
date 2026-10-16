@@ -16,7 +16,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "60dced80575a900aa994355296ab98df06bf0fe8e4a41a64d407274b117a6645"
+      "sha256": "d0111c2c57d027c956c00442af5803d391eadf302070197e1ddd4f256079e5f0"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -283,6 +283,14 @@
       "sha256": "22d2bef7e9b2e4814e56870e5be309f2af2b62d151de4fd012e4e1682c8848be"
     },
     {
+      "path": "fillet-table.css",
+      "sha256": "668c91d9530d039269d455069d978222af8915f5154f0685ce68ef3d65f373a1"
+    },
+    {
+      "path": "fillet-table.js",
+      "sha256": "4b0b829ff2e19d7f4dd29d82189c66db788c3a773dfd20b952717e8f38630e79"
+    },
+    {
       "path": "foundation-products/lookup.js",
       "sha256": "f323d53271b7f191066b79a3a2964af7298e071b00990258e2de2956d9a2de39"
     },
@@ -380,7 +388,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "b975074162b9227e04e432fa99a63b04a514320872d9c5fe4fb744979d2e774c"
+      "sha256": "02bc1931716ff337d505a3dc5b7742917e18957c432a82ea548a497f908cb663"
     },
     {
       "path": "LICENSE.md",
@@ -452,11 +460,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "ad1e97a4617f1e749656ea4457212a1091dddbb0008af56a6f8e298c95473401"
+      "sha256": "ac22e9da6fcfe1c109bbfb792368d33065369ddbcc160a504bc84fb6e0aaf72a"
     },
     {
       "path": "README.md",
-      "sha256": "efc7f6625aef214d382e83f1e1ae9e2df45351ad055e6daaa7c11527f076f2ba"
+      "sha256": "b36620c217f7194d4de636e80d4378562c72b2b4297d6d2d5f4ca76ecdb6f1ee"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -557,6 +565,14 @@
     {
       "path": "weld-capacity.js",
       "sha256": "85f8dfc746dfe6fea6c4a2347dc3db1771be61629776c986476de7885ff1547f"
+    },
+    {
+      "path": "weld-detailing.js",
+      "sha256": "6107b7e9243ce91439ba946ac9fc9d86bea8ff6fb6f7f8aaadd414d2c43f6887"
+    },
+    {
+      "path": "weld-improvements.css",
+      "sha256": "9410c4c11b977d240b0881d546da13d94d0ecba77ea753e303938613b336bcfa"
     },
     {
       "path": "workflow-review/app.js",

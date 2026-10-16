@@ -637,7 +637,7 @@ const weldTypeData = {
     scope: "incomplete-penetration butt-weld throat resistance"
   }
 };
-const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentCheckEnabled", "weldParentThickness", "weldParentGrade"];
+const weldInputIds = ["weldType", "weldSize", "weldCategory", "weldStrength", "weldLength", "weldRuns", "weldEffectiveThroat", "weldLapConnection", "weldDemand", "weldParentCheckEnabled", "weldParentThickness", "weldParentGrade", "weldSizeCheckEnabled", "weldPart1", "weldPart2", "weldJointCondition", "weldEdgeCondition"];
 const concreteInputIds = [
   "concreteDirection", "concreteTopDepth", "concreteBottomDepth", "concreteFootingProjection", "concreteCover", "concreteFc",
   "concreteReinforcementLayout",
@@ -4574,10 +4574,11 @@ function calculateWeld() {
   const parentPhi = 0.9;
   const weldMethodAvailable = type === "fillet" || type === "ipbw";
   const inputErrors = [];
-  if (weldMethodAvailable && !(length > 0)) inputErrors.push("Effective weld length l_w must be greater than zero");
-  if (type === "fillet" && length > 0 && length < 4 * size) inputErrors.push("Fillet-weld effective length l_w must be at least 4s");
-  if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("Effective weld lines must be a positive whole number");
-  if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW design throat t_t must be greater than zero");
+  if (type === "fillet" && $("weldSizeCheckEnabled").checked && $("weldJointCondition").value === "special") inputErrors.push("Special fillet geometry requires a project-specific design throat");
+  if (weldMethodAvailable && !(length > 0)) inputErrors.push("Effective length l_w must be positive");
+  if (type === "fillet" && length > 0 && length < 4 * size) inputErrors.push("Fillet length l_w must be at least 4s");
+  if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("Lines must be a positive whole number");
+  if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW throat t_t must be positive");
   [
     ["weldLength", length > 0 && (type !== "fillet" || length >= 4 * size)],
     ["weldRuns", runsValue >= 1 && Number.isInteger(runsValue)],
@@ -4619,9 +4620,9 @@ function calculateWeld() {
   if (demandInvalid) $("weldDemand").setAttribute("aria-invalid", "true");
   else $("weldDemand").removeAttribute("aria-invalid");
   const callouts = {
-    fillet: `${size} mm fillet weld, category ${category}, f<sub>uw</sub> ${fuw} MPa`,
-    cpbw: `CPBW, category ${category}; resistance governed by the weaker joined part`,
-    ipbw: `IPBW, t<sub>t</sub> ${displayFixed(effectiveThroat, 1)} mm, category ${category}, f<sub>uw</sub> ${fuw} MPa`
+    fillet: `${size} mm fillet · ${category} · f<sub>uw</sub> ${fuw} MPa`,
+    cpbw: `CPBW · ${category} · weaker joined-part resistance required`,
+    ipbw: `IPBW, t<sub>t</sub> ${displayFixed(effectiveThroat, 1)} mm · ${category} · f<sub>uw</sub> ${fuw} MPa`
   };
 
   $("weldSizeField").hidden = type !== "fillet";
@@ -4642,10 +4643,10 @@ function calculateWeld() {
       ? "Resistance governed by the weaker joined part"
       : "Project-specific resistance required";
   $("weldCapacityBasis").innerHTML = calculationAvailable
-    ? `${typeData.scope}; ${category}; &phi; = ${displayFixed(phi, 2)} from AS 4100 Table 3.4`
+    ? `${category} · &phi; = ${displayFixed(phi, 2)} · AS 4100 Table 3.4`
     : inputErrors.length
-      ? "Not evaluated; valid weld geometry is required"
-    : "AS 4100 Cl. 9.6.2.7; joined-part resistance is not defined by this weld-metal input set";
+      ? "Not evaluated; check geometry"
+    : "AS 4100 Cl. 9.6.2.7 · joined-part resistance required";
   $("weldCapacity").textContent = calculationAvailable ? fixed(capacity) : "Not evaluated";
   $("weldCapacityPerMm").textContent = calculationAvailable ? displayFixed(capacityPerMm, 2) : "Not evaluated";
   $("weldCapacityUnit").hidden = !calculationAvailable;
@@ -4656,14 +4657,14 @@ function calculateWeld() {
   $("parentGoverningPerMm").textContent = parentCheckActive ? fixed2(parentPerMm) : parentCheckEnabled ? "Not evaluated" : "Not enabled";
   $("parentGoverningUnit").hidden = !parentCheckActive;
   $("parentGoverningNote").textContent = !parentCheckEnabled
-    ? "Enable and define the parent-metal screen below"
+    ? "Enable screen and enter thickness"
     : !parentCheckActive
       ? "Enter a positive ply thickness"
     : !calculationAvailable
       ? "Advisory only; joined-part resistance not evaluated"
     : parentGoverns
       ? `Advisory screen lower; f_up ${parentGrade.fup} MPa`
-      : "Advisory screen does not govern weld-throat resistance";
+      : "Advisory; throat resistance unchanged";
   $("parentGoverningNote").className = parentCheckEnabled ? "check" : "";
   $("weldUtilisation").textContent = !calculationAvailable || !hasDemand ? "\u2014" : displayFixed(utilisation, 2);
   $("weldStatus").textContent = !calculationAvailable ? "Not evaluated" : demandInvalid ? "Invalid design action" : !hasDemand ? "No design action" : utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL";
@@ -4673,7 +4674,7 @@ function calculateWeld() {
     $("weldFormulaSteps").innerHTML = [
       calculationTraceRow({
         title: "Weld classification",
-        lookup: "Selected weld type and weld category.",
+        lookup: "Weld type and category.",
         selection: `${typeData.label}; category ${category}`,
         adopted: typeData.scope,
         applicability: callouts[type] || callouts.fillet
@@ -4684,49 +4685,49 @@ function calculateWeld() {
         formula: type === "fillet" ? `t<sub>t</sub> = 0.707s` : `t<sub>t</sub> = t<sub>t,specified</sub>`,
         substitution: type === "fillet" ? `0.707 &times; ${displayFixed(size, 0)} mm` : `${displayFixed(effectiveThroat, 1)} mm`,
         result: `Design throat thickness = ${fixed2(throat)} mm`,
-        applicability: type === "fillet" ? "Equal-leg fillet weld; entered effective length satisfies AS 4100 Cl. 9.6.3.5 minimum 4s." : "Incomplete-penetration butt weld with project-specified design throat."
+        applicability: type === "fillet" ? "Equal-leg fillet; l_w ≥ 4s (AS 4100 Cl. 9.6.3.5)." : "IPBW; project-specified throat."
       }),
       calculationTraceRow({
         title: "Design capacity per unit effective length",
         reference: "AS 4100 Cl. 9.6.3.10 and AS 4100 Table 3.4",
         formula: `&phi;R/l<sub>w</sub> = &phi;0.6f<sub>uw</sub>t<sub>t</sub>k<sub>r</sub>`,
         substitution: `${displayFixed(phi, 2)} &times; 0.6 &times; ${displayFixed(fuw, 0)} MPa &times; ${fixed2(throat)} mm &times; ${displayFixed(kr, 2)} / 1000`,
-        result: `Design weld capacity per unit effective length = ${displayFixed(capacityPerMm, 2)} kN/mm per effective weld line`,
-        applicability: "Direct weld-throat resistance for the selected fillet-weld or IPBW calculation path."
+        result: `${displayFixed(capacityPerMm, 2)} kN/mm per line`,
+        applicability: "Direct throat resistance; fillet or IPBW."
       }),
       calculationTraceRow({
         title: "Welded-lap reduction",
         reference: "AS 4100 Table 9.6.3.10(B)",
-        lookup: "Reduction factor by welded-lap connection status and weld length.",
+        lookup: "Lap condition and effective length.",
         selection: lapReductionActive ? `l<sub>w</sub> = ${fixed(length)} mm = ${displayFixed(length / 1000, 2)} m` : "Welded-lap reduction not selected",
         adopted: `k<sub>r</sub> = ${displayFixed(kr, 2)}`,
-        applicability: lapReductionActive ? "Applicable to the selected fillet welded-lap connection." : "Not applicable to the selected connection condition or weld type."
+        applicability: lapReductionActive ? "Selected fillet lap connection." : "Not applicable to this condition / weld type."
       }),
       calculationTraceRow({
         title: "Total design weld capacity",
         formula: `&phi;R<sub>total</sub> = (&phi;R/l<sub>w</sub>)l<sub>w</sub>n<sub>w</sub>`,
         substitution: `${displayFixed(phi, 2)} &times; 0.6 &times; ${displayFixed(fuw, 0)} MPa &times; ${type === "fillet" ? `(0.707 &times; ${displayFixed(size, 0)} mm)` : `${displayFixed(throat, 3)} mm`} &times; ${displayFixed(kr, 3)} &times; ${fixed(length)} mm &times; ${runs} / 1000`,
-        result: `Total design weld capacity = ${fixed(capacity)} kN`,
-        applicability: `${runs} identical effective weld line${runs === 1 ? "" : "s"}; effective weld lines are not welding passes.`
+        result: `${fixed(capacity)} kN total`,
+        applicability: `${runs} identical line${runs === 1 ? "" : "s"}; not passes.`
       }),
       calculationTraceRow({
         title: "Optional weld throat utilisation",
         formula: hasDemand ? `&eta;<sub>w</sub> = V<sub>w</sub><sup>*</sup>/&phi;R<sub>total</sub>` : "",
         substitution: hasDemand ? `${fixed(demand)} kN / ${fixed(capacity)} kN` : "",
         result: demandInvalid ? "Invalid design action" : hasDemand ? `&eta;<sub>w</sub> = ${displayFixed(utilisation, 2)}; ${utilisation <= 1 ? "Weld throat PASS" : "Weld throat FAIL"}` : "No design action entered",
-        applicability: "Direct action against the calculated throat resistance only; weld group effects, eccentricity and connected-part limit states remain excluded."
+        applicability: "Direct throat check only; excludes weld groups, eccentricity and connected-part limit states."
       }),
       calculationTraceRow({
         title: "Indicative parent-metal screen",
         formula: parentCheckActive ? `&phi;R<sub>p</sub>/l = 0.90(0.6f<sub>up</sub>t)` : "",
         substitution: parentCheckActive ? `0.90 &times; 0.6 &times; ${parentGrade.fup} MPa &times; ${fixed2(parentThickness)} mm / 1000` : "",
-        result: parentCheckActive ? `Indicative resistance per unit length = ${fixed2(parentPerMm)} kN/mm` : "Not evaluated",
-        applicability: parentCheckActive ? `Advisory screening result; ${parentGrade.standard}. This is not the weaker-joined-part CPBW resistance.` : parentCheckEnabled ? "A positive ply thickness is required to display this optional screening result." : "Optional screen not enabled."
+        result: parentCheckActive ? `${fixed2(parentPerMm)} kN/mm (advisory)` : "Not evaluated",
+        applicability: parentCheckActive ? `Advisory · ${parentGrade.standard}; CPBW resistance not established.` : parentCheckEnabled ? "Enter a positive ply thickness." : "Optional screen not enabled."
       }),
       calculationTraceRow({
         title: "Design boundary",
         result: "Scoped weld-throat resistance calculation",
-        applicability: "Not a complete welded-joint design. Weld groups, connected-part rupture, heat-affected-zone requirements, joint preparation, welding procedure specifications, inspection, fatigue and effective-length provisions beyond the entered length are excluded."
+        applicability: "Throat resistance only; verify joint design, detailing and fabrication separately. See Sources & scope for exclusions."
       })
     ].join("");
   } else if (inputErrors.length) {
@@ -4734,19 +4735,20 @@ function calculateWeld() {
       title: "Input validation",
       selection: inputErrors.join("; "),
       result: "Not evaluated",
-      applicability: "Enter valid weld geometry before using the AS 4100 throat-capacity check.",
+      applicability: "Enter valid geometry to calculate throat resistance.",
       state: "warning"
     });
   } else {
-    const capacityRule = `AS 4100 Cl. 9.6.2.7 takes CPBW design capacity as the nominal capacity of the weaker joined part multiplied by the appropriate capacity factor. The resistance of that joined part is not defined by weld-metal strength and throat alone.`;
+    const capacityRule = `AS 4100 Cl. 9.6.2.7: φ × nominal capacity of the weaker joined part; weld-metal strength and throat alone are insufficient.`;
     $("weldFormulaSteps").innerHTML = calculationTraceRow({
       title: typeData.label,
       reference: "AS 4100 Cl. 9.6.2.7",
       result: "Not evaluated",
-      applicability: `${capacityRule} Define the weaker joined part, applicable limit state, material strength, net/gross section and capacity factor. The welding procedure specification, preparation, inspection, fatigue, heat-affected-zone requirements and connected-part limit states remain project-specific.`,
+      applicability: `${capacityRule} Define the joined part, limit state, material, net/gross section and φ. Verify project detailing and fabrication separately.`,
       state: "warning"
     });
   }
+  WeldDetailing.update(document);
 }
 
 const beamFamilyDefinitions = Object.freeze({
