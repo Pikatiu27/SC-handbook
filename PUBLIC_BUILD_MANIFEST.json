@@ -16,7 +16,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "d0111c2c57d027c956c00442af5803d391eadf302070197e1ddd4f256079e5f0"
+      "sha256": "21e05051e9723af7357b7dd6207bf5ce57666ff5e49d661c6b28a57f56516ef2"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -259,6 +259,26 @@
       "sha256": "e12bc28874d480a170152f9a3b15bb646bd45a59495b00df31ebd14598dd6480"
     },
     {
+      "path": "concrete-beam/app.js",
+      "sha256": "9d9118c5629caa8433934f87b0f31ea9cbd0972dee67d42f77420a6b811bd9ea"
+    },
+    {
+      "path": "concrete-beam/calculation.js",
+      "sha256": "cc4cfb2f1f0fe4318377cb0763b8601f8137cd259b5911238982440502b8d22d"
+    },
+    {
+      "path": "concrete-beam/drawing.js",
+      "sha256": "97c071755f13424981c4f958dbee7a56c6a26025d66553ef75757369376820f3"
+    },
+    {
+      "path": "concrete-beam/presentation.js",
+      "sha256": "7b8ac57538234a917ed3d285b66994080d0de5aa2abb88de0ae6177fe0b5849d"
+    },
+    {
+      "path": "concrete-beam/styles.css",
+      "sha256": "190ef7a3f3fc570ff29c698e8ce553ef6941cb87023c840985032dc77e7d6540"
+    },
+    {
       "path": "concrete-cover/app.js",
       "sha256": "c6b3ae5831c4db9f58bd236e8fa8f33678aab23c6596a0af52661969d670f23e"
     },
@@ -276,7 +296,7 @@
     },
     {
       "path": "concrete-section-calculation.js",
-      "sha256": "49406eaafc5e4a15e1c4dd6f109ef874d51a674c422f3e730e24141352aeb795"
+      "sha256": "c077a8c6ecd7e28b904e0f1c3f7a865ae6f81c8f111c8e8daaf28bc27edf4733"
     },
     {
       "path": "engineering-number-format.js",
@@ -388,7 +408,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "02bc1931716ff337d505a3dc5b7742917e18957c432a82ea548a497f908cb663"
+      "sha256": "1e9f34b1daf5db181747ff53c62d7ccf1515537abb636b8162156e9f00f17a83"
     },
     {
       "path": "LICENSE.md",
@@ -460,11 +480,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "ac22e9da6fcfe1c109bbfb792368d33065369ddbcc160a504bc84fb6e0aaf72a"
+      "sha256": "4079f884d61def5156b6cdf5e21ab7873d342f95a0c1f2d681229eaae7bde2cd"
     },
     {
       "path": "README.md",
-      "sha256": "b36620c217f7194d4de636e80d4378562c72b2b4297d6d2d5f4ca76ecdb6f1ee"
+      "sha256": "5920f1ea25a3ccb0d6b33e192d9cd68e9a85536d299ca710fb912593da05d789"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -552,11 +572,11 @@
     },
     {
       "path": "tool-directory/directory.js",
-      "sha256": "ce4ea69e81223c4ddd1fe5323225c27210ff69df08815747eb6415ca6d9d8fb3"
+      "sha256": "3b0ccc65b68bfdf9b8cfef2fce75edf437be8f9043b0f9998bdbbcf40203524b"
     },
     {
       "path": "tool-directory/registry.js",
-      "sha256": "2312026dd75ff7e7c3370931a6448eb40da3128e07c6549bb9fd2dc4f3c35f3c"
+      "sha256": "f856f57d3129b8e3f2e00d58a5d9eb9fdcca30d81ffb7286ab7bb124b251f3c9"
     },
     {
       "path": "web-drawing/styles.css",

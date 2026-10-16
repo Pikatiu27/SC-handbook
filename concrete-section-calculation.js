@@ -134,7 +134,13 @@
     const vuRaw = vuc + vus;
     const vuMax = 0.55 * 0.9 * fc * bv * dv * (cotTheta / (1 + cotTheta ** 2)) / 1000;
     const vu = Math.min(vuRaw, vuMax);
-    const webCrushingLimited = vuRaw > vuMax;
+    // AS 3600 Table 2.2.2(e), Cls 8.2.3.1 and 8.2.3.3(5):
+    // independently reduce the sectional and crushing checks before comparing.
+    const sectionPhi = minShearReoProvided ? 0.75 : 0.70;
+    const crushingPhi = 0.70;
+    const sectionDesignLimit = sectionPhi * vuRaw;
+    const crushingDesignLimit = crushingPhi * vuMax;
+    const webCrushingLimited = crushingDesignLimit <= sectionDesignLimit;
     const highStrengthLongitudinalLayers = data.layers.filter(layer => Number(layer.fsy) > 500);
     const scopeFailures = [];
     if (fc > 65) scopeFailures.push(`f'c = ${fc} MPa exceeds 65 MPa`);
@@ -143,7 +149,9 @@
       scopeFailures.push(`${highStrengthLongitudinalLayers.map(layer => `mat ${layer.index}`).join(", ")} f_sy exceeds 500 MPa`);
     }
     const withinSimplifiedScope = scopeFailures.length === 0;
-    const phi = minShearReoProvided && !webCrushingLimited ? 0.75 : 0.70;
+    // Compatibility field: factor of the governing check; phi*vu is not the
+    // design capacity in the transition region. Consumers use phiVu directly.
+    const phi = webCrushingLimited ? crushingPhi : sectionPhi;
 
     return Object.freeze({
       tensionLayers: Object.freeze(tensionLayers.slice()),
@@ -177,7 +185,11 @@
       withinSimplifiedScope,
       scopeFailures: Object.freeze(scopeFailures),
       phi,
-      phiVu: withinSimplifiedScope ? phi * vu : NaN
+      sectionPhi,
+      crushingPhi,
+      sectionDesignLimit,
+      crushingDesignLimit,
+      phiVu: withinSimplifiedScope ? Math.min(sectionDesignLimit, crushingDesignLimit) : NaN
     });
   }
 

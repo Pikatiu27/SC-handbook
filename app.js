@@ -2910,6 +2910,8 @@ for (const tool of window.HandbookDirectoryRegistry) {
   (toolCategories[tool.category] ||= []).push(tool.id);
 }
 /* APPROVED NAVIGATION CLASSIFICATION END */
+toolNames.push("concretebeam");
+toolAliases["concrete-beam"] = "concretebeam";
 const publicToolHashes = { concrete: "pad" };
 const concreteLayerFieldSuffixes = ["Active", "Auto", "Y", "Bar", "Spacing", "Fsy", "Es"];
 let concreteLayerState = null;
@@ -8463,7 +8465,7 @@ function calculateConcrete() {
   $("concreteWarningText").innerHTML = warningText;
 
   const shearState = shear.withinSimplifiedScope
-    ? `<article><b>One-way shear capacity</b><span>&phi;V<sub>u</sub> = ${fixed(shear.phiVu)} kN; &phi; = ${displayFixed(shear.phi, 2)}</span><small>V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u.max</sub>) = ${fixed(shear.vu)} kN${shear.webCrushingLimited ? "; web crushing governs" : ""}</small></article>`
+    ? `<article><b>One-way shear capacity</b><span>&phi;V<sub>u</sub> = ${fixed(shear.phiVu)} kN</span><small>Section limit ${fixed(shear.sectionDesignLimit)} kN; crushing limit ${fixed(shear.crushingDesignLimit)} kN. ${shear.webCrushingLimited ? "Web crushing governs." : "Sectional shear governs."}</small></article>`
     : `<article><b>One-way shear check</b><span>Shear capacity not calculated.</span><small>${shear.scopeFailures.join("; ")}. Use the applicable general shear method for the project.</small></article>`;
   $("concreteSectionState").innerHTML = `
     <article><b>Flexural capacity details</b><span>Neutral axis depth x = ${fixed(result.x)} mm from the selected compression face; d<sub>o</sub> = ${fixed(result.d0)} mm; k<sub>uo</sub> = ${displayFixed(result.kuo, 3)}; M<sub>uo</sub> = ${fixed(result.muo)} kNm</span><small>C<sub>c</sub> = ${fixed(result.cc / 1000)} kN; &phi; = ${displayFixed(result.phi, 2)}; &phi;M<sub>uo</sub> = ${fixed(result.phiMuo)} kNm</small></article>
@@ -8535,9 +8537,9 @@ function calculateConcrete() {
     }),
     calculationTraceRow({
       title: "One-way shear design capacity",
-      reference: "AS 3600 Cl. 8.2.3.1 and AS 3600 Table 2.2.2",
-      formula: `V<sub>u</sub> = min(V<sub>uc</sub> + V<sub>us</sub>, V<sub>u,max</sub>); design capacity = &phi; &times; V<sub>u</sub>`,
-      substitution: `min(${displayFixed(shear.vuc, 3)} + ${displayFixed(shear.vus, 3)}, ${displayFixed(shear.vuMax, 3)}) kN; &phi; = ${displayFixed(shear.phi, 2)}`,
+      reference: "AS 3600 Cls 8.2.3.1, 8.2.3.3(5); Table 2.2.2(e)",
+      formula: `Design capacity = min[&phi;<sub>s</sub>(V<sub>uc</sub> + V<sub>us</sub>), 0.70V<sub>u,max</sub>]`,
+      substitution: `min[${displayFixed(shear.sectionPhi, 2)} &times; (${displayFixed(shear.vuc, 3)} + ${displayFixed(shear.vus, 3)}), 0.70 &times; ${displayFixed(shear.vuMax, 3)}] = min(${displayFixed(shear.sectionDesignLimit,3)}, ${displayFixed(shear.crushingDesignLimit,3)}) kN`,
       result: `Design one-way shear capacity = ${fixed(shear.phiVu)} kN`,
       applicability: shear.webCrushingLimited ? "Web crushing governs." : shear.minShearReoProvided ? "Verified minimum Class N fitments; no web-crushing limit governs." : "No verified minimum Class N fitments."
     })

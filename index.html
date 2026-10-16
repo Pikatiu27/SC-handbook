@@ -43,6 +43,7 @@
 <script src="workflow-review/numerical-traces.js?v=20261016workflowtrace1"></script>
 <link rel="stylesheet" href="workflow-review/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="weld-improvements.css?v=20261016weld1"><link rel="stylesheet" href="fillet-table.css?v=20261016weld1">
+<link rel="stylesheet" href="concrete-beam/styles.css?v=20261017concretebeam1">
 </head>
 <body>
   <header class="topbar">
@@ -80,7 +81,8 @@
           <button class="tool-tab" type="button" data-category="steel" data-tool="beam" data-legacy-name="Beam Section Capacity" aria-controls="beamPanel" aria-pressed="false" hidden>Beam Section Capacity</button>
           <button class="tool-tab" type="button" data-category="steel" data-tool="chs4600" data-legacy-name="Cold-formed CHS Bending" aria-controls="chs4600Panel" aria-pressed="false" hidden>Cold-formed CHS Bending</button>
           <button class="tool-tab" type="button" data-category="steel" data-tool="monopole" data-legacy-name="Steel Monopole Section Capacity" aria-controls="monopolePanel" aria-pressed="false" hidden>Monopole Section Capacity</button>
-          <button class="tool-tab" type="button" data-category="concrete" data-tool="cover" data-legacy-name="Concrete Cover &amp; Durability" aria-controls="coverPanel" aria-pressed="false" hidden>Concrete Cover &amp; Durability</button>
+          <button class="tool-tab" type="button" data-category="concrete" data-tool="concretebeam" data-legacy-name="Concrete Beam Section Capacity" aria-controls="concretebeamPanel" aria-pressed="false" hidden>Concrete Beam Section Capacity</button>
+<button class="tool-tab" type="button" data-category="concrete" data-tool="cover" data-legacy-name="Concrete Cover &amp; Durability" aria-controls="coverPanel" aria-pressed="false" hidden>Concrete Cover &amp; Durability</button>
           <button class="tool-tab" type="button" data-category="concrete" data-tool="reo" data-legacy-name="Reinforcement" aria-controls="reoPanel" aria-pressed="false" hidden>Reinforcement</button>
           <button class="tool-tab" type="button" data-category="connections" data-tool="bolt" data-legacy-name="Bolt Capacity" aria-controls="boltPanel" aria-pressed="false" hidden>Bolt Capacity</button>
           <button class="tool-tab" type="button" data-category="connections" data-tool="weld" data-legacy-name="Weld Capacity" aria-controls="weldPanel" aria-pressed="false" hidden>Weld Capacity</button>
@@ -145,11 +147,11 @@
         </div>
       </details>
       <details data-category-scope="concrete" hidden>
-        <summary><span><b>Design scope · Concrete</b><small>Coverage and exclusions for concrete references</small></span><i>+</i></summary>
+        <summary><span><b>Design scope · Concrete</b><small>Coverage and exclusions for concrete tools</small></span><i>+</i></summary>
         <div class="category-scope-grid">
           <section><h2>Complete design includes</h2><p>Project actions, geometry and materials; resistance, serviceability, durability and reinforcement detailing; construction and acceptance.</p></section>
-          <section><h2>Handbook scope</h2><p>Concrete exposure, cover and selected curing references; reinforcement area and spacing; tension development and lap references.</p></section>
-          <section><h2>Not evaluated</h2><p>Complete concrete-member design; site exposure adoption, member resistance, deflection, cracking, shear, punching or complete detailing. Concrete pad checks remain under Foundations.</p></section>
+          <section><h2>Handbook scope</h2><p>Rectangular beam section flexure, simplified shear and selected reinforcement screens; exposure, cover and curing references; reinforcement area, spacing, tension development and laps.</p></section>
+          <section><h2>Not evaluated</h2><p>Complete concrete-member design; project actions, site exposure adoption, axial force, torsion, deep beams, deflection, cracking, punching or complete detailing. Concrete pad checks remain under Foundations.</p></section>
         </div>
       </details>
       <details data-category-scope="foundations" hidden>
@@ -941,6 +943,81 @@
     <p><b>Edition · checked 16 Oct 2026.</b> AS 4100:2020: Pending Revision; <a href="https://store.standards.org.au/product/as-4100-2020-amd-1-2021" target="_blank" rel="noopener">Amd 1:2021</a>: Current. Published amendment scope excludes these provisions; full amendment / consolidated text review remains open. Project adoption and AS/NZS 1554 coordination required.</p>
   </details>
 </section>
+</section>
+
+<section id="concretebeamPanel" class="tool-panel" hidden>
+  <div class="tool-heading"><div><p class="kicker">Concrete members · AS 3600:2018 + Amd 1 &amp; 2</p><h2>Concrete Beam Section Capacity</h2></div><span class="tool-status">Public beta · For Review</span></div>
+  <section class="lookup-card cb-card">
+  <div class="cb-workspace">
+    <section class="cb-inputs" aria-label="Concrete beam inputs">
+      <div class="cb-pane-heading"><h2 class="cb-pane-title">Section inputs</h2><button id="cbReset" class="cb-reset" type="button">Reset example</button></div>
+      <section class="input-group input-group-section"><span class="input-group-heading"><b>Section geometry</b></span>
+        <div class="cb-section-layout"><div class="cb-section-fields"><div class="cb-fields input-group-fields" role="group" aria-label="Section geometry">
+          <label><span>Width, b</span><span class="unit"><input id="cbWidth" type="number" min="1" max="5000" step="1" value="300"><em>mm</em></span></label>
+          <label><span>Overall depth, D</span><span class="unit"><input id="cbDepth" type="number" min="1" max="5000" step="1" value="600"><em>mm</em></span></label>
+          <label><span>Cover, c<sub>nom</sub></span><span class="unit"><input id="cbCover" aria-describedby="cbCoverNote" type="number" min="1" step="1" value="40"><em>mm</em></span></label>
+          <label><span>Compression face</span><select id="cbDirection"><option value="top">Top face</option><option value="bottom">Bottom face</option></select></label>
+        </div><h3 class="cb-material-heading">Material properties</h3><div class="cb-fields input-group-fields" role="group" aria-label="Material properties">
+        <label><span>Concrete, f′<sub>c</sub></span><span class="unit"><input id="cbFc" type="number" min="20" max="65" step="1" value="32"><em>MPa</em></span></label>
+        <label><span>Aggregate, d<sub>ag</sub></span><span class="unit"><input id="cbAggregate" type="number" min="1" max="100" step="1" value="20"><em>mm</em></span></label>
+        </div></div><figure class="cb-section-figure engineering-figure" data-figure-profile="SC-WEB-FIGURE-001" aria-labelledby="cbFigureCaption"><div id="cbDrawing" class="cb-section-drawing engineering-figure__plot"></div><figcaption id="cbFigureCaption" class="engineering-figure__caption">Section · mm · from inputs</figcaption><p id="cbDrawingSummary" class="cb-drawing-summary engineering-figure__key" aria-label="Figure key"></p><p id="cbCoverNote" class="cb-cover-note">Cover to fitments; bars if none.</p></figure></div>
+      </section>
+      <section class="input-group cb-row-inputs"><span class="input-group-heading"><b>Longitudinal bars · 500N</b><small>0 = omitted</small></span>
+        <div class="cb-fields input-group-fields">
+          <label><span>Top bar</span><select id="cbTopBar"></select></label><label><span>Top count</span><input id="cbTopCount" type="number" min="0" max="30" step="1" value="2"></label>
+          <label><span>Bottom bar</span><select id="cbBottomBar"></select></label><label><span>Bottom count</span><input id="cbBottomCount" type="number" min="0" max="30" step="1" value="3"></label>
+        </div>
+      </section>
+      <section class="input-group cb-row-inputs cb-fitment-inputs"><span class="input-group-heading"><b>Shear fitments</b></span>
+        <div class="cb-fields input-group-fields"><label><span>Type</span><select id="cbFitments"><option value="vertical">Vertical N</option><option value="none">No fitments</option></select></label>
+          <label data-cb-fitment><span>Fitment bar</span><select id="cbFitmentBar"></select></label>
+          <label data-cb-fitment><span>Effective legs, n<sub>sv</sub></span><input id="cbLegs" type="number" min="2" max="10" step="1" value="2"></label>
+          <label data-cb-fitment><span>Spacing, s<sub>v</sub></span><span class="unit"><input id="cbSpacing" type="number" min="1" step="1" value="200"><em>mm</em></span></label>
+        </div>
+      </section>
+      <div class="cb-input-footer"><div class="cb-applicability"><label class="cb-checkbox"><input id="cbApplicable" type="checkbox" checked><span>Confirm method applicability</span></label><a id="cbViewConditions" class="cb-conditions-link" href="#cbApplicability" aria-controls="cbSources">View conditions</a>
+      </div>
+      </div>
+    </section>
+    <section class="cb-output" aria-label="Concrete beam results">
+      <div class="cb-results-main">
+      <div class="section-heading"><h2>Section capacity</h2></div>
+      <div class="cb-capacities" aria-live="polite" aria-atomic="true">
+        <article class="capacity-card selected-shear"><span>Moment · φM<sub>uo</sub></span><strong><output id="cbMomentCapacity">—</output><small id="cbMomentUnit"> kN·m</small></strong><p id="cbMomentNote"></p></article>
+        <article class="capacity-card"><span>Shear · φV<sub>u</sub></span><strong><output id="cbShearCapacity">—</output><small id="cbShearUnit"> kN</small></strong><p id="cbShearNote"></p></article>
+      </div>
+      <div id="cbIssues" class="cb-issues" role="status"></div>
+      <section class="cb-derived"><h3>Reinforcement screens</h3><div id="cbScreens" aria-live="polite" aria-atomic="true"></div></section>
+      <p class="cb-boundary">Capacity only · detailing excluded; clear gaps not checked.</p>
+      </div>
+    </section>
+  </div>
+  <div class="cb-supporting-details">
+  <details class="detail-card cb-properties"><summary><span class="summary-copy"><span class="summary-heading"><b>Section properties</b></span></span><i aria-hidden="true">+</i></summary><div class="detail-body"><p id="cbSummary" class="cb-result-basis"></p><div id="cbGeometry"></div></div></details>
+  <details id="cbCalculation" class="detail-card cb-output-details"><summary><span class="summary-copy"><span class="summary-heading"><b>Calculation</b></span></span><i aria-hidden="true">+</i></summary><div class="detail-body"><div class="cb-trace-actions"><button id="cbBackResults" class="cb-reset" type="button">Back to results</button></div><div id="cbDetails" class="formula-list"></div></div></details>
+  <details id="cbSources" class="detail-card cb-output-details"><summary><span class="summary-copy"><span class="summary-heading"><b>Sources &amp; scope</b></span></span><i aria-hidden="true">+</i></summary><div class="detail-body cb-sources">
+    <div class="cb-conditions-heading"><h3 id="cbApplicability" tabindex="-1">Applicability</h3><button id="cbBackInputs" class="cb-reset" type="button">Back to inputs</button></div>
+    <p>Pure bending and simplified shear in normal-weight, solid rectangular flexural regions. One 500N bar row per face; fully developed bars and equally spaced effective vertical fitment legs. f′<sub>c</sub> = 20–65 MPa; E<sub>s</sub> = 200,000 MPa; k<sub>uo</sub> ≤ 0.36 for flexure; d<sub>ag</sub> ≥ 10 mm for shear.</p>
+    <p><b>Excluded:</b> prestress, axial force, torsion, significant secondary shear, reversal cracking of the compression face, deep beams, discontinuities, openings, non-rectangular sections and bundled bars.</p>
+    <p><b>Not checked:</b> actions/redistribution; SLS deflection/cracking, vibration/slenderness, fire/durability; clear spacing, cover suitability, bar certificates, cut-off/development/laps/anchorage, shear-induced longitudinal tension, fitment restraint/extent and support bearing. Figure fitments/legs are schematic; hooks/bends omitted; not for fabrication.</p>
+    <h3>References</h3>
+    <p><a href="https://store.standards.org.au/product/as-3600-2018" target="_blank" rel="noopener noreferrer">AS 3600:2018 + Amendments 1 &amp; 2</a>. Page locators below are PDF / printed.</p>
+    <ul>
+      <li><b>Flexure:</b> 8.1.2–8.1.3 (113 / 110), 8.1.5–8.1.6.1 (114 / 111); Table 2.2.2 (39 / 36).</li>
+      <li><b>Shear:</b> 8.2.1.6–8.2.1.9 (117–118 / 114–115), 8.2.3.1–8.2.3.3 (118–120 / 115–117), 8.2.4.1 and 8.2.4.3 (120, 122 / 117, 119), 8.2.5.2 (123 / 120).</li>
+      <li><b>Fitment spacing:</b> 8.3.2.2 (128 / 125); no low-demand relaxation.</li>
+      <li><b>Materials:</b> Cl. 3.1.1.3 (48 / 45); Table 3.2.1 and Cl. 3.2.2 (54 / 51). N10–N40 nominal areas: AS/NZS 4671:2019 Table 7.5(A) (21 / 12).</li>
+    </ul>
+    <h3>Worked comparisons</h3>
+    <p>Declared tolerance: 0.1%. These compare section calculations only; actions, support selection and complete detailing remain unverified.</p>
+    <ul>
+      <li><b>Flexure:</b> <a href="https://skyciv.com/wp-content/uploads/2020/08/AS3600-Example-Concrete-Member-Design-Calculation-SkyCiv-min.pdf#page=2" target="_blank" rel="noopener noreferrer">SkyCiv, pp. 1–3 · AS 3600:2018(A1)</a>. Source / local φM: 25.37 / 25.36 kN·m (0.052%). Source / nominal A<sub>st</sub>: 452.39 / 452 mm². Cover 30 mm with N10 is derived to match d = 153.9 mm; spacing is assumed. Does not verify shear.</li>
+      <li><b>Shear:</b> <a href="https://www.integraph.com.au/coriolis/docs/acs/examples/rc-beam#shear" target="_blank" rel="noopener noreferrer">Integraph ACS, Shear verification · AS 3600:2018(A2)</a>. Source / local φV<sub>u</sub>: 300.8 / 300.65 kN (0.049%). Source A<sub>sv</sub> = 157 mm² reconstructs V<sub>us</sub> = 262.55 kN versus its reported 262.7 kN. Local nominal areas retained; aggregate 20 mm is assumed, not a source input.</li>
+    </ul>
+    <p>Checked 16 Oct 2026. Independent engineering acceptance remains open.</p>
+  </div></details>
+  </div>
+  </section>
 </section>
 
 <section id="concretePanel" class="tool-panel" hidden>
@@ -2381,14 +2458,14 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.127 &middot; updated 16 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.128 &middot; updated 17 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261016workflowtrace1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
   <script src="bolt-integrity.js?v=20261016workflowtrace1"></script>
   <script src="weld-capacity.js?v=20261016workflowtrace1"></script>
 <script src="weld-detailing.js?v=20261016weld1"></script><script src="fillet-table.js?v=20261016weld1"></script>
-  <script src="concrete-section-calculation.js?v=20261016workflowtrace1"></script>
+  <script src="concrete-section-calculation.js?v=20261017concretebeam1"></script>
   <script src="section-geometry.js?v=20261016workflowtrace1"></script>
   <script src="section-catalogue.js?v=20261016workflowtrace1"></script>
   <script src="steel-materials.js?v=20261016workflowtrace1"></script>
@@ -2408,9 +2485,9 @@
       <script src="geo-parameters/geo-parameters.js?v=20261016workflowtrace1"></script>
 
   <script src="bolt-comparison/comparison.js?v=20261016workflowtrace1"></script>
-<script src="tool-directory/registry.js?v=20261016workflowtrace1"></script>
-<script src="tool-directory/directory.js?v=20261016workflowtrace1"></script>
-<script src="app.js?v=20261016weld1"></script>
+<script src="tool-directory/registry.js?v=20261017concretebeam1"></script>
+<script src="tool-directory/directory.js?v=20261017concretebeam1"></script>
+<script src="app.js?v=20261017concretebeam1"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=20261016workflowtrace1"></script>
 <script src="geo-parameters/detail-app.js?v=20261016workflowtrace1"></script>
@@ -2462,5 +2539,6 @@
 <script src="beam-internal-forces/app.js?v=20261016workflowtrace1"></script>
 <script src="workflow-review/config.js?v=20261016workflowtrace1"></script>
 <script src="workflow-review/app.js?v=20261016workflowtrace1"></script>
+<script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261017concretebeam1"></script><script src="concrete-beam/app.js?v=20261017concretebeam1"></script>
 </body>
 </html>

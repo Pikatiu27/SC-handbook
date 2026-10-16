@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.127 (16 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.128 (16 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -272,4 +272,7 @@ Audit maintenance: concise phone navigation, bounded purpose text, accessible ta
 16 October 2026: user-approved result → calculation → return workflow, shared folded calculation/source presentation and complete numerical substitutions for CHS Bending, Monopole Section and Beam Internal Forces. Beam selection/load editing and exact current-section readings use the reviewed bounded determinate-analysis flow. All old URLs and query modes remain compatible. Appendix K overlap is informative geometric guidance; joint resistance is not evaluated. Public beta / For Review; independent engineering, project adoption, source-use and full accessibility acceptance remain open. Concrete Beam and private audit/source evidence are excluded.
 
 
-Build 0.7.127 (16 October 2026): compact Weld Capacity calculator, selected-size fillet capacity table, optional fillet size limits and selected AS 1101.3:2026 symbol guide. Direct throat resistance only; project joint design, material/consumable matching, fabrication and inspection remain separate. CPBW resistance is not evaluated. Public beta / For Review; source edition review and independent engineering acceptance remain open.
+Build 0.7.128 (16 October 2026): compact Weld Capacity calculator, selected-size fillet capacity table, optional fillet size limits and selected AS 1101.3:2026 symbol guide. Direct throat resistance only; project joint design, material/consumable matching, fabrication and inspection remain separate. CPBW resistance is not evaluated. Public beta / For Review; source edition review and independent engineering acceptance remain open.
+
+
+Build 0.7.128 (17 October 2026): Concrete Beam Section Capacity under Concrete; bounded rectangular pure-bending and simplified shear capacities with selected reinforcement screens, input-linked section and concise calculation/return flow. Independently reduced sectional and web-crushing design limits also correct the shared Concrete Pad calculation. Default method assumptions remain checked and inspectable. Public beta / For Review; project adoption, source currency, independent engineering, complete detailing and full accessibility remain separately qualified. Other local audit/analysis candidates are excluded.

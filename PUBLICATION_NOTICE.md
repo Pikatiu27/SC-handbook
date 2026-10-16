@@ -2,6 +2,9 @@
 
 ## Status
 
+Build 0.7.128 (17 October 2026): Concrete Beam Section Capacity under Concrete; bounded rectangular pure-bending and simplified shear capacities with selected reinforcement screens, input-linked section and concise calculation/return flow. Independently reduced sectional and web-crushing design limits also correct the shared Concrete Pad calculation. Default method assumptions remain checked and inspectable. Public beta / For Review; project adoption, source currency, independent engineering, complete detailing and full accessibility remain separately qualified. Other local audit/analysis candidates are excluded.
+
+
 Build 0.7.127 (16 October 2026): compact Weld Capacity calculator, selected-size fillet capacity table, optional fillet size limits and selected AS 1101.3:2026 symbol guide. Direct throat resistance only; project joint design, material/consumable matching, fabrication and inspection remain separate. CPBW resistance is not evaluated. Public beta / For Review; source edition review and independent engineering acceptance remain open.
 
 
