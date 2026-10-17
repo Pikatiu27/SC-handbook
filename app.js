@@ -8394,6 +8394,7 @@ function calculateConcrete() {
     state: projectionScreen?.nonFlexuralProportion || !projectionValid ? "warning" : ""
   });
 
+  if (typeof window !== "undefined" && window.PadInputGuide) window.PadInputGuide.update({data, result});
   if (!result.ok) {
     ["concretePhiMuo", "concretePhiVu"].forEach(id => $(id).textContent = "-");
     $("concreteWarningText").textContent = result.message;
@@ -11259,9 +11260,6 @@ function initialise() {
     if (!$("concretePanel").hidden) calculateConcrete();
     if (!$("reoPanel").hidden) calculateReo();
     if (!$("screwPanel").hidden) calculateScrew();
-  });
-  document.querySelector(".concrete-layout-details").addEventListener("toggle", event => {
-    if (event.target.open) calculateConcrete();
   });
   document.querySelectorAll(".beam-family").forEach(button => button.addEventListener("click", () => {
     setBeamFamily(button.dataset.beamFamily);

@@ -16,7 +16,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "de71a3ddcc9612075dbc195d522f9705cc16726c26c6e7927598bcf90b5ee635"
+      "sha256": "8f204a4b5253080f54ed8731792690d969194aba3a5fc383450ac2b3c80aeb0f"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -408,7 +408,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "f2c9e88d0fa7297d225644d684db0d3e0cdaf0a81bb7d8faeee47848a11f2ad5"
+      "sha256": "65af637621f022b44093a21cefd653b05d572eab6ecddc352033b2a8be2af0a0"
     },
     {
       "path": "LICENSE.md",
@@ -429,6 +429,18 @@
     {
       "path": "monopole-capacity.js",
       "sha256": "bd46234a158aedd1c0d6c86b64dcf19cfd5492ca7956b0327686d0a1d99e1bdc"
+    },
+    {
+      "path": "pad-input/app.js",
+      "sha256": "2a885ba95820768e1bd7143258763a85e13a84a61d44e6683802a0e00bb49f4d"
+    },
+    {
+      "path": "pad-input/drawing.js",
+      "sha256": "d48060720f1c6d5801fdc00f13b65b6f8534a7c52e695f81c15ff62022f5d02e"
+    },
+    {
+      "path": "pad-input/styles.css",
+      "sha256": "75f5ec116c027b2a20850e1a3d0f8c9aeeba57947cc006231608fb01bcd90ad0"
     },
     {
       "path": "panel-antennas/app.js",
@@ -480,11 +492,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "d24b271d155b0e85effd3f6d379e26f219b27961a6deca9326adfaebd7fa31e0"
+      "sha256": "9e1c3874e085e102086f53b177357b0708e44a5b6fde8ce97de1227fcf8aeb1f"
     },
     {
       "path": "README.md",
-      "sha256": "c96f194dd553062224a5403e68559d1013f3ab03e91be967992116ee18f3541e"
+      "sha256": "131761511bb7ac08315cc1610ec4652dbf7a881485ec87a7af0fa862273c9806"
     },
     {
       "path": "reinforcement-area/app.js",

@@ -2,6 +2,9 @@
 
 ## Status
 
+Build 0.7.130 (17 October 2026): Concrete Pad uses compact grouped inputs, an input-linked one-metre strip section, aligned reinforcement mats and explicit Auto/Reset depth recovery. Optional projection and fitment inputs remain folded; capacities stay primary and symbols are under Calculation. The independent Pad analysis schematic is removed. Current 0.7.129 calculation owners and other pages remain unchanged. Public beta / For Review; whole-footing, interface, anchorage, project adoption and independent engineering checks remain outside this section-capacity tool.
+
+
 Build 0.7.129 (17 October 2026): Calculation maintenance improves stable section/member/beam arithmetic, strict source applicability boundaries, concrete shear and reinforcement scope, load-distribution state handling, and reproducible numerical substitutions. Valid input normalization now refreshes dependent results. Concrete Beam and all existing routes are retained. Public beta / For Review continues; source-method discrepancies, catalogue currency, project adoption, independent engineering and complete design/accessibility acceptance remain separately qualified.
 
 

@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.129 (17 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.130 (17 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -279,3 +279,6 @@ Build 0.7.128 (17 October 2026): Concrete Beam Section Capacity under Concrete; 
 
 
 Build 0.7.129 (17 October 2026): Calculation maintenance improves stable section/member/beam arithmetic, strict source applicability boundaries, concrete shear and reinforcement scope, load-distribution state handling, and reproducible numerical substitutions. Valid input normalization now refreshes dependent results. Concrete Beam and all existing routes are retained. Public beta / For Review continues; source-method discrepancies, catalogue currency, project adoption, independent engineering and complete design/accessibility acceptance remain separately qualified.
+
+
+Build 0.7.130 (17 October 2026): Concrete Pad uses compact grouped inputs, an input-linked one-metre strip section, aligned reinforcement mats and explicit Auto/Reset depth recovery. Optional projection and fitment inputs remain folded; capacities stay primary and symbols are under Calculation. The independent Pad analysis schematic is removed. Current 0.7.129 calculation owners and other pages remain unchanged. Public beta / For Review; whole-footing, interface, anchorage, project adoption and independent engineering checks remain outside this section-capacity tool.

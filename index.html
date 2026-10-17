@@ -44,6 +44,7 @@
 <link rel="stylesheet" href="workflow-review/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="weld-improvements.css?v=20261016weld1"><link rel="stylesheet" href="fillet-table.css?v=20261016weld1">
 <link rel="stylesheet" href="concrete-beam/styles.css?v=20261017concretebeam1">
+<link rel="stylesheet" href="pad-input/styles.css?v=20261017padrelease1">
 </head>
 <body>
   <header class="topbar">
@@ -1024,6 +1025,14 @@
       <div class="tool-heading"><div><p class="kicker">Concrete pads · AS 3600:2018 section theory</p><h2>Concrete Pad Section</h2></div><span class="tool-status">For Review · section capacity only</span></div>
 
       <section class="lookup-card concrete-card">
+<figure id="padInputFigure" class="engineering-figure pp-figure" data-figure-profile="SC-WEB-FIGURE-001">
+ <div id="padInputPlot" class="engineering-figure__plot"></div>
+ <figcaption class="engineering-figure__caption">Pad strip section · mm · entered geometry</figcaption>
+ <div id="padFigureKey" class="engineering-figure__key"></div>
+ <p id="padFigureFocus" class="pp-figure-note" aria-live="polite"></p>
+ <details class="pp-figure-basis"><summary>Drawing basis</summary><p>Cut normal to the bending bars. Dots show entered diameter, pitch and depth; their centred phase is illustrative, not a finite bar count or side cover. Solid bars show the equal-size crossing layer at automatic two-way mats. Manual offsets omit inferred crossing bars. Strip sides are not footing edges. Fitments and anchorage are not detailed.</p><p>Convention: <a href="https://www.tmr.qld.gov.au/_/media/busind/techstdpubs/bridges-marine-and-other-structures/drafting-and-design-presentation-standards/volume-3/ddpsm-vol-3-chapter-2.pdf" target="_blank" rel="noopener">TMR DDPSM Vol. 3 Ch. 2, §§14, 16.1</a> (January 2026). Original generated geometry; screen review only.</p></details>
+</figure>
+
         <div class="concrete-input-stack input-cluster">
           <section class="input-group input-group-factor">
             <span class="input-group-heading"><b>Analysis basis</b><small>Choose the concrete face in compression.</small></span>
@@ -1093,9 +1102,7 @@
           <p class="result-note" id="concreteWarningText">Section capacities only; design actions and excluded checks are not evaluated.</p>
         </section>
 
-        <section class="concrete-visual-grid">
-          <details class="concrete-visual-card concrete-layout-details"><summary><div class="section-heading"><div><h2>Section analysis schematic</h2></div><span>strain and stress block</span></div><i>+</i></summary><div class="concrete-visual-body"><figure class="concrete-publication-figure"><picture><source media="(max-width: 760px)" srcset="assets/generated/concrete-pad-publication-style-mobile.svg?v=20260717stressblock7"><img src="assets/generated/concrete-pad-publication-style.svg?v=20261016workflowtrace1" alt="Concrete cross-section, linear strain distribution and equivalent rectangular stress block"></picture><figcaption>Notation schematic only: a = &gamma;x and C<sub>c</sub> acts at a/2; the calculation uses every active layer parallel to bending.</figcaption></figure></div></details>
-        </section>
+
       </section>
 
       <details class="detail-card concrete-detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Detailed section checks</b></span><small>Neutral axis, forces and calculation steps</small></span><i>+</i></summary><div class="detail-body"><section><h3>Capacity summary</h3><div id="concreteSectionState" class="concrete-layer-results"></div></section><section><h3>Reinforcement forces and strains</h3><div id="concreteLayerResults" class="concrete-layer-results"></div></section><section><h3>Calculation steps</h3><div id="concreteFormulaSteps" class="formula-list"></div></section></div></details>
@@ -1124,7 +1131,7 @@
       </details>
     </section>
 
-    <section id="propertiesPanel" class="tool-panel section-table-preview" hidden>
+<section id="propertiesPanel" class="tool-panel section-table-preview" hidden>
       <div class="tool-heading"><div><p class="kicker">Section and material properties</p><h2>Section Properties</h2></div><span class="tool-status">For Review &middot; Public beta</span></div>
 
       <section class="lookup-card">
@@ -2458,7 +2465,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.129 &middot; updated 17 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.130 &middot; updated 17 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2487,7 +2494,7 @@
   <script src="bolt-comparison/comparison.js?v=20261016workflowtrace1"></script>
 <script src="tool-directory/registry.js?v=20261017concretebeam1"></script>
 <script src="tool-directory/directory.js?v=20261017concretebeam1"></script>
-<script src="app.js?v=20261017calcaudit1"></script>
+<script src="app.js?v=20261017padrelease1"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=20261016workflowtrace1"></script>
 <script src="geo-parameters/detail-app.js?v=20261016workflowtrace1"></script>
@@ -2540,5 +2547,6 @@
 <script src="workflow-review/config.js?v=20261016workflowtrace1"></script>
 <script src="workflow-review/app.js?v=20261016workflowtrace1"></script>
 <script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261017concretebeam1"></script><script src="concrete-beam/app.js?v=20261017concretebeam1"></script>
+<script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261017padrelease1"></script>
 </body>
 </html>
