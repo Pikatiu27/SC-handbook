@@ -1,5 +1,5 @@
 "use strict";
-(function(root,factory){const api=factory(); if(typeof module==='object'&&module.exports)module.exports=api; root.WeldDetailing=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
+(function(root,factory){const F=typeof module==='object'&&module.exports?require('./engineering-number-format.js'):root.EngineeringNumberFormat; const api=factory(F); if(typeof module==='object'&&module.exports)module.exports=api; root.WeldDetailing=api;})(typeof globalThis!=='undefined'?globalThis:this,function(F){
   const thickness=value=>typeof value==='number'||typeof value==='string'&&value.trim()!==''?Number(value):NaN;
   function evaluate({type='fillet',enabled=false,size,t1,t2,joint='unknown',edge='unknown'}){
     const unavailable=(state,note)=>({state,note,minimum:null,maximum:null,tableMinimum:null,within:false});
@@ -27,7 +27,9 @@
       const n=thickness(el(id).value);
       if(active&&!(Number.isFinite(n)&&n>0))el(id).setAttribute('aria-invalid','true');else el(id).removeAttribute('aria-invalid');
     }
-    const number=n=>Number.isInteger(n)?String(n):String(Number(n.toFixed(3)));
+    // Preserve source-band operands and thinner-part limits. Rounding a value
+    // just above 7/10/15 or 6 mm would hide the branch shown in the same trace.
+    const number=n=>F&&typeof F.decimalHalfUpSignificant==='function'?F.decimalHalfUpSignificant(n,17):String(n);
     el('weldSizeMinimum').textContent=result.minimum===null?'Not evaluated':number(result.minimum)+' mm';
     el('weldSizeMaximum').textContent=result.minimum===null?'Not evaluated':result.maximum===null?'Not applicable':number(result.maximum)+' mm';
     el('weldSizeState').textContent=result.state;

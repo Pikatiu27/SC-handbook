@@ -54,7 +54,7 @@
     return Object.freeze(coordinates.map((point, index) => Object.freeze({ id: index + 1, ...point })));
   }
 
-  function simultaneousAxialHorizontalPiles(reactions, tolerance = 0.05) {
+  function simultaneousAxialHorizontalPiles(reactions, tolerance = 0) {
     if (!Array.isArray(reactions)) throw new TypeError("Pile reactions must be an array.");
     const checkedTolerance = finite(tolerance, "Simultaneous-action tolerance");
     if (checkedTolerance < 0) throw new RangeError("Simultaneous-action tolerance cannot be negative.");
@@ -83,10 +83,10 @@
       momentY: finite(momentY, "Y moment action"),
       torsion: finite(torsion, "Torsional action")
     };
-    const tolerance = 1e-9;
     const sumX = points.reduce((sum, point) => sum + point.x, 0);
     const sumY = points.reduce((sum, point) => sum + point.y, 0);
-    if (Math.abs(sumX) > tolerance || Math.abs(sumY) > tolerance) {
+    const coordinateTolerance = key => 32 * Number.EPSILON * points.reduce((sum, point) => sum + Math.abs(point[key]), 0);
+    if (Math.abs(sumX) > coordinateTolerance("x") || Math.abs(sumY) > coordinateTolerance("y")) {
       throw new RangeError("Pile coordinates must be measured from the group centroid.");
     }
 
@@ -94,20 +94,23 @@
     const sumY2 = points.reduce((sum, point) => sum + point.y ** 2, 0);
     const sumXY = points.reduce((sum, point) => sum + point.x * point.y, 0);
     const sumR2 = sumX2 + sumY2;
-    if (Math.abs(sumXY) > tolerance) throw new RangeError("Pile coordinate axes must be uncoupled for the simplified distribution.");
-    if (Math.abs(actions.momentX) > tolerance && sumY2 <= tolerance) throw new RangeError("The pile layout cannot resist the entered X moment.");
-    if (Math.abs(actions.momentY) > tolerance && sumX2 <= tolerance) throw new RangeError("The pile layout cannot resist the entered Y moment.");
-    if (Math.abs(actions.torsion) > tolerance && sumR2 <= tolerance) throw new RangeError("The pile layout cannot resist the entered torsion.");
+    if (![sumX, sumY, sumX2, sumY2, sumXY, sumR2].every(Number.isFinite)) throw new RangeError("Pile geometry exceeds the supported numerical range.");
+    const crossTolerance = 32 * Number.EPSILON * points.reduce((sum, point) => sum + Math.abs(point.x * point.y), 0);
+    if (Math.abs(sumXY) > crossTolerance) throw new RangeError("Pile coordinate axes must be uncoupled for the simplified distribution.");
+    if (actions.momentX !== 0 && sumY2 === 0) throw new RangeError("The pile layout cannot resist the entered X moment.");
+    if (actions.momentY !== 0 && sumX2 === 0) throw new RangeError("The pile layout cannot resist the entered Y moment.");
+    if (actions.torsion !== 0 && sumR2 === 0) throw new RangeError("The pile layout cannot resist the entered torsion.");
 
     const count = points.length;
     const directShearX = actions.shearX / count;
     const directShearY = actions.shearY / count;
     const reactions = points.map(point => {
       const pileAxial = actions.axial / count
-        + (sumY2 > tolerance ? actions.momentX * point.y / sumY2 : 0)
-        + (sumX2 > tolerance ? actions.momentY * point.x / sumX2 : 0);
-      const lateralX = directShearX + (sumR2 > tolerance ? -actions.torsion * point.y / sumR2 : 0);
-      const lateralY = directShearY + (sumR2 > tolerance ? actions.torsion * point.x / sumR2 : 0);
+        + (sumY2 > 0 ? actions.momentX * point.y / sumY2 : 0)
+        + (sumX2 > 0 ? actions.momentY * point.x / sumX2 : 0);
+      const lateralX = directShearX + (sumR2 > 0 ? -actions.torsion * point.y / sumR2 : 0);
+      const lateralY = directShearY + (sumR2 > 0 ? actions.torsion * point.x / sumR2 : 0);
+      if (![pileAxial, lateralX, lateralY].every(Number.isFinite)) throw new RangeError("Pile actions exceed the supported numerical range.");
       return Object.freeze({ ...point, axial: pileAxial, lateralX, lateralY, lateral: Math.hypot(lateralX, lateralY) });
     });
 

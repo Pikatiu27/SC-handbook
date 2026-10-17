@@ -46,7 +46,7 @@
 
     let alphaB;
     if (["chs", "rhs", "shs"].includes(sectionFamily)) {
-      alphaB = -0.5;
+      alphaB = kf < 1 ? 0 : -0.5;
     } else if (sectionFamily === "ub" || sectionFamily === "uc") {
       const tf = positive(flangeThickness, "Universal-section flange thickness");
       alphaB = tf > 40 ? 1 : 0;
@@ -91,14 +91,21 @@
 
     const alphaA = 2100 * (slenderness - 13.5) / (slenderness ** 2 - 15.3 * slenderness + 2050);
     const modifiedLambda = slenderness + alphaA * sectionConstant;
-    if (modifiedLambda <= 0) {
-      throw new RangeError("Modified member slenderness lambda must be greater than zero for the adopted compression curve.");
+    if (!Number.isFinite(modifiedLambda)) {
+      throw new RangeError("Modified member slenderness must remain finite.");
     }
     const eta = Math.max(0, 0.00326 * (modifiedLambda - 13.5));
     const ratio = modifiedLambda / 90;
-    const xi = (ratio ** 2 + 1 + eta) / (2 * ratio ** 2);
-    const rootTerm = Math.max(0, 1 - (90 / (xi * modifiedLambda)) ** 2);
-    const alphaC = Math.min(1, Math.max(0, xi * (1 - Math.sqrt(rootTerm))));
+    const squareRatio = ratio ** 2;
+    const xi = squareRatio > 0 ? (squareRatio + 1 + eta) / (2 * squareRatio) : Infinity;
+    // AS 4100 Cl. 6.3.3, rationalized smaller root. This avoids
+    // subtraction cancellation for stocky members. Modified lambda may
+    // be negative; the equation uses its square and eta remains >= 0.
+    const linear = 1 + eta + squareRatio;
+    const rawReduction = squareRatio > 1
+      ? (2 / squareRatio) / (linear / squareRatio + Math.sqrt(Math.max(0, (linear / squareRatio) ** 2 - 4 / squareRatio)))
+      : 2 / (linear + Math.sqrt(Math.max(0, linear ** 2 - 4 * squareRatio)));
+    const alphaC = Math.min(1, Math.max(0, rawReduction));
     return Object.freeze({ alphaC, alphaA, modifiedLambda, eta, xi });
   }
 

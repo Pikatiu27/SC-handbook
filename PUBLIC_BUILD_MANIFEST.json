@@ -16,11 +16,11 @@
     },
     {
       "path": "app.js",
-      "sha256": "21e05051e9723af7357b7dd6207bf5ce57666ff5e49d661c6b28a57f56516ef2"
+      "sha256": "de71a3ddcc9612075dbc195d522f9705cc16726c26c6e7927598bcf90b5ee635"
     },
     {
       "path": "as4600-chs/bending.js",
-      "sha256": "c7b2df6d07dafe966f242e6901f228d34d4b17e71744637a9bda6aacdf838481"
+      "sha256": "f0a7b28c6211ad3ab2ffba948252e2819adb19182825f932986b05944c298e5f"
     },
     {
       "path": "as4600-chs/orrcon-products.js",
@@ -140,7 +140,7 @@
     },
     {
       "path": "beam-custom-section.js",
-      "sha256": "725123387352894c9caa477e9bd18d18a2879a6730827e99b4569e9f1af9739c"
+      "sha256": "6a537f817be09d03324c02de7caef685949c35bf2e261d2b8b6d209445dce17c"
     },
     {
       "path": "beam-hot-rolled-data.js",
@@ -148,15 +148,15 @@
     },
     {
       "path": "beam-internal-forces/app.js",
-      "sha256": "0cbad813937e9a156c464648e032e3a703248dc0b610f6f0856ffc8d99a175a6"
+      "sha256": "4a23ed826f4f50bc6d96dbb7a00654a6e40579f0e904aa000a72f6927248f84a"
     },
     {
       "path": "beam-internal-forces/calculation.js",
-      "sha256": "15779aac7e359995ef6e3a4a917045994fb8ae363910f4b2124425aa515bd980"
+      "sha256": "ea251f8bfb5510de167e2a091daabc9dd7b78d8d8ba968587e5a521446b69550"
     },
     {
       "path": "beam-internal-forces/drawing.js",
-      "sha256": "e8b287b1cb6c95d188953d82513c425128cd9e3a272ddf45210466bef871712d"
+      "sha256": "3d10ce947ae76f3e728866f13d2b23419667003973eea8e4347cf5129c76a599"
     },
     {
       "path": "beam-internal-forces/styles.css",
@@ -180,7 +180,7 @@
     },
     {
       "path": "beam-section-reconciliation.js",
-      "sha256": "2f4a45c7adcb9eb5bffecc601195a48aff3a7890c901cc2ecdc1e05e5284d8ed"
+      "sha256": "395d13e7001ce57797ed81e9e3bc58668081d7ed423ea52ec30f77b21724bb99"
     },
     {
       "path": "bolt-capacity.js",
@@ -296,11 +296,11 @@
     },
     {
       "path": "concrete-section-calculation.js",
-      "sha256": "c077a8c6ecd7e28b904e0f1c3f7a865ae6f81c8f111c8e8daaf28bc27edf4733"
+      "sha256": "3d044406fa0c7eea1538f8d94edb03ea7bc9e423824323f21f7ac3bff4e92ef3"
     },
     {
       "path": "engineering-number-format.js",
-      "sha256": "22d2bef7e9b2e4814e56870e5be309f2af2b62d151de4fd012e4e1682c8848be"
+      "sha256": "aaf63b6934734c14b02bb9f1376a7b275a7a1705b323ccfea89860bd1d157a92"
     },
     {
       "path": "fillet-table.css",
@@ -308,7 +308,7 @@
     },
     {
       "path": "fillet-table.js",
-      "sha256": "4b0b829ff2e19d7f4dd29d82189c66db788c3a773dfd20b952717e8f38630e79"
+      "sha256": "effd85e0cecfb2561d45e01de4919710c61f45da48c10f3d1ce7a301d959092b"
     },
     {
       "path": "foundation-products/lookup.js",
@@ -408,7 +408,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "1e9f34b1daf5db181747ff53c62d7ccf1515537abb636b8162156e9f00f17a83"
+      "sha256": "f2c9e88d0fa7297d225644d684db0d3e0cdaf0a81bb7d8faeee47848a11f2ad5"
     },
     {
       "path": "LICENSE.md",
@@ -416,7 +416,7 @@
     },
     {
       "path": "member-capacity.js",
-      "sha256": "ef3876291f804606467e458c74e9b96f92e5414c925e3a38402a7d41903b43a3"
+      "sha256": "343b1de367332cb8c1bbbdd45974785d98d32e910bf54f62411a61091f9705f1"
     },
     {
       "path": "member-form-factor.js",
@@ -428,7 +428,7 @@
     },
     {
       "path": "monopole-capacity.js",
-      "sha256": "4c14ae063ed7b81f95198db395a7cd4bb2ce4f45591577551e97a61bb4158577"
+      "sha256": "bd46234a158aedd1c0d6c86b64dcf19cfd5492ca7956b0327686d0a1d99e1bdc"
     },
     {
       "path": "panel-antennas/app.js",
@@ -480,11 +480,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "4079f884d61def5156b6cdf5e21ab7873d342f95a0c1f2d681229eaae7bde2cd"
+      "sha256": "d24b271d155b0e85effd3f6d379e26f219b27961a6deca9326adfaebd7fa31e0"
     },
     {
       "path": "README.md",
-      "sha256": "0d054e76c54d4050fbdcf75a015d0aec5502dedf0dc19e5105d78246662a8de3"
+      "sha256": "c96f194dd553062224a5403e68559d1013f3ab03e91be967992116ee18f3541e"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -500,7 +500,7 @@
     },
     {
       "path": "reo-calculation.js",
-      "sha256": "600641c13c47e667de6c4f5061fa2d8e19784fb528bd8fbd1423d2e2c0983029"
+      "sha256": "231bbf9f8b501cf4d96f4546133726968943de9c5dc79ec8c0f5ac997be8fa30"
     },
     {
       "path": "reo-state.js",
@@ -512,7 +512,7 @@
     },
     {
       "path": "screw-demand.js",
-      "sha256": "70623a8fd6a173ed7af8c1909a642fb8e9c177fc6af1bf33b825d2997979ee83"
+      "sha256": "4765bd1e016198e7c537cac2464bc5880ef0a2e0476aefcb56e94cc6d9479037"
     },
     {
       "path": "section-catalogue.js",
@@ -520,7 +520,7 @@
     },
     {
       "path": "section-geometry.js",
-      "sha256": "5cb1860d3d4c212e93219e9f88ea60eef3cc41581acd6fa08ce6e65f4218f1bb"
+      "sha256": "ef1e74ed1326b56cc8464d72e4549d1910665ef62dc514315c38f369a8155aea"
     },
     {
       "path": "section-tables/header-filters.js",
@@ -588,7 +588,7 @@
     },
     {
       "path": "weld-detailing.js",
-      "sha256": "6107b7e9243ce91439ba946ac9fc9d86bea8ff6fb6f7f8aaadd414d2c43f6887"
+      "sha256": "f986109d4bcc5c8bedb502309474af386e5106152d12e41d51a149a3383d6091"
     },
     {
       "path": "weld-improvements.css",
@@ -604,7 +604,7 @@
     },
     {
       "path": "workflow-review/numerical-traces.js",
-      "sha256": "a35eb895cb7447117cc541764e72a8eaeb90016572a3a8cd7626b9b2614a0360"
+      "sha256": "c0e2d3ccb7e84b9558fe94e58b79cd42a3d5984c7320607a5569e3c376f011f8"
     },
     {
       "path": "workflow-review/styles.css",

@@ -34,7 +34,10 @@
 
   function solveSection(data) {
     const forceAt = x => forcesAtNeutralAxis(x, data).axial;
-    let low = 0.5;
+    // A fixed 0.5 mm floor rejects valid lightly reinforced sections. Bracket
+    // below the nearest active bar instead, retaining a positive strain divisor.
+    const nearestLayer = Math.min(...data.layers.map(layer => layer.d).filter(value => value > 0));
+    let low = Math.max(Number.MIN_VALUE, Math.min(data.depth, nearestLayer) * 1e-12);
     let high = data.depth * 4;
     let fLow = forceAt(low);
     let fHigh = forceAt(high);
@@ -47,10 +50,13 @@
     if (fLow * fHigh > 0) {
       return { ok: false, message: "No neutral axis solution found for active layers" };
     }
-    for (let index = 0; index < 90; index += 1) {
+    for (let index = 0; index < 160; index += 1) {
       const mid = (low + high) / 2;
-      const fMid = forceAt(mid);
-      if (Math.abs(fMid) < 0.5) {
+      const midState = forcesAtNeutralAxis(mid, data);
+      const fMid = midState.axial;
+      const forceScale = Math.abs(midState.cc) + midState.layers.reduce((sum, layer) => sum + Math.abs(layer.force), 0);
+      const residualTolerance = Math.max(Number.MIN_VALUE, 32 * Number.EPSILON * forceScale);
+      if (Math.abs(fMid) <= residualTolerance) {
         low = mid;
         high = mid;
         break;
@@ -65,7 +71,13 @@
     }
     const x = (low + high) / 2;
     const state = forcesAtNeutralAxis(x, data);
-    const momentNmm = state.cc * state.yCc + state.layers.reduce((sum, layer) => sum + layer.force * layer.yTop, 0);
+    const forceScale = Math.abs(state.cc) + state.layers.reduce((sum, layer) => sum + Math.abs(layer.force), 0);
+    if (!Number.isFinite(state.axial) || Math.abs(state.axial) > Math.max(Number.MIN_VALUE, 64 * Number.EPSILON * forceScale)) {
+      return { ok: false, message: "Neutral-axis solution did not satisfy force equilibrium for the entered point-layer model" };
+    }
+    // Use the selected compression face as the moment origin. This also avoids
+    // amplifying a small equilibrium residual under top/bottom reflection.
+    const momentNmm = state.cc * state.blockDepth / 2 + state.layers.reduce((sum, layer) => sum + layer.force * layer.d, 0);
     const muo = Math.abs(momentNmm) / 1e6;
     const extremeTensionLayer = state.layers
       .filter(layer => layer.strain < -0.00005)
@@ -112,7 +124,7 @@
     const sv = shearReoMode === "vertical" ? svInput : 1;
     const fsyf = shearReoMode === "vertical" ? fsyfInput : 1;
     const tensionLayers = data.layers.filter(layer =>
-      Number(layer.d) >= depth / 2 && Number(layer.strain) < -0.00005 && Number(layer.area) > 0
+      Number(layer.d) >= depth / 2 && Number(layer.strain) < 0 && Number(layer.area) > 0
     );
     const centroidArea = tensionLayers.reduce((sum, layer) => sum + Number(layer.area), 0);
     const dNumerator = tensionLayers.reduce((sum, layer) => sum + Number(layer.area) * Number(layer.d), 0);
@@ -134,13 +146,6 @@
     const vuRaw = vuc + vus;
     const vuMax = 0.55 * 0.9 * fc * bv * dv * (cotTheta / (1 + cotTheta ** 2)) / 1000;
     const vu = Math.min(vuRaw, vuMax);
-    // AS 3600 Table 2.2.2(e), Cls 8.2.3.1 and 8.2.3.3(5):
-    // independently reduce the sectional and crushing checks before comparing.
-    const sectionPhi = minShearReoProvided ? 0.75 : 0.70;
-    const crushingPhi = 0.70;
-    const sectionDesignLimit = sectionPhi * vuRaw;
-    const crushingDesignLimit = crushingPhi * vuMax;
-    const webCrushingLimited = crushingDesignLimit <= sectionDesignLimit;
     const highStrengthLongitudinalLayers = data.layers.filter(layer => Number(layer.fsy) > 500);
     const scopeFailures = [];
     if (fc > 65) scopeFailures.push(`f'c = ${fc} MPa exceeds 65 MPa`);
@@ -149,9 +154,17 @@
       scopeFailures.push(`${highStrengthLongitudinalLayers.map(layer => `mat ${layer.index}`).join(", ")} f_sy exceeds 500 MPa`);
     }
     const withinSimplifiedScope = scopeFailures.length === 0;
-    // Compatibility field: factor of the governing check; phi*vu is not the
-    // design capacity in the transition region. Consumers use phiVu directly.
-    const phi = webCrushingLimited ? crushingPhi : sectionPhi;
+    // AS3600 Table2.2.2(e): area sufficiency alone does not establish Class N.
+    // The existing controller supplies an Australian N/Y designation. Unknown
+    // or legacy classes retain the conservative otherwise factor.
+    const classNFitments = hasShearReo && /^N\d+$/.test(String(reinforcement.designation || ""));
+    const sectionPhi = minShearReoProvided && classNFitments ? 0.75 : 0.70;
+    const sectionDesignCapacity = sectionPhi * vuRaw;
+    const webCrushingDesignCapacity = 0.70 * vuMax;
+    // Compare design resistances separately. With Class N fitments the 0.70
+    // web-crushing limit can govern before vuRaw reaches nominal vuMax.
+    const webCrushingLimited = webCrushingDesignCapacity <= sectionDesignCapacity;
+    const phi = webCrushingLimited ? 0.70 : sectionPhi;
 
     return Object.freeze({
       tensionLayers: Object.freeze(tensionLayers.slice()),
@@ -175,6 +188,7 @@
       asvMinPerS,
       hasShearReo,
       minShearReoProvided,
+      classNFitments,
       theta,
       cotTheta,
       vus,
@@ -186,10 +200,13 @@
       scopeFailures: Object.freeze(scopeFailures),
       phi,
       sectionPhi,
-      crushingPhi,
-      sectionDesignLimit,
-      crushingDesignLimit,
-      phiVu: withinSimplifiedScope ? Math.min(sectionDesignLimit, crushingDesignLimit) : NaN
+      sectionDesignCapacity,
+      webCrushingDesignCapacity,
+      // Preserve the published Concrete Beam / Pad consumer field names.
+      crushingPhi: 0.70,
+      sectionDesignLimit: sectionDesignCapacity,
+      crushingDesignLimit: webCrushingDesignCapacity,
+      phiVu: withinSimplifiedScope ? Math.min(sectionDesignCapacity, webCrushingDesignCapacity) : NaN
     });
   }
 

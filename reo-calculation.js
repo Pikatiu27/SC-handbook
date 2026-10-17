@@ -43,7 +43,7 @@
       issues.push("Select a supported 500N reinforcing bar designation.");
       return;
     }
-    if (!Number.isFinite(options.fc) || options.fc < 20) issues.push("Enter a concrete strength of at least 20 MPa for this quick check.");
+    if (!Number.isFinite(options.fc) || options.fc < 20 || options.fc > 120) issues.push("Enter a concrete strength between 20 MPa and 120 MPa for this quick check (AS 3600 Cl. 1.1.2). The development expression separately limits its strength term to 65 MPa.");
     if (!Number.isFinite(options.cover) || options.cover <= 0) issues.push("Concrete cover c must be greater than zero.");
     if (!Number.isFinite(options.clearSpacing) || options.clearSpacing <= 0) issues.push("Clear bar spacing a must be greater than zero.");
     const customRefinedArrangement = options.method === "refined" && options.refinedArrangement === "custom";

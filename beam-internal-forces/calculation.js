@@ -3,6 +3,14 @@
   const types=Object.freeze({simple:"Simply supported", "cantilever-left":"Cantilever · fixed left", "cantilever-right":"Cantilever · fixed right", "overhang-left":"Left overhang", "overhang-right":"Right overhang", "overhang-both":"Both-end overhangs"});
   const defaults=Object.freeze({type:"simple",length:6,a:0,b:6,loads:[{id:"L1",type:"point",start:2,p:10},{id:"L2",type:"udl",start:0,end:6,q0:2,q1:2}]});
   const finite=Number.isFinite,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+  // Compare the declared canonical decimal values without a subtraction or an
+  // epsilon band. HTML Number inputs are already parsed to these Number values.
+  function spanAtLeast(start,end,length,power){
+    const parts=value=>{const [mantissa,exponent="0"]=String(value).toLowerCase().split("e"),[whole,fraction=""]=mantissa.split(".");return {coefficient:BigInt(whole+fraction),exponent:Number(exponent)-fraction.length};};
+    const a=parts(start),b=parts(end),limit=parts(length);limit.exponent+=power;
+    const exponent=Math.min(a.exponent,b.exponent,limit.exponent),integer=v=>v.coefficient*10n**BigInt(v.exponent-exponent);
+    return integer(b)-integer(a)>=integer(limit);
+  }
   function supports(input){
     const L=input.length;
     if(input.type==="cantilever-left")return [{id:"A",x:0,fixed:true}];
@@ -16,7 +24,7 @@
     if(errors.length)return errors;
     const s=supports(input),L=input.length;
     if(s.length===2){
-      if(s.some(r=>!finite(r.x)||r.x<0||r.x>L)||s[1].x-s[0].x+L*Number.EPSILON*4<L*0.001)errors.push({field:"supports",message:"Supports must lie on the beam, with spacing at least 0.1% of its length."});
+      if(s.some(r=>!finite(r.x)||r.x<0||r.x>L)||!spanAtLeast(s[0].x,s[1].x,L,-3))errors.push({field:"supports",message:"Supports must lie on the beam, with spacing at least 0.1% of its length."});
       if(input.type.includes("overhang")&&((input.type!=="overhang-right"&&!(input.a>0))||(input.type!=="overhang-left"&&!(input.b<L))))errors.push({field:"supports",message:"The selected overhang must have a positive length."});
     }
     if(!Array.isArray(input.loads)||input.loads.length>24){errors.push({field:"loads",message:"Use at most 24 loads."});return errors;}
@@ -29,11 +37,30 @@
       if(["point","moment"].includes(load.type)){
         if(!finite(load.p)||Math.abs(load.p)>1e6)fail("enter a finite magnitude between −1,000,000 and +1,000,000.");
       }else{
-        if(!finite(load.end)||load.end>L||!(load.end>load.start)||load.end-load.start<L*1e-6)fail("distributed-load end must follow its start and lie on the beam.");
+        if(!finite(load.end)||load.end>L||!(load.end>load.start)||!spanAtLeast(load.start,load.end,L,-6))fail("distributed-load end must follow its start and lie on the beam, with length at least 0.0001% of L.");
         if(!finite(load.q0)||Math.abs(load.q0)>1e6||!finite(load.q1)||Math.abs(load.q1)>1e6)fail("enter finite intensities between −1,000,000 and +1,000,000 kN/m.");
         if(load.type==="udl"&&load.q0!==load.q1)fail("uniform-load end intensities must match.");
       }
-    });return errors;
+    });
+    if(!errors.length){
+      // Below the normal IEEE754 range, force/moment arithmetic can discard
+      // nonzero reactions or violate equilibrium while still remaining finite.
+      // This is an explicit numerical support bound, not an engineering limit.
+      const normalMinimum=2**-1022;
+      const activeLoads=input.loads.filter(load=>["point","moment"].includes(load.type)?load.p!==0:load.q0!==0||load.q1!==0);
+      const activePositions=[...new Set([0,L,...s.map(support=>support.x),...activeLoads.flatMap(load=>[load.start,...(["udl","linear"].includes(load.type)?[load.end]:[])])])];
+      input.loads.forEach(load=>{
+        let magnitude,components,forceMagnitude,origins;
+        if(load.type==="point"){magnitude=Math.abs(load.p);components=[magnitude,magnitude*L];forceMagnitude=magnitude;origins=[load.start];}
+        else if(load.type==="moment"){magnitude=Math.abs(load.p);components=[magnitude,magnitude/L];}
+        else{magnitude=Math.max(Math.abs(load.q0),Math.abs(load.q1));const d=load.end-load.start;forceMagnitude=magnitude*d;components=[forceMagnitude,magnitude*d*d];origins=[load.start,load.end];}
+        // Retain first moments at each entered event/support, including near-end
+        // point actions. Whole-beam P*L alone does not bound a tiny nonzero P*x.
+        if(forceMagnitude>0)for(const origin of origins)for(const position of activePositions){const lever=Math.abs(position-origin);if(lever>0)components.push(forceMagnitude*lever);}
+        if(magnitude!==0&&components.some(value=>value===0||value<normalMinimum))errors.push({field:"load:"+load.id,message:"Action magnitudes are below the supported numerical range: nonzero characteristic force and moment components, including event/support lever-arm products, must be at least 2^-1022."});
+      });
+    }
+    return errors;
   }
   // Exact force and first moment of a linear intensity, including sign changes.
   function resultant(load){
@@ -66,10 +93,12 @@
     function roots(A,B,C,span){
       const scale=Math.max(Math.abs(A)*span*span,Math.abs(B)*span,Math.abs(C));
       if(scale===0)return [];
-      const tol=1e-13*scale;
-      if(Math.abs(A)*span*span<tol)return Math.abs(B)*span<tol?[]:[-C/B];
-      const D=B*B-4*A*C;if(D<0)return [];
-      const q=-.5*(B+(B>=0?1:-1)*Math.sqrt(D));return q===0?[-B/(2*A)]:[q/A,C/q];
+      // Solve in dimensionless u/span and normalize before squaring. Otherwise
+      // the discriminant underflows for valid small loads, losing real extrema.
+      const a=A*span*span/scale,b=B*span/scale,c=C/scale;
+      if(Math.abs(a)<1e-13)return Math.abs(b)<1e-13?[]:[-c/b*span];
+      const D=b*b-4*a*c;if(D<0)return [];
+      const q=-.5*(b+(b>=0?1:-1)*Math.sqrt(D));return (q===0?[-b/(2*a)]:[q/a,c/q]).map(v=>v*span);
     }
     const candidates=events.flatMap(e=>[at(e,"left"),at(e,"right")]).filter(r=>!(r.x===0&&r.side==="left")&&!(r.x===L&&r.side==="right"));
     const zeroShear=[];
@@ -77,7 +106,7 @@
       const start=events[i],end=events[i+1],span=end-start,mid=(start+end)/2;
       const active=input.loads.filter(l=>["udl","linear"].includes(l.type)&&mid>l.start&&mid<l.end);
       const k=active.reduce((s,l)=>s+(l.q1-l.q0)/(l.end-l.start),0),q=active.reduce((s,l)=>s+l.q0+(l.q1-l.q0)*(start-l.start)/(l.end-l.start),0);
-      for(const u of roots(-k/2,-q,at(start,"right").V,span))if(u>span*1e-10&&u<span*(1-1e-10)){const station=start+u;candidates.push(at(station));zeroShear.push(station);}
+      for(const u of roots(-k/2,-q,at(start,"right").V,span))if(u>0&&u<span){const station=start+u;if(station>start&&station<end){candidates.push(at(station));zeroShear.push(station);}}
       if(k!==0){const u=-q/k;if(u>0&&u<span)candidates.push(at(start+u));}
     }
     const extrema={};

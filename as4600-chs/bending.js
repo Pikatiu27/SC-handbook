@@ -16,6 +16,28 @@
     return Number(value);
   }
 
+  // Compare the entered decimal-number products directly. Computing D/t and
+  // E/fy separately can cross an exact clause boundary through binary rounding
+  // (e.g. D352.8, t1.4, fy350 at the 0.441E limit). No epsilon expands scope.
+  function decimalProduct(values) {
+    return values.reduce((product, value) => {
+      const [mantissa, power = "0"] = String(value).toLowerCase().split("e");
+      const [whole, fraction = ""] = mantissa.split(".");
+      return {
+        integer: product.integer * BigInt(whole + fraction),
+        exponent: product.exponent + Number(power) - fraction.length
+      };
+    }, { integer: 1n, exponent: 0 });
+  }
+
+  function withinRatioLimit(D, t, fy, coefficient) {
+    const left = decimalProduct([D, fy]);
+    const right = decimalProduct([coefficient, E_MPA, t]);
+    const exponent = Math.min(left.exponent, right.exponent);
+    return left.integer * 10n ** BigInt(left.exponent - exponent)
+      <= right.integer * 10n ** BigInt(right.exponent - exponent);
+  }
+
   function calculate(input) {
     const D = validNumber(input?.diameterMm);
     const t = validNumber(input?.thicknessMm);
@@ -38,7 +60,7 @@
       return { status: "Invalid input", issues: ["The entered yield stress is outside a calculable numeric range."] };
     }
     const limits = { compact: 0.0714 * eFy, intermediate: 0.318 * eFy, applicability: 0.441 * eFy };
-    if (ratio > limits.applicability) {
+    if (!withinRatioLimit(D, t, fy, 0.441)) {
       return {
         status: "Not evaluated",
         issues: ["D/t exceeds the AS/NZS 4600:2018 Cl. 3.6.1 cylindrical-tube limit."],
@@ -53,10 +75,10 @@
     const sectionModulusMm3 = 2 * momentOfInertiaMm4 / D;
     let branch;
     let nominalStressMpa;
-    if (ratio <= limits.compact) {
+    if (withinRatioLimit(D, t, fy, 0.0714)) {
       branch = "3.6.2(1)";
       nominalStressMpa = 1.25 * fy;
-    } else if (ratio <= limits.intermediate) {
+    } else if (withinRatioLimit(D, t, fy, 0.318)) {
       branch = "3.6.2(2)";
       nominalStressMpa = (0.970 + 0.020 * eFy / ratio) * fy;
     } else {

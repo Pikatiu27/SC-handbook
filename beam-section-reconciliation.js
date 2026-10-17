@@ -332,6 +332,12 @@
           { name: "flange outstand", lambda: flatSlenderness(flangeWidth, section.tf, grade.fy), limits: LIMITS.outstandGradientHR, slenderExponent: 2 }
         ];
     const governing = governingElement(elements);
+    if (governing.name === "web in bending" && governing.lambda > governing.limits.yield) {
+      return Object.freeze({
+        status: "unresolved",
+        reason: "Slender web in bending: effective-section modulus is not established by the implemented AS 4100 simplified path. Obtain a verified effective-section assessment."
+      });
+    }
     return derived({
       family: section.family,
       direction,
@@ -367,6 +373,12 @@
       { name: "web in bending", lambda: flatSlenderness(section.d1, section.tw, grade.fy), limits: LIMITS.internalGradient }
     ];
     const governing = governingElement(elements);
+    if (governing.name === "web in bending" && governing.lambda > governing.limits.yield) {
+      return Object.freeze({
+        status: "unresolved",
+        reason: "Slender web in bending: effective-section modulus is not established by the implemented AS 4100 simplified path. Obtain a verified effective-section assessment."
+      });
+    }
     return derived({
       family: "pfc",
       direction,
@@ -414,6 +426,12 @@
       { name: "compression flange", lambda: flatSlenderness(flangeWidth, section.t, grade.fy), limits: LIMITS.internalUniformCF },
       { name: "web in bending", lambda: flatSlenderness(webWidth, section.t, grade.fy), limits: LIMITS.internalGradient }
     ]);
+    if (governing.name === "web in bending" && governing.lambda > governing.limits.yield) {
+      return Object.freeze({
+        status: "unresolved",
+        reason: "Slender web in bending: effective-section modulus is not established by the implemented AS 4100 simplified path. Obtain a verified effective-section assessment."
+      });
+    }
     const expectedClass = sectionClass(governing.lambda, governing.limits);
     return derived({
       family: section.family,

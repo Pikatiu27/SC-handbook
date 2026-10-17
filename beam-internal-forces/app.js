@@ -3,7 +3,7 @@
   const C=BeamInternalForces,D=BeamForcesDrawing,panel=document.getElementById("beamforcesPanel");if(!panel)return;
   const $=id=>document.getElementById("bif"+id),esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   let loads=C.defaults.loads.map(l=>({...l})),nextId=3,selected="L1",result=null,x=3,pinned=false,drag=null,coordinateValid=true;
-  const fmt=D.format,pos=v=>Number.isFinite(v)?Number(v.toFixed(6)).toString():"—",number=e=>e.value.trim()===""?NaN:Number(e.value);
+  const fmt=D.format,pos=v=>Number.isFinite(v)?v.toString():"—",number=e=>e.value.trim()===""?NaN:Number(e.value);
   const loadChoices={point:'Point force',moment:'Applied couple',udl:'Uniform load',triangle:'Triangular load',trapezoid:'Trapezoidal load',linear:'Linear distribution'},loadTools=$("LoadTools");
   // General linear is an explicit editor choice and may include special shapes.
   // Named shape presets otherwise follow the actual editable end intensities.
@@ -60,7 +60,8 @@
     const m=result.extrema.M,v=result.extrema.V,vPeak=Math.abs(v.max.V)>=Math.abs(v.min.V)?v.max:v.min,mNoise=Math.max(Math.abs(m.max.M),Math.abs(m.min.M))*1e-12;
     // Keep roundoff at an unloaded/free end from becoming a phantom signed peak.
     // The tolerance scales with this case, so small nonzero load cases still locate.
-    const peaks=[{label:'M max +',name:'Maximum positive moment',e:m.max,key:'M',show:m.max.M>mNoise},{label:'M min −',name:'Minimum negative moment',e:m.min,key:'M',show:m.min.M<-mNoise},{label:'|V| max',name:'Maximum absolute shear',e:vPeak,key:'V',show:Math.abs(vPeak.V)>0}].filter(p=>p.show);
+    const resolvedMoment = e => e.x>0&&e.x<result.input.length || result.reactions.filter(r=>r.x===e.x).reduce((a,r)=>a+r.couple,0)+result.input.loads.filter(l=>l.type==='moment'&&l.start===e.x).reduce((a,l)=>a+l.p,0)!==0 || Math.abs(e.M)>mNoise;
+    const peaks=[{label:'M max +',name:'Maximum positive moment',e:m.max,key:'M',show:m.max.M>0&&resolvedMoment(m.max)},{label:'M min −',name:'Minimum negative moment',e:m.min,key:'M',show:m.min.M<0&&resolvedMoment(m.min)},{label:'|V| max',name:'Maximum absolute shear',e:vPeak,key:'V',show:Math.abs(vPeak.V)>0}].filter(p=>p.show);
     $("QuickExtrema").innerHTML=peaks.map(p=>{const value=p.key==='V'?Math.abs(p.e.V):p.e.M,unit=p.key==='M'?'kN·m':'kN';return `<button type="button" data-extreme="${p.e.x}|${p.e.side}" aria-pressed="false" aria-label="${p.name}: ${fmt(value)} ${unit}${p.key==='V'?`, signed V = ${fmt(p.e.V)} kN`:''}, x = ${pos(p.e.x)} m, ${p.e.side} side"><span>${p.label}</span><b>${fmt(value)} <small>${unit}</small></b></button>`;}).join('')||'<span class="bif-help">Zero-force case · no nonzero extrema</span>';
   }
   $("Calculation").classList.add('formula-list');

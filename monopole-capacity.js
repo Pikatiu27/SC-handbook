@@ -56,7 +56,7 @@
     if (thickness < 4.5 || thickness > 200) {
       throw new RangeError("AS/NZS 3678 plate lookup requires 4.5 mm <= t <= 200 mm.");
     }
-    const index = PLATE_THICKNESS_LIMITS.findIndex(limit => thickness <= limit + EPSILON);
+    const index = PLATE_THICKNESS_LIMITS.findIndex(limit => thickness <= limit);
     const yieldStress = values[index];
     if (!Number.isFinite(yieldStress)) {
       throw new RangeError(`AS/NZS 3678:2016 Table 8 does not specify Grade ${gradeKey} at t = ${thickness} mm.`);
@@ -69,10 +69,13 @@
     const t = positive(thickness, "Design wall thickness");
     if (2 * t >= D) throw new RangeError("Design wall thickness must be less than half the outside diameter.");
     const Di = D - 2 * t;
-    const area = Math.PI * (D ** 2 - Di ** 2) / 4;
-    const inertia = Math.PI * (D ** 4 - Di ** 4) / 64;
+    const area = Math.PI * t * (D - t);
+    const inertia = Math.PI * t * (D - t) * (D ** 2 + Di ** 2) / 16;
     const elasticModulus = inertia / (D / 2);
-    const plasticModulus = (D ** 3 - Di ** 3) / 6;
+    const plasticModulus = t * (D ** 2 + D * Di + Di ** 2) / 3;
+    if (![area, inertia, elasticModulus, plasticModulus].every(value => Number.isFinite(value) && value > 0)) {
+      throw new RangeError("Circular geometry exceeds the supported numerical range.");
+    }
     return Object.freeze({
       form: "circular",
       outsideDimension: D,
@@ -142,12 +145,19 @@
     const insideApothem = dimensions.outsideApothem - t;
     const insideCircumradius = insideApothem / Math.cos(halfAngle);
     const outer = regularPolygonSolidProperties(dimensions.sideCount, dimensions.outsideCircumradius);
-    const inner = regularPolygonSolidProperties(dimensions.sideCount, insideCircumradius);
-    const area = outer.area - inner.area;
-    const ix = outer.ix - inner.ix;
-    const iy = outer.iy - inner.iy;
+    // The inner polygon is homothetic. Evaluate 1-r^2 and 1-r^4 as
+    // polynomials in t/a, avoiding nearly equal outer/inner subtraction.
+    const ratio = t / dimensions.outsideApothem;
+    const areaFraction = ratio * (2 - ratio);
+    const inertiaFraction = ratio * (4 - 6 * ratio + 4 * ratio ** 2 - ratio ** 3);
+    const area = outer.area * areaFraction;
+    const ix = outer.ix * inertiaFraction;
+    const iy = outer.iy * inertiaFraction;
     const inertia = Math.min(ix, iy);
     const elasticModulus = inertia / dimensions.outsideCircumradius;
+    if (![area, ix, iy, inertia, elasticModulus].every(value => Number.isFinite(value) && value > 0)) {
+      throw new RangeError("Polygon geometry exceeds the supported numerical range.");
+    }
     return Object.freeze({
       form: "polygon",
       ...dimensions,
@@ -226,7 +236,7 @@
         D * Math.sqrt(yieldSlendernessLimit / slenderness),
         D * (3 * yieldSlendernessLimit / slenderness) ** 2
       );
-    const effectiveArea = properties.area - Math.PI * (D - effectiveDiameter) * t;
+    const effectiveArea = Math.PI * t * (effectiveDiameter - t);
     if (!Number.isFinite(effectiveArea) || effectiveArea <= 0) {
       throw new RangeError("Circular effective area is outside the AS 4100 section method.");
     }
@@ -365,7 +375,7 @@
       `Segment ${index + 1} nominal wall thickness`
     );
     const thickness = positive(section.thickness, `Segment ${index + 1} design wall thickness`);
-    if (thickness > nominalThickness + EPSILON) {
+    if (thickness > nominalThickness) {
       throw new RangeError(`Segment ${index + 1} design wall thickness must not exceed its nominal wall thickness.`);
     }
     const yieldStress = positive(section.yieldStress, `Segment ${index + 1} yield stress`);
@@ -524,12 +534,23 @@
 
   function buildStations(assembly, interval = 0.5) {
     const step = positive(interval, "Station interval");
+    const intervalCount = Math.floor(assembly.height / step);
+    if (!Number.isFinite(intervalCount) || intervalCount > 20000) {
+      throw new RangeError("Station count exceeds the supported numerical range (20,000 intervals). Reduce the height or increase the station interval.");
+    }
     const elevations = new Set();
-    const addElevation = elevation => elevations.add(Number(elevation.toFixed(9)));
+    const exactBoundaries = [assembly.height, 0, ...assembly.sections.flatMap(item => [item.start, item.end])];
+    const addElevation = elevation => {
+      // Snap only floating-operation equivalents to the entered boundaries;
+      // preserve the actual endpoint rather than decimal-rounding it away.
+      const boundary = exactBoundaries.find(value => Math.abs(value - elevation)
+        <= 16 * Number.EPSILON * Math.max(Math.abs(value), Math.abs(elevation), Number.MIN_VALUE));
+      elevations.add(boundary === undefined ? elevation : boundary);
+    };
     addElevation(0);
     addElevation(assembly.height);
-    for (let elevation = 0; elevation <= assembly.height + EPSILON; elevation += step) {
-      addElevation(Math.min(assembly.height, elevation));
+    for (let index = 0; index <= intervalCount; index += 1) {
+      addElevation(Math.min(assembly.height, index * step));
     }
     assembly.sections.forEach(item => {
       addElevation(item.start);
@@ -613,13 +634,13 @@
       minimumConstructedOverlap,
       designRatio: designOverlap / requiredDesignOverlap,
       minimumNominalClearance: nominalFit.minimumNominalClearance,
-      designState: designOverlap + EPSILON >= requiredDesignOverlap
+      designState: designOverlap >= requiredDesignOverlap
         ? "Meets prescribed design overlap"
         : "Below prescribed design overlap",
       actualInstalledOverlap: actual,
       constructedState: actual === null
         ? "Drawing value - installation not verified"
-        : actual + EPSILON >= minimumConstructedOverlap
+        : actual >= minimumConstructedOverlap
           ? "Meets minimum constructed overlap"
           : "Below minimum constructed overlap",
       jointCapacityState: "Not evaluated"

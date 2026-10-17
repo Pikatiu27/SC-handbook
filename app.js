@@ -3080,7 +3080,11 @@ function clampNumericInput(input) {
   const maximum = numericValue(max);
   if (Number.isFinite(minimum) && current < minimum) return;
   if (Number.isFinite(maximum) && current > maximum) return;
-  input.value = String(current);
+  const normalised = String(current);
+  if (input.value !== normalised) {
+    input.value = normalised;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
 }
 
 function enhanceNumberInputs() {
@@ -8448,6 +8452,7 @@ function calculateConcrete() {
   if (!shear.withinSimplifiedScope) reviewFlags.push(`one-way shear not evaluated outside AS 3600 Cl. 8.2.4 simplified-method scope (${shear.scopeFailures.join("; ")})`);
   if (shear.shearReoMode === "vertical" && !shear.hasShearReo) reviewFlags.push("selected shear reinforcement requires at least one fitment leg and positive spacing");
   if (shear.hasShearReo && !shear.minShearReoProvided) reviewFlags.push(`A<sub>sv</sub>/s below the AS 3600 Cl. 8.2.1.7 minimum (${displayFixed(shear.asvPerS, 3)} < ${displayFixed(shear.asvMinPerS, 3)} mm<sup>2</sup>/mm)`);
+  if (shear.hasShearReo && !shear.classNFitments) reviewFlags.push("Class N fitment ductility is not established; shear uses φ = 0.70. Verify project material records.");
   if (shear.webCrushingLimited) reviewFlags.push(`V<sub>u</sub> limited by AS 3600 Cl. 8.2.3.3 web crushing`);
   if (coverWarnings.length) reviewFlags.push(`${coverWarnings.map(layer => `layer ${layer.index}`).join(", ")} cover check`);
   if (legacyLayers.length) reviewFlags.push(`legacy Y bar in ${legacyLayers.map(layer => `layer ${layer.index}`).join(", ")}`);
@@ -8507,7 +8512,7 @@ function calculateConcrete() {
     calculationTraceRow({
       title: "Shear reinforcement area",
       formula: shear.hasShearReo ? `A<sub>sv</sub> = n<sub>sv</sub>A<sub>bar</sub>; A<sub>sv</sub>/s = A<sub>sv</sub>/s` : `A<sub>sv</sub>/s = 0`,
-      substitution: shear.hasShearReo ? `${displayFixed(shear.nsv, 0)} &times; ${fixed(shear.shearBarArea)} mm<sup>2</sup> = ${fixed(shear.asv)} mm<sup>2</sup>; ${fixed(shear.asv)}/${fixed(shear.sv)}` : "",
+      substitution: shear.hasShearReo ? `${displayFixed(shear.nsv, 0)} &times; ${displayFixed(shear.shearBarArea, 6)} mm<sup>2</sup> = ${displayFixed(shear.asv, 6)} mm<sup>2</sup>; ${displayFixed(shear.asv, 6)}/${displayFixed(shear.sv, 6)}` : "",
       result: `A<sub>sv</sub>/s = ${displayFixed(shear.asvPerS, 3)} mm<sup>2</sup>/mm`,
       applicability: shear.hasShearReo ? `${shear.shearDesignation}; area from the reinforcement table.` : "No vertical shear reinforcement selected."
     }),
@@ -8531,7 +8536,7 @@ function calculateConcrete() {
       title: "Shear reinforcement contribution",
       reference: "AS 3600 Cl. 8.2.5.2",
       formula: shear.hasShearReo ? `V<sub>us</sub> = (A<sub>sv</sub>f<sub>sy.f</sub>d<sub>v</sub>/s)cot&theta;<sub>v</sub>` : `V<sub>us</sub> = 0`,
-      substitution: shear.hasShearReo ? `(${fixed(shear.asv)} &times; ${fixed(shear.fsyf)} &times; ${displayFixed(shear.dv, 3)} / ${fixed(shear.sv)}) &times; ${displayFixed(shear.cotTheta, 6)} / 1000` : "",
+      substitution: shear.hasShearReo ? `(${displayFixed(shear.asv, 6)} &times; ${displayFixed(shear.fsyf, 6)} &times; ${displayFixed(shear.dv, 6)} / ${displayFixed(shear.sv, 6)}) &times; ${displayFixed(shear.cotTheta, 9)} / 1000` : "",
       result: `V<sub>us</sub> = ${fixed(shear.vus)} kN`,
       applicability: shear.hasShearReo && !shear.minShearReoProvided ? "Provided A<sub>sv</sub>/s is below the AS 3600 Cl. 8.2.1.7 minimum; review required." : "Selected shear-reinforcement state."
     }),
@@ -8539,9 +8544,9 @@ function calculateConcrete() {
       title: "One-way shear design capacity",
       reference: "AS 3600 Cls 8.2.3.1, 8.2.3.3(5); Table 2.2.2(e)",
       formula: `Design capacity = min[&phi;<sub>s</sub>(V<sub>uc</sub> + V<sub>us</sub>), 0.70V<sub>u,max</sub>]`,
-      substitution: `min[${displayFixed(shear.sectionPhi, 2)} &times; (${displayFixed(shear.vuc, 3)} + ${displayFixed(shear.vus, 3)}), 0.70 &times; ${displayFixed(shear.vuMax, 3)}] = min(${displayFixed(shear.sectionDesignLimit,3)}, ${displayFixed(shear.crushingDesignLimit,3)}) kN`,
+      substitution: `min[${displayFixed(shear.sectionPhi, 2)} &times; (${displayFixed(shear.vuc, 6)} + ${displayFixed(shear.vus, 6)}), 0.70 &times; ${displayFixed(shear.vuMax, 6)}] = min(${displayFixed(shear.sectionDesignLimit,6)}, ${displayFixed(shear.crushingDesignLimit,6)}) kN`,
       result: `Design one-way shear capacity = ${fixed(shear.phiVu)} kN`,
-      applicability: shear.webCrushingLimited ? "Web crushing governs." : shear.minShearReoProvided ? "Verified minimum Class N fitments; no web-crushing limit governs." : "No verified minimum Class N fitments."
+      applicability: shear.webCrushingLimited ? "Web-crushing design resistance governs; φ = 0.70." : shear.minShearReoProvided && shear.classNFitments ? "Minimum Class N fitment area verified; section φ = 0.75." : "No verified minimum Class N fitments; section φ = 0.70."
     })
   ].join("") : calculationTraceRow({
     title: "One-way shear scope",
@@ -9907,6 +9912,8 @@ function updateScrewRisk(pile, compressionCap, upliftCap, lateralCap) {
 }
 
 function calculateScrewDemand(comparison) {
+  const showNumber = (number, digits) => Number.isFinite(number) && number !== 0 && (Math.abs(number) < 0.5 * 10 ** -digits || Math.abs(number) >= 1e9) ? displaySignificant(number, 6) : displayFixed(number, digits);
+  const actionNumber = number => showNumber(number, 1), coordinateNumber = number => showNumber(number, 2);
   const compressionCap = comparison.compression || 0;
   const upliftCap = comparison.uplift || 0;
   const lateralCap = comparison.lateral || 0;
@@ -9928,7 +9935,7 @@ function calculateScrewDemand(comparison) {
   };
   const layoutInputs = updateScrewLayoutControls();
   const actionsValid = Object.values(actionInputs).every(Number.isFinite);
-  if (!layoutInputs.valid || !actionsValid) {
+  function clearDistribution(reason) {
     $("screwDemandPileCount").textContent = "-";
     $("screwDemandCompression").textContent = "Not evaluated";
     $("screwDemandUplift").textContent = "Not evaluated";
@@ -9941,18 +9948,21 @@ function calculateScrewDemand(comparison) {
     $("screwDemandStatus").textContent = "Input required";
     $("screwDemandInteractionWarning").hidden = true;
     setStatusClass($("screwDemandStatus"), "check");
-    const reason = layoutInputs.valid ? "Enter a finite value for every group action." : layoutInputs.error;
     $("screwDemandFormulaSteps").innerHTML = calculationTraceRow({
       title: "Pile-group action distribution",
       result: "Not evaluated",
       applicability: reason,
       state: "warning"
     });
+  }
+  if (!layoutInputs.valid || !actionsValid) {
+    clearDistribution(layoutInputs.valid ? "Enter a finite value for every group action." : layoutInputs.error);
     return;
   }
   const coords = screwLayoutCoordinates();
   const { baseN, vx, vy, mx, my, tz } = actionInputs;
-  const distribution = ScrewDemand.distribute({
+  let distribution;
+  try { distribution = ScrewDemand.distribute({
     coordinates: coords,
     axial: baseN,
     shearX: vx,
@@ -9960,7 +9970,7 @@ function calculateScrewDemand(comparison) {
     momentX: mx,
     momentY: my,
     torsion: tz
-  });
+  }); } catch (error) { clearDistribution(error.message); return; }
   const {
     count: n,
     reactions,
@@ -9979,15 +9989,15 @@ function calculateScrewDemand(comparison) {
     ? `<b>Interaction review required</b> &middot; ${simultaneousPiles.length} pile${simultaneousPiles.length === 1 ? "" : "s"} carr${simultaneousPiles.length === 1 ? "ies" : "y"} simultaneous axial and horizontal action. The optional project comparison evaluates directions independently; combined axial&ndash;horizontal interaction is not evaluated.`
     : "";
   $("screwDemandPileCount").textContent = String(n);
-  $("screwDemandCompression").textContent = `${fixed(maxCompression)} kN`;
-  $("screwDemandUplift").textContent = `${fixed(maxUplift)} kN`;
-  $("screwDemandLateral").textContent = `${fixed(maxLateral)} kN`;
+  $("screwDemandCompression").textContent = `${actionNumber(maxCompression)} kN`;
+  $("screwDemandUplift").textContent = `${actionNumber(maxUplift)} kN`;
+  $("screwDemandLateral").textContent = `${actionNumber(maxLateral)} kN`;
   $("screwDemandCompressionPile").textContent = maxCompressionPile ? `Pile ${maxCompressionPile.id}` : "Pile -";
   $("screwDemandUpliftPile").textContent = maxUpliftPile ? `Pile ${maxUpliftPile.id}` : "Pile -";
   $("screwDemandLateralPile").textContent = maxLateralPile ? `Pile ${maxLateralPile.id}` : "Pile -";
   $("screwReactionRows").innerHTML = reactions.map(item => {
-    const state = item.axial > 0.05 ? "Compression" : item.axial < -0.05 ? "Tension" : "Neutral";
-    return `<tr><td>${item.id}</td><td>${fixed2(item.x)} m</td><td>${fixed2(item.y)} m</td><td>${fixed(item.axial)} kN</td><td>${state}</td><td>${fixed(item.lateral)} kN</td></tr>`;
+    const state = item.axial > 0 ? "Compression" : item.axial < 0 ? "Tension" : "Neutral";
+    return `<tr><td>${item.id}</td><td>${coordinateNumber(item.x)} m</td><td>${coordinateNumber(item.y)} m</td><td>${actionNumber(item.axial)} kN</td><td>${state}</td><td>${actionNumber(item.lateral)} kN</td></tr>`;
   }).join("");
 
   const hasDemand = maxCompression > 0 || maxUplift > 0 || maxLateral > 0;
@@ -10040,9 +10050,9 @@ function calculateScrewDemand(comparison) {
 
   const denominatorSymbols = { compression: "R<sub>c,proj</sub>", tension: "R<sub>t,proj</sub>", horizontal: "R<sub>h,proj</sub>" };
   const capacityComparisons = [
-    maxCompression > 0 ? `N<sub>c,max</sub><sup>*</sup> / ${denominatorSymbols.compression} = ${fixed(maxCompression)} / ${compressionCap > 0 ? fixed(compressionCap) : "not stated"}` : "",
-    maxUplift > 0 ? `N<sub>t,max</sub><sup>*</sup> / ${denominatorSymbols.tension} = ${fixed(maxUplift)} / ${upliftCap > 0 ? fixed(upliftCap) : "not stated"}` : "",
-    maxLateral > 0 ? `V<sub>h,max</sub><sup>*</sup> / ${denominatorSymbols.horizontal} = ${fixed(maxLateral)} / ${lateralCap > 0 ? fixed(lateralCap) : "not stated"}` : ""
+    maxCompression > 0 ? `N<sub>c,max</sub><sup>*</sup> / ${denominatorSymbols.compression} = ${actionNumber(maxCompression)} / ${compressionCap > 0 ? actionNumber(compressionCap) : "not stated"}` : "",
+    maxUplift > 0 ? `N<sub>t,max</sub><sup>*</sup> / ${denominatorSymbols.tension} = ${actionNumber(maxUplift)} / ${upliftCap > 0 ? actionNumber(upliftCap) : "not stated"}` : "",
+    maxLateral > 0 ? `V<sub>h,max</sub><sup>*</sup> / ${denominatorSymbols.horizontal} = ${actionNumber(maxLateral)} / ${lateralCap > 0 ? actionNumber(lateralCap) : "not stated"}` : ""
   ].filter(Boolean).join("; ") || "no non-zero design action effect";
 
   let comparisonFormula;
@@ -10081,7 +10091,7 @@ function calculateScrewDemand(comparison) {
       title: "Action-distribution model",
       reference: "Derived rigid-cap equilibrium model",
       formula: `&Sigma;x<sub>j</sub>y<sub>j</sub> = 0 for the symmetric layout; actions are distributed by rigid-cap equilibrium`,
-      substitution: `n = ${n}; &Sigma;x<sub>j</sub>y<sub>j</sub> = ${fixed2(sumXY)} m<sup>2</sup>; &Sigma;x<sub>j</sub><sup>2</sup> = ${fixed2(sumX2)} m<sup>2</sup>; &Sigma;y<sub>j</sub><sup>2</sup> = ${fixed2(sumY2)} m<sup>2</sup>; &Sigma;r<sub>j</sub><sup>2</sup> = ${fixed2(sumR2)} m<sup>2</sup>`,
+      substitution: `n = ${n}; &Sigma;x<sub>j</sub>y<sub>j</sub> = ${coordinateNumber(sumXY)} m<sup>2</sup>; &Sigma;x<sub>j</sub><sup>2</sup> = ${coordinateNumber(sumX2)} m<sup>2</sup>; &Sigma;y<sub>j</sub><sup>2</sup> = ${coordinateNumber(sumY2)} m<sup>2</sup>; &Sigma;r<sub>j</sub><sup>2</sup> = ${coordinateNumber(sumR2)} m<sup>2</sup>`,
       result: `${n}-pile symmetric rectangular group`,
       applicability: `Rigid pad; vertical identical piles; equal axial stiffness in compression and tension; equal horizontal stiffness; no pad-soil resistance. ${actionBasisLabel}.`
     }),
@@ -10089,16 +10099,16 @@ function calculateScrewDemand(comparison) {
       title: "Axial pile action",
       reference: "Derived rigid-cap equilibrium model",
       formula: `N<sub>i</sub><sup>*</sup> = N<sup>*</sup>/n + M<sub>x</sub><sup>*</sup>y<sub>i</sub>/&Sigma;y<sub>j</sub><sup>2</sup> + M<sub>y</sub><sup>*</sup>x<sub>i</sub>/&Sigma;x<sub>j</sub><sup>2</sup>`,
-      substitution: `N<sup>*</sup> = ${fixed(baseN)} kN; M<sub>x</sub><sup>*</sup> = ${fixed(mx)} kN&middot;m; M<sub>y</sub><sup>*</sup> = ${fixed(my)} kN&middot;m; n = ${n}`,
-      result: `Maximum compression = ${fixed(maxCompression)} kN; maximum tension = ${fixed(maxUplift)} kN`,
+      substitution: `N<sup>*</sup> = ${actionNumber(baseN)} kN; M<sub>x</sub><sup>*</sup> = ${actionNumber(mx)} kN&middot;m; M<sub>y</sub><sup>*</sup> = ${actionNumber(my)} kN&middot;m; n = ${n}`,
+      result: `Maximum compression = ${actionNumber(maxCompression)} kN; maximum tension = ${actionNumber(maxUplift)} kN`,
       applicability: "Positive N<sub>i</sub><sup>*</sup> denotes compression; pile coordinates are measured from the group centroid."
     }),
     calculationTraceRow({
       title: "Horizontal pile action",
       reference: "Derived rigid-cap equilibrium model",
       formula: `V<sub>x,i</sub><sup>*</sup> = V<sub>x</sub><sup>*</sup>/n - T<sub>z</sub><sup>*</sup>y<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>y,i</sub><sup>*</sup> = V<sub>y</sub><sup>*</sup>/n + T<sub>z</sub><sup>*</sup>x<sub>i</sub>/&Sigma;r<sub>j</sub><sup>2</sup>; V<sub>i</sub><sup>*</sup> = &radic;[(V<sub>x,i</sub><sup>*</sup>)<sup>2</sup> + (V<sub>y,i</sub><sup>*</sup>)<sup>2</sup>]`,
-      substitution: `V<sub>x</sub><sup>*</sup> = ${fixed(vx)} kN; V<sub>y</sub><sup>*</sup> = ${fixed(vy)} kN; T<sub>z</sub><sup>*</sup> = ${fixed(tz)} kN&middot;m; n = ${n}`,
-      result: `Maximum horizontal pile action = ${fixed(maxLateral)} kN`,
+      substitution: `V<sub>x</sub><sup>*</sup> = ${actionNumber(vx)} kN; V<sub>y</sub><sup>*</sup> = ${actionNumber(vy)} kN; T<sub>z</sub><sup>*</sup> = ${actionNumber(tz)} kN&middot;m; n = ${n}`,
+      result: `Maximum horizontal pile action = ${actionNumber(maxLateral)} kN`,
       applicability: "Equal-stiffness distribution; pile-head fixity, soil-pile interaction and horizontal displacement are excluded."
     }),
     comparisonFormula
@@ -10452,7 +10462,7 @@ function updateReoSchedule(options, selectedDesignation) {
 }
 
 function reoBasicFormulaSubstitution(result) {
-  return `0.5 &times; ${displayFixed(result.k1, 2)} &times; ${displayFixed(result.k3, 4)} &times; ${displayFixed(result.fsy, 0)} &times; ${displayFixed(result.bar.diameter, 0)} / (${displayFixed(result.k2, 3)} &times; &radic;${displayFixed(result.fcUsed, 1)}) = ${displayFixed(result.basicFormula, 2)} mm`;
+  return `0.5 &times; ${displayFixed(result.k1, 6)} &times; ${displayFixed(result.k3, 8)} &times; ${displayFixed(result.fsy, 6)} &times; ${displayFixed(result.bar.diameter, 6)} / (${displayFixed(result.k2, 6)} &times; &radic;${displayFixed(result.fcUsed, 6)}) = ${displayFixed(result.basicFormula, 2)} mm`;
 }
 
 function reoRefinedFormulaHtml(result, options, label) {
@@ -10844,7 +10854,7 @@ function updateReoLapFieldValidity(options, path, developmentOptions) {
     if (error) error.hidden = !invalid;
   };
   const lapActive = path.requiresLap;
-  setFieldValidity("reoConcreteStrength", "reoConcreteStrengthError", lapActive && (!Number.isFinite(options.fc) || options.fc < 20));
+  setFieldValidity("reoConcreteStrength", "reoConcreteStrengthError", lapActive && (!Number.isFinite(options.fc) || options.fc < 20 || options.fc > 120));
   setFieldValidity("reoCover", "reoCoverError", lapActive && (!Number.isFinite(options.cover) || options.cover <= 0));
   setFieldValidity("reoClearSpacing", "reoClearSpacingError", lapActive && (!Number.isFinite(options.clearSpacing) || options.clearSpacing <= 0));
   setFieldValidity("reoBarGap", "reoBarGapError", lapActive && options.memberType === "narrow" && options.lapType === "noncontact" && (!Number.isFinite(options.barGap) || options.barGap < 0));
@@ -10871,6 +10881,7 @@ function updateReoLapFieldValidity(options, path, developmentOptions) {
   $("reoPressureError").hidden = !pressureInvalid;
 
   const existingPressureActive = path.requiresDevelopment && developmentOptions?.method === "refined";
+  setFieldValidity("reoExistingConcreteStrength", null, path.requiresDevelopment && (!Number.isFinite(developmentOptions.fc) || developmentOptions.fc < 20 || developmentOptions.fc > 120));
   const existingCustomRefined = existingPressureActive && developmentOptions.refinedArrangement === "custom";
   const existingAtrMin = developmentOptions?.atrMinBasis === "beam-column" ? 0.25 * (selectedBar?.area || 0) : 0;
   const existingConfinementPotential = existingCustomRefined && Number.isFinite(developmentOptions.atrTotal) && developmentOptions.atrTotal > existingAtrMin;

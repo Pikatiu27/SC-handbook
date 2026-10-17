@@ -40,7 +40,7 @@
 <link rel="stylesheet" href="bolt-details/layout.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="web-drawing/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="beam-internal-forces/styles.css?v=20261016workflowtrace1">
-<script src="workflow-review/numerical-traces.js?v=20261016workflowtrace1"></script>
+<script src="workflow-review/numerical-traces.js?v=20261017calcaudit1"></script>
 <link rel="stylesheet" href="workflow-review/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="weld-improvements.css?v=20261016weld1"><link rel="stylesheet" href="fillet-table.css?v=20261016weld1">
 <link rel="stylesheet" href="concrete-beam/styles.css?v=20261017concretebeam1">
@@ -1793,8 +1793,8 @@
               <table class="compact-lookup-table">
                 <thead><tr><th>Member case</th><th>Use this value when</th><th>α<sub>b</sub></th><th>Status</th></tr></thead>
                 <tbody>
-                  <tr><td>CHS</td><td>Cold-formed, non-stress-relieved CHS.</td><td>-0.5</td><td>AS 4100 Table 6.3.3(A) or (B), CHS row selected by k<sub>f</sub>.</td></tr>
-                  <tr><td>RHS / SHS</td><td>Cold-formed, non-stress-relieved hollow section.</td><td>-0.5</td><td>AS 4100 Table 6.3.3(A) or (B), RHS and CHS row selected by k<sub>f</sub>.</td></tr>
+                  <tr><td>CHS</td><td>Cold-formed, non-stress-relieved CHS.</td><td>-0.5 for k<sub>f</sub> = 1; 0 for k<sub>f</sub> &lt; 1</td><td>AS 4100 Table 6.3.3(A) or (B), CHS row selected by k<sub>f</sub>.</td></tr>
+                  <tr><td>RHS / SHS</td><td>Cold-formed, non-stress-relieved hollow section.</td><td>-0.5 for k<sub>f</sub> = 1; 0 for k<sub>f</sub> &lt; 1</td><td>AS 4100 Table 6.3.3(A) or (B), RHS and CHS row selected by k<sub>f</sub>.</td></tr>
                   <tr><td>UB / UC</td><td>Hot-rolled section with flange thickness not exceeding 40 mm.</td><td>0</td><td>AS 4100 Table 6.3.3(A) or (B), hot-rolled UB and UC sections.</td></tr>
                   <tr><td>PFC</td><td>Hot-rolled channel with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), hot-rolled channels.</td></tr>
                   <tr><td>EA</td><td>Equal angle with k<sub>f</sub> = 1.0.</td><td>0.5</td><td>AS 4100 Table 6.3.3(A), angles.</td></tr>
@@ -1900,7 +1900,7 @@
             <section class="input-group input-group-section" id="reoLapGeometryGroup">
               <span class="input-group-heading reo-group-heading"><b>Inputs</b></span>
               <div class="input-group-fields reo-lap-input-fields">
-                <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="reoConcreteStrength" type="number" min="20" max="120" step="1" value="32" aria-describedby="reoConcreteStrengthError"><em>MPa</em></span><small class="field-error" id="reoConcreteStrengthError" hidden>Enter at least 20 MPa.</small></label>
+                <label><span>Concrete strength, f'<sub>c</sub></span><span class="unit"><input id="reoConcreteStrength" type="number" min="20" max="120" step="1" value="32" aria-describedby="reoConcreteStrengthError"><em>MPa</em></span><small class="field-error" id="reoConcreteStrengthError" hidden>Enter 20–120 MPa.</small></label>
                 <label><span>Clear cover, c</span><span class="unit"><input id="reoCover" type="number" min="1" step="5" value="40" aria-describedby="reoCoverError"><em>mm</em></span><small class="field-error" id="reoCoverError" hidden>Enter a value greater than zero.</small></label>
                 <label><span>Clear spacing between bars, a</span><span class="unit"><input id="reoClearSpacing" type="number" min="1" step="5" value="100" aria-describedby="reoClearSpacingError"><em>mm</em></span><small class="field-error" id="reoClearSpacingError" hidden>Enter a value greater than zero.</small></label>
                 <label id="reoBarGapField"><span>Non-contact gap, s<sub>b</sub></span><span class="unit"><input id="reoBarGap" type="number" min="0" step="5" value="80" aria-describedby="reoBarGapError"><em>mm</em></span><small class="field-error" id="reoBarGapError" hidden>Enter zero or a positive value.</small></label>
@@ -2458,28 +2458,28 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.128 &middot; updated 17 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.129 &middot; updated 17 Oct 2026</b>
   </footer>
-  <script src="engineering-number-format.js?v=20261016workflowtrace1"></script>
+  <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
   <script src="bolt-integrity.js?v=20261016workflowtrace1"></script>
   <script src="weld-capacity.js?v=20261016workflowtrace1"></script>
-<script src="weld-detailing.js?v=20261016weld1"></script><script src="fillet-table.js?v=20261016weld1"></script>
-  <script src="concrete-section-calculation.js?v=20261017concretebeam1"></script>
-  <script src="section-geometry.js?v=20261016workflowtrace1"></script>
+<script src="weld-detailing.js?v=20261017calcaudit1"></script><script src="fillet-table.js?v=20261017calcaudit1"></script>
+  <script src="concrete-section-calculation.js?v=20261017calcaudit1"></script>
+  <script src="section-geometry.js?v=20261017calcaudit1"></script>
   <script src="section-catalogue.js?v=20261016workflowtrace1"></script>
   <script src="steel-materials.js?v=20261016workflowtrace1"></script>
   <script src="beam-section-data.js?v=20261016workflowtrace1"></script>
   <script src="beam-hot-rolled-data.js?v=20261016workflowtrace1"></script>
   <script src="beam-section-capacity.js?v=20261016workflowtrace1"></script>
-  <script src="beam-section-reconciliation.js?v=20261016workflowtrace1"></script>
-  <script src="beam-custom-section.js?v=20261016workflowtrace1"></script>
-  <script src="member-capacity.js?v=20261016workflowtrace1"></script>
+  <script src="beam-section-reconciliation.js?v=20261017calcaudit1"></script>
+  <script src="beam-custom-section.js?v=20261017calcaudit1"></script>
+  <script src="member-capacity.js?v=20261017calcaudit1"></script>
   <script src="member-form-factor.js?v=20261016workflowtrace1"></script>
-  <script src="screw-demand.js?v=20261016workflowtrace1"></script>
-  <script src="reo-calculation.js?v=20261016workflowtrace1"></script>
+  <script src="screw-demand.js?v=20261017calcaudit1"></script>
+  <script src="reo-calculation.js?v=20261017calcaudit1"></script>
   <script src="reo-state.js?v=20261016workflowtrace1"></script>
-  <script src="monopole-capacity.js?v=20261016workflowtrace1"></script>
+  <script src="monopole-capacity.js?v=20261017calcaudit1"></script>
 
       <script src="geo-parameters/geo-parameters-data.js?v=20261016workflowtrace1"></script>
       <script src="geo-parameters/geo-parameters.js?v=20261016workflowtrace1"></script>
@@ -2487,13 +2487,13 @@
   <script src="bolt-comparison/comparison.js?v=20261016workflowtrace1"></script>
 <script src="tool-directory/registry.js?v=20261017concretebeam1"></script>
 <script src="tool-directory/directory.js?v=20261017concretebeam1"></script>
-<script src="app.js?v=20261017concretebeam1"></script>
+<script src="app.js?v=20261017calcaudit1"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=20261016workflowtrace1"></script>
 <script src="geo-parameters/detail-app.js?v=20261016workflowtrace1"></script>
 
   <script src="monopole-app.js?v=20261016workflowtrace1"></script>
-  <script src="as4600-chs/bending.js?v=20261016workflowtrace1"></script>
+  <script src="as4600-chs/bending.js?v=20261017calcaudit1"></script>
   <script src="as4600-chs/orrcon-products.js?v=20261016workflowtrace1"></script>
   <script src="chs-bending-comparison/model.js?v=20261016workflowtrace1"></script>
 <script src="chs-bending-comparison/panel.js?v=20261016workflowtrace1"></script>
@@ -2534,9 +2534,9 @@
 <script src="accessibility/repairs.js?v=20261016workflowtrace1"></script>
 <script src="bolt-details/diagram.js?v=20261016workflowtrace1"></script>
 <script src="bolt-details/app.js?v=20261016workflowtrace1"></script>
-<script src="beam-internal-forces/calculation.js?v=20261016workflowtrace1"></script>
-<script src="beam-internal-forces/drawing.js?v=20261016workflowtrace1"></script>
-<script src="beam-internal-forces/app.js?v=20261016workflowtrace1"></script>
+<script src="beam-internal-forces/calculation.js?v=20261017calcaudit1"></script>
+<script src="beam-internal-forces/drawing.js?v=20261017calcaudit1"></script>
+<script src="beam-internal-forces/app.js?v=20261017calcaudit1"></script>
 <script src="workflow-review/config.js?v=20261016workflowtrace1"></script>
 <script src="workflow-review/app.js?v=20261016workflowtrace1"></script>
 <script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261017concretebeam1"></script><script src="concrete-beam/app.js?v=20261017concretebeam1"></script>

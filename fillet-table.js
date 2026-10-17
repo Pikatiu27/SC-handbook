@@ -1,9 +1,10 @@
 "use strict";
 (function(root,factory){
   const W=typeof module==='object'&&module.exports?require('./weld-capacity.js'):root.WeldCapacity;
-  const api=factory(W);if(typeof module==='object'&&module.exports)module.exports=api;root.FilletTable=api;
+  const F=typeof module==='object'&&module.exports?require('./engineering-number-format.js'):root.EngineeringNumberFormat;
+  const api=factory(W,F);if(typeof module==='object'&&module.exports)module.exports=api;root.FilletTable=api;
   if(typeof document!=='undefined')document.addEventListener('DOMContentLoaded',()=>api.init(document));
-})(typeof globalThis!=='undefined'?globalThis:this,function(W){
+})(typeof globalThis!=='undefined'?globalThis:this,function(W,F){
   const sizes=Object.freeze([3,4,5,6,8,10,12,16]);
   const numeric=v=>(typeof v==='number'||typeof v==='string'&&v.trim()!=='')?Number(v):NaN;
   function evaluate(input){
@@ -25,6 +26,9 @@
     }
     return result;
   }
+  // Expanded substitutions retain the shortest decimal input precision through
+  // the shared half-up/scientific formatter. Primary table precision is unchanged.
+  const precise=n=>Number.isFinite(n)?(F&&typeof F.decimalHalfUpSignificant==='function'?F.decimalHalfUpSignificant(n,17):String(n)):'Not evaluated';
   function init(doc){
     const el=id=>doc.getElementById(id);if(!el('filletTablePane'))return;
     const fmt=(n,d=1)=>Number.isFinite(n)?n.toLocaleString('en-AU',{minimumFractionDigits:d,maximumFractionDigits:d}):'Not evaluated';
@@ -48,7 +52,8 @@
         for(const [label,value]of [['Formula',formula],['Substitution',substitution],['Result',result],['Applicability',scope]]){const p=doc.createElement('div'),key=doc.createElement('span'),content=doc.createElement('code');p.className='calculation-trace-line is-'+label.toLowerCase();key.textContent=label;notation(content,value);p.append(key,content);body.append(p);}part.append(body);container.append(part);
       }
       const c=current;
-      block(`${selected} mm fillet · entered length`,'tt = 0.707s; q = φ × 0.6 × fuw × tt × kr / 1000; φR = n × q × L',r.capacity===null?`L = ${inputFmt(c.length)} mm; minimum 4s = ${r.minimum} mm.`:`tt = 0.707 × ${selected} = ${fmt(r.throat,3)} mm; φ = ${r.phi}; fuw = ${c.fuw} MPa; kr = ${fmt(r.kr,5)}; n = ${c.runs}; L = ${inputFmt(c.length)} mm.`,r.capacity===null?(c.length<r.minimum?'Not evaluated: entered length is below 4s.':'Not evaluated: numerical range exceeded; revise inputs.'):`${fmt(r.perMm,4)} kN/mm per line; ${fmt(r.capacity,2)} kN total.`,'Full-size route: L ≥ 4s. Weld-size limits and connected parts are separate.');
+      const krWorking=c.connection!=='lap'?'ordinary joint':c.length<=1700?'L/1000 ≤ 1.7 m':c.length<=8000?`1.10 − 0.06 × (${precise(c.length)}/1000)`:'L/1000 > 8 m; table value';
+      block(`${selected} mm fillet · entered length`,'tt = 0.707s; q = φ × 0.6 × fuw × tt × kr / 1000; φR = n × q × L',r.capacity===null?`L = ${precise(c.length)} mm; minimum 4s = ${r.minimum} mm.`:`tt = 0.707 × ${selected} = ${fmt(r.throat,3)} mm; φ = ${r.phi}; fuw = ${c.fuw} MPa; kr = ${precise(r.kr)} (${krWorking}); n = ${c.runs}; L = ${precise(c.length)} mm.`,r.capacity===null?(c.length<r.minimum?'Not evaluated: entered length is below 4s.':'Not evaluated: numerical range exceeded; revise inputs.'):`${fmt(r.perMm,4)} kN/mm per line; ${fmt(r.capacity,2)} kN total.`,'Full-size route: L ≥ 4s. Weld-size limits and connected parts are separate.');
     }
     function update(){
       current=evaluate({category:el('filletCategory').value,fuw:el('filletStrength').value,length:el('filletLength').value,runs:el('filletLines').value,connection:el('filletConnection').value});

@@ -44,19 +44,23 @@
     if (!Number.isFinite(number) || !Number.isInteger(digits) || digits < 1 || digits > 20) return "—";
     if (number === 0) return "0";
 
-    const exponent = Math.floor(Math.log10(Math.abs(number)));
+    const [coefficient, exponentText] = Math.abs(number).toExponential().split("e");
+    let exponent = Number(exponentText);
+    const raw = coefficient.replace(".", "").padEnd(digits + 1, "0");
+    let retained = (BigInt(raw.slice(0, digits)) + (raw[digits] >= "5" ? 1n : 0n)).toString();
+    if (retained.length > digits) { exponent += 1; retained = retained.slice(0, digits); }
+    const sign = number < 0 ? "-" : "";
     const places = digits - exponent - 1;
-    if (places >= 0) {
-      const rounded = decimalHalfUp(number, places);
-      return rounded.includes(".") ? rounded.replace(/0+$/, "").replace(/\.$/, "") : rounded;
+    if (places > 20 || exponent > 20) {
+      const mantissa = (retained[0] + (retained.length > 1 ? "." + retained.slice(1) : "")).replace(/\.?0+$/, "");
+      return `${sign}${mantissa}e${exponent >= 0 ? "+" : ""}${exponent}`;
     }
-
-    const scalePlaces = -places;
-    const rounded = decimalHalfUp(number / 10 ** scalePlaces, 0);
-    if (rounded === "—") return rounded;
-    const sign = rounded.startsWith("-") ? "-" : "";
-    const magnitude = sign ? rounded.slice(1) : rounded;
-    return `${sign}${magnitude}${"0".repeat(scalePlaces)}`;
+    const point = exponent + 1;
+    let text = point <= 0 ? "0." + "0".repeat(-point) + retained
+      : point >= retained.length ? retained.padEnd(point, "0")
+      : retained.slice(0, point) + "." + retained.slice(point);
+    if (text.includes(".")) text = text.replace(/0+$/, "").replace(/\.$/, "");
+    return sign + text;
   }
 
   return Object.freeze({ decimalHalfUp, decimalHalfUpSignificant });

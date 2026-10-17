@@ -26,7 +26,12 @@
     const average = (ix + iy) / 2;
     const principalRadius = Math.hypot((ix - iy) / 2, ixy);
     const iu = average + principalRadius;
-    const iv = average - principalRadius;
+    // det(I) / Iu is the same smaller eigenvalue without subtracting two
+    // nearly equal large values for a very slender but valid section.
+    const iv = (ix / iu) * iy - (ixy / iu) * ixy;
+    if (!(iv > 0) || !Number.isFinite(iu)) {
+      throw new RangeError("Section geometry must produce positive finite principal properties.");
+    }
     const isotropic = principalRadius <= Math.max(ix, iy) * 1e-12;
     let thetaU = isotropic ? null : Math.atan2(-2 * ixy, ix - iy) * 90 / Math.PI;
     if (thetaU !== null && thetaU <= -90) thetaU += 180;
@@ -224,9 +229,10 @@
     const t = positive(thickness, "Wall thickness");
     if (2 * t >= D) throw new RangeError("Wall thickness must be less than half the outside diameter.");
     const inner = D - 2 * t;
-    const inertia = Math.PI * (D ** 4 - inner ** 4) / 64;
+    // Factored annular identities retain significant digits for thin walls.
+    const inertia = Math.PI * t * (D - t) * (D ** 2 + inner ** 2) / 16;
     return supplement(finish({
-      area: Math.PI * (D ** 2 - inner ** 2) / 4,
+      area: Math.PI * t * (D - t),
       cx: D / 2,
       cy: D / 2,
       ix: inertia,
@@ -236,8 +242,8 @@
       yMin: 0,
       yMax: D
     }), {
-      sx: (D ** 3 - inner ** 3) / 6,
-      sy: (D ** 3 - inner ** 3) / 6,
+      sx: t * (D ** 2 + D * inner + inner ** 2) / 3,
+      sy: t * (D ** 2 + D * inner + inner ** 2) / 3,
       j: 2 * inertia,
       iw: 0
     });
