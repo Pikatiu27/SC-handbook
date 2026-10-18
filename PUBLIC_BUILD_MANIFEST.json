@@ -408,7 +408,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "65af637621f022b44093a21cefd653b05d572eab6ecddc352033b2a8be2af0a0"
+      "sha256": "ef824204b229d4f5ee8e59e9edd72539d3fbbf36464a211382e5a79ba84a6f0b"
     },
     {
       "path": "LICENSE.md",
@@ -424,11 +424,19 @@
     },
     {
       "path": "monopole-app.js",
-      "sha256": "e12fc306eda0f45521d1bf8d19299f2dc7b8e51c81a92efec6a1a840b99fb4f0"
+      "sha256": "7df0ae66cd3fa54082e87c732f856dd8640e8d9b77bbbf545ad7531e3ee1c461"
     },
     {
       "path": "monopole-capacity.js",
       "sha256": "bd46234a158aedd1c0d6c86b64dcf19cfd5492ca7956b0327686d0a1d99e1bdc"
+    },
+    {
+      "path": "monopole-presentation/presentation.js",
+      "sha256": "a1102ca6cbbb4d75a2f1154912da52b1efc7fae9c1ec5b3acc51dcee3a5ee7c6"
+    },
+    {
+      "path": "monopole-presentation/styles.css",
+      "sha256": "5ccf57b41af0a31a87b044b5a142ce31b7426ae54a0f8b29e44b831c33ade0a7"
     },
     {
       "path": "pad-input/app.js",
@@ -492,11 +500,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "9e1c3874e085e102086f53b177357b0708e44a5b6fde8ce97de1227fcf8aeb1f"
+      "sha256": "4fd2c193d000dd47ee291bbc06a112eeb0e9c9632edc17cfd798c9b8892fecfc"
     },
     {
       "path": "README.md",
-      "sha256": "131761511bb7ac08315cc1610ec4652dbf7a881485ec87a7af0fa862273c9806"
+      "sha256": "4f2e0592c372ed45b6e937e6f02617322e772a0a8fb414057248811b2dfe799c"
     },
     {
       "path": "reinforcement-area/app.js",

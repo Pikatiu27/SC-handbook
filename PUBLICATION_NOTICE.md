@@ -2,6 +2,9 @@
 
 ## Status
 
+Build 0.7.131 (18 October 2026): Monopole capacity summaries align consistently, and calculation traces use written fractions, roots, subscripts and upright units. Compact 12 px equations retain horizontal desktop notation and grouped narrow-screen wrapping. Numerical methods, source coefficients, station results, other tools and legacy links are unchanged. Public beta / For Review remains; existing source, project adoption, independent engineering and complete-design limitations continue.
+
+
 Build 0.7.130 (17 October 2026): Concrete Pad uses compact grouped inputs, an input-linked one-metre strip section, aligned reinforcement mats and explicit Auto/Reset depth recovery. Optional projection and fitment inputs remain folded; capacities stay primary and symbols are under Calculation. The independent Pad analysis schematic is removed. Current 0.7.129 calculation owners and other pages remain unchanged. Public beta / For Review; whole-footing, interface, anchorage, project adoption and independent engineering checks remain outside this section-capacity tool.
 
 

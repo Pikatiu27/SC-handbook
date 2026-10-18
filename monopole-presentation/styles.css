@@ -1,0 +1,53 @@
+/* Monopole presentation only; shared drawing and calculation owners stay frozen. */
+#monopolePanel :is(.monopole-moment-section,.monopole-combined-section) > summary {
+  display:grid; grid-template-columns:minmax(0,1fr) auto 24px;
+  align-items:center; gap:10px 22px;
+}
+#monopolePanel :is(.monopole-moment-section,.monopole-combined-section) > summary > span { min-width:0; }
+#monopolePanel :is(.monopole-moment-section,.monopole-combined-section) > summary > :is(strong,.wf-result-link) {
+  margin:0; max-width:580px; justify-self:end; text-align:right;
+  color:var(--monopole-dark)!important; font-size:var(--fs-sm); line-height:1.5; font-weight:850;
+}
+#monopolePanel .monopole-moment-section > summary > .wf-result-link {
+  text-decoration:none; min-height:44px; padding:8px 0!important;
+}
+#monopolePanel .monopole-moment-section > summary > .wf-result-link:hover:not(:disabled) {
+  text-decoration:underline; text-underline-offset:4px;
+}
+#monopolePanel :is(.monopole-moment-section,.monopole-combined-section) > summary > i { justify-self:end; }
+#monopoleFormulaSteps .calculation-trace-row { grid-template-columns:minmax(155px,205px) minmax(0,1fr); gap:12px 22px; }
+#monopoleFormulaSteps .calculation-trace-heading b { font-size:13px; line-height:1.45; }
+#monopoleFormulaSteps .calculation-trace-heading small { font-size:12px; line-height:1.5; font-weight:500; }
+#monopoleFormulaSteps .calculation-trace-line { grid-template-columns:90px minmax(0,1fr); gap:8px 14px; }
+#monopoleFormulaSteps .calculation-trace-line > span { font-size:12px; line-height:1.5; }
+#monopoleFormulaSteps .mono-trace-content { min-width:0; font-family:var(--font); font-size:13px; line-height:1.65; overflow-wrap:anywhere; }
+#monopoleFormulaSteps .is-applicability .mono-trace-content { color:var(--muted); }
+#monopoleFormulaSteps .is-result .mono-trace-content { color:var(--ink); font-weight:700; }
+#monopoleFormulaSteps .mono-math-stack { display:grid; min-width:0; gap:9px; }
+#monopoleFormulaSteps .mono-math-line { display:flex; align-items:center; flex-wrap:wrap; gap:8px 6px; min-width:0; }
+#monopoleFormulaSteps math { font-family:math; font-size:12px; line-height:1.5; text-align:left; margin:0; max-width:100%; }
+#monopoleFormulaSteps math mtext { font-family:var(--font); }
+#monopoleFormulaSteps .mono-trace-note { font-family:var(--font); font-size:13px; line-height:1.6; }
+#monopoleFormulaSteps .mono-precision-note { margin:0 0 14px; font-size:12px; color:var(--muted); line-height:1.5; }
+#monopoleFormulaSteps .mono-math-wide { display:none; }
+#monopoleFormulaSteps .mono-math-narrow { display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; }
+@media(min-width:1200px) {
+  #monopoleFormulaSteps .mono-math-wide { display:block; min-width:0; }
+  #monopoleFormulaSteps .mono-math-narrow { display:none; }
+}
+@media(max-width:1050px) {
+  #monopolePanel :is(.monopole-moment-section,.monopole-combined-section) > summary { grid-template-columns:minmax(0,1fr) 24px; gap:4px 12px; }
+  #monopolePanel :is(.monopole-moment-section,.monopole-combined-section) > summary > span { grid-column:1; grid-row:1; }
+  #monopolePanel :is(.monopole-moment-section,.monopole-combined-section) > summary > :is(strong,.wf-result-link) { grid-column:1; grid-row:2; justify-self:start; text-align:left; max-width:100%; }
+  #monopolePanel :is(.monopole-moment-section,.monopole-combined-section) > summary > i { grid-column:2; grid-row:1 / span 2; align-self:center; }
+  #monopolePanel .monopole-moment-section > summary > .wf-result-link { padding:4px 0!important; }
+  #monopoleFormulaSteps .calculation-trace-row { grid-template-columns:minmax(0,1fr); gap:9px; }
+}
+@media(max-width:600px) {
+  #monopoleFormulaSteps .calculation-trace-line { grid-template-columns:minmax(0,1fr); gap:5px; }
+  #monopoleFormulaSteps .calculation-trace-body { gap:12px; }
+  #monopoleFormulaSteps .calculation-trace-heading small { font-size:12px; }
+  #monopoleFormulaSteps .nt-station > summary { min-width:0; gap:8px; }
+  #monopoleFormulaSteps .nt-station > summary > span { min-width:0; overflow-wrap:anywhere; }
+  #monopoleFormulaSteps .nt-station .detail-body { padding:12px; }
+}
