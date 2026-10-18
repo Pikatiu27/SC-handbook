@@ -1,0 +1,19 @@
+.bd-stiffness{padding-top:12px!important;border-top:1px solid var(--line)!important;}
+.bd-stiffness h3{margin-bottom:10px!important;}
+.bd-views{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+#beamforcesPanel .bd-views button{flex:1 1 150px;min-height:44px;}
+#beamforcesPanel .bd-views [aria-pressed=true]{background:var(--green-soft);border-color:var(--green-dark);color:var(--green-dark);font-weight:700;}
+#beamforcesPanel.bd-deformation .bd-forces-only,#beamforcesPanel.bd-deformation #bifReadout,#beamforcesPanel.bd-deformation #bifQuickExtrema,#beamforcesPanel.bd-deformation #bifSideField,#beamforcesPanel.bd-deformation #bifJump,#beamforcesPanel.bd-deformation #bifExtrema,#beamforcesPanel.bd-deformation #bifReadingTools .bif-help:last-child{display:none!important;}
+#beamforcesPanel:not(.bd-deformation) :is(#bdReadout,#bdResponse){display:none!important;}
+.bif-reading>#bdReadout{grid-column:2;grid-row:1;}
+#beamforcesPanel .bif-reading>#bifPin{grid-column:3;grid-row:1;}
+#bdCalculation{font-size:var(--fs-sm);line-height:1.6;overflow-wrap:anywhere;}
+#bdCalculation dl{margin:0;display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px 14px;}
+#bdCalculation dt{font-weight:800;}#bdCalculation dd{margin:0;}
+#bdResponse .bif-warning,#bdResponse .bif-errors{margin:10px 0;}
+#bdE[aria-invalid=true],#bdI[aria-invalid=true]{outline:2px solid var(--status-fail);outline-offset:1px;}
+#bdInputErrors{color:var(--status-fail);}
+@media(max-width:500px){.bif-reading>#bdReadout{grid-column:1/-1;grid-row:2;}#beamforcesPanel .bif-reading>#bifPin{grid-column:2;grid-row:1;}#bdCalculation dl{grid-template-columns:1fr;gap:4px;}#bdCalculation dd{margin-bottom:10px;}}
+
+#beamforcesPanel.bd-deformation .wf-result-actions:has([data-wf-result="bif-forces"]),#beamforcesPanel:not(.bd-deformation) .wf-result-actions:has([data-wf-result="bd-deformation"]){display:none!important;}
+#beamforcesPanel .bif-reading>.wf-result-actions{grid-column:1/-1;grid-row:auto;justify-self:start;}

@@ -18,6 +18,7 @@ window.HandbookWorkflowLinks=[
  {key:'reo-anchorage',panel:'reo',label:'#reoAnchoragePrimaryResult',valid:'#reoAnchoragePrimaryResult',trace:'#reoFormulaSteps'},
  {key:'reo-area',panel:'reo',label:'#reoAreaResult',valid:'#reoAreaResult',trace:'#wfAreaFormula',title:'Reinforcement area'},
  {key:'reo-mass',panel:'reo',label:'#reoAreaMass',valid:'#reoAreaMass',trace:'#wfAreaFormula',title:'Nominal bar mass'},
+ {key:'bd-deformation',panel:'beamforces',appendAfter:'#bdReadout',label:'Calculation',valid:'#bdReadout',invalidIf:'#bifX[aria-invalid="true"], #bdE[aria-invalid="true"], #bdI[aria-invalid="true"]',trace:'#bdCalculation',title:'Beam deflection and rotation'},
  {key:'bif-forces',panel:'beamforces',appendAfter:'#bifReadout',label:'Calculation',valid:'#bifReadout',invalidIf:'#bifX[aria-invalid="true"]',trace:'#bifCalculation',title:'Beam reactions and section forces'},
  {key:'screw-actions',panel:'screw',label:'#screwDemandCompression',valid:'#screwDemandCompression',trace:'#screwDemandFormulaSteps',title:'Pile-group action distribution'}
 ];

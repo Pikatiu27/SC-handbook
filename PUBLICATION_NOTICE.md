@@ -2,6 +2,9 @@
 
 ## Status
 
+Build 0.7.132 (19 October 2026): Analysis adds constant-EI elastic deflection and rotation for the six existing determinate beam layouts, with entered E/GPa and I/mm4, linked section/peak inspection and calculation return. Downward displacement is shown in mm and clockwise-positive slope in mrad. Shear deformation, variable/effective stiffness, settlement, indeterminate analysis, normative serviceability limits and design acceptance remain excluded. More layouts remains reference-only. Public beta / For Review; all existing source, project, independent-engineering and accessibility qualifications remain.
+
+
 Build 0.7.131 (18 October 2026): Monopole capacity summaries align consistently, and calculation traces use written fractions, roots, subscripts and upright units. Compact 12 px equations retain horizontal desktop notation and grouped narrow-screen wrapping. Numerical methods, source coefficients, station results, other tools and legacy links are unchanged. Public beta / For Review remains; existing source, project adoption, independent engineering and complete-design limitations continue.
 
 

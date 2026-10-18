@@ -143,12 +143,28 @@
       "sha256": "6a537f817be09d03324c02de7caef685949c35bf2e261d2b8b6d209445dce17c"
     },
     {
+      "path": "beam-deflection-preview/app.js",
+      "sha256": "9186e39b416944877e46dae9020d37a9535511f796e3ae6715718358b2ed2552"
+    },
+    {
+      "path": "beam-deflection-preview/calculation.js",
+      "sha256": "e679254fdf547c2890f1b33e970127a8f67dad2cf568011507879f488a634674"
+    },
+    {
+      "path": "beam-deflection-preview/drawing.js",
+      "sha256": "db7e584d8c2dc2b9865d06ebdbb49d9a09ed5abcc569d2307042c55ce39560ae"
+    },
+    {
+      "path": "beam-deflection-preview/styles.css",
+      "sha256": "4cc8a6f3b58ea5f172dc723238dbc7a6b7d109e191f97afeeade8c32441a77a0"
+    },
+    {
       "path": "beam-hot-rolled-data.js",
       "sha256": "55ca29984ba4a82efa940f8189bf475a632e6f4ad7573a7df68b605e87d45d27"
     },
     {
       "path": "beam-internal-forces/app.js",
-      "sha256": "4a23ed826f4f50bc6d96dbb7a00654a6e40579f0e904aa000a72f6927248f84a"
+      "sha256": "596c9d0dec6962c9f5231cee13f207aba01caec7d63f5228339fdd91de7cfd50"
     },
     {
       "path": "beam-internal-forces/calculation.js",
@@ -156,11 +172,11 @@
     },
     {
       "path": "beam-internal-forces/drawing.js",
-      "sha256": "3d10ce947ae76f3e728866f13d2b23419667003973eea8e4347cf5129c76a599"
+      "sha256": "9abcfa13d74bf6a9d8bc2d47dfb19265315844b9564add02cd2e9855bd10662f"
     },
     {
       "path": "beam-internal-forces/styles.css",
-      "sha256": "8f43b36f616ba975600bd279aac932f9de3c6ba42a29e9fde048bf16e779eded"
+      "sha256": "e75a025e2ae57671bcb2da4a4737ebdd995dd8b9dc5c11c37f36097533b90ef0"
     },
     {
       "path": "beam-presentation/layout.css",
@@ -408,7 +424,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "ef824204b229d4f5ee8e59e9edd72539d3fbbf36464a211382e5a79ba84a6f0b"
+      "sha256": "34e4971906f0d65c0cfd017a49f8981d7b24ccb11976120ad02cd95a5c2e9b22"
     },
     {
       "path": "LICENSE.md",
@@ -500,11 +516,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "4fd2c193d000dd47ee291bbc06a112eeb0e9c9632edc17cfd798c9b8892fecfc"
+      "sha256": "f3ad8b9a2d100b601cf277e0c1fd9d3aab9a09cb8f62da7837f2a615ca1f3bdc"
     },
     {
       "path": "README.md",
-      "sha256": "4f2e0592c372ed45b6e937e6f02617322e772a0a8fb414057248811b2dfe799c"
+      "sha256": "d974e29142345629b6959dd14186eda7e2253e3d5b2889d5ecd61a2191cc9bcb"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -596,7 +612,7 @@
     },
     {
       "path": "tool-directory/registry.js",
-      "sha256": "f856f57d3129b8e3f2e00d58a5d9eb9fdcca30d81ffb7286ab7bb124b251f3c9"
+      "sha256": "602e9b8bb66be0b1dd915f47534c0b750bb92729dc415d48f587b2697d6b6b7d"
     },
     {
       "path": "web-drawing/styles.css",
@@ -620,7 +636,7 @@
     },
     {
       "path": "workflow-review/config.js",
-      "sha256": "f81848578b963750bd38efd42d63740517e74f6fa992664d79d23c8a55feb7a7"
+      "sha256": "09948dfe047bfa3dd108416da50c1c284bdd579d704508e8354be59d2fcf7288"
     },
     {
       "path": "workflow-review/numerical-traces.js",

@@ -2,7 +2,7 @@
 
 Static, English-language engineering lookup handbook with traceable quick-reference calculators. Open `index.html` directly; no server or package installation is required.
 
-**Release status:** Public beta · Build 0.7.131 (18 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
+**Release status:** Public beta · Build 0.7.132 (19 October 2026). This is engineering quick-reference software, not certified design software. Every tool retains its displayed issue status, source status and limitations. Public availability does not make a `Draft`, `For Review`, `Source_Not_Verified` or `Not evaluated` result issue-ready.
 
 **Repository model:** The complete current project and future development belong in the private `Pikatiu27/SC-handbook-source` repository. The active `main` of `Pikatiu27/SC-handbook` contains only the approved site artifact and minimum deployment files, preserving the existing public website URL. Do not push source work to the public repository. Previously public commits, forks, clones and cached copies may remain accessible.
 
@@ -14,7 +14,7 @@ Public site: <https://pikatiu27.github.io/SC-handbook/>
 
 Report calculation, source, accessibility or publication issues through the [issue tracker](https://github.com/Pikatiu27/SC-handbook/issues/new). Do not include confidential project information.
 
-The web handbook groups tools under Steel Connections, Steel Members and Foundations. Each category includes a folded `Design scope` map stating the complete-design context, handbook scope and principal exclusions. It does not combine tab results or imply a complete project design.
+The web handbook groups tools under Analysis, Steel, Concrete, Connections and Foundations, with Products as an auxiliary lookup. Each category includes a folded `Design scope` map stating the complete-design context, handbook scope and principal exclusions. It does not combine tab results or imply a complete project design.
 
 ## Tools
 
@@ -285,3 +285,6 @@ Build 0.7.130 (17 October 2026): Concrete Pad uses compact grouped inputs, an in
 
 
 Build 0.7.131 (18 October 2026): Monopole capacity summaries align consistently, and calculation traces use written fractions, roots, subscripts and upright units. Compact 12 px equations retain horizontal desktop notation and grouped narrow-screen wrapping. Numerical methods, source coefficients, station results, other tools and legacy links are unchanged. Public beta / For Review remains; existing source, project adoption, independent engineering and complete-design limitations continue.
+
+
+Build 0.7.132 (19 October 2026): Analysis adds constant-EI elastic deflection and rotation for the six existing determinate beam layouts, with entered E/GPa and I/mm4, linked section/peak inspection and calculation return. Downward displacement is shown in mm and clockwise-positive slope in mrad. Shear deformation, variable/effective stiffness, settlement, indeterminate analysis, normative serviceability limits and design acceptance remain excluded. More layouts remains reference-only. Public beta / For Review; all existing source, project, independent-engineering and accessibility qualifications remain.

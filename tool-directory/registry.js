@@ -1,6 +1,6 @@
 "use strict";
 window.HandbookDirectoryRegistry = [
-  {id:'beamforces',category:'analysis',name:'Beam Internal Forces',title:'Beam Internal Forces',kind:'Calculation',description:'Determinate beam reactions, combined loads, shear and moment diagrams with linked section readings. Public beta / For Review.',keywords:'beam statics shear moment load cantilever overhang 内力 弯矩 剪力 静定梁'},
+  {id:'beamforces',category:'analysis',name:'Beam Internal Forces',title:'Beam Internal Forces',kind:'Calculation',description:'Determinate beam reactions, combined loads, shear and moment; constant-EI deflection and rotation with linked section readings. Public beta / For Review.',keywords:'beam statics shear moment deflection rotation stiffness load cantilever overhang 内力 弯矩 剪力 挠度 转角 静定梁'},
   {id:'bolt',category:'connections',name:'Bolt Capacity',kind:'Calculation + data',description:'Bolt shear, tension and slip checks; fastener reference tables.',keywords:'bolts fasteners nuts washers u-bolt blind bolts 螺栓 紧固件 螺母 垫圈'},
   {id:'weld',category:'connections',name:'Weld Capacity',kind:'Calculation',description:'Weld resistance with effective length, material and optional action checks.',keywords:'fillet butt weld throat 焊缝 焊接'},
   {id:'properties',category:'steel',name:'Section Properties',kind:'Properties + data',description:'Steel section properties, plate sizes and mass; custom geometry.',keywords:'UB UC PFC CHS RHS SHS EA Rod round bar plate 截面 型钢 板 圆钢'},
