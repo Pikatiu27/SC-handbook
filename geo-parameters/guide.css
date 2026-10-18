@@ -23,7 +23,7 @@
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table th,:is(#geoPanel.geo-guide,main.geo-guide) .range-table td{padding:9px 10px;width:auto;vertical-align:middle;overflow-wrap:anywhere}
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table th:first-child{width:17%}
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table td:last-child{color:var(--geo-ink)}
-:is(#geoPanel.geo-guide,main.geo-guide) .range-table button{font-family:inherit;font-size:var(--fs-sm);line-height:1.3;min-height:36px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;color:var(--geo-accent);background:none;border:0;width:100%;text-align:left;border-radius:4px}
+:is(#geoPanel.geo-guide,main.geo-guide) .range-table button{font-family:inherit;font-size:var(--fs-sm);line-height:1.3;min-height:36px;cursor:pointer;text-decoration:none;color:var(--geo-accent);background:var(--card);border:1px solid var(--geo-line);width:100%;text-align:left;border-radius:6px}
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table button[aria-expanded=true]{font-weight:900;background:#e1eee5}
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-value-line{display:block}
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-value-line+.geo-value-line{margin-top:5px}
@@ -31,7 +31,7 @@
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-value-label::after{content:": ";white-space:pre}
 @media(min-width:761px){.tool-navigation[data-active-tool="geo"] .tool-navigation-menu,.tool-navigation[data-active-tool="geo"] .tool-tabs{min-width:0;max-width:100%}.tool-navigation[data-active-tool="geo"] .tool-tabs{flex-wrap:wrap}.tool-navigation[data-active-tool="geo"] .tool-tab{min-width:0;white-space:normal}}
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-group-note{padding:9px 12px;margin:0;border-top:1px solid var(--geo-line);color:var(--geo-muted);font-size:var(--fs-xs);line-height:1.5}
-:is(#geoPanel.geo-guide,main.geo-guide) .geo-group-note button{font:inherit;color:var(--geo-accent);text-decoration:underline;border:0;background:none;cursor:pointer;padding:4px 0}
+:is(#geoPanel.geo-guide,main.geo-guide) .geo-group-note button{font:inherit;color:var(--geo-accent);text-decoration:none;border:1px solid var(--geo-line);border-radius:6px;background:var(--card);cursor:pointer;padding:4px 8px}
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-selection{margin:12px;padding:12px;border:1px solid #9ebdaa;border-left:4px solid var(--geo-accent);border-radius:8px;background:#fff;box-shadow:none}
 :is(#geoPanel.geo-guide,main.geo-guide) #resultHeading{scroll-margin-top:170px;font-size:var(--fs-md,16px);margin:0;color:var(--geo-accent)}
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-selection-intro{margin:5px 0 10px;font-size:var(--fs-xs);color:var(--geo-muted)}
@@ -192,7 +192,7 @@
 }
 
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-row-source{margin-top:6px;font-size:var(--fs-xs)}
-:is(#geoPanel.geo-guide,main.geo-guide) .geo-row-source summary{cursor:pointer;text-decoration:underline}
+:is(#geoPanel.geo-guide,main.geo-guide) .geo-row-source summary{cursor:pointer;text-decoration:none}
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-row-source p{font-size:var(--fs-xs);margin:6px 0}
 :is(#geoPanel.geo-guide,main.geo-guide) .geo-detail-table .parameter-group th{background:#edf3ef;font-size:var(--fs-sm);padding:10px;text-align:left}
 @media(max-width:760px){:is(#geoPanel.geo-guide,main.geo-guide) #rangeOverview{grid-template-columns:repeat(2,minmax(0,1fr))}:is(#geoPanel.geo-guide,main.geo-guide) .geo-detail-table .parameter-group{display:block}}
@@ -269,7 +269,7 @@ main.geo-guide .source-panel>summary{padding:14px 16px;min-height:44px}
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table .geo-value-label{display:block;margin-bottom:2px}
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table .geo-value-label::after{content:none}
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table .geo-value-line+.geo-value-line{margin-top:8px}
-:is(#geoPanel.geo-guide,main.geo-guide) .range-table button{padding:0;min-height:44px;display:flex;align-items:flex-start;gap:4px}
+:is(#geoPanel.geo-guide,main.geo-guide) .range-table button{padding:4px 6px;min-height:44px;display:flex;align-items:flex-start;gap:4px}
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table .geo-overview-value{font-weight:700}
 @media(max-width:960px){
 :is(#geoPanel.geo-guide,main.geo-guide) .range-table :is(th,td){padding:8px;min-width:0}

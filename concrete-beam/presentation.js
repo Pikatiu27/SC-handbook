@@ -39,7 +39,7 @@
     return rows;
   }
   function renderScreens(input,r,compact=false){
-    return screens(input,r).map(item=>`<a class="cb-screen-line" data-check="${item.id}" data-state="${item.status}" href="#cbTrace-${item.id}" aria-controls="cbCalculation" aria-label="${item.title}: ${item.label}. View calculation"><span class="cb-screen-name">${item.title}</span><strong class="cb-screen-status">${item.label}</strong>${!compact||item.status==="review"?`<span class="cb-screen-value">${escape(item.value)}</span>`:""}</a>`).join("");
+    return screens(input,r).map(item=>`<div class="cb-screen-line" data-state="${item.status}"><span class="cb-screen-name">${item.title}</span><strong class="cb-screen-status">${item.label}</strong>${!compact||item.status==="review"?`<span class="cb-screen-value">${escape(item.value)}</span>`:""}</div>`).join("");
   }
   function primaryIssues(r){
     if(!r.valid)return [];

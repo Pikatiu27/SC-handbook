@@ -37,7 +37,9 @@
     function updateScrollCue(){el('filletScrollHint').hidden=scroll.scrollWidth<=scroll.clientWidth+1;}
     if(doc.defaultView&&doc.defaultView.ResizeObserver)new doc.defaultView.ResizeObserver(updateScrollCue).observe(scroll);
     else if(doc.defaultView)doc.defaultView.addEventListener('resize',updateScrollCue);
-    let selected=6,current=null;
+    const sizeControl=el('filletTraceSize');
+    let selected=Number(sizeControl.value),current=null;
+    function markCalculationSize(){for(const row of el('filletRows').children)row.classList.toggle('fillet-selected',Number(row.dataset.size)===selected);}
     function showTrace(){
       const r=current&&current.rows.find(r=>r.size===selected),container=el('filletTrace');container.replaceChildren();
       if(!r){block('Fillet calculation','tt = 0.707s; q = φ × 0.6 × fuw × tt × kr / 1000; φR = n × q × L','Valid table inputs required.','Not evaluated.',current?Object.values(current.errors).join(' '):'Select the table basis.');return;}
@@ -65,7 +67,7 @@
       const tbody=el('filletRows');tbody.replaceChildren();
       for(const size of sizes){
         const r=current.rows.find(x=>x.size===size),tr=doc.createElement('tr');tr.dataset.size=String(size);if(size===selected)tr.className='fillet-selected';
-        const th=doc.createElement('th');th.scope='row';const b=doc.createElement('button');b.type='button';b.className='fillet-row-button';b.textContent=String(size);b.setAttribute('aria-label',`Calculation for ${size} mm fillet`);b.setAttribute('aria-controls','filletCalculation');b.setAttribute('aria-pressed',String(size===selected));b.addEventListener('click',()=>{selected=size;el('filletCalculation').open=true;showTrace();for(const row of tbody.children){const active=row.dataset.size===String(size);row.classList.toggle('fillet-selected',active);row.querySelector('button').setAttribute('aria-pressed',String(active));}el('filletCalculationTitle').focus();el('filletCalculationTitle').scrollIntoView({block:'start'});});th.append(b);tr.append(th);
+        const th=doc.createElement('th');th.scope='row';th.textContent=String(size);tr.append(th);
         function cell(value,note){const td=doc.createElement('td');td.textContent=value;if(note){const small=doc.createElement('small');small.textContent=note;td.append(small);}tr.append(td);}
         cell(r?fmt(r.throat,3):'Not evaluated');cell(r?fmt(r.minimum,0):'Not evaluated');
         cell(r&&r.perMm!==null?fmt(r.perMm,3):'Not evaluated',r&&current.length<r.minimum?'L < 4s':null);
@@ -75,10 +77,10 @@
       showTrace();updateScrollCue();
     }
     for(const id of ['filletCategory','filletStrength','filletLength','filletLines','filletConnection'])el(id).addEventListener('input',update);
+    sizeControl.addEventListener('change',()=>{selected=Number(sizeControl.value);markCalculationSize();showTrace();});
     for(const name of ['Calculator','Table'])el('weldMode'+name).addEventListener('click',()=>{
       const table=name==='Table';el('weldCalculatorPane').hidden=table;el('filletTablePane').hidden=!table;el('weldModeTable').setAttribute('aria-pressed',String(table));el('weldModeCalculator').setAttribute('aria-pressed',String(!table));
     });
-    el('filletBack').addEventListener('click',()=>{el('filletCalculation').open=false;const b=el('filletRows').querySelector(`[data-size="${selected}"] button`);b.focus();b.scrollIntoView({block:'center'});});
     update();
   }
   return Object.freeze({sizes,evaluate,init});

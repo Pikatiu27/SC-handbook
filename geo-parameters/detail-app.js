@@ -4,6 +4,35 @@
   const data = window.GeoParametersData;
   const query = window.GeoParameters;
   const $ = (id) => document.getElementById(id);
+  let inlineReference = null;
+  function closeInlineReference(restoreFocus = false) {
+    if (!inlineReference) return;
+    const { topic, origin, host } = inlineReference;
+    inlineReference = null;
+    $("geoRelatedReferences").append(topic);
+    topic.open = false;
+    host.remove();
+    if (origin.isConnected) {
+      origin.setAttribute("aria-expanded", "false");
+      if (restoreFocus) origin.focus({ preventScroll: true });
+    }
+  }
+  function showInlineReference(origin) {
+    if (inlineReference?.origin === origin) { closeInlineReference(true); return; }
+    closeInlineReference();
+    const topic = $(origin.dataset.topic);
+    if (!topic) return;
+    const row = origin.closest(".geo-detail-table tr");
+    const host = document.createElement(row ? "tr" : "div");
+    host.className = "geo-inline-reference" + (row ? " geo-reference-row" : "");
+    const holder = row ? document.createElement("td") : host;
+    if (row) { holder.colSpan = 3; host.append(holder); row.after(host); }
+    else origin.after(host);
+    holder.append(topic);
+    inlineReference = { topic, origin, host };
+    origin.setAttribute("aria-expanded", "true");
+    topic.open = true;
+  }
 
   const symbolMap = {
     "q_ult,screen": "q<sub>ult,screen</sub>", "C_a": "C<sub>a</sub>", "γ_w": "γ<sub>w</sub>",
@@ -108,7 +137,7 @@
       const value = project ? '<span class="geo-project-value">Project input</span>' : row.inventory ? labelledValue(row.name, row.value) : partsHtml(row.parts);
       const kind = row.role === 'project' ? '' : row.role === 'standard' ? 'Classification band' : /bearing/i.test(row.name) ? (state.family === 'rock' ? 'Broad source reference' : 'Conditional reference') : /modulus/.test(row.name) ? 'Stiffness reference' : /Pile shaft/.test(row.name) ? 'Estimation factors' : 'Typical reference';
       const topic = row.name === 'Allowable bearing pressure, q_a' ? 'bearingReference' : /modulus/.test(row.name) ? 'settlementReference' : row.name === 'Pile shaft resistance, f_s' ? 'interfaceReferences' : '';
-      const link = topic ? `<button type="button" class="geo-reference-link" data-topic="${topic}">${topic === 'bearingReference' ? 'Bearing conditions' : topic === 'settlementReference' ? 'Settlement basis' : 'Installation basis'}</button>` : '';
+      const link = topic ? `<button type="button" class="geo-reference-link" data-topic="${topic}" aria-controls="${topic}" aria-expanded="false">${topic === 'bearingReference' ? 'Bearing conditions' : topic === 'settlementReference' ? 'Settlement basis' : 'Installation basis'}</button>` : '';
       return `<tr data-geo-role="${escapeHtml(row.role)}"><th scope="row">${symbols(row.name)}</th><td class="${row.role === 'project' ? 'geo-pending' : 'geo-numeric'}">${kind ? `<span class="geo-reference-kind">${kind}</span>` : ''}${value}</td><td>${symbols(condition)}<div class="geo-row-actions">${evidence}${link}</div></td></tr>`;
     }).join('');
   }
@@ -123,10 +152,11 @@
       rock: ['anchorReference', 'Rock anchor bond reference']
     };
     const [topic, label] = links[material];
-    return `<button type="button" class="geo-reference-link" data-topic="${topic}">${label}</button>`;
+    return `<button type="button" class="geo-reference-link" data-topic="${topic}" aria-controls="${topic}" aria-expanded="false">${label}</button>`;
   }
 
   function render() {
+    closeInlineReference();
     const canGrade=$("family").value==="granular" && $("material").value==="sand" && ["loose","dense"].includes($("condition").value);
     $("gradingField").hidden=!canGrade;
     if(!canGrade) $("grading").value="unknown";
@@ -169,6 +199,7 @@
 
   }
   function renderUnselected() {
+    closeInlineReference();
     ["bearingReference","settlementReference","baseInterfaceReference","interfaceReferences","anchorReference"].forEach(id=>$("geoRelatedReferences").append($(id)));
     selection.hidden=true;
     $("selectedRangeRows").innerHTML="";
@@ -306,10 +337,12 @@
   });
   $("geoPanel").addEventListener("click",event=>{
     const button=event.target.closest("button[data-topic]");if(!button)return;
-    const topic=$(button.dataset.topic);
-    topic.open=true;
-    topic.querySelector("summary").focus();
-    topic.scrollIntoView({block:"start",behavior:"instant"});
+    showInlineReference(button);
+  });
+  ["bearingReference","settlementReference","baseInterfaceReference","interfaceReferences","anchorReference"].forEach(id=>{
+    $(id).addEventListener("toggle",()=>{
+      if (inlineReference?.topic === $(id) && !$(id).open) closeInlineReference(true);
+    });
   });
   document.querySelectorAll(".geo-jump a").forEach(link=>link.addEventListener("click",event=>{
     event.preventDefault(); // Keep the shared app's #geo route; these are in-page section links.

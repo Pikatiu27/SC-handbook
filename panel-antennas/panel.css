@@ -76,7 +76,9 @@
 .antenna-spec-link { display:block; padding:0; font-weight:700; }
 .antenna-page-links { display:grid; gap:4px; margin-top:4px; padding-top:4px; border-top:1px solid #e0e7eb; font-size:var(--fs-xs); }
 .antenna-page-links a { white-space:nowrap; }
-.antenna-table .antenna-model-button { display:block; width:100%; min-height:28px; padding:0; border:0; border-radius:2px; background:transparent; color:var(--green-dark); text-align:left; line-height:1.3; text-decoration:underline; text-underline-offset:3px; overflow-wrap:anywhere; scroll-margin-top:90px; }
+.antenna-table .antenna-model-button { display:block; width:100%; min-height:32px; padding:4px 6px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--green-dark); text-align:left; line-height:1.3; text-decoration:none; overflow-wrap:anywhere; scroll-margin-top:90px; }
+.antenna-table .antenna-model-button:is(:hover,[aria-expanded="true"]), .antenna-brand-table button:hover { background:var(--green-soft); border-color:var(--green); }
+.antenna-table .antenna-model-button:focus-visible, .antenna-brand-table button:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
 .antenna-table .antenna-data-row { background:#fff; }
 .antenna-table .antenna-data-row:nth-child(even) { background:#f5f8f7; }
 .antenna-table .antenna-selected-row:nth-child(n) { background:#e8f2ed; }
@@ -168,8 +170,10 @@
 .antenna-brand-table tbody tr:nth-child(even) { background:#f7f9fa; }
 .antenna-brand-table tbody tr:last-child > * { border-bottom:0; }
 .antenna-brand-table .antenna-brand-count { font-variant-numeric:tabular-nums; text-align:right; font-weight:700; }
-.antenna-brand-table button { display:block; width:100%; min-height:28px; text-align:left; padding:0; border:0; border-radius:2px; background:transparent; color:var(--green-dark); font-weight:700; line-height:1.35; text-decoration:underline; text-underline-offset:3px; overflow-wrap:anywhere; }
+.antenna-brand-table button { display:block; width:100%; min-height:32px; text-align:left; padding:4px 6px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--green-dark); font-weight:700; line-height:1.35; text-decoration:none; overflow-wrap:anywhere; }
+.antenna-brand-table .antenna-filter-action { display:block; font-size:var(--fs-xs); font-weight:400; margin-top:2px; }
 .antenna-brand-table a { display:inline-block; padding:4px 0; text-decoration:underline; }
+@media(max-width:760px) { .antenna-table .antenna-model-button, .antenna-brand-table button { min-height:44px; } }
 .antenna-brand-scope { margin-top:4px; border-top:1px solid var(--line); padding-top:4px; }
 .antenna-brand-scope > summary { min-height:28px; padding:6px 0; font-size:var(--fs-xs); font-weight:400; line-height:1.35; }
 .antenna-brand-notes { margin:6px 0 0; padding-left:16px; color:var(--muted); font-size:var(--fs-xs); font-weight:400; line-height:1.45; }

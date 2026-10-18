@@ -22,7 +22,7 @@
 #boltPanel .bolt-compare-table thead th:first-child { background:var(--green-soft); }
 #boltPanel .bolt-compare-table tbody tr { background:#fff; }
 #boltPanel .bolt-compare-table button { min-height:44px; width:100%; padding:4px; border:0; background:transparent; color:var(--link); font:inherit; font-weight:700; cursor:pointer; border-radius:4px; }
-#boltPanel .bolt-compare-table button:hover { text-decoration:underline; background:var(--green-soft); }
+#boltPanel .bolt-compare-table button:hover { text-decoration:none; background:var(--green-soft); }
 #boltPanel .bolt-compare-table button:focus-visible { outline:3px solid var(--green-dark); outline-offset:-3px; }
 #boltPanel .bolt-compare-table tr:nth-child(even) { background:#f5faf7; }
 #boltPanel .bolt-compare-table tr[data-current="true"] { background:#e2f1e8; }

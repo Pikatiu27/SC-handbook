@@ -32,7 +32,8 @@
 .fp-table .fp-doc { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
 .fp-doc-links { display: flex; flex-wrap: wrap; gap: 3px 10px; }
 .fp-table a, .fp-detail-button { color: var(--link); }
-.fp-detail-button { min-height: 28px; padding: 3px 0; border: 0; border-radius: 3px; background: transparent; font: inherit; text-decoration: underline; cursor: pointer; }
+.fp-detail-button { display:inline-flex; align-items:center; min-height:32px; padding:4px 8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--green-dark); font:inherit; text-decoration:none; cursor:pointer; }
+.fp-detail-button:is(:hover,[aria-expanded="true"]) { background:var(--green-soft); border-color:var(--green); }
 .fp-table .fp-detail-cell { background: var(--green-soft); padding: 16px; }
 .fp-detail-row { scroll-margin-top: 80px; }
 .fp-detail-close { float: right; min-height: 32px; }

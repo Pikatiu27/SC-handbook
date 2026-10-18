@@ -179,7 +179,7 @@
 /* Accepted fixed identity and side details, 9 October 2026. */
 /* Unreleased review candidate. Keep the complete catalogue table. */
 #guyPanel .guy-table tbody th button { align-items:flex-start; text-align:left; gap:3px; padding:6px; }
-#guyPanel .guy-table .guy-model-code { width:100%; white-space:normal; overflow-wrap:anywhere; text-decoration:underline; font-weight:700; }
+#guyPanel .guy-table .guy-model-code { width:100%; white-space:normal; overflow-wrap:anywhere; text-decoration:none; font-weight:700; }
 #guyPanel .guy-table .guy-model-brand { font-weight:400; }
 #guyPanel .guy-table .guy-model-size { font-size:var(--fs-xs); font-weight:400; color:var(--ink); white-space:normal; }
 #guyPanel .guy-table .guy-row-supplier { text-align:left; overflow-wrap:anywhere; }
@@ -224,7 +224,9 @@ body:has(#guyDrawer[open][aria-modal="true"]) { overflow:hidden; }
 #guyPanel .guy-th-label > span { overflow-wrap:normal; word-break:normal; }
 #guyPanel .guy-th-unit { white-space:nowrap; font-size:var(--fs-xs); }
 #guyPanel .guy-table tbody th { padding:2px 5px; }
-#guyPanel .guy-table tbody th button { padding:2px 4px; min-height:44px; gap:1px; justify-content:center; align-items:flex-start; line-height:1.25; }
+#guyPanel .guy-table tbody th button { padding:4px 6px; min-height:44px; gap:1px; justify-content:center; align-items:flex-start; line-height:1.25; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--green-dark); text-decoration:none; }
+#guyPanel .guy-table tbody th button:is(:hover,[aria-expanded="true"]) { background:var(--green-soft); border-color:var(--green); }
+#guyPanel .guy-table tbody th button:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
 #guyPanel .guy-table .guy-model-code { overflow-wrap:anywhere; font-size:var(--fs-sm); }
 #guyPanel .guy-table .guy-model-brand { font-size:var(--fs-xs); white-space:normal; }
 #guyPanel .guy-table .guy-model-size { line-height:1.2; }

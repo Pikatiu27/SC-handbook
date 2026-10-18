@@ -9,8 +9,8 @@
   const escape = value => String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
   const kv = pairs => '<dl class="cb-kv">'+pairs.map(([name,value])=>`<dt>${name}</dt><dd>${value}</dd>`).join("")+"</dl>";
   const presentation=window.ConcreteBeamPresentation;
-  const renderTraces=(input,result)=>presentation.traces(input,result).filter(row=>!selectedTrace||row.id===selectedTrace).map(row=>window.calculationTraceRow(row).replace('class="calculation-trace-row',`id="cbTrace-${row.id}" role="group" tabindex="-1" aria-label="${escape(row.title)} calculation" data-cb-trace="${row.id}" class="calculation-trace-row${row.id===selectedTrace?" cb-trace-selected":""}`)).join("");
-  let drawingInput=null,drawingResult=null,selectedTrace=null;
+  const renderTraces=(input,result)=>presentation.traces(input,result).map(row=>window.calculationTraceRow(row).replace('class="calculation-trace-row',`id="cbTrace-${row.id}" role="group" aria-label="${escape(row.title)} calculation" data-cb-trace="${row.id}" class="calculation-trace-row`)).join("");
+  let drawingInput=null,drawingResult=null;
   function draw(){
     const holder=el("Drawing"), model=window.ConcreteBeamDrawing.geometry(drawingInput,drawingResult);
     if(!model){holder.textContent="Enter valid section inputs";el("DrawingSummary").textContent="";return;}
@@ -51,11 +51,6 @@
     }
     clear();
     el("Screens").innerHTML=presentation.renderScreens(input,result,true);
-    // A changed reinforcement branch must not replace a selected check with all steps.
-    if(selectedTrace&&!presentation.screens(input,result).some(row=>row.id===selectedTrace)){
-      selectedTrace=null;
-      el("Calculation").open=false;
-    }
     el("Details").innerHTML=renderTraces(input,result);
     if(!result.valid){el("Issues").dataset.state="invalid";el("Issues").textContent=result.errors.section?`Invalid input · ${result.errors.section}`:"Invalid input · correct the highlighted fields.";return;}
     const r=result, s=r.section, v=r.shear;
@@ -69,28 +64,11 @@
     el("Geometry").innerHTML=kv(presentation.geometry(r));
     window.ConcreteBeamLastResult=r;
   }
-  el("Screens").addEventListener("click",event=>{
-    const link=event.target.closest("a[data-check]");
-    if(!link)return;
-    event.preventDefault();
-    selectedTrace=link.dataset.check;
-    el("Details").innerHTML=renderTraces(drawingInput,drawingResult);
-    const target=document.getElementById("cbTrace-"+link.dataset.check);
-    if(!target)return;
-    el("Calculation").open=true;
-    target.focus({preventScroll:true});
-    el("Calculation").scrollIntoView({block:"start",behavior:"instant"});
-  });
-  el("Calculation").querySelector("summary").addEventListener("click",()=>{
-    if(!el("Calculation").open){selectedTrace=null;el("Details").innerHTML=renderTraces(drawingInput,drawingResult);}
-  });
   el("BackResults").addEventListener("click",()=>{
-    const origin=el("Screens").querySelector(`a[data-check="${selectedTrace}"]`)||el("Screens").querySelector("a");
-    selectedTrace=null;
+    const origin=el("Results");
     el("Calculation").open=false;
-    el("Details").innerHTML=renderTraces(drawingInput,drawingResult);
     origin?.focus({preventScroll:true});
-    origin?.scrollIntoView({block:"center",behavior:"instant"});
+    origin?.scrollIntoView({block:"start",behavior:"instant"});
   });
   el("ViewConditions").addEventListener("click",event=>{
     event.preventDefault();
@@ -104,7 +82,7 @@
     el("ViewConditions").scrollIntoView({block:"center",behavior:"instant"});
   });
   // Default applicability is explicitly user-adopted for this local example.
-  function reset(){if(selectedTrace)el("Calculation").open=false;selectedTrace=null;for(const key of Object.keys(fields)){const value=calc.defaults[key];if($(key).type === "checkbox")$(key).checked=value;else $(key).value=value == null ? "" : value;}update();}
+  function reset(){for(const key of Object.keys(fields)){const value=calc.defaults[key];if($(key).type === "checkbox")$(key).checked=value;else $(key).value=value == null ? "" : value;}update();}
   panel.addEventListener("input",update);panel.addEventListener("change",update);el("Reset").addEventListener("click",reset);
   const resizeObserver=new ResizeObserver(draw);resizeObserver.observe(el("Drawing"));reset();
 })();

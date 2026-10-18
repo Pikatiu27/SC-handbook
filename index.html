@@ -13,37 +13,37 @@
   <link rel="icon" href="assets/sc-handbook-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="section-tables/styles.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="foundation-products/styles.css?v=20261016workflowtrace1">
+<link rel="stylesheet" href="foundation-products/styles.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="beam-capacity/layout.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="bolt-comparison/compact.css?v=20261016workflowtrace1">
+<link rel="stylesheet" href="bolt-comparison/compact.css?v=20261019interactionrelease1">
   <link rel="stylesheet" href="as4600-chs/panel.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="chs-bending-comparison/layout.css?v=20261016workflowtrace1">
 
   <link rel="stylesheet" href="geo-parameters/tab.css?v=20261016workflowtrace1">
-  <link rel="stylesheet" href="geo-parameters/guide.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="geo-parameters/detail-layout.css?v=20261016workflowtrace1">
+  <link rel="stylesheet" href="geo-parameters/guide.css?v=20261019interactionrelease1">
+<link rel="stylesheet" href="geo-parameters/detail-layout.css?v=20261019interactionrelease1">
 
-    <link rel="stylesheet" href="guy-lookup/guy.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="panel-antennas/panel.css?v=20261016workflowtrace1">
+    <link rel="stylesheet" href="guy-lookup/guy.css?v=20261019interactionrelease1">
+<link rel="stylesheet" href="panel-antennas/panel.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="reinforcement-area/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="bolt-dimensions/styles.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="concrete-anchors/styles.css?v=20261016workflowtrace1">
+<link rel="stylesheet" href="concrete-anchors/styles.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="axial-capacity/layout.css?v=20261016workflowtrace1">
 <script defer src="axial-capacity/presentation.js?v=20261016workflowtrace1"></script>
 <link rel="stylesheet" href="plate-tables/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="beam-presentation/layout.css?v=20261016workflowtrace1">
 <script defer src="beam-presentation/presentation.js?v=20261016workflowtrace1"></script>
 <link rel="stylesheet" href="concrete-cover/styles.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="tool-directory/directory.css?v=20261016workflowtrace1">
+<link rel="stylesheet" href="tool-directory/directory.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="steel-corrosion/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="accessibility/repairs.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="bolt-details/layout.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="web-drawing/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="beam-internal-forces/styles.css?v=20261019deflection1">
 <script src="workflow-review/numerical-traces.js?v=20261017calcaudit1"></script>
-<link rel="stylesheet" href="workflow-review/styles.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="weld-improvements.css?v=20261016weld1"><link rel="stylesheet" href="fillet-table.css?v=20261016weld1">
-<link rel="stylesheet" href="concrete-beam/styles.css?v=20261017concretebeam1">
+<link rel="stylesheet" href="workflow-review/styles.css?v=20261019interactionrelease1">
+<link rel="stylesheet" href="weld-improvements.css?v=20261016weld1"><link rel="stylesheet" href="fillet-table.css?v=20261019interactionrelease1">
+<link rel="stylesheet" href="concrete-beam/styles.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="pad-input/styles.css?v=20261017padrelease1">
   <link rel="stylesheet" href="monopole-presentation/styles.css?v=20261018monopole1">
 <link rel="stylesheet" href="beam-deflection-preview/styles.css?v=20261019deflection1">
@@ -937,7 +937,7 @@
     </table>
   </div>
   <p class="fillet-note">Selected sizes; throat resistance only. Excludes longitudinal RHS welds with wall t &lt; 3 mm. Verify size limits, connected parts and fabrication separately.</p>
-  <details id="filletCalculation" class="fillet-details"><summary id="filletCalculationTitle" tabindex="-1">Calculation</summary><div id="filletTrace" class="formula-list"></div><button id="filletBack" type="button">Back to results</button></details>
+  <details id="filletCalculation" class="fillet-details"><summary id="filletCalculationTitle">Calculation</summary><label class="fillet-trace-size"><span>Weld size, s</span><select id="filletTraceSize"><option value="3">3 mm</option><option value="4">4 mm</option><option value="5">5 mm</option><option value="6" selected>6 mm</option><option value="8">8 mm</option><option value="10">10 mm</option><option value="12">12 mm</option><option value="16">16 mm</option></select></label><div id="filletTrace" class="formula-list"></div></details>
   <details class="fillet-details"><summary>Sources &amp; scope</summary>
     <p><a href="https://store.standards.org.au/product/as-4100-2020" target="_blank" rel="noopener">AS 4100:2020</a> · Table 3.4 (φ); Fig. 9.6.3.1 (throat); Cl. 9.6.3.5 (length); Cl. 9.6.3.10 and Tables 9.6.3.10(A)/(B) (strength / lap reduction).</p>
     <p><b>Basis.</b> t<sub>t</sub> = 0.707s; φ = 0.80 SP / 0.60 GP. Nominal weld-metal strengths require project consumable / parent-metal matching. This tool uses full-size l<sub>w</sub> ≥ 4s; the shorter-length reduced-size route is excluded.</p>
@@ -982,7 +982,7 @@
       </div>
       </div>
     </section>
-    <section class="cb-output" aria-label="Concrete beam results">
+    <section id="cbResults" class="cb-output" aria-label="Concrete beam results" tabindex="-1">
       <div class="cb-results-main">
       <div class="section-heading"><h2>Section capacity</h2></div>
       <div class="cb-capacities" aria-live="polite" aria-atomic="true">
@@ -2508,13 +2508,13 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.132 &middot; updated 19 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.133 &middot; updated 19 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
   <script src="bolt-integrity.js?v=20261016workflowtrace1"></script>
   <script src="weld-capacity.js?v=20261016workflowtrace1"></script>
-<script src="weld-detailing.js?v=20261017calcaudit1"></script><script src="fillet-table.js?v=20261017calcaudit1"></script>
+<script src="weld-detailing.js?v=20261017calcaudit1"></script><script src="fillet-table.js?v=20261019interactionrelease1"></script>
   <script src="concrete-section-calculation.js?v=20261017calcaudit1"></script>
   <script src="section-geometry.js?v=20261017calcaudit1"></script>
   <script src="section-catalogue.js?v=20261016workflowtrace1"></script>
@@ -2536,11 +2536,11 @@
 
   <script src="bolt-comparison/comparison.js?v=20261016workflowtrace1"></script>
 <script src="tool-directory/registry.js?v=20261019deflection1"></script>
-<script src="tool-directory/directory.js?v=20261017concretebeam1"></script>
+<script src="tool-directory/directory.js?v=20261019interactionrelease1"></script>
 <script src="app.js?v=20261017padrelease1"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=20261016workflowtrace1"></script>
-<script src="geo-parameters/detail-app.js?v=20261016workflowtrace1"></script>
+<script src="geo-parameters/detail-app.js?v=20261019interactionrelease1"></script>
 
   <script src="monopole-presentation/presentation.js?v=20261018monopole1"></script>
   <script src="monopole-app.js?v=20261018monopole1"></script>
@@ -2558,7 +2558,7 @@
   <script src="guy-lookup/app.js?v=20261016workflowtrace1"></script>
 <script src="panel-antennas/data.js?v=20261016workflowtrace1"></script>
 <script src="panel-antennas/lookup.js?v=20261016workflowtrace1"></script>
-<script src="panel-antennas/app.js?v=20261016workflowtrace1"></script>
+<script src="panel-antennas/app.js?v=20261019interactionrelease1"></script>
 <script src="reinforcement-area/calculation.js?v=20261016workflowtrace1"></script>
 <script src="reinforcement-area/app.js?v=20261016workflowtrace1"></script>
 <script src="bolt-dimensions/data.js?v=20261016workflowtrace1"></script>
@@ -2591,9 +2591,9 @@
 <script src="beam-deflection-preview/drawing.js?v=20261019deflection1"></script>
 <script src="beam-deflection-preview/app.js?v=20261019deflection1"></script>
 <script src="beam-internal-forces/app.js?v=20261019deflection1"></script>
-<script src="workflow-review/config.js?v=20261019deflection1"></script>
-<script src="workflow-review/app.js?v=20261016workflowtrace1"></script>
-<script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261017concretebeam1"></script><script src="concrete-beam/app.js?v=20261017concretebeam1"></script>
+<script src="workflow-review/config.js?v=20261019interactionrelease1"></script>
+<script src="workflow-review/app.js?v=20261019interactionrelease1"></script>
+<script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261019interactionrelease1"></script><script src="concrete-beam/app.js?v=20261019interactionrelease1"></script>
 <script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261017padrelease1"></script>
 </body>
 </html>
