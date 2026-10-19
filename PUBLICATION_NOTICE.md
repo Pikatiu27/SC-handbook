@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.134 (19 October 2026): Beam Analysis support reactions are always visible, with aligned symbols, signed values, units and directions. Section readings use compact coordinates (up to two decimal places, with scientific notation for small nonzero values), hold/follow controls and formal calculation notation. Existing numerical corrections, constant-EI deflection/rotation linkage and legacy links are retained. Engineering and source acceptance remain For Review.
+
 Build 0.7.133 (19 October 2026): ordinary result and parameter text no longer opens filtered calculations. Existing complete Calculation disclosures remain available; explicit actions retain product details, selection and diagram location. The latest constant-EI beam response, sources, numerical methods, legacy links and Public beta / For Review status are retained.
 
 Build 0.7.132 (19 October 2026): Analysis adds constant-EI elastic deflection and rotation for the six existing determinate beam layouts, with entered E/GPa and I/mm4, linked section/peak inspection and calculation return. Downward displacement is shown in mm and clockwise-positive slope in mrad. Shear deformation, variable/effective stiffness, settlement, indeterminate analysis, normative serviceability limits and design acceptance remain excluded. More layouts remains reference-only. Public beta / For Review; all existing source, project, independent-engineering and accessibility qualifications remain.

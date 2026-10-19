@@ -39,16 +39,17 @@
 <link rel="stylesheet" href="accessibility/repairs.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="bolt-details/layout.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="web-drawing/styles.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="beam-internal-forces/styles.css?v=20261019deflection1">
-<script src="workflow-review/numerical-traces.js?v=20261017calcaudit1"></script>
-<link rel="stylesheet" href="workflow-review/styles.css?v=20261019interactionrelease1">
+<link rel="stylesheet" href="beam-internal-forces/styles.css?v=20261019beamformatrelease1">
+<script src="workflow-review/numerical-traces.js?v=20261019beamformatrelease1"></script>
+<script src="beam-internal-forces/trace-presentation.js?v=20261019beamformatrelease1"></script>
+<link rel="stylesheet" href="workflow-review/styles.css?v=20261019beamformatrelease1">
 <link rel="stylesheet" href="weld-improvements.css?v=20261016weld1"><link rel="stylesheet" href="fillet-table.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="concrete-beam/styles.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="pad-input/styles.css?v=20261017padrelease1">
   <link rel="stylesheet" href="monopole-presentation/styles.css?v=20261018monopole1">
-<link rel="stylesheet" href="beam-deflection-preview/styles.css?v=20261019deflection1">
+<link rel="stylesheet" href="beam-deflection-preview/styles.css?v=20261019beamformatrelease1">
 </head>
-<body>
+<body data-beam-analysis-presentation="20261019beamformatrelease1">
   <header class="topbar">
     <a class="brand" href="#home"><span class="brand-mark">SC</span><span><strong>SC Handbook</strong><small>Engineering lookup handbook</small></span></a>
   </header>
@@ -1312,13 +1313,13 @@
       <div id="bifWarnings" class="bif-warning" role="status" hidden></div>
       <div id="bifValid">
         <figure class="engineering-figure bif-structure" data-figure-profile="SC-WEB-FIGURE-001"><div id="bifStructure" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption">x / m · entered positions; schematic symbols</figcaption></figure>
-        <details id="bifReactionDetails" class="bif-inline-details"><summary>Support reactions</summary><div id="bifReactions" class="bif-reactions"></div></details>
-        <div class="bif-reading"><label class="bif-coordinate" for="bifX">x / m<input id="bifX" type="number" min="0" max="6" step="0.01" value="3"></label><p id="bifReadout" class="bif-readout"></p><p id="bdReadout" class="bif-readout"></p><button id="bifPin" type="button" aria-pressed="false" aria-label="Pin section reading">Pin</button><label id="bifSideField" for="bifSide" hidden>At jump<select id="bifSide"><option value="right">Right (+)</option><option value="left">Left (−)</option></select></label></div>
-        <div id="bifDetailResults"><details id="bifReadingTools" class="bif-inline-details"><summary>Inspect a section</summary><div class="bif-inline-body"><p id="bifJump" class="bif-help"></p><label class="bif-snap-label" for="bifSnap">Jump to a key section<select id="bifSnap"></select></label><label class="bif-range-label" for="bifSectionRange">Read section<input id="bifSectionRange" type="range" min="0" max="6" step="0.001" value="3" aria-label="Reading section coordinate"></label><div id="bifExtrema" class="bif-extrema"></div><p class="bif-help">Shear: <span id="bifVScale"></span> kN · Moment: <span id="bifMScale"></span> kN·m</p></div></details></div>
+        <section id="bifReactionDetails" class="bif-support-results" aria-labelledby="bifReactionHeading"><h3 id="bifReactionHeading">Support reactions</h3><div id="bifReactions" class="bif-reactions"></div></section>
+        <div class="bif-reading-heading"><b>Section reading</b><span id="bifMode">Following pointer</span></div>
+        <div class="bif-reading"><label class="bif-coordinate" for="bifX"><span><i>x</i> / m</span><input id="bifX" type="number" min="0" max="6" step="any" value="3" aria-describedby="bifReadingHelp"></label><p id="bifReadout" class="bif-readout"></p><p id="bdReadout" class="bif-readout"></p><button id="bifPin" type="button" aria-pressed="false">Hold reading</button><div id="bifDetailResults" class="bif-section-nav"><label class="bif-snap-label" for="bifSnap">Jump to section<select id="bifSnap"></select></label><label id="bifSideField" for="bifSide" hidden>Side of section<select id="bifSide"><option value="right">Right side</option><option value="left">Left side</option></select></label></div><p id="bifJump" class="bif-help"></p></div>
         <div id="bifQuickExtrema" class="bif-quick-extrema" role="group" aria-label="Locate extrema"></div><span id="bifAnnounce" class="sr-only" aria-live="polite"></span>
         <figure class="engineering-figure bif-chart bd-forces-only" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Shear <i>V</i> / kN</b><span id="bifVAxisMultiplier"></span></div><div id="bifShear" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">Position <i>x</i> / m · positive shear above zero</figcaption></figure>
         <figure class="engineering-figure bif-chart bd-forces-only" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Moment <i>M</i> / kN·m</b><span id="bifMAxisMultiplier"></span></div><div id="bifMoment" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">Position <i>x</i> / m · positive moment is sagging</figcaption></figure>
-        <p class="engineering-figure__key bd-forces-only"><span><i class="engineering-figure__swatch engineering-figure__swatch--symbolic"></i>Reading section · move to read, click to pin</span></p>
+        <p id="bifReadingHelp" class="engineering-figure__key bd-forces-only"><span><i class="engineering-figure__swatch engineering-figure__swatch--symbolic"></i>Move to read · click or enter x to hold · drag loads on the beam</span></p>
 <div id="bdResponse">
   <div id="bdErrors" class="bif-errors" role="alert" hidden></div>
   <div id="bdWarning" class="bif-warning" role="status" hidden></div>
@@ -1334,7 +1335,7 @@
       <div id="bdTheta" class="engineering-figure__plot"></div>
       <figcaption class="engineering-figure__caption">Position <i>x</i> / m · clockwise-positive θ above zero · 1 mrad = 0.001 rad</figcaption>
     </figure>
-    <p class="engineering-figure__key"><span><i class="engineering-figure__swatch engineering-figure__swatch--symbolic"></i>Reading section · move to read, click to pin</span></p>
+    <p class="engineering-figure__key"><span><i class="engineering-figure__swatch engineering-figure__swatch--symbolic"></i>Move to read · click or enter x to hold</span></p>
     <p class="bif-help">Constant EI · linear elastic · no shear deformation or deflection-limit check.</p>
   </div>
 </div>
@@ -2508,7 +2509,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.133 &middot; updated 19 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.134 &middot; updated 19 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2585,14 +2586,14 @@
 <script src="accessibility/repairs.js?v=20261016workflowtrace1"></script>
 <script src="bolt-details/diagram.js?v=20261016workflowtrace1"></script>
 <script src="bolt-details/app.js?v=20261016workflowtrace1"></script>
-<script src="beam-internal-forces/calculation.js?v=20261019deflection1"></script>
-<script src="beam-internal-forces/drawing.js?v=20261019deflection1"></script>
-<script src="beam-deflection-preview/calculation.js?v=20261019deflection1"></script>
-<script src="beam-deflection-preview/drawing.js?v=20261019deflection1"></script>
-<script src="beam-deflection-preview/app.js?v=20261019deflection1"></script>
-<script src="beam-internal-forces/app.js?v=20261019deflection1"></script>
-<script src="workflow-review/config.js?v=20261019interactionrelease1"></script>
-<script src="workflow-review/app.js?v=20261019interactionrelease1"></script>
+<script src="beam-internal-forces/calculation.js?v=20261019beamformatrelease1"></script>
+<script src="beam-internal-forces/drawing.js?v=20261019beamformatrelease1"></script>
+<script src="beam-deflection-preview/calculation.js?v=20261019beamformatrelease1"></script>
+<script src="beam-deflection-preview/drawing.js?v=20261019beamformatrelease1"></script>
+<script src="beam-deflection-preview/app.js?v=20261019beamformatrelease1"></script>
+<script src="beam-internal-forces/app.js?v=20261019beamformatrelease1"></script>
+<script src="workflow-review/config.js?v=20261019beamformatrelease1"></script>
+<script src="workflow-review/app.js?v=20261019beamformatrelease1"></script>
 <script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261019interactionrelease1"></script><script src="concrete-beam/app.js?v=20261019interactionrelease1"></script>
 <script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261017padrelease1"></script>
 </body>

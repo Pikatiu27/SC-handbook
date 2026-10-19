@@ -144,7 +144,7 @@
     },
     {
       "path": "beam-deflection-preview/app.js",
-      "sha256": "9186e39b416944877e46dae9020d37a9535511f796e3ae6715718358b2ed2552"
+      "sha256": "fd0031e35a4f966473a7b6085d82aa401a296bf128edc8e85a1b07f759baf86e"
     },
     {
       "path": "beam-deflection-preview/calculation.js",
@@ -156,7 +156,7 @@
     },
     {
       "path": "beam-deflection-preview/styles.css",
-      "sha256": "4cc8a6f3b58ea5f172dc723238dbc7a6b7d109e191f97afeeade8c32441a77a0"
+      "sha256": "f237ad986edc4e47f0eccdba72063e86d35fc62595ad44796ab7d8e1329faeba"
     },
     {
       "path": "beam-hot-rolled-data.js",
@@ -164,7 +164,7 @@
     },
     {
       "path": "beam-internal-forces/app.js",
-      "sha256": "596c9d0dec6962c9f5231cee13f207aba01caec7d63f5228339fdd91de7cfd50"
+      "sha256": "ad9a03435b55f21e50f690e5045c2516b08cdd923c7d731332b17bbb54d1ef7a"
     },
     {
       "path": "beam-internal-forces/calculation.js",
@@ -176,7 +176,11 @@
     },
     {
       "path": "beam-internal-forces/styles.css",
-      "sha256": "e75a025e2ae57671bcb2da4a4737ebdd995dd8b9dc5c11c37f36097533b90ef0"
+      "sha256": "7336d561a46770d0816767f89c027e3e1e4a0e0386a9156ffb831380d298f520"
+    },
+    {
+      "path": "beam-internal-forces/trace-presentation.js",
+      "sha256": "6f3361814c84e0fa25525206ae28a281fcd9f1804537b04ef902cce8b2655922"
     },
     {
       "path": "beam-presentation/layout.css",
@@ -424,7 +428,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "9e07d3477eb580680891a04e9309725b83c29e4b551cef2c11d216bc88fd5c03"
+      "sha256": "1e4972d17cec7f0a3f429ad50866c12114f6871e533071ef3cb8b055855f45e1"
     },
     {
       "path": "LICENSE.md",
@@ -516,11 +520,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "2be8517a25c142ec5236b42798a166de27c3dbab261ded9f25c9471e9a5c7242"
+      "sha256": "18ac8192a787dc989f6806be6a18991b3d220dfc0c34bf4724239a64a1f2d15b"
     },
     {
       "path": "README.md",
-      "sha256": "d5e9c7902e8512128c72695e9e57067f8255f6c2d77ea7ee9eb8f0e06d027e14"
+      "sha256": "dba6dafcbeb80e8ba2d59119366fbd1be9f51e628a0ddc25116c033df17262fe"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -640,7 +644,7 @@
     },
     {
       "path": "workflow-review/numerical-traces.js",
-      "sha256": "c0e2d3ccb7e84b9558fe94e58b79cd42a3d5984c7320607a5569e3c376f011f8"
+      "sha256": "70f80092838a554f549e2855dca4ad9793ca0758d56884aadc7c3c3f795e7cb5"
     },
     {
       "path": "workflow-review/styles.css",

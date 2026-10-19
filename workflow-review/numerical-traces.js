@@ -84,7 +84,9 @@
   return {common,moment,stations:stationRows,mass:massRows,compression,compressionStations,joints};
  }
  const staticsRef='Derived equilibrium; BIF-STATICS-01; Udoeyo §4.3–4.4',sectionRef='Derived cut equilibrium; BIF-SECTION-01; Udoeyo §4.3–4.4';
- function bif(result,x,side,coordinateValid,owner){
+ const defaultBifNumber=n;
+ function bif(result,x,side,coordinateValid,owner,options={}){
+  const n=typeof options.format==='function'?options.format:defaultBifNumber,p=v=>'('+n(v)+')',sum=a=>a.length?a.map(p).join(' + '):'0';
   if(!result?.valid)return [missing('bif-invalid','Beam equilibrium',staticsRef,'Valid beam and action inputs required.')];
   const loads=result.input.loads,t=result.totals,reactions=result.reactions,rows=[],full=loads.map(l=>owner.resultant(l));
   loads.forEach((l,i)=>{const r=full[i],id='bif-resultant-'+i;let f,s;
