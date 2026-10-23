@@ -1,0 +1,17 @@
+/* Two :is() selectors intentionally outrank legacy panel-specific indicator rules. */
+html body :is(#sc-specificity-a,.sc-disclosure):is(#sc-specificity-b,.sc-disclosure) {
+  position:relative!important;list-style:none!important;padding-inline-end:34px!important;
+}
+html body .sc-disclosure::marker {content:""!important;}
+html body .sc-disclosure::-webkit-details-marker {display:none!important;}
+html body :is(#sc-specificity-a,.sc-disclosure):is(#sc-specificity-b,.sc-disclosure)::before {content:none!important;display:none!important;}
+html body .sc-disclosure .sc-old-disclosure-symbol {display:none!important;}
+html body :is(#sc-specificity-a,.sc-disclosure):is(#sc-specificity-b,.sc-disclosure)::after {
+  content:"+"!important;display:block!important;position:absolute!important;inset-inline-end:12px!important;top:50%!important;
+  width:16px!important;height:20px!important;margin:0!important;padding:0!important;
+  transform:translateY(-50%)!important;transition:none!important;
+  font:400 18px/20px Arial,sans-serif!important;text-align:center!important;color:currentColor!important;
+  pointer-events:none!important;border:0!important;flex:none!important;
+}
+html body details[open] > :is(#sc-specificity-a,.sc-disclosure):is(#sc-specificity-b,.sc-disclosure)::after,
+html body :is(#sc-specificity-a,.sc-disclosure):is(#sc-specificity-b,.sc-disclosure)[aria-expanded="true"]::after {content:"×"!important;}

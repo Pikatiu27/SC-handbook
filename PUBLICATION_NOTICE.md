@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.136 (23 October 2026): disclosure headings and expandable buttons share collapsed + / expanded × symbols. Existing fourteen-layout Beam Analysis, numerical/drawing/data owners, calculation traces and legacy links are retained unchanged. Public beta / For Review.
+
 Build 0.7.135 (23 October 2026): Beam Analysis combines fourteen calculated layouts in one selector, adding propped, fixed-fixed, continuous and Gerber beams under constant positive EI and zero support settlement. Reactions, V/M and elastic deflection/rotation retain linked inputs, exact section sides and analytical extrema. Calculation traces share Formula / Substitution / Result / Applicability with formal mathematical notation; Sources & scope is consolidated. No resistance or code serviceability verdict. Public beta / For Review.
 
 Build 0.7.134 (19 October 2026): Beam Analysis support reactions are always visible, with aligned symbols, signed values, units and directions. Section readings use compact coordinates (up to two decimal places, with scientific notation for small nonzero values), hold/follow controls and formal calculation notation. Existing numerical corrections, constant-EI deflection/rotation linkage and legacy links are retained. Engineering and source acceptance remain For Review.

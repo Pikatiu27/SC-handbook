@@ -319,6 +319,14 @@
       "sha256": "3d044406fa0c7eea1538f8d94edb03ea7bc9e423824323f21f7ac3bff4e92ef3"
     },
     {
+      "path": "disclosure/indicators.css",
+      "sha256": "ba4d6b6fade0bd6fed56243b694def2a8ba23b7c4d06d278b41d220fb47a9c79"
+    },
+    {
+      "path": "disclosure/indicators.js",
+      "sha256": "8a10f9551f8804087ed476c1f48b23fc88c386cf74628e9e6a8598e2be5b0ad5"
+    },
+    {
       "path": "engineering-number-format.js",
       "sha256": "aaf63b6934734c14b02bb9f1376a7b275a7a1705b323ccfea89860bd1d157a92"
     },
@@ -428,7 +436,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "3c9980638e8e923589702cf177a27fa6d8c46b336bf50ed8c224c50a50e09838"
+      "sha256": "ea6ea06e57bb8b81510ec4a440941c818ecf4722d8a2bc58ebedf0e8ef076ffa"
     },
     {
       "path": "LICENSE.md",
@@ -536,11 +544,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "a4da449f181d7bb414ef8133558262ad7d13e8fcbf795734e6186304cbd3bd95"
+      "sha256": "0412f9b63b3f4c4a40eee89b88fa33a01dce586dd2f4c019b3f46a583e64c174"
     },
     {
       "path": "README.md",
-      "sha256": "d29159cce6e7bcd11f1c17d3e13bb691d70eb8c35d0cbf41ead7d627c41b100f"
+      "sha256": "ad9740472f1a3811284d9bf2bc47eb992e92bea194b170f917bc47dc5455e0d5"
     },
     {
       "path": "reinforcement-area/app.js",
