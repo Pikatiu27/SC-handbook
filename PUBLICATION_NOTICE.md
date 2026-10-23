@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.135 (23 October 2026): Beam Analysis combines fourteen calculated layouts in one selector, adding propped, fixed-fixed, continuous and Gerber beams under constant positive EI and zero support settlement. Reactions, V/M and elastic deflection/rotation retain linked inputs, exact section sides and analytical extrema. Calculation traces share Formula / Substitution / Result / Applicability with formal mathematical notation; Sources & scope is consolidated. No resistance or code serviceability verdict. Public beta / For Review.
+
 Build 0.7.134 (19 October 2026): Beam Analysis support reactions are always visible, with aligned symbols, signed values, units and directions. Section readings use compact coordinates (up to two decimal places, with scientific notation for small nonzero values), hold/follow controls and formal calculation notation. Existing numerical corrections, constant-EI deflection/rotation linkage and legacy links are retained. Engineering and source acceptance remain For Review.
 
 Build 0.7.133 (19 October 2026): ordinary result and parameter text no longer opens filtered calculations. Existing complete Calculation disclosures remain available; explicit actions retain product details, selection and diagram location. The latest constant-EI beam response, sources, numerical methods, legacy links and Public beta / For Review status are retained.

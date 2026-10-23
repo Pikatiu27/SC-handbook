@@ -1,0 +1,15 @@
+#beamforcesPanel .bif-structure .engineering-figure__plot{height:200px;min-height:200px}.bif-structure svg{max-height:none}.bif-choice-grid button small{display:block;font-size:12px}#bmlCField[hidden]{display:none}#bmlCField span{overflow-wrap:anywhere}#beamforcesPanel .bml-equations{font-size:13px;overflow-wrap:anywhere}#beamforcesPanel.bd-deformation.bml-hinge-cut #bifSideField:not([hidden]){display:block!important}@media(min-width:900px){#beamforcesPanel .bif-type-chooser>.bif-picker-body{width:520px}#bifTypeOptions{grid-template-columns:repeat(3,minmax(0,1fr))}}
+#bdCalculation .bif-math-stack{display:flex;flex-direction:column;align-items:stretch;gap:6px;min-width:0;}
+#bdCalculation .bif-math-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 6px;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:3px 2px;}
+#bdCalculation math{font-family:var(--font);font-size:13px;font-weight:400;line-height:1.45;text-align:left;margin:0;width:max-content;max-width:none;}
+#bdCalculation math mi{font-family:inherit;font-style:italic;}
+#bdCalculation math :is(mn,mo,mtext){font-family:inherit;font-style:normal;}
+#bdCalculation math mo{font-family:math;}
+#bdCalculation .is-result math{font-weight:700;}
+#bdCalculation .bif-trace-note{font-family:inherit;font-size:var(--fs-xs);line-height:1.5;}
+#bdCalculation :is(p,li){font-size:var(--fs-xs);line-height:1.5;}
+#bdCalculation .calculation-trace-heading small{font-size:var(--fs-xs);font-weight:400;line-height:1.4;}
+#bdCalculation .calculation-trace-line{align-items:start;}
+#bdCalculation .calculation-trace-line>span{font-size:var(--fs-xs);font-weight:600;line-height:1.4;padding-top:4px;}
+@media(max-width:600px){#bdCalculation.formula-list>.calculation-trace-row{grid-template-columns:minmax(0,1fr);gap:12px;}#bdCalculation .calculation-trace-line{grid-template-columns:minmax(0,1fr);gap:3px;}#bdCalculation .calculation-trace-line>span{padding-top:0;}}
+#beamforcesPanel .bif-sources h3{font-size:13px;margin:14px 0 6px}#beamforcesPanel .bif-sources ul{margin:6px 0;padding-left:18px;font-size:13px;line-height:1.6}

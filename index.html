@@ -41,13 +41,14 @@
 <link rel="stylesheet" href="web-drawing/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="beam-internal-forces/styles.css?v=20261019beamformatrelease1">
 <script src="workflow-review/numerical-traces.js?v=20261019beamformatrelease1"></script>
-<script src="beam-internal-forces/trace-presentation.js?v=20261019beamformatrelease1"></script>
+<script src="beam-internal-forces/trace-presentation.js?v=20261023beammerged1"></script>
 <link rel="stylesheet" href="workflow-review/styles.css?v=20261019beamformatrelease1">
 <link rel="stylesheet" href="weld-improvements.css?v=20261016weld1"><link rel="stylesheet" href="fillet-table.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="concrete-beam/styles.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="pad-input/styles.css?v=20261017padrelease1">
   <link rel="stylesheet" href="monopole-presentation/styles.css?v=20261018monopole1">
 <link rel="stylesheet" href="beam-deflection-preview/styles.css?v=20261019beamformatrelease1">
+<link rel="stylesheet" href="more-layouts/styles.css?v=20261023beammerged1">
 </head>
 <body data-beam-analysis-presentation="20261019beamformatrelease1">
   <header class="topbar">
@@ -121,8 +122,8 @@
         <summary><span><b>Design scope · Analysis</b><small>Entered actions, internal forces and elastic deformation</small></span><i>+</i></summary>
         <div class="category-scope-grid">
           <section><h2>Complete design includes</h2><p>Project actions and combinations; an adopted structural model, restraints and applicable response checks; separate member and connection verification.</p></section>
-          <section><h2>Handbook scope</h2><p>Six determinate straight-beam templates; entered vertical point forces, couples and linear distributed loads; reactions, shear and moment diagrams with section readings; constant-EI elastic deflection and rotation.</p></section>
-          <section><h2>Not evaluated</h2><p>Load generation or prescribed combinations, indeterminate analysis, axial force, torsion, shear deformation, variable EI, dynamics, stability, resistance or complete structural design. Public beta / For Review.</p></section>
+          <section><h2>Handbook scope</h2><p>Fourteen straight-beam layouts with ideal supports and zero settlement; entered vertical point forces, couples and linear distributed loads; reactions, shear and moment diagrams with section readings; constant-EI elastic deflection and rotation.</p></section>
+          <section><h2>Not evaluated</h2><p>Load generation or prescribed combinations, support settlement, axial force, torsion, shear deformation, variable EI, dynamics, stability, resistance or complete structural design. Public beta / For Review.</p></section>
         </div>
       </details>
 
@@ -1287,10 +1288,11 @@
     <section class="bif-inputs" aria-label="Beam and load inputs">
       <div class="bif-input-heading"><h3>Beam &amp; supports</h3><button id="bifReset" type="button">Reset</button></div>
       <section class="input-group"><div class="bif-fields bif-arrangement input-group-fields">
-        <div class="bif-type-field"><span id="bifTypeLabel">Beam layout</span><select id="bifType" aria-labelledby="bifTypeLabel" hidden><option value="simple">Simply supported</option><option value="cantilever-left">Cantilever · fixed left</option><option value="cantilever-right">Cantilever · fixed right</option><option value="overhang-left">Left overhang</option><option value="overhang-right">Right overhang</option><option value="overhang-both">Both-end overhangs</option></select><details id="bifTypeChooser" class="bif-type-chooser"><summary aria-labelledby="bifTypeLabel bifTypeName"><span id="bifTypeName">Simply supported</span><i aria-hidden="true">+</i></summary><div class="bif-picker-body"><div class="bif-layout-modes" role="group" aria-label="Beam layout catalogue"><button id="bifAvailableLayouts" type="button" aria-pressed="true" aria-controls="bifTypeOptions">Available · 6</button><button id="bifReferenceLayouts" type="button" aria-pressed="false" aria-controls="bifReferenceOptions">Reference layouts · 8</button></div><div id="bifTypeOptions" class="bif-choice-grid" role="group" aria-label="Calculated beam arrangements"></div><div id="bifReferenceOptions" class="bif-choice-grid" role="group" aria-label="Reference layouts, not calculated" hidden></div><p id="bifLayoutCaption" class="engineering-figure__caption">6 calculated layouts · schematic only, not to scale</p></div></details></div>
+        <div class="bif-type-field"><span id="bifTypeLabel">Beam layout</span><select id="bifType" aria-labelledby="bifTypeLabel" hidden><option value="simple">Simply supported</option><option value="cantilever-left">Cantilever · fixed left</option><option value="cantilever-right">Cantilever · fixed right</option><option value="overhang-left">Left overhang</option><option value="overhang-right">Right overhang</option><option value="overhang-both">Both-end overhangs</option></select><details id="bifTypeChooser" class="bif-type-chooser"><summary aria-labelledby="bifTypeLabel bifTypeName"><span id="bifTypeName">Simply supported</span><i aria-hidden="true">+</i></summary><div class="bif-picker-body"><div id="bifTypeOptions" class="bif-choice-grid" role="group" aria-label="Calculated beam arrangements"></div><p id="bifLayoutCaption" class="engineering-figure__caption">14 beam layouts · schematic only, not to scale</p></div></details></div>
         <label><span>Total length, L</span><span class="unit"><input id="bifLength" type="number" min="0.1" max="100" step="0.1" value="6"><em>m</em></span></label>
         <label id="bifAField" hidden><span>Support A, x<sub>A</sub></span><span class="unit"><input id="bifA" type="number" step="0.1" value="1.2"><em>m</em></span></label>
         <label id="bifBField" hidden><span>Support B, x<sub>B</sub></span><span class="unit"><input id="bifB" type="number" step="0.1" value="4.8"><em>m</em></span></label>
+        <label id="bmlCField" hidden><span>Support C position</span><span class="unit"><input id="bmlC" type="number" step="any" value="5.1"><em>m</em></span></label>
       </div><p id="bifSupportSummary" class="bif-support-summary" aria-live="polite"></p></section>
 <section class="bd-stiffness input-group" aria-label="Project bending stiffness">
   <h3>Bending stiffness</h3>
@@ -1298,7 +1300,7 @@
     <label><span>Elastic modulus, E</span><span class="unit"><input id="bdE" type="number" min="0.001" max="1000" step="any" value="200" aria-describedby="bdStiffnessHint bdInputErrors"><em>GPa</em></span></label>
     <label><span>Second moment, I</span><span class="unit"><input id="bdI" type="number" min="1" max="1000000000000000" step="any" value="80000000" aria-describedby="bdStiffnessHint bdInputErrors"><em>mm⁴</em></span></label>
   </div>
-  <p id="bdStiffnessHint" class="bif-help">Project inputs · illustrative defaults. Use I about the bending axis and confirm constant EI.</p>
+  <p id="bdStiffnessHint" class="bif-help">Project inputs · illustrative defaults. Use I about the bending axis and confirm constant EI. Zero support settlement; ideal restraints.</p>
   <p id="bdInputErrors" class="bif-help" hidden></p>
 </section>
 
@@ -1344,23 +1346,19 @@
     </section>
   </div></section>
   <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Internal-force calculation</b></span><small>Reactions, load resultants, equilibrium and section values</small></span><i>+</i></summary><div id="bifCalculation" class="detail-body"></div></details>
-  <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Internal-force sources &amp; scope</b></span><small>Static beam assumptions and sign convention</small></span><i>+</i></summary><div class="detail-body bif-sources">
-    <p>Derived statics aid: straight, stable, statically determinate beam with ideal supports; downward vertical point / distributed loads and counterclockwise applied couples taken as positive. Positive internal moment is sagging; dM/dx = V and dV/dx = −q between discontinuities. Diagram ordinate scales are independent of the beam length scale.</p>
-    <p>Exact reaction equilibrium and integration of linear distributed intensities; overlapping loads add algebraically. Point loads jump V and applied couples jump M. Left / right values are evaluated directly; extremum locations come from the segment equations, rather than plot sampling. At x = 0 or L the readout uses the beam-interior side.</p>
-    <p>Scope: six determinate templates, up to 24 simultaneous loads, 0.1–100 m total length, support spacing at least 0.1% of total length. Uniform, triangular and trapezoidal intensity profiles may occupy a partial span. Uplift reactions require separate restraint / bearing review; ideal supports can mathematically carry either sign.</p>
-    <p>Excludes axial loading, torsion, curved beams, internal hinges, continuous / fixed-fixed / propped beams, indeterminate stiffness-dependent analysis, shear deformation, dynamics, stability, load-combination generation and resistance checks. Actions and their ULS / SLS basis are user inputs. No prescribed self-weight or design factors are added.</p>
-    <p>Basis: Felix Udoeyo, <a href="https://eng.libretexts.org/Bookshelves/Civil_Engineering/Structural_Analysis_(Udoeyo)/01:_Chapters/1.04:_Internal_Forces_in_Beams_and_Frames" target="_blank" rel="noopener noreferrer">Structural Analysis, Chapter 1.4</a>, Sections 4.3–4.4 and the equilibrium / internal-force examples. Conventional principles independently implemented; no textbook figure or table is reproduced. Source accessed 14 October 2026. BIF-STATICS-01 / BIF-SECTION-01.</p>
-    <p>Layout catalogue: <a href="https://eng.libretexts.org/Bookshelves/Civil_Engineering/Structural_Analysis_(Udoeyo)/01:_Chapters/1.03:_Equilibrium_Structures_Support_Reactions_Determinacy_and_Stability_of_Beams_and_Frames" target="_blank" rel="noopener noreferrer">support restraints, determinacy and internal hinges</a>; <a href="https://eng.libretexts.org/Bookshelves/Civil_Engineering/Structural_Analysis_(Udoeyo)/01:_Chapters/1.10:_Force_Method_of_Analysis_of_Indeterminate_Structures" target="_blank" rel="noopener noreferrer">propped and indeterminate beams</a>. Reference layouts are schematic only and cannot be calculated here. Springs, partial rotational restraint and support settlement are model conditions, not extra calculated layouts. Accessed 16 October 2026. BIF-LAYOUT-TAXONOMY-20261016.</p>
-    <p>Screen figure profile SC-WEB-FIGURE-001 / UWEDS 1.14.0; position-driven diagrams, schematic load/support symbols, not for fabrication. Local author numerical and browser review; independent engineering acceptance remains open. Public beta / For Review.</p>
-  </div></details>
 <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Deformation calculation</b></span><small>Formula, substitution, result and applicability</small></span><i>+</i></summary><div id="bdCalculation" class="detail-body"></div></details>
-<details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Deformation sources &amp; scope</b></span><small>Constant EI, signs and method boundary</small></span><i>+</i></summary><div class="detail-body bif-sources">
-  <p>Derived aid: straight prismatic Euler–Bernoulli beam, linear elastic response, small deformation, constant positive entered E and I. The six existing determinate layouts and their entered loads govern the bending moment. Ideal supports have zero settlement; fixed supports also have zero rotation. Actions, material stiffness and bending-axis I remain project inputs; no self-weight, action factors or material defaults are adopted.</p>
-  <p>Positive δ is downward. θ = dδ/dx is the small-angle clockwise-positive slope for x increasing to the right; EI δ″ = −M with sagging-positive moment. θ is displayed in mrad; δ in mm. Both remain continuous at point forces and applied couples. Each response diagram has its own labelled ordinate scale and shares x with the entered beam; this is not a true-scale deformed shape.</p>
-  <p>Method: exact integration of the cubic bending-moment polynomial on every load/support segment, with integration constants fixed by support conditions. Maximum |δ| is located from endpoints and θ = 0 roots; maximum |θ| from endpoints and M = 0 roots. Plot sampling does not own the extrema. E in GPa and I in mm⁴ give EI = E I × 10⁻⁶ kN·m².</p>
-  <p>Method and worked comparisons: Felix Udoeyo, <a href="https://temple.manifoldapp.org/projects/structural-analysis" target="_blank" rel="noopener noreferrer">Structural Analysis, North Broad Press / Temple University, 2020</a>, Chapter 7, Sections 7.2–7.4, Eq. 7.12 and Examples 7.1–7.4 (original PDF pages 167–177). Original upward/counterclockwise signs are mapped to this demo’s downward/clockwise convention. US customary inputs are converted to SI; published intermediate rounding is retained in the comparison tolerances. Independent cantilever formula comparison: David M. Parks, MIT 2.002 (9 February 2004), <a href="https://ocw.mit.edu/courses/2-002-mechanics-and-materials-ii-spring-2004/bc25a56b5a91ad29ca5c7419616686f7_lec2.pdf" target="_blank" rel="noopener noreferrer">Euler–Bernoulli Beams, slide 9</a>. Reviewed 17 October 2026. Conventional theory is independently implemented; no source artwork or table is reproduced. BD-ELASTIC-01 / BD-EXTREMA-01.</p>
-  <p>Excludes shear deformation, variable EI, concrete cracking/creep/shrinkage, composite or connection slip, support settlement, internal hinges, continuous/fixed-fixed/propped beams, axial/torsional effects, geometric/material nonlinearity, dynamics and resistance. Confirm effective stiffness separately for concrete and other stiffness-sensitive systems. No Australian-code serviceability limit or compliance verdict is provided.</p>
-  <p>The demo flags |δ|max / L &gt; 1/100 or |θ|max &gt; 0.05 rad for applicability review. These are project-selected review triggers, not code limits or proof of suitability below the thresholds. A flagged result is a linear extrapolation requiring separate review. Valid input bounds: E 0.001–1,000 GPa; I 1–10¹⁵ mm⁴. Independent engineering and full accessibility acceptance remain open. Public beta / For Review.</p>
+<details id="bmlSources" class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Sources &amp; scope</b></span><small>Model, signs and references</small></span><i>+</i></summary><div class="detail-body bif-sources">
+ <h3>Model and signs</h3>
+ <p>Fourteen straight-beam layouts; ideal supports, zero settlement and uniform positive EI. Entered point forces, couples and partial linear loads superpose. Downward loads and deflection, counterclockwise external couples, sagging moment and clockwise rotation are positive. A Gerber hinge has zero moment, common displacement and separate left/right rotations; a nonzero couple exactly at the hinge is not supported. Negative reactions require uplift restraint.</p>
+ <h3>Applicability</h3>
+ <p>Linear elastic Euler–Bernoulli bending only. No variable/effective stiffness, shear deformation, concrete cracking/creep, slip, axial/torsional effects, nonlinearity, dynamics, stability, resistance or code serviceability verdict. Loads and stiffness are project inputs; no self-weight or load factors are added. Review triggers |δ|max/L &gt; 1/100 or |θ|max &gt; 0.05 rad are not code limits.</p>
+ <p>L 0.1–100 m; minimum support spacing 0.001L; up to 24 loads; E 0.001–1,000 GPa; I 1–10¹⁵ mm⁴. Analytical section values and extrema govern; each diagram has its own labelled ordinate scale. Symbols are schematic. Independent engineering and project applicability remain For Review.</p>
+ <h3>References</h3>
+ <ul>
+  <li>Udoeyo, <a href="https://temple.manifoldapp.org/projects/structural-analysis" target="_blank" rel="noopener noreferrer">Structural Analysis</a> (2020): Sections 4.3–4.4, 7.2–7.4, 10.3; Examples 10.1, 10.2 and 11.1 — equilibrium, elastic integration and compatibility.</li>
+  <li>American Wood Council, <a href="https://awc.org/wp-content/uploads/2021/12/AWC-DA6-BeamFormulas-0710.pdf" target="_blank" rel="noopener noreferrer">Design Aid 6</a> (2007): Figures 15, 16, 23, 24, 26, 29 and 31 — elastic formula comparisons only; timber design rules are excluded.</li>
+  <li>MIT 2.002, <a href="https://ocw.mit.edu/courses/2-002-mechanics-and-materials-ii-spring-2004/bc25a56b5a91ad29ca5c7419616686f7_lec2.pdf" target="_blank" rel="noopener noreferrer">Euler–Bernoulli Beams</a> (2004), slide 9 — cantilever comparison.</li>
+ </ul>
 </div></details>
 
 </section>
@@ -2509,7 +2507,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.134 &middot; updated 19 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.135 &middot; updated 23 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2587,11 +2585,14 @@
 <script src="bolt-details/diagram.js?v=20261016workflowtrace1"></script>
 <script src="bolt-details/app.js?v=20261016workflowtrace1"></script>
 <script src="beam-internal-forces/calculation.js?v=20261019beamformatrelease1"></script>
-<script src="beam-internal-forces/drawing.js?v=20261019beamformatrelease1"></script>
+<script src="beam-internal-forces/drawing.js?v=20261023beammerged1"></script>
 <script src="beam-deflection-preview/calculation.js?v=20261019beamformatrelease1"></script>
-<script src="beam-deflection-preview/drawing.js?v=20261019beamformatrelease1"></script>
-<script src="beam-deflection-preview/app.js?v=20261019beamformatrelease1"></script>
-<script src="beam-internal-forces/app.js?v=20261019beamformatrelease1"></script>
+<script src="beam-deflection-preview/drawing.js?v=20261023beammerged1"></script>
+<script src="more-layouts/force-response.js?v=20261023beammerged1"></script>
+<script src="more-layouts/calculation.js?v=20261023beammerged1"></script>
+<script src="more-layouts/trace.js?v=20261023beammerged1"></script>
+<script src="beam-deflection-preview/app.js?v=20261023beammerged1"></script>
+<script src="beam-internal-forces/app.js?v=20261023beammerged1"></script>
 <script src="workflow-review/config.js?v=20261019beamformatrelease1"></script>
 <script src="workflow-review/app.js?v=20261019beamformatrelease1"></script>
 <script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261019interactionrelease1"></script><script src="concrete-beam/app.js?v=20261019interactionrelease1"></script>

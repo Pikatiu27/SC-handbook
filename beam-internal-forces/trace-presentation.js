@@ -48,22 +48,39 @@
     for(let i=0;i<s.length;i++){
       if('([{'.includes(s[i]))depth++;if(')]}'.includes(s[i]))depth--;
       if(depth!==0)continue;
-      if(s[i]==='='){equalities++;if(equalities<2&&!splitFirst)continue;}
+      if(s[i]==='='){equalities++;if(equalities<2&&!splitFirst&&s.length<32)continue;}
       if((s[i]==='='||((s[i]==='+'||s[i]==='−')&&s[i-1]===' '&&s[i+1]===' '))&&i>start){chunks.push(s.slice(start,i).trim());start=i;}
     }
     chunks.push(s.slice(start).trim());return chunks.filter(Boolean);
   }
   function additiveTerms(s){const terms=[];let depth=0,start=0;for(let i=0;i<s.length;i++){if('([{'.includes(s[i]))depth++;if(')]}'.includes(s[i]))depth--;if(depth===0&&i>start&&(s[i]==='+'||s[i]==='−')&&s[i-1]===' '&&s[i+1]===' '){terms.push(s.slice(start,i).trim());start=i;}}terms.push(s.slice(start).trim());return terms;}
+  function wrappedTerm(s){
+    if(s.length<26)return notation(s);
+    const factors=[];let depth=0,start=0;
+    for(let i=0;i<s.length;i++){
+      if('([{'.includes(s[i]))depth++;if(')]}'.includes(s[i]))depth--;
+      if(depth===0&&s[i]==='×'&&i>start){factors.push(s.slice(start,i).trim());start=i;}
+    }
+    if(!factors.length)return notation(s);factors.push(s.slice(start).trim());
+    return '<mtable columnalign="left" rowspacing="0.15em">'+factors.map(f=>'<mtr><mtd>'+notation(f)+'</mtd></mtr>').join('')+'</mtable>';
+  }
   function equation(s,splitFirst){
     const unit=s.match(/\s+(kN(?:·m|\/m[²³]?)?|m)$/),body=unit?s.slice(0,unit.index):s,eq=body.lastIndexOf('='),lhs=eq<0?'':body.slice(0,eq+1);let rhs=body.slice(eq+1).trim();
     // A leading (a + b) followed by + or − can be flattened without changing
     // arithmetic, allowing the whole factored quantity to wrap by terms.
     if(rhs.startsWith('(')){let depth=0;for(let i=0;i<rhs.length;i++){if(rhs[i]==='(')depth++;if(rhs[i]===')')depth--;if(depth===0){if(/^[ +−]/.test(rhs.slice(i+1))&&/^[ ]*[+−]/.test(rhs.slice(i+1)))rhs=rhs.slice(1,i)+rhs.slice(i+1);break;}}}
     if(rhs.startsWith('[')&&rhs.endsWith(']')){let depth=0,outer=true;for(let i=0;i<rhs.length-1;i++){if(rhs[i]==='[')depth++;if(rhs[i]===']')depth--;if(depth===0){outer=false;break;}}if(outer)rhs=rhs.slice(1,-1);}
+    if(rhs.startsWith('−[')&&rhs.endsWith(']')){
+      const inner=rhs.slice(2,-1),terms=additiveTerms(inner);
+      if(inner.length>24&&terms.length>1){
+        const column='<mtable columnalign="left" rowspacing="0.2em">'+terms.map(t=>'<mtr><mtd>'+wrappedTerm(t)+'</mtd></mtr>').join('')+'</mtable>';
+        return '<span class="bif-math-line">'+(lhs?math(notation(lhs)):'')+math(mo('−')+mo('[')+column+mo(']')+(unit?'<mspace width="0.22em"/>'+notation(unit[1]):''))+'</span>';
+      }
+    }
     const terms=additiveTerms(rhs);
     // Factor the unit outside the entire numerical sum, not its last term.
     if(unit&&terms.length>1&&!/[A-DF-Za-df-zεΔ₀-₉]/.test(rhs)){
-      const middle=rhs.length<16&&terms.length<3?notation(rhs):`<mtable columnalign="left" rowspacing="0.2em">${terms.map(t=>`<mtr><mtd>${notation(t)}</mtd></mtr>`).join('')}</mtable>`;
+      const middle=rhs.length<16&&terms.length<3?notation(rhs):`<mtable columnalign="left" rowspacing="0.2em">${terms.map(t=>`<mtr><mtd>${wrappedTerm(t)}</mtd></mtr>`).join('')}</mtable>`;
       return `<span class="bif-math-line">${lhs?math(notation(lhs)):''}${math(mo('(')+middle+mo(')')+'<mspace width="0.22em"/>'+notation(unit[1]))}</span>`;
     }
     return `<span class="bif-math-line">${continuation(s,splitFirst).map(c=>math(notation(c))).join('')}</span>`;
