@@ -391,6 +391,10 @@
       "sha256": "19f9520938681f13a86f37b554eb27f444c0defa4490293be158c492e63d697e"
     },
     {
+      "path": "geo-parameters/interaction-layout.css",
+      "sha256": "069784f355b8e999df071155d46c450e7be854828741fa3f2effd35eab86e7b9"
+    },
+    {
       "path": "geo-parameters/tab.css",
       "sha256": "df40d18f5a3dd72b0cc11a3d2498c4c26c8b0da5eb6b7d92067bb1eb35f54348"
     },
@@ -436,7 +440,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "ea6ea06e57bb8b81510ec4a440941c818ecf4722d8a2bc58ebedf0e8ef076ffa"
+      "sha256": "3b03b3475c2644b4ea5e9ff6ea0143b9a576612e58cf1c9c12a38dd1d71731d3"
     },
     {
       "path": "LICENSE.md",
@@ -544,11 +548,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "0412f9b63b3f4c4a40eee89b88fa33a01dce586dd2f4c019b3f46a583e64c174"
+      "sha256": "0c48050ef17e7cd3385cf3896a7bbe8c77f4a9f84ee0c4430a38f1fa831ed599"
     },
     {
       "path": "README.md",
-      "sha256": "ad9740472f1a3811284d9bf2bc47eb992e92bea194b170f917bc47dc5455e0d5"
+      "sha256": "5bd2035342bf8c810602707792058ba54f941b7db7e6c966f798e1d0e47333bc"
     },
     {
       "path": "reinforcement-area/app.js",

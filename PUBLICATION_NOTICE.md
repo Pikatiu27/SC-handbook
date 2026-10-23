@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.137 (23 October 2026): Ground Reference classification labels and Basis/reference actions use aligned typography, spacing and disclosure controls. All existing calculations, values, sources, figures and legacy destinations remain unchanged. Public beta / For Review.
+
 Build 0.7.136 (23 October 2026): disclosure headings and expandable buttons share collapsed + / expanded × symbols. Existing fourteen-layout Beam Analysis, numerical/drawing/data owners, calculation traces and legacy links are retained unchanged. Public beta / For Review.
 
 Build 0.7.135 (23 October 2026): Beam Analysis combines fourteen calculated layouts in one selector, adding propped, fixed-fixed, continuous and Gerber beams under constant positive EI and zero support settlement. Reactions, V/M and elastic deflection/rotation retain linked inputs, exact section sides and analytical extrema. Calculation traces share Formula / Substitution / Result / Applicability with formal mathematical notation; Sources & scope is consolidated. No resistance or code serviceability verdict. Public beta / For Review.
