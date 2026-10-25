@@ -29,7 +29,7 @@
   const escape = value => String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const families = ["Guy strand", "Guy wire rope", "Turnbuckle", "Rigging screw", "Shackle", "Dead-end", "Thimble", "Wire rope grip", "Accessories"];
   let matching = [], selected = null, relatedBack = null, headerRows = [], headerColumns = [];
-  const filterValue=(p,key)=>key==="$model"?p.code+" · "+p.size:key==="$supplier"?p.manufacturer:key==="$series"||key==="$form"?p.series:key==="$grade"?p.grade:key==="$rating"?(p.fieldIssues?.some(i=>i.field==="WLL")?"WLL · Not verified":p.rating?fmt(calc.ratingKN(p),2)+" kN · "+p.rating.type:"Not published"):key==="$source"?sources[p.source].title:key==="$evidence"?evidenceSummary(p):key==="$diameter"?GuyFittingsLookup.diameter(p):key==="$difference"?(()=>{const d=GuyFittingsLookup.diameter(p);return d===null?null:d-Number($("Diameter").value);})():p.properties[key];
+  const filterValue=(p,key)=>key==="$size"?p.size:key==="$model"?p.code+" · "+p.size:key==="$supplier"?p.manufacturer:key==="$series"||key==="$form"?p.series:key==="$grade"?p.grade:key==="$rating"?(p.fieldIssues?.some(i=>i.field==="WLL")?"WLL · Not verified":p.rating?fmt(calc.ratingKN(p),2)+" kN · "+p.rating.type:"Not published"):key==="$source"?sources[p.source].title:key==="$evidence"?evidenceSummary(p):key==="$diameter"?GuyFittingsLookup.diameter(p):key==="$difference"?(()=>{const d=GuyFittingsLookup.diameter(p);return d===null?null:d-Number($("Diameter").value);})():p.properties[key];
   const filterNumber=(p,key)=>key==="$rating"?(p.fieldIssues?.some(i=>i.field==="WLL")?null:calc.ratingKN(p)):GuyHeaderFilters.number(filterValue(p,key));
   const columnFilters=GuyHeaderFilters.mount({panel,head:$("Head"),bar:$("ColumnFilters"),rows:()=>headerRows,columns:()=>headerColumns,value:filterValue,numeric:filterNumber,basis:p=>p.rating?.type||"",onChange:()=>filter("column")});
   const drawer=$("Drawer"), phoneDrawer=window.matchMedia("(max-width:899px)");
@@ -237,14 +237,13 @@
   function sourceLink(p) {const s=sources[p.source];return p.source==="bullivants4"?`https://app.nexuspublications.com.au/a10/publications/bullivants-product-catalogue-edition-4-1/${p.page}`:referenceLink(p.source,p.page);}
   function renderTable() {
     const view=viewPosition(),family=$("Family").value;
-    const layout=GuyCompactTable.columns(family,headerRows,products,$("Series").value),columns=layout.columns;
+    const layout=GuyTableIdentity.columns(GuyCompactTable.columns(family,headerRows,products,$("Series").value),family),columns=layout.columns;
     if($("Diameter").value.trim())columns.push({key:"$diameter",label:"Compared diameter (mm)",numeric:true,secondary:true},{key:"$difference",label:"Difference (mm)",numeric:true,secondary:true});
-    headerColumns=[{key:"$model",label:"Model / size"},...columns,{key:"$source",label:"Source / page"}];
+    headerColumns=[{key:"$model",label:"Product"},...columns,{key:"$source",label:"Source / page"}];
     const secondary=columns.findIndex(c=>c.secondary);
     const header=c=>{
-      const full=c.label,m=full.match(/^(.*) (\([^()]+\))$/),name=m?m[1]:full,unit=m?m[2]:"";
-      const breaks={"Published rating":["Published","rating"],"Form / connection":["Form /","connection"],"Matching requirement":["Matching","requirement"],"Strand diameter":["Strand","diameter"],"Nominal rope diameter":["Nominal rope","diameter"],"Matching diameter":["Matching","diameter"],"Strand construction":["Strand","construction"],"Metallic area":["Metallic","area"],"Closed length":["Closed","length"],"Open length":["Open","length"],"Length range":["Length range"],"Grips per termination":["Grips per","termination"],"AU / mast evidence":["AU / mast","evidence"],"Source / page":["Source /","page"],"Model / size":["Model / size"],"Nominal wire diameter":["Nominal wire","diameter"]};
-      const lines=breaks[name]||(name.startsWith("Zinc min. ")?["Zinc minimum",name.slice(10)]:[name]);
+      const full=c.label,{name,unit}=GuyTableIdentity.header(c);
+      const lines=[name];
       const title=c.key==="Catalogue efficiency (% of rope catalogue strength)"?"Efficiency (% of catalogue rope strength)":full;
       return `<button type="button" class="guy-header-control" data-column="${escape(c.key)}" aria-haspopup="dialog" aria-controls="guyColumnFilter" aria-expanded="false" aria-label="${escape(full)}: filter and sort"><span class="guy-header-name"><span class="guy-th-label" title="${escape(title)}">${lines.map(l=>`<span>${escape(l)}</span>`).join("")}</span><span class="guy-filter-icon" aria-hidden="true">&#9662;</span></span><span class="guy-th-unit">${escape(unit)||"&nbsp;"}</span></button>`;
     };
@@ -253,7 +252,7 @@
         const r=GuyCompactTable.rating(p,calc.ratingKN(p),fmt);
         return `<span class="guy-rating-value ${r.unavailable?"guy-unavailable":""}"><b>${escape(r.value)}</b>${r.basis?`<span class="guy-rating-basis">${escape(r.basis)}</span>`:""}</span>${r.original?`<small class="guy-rating-original">Source: ${escape(r.original)}</small>`:""}`;
       }
-      let value=c.key==="$grade"?GuyCompactTable.grade(p):c.key==="$form"?p.series:c.key==="$evidence"?evidenceSummary(p):c.key==="$diameter"?(()=>{const d=GuyFittingsLookup.diameter(p);return d===null?"—":fmt(d,3);})():c.key==="$difference"?(()=>{const d=GuyFittingsLookup.diameter(p);if(d===null)return "—";const delta=d-Number($("Diameter").value);return `${delta>0?"+":""}${fmt(delta,3)}`;})():p.properties[c.key]??"—";
+      let value=c.key==="$size"?p.size:c.key==="$grade"?GuyCompactTable.grade(p):c.key==="$form"?p.series:c.key==="$evidence"?evidenceSummary(p):c.key==="$diameter"?(()=>{const d=GuyFittingsLookup.diameter(p);return d===null?"—":fmt(d,3);})():c.key==="$difference"?(()=>{const d=GuyFittingsLookup.diameter(p);if(d===null)return "—";const delta=d-Number($("Diameter").value);return `${delta>0?"+":""}${fmt(delta,3)}`;})():p.properties[c.key]??"—";
       const text=String(value);
       if(c.key==="$grade"){
         const match=text.match(/^(.*?) \((.*)\)$/);
@@ -280,15 +279,15 @@
     if(layout.omitted.length)notes.push(`${layout.omitted.length} unrecorded dimension columns omitted; full records remain in details.`);
     $("TableNote").textContent=notes.join(" ");
     $("Table").querySelector("colgroup")?.remove();
-    const widths=[...columns.map(c=>c.key==="Construction"?100:GuyCompactTable.width(c)),94];
+    const widths=[...columns.map(c=>c.key==="$size"?94:c.key==="Construction"?100:GuyCompactTable.width(c)),94];
     const group=document.createElement("colgroup");group.innerHTML='<col style="width:var(--guy-identity-width)">'+widths.map(w=>`<col style="width:${w}px">`).join("");$("Table").prepend(group);$("Table").style.width=`calc(var(--guy-identity-width) + ${widths.reduce((a,b)=>a+b,0)}px)`;
-    $("Head").innerHTML=`<tr><th scope="col">${header({key:"$model",label:"Model / size"})}</th>${columns.map((c,i)=>`<th scope="col" class="${c.numeric?"guy-number":""} ${i===secondary?"guy-secondary-start":""}">${header(c)}</th>`).join("")}<th scope="col">${header({key:"$source",label:"Source / page"})}</th></tr>`;
+    $("Head").innerHTML=`<tr><th scope="col">${header({key:"$model",label:"Product"})}</th>${columns.map((c,i)=>`<th scope="col" class="${c.numeric?"guy-number":""} ${i===secondary?"guy-secondary-start":""}">${header(c)}</th>`).join("")}<th scope="col">${header({key:"$source",label:"Source / page"})}</th></tr>`;
     $("Rows").innerHTML=matching.map((p,i)=>{
-      const code=p.code.toLowerCase().replace(/\s+/g,""),size=p.size.toLowerCase().replace(/\s+/g,""),inCode=code===size||code.startsWith(size+"/")||code.startsWith(size+"(");
+      const identity=GuyTableIdentity.identity(p,columns);
       const status=GuyCatalogueStatus.status(p,GuyFittingsLookup.diameter),active=drawer.open&&(drawerOrigin||selected?.id)===p.id,s=sources[p.source];
       const source=s.shortLabel||({bullivants4:"Edition 4",nobles2018:"2018",bekaertCA:"Canada · 2022",noblesStrand2018:"2018",plpAU2025:"AU · 2025 file"}[p.source])||"2016";
       const tag=status.label||(p.sourceStatus!=="Checked"?p.sourceStatus:"");
-      return `<tr class="${i&&p.size!==matching[i-1].size?"guy-size-start":""}" data-selected="${active}"><th scope="row"><button type="button" data-product="${escape(p.id)}" aria-label="View ${escape(p.manufacturer)} ${escape(p.code)} ${escape(p.size)} ${escape(p.grade)} ${escape(p.series)}" aria-haspopup="dialog" aria-controls="guyDrawer" aria-expanded="${active}"><span class="guy-model-code">${escape(p.code).replaceAll("-","-<wbr>")} <span class="guy-model-brand">(${escape(p.manufacturer)})</span></span>${inCode?"":`<span class="guy-model-size">${escape(p.size)}</span>`}${tag?`<small class="guy-data-tag">${escape(tag)}</small>`:""}</button></th>${columns.map((c,j)=>`<td class="${c.numeric?"guy-number":""} ${c.key==="$rating"?"guy-rating-cell":""} ${c.key==="$grade"?"guy-grade":""} ${j===secondary?"guy-secondary-start":""}"${c.key==="$grade"?` title="${escape(p.grade)}"`:""}>${cell(c,p)}</td>`).join("")}<td class="guy-source-cell"><a href="${escape(sourceLink(p))}" target="_blank" rel="noopener noreferrer"><span>${escape(source)}</span><span class="guy-source-page">${s.kind==="web"?"Specification":`p. ${p.page}`}</span></a></td></tr>`;
+      return `<tr class="${i&&p.size!==matching[i-1].size?"guy-size-start":""}" data-selected="${active}"><th scope="row"><button type="button" data-product="${escape(p.id)}" aria-label="View ${escape(p.manufacturer)} ${escape(p.code)} ${escape(p.size)} ${escape(p.grade)} ${escape(p.series)}" aria-haspopup="dialog" aria-controls="guyDrawer" aria-expanded="${active}"><span class="guy-model-code">${escape(identity.code).replaceAll("-","-<wbr>")} <span class="guy-model-brand">(${escape(p.manufacturer)})</span></span>${identity.size?`<span class="guy-model-size">${escape(identity.size)}</span>`:""}${tag?`<small class="guy-data-tag">${escape(tag)}</small>`:""}</button></th>${columns.map((c,j)=>`<td class="${c.numeric?"guy-number":""} ${c.key==="$rating"?"guy-rating-cell":""} ${c.key==="$grade"?"guy-grade":""} ${j===secondary?"guy-secondary-start":""}"${c.key==="$grade"?` title="${escape(p.grade)}"`:""}>${cell(c,p)}</td>`).join("")}<td class="guy-source-cell"><a href="${escape(sourceLink(p))}" target="_blank" rel="noopener noreferrer"><span>${escape(source)}</span><span class="guy-source-page">${s.kind==="web"?"Specification":`p. ${p.page}`}</span></a></td></tr>`;
     }).join("");
     $("Empty").hidden=matching.length>0;$("Table").closest(".guy-table-wrap").hidden=false;
     columnFilters.decorate();

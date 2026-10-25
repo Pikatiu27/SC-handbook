@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.138 (26 October 2026): Compact product-table headers retain full labels and essential units/qualifiers. Column filters use downward triangles; table content disclosures use plain text with + / ×. Guy nominal-size comparison, short-table width, product-source links and selected-row close behaviour are refined. Existing calculations, catalogue data, sources, figures and legacy links are retained. Public beta / For Review.
+
 Build 0.7.137 (23 October 2026): Ground Reference classification labels and Basis/reference actions use aligned typography, spacing and disclosure controls. All existing calculations, values, sources, figures and legacy destinations remain unchanged. Public beta / For Review.
 
 Build 0.7.136 (23 October 2026): disclosure headings and expandable buttons share collapsed + / expanded × symbols. Existing fourteen-layout Beam Analysis, numerical/drawing/data owners, calculation traces and legacy links are retained unchanged. Public beta / For Review.

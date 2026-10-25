@@ -34,7 +34,7 @@
     dialog.id="guyColumnFilter";dialog.className="guy-column-filter";dialog.setAttribute("aria-labelledby","guyColumnFilterTitle");panel.append(dialog);
     let originKey=null,currentKey=null,draft={},checked=new Set(),domain=[],search="",anchor=null;
     const keysFor=k=>k==="$model"?["$model","$supplier","$series"]:[k];
-    const label=k=>({$model:"Model / size",$supplier:"Supplier",$series:"Construction / end form"}[k]||columns().find(c=>c.key===k)?.label||k);
+    const label=k=>({$model:"Product",$supplier:"Supplier",$series:"Construction / end form"}[k]||columns().find(c=>c.key===k)?.label||k);
     const sourceButton=()=>[...head.querySelectorAll("[data-column]")].find(b=>b.dataset.column===originKey);
     function close(){if(dialog.open)dialog.close();sourceButton()?.setAttribute("aria-expanded","false");sourceButton()?.focus({preventScroll:true});}
     function update(){onChange();}
@@ -119,7 +119,7 @@
         return `<button type="button" data-remove-filter="${esc(key)}" aria-label="Clear ${esc(label(key))} filter">${esc(label(key))}: ${esc(parts.join(" · "))} <span aria-hidden="true">×</span></button>`;
       });
       if(state.sort)items.push(`<button type="button" data-clear-sort aria-label="Clear column sort">${esc(label(state.sort.key))} ${state.sort.direction==="asc"?"↑":"↓"} <span aria-hidden="true">×</span></button>`);
-      bar.innerHTML=items.length?items.join("")+'<button type="button" data-clear-filters class="guy-clear-filters">Clear all</button>':'<span>Use column headers to filter or sort. Supplier is under Model / size.</span>';
+      bar.innerHTML=items.length?items.join("")+'<button type="button" data-clear-filters class="guy-clear-filters">Clear all</button>':'<span>Use column headers to filter or sort. Supplier is under Product.</span>';
     }
     new MutationObserver(()=>{if(panel.hidden&&dialog.open)close();}).observe(panel,{attributes:true,attributeFilter:["hidden"]});
     return {state,decorate,reset(){if(dialog.open)close();state.reset();}};

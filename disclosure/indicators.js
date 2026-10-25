@@ -3,6 +3,8 @@
   'use strict';
   const glyph = /^[+−–—×xX▸▾▴▿▶▼▲△▽⌄⌃›»∨∧-]+$/;
   function update(control) {
+    // Column filter/sort dialogs retain their own downward triangle and state icons.
+    if (control.matches(".st-header-control,.guy-header-control")) return;
     if (!control.classList.contains('sc-disclosure')) control.classList.add('sc-disclosure');
     for (const child of control.querySelectorAll('i,span,b,svg')) {
       if (child.classList.contains('sc-disclosure-symbol') || child.classList.contains('sc-old-disclosure-symbol')) continue;

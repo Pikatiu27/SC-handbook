@@ -124,6 +124,11 @@
     if (!button) return;
     const id=button.dataset.record;
     if (!pageRows.some(row=>row.id===id)) return;
+    if (selectedId === id && selectionOpen) {
+      selectionOpen = false; render();
+      document.getElementById("antenna-model-"+id)?.focus({preventScroll:true});
+      return;
+    }
     selectedId = id; selectionOpen = true;
     render();
     $('antennaSelectionTitle').focus({preventScroll:true});

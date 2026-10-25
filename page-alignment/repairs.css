@@ -1,0 +1,49 @@
+/* Local all-page alignment review. Preserve numerical and drawing owners. */
+/* Compact tables fill available space; wider column sets retain internal scroll. */
+#guyPanel .guy-table {min-width:100%;}
+#guyPanel .guy-table thead th,
+#guyPanel .guy-table thead th.guy-number {height:52px;}
+#guyPanel .guy-table thead .guy-header-control {min-height:52px;line-height:1.35;}
+#guyPanel .guy-table .guy-header-name {min-height:18px;}
+#guyPanel .guy-table .guy-th-label {line-height:18px;}
+#guyPanel .guy-table .guy-th-unit {margin-top:2px;min-height:15px;line-height:15px;}
+/* Corrosion already used sc-disclosure on a details container before the
+   shared control marker existed. Only its summary owns a toggle symbol. */
+html body :is(#pa-specificity-a,details.sc-disclosure):is(#pa-specificity-b,details.sc-disclosure) {padding-inline-end:0!important;}
+html body :is(#pa-specificity-a,details.sc-disclosure):is(#pa-specificity-b,details.sc-disclosure)::after {content:none!important;display:none!important;}
+#corrosionPanel :is(summary,button).sc-disclosure {margin-top:0;}
+/* Column filters keep their original triangle, sort direction and active-filter icon.
+   The disclosure controller excludes these controls, including while open. */
+.st-header-control {box-sizing:border-box;}
+.st-header-control .st-header-name {line-height:1.4;}
+/* Small native summaries otherwise leave their text above the centred symbol. */
+#weldPanel :is(.weld-symbol-basis,.weld-size-basis) > summary {
+  box-sizing:border-box;display:flex;align-items:center;min-height:44px;
+  padding:8px 34px 8px 10px;line-height:1.4;
+}
+#weldPanel :is(.weld-symbol-basis,.weld-size-basis)[open] > summary {margin-bottom:8px;}
+/* Full product records retain their own close action and a matching title line. */
+:is(#screwPanel,#rockPanel) .fp-detail-body {position:relative;}
+:is(#screwPanel,#rockPanel) .fp-detail-close {
+  box-sizing:border-box;min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  position:absolute;top:0;right:0;float:none;margin:0;line-height:1.4;
+  border:0;border-radius:0;box-shadow:none;background:transparent;
+}
+:is(#screwPanel,#rockPanel) .fp-detail-body > h4 {
+  box-sizing:border-box;min-height:44px;display:flex;align-items:center;
+  padding-inline-end:80px;margin:0 0 8px;line-height:1.4;
+}
+:is(#screwPanel,#rockPanel) .fp-table tbody th > a {
+  color:var(--link);text-decoration:underline;text-underline-offset:2px;
+  overflow-wrap:anywhere;
+}
+:is(#screwPanel,#rockPanel) .fp-table tbody th > a:focus-visible {outline:2px solid var(--focus);outline-offset:2px;}
+/* Table cells already have boundaries. Disclosure actions need no nested card. */
+html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#pa-cell-b,button[aria-expanded],summary.sc-disclosure):not(.st-header-control,.guy-header-control) {
+  box-sizing:border-box;border:0;border-radius:0;box-shadow:none;
+  background:transparent;min-height:44px;margin:0;padding-block:6px;
+  padding-inline-start:0;font-size:var(--fs-sm,13px);line-height:1.4;
+  text-align:left;white-space:normal;
+}
+html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#pa-cell-b,button[aria-expanded],summary.sc-disclosure):not(.st-header-control,.guy-header-control):is(:hover,[aria-expanded="true"]) {background:var(--green-soft);}
+html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#pa-cell-b,button[aria-expanded],summary.sc-disclosure):not(.st-header-control,.guy-header-control):focus-visible {outline:2px solid var(--brand);outline-offset:-2px;}
