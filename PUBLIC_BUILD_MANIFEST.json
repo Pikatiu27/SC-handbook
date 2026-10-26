@@ -440,7 +440,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "22a0d83331f6de4abd7c888a9df35015078b430e1a69be1e62e57e1c028117e8"
+      "sha256": "7e4e065211a151f351ea3e74b7bd7be81a788eb64ae64859bef3d8d5ea5e0965"
     },
     {
       "path": "LICENSE.md",
@@ -556,11 +556,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "cba7c714a9c4d06759854d70a06f056def4916dab985e486c8d158d2890e4d26"
+      "sha256": "83ed8ada1c53b8fb4b6a073dc1f9be0193f6ea5033124e204bb65f960ea7099e"
     },
     {
       "path": "README.md",
-      "sha256": "ea1b2dc6d3c92386b847b33f9c4bd1c3b9b2780ec31153b297e86d66cfd1e5a3"
+      "sha256": "16c6c8277421081d7fa9f9bb4b32c8f6b22e71dfe3053fd1e5d31aa95569a37f"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -616,11 +616,19 @@
     },
     {
       "path": "steel-corrosion/app.js",
-      "sha256": "7ed2fcca403a4846313c980fe94057c8ef84ec5f34ed51391ca1e29c6f49f825"
+      "sha256": "59ea1a688ddb0c37d6d902d1b08da4b5b76c018fe186b06e71268aa4e928b924"
     },
     {
       "path": "steel-corrosion/data.js",
       "sha256": "d292c0c83ef30fc531b02d0627520629c028a6c4da3fdbea3ed7a4f601ac5271"
+    },
+    {
+      "path": "steel-corrosion/header-labels.js",
+      "sha256": "b2767e33a830cbf896887a2dae36c2aba395cfeec1eaf083ff2993d6ed5e4d14"
+    },
+    {
+      "path": "steel-corrosion/header-layout.css",
+      "sha256": "aab3cf4bfcef74c3d84c2783f00b0d35939907b9b713a03bdbe314ae0563bd7a"
     },
     {
       "path": "steel-corrosion/model.js",
