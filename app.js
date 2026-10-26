@@ -6388,7 +6388,7 @@ function setBeamDimensionDefaults(section) {
 
 function updateBeamDimensionUi() {
   const active = beamDimensionOverrideActive();
-  const customSupported = BeamCustomSection.directions(beamFamily).length > 0;
+  const customSupported = Boolean(SCUnifiedSection.fields[beamFamily]);
   $("beamDimensionOverride").disabled = !customSupported;
   $("beamDimensionFields").hidden = !active;
   document.querySelectorAll("[data-beam-dim]").forEach(field => {
@@ -6593,7 +6593,7 @@ function renderBeamSectionDiagram(section) {
   }
   const axisX = x0 + properties.cx * scale;
   const axisY = y0 + h - properties.cy * scale;
-  const direction = $("beamDirection").value || beamDirections()[0][0];
+  const direction = $("beamDirection").value || beamDirections()[0]?.[0] || "";
   const xActive = ["x", "axis", "xy", "a", "c"].includes(direction);
   const yActive = ["y", "y-a", "y-b", "axis", "xy", "b", "d"].includes(direction);
   const xStart = Math.max(12, x0 - 18);
@@ -6673,7 +6673,7 @@ function formatBeamInteractionFactor(value) {
 function calculateBeam() {
   const section = selectedBeamSection();
   const customDimensions = beamDimensionOverrideActive();
-  const direction = $("beamDirection").value || beamDirections()[0][0];
+  const direction = $("beamDirection").value || beamDirections()[0]?.[0] || "";
   beamDirectionMemory[beamFamily] = direction;
   const gradeName = $("beamGrade").value;
   const gradeBase = section?.grades?.[gradeName] || null;
@@ -7115,14 +7115,8 @@ function pfcGeometry(d, bf, tw, tf) {
 
 function memberDimensionProperties(section) {
   if (!memberDimensionOverrideActive()) return null;
-  const D = signedValue(memberType === "chs" ? "memberDimChsD" : "memberDimRodD", NaN);
-  const t = memberType === "chs" ? signedValue("memberDimChsT", NaN) : NaN;
-  if (!Number.isFinite(D) || D <= 0 || (memberType === "chs" && (!Number.isFinite(t) || t <= 0 || 2 * t >= D))) {
-    return { area: NaN, r: NaN, rx: NaN, ry: NaN, ix: NaN, iy: NaN, D, t, diameter: D, customGeometry: true, designation: "INPUT REQUIRED" };
-  }
-  if (memberType === "chs") return chsGeometry(D, t);
-  if (memberType === "rod") return rodGeometry(D);
-  return null;
+  try { return SCUnifiedSection.memberGeometry(memberType, Object.fromEntries(SCUnifiedSection.fields[memberType].map(([key,id]) => [key,signedValue('memberDim'+id,NaN)]))); }
+  catch(error) {return {area:NaN,r:NaN,rx:NaN,ry:NaN,ix:NaN,iy:NaN,customGeometry:true,designation:'INPUT REQUIRED',invalidReason:error.message};}
 }
 
 function memberHollowSections(family) {
@@ -7226,7 +7220,7 @@ function memberCompressionDefaults(grade, section, properties, fy) {
   const defaults = MemberCapacity.catalogueCompressionDefaults({
     family: memberType,
     catalogueKf: kf,
-    flangeThickness: section?.tf,
+    flangeThickness: properties.customGeometry ? properties.tf : section?.tf,
     dimensionOverride: false
   });
   return {
@@ -7322,33 +7316,27 @@ function memberCatalogueBasisText() {
 }
 
 function setMemberDimensionDefaults(section) {
-  if (memberType === "custom" || !section) return;
-  if (memberType === "chs") {
-    $("memberDimChsD").value = (section.D || 0).toFixed(1);
-    $("memberDimChsT").value = (section.t || 0).toFixed(1);
-  }
-  if (memberType === "rod") {
-    $("memberDimRodD").value = (section.diameter || 0).toFixed(1);
-  }
+  if (memberType === 'custom' || !section) return;
+  SCUnifiedSection.fields[memberType].forEach(([key,id]) => { const n=key==='D'&&memberType==='rod' ? section.diameter : key==='t'&&memberType==='ea' ? section.actualT||section.t : section[key]; $('memberDim'+id).value=Number.isFinite(n)?String(n):''; });
 }
 
 function updateMemberDimensionUi(properties = null) {
   const active = memberDimensionOverrideActive();
-  const dimensionOverrideSupported = ["chs", "rod"].includes(memberType);
+  const dimensionOverrideSupported = Boolean(SCUnifiedSection.fields[memberType]);
   if ($("memberDimensionCard")) $("memberDimensionCard").hidden = memberType === "custom" || !dimensionOverrideSupported;
   if ($("memberDimensionFields")) $("memberDimensionFields").hidden = !active || memberType === "custom";
   document.querySelectorAll("[data-member-dim]").forEach(field => {
-    field.hidden = field.dataset.memberDim !== memberType;
+    field.hidden = !field.dataset.memberDim.split(/\s+/).includes(memberType);
   });
   document.querySelectorAll("#memberDimensionFields input").forEach(input => {
-    input.disabled = !active || memberType === "custom";
+    input.disabled = !active || !input.closest("[data-member-dim]")?.dataset.memberDim.split(/\s+/).includes(memberType);
   });
   if ($("memberDimensionOverride")) $("memberDimensionOverride").disabled = memberType === "custom";
   if ($("memberRadiusField")) $("memberRadiusField").hidden = memberType === "custom" || active;
   const props = properties || (selectedMemberGrade() ? memberProperties(selectedMemberGrade().section) : null);
   if ($("memberDimensionStatus")) {
     $("memberDimensionStatus").hidden = !active || memberType === "custom";
-    const sourceText = `${MEMBER_TYPE_LABELS[memberType]} override defines A<sub>g</sub>, r<sub>x</sub> and r<sub>y</sub> by ideal circular geometry.`;
+    const sourceText = `${MEMBER_TYPE_LABELS[memberType]} · entered ${["chs","rod"].includes(memberType) ? "ideal circular" : "ideal sharp-corner"} geometry${memberType === "ea" ? "; radii and inertias use principal u–u / v–v axes" : ""}.`;
     $("memberDimensionStatus").innerHTML = props ? `${sourceText} A<sub>g</sub> = ${formatArea(props.area)}; r<sub>x</sub> = ${displayFixed(props.rx, 1)} mm; r<sub>y</sub> = ${displayFixed(props.ry, 1)} mm.` : sourceText;
   }
 }
@@ -7576,15 +7564,11 @@ function calculateMember() {
   const { section, gradeName, grade } = selected;
   const gradeDisplayName = SteelMaterials.gradeLabel(gradeName);
   if (memberDimensionOverrideActive()) {
-    const D = signedValue(memberType === "chs" ? "memberDimChsD" : "memberDimRodD", NaN);
-    const t = memberType === "chs" ? signedValue("memberDimChsT", NaN) : NaN;
-    const diameterValid = Number.isFinite(D) && D > 0;
-    const thicknessValid = memberType !== "chs" || (Number.isFinite(t) && t > 0 && 2 * t < D);
-    setMemberFieldValidity(memberType === "chs" ? "memberDimChsD" : "memberDimRodD", diameterValid);
-    if (memberType === "chs") setMemberFieldValidity("memberDimChsT", thicknessValid);
-    if (!diameterValid || !thicknessValid) {
-      updateMemberDimensionUi({ area: NaN, rx: NaN, ry: NaN });
-      setMemberInvalidState(memberType === "chs" ? "CHS dimensions must satisfy D > 0 and 0 < t < D/2" : "round-bar diameter must be greater than zero", section.designation);
+    const p=memberDimensionProperties(section);
+    SCUnifiedSection.fields[memberType].forEach(([,id]) => setMemberFieldValidity('memberDim'+id, !p.invalidReason));
+    if (p.invalidReason || !$('memberDimensionBasis')?.value) {
+      updateMemberDimensionUi(p);
+      setMemberInvalidState(p.invalidReason || 'confirm the product form and entered material strengths',section.designation);
       return;
     }
   }
@@ -7608,7 +7592,7 @@ function calculateMember() {
   const kf = compressionDefaults.kf;
   const kfBasis = formFactorError ? "form factor not established" : memberKfBasisText(compressionDefaults);
   const alphaB = compressionDefaults.alphaB;
-  const alphaBBasis = memberAlphaBBasis(kf, section);
+  const alphaBBasis = memberAlphaBBasis(kf, properties.customGeometry ? properties : section);
   if (memberType !== "custom" && Number.isFinite(alphaB)) {
     $("memberAlphaB").value = String(alphaB);
   }
@@ -7813,13 +7797,13 @@ function calculateMember() {
   const manualReason = memberType === "pfc"
     ? ` PFC default t = t<sub>w</sub> = ${fixed(properties.tw || section.tw || 0)} mm; use verified t for the net path.`
     : memberType === "ea"
-      ? ` EA deduction uses catalogue actual t = ${fixed(properties.t)} mm${properties.nominalT && Math.abs(properties.nominalT - properties.t) > 0.01 ? `, not nominal ${fixed(properties.nominalT)} mm` : ""}.`
+      ? ` EA deduction uses ${properties.customGeometry ? "entered" : "catalogue actual"} t = ${fixed(properties.t)} mm${properties.nominalT && Math.abs(properties.nominalT - properties.t) > 0.01 ? `, not nominal ${fixed(properties.nominalT)} mm` : ""}.`
     : "";
   $("memberNetAreaSource").innerHTML = `${autoNetAreaText}${manualReason} Use manual A<sub>n</sub> for non-straight net paths.`;
   $("memberWarning").innerHTML = memberType === "chs"
-    ? `Scope: centroidal axial compression and axial tension only. CHS basis: assumed cold-formed non-stress-relieved; k<sub>f</sub> = ${displayFixed(kf, 3)}, &alpha;<sub>b</sub> = -0.5.`
+    ? `Scope: centroidal axial compression and axial tension only. CHS basis: assumed cold-formed non-stress-relieved; k<sub>f</sub> = ${displayFixed(kf, 3)}, &alpha;<sub>b</sub> = ${displayFixed(alphaB, 1)}.`
     : memberType === "rhs" || memberType === "shs"
-      ? `Scope: centroidal axial compression and axial tension only. ${memberType.toUpperCase()} basis: cold-formed non-stress-relieved; ${memberAxisBasisText()}, k<sub>f</sub> = ${displayFixed(kf, 3)}, &alpha;<sub>b</sub> = -0.5.`
+      ? `Scope: centroidal axial compression and axial tension only. ${memberType.toUpperCase()} basis: cold-formed non-stress-relieved; ${memberAxisBasisText()}, k<sub>f</sub> = ${displayFixed(kf, 3)}, &alpha;<sub>b</sub> = ${displayFixed(alphaB, 1)}.`
     : memberType === "ub" || memberType === "uc"
       ? `Scope: centroidal axial compression and axial tension only. ${memberType.toUpperCase()} basis: hot-rolled section, ${memberAxisBasisText()}, k<sub>f</sub> = ${displayFixed(kf, 3)}, &alpha;<sub>b</sub> = ${displayFixed(alphaB, 1)}.`
     : memberType === "ea"

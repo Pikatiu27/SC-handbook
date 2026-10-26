@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.141 (26 October 2026): Axial Member and Beam Section share family-local Custom dimensions. Axial adds ideal geometry for all listed families; Beam adds verified-property Custom. Missing calculation bases remain Not evaluated; custom EA Beam capacity remains unavailable. Existing product links, routes, analysis layouts and deflection remain. Public beta / For Review.
+
 Build 0.7.140 (26 October 2026): Standard-store references are readable Standard identities with editions, clauses and conditions retained. Section, plate and concrete-cover names open existing details; redundant Details and constant cover Source columns are removed. Product manuals, catalogue PDFs, grade sheets, displayed-column filters, selection actions and old routes remain. Public beta / For Review.
 
 Build 0.7.139 (26 October 2026): Steel Corrosion uses compact two-line headers with essential units and professional qualifiers. First-column names open the existing details; separate Source/Details columns and Standard-store links are removed. Standard identities, clauses, conditions and direct readable guide links remain in details. Existing values, filters for displayed columns, old routes and engineering review limits are retained. Public beta / For Review.

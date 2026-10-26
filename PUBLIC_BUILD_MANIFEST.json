@@ -16,7 +16,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "8f204a4b5253080f54ed8731792690d969194aba3a5fc383450ac2b3c80aeb0f"
+      "sha256": "d36920e67fc9baf60beb404b0b2c6a59e7e02164e73a66e60ddbca34b668991a"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -440,7 +440,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "a5900cf2dd35c5a7f4f5af39289762c815f5ec3ffa57fff16e7dd7e3ca02d175"
+      "sha256": "4f983dcb32e341d44e728cb76c403c7a4610a3e726372dbd7e3e02921868eb82"
     },
     {
       "path": "LICENSE.md",
@@ -556,11 +556,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "a4bec279703c71f73b12c9dea58697d5ad28c22ae24c9b4be526badd9efcac74"
+      "sha256": "01fced987065043b0ef885a2b36fc160f7ed25015447b076748824735b0f742d"
     },
     {
       "path": "README.md",
-      "sha256": "86fd9c3684603be003d3c296f4d30dc9d4c832fef142c51994850aab0b8a3f3c"
+      "sha256": "fa5233b3bb0b52d94d16f6420f8c7c3e27199c1744716856fd8b9847b49f55c7"
     },
     {
       "path": "reference-actions/presentation.js",
@@ -601,6 +601,18 @@
     {
       "path": "section-catalogue.js",
       "sha256": "ac44531675a2137dede8563114d9dbeb67dc46659754c0cd16cdb4e19e50b495"
+    },
+    {
+      "path": "section-custom/calculation.js",
+      "sha256": "8a5bb8d3e8d491bbf27aa115af20a8dc438b53b248cca5cff15b3449f6a9f42c"
+    },
+    {
+      "path": "section-custom/input.css",
+      "sha256": "2e4ebb45205b37ae6ba6b04cc8107bda0caebaad386821590a80fd0dd69484f0"
+    },
+    {
+      "path": "section-custom/input.js",
+      "sha256": "e0df3af18ff9b358fcd95a5d5a9efb2be043f626a61485f963051251eba8be49"
     },
     {
       "path": "section-geometry.js",

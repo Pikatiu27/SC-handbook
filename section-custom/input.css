@@ -1,0 +1,45 @@
+/* Shared compact inputs. No engineering figure renderer or profile is changed. */
+#memberPanel .member-type-switch,#beamPanel .beam-family-switch{display:flex;box-sizing:border-box;width:100%;max-width:100%;min-width:0;flex-wrap:nowrap;overflow-x:auto;gap:3px;scroll-padding-inline:4px;scrollbar-width:thin}
+#memberPanel .member-type-switch .member-type,#beamPanel .beam-family-switch .beam-family{flex:1 0 auto;min-width:56px;min-height:44px;padding:8px 10px;white-space:nowrap;line-height:20px}
+#memberPanel .member-dimension-toggle .checkbox-field>span,#beamPanel .member-dimension-toggle .checkbox-field>span{white-space:nowrap}
+#memberPanel #memberDimensionFields,#beamPanel #beamDimensionFields,.section-custom-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#memberDimensionFields[hidden],#beamDimensionFields[hidden],[hidden].section-custom-grid,.section-custom-overall[hidden],#beamPanel .beam-workspace[hidden],#beamPanel .beam-section-figure[hidden]{display:none!important}
+#beamPanel.section-custom-active .beam-section-details,#beamPanel.section-custom-active>.detail-card,#beamPanel.section-custom-active>.source-card{display:none!important}
+#memberCustomSectionFields{grid-template-columns:repeat(2,minmax(0,1fr))}
+#memberCustomSectionFields .member-custom-subheading{grid-column:1/-1}
+#memberDimensionFields label,#beamDimensionFields label,.section-custom-grid label{min-width:0}
+#memberDimensionFields label>span:first-child,#beamDimensionFields label>span:first-child,.section-custom-grid label>span:first-child{font-size:13px;line-height:1.45}
+#memberDimensionFields label i,#beamDimensionFields label i,.section-custom-grid label i{font-size:12px;font-style:normal}
+#memberDimensionBasisField{margin-top:12px}
+.section-custom-basis{display:grid;gap:6px;min-width:0}
+.section-custom-basis select,.section-custom-overall select{box-sizing:border-box;min-width:0;width:100%;max-width:100%}
+.section-custom-basis select,.section-custom-overall select{min-height:44px;padding:10px;border:1px solid #c5cec8;border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:13px}
+.section-custom-overall>div label,.section-custom-overall .input-group>label:not(.checkbox-field){min-width:0}
+.section-custom-grid .unit,#memberDimensionFields .unit,#beamDimensionFields .unit{display:block;position:relative;width:100%}
+#beamMaterialFields .unit,#memberMaterialGroup .unit{display:block;position:relative;width:100%}
+#beamMaterialFields .unit em,#memberMaterialGroup .unit em{top:50%;transform:translateY(-50%)}
+.section-custom-grid .unit input{box-sizing:border-box;padding-right:42px}
+.section-custom-grid .unit em{top:50%;transform:translateY(-50%);right:8px;font-size:11px;line-height:1.2}
+#memberDimensionBasisField small,.section-custom-overall small{display:block;font-size:12px;line-height:1.6;color:#52646a;margin-top:8px}
+.section-custom-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.section-custom-overall .input-group{display:block;min-width:0;width:100%;padding:16px}
+.section-custom-overall .input-group-heading{margin-top:18px;margin-bottom:12px}
+.section-custom-overall .input-group-heading:first-child{margin-top:0}
+.section-custom-overall .unit input{min-width:0;width:100%}
+.section-custom-overall .unit em{white-space:nowrap}
+.section-custom-overall .section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.section-custom-confirm{margin-top:16px;gap:12px}
+.section-custom-results{min-width:0}
+.section-custom-result{padding:14px 0;border-bottom:1px solid #d5e1e3;display:grid;gap:8px}
+.section-custom-result strong{font-size:20px;color:var(--beam-dark,#285965);overflow-wrap:anywhere}
+.section-custom-overall details{margin-top:16px;border-top:1px solid #d5e1e3;padding:12px 0}
+.section-custom-overall summary{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:32px;cursor:pointer;list-style:none}
+.section-custom-overall summary::-webkit-details-marker{display:none}
+.section-custom-overall summary i{font:20px/1 sans-serif;font-style:normal}
+.section-custom-overall h3{font-size:14px;margin-bottom:12px}
+.section-custom-trace{padding:12px 0;border-bottom:1px solid #e3eaeb;overflow:auto}
+.section-custom-trace math{font-size:13px;text-align:left;margin:10px 0;white-space:nowrap}
+.section-custom-trace p{font-size:14px}
+.section-custom-overall input[aria-invalid=true],#memberDimensionFields input[aria-invalid=true]{outline:2px solid #a33;outline-offset:1px}
+@media(max-width:700px){.section-custom-layout{grid-template-columns:minmax(0,1fr);gap:16px}#memberPanel .member-type-switch .member-type,#beamPanel .beam-family-switch .beam-family{flex:0 0 auto;min-width:54px;padding-inline:10px}.section-custom-overall .input-group{padding:12px}.section-custom-grid,#memberDimensionFields,#beamDimensionFields{gap:10px}.section-custom-grid input{font-size:14px}.section-custom-grid .unit em{font-size:11px}#memberDimensionFields label>span:first-child,#beamDimensionFields label>span:first-child,.section-custom-grid label>span:first-child{min-height:36px}}
+@media(max-width:600px){#beamPanel #beamMaterialGroup #beamMaterialFields{grid-template-columns:repeat(2,minmax(0,1fr))}#beamPanel #beamMaterialFields #beamFuField:not(:only-child){grid-column:auto}#beamPanel #beamMaterialFields:not(:has(#beamFywField[hidden])) #beamFuField{grid-column:1/-1}#beamPanel #beamMaterialFields input{font-size:14px;padding-right:36px}#beamMaterialFields .unit em{right:8px;font-size:11px}}

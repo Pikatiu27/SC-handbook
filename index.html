@@ -54,6 +54,7 @@
 <link rel="stylesheet" href="page-alignment/repairs.css?v=20261026tables3">
 <link rel="stylesheet" href="steel-corrosion/header-layout.css?v=20261026corrosion139">
 <link rel="stylesheet" href="reference-actions/styles.css?v=20261026references140"><script src="reference-actions/presentation.js?v=20261026references140"></script>
+<link rel="stylesheet" href="section-custom/input.css?v=20261026custom141">
 </head>
 <body data-beam-analysis-presentation="20261019beamformatrelease1">
   <header class="topbar">
@@ -1380,11 +1381,29 @@
           <button class="beam-family" type="button" data-beam-family="rhs" aria-pressed="false">RHS</button>
           <button class="beam-family" type="button" data-beam-family="shs" aria-pressed="false">SHS</button>
           <button class="beam-family" type="button" data-beam-family="ea" aria-pressed="false" aria-label="Equal Angle (EA)" title="Equal Angle">EA</button>
-          <button class="beam-family" type="button" data-beam-family="rod" aria-pressed="false">Round Bar</button>
+          <button class="beam-family" type="button" data-beam-family="rod" aria-pressed="false">Rod</button><button class="beam-family" id="beamOverallCustomButton" type="button" aria-pressed="false" title="Enter verified section properties and an explicit capacity basis">Custom</button>
           <select id="beamFamily" aria-label="Beam section family" hidden tabindex="-1"><option value="ub">UB</option><option value="uc">UC</option><option value="pfc">PFC</option><option value="chs">CHS</option><option value="rhs">RHS</option><option value="shs">SHS</option><option value="ea">EA</option><option value="rod">Round Bar</option></select>
         </div>
 
-        <div class="beam-workspace"><section class="beam-input-pane" aria-label="Beam inputs"><div class="section-heading"><h2>Section inputs</h2></div><div class="input-cluster beam-selection-inputs">
+        <section id="beamOverallCustom" class="section-custom-overall" aria-label="Custom beam section properties" hidden>
+  <div class="section-heading"><h2>Custom section properties</h2><span class="tool-status">For Review</span></div>
+  <p class="result-note">Enter verified properties for any section. Dimensions and section classification are not inferred.</p>
+  <div class="section-custom-layout"><section class="input-group"><span class="input-group-heading"><b>Section properties</b></span><div class="input-group-fields section-custom-grid">
+    <label><span>A<sub>g</sub> <i>gross area</i></span><span class="unit"><input id="beamOverallArea" type="number" min="0" step="any" inputmode="decimal"><em>mm²</em></span></label>
+    <label><span>Bending axis</span><select id="beamOverallAxis"><option value="x">x–x</option><option value="y">y–y</option></select></label>
+    <label><span>I<sub>x</sub> <i>second moment</i></span><span class="unit"><input id="beamOverallIx" type="number" min="0" step="any" inputmode="decimal"><em>mm⁴</em></span></label><label><span>I<sub>y</sub> <i>second moment</i></span><span class="unit"><input id="beamOverallIy" type="number" min="0" step="any" inputmode="decimal"><em>mm⁴</em></span></label>
+    <label><span>Z<sub>e,x</sub> <i>effective modulus</i></span><span class="unit"><input id="beamOverallZex" type="number" min="0" step="any" inputmode="decimal"><em>mm³</em></span></label><label><span>Z<sub>e,y</sub> <i>effective modulus</i></span><span class="unit"><input id="beamOverallZey" type="number" min="0" step="any" inputmode="decimal"><em>mm³</em></span></label>
+  </div><small>Use the same centroidal or principal axes throughout. Effective moduli must include the applicable section classification; elastic or plastic moduli alone are insufficient.</small>
+  <span class="input-group-heading"><b>Material</b></span><div class="input-group-fields section-custom-grid"><label><span>f<sub>y</sub> <i>yield strength</i></span><span class="unit"><input id="beamOverallFy" type="number" min="0" step="any" inputmode="decimal"><em>MPa</em></span></label><label><span>f<sub>u</sub> <i>tensile strength</i></span><span class="unit"><input id="beamOverallFu" type="number" min="0" step="any" inputmode="decimal"><em>MPa</em></span></label></div>
+  <label class="checkbox-field section-custom-confirm"><span>Verified property and material basis</span><input id="beamOverallConfirmed" type="checkbox"></label>
+  <small>Confirm the property report, axis, effective modulus and material values for the actual section. For a built-up section, connections and fabrication require separate checks.</small>
+  <span class="input-group-heading"><b>Shear basis</b></span><label><span>Shear model</span><select id="beamOverallShearModel"><option value="none">Not evaluated</option><option value="flat-web">Uniform flat web · verified reduction</option><option value="chs">CHS · verified effective area</option></select></label>
+  <div id="beamOverallWebFields" class="input-group-fields section-custom-grid" hidden><label><span>A<sub>w</sub> <i>gross web area</i></span><span class="unit"><input id="beamOverallAw" type="number" min="0" step="any" inputmode="decimal"><em>mm²</em></span></label><label><span>f<sub>y,w</sub> <i>web yield strength</i></span><span class="unit"><input id="beamOverallFyw" type="number" min="0" step="any" inputmode="decimal"><em>MPa</em></span></label><label><span>α<sub>v</sub> <i>verified shear reduction</i></span><span class="unit"><input id="beamOverallAlphaV" type="number" min="0" step="any" inputmode="decimal"><em>—</em></span></label></div>
+  <div id="beamOverallChsFields" class="input-group-fields section-custom-grid" hidden><label><span>A<sub>e</sub> <i>effective shear area</i></span><span class="unit"><input id="beamOverallAe" type="number" min="0" step="any" inputmode="decimal"><em>mm²</em></span></label></div>
+  <small id="beamOverallShearHelp">Select a model only after verifying its applicability.</small></section>
+  <section class="section-custom-results" aria-label="Custom section capacity results"><div class="section-heading"><h2>Capacity results</h2></div><div id="beamOverallResults" aria-live="polite"></div>
+  <details><summary><b>Calculation</b><i>+</i></summary><div id="beamOverallCalculation"></div></details>
+  <details><summary><b>Applicability</b><i>+</i></summary><div class="details-content"><p>Section capacity only · AS 4100:2020, Table 3.4, Cl. 5.2.1 and 5.11.2–5.11.5. Each limit state needs its own verified inputs.</p><p>Flat-web shear requires approximately uniform shear stress and a verified reduction including the applicable buckling basis. For non-uniform shear or other section types, leave shear Not evaluated.</p><p>CHS A<sub>e</sub> follows Cl. 5.11.4 hole and net-area conditions. Do not use this model for arbitrary hollow sections.</p><p>Member stability, lateral-torsional buckling, combined moment and shear, torsion, bearing, connections, fabrication and design acceptance are not evaluated.</p></div></details></section></div></section><div class="beam-workspace"><section class="beam-input-pane" aria-label="Beam inputs"><div class="section-heading"><h2>Section inputs</h2></div><div class="input-cluster beam-selection-inputs">
           <section class="input-group input-group-section" id="beamSectionGroup">
             <span class="input-group-heading"><b>Section</b></span>
             <div class="beam-selection-with-figure"><div class="input-group-fields one beam-selection-fields">
@@ -1687,7 +1706,7 @@
       <div class="tool-heading"><div><p class="kicker">Axial members · AS 4100 Sections 6 and 7</p><h2>Axial Member Capacity</h2></div><span class="tool-status">For Review · axial capacity</span></div>
 
       <section class="lookup-card member-card">
-        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type" type="button" data-member-type="ub">UB</button><button class="member-type" type="button" data-member-type="uc">UC</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="rhs">RHS</button><button class="member-type" type="button" data-member-type="shs">SHS</button><button class="member-type" type="button" data-member-type="ea" aria-label="Equal Angle (EA)" title="Equal Angle">EA</button><button class="member-type" type="button" data-member-type="rod">Round Bar</button><button class="member-type" type="button" data-member-type="custom">Custom / Built-up</button></div>
+        <div class="member-type-switch" role="group" aria-label="Member section type"><button class="member-type" type="button" data-member-type="ub">UB</button><button class="member-type" type="button" data-member-type="uc">UC</button><button class="member-type" type="button" data-member-type="pfc">PFC</button><button class="member-type active" type="button" data-member-type="chs">CHS</button><button class="member-type" type="button" data-member-type="rhs">RHS</button><button class="member-type" type="button" data-member-type="shs">SHS</button><button class="member-type" type="button" data-member-type="ea" aria-label="Equal Angle (EA)" title="Equal Angle">EA</button><button class="member-type" type="button" data-member-type="rod">Rod</button><button class="member-type" type="button" data-member-type="custom" title="Enter verified section properties and compression factors">Custom</button></div>
 
         <div class="axial-workspace member-selected-section"><section class="axial-input-pane" aria-label="Axial member inputs"><div class="section-heading"><h2>Member inputs</h2></div><div class="input-cluster input-cluster-four member-main-inputs">
           <section class="input-group input-group-section" id="memberSectionGroup">
@@ -1721,11 +1740,26 @@
             <div class="member-dimension-panel" id="memberDimensionCard">
 
               <div class="input-group-fields four member-dimension-fields" id="memberDimensionFields" hidden>
-                <label data-member-dim="chs"><span>D <i>outside diameter</i></span><span class="unit"><input id="memberDimChsD" type="number" min="0" step="0.1" value="60.3"><em>mm</em></span></label>
-                <label data-member-dim="chs"><span>t <i>wall thickness</i></span><span class="unit"><input id="memberDimChsT" type="number" min="0" step="0.1" value="3.2"><em>mm</em></span></label>
-                <label data-member-dim="rod" hidden><span>d <i>diameter</i></span><span class="unit"><input id="memberDimRodD" type="number" min="0" step="0.1" value="24"><em>mm</em></span></label>
+                <label data-member-dim="ub uc"><span>d <i>overall depth</i></span><span class="unit"><input id="memberDimID" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="ub uc"><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="memberDimIBf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="ub uc"><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="memberDimITw" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="ub uc"><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="memberDimITf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="pfc" hidden><span>d <i>overall depth</i></span><span class="unit"><input id="memberDimPfcD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="pfc" hidden><span>b<sub>f</sub> <i>flange width</i></span><span class="unit"><input id="memberDimPfcBf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="pfc" hidden><span>t<sub>w</sub> <i>web thickness</i></span><span class="unit"><input id="memberDimPfcTw" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="pfc" hidden><span>t<sub>f</sub> <i>flange thickness</i></span><span class="unit"><input id="memberDimPfcTf" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="chs" hidden><span>D <i>outside diameter</i></span><span class="unit"><input id="memberDimChsD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="chs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="memberDimChsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="rhs" hidden><span>d <i>outside depth</i></span><span class="unit"><input id="memberDimRhsD" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="rhs" hidden><span>b <i>outside width</i></span><span class="unit"><input id="memberDimRhsB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="rhs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="memberDimRhsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="shs" hidden><span>b = d <i>outside size</i></span><span class="unit"><input id="memberDimShsB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="shs" hidden><span>t <i>wall thickness</i></span><span class="unit"><input id="memberDimShsT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="ea" hidden><span>b <i>equal leg length</i></span><span class="unit"><input id="memberDimEaB" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="ea" hidden><span>t <i>leg thickness</i></span><span class="unit"><input id="memberDimEaT" type="number" min="0" step="0.1"><em>mm</em></span></label>
+                <label data-member-dim="rod" hidden><span>d <i>diameter</i></span><span class="unit"><input id="memberDimRodD" type="number" min="0" step="0.1"><em>mm</em></span></label>
               </div>
-              <p class="result-note user-input-note" id="memberDimensionStatus" hidden></p>
+              <div id="memberDimensionBasisField" hidden><label class="section-custom-basis"><span>Product basis</span><select id="memberDimensionBasis"><option value="">Confirm product and material basis</option><option value="family">Selected family · verified strengths</option></select></label><small id="memberDimensionBasisHelp"></small></div><p class="result-note user-input-note" id="memberDimensionStatus" hidden></p>
             </div>
           </section>
           <section class="input-group input-group-material" id="memberMaterialGroup">
@@ -2512,7 +2546,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.140 &middot; updated 26 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.141 &middot; updated 26 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2541,7 +2575,7 @@
   <script src="bolt-comparison/comparison.js?v=20261016workflowtrace1"></script>
 <script src="tool-directory/registry.js?v=20261019deflection1"></script>
 <script src="tool-directory/directory.js?v=20261019interactionrelease1"></script>
-<script src="app.js?v=20261017padrelease1"></script>
+<script src="section-custom/calculation.js?v=20261026custom141"></script><script src="app.js?v=20261026custom141"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=20261016workflowtrace1"></script>
 <script src="geo-parameters/detail-app.js?v=20261019interactionrelease1"></script>
@@ -2605,5 +2639,6 @@
 <script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261019interactionrelease1"></script><script src="concrete-beam/app.js?v=20261019interactionrelease1"></script>
 <script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261017padrelease1"></script>
 <script src="disclosure/indicators.js?v=20261026tables3"></script>
+<script src="section-custom/input.js?v=20261026custom141"></script>
 </body>
 </html>
