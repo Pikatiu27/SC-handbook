@@ -1,0 +1,12 @@
+/* Reference identities stay readable; product/manual links keep their original owners. */
+.sc-standard-reference {color:inherit;text-decoration:none;cursor:inherit;}
+html body :is(#propertiesPanel,#coverPanel) .st-table .sc-name-detail {
+  display:block;box-sizing:border-box;width:100%;min-height:44px;margin:0;padding:6px 34px 6px 0;
+  border:0;border-radius:0;background:transparent;box-shadow:none;color:var(--green-dark);
+  font:inherit;font-weight:700;line-height:20px;text-align:left;white-space:normal;cursor:pointer;
+}
+html body :is(#propertiesPanel,#coverPanel) .st-table .sc-name-detail:hover {background:transparent;text-decoration:underline;}
+html body :is(#propertiesPanel,#coverPanel) .st-table .sc-name-detail:focus-visible {outline:2px solid var(--green-dark);outline-offset:2px;}
+#stWorkspace,#plateDetails,#coverDetails {scroll-margin-block-start:128px;}
+#coverPanel #coverDetails {scroll-margin-block-start:128px;}
+#plateCatalogue .st-table .st-identity {width:132px;min-width:132px;}

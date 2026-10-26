@@ -228,7 +228,7 @@
     },
     {
       "path": "bolt-dimensions/app.js",
-      "sha256": "f9c2f3d33685d684154ebc6e14ac3d4e3fc79464b1d8aa22f3bf9b6dd4540aa8"
+      "sha256": "fbd52a89554948dd9a5297d6e575b426ceafe7de99e36574f994d5eb325f3c53"
     },
     {
       "path": "bolt-dimensions/data.js",
@@ -300,7 +300,7 @@
     },
     {
       "path": "concrete-cover/app.js",
-      "sha256": "c6b3ae5831c4db9f58bd236e8fa8f33678aab23c6596a0af52661969d670f23e"
+      "sha256": "b9f5b06102fabcecaa5189970b92f4e1ac9950ae7c6224fb950dac12eb8caa58"
     },
     {
       "path": "concrete-cover/data.js",
@@ -440,7 +440,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "7e4e065211a151f351ea3e74b7bd7be81a788eb64ae64859bef3d8d5ea5e0965"
+      "sha256": "a5900cf2dd35c5a7f4f5af39289762c815f5ec3ffa57fff16e7dd7e3ca02d175"
     },
     {
       "path": "LICENSE.md",
@@ -540,7 +540,7 @@
     },
     {
       "path": "plate-tables/app.js",
-      "sha256": "7c7b5b0b6f57b643063968edd066d3e18fb1200b6b245957045d7d2bae81b3ff"
+      "sha256": "96e692650f3b91e3d6fca00349278c28b597f85e9da24f8476906796916660aa"
     },
     {
       "path": "plate-tables/catalogue.js",
@@ -556,11 +556,19 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "83ed8ada1c53b8fb4b6a073dc1f9be0193f6ea5033124e204bb65f960ea7099e"
+      "sha256": "a4bec279703c71f73b12c9dea58697d5ad28c22ae24c9b4be526badd9efcac74"
     },
     {
       "path": "README.md",
-      "sha256": "16c6c8277421081d7fa9f9bb4b32c8f6b22e71dfe3053fd1e5d31aa95569a37f"
+      "sha256": "86fd9c3684603be003d3c296f4d30dc9d4c832fef142c51994850aab0b8a3f3c"
+    },
+    {
+      "path": "reference-actions/presentation.js",
+      "sha256": "3b429eca7c07028e22eddf4d1c68b48b05e4f91e0da033f994dd0580663f15fe"
+    },
+    {
+      "path": "reference-actions/styles.css",
+      "sha256": "5c6f76d7ce8f3f92672b1a6bdbff331de5989d424626d5af7f67bad86ab2be2e"
     },
     {
       "path": "reinforcement-area/app.js",
@@ -604,7 +612,7 @@
     },
     {
       "path": "section-tables/lookup.js",
-      "sha256": "ed130505cb58fca9ab0fcb858490a475df2de8476f2f0a2ad291ed521884029c"
+      "sha256": "503f7e2cd5f0c524c6db9407f651382d5d42fb379d88612adfe668a4281df572"
     },
     {
       "path": "section-tables/model.js",

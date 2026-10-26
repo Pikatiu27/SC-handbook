@@ -4,9 +4,9 @@
   const panel = document.getElementById('coverPanel');
   if (!data || !model || !shared || !panel) return;
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const link = (url, label, title = '') => `<a class="st-document-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer"${title ? ` title="${esc(title)}"` : ''}>${esc(label)}</a>`;
-  const cols = model.columns(data), engine = shared.engine({ sections: data.rows }, cols), $ = id => document.getElementById(id);
-  const exposureCols = model.exposureColumns(), exposureEngine = shared.engine({ sections: data.exposures }, exposureCols);
+  const link = (url, label, title = '') => SCReferenceActions.isStore(url)?SCReferenceActions.reference(label,title):`<a class="st-document-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer"${title ? ` title="${esc(title)}"` : ''}>${esc(label)}</a>`;
+  const cols = model.columns(data).filter(c=>c.key!=='source'), engine = shared.engine({ sections: data.rows }, cols), $ = id => document.getElementById(id);
+  const exposureCols = model.exposureColumns().filter(c=>c.key!=='source'), exposureEngine = shared.engine({ sections: data.exposures }, exposureCols);
   panel.innerHTML = `<div class="tool-heading"><div><p class="kicker">AS 3600:2018 · Amendments 1 &amp; 2</p><h2>Concrete Cover &amp; Durability</h2></div><span class="tool-status">Public beta · For Review</span></div>
     <div class="section-catalogue-family-switch cover-view-tabs" role="tablist" aria-label="Concrete durability tables"><button type="button" class="section-catalogue-family-tab active" id="coverExposureTab" role="tab" data-cover-view="exposure" aria-selected="true" aria-controls="coverExposureView">Exposure classifications</button><button type="button" class="section-catalogue-family-tab" id="coverReferenceTab" role="tab" data-cover-view="cover" aria-selected="false" aria-controls="coverReferenceView" tabindex="-1">Concrete cover</button></div>
     <section id="coverExposureView" role="tabpanel" aria-labelledby="coverExposureTab"><section class="lookup-card st-catalogue cover-exposure-catalogue"><div class="st-table-heading"><div class="st-heading-copy"><h3 id="coverExposureTitle">Exposure classifications</h3><p class="st-axis-note">Selected examples; confirm each surface under Table 4.3 and Figure 4.3.</p></div><div class="st-heading-actions"><span id="coverExposureCount" role="status" aria-live="polite" aria-atomic="true"></span><button id="coverExposureReset" type="button">Reset</button></div></div>
@@ -17,7 +17,7 @@
     <div id="coverFilterBar" class="st-filter-bar" aria-label="Active cover filters"></div><div class="st-scroll" id="coverScroll" role="region" tabindex="0" aria-labelledby="coverTitle" aria-describedby="coverScrollCue"><table class="st-table cover-table"><caption class="st-sr-only">Selected ordinary AS 3600 corrosion-cover references, initial curing and construction conditions. Not a final project cover specification.</caption><thead id="coverHead"></thead><tbody id="coverRows"></tbody></table></div><p class="st-scroll-cue" id="coverScrollCue" hidden>Scroll across for all columns.</p>
     <p class="st-legend">Ground rows include +10 mm (membrane) / +20 mm (direct). Curing: minimum days or strength route in Details. ≥50: strength band within Cl. 1.1.2. U: project assessment.</p>
     <section id="coverDetails" class="cover-details" aria-labelledby="coverDetailTitle" hidden><div class="st-detail-heading"><h3 id="coverDetailTitle"></h3><button id="coverClose" type="button">Close details</button></div><div id="coverDetailBody"></div></section></section></section>
-    <details class="source-card cover-disclosure"><summary><span><b>Scope &amp; sources</b><small>Coverage, casting conditions and source links</small></span><i>+</i></summary><div class="cover-source-body">
+    <details class="source-card cover-disclosure"><summary><span><b>Scope &amp; sources</b><small>Coverage, casting conditions and references</small></span><i>+</i></summary><div class="cover-source-body">
     <p><b>Basis:</b> ${link(data.source.url, 'AS 3600:2018')} + ${link('https://store.standards.org.au/product/as-3600-2018-amd-1-2018', 'Amd 1:2018')} + ${link('https://store.standards.org.au/product/as-3600-2018-amd-2-2021', 'Amd 2:2021')}. Tables 4.3–4.4, 4.10.3.2–3; Cl. 4.3, 4.10.3.4–5. Publisher: Pending Revision, checked 12 Oct 2026.</p>
     <p><b>Applicability:</b> reinforced / prestressed building concrete within Cl. 1.1.2: f′c 20–120 MPa, SSD density 1,800–2,800 kg/m³ and the specified reinforcement classes. Reference design life: 50 years ±20% (Cl. 4.1).</p>
     <div class="cover-guide-scroll"><table class="cover-guide-table cover-coverage-table"><caption class="st-sr-only">Common situations covered by this lookup and conditions requiring separate checks.</caption><thead><tr><th scope="col">Situation</th><th scope="col">Coverage / condition</th></tr></thead><tbody>
@@ -37,7 +37,7 @@
   const viewScroll = { exposure: { top: 0, left: 0 }, cover: { top: 0, left: 0 } };
   const procedure = row => data.procedures.find(p => p.key === row.procedure);
   function heading() {
-    $('coverHead').innerHTML = '<tr>' + cols.map((c, i) => `<th scope="col" class="${i === 0 ? 'st-identity' : c.numeric ? 'st-num' : c.key === 'source' ? 'st-source-col' : ''}"><button type="button" class="st-header-control" data-st-column="${c.key}" aria-haspopup="dialog" aria-expanded="false" aria-label="${esc(c.label.replace(/<[^>]+>/g, ''))}${c.unit ? ' (' + esc(c.unit) + ')' : ''}: filter or sort"><span class="st-header-name"><span>${c.label}</span><span class="st-filter-icon" aria-hidden="true">▾</span></span><small>${c.unit || '&nbsp;'}</small></button></th>`).join('') + '<th scope="col" class="st-action-col">Details</th></tr>';
+    $('coverHead').innerHTML = '<tr>' + cols.map((c, i) => `<th scope="col" class="${i === 0 ? 'st-identity' : c.numeric ? 'st-num' : c.key === 'source' ? 'st-source-col' : ''}"><button type="button" class="st-header-control" data-st-column="${c.key}" aria-haspopup="dialog" aria-expanded="false" aria-label="${esc(c.label.replace(/<[^>]+>/g, ''))}${c.unit ? ' (' + esc(c.unit) + ')' : ''}: filter or sort"><span class="st-header-name"><span>${c.label}</span><span class="st-filter-icon" aria-hidden="true">▾</span></span><small>${c.unit || '&nbsp;'}</small></button></th>`).join('') + '</tr>';
   }
   function overflow() {
     for (const prefix of ['cover', 'coverExposure']) $(prefix + 'ScrollCue').hidden = $(prefix + 'Scroll').scrollWidth <= $(prefix + 'Scroll').clientWidth + 1;
@@ -49,10 +49,11 @@
       const value = engine.text(row, c.key), tag = i === 0 ? 'th' : 'td';
       let content = c.key === 'source' ? link(data.source.url, value, `AS 3600:2018 + Amd 1 & 2; ${row.cover === null ? 'Cl. 4.5' : 'Table ' + procedure(row).table}${row.adjustment ? '; Cl. 4.10.3.5; derived +' + row.adjustment + ' mm' : ''}`) : esc(value);
       if (c.key === 'exposure' && row.cover === null) content += '<small>Review</small>';
+      if(i===0)content=SCReferenceActions.detail(value,'data-cover-detail',row.id,'coverDetails','Details: '+row.exposure+', '+procedure(row).label+', '+row.strengthBand)+(row.cover===null?'<small>Review</small>':'');
       const title = c.key === 'concreteClass' ? row.concreteClass : c.key === 'cover' && row.adjustment ? `${row.baseCover} + ${row.adjustment} = ${row.cover} mm; Cl. 4.10.3.5` : '';
       return `<${tag}${i === 0 ? ' scope="row"' : ''}${title ? ` title="${esc(title)}"` : ''} class="${i === 0 ? 'st-identity' : c.numeric ? 'st-num' : c.key === 'source' ? 'st-source-col' : ''}${c.numeric && row[c.key] === null ? ' st-unavailable' : ''}">${content}</${tag}>`;
-    }).join('') + `<td class="st-action-col"><button type="button" data-cover-detail="${esc(row.id)}" aria-expanded="${selected === row.id}" aria-controls="coverDetails" aria-label="Details: ${esc(row.exposure + ', ' + procedure(row).label + ', ' + row.strengthBand + (row.strength === null ? '' : ' MPa'))}">Details</button></td></tr>`).join('') : `<tr><td colspan="${cols.length + 1}" class="st-empty">No matching references. Clear a column filter or Reset.</td></tr>`;
-    filters.decorate(); overflow();
+    }).join('') + `</tr>`).join('') : `<tr><td colspan="${cols.length}" class="st-empty">No matching references. Clear a column filter or Reset.</td></tr>`;
+    panel.querySelectorAll('[data-cover-detail]').forEach(b=>b.setAttribute('aria-expanded',String(selected===b.dataset.coverDetail))); filters.decorate(); overflow();
   }
   function closeDetails(restore = false) {
     const id = selected; selected = null; $('coverDetails').hidden = true;
@@ -68,7 +69,7 @@
     $('coverExposureRows').innerHTML = rows.length ? rows.map(row => '<tr data-cover-exposure-row="' + row.exposure + '">' + exposureCols.map((col, i) => {
       const tag = i === 0 ? 'th' : 'td', content = col.key === 'source' ? link(data.source.url, exposureEngine.text(row, col.key), 'AS 3600:2018 + Amd 1 & 2; Table 4.3, notes and Figure 4.3; PDF pp. 62–64 / printed pp. 59–61' + (row.exposure === 'U' ? '; Cl. 4.5' : '')) : esc(exposureEngine.text(row, col.key));
       return `<${tag}${i === 0 ? ' scope="row"' : ''} class="${i === 0 ? 'st-identity' : col.key === 'source' ? 'st-source-col' : ''}">${content}${i === 0 && row.exposure === 'U' ? '<small>Review</small>' : ''}</${tag}>`;
-    }).join('') + `<td class="st-action-col"><button type="button" data-cover-for-exposure="${row.exposure}" aria-label="View cover references for AS 3600 exposure ${row.exposure}" title="Show ${row.exposure} references; replace cover filters">View cover</button></td></tr>`).join('') : '<tr><td colspan="5" class="st-empty">No matching classes. Clear a column filter or Reset.</td></tr>';
+    }).join('') + `<td class="st-action-col"><button type="button" data-cover-for-exposure="${row.exposure}" aria-label="View cover references for AS 3600 exposure ${row.exposure}" title="Show ${row.exposure} references; replace cover filters">View cover</button></td></tr>`).join('') : '<tr><td colspan="${exposureCols.length+1}" class="st-empty">No matching classes. Clear a column filter or Reset.</td></tr>';
     exposureFilters.decorate(); overflow();
   }
   function setView(view, focus = false) {
@@ -97,12 +98,13 @@
   $('coverReset').addEventListener('click', () => { filters.close(false); closeDetails(); engine.reset(); render(); $('coverScroll').scrollTop = 0; $('coverScroll').scrollLeft = 0; });
   $('coverRows').addEventListener('click', e => {
     const button = e.target.closest('[data-cover-detail]'); if (!button) return;
+    if(selected===button.dataset.coverDetail&&!$('coverDetails').hidden){closeDetails(true);return;}
     const row = data.rows.find(r => r.id === button.dataset.coverDetail), p = procedure(row);
     savedScroll = { top: $('coverScroll').scrollTop, left: $('coverScroll').scrollLeft }; selected = row.id;
     $('coverDetailTitle').textContent = `${row.exposure} · ${p.label} · ${row.strengthBand}${row.strength === null ? '' : ' MPa'}`;
     const body = row.cover === null ? '<p><b>Review required.</b> Class U has no generic strength, cover or curing value. Specify durability requirements for the actual environment under Cl. 4.5; no numeric result is adopted.</p>' : `<dl><div><dt>Corrosion-cover reference</dt><dd>${row.cover} mm · ${esc(row.status)}</dd></div><div><dt>Construction condition</dt><dd>${esc(p.condition)}</dd></div><div><dt>Value basis</dt><dd>${esc(p.basis)}${row.adjustment ? `: ${row.baseCover} + ${row.adjustment} = ${row.cover} mm` : `; Table ${p.table}, ${row.baseCover} mm`}</dd></div><div><dt>Concrete quality</dt><dd>Listed exposure: f′c ≥ ${row.minStrength} MPa${row.concreteClass === 'Special required' ? '; special-class concrete under AS 1379' : ''}. The member’s most severe surface may require a higher class.</dd></div><div><dt>Curing route</dt><dd>Continuous initial curing ≥ ${row.curing} days, subject to Cl. 17.1.5.1; alternatively, average strength at stripping / demoulding ≥ ${row.stripping} MPa under Table 4.4.</dd></div><div><dt>Exact locator</dt><dd>AS 3600:2018 + Amd 1 &amp; 2, Table ${p.table} · PDF p. ${p.page} / printed p. ${p.page - 3}${row.adjustment ? '; Cl. 4.10.3.5 · PDF p. 70 / printed p. 67' : ''}; Table 4.4 · PDF p. 65 / printed p. 62.</dd></div></dl>`;
     $('coverDetailBody').innerHTML = body + '<p class="cover-detail-boundary">This reference is not final nominal cover. Confirm placement, aggressive-ground, fire, tolerance and project detailing requirements.</p>';
-    $('coverDetails').hidden = false; render(); $('coverScroll').scrollTop = savedScroll.top; $('coverScroll').scrollLeft = savedScroll.left; $('coverDetails').scrollIntoView({ block: 'nearest' }); $('coverClose').focus({ preventScroll: true });
+    $('coverDetails').hidden = false; render(); $('coverScroll').scrollTop = savedScroll.top; $('coverScroll').scrollLeft = savedScroll.left; $('coverDetails').scrollIntoView({ block: 'start' }); $('coverClose').focus({ preventScroll: true });
   });
   $('coverClose').addEventListener('click', () => closeDetails(true));
   new ResizeObserver(overflow).observe($('coverScroll'));

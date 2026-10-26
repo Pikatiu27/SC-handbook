@@ -59,11 +59,11 @@
     $('stCount').textContent = `${rows.length} / ${family.sections.length} sections`;
     $('stCaption').textContent = `${bridge.names[family.key]} catalogue dimensions, mass and section properties. ${$('stAxes').textContent}`;
     const control = (key, label, unit = '') => `<button type="button" class="st-header-control" data-st-column="${key}" aria-haspopup="dialog" aria-controls="stColumnFilter" aria-expanded="false"><span class="st-header-name"><span>${label}</span><span class="st-filter-icon" aria-hidden="true">▾</span></span>${unit ? `<small>${unit}</small>` : '<small aria-hidden="true">&nbsp;</small>'}</button>`;
-    $('stHead').innerHTML = '<tr><th scope="col" class="st-identity">' + control('section', 'Section') + '</th>' + cols.map(c => `<th scope="col" class="st-num">${control(c.key, c.label, c.unit)}</th>`).join('') + '<th scope="col" class="st-source-col">' + control('source', 'Source') + '</th><th scope="col" class="st-action-col">Details</th></tr>';
-    $('stRows').innerHTML = rows.length ? rows.map(row => `<tr><th scope="row" class="st-identity">${esc(row.designation)}</th>${cols.map(c => {
+    $('stHead').innerHTML = '<tr><th scope="col" class="st-identity">' + control('section', 'Section') + '</th>' + cols.map(c => `<th scope="col" class="st-num">${control(c.key, c.label, c.unit)}</th>`).join('') + '<th scope="col" class="st-source-col">' + control('source', 'Source') + '</th></tr>';
+    $('stRows').innerHTML = rows.length ? rows.map(row => `<tr><th scope="row" class="st-identity">${SCReferenceActions.detail(row.designation,'data-st-details',row.id,'stWorkspace','Details for '+row.designation)}</th>${cols.map(c => {
       const item = c.value(row), derived = item?.basis === 'derived';
       return `<td class="st-num${item?.value == null ? ' st-unavailable' : ''}"><span>${esc(model.format(item, c.scale))}</span>${derived ? '<small>Derived</small>' : ''}</td>`;
-    }).join('')}<td class="st-source-col">${catalogueLink(row)}</td><td class="st-action-col"><button type="button" data-st-details="${esc(row.id)}" aria-controls="stWorkspace" aria-expanded="false" aria-label="Details for ${esc(row.designation)}">Details</button></td></tr>`).join('') : `<tr><td colspan="${cols.length + 3}" class="st-empty">No matching sections. <button type="button" data-st-clear>Clear filters</button></td></tr>`;
+    }).join('')}<td class="st-source-col">${catalogueLink(row)}</td></tr>`).join('') : `<tr><td colspan="${cols.length + 2}" class="st-empty">No matching sections. <button type="button" data-st-clear>Clear filters</button></td></tr>`;
     if (selected && !rows.some(r => r.id === selected)) closeDetails();
     updateDetailsButtons(); headerMenus.decorate(); setOverflow();
   }

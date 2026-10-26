@@ -86,10 +86,11 @@
     if(node.classList.contains("bd-grouped"))node.style.setProperty("--bd-group-top",node.tHead.rows[0].getBoundingClientRect().height+"px");
     if(node.id==="bdTable")q("bdTableHint").textContent="Dimensions: mm."+(overflow?" Scroll for more columns.":"");
   }
-  function sourceLink(key){const s=data.sources[key];return `<p><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a><br><span>${esc(s.locator)} · ${esc(s.kind)} · checked ${esc(s.checked)}</span></p>`;}
+  function sourceLink(key){const s=data.sources[key];return `<p>${SCReferenceActions.isStore(s.url)?SCReferenceActions.reference(s.name):`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>`}<br><span>${esc(s.locator)} · ${esc(s.kind)} · checked ${esc(s.checked)}</span></p>`;}
   const documentPages={hobsonU:2,hbs:3,uni:3,nexgen:5};
   function documentLink(key,code){
     const s=data.sources[key],pdf=/\.pdf(?:$|\?)/i.test(s.url);
+    if(SCReferenceActions.isStore(s.url))return SCReferenceActions.reference(s.name,s.locator);
     const label=s.kind.includes("installation")?"Installation":pdf?"Datasheet":"Product page";
     const url=s.url+(pdf?"#page="+(documentPages[key]||1):"");
     return `<a href="${esc(url)}" target="_blank" rel="noopener" title="${esc(s.name)}" aria-label="${esc(code+': '+label+' · '+s.name)}">${label} ↗</a>`;
@@ -99,7 +100,7 @@
   function catalogueStatus(p){return ({Source_Online_Checked:"Manufacturer source checked online",Source_Checked:"Local reference checked",Source_Not_Verified:"Source not verified"})[p.sourceStatus]||"Source not verified";}
   function referenceLink(key,label,page){
     const s=data.sources[key],url=s.url+(page?"#page="+page:"");
-    return `<a href="${esc(url)}" target="_blank" rel="noopener" title="${esc(s.name)}" aria-label="${esc(s.name+': '+label)}">${esc(label)} ↗</a>`;
+    return SCReferenceActions.isStore(url)?SCReferenceActions.reference(label,s.name):`<a href="${esc(url)}" target="_blank" rel="noopener" title="${esc(s.name)}" aria-label="${esc(s.name+': '+label)}">${esc(label)} ↗</a>`;
   }
   function identity(r){return `<th scope="row" class="bd-code">${esc(r.code)}</th><td class="bd-maker">${esc(r.manufacturer)}${note(r.family)}</td><td class="bd-size">${esc(r.size)}</td>`;}
   function holeValue(d,type){const h=api.hole(d,type);return `${h.limit?"≤ ":""}${num(h.width)}${h.length?" × ≤ "+num(h.length):""}`;}

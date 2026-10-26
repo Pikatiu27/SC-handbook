@@ -53,6 +53,7 @@
 <link rel="stylesheet" href="geo-parameters/interaction-layout.css?v=20261023ground1">
 <link rel="stylesheet" href="page-alignment/repairs.css?v=20261026tables3">
 <link rel="stylesheet" href="steel-corrosion/header-layout.css?v=20261026corrosion139">
+<link rel="stylesheet" href="reference-actions/styles.css?v=20261026references140"><script src="reference-actions/presentation.js?v=20261026references140"></script>
 </head>
 <body data-beam-analysis-presentation="20261019beamformatrelease1">
   <header class="topbar">
@@ -861,7 +862,7 @@
                   </div>
                   <div id="weldSizeOutputs" class="weld-size-outputs" aria-live="polite" hidden><div><span>Minimum size</span><strong id="weldSizeMinimum">Not evaluated</strong></div><div><span>Edge maximum</span><strong id="weldSizeMaximum">Not evaluated</strong></div><div class="weld-size-wide"><span>Size check</span><strong id="weldSizeState" class="check">Not enabled</strong></div></div>
                   <p id="weldSizeNote" class="weld-size-note">Optional size limits only; no joint acceptance.</p>
-                  <details class="weld-size-basis"><summary>Conditions &amp; source</summary><p id="weldSizeTrace">Select a confirmed joint and enter both thicknesses.</p><p><a href="https://store.standards.org.au/product/as-4100-2020" target="_blank" rel="noopener">AS 4100:2020</a> · Cls 9.6.3.2–9.6.3.3, Table 9.6.3.2 and Fig. 9.6.3.3; printed pp. 131–132. Minimum uses the thicker part, capped by thinner-part thickness. The edge maximum uses the thinner part; a built-out edge must be designated on the drawing.</p><p>Selected size limits only; verify WPS, root geometry, fit-up, heat input, fatigue, connected parts and fabrication. Longitudinal RHS welds with wall t &lt; 3 mm are excluded.</p></details>
+                  <details class="weld-size-basis"><summary>Conditions &amp; source</summary><p id="weldSizeTrace">Select a confirmed joint and enter both thicknesses.</p><p><span class="sc-standard-reference">AS 4100:2020</span> · Cls 9.6.3.2–9.6.3.3, Table 9.6.3.2 and Fig. 9.6.3.3; printed pp. 131–132. Minimum uses the thicker part, capped by thinner-part thickness. The edge maximum uses the thinner part; a built-out edge must be designated on the drawing.</p><p>Selected size limits only; verify WPS, root geometry, fit-up, heat input, fatigue, connected parts and fabrication. Longitudinal RHS welds with wall t &lt; 3 mm are excluded.</p></details>
                 </div>
               </section>
 
@@ -916,7 +917,7 @@
 </div></div></details>
 
     </div><section id="filletTablePane" class="lookup-card fillet-table-pane" hidden aria-label="Fillet weld capacity table">
-  <div class="fillet-heading"><h3>Fillet capacity table</h3><a href="https://store.standards.org.au/product/as-4100-2020" target="_blank" rel="noopener">AS 4100:2020</a></div>
+  <div class="fillet-heading"><h3>Fillet capacity table</h3><span class="sc-standard-reference">AS 4100:2020</span></div>
   <p class="fillet-scope">Equal-leg, 90° fillets; no root gap. Identical lines equally share direct action.</p>
   <div class="fillet-inputs input-group-fields">
     <label><span>Weld category</span><select id="filletCategory"><option value="SP">SP — Structural Purpose</option><option value="GP">GP — General Purpose</option></select></label>
@@ -945,11 +946,11 @@
   <p class="fillet-note">Selected sizes; throat resistance only. Excludes longitudinal RHS welds with wall t &lt; 3 mm. Verify size limits, connected parts and fabrication separately.</p>
   <details id="filletCalculation" class="fillet-details"><summary id="filletCalculationTitle">Calculation</summary><label class="fillet-trace-size"><span>Weld size, s</span><select id="filletTraceSize"><option value="3">3 mm</option><option value="4">4 mm</option><option value="5">5 mm</option><option value="6" selected>6 mm</option><option value="8">8 mm</option><option value="10">10 mm</option><option value="12">12 mm</option><option value="16">16 mm</option></select></label><div id="filletTrace" class="formula-list"></div></details>
   <details class="fillet-details"><summary>Sources &amp; scope</summary>
-    <p><a href="https://store.standards.org.au/product/as-4100-2020" target="_blank" rel="noopener">AS 4100:2020</a> · Table 3.4 (φ); Fig. 9.6.3.1 (throat); Cl. 9.6.3.5 (length); Cl. 9.6.3.10 and Tables 9.6.3.10(A)/(B) (strength / lap reduction).</p>
+    <p><span class="sc-standard-reference">AS 4100:2020</span> · Table 3.4 (φ); Fig. 9.6.3.1 (throat); Cl. 9.6.3.5 (length); Cl. 9.6.3.10 and Tables 9.6.3.10(A)/(B) (strength / lap reduction).</p>
     <p><b>Basis.</b> t<sub>t</sub> = 0.707s; φ = 0.80 SP / 0.60 GP. Nominal weld-metal strengths require project consumable / parent-metal matching. This tool uses full-size l<sub>w</sub> ≥ 4s; the shorter-length reduced-size route is excluded.</p>
     <p><b>Lap reduction · L in mm.</b> k<sub>r</sub> = 1 for L ≤ 1700; 1.10 − 0.00006L for 1700 &lt; L ≤ 8000; 0.62 above 8000. Other joints: k<sub>r</sub> = 1. Capacity uses the entered effective length per line.</p>
     <p><b>Excluded.</b> Unequal-leg, skew, gapped, deep-penetration or butt-reinforcing fillets; longitudinal RHS welds with wall t &lt; 3 mm; intermittent arrangements, weld groups, fatigue and complete joint / fabrication acceptance. Calculator size checks are separate.</p>
-    <p><b>Edition · checked 16 Oct 2026.</b> AS 4100:2020: Pending Revision; <a href="https://store.standards.org.au/product/as-4100-2020-amd-1-2021" target="_blank" rel="noopener">Amd 1:2021</a>: Current. Published amendment scope excludes these provisions; full amendment / consolidated text review remains open. Project adoption and AS/NZS 1554 coordination required.</p>
+    <p><b>Edition · checked 16 Oct 2026.</b> AS 4100:2020: Pending Revision; <span class="sc-standard-reference">Amd 1:2021</span>: Current. Published amendment scope excludes these provisions; full amendment / consolidated text review remains open. Project adoption and AS/NZS 1554 coordination required.</p>
   </details>
 </section>
 </section>
@@ -1010,7 +1011,7 @@
     <p><b>Excluded:</b> prestress, axial force, torsion, significant secondary shear, reversal cracking of the compression face, deep beams, discontinuities, openings, non-rectangular sections and bundled bars.</p>
     <p><b>Not checked:</b> actions/redistribution; SLS deflection/cracking, vibration/slenderness, fire/durability; clear spacing, cover suitability, bar certificates, cut-off/development/laps/anchorage, shear-induced longitudinal tension, fitment restraint/extent and support bearing. Figure fitments/legs are schematic; hooks/bends omitted; not for fabrication.</p>
     <h3>References</h3>
-    <p><a href="https://store.standards.org.au/product/as-3600-2018" target="_blank" rel="noopener noreferrer">AS 3600:2018 + Amendments 1 &amp; 2</a>. Page locators below are PDF / printed.</p>
+    <p><span class="sc-standard-reference">AS 3600:2018 + Amendments 1 &amp; 2</span>. Page locators below are PDF / printed.</p>
     <ul>
       <li><b>Flexure:</b> 8.1.2–8.1.3 (113 / 110), 8.1.5–8.1.6.1 (114 / 111); Table 2.2.2 (39 / 36).</li>
       <li><b>Shear:</b> 8.2.1.6–8.2.1.9 (117–118 / 114–115), 8.2.3.1–8.2.3.3 (118–120 / 115–117), 8.2.4.1 and 8.2.4.3 (120, 122 / 117, 119), 8.2.5.2 (123 / 120).</li>
@@ -2123,7 +2124,7 @@
             <article><b>Hilti Concrete-to-concrete Connections Handbook &middot; Jan 2024</b><span>Design concepts and detailing for post-installed reinforcement connections.</span><a href="https://productdata.hilti.com/APQ_HC_RAW/ASSET_DOC_21602632.pdf" target="_blank" rel="noreferrer">Open Hilti handbook</a></article>
             <article><b>Hilti Post-Installed Reinforcement in End Anchorages &middot; Nov 2022</b><span>European design background only; not the Australian normative basis.</span><a href="https://productdata.hilti.com/APQ_HC_RAW/ASSET_DOC_19702362.pdf" target="_blank" rel="noreferrer">Open end-anchorage manual</a></article>
             <article><b>Hilti PROFIS Engineering</b><span>Project-specific adhesive, embedment and failure-mode design remains in PROFIS.</span><a href="https://www.hilti.com.au/c/CLS_CUSTOMER_SOFTWARE/CLS_FASTENING_DESIGN_SOFTWARE/r6502279" target="_blank" rel="noreferrer">Open PROFIS Engineering</a></article>
-            <article><b>AS 5216:2026</b><span>Current Australian post-installed fastening design boundary; verify the edition stated in each project report.</span><a href="https://store.standards.org.au/product/as-5216-2026" target="_blank" rel="noreferrer">Open Standard record</a></article>
+            <article><b>AS 5216:2026</b><span>Current Australian post-installed fastening design boundary; verify the edition stated in each project report.</span><span class="sc-standard-reference">Open Standard record</span></article>
           </section>
           <section class="reo-reference-limitations"><h3>Basis and limitations</h3><div class="source-body">
           <div class="source-notes">
@@ -2511,7 +2512,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.139 &middot; updated 26 Oct 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.140 &middot; updated 26 Oct 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2567,7 +2568,7 @@
 <script src="reinforcement-area/app.js?v=20261016workflowtrace1"></script>
 <script src="bolt-dimensions/data.js?v=20261016workflowtrace1"></script>
 <script src="bolt-dimensions/lookup.js?v=20261016workflowtrace1"></script>
-<script src="bolt-dimensions/app.js?v=20261016workflowtrace1"></script>
+<script src="bolt-dimensions/app.js?v=20261026references140"></script>
 <script src="concrete-anchors/data.js?v=20261016workflowtrace1"></script>
 <script src="concrete-anchors/lookup.js?v=20261016workflowtrace1"></script>
 <script src="concrete-anchors/app.js?v=20261016workflowtrace1"></script>
@@ -2576,13 +2577,13 @@
 <script src="foundation-products/lookup.js?v=20261026tables3"></script>
 <script src="section-tables/model.js?v=20261016workflowtrace1"></script>
 <script src="section-tables/header-filters.js?v=20261016workflowtrace1"></script>
-<script src="section-tables/lookup.js?v=20261016workflowtrace1"></script>
+<script src="section-tables/lookup.js?v=20261026references140"></script>
 <script src="plate-tables/catalogue.js?v=20261016workflowtrace1"></script>
 <script src="plate-tables/model.js?v=20261016workflowtrace1"></script>
-<script src="plate-tables/app.js?v=20261016workflowtrace1"></script>
+<script src="plate-tables/app.js?v=20261026references140"></script>
 <script src="concrete-cover/data.js?v=20261016workflowtrace1"></script>
 <script src="concrete-cover/model.js?v=20261016workflowtrace1"></script>
-<script src="concrete-cover/app.js?v=20261016workflowtrace1"></script>
+<script src="concrete-cover/app.js?v=20261026references140"></script>
 <script src="steel-corrosion/data.js?v=20261016workflowtrace1"></script>
 <script src="steel-corrosion/model.js?v=20261016workflowtrace1"></script>
 <script src="steel-corrosion/header-labels.js?v=20261026corrosion139"></script>
