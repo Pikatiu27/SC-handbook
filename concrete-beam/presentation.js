@@ -13,7 +13,7 @@
     "Provided fitments are below the minimum transverse reinforcement ratio.":"Minimum shear steel not satisfied.",
     "Fitment longitudinal spacing exceeds the conservative ordinary limit min(0.5D, 300 mm).":"Longitudinal spacing exceeds min(0.5D, 300 mm).",
     "Assumed equally spaced fitment legs overlap or exceed the selected transverse-spacing limit.":"Effective legs overlap or exceed the spacing limit.",
-    "No-fitment shear capacity is conditional: separately check the transverse-reinforcement trigger shown below.":"No-fitment shear capacity is conditional; check the trigger below."
+    "No-fitment shear capacity is conditional: separately check the transverse-reinforcement trigger shown below.":"No-fitment capacity is conditional; check the shear reinforcement requirement below."
   };
   const note=value=>escape(conciseNotes[value]||value).replace(/k_uo/g,"k<sub>uo</sub>").replace(/\bCl\./g,"AS 3600 Cl.").replace(/phi =/g,"φ =").replace(/D &gt;=/g,"D ≥");
   const labels={satisfied:"Satisfied",review:"Review required",unavailable:"Not evaluated"};
@@ -26,7 +26,7 @@
     const rows=[row("minimum-flexure","Minimum flexural steel",r.valid?`${fmt(r.ast,1)} / ${fmt(r.astMin,1)} mm² · provided / min.`:"Input required",condition(flex,r.minimumFlexure))];
     if(valid&&!flex)rows[0].value="Outside flexural method";
     if(input.fitments==="none"){
-      rows.push(row("no-fitment-trigger","Fitment requirement",r.valid?(input.depth>=750?"Required: D ≥ 750 mm":`Compare design shear with ${fmt(r.noFitmentThreshold)} kN`):"Input required",shear?"review":"unavailable"));
+      rows.push(row("no-fitment-trigger","Shear reinforcement requirement",r.valid?(input.depth>=750?"Required: D ≥ 750 mm":`Fitments required if |V*| > ${fmt(r.noFitmentThreshold)} kN`):"Input required",shear?"review":"unavailable"));
     }else{
       const v=r.shear;
       rows.push(row("minimum-fitments","Minimum shear steel",r.valid?`${fmt(v.asvPerS,3)} / ${fmt(v.asvMinPerS,3)} mm²/mm · provided / min.`:"Input required",condition(shear,v?.minShearReoProvided)),
@@ -116,11 +116,11 @@
       "V<sub>u,max</sub> = 0.55 × 0.9f′<sub>c</sub>b<sub>v</sub>d<sub>v</sub>cot θ<sub>v</sub> / [(1 + cot²θ<sub>v</sub>)1000]",()=>({
         substitution:`0.55 × 0.9 × ${fmt(input.fc)} × ${fmt(v.bv)} × ${fmt(v.dv)} × ${fmt(v.cotTheta,5)} / [(1 + ${fmt(v.cotTheta,5)}²) × 1000]`,
         result:`Nominal V<sub>u,max</sub> = ${fmt(v.vuMax,3)} kN`,applicability:v.webCrushingLimited?"Design limit governs; φ = 0.70.":"Independent design limit: 0.70V<sub>u,max</sub>."}));
-    add("design-shear","Design shear","AS 3600 Table 2.2.2(e); AS 3600 Cl. 8.2.3.1; AS 3600 Cl. 8.2.3.3",
+    add("design-shear","Shear capacity","AS 3600 Table 2.2.2(e); AS 3600 Cl. 8.2.3.1; AS 3600 Cl. 8.2.3.3",
       "Design φV<sub>u</sub> = min[φ<sub>s</sub>(V<sub>uc</sub> + V<sub>us</sub>), 0.70V<sub>u,max</sub>]",()=>({
         substitution:`min[${fmt(v.sectionPhi,2)} × (${fmt(v.vuc,3)} + ${fmt(v.vus,3)}), 0.70 × ${fmt(v.vuMax,3)}] = min[${fmt(v.sectionDesignLimit,3)}, ${fmt(v.crushingDesignLimit,3)}] kN`,
         result:r.shearCapacity==null?"Not evaluated":`Design φV<sub>u</sub> = ${fmt(r.shearCapacity)} kN`,
-        applicability:denied(r.shearReasons)||(input.fitments==="none"?"Conditional · separately check the fitment trigger.":v.webCrushingLimited?"Web crushing governs; φ = 0.70.":"Minimum Class N fitments; φ = 0.75."),state:r.shearCapacity==null||input.fitments==="none"?"warning":""}));
+        applicability:denied(r.shearReasons)||(input.fitments==="none"?"Section resistance only; compare separately with project design shear |V*|. With no fitments, also check the shear reinforcement requirement below.":v.webCrushingLimited?"Section resistance only; compare separately with project design shear |V*|. Web crushing governs; φ = 0.70.":"Section resistance only; compare separately with project design shear |V*|. Minimum Class N fitments; φ = 0.75."),state:r.shearCapacity==null||input.fitments==="none"?"warning":""}));
     if(input.fitments==="vertical"){
       add("minimum-fitments","Minimum shear steel","AS 3600 Cl. 8.2.1.7",
         "(A<sub>sv</sub>/s<sub>v</sub>)<sub>min</sub> = 0.08√f′<sub>c</sub>b<sub>v</sub>/f<sub>sy.f</sub>",()=>({
@@ -131,9 +131,9 @@
         "s<sub>t</sub> = [b − 2(c<sub>nom</sub> + d<sub>fit</sub>/2)]/(n<sub>sv</sub> − 1); s<sub>t,max</sub> = min(D, 600 mm)",()=>({
           substitution:`[${fmt(input.width)} − 2(${fmt(input.cover)} + ${fmt(Number(input.fitmentBar.slice(1)),0)}/2)] / (${input.legs} − 1); min(${fmt(input.depth)}, 600)`,
           result:checked("transverse-spacing",`Derived ${fmt(r.transverseSpacing)} mm; limit ${fmt(r.transverseMax)} mm`),applicability:checkScope("transverse-spacing","Equally spaced effective legs; physical overlap is rejected."),state:checkState("transverse-spacing")}));
-    }else add("no-fitment-trigger","Fitment requirement","AS 3600 Cl. 8.2.1.6",
+    }else add("no-fitment-trigger","Shear reinforcement requirement","AS 3600 Cl. 8.2.1.6",
       "V<sub>trigger</sub> = k<sub>s</sub> × 0.70V<sub>uc</sub>; k<sub>s</sub> = "+(input.depth<=300?"1":input.depth>=650?"0.5":"(1000 − D)/700"),()=>({substitution:(input.depth>300&&input.depth<650?`k<sub>s</sub> = (1000 − ${fmt(input.depth)}) / 700 = ${fmt(r.ks,5)}; `:"")+`${fmt(r.ks,5)} × 0.70 × ${fmt(v.vuc,3)}`,
-        result:checked("no-fitment-trigger",`Trigger = ${fmt(r.noFitmentThreshold)} kN`),applicability:checkScope("no-fitment-trigger",input.depth>=750?"Fitments required: D ≥ 750 mm.":"Compare project |V<sup>*</sup>| separately; no action is entered here."),state:"warning"}));
+        result:checked("no-fitment-trigger",input.depth>=750?`Fitments required: D ≥ 750 mm; shear threshold = ${fmt(r.noFitmentThreshold)} kN`:`Fitments required if |V*| > ${fmt(r.noFitmentThreshold)} kN`),applicability:checkScope("no-fitment-trigger",input.depth>=750?"The depth condition requires transverse shear reinforcement regardless of the shear threshold. Complete reinforcement detailing is checked separately.":"This is a reinforcement trigger, not the section capacity. Compare project design shear |V<sup>*</sup>| with this threshold. Review required: no design shear is entered here. Other reinforcement and detailing requirements still apply."),state:"warning"}));
     return rows;
   }
   return Object.freeze({screens,renderScreens,geometry,primaryIssues,traces,note});

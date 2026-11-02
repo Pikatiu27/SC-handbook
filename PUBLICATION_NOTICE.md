@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.142 (2 November 2026): Concrete Beam distinguishes Shear capacity from Shear reinforcement requirement. Conditional no-fitment capacity, the shear reinforcement threshold and the pending project-demand comparison are explained explicitly. Calculation logic, formulas, references, figures, all existing routes and links remain unchanged. Public beta / For Review.
+
 Build 0.7.141 (26 October 2026): Axial Member and Beam Section share family-local Custom dimensions. Axial adds ideal geometry for all listed families; Beam adds verified-property Custom. Missing calculation bases remain Not evaluated; custom EA Beam capacity remains unavailable. Existing product links, routes, analysis layouts and deflection remain. Public beta / For Review.
 
 Build 0.7.140 (26 October 2026): Standard-store references are readable Standard identities with editions, clauses and conditions retained. Section, plate and concrete-cover names open existing details; redundant Details and constant cover Source columns are removed. Product manuals, catalogue PDFs, grade sheets, displayed-column filters, selection actions and old routes remain. Public beta / For Review.
