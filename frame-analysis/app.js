@@ -1,0 +1,111 @@
+'use strict';
+(()=>{
+  const C=window.FrameAnalysis,D=window.FrameDrawing,panel=document.getElementById('frameanalysisPanel');if(!panel||!C||!D)return;
+  const $=id=>document.getElementById('fa'+id),num=e=>e.value.trim()===''?NaN:Number(e.value),fmt=D.fmt;
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let result=null,member='BC',view='M',detailKey='M',held=false,exactPosition=null,modelFields=[];
+  const field=(key,label,unit,min,max)=>{modelFields.push(key);return `<label for="fa${key}"><span>${label}</span><span class="unit"><input id="fa${key}" type="number" inputmode="decimal" step="any" min="${min}" max="${max}" aria-describedby="faErrors"><em>${unit}</em></span></label>`;};
+  $('Geometry').innerHTML=field('span','Span, L','m',.25,50)+field('height','Column height, h','m',.25,50);
+  $('Supports').innerHTML=['left','right'].map((side,i)=>`<label for="fa${side}Base"><span>${i?'Right':'Left'} base · ${i?'D':'A'}</span><select id="fa${side}Base"><option value="fixed">Fixed</option><option value="pin">Pinned</option></select></label>`).join('');
+  $('Material').innerHTML=field('E','Elastic modulus, E','GPa',1,500);
+  $('Properties').innerHTML=[['left','Left column · AB'],['beam','Beam · BC'],['right','Right column · DC']].map(([key,label])=>`<section class="fa-properties-row"><h4>${label}</h4><div class="bif-fields">${field(key+'A','Area, A','mm²',1,1e8)}${field(key+'I','Second moment, I','mm⁴',1e3,1e12)}</div></section>`).join('');
+  $('Uniform').innerHTML=field('q','Beam uniform load, q','kN/m',-1e6,1e6);
+  $('Loads').innerHTML=[['Left','B'],['Right','C']].map(([side,node])=>`<details class="fa-load-node" ${side==='Left'?'open':''}><summary>Roof node ${node} · loads</summary><p id="fa${side}LoadSummary" class="fa-load-summary"></p><div class="bif-fields">${field('H'+side,'Horizontal force, H','kN',-1e6,1e6)}${field('P'+side,'Vertical force, P','kN',-1e6,1e6)}${field('C'+side,'Nodal moment, C','kN·m',-1e6,1e6)}</div></details>`).join('');
+  const input=()=>{const r={};for(const key of modelFields)r[key]=num($(key));r.leftBase=$('leftBase').value;r.rightBase=$('rightBase').value;for(const key of ['left','beam','right']){r[key]={A:r[key+'A'],I:r[key+'I']};delete r[key+'A'];delete r[key+'I'];}return r;};
+  const active=()=>result?.valid?result.members.find(e=>e.id===member):null;
+  const display=(key,value)=>fmt(D.resolved(result,key,value));
+  const coordinate=()=>{const x=exactPosition??num($('X')),e=active();return {x,valid:!!e&&Number.isFinite(x)&&x>=0&&x<=e.L};};
+  function reset(){const raw=C.defaults();for(const key of modelFields)$(key).value=String(/^(left|beam|right)[AI]$/.test(key)?raw[key.slice(0,-1)][key.at(-1)]:raw[key]);$('leftBase').value=raw.leftBase;$('rightBase').value=raw.rightBase;member='BC';$('Member').value=member;exactPosition=null;$('X').value=(raw.span/2).toFixed(2);held=false;view='M';detailKey='M';$('Response').value=view;$('Scale').value='100';$('ShowLabels').checked=true;$('ShowLoads').checked=false;$('Isolate').checked=false;$('MemberDetails').open=false;$('PeakDetails').open=false;panel.querySelector('.fa-view-options').open=false;recalculate();}
+  function recalculate(){result=C.calculate(input());for(const key of [...modelFields,'leftBase','rightBase'])$(key).removeAttribute('aria-invalid');
+    $('Errors').hidden=result.valid;$('Errors').textContent=result.valid?'':result.errors.map(e=>e.message).join(' ');
+    for(const error of result.errors||[])$(error.field)?.setAttribute('aria-invalid','true');
+    $('Status').textContent=result.valid?'Calculated · For Review':'Not evaluated';
+    $('Warnings').hidden=!result.warnings?.length;$('Warnings').textContent=(result.warnings||[]).map(w=>w.startsWith('Uplift reaction:')?'Uplift at a base: check the hold-down load path.':w.startsWith('Large first-order')?'Large movements: check whether first-order analysis is suitable.':w).join(' ');
+    for(const id of ['Member','X','Hold','Slider','CalculationLink','DetailResponse'])$(id).disabled=!result.valid;
+    for(const side of ['Left','Right'])$(side+'LoadSummary').textContent=`H ${fmt(num($('H'+side)))} kN · P ${fmt(num($('P'+side)))} kN · C ${fmt(num($('C'+side)))} kN·m`;
+    render();
+  }
+  function render(){
+    const valid=result?.valid,e=active(),pos=coordinate(),deformed=view==='displacement',rotation=view==='theta';
+    $('Response').value=view;$('DetailResponse').value=detailKey;$('ScaleValue').textContent=$('Scale').value+'%';$('Scale').disabled=!valid||view==='model';$('AutoScale').disabled=!valid||view==='model';$('ShowLoads').disabled=view==='model';$('Isolate').disabled=view==='model';
+    $('Hold').textContent=held?'Follow pointer':'Hold reading';$('Hold').setAttribute('aria-pressed',String(held));$('NodeOutput').hidden=!(deformed||rotation)||!valid;$('Structure').closest('figure').hidden=!valid;
+    $('X').setAttribute('aria-invalid',String(valid&&!pos.valid));$('CoordinateError').hidden=!valid||pos.valid;$('CoordinateError').textContent=e?`Enter x from 0 to ${e.L} m along ${member}.`:'';
+    $('CalculationLink').disabled=!valid||!pos.valid;
+    $('Structure').innerHTML='';$('FrameAxes').innerHTML='';$('Position').innerHTML='';$('Charts').innerHTML='';$('Reactions').innerHTML='';$('Nodes').innerHTML='';$('Readout').innerHTML='';$('Peaks').innerHTML='';$('LocalAxes').textContent='';$('ScaleLegend').textContent='';$('ScaleReference').textContent='';$('FrameSigns').textContent='';
+    if(!valid){$('Readout').textContent='Resolve the input errors to calculate results.';$('Trace').textContent='Results unavailable. Correct the model inputs.';return;}
+    const width=Math.floor($('Structure').clientWidth)||520,compact=window.matchMedia('(max-width:500px)').matches,height=compact?260:320,scale=num($('Scale')),state=D.frameScale(result,view,{width,height,compact,scale});
+    $('Structure').innerHTML=D.renderFrame(result,{width,height,compact,member,mode:view,x:pos.valid?pos.x:null,scale,labels:$('ShowLabels').checked,loads:$('ShowLoads').checked,isolate:$('Isolate').checked});
+    $('FrameAxes').innerHTML=D.frameAxes(result,{width,height,member,x:pos.valid?pos.x:null});
+    const station=D.framePosition(result,member,pos.valid?pos.x:null);
+    $('Position').innerHTML=station?`<b>${member} · position</b><span>X <strong data-frame-position="X">${fmt(station.X)}</strong> m</span><span>Y <strong data-frame-position="Y">${fmt(station.Y)}</strong> m</span><span>x from ${member[0]} <strong data-frame-position="x">${fmt(station.x)}</strong> m</span>`:'Enter a valid member position.';
+    // A tight corner may have no clear short leader. Keep the selected value
+    // next to its position rather than attaching it to a distant annotation.
+    if(station&&view!=='model'&&$('ShowLabels').checked&&!$('Structure').querySelector('[data-result-selected="true"]')){const p=e.at(pos.x),key=deformed?'U':view,value=D.resolved(result,key,deformed?Math.hypot(p.ux,p.uy)*1000:p[key]*D.factor(key)),label=deformed?'|u|':rotation?'θ':view;
+      $('Position').querySelector('b').innerHTML=`${member} · <span class="fa-position-result" data-fa-fallback-value="${key}" aria-label="Selected ${label}, ${D.units[key]}">${label} ${!deformed&&value>0?'+':''}${fmt(value)} ${D.units[key]}</span>`;
+    }
+    $('StructureCaption').textContent='Original frame · A = (0, 0) m';
+    if(view==='model'||$('ShowLoads').checked){const layout=state.geometry;if(layout.scale*result.input.span<70||layout.scale*result.input.height<45)$('StructureCaption').textContent+=' · load symbols omitted; see Loads';}
+    $('ScaleLegend').textContent=view!=='model'&&!deformed&&!state.referenceValue?'Zero response.':'';
+    if($('Isolate').checked&&view!=='model')$('ScaleLegend').textContent+=` Only ${member} results shown.`;
+    $('ScaleLegend').hidden=!$('ScaleLegend').textContent;
+    $('ScaleReference').textContent=view==='model'?'Support and load symbols are schematic.':deformed?'One magnification for all members; |u| labels in mm.':state.referenceValue?`Shared by all members: ${fmt(state.amplitude)} px = ${fmt(state.referenceValue)} ${D.units[view]}.`:'Values below numerical precision display as zero.';
+    const signs={M:'Positive M: below beam / right of columns.'};
+    $('FrameSigns').textContent=signs[view]||'';$('FrameSigns').hidden=!$('FrameSigns').textContent;
+    const visible=result.members.filter(e=>!$('Isolate').checked||e.id===member),bounds=view==='model'||deformed?[]:visible.flatMap(e=>['min','max'].map(which=>D.resolved(result,view,e.extrema[view][which][view]*D.factor(view))));
+    $('ActiveKey').textContent=deformed?`Deformed · ${fmt(state.mag)}×`:'Positive (+)';$('PositiveKey').hidden=view==='model'||(!deformed&&!bounds.some(v=>v>0));$('NegativeKey').hidden=view==='model'||deformed||!bounds.some(v=>v<0);
+    $('Reactions').innerHTML=result.reactions.map(r=>`<div class="fa-reaction"><b>${r.id} · ${result.input[r.id==='A'?'leftBase':'rightBase']==='fixed'?'Fixed':'Pin'}</b><span>R<sub>x</sub> ${display('N',r.Fx)} kN</span> <span>R<sub>y</sub> ${display('N',r.Fy)} kN</span> <span>C ${display('M',r.C)} kN·m</span></div>`).join('');
+    $('Nodes').className='fa-nodes';$('Nodes').innerHTML=result.nodes.slice(1,3).map(n=>`<div class="fa-node"><b>${n.id}</b><span>u<sub>x</sub> ${display('ux',n.ux*1000)} mm</span> <span>u<sub>y</sub> ${display('uy',n.uy*1000)} mm</span> <span>θ ${display('theta',n.theta*1000)} mrad</span></div>`).join('');
+    $('X').max=String(Math.ceil(e.L*100)/100);$('Slider').max=String(e.L);$('Slider').step=String(e.L/10000);if(pos.valid)$('Slider').value=String(pos.x);
+    $('LocalAxes').textContent=`x: ${e.id[0]} → ${e.id[1]} · local +y: ${e.id==='BC'?'up':'left'}.`;
+    const keys=deformed?['ux','uy','theta']:rotation?['theta']:['N','V','M'];
+    $('Readout').innerHTML=pos.valid?keys.map(key=>`<span${key===view?' class="fa-current-result"':''}>${esc(key==='theta'?'θ':key==='ux'?'uₓ':key==='uy'?'uᵧ':key)} / ${D.units[key]}<b data-fa-value="${key}">${fmt(D.resolved(result,key,e.at(pos.x)[key]*D.factor(key)))}</b></span>`).join(''):'Enter a valid position to read this member.';
+    const peakButton=(label,id,x,value,unit)=>`<button type="button" data-fa-member="${id}" data-fa-peak="${x}" aria-label="${esc(label)} on ${id} at ${x} metres">${esc(label)}<br>${fmt(Math.abs(value))} ${unit} · ${id} · x ${fmt(x)} m</button>`;
+    const governing=D.framePeak(result,view);
+    if(governing){const p=Math.abs(e.extrema[view].min[view])>Math.abs(e.extrema[view].max[view])?e.extrema[view].min:e.extrema[view].max;$('Peaks').innerHTML=peakButton('Whole-frame peak |'+(rotation?'θ':view)+'|',governing.member,governing.x,governing.value,D.units[view])+peakButton('Member peak |'+(rotation?'θ':view)+'|',member,p.x,D.resolved(result,view,p[view]*D.factor(view)),D.units[view]);}
+    else if(deformed){const node=result.nodes.slice(1,3).reduce((a,b)=>Math.hypot(a.ux,a.uy)>Math.hypot(b.ux,b.uy)?a:b);$('Peaks').innerHTML=peakButton('Roof node peak |u|',node.id==='B'?'AB':'DC',result.input.height,Math.hypot(node.ux,node.uy)*1000,'mm');}
+    $('DetailsMember').textContent=member+' · '+e.name.toLowerCase();
+    const chartKeys=[detailKey],chartWidth=Math.floor($('Charts').clientWidth)||Math.max(160,width-40),chartHeight=180;
+    const titles={N:'Axial force <i>N</i>',V:'Shear force <i>V</i>',M:'Bending moment <i>M</i>',v:'Local displacement <i>v</i>',theta:'Rotation <i>θ</i>'};
+    $('Charts').innerHTML=chartKeys.map(key=>{const exponent=D.axes(e,key,{width:chartWidth,height:chartHeight,result}).exponent,value=pos.valid?D.resolved(result,key,e.at(pos.x)[key]*D.factor(key)):NaN;return `<figure class="engineering-figure fa-chart" data-figure-profile="SC-WEB-FIGURE-001"><div class="fa-chart-heading"><h4>${titles[key]} <span>/ ${D.units[key]}${exponent?' · axis ×10<sup>'+exponent+'</sup>':''}</span></h4><output class="fa-detail-value" data-fa-detail-value="${key}" aria-label="${D.names[key]} at current position, ${D.units[key]}">${fmt(value)}</output></div><div class="engineering-figure__plot" data-fa-chart="${key}">${D.renderChart(result,key,{width:chartWidth,height:chartHeight,compact,member,x:pos.valid?pos.x:null})}${D.axisLabels(e,key,{width:chartWidth,height:chartHeight,result})}</div><figcaption class="engineering-figure__caption">Local <i>x</i> / m</figcaption></figure>`;}).join('');
+    trace(pos);
+  }
+  function trace(pos){const e=active(),p=pos.valid?e.at(pos.x):null,{E}=result.input,prop=result.input[e.id==='AB'?'left':e.id==='BC'?'beam':'right'],row=(title,formula,sub,result,scope)=>`<section class="fa-trace-row"><h4>${title}</h4><div><b>Formula</b> ${formula}</div><div><b>Substitution</b> ${sub}</div><div><b>Result</b> ${result}</div><div><b>Applicability</b> ${scope}</div></section>`;
+    const eq=s=>window.BeamForceTracePresentation.equations(s);
+    const transpose='<msup><mi>T</mi><mtext>T</mtext></msup>',matrixFormula=`<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>K</mi><mo>=</mo><mo>∑</mo>${transpose}<mi>k</mi><mi>T</mi></math><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>F</mi><mo>=</mo><msub><mi>F</mi><mtext>node</mtext></msub><mo>+</mo><mo>∑</mo>${transpose}<msub><mi>f</mi><mi>e</mi></msub></math>`+eq('K_ff d_f = F_f');
+    const system=row('1 · Assembly and solve',matrixFormula,`12 global degrees of freedom; ${result.free.length} free. Zero restrained displacements.`, `Scaled condition estimate ${fmt(result.scaledCondition)} (limit 1e8); Cholesky minimum pivot ${fmt(result.minPivot)}; normalized free-DOF residual ${fmt(result.normalizedResidual)}.`, 'Rigid joints; ideal supports; first-order 2D axial and bending response. No support settlement.');
+    const properties=row('2 · Selected member '+member,eq('EA = E A; EI = E I × 10⁻⁶'),`E = ${fmt(E)} GPa; A = ${fmt(prop.A)} mm²; I = ${fmt(prop.I)} mm⁴; L = ${fmt(e.L)} m.`,`EA = ${fmt(e.EA)} kN; EI = ${fmt(e.EI)} kN·m².`, 'Prismatic Euler–Bernoulli member; shear deformation excluded.');
+    const end=row('3 · Member end actions',eq('dₗ = T d; p = k dₗ − fₑ'),`pᵢ = [${e.p.slice(0,3).map(fmt).join(', ')}]; pⱼ = [${e.p.slice(3).map(fmt).join(', ')}]. Units: kN, kN, kN·m.`,`p uses actions applied to the member ends, local +x / +y / counterclockwise.`, 'End action signs differ from the section functions N = −pᵢₓ, M(0) = −pᵢθ.');
+    const section=p?row('4 · Section equilibrium',eq('N = −pᵢₓ; V = pᵢᵧ + qᵧx; M = −pᵢθ + pᵢᵧx + qᵧx²/2'),`x = ${fmt(pos.x)} m; local qᵧ = ${fmt(e.q)} kN/m.`,`N = ${display('N',p.N)} kN; V = ${display('V',p.V)} kN; M = ${display('M',p.M)} kN·m.`, 'No member-interior concentrated load in this demo; roof forces/couples are nodal actions.'):row('4 · Section','Local section equilibrium','Invalid position.','Not evaluated.','Correct x; reactions remain independent of the inspection coordinate.');
+    const deform=p?row('5 · Exact displacement recovery',eq('u = uᵢ + Nx/EA; v = vᵢ + θᵢx + (−pᵢθx²/2 + pᵢᵧx³/6 + qᵧx⁴/24)/EI; θ = dv/dx'),`uᵢ = ${fmt(e.dl[0]*1000)} mm; vᵢ = ${fmt(e.dl[1]*1000)} mm; θᵢ = ${fmt(e.dl[2]*1000)} mrad.`,`v = ${display('v',p.v*1000)} mm; θ = ${display('theta',p.theta*1000)} mrad; global uₓ = ${display('ux',p.ux*1000)} mm; uᵧ = ${display('uy',p.uy*1000)} mm.`, 'Includes the uniform-load quartic term. Local displacement includes member-end translations; no code deflection verdict.'):'';
+    const nodeTable=`<h4>Global nodal displacement schedule</h4><table class="fa-trace-table"><thead><tr><th>Node</th><th>uₓ / mm</th><th>uᵧ / mm</th><th>θ / mrad</th></tr></thead><tbody>${result.nodes.map(n=>`<tr><th>${n.id}</th><td>${display('ux',n.ux*1000)}</td><td>${display('uy',n.uy*1000)}</td><td>${display('theta',n.theta*1000)}</td></tr>`).join('')}</tbody></table>`;
+    $('Trace').innerHTML=system+properties+end+section+deform+nodeTable+'<p>Analytical extrema: endpoints plus V = 0 for M, θ = 0 for v, and M = 0 for θ. Curves are sampled for display only. This local author calculation remains For Review.</p>';
+  }
+  function move(x,hold=false){exactPosition=x;$('X').value=x.toFixed(2);if(hold)held=true;render();}
+  function selectMember(id){if(!result?.valid)return;const old=active(),fraction=coordinate().valid?coordinate().x/old.L:.5;member=id;$('Member').value=id;exactPosition=active().L*fraction;$('X').value=exactPosition.toFixed(2);render();}
+  panel.addEventListener('input',event=>{if(modelFields.includes(event.target.id.slice(2)))recalculate();});
+  for(const key of ['leftBase','rightBase'])$(key).addEventListener('change',recalculate);
+  $('Reset').addEventListener('click',reset);$('ClearLoads').addEventListener('click',()=>{for(const key of ['q','HLeft','HRight','PLeft','PRight','CLeft','CRight'])$(key).value='0';recalculate();});
+  $('Response').addEventListener('change',()=>{view=$('Response').value;detailKey=view==='displacement'?'v':view==='model'?'M':view;render();});$('DetailResponse').addEventListener('change',()=>{detailKey=$('DetailResponse').value;render();});$('Scale').addEventListener('input',render);$('AutoScale').addEventListener('click',()=>{$('Scale').value='100';render();});for(const id of ['ShowLabels','ShowLoads','Isolate'])$(id).addEventListener('change',render);
+  $('Member').addEventListener('change',()=>selectMember($('Member').value));$('X').addEventListener('input',()=>{exactPosition=null;held=true;render();});$('Slider').addEventListener('input',()=>move(num($('Slider')),true));$('Hold').addEventListener('click',()=>{held=!held;render();});
+  $('Peaks').addEventListener('click',event=>{const b=event.target.closest('[data-fa-peak]');if(b){member=b.dataset.faMember;$('Member').value=member;move(Number(b.dataset.faPeak),true);}});
+  function framePosition(event,hold){if(!result?.valid||(!hold&&held))return;const target=event.target.closest('[data-member]');if(!target)return;const e=result.members.find(e=>e.id===target.dataset.member),svg=$('Structure').querySelector('svg'),point=new DOMPoint(event.clientX,event.clientY).matrixTransform(svg.getScreenCTM().inverse()),g=D.layout(result,{width:svg.viewBox.baseVal.width,height:svg.viewBox.baseVal.height}),ni=result.nodes[e.i],label=event.target.closest('[data-result-x]');let x=label?Number(label.dataset.resultX):Math.max(0,Math.min(e.L,((point.x-g.X(ni.x))*e.c-(point.y-g.Y(ni.y))*e.s)/g.scale));
+    if(!label&&view==='displacement'&&event.target.closest('[data-frame-member]')){const state=D.frameScale(result,view,{width:svg.viewBox.baseVal.width,height:svg.viewBox.baseVal.height,compact:window.matchMedia('(max-width:500px)').matches,scale:num($('Scale'))}),points=D.responseSamples(e,view,member===e.id&&coordinate().valid?coordinate().x:null).map(p=>({...D.projectPoint(result,e,p,view,state),position:p.x}));let best=Infinity;for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i],dx=b.x-a.x,dy=b.y-a.y,t=Math.max(0,Math.min(1,((point.x-a.x)*dx+(point.y-a.y)*dy)/(dx*dx+dy*dy||1))),distance=Math.hypot(point.x-a.x-dx*t,point.y-a.y-dy*t);if(distance<best){best=distance;x=a.position+(b.position-a.position)*t;}}}
+    member=e.id;$('Member').value=member;move(x,hold);}
+  // Touch-generated clicks may be moved by browser target adjustment. Read the
+  // actual released contact instead; leave scrolling gestures to the browser.
+  let touchStart=null,lastTouchReading=-Infinity;
+  $('Structure').addEventListener('pointerdown',event=>{if(event.pointerType!=='mouse')touchStart={id:event.pointerId,x:event.clientX,y:event.clientY};});
+  $('Structure').addEventListener('pointercancel',()=>{touchStart=null;});
+  $('Structure').addEventListener('pointerup',event=>{const start=touchStart;touchStart=null;if(start?.id===event.pointerId&&Math.hypot(event.clientX-start.x,event.clientY-start.y)<=8&&event.target.closest('[data-member]')){lastTouchReading=performance.now();framePosition(event,true);}});
+  $('Structure').addEventListener('click',event=>{if(event.pointerType==='touch'||event.pointerType==='pen'||(event.detail&&performance.now()-lastTouchReading<700))return;framePosition(event,true);});$('Structure').addEventListener('pointermove',event=>{if(event.pointerType==='mouse')framePosition(event,false);});
+  $('Structure').addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)){const g=event.target.closest('[data-member]');if(g){event.preventDefault();const id=g.dataset.member;selectMember(id);$('Structure').querySelector(`[data-member="${id}"]`)?.focus();}}});
+  function plotPosition(event,hold){if(!result?.valid)return;const plot=event.target.closest('[data-fa-chart]');if(!plot)return;const rect=plot.getBoundingClientRect(),e=active(),a=D.axes(e,plot.dataset.faChart,{width:rect.width,height:rect.height});move(Math.max(0,Math.min(e.L,(event.clientX-rect.left-a.left)/(rect.width-a.left-a.right)*e.L)),hold);}
+  $('Charts').addEventListener('pointermove',event=>{if(event.pointerType==='mouse'&&!held)plotPosition(event,false);});$('Charts').addEventListener('click',event=>plotPosition(event,true));
+  $('CalculationLink').addEventListener('click',()=>{$('Calculation').open=true;$('Calculation').scrollIntoView({block:'start'});$('Return').focus({preventScroll:true});});$('Return').addEventListener('click',()=>{$('Readout').scrollIntoView({block:'center'});$('CalculationLink').focus({preventScroll:true});});
+  function jumpTo(control){const anchor=control.closest('label')||control,occlusion=[...document.querySelectorAll('.topbar,.tool-navigation')].filter(e=>e.getClientRects().length&&['sticky','fixed'].includes(getComputedStyle(e).position)).reduce((sum,e)=>sum+e.getBoundingClientRect().height,0);window.scrollTo({top:window.scrollY+anchor.getBoundingClientRect().top-occlusion-12,behavior:'instant'});control.focus({preventScroll:true});}
+  $('ViewResults').addEventListener('click',()=>jumpTo($('Response')));$('EditInputs').addEventListener('click',()=>jumpTo($('span')));
+  $('MemberDetails').addEventListener('toggle',()=>{if($('MemberDetails').open)render();});
+  const observer=new ResizeObserver(()=>{if(!panel.hidden)render();});observer.observe($('Structure'));
+  new MutationObserver(()=>{if(!panel.hidden)render();}).observe(panel,{attributes:true,attributeFilter:['hidden']});
+  window.FrameAnalysisUI={getState:()=>({result,member,view,held,position:coordinate()}),reset};reset();
+})();

@@ -1,0 +1,13 @@
+.hb-signs-button{min-height:44px;flex-shrink:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:13px;font-weight:700;padding:8px 10px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.hb-signs-link{border:0;background:none;color:var(--green-dark);font:inherit;text-decoration:underline;text-underline-offset:3px;padding:8px 0;min-height:44px;cursor:pointer}
+.hb-signs-button:focus-visible,.hb-signs-link:focus-visible,.hb-conventions :focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.hb-conventions{box-sizing:border-box;width:min(680px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--line);border-radius:16px;color:var(--ink);background:#fff;overflow:auto;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6}
+.hb-conventions::backdrop{background:rgba(20,35,30,.35)}
+.hb-conventions-heading{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;background:#fff;border-bottom:1px solid var(--line);padding:20px 24px}
+.hb-conventions h2{font-size:19px;margin:0}.hb-conventions-heading p{font-size:13px;color:var(--muted);margin:3px 0 0}
+.hb-conventions-heading button{min-width:60px;min-height:44px;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer}
+.hb-conventions-body{padding:0 24px 24px}.hb-conventions section{margin-top:22px}.hb-conventions h3{font-size:15px;margin:0 0 8px}.hb-conventions p{margin:8px 0}
+.hb-conventions-list{margin:0}.hb-conventions-list>div{display:grid;grid-template-columns:145px 1fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}.hb-conventions dt{font-weight:700}.hb-conventions dd{margin:0}
+.hb-conventions details{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}.hb-conventions summary{font-weight:700;min-height:44px;cursor:pointer;align-content:center}
+.hb-conventions-open{overflow:hidden}
+@media(max-width:500px){.hb-signs-button{font-size:12px;padding-inline:4px}.hb-conventions-heading{padding:16px;gap:8px}.hb-conventions h2{font-size:18px}.hb-conventions-body{padding:0 16px 20px}.hb-conventions-list>div{grid-template-columns:1fr;gap:2px}}

@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.143 (2 November 2026): Beam and single-storey single-bay Frame Analysis share HB-ANALYSIS-01 signs and a Signs & units reference. Displacements are upward-positive and rotations counterclockwise-positive. Frame adds whole-frame results and member details. First-order elastic analysis only; independent engineering and project acceptance remain required. Public beta / For Review.
+
 Build 0.7.142 (2 November 2026): Concrete Beam distinguishes Shear capacity from Shear reinforcement requirement. Conditional no-fitment capacity, the shear reinforcement threshold and the pending project-demand comparison are explained explicitly. Calculation logic, formulas, references, figures, all existing routes and links remain unchanged. Public beta / For Review.
 
 Build 0.7.141 (26 October 2026): Axial Member and Beam Section share family-local Custom dimensions. Axial adds ideal geometry for all listed families; Beam adds verified-property Custom. Missing calculation bases remain Not evaluated; custom EA Beam capacity remains unavailable. Existing product links, routes, analysis layouts and deflection remain. Public beta / For Review.

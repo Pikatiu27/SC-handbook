@@ -16,7 +16,7 @@
     },
     {
       "path": "app.js",
-      "sha256": "d36920e67fc9baf60beb404b0b2c6a59e7e02164e73a66e60ddbca34b668991a"
+      "sha256": "85b3109f00b9bb8647be78d8a542ce604ff787d422b11dc15c2fdd22ad3c4db1"
     },
     {
       "path": "as4600-chs/bending.js",
@@ -144,7 +144,7 @@
     },
     {
       "path": "beam-deflection-preview/app.js",
-      "sha256": "cc566474c81795eb29041791d9a7ed53221d48b41447a24c5a758cb4502a24ed"
+      "sha256": "ae75006360d62e9ccd6005693dd572c98141605aa7598316fcfad9cd1aa66bc1"
     },
     {
       "path": "beam-deflection-preview/calculation.js",
@@ -152,7 +152,7 @@
     },
     {
       "path": "beam-deflection-preview/drawing.js",
-      "sha256": "43e06db13104c43a379ea1e40c26f135d287e85eae87d84d220f81dd6c45a35e"
+      "sha256": "af4316e0282cef1c78db37a14fe10ac60424c4fcf23686e71a266d83bd648b98"
     },
     {
       "path": "beam-deflection-preview/styles.css",
@@ -355,6 +355,22 @@
       "sha256": "dea109312d375d6dd056f3fe0852be5e800329a5871a71a9c98bb69d3f4a3193"
     },
     {
+      "path": "frame-analysis/app.js",
+      "sha256": "a1ff62ce53afaa6cbea0160bcf5507a7bf62ea1159e181f77b8bbeb9dc9129e1"
+    },
+    {
+      "path": "frame-analysis/calculation.js",
+      "sha256": "e0d3579daab9dcc542ad575c2299de269ac325ecce8b9883bfbb6f2570e3d93b"
+    },
+    {
+      "path": "frame-analysis/drawing.js",
+      "sha256": "4619a54b1e7ed75d9000e39080cc8668b3da1d3f51bd9550e28ae7e467bb5019"
+    },
+    {
+      "path": "frame-analysis/styles.css",
+      "sha256": "77abd8fe280948832636a7f799e73fa7f0edb2c337dab6eb0e78e6bad1e02000"
+    },
+    {
       "path": "geo-parameters/app.js",
       "sha256": "09fae6c8f03ce03541861382fda71eaa6e836c3d3bb791cb4e447441871b5901"
     },
@@ -439,8 +455,20 @@
       "sha256": "b0f6dc7229f569920e945876119eaa97c23f5efa27d6f509aab781c365b6b285"
     },
     {
+      "path": "handbook-conventions/analysis-signs.js",
+      "sha256": "56e9721123d755f6025e244f20f6baa820d64058088c6dbc0a162453654987bc"
+    },
+    {
+      "path": "handbook-conventions/app.js",
+      "sha256": "2a812f6f19133fd25c471d826f7b4af3f7820c66906f6d07626bdbc2d9f69190"
+    },
+    {
+      "path": "handbook-conventions/styles.css",
+      "sha256": "570b1bc4789b0e909480c9777b78fa26f346949f58dd830f563f02012fe12812"
+    },
+    {
       "path": "index.html",
-      "sha256": "520584f3fd03ac398d2e87a7edf3155945abdbf4236269f01d6dd6f866893b49"
+      "sha256": "19768c4669adfdba28c677848b5dd6c54f7907216e55af578a487f0548357cfb"
     },
     {
       "path": "LICENSE.md",
@@ -484,7 +512,7 @@
     },
     {
       "path": "more-layouts/trace.js",
-      "sha256": "c686f4718914cce8e540f640b39159ddd3d6176ecdf2165ef75cd40f02b9541f"
+      "sha256": "c37824175d106e98cf0e1480b1976d909f1ee1fc88b4e61b745977a8b10cba1e"
     },
     {
       "path": "pad-input/app.js",
@@ -556,11 +584,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "2e1bc43337ec18a2367cffae6e361f17d8c071124ffba7b325bafbd10d2df8b1"
+      "sha256": "76cdc8690d1a80e7d967fb964b2fe7b6d3d5bebb8e97dbcfc022f9e97d4d619b"
     },
     {
       "path": "README.md",
-      "sha256": "16a6029ff2d5a215b7c85c91c12182433534e5fba964a3bd248ed799d69ad211"
+      "sha256": "e06249d20a30341325faa84aec7d38002c02d66ff42a8dea4f1c42a85b62e232"
     },
     {
       "path": "reference-actions/presentation.js",
@@ -676,11 +704,11 @@
     },
     {
       "path": "tool-directory/directory.js",
-      "sha256": "eef3c1cd6c58d5505be20c57ac9e705fc046378d2f6ef49c2d1d86776886120f"
+      "sha256": "ca2b2c7bc1e8f8408959ee91096843b409f9870588a1cc03614a0a750e2d2452"
     },
     {
       "path": "tool-directory/registry.js",
-      "sha256": "1bf99292b247671ac9c2976578a96c22303a488bb93848d3398c33cace9856dd"
+      "sha256": "66d472f538c8e114fd5b241527a8ed8a7ca902aa99ed152d345e197baaef8b42"
     },
     {
       "path": "web-drawing/styles.css",

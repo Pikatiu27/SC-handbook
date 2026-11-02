@@ -2903,7 +2903,8 @@ toolCategories["steel-members"].splice(1, 0, "corrosion");
 /* STEEL CORROSION REGISTRATION END */
 /* APPROVED NAVIGATION CLASSIFICATION START */
 // The directory registry owns navigation only; tool IDs and engineering methods stay intact.
-toolNames.push("beamforces");
+toolNames.push("beamforces", "frameanalysis");
+toolAliases["frame-analysis"] = "frameanalysis";
 toolAliases["beam-internal-forces"] = "beamforces";
 for (const category of Object.keys(toolCategories)) delete toolCategories[category];
 for (const tool of window.HandbookDirectoryRegistry) {

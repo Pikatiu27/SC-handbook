@@ -45,8 +45,11 @@
   document.getElementById('bifReset').addEventListener('click',()=>{$('E').value=B.defaults.E;$('I').value=B.defaults.I;signature='';});
   for(const id of ['Delta','Theta']){
     const host=$(id),coordinate=e=>{const svg=e.target.closest('svg');return svg&&forces?.valid&&result?.valid?F.xFromSvg(svg,e.clientX,e.clientY,forces.input.length,innerWidth<=500):null;};
+    let touchStart=null;
     host.addEventListener('pointermove',e=>{if(state.pinned||document.activeElement===document.getElementById('bifX')||e.pointerType==='touch')return;const x=coordinate(e);if(x!==null)jump(x,false);});
-    host.addEventListener('pointerdown',e=>{const x=coordinate(e);if(x!==null)jump(x,true);});
+    host.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){const x=coordinate(e);if(x!==null)jump(x,true);}else touchStart={id:e.pointerId,x:e.clientX,y:e.clientY};});
+    host.addEventListener('pointercancel',()=>{touchStart=null;});
+    host.addEventListener('pointerup',e=>{const start=touchStart;touchStart=null;if(start?.id===e.pointerId&&Math.hypot(e.clientX-start.x,e.clientY-start.y)<=8){const x=coordinate(e);if(x!==null)jump(x,true);}});
   }
   new ResizeObserver(()=>render()).observe($('Delta'));
 })();

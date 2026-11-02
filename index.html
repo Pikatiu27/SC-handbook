@@ -55,10 +55,12 @@
 <link rel="stylesheet" href="steel-corrosion/header-layout.css?v=20261026corrosion139">
 <link rel="stylesheet" href="reference-actions/styles.css?v=20261026references140"><script src="reference-actions/presentation.js?v=20261026references140"></script>
 <link rel="stylesheet" href="section-custom/input.css?v=20261026custom141">
+<link rel="stylesheet" href="frame-analysis/styles.css?v=20261102analysis143"><link rel="stylesheet" href="handbook-conventions/styles.css?v=20261102analysis143">
 </head>
-<body data-beam-analysis-presentation="20261019beamformatrelease1">
+<body data-analysis-signs="HB-ANALYSIS-01" data-beam-analysis-presentation="20261019beamformatrelease1">
   <header class="topbar">
     <a class="brand" href="#home"><span class="brand-mark">SC</span><span><strong>SC Handbook</strong><small>Engineering lookup handbook</small></span></a>
+    <button id="handbookSignsButton" type="button" class="hb-signs-button" data-open-conventions aria-haspopup="dialog" aria-controls="handbookConventions">Signs &amp; units</button>
   </header>
 
   <main id="top">
@@ -86,6 +88,7 @@
 
         <nav class="tool-tabs" aria-label="SC Handbook tools">
           <button class="tool-tab" type="button" data-category="analysis" data-tool="beamforces" data-legacy-name="Beam Internal Forces" aria-controls="beamforcesPanel" aria-pressed="false" hidden>Beam Internal Forces</button>
+          <button class="tool-tab" type="button" data-category="analysis" data-tool="frameanalysis" aria-controls="frameanalysisPanel" aria-pressed="false" hidden>Frame Analysis</button>
           <button class="tool-tab" type="button" data-category="steel" data-tool="properties" data-legacy-name="Section Properties" aria-controls="propertiesPanel" aria-pressed="false" hidden>Section Properties</button>
           <button class="tool-tab" type="button" data-category="steel" data-tool="corrosion" data-legacy-name="Steel Corrosion &amp; Protection" aria-controls="corrosionPanel" aria-pressed="false" hidden>Steel Corrosion &amp; Protection</button>
           <button class="tool-tab" type="button" data-category="steel" data-tool="member" data-legacy-name="Axial Member Capacity" aria-controls="memberPanel" aria-pressed="false" hidden>Axial Member Capacity</button>
@@ -1288,7 +1291,49 @@
       <details class="source-card"><summary><span><b>Source and limitations</b><small id="sectionSourceSummary">Catalogue, material-standard and derivation status</small></span><i>+</i></summary><div class="source-body"><div class="source-notes" id="sectionSourceDetails"></div><div class="source-notes"><p><b>Material</b> &mdash; hot-rolled section strengths follow AS/NZS 3679.1 Table 14 using controlling part thickness; round-bar strengths follow AS/NZS 3679.1 Table 15 using diameter. The adopted edition is AS/NZS 3679.1:2016. Hollow-section values require the selected checked AS/NZS 1163:2016 grade. Custom standard-material thickness is linked to the entered geometry unless the visible manual override is active. E, G, &nu; and &alpha;<sub>T</sub> follow AS 4100 Cl. 2.2.4; the adopted edition is AS 4100:2020. Confirm applicable amendments, supplied grade, thickness range, supply condition and test certificate before design issue.</p><p><b>Axes</b> &mdash; positive horizontal and vertical directions are right and up. Positive rotation is counter-clockwise. For equal angles, n-n is horizontal, p-p is vertical, and the catalogue x-x / y-y axes are principal axes at 45&deg;; other shapes use centroidal x-x / y-y axes parallel to the overall dimensions. Directional Z values retain the catalogue edge labels.</p><p><b>Shear reference</b> &mdash; A<sub>w</sub> is clear web area for I-sections and channels. A<sub>wx</sub> and A<sub>wy</sub> are the two-horizontal-wall and two-vertical-wall areas for ideal RHS/SHS. These are geometric reference areas, not design-standard effective shear area A<sub>v</sub>, and are not used for capacity.</p><p><b>Boundary</b> &mdash; checked k<sub>f</sub>, compactness and Z<sub>e</sub> are reference attributes reused only for exact section, grade and direction matches. Product availability, design capacity, member stability, actions and utilisation are excluded.</p></div></div></details>
     </section>
 
-    <section id="beamforcesPanel" class="tool-panel bd-deformation" hidden>
+    <section id="frameanalysisPanel" class="tool-panel" hidden>
+  <div class="tool-heading"><div><h2>Frame Analysis</h2></div><span class="tool-status">Public beta · For Review</span></div>
+  <section class="lookup-card fa-card"><div class="bif-workspace">
+    <section class="bif-inputs" aria-label="Portal frame inputs">
+      <div class="bif-input-heading"><h3>Portal frame</h3><button id="faReset" type="button">Reset</button></div>
+      <p class="bif-help">Single storey · single bay · rigid beam–column joints</p><button id="faViewResults" class="fa-phone-jump" type="button">View results ↓</button>
+      <div id="faGeometry" class="bif-fields"></div>
+      <div id="faSupports" class="bif-fields"></div>
+      <section class="input-group"><h3>Member stiffness</h3><div id="faMaterial" class="bif-fields"></div><div id="faProperties"></div><p class="bif-help">Illustrative defaults; enter project properties. I is about the frame's bending axis.</p></section>
+      <section class="input-group"><h3>Loads</h3><div id="faUniform" class="bif-fields"></div><p class="bif-help">q and P: down +; H: right +; C: counterclockwise +. Include self-weight if required.</p><div id="faLoads"></div><button id="faClearLoads" type="button">Clear loads</button></section>
+    </section>
+    <section class="bif-output" aria-label="Frame analysis results">
+      <div class="section-heading"><h3>Frame response</h3><span id="faStatus" class="fa-state" aria-live="polite"></span></div><button id="faEditInputs" class="fa-phone-jump" type="button">Edit inputs ↑</button>
+      <div class="fa-result-controls"><label for="faResponse">Whole-frame result<select id="faResponse"><option value="model">Model / loads</option><option value="N">Axial force N / kN</option><option value="V">Shear force V / kN</option><option value="M" selected>Bending moment M / kN·m</option><option value="displacement">Displacement / mm</option><option value="theta">Rotation θ / mrad</option></select></label></div>
+      <details class="bif-inline-details fa-view-options"><summary>View options</summary><div class="fa-scale-control"><label for="faScale">Diagram size · <output id="faScaleValue" for="faScale">100%</output></label><input id="faScale" type="range" min="50" max="200" step="10" value="100" aria-label="Whole-frame diagram size"><button id="faAutoScale" type="button">Auto</button></div><div class="fa-view-options-body"><label><input id="faShowLabels" type="checkbox" checked>Show values</label><label><input id="faShowLoads" type="checkbox">Show loads</label><label><input id="faIsolate" type="checkbox">Selected member only</label></div><p id="faScaleReference" class="bif-help"></p></details>
+      <p id="faErrors" class="fa-errors" role="alert" hidden></p>
+      <p id="faWarnings" class="fa-warnings" aria-live="polite" hidden></p>
+      <figure class="engineering-figure fa-structure" data-figure-profile="SC-WEB-FIGURE-001"><div id="faPosition" class="fa-position" aria-label="Selected position on the original frame"></div><div class="fa-frame-stage"><div id="faStructure" class="engineering-figure__plot"></div><div id="faFrameAxes"></div></div><figcaption id="faStructureCaption" class="engineering-figure__caption">Original frame · A = (0, 0) m</figcaption><div class="engineering-figure__key"><span><i class="engineering-figure__swatch"></i>Frame</span><span id="faPositiveKey"><i class="engineering-figure__swatch engineering-figure__swatch--active"></i><span id="faActiveKey">Positive (+)</span></span><span id="faNegativeKey"><i class="engineering-figure__swatch engineering-figure__swatch--active engineering-figure__swatch--symbolic"></i>Negative (−)</span></div></figure>
+      <p id="faScaleLegend" class="bif-help"></p><p id="faFrameSigns" class="bif-help"></p>
+      <section class="fa-inspection" aria-label="Selected member reading"><h3>Section reading</h3><div class="fa-member-controls"><label for="faMember">Member</label><select id="faMember"><option value="AB">AB · left column · A → B</option><option value="BC" selected>BC · beam · B → C</option><option value="DC">DC · right column · D → C</option></select></div>
+      <div class="fa-reading"><label for="faX">Position x / m<input id="faX" type="number" inputmode="decimal" step="any" value="3"></label><button id="faHold" type="button" aria-pressed="false">Hold reading</button><div id="faReadout" class="fa-readout" aria-live="polite"></div><input id="faSlider" type="range" min="0" max="6" step="0.001" value="3" aria-label="Position along selected member"><button id="faCalculationLink" type="button">Calculation</button></div>
+      <p id="faCoordinateError" class="fa-errors" hidden></p>
+      <details id="faPeakDetails" class="bif-inline-details fa-peak-details"><summary>Peak locations</summary><div id="faPeaks" class="fa-peaks" aria-label="Frame and selected member peaks"></div></details></section>
+      <section class="fa-reaction-section"><h3>Support reactions</h3><div id="faReactions" class="fa-reactions"></div><p class="bif-help">R<sub>x</sub> right + · R<sub>y</sub> up + · C counterclockwise +</p></section>
+      <div id="faNodeOutput" hidden><h3>Roof node displacements</h3><div id="faNodes"></div></div>
+      <details id="faMemberDetails" class="detail-card fa-member-details"><summary><span><b>Member details</b><small id="faDetailsMember">BC · member curves</small></span><i aria-hidden="true">+</i></summary><div class="detail-body"><label class="fa-detail-control" for="faDetailResponse">Member result<select id="faDetailResponse"><option value="N">Axial force N</option><option value="V">Shear force V</option><option value="M" selected>Bending moment M</option><option value="v">Local displacement v</option><option value="theta">Rotation θ</option></select></label><p id="faLocalAxes" class="bif-help"></p><div id="faCharts"></div></div></details>
+      <p class="bif-boundary">Linear elastic, first-order analysis. No stability, strength or deflection-limit checks.</p>
+    </section>
+  </div></section>
+  <details id="faCalculation" class="detail-card"><summary><span><b>Calculation</b><small>Formula, substitution, result and applicability</small></span><i aria-hidden="true">+</i></summary><div class="detail-body"><button id="faReturn" type="button">Return to results</button><div id="faTrace"></div></div></details>
+  <details id="faSources" class="detail-card"><summary><span><b>Sources &amp; scope</b><small>Model, signs, units and limits</small></span><i aria-hidden="true">+</i></summary><div class="detail-body">
+    <p><b>Model:</b> First-order 2D Euler–Bernoulli analysis with axial deformation and rigid roof joints (FA-STIFFNESS-01 / FA-RECOVERY-01). E is shared; each member has constant A and I. Support settlement is zero.</p>
+    <p><b>Supports:</b> Both bases restrain X/Y translation. Fixed bases also restrain rotation; pinned bases allow rotation.</p>
+    <button type="button" class="hb-signs-link" data-open-conventions aria-haspopup="dialog" aria-controls="handbookConventions">Signs &amp; units</button>
+    <p>Local v includes node translation; it is not displacement relative to the member chord.</p>
+    <p><b>Worked example:</b> Jeffrey Erochko, <a href="https://learnaboutstructures.com/Slope-Deflection-Method-for-Sway-Frames" target="_blank" rel="noopener noreferrer">An Introduction to Structural Analysis, §9.6, Figures 9.20–9.24</a> (2020; checked 23 October 2026). Its axially rigid model is a separate comparison. End moments agree at printed precision. The expanded sway coefficient 0.1714 conflicts with 6/49 from the unexpanded equation; printed EIΔ = 3502 is therefore excluded. Exact axial-rigid reconstruction gives EIΔ = 4900 kN·m³.</p>
+    <p><b>Verification:</b> Closed-form checks and independent <a href="https://opensees.github.io/OpenSeesDocumentation/user/manual/model/elements/elasticBeamColumn.html" target="_blank" rel="noopener noreferrer">OpenSees elasticBeamColumn</a> comparisons with Linear transformation and uniform member loading. These are local author checks, not independent engineering or project acceptance.</p>
+    <p><b>Limits:</b> Span and height 0.25–50 m; span/height 0.1–10; positive finite stiffness. Invalid or ill-conditioned models clear dependent results. Large-movement warnings flag the method's applicability, not a code limit.</p>
+    <p><b>Excluded:</b> Shear deformation, joint offsets, springs, roof end releases, support settlement, plasticity, dynamics, action combinations, P–Δ, buckling, resistance and code deflection-limit checks. Self-weight must be entered as a load. Public beta / For Review.</p>
+  </div></details>
+</section>
+
+<section id="beamforcesPanel" class="tool-panel bd-deformation" hidden>
   <div class="tool-heading"><div><h2>Beam Internal Forces</h2></div><span class="tool-status">Public beta · For Review</span></div>
   <section class="lookup-card bif-card"><div class="bif-workspace">
     <section class="bif-inputs" aria-label="Beam and load inputs">
@@ -1325,8 +1370,8 @@
         <div class="bif-reading-heading"><b>Section reading</b><span id="bifMode">Following pointer</span></div>
         <div class="bif-reading"><label class="bif-coordinate" for="bifX"><span><i>x</i> / m</span><input id="bifX" type="number" min="0" max="6" step="any" value="3" aria-describedby="bifReadingHelp"></label><p id="bifReadout" class="bif-readout"></p><p id="bdReadout" class="bif-readout"></p><button id="bifPin" type="button" aria-pressed="false">Hold reading</button><div id="bifDetailResults" class="bif-section-nav"><label class="bif-snap-label" for="bifSnap">Jump to section<select id="bifSnap"></select></label><label id="bifSideField" for="bifSide" hidden>Side of section<select id="bifSide"><option value="right">Right side</option><option value="left">Left side</option></select></label></div><p id="bifJump" class="bif-help"></p></div>
         <div id="bifQuickExtrema" class="bif-quick-extrema" role="group" aria-label="Locate extrema"></div><span id="bifAnnounce" class="sr-only" aria-live="polite"></span>
-        <figure class="engineering-figure bif-chart bd-forces-only" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Shear <i>V</i> / kN</b><span id="bifVAxisMultiplier"></span></div><div id="bifShear" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">Position <i>x</i> / m · positive shear above zero</figcaption></figure>
-        <figure class="engineering-figure bif-chart bd-forces-only" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Moment <i>M</i> / kN·m</b><span id="bifMAxisMultiplier"></span></div><div id="bifMoment" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">Position <i>x</i> / m · positive moment is sagging</figcaption></figure>
+        <figure class="engineering-figure bif-chart bd-forces-only" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Shear <i>V</i> / kN</b><span id="bifVAxisMultiplier"></span></div><div id="bifShear" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">Position <i>x</i> / m</figcaption></figure>
+        <figure class="engineering-figure bif-chart bd-forces-only" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Moment <i>M</i> / kN·m</b><span id="bifMAxisMultiplier"></span></div><div id="bifMoment" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">Position <i>x</i> / m</figcaption></figure>
         <p id="bifReadingHelp" class="engineering-figure__key bd-forces-only"><span><i class="engineering-figure__swatch engineering-figure__swatch--symbolic"></i>Move to read · click or enter x to hold · drag loads on the beam</span></p>
 <div id="bdResponse">
   <div id="bdErrors" class="bif-errors" role="alert" hidden></div>
@@ -1336,12 +1381,12 @@
     <figure class="engineering-figure bif-chart" data-figure-profile="SC-WEB-FIGURE-001">
       <div class="bif-chart-title"><b>Deflection <i>δ</i> / mm</b><span id="bdDeltaMultiplier"></span></div>
       <div id="bdDelta" class="engineering-figure__plot"></div>
-      <figcaption class="engineering-figure__caption">Position <i>x</i> / m · downward-positive δ below zero · independent scales</figcaption>
+      <figcaption class="engineering-figure__caption">Position <i>x</i> / m</figcaption>
     </figure>
     <figure class="engineering-figure bif-chart" data-figure-profile="SC-WEB-FIGURE-001">
       <div class="bif-chart-title"><b>Rotation <i>θ</i> / mrad</b><span id="bdThetaMultiplier"></span></div>
       <div id="bdTheta" class="engineering-figure__plot"></div>
-      <figcaption class="engineering-figure__caption">Position <i>x</i> / m · clockwise-positive θ above zero · 1 mrad = 0.001 rad</figcaption>
+      <figcaption class="engineering-figure__caption">Position <i>x</i> / m</figcaption>
     </figure>
     <p class="engineering-figure__key"><span><i class="engineering-figure__swatch engineering-figure__swatch--symbolic"></i>Move to read · click or enter x to hold</span></p>
     <p class="bif-help">Constant EI · linear elastic · no shear deformation or deflection-limit check.</p>
@@ -1353,9 +1398,9 @@
   </div></section>
   <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Internal-force calculation</b></span><small>Reactions, load resultants, equilibrium and section values</small></span><i>+</i></summary><div id="bifCalculation" class="detail-body"></div></details>
 <details class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Deformation calculation</b></span><small>Formula, substitution, result and applicability</small></span><i>+</i></summary><div id="bdCalculation" class="detail-body"></div></details>
-<details id="bmlSources" class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Sources &amp; scope</b></span><small>Model, signs and references</small></span><i>+</i></summary><div class="detail-body bif-sources">
- <h3>Model and signs</h3>
- <p>Fourteen straight-beam layouts; ideal supports, zero settlement and uniform positive EI. Entered point forces, couples and partial linear loads superpose. Downward loads and deflection, counterclockwise external couples, sagging moment and clockwise rotation are positive. A Gerber hinge has zero moment, common displacement and separate left/right rotations; a nonzero couple exactly at the hinge is not supported. Negative reactions require uplift restraint.</p>
+<details id="bmlSources" class="detail-card"><summary><span class="summary-copy"><span class="summary-heading"><b>Sources &amp; scope</b></span><small>Model and references</small></span><i>+</i></summary><div class="detail-body bif-sources">
+ <button type="button" class="hb-signs-link" data-open-conventions aria-haspopup="dialog" aria-controls="handbookConventions">Signs &amp; units</button><h3>Model</h3>
+ <p>Fourteen straight-beam layouts; ideal supports, zero settlement and uniform positive EI. Entered point forces, couples and partial linear loads superpose. A Gerber hinge has zero moment, common displacement and separate left/right rotations; a nonzero couple exactly at the hinge is not supported. Negative reactions require uplift restraint.</p>
  <h3>Applicability</h3>
  <p>Linear elastic Euler–Bernoulli bending only. No variable/effective stiffness, shear deformation, concrete cracking/creep, slip, axial/torsional effects, nonlinearity, dynamics, stability, resistance or code serviceability verdict. Loads and stiffness are project inputs; no self-weight or load factors are added. Review triggers |δ|max/L &gt; 1/100 or |θ|max &gt; 0.05 rad are not code limits.</p>
  <p>L 0.1–100 m; minimum support spacing 0.001L; up to 24 loads; E 0.001–1,000 GPa; I 1–10¹⁵ mm⁴. Analytical section values and extrema govern; each diagram has its own labelled ordinate scale. Symbols are schematic. Independent engineering and project applicability remain For Review.</p>
@@ -2546,7 +2591,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.142 &middot; updated 2 Nov 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.143 &middot; updated 2 Nov 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2573,20 +2618,20 @@
       <script src="geo-parameters/geo-parameters.js?v=20261016workflowtrace1"></script>
 
   <script src="bolt-comparison/comparison.js?v=20261016workflowtrace1"></script>
-<script src="tool-directory/registry.js?v=20261019deflection1"></script>
-<script src="tool-directory/directory.js?v=20261019interactionrelease1"></script>
-<script src="section-custom/calculation.js?v=20261026custom141"></script><script src="app.js?v=20261026custom141"></script>
+<script src="tool-directory/registry.js?v=20261102analysis143"></script>
+<script src="tool-directory/directory.js?v=20261102analysis143"></script>
+<script src="section-custom/calculation.js?v=20261026custom141"></script><script src="app.js?v=20261102analysis143"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=20261016workflowtrace1"></script>
-<script src="geo-parameters/detail-app.js?v=20261019interactionrelease1"></script>
+<script src="geo-parameters/detail-app.js?v=20261102analysis143"></script>
 
   <script src="monopole-presentation/presentation.js?v=20261018monopole1"></script>
-  <script src="monopole-app.js?v=20261018monopole1"></script>
+  <script src="monopole-app.js?v=20261102analysis143"></script>
   <script src="as4600-chs/bending.js?v=20261017calcaudit1"></script>
   <script src="as4600-chs/orrcon-products.js?v=20261016workflowtrace1"></script>
   <script src="chs-bending-comparison/model.js?v=20261016workflowtrace1"></script>
 <script src="chs-bending-comparison/panel.js?v=20261016workflowtrace1"></script>
-  <script type="module" src="rock-anchor-selector/app.js?v=20261016workflowtrace1"></script>
+  <script type="module" src="rock-anchor-selector/app.js?v=20261102analysis143"></script>
     <script src="guy-lookup/data.js?v=20261016workflowtrace1"></script>
   <script src="guy-lookup/units.js?v=20261016workflowtrace1"></script>
   <script src="guy-lookup/lookup.js?v=20261016workflowtrace1"></script>
@@ -2594,18 +2639,18 @@
   <script src="guy-lookup/table-layout.js?v=20261016workflowtrace1"></script>
   <script src="guy-lookup/header-filters.js?v=20261026tables3"></script>
   <script src="page-alignment/guy-identity.js?v=20261026tables3"></script>
-<script src="guy-lookup/app.js?v=20261026tables3"></script>
+<script src="guy-lookup/app.js?v=20261102analysis143"></script>
 <script src="panel-antennas/data.js?v=20261016workflowtrace1"></script>
 <script src="panel-antennas/lookup.js?v=20261016workflowtrace1"></script>
-<script src="panel-antennas/app.js?v=20261026tables3"></script>
+<script src="panel-antennas/app.js?v=20261102analysis143"></script>
 <script src="reinforcement-area/calculation.js?v=20261016workflowtrace1"></script>
-<script src="reinforcement-area/app.js?v=20261016workflowtrace1"></script>
+<script src="reinforcement-area/app.js?v=20261102analysis143"></script>
 <script src="bolt-dimensions/data.js?v=20261016workflowtrace1"></script>
 <script src="bolt-dimensions/lookup.js?v=20261016workflowtrace1"></script>
-<script src="bolt-dimensions/app.js?v=20261026references140"></script>
+<script src="bolt-dimensions/app.js?v=20261102analysis143"></script>
 <script src="concrete-anchors/data.js?v=20261016workflowtrace1"></script>
 <script src="concrete-anchors/lookup.js?v=20261016workflowtrace1"></script>
-<script src="concrete-anchors/app.js?v=20261016workflowtrace1"></script>
+<script src="concrete-anchors/app.js?v=20261102analysis143"></script>
 <script src="foundation-products/models.js?v=20261016workflowtrace1"></script>
 <script src="foundation-products/research.js?v=20261016workflowtrace1"></script>
 <script src="foundation-products/lookup.js?v=20261026tables3"></script>
@@ -2614,31 +2659,54 @@
 <script src="section-tables/lookup.js?v=20261026references140"></script>
 <script src="plate-tables/catalogue.js?v=20261016workflowtrace1"></script>
 <script src="plate-tables/model.js?v=20261016workflowtrace1"></script>
-<script src="plate-tables/app.js?v=20261026references140"></script>
+<script src="plate-tables/app.js?v=20261102analysis143"></script>
 <script src="concrete-cover/data.js?v=20261016workflowtrace1"></script>
 <script src="concrete-cover/model.js?v=20261016workflowtrace1"></script>
-<script src="concrete-cover/app.js?v=20261026references140"></script>
+<script src="concrete-cover/app.js?v=20261102analysis143"></script>
 <script src="steel-corrosion/data.js?v=20261016workflowtrace1"></script>
 <script src="steel-corrosion/model.js?v=20261016workflowtrace1"></script>
 <script src="steel-corrosion/header-labels.js?v=20261026corrosion139"></script>
-<script src="steel-corrosion/app.js?v=20261026corrosion139"></script>
+<script src="steel-corrosion/app.js?v=20261102analysis143"></script>
 <script src="accessibility/repairs.js?v=20261016workflowtrace1"></script>
 <script src="bolt-details/diagram.js?v=20261016workflowtrace1"></script>
-<script src="bolt-details/app.js?v=20261016workflowtrace1"></script>
+<script src="bolt-details/app.js?v=20261102analysis143"></script>
 <script src="beam-internal-forces/calculation.js?v=20261019beamformatrelease1"></script>
 <script src="beam-internal-forces/drawing.js?v=20261023beammerged1"></script>
 <script src="beam-deflection-preview/calculation.js?v=20261019beamformatrelease1"></script>
-<script src="beam-deflection-preview/drawing.js?v=20261023beammerged1"></script>
+<script src="beam-deflection-preview/drawing.js?v=20261102analysis143"></script>
 <script src="more-layouts/force-response.js?v=20261023beammerged1"></script>
 <script src="more-layouts/calculation.js?v=20261023beammerged1"></script>
-<script src="more-layouts/trace.js?v=20261023beammerged1"></script>
-<script src="beam-deflection-preview/app.js?v=20261023beammerged1"></script>
-<script src="beam-internal-forces/app.js?v=20261023beammerged1"></script>
+<script src="handbook-conventions/analysis-signs.js?v=20261102analysis143"></script>
+<script src="more-layouts/trace.js?v=20261102analysis143"></script>
+<script src="beam-deflection-preview/app.js?v=20261102analysis143"></script>
+<script src="beam-internal-forces/app.js?v=20261102analysis143"></script>
 <script src="workflow-review/config.js?v=20261019beamformatrelease1"></script>
-<script src="workflow-review/app.js?v=20261019beamformatrelease1"></script>
-<script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261102shear142"></script><script src="concrete-beam/app.js?v=20261102shear142"></script>
-<script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261017padrelease1"></script>
+<script src="workflow-review/app.js?v=20261102analysis143"></script>
+<script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261102shear142"></script><script src="concrete-beam/app.js?v=20261102analysis143"></script>
+<script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261102analysis143"></script>
 <script src="disclosure/indicators.js?v=20261026tables3"></script>
 <script src="section-custom/input.js?v=20261026custom141"></script>
+<dialog id="handbookConventions" class="hb-conventions" aria-labelledby="hbConventionsTitle">
+  <header class="hb-conventions-heading"><div><h2 id="hbConventionsTitle">Signs &amp; units</h2><p>Handbook analysis conventions</p></div><button type="button" data-close-conventions aria-label="Close Signs and units">Close</button></header>
+  <div class="hb-conventions-body">
+    <section><h3>Coordinates &amp; results</h3><dl class="hb-conventions-list">
+      <div><dt>Global axes</dt><dd>X right · Y up · rotation θ counterclockwise positive.</dd></div>
+      <div><dt>Member axes</dt><dd>Local x runs from i to j; local y is its left normal. For the portal: AB and DC run upward, BC runs right.</dd></div>
+      <div><dt>Displacement</dt><dd>uₓ right positive; uᵧ, beam δ and local v positive along their +y axis. Downward beam deflection is negative.</dd></div>
+      <div><dt>Internal forces</dt><dd>N: tension positive. V = dM/dx. M = EI v″; positive beam M is sagging. θ = dv/dx.</dd></div>
+    </dl></section>
+    <section><h3>Load inputs &amp; reactions</h3><p>P and q use a downward-positive input magnitude; H is right positive and applied couple C is counterclockwise positive. The program converts these inputs to the analysis axes. Reactions Rₓ are right positive, Rᵧ up positive and support C counterclockwise positive.</p></section>
+    <section><h3>Reading the diagrams</h3><p>Ordinary result charts have positive values above zero. Frame M is drawn on the tension side: positive below the beam / right of the columns. Frame N, V and θ are positive along local +y; negative frame curves are dashed.</p><p>Frame X/Y rulers locate the original geometry in metres. Displacement uses one magnification for the whole frame. A curve's offset shows its value; its side does not define the direction of a force.</p></section>
+    <section><h3>Units &amp; precision</h3><dl class="hb-conventions-list">
+      <div><dt>Geometry / section</dt><dd>Model lengths m; section dimensions mm; A mm²; I mm⁴.</dd></div>
+      <div><dt>Actions / results</dt><dd>Forces kN · distributed loads kN/m · moments kN·m · displacement mm · rotation mrad.</dd></div>
+      <div><dt>Stiffness</dt><dd>E in GPa: EA = E A in kN; EI = E I × 10⁻⁶ in kN·m². Internal m/rad convert to mm/mrad by ×1000.</dd></div>
+      <div><dt>Readings</dt><dd>Up to two decimals; scientific notation for very small or large results. Numerical roundoff displays as zero. Calculations and exact peak positions keep full precision.</dd></div>
+    </dl></section>
+    <details><summary>Design-code conventions</summary><p>These analysis signs apply to Beam and Frame. Other handbook design tools follow the sign, magnitude and tension/compression branch required by their adopted clause.</p><p>For example, AS 3600:2018 Clause 8.2.4.2.2 uses absolute M* and V*, with N* positive in tension and negative in compression. Clause 18.2 defines the concrete compressive stress as compression-positive. Analysis signs are mapped to each formula; they do not replace its definitions.</p><p>Coordinate basis: <a href="https://opensees.github.io/OpenSeesDocumentation/user/manual/model/geomTransf/Linear.html" target="_blank" rel="noopener noreferrer">OpenSees local axes</a>. This is a modelling convention, not an Australian code compliance claim. Public beta · For Review.</p></details>
+  </div>
+</dialog>
+
+<script src="frame-analysis/calculation.js?v=20261102analysis143"></script><script src="frame-analysis/drawing.js?v=20261102analysis143"></script><script src="frame-analysis/app.js?v=20261102analysis143"></script><script src="handbook-conventions/app.js?v=20261102analysis143"></script>
 </body>
 </html>
