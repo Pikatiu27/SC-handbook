@@ -1,0 +1,64 @@
+/* Shared mobile UI typography. Keep user zoom, mathematical script sizing and
+   the registered figure typography intact. No UA sniffing or calculation hooks. */
+html, body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+/* iPhone landscape evidence: Safari enlarged these ordinary explanatory blocks
+   beyond the adjacent section headings. Keep their existing 12px/1.5 role at
+   every width; phone landscape may be wider than the compact-layout breakpoint.
+   This does not target SVG labels, MathML or user-initiated page/pinch zoom. */
+#beamforcesPanel :is(.bif-support-summary, .bif-help, .bif-boundary),
+#frameanalysisPanel .bif-help {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-size: var(--fs-xs, 12px);
+  line-height: 1.5;
+}
+body :is(button, input, select, textarea) {
+  font-family: var(--font, Arial, sans-serif);
+}
+/* All editable controls, including table/search/custom-strength controls, need
+   the same typing size. The existing component layout still owns their width. */
+@media (max-width: 960px), (hover: none) and (pointer: coarse) {
+  main :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]):not([type="color"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]), select, textarea) {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+  /* Whole controls are touch targets; keep the drawing annotation geometry
+     outside this rule. Component grid/flex layout still owns their placement. */
+  body main button:not(figure *):not(svg *):not(math *):not([role="img"] *):not(.engineering-figure *),
+  body main summary:not(figure *):not(svg *):not(math *):not([role="img"] *):not(.engineering-figure *),
+  body .tool-category,
+  body .directory-products-link,
+  body .brand {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  .directory-link,
+  body > footer nav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  main small:not(figure *):not(svg *):not(math *):not([role="img"] *):not(.engineering-figure *),
+  main dt:not(figure *):not(svg *):not(math *):not([role="img"] *):not(.engineering-figure *),
+  main .unit em,
+  main .calculation-trace-line > span,
+  main .input-check-status,
+  main .reo-calculated-basis em {
+    font-size: var(--fs-xs, 12px) !important;
+  }
+}
+@media (max-width: 760px) {
+  .directory-heading h1,
+  #chs4600Panel .tool-heading h2,
+  #weldPanel .section-heading h2 {
+    font-size: var(--fs-md, 15px);
+    line-height: 1.25;
+  }
+  #chs4600Panel .chs-compare-groups th {
+    font-size: var(--fs-xs, 12px) !important;
+  }
+}

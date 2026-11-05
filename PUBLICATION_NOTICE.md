@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.144 (5 November 2026): Shared mobile typography, typing controls, touch targets and landscape explanatory-text hierarchy are refined. Existing calculations, deflection linkage, figures, product manuals, filters and historical links remain unchanged. Browser viewport checks do not establish physical iPhone/iPad Safari, Android, macOS, native zoom or complete accessibility acceptance; these remain For Review. Public beta / For Review.
+
 Build 0.7.143 (2 November 2026): Beam and single-storey single-bay Frame Analysis share HB-ANALYSIS-01 signs and a Signs & units reference. Displacements are upward-positive and rotations counterclockwise-positive. Frame adds whole-frame results and member details. First-order elastic analysis only; independent engineering and project acceptance remain required. Public beta / For Review.
 
 Build 0.7.142 (2 November 2026): Concrete Beam distinguishes Shear capacity from Shear reinforcement requirement. Conditional no-fitment capacity, the shear reinforcement threshold and the pending project-demand comparison are explained explicitly. Calculation logic, formulas, references, figures, all existing routes and links remain unchanged. Public beta / For Review.

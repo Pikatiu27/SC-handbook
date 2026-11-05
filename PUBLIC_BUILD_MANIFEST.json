@@ -432,7 +432,7 @@
     },
     {
       "path": "guy-lookup/index.html",
-      "sha256": "653f86f583d2bb18fa96ab492fad27fb376600500be9aa3e73806dcaea8d7c66"
+      "sha256": "02d406a9674f75d17bbb9595a417643ce35a6560df6185eb3e8e819a505d7c18"
     },
     {
       "path": "guy-lookup/lookup.js",
@@ -468,7 +468,11 @@
     },
     {
       "path": "index.html",
-      "sha256": "19768c4669adfdba28c677848b5dd6c54f7907216e55af578a487f0548357cfb"
+      "sha256": "d0c59712403c09ca88cd75a7cf93e1aeedba930216435cce163b79b0eefa5561"
+    },
+    {
+      "path": "ios-typography/repairs.css",
+      "sha256": "c3d3be179d13b837216830955673b7e9474d7286e3f5b7d7c13f980d1482d89e"
     },
     {
       "path": "LICENSE.md",
@@ -584,11 +588,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "76cdc8690d1a80e7d967fb964b2fe7b6d3d5bebb8e97dbcfc022f9e97d4d619b"
+      "sha256": "a270cd685f3a73b3341347e01dba3545f55bff9ee21ec73dcbfa892ccc6d234c"
     },
     {
       "path": "README.md",
-      "sha256": "e06249d20a30341325faa84aec7d38002c02d66ff42a8dea4f1c42a85b62e232"
+      "sha256": "3b7449ca5c222bc1c49d632f70d2690b227cd7610966b4bd032f18a660d7c227"
     },
     {
       "path": "reference-actions/presentation.js",
