@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.146 (6 November 2026): Frame calculation details use the shared four-part format, full-precision substitutions and explicit unit conversions. Sources & scope is shorter. Frame node letters are directly labelled; station/result markers and total-displacement labels are clearer, and plot height adapts without changing the model scale. Numerical kernels, Beam, Fastener Tables and historical links are unchanged. Public beta / For Review; physical-device, full accessibility and independent engineering/project acceptance remain open.
+
 Build 0.7.145 (6 November 2026): Fastener Tables use consistent row spacing, centred header typography and aligned unit rows, including mm and mm². Product identities, dimensions, loads, filters, manufacturer manuals, calculations and historical links remain unchanged. Existing engineering/source qualifications, physical-device, native zoom and full accessibility acceptance remain For Review. Public beta / For Review.
 
 Build 0.7.144 (5 November 2026): Shared mobile typography, typing controls, touch targets and landscape explanatory-text hierarchy are refined. Existing calculations, deflection linkage, figures, product manuals, filters and historical links remain unchanged. Browser viewport checks do not establish physical iPhone/iPad Safari, Android, macOS, native zoom or complete accessibility acceptance; these remain For Review. Public beta / For Review.

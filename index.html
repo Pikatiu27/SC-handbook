@@ -58,6 +58,8 @@
 <link rel="stylesheet" href="frame-analysis/styles.css?v=20261102analysis143"><link rel="stylesheet" href="handbook-conventions/styles.css?v=20261102analysis143">
 <link rel="stylesheet" href="ios-typography/repairs.css?v=20261105mobile144">
 <link rel="stylesheet" href="fastener-spacing/repairs.css?v=20261106fastener145">
+<link rel="stylesheet" href="frame-analysis/trace.css?v=20261106frame146">
+<link rel="stylesheet" href="frame-analysis/figure-review.css?v=20261106frame146">
 </head>
 <body data-analysis-signs="HB-ANALYSIS-01" data-beam-analysis-presentation="20261019beamformatrelease1">
   <header class="topbar">
@@ -1323,15 +1325,11 @@
     </section>
   </div></section>
   <details id="faCalculation" class="detail-card"><summary><span><b>Calculation</b><small>Formula, substitution, result and applicability</small></span><i aria-hidden="true">+</i></summary><div class="detail-body"><button id="faReturn" type="button">Return to results</button><div id="faTrace"></div></div></details>
-  <details id="faSources" class="detail-card"><summary><span><b>Sources &amp; scope</b><small>Model, signs, units and limits</small></span><i aria-hidden="true">+</i></summary><div class="detail-body">
-    <p><b>Model:</b> First-order 2D Euler–Bernoulli analysis with axial deformation and rigid roof joints (FA-STIFFNESS-01 / FA-RECOVERY-01). E is shared; each member has constant A and I. Support settlement is zero.</p>
-    <p><b>Supports:</b> Both bases restrain X/Y translation. Fixed bases also restrain rotation; pinned bases allow rotation.</p>
+  <details id="faSources" class="detail-card"><summary><span><b>Sources &amp; scope</b><small>Model and references</small></span><i aria-hidden="true">+</i></summary><div class="detail-body fa-trace-sources">
+    <h3>Model</h3><p>Single-storey, single-bay rigid portal; first-order 2D Euler–Bernoulli bending and axial response. Shared E; constant member A/I; ideal fixed or pinned bases with zero settlement. Roof-node forces/couples and full-span beam UDL only; enter self-weight explicitly.</p>
     <button type="button" class="hb-signs-link" data-open-conventions aria-haspopup="dialog" aria-controls="handbookConventions">Signs &amp; units</button>
-    <p>Local v includes node translation; it is not displacement relative to the member chord.</p>
-    <p><b>Worked example:</b> Jeffrey Erochko, <a href="https://learnaboutstructures.com/Slope-Deflection-Method-for-Sway-Frames" target="_blank" rel="noopener noreferrer">An Introduction to Structural Analysis, §9.6, Figures 9.20–9.24</a> (2020; checked 23 October 2026). Its axially rigid model is a separate comparison. End moments agree at printed precision. The expanded sway coefficient 0.1714 conflicts with 6/49 from the unexpanded equation; printed EIΔ = 3502 is therefore excluded. Exact axial-rigid reconstruction gives EIΔ = 4900 kN·m³.</p>
-    <p><b>Verification:</b> Closed-form checks and independent <a href="https://opensees.github.io/OpenSeesDocumentation/user/manual/model/elements/elasticBeamColumn.html" target="_blank" rel="noopener noreferrer">OpenSees elasticBeamColumn</a> comparisons with Linear transformation and uniform member loading. These are local author checks, not independent engineering or project acceptance.</p>
-    <p><b>Limits:</b> Span and height 0.25–50 m; span/height 0.1–10; positive finite stiffness. Invalid or ill-conditioned models clear dependent results. Large-movement warnings flag the method's applicability, not a code limit.</p>
-    <p><b>Excluded:</b> Shear deformation, joint offsets, springs, roof end releases, support settlement, plasticity, dynamics, action combinations, P–Δ, buckling, resistance and code deflection-limit checks. Self-weight must be entered as a load. Public beta / For Review.</p>
+    <h3>Applicability</h3><p>Span and height 0.25–50 m; span/height 0.1–10. Ill-conditioned models are not evaluated. Local v includes node translation. Large-movement warnings concern first-order applicability, not code limits. Excludes shear deformation, offsets, springs, roof releases, settlement, plasticity, dynamics, P–Δ, buckling, resistance and code serviceability checks.</p>
+    <h3>References</h3><p><a href="https://learnaboutstructures.com/Slope-Deflection-Method-for-Sway-Frames" target="_blank" rel="noopener noreferrer">Erochko Section 9.6</a> (2020): axially rigid comparison; end moments verified, conflicting printed displacement excluded. Independent <a href="https://opensees.github.io/OpenSeesDocumentation/user/manual/model/elements/elasticBeamColumn.html" target="_blank" rel="noopener noreferrer">OpenSees elasticBeamColumn</a> comparisons include finite axial stiffness. Author verification does not establish independent engineering or project acceptance.</p>
   </div></details>
 </section>
 
@@ -2593,7 +2591,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.145 &middot; updated 6 Nov 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.146 &middot; updated 6 Nov 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2709,6 +2707,7 @@
   </div>
 </dialog>
 
-<script src="frame-analysis/calculation.js?v=20261102analysis143"></script><script src="frame-analysis/drawing.js?v=20261102analysis143"></script><script src="frame-analysis/app.js?v=20261102analysis143"></script><script src="handbook-conventions/app.js?v=20261102analysis143"></script>
+<script src="frame-analysis/calculation.js?v=20261102analysis143"></script><script src="frame-analysis/drawing.js?v=20261106frame146"></script><script src="frame-analysis/trace.js?v=20261106frame146"></script>
+<script src="frame-analysis/app.js?v=20261106frame146"></script><script src="handbook-conventions/app.js?v=20261102analysis143"></script>
 </body>
 </html>

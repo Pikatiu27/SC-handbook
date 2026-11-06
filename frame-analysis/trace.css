@@ -1,0 +1,14 @@
+#faTrace .bif-math-stack{display:flex;flex-direction:column;align-items:stretch;gap:6px;min-width:0;}
+#faTrace .bif-math-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 6px;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:3px 2px;}
+#faTrace math{font-family:var(--font);font-size:13px;font-weight:400;line-height:1.45;text-align:left;margin:0;width:max-content;max-width:none;}
+#faTrace math mi{font-family:inherit;font-style:italic;}
+#faTrace math :is(mn,mo,mtext){font-family:inherit;font-style:normal;}
+#faTrace math mo{font-family:math;}
+#faTrace .is-result math{font-weight:700;}
+#faTrace .bif-trace-note{font-family:inherit;font-size:var(--fs-xs);line-height:1.5;}
+#faTrace :is(p,li){font-size:var(--fs-xs);line-height:1.5;}
+#faTrace .calculation-trace-heading small{font-size:var(--fs-xs);font-weight:400;line-height:1.4;}
+#faTrace .calculation-trace-line{align-items:start;}
+#faTrace .calculation-trace-line>span{font-size:var(--fs-xs);font-weight:600;line-height:1.4;padding-top:4px;}
+@media(max-width:600px){#faTrace.formula-list>.calculation-trace-row{grid-template-columns:minmax(0,1fr);gap:12px;}#faTrace .calculation-trace-line{grid-template-columns:minmax(0,1fr);gap:3px;}#faTrace .calculation-trace-line>span{padding-top:0;}}
+#faTrace>p{margin:0 0 12px}#faTrace .fa-trace-note{font-size:12px;line-height:1.5}#faTrace .fa-node-schedule{display:block;border:0;padding:12px 0}#faTrace .fa-node-schedule h4{font-size:13px;margin:0 0 6px}#faTrace .fa-trace-table td{text-align:right;font-variant-numeric:tabular-nums}#faTrace .fa-trace-table thead th:not(:first-child){text-align:right}#faTrace .fa-trace-verification{margin-top:12px;padding-top:8px;border-top:1px solid var(--line)}#faTrace .fa-trace-verification summary{font-size:13px;font-weight:700}#faTrace .fa-trace-verification p{font-size:12px}#faSources h3{font-size:13px;margin:14px 0 5px}

@@ -10,7 +10,7 @@
   }
   const line=(a,b,cls='secondary',extra='')=>`<line x1="${n(a.x)}" y1="${n(a.y)}" x2="${n(b.x)}" y2="${n(b.y)}" class="engineering-drawing__${cls}" ${extra}/>`;
   const text=(x,y,value)=>`<text x="${n(x)}" y="${n(y)}" class="engineering-drawing__text">${esc(value)}</text>`;
-  function head(id,w,h,compact,title,desc){return `<svg xmlns="http://www.w3.org/2000/svg" class="engineering-figure__svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-labelledby="fa-${id}-title fa-${id}-desc" data-figure-profile="SC-WEB-FIGURE-001" data-standard-adoption-id="SC-HANDBOOK-UWEDS-001" data-pre-drawing-case-review-id="SC-FA-OVERLAY-20261023" data-representation-class="OTHER_CONTROLLED" data-drawing-status="FOR_REVIEW" data-view-id="FA-${id}" data-purpose="Entered portal geometry and first-order response inspection" data-projection="ORTHOGRAPHIC" data-scale="NTS" data-unit="m,kN,kN.m,mm,mrad" data-production-mode="WEB_NATIVE_PARAMETRIC" data-source-ref="FA-STIFFNESS-01 FA-RECOVERY-01" data-source-access-date="2026-10-23" data-derivative-revision="20261026frameleaders1" data-rendered-variant="${compact?'phone':'desktop'}" data-source-status="DERIVED_FROM_VALIDATED_INPUTS"><title id="fa-${id}-title">${esc(title)}</title><desc id="fa-${id}-desc">${esc(desc)} Screen review only, not for fabrication.</desc>`;}
+  function head(id,w,h,compact,title,desc){return `<svg xmlns="http://www.w3.org/2000/svg" class="engineering-figure__svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-labelledby="fa-${id}-title fa-${id}-desc" data-figure-profile="SC-WEB-FIGURE-001" data-standard-adoption-id="SC-HANDBOOK-UWEDS-001" data-pre-drawing-case-review-id="SC-FA-DIRECT-NODES-20261106" data-representation-class="OTHER_CONTROLLED" data-drawing-status="FOR_REVIEW" data-view-id="FA-${id}" data-purpose="Entered portal geometry and first-order response inspection" data-projection="ORTHOGRAPHIC" data-scale="NTS" data-unit="m,kN,kN.m,mm,mrad" data-production-mode="WEB_NATIVE_PARAMETRIC" data-source-ref="FA-STIFFNESS-01 FA-RECOVERY-01" data-source-access-date="2026-10-23" data-derivative-revision="20261106framedirectnodes1" data-rendered-variant="${compact?'phone':'desktop'}" data-source-status="DERIVED_FROM_VALIDATED_INPUTS"><title id="fa-${id}-title">${esc(title)}</title><desc id="fa-${id}-desc">${esc(desc)} Screen review only, not for fabrication.</desc>`;}
   function arrow(a,b){const dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(L<1)return '';const ux=dx/L,uy=dy/L,bx=b.x-ux*6,by=b.y-uy*6;return line(a,b)+`<path class="engineering-drawing__arrow" data-load-arrow="true" data-tip-x="${n(b.x)}" data-tip-y="${n(b.y)}" d="M ${n(bx-uy*2)} ${n(by+ux*2)} L ${n(b.x)} ${n(b.y)} L ${n(bx+uy*2)} ${n(by-ux*2)} Z"/>`;}
   function layout(r,{width=520,height=280}={}){const scale=Math.min((width-100)/r.input.span,(height-110)/r.input.height),w=scale*r.input.span,h=scale*r.input.height;return {scale,X:x=>(width-w)/2+x*scale,Y:y=>height-44-y*scale};}
   // Position belongs to the original member station, never the result offset
@@ -28,7 +28,7 @@
     const xt=positionTicks(span,g.scale*span),yt=positionTicks(h,g.scale*h);
     return `<div class="fa-frame-axes" aria-hidden="true"><span class="fa-frame-axis-title fa-frame-axis-title--y">Y / m</span><span class="fa-frame-axis-title fa-frame-axis-title--x">X / m</span><i class="fa-frame-axis-line fa-frame-axis-line--x" style="left:${n(g.X(0))}px;top:${bottom}px;width:${n(g.scale*span)}px"></i><i class="fa-frame-axis-line fa-frame-axis-line--y" style="left:${left}px;top:${n(top)}px;height:${n(zero-top)}px"></i>${xt.map((v,i)=>mark('X',v,g.X(v),i,xt.length-1)).join('')}${yt.map((v,i)=>mark('Y',v,g.Y(v),i,yt.length-1)).join('')}${p?`<i class="fa-position-indicator fa-position-indicator--x" data-position-indicator="X" style="left:${n(g.X(p.X))}px;top:${bottom}px"></i><i class="fa-position-indicator fa-position-indicator--y" data-position-indicator="Y" style="left:${left}px;top:${n(g.Y(p.Y))}px"></i>`:''}</div>`;
   }
-  function stationMarker(r,member,x,g){const p=framePosition(r,member,x);return p?`<circle class="engineering-drawing__active fa-position-dot" fill="white" cx="${n(g.X(p.X))}" cy="${n(g.Y(p.Y))}" r="2.5" data-position-marker="${member}" data-global-x="${p.X}" data-global-y="${p.Y}"/>`:'';}
+  function stationMarker(r,member,x,g){const p=framePosition(r,member,x);return p?`<circle class="engineering-drawing__bar fa-position-dot" cx="${n(g.X(p.X))}" cy="${n(g.Y(p.Y))}" r="2" data-position-marker="${member}" data-global-x="${p.X}" data-global-y="${p.Y}"/>`:'';}
   function renderStructure(r,{width=520,height=280,compact=false,member='BC',deformed=false,showLoads=true,showLabels=true,highlight=true}={}){
     if(!r?.valid||width<160||height<180)return '';
     const g=layout(r,{width,height}),P=n=>({x:g.X(n.x),y:g.Y(n.y)}),gap=g.scale*r.input.span,actions=gap>=70&&g.scale*r.input.height>=45,out=[head('structure',width,height,compact,'Portal frame elevation','Entered span and height use uniform scaling. A and D are bases; B and C are roof nodes. AB and DC run base to roof; BC runs left to right. Supports and action arrow lengths are schematic. Crowded action symbols are omitted at extreme aspect ratios; the load input schedule remains authoritative. Select a member by tap or keyboard; numeric and range position controls provide alternatives.')];
@@ -122,21 +122,22 @@
     const out=[];
     for(const item of items.slice(0,budget)){
       const w=item.text.length*7.4+4,h=15,p=item.point,candidates=[];
-      if(item.nodeId){const left=['A','B'].includes(item.nodeId),roof=['B','C'].includes(item.nodeId);candidates.push({x:p.x+(left?-w-12:12),y:p.y+(roof?-28:16),w,h});}
-      for(const dy of [-24,28,-45,48,-65,68])for(const dx of [12,-w-12,-w/2])candidates.push({x:p.x+dx,y:p.y+dy-12,w,h});
-      // Only structural identities retain a whole-view fallback. Numerical
-      // readings must remain near their own plotted feature.
-      if(item.nodeId)for(const y of [8,height-20])for(const x of [8,width-w-8,(width-w)/2])candidates.push({x,y,w,h});
+      if(item.nodeId){
+        const left=['A','B'].includes(item.nodeId),roof=['B','C'].includes(item.nodeId);
+        // Direct identities stay on the outer side of their own original node.
+        // Reserve several nearby lanes; never route a node leader across results.
+        for(const dy of roof?[-28,-44,-60]:[16,0,-16])for(const gap of [12,24,36,48])candidates.push({x:p.x+(left?-w-gap:gap),y:p.y+dy,w,h});
+      }else for(const dy of [-24,28,-45,48,-65,68])for(const dx of [12,-w-12,-w/2])candidates.push({x:p.x+dx,y:p.y+dy-12,w,h});
       const link=b=>{const edge={x:Math.max(b.x,Math.min(b.x+b.w,p.x)),y:p.y<b.y?b.y:p.y>b.y+b.h?b.y+b.h:p.y},distance=Math.hypot(p.x-edge.x,p.y-edge.y)||1;return {x:edge.x+(p.x-edge.x)/distance*4,y:edge.y+(p.y-edge.y)/distance*4};};
       const fits=b=>b.x>=6&&b.y>=5&&b.x+b.w<=width-6&&b.y+b.h<=height-5&&!placed.some(a=>!(b.x>a.x+a.w+4||b.x+b.w<a.x-4||b.y>a.y+a.h+4||b.y+b.h<a.y-4))&&!obstacles.some(([a,c])=>segmentHits(a,c,{x:b.x-2,y:b.y-2,w:b.w+4,h:b.h+4}));
       let rect,route;
-      if(item.nodeId)rect=candidates.find(b=>fits(b)&&!placed.some(a=>segmentHits(p,link(b),{x:a.x-2,y:a.y-2,w:a.w+4,h:a.h+4})));
+      if(item.nodeId)rect=candidates.find(fits);
       else{let best=Infinity;const distance=b=>Math.hypot(p.x-Math.max(b.x,Math.min(b.x+b.w,p.x)),p.y-Math.max(b.y,Math.min(b.y+b.h,p.y)));
         for(const b of candidates.filter(b=>distance(b)<=(compact?44:56)).sort((a,b)=>distance(a)-distance(b))){if(distance(b)>best||!fits(b))continue;const next=nearbyLeader(p,b,obstacles,placed,compact?64:80);if(next&&next.length<best){rect=b;route=next;best=next.length;}}
       }
       if(!rect)continue;placed.push(rect);const end=link(rect);
       // A leader is a screen link to a canonical result point, not a dimension.
-      if(item.nodeId)out.push(`<g data-node-identity="${item.nodeId}" pointer-events="none">`,line(p,end,'dimensions',`data-node-leader="${item.nodeId}"`),text(rect.x,rect.y+12,item.text).replace('class=',`data-node-label="${item.nodeId}" class=`),'</g>');
+      if(item.nodeId)out.push(`<g data-node-identity="${item.nodeId}" data-node-x="${n(p.x)}" data-node-y="${n(p.y)}" data-label-bounds="${n(rect.x)} ${n(rect.y)} ${n(rect.w)} ${h}" pointer-events="none">`,text(rect.x,rect.y+12,item.text).replace('class=',`data-node-label="${item.nodeId}" class=`),'</g>');
       else{out.push(`<g data-result-label="${esc(item.member)}" data-member="${esc(item.member)}" data-result-selected="${!!item.selected}" data-result-value="${item.value}" data-result-x="${item.x}" data-label-bounds="${n(rect.x)} ${n(rect.y)} ${n(rect.w)} ${h}">`,`<path class="engineering-drawing__dimensions" data-result-leader="true" data-leader-length="${n(route.length)}" d="${route.points.map((q,i)=>`${i?'L':'M'} ${n(q.x)} ${n(q.y)}`).join(' ')}"/>`,text(rect.x,rect.y+12,item.text),'</g>');for(let i=1;i<route.points.length;i++)obstacles.push([route.points[i-1],route.points[i]]);}
       if(item.nodeId)obstacles.push([p,end]);
     }
@@ -145,7 +146,7 @@
   function renderFrame(r,{width=520,height=320,compact=false,member='BC',mode='M',x=null,scale=100,labels=true,loads=false,isolate=false}={}){
     if(!r?.valid||width<160||height<180)return '';
     if(!['model',...responseKeys,'displacement'].includes(mode))return '';
-    const model=mode==='model',state=frameScale(r,mode,{width,height,compact,scale}),base=renderStructure(r,{width,height,compact,member,showLoads:model||loads,showLabels:false,highlight:false}).replace('</svg>',''),out=[base.replace('data-view-id="FA-structure"',`data-view-id="FA-whole-${mode}" data-frame-result="${mode}" data-reference-value="${state.referenceValue}" data-reference-amplitude="${state.amplitude}" data-magnification="${state.mag}"`)],obstacles=[],labelItems=[];
+    const model=mode==='model',state=frameScale(r,mode,{width,height,compact,scale}),base=renderStructure(r,{width,height,compact,member,showLoads:model||loads,showLabels:false,highlight:false}).replace('</svg>',''),out=[base.replace('data-view-id="FA-structure"',`data-view-id="FA-whole-${mode}" data-frame-result="${mode}" data-reference-value="${state.referenceValue}" data-reference-amplitude="${state.amplitude}" data-magnification="${state.mag}"`)],obstacles=[],actionLanes=new Set(),labelItems=[];
     const visible=model?[]:r.members.filter(e=>!isolate||e.id===member),path=ps=>ps.map((p,i)=>`${i?'L':'M'} ${n(p.x)} ${n(p.y)}`).join(' ');
     // Include original members, support symbol envelopes and optional actions in
     // the callout exclusion geometry. Shape/path collision is rechecked in browser.
@@ -159,7 +160,7 @@
     // Reserve the optional schematic action envelopes too. Dense horizontal
     // exclusion lanes conservatively cover the full symbol area, including arcs.
     if((model||loads)&&state.geometry.scale*r.input.span>=70&&state.geometry.scale*r.input.height>=45){
-      const reserve=(x0,x1,y0,y1)=>{for(let y=y0;y<=y1;y+=2)obstacles.push([{x:x0,y},{x:x1,y}]);};
+      const reserve=(x0,x1,y0,y1)=>{for(let y=y0;y<=y1;y+=2){const lane=[{x:x0,y},{x:x1,y}];obstacles.push(lane);actionLanes.add(lane);}};
       for(const [i,suffix]of [[1,'Left'],[2,'Right']])if(['H','P','C'].some(k=>r.input[k+suffix])){const p=r.nodes[i];reserve(state.geometry.X(p.x)-36,state.geometry.X(p.x)+36,state.geometry.Y(p.y)-36,state.geometry.Y(p.y)+36);}
       if(r.input.q){const y=state.geometry.Y(r.input.height),other=y-26*Math.sign(r.input.q);reserve(state.geometry.X(0),state.geometry.X(r.input.span),Math.min(y,other)-2,Math.max(y,other)+2);}
     }
@@ -190,15 +191,15 @@
     if(model)out.push(stationMarker(r,member,x,state.geometry));
     if(!model&&selected&&Number.isFinite(x)&&x>=0&&x<=selected.L){const p=selected.at(x),point=projectPoint(r,selected,p,mode,state),value=mode==='displacement'?Math.hypot(p.ux,p.uy)*1000:resolved(r,mode,p[mode]*factor(mode));
       out.push(stationMarker(r,member,x,state.geometry));for(const dy of [-3,0,3])obstacles.push([{x:point.base.x-3,y:point.base.y+dy},{x:point.base.x+3,y:point.base.y+dy}]);
-      out.push(line(point.base,point,'symbolic','data-frame-reading="true"'),`<circle class="engineering-drawing__active fa-reading-dot" fill="white" cx="${n(point.x)}" cy="${n(point.y)}" r="3.5" data-reading-member="${member}" data-model-x="${x}" data-result-value="${value}"/>`);
+      out.push(line(point.base,point,'dimensions','data-frame-reading="true"'),`<circle class="engineering-drawing__active fa-reading-dot" fill="white" cx="${n(point.x)}" cy="${n(point.y)}" r="3.5" data-reading-member="${member}" data-model-x="${x}" data-result-value="${value}"/>`);
       obstacles.push([point.base,point]);for(const dy of [-4,-2,0,2,4])obstacles.push([{x:point.x-4,y:point.y+dy},{x:point.x+4,y:point.y+dy}]);
       const duplicate=labelItems.findIndex(a=>Math.hypot(a.point.x-point.x,a.point.y-point.y)<12||(a.member===member&&Math.abs(a.value-value)<1e-12*Math.max(1,Math.abs(value))));
       if(duplicate>=0)labelItems.splice(duplicate,1);
-      labelItems.unshift({member,x,value,point,selected:true,text:`${member} ${value>0?'+':''}${fmt(value)}`});
+      labelItems.unshift({member,x,value,point,selected:true,text:mode==='displacement'?`${member} |u| ${fmt(value)}`:`${member} ${value>0?'+':''}${fmt(value)}`});
     }
     if(mode==='displacement')for(const ni of [1,2]){const node=r.nodes[ni],e=r.members.find(e=>e.j===ni),p=e.at(e.L),point=projectPoint(r,e,p,mode,state),value=Math.hypot(node.ux,node.uy)*1000;if(!labelItems.some(a=>Math.hypot(a.point.x-point.x,a.point.y-point.y)<15))labelItems.push({member:e.id,x:e.L,value,point,text:`${node.id} |u| ${fmt(value)}`});}
     const placed=[],identities=r.nodes.map(node=>({nodeId:node.id,text:node.id,point:{x:state.geometry.X(node.x),y:state.geometry.Y(node.y)}}));
-    out.push('<g data-geometry-role="node-identities">',callouts(identities,obstacles,width,height,4,placed),'</g>');
+    out.push('<g data-geometry-role="node-identities">',callouts(identities,obstacles.filter(lane=>!actionLanes.has(lane)),width,height,4,placed),'</g>');
     if(labels&&!model)out.push('<g data-geometry-role="result-labels">',callouts(labelItems,obstacles,width,height,compact?2:4,placed,compact),'</g>');
     out.push('</svg>');return out.join('');
   }

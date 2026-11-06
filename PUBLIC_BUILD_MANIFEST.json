@@ -360,7 +360,7 @@
     },
     {
       "path": "frame-analysis/app.js",
-      "sha256": "a1ff62ce53afaa6cbea0160bcf5507a7bf62ea1159e181f77b8bbeb9dc9129e1"
+      "sha256": "96e6d9ba0a20e76427de58517ad9d2a4cb6182a221456b025856baae6c963368"
     },
     {
       "path": "frame-analysis/calculation.js",
@@ -368,11 +368,23 @@
     },
     {
       "path": "frame-analysis/drawing.js",
-      "sha256": "4619a54b1e7ed75d9000e39080cc8668b3da1d3f51bd9550e28ae7e467bb5019"
+      "sha256": "eeb3cfaa02dfe487eddadb08909d7e6b012890742ba9ba6cb3684c1a5d54ddb2"
+    },
+    {
+      "path": "frame-analysis/figure-review.css",
+      "sha256": "e8a0c514a198ec5317a23c833b1f549d1d685b3706658bf73f90e16f2e2e22b4"
     },
     {
       "path": "frame-analysis/styles.css",
       "sha256": "77abd8fe280948832636a7f799e73fa7f0edb2c337dab6eb0e78e6bad1e02000"
+    },
+    {
+      "path": "frame-analysis/trace.css",
+      "sha256": "1fc61ef580839bf04dd15168f020d64bb18bb74a5bca0064bb5640aa102ed2fb"
+    },
+    {
+      "path": "frame-analysis/trace.js",
+      "sha256": "d99e59cd6185ff9d804b2060dcaa36f0628ef167196175172ea5652304f51a93"
     },
     {
       "path": "geo-parameters/app.js",
@@ -472,7 +484,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "a4e7ba7d99c9674c4f8421efeb234757bcea0ef70599341b077c0d92412ecac8"
+      "sha256": "7f93787ddac5fd2439a234484dd8f292ea4eb0976c2b834fc8b842abe637701b"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -592,11 +604,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "c007b8ad63cba839aa7a7d1b637a652b0341407b4754d9f78af48ed2d9e2e579"
+      "sha256": "98e2f3dec4c53ab2ea10e78ef7a6a7a6337c815a9eb60e23a5b6ef7ababd6d72"
     },
     {
       "path": "README.md",
-      "sha256": "433ed6494e95b9156dd2471abb533ab33f8dd20a33f1f7c66d783075168c39c5"
+      "sha256": "4ec824282e5db115d1fd6c0ad925d421b81205f225ddc1ba9cd875c3fe27d339"
     },
     {
       "path": "reference-actions/presentation.js",

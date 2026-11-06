@@ -1,0 +1,2 @@
+/* Shared screen drawing roles; scoped emphasis only. */
+#frameanalysisPanel [data-result-selected="true"] .engineering-drawing__text{font-weight:700;fill:var(--drawing-active)}
