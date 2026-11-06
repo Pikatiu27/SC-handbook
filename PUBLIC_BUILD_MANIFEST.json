@@ -331,6 +331,10 @@
       "sha256": "aaf63b6934734c14b02bb9f1376a7b275a7a1705b323ccfea89860bd1d157a92"
     },
     {
+      "path": "fastener-spacing/repairs.css",
+      "sha256": "132695a389c051f8a1f8957cf1dae33e3a4e112ec9c3722c0280149df97118ee"
+    },
+    {
       "path": "fillet-table.css",
       "sha256": "0a4808166a8c082381c60929a5e41744cbf4e97da69775913dbcdbea7d0362a6"
     },
@@ -468,7 +472,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "d0c59712403c09ca88cd75a7cf93e1aeedba930216435cce163b79b0eefa5561"
+      "sha256": "a4e7ba7d99c9674c4f8421efeb234757bcea0ef70599341b077c0d92412ecac8"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -588,11 +592,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "a270cd685f3a73b3341347e01dba3545f55bff9ee21ec73dcbfa892ccc6d234c"
+      "sha256": "c007b8ad63cba839aa7a7d1b637a652b0341407b4754d9f78af48ed2d9e2e579"
     },
     {
       "path": "README.md",
-      "sha256": "3b7449ca5c222bc1c49d632f70d2690b227cd7610966b4bd032f18a660d7c227"
+      "sha256": "433ed6494e95b9156dd2471abb533ab33f8dd20a33f1f7c66d783075168c39c5"
     },
     {
       "path": "reference-actions/presentation.js",

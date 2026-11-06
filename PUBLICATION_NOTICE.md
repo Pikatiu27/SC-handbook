@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.145 (6 November 2026): Fastener Tables use consistent row spacing, centred header typography and aligned unit rows, including mm and mm². Product identities, dimensions, loads, filters, manufacturer manuals, calculations and historical links remain unchanged. Existing engineering/source qualifications, physical-device, native zoom and full accessibility acceptance remain For Review. Public beta / For Review.
+
 Build 0.7.144 (5 November 2026): Shared mobile typography, typing controls, touch targets and landscape explanatory-text hierarchy are refined. Existing calculations, deflection linkage, figures, product manuals, filters and historical links remain unchanged. Browser viewport checks do not establish physical iPhone/iPad Safari, Android, macOS, native zoom or complete accessibility acceptance; these remain For Review. Public beta / For Review.
 
 Build 0.7.143 (2 November 2026): Beam and single-storey single-bay Frame Analysis share HB-ANALYSIS-01 signs and a Signs & units reference. Displacements are upward-positive and rotations counterclockwise-positive. Frame adds whole-frame results and member details. First-order elastic analysis only; independent engineering and project acceptance remain required. Public beta / For Review.

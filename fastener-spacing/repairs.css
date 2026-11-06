@@ -1,0 +1,81 @@
+/* Local Fastener Tables spacing revision. Table rows grow with their content. */
+#boltDimensionsView {
+  --bd-cell-y: 8px;
+  --bd-cell-x: 10px;
+  --bd-row-min: 40px;
+}
+#boltDimensionsView .bd-types { gap: 6px; margin-bottom: 12px; }
+#boltDimensionsView .bd-scope { margin: 0 0 16px; }
+#boltDimensionsView .bd-filter-toolbar.input-group-fields { margin: 0 0 16px; gap: 12px; }
+#boltDimensionsView .bd-table-heading { align-items: center; gap: 8px 12px; margin-bottom: 6px; }
+#boltDimensionsView .bd-table-hint { margin: 0 0 8px; }
+#boltDimensionsView .bd-table-wrap table { line-height: 1.45; }
+#boltDimensionsView .bd-table-wrap :is(th, td) {
+  box-sizing: border-box;
+  padding: var(--bd-cell-y) var(--bd-cell-x);
+  vertical-align: top;
+}
+/* A table-cell height is a minimum: wrapping may increase it. No clipping. */
+#boltDimensionsView .bd-table-wrap tbody :is(th, td) { height: var(--bd-row-min); }
+#boltDimensionsView .bd-table-wrap thead th {
+  padding: 7px var(--bd-cell-x);
+  font-family: var(--font);
+  font-size: var(--fs-sm,13px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.4;
+  text-align: center;
+  vertical-align: middle;
+  color: var(--ink);
+  letter-spacing: 0;
+  text-transform: none;
+}
+#boltDimensionsView .bd-table-wrap .bd-group-row .bd-column-group {
+  padding: 4px var(--bd-cell-x);
+  font-size: var(--fs-sm,13px); line-height: 1.4;
+  color: var(--ink); text-align: center; vertical-align: middle;
+}
+#boltDimensionsView .bd-table-wrap .bd-group-row th[rowspan] { vertical-align: middle; }
+#boltDimensionsView .bd-table-wrap thead small {
+  margin-top: 2px;
+  font-family: inherit; font-size: var(--fs-xs,12px);
+  font-weight: 400; font-style: normal;
+  line-height: 16px; text-align: center; color: var(--muted);
+}
+/* Scripts retain their notation without enlarging the shared title line box.
+   Otherwise A_s moves its following mm² line below neighbouring mm units. */
+#boltDimensionsView .bd-table-wrap thead :is(sub, sup) {
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+#boltDimensionsView .bd-table-wrap thead sub { bottom: -.25em; }
+#boltDimensionsView .bd-table-wrap thead sup { top: -.5em; }
+#boltDimensionsView .bd-cell-note {
+  margin-top: 3px; font-size: var(--fs-xs,12px); line-height: 1.4;
+}
+#boltDimensionsView .bd-documents a { margin-bottom: 3px; line-height: 1.45; }
+#boltDimensionsView .bd-documents a:last-child { margin-bottom: 0; }
+#boltDimensionsView .bd-table-wrap .bd-code {
+  width: 1%; min-width: 136px; max-width: 164px;
+  white-space: normal; overflow-wrap: anywhere;
+}
+/* Progressive width refinement; browsers without :has retain the usable base. */
+#boltDimensionsView:has([data-bd-type="structural"][aria-pressed="true"]) #bdTable .bd-code,
+#boltDimensionsView #bdHoleTable .bd-code { width: 80px; min-width: 80px; max-width: 80px; }
+#boltDimensionsView .bd-note { margin: 8px 0 0; }
+#boltDimensionsView .bd-hole-section { margin-top: 20px; }
+#boltDimensionsView .bd-hole-section .section-heading { margin-bottom: 6px; }
+#boltDimensionsView .bd-disclosure { margin-top: 12px; }
+#boltDimensionsView .bd-disclosure > .bd-table-wrap { margin-top: 10px; }
+#boltDimensionsView .bd-basis > p { margin: 8px 0; }
+#boltDimensionsView .bd-basis h3 { margin: 16px 0 6px; }
+#boltDimensionsView .bd-footer { margin: 10px 4px 0; }
+@media (max-width: 760px) {
+  #boltDimensionsView { --bd-cell-x: 8px; }
+  #boltDimensionsView .bd-table-wrap .bd-code { min-width: 128px; max-width: 148px; }
+  #boltDimensionsView:has([data-bd-type="structural"][aria-pressed="true"]) #bdTable .bd-code,
+  #boltDimensionsView #bdHoleTable .bd-code { width: 72px; min-width: 72px; max-width: 72px; }
+  #boltDimensionsView .bd-filter-toolbar.input-group-fields { gap: 10px; }
+}
