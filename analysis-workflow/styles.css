@@ -1,0 +1,34 @@
+/* Shared Analysis workflow roles. Tool colours and drawing tokens remain owned by the handbook. */
+:is(#beamforcesPanel,#frameanalysisPanel) :is(.bif-card,.fa-card){padding:0;border:0;background:transparent;box-shadow:none}
+:is(#beamforcesPanel,#frameanalysisPanel) .bif-workspace{gap:16px}
+:is(#beamforcesPanel,#frameanalysisPanel) :is(.aw-inputs,.aw-results){padding:16px;min-width:0;border:1px solid var(--line);border-radius:var(--card-radius,16px)}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-inputs{background:var(--panel-bg,var(--paper));gap:12px}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-results{background:var(--card);border-top:3px solid var(--green-dark);margin-top:0}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-stage-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-stage-heading h3{font-size:var(--fs-md,15px);line-height:1.4;margin:0;color:var(--ink)}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-note{font-size:var(--fs-xs);line-height:1.5;color:var(--muted);margin:0 0 10px;overflow-wrap:anywhere}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-stage-heading+.aw-note{margin-top:6px}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-group-title{font-size:var(--fs-sm);line-height:1.4;margin:4px 0 0;font-weight:700}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-model-title{margin:14px 0 5px}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-state{font-size:var(--fs-xs);line-height:1.5;color:var(--muted);margin:0 0 12px}
+#beamforcesPanel .aw-state[data-state=invalid]{color:var(--status-fail)}
+#beamforcesPanel #bdResultHeading{display:none}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-inspection,:is(#beamforcesPanel,#frameanalysisPanel) .fa-inspection{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:14px 0}
+#beamforcesPanel .aw-inspection .bif-reading-heading{margin-top:0;flex-wrap:wrap}
+#beamforcesPanel .aw-inspection h3{font-size:var(--fs-sm);line-height:1.4;margin:0}
+#frameanalysisPanel .fa-inspection h3{font-size:var(--fs-sm)}
+#frameanalysisPanel .fa-inspection .aw-note{margin-top:6px}
+#beamforcesPanel .aw-inspection>.aw-note{margin:6px 0 0}
+:is(#beamforcesPanel,#frameanalysisPanel) .aw-jump{display:none;white-space:normal}
+#frameanalysisPanel :is(#faViewResults,#faEditInputs){display:none!important}
+:is(#beamforcesPanel,#frameanalysisPanel) [id^=aw-][tabindex]{scroll-margin-top:150px;outline-offset:4px}
+#frameanalysisPanel .fa-result-controls{margin-top:0}
+@media(max-width:960px){
+  :is(#beamforcesPanel,#frameanalysisPanel) .aw-jump{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;min-height:44px}
+  :is(#beamforcesPanel,#frameanalysisPanel) .aw-results .aw-stage-heading{align-items:flex-start}
+}
+@media(max-width:500px){
+  :is(#beamforcesPanel,#frameanalysisPanel) :is(.aw-inputs,.aw-results){padding:12px}
+  :is(#beamforcesPanel,#frameanalysisPanel) .aw-results .aw-stage-heading{gap:6px}
+  #beamforcesPanel .bif-reading>.bif-coordinate{min-width:0}
+}

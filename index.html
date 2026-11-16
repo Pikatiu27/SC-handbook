@@ -60,6 +60,7 @@
 <link rel="stylesheet" href="fastener-spacing/repairs.css?v=20261106fastener145">
 <link rel="stylesheet" href="frame-analysis/trace.css?v=20261106frame146">
 <link rel="stylesheet" href="frame-analysis/figure-review.css?v=20261106frame146">
+<link rel="stylesheet" href="analysis-workflow/styles.css?v=20261116analysis147">
 </head>
 <body data-analysis-signs="HB-ANALYSIS-01" data-beam-analysis-presentation="20261019beamformatrelease1">
   <header class="topbar">
@@ -1298,24 +1299,24 @@
     <section id="frameanalysisPanel" class="tool-panel" hidden>
   <div class="tool-heading"><div><h2>Frame Analysis</h2></div><span class="tool-status">Public beta · For Review</span></div>
   <section class="lookup-card fa-card"><div class="bif-workspace">
-    <section class="bif-inputs" aria-label="Portal frame inputs">
-      <div class="bif-input-heading"><h3>Portal frame</h3><button id="faReset" type="button">Reset</button></div>
+    <section class="bif-inputs aw-inputs" aria-labelledby="aw-frame-inputs">
+      <div class="aw-stage-heading"><h3 id="aw-frame-inputs" tabindex="-1">Model inputs</h3><button id="faReset" type="button">Reset</button></div><p class="aw-note">Illustrative starting values · enter project inputs.</p><button class="aw-jump" type="button" data-analysis-jump="frame-results">View results ↓</button><h4 class="aw-group-title">Geometry &amp; supports</h4>
       <p class="bif-help">Single storey · single bay · rigid beam–column joints</p><button id="faViewResults" class="fa-phone-jump" type="button">View results ↓</button>
       <div id="faGeometry" class="bif-fields"></div>
       <div id="faSupports" class="bif-fields"></div>
       <section class="input-group"><h3>Member stiffness</h3><div id="faMaterial" class="bif-fields"></div><div id="faProperties"></div><p class="bif-help">Illustrative defaults; enter project properties. I is about the frame's bending axis.</p></section>
       <section class="input-group"><h3>Loads</h3><div id="faUniform" class="bif-fields"></div><p class="bif-help">q and P: down +; H: right +; C: counterclockwise +. Include self-weight if required.</p><div id="faLoads"></div><button id="faClearLoads" type="button">Clear loads</button></section>
     </section>
-    <section class="bif-output" aria-label="Frame analysis results">
-      <div class="section-heading"><h3>Frame response</h3><span id="faStatus" class="fa-state" aria-live="polite"></span></div><button id="faEditInputs" class="fa-phone-jump" type="button">Edit inputs ↑</button>
-      <div class="fa-result-controls"><label for="faResponse">Whole-frame result<select id="faResponse"><option value="model">Model / loads</option><option value="N">Axial force N / kN</option><option value="V">Shear force V / kN</option><option value="M" selected>Bending moment M / kN·m</option><option value="displacement">Displacement / mm</option><option value="theta">Rotation θ / mrad</option></select></label></div>
-      <details class="bif-inline-details fa-view-options"><summary>View options</summary><div class="fa-scale-control"><label for="faScale">Diagram size · <output id="faScaleValue" for="faScale">100%</output></label><input id="faScale" type="range" min="50" max="200" step="10" value="100" aria-label="Whole-frame diagram size"><button id="faAutoScale" type="button">Auto</button></div><div class="fa-view-options-body"><label><input id="faShowLabels" type="checkbox" checked>Show values</label><label><input id="faShowLoads" type="checkbox">Show loads</label><label><input id="faIsolate" type="checkbox">Selected member only</label></div><p id="faScaleReference" class="bif-help"></p></details>
+    <section class="bif-output aw-results" aria-labelledby="aw-frame-results">
+      <div class="aw-stage-heading"><h3 id="aw-frame-results" tabindex="-1">Results</h3><button class="aw-jump" type="button" data-analysis-jump="frame-inputs">Edit model ↑</button></div><p class="aw-note">Updates automatically from model inputs.</p><p id="faStatus" class="fa-state" aria-live="polite"></p><button id="faEditInputs" class="fa-phone-jump" type="button">Edit inputs ↑</button>
+      <div class="fa-result-controls"><label for="faResponse">Display<select id="faResponse"><option value="model">Model / loads</option><option value="N">Axial force N / kN</option><option value="V">Shear force V / kN</option><option value="M" selected>Bending moment M / kN·m</option><option value="displacement">Displacement / mm</option><option value="theta">Rotation θ / mrad</option></select></label></div>
+
       <p id="faErrors" class="fa-errors" role="alert" hidden></p>
       <p id="faWarnings" class="fa-warnings" aria-live="polite" hidden></p>
       <figure class="engineering-figure fa-structure" data-figure-profile="SC-WEB-FIGURE-001"><div id="faPosition" class="fa-position" aria-label="Selected position on the original frame"></div><div class="fa-frame-stage"><div id="faStructure" class="engineering-figure__plot"></div><div id="faFrameAxes"></div></div><figcaption id="faStructureCaption" class="engineering-figure__caption">Original frame · A = (0, 0) m</figcaption><div class="engineering-figure__key"><span><i class="engineering-figure__swatch"></i>Frame</span><span id="faPositiveKey"><i class="engineering-figure__swatch engineering-figure__swatch--active"></i><span id="faActiveKey">Positive (+)</span></span><span id="faNegativeKey"><i class="engineering-figure__swatch engineering-figure__swatch--active engineering-figure__swatch--symbolic"></i>Negative (−)</span></div></figure>
       <p id="faScaleLegend" class="bif-help"></p><p id="faFrameSigns" class="bif-help"></p>
-      <section class="fa-inspection" aria-label="Selected member reading"><h3>Section reading</h3><div class="fa-member-controls"><label for="faMember">Member</label><select id="faMember"><option value="AB">AB · left column · A → B</option><option value="BC" selected>BC · beam · B → C</option><option value="DC">DC · right column · D → C</option></select></div>
-      <div class="fa-reading"><label for="faX">Position x / m<input id="faX" type="number" inputmode="decimal" step="any" value="3"></label><button id="faHold" type="button" aria-pressed="false">Hold reading</button><div id="faReadout" class="fa-readout" aria-live="polite"></div><input id="faSlider" type="range" min="0" max="6" step="0.001" value="3" aria-label="Position along selected member"><button id="faCalculationLink" type="button">Calculation</button></div>
+      <section class="fa-inspection" aria-label="Selected member reading"><h3>Inspect results</h3><p class="aw-note">Select a member and position to read results; model inputs stay unchanged.</p><details class="bif-inline-details fa-view-options"><summary>Display options</summary><div class="fa-scale-control"><label for="faScale">Diagram size · <output id="faScaleValue" for="faScale">100%</output></label><input id="faScale" type="range" min="50" max="200" step="10" value="100" aria-label="Whole-frame diagram size"><button id="faAutoScale" type="button">Auto</button></div><div class="fa-view-options-body"><label><input id="faShowLabels" type="checkbox" checked>Show values</label><label><input id="faShowLoads" type="checkbox">Show loads</label><label><input id="faIsolate" type="checkbox">Selected member only</label></div><p id="faScaleReference" class="bif-help"></p></details><div class="fa-member-controls"><label for="faMember">Member</label><select id="faMember"><option value="AB">AB · left column · A → B</option><option value="BC" selected>BC · beam · B → C</option><option value="DC">DC · right column · D → C</option></select></div>
+      <div class="fa-reading"><label for="faX"><span id="aw-frame-position-label">Inspection position x / m</span><input id="faX" type="number" inputmode="decimal" step="any" value="3"></label><button id="faHold" type="button" aria-pressed="false">Hold reading</button><div id="faReadout" class="fa-readout" aria-live="polite"></div><input id="faSlider" type="range" min="0" max="6" step="0.001" value="3" aria-label="Position along selected member"><button id="faCalculationLink" type="button">Calculation</button></div>
       <p id="faCoordinateError" class="fa-errors" hidden></p>
       <details id="faPeakDetails" class="bif-inline-details fa-peak-details"><summary>Peak locations</summary><div id="faPeaks" class="fa-peaks" aria-label="Frame and selected member peaks"></div></details></section>
       <section class="fa-reaction-section"><h3>Support reactions</h3><div id="faReactions" class="fa-reactions"></div><p class="bif-help">R<sub>x</sub> right + · R<sub>y</sub> up + · C counterclockwise +</p></section>
@@ -1336,8 +1337,8 @@
 <section id="beamforcesPanel" class="tool-panel bd-deformation" hidden>
   <div class="tool-heading"><div><h2>Beam Internal Forces</h2></div><span class="tool-status">Public beta · For Review</span></div>
   <section class="lookup-card bif-card"><div class="bif-workspace">
-    <section class="bif-inputs" aria-label="Beam and load inputs">
-      <div class="bif-input-heading"><h3>Beam &amp; supports</h3><button id="bifReset" type="button">Reset</button></div>
+    <section class="bif-inputs aw-inputs" aria-labelledby="aw-beam-inputs">
+      <div class="aw-stage-heading"><h3 id="aw-beam-inputs" tabindex="-1">Model inputs</h3><button id="bifReset" type="button">Reset</button></div><p class="aw-note">Illustrative starting values · enter project inputs.</p><button class="aw-jump" type="button" data-analysis-jump="beam-results">View results ↓</button><h4 class="aw-group-title">Geometry &amp; supports</h4>
       <section class="input-group"><div class="bif-fields bif-arrangement input-group-fields">
         <div class="bif-type-field"><span id="bifTypeLabel">Beam layout</span><select id="bifType" aria-labelledby="bifTypeLabel" hidden><option value="simple">Simply supported</option><option value="cantilever-left">Cantilever · fixed left</option><option value="cantilever-right">Cantilever · fixed right</option><option value="overhang-left">Left overhang</option><option value="overhang-right">Right overhang</option><option value="overhang-both">Both-end overhangs</option></select><details id="bifTypeChooser" class="bif-type-chooser"><summary aria-labelledby="bifTypeLabel bifTypeName"><span id="bifTypeName">Simply supported</span><i aria-hidden="true">+</i></summary><div class="bif-picker-body"><div id="bifTypeOptions" class="bif-choice-grid" role="group" aria-label="Calculated beam arrangements"></div><p id="bifLayoutCaption" class="engineering-figure__caption">14 beam layouts · schematic only, not to scale</p></div></details></div>
         <label><span>Total length, L</span><span class="unit"><input id="bifLength" type="number" min="0.1" max="100" step="0.1" value="6"><em>m</em></span></label>
@@ -1360,16 +1361,16 @@
       <div id="bifLoads"></div>
       <details id="bifLoadTools" class="bif-inline-details bif-load-movement" hidden><summary>Move this load</summary><div class="bif-inline-body"><label id="bifMoveLabel" for="bifMove">Move selected load</label><input id="bifMove" type="range" min="0" max="6" step="0.001" value="2" aria-labelledby="bifMoveLabel" aria-describedby="bifMoveHint"><p id="bifMoveHint" class="bif-help">Drag the action on the beam, or move it here.</p></div></details>
     </section>
-    <section class="bif-output" aria-label="Beam analysis results">
-      <div class="section-heading"><h3 id="bdResultHeading">Deflection &amp; rotation</h3></div><div class="bd-views" role="group" aria-label="Beam response view"><button id="bdForcesView" type="button" aria-pressed="false">Internal forces</button><button id="bdDeformationView" type="button" aria-pressed="true">Deflection &amp; rotation</button></div>
+    <section class="bif-output aw-results" aria-labelledby="aw-beam-results">
+      <div class="aw-stage-heading"><h3 id="aw-beam-results" tabindex="-1">Results</h3><button class="aw-jump" type="button" data-analysis-jump="beam-inputs">Edit model ↑</button></div><p class="aw-note">Updates automatically from model inputs.</p><p id="aw-beam-state" class="aw-state" aria-live="polite"></p><span id="bdResultHeading" class="sr-only">Deflection &amp; rotation</span><div class="bd-views" role="group" aria-label="Beam response view"><button id="bdForcesView" type="button" aria-pressed="false">Internal forces</button><button id="bdDeformationView" type="button" aria-pressed="true">Deflection &amp; rotation</button></div>
       <div id="bifErrors" class="bif-errors" role="alert" hidden></div>
       <div id="bifWarnings" class="bif-warning" role="status" hidden></div>
       <div id="bifValid">
-        <figure class="engineering-figure bif-structure" data-figure-profile="SC-WEB-FIGURE-001"><div id="bifStructure" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption">x / m · entered positions; schematic symbols</figcaption></figure>
-        <section id="bifReactionDetails" class="bif-support-results" aria-labelledby="bifReactionHeading"><h3 id="bifReactionHeading">Support reactions</h3><div id="bifReactions" class="bif-reactions"></div></section>
-        <div class="bif-reading-heading"><b>Section reading</b><span id="bifMode">Following pointer</span></div>
-        <div class="bif-reading"><label class="bif-coordinate" for="bifX"><span><i>x</i> / m</span><input id="bifX" type="number" min="0" max="6" step="any" value="3" aria-describedby="bifReadingHelp"></label><p id="bifReadout" class="bif-readout"></p><p id="bdReadout" class="bif-readout"></p><button id="bifPin" type="button" aria-pressed="false">Hold reading</button><div id="bifDetailResults" class="bif-section-nav"><label class="bif-snap-label" for="bifSnap">Jump to section<select id="bifSnap"></select></label><label id="bifSideField" for="bifSide" hidden>Side of section<select id="bifSide"><option value="right">Right side</option><option value="left">Left side</option></select></label></div><p id="bifJump" class="bif-help"></p></div>
-        <div id="bifQuickExtrema" class="bif-quick-extrema" role="group" aria-label="Locate extrema"></div><span id="bifAnnounce" class="sr-only" aria-live="polite"></span>
+        <h4 class="aw-group-title aw-model-title">Model &amp; loads</h4><p class="aw-note">Drag a load to change the model; use the fields for exact values.</p><figure class="engineering-figure bif-structure" data-figure-profile="SC-WEB-FIGURE-001"><div id="bifStructure" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption">x / m · entered positions; schematic symbols</figcaption></figure>
+
+        <section class="aw-inspection" aria-labelledby="aw-beam-inspect"><div class="bif-reading-heading"><h3 id="aw-beam-inspect">Inspect results</h3><span id="bifMode">Following pointer</span></div>
+        <p class="aw-note">Choose a section to read results; model inputs stay unchanged.</p><div class="bif-reading"><label class="bif-coordinate" for="bifX"><span>Inspection position <i>x</i> / m</span><input id="bifX" type="number" min="0" max="6" step="any" value="3" aria-describedby="bifReadingHelp"></label><p id="bifReadout" class="bif-readout"></p><p id="bdReadout" class="bif-readout"></p><button id="bifPin" type="button" aria-pressed="false">Hold reading</button><div id="bifDetailResults" class="bif-section-nav"><label class="bif-snap-label" for="bifSnap">Jump to section<select id="bifSnap"></select></label><label id="bifSideField" for="bifSide" hidden>Side of section<select id="bifSide"><option value="right">Right side</option><option value="left">Left side</option></select></label></div><p id="bifJump" class="bif-help"></p></div>
+        </section><div id="bifQuickExtrema" class="bif-quick-extrema" role="group" aria-label="Locate extrema"></div><span id="bifAnnounce" class="sr-only" aria-live="polite"></span>
         <figure class="engineering-figure bif-chart bd-forces-only" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Shear <i>V</i> / kN</b><span id="bifVAxisMultiplier"></span></div><div id="bifShear" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">Position <i>x</i> / m</figcaption></figure>
         <figure class="engineering-figure bif-chart bd-forces-only" data-figure-profile="SC-WEB-FIGURE-001"><div class="bif-chart-title"><b>Moment <i>M</i> / kN·m</b><span id="bifMAxisMultiplier"></span></div><div id="bifMoment" class="engineering-figure__plot"></div><figcaption class="engineering-figure__caption bif-chart-caption">Position <i>x</i> / m</figcaption></figure>
         <p id="bifReadingHelp" class="engineering-figure__key bd-forces-only"><span><i class="engineering-figure__swatch engineering-figure__swatch--symbolic"></i>Move to read · click or enter x to hold · drag loads on the beam</span></p>
@@ -1393,6 +1394,7 @@
   </div>
 </div>
 
+        <section id="bifReactionDetails" class="bif-support-results" aria-labelledby="bifReactionHeading"><h3 id="bifReactionHeading">Support reactions</h3><div id="bifReactions" class="bif-reactions"></div></section>
       </div>
     </section>
   </div></section>
@@ -2591,7 +2593,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.146 &middot; updated 6 Nov 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.147 &middot; updated 16 Nov 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2709,5 +2711,6 @@
 
 <script src="frame-analysis/calculation.js?v=20261102analysis143"></script><script src="frame-analysis/drawing.js?v=20261106frame146"></script><script src="frame-analysis/trace.js?v=20261106frame146"></script>
 <script src="frame-analysis/app.js?v=20261106frame146"></script><script src="handbook-conventions/app.js?v=20261102analysis143"></script>
+<script src="analysis-workflow/app.js?v=20261116analysis147"></script>
 </body>
 </html>

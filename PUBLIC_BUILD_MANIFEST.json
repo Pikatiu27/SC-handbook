@@ -15,6 +15,14 @@
       "sha256": "505a54c15e75c003185f96d51d5176368e68544c0d15a37d11a2698411941a5d"
     },
     {
+      "path": "analysis-workflow/app.js",
+      "sha256": "1a8aa4a62f69d125e50e7e75227646f15fd76d545aeaac56523ad0f6fcc8a6db"
+    },
+    {
+      "path": "analysis-workflow/styles.css",
+      "sha256": "0d771b02a9a9b2aae3796aefe35697715a3d92f2eebcb70f47ef619a069a76ee"
+    },
+    {
       "path": "app.js",
       "sha256": "85b3109f00b9bb8647be78d8a542ce604ff787d422b11dc15c2fdd22ad3c4db1"
     },
@@ -484,7 +492,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "7f93787ddac5fd2439a234484dd8f292ea4eb0976c2b834fc8b842abe637701b"
+      "sha256": "76d5fa99ebbcbc07ab56288a7349b36975d085aa174d7fb7126204076e6f3fc3"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -604,11 +612,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "98e2f3dec4c53ab2ea10e78ef7a6a7a6337c815a9eb60e23a5b6ef7ababd6d72"
+      "sha256": "0858afefecc1096d731c0b753b1d1c0ceaec8a8ad058e3cb333048c674bb31db"
     },
     {
       "path": "README.md",
-      "sha256": "4ec824282e5db115d1fd6c0ad925d421b81205f225ddc1ba9cd875c3fe27d339"
+      "sha256": "85899f70d66568b20ed887012ad9e2292c2eca09c52162b8ec99e5d6278df528"
     },
     {
       "path": "reference-actions/presentation.js",
