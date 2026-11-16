@@ -1,0 +1,131 @@
+/* Specificity is intentionally above legacy module overrides; selectors still match the existing body. */
+/* Local table presentation review. Data, controls and mathematical owners remain original. */
+/* Header typography is shared across lookup/comparison tables, including folded references. */
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table:not(:where(#boltDimensionsView table)) thead th {
+  font-family: var(--font);
+  font-size: var(--fs-sm, 13px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  text-align: center;
+  vertical-align: bottom;
+  color: var(--ink);
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table:not(:where(#boltDimensionsView table)) thead :is(button.st-header-control, button.guy-header-control) {
+  font-family: inherit;
+  font-size: var(--fs-sm, 13px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 18px;
+  text-align: center;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table:not(:where(#boltDimensionsView table)) thead :is(.st-header-name, .guy-header-name) {
+  justify-content: center;
+  align-items: center;
+  line-height: 18px;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table:not(:where(#boltDimensionsView table)) thead :is(small, .guy-th-unit, .antenna-unit) {
+  display: block;
+  margin-top: 2px;
+  font-family: inherit;
+  font-size: var(--fs-xs, 12px);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 16px;
+  text-align: center;
+  color: var(--muted);
+}
+/* Keep subscripts/superscripts legible without changing the following unit baseline. */
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table:not(:where(#boltDimensionsView table)) thead :is(sub, sup) {
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table:not(:where(#boltDimensionsView table)) thead sub { bottom: -.25em; }
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table:not(:where(#boltDimensionsView table)) thead sup { top: -.5em; }
+/* Native table-cell heights are minima; descriptions and source qualifications may wrap. */
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table thead th[rowspan] { vertical-align: middle; }
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) table:not(:where(#boltDimensionsView table)) thead th:not(:has(small, .guy-th-unit, .antenna-unit)) {
+  vertical-align: middle;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) .tp-header-name { display: block; }
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :where(.st-table, .guy-table, .fp-table, #caTable, .chs-compare-table,
+  .fillet-table, .monopole-schedule-table, .monopole-result-table, .reo-area-table) {
+  font-size: var(--fs-sm, 13px);
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :where(.st-table, .guy-table, .fp-table, #caTable, .chs-compare-table,
+  .fillet-table, .monopole-result-table) tbody > tr > :is(th, td) {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 8px 10px;
+  line-height: 1.45;
+}
+/* Identity controls already provide a 44px target; avoid padding a second tall box around them. */
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :is(.st-table, .guy-table) tbody > tr > :is(th, td):has(> button[aria-expanded]) {
+  padding-block: 0;
+  vertical-align: middle;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) #chs4600Panel .chs-compare-table .chs-compare-strength :is(th, td) {
+  font-size: var(--fs-sm, 13px);
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) #chs4600Panel .chs-compare-table small {
+  font-size: var(--fs-xs, 12px);
+  line-height: 16px;
+}
+/* Reference sub-tables use the same readable body size; symbols keep their own drawing styles. */
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :is(.compact-lookup-table, .weld-symbol-table) {
+  font-size: var(--fs-sm, 13px);
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :is(.compact-lookup-table, .weld-symbol-table) tbody > tr > :is(th, td) {
+  height: 40px;
+  padding: 8px 10px;
+  font-size: var(--fs-sm, 13px);
+  line-height: 1.45;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) .compact-lookup-table small {
+  font-size: var(--fs-xs, 12px);
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) #chs4600Panel .chs-compare-primary td {
+  font-size: var(--fs-sm, 13px);
+  font-weight: 700;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) .monopole-schedule-table:not(:where(#boltDimensionsView table)) thead th { padding: 8px 10px; }
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) .monopole-result-table:not(:where(#boltDimensionsView table)) thead th { padding: 8px 10px; }
+/* Header labels with different line counts share a bottom-aligned second line. */
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :is(.st-table, .guy-table) thead th { vertical-align: bottom; }
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :is(.st-table, .guy-table) thead :is(.st-header-control, .guy-header-control) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  height: auto;
+  min-height: 52px;
+  padding-block: 7px;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :is(.st-table, .guy-table) thead :is(.st-header-name, .guy-header-name) {
+  min-height: 18px;
+}
+html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :is(.st-table, .guy-table) thead :is(.st-header-control > small, .guy-th-unit) {
+  min-height: 16px;
+  flex: none;
+}
+@media (max-width: 760px) {
+  /* The accepted mobile overlay pins this old group role to 12px with !important. */
+  html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) #chs4600Panel .chs-compare-groups th {
+    font-size: var(--fs-sm, 13px) !important;
+  }
+  html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) :where(.st-table, .guy-table, .fp-table, #caTable, .chs-compare-table,
+    .fillet-table, .monopole-result-table) tbody > tr > :is(th, td) { padding-inline: 8px; }
+}
+/* Ground/antenna and reinforcement candidate cards retain their accepted phone geometry. */
+@media (min-width: 961px) {
+  html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) #geoPanel .range-table:not(:where(#boltDimensionsView table)) thead th { text-align: center; vertical-align: bottom; }
+  html body:is(#table-presentation-scope, body):is(#table-presentation-tables, body) #geoPanel .range-table:not(:where(#boltDimensionsView table)) thead small { margin-top: 2px; line-height: 16px; }
+}

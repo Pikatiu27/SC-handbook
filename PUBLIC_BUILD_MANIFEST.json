@@ -456,7 +456,7 @@
     },
     {
       "path": "guy-lookup/index.html",
-      "sha256": "02d406a9674f75d17bbb9595a417643ce35a6560df6185eb3e8e819a505d7c18"
+      "sha256": "56f30dee3e81a323ed74d31975560660dfa35c1b227dccd3a790a8f7aadea410"
     },
     {
       "path": "guy-lookup/lookup.js",
@@ -492,7 +492,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "76d5fa99ebbcbc07ab56288a7349b36975d085aa174d7fb7126204076e6f3fc3"
+      "sha256": "61aaca0570bd557aed82f1e9b5624cf1ea73b919967cf56e9ce86c592bbc5b5a"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -572,7 +572,7 @@
     },
     {
       "path": "panel-antennas/index.html",
-      "sha256": "7e99c3c289997228c4c2ccac05acc89261d804da889f78d04606f1bf2635180f"
+      "sha256": "1115d6e7fccbe486a9a3dd658737b624552605e6207147fc94f25361aaca9d5a"
     },
     {
       "path": "panel-antennas/lookup.js",
@@ -612,11 +612,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "0858afefecc1096d731c0b753b1d1c0ceaec8a8ad058e3cb333048c674bb31db"
+      "sha256": "f2e489fdeb571e0220446ae3f695786d894231506efa0625228fc665c6b3800f"
     },
     {
       "path": "README.md",
-      "sha256": "85899f70d66568b20ed887012ad9e2292c2eca09c52162b8ec99e5d6278df528"
+      "sha256": "07ff9e9daa93b5446ba866a32240e9bc7c2968e1cde46a99cec3b0ffe223e781"
     },
     {
       "path": "reference-actions/presentation.js",
@@ -721,6 +721,14 @@
     {
       "path": "styles.css",
       "sha256": "47c95f42a4941c66281f24fa625af751933344eef006fe0686d1572c2a20d774"
+    },
+    {
+      "path": "table-presentation/headers.js",
+      "sha256": "580d9673bee9a74aebc9a4688543b0765891d458b79b44c4229012587dd7a2ae"
+    },
+    {
+      "path": "table-presentation/repairs.css",
+      "sha256": "20cdc49ca5d8f7c17c95b0d5bf6c9e639d6c6725b0084c0f6eb0cb961a477e46"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",

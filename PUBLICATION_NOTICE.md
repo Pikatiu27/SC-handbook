@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.148 (16 November 2026): Lookup and reference tables share readable header typography, aligned units and natural row spacing. Latest Analysis workflow, calculation/data/drawing owners, filter controls, product manuals and historical links are preserved. Physical-device/font/zoom, full accessibility, existing source qualifications and independent engineering acceptance remain For Review. Public beta / For Review.
+
 Build 0.7.147 (16 November 2026): Beam and Frame separate Model inputs, Results and Inspect results without step numbers. Input/result surfaces and phone navigation are clearer; Frame display options sit with result inspection. Existing automatic calculations, numerical/drawing owners, source qualifications and applicability limits are unchanged. Public beta / For Review remains; physical-device, full accessibility and independent engineering/project acceptance remain open.
 
 Build 0.7.146 (6 November 2026): Frame calculation details use the shared four-part format, full-precision substitutions and explicit unit conversions. Sources & scope is shorter. Frame node letters are directly labelled; station/result markers and total-displacement labels are clearer, and plot height adapts without changing the model scale. Numerical kernels, Beam, Fastener Tables and historical links are unchanged. Public beta / For Review; physical-device, full accessibility and independent engineering/project acceptance remain open.
