@@ -16,7 +16,7 @@
     },
     {
       "path": "analysis-workflow/app.js",
-      "sha256": "1a8aa4a62f69d125e50e7e75227646f15fd76d545aeaac56523ad0f6fcc8a6db"
+      "sha256": "af61bdfc378bd4dab75e929d7c96702936848449c2b3ba5da43e223ee3a01fd1"
     },
     {
       "path": "analysis-workflow/styles.css",
@@ -352,7 +352,7 @@
     },
     {
       "path": "foundation-products/lookup.js",
-      "sha256": "110113ddf93a155903674ef5550d24244cb5219fe07606eb8e7931142c0c294e"
+      "sha256": "7abe6e2b6cce9bc303fdf460e2394772d3f84437d66bef6b526ee05c919b1b2f"
     },
     {
       "path": "foundation-products/models.js",
@@ -492,7 +492,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "61aaca0570bd557aed82f1e9b5624cf1ea73b919967cf56e9ce86c592bbc5b5a"
+      "sha256": "889b95689ed61d9be62696b350be832a67a3736fc2e033419434a0d4919da20d"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -572,7 +572,7 @@
     },
     {
       "path": "panel-antennas/index.html",
-      "sha256": "1115d6e7fccbe486a9a3dd658737b624552605e6207147fc94f25361aaca9d5a"
+      "sha256": "f17525d5c047e0c1b9f6e8a5331e274405614d4452f227fd29f1e68745b489be"
     },
     {
       "path": "panel-antennas/lookup.js",
@@ -612,11 +612,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "f2e489fdeb571e0220446ae3f695786d894231506efa0625228fc665c6b3800f"
+      "sha256": "546a1182d6a2d48cf461e3f7dd36f181507e8fda8cb81c0a5048463347706c1f"
     },
     {
       "path": "README.md",
-      "sha256": "07ff9e9daa93b5446ba866a32240e9bc7c2968e1cde46a99cec3b0ffe223e781"
+      "sha256": "410e077e344fc1a12add7b470f3df0ad26cf8601e5f8061e4ff300b01a4efbcf"
     },
     {
       "path": "reference-actions/presentation.js",
@@ -768,7 +768,7 @@
     },
     {
       "path": "workflow-review/config.js",
-      "sha256": "7684d36b761394557ad8f78cc4675d37d8d47df42621ae87b0ef87d25d6b7b1d"
+      "sha256": "de840fe294bf74e02c7647c9c2190072a23ae7cd5102f931dfd1cddfde86a5b5"
     },
     {
       "path": "workflow-review/numerical-traces.js",

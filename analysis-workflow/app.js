@@ -12,7 +12,7 @@
   const beam=$('beamforcesPanel'),state=$('aw-beam-state');
   function beamState(){
     const invalid=!$('bifErrors').hidden||(beam.classList.contains('bd-deformation')&&!$('bdErrors').hidden);
-    const text=invalid?'Not evaluated · review input errors':'Live results · For Review';
+    const text=invalid?'Not evaluated · review input errors':'Calculated · For Review';
     if(state.textContent!==text)state.textContent=text;
     state.dataset.state=invalid?'invalid':'calculated';
   }

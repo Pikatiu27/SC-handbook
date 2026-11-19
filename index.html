@@ -229,7 +229,7 @@
     <section id="antennaPanel" class="tool-panel" hidden>
 <div id="antennaLookup" class="antenna-lookup">
   <div class="tool-heading"><div><h2>Panel Antenna Specs</h2></div><span class="tool-status">Public beta · For Review</span></div>
-  <p class="antenna-public-source"><b>Public sources only.</b> Linked publicly available manufacturer pages/PDFs, regulator records and released site/planning documents. No internal or confidential documents. Coverage is non-exhaustive.</p>
+  <p class="antenna-public-source">Use the exact model and document revision for dimensions and wind data.</p>
   <div class="lookup-card">
   <div class="input-group antenna-filter" role="search" aria-label="Find antenna specifications">
     <div class="input-group-heading"><b>Find a model</b></div>
@@ -289,8 +289,7 @@
     <div id="antennaSelectionBody"></div>
   </section>
   <details class="antenna-basis detail-card antenna-operator-overview"><summary>Australian operator evidence</summary><p>Dated 4G / 5G examples, not national market share or full equipment approval. Check passive, active and hybrid specifications separately.</p><div id="antennaOperators" class="antenna-operators"></div></details>
-  <details class="antenna-basis source-card antenna-brands"><summary>Brands · coverage and sources</summary><div id="antennaDirectories" class="antenna-directories" role="region" aria-label="Brand coverage and original sources" tabindex="0"></div></details>
-  <details class="antenna-basis source-card"><summary>Sources and limitations</summary><p id="antennaCoverage"></p>
+  <details class="antenna-basis source-card"><summary>Sources &amp; scope</summary><p id="antennaCoverage"></p><p>Sources include public manufacturer pages and PDFs, regulator records and released site or planning documents.</p><section class="detail-body" aria-label="Brand coverage"><h3>Brands</h3><div id="antennaDirectories" class="antenna-directories" role="region" aria-label="Brand coverage and original sources" tabindex="0"></div></section>
     <div class="antenna-reference-grid">
       <section><h3>Document status</h3><ul>
         <li><b>Public PDF · review needed:</b> original pages not yet checked; no mechanical values.</li>
@@ -1298,18 +1297,18 @@
     </section>
 
     <section id="frameanalysisPanel" class="tool-panel" hidden>
-  <div class="tool-heading"><div><h2>Frame Analysis</h2></div><span class="tool-status">Public beta · For Review</span></div>
+  <div class="tool-heading"><div><h2>Frame Analysis</h2></div></div>
   <section class="lookup-card fa-card"><div class="bif-workspace">
     <section class="bif-inputs aw-inputs" aria-labelledby="aw-frame-inputs">
-      <div class="aw-stage-heading"><h3 id="aw-frame-inputs" tabindex="-1">Model inputs</h3><button id="faReset" type="button">Reset</button></div><p class="aw-note">Illustrative starting values · enter project inputs.</p><button class="aw-jump" type="button" data-analysis-jump="frame-results">View results ↓</button><h4 class="aw-group-title">Geometry &amp; supports</h4>
+      <div class="aw-stage-heading"><h3 id="aw-frame-inputs" tabindex="-1">Model inputs</h3><button id="faReset" type="button">Reset</button></div><p class="aw-note">Replace example values with project inputs.</p><button class="aw-jump" type="button" data-analysis-jump="frame-results">View results ↓</button><h4 class="aw-group-title">Geometry &amp; supports</h4>
       <p class="bif-help">Single storey · single bay · rigid beam–column joints</p><button id="faViewResults" class="fa-phone-jump" type="button">View results ↓</button>
       <div id="faGeometry" class="bif-fields"></div>
       <div id="faSupports" class="bif-fields"></div>
-      <section class="input-group"><h3>Member stiffness</h3><div id="faMaterial" class="bif-fields"></div><div id="faProperties"></div><p class="bif-help">Illustrative defaults; enter project properties. I is about the frame's bending axis.</p></section>
+      <section class="input-group"><h3>Member stiffness</h3><div id="faMaterial" class="bif-fields"></div><div id="faProperties"></div><p class="bif-help">Use I about the frame's bending axis.</p></section>
       <section class="input-group"><h3>Loads</h3><div id="faUniform" class="bif-fields"></div><p class="bif-help">q and P: down +; H: right +; C: counterclockwise +. Include self-weight if required.</p><div id="faLoads"></div><button id="faClearLoads" type="button">Clear loads</button></section>
     </section>
     <section class="bif-output aw-results" aria-labelledby="aw-frame-results">
-      <div class="aw-stage-heading"><h3 id="aw-frame-results" tabindex="-1">Results</h3><button class="aw-jump" type="button" data-analysis-jump="frame-inputs">Edit model ↑</button></div><p class="aw-note">Updates automatically from model inputs.</p><p id="faStatus" class="fa-state" aria-live="polite"></p><button id="faEditInputs" class="fa-phone-jump" type="button">Edit inputs ↑</button>
+      <div class="aw-stage-heading"><h3 id="aw-frame-results" tabindex="-1">Results</h3><button class="aw-jump" type="button" data-analysis-jump="frame-inputs">Edit model ↑</button></div><p id="faStatus" class="fa-state" aria-live="polite"></p><button id="faEditInputs" class="fa-phone-jump" type="button">Edit inputs ↑</button>
       <div class="fa-result-controls"><label for="faResponse">Display<select id="faResponse"><option value="model">Model / loads</option><option value="N">Axial force N / kN</option><option value="V">Shear force V / kN</option><option value="M" selected>Bending moment M / kN·m</option><option value="displacement">Displacement / mm</option><option value="theta">Rotation θ / mrad</option></select></label></div>
 
       <p id="faErrors" class="fa-errors" role="alert" hidden></p>
@@ -1336,10 +1335,10 @@
 </section>
 
 <section id="beamforcesPanel" class="tool-panel bd-deformation" hidden>
-  <div class="tool-heading"><div><h2>Beam Internal Forces</h2></div><span class="tool-status">Public beta · For Review</span></div>
+  <div class="tool-heading"><div><h2>Beam Internal Forces</h2></div></div>
   <section class="lookup-card bif-card"><div class="bif-workspace">
     <section class="bif-inputs aw-inputs" aria-labelledby="aw-beam-inputs">
-      <div class="aw-stage-heading"><h3 id="aw-beam-inputs" tabindex="-1">Model inputs</h3><button id="bifReset" type="button">Reset</button></div><p class="aw-note">Illustrative starting values · enter project inputs.</p><button class="aw-jump" type="button" data-analysis-jump="beam-results">View results ↓</button><h4 class="aw-group-title">Geometry &amp; supports</h4>
+      <div class="aw-stage-heading"><h3 id="aw-beam-inputs" tabindex="-1">Model inputs</h3><button id="bifReset" type="button">Reset</button></div><p class="aw-note">Replace example values with project inputs.</p><button class="aw-jump" type="button" data-analysis-jump="beam-results">View results ↓</button><h4 class="aw-group-title">Geometry &amp; supports</h4>
       <section class="input-group"><div class="bif-fields bif-arrangement input-group-fields">
         <div class="bif-type-field"><span id="bifTypeLabel">Beam layout</span><select id="bifType" aria-labelledby="bifTypeLabel" hidden><option value="simple">Simply supported</option><option value="cantilever-left">Cantilever · fixed left</option><option value="cantilever-right">Cantilever · fixed right</option><option value="overhang-left">Left overhang</option><option value="overhang-right">Right overhang</option><option value="overhang-both">Both-end overhangs</option></select><details id="bifTypeChooser" class="bif-type-chooser"><summary aria-labelledby="bifTypeLabel bifTypeName"><span id="bifTypeName">Simply supported</span><i aria-hidden="true">+</i></summary><div class="bif-picker-body"><div id="bifTypeOptions" class="bif-choice-grid" role="group" aria-label="Calculated beam arrangements"></div><p id="bifLayoutCaption" class="engineering-figure__caption">14 beam layouts · schematic only, not to scale</p></div></details></div>
         <label><span>Total length, L</span><span class="unit"><input id="bifLength" type="number" min="0.1" max="100" step="0.1" value="6"><em>m</em></span></label>
@@ -1353,7 +1352,7 @@
     <label><span>Elastic modulus, E</span><span class="unit"><input id="bdE" type="number" min="0.001" max="1000" step="any" value="200" aria-describedby="bdStiffnessHint bdInputErrors"><em>GPa</em></span></label>
     <label><span>Second moment, I</span><span class="unit"><input id="bdI" type="number" min="1" max="1000000000000000" step="any" value="80000000" aria-describedby="bdStiffnessHint bdInputErrors"><em>mm⁴</em></span></label>
   </div>
-  <p id="bdStiffnessHint" class="bif-help">Project inputs · illustrative defaults. Use I about the bending axis and confirm constant EI. Zero support settlement; ideal restraints.</p>
+  <p id="bdStiffnessHint" class="bif-help">Use I about the bending axis. Assumes constant EI, ideal supports and zero settlement.</p>
   <p id="bdInputErrors" class="bif-help" hidden></p>
 </section>
 
@@ -1363,7 +1362,7 @@
       <details id="bifLoadTools" class="bif-inline-details bif-load-movement" hidden><summary>Move this load</summary><div class="bif-inline-body"><label id="bifMoveLabel" for="bifMove">Move selected load</label><input id="bifMove" type="range" min="0" max="6" step="0.001" value="2" aria-labelledby="bifMoveLabel" aria-describedby="bifMoveHint"><p id="bifMoveHint" class="bif-help">Drag the action on the beam, or move it here.</p></div></details>
     </section>
     <section class="bif-output aw-results" aria-labelledby="aw-beam-results">
-      <div class="aw-stage-heading"><h3 id="aw-beam-results" tabindex="-1">Results</h3><button class="aw-jump" type="button" data-analysis-jump="beam-inputs">Edit model ↑</button></div><p class="aw-note">Updates automatically from model inputs.</p><p id="aw-beam-state" class="aw-state" aria-live="polite"></p><span id="bdResultHeading" class="sr-only">Deflection &amp; rotation</span><div class="bd-views" role="group" aria-label="Beam response view"><button id="bdForcesView" type="button" aria-pressed="false">Internal forces</button><button id="bdDeformationView" type="button" aria-pressed="true">Deflection &amp; rotation</button></div>
+      <div class="aw-stage-heading"><h3 id="aw-beam-results" tabindex="-1">Results</h3><button class="aw-jump" type="button" data-analysis-jump="beam-inputs">Edit model ↑</button></div><p id="aw-beam-state" class="aw-state" aria-live="polite"></p><span id="bdResultHeading" class="sr-only">Deflection &amp; rotation</span><div class="bd-views" role="group" aria-label="Beam response view"><button id="bdForcesView" type="button" aria-pressed="false">Internal forces</button><button id="bdDeformationView" type="button" aria-pressed="true">Deflection &amp; rotation</button></div>
       <div id="bifErrors" class="bif-errors" role="alert" hidden></div>
       <div id="bifWarnings" class="bif-warning" role="status" hidden></div>
       <div id="bifValid">
@@ -2349,7 +2348,7 @@
       </section></div>
 
       <details class="detail-card" id="screwDemandDetails">
-        <summary><span class="summary-copy"><span class="summary-heading"><b>Preliminary Pile-Group Action Distribution</b></span><small>Rectangular rigid-pad model; project design values required for comparison.</small></span><i>+</i></summary>
+        <summary><span class="summary-copy"><span class="summary-heading"><b>Pile-group action check</b></span><small>Optional · rectangular rigid-pad model. Use project design values for comparison.</small></span><i>+</i></summary>
         <div class="detail-body">
           <section>
             <h3>Design action effects at pile-group centroid</h3>
@@ -2415,8 +2414,8 @@
       </details>
 
       <details class="source-card">
-        <summary><span><b>Basis / limits</b><small>Scope and source status</small></span><i>+</i></summary>
-        <div class="source-body">
+        <summary><span><b>Sources &amp; scope</b></span><i>+</i></summary>
+        <div class="source-body" id="fp-screw-scope">
           <div class="source-notes">
             <p><b>Scope</b> - Product selection and preliminary action effects for a symmetric rectangular pile group.</p>
             <p><b>Assumptions</b> - Rigid pad; vertical identical piles; equal axial stiffness in compression and tension; equal lateral stiffness; centroidal actions; no pad-soil resistance; one ULS or SLS basis.</p>
@@ -2561,7 +2560,7 @@
       </section></div>
 
       <details class="source-card">
-        <summary><span><b>Product basis and limitations</b><small>Product-data scope and source status.</small></span><i>+</i></summary>
+        <summary><span><b>Sources &amp; scope</b></span><i>+</i></summary>
         <div class="source-body rock-source-body">
           <div class="source-notes">
             <p><b>Scope</b> &middot; Product selection for active post-tensioned foundation anchors.</p>
@@ -2570,7 +2569,8 @@
             <p><b>Australian execution reference</b> &middot; Austroads ATS 5140-26 covers post-tensioned ground-anchor supply, assembly, installation, grouting, stressing, testing and monitoring. It is not used here to infer design resistance.</p>
             <p><b>Before adoption</b> &middot; Confirm product revision, Australian supply, project design and execution requirements.</p>
           </div>
-          <div class="rock-source-grid">
+          <section id="fp-rock-scope"><h3>Reference documents</h3>
+            <div class="rock-source-grid">
             <article><b>Freyssinet</b><span>Current ground-anchor families and archived 2014 tendon rows.</span><a href="https://www.freyssinet.com/solution/build/anchoring-systems-for-geotechnics/geotechnics-solutions/">Open source</a></article>
             <article><b>DYWIDAG</b><span>Current system families and October 2024 US Threadbar rows.</span><a href="https://dywidag.com/products/ground-anchors/threadbar-anchor-system">Open source</a></article>
             <article><b>Williams</b><span>Prestressed ground-anchor, MCP and R7S Spin-Lock 25–48 mm systems.</span><a href="https://www.williamsform.com/rock/spin-lock-anchors/r7s-spin-lock-rock-bolt/">Open source</a></article>
@@ -2579,7 +2579,8 @@
             <article><b>BBR</b><span>CONA CMG 15.7 mm Y1860 tendon rows and ETA 21/1053 system basis.</span><a href="https://www.bbrnetwork.com/fileadmin/userdaten/Broschueren/GT/BBR_VT_CONA_CMG_EN_Rev3_0621.pdf">Open PDF</a></article>
             <article><b>Keller Australia</b><span>Australian bar, strand and SBMA pathways.</span><a href="https://www.keller.com.au/expertise/techniques/anchors">Open source</a></article>
             <article><b>SRG Global</b><span>Australian high-capacity strand and BBR H Bar pathways; current certification must be confirmed.</span><a href="https://srgglobal.com.au/what-we-do/technology/dam-anchoring-and-monitoring/">Open source</a></article>
-          </div>
+            </div>
+          </section>
         </div>
       </details>
     </section>
@@ -2594,7 +2595,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.148 &middot; updated 16 Nov 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.149 &middot; updated 20 Nov 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2656,7 +2657,7 @@
 <script src="concrete-anchors/app.js?v=20261102analysis143"></script>
 <script src="foundation-products/models.js?v=20261016workflowtrace1"></script>
 <script src="foundation-products/research.js?v=20261016workflowtrace1"></script>
-<script src="foundation-products/lookup.js?v=20261026tables3"></script>
+<script src="foundation-products/lookup.js?v=20261120compact149"></script>
 <script src="section-tables/model.js?v=20261016workflowtrace1"></script>
 <script src="section-tables/header-filters.js?v=20261016workflowtrace1"></script>
 <script src="section-tables/lookup.js?v=20261026references140"></script>
@@ -2683,7 +2684,7 @@
 <script src="more-layouts/trace.js?v=20261102analysis143"></script>
 <script src="beam-deflection-preview/app.js?v=20261102analysis143"></script>
 <script src="beam-internal-forces/app.js?v=20261102analysis143"></script>
-<script src="workflow-review/config.js?v=20261019beamformatrelease1"></script>
+<script src="workflow-review/config.js?v=20261120compact149"></script>
 <script src="workflow-review/app.js?v=20261102analysis143"></script>
 <script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261102shear142"></script><script src="concrete-beam/app.js?v=20261102analysis143"></script>
 <script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261102analysis143"></script>
@@ -2712,7 +2713,7 @@
 
 <script src="frame-analysis/calculation.js?v=20261102analysis143"></script><script src="frame-analysis/drawing.js?v=20261106frame146"></script><script src="frame-analysis/trace.js?v=20261106frame146"></script>
 <script src="frame-analysis/app.js?v=20261106frame146"></script><script src="handbook-conventions/app.js?v=20261102analysis143"></script>
-<script src="analysis-workflow/app.js?v=20261116analysis147"></script>
+<script src="analysis-workflow/app.js?v=20261120compact149"></script>
 <script src="table-presentation/headers.js?v=20261116tables148"></script>
 </body>
 </html>
