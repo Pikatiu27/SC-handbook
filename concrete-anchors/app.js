@@ -10,7 +10,7 @@
         <button class="branch-tab active" type="button" data-ca-type="mechanical" aria-pressed="true">Mechanical anchors</button>
         <button class="branch-tab" type="button" data-ca-type="chemical" aria-pressed="false">Chemical anchors</button>
       </nav>
-      <p class="ca-intro">Selected AU profiles. Compare installation parameters; open Details for conditions.</p>
+      <p class="ca-intro">Selected AU profiles. Select a product to see its installation conditions.</p>
       <div class="input-group ca-filter-group"><div class="input-group-fields ca-filters">
         <label><span>Manufacturer</span><select id="caManufacturer"><option value="">All manufacturers</option></select></label>
         <label><span>Nominal size</span><select id="caSize"><option value="">All sizes</option></select></label>
@@ -19,6 +19,7 @@
       </div></div>
       <div class="ca-table-heading"><h3 id="caTableTitle">Mechanical installation profiles</h3><span id="caCount" role="status" aria-live="polite" aria-atomic="true"></span></div>
       <p id="caTableHelp" class="ca-help">Dimensions in mm; torque in Nm. Each edge / spacing minimum retains its own condition.</p>
+      <p id="caScrollHint" class="ca-scroll-hint"></p>
       <div id="caScroll" class="ca-table-wrap" role="region" tabindex="0" aria-labelledby="caTableTitle" aria-describedby="caTableHelp caScrollHint">
         <table id="caTable">
           <caption class="visually-hidden">Manufacturer installation profiles. Geometry only; minimum layout is not a resistance check.</caption>
@@ -35,7 +36,6 @@
           </tr></thead><tbody id="caBody"></tbody>
         </table>
       </div>
-      <p id="caScrollHint" class="ca-scroll-hint"></p>
       <p class="ca-boundary">Installation parameters only. Verify the supplied variant and current instructions; anchor resistance and project suitability are not evaluated.</p>
     </section>
     <details class="source-card ca-coverage"><summary><span><b>Coverage &amp; sources</b></span><i>+</i></summary><div class="ca-coverage-body">
@@ -76,11 +76,11 @@
       const groupStart = i > 0 && rows[i - 1].product !== row.product;
       const profileLabel = row.profile === "Minimum-depth profile" ? "Min. depth" : row.profile;
       return `<tr class="ca-data-row${i % 2 ? " ca-stripe" : ""}${groupStart ? " ca-group-start" : ""}" data-ca-id="${esc(row.id)}">
-        <th scope="row" class="ca-product">${esc(row.product)}${note(`${row.manufacturer} · ${row.mechanism.replace(" + threaded rod", "")}`)}${note(profileLabel ? `${row.concrete} · ${profileLabel}` : row.concrete)}${row.source === "hst3" ? note("FTM 2023") : ""}</th>
+        <th scope="row" class="ca-product"><button type="button" class="ca-detail-toggle" data-ca-detail="${esc(row.id)}" aria-expanded="${expandedId === row.id}" aria-controls="ca-detail-${esc(row.id)}" aria-label="${esc(`Details: ${row.product}, ${row.sizeLabel}, embedment ${row.depth} mm, ${row.finish}`)}">${esc(row.product)}</button>${note(`${row.manufacturer} · ${row.mechanism.replace(" + threaded rod", "")}`)}${note(profileLabel ? `${row.concrete} · ${profileLabel}` : row.concrete)}${row.source === "hst3" ? note("FTM 2023") : ""}</th>
         <td class="ca-size">${esc(row.sizeLabel)}</td><td class="ca-finish">${esc(row.finish)}</td>
         ${cell(row.hole)}${cell(row.depth, row.depthBasis === "Effective" ? "" : row.depthBasis)}${cell(row.drillDepth, row.drillNote === "Published depth" ? "Published" : row.drillNote)}${cell(torque, row.torqueBasis)}
         ${cell(row.edge, /^(?:SARB |ETA )?minimum$/i.test(row.edgeNote) ? "" : row.edgeNote)}${cell(row.spacing, /^(?:SARB |ETA )?minimum$/i.test(row.spacingNote) ? "" : row.spacingNote)}${cell(row.substrate, row.substrateNote)}
-        <td class="ca-documents"><div class="ca-document-links">${link(source.url + `#page=${source.page}`, source.url === source.eta ? "ETA" : "Sheet", `${source.title} · ${source.pages}`)}${source.eta && source.eta !== source.url ? link(source.eta, "ETA", source.assessment) : link(source.product, "Product", `${row.product} AU product page`)}</div><button type="button" class="ca-detail-toggle" data-ca-detail="${esc(row.id)}" aria-expanded="${expandedId === row.id}" aria-controls="ca-detail-${esc(row.id)}" aria-label="${esc(`Details: ${row.product}, ${row.sizeLabel}, embedment ${row.depth} mm, ${row.finish}`)}">${expandedId === row.id ? "Close details" : "Details"}</button></td>
+        <td class="ca-documents"><div class="ca-document-links">${link(source.url + `#page=${source.page}`, source.url === source.eta ? "ETA" : "Sheet", `${source.title} · ${source.pages}`)}${source.eta && source.eta !== source.url ? link(source.eta, "ETA", source.assessment) : link(source.product, "Product", `${row.product} AU product page`)}</div></td>
       </tr>${details(row)}`;
     }).join("") : '<tr><td colspan="11" class="ca-empty">No matching profiles. <button type="button" data-ca-clear>Clear filters</button></td></tr>';
     updateScroll();
@@ -117,11 +117,11 @@
     if (expandedId && expandedId !== id) {
       $("ca-detail-" + expandedId).hidden = true;
       const previous = [...mount.querySelectorAll("[data-ca-detail]")].find(b => b.dataset.caDetail === expandedId);
-      previous.setAttribute("aria-expanded", "false"); previous.textContent = "Details";
+      previous.setAttribute("aria-expanded", "false");
     }
     expandedId = expandedId === id ? null : id;
     $("ca-detail-" + id).hidden = expandedId !== id;
-    mainButton.setAttribute("aria-expanded", String(expandedId === id)); mainButton.textContent = expandedId === id ? "Close details" : "Details";
+    mainButton.setAttribute("aria-expanded", String(expandedId === id));
     if (expandedId === id) {
       $("caScroll").scrollLeft = 0;
       $("ca-detail-" + id).querySelector("[data-ca-close]").focus({preventScroll:true});

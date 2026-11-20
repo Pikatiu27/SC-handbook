@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="panel-antennas/panel.css?v=20261019interactionrelease1">
 <link rel="stylesheet" href="reinforcement-area/styles.css?v=20261016workflowtrace1">
 <link rel="stylesheet" href="bolt-dimensions/styles.css?v=20261016workflowtrace1">
-<link rel="stylesheet" href="concrete-anchors/styles.css?v=20261019interactionrelease1">
+<link rel="stylesheet" href="concrete-anchors/styles.css?v=20261120format151">
 <link rel="stylesheet" href="axial-capacity/layout.css?v=20261016workflowtrace1">
 <script defer src="axial-capacity/presentation.js?v=20261016workflowtrace1"></script>
 <link rel="stylesheet" href="plate-tables/styles.css?v=20261016workflowtrace1">
@@ -51,7 +51,7 @@
 <link rel="stylesheet" href="more-layouts/styles.css?v=20261023beammerged1">
 <link rel="stylesheet" href="disclosure/indicators.css?v=20261023disclosure1">
 <link rel="stylesheet" href="geo-parameters/interaction-layout.css?v=20261023ground1">
-<link rel="stylesheet" href="page-alignment/repairs.css?v=20261120layout150">
+<link rel="stylesheet" href="page-alignment/repairs.css?v=20261120format151">
 <link rel="stylesheet" href="steel-corrosion/header-layout.css?v=20261026corrosion139">
 <link rel="stylesheet" href="reference-actions/styles.css?v=20261026references140"><script src="reference-actions/presentation.js?v=20261026references140"></script>
 <link rel="stylesheet" href="section-custom/input.css?v=20261026custom141">
@@ -83,14 +83,14 @@
         <button id="mobileToolsToggle" class="mobile-tools-toggle" type="button" aria-expanded="false" aria-controls="toolNavigationMenu">Tools <span aria-hidden="true">+</span></button>
       </div>
       <div id="toolNavigationMenu" class="tool-navigation-menu">
-        <div class="directory-navigation-row"><nav class="tool-categories" aria-label="Engineering categories">
+        <div class="directory-navigation-row"><div class="directory-category-scroll"><nav class="tool-categories" aria-label="Engineering categories">
           <a id="directoryHomeLink" class="tool-category directory-home-link" href="#home">Home</a>
           <button class="tool-category" type="button" data-category="analysis" aria-pressed="false">Analysis</button>
           <button class="tool-category" type="button" data-category="steel" aria-pressed="false">Steel</button>
           <button class="tool-category" type="button" data-category="concrete" aria-pressed="false">Concrete</button>
           <button class="tool-category" type="button" data-category="connections" aria-pressed="false">Connections</button>
           <button class="tool-category" type="button" data-category="foundations" aria-pressed="false">Foundations</button>
-        </nav><a id="directoryProductsLink" class="directory-products-link" href="#products">Products</a></div>
+        </nav></div><a id="directoryProductsLink" class="directory-products-link" href="#products">Products</a></div>
 
         <nav class="tool-tabs" aria-label="SC Handbook tools">
           <button class="tool-tab" type="button" data-category="analysis" data-tool="beamforces" data-legacy-name="Beam Internal Forces" aria-controls="beamforcesPanel" aria-pressed="false" hidden>Beam Internal Forces</button>
@@ -186,7 +186,7 @@
 
         <!-- PUBLIC:GUY_PANEL:START -->
     <section id="guyPanel" class="tool-panel" hidden>
-      <div class="tool-heading"><div><p class="kicker">Catalogue lookup · Public beta</p><h2>Guy &amp; Fittings</h2><p>Compare published strand, wire-rope and fitting specifications. Select a row for its published rating, dimensions and source notes.</p></div><span class="guy-review">Public beta · For Review</span></div>
+      <div class="tool-heading"><div><h2>Guy &amp; Fittings</h2><p>Compare published ratings and dimensions. Select a product to view its source notes.</p></div><span class="guy-review">For Review</span></div>
       <nav id="guyFamilies" class="guy-families" aria-label="Component family"></nav>
       <select id="guyFamily" hidden aria-label="Component"></select>
       <section class="lookup-card guy-catalogue" aria-labelledby="guyCatalogueTitle">
@@ -197,7 +197,7 @@
         <div id="guyColumnFilters" class="guy-filter-bar" aria-label="Active column filters"></div><select id="guyProduct" hidden aria-label="Selected catalogue product"></select>
         <p id="guyNearbyNote" role="status" class="guy-nearby-note" hidden></p><p id="guyMinimumNote" role="status" hidden></p>
         <p id="guyTableNote" class="result-note"></p>
-        <div class="guy-table-wrap" role="region" aria-label="Product comparison; scroll for more parameters" tabindex="0"><table id="guyTable" class="guy-table"><caption id="guyCaption"></caption><thead id="guyHead"></thead><tbody id="guyRows"></tbody></table></div>
+        <p class="table-scroll-prompt" hidden>Scroll across for more columns.</p><div class="guy-table-wrap" role="region" aria-label="Product comparison; scroll for more parameters" tabindex="0"><table id="guyTable" class="guy-table"><caption id="guyCaption"></caption><thead id="guyHead"></thead><tbody id="guyRows"></tbody></table></div>
         <p id="guyEmpty" hidden>No matching products. Clear the search or change the filters.</p>
       </section>
       <dialog id="guyDrawer" aria-labelledby="guyDrawerTitle"><header class="guy-drawer-header"><div><p class="kicker">Product record</p><h3 id="guyDrawerTitle" tabindex="-1">Product details</h3></div><button type="button" id="guyDrawerClose">Close</button></header><div class="guy-drawer-scroll"><details id="guySelection" class="detail-card guy-details"><summary id="guySelectionTitle">Product record</summary><div class="guy-detail-body">
@@ -365,7 +365,7 @@
 </section><div hidden><div><span>Selected bolt basis</span><strong id="selectionTitle">M24 8.8/S</strong><small id="drawingNote">N: threads intercept shear plane · X: threads clear of shear plane</small></div><label><span>Shear plane</span><select id="shearPlane" aria-label="Shear-plane condition"><option value="N">N — threads intercept plane</option><option value="X">X — threads clear of plane</option></select></label></div></div>
 <p id="boltCategoryScope" class="result-note bolt-compare-note" hidden></p><section class="bolt-compare" aria-labelledby="boltCompareTitle">
  <div class="bolt-compare-heading"><div><h3 id="boltCompareTitle">Compare sizes</h3><span id="boltCompareContext" class="bolt-compare-context" role="status" aria-live="polite"></span></div><div class="bolt-compare-modes" role="group" aria-label="Compare bolts by"><button type="button" data-bolt-compare-mode="size" aria-pressed="true">By size</button><button type="button" data-bolt-compare-mode="category" aria-pressed="false">By category</button></div></div>
- <div class="bolt-compare-wrap" role="region" aria-label="Bolt capacity comparison; scroll horizontally on small screens" tabindex="0"><table class="bolt-compare-table"><caption class="sr-only">Design capacities per bolt, one shear plane; kN</caption><thead id="boltCompareHead"></thead><tbody id="boltCompareRows"></tbody></table></div><p id="boltCompareNote" class="result-note bolt-compare-note"></p>
+ <p class="table-scroll-prompt" hidden>Scroll across for more columns.</p><div class="bolt-compare-wrap" role="region" aria-label="Bolt capacity comparison; scroll horizontally on small screens" tabindex="0"><table class="bolt-compare-table"><caption class="sr-only">Design capacities per bolt, one shear plane; kN</caption><thead id="boltCompareHead"></thead><tbody id="boltCompareRows"></tbody></table></div><p id="boltCompareNote" class="result-note bolt-compare-note"></p>
  </section>
  <section class="capacity-section" aria-live="polite">
           <div class="section-heading"><div><h2>Bolt capacities</h2></div><span>design capacities per bolt</span></div>
@@ -992,6 +992,7 @@
           <label data-cb-fitment><span>Fitment bar</span><select id="cbFitmentBar"></select></label>
           <label data-cb-fitment><span>Effective legs, n<sub>sv</sub></span><input id="cbLegs" type="number" min="2" max="10" step="1" value="2"></label>
           <label data-cb-fitment><span>Spacing, s<sub>v</sub></span><span class="unit"><input id="cbSpacing" type="number" min="1" step="1" value="200"><em>mm</em></span></label>
+          <p class="cb-no-fitments-note" hidden>Shear resistance is conditional. See Reinforcement checks.</p>
         </div>
       </section>
       <div class="cb-input-footer"><div class="cb-applicability"><label class="cb-checkbox"><input id="cbApplicable" type="checkbox" checked><span>Confirm method applicability</span></label><a id="cbViewConditions" class="cb-conditions-link" href="#cbApplicability" aria-controls="cbSources">View conditions</a>
@@ -1001,13 +1002,13 @@
     <section id="cbResults" class="cb-output" aria-label="Concrete beam results" tabindex="-1">
       <div class="cb-results-main">
       <div class="section-heading"><h2>Section capacity</h2></div>
-      <div class="cb-capacities" aria-live="polite" aria-atomic="true">
+      <div class="cb-capacities review-result-cards" aria-live="polite" aria-atomic="true">
         <article class="capacity-card selected-shear"><span>Moment · φM<sub>uo</sub></span><strong><output id="cbMomentCapacity">—</output><small id="cbMomentUnit"> kN·m</small></strong><p id="cbMomentNote"></p></article>
         <article class="capacity-card"><span>Shear capacity · φV<sub>u</sub></span><strong><output id="cbShearCapacity">—</output><small id="cbShearUnit"> kN</small></strong><p id="cbShearNote"></p></article>
       </div>
-      <div id="cbIssues" class="cb-issues" role="status"></div>
-      <section class="cb-derived"><h3>Reinforcement screens</h3><div id="cbScreens" aria-live="polite" aria-atomic="true"></div></section>
-      <p class="cb-boundary">Capacity only · detailing excluded; clear gaps not checked.</p>
+      <div class="result-review-note"><b>Applicability</b><div id="cbIssues" class="cb-issues" role="status"></div><p class="cb-boundary">Capacity only · detailing excluded; clear gaps not checked.</p></div>
+      <section class="cb-derived"><h3>Reinforcement checks</h3><div id="cbScreens" aria-live="polite" aria-atomic="true"></div></section>
+
       </div>
     </section>
   </div>
@@ -1113,11 +1114,11 @@
 
         <section class="capacity-section" aria-live="polite">
           <div class="section-heading"><div><h2>Section capacity</h2></div></div>
-          <div class="capacity-grid concrete-results">
+          <div class="capacity-grid concrete-results review-result-cards">
             <article class="capacity-card selected-shear"><span class="capacity-label">Design flexural capacity <b>&phi;M<sub>uo</sub></b></span><strong><output id="concretePhiMuo">-</output><small> kNm</small></strong></article>
             <article class="capacity-card"><span class="capacity-label">One-way shear section capacity <b>&phi;V<sub>u</sub></b></span><strong><output id="concretePhiVu">-</output><small> kN</small></strong></article>
           </div>
-          <p class="result-note" id="concreteWarningText">Section capacities only; design actions and excluded checks are not evaluated.</p>
+          <div class="result-review-note"><b>Applicability</b><p class="result-note" id="concreteWarningText">Section capacities only; design actions and excluded checks are not evaluated.</p><p>Check punching shear and soil bearing separately.</p></div>
         </section>
 
 
@@ -1513,13 +1514,13 @@
             </div>
           </details><dl><div data-beam-summary-cell="axis"><dt>Bending direction</dt><dd id="beamSummaryDirection">x-x</dd></div><div data-beam-summary-cell="fym"><dt>f<sub>y,m</sub></dt><dd id="beamFy">320 MPa</dd></div><div data-beam-summary-cell="fyw"><dt>f<sub>y,w</sub></dt><dd id="beamFyw">320 MPa</dd></div></dl></div></section><section class="capacity-section beam-result-pane" aria-live="polite" aria-label="Beam capacity results">
           <div class="section-heading"><div><h2>Section capacity</h2></div><span>&phi; = 0.90</span></div><div class="beam-result-basis"><span>Selected section</span><strong id="beamDesignation">310UB40.4 · Grade 300 (300PLUS)</strong><small id="beamAssumption">x-x section moment and web shear; member checks excluded.</small></div>
-          <div class="capacity-grid beam-results" id="beamResultsGrid">
+          <div class="capacity-grid beam-results review-result-cards" id="beamResultsGrid">
             <article class="capacity-card selected-shear"><span id="beamMomentResultLabel">Design section moment capacity &phi;M<sub>sx</sub></span><strong><output id="beamSectionCapacity">182.3</output><small> kN·m</small></strong><p id="beamMomentResultBasis">Catalogue Z<sub>ex</sub> · AS 4100 Cl. 5.2</p></article>
             <article class="capacity-card" id="beamShearCard"><span id="beamShearResultLabel">Design section shear capacity &phi;V<sub>v</sub></span><strong><output id="beamShearCapacity">298.9</output><small> kN</small></strong><p id="beamShearResultBasis">AS 4100 Cl. 5.11 · web shear</p></article>
           </div><dl class="beam-quick-properties"><div><dt>Bending direction</dt><dd id="beam-preview-direction">—</dd></div><div><dt>Section class</dt><dd id="beam-preview-class">—</dd></div></dl>
           <p class="beam-result-status" id="beamResultStatus">Calculated · section resistance only</p>
 
-        <p class="result-note" id="beamWarning">Section capacity only. Member stability, restraint and serviceability are excluded.</p>
+        <div class="result-review-note"><b>Applicability</b><p class="result-note" id="beamWarning">Section capacity only. Member stability, restraint and serviceability are excluded.</p></div>
 </section></div><details class="beam-section-details">
             <summary><span><b>Section properties</b><small id="beamSectionDetailsLabel">Dimensions and supplementary catalogue properties</small></span><i>+</i></summary>
             <section class="beam-property-group"><h3>Capacity basis</h3><div class="beam-capacity-basis"><dl class="beam-summary-metrics beam-summary-primary">
@@ -1554,7 +1555,7 @@
     </section>
 
 <section id="chs4600Panel" class="tool-panel" hidden>
- <div class="tool-heading"><div><p class="kicker">Shared D and t · separate f<sub>y</sub></p><h2>Cold-formed CHS Bending Capacity</h2><p class="chs-compare-intro">AS 4100 vs AS/NZS 4600 · hot-finished CHS comparison.</p></div><span class="tool-status">Public beta · For Review</span></div>
+ <div class="tool-heading"><div><p class="kicker">Shared D and t · separate f<sub>y</sub></p><h2>Cold-formed CHS Bending Capacity</h2><p class="chs-compare-intro">AS 4100 vs AS/NZS 4600 · hot-finished CHS comparison.</p></div><span class="tool-status">For Review</span></div>
  <section class="lookup-card chs-compare-workspace">
   <section class="chs-compare-pane" aria-label="Shared CHS inputs">
    <h3>Section inputs</h3>
@@ -1665,19 +1666,10 @@
 
         <p id="monopoleInputStatus" class="result-note" aria-live="polite" hidden></p>
 
-        <section class="monopole-shaft-summary" aria-live="polite">
-          <b>Derived properties</b>
-          <dl class="monopole-inline-metrics">
-            <div><dt>Mass</dt><dd><output id="monopoleMass">-</output> kg</dd></div>
-            <div><dt>Self-weight</dt><dd><output id="monopoleSelfWeight">-</output> kN</dd></div>
-            <div><dt>z<sub>cg</sub></dt><dd><output id="monopoleCentreOfGravity">-</output> m</dd></div>
-            <div><dt>H</dt><dd><output id="monopoleAssembledHeight">-</output></dd></div>
-          </dl>
-          <small><span id="monopoleMassBasis">physical shell geometry</span> &middot; <output id="monopoleSectionCount">-</output> <span id="monopoleCountLabel">segments</span></small>
-        </section>
+
 
         <div id="monopoleCapacityHeading" class="monopole-stage-heading">
-          <b>Capacity results</b>
+          <h2 class="monopole-result-review-title">Capacity results</h2>
         </div>
 
         <details id="monopoleMomentSection" class="monopole-moment-section monopole-station-details">
@@ -1719,6 +1711,17 @@
           </div>
         </details>
 
+        <div class="result-review-note"><b>Applicability</b><p>Section capacities at the reported elevations. Check design actions, member stability and joints separately.</p></div>
+        <section class="monopole-shaft-summary" aria-live="polite">
+          <b>Derived properties</b>
+          <dl class="monopole-inline-metrics">
+            <div><dt>Mass</dt><dd><output id="monopoleMass">-</output> kg</dd></div>
+            <div><dt>Self-weight</dt><dd><output id="monopoleSelfWeight">-</output> kN</dd></div>
+            <div><dt>z<sub>cg</sub></dt><dd><output id="monopoleCentreOfGravity">-</output> m</dd></div>
+            <div><dt>H</dt><dd><output id="monopoleAssembledHeight">-</output></dd></div>
+          </dl>
+          <small><span id="monopoleMassBasis">physical shell geometry</span> &middot; <output id="monopoleSectionCount">-</output> <span id="monopoleCountLabel">segments</span></small>
+        </section>
         <section id="monopoleOverlapSection" class="monopole-overlap-section" hidden>
           <div class="section-heading"><div><h2>Overlap guidance screen</h2></div><span>Geometry only &middot; joint resistance not evaluated</span></div>
           <div class="table-scroll">
@@ -1852,13 +1855,13 @@
           </details>
         </div></section><section class="capacity-section axial-result-pane" aria-live="polite" aria-label="Axial member results">
           <div class="section-heading"><div><h2>Member capacity</h2></div><span>capacity factor &phi; = 0.90</span></div><div class="axial-result-identity"><strong id="memberDesignation">—</strong></div>
-          <div class="capacity-grid member-results">
+          <div class="capacity-grid member-results review-result-cards">
             <article class="capacity-card selected-shear"><span class="capacity-label">Compression <b>&phi;N<sub>c</sub></b></span><strong><output id="memberCompression">—</output><small> kN</small></strong><p>Flexural buckling only · AS 4100 Cl. 6.3. Flexural-torsional buckling not evaluated.</p></article>
             <article class="capacity-card alternate-shear"><span class="capacity-label">Tension <b>&phi;N<sub>t</sub></b></span><strong><output id="memberTension">—</output><small> kN</small></strong><p id="memberTensionBasis">Governing tension limit state · AS 4100 Cl. 7.2</p></article>
           </div><dl class="axial-quick-properties"><div><dt>Checked axis / r</dt><dd data-axial-axis>—</dd></div><div><dt>L<sub>e</sub> / L<sub>e</sub>/r</dt><dd data-axial-slenderness>—</dd></div></dl>
 
-          <p class="axial-scope-note" data-axial-scope>Centroidal compression / tension only.</p>
-          <p class="result-note user-input-note" id="memberInputStatus">Verify length, axis and connection basis.</p>
+          <div class="result-review-note"><b>Applicability</b><p class="axial-scope-note" data-axial-scope>Centroidal compression / tension only.</p>
+          <p class="result-note user-input-note" id="memberInputStatus">Verify length, axis and connection basis.</p></div>
         <div hidden aria-hidden="true"><details class="member-section-details" id="memberSectionDetails">
             <summary><span><b>Basis notes</b><small>Sources and adopted assumptions</small></span><i>+</i></summary>
             <small id="memberAssumption">Calculated after selection</small><p class="result-note" id="memberWarning">Select section and grade to calculate member capacity.</p><div hidden aria-hidden="true"><small id="memberRadiusSource">Section and effective length.</small><dl class="member-summary-basis">
@@ -2051,10 +2054,10 @@
 
             <section class="capacity-section reo-result-section" id="reoLapResultSection">
               <div class="section-heading"><div><h2>Required lap length</h2></div><span id="reoResultStatus" role="status" aria-live="polite">AS 3600 REFERENCE</span></div>
-              <div class="capacity-grid reo-results">
+              <div class="capacity-grid reo-results review-result-cards">
                 <article class="capacity-card reo-primary-result"><span class="capacity-label"><span id="reoPrimaryResultLabel">Adopted lap length</span> <b>L<sub>lap,adopted</sub></b></span><strong aria-live="polite" aria-atomic="true"><output id="reoRequiredLength">-</output><small> mm</small></strong><p class="reo-result-meta"><span><output id="reoLapRatio">-</output>d<sub>b</sub></span><span id="reoGoverning">Governing expression not calculated.</span><small id="reoDevelopmentLength">L<sub>sy.t</sub> = -</small><small>Rounded up to the next 10 mm.</small></p></article>
               </div>
-              <p class="result-note" id="reoResultNote">Use only where the project drawings or specification permit the splice &middot; AS 3600 Cl. 13.2.1(a). Same-size bars assumed.</p>
+              <div class="result-review-note"><b>Applicability</b><p class="result-note" id="reoResultNote">Use only where the project drawings or specification permit the splice &middot; AS 3600 Cl. 13.2.1(a). Same-size bars assumed.</p></div>
             </section>
 
             <details class="detail-card reo-k7-card" id="reoLapFactorGroup">
@@ -2179,13 +2182,13 @@
 
         <section class="capacity-section reo-result-section reo-anchorage-result" id="reoAnchorageResultSection" hidden>
           <div class="section-heading"><div><h2 id="reoAnchorageResultTitle">Development reference length</h2></div><span id="reoAnchorageResultStatus" role="status" aria-live="polite">INPUT REQUIRED</span></div>
-          <div class="capacity-grid reo-reference-results">
+          <div class="capacity-grid reo-reference-results review-result-cards">
             <article class="capacity-card reo-primary-result"><span class="capacity-label" id="reoRequiredEmbedmentLabel">Development reference length <b>L<sub>sy.t</sub></b></span><strong aria-live="polite" aria-atomic="true"><output id="reoAnchoragePrimaryResult">-</output><small> mm</small></strong><p id="reoSaving">AS 3600 development reference.</p></article>
           </div>
           <div class="reo-anchorage-reference-strip" id="reoAnchorageReferenceStrip" aria-label="Development and anchorage reference lengths">
             <div id="reoAnchorageFullReferenceCard"><span>AS 3600 full-yield reference</span><strong><output id="reoAsFullDevelopment">-</output> mm</strong><small id="reoFullReferenceContext">Reference context</small></div>
           </div>
-          <p class="result-note" id="reoAnchorageResultNote">AS 3600 reference only. Complete all applicable detailing and product-specific checks.</p>
+          <div class="result-review-note"><b>Applicability</b><p class="result-note" id="reoAnchorageResultNote">AS 3600 reference only. Complete all applicable detailing and product-specific checks.</p></div>
         </section>
 
       </section>
@@ -2601,7 +2604,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.150 &middot; updated 20 Nov 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.151 &middot; updated 20 Nov 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2629,18 +2632,18 @@
 
   <script src="bolt-comparison/comparison.js?v=20261016workflowtrace1"></script>
 <script src="tool-directory/registry.js?v=20261102analysis143"></script>
-<script src="tool-directory/directory.js?v=20261102analysis143"></script>
-<script src="section-custom/calculation.js?v=20261026custom141"></script><script src="app.js?v=20261102analysis143"></script>
+<script src="tool-directory/directory.js?v=20261120format151"></script>
+<script src="section-custom/calculation.js?v=20261026custom141"></script><script src="app.js?v=20261120format151"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=20261016workflowtrace1"></script>
 <script src="geo-parameters/detail-app.js?v=20261102analysis143"></script>
 
-  <script src="monopole-presentation/presentation.js?v=20261018monopole1"></script>
-  <script src="monopole-app.js?v=20261102analysis143"></script>
+  <script src="monopole-presentation/presentation.js?v=20261120format151"></script>
+  <script src="monopole-app.js?v=20261120format151"></script>
   <script src="as4600-chs/bending.js?v=20261017calcaudit1"></script>
   <script src="as4600-chs/orrcon-products.js?v=20261016workflowtrace1"></script>
   <script src="chs-bending-comparison/model.js?v=20261016workflowtrace1"></script>
-<script src="chs-bending-comparison/panel.js?v=20261016workflowtrace1"></script>
+<script src="chs-bending-comparison/panel.js?v=20261120format151"></script>
   <script type="module" src="rock-anchor-selector/app.js?v=20261102analysis143"></script>
     <script src="guy-lookup/data.js?v=20261016workflowtrace1"></script>
   <script src="guy-lookup/units.js?v=20261016workflowtrace1"></script>
@@ -2654,25 +2657,25 @@
 <script src="panel-antennas/lookup.js?v=20261016workflowtrace1"></script>
 <script src="panel-antennas/app.js?v=20261102analysis143"></script>
 <script src="reinforcement-area/calculation.js?v=20261016workflowtrace1"></script>
-<script src="reinforcement-area/app.js?v=20261102analysis143"></script>
+<script src="reinforcement-area/app.js?v=20261120format151"></script>
 <script src="bolt-dimensions/data.js?v=20261016workflowtrace1"></script>
 <script src="bolt-dimensions/lookup.js?v=20261016workflowtrace1"></script>
 <script src="bolt-dimensions/app.js?v=20261102analysis143"></script>
 <script src="concrete-anchors/data.js?v=20261016workflowtrace1"></script>
 <script src="concrete-anchors/lookup.js?v=20261016workflowtrace1"></script>
-<script src="concrete-anchors/app.js?v=20261102analysis143"></script>
+<script src="concrete-anchors/app.js?v=20261120format151"></script>
 <script src="foundation-products/models.js?v=20261016workflowtrace1"></script>
 <script src="foundation-products/research.js?v=20261016workflowtrace1"></script>
 <script src="foundation-products/lookup.js?v=20261120compact149"></script>
 <script src="section-tables/model.js?v=20261016workflowtrace1"></script>
 <script src="section-tables/header-filters.js?v=20261016workflowtrace1"></script>
-<script src="section-tables/lookup.js?v=20261026references140"></script>
+<script src="section-tables/lookup.js?v=20261120format151"></script>
 <script src="plate-tables/catalogue.js?v=20261016workflowtrace1"></script>
 <script src="plate-tables/model.js?v=20261016workflowtrace1"></script>
 <script src="plate-tables/app.js?v=20261102analysis143"></script>
 <script src="concrete-cover/data.js?v=20261016workflowtrace1"></script>
 <script src="concrete-cover/model.js?v=20261016workflowtrace1"></script>
-<script src="concrete-cover/app.js?v=20261102analysis143"></script>
+<script src="concrete-cover/app.js?v=20261120format151"></script>
 <script src="steel-corrosion/data.js?v=20261016workflowtrace1"></script>
 <script src="steel-corrosion/model.js?v=20261016workflowtrace1"></script>
 <script src="steel-corrosion/header-labels.js?v=20261026corrosion139"></script>
@@ -2692,10 +2695,10 @@
 <script src="beam-internal-forces/app.js?v=20261102analysis143"></script>
 <script src="workflow-review/config.js?v=20261120compact149"></script>
 <script src="workflow-review/app.js?v=20261102analysis143"></script>
-<script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261102shear142"></script><script src="concrete-beam/app.js?v=20261102analysis143"></script>
-<script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261102analysis143"></script>
+<script src="concrete-beam/calculation.js?v=20261017concretebeam1"></script><script src="concrete-beam/drawing.js?v=20261017concretebeam1"></script><script src="concrete-beam/presentation.js?v=20261120format151"></script><script src="concrete-beam/app.js?v=20261120format151"></script>
+<script src="pad-input/drawing.js?v=20261017padrelease1"></script><script src="pad-input/app.js?v=20261120format151"></script>
 <script src="disclosure/indicators.js?v=20261026tables3"></script>
-<script src="section-custom/input.js?v=20261026custom141"></script>
+<script src="section-custom/input.js?v=20261120format151"></script>
 <dialog id="handbookConventions" class="hb-conventions" aria-labelledby="hbConventionsTitle">
   <header class="hb-conventions-heading"><div><h2 id="hbConventionsTitle">Signs &amp; units</h2><p>Handbook analysis conventions</p></div><button type="button" data-close-conventions aria-label="Close Signs and units">Close</button></header>
   <div class="hb-conventions-body">

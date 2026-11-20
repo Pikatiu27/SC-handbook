@@ -131,7 +131,7 @@
     const v=overallValues(),r=S.genericBeam(v),web=v.shearModel==='flat-web',chs=v.shearModel==='chs';
     $id('beamOverallWebFields').hidden=!web;$id('beamOverallChsFields').hidden=!chs;
     $id('beamOverallWebFields').querySelectorAll('input').forEach(e=>e.disabled=!web);$id('beamOverallAe').disabled=!chs;
-    $id('beamOverallShearHelp').textContent=web?'A_w is the gross web area. Enter a verified α_v ≤ 1 for approximately uniform shear, including buckling. Non-uniform shear: Not evaluated.':chs?'A_e must satisfy AS 4100 Cl. 5.11.4 hole and net-area conditions. CHS only.':'Shear remains Not evaluated until its model and inputs are verified.';
+    $id('beamOverallShearHelp').innerHTML=engineeringInputNotation(web?'A_w is the gross web area. Enter a verified α_v ≤ 1 for approximately uniform shear, including buckling. Non-uniform shear: Not evaluated.':chs?'A_e must satisfy AS 4100 Cl. 5.11.4 hole and net-area conditions. CHS only.':'Shear remains Not evaluated until its model and inputs are verified.');
     for(const key of ['Area','Ix','Iy','Fy','Fu','Zex','Zey','Aw','Fyw','AlphaV','Ae']){
       const e=$id('beamOverall'+key),n=Number(e.value);
       let bad=!e.disabled&&e.value!==''&&(!Number.isFinite(n)||n<=0);
@@ -140,13 +140,16 @@
       if((key==='Aw'&&web||key==='Ae'&&chs)&&n>v.area)bad=true;
       e.setAttribute('aria-invalid',String(bad));
     }
-    const result=(label,n,unit,reason)=>'<div class="section-custom-result"><b>'+label+'</b><strong>'+f2(n)+(n===null?'':' '+unit)+'</strong><small>'+esc(reason)+'</small></div>';
-    $id('beamOverallResults').innerHTML=result('Moment · '+v.axis+'–'+v.axis,r.moment,'kN·m',r.momentReason)+result('Shear',r.shear,'kN',r.shearReason)+'<p class="result-note">Derived radii: r<sub>x</sub> = '+(r.rx===null?'—':f2(r.rx))+' mm; r<sub>y</sub> = '+(r.ry===null?'—':f2(r.ry))+' mm. For Review · section capacity only.</p>';
-    let calc='';
+    const sharedReason=r.moment===null && r.shear===null && r.momentReason===r.shearReason
+      ? engineeringInputNotation(r.momentReason) : '';
+    const reasonText=reason=>sharedReason?'':engineeringInputNotation(reason);
+    const result=(label,n,unit,reason)=>'<div class="section-custom-result"><b>'+label+'</b><strong>'+f2(n)+(n===null?'':' '+unit)+'</strong>'+(sharedReason?'':'<small>'+reasonText(reason)+'</small>')+'</div>';
+    $id('beamOverallResults').innerHTML=result('Moment · '+v.axis+'–'+v.axis,r.moment,'kN·m',r.momentReason)+result('Shear',r.shear,'kN',r.shearReason)+(sharedReason?'<p class="result-note is-warning">'+sharedReason+'</p>':'')+'<div class="result-review-note"><b>Applicability</b><p>For Review · section capacity only.</p></div><p class="result-note">Derived radii: r<sub>x</sub> = '+(r.rx===null?'—':f2(r.rx))+' mm; r<sub>y</sub> = '+(r.ry===null?'—':f2(r.ry))+' mm.</p>';
+    let calc=sharedReason?'<p>'+sharedReason+'</p>':'';
     if(r.moment!==null)calc+=trace('Moment capacity',formula(false,false),`= 0.90 × ${f2(v.fy)} × ${f2(r.ze)} / 10⁶`,`φMₛ = ${f2(r.moment)} kN·m`,r.momentReason);
-    else calc+='<p>Moment: Not evaluated. '+esc(r.momentReason)+'</p>';
+    else calc+='<p>Moment: Not evaluated. '+reasonText(r.momentReason)+'</p>';
     if(r.shear!==null)calc+=web?trace('Shear capacity',formula(true,false),`= 0.90 × ${f2(v.alphaV)} × 0.6 × ${f2(v.fyw)} × ${f2(v.aw)} / 10³`,`φVᵥ = ${f2(r.shear)} kN`,r.shearReason):trace('Shear capacity',formula(false,true),`= 0.90 × 0.36 × ${f2(v.fy)} × ${f2(v.ae)} / 10³`,`φVᵥ = ${f2(r.shear)} kN`,r.shearReason);
-    else calc+='<p>Shear: Not evaluated. '+esc(r.shearReason)+'</p>';
+    else calc+='<p>Shear: Not evaluated. '+reasonText(r.shearReason)+'</p>';
     $id('beamOverallCalculation').innerHTML=calc;
   }
   inputs('#beamOverallCustom').forEach(e=>e.addEventListener(e.tagName==='SELECT'||e.type==='checkbox'?'change':'input',renderOverall));

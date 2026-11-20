@@ -40,7 +40,10 @@
     for (const suffix of ["MomentUnit","ShearUnit","MomentNote","ShearNote","Geometry","Screens","Details","Summary"]) el(suffix).textContent="";
   }
   function update() {
-    const input=collect(), result=calc.calculate(input); panel.querySelectorAll("[data-cb-fitment]").forEach(label=>label.hidden=input.fitments === "none");
+    const input=collect(), result=calc.calculate(input);
+    const noFitments = input.fitments === "none";
+    panel.querySelectorAll("[data-cb-fitment]").forEach(label=>label.hidden=noFitments);
+    panel.querySelector(".cb-no-fitments-note").hidden=!noFitments;
     window.ConcreteBeamLastResult=result;
     drawingInput=input;drawingResult=result;draw();
     for (const key of Object.keys(fields)) {
@@ -58,7 +61,9 @@
     if(r.flexureCapacity != null){el("MomentCapacity").textContent=fmt(r.flexureCapacity);el("MomentCapacity").classList.remove("cb-unavailable");el("MomentUnit").textContent=" kN·m";}
     if(r.shearCapacity != null){el("ShearCapacity").textContent=fmt(r.shearCapacity);el("ShearCapacity").classList.remove("cb-unavailable");el("ShearUnit").textContent=" kN";}
     el("MomentNote").innerHTML=r.flexureReasons.some(reason=>reason!=="Confirm the stated section applicability before using capacities.") ? "Outside section method." : !input.applicable ? "" : !r.minimumFlexure ? "Review minimum flexural steel." : "";
-    el("ShearNote").textContent=r.shearReasons.length ? "" : v.webCrushingLimited ? "Web crushing governs." : input.fitments === "none" ? "Conditional · check shear reinforcement requirement." : "";
+    el("ShearNote").textContent=r.shearReasons.length ? "" : input.fitments === "none"
+      ? (v.webCrushingLimited ? "Conditional · web crushing governs." : "Conditional · no fitments.")
+      : (v.webCrushingLimited ? "Web crushing governs." : "");
     const issues=presentation.primaryIssues(r);
     el("Issues").innerHTML=issues.length ? '<ul>'+[...new Set(issues)].map(note=>`<li>${presentation.note(note)}</li>`).join("")+"</ul>" : "";
     el("Geometry").innerHTML=kv(presentation.geometry(r));

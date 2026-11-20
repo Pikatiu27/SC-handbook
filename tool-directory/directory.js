@@ -5,6 +5,16 @@
   const byId=new Map(tools.map(t=>[t.id,t]));
   const oldNames=new Map([...document.querySelectorAll('.tool-tab')].map(b=>[b.dataset.tool,b.dataset.legacyName||b.textContent.trim()]));
   const home=document.getElementById('toolDirectory'),homeLink=document.getElementById('directoryHomeLink'),search=document.getElementById('directorySearch'),productsLink=document.getElementById('directoryProductsLink');
+  const categoryNav=homeLink.closest('.tool-categories');
+  const categoryScroll=categoryNav.parentElement;
+  const updateCategoryEdge=()=>{
+    categoryScroll.classList.toggle('has-more-categories',
+      categoryNav.clientWidth>0 && categoryNav.scrollWidth-categoryNav.clientWidth-categoryNav.scrollLeft>2);
+  };
+  categoryNav.addEventListener('scroll',updateCategoryEdge,{passive:true});
+  if(typeof ResizeObserver==='function')new ResizeObserver(updateCategoryEdge).observe(categoryNav);
+  else window.addEventListener('resize',updateCategoryEdge);
+  updateCategoryEdge();
   const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let scheduled=false,focusNextTool=false,toolOpened=false,descriptions=false,directoryMode='home';
   const productTools=tools.filter(t=>t.kind==='Product data');

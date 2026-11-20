@@ -39,7 +39,13 @@
     return rows;
   }
   function renderScreens(input,r,compact=false){
-    return screens(input,r).map(item=>`<div class="cb-screen-line" data-state="${item.status}"><span class="cb-screen-name">${item.title}</span><strong class="cb-screen-status">${item.label}</strong>${!compact||item.status==="review"?`<span class="cb-screen-value">${escape(item.value)}</span>`:""}</div>`).join("");
+    const rows = screens(input,r);
+    // Show the conditional no-fitment trigger first in the result panel.
+    if (compact && rows[1]?.id === "no-fitment-trigger") {
+      const trigger = rows.splice(1,1)[0];
+      rows.unshift(trigger);
+    }
+    return rows.map(item=>`<div class="cb-screen-line" data-state="${item.status}"><span class="cb-screen-name">${item.title}</span><strong class="cb-screen-status">${item.label}</strong>${!compact||item.status==="review"?`<span class="cb-screen-value">${escape(item.value)}</span>`:""}</div>`).join("");
   }
   function primaryIssues(r){
     if(!r.valid)return [];

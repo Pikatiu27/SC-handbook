@@ -6,10 +6,39 @@
  const designIds=['chsCompare4100Design','chsCompare4600Design','chsCompareHotDesign'];
  const outputIds=[...designIds,'chsCompare4100Nominal','chsCompare4600Nominal','chsCompareHotNominal','chsCompare4100Class','chsCompare4600Branch','chsCompareHotClass','chsCompare4100Fy','chsCompare4600Fy','chsCompareHotFyReadout','chsCompareRatio','chsCompareBaseline','chsCompareDifference','chsCompareHotDifference','chsCompareInside','chsCompareI','chsCompareZ','chsCompareS'];
  const traceIds=['chsCompare4100Trace','chsCompare4600Trace','chsCompareHotTrace'];
+
+ function writtenNotation(value){
+  const digits='⁰¹²³⁴⁵⁶⁷⁸⁹';
+  return value.replace(/(?<![\p{L}_])(?:φM_s|φ_b|λ_[psy]|Z_[cef]|f_[by]|M_[bs])(?![\p{L}_])/gu, symbol=>{
+   const [letter,index]=symbol.split('_');
+   return '<var class="trace-symbol">'+letter+'<sub>'+index+'</sub></var>';
+  }).replace(/(\b\d+(?:\.\d+)?(?: × 10[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?)( (?:mm[²³⁴]?|MPa|kN·m))(?![\p{L}²³⁴])/gu,
+   (_,value,unit)=>'<span class="trace-quantity">'+value+unit+'</span>'
+  ).replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, power=>'<sup>'+[...power].map(digit=>digits.indexOf(digit)).join('')+'</sup>');
+ }
+ function renderTrace(row){
+  const display={...row};
+  if(row.id.endsWith('-moduli')){
+   const {I,Z,S}=row.values;
+   display.result='I ≈ '+format(I/1e6,6)+' × 10⁶ mm⁴; Z ≈ '+format(Z/1e3,6)+' × 10³ mm³; S ≈ '+format(S/1e3,6)+' × 10³ mm³';
+  }else if(/-(?:class|ze|nominal|design)$/.test(row.id)){
+   display.result=display.result.replace(/= (\d+\.\d{9,})(?![\dEe.])/g,(full,value)=>{
+    const rounded=EngineeringNumberFormat.decimalHalfUpSignificant(Number(value),9);
+    // Leave the classification input at full precision next to either limit.
+    if(rounded.includes('e') || (row.id.endsWith('-class') && [50,120].some(limit=>Math.abs(Number(value)-limit)<1e-5)))return full;
+    return '≈ '+rounded;
+   });
+  }
+  for(const field of ['formula','substitution','result']){
+   display[field]=display[field]?.split('; ').map((term,i,terms)=>'<span class="trace-term">'+writtenNotation(term)+(i+1<terms.length?';':'')+'</span>').join(' ');
+  }
+  display.applicability=writtenNotation(row.applicability||'');
+  return calculationTraceRow(display);
+ }
  function clear(message){
   outputIds.forEach(id=>text(id,'—'));designIds.forEach(id=>$(id).parentElement.classList.remove('is-unavailable'));
   text('chsCompareMessage',message);
-  traceIds.forEach((id,i)=>$(id).innerHTML=HandbookNumericalTraces.html(HandbookNumericalTraces.chs({issues:[message]},['as4100','as4600','hotAs4100'][i]),calculationTraceRow));
+  traceIds.forEach((id,i)=>$(id).innerHTML=HandbookNumericalTraces.html(HandbookNumericalTraces.chs({issues:[message]},['as4100','as4600','hotAs4100'][i]),renderTrace));
  }
  function provenance(){text('chsCompareProvenance',$('chsCompareProduct').value?'Cold-formed: Orrcon nominal size/grade · HR fy: manual.':'Manual geometry and fy · confirm both material bases.');}
  function selectProduct(){
@@ -40,7 +69,7 @@
   text('chsCompareRatio',format(result.ratio,2));text('chsCompareBaseline',a.status==='Calculated'?'Baseline':'—');text('chsCompareDifference',percent(result.differencePercent));text('chsCompareHotDifference',percent(result.hotDifferencePercent));
   text('chsCompareInside',format(result.insideDiameterMm,2)+' mm');text('chsCompareI',format(result.I/1e6,3)+' × 10⁶ mm⁴');text('chsCompareZ',format(result.Z/1000,3)+' × 10³ mm³');text('chsCompareS',format(result.S/1000,3)+' × 10³ mm³');
   text('chsCompare4600Trace',b.status==='Calculated'?'fy = '+format(result.yieldStressMpa,1)+' MPa; D/t = '+format(b.ratio,3)+'; limits '+[b.limits.compact,b.limits.intermediate,b.limits.applicability].map(v=>format(v,3)).join(' / ')+'. Cl. '+b.branch+': effective stress = '+format(b.nominalStressMpa,3)+' MPa. Mb = '+format(b.nominalMomentKNm)+' kN·m.':b.issues.join(' '));
-  ['as4100','as4600','hotAs4100'].forEach((key,i)=>$(traceIds[i]).innerHTML=HandbookNumericalTraces.html(HandbookNumericalTraces.chs(result,key),calculationTraceRow));
+  ['as4100','as4600','hotAs4100'].forEach((key,i)=>$(traceIds[i]).innerHTML=HandbookNumericalTraces.html(HandbookNumericalTraces.chs(result,key),renderTrace));
   text('chsCompareMessage',result.status!=='Calculated'?result.issues.join(' '):result.yieldStressMpa===result.hotYieldStressMpa?'Same fy · AS 4100 CF and HR match.':'Different fy · material strength also affects the comparison.');
  }
  products.rows.forEach(p=>$('chsCompareProduct').add(new Option(p.outsideDiameterMm+' × '+p.nominalThicknessMm+' CHS (Orrcon)',p.id)));

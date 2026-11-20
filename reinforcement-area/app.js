@@ -34,12 +34,14 @@
         <label id="reoAreaLengthField" hidden><span>Straight length per bar, L</span><span class="unit"><input id="reoAreaLength" type="text" inputmode="decimal" data-preserve-invalid="true" value="6" aria-describedby="reoAreaInputError"><em>m</em></span></label>
       </div>
       <p id="reoAreaInputError" class="field-error" role="status" hidden></p>
-      <div class="reo-area-results" aria-live="polite" aria-atomic="true">
+      <h3 class="reo-area-result-heading">Area &amp; mass</h3>
+      <div class="reo-area-results review-result-cards" aria-live="polite" aria-atomic="true">
         <article class="capacity-card"><span id="reoAreaResultLabel">Steel area per metre</span><strong><output id="reoAreaResult">—</output><small id="reoAreaResultUnit"> mm²/m</small></strong><p id="reoAreaArrangement" class="reo-area-caption"></p></article>
         <article class="capacity-card"><span id="reoAreaMassLabel">Nominal mass · one direction</span><strong><output id="reoAreaMass">—</output><small id="reoAreaMassUnit"> kg/m²</small></strong><p id="reoAreaMassNote" class="reo-area-caption">One layer. Standard nominal mass, excluding laps and wastage.</p></article>
       </div>
+      <div class="result-review-note"><b>Applicability</b><p class="reo-area-caption" id="reoAreaScope">Equivalent continuous one-metre strip, one layer and one direction. Clear gap is geometry only; detailing limits are not checked.</p></div>
       <div class="reo-area-basis-strip"><span>Single bar <b id="reoAreaSingleArea"></b> mm²</span><span>Nominal mass <b id="reoAreaSingleMass"></b> kg/m</span><span id="reoAreaGapWrap">Clear gap <b id="reoAreaClearGap"></b> mm</span></div>
-      <p class="reo-area-caption" id="reoAreaScope">Equivalent continuous one-metre strip, one layer and one direction. Clear gap is geometry only; detailing limits are not checked.</p>
+
     </section>
     <section class="lookup-card reo-area-card">
       <div class="section-heading"><div><h3 id="reoAreaTableTitle">Area at common spacings</h3></div><span class="reo-area-status" id="reoAreaTableUnit">mm²/m</span></div>

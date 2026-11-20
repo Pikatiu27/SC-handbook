@@ -286,7 +286,8 @@
     let start = 0;
     for (const match of plain.matchAll(inlineVariables)) {
       const at = match.index;
-      if (at > 0 && /[A-Za-z0-9_]/.test(plain[at - 1])) continue;
+      const afterCoefficient = match[0] === "t_d" && /\d/.test(plain[at - 1] || "");
+      if (at > 0 && /[A-Za-z0-9_]/.test(plain[at - 1]) && !afterCoefficient) continue;
       pieces.push(escape(plain.slice(start, at)).replace(/\n/g, "<br>"));
       pieces.push(math(symbolMarkup(match[0]), match[0], true));
       start = at + match[0].length;
@@ -354,7 +355,9 @@
       && !/^e$/i.test(word));
     if (unknown) return prose(source);
     try {
-      return '<span class="mono-math-line">' + (label ? '<span class="mono-math-label">' + escape(label) + "</span>" : "")
+      return '<span class="mono-math-line">' + (label ? '<span class="mono-math-label">' + escape(label)
+        .replace(/φN_s(?=\s*=)/g, () => math(mrow(mi("φ") + symbolMarkup("N_s")), "φN_s", true))
+        .replace(/\bz_c(?=\s*=)/g, symbol => math(symbolMarkup(symbol), symbol, true)) + "</span>" : "")
         + equation(body, format) + "</span>";
     } catch (error) {
       failures.push({ source, message: error.message });

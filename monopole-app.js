@@ -487,7 +487,7 @@
       if (!Number.isFinite(baseCompression) || !Number.isFinite(baseMoment)) {
         throw new RangeError("Base compression and bending section capacities are unavailable.");
       }
-      $("monopoleCombinedCapacitySummary").innerHTML = `Base &phi;N<sub>s</sub> = ${fixed(baseCompression, 1)} kN &middot; &phi;M<sub>s</sub> = ${fixed(baseMoment, 1)} kN&middot;m`;
+      $("monopoleCombinedCapacitySummary").innerHTML = `Base &phi;N<sub>s</sub> = ${fixed(baseCompression, 1)} kN`;
       $("monopoleCombinedCapacityBody").innerHTML = rows.map(row => `
         <tr>
           <td>${row.activeIndex === 0 ? `${fixed(row.station.elevation, 1)} m` : '<span class="monopole-repeat-elevation">same station</span>'}</td>

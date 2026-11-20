@@ -39,7 +39,7 @@ html body :is(#pa-specificity-a,details.sc-disclosure):is(#pa-specificity-b,deta
 }
 :is(#screwPanel,#rockPanel) .fp-table tbody th > a:focus-visible {outline:2px solid var(--focus);outline-offset:2px;}
 /* Table cells already have boundaries. Disclosure actions need no nested card. */
-html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#pa-cell-b,button[aria-expanded],summary.sc-disclosure):not(.st-header-control,.guy-header-control) {
+html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#pa-cell-b,button[aria-expanded],summary.sc-disclosure):not(.st-header-control,.guy-header-control,.ca-detail-toggle) {
   box-sizing:border-box;border:0;border-radius:0;box-shadow:none;
   background:transparent;min-height:44px;margin:0;padding-block:6px;
   padding-inline-start:0;font-size:var(--fs-sm,13px);line-height:1.4;
@@ -105,5 +105,142 @@ html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#
 
   :is(#propertiesPanel, #coverPanel, #corrosionPanel) .st-heading-actions button {
     flex: 0 0 auto;
+  }
+}
+
+.calculation-trace-line .trace-symbol {
+  white-space: nowrap;
+}
+
+#chs4600Panel .source-body .chs-source-groups p {
+  max-inline-size: none;
+}
+
+#chs4600Panel .chs-source-groups > section > h3,
+#chs4600Panel .chs-source-groups > section > p:first-of-type {
+  display: inline;
+}
+
+#chs4600Panel .chs-source-groups > section > h3 {
+  margin: 0;
+}
+
+#chs4600Panel .chs-source-groups > section > h3::after {
+  content: ' · ';
+}
+
+/* Shared result typography and a compact place for scope or action needed. */
+.review-result-cards > .capacity-card {
+  min-width: 0;
+  padding: 12px;
+}
+
+.review-result-cards > .capacity-card > span {
+  display: block;
+  line-height: 1.4;
+}
+
+.review-result-cards > .capacity-card > strong {
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.review-result-cards > .capacity-card > strong > small {
+  white-space: nowrap;
+}
+
+.result-review-note {
+  min-width: 0;
+  margin-block: 10px;
+  padding: 7px 10px;
+  border-inline-start: 2px solid var(--line);
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+.result-review-note > b {
+  display: block;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.tool-panel .result-review-note > :is(p, #memberInputStatus, .axial-scope-note, .cb-boundary) {
+  margin: 3px 0 0;
+}
+
+.result-review-note > :is(p, div):empty {
+  display: none;
+}
+
+.result-review-note .cb-issues:empty + .cb-boundary {
+  margin-block-start: 4px;
+}
+
+.directory-category-scroll { position: relative; min-width: 0; }
+.directory-category-scroll.has-more-categories::after {
+  content: "";
+  position: absolute;
+  inset: 1px 1px 1px auto;
+  width: 18px;
+  border-radius: 0 10px 10px 0;
+  background: linear-gradient(to right, transparent, #edf1ee);
+  pointer-events: none;
+}
+
+.table-scroll-prompt { margin: 6px 0; color: var(--muted); font-size: var(--fs-xs); }
+#beamPanel .beam-direction-controls { grid-template-columns: max-content minmax(0, 1fr); }
+#beamPanel .beam-direction-controls > .input-group-fields { grid-column: 2; grid-row: 1; min-width: 0; }
+#concretebeamPanel .cb-fitment-inputs .cb-fields:has(.cb-no-fitments-note:not([hidden])) {
+  grid-template-columns: minmax(108px, 12em) minmax(0, 1fr);
+  align-items: end;
+}
+.cb-no-fitments-note { margin: 0; padding-block: 7px; color: var(--muted); font-size: var(--fs-xs); }
+#chs4600Panel .trace-term { display: block; }
+#chs4600Panel .trace-term + .trace-term { margin-block-start: 0.2em; }
+#chs4600Panel .trace-quantity { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+#monopolePanel .monopole-result-review-title {
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
+#monopolePanel .monopole-shaft-summary {
+  margin-block: 10px 0;
+}
+
+#concretePanel #padCapacityResults > .concrete-summary {
+  margin-block: 10px 0;
+}
+
+#reoPanel .reo-area-result-heading {
+  margin: 10px 0 7px;
+  font-size: var(--fs-md);
+}
+
+@media (max-width: 500px) {
+  .tool-panel .review-result-cards > .capacity-card {
+    padding: 10px;
+  }
+  #guyPanel.tool-panel .tool-heading h2,
+  #chs4600Panel.tool-panel .tool-heading h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  #concretebeamPanel .cb-fitment-inputs .cb-fields:has(.cb-no-fitments-note:not([hidden])),
+  #chs4600Panel .calculation-trace-line,
+  #beamforcesPanel .calculation-trace-line,
+  #frameanalysisPanel .calculation-trace-line {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+  #monopoleFormulaSteps .mono-math-line {
+    gap: 5px;
   }
 }

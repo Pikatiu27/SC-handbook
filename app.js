@@ -3029,6 +3029,11 @@ function safeText(text) {
   }[char]));
 }
 
+function engineeringInputNotation(text) {
+  return safeText(text).replace(/(?<![\p{L}\d_])([AIfrLkα])_([a-z]+(?:,[a-z]+)?)(?![\p{L}\d_])/gu,
+    (_, symbol, subscript) => `<var>${symbol}<sub>${subscript}</sub></var>`);
+}
+
 function calculationTraceLine(label, content, className = "") {
   if (!content) return "";
   return `<div class="calculation-trace-line${className ? ` ${className}` : ""}"><span>${label}</span><code>${content}</code></div>`;
@@ -4582,10 +4587,10 @@ function calculateWeld() {
   const weldMethodAvailable = type === "fillet" || type === "ipbw";
   const inputErrors = [];
   if (type === "fillet" && $("weldSizeCheckEnabled").checked && $("weldJointCondition").value === "special") inputErrors.push("Special fillet geometry requires a project-specific design throat");
-  if (weldMethodAvailable && !(length > 0)) inputErrors.push("Effective length l_w must be positive");
-  if (type === "fillet" && length > 0 && length < 4 * size) inputErrors.push("Fillet length l_w must be at least 4s");
+  if (weldMethodAvailable && !(length > 0)) inputErrors.push("Effective length <var>l<sub>w</sub></var> must be positive");
+  if (type === "fillet" && length > 0 && length < 4 * size) inputErrors.push("Fillet length <var>l<sub>w</sub></var> must be at least 4s");
   if (weldMethodAvailable && !(runsValue >= 1 && Number.isInteger(runsValue))) inputErrors.push("Lines must be a positive whole number");
-  if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW throat t_t must be positive");
+  if (type === "ipbw" && !(effectiveThroat > 0)) inputErrors.push("IPBW throat <var>t<sub>t</sub></var> must be positive");
   [
     ["weldLength", length > 0 && (type !== "fillet" || length >= 4 * size)],
     ["weldRuns", runsValue >= 1 && Number.isInteger(runsValue)],
@@ -4692,7 +4697,7 @@ function calculateWeld() {
         formula: type === "fillet" ? `t<sub>t</sub> = 0.707s` : `t<sub>t</sub> = t<sub>t,specified</sub>`,
         substitution: type === "fillet" ? `0.707 &times; ${displayFixed(size, 0)} mm` : `${displayFixed(effectiveThroat, 1)} mm`,
         result: `Design throat thickness = ${fixed2(throat)} mm`,
-        applicability: type === "fillet" ? "Equal-leg fillet; l_w ≥ 4s (AS 4100 Cl. 9.6.3.5)." : "IPBW; project-specified throat."
+        applicability: type === "fillet" ? "Equal-leg fillet; <var>l<sub>w</sub></var> ≥ 4s (AS 4100 Cl. 9.6.3.5)." : "IPBW; project-specified throat."
       }),
       calculationTraceRow({
         title: "Design capacity per unit effective length",
@@ -7386,11 +7391,12 @@ function setMemberInvalidState(message, designation) {
   $("memberGoverning").textContent = "Not evaluated";
   $("memberUtilisationStatus").textContent = "INPUT REQUIRED";
   $("memberUtilisationStatus").className = "check";
-  $("memberWarning").innerHTML = `Input required: ${validationMessage}. No axial capacity has been evaluated.`;
+  const validationHtml = engineeringInputNotation(validationMessage);
+  $("memberWarning").innerHTML = `Input required: ${validationHtml}. No axial capacity has been evaluated.`;
   $("memberFormulaSteps").innerHTML = calculationTraceRow({
     title: "Input validation",
-    selection: validationMessage,
-    result: "Not evaluated",
+    selection: validationHtml,
+    adopted: "Not evaluated",
     applicability: "Enter valid project inputs before using the AS 4100 axial-member checks."
   });
 }
@@ -11406,6 +11412,18 @@ function initialise() {
 
 if (typeof document !== "undefined" && typeof window !== "undefined") {
   initialise();
+  document.querySelectorAll(".table-scroll-prompt").forEach(prompt => {
+    const region = prompt.nextElementSibling;
+    const update = () => { prompt.hidden = !region.clientWidth || region.scrollWidth <= region.clientWidth + 1; };
+    update();
+    if (typeof ResizeObserver === "function") {
+      const observer = new ResizeObserver(update);
+      observer.observe(region);
+      observer.observe(region.querySelector("table"));
+    } else {
+      window.addEventListener("resize", update);
+    }
+  });
   window.addEventListener("pageshow", () => window.requestAnimationFrame(calculateBolt));
 }
 

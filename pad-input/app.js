@@ -39,7 +39,7 @@
  const note=document.createElement('p');note.className='pp-table-note';note.innerHTML='y<sub>i</sub>: bar centre from overall top. Edit depth to override; Reset restores auto.';table.before(note);
  $('bottomPadLayerNote').innerHTML='Bottom pad absent (D<sub>bot</sub> = 0).';
  const symbols=card.querySelector('.concrete-symbol-details');symbols.querySelector('summary small')?.remove();symbols.querySelector('.symbol-key').insertAdjacentHTML('afterbegin','<span><b>D</b> = D<sub>top</sub> + D<sub>bot</sub></span>');panel.querySelector('.concrete-detail-card>.detail-body').prepend(symbols);
- const results=card.querySelector('.capacity-section'),summary=card.querySelector('.concrete-summary');results.prepend(summary);results.id='padCapacityResults';
+ const results=card.querySelector('.capacity-section'),summary=card.querySelector('.concrete-summary');results.querySelector('.result-review-note').before(summary);results.id='padCapacityResults';
  results.querySelector('h2').textContent='Section capacity';
  $('concretePhiMuo').parentElement.querySelector('small').textContent=' kN·m';
  $('concretePhiMuo').closest('article').querySelector('.capacity-label').firstChild.textContent='Flexural capacity ';
