@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.150 (20 November 2026): CHS, Monopole, Screw Pile and Rock Anchor source sections use one reading column. Frame gives the elastic modulus and uniform load separate input rows. Section Properties, Concrete Cover and Steel Corrosion align record counts and reset controls across the phone toolbar. Calculation and diagram logic, filters, product documents and historical links are preserved. Physical-device verification, full accessibility and independent engineering/project acceptance remain For Review. Public beta / For Review.
+
 Build 0.7.149 (20 November 2026): Beam and Frame use shorter model guidance and clearer calculation entry points. Screw Pile, Rock Anchor and Panel Antenna consolidate source and scope information; pile-group actions retain a separate optional section. Bolt Capacity keeps one Calculation disclosure. Calculation and drawing logic, catalogue data, filters, manuals and historical links are preserved. Physical-device and accessibility verification and independent engineering/project acceptance remain For Review. Public beta / For Review.
 
 Build 0.7.148 (16 November 2026): Lookup and reference tables share readable header typography, aligned units and natural row spacing. Latest Analysis workflow, calculation/data/drawing owners, filter controls, product manuals and historical links are preserved. Physical-device/font/zoom, full accessibility, existing source qualifications and independent engineering acceptance remain For Review. Public beta / For Review.

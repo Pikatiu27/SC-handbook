@@ -51,7 +51,7 @@
 <link rel="stylesheet" href="more-layouts/styles.css?v=20261023beammerged1">
 <link rel="stylesheet" href="disclosure/indicators.css?v=20261023disclosure1">
 <link rel="stylesheet" href="geo-parameters/interaction-layout.css?v=20261023ground1">
-<link rel="stylesheet" href="page-alignment/repairs.css?v=20261026tables3">
+<link rel="stylesheet" href="page-alignment/repairs.css?v=20261120layout150">
 <link rel="stylesheet" href="steel-corrosion/header-layout.css?v=20261026corrosion139">
 <link rel="stylesheet" href="reference-actions/styles.css?v=20261026references140"><script src="reference-actions/presentation.js?v=20261026references140"></script>
 <link rel="stylesheet" href="section-custom/input.css?v=20261026custom141">
@@ -1587,11 +1587,17 @@
   <div class="chs-compare-methods"><section><h3>Cold-formed · AS 4100</h3><p>M<sub>s</sub> = f<sub>y</sub>Z<sub>e</sub>; design moment = 0.90 M<sub>s</sub>.</p><div id="chsCompare4100Trace" class="formula-list">Enter valid geometry and fy.</div><p>AS 4100:2020 Cl. 5.2.1–5.2.6, Table 5.2 CF; factor Table 3.4.</p></section><section><h3>Cold-formed · AS/NZS 4600</h3><p>M<sub>b</sub> uses the cylindrical-tube branch; design moment = 0.95 M<sub>b</sub>.</p><div id="chsCompare4600Trace" class="formula-list">Enter valid geometry and fy.</div><p>AS/NZS 4600:2018 Cl. 3.6.1–3.6.2; factor Table 1.6.3(f). E = 200,000 MPa.</p></section><section><h3>Hot-finished · AS 4100</h3><p>M<sub>s</sub> = f<sub>y,HR</sub>Z<sub>e,HR</sub>; design moment = 0.90 M<sub>s</sub>.</p><div id="chsCompareHotTrace" class="formula-list">Enter valid geometry and fy.</div><p>AS 4100:2020 Cl. 5.2.1–5.2.6, Table 5.2 HR; factor Table 3.4.</p></section></div>
   <p>Differences use cold-formed AS 4100 as the baseline: (design moment ÷ baseline − 1) × 100. They are withheld when either result is unavailable. Different f<sub>y</sub> compares material strength as well as the stated method; it does not isolate manufacturing effects.</p>
  </div></details>
- <details class="source-card chs-compare-details"><summary><span><b>Sources and scope</b><small>Applicability, catalogue inputs and exclusions</small></span><i>+</i></summary><div class="source-body"><div class="source-notes">
-  <p>Shared D and base-steel t; ideal circular geometry without holes. Cold-formed uses one confirmed f<sub>y</sub> for both Standards; hot-finished uses a separate confirmed f<sub>y</sub>. HR means hot-rolled or hot-finished. AS 4100 Table 5.2 gives CF and HR the same CHS bending limits, 50 / 120; equal D, t and f<sub>y</sub> therefore give equal section moments.</p>
-  <p>AS/NZS 4600 requires t ≤ 25 mm and D/t ≤ 0.441E/f<sub>y</sub>. An unavailable side is withheld independently; a percentage comparison requires two valid results.</p>
-  <p>Optional cold-formed size/grade lookup: <a href="https://orrconmanufacturing.com.au/app/uploads/2024/07/Orrcon-National-Product-Catalogue-Man-LR.pdf" target="_blank" rel="noopener noreferrer">Orrcon July 2024, §1.1.4, pp. 10–11 ↗</a>; listed minimum f<sub>y</sub> follows AS/NZS 1163:2016 Table 7. Its dimensions are only a shared comparison geometry for the HR column; no hot-finished product or grade is supplied. Confirm the HR supply condition, applicable material Standard and thickness-dependent f<sub>y</sub> independently. No manufacturer capacity, stock or product equivalence is inferred. Adopt thickness allowances separately.</p>
-  <p>Pure section bending only. Axial force, shear, concentrated loads, stability, connections, serviceability, fatigue, fire and complete member design are excluded. Comparison does not establish project applicability or engineering acceptance. For Review.</p>
+ <details class="source-card chs-compare-details"><summary><span><b>Sources and scope</b><small>Applicability, catalogue inputs and exclusions</small></span><i>+</i></summary><div class="source-body"><div class="source-notes chs-source-groups">
+  <section><h3>Applicability</h3>
+    <p>Shared D and base-steel t; ideal circular geometry without holes. Cold-formed uses one confirmed f<sub>y</sub> for both Standards; hot-finished uses a separate confirmed f<sub>y</sub>. HR means hot-rolled or hot-finished. AS 4100 Table 5.2 gives CF and HR the same CHS bending limits, 50 / 120; equal D, t and f<sub>y</sub> therefore give equal section moments.</p>
+    <p>AS/NZS 4600 requires t ≤ 25 mm and D/t ≤ 0.441E/f<sub>y</sub>. An unavailable side is withheld independently; a percentage comparison requires two valid results.</p>
+  </section>
+  <section><h3>Catalogue source</h3>
+    <p>Optional cold-formed size/grade lookup: <a href="https://orrconmanufacturing.com.au/app/uploads/2024/07/Orrcon-National-Product-Catalogue-Man-LR.pdf" target="_blank" rel="noopener noreferrer">Orrcon July 2024, §1.1.4, pp. 10–11 ↗</a>; listed minimum f<sub>y</sub> follows AS/NZS 1163:2016 Table 7. Its dimensions are only a shared comparison geometry for the HR column; no hot-finished product or grade is supplied. Confirm the HR supply condition, applicable material Standard and thickness-dependent f<sub>y</sub> independently. No manufacturer capacity, stock or product equivalence is inferred. Adopt thickness allowances separately.</p>
+  </section>
+  <section><h3>Exclusions</h3>
+    <p>Pure section bending only. Axial force, shear, concentrated loads, stability, connections, serviceability, fatigue, fire and complete member design are excluded. Comparison does not establish project applicability or engineering acceptance. For Review.</p>
+  </section>
  </div></div></details>
 </section>
 
@@ -2595,7 +2601,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.149 &middot; updated 20 Nov 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.150 &middot; updated 20 Nov 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>

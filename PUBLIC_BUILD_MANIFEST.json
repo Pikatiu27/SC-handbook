@@ -492,7 +492,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "889b95689ed61d9be62696b350be832a67a3736fc2e033419434a0d4919da20d"
+      "sha256": "ebce3059811751908156cacd1c3f75d981be4f5a6c43ea53163dfe2ca3d55b9d"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -560,7 +560,7 @@
     },
     {
       "path": "page-alignment/repairs.css",
-      "sha256": "0116b95eb3dff9015496ed88d680eae96729a83f37d3882ca32e27da9fb37c75"
+      "sha256": "1bf385f1a6a361730180d70c411e90189f924f4e5407a1a5d92ff53855b8aaac"
     },
     {
       "path": "panel-antennas/app.js",
@@ -612,11 +612,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "546a1182d6a2d48cf461e3f7dd36f181507e8fda8cb81c0a5048463347706c1f"
+      "sha256": "01c1ab339cd222bf7ec2afdfc0a3d29cc05e7331f25ab2cc0a843b30a37b5e63"
     },
     {
       "path": "README.md",
-      "sha256": "410e077e344fc1a12add7b470f3df0ad26cf8601e5f8061e4ff300b01a4efbcf"
+      "sha256": "311b7060b8b59d89b557bb30bcaabb522e38258251b1615d918fb5b325da1e3f"
     },
     {
       "path": "reference-actions/presentation.js",

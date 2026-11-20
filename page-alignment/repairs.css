@@ -47,3 +47,63 @@ html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#
 }
 html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#pa-cell-b,button[aria-expanded],summary.sc-disclosure):not(.st-header-control,.guy-header-control):is(:hover,[aria-expanded="true"]) {background:var(--green-soft);}
 html body table :is(#pa-cell-a,button[aria-expanded],summary.sc-disclosure):is(#pa-cell-b,button[aria-expanded],summary.sc-disclosure):not(.st-header-control,.guy-header-control):focus-visible {outline:2px solid var(--brand);outline-offset:-2px;}
+
+/* Narrative sections complete one reading sequence. The comparison tables keep their columns. */
+#chs4600Panel .chs-compare-details > .source-body,
+#monopolePanel .source-card > .source-body,
+#fp-screw-scope,
+#rockPanel .source-card > .rock-source-body {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+
+:is(#chs4600Panel, #monopolePanel, #screwPanel, #rockPanel) .source-body .source-notes p {
+  max-inline-size: 90ch;
+}
+
+#chs4600Panel .chs-source-groups > section + section {
+  margin-block-start: 14px;
+}
+
+#chs4600Panel .chs-source-groups h3 {
+  margin: 0 0 5px;
+  color: var(--ink);
+  font-size: var(--fs-sm);
+}
+
+#chs4600Panel .chs-source-groups section > p:first-of-type {
+  margin-block-start: 0;
+}
+
+#fp-screw-scope > .fp-review {
+  margin-block-start: 0;
+  padding-block-start: 10px;
+}
+
+#fp-rock-scope > h3,
+#fp-screw-scope > .fp-review > h3 {
+  margin: 0 0 8px;
+  font-size: var(--fs-sm);
+}
+
+#frameanalysisPanel :is(#faMaterial, #faUniform) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 760px) {
+  :is(#propertiesPanel, #coverPanel, #corrosionPanel) .st-table-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  :is(#propertiesPanel, #coverPanel, #corrosionPanel) .st-heading-actions {
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  :is(#propertiesPanel, #coverPanel, #corrosionPanel) .st-heading-actions button {
+    flex: 0 0 auto;
+  }
+}
