@@ -4,35 +4,31 @@
   const data = window.GeoParametersData;
   const query = window.GeoParameters;
   const $ = (id) => document.getElementById(id);
-  let inlineReference = null;
-  function closeInlineReference(restoreFocus = false) {
-    if (!inlineReference) return;
-    const { topic, origin, host } = inlineReference;
-    inlineReference = null;
-    $("geoRelatedReferences").append(topic);
-    topic.open = false;
-    host.remove();
-    if (origin.isConnected) {
-      origin.setAttribute("aria-expanded", "false");
-      if (restoreFocus) origin.focus({ preventScroll: true });
-    }
+  const panel = $("geoPanel");
+  const topics = [...$("geoRelatedReferences").querySelectorAll(":scope > details")];
+  const referenceContext = panel.querySelector(".geo-reference-context");
+  const returnToParameter = document.createElement("button");
+  returnToParameter.type = "button";
+  returnToParameter.className = "geo-reference-return";
+  returnToParameter.textContent = "↑ Back to parameter";
+  let referenceOrigin = null;
+
+  function focusSection(target) {
+    target.focus({preventScroll:true});
+    target.scrollIntoView({block:"start",behavior:"instant"});
   }
-  function showInlineReference(origin) {
-    if (inlineReference?.origin === origin) { closeInlineReference(true); return; }
-    closeInlineReference();
-    const topic = $(origin.dataset.topic);
-    if (!topic) return;
-    const row = origin.closest(".geo-detail-table tr");
-    const host = document.createElement(row ? "tr" : "div");
-    host.className = "geo-inline-reference" + (row ? " geo-reference-row" : "");
-    const holder = row ? document.createElement("td") : host;
-    if (row) { holder.colSpan = 3; host.append(holder); row.after(host); }
-    else origin.after(host);
-    holder.append(topic);
-    inlineReference = { topic, origin, host };
-    origin.setAttribute("aria-expanded", "true");
-    topic.open = true;
+  function clearReferenceReturn() {
+    referenceOrigin = null;
+    returnToParameter.remove();
   }
+  returnToParameter.addEventListener("click", () => {
+    const origin = referenceOrigin;
+    clearReferenceReturn();
+    if (origin?.isConnected) focusSection(origin);
+  });
+  topics.forEach(topic => topic.addEventListener("toggle", () => {
+    if (!topic.open && returnToParameter.parentElement === topic) clearReferenceReturn();
+  }));
 
   const symbolMap = {
     "q_ult,screen": "q<sub>ult,screen</sub>", "C_a": "C<sub>a</sub>", "γ_w": "γ<sub>w</sub>",
@@ -132,31 +128,24 @@
         row.inventory && row.role === 'project' ? row.value : '',
         row.basis && row.basis !== condition ? row.basis : ''
       ].filter(Boolean))];
-      const evidence = notes.length ? `<details class="geo-row-source"><summary>Basis</summary>${notes.map(note => `<p>${symbols(note)}</p>`).join('')}</details>` : '';
+      const evidence = notes.length ? `<details class="geo-row-source"><summary>Value basis</summary>${notes.map(note => `<p>${symbols(note)}</p>`).join('')}</details>` : '';
       const project = row.inventory && row.role === 'project';
       const value = project ? '<span class="geo-project-value">Project input</span>' : row.inventory ? labelledValue(row.name, row.value) : partsHtml(row.parts);
       const kind = row.role === 'project' ? '' : row.role === 'standard' ? 'Classification band' : /bearing/i.test(row.name) ? (state.family === 'rock' ? 'Broad source reference' : 'Conditional reference') : /modulus/.test(row.name) ? 'Stiffness reference' : /Pile shaft/.test(row.name) ? 'Estimation factors' : 'Typical reference';
-      const topic = row.name === 'Allowable bearing pressure, q_a' ? 'bearingReference' : /modulus/.test(row.name) ? 'settlementReference' : row.name === 'Pile shaft resistance, f_s' ? 'interfaceReferences' : '';
-      const link = topic ? `<button type="button" class="geo-reference-link" data-topic="${topic}" aria-controls="${topic}" aria-expanded="false">${topic === 'bearingReference' ? 'Bearing conditions' : topic === 'settlementReference' ? 'Settlement basis' : 'Installation basis'}</button>` : '';
+      const topic = row.name === 'Allowable bearing pressure, q_a' ? ['bearingReference','Bearing pressure']
+        : /modulus/.test(row.name) ? ['settlementReference','Settlement and stiffness']
+        : row.name === 'Pile shaft resistance, f_s' ? ['interfaceReferences','Pile shaft factors']
+        : row.name === 'Concrete–ground interface, μ / δ' ? ['baseInterfaceReference','Footing base friction']
+        : row.name === 'Anchor bond stress' ? ['anchorReference','Rock anchor bond'] : null;
+      const link = topic ? `<button type="button" class="geo-topic-link" data-geo-target="${topic[0]}">${topic[1]} <span aria-hidden="true">↓</span></button>` : '';
       return `<tr data-geo-role="${escapeHtml(row.role)}"><th scope="row">${symbols(row.name)}</th><td class="${row.role === 'project' ? 'geo-pending' : 'geo-numeric'}">${kind ? `<span class="geo-reference-kind">${kind}</span>` : ''}${value}</td><td>${symbols(condition)}<div class="geo-row-actions">${evidence}${link}</div></td></tr>`;
     }).join('');
   }
   function detailTable(rows, state, title) {
     return `<table class="geo-detail-table" aria-label="${escapeHtml(title)}"><thead><tr><th scope="col">Parameter</th><th scope="col">Reference / input</th><th scope="col">Conditions</th></tr></thead><tbody>${detailRows(rows, state)}</tbody></table>`;
   }
-  function quickReferenceLink(material) {
-    const links = {
-      clay: ['interfaceReferences', 'Bored pile shaft basis'],
-      sand: ['interfaceReferences', 'Pile shaft factors & stress comparison'],
-      gravel: ['baseInterfaceReference', 'Concrete–ground interface reference'],
-      rock: ['anchorReference', 'Rock anchor bond reference']
-    };
-    const [topic, label] = links[material];
-    return `<button type="button" class="geo-reference-link" data-topic="${topic}" aria-controls="${topic}" aria-expanded="false">${label}</button>`;
-  }
-
   function render() {
-    closeInlineReference();
+    clearReferenceReturn();
     const canGrade=$("family").value==="granular" && $("material").value==="sand" && ["loose","dense"].includes($("condition").value);
     $("gradingField").hidden=!canGrade;
     if(!canGrade) $("grading").value="unknown";
@@ -168,8 +157,7 @@
     selection.hidden=false;
     $("resultHeading").textContent=ground.heading;
     $("selectionStatus").textContent=`Details shown for ${ground.heading}. No value is adopted by default.`;
-    const referenceIds=["bearingReference","settlementReference","baseInterfaceReference","interfaceReferences","anchorReference"];
-    referenceIds.forEach(id=>$("geoRelatedReferences").append($(id)));
+    referenceContext.textContent=`Selected ground: ${ground.heading}. Check the conditions of each table.`;
     const grouped=window.GeoDetailPresentation.partition([...guide,
       {group:'Foundation / interface',name:'Concrete–ground interface, μ / δ',value:'Match contact materials',parts:[{label:'',value:'Match contact materials'}],role:'project',condition:'Match the actual interface; soil φ′ alone is insufficient.'},
       {group:'Foundation / interface',name:'Anchor bond stress',value:'Match rock type and condition',parts:[{label:'',value:'Match rock type and condition'}],role:'project',condition:'Ultimate grout–rock bond references only; not soil-anchor bond or allowable design stress.'}
@@ -180,7 +168,7 @@
     selection.dataset.detailKey=stateKey;
     $("selectedRangeRows").innerHTML=detailRows(grouped.common,state);
     $("geoSupplementalRows").innerHTML=grouped.supplements.map(group=>`<details class="geo-supplement" data-geo-group="${escapeHtml(group.key)}"${expanded.has(group.key)?' open':''}><summary><b>${escapeHtml(group.title)}</b><small>${group.rows.length} parameter${group.rows.length===1?'':'s'}</small><i aria-hidden="true">+</i></summary>${detailTable(group.rows,state,group.title)}</details>`).join('');
-    referenceIds.forEach(id=>{const topic=$(id);if(!sameSelection)topic.open=false;$("geoRelatedReferences").append(topic);});
+    if(!sameSelection) topics.forEach(topic=>{topic.open=false;});
     $("ultimateBearingTable").hidden=state.family!=="cohesive";
     $("rockBearingTable").hidden=state.family!=="rock" || Boolean(ground.soilLike);
     document.querySelector(".geo-bearing-basis").hidden=state.family==="rock" && !ground.soilLike;
@@ -199,8 +187,9 @@
 
   }
   function renderUnselected() {
-    closeInlineReference();
-    ["bearingReference","settlementReference","baseInterfaceReference","interfaceReferences","anchorReference"].forEach(id=>$("geoRelatedReferences").append($(id)));
+    clearReferenceReturn();
+    topics.forEach(topic=>{topic.open=false;});
+    referenceContext.textContent=`Material: ${activeMaterial[0].toUpperCase()+activeMaterial.slice(1)}. Check the conditions of each table.`;
     selection.hidden=true;
     $("selectedRangeRows").innerHTML="";
     $("geoSupplementalRows").innerHTML="";
@@ -216,10 +205,6 @@
     $("settlementReferenceTable").innerHTML=referenceTable(query.settlementReference());
     $("selectedBearing").innerHTML="";
     $("selectionStatus").textContent="Select a material and reported state. No value is adopted by default.";
-  }
-  function clayShaftBasis() {
-    const reference=query.foundationQuickReferences("clay")[0];
-    return `<details class="foundation-topic"><summary><span>Bored pile shaft basis</span><span aria-hidden="true">+</span></summary><div class="geo-shaft-body"><p>${symbols(reference.source)}</p><p>${symbols(reference.note)}</p></div></details>`;
   }
   function renderOverview() {
     const groups=[
@@ -249,7 +234,7 @@
         const cell=(parameter,label)=>`<td class="${parameter.role==="project"?"geo-overview-pending":"geo-overview-value"}"><span class="range-mobile-label">${overviewHeading(label)}</span>${parameter.role==="project"?(rock && parameter===weight?"Refine lithology / weathering":"Project value required"):partsHtml(parameter.parts)}${clay && row.id==="soft" && parameter===weight?'<small class="geo-value-scope">Non-organic clay only.</small>':""}</td>`;
         return `<tr><td><button type="button" data-family="${group.family}" data-material="${group.material}" data-condition="${row.id}" aria-label="${group.title} · ${row.term}: show parameter details" aria-controls="selectedGround" aria-pressed="false" aria-expanded="false">${escapeHtml(row.term)}<span aria-hidden="true"> +</span></button></td>${columns.map(key=>{const html=cell({bearing,strength:strengthRow,modulus:modulusRow,weight,shaft,pointLoad,densityIndex}[key],labels[key]);return key==="shaft" && group.material==="sand"?html.replace("<td ",`<td data-sand-shaft="${row.id}" `):html;}).join("")}</tr>`;
       }).join("");
-      return `<section id="geo-${group.material}" class="range-group" role="tabpanel" aria-labelledby="geo-tab-${group.material}"${group.material===activeMaterial?"":" hidden"}><header class="geo-sr-only"><h4>${group.title}</h4><span>${group.note}</span></header><div class="range-table-wrap"><table class="range-table"><thead><tr><th scope="col">${clay?"Consistency":rock?"Intact rock strength":"Relative density"}</th>${columns.map(key=>`<th scope="col"${key==="shaft" && group.material==="sand"?' id="sandShaftHeading"':""}>${overviewHeading(labels[key])}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div><p class="geo-group-note">Separate source references; not an adopted design set.</p><p class="geo-group-note">${symbols(note)}</p><div class="geo-quick-foundation">${quickReferenceLink(group.material)}</div></section>`;
+      return `<section id="geo-${group.material}" class="range-group" role="tabpanel" aria-labelledby="geo-tab-${group.material}"${group.material===activeMaterial?"":" hidden"}><header class="geo-sr-only"><h4>${group.title}</h4><span>${group.note}</span></header><div class="range-table-wrap"><table class="range-table"><thead><tr><th scope="col">${clay?"Consistency":rock?"Intact rock strength":"Relative density"}</th>${columns.map(key=>`<th scope="col"${key==="shaft" && group.material==="sand"?' id="sandShaftHeading"':""}>${overviewHeading(labels[key])}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div><p class="geo-group-note">Separate source references; not an adopted design set.</p><p class="geo-group-note">${symbols(note)}</p></section>`;
     }).join("");
   }
 
@@ -257,7 +242,6 @@
     const changed=material!==activeMaterial;
     activeMaterial=material;
     $("geoSandBenchmark").hidden=material!=="sand";
-    ["bearingReference","settlementReference","baseInterfaceReference","interfaceReferences","anchorReference"].forEach(id=>{if(changed)$(id).open=false;});
     if(changed) {
       hasSelection=false;
       $("family").value=material==="clay"?"cohesive":material==="rock"?"rock":"granular";
@@ -274,7 +258,6 @@
       $(tab.getAttribute("aria-controls")).hidden=!active;
     });
     $("geo-"+material).append(selection);
-    $("geo-"+material).append($("geo-"+material).querySelector(".geo-quick-foundation"));
     if(!hasSelection){$("ultimateBearingTable").hidden=material!=="clay";$("rockBearingTable").hidden=material!=="rock";document.querySelector(".geo-bearing-basis").hidden=material==="rock";}
     if(focus) $("geo-tab-"+material).focus();
     if(changed) $("selectionStatus").textContent=`${material} selected. Select a reported state to view details. No value is adopted by default.`;
@@ -335,14 +318,17 @@
     $("resultHeading").focus({preventScroll:true});
     $("resultHeading").scrollIntoView({block:"start",behavior:"instant"});
   });
-  $("geoPanel").addEventListener("click",event=>{
-    const button=event.target.closest("button[data-topic]");if(!button)return;
-    showInlineReference(button);
-  });
-  ["bearingReference","settlementReference","baseInterfaceReference","interfaceReferences","anchorReference"].forEach(id=>{
-    $(id).addEventListener("toggle",()=>{
-      if (inlineReference?.topic === $(id) && !$(id).open) closeInlineReference(true);
-    });
+  panel.addEventListener("click", event => {
+    const link = event.target.closest(".geo-reference-jump, .geo-topic-link");
+    if (!link) return;
+    clearReferenceReturn();
+    const target = $(link.dataset.geoTarget);
+    if (link.classList.contains("geo-reference-jump")) { focusSection(target); return; }
+    topics.forEach(topic => { topic.open = topic === target; });
+    referenceOrigin = link;
+    const summary = target.querySelector("summary");
+    summary.after(returnToParameter);
+    focusSection(summary);
   });
   document.querySelectorAll(".geo-jump a").forEach(link=>link.addEventListener("click",event=>{
     event.preventDefault(); // Keep the shared app's #geo route; these are in-page section links.

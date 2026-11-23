@@ -400,7 +400,7 @@
     },
     {
       "path": "geo-parameters/detail-app.js",
-      "sha256": "7728e71e9132d5b6a40f73dabf080ad62186f1eec6fe3fa80787422ac8d9bb2f"
+      "sha256": "bc80175be6ee4737c863783d808c3ff41c1fd8de920ab33ee1711cfc21ab82d7"
     },
     {
       "path": "geo-parameters/detail-layout.css",
@@ -432,7 +432,7 @@
     },
     {
       "path": "geo-parameters/interaction-layout.css",
-      "sha256": "069784f355b8e999df071155d46c450e7be854828741fa3f2effd35eab86e7b9"
+      "sha256": "45b8b9846f2c0c9defe145da4d34aa3f3d3b9da653e33090d4ee4a40dba90965"
     },
     {
       "path": "geo-parameters/tab.css",
@@ -492,7 +492,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "9d751971a89c2ea55a1497c540c181fc90971ef7c16d859e4c6b8c811642a46a"
+      "sha256": "97080dc5f012cb05f1aa6894bf8924e5e2c33d386207ace535acad65ba1a96fe"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -612,11 +612,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "c5b94001594724d78240ea9844236076444be19a3e2d232f18058dc8109b9538"
+      "sha256": "960f91e4e185401a744235960433af08761820a591df34138e0703152a425bcc"
     },
     {
       "path": "README.md",
-      "sha256": "d744b888812e391d41b6363701fc230ef1a219dded8ce61d3dae4be8ee997df1"
+      "sha256": "d7dc0988e652408ef5a1d48314320b5b11bf78443a0bdcada2aad8da037aab90"
     },
     {
       "path": "reference-actions/presentation.js",

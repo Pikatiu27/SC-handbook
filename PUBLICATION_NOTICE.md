@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.152 (23 November 2026): Ground Reference has a fixed reference table section, contextual navigation and single-column sources. Existing values, source links, old routes and project limits are preserved. Public beta / For Review.
+
 Build 0.7.151 (20 November 2026): Streamlines engineering result summaries, input validation, calculation notation and table navigation. Existing calculation methods, data, document links and saved routes are retained. iPhone Safari device checks, full accessibility and independent engineering/project acceptance remain For Review. Public beta / For Review.
 
 Build 0.7.150 (20 November 2026): CHS, Monopole, Screw Pile and Rock Anchor source sections use one reading column. Frame gives the elastic modulus and uniform load separate input rows. Section Properties, Concrete Cover and Steel Corrosion align record counts and reset controls across the phone toolbar. Calculation and diagram logic, filters, product documents and historical links are preserved. Physical-device verification, full accessibility and independent engineering/project acceptance remain For Review. Public beta / For Review.
