@@ -236,7 +236,7 @@
     },
     {
       "path": "bolt-dimensions/app.js",
-      "sha256": "fbd52a89554948dd9a5297d6e575b426ceafe7de99e36574f994d5eb325f3c53"
+      "sha256": "43c8dc51fe50741267f7271c37b5d87e999660ca1b513caf107a351a5e8a1593"
     },
     {
       "path": "bolt-dimensions/data.js",
@@ -252,7 +252,7 @@
     },
     {
       "path": "bolt-dimensions/styles.css",
-      "sha256": "3f5954dc4c57d9988b0ac5ce5d76f1e2e74c4775b2bc47a7d6eb9d18d6ec80a1"
+      "sha256": "f9916820d84348f6188925a2e4c8428146e84459d4291d0650ba88589a71b064"
     },
     {
       "path": "bolt-integrity.js",
@@ -400,7 +400,7 @@
     },
     {
       "path": "geo-parameters/detail-app.js",
-      "sha256": "bc80175be6ee4737c863783d808c3ff41c1fd8de920ab33ee1711cfc21ab82d7"
+      "sha256": "e26c77be63110dd751456d9a1df11d5b99df03bf2839e7545b968735bfac4f37"
     },
     {
       "path": "geo-parameters/detail-layout.css",
@@ -432,7 +432,7 @@
     },
     {
       "path": "geo-parameters/interaction-layout.css",
-      "sha256": "45b8b9846f2c0c9defe145da4d34aa3f3d3b9da653e33090d4ee4a40dba90965"
+      "sha256": "ec16895b7a2efb1a387fcd085cf905c0018acd833393faaf94ad784aed0ef828"
     },
     {
       "path": "geo-parameters/tab.css",
@@ -492,7 +492,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "78bb5b14197b618c7c7c7a5d51250ce64762167616d85071761a60fb48a87111"
+      "sha256": "e8e12510ece3512f727c3a39d57d3f6c0a2ce85a58a4eccbfa5e34469d833730"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -612,11 +612,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "b942692cd12b5f48c1d82146273df72d9fbd2c48a3c60b93f0f0d0a98aade6cf"
+      "sha256": "2529f6eb6a5f339117609528b075a0e41ba4f6deec03d6b31525dfe2fe669758"
     },
     {
       "path": "README.md",
-      "sha256": "03790300260c1e2740958a2ee9b82334662c318941f25f47c3929ac439f9fd45"
+      "sha256": "b9c8045ca6a144042ac9fbd6c1428981ae88951bb6f0e63f5799b4962130f637"
     },
     {
       "path": "reference-actions/presentation.js",

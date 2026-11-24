@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.154 (24 November 2026): Ground Reference clarifies applicability and places material-specific references with their tables. Fastener Tables groups product documents beside the lookup, and Screw Pile Data shows action-check assumptions beside the inputs. Existing values, calculations, source links and routes are retained. Public beta / For Review.
+
 Build 0.7.153 (24 November 2026): CHS bending classification applies the AS 4100 limits of 50 and 120 correctly for decimal inputs. Public beta / For Review.
 
 Build 0.7.152 (23 November 2026): Ground Reference has a fixed reference table section, contextual navigation and single-column sources. Existing values, source links, old routes and project limits are preserved. Public beta / For Review.

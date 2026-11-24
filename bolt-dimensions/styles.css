@@ -9,6 +9,10 @@
 .bd-table-heading { flex-wrap: wrap; gap: 8px 14px; margin-bottom: 4px; }
 .bd-table-heading h2 { margin-right: auto; }
 .bd-table-hint { margin: 0 0 10px; }
+.bd-document-entry { min-width:0; white-space:normal; }
+.bd-document-entry + .bd-document-entry { margin-top:8px; }
+.bd-document-entry .bd-cell-note { white-space:normal; overflow-wrap:anywhere; }
+.bd-hole-conditions .bd-basis { padding:0 12px 10px; }
 .bd-reset { padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--link); font: inherit; font-size: var(--fs-xs); cursor: pointer; }
 .bd-table-wrap { max-width: 100%; overflow: auto; max-height: min(560px, 65vh); border: 1px solid var(--line); border-radius: 8px; position: relative; isolation: isolate; }
 .bd-table-wrap:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
