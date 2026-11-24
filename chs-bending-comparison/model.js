@@ -9,8 +9,32 @@
  const invalid=issues=>({status:'Invalid input',issues,as4100:unavailable(issues[0]),as4600:unavailable(issues[0]),hotAs4100:unavailable(issues[0]),differencePercent:null,hotDifferencePercent:null});
  const labels={C:'Compact',N:'Non-compact',S:'Slender'},clauses={'Compact':'5.2.3','Non-compact':'5.2.4','Slender':'5.2.5'};
  const positive=v=>Number.isFinite(v)&&v>0;
- // Multiply before dividing so exact input relationships at 50/120 stay on their owning branch.
- const slenderness=(D,t,fy)=>(D*fy)/(250*t);
+ function decimalProduct(values) {
+  let integer=1n, exponent=0;
+  for(const value of values){
+   const [mantissa,power='0']=String(value).split('e');
+   const [whole,fraction='']=mantissa.split('.');
+   integer*=BigInt(whole+fraction);
+   exponent+=Number(power)-fraction.length;
+  }
+  return {integer,exponent};
+ }
+ function slenderness(D,t,fy){
+  const lambda=(D*fy)/(250*t);
+  for(const limit of [reconciliation.LIMITS.chsBendingCF.plastic,reconciliation.LIMITS.chsBendingCF.yield]){
+   const precision=Number.EPSILON*limit;
+   if(Math.abs(lambda-limit)>4*precision || !Number.isFinite(lambda))continue;
+   // Compare the entered decimal products close to a limit without widening the branch.
+   const left=decimalProduct([D,fy]),right=decimalProduct([limit,250,t]);
+   const exponent=Math.min(left.exponent,right.exponent);
+   const demand=left.integer*10n**BigInt(left.exponent-exponent);
+   const threshold=right.integer*10n**BigInt(right.exponent-exponent);
+   if(demand===threshold)return limit;
+   if(demand<threshold && lambda>=limit)return limit-precision;
+   if(demand>threshold && lambda<=limit)return limit+precision;
+  }
+  return lambda;
+ }
  function difference(a,b){if(a.status!=='Calculated'||b.status!=='Calculated')return null;const d=100*(b.designMomentKNm/a.designMomentKNm-1);return Number.isFinite(d)?(Math.abs(d)<1e-10?0:d):null;}
  function calculate(input){
   const D=number(input?.diameterMm),t=number(input?.thicknessMm),fy=number(input?.yieldStressMpa),hotFy=number(input?.hotYieldStressMpa),issues=[];

@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.153 (24 November 2026): CHS bending classification applies the AS 4100 limits of 50 and 120 correctly for decimal inputs. Public beta / For Review.
+
 Build 0.7.152 (23 November 2026): Ground Reference has a fixed reference table section, contextual navigation and single-column sources. Existing values, source links, old routes and project limits are preserved. Public beta / For Review.
 
 Build 0.7.151 (20 November 2026): Streamlines engineering result summaries, input validation, calculation notation and table navigation. Existing calculation methods, data, document links and saved routes are retained. iPhone Safari device checks, full accessibility and independent engineering/project acceptance remain For Review. Public beta / For Review.

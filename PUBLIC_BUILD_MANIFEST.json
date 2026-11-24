@@ -264,7 +264,7 @@
     },
     {
       "path": "chs-bending-comparison/model.js",
-      "sha256": "48bf57e3d92f6fa4be24a5e5873ee49f0940cf3ad40980e583dd82de2088be1d"
+      "sha256": "a93bc401584517b32be95ceb93e5c364bd8472cc3086ccda15070aed9631cf1b"
     },
     {
       "path": "chs-bending-comparison/panel.js",
@@ -492,7 +492,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "97080dc5f012cb05f1aa6894bf8924e5e2c33d386207ace535acad65ba1a96fe"
+      "sha256": "78bb5b14197b618c7c7c7a5d51250ce64762167616d85071761a60fb48a87111"
     },
     {
       "path": "ios-typography/repairs.css",
@@ -612,11 +612,11 @@
     },
     {
       "path": "PUBLICATION_NOTICE.md",
-      "sha256": "960f91e4e185401a744235960433af08761820a591df34138e0703152a425bcc"
+      "sha256": "b942692cd12b5f48c1d82146273df72d9fbd2c48a3c60b93f0f0d0a98aade6cf"
     },
     {
       "path": "README.md",
-      "sha256": "d7dc0988e652408ef5a1d48314320b5b11bf78443a0bdcada2aad8da037aab90"
+      "sha256": "03790300260c1e2740958a2ee9b82334662c318941f25f47c3929ac439f9fd45"
     },
     {
       "path": "reference-actions/presentation.js",
