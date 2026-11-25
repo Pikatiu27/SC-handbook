@@ -50,7 +50,7 @@
 <link rel="stylesheet" href="beam-deflection-preview/styles.css?v=20261019beamformatrelease1">
 <link rel="stylesheet" href="more-layouts/styles.css?v=20261023beammerged1">
 <link rel="stylesheet" href="disclosure/indicators.css?v=20261023disclosure1">
-<link rel="stylesheet" href="geo-parameters/interaction-layout.css?v=20261125ground155">
+<link rel="stylesheet" href="geo-parameters/interaction-layout.css?v=20261125ground156">
 <link rel="stylesheet" href="page-alignment/repairs.css?v=20261120format151">
 <link rel="stylesheet" href="steel-corrosion/header-layout.css?v=20261026corrosion139">
 <link rel="stylesheet" href="reference-actions/styles.css?v=20261026references140"><script src="reference-actions/presentation.js?v=20261026references140"></script>
@@ -2450,7 +2450,6 @@
         <h3 id="geoOverviewHeading" class="geo-sr-only">Ground ranges</h3>
         <div class="geo-lookup-intro">
           <p class="geo-lead">Choose a material, then a reported ground state.</p>
-          <button type="button" class="geo-reference-jump" data-geo-target="geoReferencesHeading">Shared references <span aria-hidden="true">↓</span></button>
         </div>
 
 
@@ -2495,17 +2494,17 @@
         <details id="rockBearingReference" class="foundation-topic" data-geo-material-ref="rock"><summary><span><b>Bearing by RQD</b><small>Rock-mass quality reference</small></span><i aria-hidden="true">+</i></summary><div id="rockBearingTable"></div></details>
         <details id="anchorReference" class="foundation-topic" data-geo-material-ref="rock"><summary><span><b>Anchor bond by rock type</b><small>Ultimate grout–rock bond stress</small></span><i aria-hidden="true">+</i></summary><div id="anchorReferenceTables"></div></details>
       </div>
-      <section id="parameterReferenceParking" class="geo-foundation-references" aria-labelledby="geoReferencesHeading">
-        <header><h3 id="geoReferencesHeading" tabindex="-1">Shared reference</h3></header>
+      <div id="parameterReferenceParking" class="geo-footing-reference">
         <div id="geoRelatedReferences">
-
-        <details id="baseInterfaceReference" class="foundation-topic"><summary><span><b>Footing base friction</b><small>Concrete–ground coefficient μ and interface angle δ</small></span><i aria-hidden="true">+</i></summary>
+        <details id="baseInterfaceReference" class="source-card geo-footing-card"><summary id="geoReferencesHeading" tabindex="-1"><span><b>Footing base friction</b><small>Concrete–ground coefficient μ and interface angle δ</small></span><i aria-hidden="true">+</i></summary>
+          <div class="source-body">
           <p class="geo-topic-intro">Match the supporting material and contact condition. Interface δ differs from soil φ′.</p>
           <div id="baseInterfaceTable"></div>
           <p class="foundation-note"><b>Undrained adhesion, c<sub>a</sub> (kPa)</b> needs a project interface value. GEC 6 discusses c<sub>a</sub> ≈ s<sub>u</sub> as an idealisation; it is not adopted here. Do not add undrained adhesion to drained friction. No sliding resistance is calculated.</p>
+          </div>
         </details>
         </div>
-      </section>
+      </div>
 
       <details class="source-card geo-sources" id="geoSourcesScope"><summary><span><b>Sources &amp; scope</b><small>Basis, project checks and references</small></span><i>+</i></summary><div class="source-body"><div class="geo-use-notes"><section class="geo-parameter-meanings"><h4>Basis &amp; limits</h4><dl class="geo-definitions">
             <div><dt>Bearing, q<sub>a</sub></dt><dd>Foundation pressure reference.</dd></div>
@@ -2624,7 +2623,7 @@
 
   <footer>
     <div><span>Engineering quick-reference only. Verify results against licensed current Standards and project-specific design requirements.</span><nav aria-label="Publication information"><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/PUBLICATION_NOTICE.md">Publication notice</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/LICENSE.md">Repository terms</a><a href="https://github.com/Pikatiu27/SC-handbook/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a><a href="https://github.com/Pikatiu27/SC-handbook/issues/new">Feedback</a></nav></div>
-    <b>SC Handbook &middot; Public beta &middot; Build 0.7.155 &middot; updated 25 Nov 2026</b>
+    <b>SC Handbook &middot; Public beta &middot; Build 0.7.156 &middot; updated 25 Nov 2026</b>
   </footer>
   <script src="engineering-number-format.js?v=20261017calcaudit1"></script>
   <script src="bolt-capacity.js?v=20261016workflowtrace1"></script>
@@ -2656,7 +2655,7 @@
 <script src="section-custom/calculation.js?v=20261026custom141"></script><script src="app.js?v=20261120format151"></script>
 
       <script src="geo-parameters/detail-presentation.js?v=20261016workflowtrace1"></script>
-<script src="geo-parameters/detail-app.js?v=20261125ground155"></script>
+<script src="geo-parameters/detail-app.js?v=20261125ground156"></script>
 
   <script src="monopole-presentation/presentation.js?v=20261120format151"></script>
   <script src="monopole-app.js?v=20261120format151"></script>
