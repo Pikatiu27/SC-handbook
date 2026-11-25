@@ -74,6 +74,11 @@
   };
   const selection = $("selectedGround");
   const availabilityNote = $("geoParameterApplicability");
+  const clayShaftSource = data.interfaceReferences.find(group => group.title.startsWith("Clay piles"));
+  const sandShaftSource = data.interfaceReferences.find(group => group.title.startsWith("Sand piles"));
+  const boredClayFactors = new Map(clayShaftSource.rows.filter(([installation]) => installation === "Bored")
+    .map(([,condition,factor]) => [condition.toLowerCase(),factor]));
+  const sandFactors = new Map(sandShaftSource.rows.map(([density,bored,driven]) => [density,{bored,driven}]));
   const subgradeName = "Vertical subgrade reaction modulus";
   const directionalPermeability = "Horizontal / vertical permeability";
   const sandScopeNotes = new Map([
@@ -91,9 +96,7 @@
     topic.hidden = !available;
     if (!available) topic.open = false;
   }
-  function updateTopicAvailability(sandNeedsReview, soilLike) {
-    setTopicAvailable("sandBearingReference", !sandNeedsReview);
-    setTopicAvailable("sandShaftReference", !sandNeedsReview);
+  function updateTopicAvailability(soilLike) {
     setTopicAvailable("rockBearingReference", !soilLike);
     setTopicAvailable("anchorReference", !soilLike);
   }
@@ -132,7 +135,27 @@
   }
   function overviewHeading(label) {
     const match=label.match(/^(.*) \(([^()]*)\)$/);
-    return match ? `${symbols(match[1])}<small class="geo-heading-unit">${symbols(match[2])}</small>` : symbols(label);
+    return match ? `<span class="geo-heading-label">${symbols(match[1])}</span><small class="geo-heading-unit">${symbols(match[2])}</small>` : symbols(label);
+  }
+  function shaftLine(label, factor, stress, stressType = "") {
+    if (!Number.isFinite(Number(factor)) && !stressType) {
+      return `<div class="geo-shaft-line geo-shaft-unavailable"><span>${symbols(label)}</span><span>${symbols(factor)}</span></div>`;
+    }
+    return `<div class="geo-shaft-line"><span>${symbols(label)}</span><span class="geo-shaft-factor">${symbols(factor)}</span><span class="geo-shaft-value"${stressType ? ` data-geo-shaft-stress="${stressType}"` : ""}>${symbols(stress)}</span></div>`;
+  }
+  function sandShaftCell(row, benchmarks) {
+    const factors = sandFactors.get(row.term);
+    if (!factors) return '<span class="geo-overview-pending">No source estimate</span>';
+    const [,bored,lowDisplacement,driven] = benchmarks.get(row.term);
+    return shaftLine("Bored", factors.bored, bored, Number.isFinite(Number(factors.bored)) ? "bored" : "")
+      + shaftLine("Driven", factors.driven, driven, "driven")
+      + `<details class="geo-inline-detail"><summary>Low-displacement</summary>${shaftLine("Driven", "½ × " + factors.driven, lowDisplacement, "lowDisplacement")}</details>`;
+  }
+  function clayShaftCell(row) {
+    return query.overviewShaft("clay",row.id).parts.map(part => {
+      const condition = part.label.split(" · ")[1];
+      return shaftLine(condition === "fissured" ? "Fissured" : "Non-fissured", boredClayFactors.get(condition), part.value);
+    }).join("");
   }
   function labelledValue(label, value) {
     if (/unit weight/i.test(label)) return partsHtml(query.labelledPair(value, "Dry", "Saturated", "kN/m³"));
@@ -146,7 +169,7 @@
       if (index === 1) return labelledValue(row[0], value);
       return symbols(value);
     };
-    return `<section class="interface-reference"><h4>${symbols(group.title)}</h4><p>${symbols(group.source)}</p><table><thead><tr>${group.headings.map(heading => `<th scope="col">${symbols(heading)}</th>`).join("")}</tr></thead><tbody>${group.rows.map(row => `<tr>${row.map((value,index) => `<td><span class="foundation-mobile-label">${symbols(group.headings[index])}</span>${cellValue(value, index, row)}</td>`).join("")}</tr>`).join("")}</tbody></table><p>${symbols(group.note)}</p></section>`;
+    return `<section class="interface-reference"><h4>${symbols(group.title)}</h4><p>${symbols(group.source)}</p><table aria-label="${escapeHtml(group.title)}"><thead><tr>${group.headings.map(heading => `<th scope="col">${overviewHeading(heading)}</th>`).join("")}</tr></thead><tbody>${group.rows.map(row => `<tr>${row.map((value,index) => `<td${/^[-−≤≥<>≈\d]/.test(value) ? ' class="geo-number"' : ""}><span class="foundation-mobile-label">${symbols(group.headings[index])}</span>${cellValue(value, index, row)}</td>`).join("")}</tr>`).join("")}</tbody></table><p>${symbols(group.note)}</p></section>`;
   }
   function parameterLabel(name, material) {
     if (name === "Allowable bearing pressure, q_a" && material !== "rock") return "Presumed allowable bearing pressure, q_a";
@@ -165,8 +188,9 @@
       ].filter(Boolean))];
       const evidence = notes.length ? `<details class="geo-row-source"><summary>Value basis</summary>${notes.map(note => `<p>${symbols(note)}</p>`).join('')}</details>` : '';
       const project = row.inventory && row.role === 'project';
-      const value = project ? '<span class="geo-project-value">Project input</span>' : row.inventory ? labelledValue(row.name, row.value) : partsHtml(row.parts);
       const material = state.family === 'cohesive' ? 'clay' : state.family === 'rock' ? 'rock' : state.material;
+      const sandShaft = row.name === 'Pile shaft resistance, f_s' && material === 'sand' && row.role !== 'project';
+      const value = sandShaft ? '<span class="geo-value-line">See density row</span>' : project ? '<span class="geo-project-value">Project input</span>' : row.inventory ? labelledValue(row.name, row.value) : partsHtml(row.parts);
       const kind = row.role === 'project' ? ''
         : row.role === 'standard' ? 'Classification band'
         : row.name.includes('ultimate screen') ? 'Ultimate screen'
@@ -174,17 +198,12 @@
         : /modulus/.test(row.name) ? 'Stiffness reference'
         : row.name === 'Pile shaft resistance, f_s' && material === 'sand' ? 'Dimensionless factors'
         : 'Typical reference';
-      const bearingTopic = {
-        clay: ['bearingReference','Clay bearing conditions'],
-        sand: ['sandBearingReference','Sand bearing conditions'],
-        rock: ['rockBearingReference','Rock bearing by RQD']
-      };
-      const topic = row.name === 'Allowable bearing pressure, q_a' && row.role !== 'project' ? bearingTopic[material]
-        : /modulus/.test(row.name) ? ['settlementReference','Settlement inputs']
-        : row.name === 'Pile shaft resistance, f_s' && material === 'clay' ? ['interfaceReferences','Clay pile shaft factors']
-        : row.name === 'Pile shaft resistance, f_s' && material === 'sand' && !sandWithFines(state) ? ['sandShaftReference','Sand pile shaft factors']
+      const topic = row.name === 'Allowable bearing pressure, q_a' && row.role !== 'project' && material === 'rock' ? ['rockBearingReference','Bearing by RQD']
+        : /^(?:Rock-mass deformation|Deformation) modulus/.test(row.name) ? ['settlementReference','Settlement inputs']
+        : row.name === 'Pile shaft resistance, f_s' && material === 'clay' ? ['interfaceReferences','Driven pile factors']
+        : sandShaft ? [`sand-shaft-${state.condition}`,'Pile shaft row']
         : row.name === 'Concrete–ground interface, μ / δ' ? ['baseInterfaceReference','Footing base friction']
-        : row.name === 'Anchor bond stress' && material === 'rock' ? ['anchorReference','Rock anchor bond'] : null;
+        : row.name === 'Anchor bond stress' && material === 'rock' ? ['anchorReference','Anchor bond by rock type'] : null;
       const link = topic && !$(topic[0]).hidden ? `<button type="button" class="geo-topic-link" data-geo-target="${topic[0]}">${topic[1]} <span aria-hidden="true">↓</span></button>` : '';
       return `<tr data-geo-role="${escapeHtml(row.role)}"><th scope="row">${symbols(parameterLabel(row.name, material))}</th><td class="${row.role === 'project' ? 'geo-pending' : 'geo-numeric'}">${kind ? `<span class="geo-reference-kind">${kind}</span>` : ''}${value}</td><td>${symbols(condition)}<div class="geo-row-actions">${evidence}${link}</div></td></tr>`;
     }).join('');
@@ -204,12 +223,12 @@
     const ground=result.ground;
     $("conditionField").hidden=Boolean(ground.soilLike);
     const soilLike=Boolean(ground.soilLike);
-    updateTopicAvailability(sandNeedsReview, soilLike);
+    updateTopicAvailability(soilLike);
     availabilityNote.textContent=sandNeedsReview
       ? `${state.uscs} provides a permeability reference. Confirm material-specific strength, stiffness, bearing and pile shaft inputs.`
       : soilLike ? "Soil-like material. Confirm the ground model, bearing and bond stratum from project evidence." : "";
     availabilityNote.hidden=!availabilityNote.textContent;
-    const guide=query.unifiedRows(state,ground).map(row=>{
+    const guide=query.unifiedRows(state,ground).filter(row=>row.name!=="RQD-based allowable bearing-pressure reference").map(row=>{
       const condition=sandNeedsReview && sandScopeNotes.get(row.name);
       if (!condition) return row;
       const value="Project value required";
@@ -219,10 +238,9 @@
     $("resultHeading").textContent=ground.heading;
     $("selectionStatus").textContent=`Details shown for ${ground.heading}. No value is adopted by default.`;
     const anchorValue=soilLike?'Project bond stratum required':'Match rock type and condition';
-    const grouped=window.GeoDetailPresentation.partition([...guide,
-      {group:'Foundation / interface',name:'Concrete–ground interface, μ / δ',value:'Match contact materials',parts:[{label:'',value:'Match contact materials'}],role:'project',condition:'Match the actual interface; soil φ′ alone is insufficient.'},
-      {group:'Foundation / interface',name:'Anchor bond stress',value:anchorValue,parts:[{label:'',value:anchorValue}],role:'project',condition:soilLike?'Investigate the bond stratum and confirm the applicable grout–ground model and testing basis.':'Ultimate grout–rock bond references only; not soil-anchor bond or allowable design stress.'}
-    ]);
+    const interfaceRows=[{group:'Foundation / interface',name:'Concrete–ground interface, μ / δ',value:'Match contact materials',parts:[{label:'',value:'Match contact materials'}],role:'project',condition:'Match the actual interface; soil φ′ alone is insufficient.'}];
+    if(state.family==="rock") interfaceRows.push({group:'Foundation / interface',name:'Anchor bond stress',value:anchorValue,parts:[{label:'',value:anchorValue}],role:'project',condition:soilLike?'Investigate the bond stratum and confirm the applicable grout–ground model and testing basis.':'Ultimate grout–rock bond references only; not soil-anchor bond or allowable design stress.'});
+    const grouped=window.GeoDetailPresentation.partition([...guide,...interfaceRows]);
     const stateKey=[state.family,state.material,state.condition].join('|');
     const sameSelection=selection.dataset.detailKey===stateKey;
     const expanded=sameSelection ? new Set([...$("geoSupplementalRows").querySelectorAll('details[data-geo-group][open]')].map(e=>e.dataset.geoGroup)) : new Set();
@@ -237,7 +255,7 @@
       const active=hasSelection && !ground.soilLike && button.dataset.family===state.family && button.dataset.condition===state.condition && (state.family!=="granular" || state.material===button.dataset.material);
       button.setAttribute("aria-pressed",String(active));
       button.setAttribute("aria-expanded",String(active));
-      button.querySelector("span").textContent=active ? " −" : " +";
+      button.querySelector("span").textContent=active ? " ×" : " +";
       button.setAttribute("aria-label",`${button.dataset.material} · ${button.firstChild.textContent}: ${active ? "hide" : "show"} parameter details`);
       button.classList.toggle("active",active);
       button.closest("tr").classList.toggle("active",active);
@@ -247,7 +265,7 @@
   function renderUnselected() {
     clearReferenceReturn();
     topics.forEach(topic=>{topic.open=false;});
-    updateTopicAvailability(false,false);
+    updateTopicAvailability(false);
     availabilityNote.textContent="";
     availabilityNote.hidden=true;
     selection.hidden=true;
@@ -267,6 +285,7 @@
     $("selectionStatus").textContent="Select a material and reported state. No value is adopted by default.";
   }
   function renderOverview() {
+    const sandBenchmarks = new Map(query.sandShaftBenchmarks(Number($("sandShaftStress").value)).rows.map(row => [row[0],row]));
     const groups=[
       {material:"clay",family:"cohesive",title:"Clay",note:"Cohesive soils · consistency",rows:data.cohesive},
       {material:"sand",family:"granular",title:"Sand",note:"Granular soils · relative density",rows:data.granular},
@@ -275,12 +294,11 @@
     ];
     $("geoMaterialTabs").innerHTML=groups.map(group=>`<button type="button" role="tab" id="geo-tab-${group.material}" data-material="${group.material}" aria-controls="geo-${group.material}" aria-selected="${group.material===activeMaterial}" tabindex="${group.material===activeMaterial?0:-1}">${group.title}</button>`).join("");
     $("rangeOverview").innerHTML=groups.map(group=>{
-      const rock=group.family==="rock", clay=group.family==="cohesive";
-      const strength=rock?"Intact strength, UCS (MPa)":clay?"Undrained shear strength, s_u (kPa · class band)":"Effective friction angle, φ′ (°)";
-      const modulus=rock?"Rock-mass modulus, E_rm (MPa)":group.material==="sand"?"Modulus, E_s (MPa · medium–coarse sand)":"Modulus, E_s (MPa)";
-      const note=rock?"Intact-rock indices are not socket or anchor resistance. Bearing: broad source reference; assess defects, weathering and footing conditions.":clay?"Shaft: uniform bored clay; α = 0.30 fissured / 0.45 non-fissured; cap 100 kPa. Estimates are not allowable; uplift requires separate assessment. Bearing: natural ground, B > 1 m, 25 mm settlement. Modulus time labels are source terms, not durations.":group.material==="sand"?"Scope: do not transfer to residual, clayey/silty, cemented or crushable sands without material-specific evidence. Shaft: uniform sand; rounded estimate, not allowable; uplift requires separate assessment. Bearing: natural sand, B > 1 m, 25 mm settlement; groundwater more than B below base.":"No presumed gravel bearing range or sand-factor substitution. Missing modulus classes need project data. Strength: check grading, fines and plasticity; the source correlation is fines-governed above 30%.";
-      const columns=rock?["strength","bearing","pointLoad"]:clay?["strength","bearing","modulus","shaft","weight"]:group.material==="sand"?["strength","modulus","bearing","shaft","weight"]:["strength","modulus","weight","densityIndex"];
-      const labels={strength,modulus,shaft:clay?"Estimated bored pile shaft stress, f_s (kPa)":"Estimated pile shaft stress, f_s (kPa · at σ′_v = 100 kPa)",pointLoad:"Point-load index, I_s(50) (MPa)",densityIndex:"Relative density index, I_D (%)",bearing:rock?"Preliminary bearing reference, q_a (MPa · conditional; not UCS-derived)":"Presumed allowable bearing, q_a (kPa)",weight:"Unit weight, γ (kN/m³ · dry / saturated)"};
+      const rock=group.family==="rock", clay=group.family==="cohesive", sand=group.material==="sand", gravel=group.material==="gravel";
+      const strength=rock?"UCS (MPa)":clay?"Shear strength, s_u (kPa)":"Friction angle, φ′ (°)";
+      const note=rock?"Intact-rock strength classes. Assess rock-mass quality separately for bearing and bond.":clay?"s_u is a classification band. Bearing: natural ground, B > 1 m, 25 mm settlement. Shaft: bored piles in uniform clay; estimated unit stress, capped at 100 kPa; no allowable stress inferred.":sand?"General sand ranges. Modulus: medium–coarse sand. Bearing: natural sand, B > 1 m, 25 mm settlement, groundwater more than B below the base. Shaft: uniform sand; estimated unit stress.":"No presumed gravel bearing or shaft-factor ranges. Check grading, fines and plasticity. The source strength correlation is fines-governed above 30%.";
+      const columns=rock?["strength","pointLoad"]:clay||sand?["strength","modulus","bearing","weight","shaft"]:["strength","modulus","weight"];
+      const labels={strength,modulus:"Modulus, E_s (MPa)",shaft:clay?"Bored pile shaft (Factor · unitless / stress · kPa)":"Pile shaft (Factor · unitless / stress · kPa)",pointLoad:"Point-load, I_s(50) (MPa)",bearing:"Bearing, q_a (kPa)",weight:"Unit weight, γ (kN/m³)"};
       const rows=group.rows.map(row=>{
         const state={family:group.family,material:group.material,condition:row.id,weathering:"unknown",plasticity:"unknown",uscs:"unknown"};
         const parameters=query.guideRows(state,query.evaluate(state).ground);
@@ -288,17 +306,20 @@
         const strengthRow=parameters.find(p=>/Undrained shear strength|Effective friction angle|Uniaxial compressive/.test(p.name));
         const modulusRow=parameters.find(p=>/modulus/.test(p.name));
         const weight=parameters.find(p=>/unit weight/i.test(p.name));
-        const shaft=query.overviewShaft(group.material,row.id);
         const pointLoad={role:"standard",parts:[{label:"",value:row.is50}]};
-        const densityIndex={role:"standard",parts:[{label:"",value:row.densityIndex}]};
         const cell=(parameter,label)=>{
           const ultimate=clay && parameter===bearing
             ? `<details class="geo-clay-ultimate"><summary>Ultimate bearing screen</summary><p><b>q<sub>ult</sub></b> · Approx. ${symbols(row.undrainedUltimate)}</p><p>Idealised surface strip footing.</p></details>` : "";
-          return `<td class="${parameter.role==="project"?"geo-overview-pending":"geo-overview-value"}"><span class="range-mobile-label">${overviewHeading(label)}</span>${parameter.role==="project"?(rock && parameter===weight?"Refine lithology / weathering":"Project value required"):partsHtml(parameter.parts)}${clay && row.id==="soft" && parameter===weight?'<small class="geo-value-scope">Non-organic clay only.</small>':""}${ultimate}</td>`;
+          const parts=parameter.parts.map(part=>({
+            ...part,
+            label:part.label.replace(/, γ_(?:d|sat)$| \(source\)$/g,"")
+          }));
+          return `<td class="${parameter.role==="project"?"geo-overview-pending":"geo-overview-value geo-number"}"><span class="range-mobile-label">${overviewHeading(label)}</span>${parameter.role==="project"?"Project value required":partsHtml(parts)}${clay && row.id==="soft" && parameter===weight?'<small class="geo-value-scope">Non-organic clay only.</small>':""}${ultimate}</td>`;
         };
-        return `<tr><td><button type="button" data-family="${group.family}" data-material="${group.material}" data-condition="${row.id}" aria-label="${group.title} · ${row.term}: show parameter details" aria-controls="selectedGround" aria-pressed="false" aria-expanded="false">${escapeHtml(row.term)}<span aria-hidden="true"> +</span></button></td>${columns.map(key=>{const html=cell({bearing,strength:strengthRow,modulus:modulusRow,weight,shaft,pointLoad,densityIndex}[key],labels[key]);return key==="shaft" && group.material==="sand"?html.replace("<td ",`<td data-sand-shaft="${row.id}" `):html;}).join("")}</tr>`;
+        const shaftCell=()=>`<td class="geo-shaft-cell"${sand?` id="sand-shaft-${row.id}" data-sand-shaft="${row.id}" tabindex="-1"`:""}><span class="range-mobile-label">${overviewHeading(labels.shaft)}</span>${clay?clayShaftCell(row):sandShaftCell(row,sandBenchmarks)}</td>`;
+        return `<tr><th scope="row"><button type="button" data-family="${group.family}" data-material="${group.material}" data-condition="${row.id}" aria-label="${group.title} · ${row.term}: show parameter details" aria-controls="selectedGround" aria-pressed="false" aria-expanded="false">${escapeHtml(row.term)}<span aria-hidden="true"> +</span></button>${gravel?`<small class="geo-state-index">I<sub>D</sub> ${symbols(row.densityIndex)}</small>`:""}</th>${columns.map(key=>key==="shaft"?shaftCell():cell({bearing,strength:strengthRow,modulus:modulusRow,weight,pointLoad}[key],labels[key])).join("")}</tr>`;
       }).join("");
-      return `<section id="geo-${group.material}" class="range-group" role="tabpanel" aria-labelledby="geo-tab-${group.material}"${group.material===activeMaterial?"":" hidden"}><header class="geo-sr-only"><h4>${group.title}</h4><span>${group.note}</span></header><div class="range-table-wrap"><table class="range-table"><thead><tr><th scope="col">${clay?"Consistency":rock?"Intact rock strength":"Relative density"}</th>${columns.map(key=>`<th scope="col"${key==="shaft" && group.material==="sand"?' id="sandShaftHeading"':""}>${overviewHeading(labels[key])}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div><p class="geo-group-note">Separate source references; not an adopted design set.</p><p class="geo-group-note">${symbols(note)}</p></section>`;
+      return `<section id="geo-${group.material}" class="range-group" role="tabpanel" aria-labelledby="geo-tab-${group.material}"${group.material===activeMaterial?"":" hidden"}><p class="geo-group-note" id="geo-basis-${group.material}">${symbols(note)}</p><div class="range-table-wrap"><table class="range-table" aria-label="${group.title} reference ranges" aria-describedby="geo-basis-${group.material}"${sand?' id="sandShaftFactorTable"':""}><thead><tr><th scope="col">${clay?"Consistency":rock?"Intact rock strength":"Relative density"}</th>${columns.map(key=>`<th scope="col" class="geo-col-${key}"${key==="shaft" && sand?' id="sandShaftHeading"':""}>${overviewHeading(labels[key])}</th>`).join("")}</tr></thead><tbody${sand?' id="quick-foundation-sand"':""}>${rows}</tbody></table></div></section>`;
     }).join("");
   }
 
@@ -343,7 +364,8 @@
   options($("plasticity"),Object.entries(data.plasticity).map(([id,row])=>[id,row.label]),"unknown");
   syncGroundControls();
   renderOverview();
-  for(const material of ["clay","sand","rock"]){
+  $("geo-sand").querySelector(".range-table-wrap").before($("sandShaftReference"));
+  for(const material of ["clay","rock"]){
     const references=document.createElement("div");
     references.className="geo-material-references";
     references.append(...topics.filter(topic=>topic.dataset.geoMaterialRef===material));
@@ -351,15 +373,28 @@
   }
   $("sandShaftStress").addEventListener("change",()=>{
     const stress=Number($("sandShaftStress").value);
-    $("quick-foundation-sand").innerHTML=query.foundationQuickReferences("sand",stress).map(referenceTable).join("");
+    const byDensity=new Map(query.sandShaftBenchmarks(stress).rows.map(([density,bored,lowDisplacement,driven])=>[density,{bored,lowDisplacement,driven}]));
+    for(const row of data.granular) {
+      const values=byDensity.get(row.term);
+      if (!values) continue;
+      for(const entry of $(`sand-shaft-${row.id}`).querySelectorAll("[data-geo-shaft-stress]")) {
+        entry.textContent=values[entry.dataset.geoShaftStress];
+      }
+    }
+    $("geoSandStressStatus").textContent=`Sand pile shaft estimates updated for ${stress} kPa effective stress.`;
   });
   renderUnselected();
   activateMaterial("clay");
   rockBearingTable();
   $("baseInterfaceTable").innerHTML=referenceTable(data.baseInterfaceReference);
-  $("interfaceReferenceTables").innerHTML=data.interfaceReferences.filter(group=>group.title.startsWith("Clay piles")).map(referenceTable).join("")+'<p class="geo-reference-note">'+symbols(query.foundationQuickReferences("clay")[0].note)+'</p>';
-  $("sandShaftFactorTable").innerHTML=data.interfaceReferences.filter(group=>group.title.startsWith("Sand piles")).map(referenceTable).join("");
-  $("quick-foundation-sand").innerHTML=query.foundationQuickReferences("sand",100).map(referenceTable).join("");
+  $("interfaceReferenceTables").innerHTML=referenceTable({
+    title:"Driven piles in clay · adhesion factor α",
+    source:clayShaftSource.source,
+    headings:["Clay consistency","Factor, α"],
+    rows:clayShaftSource.rows.filter(([installation])=>installation==="Driven").map(([,condition,factor])=>[condition,factor]),
+    note:"Very stiff appears in two source bands. Confirm the applicable condition before selecting a factor."
+  });
+  $("geoShaftBasis").innerHTML=`<p>${symbols(clayShaftSource.source)} · Clay. ${symbols(query.foundationQuickReferences("clay")[0].note)}</p><p>${symbols(sandShaftSource.source)} · Sand. ${symbols(sandShaftSource.note)}</p><p>${symbols(query.sandShaftBenchmarks(100).note)}</p><p>Confirm applicability separately for residual, clayey or silty, cemented and crushable sand.</p>`;
   $("anchorReferenceTables").innerHTML=data.interfaceReferences.filter(group=>group.title.startsWith("Rock anchors")).map(group=>referenceTable({...group,note:window.GeoDetailPresentation.anchorNote})).join("");
   $("material").addEventListener("change",()=>{if($("family").value==="granular" && $("material").value!==activeMaterial){activateMaterial($("material").value,true);return;}hasSelection=true;syncUsCs();render();});
   ["condition","weathering","plasticity","uscs","grading"].forEach(id=>$(id).addEventListener("change",()=>{hasSelection=true;render();}));
@@ -391,11 +426,16 @@
     clearReferenceReturn();
     const target = $(link.dataset.geoTarget);
     if (link.classList.contains("geo-reference-jump")) { focusSection(target); return; }
-    topics.forEach(topic => { topic.open = topic === target; });
     referenceOrigin = link;
-    const summary = target.querySelector("summary");
-    summary.after(returnToParameter);
-    focusSection(summary);
+    const summary = target.matches("details") ? target.querySelector(":scope > summary") : null;
+    topics.forEach(topic => { topic.open = topic === target; });
+    if (summary) summary.after(returnToParameter);
+    else {
+      const scope = target.closest("details");
+      if (scope) scope.open = true;
+      target.append(returnToParameter);
+    }
+    focusSection(summary || target);
   });
   document.querySelectorAll(".geo-jump a").forEach(link=>link.addEventListener("click",event=>{
     event.preventDefault(); // Keep the shared app's #geo route; these are in-page section links.

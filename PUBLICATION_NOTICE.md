@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.155 (25 November 2026): Ground Reference puts pile shaft factors and estimated stresses in the material tables, retains separate rock and interface lookups, and groups explanatory material under Sources & scope. Source values, formulas and legacy links are retained. Public beta / For Review.
+
 Build 0.7.154 (24 November 2026): Ground Reference clarifies applicability and places material-specific references with their tables. Fastener Tables groups product documents beside the lookup, and Screw Pile Data shows action-check assumptions beside the inputs. Existing values, calculations, source links and routes are retained. Public beta / For Review.
 
 Build 0.7.153 (24 November 2026): CHS bending classification applies the AS 4100 limits of 50 and 120 correctly for decimal inputs. Public beta / For Review.
