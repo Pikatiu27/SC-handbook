@@ -130,8 +130,12 @@
   function input() {
     return Object.fromEntries(["family","material","condition","weathering","plasticity","uscs","grading"].map(id => [id,$(id).value]));
   }
+  function readingHtml(value) {
+    return symbols(value).replace(/((?:(?:≈|≤|≥|&lt;|&gt;) )?[\d.,–⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+) (kN\/m³|MPa|kPa⁻¹|kPa|m\/s)(?![\w³⁻])/g,
+      '<span class="geo-measure">$1 $2</span>');
+  }
   function partsHtml(parts) {
-    return parts.map(part => `<span class="geo-value-line">${part.label ? `<span class="geo-value-label">${symbols(part.label)}</span>` : ""}${symbols(/No exact|Exact row not/.test(part.value) ? "No verified range for this selection" : part.value)}</span>`).join("");
+    return parts.map(part => `<span class="geo-value-line">${part.label ? `<span class="geo-value-label">${symbols(part.label)}</span>` : ""}${readingHtml(/No exact|Exact row not/.test(part.value) ? "No verified range for this selection" : part.value)}</span>`).join("");
   }
   function overviewHeading(label) {
     const match=label.match(/^(.*) \(([^()]*)\)$/);
@@ -141,7 +145,7 @@
     if (!Number.isFinite(Number(factor)) && !stressType) {
       return `<div class="geo-shaft-line geo-shaft-unavailable"><span>${symbols(label)}</span><span>${symbols(factor)}</span></div>`;
     }
-    return `<div class="geo-shaft-line"><span>${symbols(label)}</span><span class="geo-shaft-factor">${symbols(factor)}</span><span class="geo-shaft-value"${stressType ? ` data-geo-shaft-stress="${stressType}"` : ""}>${symbols(stress)}</span></div>`;
+    return `<div class="geo-shaft-line"><span>${symbols(label)}</span><span class="geo-shaft-factor">${symbols(factor)}</span><span class="geo-shaft-value"${stressType ? ` data-geo-shaft-stress="${stressType}"` : ""}>${readingHtml(stress)}</span></div>`;
   }
   function shaftHeading(label) {
     return `<span class="geo-heading-label">${label}</span><span class="geo-shaft-columns"><span>Method</span><span aria-label="Unitless factor">Factor</span><span>Stress (kPa)</span></span>`;
@@ -314,7 +318,7 @@
         const weight=parameters.find(p=>/unit weight/i.test(p.name));
         const pointLoad={role:"standard",parts:[{label:"",value:row.is50}]};
         const cell=(parameter,label)=>{
-          if (clay && parameter===bearing) return `<td class="geo-bearing-cell"><span class="range-mobile-label">${overviewHeading(label)}</span><dl><div><dt>Presumed q<sub>a</sub></dt><dd>${partsHtml(parameter.parts)}</dd></div><div><dt>Ultimate screen q<sub>ult</sub></dt><dd>${symbols(row.undrainedUltimate)}</dd></div></dl></td>`;
+          if (clay && parameter===bearing) return `<td class="geo-bearing-cell"><span class="range-mobile-label">${overviewHeading(label)}</span><dl><div><dt>Presumed q<sub>a</sub></dt><dd>${partsHtml(parameter.parts)}</dd></div><div><dt>Ultimate screen q<sub>ult</sub></dt><dd>${readingHtml(row.undrainedUltimate)}</dd></div></dl></td>`;
           const parts=parameter.parts.map(part=>({
             ...part,
             label:part.label.replace(/, γ_(?:d|sat)$| \(source\)$/g,"")

@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.157 (25 November 2026): Ground Reference uses content-driven column widths and compact row spacing, keeping short values and their units together while allowing longer notes to wrap. Source values, formulas and legacy links are retained. Public beta / For Review.
+
 Build 0.7.156 (25 November 2026): Ground Reference labels the two clay bearing quantities, aligns shaft columns, and gives footing base friction the same disclosure style as Sources & scope. Source values, formulas and legacy links are retained. Public beta / For Review.
 
 Build 0.7.155 (25 November 2026): Ground Reference puts pile shaft factors and estimated stresses in the material tables, retains separate rock and interface lookups, and groups explanatory material under Sources & scope. Source values, formulas and legacy links are retained. Public beta / For Review.
