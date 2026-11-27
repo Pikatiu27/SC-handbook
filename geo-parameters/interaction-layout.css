@@ -125,18 +125,18 @@
 #geoPanel.geo-guide .geo-shaft-line > :first-child {font-weight:600;}
 #geoPanel.geo-guide .geo-shaft-factor {color:var(--geo-muted);text-align:right;white-space:nowrap;}
 #geoPanel.geo-guide .geo-shaft-value {text-align:right;}
-#geoPanel.geo-guide #geo-sand {--shaft-stress-share:32%;}
-#geoPanel.geo-guide #geo-sand .geo-shaft-value {white-space:nowrap;}
-#geoPanel.geo-guide .geo-shaft-unavailable > :last-child {grid-column:2/-1;text-align:left;color:var(--geo-muted);}
-#geoPanel.geo-guide .geo-inline-detail {text-align:left;margin-top:3px;}
-#geoPanel.geo-guide .geo-inline-detail > summary {
-  display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px;
-  list-style:none;color:var(--geo-accent);font-size:var(--fs-xs,12px);font-weight:600;cursor:pointer;
+#geoPanel.geo-guide #geo-sand :is(.geo-shaft-line,.geo-shaft-columns) {
+  grid-template-columns:minmax(0,1fr) 8ch 9ch;
+  column-gap:12px;
 }
-#geoPanel.geo-guide .geo-inline-detail > summary::-webkit-details-marker {display:none;}
-#geoPanel.geo-guide .geo-inline-detail > summary::after {content:"+";font-size:var(--fs-md,15px);}
-#geoPanel.geo-guide .geo-inline-detail[open] > summary::after {content:"×";}
-#geoPanel.geo-guide .geo-inline-detail[open] .geo-shaft-line {border-top:1px solid var(--geo-line);}
+#geoPanel.geo-guide #geo-sand .geo-shaft-line > :first-child {white-space:normal;}
+#geoPanel.geo-guide #geo-sand .geo-shaft-value {white-space:nowrap;}
+#geoPanel.geo-guide #geo-sand .geo-weight-pair {
+  display:grid;grid-template-columns:minmax(0,1fr) max-content;gap:10px;align-items:baseline;
+}
+#geoPanel.geo-guide #geo-sand .geo-weight-pair .geo-value-label {margin:0;text-align:left;}
+#geoPanel.geo-guide #geo-sand > .geo-sand-driving-note {padding-block:0 8px;}
+#geoPanel.geo-guide .geo-shaft-unavailable > :last-child {grid-column:2/-1;text-align:left;color:var(--geo-muted);}
 #geoPanel.geo-guide .geo-shaft-cell .geo-reference-return {margin:0;}
 #geoPanel.geo-guide #settlementReference {scroll-margin-block-start:148px;}
 #geoPanel.geo-guide .geo-use-notes {display:grid;grid-template-columns:minmax(0,1fr);gap:16px;}
@@ -154,24 +154,22 @@
   #geoPanel.geo-guide .range-table thead .geo-col-shaft > .geo-heading-label {display:block;text-align:center;}
   #geoPanel.geo-guide #geo-clay {--shaft-stress-share:43%;}
   #geoPanel.geo-guide #geo-clay .range-table .geo-shaft-columns {min-inline-size:34ch;}
-  #geoPanel.geo-guide #geo-sand .range-table .geo-shaft-columns {min-inline-size:36ch;}
+  #geoPanel.geo-guide #geo-sand .range-table .geo-shaft-columns {min-inline-size:33ch;}
   #geoPanel.geo-guide #geo-sand .range-table thead th:not(.geo-col-shaft) {
     /* Keep short columns at their intrinsic width so the shaft group gets the remaining space. */
     width:1%;
   }
   #geoPanel.geo-guide #geo-sand .range-table :is(th.geo-number,td[data-column]) {padding-inline:6px;}
-  #geoPanel.geo-guide #geo-sand .range-table :is(.geo-col-shaft,.geo-shaft-cell) {
-    border-inline-start:1px solid var(--geo-line);padding-inline-start:12px;
+  #geoPanel.geo-guide #geo-sand .range-table :is(th.geo-col-weight,td[data-column="weight"]) {
+    min-inline-size:15ch;padding-inline:16px;
   }
-  #geoPanel.geo-guide #geo-sand .range-table thead .geo-col-shaft {width:43%;}
+  #geoPanel.geo-guide #geo-sand .range-table thead th.geo-col-weight {width:14%;}
+  #geoPanel.geo-guide #geo-sand .range-table :is(.geo-col-shaft,.geo-shaft-cell) {
+    border-inline-start:1px solid var(--geo-line);padding-inline:16px 12px;
+  }
+  #geoPanel.geo-guide #geo-sand .range-table thead .geo-col-shaft {width:38%;}
   #geoPanel.geo-guide .geo-shaft-line > span {white-space:nowrap;}
   #geoPanel.geo-guide #geo-rock .range-table tbody :is(th,td) {vertical-align:middle;}
-}
-@media(min-width:961px) and (max-width:1000px) {
-  #geoPanel.geo-guide #geo-sand .range-table thead .geo-col-shaft {width:38%;}
-}
-@media(min-width:961px) and (pointer:fine) {
-  #geoPanel.geo-guide .geo-inline-detail > summary {min-height:32px;}
 }
 @media(max-width:960px) {
   #geoPanel.geo-guide .range-table tbody th[scope="row"] {

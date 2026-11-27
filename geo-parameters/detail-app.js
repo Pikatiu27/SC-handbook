@@ -155,8 +155,8 @@
     if (!factors) return '<span class="geo-overview-pending">No source estimate</span>';
     const [,bored,lowDisplacement,driven] = benchmarks.get(row.term);
     return shaftLine("Bored", factors.bored, bored, Number.isFinite(Number(factors.bored)) ? "bored" : "")
-      + shaftLine("Displacement", factors.driven, driven, "driven")
-      + `<details class="geo-inline-detail"><summary>Low-displacement</summary>${shaftLine("Driven", "½ × " + factors.driven, lowDisplacement, "lowDisplacement")}</details>`;
+      + shaftLine("Driven · displacement", factors.driven, driven, "driven")
+      + shaftLine("Driven · low displacement", "½ × " + factors.driven, lowDisplacement, "lowDisplacement");
   }
   function clayShaftCell(row) {
     return query.overviewShaft("clay",row.id).parts.map(part => {
@@ -305,7 +305,7 @@
     $("rangeOverview").innerHTML=groups.map(group=>{
       const rock=group.family==="rock", clay=group.family==="cohesive", sand=group.material==="sand", gravel=group.material==="gravel";
       const strength=rock?"UCS (MPa)":clay?"Shear strength, s_u (kPa)":"Friction angle, φ′ (°)";
-      const note=rock?"Intact-rock strength classes. Assess rock-mass quality separately for bearing and bond.":clay?"s_u is a classification band. Bored shaft estimates apply to uniform clay and are capped at 100 kPa. Shaft factors are unitless.":sand?"General sand ranges. Modulus: medium–coarse sand. Presumed bearing: natural sand, B > 1 m, 25 mm settlement, groundwater more than B below the base. Shaft factors are unitless. Estimates assume uniform sand. Displacement and low-displacement refer to driven piles.":"No presumed gravel bearing or shaft-factor ranges. Check grading, fines and plasticity. The source strength correlation is fines-governed above 30%.";
+      const note=rock?"Intact-rock strength classes. Assess rock-mass quality separately for bearing and bond.":clay?"s_u is a classification band. Bored shaft estimates apply to uniform clay and are capped at 100 kPa. Shaft factors are unitless.":sand?"General sand ranges. Modulus: medium–coarse sand. Presumed bearing: natural sand, B > 1 m, 25 mm settlement, groundwater more than B below the base. Shaft factors are unitless. Estimates assume uniform sand.":"No presumed gravel bearing or shaft-factor ranges. Check grading, fines and plasticity. The source strength correlation is fines-governed above 30%.";
       const clayBearingBasis=clay?`<dl class="geo-clay-bearing-basis"><div><dt>Presumed allowable (q<sub>a</sub>)</dt><dd>Natural ground, B &gt; 1 m, 25 mm settlement basis.</dd></div><div><dt>Ultimate screen (q<sub>ult</sub>)</dt><dd>Approximate undrained failure pressure for an idealised surface strip footing.</dd></div></dl>`:"";
       const columns=rock?["strength","pointLoad"]:clay||sand?["strength","modulus","bearing","weight","shaft"]:["strength","modulus","weight"];
       const labels={strength,modulus:"Modulus, E_s (MPa)",shaft:clay?"Bored pile shaft":"Pile shaft",pointLoad:"Point-load, I_s(50) (MPa)",bearing:clay?"Bearing (kPa)":"Presumed bearing (kPa)",weight:"Unit weight, γ (kN/m³)"};
@@ -323,7 +323,10 @@
             ...part,
             label:part.label.replace(/, γ_(?:d|sat)$| \(source\)$/g,"")
           }));
-          return `<td data-column="${column}" class="geo-number ${parameter.role==="project"?"geo-overview-pending":"geo-overview-value"}"><span class="range-mobile-label">${overviewHeading(label)}</span>${parameter.role==="project"?"Project value required":partsHtml(parts)}${clay && row.id==="soft" && parameter===weight?'<small class="geo-value-scope">Non-organic clay only.</small>':""}</td>`;
+          const value = sand && column === "weight" && parameter.role !== "project"
+            ? parts.map(({label,value}) => `<span class="geo-value-line geo-weight-pair"><span class="geo-value-label">${symbols(label)}</span><span>${readingHtml(value.replace(/ kN\/m³$/, ""))}</span></span>`).join("")
+            : partsHtml(parts);
+          return `<td data-column="${column}" class="geo-number ${parameter.role==="project"?"geo-overview-pending":"geo-overview-value"}"><span class="range-mobile-label">${overviewHeading(label)}</span>${parameter.role==="project"?"Project value required":value}${clay && row.id==="soft" && parameter===weight?'<small class="geo-value-scope">Non-organic clay only.</small>':""}</td>`;
         };
         const shaftCell=()=>`<td class="geo-shaft-cell"${sand?` id="sand-shaft-${row.id}" data-sand-shaft="${row.id}" tabindex="-1"`:""}><span class="range-mobile-label">${shaftHeading(labels.shaft)}</span>${clay?clayShaftCell(row):sandShaftCell(row,sandBenchmarks)}</td>`;
         return `<tr><th scope="row"><button type="button" data-family="${group.family}" data-material="${group.material}" data-condition="${row.id}" aria-label="${group.title} · ${row.term}: show parameter details" aria-controls="selectedGround" aria-pressed="false" aria-expanded="false">${escapeHtml(row.term)}<span aria-hidden="true"> +</span></button>${gravel?`<small class="geo-state-index">I<sub>D</sub> ${symbols(row.densityIndex)}</small>`:""}</th>${columns.map(key=>key==="shaft"?shaftCell():cell({bearing,strength:strengthRow,modulus:modulusRow,weight,pointLoad}[key],labels[key],key)).join("")}</tr>`;
@@ -373,7 +376,10 @@
   options($("plasticity"),Object.entries(data.plasticity).map(([id,row])=>[id,row.label]),"unknown");
   syncGroundControls();
   renderOverview();
-  $("geo-sand").querySelector(".range-table-wrap").before($("sandShaftReference"));
+  const sandDrivingNote = document.createElement("p");
+  sandDrivingNote.className = "geo-group-note geo-sand-driving-note";
+  sandDrivingNote.textContent = "Low-displacement driven piles move less soil during driving (e.g. steel H-piles). Look (2014), Table 21.17 uses half the driven displacement factor in this estimate.";
+  $("geo-sand").querySelector(".range-table-wrap").before($("sandShaftReference"), sandDrivingNote);
   for(const material of ["clay","rock"]){
     const references=document.createElement("div");
     references.className="geo-material-references";

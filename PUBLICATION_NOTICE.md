@@ -2,6 +2,8 @@
 
 ## Status
 
+Build 0.7.159 (27 November 2026): The Sand reference table shows all three pile shaft methods together, explains low-displacement driving and separates unit weight from shaft values. Source values, formulas and legacy links are retained. Public beta / For Review.
+
 Build 0.7.158 (25 November 2026): Ground Reference aligns column titles and units, pairs Clay bearing labels with their values, and gives Sand pile-shaft methods more room. Classification disclosure markers sit beside their labels. Source values, formulas and legacy links are retained. Public beta / For Review.
 
 Build 0.7.157 (25 November 2026): Ground Reference uses content-driven column widths and compact row spacing, keeping short values and their units together while allowing longer notes to wrap. Source values, formulas and legacy links are retained. Public beta / For Review.
